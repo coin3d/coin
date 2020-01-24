@@ -42,11 +42,11 @@
   Upon system specific events, a translation is done by the window
   specific device classes into one of the Coin event object classes
   listed below. The event is then typically sent by the render area
-  to an SoSceneManager which will apply it to the scenegraph through
+  to an SoSceneManager which will apply it to the scene graph through
   an SoHandleEventAction.
 
   Events may be caught by the user by attaching an SoEventCallback
-  node to the scenegraph, or it can automatically be handled by a
+  node to the scene graph, or they can automatically be handled by a
   dragger or manipulator in the graph.
 
   \sa SoButtonEvent, SoKeyboardEvent, SoLocation2Event, SoMotion3Event
@@ -87,10 +87,10 @@ SO_EVENT_ABSTRACT_SOURCE(SoEvent);
 
 
 /*!
-  Initialize SoEvent and all it's known subclasses (i.e. all subclasses
+  Initialize SoEvent and all its known subclasses (i.e. all subclasses
   which are part of the standard classes in the Coin library).
 
-  This method is called from SoDB::init(), so it's very unlikely that
+  This method is called from SoDB::init(), so it is very unlikely that
   you will have to call it explicitly.
  */
 void

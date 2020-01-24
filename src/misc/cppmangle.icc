@@ -195,7 +195,7 @@ getManglingFunction(void)
 failure:
 #ifdef _MSC_VER
   // LoadLibrary(NULL) doesn't work, so we fall-back on the MSVC++ mangling
-  // scheme on MS Windows.
+  // scheme on Microsoft Windows.
   manglefunc = msvc6_initClassMangling;
 #endif
   return manglefunc;

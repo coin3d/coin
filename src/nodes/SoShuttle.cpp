@@ -85,7 +85,7 @@
 */
 /*!
   \var SoSFBool SoShuttle::on
-  Toggles animation on or off. Defauls to \c TRUE.
+  Toggles animation on or off. Defaults to \c TRUE.
 */
 
 // *************************************************************************

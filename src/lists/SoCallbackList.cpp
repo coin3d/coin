@@ -106,7 +106,7 @@ SoCallbackList::removeCallback(SoCallbackListCB * f, void * userdata)
   // already exists, else do nothing"? 20050723 kyrah.
   if (idx == -1) {
     SoDebugError::post("SoCallbackList::removeCallback",
-                       "Tried to remove non-existant callback function.");
+                       "Tried to remove non-existent callback function.");
     return;
   }
 #endif // COIN_DEBUG

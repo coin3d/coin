@@ -32,16 +32,16 @@
 
 /*!
   \class SoDrawStyle SoDrawStyle.h Inventor/nodes/SoDrawStyle.h
-  \brief The SoDrawStyle class specificies common rendering properties for shapes.
+  \brief The SoDrawStyle class specifies common rendering properties for shapes.
 
   \ingroup nodes
 
   Use SoDrawStyle nodes to influence how shape nodes following them in
-  the scenegraph will be rendered.  This node type have fields to help
+  the scene graph will be rendered.  This node type have fields to help
   decide how certain aspects of point-based shapes, line-based shapes
   and filled shape primitives are rendered.
 
-  Simple scenegraph structure usage example:
+  Simple scene graph structure usage example:
 
   \code
   #Inventor V2.1 ascii
@@ -114,7 +114,7 @@
 /*!
   \var SoSFEnum SoDrawStyle::style
 
-  How to render the geometry following a drawstyle node in the scene
+  How to render the geometry following a draw style node in the scene
   graph. Default SoDrawStyle::FILLED.
 */
 /*!
@@ -124,9 +124,9 @@
   vertex points if setting the SoDrawStyle::style to
   SoDrawStyle::POINTS.
 
-  The valid range of pointsize settings varies according to which
+  The valid range of point size settings varies according to which
   OpenGL implementation is used. For the purpose of not trying to set
-  illegal values, the application programmer should at run-time check
+  illegal values, the application programmer should at runtime check
   the valid range. How this can be accomplished is described in the
   class documentation of SoGLPointSizeElement.
 
@@ -143,9 +143,9 @@
   also of geometry border lines if setting the SoDrawStyle::style to
   SoDrawStyle::LINES.
 
-  The valid range of linewidth settings varies according to which
+  The valid range of line width settings varies according to which
   OpenGL implementation is used. For the purpose of not trying to set
-  illegal values, the application programmer should at run-time check
+  illegal values, the application programmer should at runtime check
   the valid range. How this can be accomplished is described in the
   class documentation of SoGLLineWidthElement.
 

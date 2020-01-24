@@ -58,7 +58,7 @@
 
 /* ********************************************************************** */
 
-/*! Constucts a new thread barrier. */
+/*! Constructs a new thread barrier. */
 
 cc_barrier *
 cc_barrier_construct(unsigned int count)

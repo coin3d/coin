@@ -47,7 +47,7 @@
   This node will create 3D geometry from a specified font defined by a
   preceding SoFont node. The complexity of the glyphs is controlled by
   a preceding SoComplexity node with \e Type set to OBJECT_SPACE.
-  Please note that the default builtin 3D font will not be affected by
+  Please note that the default built-in 3D font will not be affected by
   the SoComplexity node.
 
   This is a simple example of an extruded SoText3 string:
@@ -106,7 +106,7 @@
 
   Beware that using a lot of SoText3 text characters in a scene will
   usually have severe impact on the rendering performance, as each and
-  every character of the text increases the polygon-count a lot. This
+  every character of the text increases the polygon count a lot. This
   makes SoText3 nodes most suitable in situations where you just need
   a few characters to be placed in your scene, rather than to
   visualize complete sentences.
@@ -232,7 +232,7 @@
 */
 /*!
   \var SoSFBitMask SoText3::parts
-  Character parts. Default is to show only the front-facing part.
+  Character parts. Default is to show only the front facing part.
 */
 
 // FIXME: missing features, pederb 20000224
@@ -268,7 +268,7 @@ public:
 private:
 #ifdef COIN_THREADSAFE
   // FIXME: a mutex for every instance seems a bit excessive,
-  // especially since MSWindows might have rather strict limits on the
+  // especially since Microsoft Windows might have rather strict limits on the
   // total amount of mutex resources a process (or even a user) can
   // allocate. so consider making this a class-wide instance instead.
   // -mortene.
@@ -447,7 +447,7 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 
 
 /*!
-  Not implemented. Should probably have been private in OIV. Let us
+  Not implemented. Should probably have been private in Open Inventor API. Let us
   know if you need this method for anything, and we'll implement it.
 */
 SbBox3f
@@ -881,7 +881,7 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
                 vc[1] = startb[1] + (profcoords[k][1] * normala[1]);
                 vc[2] = -profcoords[k][0];
 
-                // The windows tesselation sometimes return
+                // The windows tessellation sometimes return
                 // illegal/empty tris. A test must be done to
                 // prevent stdout from being flooded with
                 // normalize() warnings from inside the normal
@@ -915,7 +915,7 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
 
           // NOTE: We add the xpos and ypos to each vertex at this
           // point because Linux systems seems to accumulate an error
-          // when calculating the normals (ie. two 'o's in a row
+          // when calculating the normals (i.e. two 'o's in a row
           // doesn't get the same normals due to the xpos
           // difference). This doesn't happen on Windows so it is
           // probably a floating point precision issue linked to the
@@ -1333,7 +1333,7 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
                 vc[1] = startb[1] + (profcoords[k][1] * normala[1]);
                 vc[2] = -profcoords[k][0];
 
-                // The windows tesselation sometimes return
+                // The windows tessellation sometimes return
                 // illegal/empty tris. A test must be done to prevent
                 // stdout from being flooded with normalize() warnings
                 // from inside the normal generator.

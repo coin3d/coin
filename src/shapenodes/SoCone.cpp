@@ -41,14 +41,14 @@
 
   \ingroup nodes
 
-  Insert a cone shape into the scenegraph. The cone is rendered with
-  the current material, texture and drawstyle settings (if any,
+  Insert a cone shape into the scene graph. The cone is rendered with
+  the current material, texture and draw style settings (if any,
   otherwise the default settings are used).
 
   The SoCone node class is provided as a convenient abstraction for
   the application programmer to use "complex" shapes of this type
   without having to do the tessellation to polygons and other
-  low-level programming herself.
+  low level programming herself.
 
   A cone is visualized by the underlying rendering system by first
   tessellating the conceptual cone into a set of polygons. To control

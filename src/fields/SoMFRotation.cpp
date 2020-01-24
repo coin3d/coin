@@ -37,7 +37,7 @@
   \ingroup fields
 
   This field is used where nodes, engines or other field containers
-  needs to store multiple rotation definitions.
+  need to store multiple rotation definitions.
 
   \sa SoSFRotation
 */

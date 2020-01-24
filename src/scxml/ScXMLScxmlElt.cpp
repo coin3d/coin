@@ -51,7 +51,7 @@
   - state - zero or more elements
   - parallel - zero or more elements
   - final - zero or more elements
-  - datamodel - zero or one if the datamodel module is enabled
+  - datamodel - zero or one if the data model module is enabled
 
   \since Coin 3.0
   \ingroup scxml

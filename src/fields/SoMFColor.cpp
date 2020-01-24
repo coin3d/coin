@@ -37,7 +37,7 @@
   \ingroup fields
 
   This field is used where nodes, engines or other field containers
-  needs to store multiple color values (i.e. "Red Green Blue"
+  need to store multiple color values (i.e. "Red Green Blue"
   triplets).
 
   This field supports application data sharing through a

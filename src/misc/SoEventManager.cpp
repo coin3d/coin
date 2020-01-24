@@ -182,7 +182,7 @@ SoEventManager::getNavigationState(void) const
 /*!
   Set the node which is top of the scene graph we're managing.  The \a
   sceneroot node reference count will be increased by 1, and any
-  previously set scene graph top node will have it's reference count
+  previously set scene graph top node will have its reference count
   decreased by 1.
 
   \sa getSceneGraph

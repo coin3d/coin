@@ -66,7 +66,7 @@
     {-11, 0, 1}, {0, 11, 1}, {11, 0, 1}, {0, -11, 1}, {-11, 0, 1}
   };
 
-  // This function generate an object by using the SoQuadMesh node
+  // This function generates an object by using the SoQuadMesh node
   // Return:
   //  SoSeparator *
   static SoSeparator *
@@ -137,7 +137,7 @@
   circumstances, this can lead to artifacts in how your meshes are
   shaded. This is an inherent problem with drawing quads in meshes.
 
-  There is a work-around solution for the above mentioned problem that
+  There is a work around solution for the above mentioned problem that
   can be applied with Coin: by setting the global environment variable
   \c COIN_QUADMESH_PRECISE_LIGHTING to "1", the quads will be broken
   up in triangles before rendered, and shading will likely look much
@@ -146,7 +146,7 @@
 
   The "precise lighting" technique is currently limited to work only
   when SoQuadMesh rendering is parameterized with 3D coordinates, a
-  materialbinding that is \e not per vertex, and if texture mapping is
+  material binding that is \e not per vertex, and if texture mapping is
   done is must be without using any of the SoTextureCoordinateFunction
   subclass nodes.
 

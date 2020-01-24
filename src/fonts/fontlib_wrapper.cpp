@@ -218,7 +218,7 @@ using_win32api(void)
                              fontlib_win32_available ? "" : " not");
     }
 
-    /* Allow only one of the availability flags to be set, as it's too
+    /* Allow only one of the availability flags to be set, as it is too
        easy to get bugs in our code in this file if we depend on
        always checking one particular flag before the other.
 
@@ -518,7 +518,7 @@ cc_flw_unref_font(int fontid)
 
   \a fontname is the name and style \e requested. The actual font
   created will typically differ slightly, depending on what is
-  available on the run-time system.  If a font has already been
+  available on the runtime system.  If a font has already been
   created for this \a fontname and size, the function will not create
   a duplicate, but simply return that font.
 
@@ -662,8 +662,8 @@ cc_flw_get_glyph(int font, unsigned int character)
         /* Create glyph from default font, mark as default. */
 
         /* FIXME: shouldn't it rather be handled by making an empty
-           rectangle glyph of the correct size, like it's at least done
-           for X11 (and probably other systems aswell)?
+           rectangle glyph of the correct size, like it is at least done
+           for X11 (and probably other systems as well)?
 
            Or perhaps this strategy _is_ better, but then we should at
            least scale the defaultfont glyph to the correct size.

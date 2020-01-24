@@ -40,8 +40,8 @@
   nodes to a new scene graph using only VRML1 compatible nodes.
 
   A current limitation of this action is that nodes specific for
-  Inventor / Coin (ie neither VRML1 or VRML97 compatible nodes) is not
-  attempted converted, they are just ignored.
+  Inventor / Coin (i.e. neither VRML1 nor VRML97 compatible nodes) are not
+  tried to convert, they are simply ignored.
 
   \sa SoToVRML2Action
 

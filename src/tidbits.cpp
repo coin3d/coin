@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*
-  This file containes various miniscule code fragments that don't really
+  This file contains various miniscule code fragments that don't really
   belong anywhere in Coin, but which is included to make it easier to keep
   Coin portable.
 */
@@ -259,7 +259,7 @@ coin_common_vsnprintf(func_vsnprintf * func,
      IRIX 6.5 vsnprintf() just returns the number of characters until
      clipped, i.e. input argument n minus one.
 
-     For the C run-times that comes with MSVC++ 5.0 and MSVC++ 6.0,
+     For the C runtimes that comes with MSVC++ 5.0 and MSVC++ 6.0,
      _vsnprintf() is specified to return -1 on overruns. (To match
      C99, one would expect Microsoft to change this, though. Perhaps
      done for MSVC++ v7?)
@@ -328,7 +328,7 @@ coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args)
   see.
 
   Compile with something like this (example is under GCC and Linux),
-  to generate a stand-alone program testing the function:
+  to generate a standalone program testing the function:
     gcc -Wall -DENABLE_TESTCODE=1 -DHAVE_UNISTD_H=1 -DHAVE_VSNPRINTF=1 \
         -o snprintf snprintf.c
 
@@ -450,7 +450,7 @@ coin_snprintf(char * dst, unsigned int n, const char * fmtstr, ...)
   aid any future transition to pure C. 20010821 mortene.
 
   UPDATE: SbList isn't really a linked list, but in fact a growable
-  array -- so the code below can not be used as a replacement. Still,
+  array -- so the code below cannot be used as a replacement. Still,
   we should have a generic linked list class. 20011220 mortene.
 */
 
@@ -503,10 +503,10 @@ envlist_append(struct envvar_data * item)
  * to the envlist linked list under Win32?  20030205 larsa */
 
 /*
-  When working with MSWindows applications using Coin as a DLL,
+  When working with Microsoft Windows applications using Coin as a DLL,
   setenv() / getenv() will not work as expected, as the application
   and the DLL has different instances of the C library with different
-  datastructures on different heaps. That's why we need this
+  data structures on different heaps. That's why we need this
   abstraction around the C-libs getenv() vs the Win32 API
   GetEnvironmentVariable() function.
 
@@ -892,7 +892,7 @@ coin_isascii(const int c)
 /* We provide our own version of the isspace() method, as we don't
    really want it to be locale-dependent (which is known to have
    caused trouble for us with some specific German characters under
-   MSWindows, at least). */
+   Microsoft Windows, at least). */
 SbBool
 coin_isspace(const char c)
 {
@@ -1169,9 +1169,9 @@ coin_atexit_cleanup(void)
 /*
   This replacement for the C library's atexit() function is used for
   two reasons: first, we want to control the internal order of when
-  clean-up callbacks are invoked (as can be done by setting the
+  cleanup callbacks are invoked (as can be done by setting the
   priority argument accordingly), second, we want to be able to do a
-  controlled clean-up in advance of the C library's shutdown, to make
+  controlled cleanup in advance of the C library's shutdown, to make
   sure that we get cleaned up before any DLLs we are using are thrown
   out of the process.
 
@@ -1182,9 +1182,9 @@ coin_atexit_cleanup(void)
   function with priority 2 will trigger before an atexit function with
   priority 1.
 
-  Functions passed to this method should be cast to the apropriate
+  Functions passed to this method should be cast to the appropriate
   method signature (coin_atexit_f), so the OSF1/cxx compiler can
-  accept a C++ function as it's input argument. (Problem reported by
+  accept a C++ function as its input argument. (Problem reported by
   Guy Barrand.)
 */
 
@@ -1223,7 +1223,7 @@ coin_atexit_func(const char * name, coin_atexit_f * f, coin_atexit_priorities pr
        which then invokes the coin_atexit_cleanup() method.
 
        Note that this scheme is not to be considered a temporary
-       workaround -- application-exit clean-up should be done
+       workaround -- application-exit cleanup should be done
        explicitly by invoking SoDB::finish().
 
        mortene.
@@ -1252,7 +1252,7 @@ coin_atexit_func(const char * name, coin_atexit_f * f, coin_atexit_priorities pr
 
 /*
   Public version of the coin_atexit function which always sets the
-  priority such that external clean-up functions are run \e first.
+  priority such that external cleanup functions are run \e first.
 
   (Which is of course important because they may have dependencies
   into Coin functionality.)
@@ -1268,7 +1268,7 @@ cc_coin_atexit(coin_atexit_f * f)
 
 /*!
   Internal function used for cleaning up static data. Do not use
-  from appliction code.
+  from application code.
 */
 void
 cc_coin_atexit_static_internal(coin_atexit_f * fp)
@@ -1644,7 +1644,7 @@ coin_isinf(double value)
 #endif
 }
 
-/* Returns 0 if the bitpattern of the \a value argument is not a valid
+/* Returns 0 if the bit pattern of the \a value argument is not a valid
    floating point number, otherwise returns non-zero.
 
    Note that on some systems, this method will always return 0
@@ -1674,7 +1674,7 @@ coin_isnan(double value)
 #endif
 }
 
-/* Returns 0 if the bitpattern of the \a value argument is not a valid
+/* Returns 0 if the bit pattern of the \a value argument is not a valid
    floating point number, or an infinite number, otherwise returns
    non-zero.
 

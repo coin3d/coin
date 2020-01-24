@@ -36,7 +36,7 @@
 
   \ingroup projectors
 
-  The following stand-alone example shows how screen space coordinates
+  The following standalone example shows how screen space coordinates
   projects into 3D when mapped with an SbSphereSheetProjector. It
   outputs the resulting projections as an SoPointSet in a
   Inventor-file on stdout:
@@ -130,7 +130,7 @@
 
 
 /*!
-  Constructor. Uses default sphere defintion, see
+  Constructor. Uses default sphere definition, see
   SbSphereProjector::SbSphereProjector().
 
   \a orienttoeye decides whether or not the sheet should always be

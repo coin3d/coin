@@ -244,7 +244,7 @@ SbPlane::isInHalfSpace(const SbVec3f& point) const
 
 /*!
   Return the distance from \a point to plane. Positive distance means
-  the point is in the plane's half space.
+  the point is in the plane's halfspace.
 
   This method is an extension specific to Coin versus the original SGI
   Inventor API.
@@ -362,7 +362,7 @@ operator ==(const SbPlane& p1, const SbPlane& p2)
 /*!
   \relates SbPlane
 
-  Check the two given planes for unequality.
+  Check the two given planes for inequality.
 */
 int
 operator !=(const SbPlane& p1, const SbPlane& p2)
@@ -371,7 +371,7 @@ operator !=(const SbPlane& p1, const SbPlane& p2)
 }
 
 /*!
-  Dump the state of this object to the \a file stream. Only works in
+  Dump the state of this object to the \a fp file stream. Only works in
   debug version of library, method does nothing in an optimized build.
 */
 void

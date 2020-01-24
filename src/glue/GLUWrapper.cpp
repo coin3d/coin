@@ -52,7 +52,7 @@
 #include "threads/threadsutilp.h"
 
 /* need this before superglu.h, since that file includes GL/gl.h
-   without any windows.h, which may fail on MS Windows dev systems */
+   without any windows.h, which may fail on Microsoft Windows dev systems */
 #include <Inventor/system/gl.h>
 
 #ifdef HAVE_SUPERGLU
@@ -160,7 +160,7 @@ GLUWrapper_set_version(const GLubyte * versionstr)
                        "Invalid GLU versionstring: \"%s\"\n", versionstr);
   }
 
-  { /* Run-time help for debugging GLU problems on remote sites. */
+  { /* Runtime help for debugging GLU problems on remote sites. */
 #ifdef HAVE_SUPERGLU
     const SbBool superglu = TRUE;
 #else
@@ -195,7 +195,7 @@ GLUWrapper_set_version(const GLubyte * versionstr)
 
       cc_debugerror_postinfo("GLUWrapper_set_version",
                              "linking with GLU at %s",
-                             runtime ? "run-time" : "build-time ");
+                             runtime ? "runtime" : "build-time ");
     }
   }
 }
@@ -373,7 +373,7 @@ GLUWrapper(void)
        Autoconf check? 20000930 mortene. */
     const char * possiblelibnames[] = {
       NULL, /* is set below */
-      /* MSWindows DLL name for the GLU library */
+      /* Microsoft Windows DLL name for the GLU library */
       "glu32",
 
       /* UNIX-style names */

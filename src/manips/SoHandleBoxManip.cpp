@@ -98,7 +98,7 @@ SoHandleBoxManip::SoHandleBoxManip(void)
 
 /*!
   Protected destructor. (SoHandleBoxManip is automatically destructed
-  when it's reference count goes to 0.)
+  when its reference count goes to 0.)
 */
 SoHandleBoxManip::~SoHandleBoxManip()
 {

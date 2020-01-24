@@ -99,8 +99,8 @@
 /*!
   \def SO_NODE_SOURCE(classname)
 
-  This macro sets up the impementation of the declarations in \ref
-  SO_NODE_HEADER.  It chould be placed in the implementation file for
+  This macro sets up the implementation of the declarations in \ref
+  SO_NODE_HEADER.  It should be placed in the implementation file for
   extension nodes.
 
   \sa SO_NODE_HEADER
@@ -111,8 +111,8 @@
 /*!
   \def SO_NODE_ABSTRACT_SOURCE(classname)
 
-  This macro sets up the impementation of the declarations in \ref
-  SO_NODE_ABSTRACT_HEADER.  It chould be placed in the implementation
+  This macro sets up the implementation of the declarations in \ref
+  SO_NODE_ABSTRACT_HEADER.  It should be placed in the implementation
   file for abstract extension nodes.
 
   \sa SO_NODE_ABSTRACT_HEADER
@@ -123,7 +123,7 @@
 /*!
   \def SO_NODE_CONSTRUCTOR(classname)
 
-  Place this in the node constructor.  It sets up the fielddata object
+  Place this in the node constructor.  It sets up the field data object
   for the node class.
 
   \ingroup nodes

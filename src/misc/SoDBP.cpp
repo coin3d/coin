@@ -99,7 +99,7 @@ SoDBP::variableArgsSanityCheck(void)
                "for further assistance.\n\n");
 }
 
-// This will free all resources which has been allocated by the SoDB
+// This will free all resources which have been allocated by the SoDB
 // class. This isn't really necessary in user applications (the
 // underlying operating system will take care of making the resources
 // available again), but it is useful for debugging purposes -- it
@@ -116,7 +116,7 @@ SoDBP::clean(void)
   //
   // (This has already proven itself to be a source of problems with
   // the SoQt library, which wets its pants on the
-  // SoDBP::globaltimersensor destruction under MSWindows if we don't
+  // SoDBP::globaltimersensor destruction under Microsoft Windows if we don't
   // first nullify the callback function pointer.)
   SoDBP::sensormanager->setChangedCallback(NULL, NULL);
 

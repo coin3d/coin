@@ -265,7 +265,7 @@
   described in 4.6.3, Shapes and geometry
   (<http://www.web3d.org/documents/specifications/14772/V2.0/part1/concepts.html#4.6.3>).
 
-  For instance, a circular crossSection with counter-clockwise
+  For instance, a circular crossSection with counterclockwise
   ordering and the default spine form a cylinder. With solid TRUE and
   ccw TRUE, the cylinder is visible from the outside. Changing ccw to
   FALSE makes it visible from the inside.  The ccw, solid, convex, and
@@ -1074,7 +1074,7 @@ SoVRMLExtrusionP::generateCoords(void)
   SbVec3f X, Y, Z;
 
   // find first non-collinear spine segments and calculate the first
-  // valid Y and Z axis
+  // valid Y- and Z-axis
   for (i = 0; i < numspine && (prevY == empty || prevZ == empty); i++) {
     if (prevY == empty) {
       Y = calculate_y_axis(spine, i, numspine, closed);
@@ -1087,7 +1087,7 @@ SoVRMLExtrusionP::generateCoords(void)
   }
 
   if (prevY == empty) prevY = SbVec3f(0.0f, 1.0f, 0.0f);
-  if (prevZ == empty) { // all spine segments are colinear, calculate constant Z axis
+  if (prevZ == empty) { // all spine segments are colinear, calculate constant Z-axis
     prevZ = SbVec3f(0.0f, 0.0f, 1.0f);
     if (prevY != SbVec3f(0.0f, 1.0f, 0.0f)) {
       SbRotation rot(SbVec3f(0.0f, 1.0f, 0.0f), prevY);

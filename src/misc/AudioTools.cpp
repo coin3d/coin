@@ -52,7 +52,7 @@
 // versions of OpenAL, and we try to fix them up below.
 //
 // (It even looks like some of these defines have been set up
-// exclusively for MSWindows usage, while others are for other
+// exclusively for Microsoft Windows usage, while others are for other
 // platforms. Really great interface design there from the OpenAL
 // developers...)
 #ifndef AL_ILLEGAL_ENUM

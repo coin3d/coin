@@ -442,7 +442,7 @@ ScXMLEventTarget::setEventTargetName(const char * targetnamestr)
 
 /*!
   Queues an ScXMLEvent event.
-  The event is copied, and can be deleted as soon as the function return.
+  The event is copied, and can be deleted as soon as the function returns.
 */
 void
 ScXMLEventTarget::queueEvent(const ScXMLEvent * event)

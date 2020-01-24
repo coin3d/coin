@@ -37,7 +37,7 @@
   \ingroup fields
 
   This field is used where nodes, engines or other field containers
-  needs to store an array of vectors with three elements.
+  need to store an array of vectors with three elements.
 
   \sa SbVec3d, SoSFVec3d, SoMFVec3f
 */

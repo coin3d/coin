@@ -43,7 +43,7 @@
   fields.
 
   The engine has sixteen input fields; eight scalar inputs (\e a, \e
-  b, \e c, \e d, \e e, \e f \e g, and \e h), and eight vector inputs (\e A,
+  b, \e c, \e d, \e e, \e f, \e g, and \e h), and eight vector inputs (\e A,
   \e B, \e C, \e D, \e E, \e F, \e G, and \e H).
 
   There are eight output fields; four scalar outputs (\e oa, \e ob, \e
@@ -146,12 +146,12 @@
   (The parentheses are not necessary, they're there just to make the
   example easier to read)
 
-  In addition to the standard comparators (\e <, \e >, \e <=, \e >=,
+  In addition to the standard comparison operators (\e <, \e >, \e <=, \e >=,
   \e ==, \e !=), you can also use && (AND) and || (OR) to
   combine expression, and the unary ! (NOT) operator.
 
-  One final thing worth mentioning is the temporary variables. There
-  exists sixteen temporary variables that can be used in expressions.
+  One final thing worth mentioning are the temporary variables. There
+  exist sixteen temporary variables that can be used in expressions.
   \e ta, \e tb, \e tc, \e td, \e te, \e tf, \e tg, and \e th are scalar
   variables, and \e tA, \e tB, \e tC, \e tD, \e tE, \e tF, \e tG, and \e tH
   are vector variables. They are usually used when you have more than
@@ -559,7 +559,7 @@ SoCalculator::evaluateExpression(struct so_eval_node *node, const int fieldidx)
 // inused and outused must be cleared before calling this method
 //
 // FIXME: this becomes a bottleneck if there are many SoCalculator
-// engines in the scenegraph which are updated all the time. See the
+// engines in the scene graph which are updated all the time. See the
 // SoGuiExamples/coin-competitions/SIM-20010914/kaos.cpp.in for some
 // great test-code to use while profiling.  Could be solved by caching
 // the set of expressions found.  20010917 mortene.

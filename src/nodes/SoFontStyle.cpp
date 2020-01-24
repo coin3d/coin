@@ -146,7 +146,7 @@ SoFontStyle::initClass(void)
 }
 
 /*!
-  Returns a system-specific text string to use for font loading, based
+  Returns a system specific text string to use for font loading, based
   on the style settings of this node.
 */
 SbString

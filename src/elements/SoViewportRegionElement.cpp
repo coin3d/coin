@@ -54,7 +54,7 @@
 SO_ELEMENT_SOURCE(SoViewportRegionElement);
 
 /*!
-  This static method initializes static data for the SoViewportregionElement
+  This static method initializes static data for the SoViewportRegionElement
   class.
 */
 

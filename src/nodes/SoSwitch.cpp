@@ -42,7 +42,7 @@
   children on or off for traversal.
 
   This node is very useful for conditionally turning on or off parts
-  of the scenegraph based on the current application processing mode,
+  of the scene graph based on the current application processing mode,
   visualizing mode, or whatever else the application can do.
 
   <b>FILE FORMAT/DEFAULTS:</b>
@@ -93,11 +93,11 @@
 
   When using \c SO_SWITCH_INHERIT, it is important to understand how
   the SoSwitch-node is affected by other SoSwitch-nodes. If you have
-  several switches in the scenegraph, the last switch with its \c
+  several switches in the scene graph, the last switch with its \c
   whichChild field set to anything but \c SO_SWITCH_INHERIT will be
   used. The switch does not only inherit from its parent switch node,
   but also from its siblings, located anywhere before it in the
-  scenegraph. An example will help clarify this:
+  scene graph. An example will help clarify this:
 
   \code
   #Inventor V2.1 ascii
@@ -127,7 +127,7 @@
   value of the previous \c whichChild field was inherited by the final
   switch, making it select child 1 - the blue BaseColor.
 
-  When constructing ascii Inventor files, the integer values for the
+  When constructing ASCII Inventor files, the integer values for the
   keywords must be used instead of their names.  They are -1 for
   \c SO_SWITCH_NONE, -2 for \c SO_SWITCH_INHERIT, and -3 for
   \c SO_SWITCH_ALL.
@@ -327,7 +327,7 @@ SbBool
 SoSwitch::affectsState(void) const
 {
   // Overridden because when this function is called we don't know
-  // which "mode" the traversing action is in. If it's an
+  // which "mode" the traversing action is in. If it is an
   // SoSearchAction with isSearchingAll() set to TRUE, we should
   // behave as if whichChild == SO_SWITCH_ALL, for instance.
   //
@@ -337,7 +337,7 @@ SoSwitch::affectsState(void) const
   //
   // So to be safe, we _always_ behave as if whichChild is set to
   // traverse all children. The worst that can happen is that we get a
-  // "false positive", ie TRUE when it should be FALSE. That means the
+  // "false positive", i.e. TRUE when it should be FALSE. That means the
   // action needs to traverse one level further down onto one of our
   // children -- which will just take a miniscule amount of additional
   // processing time.

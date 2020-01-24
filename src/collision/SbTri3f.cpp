@@ -76,7 +76,7 @@
 // Doing intersection testing would be done by transforming one primitive
 // into the local coordinate system of the triangle (by using the inverse
 // matrix).  Given the simplicity of the a, b, and c coordinates of the
-// localspace triangle, the intersection testing ought to be a lot more
+// local space triangle, the intersection testing ought to be a lot more
 // trivial to perform than in fully flexible 3D space.  Especially the
 // case of triangles in the same plane...
 
@@ -176,7 +176,7 @@ SbBool
 SbTri3f::intersect(const SbTri3f & t) const
 {
   // FIXME: remove all "programming logic" error messages and asserts from
-  // this function when it's verified that those paths can't be taken.
+  // this function when it is verified that those paths can't be taken.
 
   SbVec3f a1(PRIVATE(this)->a);
   SbVec3f b1(PRIVATE(this)->b);
@@ -367,7 +367,7 @@ SbTri3f::intersect(const SbTri3f & t) const
     return FALSE;
   }
 
-  // find end point of the four (the one furtest from origo would be an end point)
+  // find end point of the four (the one furthest from origo would be an end point)
   // and the length of that line segment
   float distance, maxdistance;
   int vertex = 1;

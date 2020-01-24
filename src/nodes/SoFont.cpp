@@ -50,9 +50,9 @@
   Spaces before or after the ":" will be ignored.
 
   If a good match for the chosen font cannot be found, the default
-  font will be loaded instead. The default 2D font is a builtin 8x12
+  font will be loaded instead. The default 2D font is a built-in 8x12
   points font. The 3D font is a serif font ala Times New Roman. It is
-  not possible to apply styles to any of the builtin fonts. It is not
+  not possible to apply styles to any of the built-in fonts. It is not
   possible to specify a size for the default 2D font.
   
   One can explicitly select the default font by setting "defaultFont"
@@ -81,7 +81,7 @@
 
 
   The default fonts are always accessible by Coin as they are embedded
-  into the run-time library. If one needs to guarantee that the text
+  into the runtime library. If one needs to guarantee that the text
   will have the same appearance under all circumstances, the default
   font will be a safe choice. Another solution might be to use the \e
   FreeType font engine and explicitly name a font-file. This is
@@ -109,7 +109,7 @@
   platforms, the \e FreeType library together with the optional \e
   Fontconfig library is used.
 
-  If the \e Fontconfig library is installed the font file on the sytem
+  If the \e Fontconfig library is installed the font file on the system
   for a given font name will be located through it. For more
   information on \e Fontconfig see
   http://freedesktop.org/software/fontconfig . Additionally \e
@@ -117,7 +117,7 @@
   matching format (see
   http://pdx.freedesktop.org/~fontconfig/fontconfig-user.html).
   Please note that the point size value in the textual representation
-  of the Fontconfig pattern is currently overriden by the size field
+  of the Fontconfig pattern is currently overridden by the size field
   of the SoFont node and if no size field is specified the default
   value of the size field is in effect. In case you intend to use your
   application on systems where the \e Fontconfig library is expected
@@ -147,7 +147,7 @@
 
   On Windows the Win32 GDI library is used. \e FreeType and \e
   Fontconfig are dynamically loaded on demand by Coin if font support
-  are requested by a node. When fontsupport is loaded on Windows,
+  are requested by a node. When font support is loaded on Windows,
   FreeType will have precedence over Win32 if located. This can be
   prevented by setting the "COIN_FORCE_FREETYPE_OFF" environment
   variable to 1. When using FreeType, you need FreeType version 2.1 or
@@ -222,13 +222,13 @@
 
   Name of font.
 
-  Which fontnames are available is rather system dependent, not only
+  Which font names are available is rather system dependent, not only
   on whether or not you are running on a UNIX/Linux system, Microsoft
   Windows or whatever, but also on which fonts and font \e types (like
   TrueType) are installed on a particular user's system.
 
   All font rendering nodes have a built-in fallback font to use,
-  though, so even though Coin can not find a font on the system of the
+  though, so even though Coin cannot find a font on the system of the
   specified type, the text should be rendered somehow.
 
   In summation, consider this node type and this particular field as a
@@ -243,7 +243,7 @@
 
   For 2D rendered bitmap fonts (like for SoText2), this value is the
   height of a character in screen pixels. For 3D text, this value is
-  the world-space coordinates height of a character in the current
+  the world space coordinates height of a character in the current
   units setting (see documentation for SoUnits node).
 */
 

@@ -129,9 +129,9 @@
   Definition of clipping plane.  Geometry on the back side of the
   clipping plane is clipped away.
 
-  The default clipping plane has it's normal pointing in the <1,0,0>
+  The default clipping plane has its normal pointing in the <1,0,0>
   direction, and intersects origo. (I.e., everything along the
-  negative X axis is clipped.)
+  negative X-axis is clipped.)
 */
 /*!
   \var SoSFBool SoClipPlane::on

@@ -568,7 +568,7 @@ ScXMLStateElt::~ScXMLStateElt(void)
 
 /*!
   Sets the XML 'src' attribute for the SCXML &lt;state&gt; element.
-  To get the attribute value intepreted and taken action upon, you will
+  To get the attribute value interpreted and taken action upon, you will
   also need to [FIXME]
 */
 void

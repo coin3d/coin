@@ -93,7 +93,7 @@ SoEmissiveColorElement::set(SoState * const state, SoNode * const COIN_UNUSED_AR
                               "Multiple emissive colors not supported. "
                               "All color except the first will be ignored.");
   }
-#endif // COIN_DEBIG
+#endif // COIN_DEBUG
 }
 
 

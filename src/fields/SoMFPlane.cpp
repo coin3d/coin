@@ -37,7 +37,7 @@
   \ingroup fields
 
   This field is used where nodes, engines or other field containers
-  needs to store multiple 3D plane definitions.
+  need to store multiple 3D plane definitions.
 
   \sa SoSFPlane
 */

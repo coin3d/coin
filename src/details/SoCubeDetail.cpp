@@ -89,7 +89,7 @@ SoCubeDetail::copy(void) const
 
 /*!
   Set the part of a cube which was selected. A cube has of course six
-  different conceptual parts -- it's sides.
+  different conceptual parts -- its sides.
   */
 void
 SoCubeDetail::setPart(const int partarg)

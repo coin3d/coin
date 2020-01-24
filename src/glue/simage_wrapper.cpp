@@ -298,7 +298,7 @@ simage_wrapper(void)
         "simage", "libsimage", "libsimage.so",
         /* Mach dynamic library name */
         "libsimage.dylib",
-        /* MSWindows DLL names for the simage library */
+        /* Microsoft Windows DLL names for the simage library */
         simage_dll_name,
         NULL
       };

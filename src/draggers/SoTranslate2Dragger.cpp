@@ -49,7 +49,7 @@
   </center>
 
   Use this dragger to allow the end-user of your application to
-  translate along the X-axis and the Y-axis at the same time, ie
+  translate along the X-axis and the Y-axis at the same time, i.e.
   freely inside a 3D plane. (Use a transformation node in front of the
   dragger to position it and re-orient it to translate in any plane.)
 
@@ -95,7 +95,7 @@
 /*!
   \var SoSFVec2f SoTranslate1Dragger::minTranslation
 
-  Sets the minimum value allowed in each component of the translaton
+  Sets the minimum value allowed in each component of the translation
   field.  This is only active if minTranslation <= maxTranslation for
   each component.
 
@@ -107,7 +107,7 @@
 /*!
   \var SoSFVec2f SoTranslate1Dragger::maxTranslation
 
-  Sets the maximum value allowed in each component of the translaton
+  Sets the maximum value allowed in each component of the translation
   field.  This is only active if minTranslation <= maxTranslation for
   each component.
 
@@ -155,7 +155,7 @@ SoTranslate2Dragger::initClass(void)
 }
 
 // FIXME: document which parts need to be present in the geometry
-// scenegraph, and what role they play in the dragger. 20010913 mortene.
+// scene graph, and what role they play in the dragger. 20010913 mortene.
 /*!
   \DRAGGER_CONSTRUCTOR
 
@@ -237,7 +237,7 @@ SoTranslate2Dragger::SoTranslate2Dragger(void)
   this->setPartAsDefault("xAxisFeedback", "translate2XAxisFeedback");
   this->setPartAsDefault("yAxisFeedback", "translate2YAxisFeedback");
 
-  // initialize swich values
+  // initialize switch values
   SoSwitch *sw;
   sw = SO_GET_ANY_PART(this, "translatorSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, 0);

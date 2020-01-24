@@ -41,7 +41,7 @@
   type. Translations, rotations and scaling in 2D can all be done.
 
   The default settings of this node's fields equals a "null
-  transform", ie no transformation.
+  transform", i.e. no transformation.
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
@@ -82,8 +82,8 @@
 /*!
   \var SoSFFloat SoTexture2Transform::rotation
 
-  Texture coordinate rotation in radians (around z-axis, s is x-axis and t is
-  y-axis).  Defaults to an identity rotation (ie zero rotation).
+  Texture coordinate rotation in radians (around Z-axis, s is X-axis and t is
+  Y-axis).  Defaults to an identity rotation (i.e. zero rotation).
 */
 /*!
   \var SoSFVec2f SoTexture2Transform::scaleFactor

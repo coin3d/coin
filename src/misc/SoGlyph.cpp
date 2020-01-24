@@ -249,8 +249,8 @@ SoGlyph::getNextCWEdge(const int edgeidx) const
 }
 
 /*!
-  Returns a pointer to the next counter clockwise edge.
-  NULL if none could be found.
+  Returns a pointer to the next counterclockwise edge. Returns NULL if
+  none could be found.
 */
 const int *
 SoGlyph::getNextCCWEdge(const int edgeidx) const
@@ -649,7 +649,7 @@ SoGlyph::getKerning(const SoGlyph & rightglyph) const
 
 /*!
   Bitmap for glyph. \a size and \a pos are return parameters.
-  Antialiased bitmap graphics not yet supported.
+  Antialiased bitmap graphics are not yet supported.
 
   Note that this function may return \c NULL if the glyph has no
   visible pixels (as for e.g. the space character).

@@ -52,7 +52,7 @@
 
 
 /*!
-  Constructor with action being the action applied to the node.
+  Constructor with \a action being the action applied to the node.
 */
 SoBundle::SoBundle(SoAction *action)
 {

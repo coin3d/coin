@@ -77,7 +77,7 @@
   Name of types traversed during the current render traversal.
 
   This field is tightly connected to the \a renderingTimePerNodeType field as
-  they will contain the same number of elements, and each value
+  it will contain the same number of elements, and each value
   in \a renderingTimePerNodeType matches the node type with the same index in
   this field.
 
@@ -90,7 +90,7 @@
   Time spent, during the current render traversal, per node type.
 
   This field is tightly connected to the \a renderedNodeType field as
-  they will contain the same number of elements, and each value
+  it will contain the same number of elements, and each value
   in this field matches the node type with the same index in
   \a renderedNodeType.
 
@@ -487,7 +487,7 @@ SoProfilerStats::notify(SoNotList * COIN_UNUSED_ARG(l))
   // redraws of the scene graph.
   //
   // and it doesn't expose any state relevant for any other nodes that
-  // do "real work" in the scenegraph anyway, so this is the correct
+  // do "real work" in the scene graph anyway, so this is the correct
   // thing to do.
 }
 

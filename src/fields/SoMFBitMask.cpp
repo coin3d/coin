@@ -37,7 +37,7 @@
   \ingroup fields
 
   This field is used where nodes, engines or other field containers
-  needs to store multiple bitmasks with values from an enumerated set.
+  need to store multiple bitmasks with values from an enumerated set.
 
   \sa SoSFBitMask
 

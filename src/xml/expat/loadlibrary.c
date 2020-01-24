@@ -81,7 +81,7 @@ HMODULE _Expat_LoadLibrary(LPCTSTR filename)
   HMODULE hModule = NULL;
   LOADLIBRARYEX_FN pLoadLibraryEx = NULL;
 
-  /* Get a handle to kernel32 so we can access it's functions at runtime */
+  /* Get a handle to kernel32 so we can access its functions at runtime */
   HMODULE hKernel32 = GetModuleHandle(TEXT("kernel32"));
   if(!hKernel32)
     return NULL;  /* LCOV_EXCL_LINE */

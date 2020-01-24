@@ -36,11 +36,11 @@
 
   \ingroup nodes
 
-  Shape nodes within the scope of SoTextureCubeMap nodes in the scenegraph
-  (ie below the same SoSeparator and to the righthand side of the
+  Shape nodes within the scope of SoTextureCubeMap nodes in the scene graph
+  (i.e. below the same SoSeparator and to the right hand side of the
   SoTextureCubeMap) will have the texture applied according to each shape
   type's individual characteristics.  See the documentation of the
-  various shape types (SoFaceSet, SoCube, SoSphere, etc etc) for
+  various shape types (SoFaceSet, SoCube, SoSphere, etc.) for
   information about the specifics of how the textures will be applied.
 
   <b>FILE FORMAT/DEFAULTS:</b>
@@ -104,7 +104,7 @@
 /*!
   \enum SoTextureCubeMap::Model
 
-  Texture mapping model, for deciding how to "merge" the texturemap
+  Texture mapping model, for deciding how to "merge" the texture map
   with the object it is mapped onto.
 */
 /*!
@@ -147,7 +147,7 @@
   \enum SoTextureCubeMap::Wrap
 
   Enumeration of wrapping strategies which can be used when the
-  texturemap doesn't cover the full extent of the geometry.
+  texture map doesn't cover the full extent of the geometry.
 */
 /*!
   \var SoTextureCubeMap::Wrap SoTextureCubeMap::REPEAT
@@ -206,7 +206,7 @@
 /*!
   \var SoSFEnum SoTextureCubeMap::wrapS
 
-  Wrapping strategy for the S coordinate when the texturemap is
+  Wrapping strategy for the S coordinate when the texture map is
   narrower than the object to map onto.
 
   Default value is SoTextureCubeMap::REPEAT.
@@ -214,7 +214,7 @@
 /*!
   \var SoSFEnum SoTextureCubeMap::wrapT
 
-  Wrapping strategy for the T coordinate when the texturemap is
+  Wrapping strategy for the T coordinate when the texture map is
   shorter than the object to map onto.
 
   Default value is SoTextureCubeMap::REPEAT.
@@ -222,7 +222,7 @@
 /*!
   \var SoSFEnum SoTextureCubeMap::model
 
-  Texturemapping model for how the texturemap is "merged" with the
+  Texture mapping model for how the texture map is "merged" with the
   polygon primitives it is applied to. Default value is
   SoTextureCubeMap::MODULATE.
 */

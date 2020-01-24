@@ -36,7 +36,7 @@
 
   \ingroup actions
 
-  This class is probably not interesting for the application
+  This class is probably not of interest for the application
   programmer.
 */
 
@@ -126,7 +126,7 @@ SoEnabledElementsList::getElements(void) const
 }
 
 /*!
-  Add an \a elementtype to the list of enabled elements if it's not
+  Add an \a elementtype to the list of enabled elements if it is not
   enabled already.
 */
 void

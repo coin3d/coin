@@ -111,7 +111,7 @@ SoHandleEventAction::initClass(void)
   Constructor.
 
   SoHandleEventAction needs a \a viewportregion to pass on to the
-  raypick action instance it uses for being able to track objects
+  ray pick action instance it uses for being able to track objects
   under the mouse cursor.
 */
 SoHandleEventAction::SoHandleEventAction(const SbViewportRegion & viewportregion)
@@ -237,7 +237,7 @@ SoHandleEventAction::isHandled(void) const
   Set a \a node pointer which will get all future events handled by
   this action until releaseGrabber() is called.
 
-  Note that since later SoHandleEventAction invokations are just applied
+  Note that since later SoHandleEventAction invocations are just applied
   directly on the grabber node, using SoHandleEventAction methods like
   getCurPath() will return bogus data.
 */

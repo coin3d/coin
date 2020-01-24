@@ -46,10 +46,10 @@
   the unique node identification number of the node that last changed
   the element.
 
-  The identifier values of nodes in the scenegraph is updated upon \e
+  The identifier values of nodes in the scene graph is updated upon \e
   any kind of change to a node, so this technique plays an important
   role in the construction, validation and destruction of internal
-  scenegraph caches.
+  scene graph caches.
 
   \sa SoAccumulatedElement
 */
@@ -129,10 +129,10 @@ SoReplacedElement::print(FILE * file) const
   SoReplacedElement subclasses should use this method to get writable
   instances.
 
-  The identifier values of nodes in the scenegraph is updated upon \e
+  The identifier values of nodes in the scene graph is updated upon \e
   any kind of change to a node, so this technique plays an important
   role in the construction, validation and destruction of internal
-  scenegraph caches.
+  scene graph caches.
 
   \sa SoElement::getElement()
 */

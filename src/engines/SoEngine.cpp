@@ -36,7 +36,7 @@
 
   \ingroup engines
 
-  Engines enables the application programmers to make complex
+  Engines enable the application programmers to make complex
   connections between fields.
 
   The most common cases where you use engines are: 1) to constrain the
@@ -433,7 +433,7 @@ SoEngine::writeOutputTypes(SoOutput * COIN_UNUSED_ARG(out))
   Make a duplicate of this engine and return a pointer to the
   duplicate.
 
-  Connections are shallow copied, ie the node or engine instance at
+  Connections are shallow copied, i.e. the node or engine instance at
   the other end of the connection is \e not cloned. We just let the
   connection reference from the cloned engine refer to the same
   instance as the engine we've cloned ourselves from.
@@ -443,7 +443,7 @@ SoEngine::writeOutputTypes(SoOutput * COIN_UNUSED_ARG(out))
   operation (like copying the value of internal data not exposed as
   fields). For that purpose, override the copyContents() method. Your
   overridden copyContents() method should then \e both copy internal
-  data aswell as calling the parent superclass' copyContents() method
+  data as well as calling the parent superclass' copyContents() method
   for automatically handling of fields and other common data.
 */
 SoEngine *
@@ -484,11 +484,11 @@ SoEngine::copyThroughConnection(void) const
   // involved in the copy operation.
   SoFieldContainer * connfc = SoFieldContainer::checkCopy(this);
   // if a copy has been made, return the findCopy instance (findCopy
-  // will run copyContents() the first time it's called on an
+  // will run copyContents() the first time it is called on an
   // instance).
   if (connfc) return SoFieldContainer::findCopy(this, TRUE);
 
-  // If we're outside the scenegraph.
+  // If we're outside the scene graph.
   if (this->shouldCopy() == FALSE)
     return
       const_cast<SoFieldContainer *>
@@ -506,7 +506,7 @@ SoEngine::copyThroughConnection(void) const
   Returns whether this engine should be copied or simply referenced in
   a copy operation.
 
-  Engines which are not really part of the scenegraph should not be
+  Engines which are not really part of the scene graph should not be
   copied.
 */
 SbBool

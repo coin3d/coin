@@ -100,11 +100,11 @@
   achieve the proper pitch change.  A duration_changed event is sent
   whenever there is a new value for the "normal" duration of the
   clip. Typically, this will only occur when the current url in use
-  changes and the sound data has been loaded, indicating that the clip
+  changes and the sound data have been loaded, indicating that the clip
   is playing a different sound source.  The duration is the length of
   time in seconds for one cycle of the audio for a pitch set to
   1.0. Changing the pitch field will not trigger a duration_changed
-  event. A duration value of "-1" implies that the sound data has not
+  event. A duration value of "-1" implies that the sound data have not
   yet loaded or the value is unavailable for some reason. A
   duration_changed event shall be generated if the AudioClip node is
   loaded when the VRML file is read or the AudioClip node is added to
@@ -483,7 +483,7 @@ SoVRMLAudioClip::getSampleRate()
 /*! Sets callbacks for opening, reading, seeking, telling and closing
  an audio source. Specifying NULL for a function is OK, except for the
  read function. If a function set to NULL is later called, a default
- implementation doing nothing is called in it's place. */
+ implementation doing nothing is called in its place. */
 
 void
 SoVRMLAudioClip::setCallbacks(open_func *opencb, read_func *readcb, 
@@ -1123,7 +1123,7 @@ SoVRMLAudioClipP::openFile(const char *filename)
   // of SoInput::getDirectories() (make a copy of the returned
   // SbStringList from when the SoVRMLAudioClip was read).  20050113 mortene.
   //
-  // FIXME: this is attempted again and again when the file can not be
+  // FIXME: this is attempted again and again when the file cannot be
   // opened. Once should be sufficient, and subsequent attempts should
   // be short-cutted somewhere before this in the call-chain. 20050627 mortene.
   this->stream = simage_wrapper()->s_stream_open(filename, NULL);

@@ -38,7 +38,7 @@
 
   This orientation is set by SoListener nodes and SoCamera Nodes during
   audio rendering. When a SoListener is visited by the SoAudioRenderAction,
-  it will add a new SoListenerOrientationElement to the state, holding it's
+  it will add a new SoListenerOrientationElement to the state, holding its
   orientation and with the setbylistener flag set. When a SoCamera is
   visited by SoAudioRenderAction, it will add a new
   SoListenerOrientationElement only if there are no previous elements with
@@ -88,8 +88,8 @@ SoListenerOrientationElement::~SoListenerOrientationElement(void)
 }
 
 /*!
-  Initializes the element to it's default value. The default
-  value for the orientation is (0.0f, 0.0f, 1.0f, 0.0f) and the
+  Initializes the element to its default value. The default
+  value for the orientation is (0.0, 0.0, 1.0, 0.0) and the
   default value for the setByListener flag is FALSE.
 */
 

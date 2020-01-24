@@ -39,7 +39,7 @@
   that Coin uses on. </i>
 
   Environment variables are variables you set on your system, which
-  are read in by the Coin-based application at run-time.  These
+  are read in by the Coin-based application at runtime.  These
   environment variables are irrelevant at compile time when Coin is
   built.
 
@@ -95,7 +95,7 @@
   on the live scene graph profiling feature in Coin.  This usage is
   still supported, but as the number of options grew, it was obvious
   that we needed a new scheme rather than one variable for each
-  feature.  The positive integer approach can not be combined with
+  feature.  The positive integer approach cannot be combined with
   using keywords, and setting the value to \c "1" is the same thing as
   setting it to \c "on".
 
@@ -157,7 +157,7 @@
   positive integer) turns on the live scene graph (primarily)
   profiling overlay feature in Coin, the way it was in the beginning
   of implementing this functionality.  This still works but just gives
-  you one default view.  It can not be combined with using keywords.
+  you one default view.  It cannot be combined with using keywords.
 
   \ingroup profiler
 */
@@ -553,7 +553,7 @@ EnvironmentVariable WINDIR;
   \var EnvironmentVariable COIN_GLBBOX
 
   If the environment variable COIN_GLBBOX is set to 1, rendering action
-  traversals will apply a bbox action before rendering.  This will make
+  traversals will apply a bounding box action before rendering.  This will make
   sure bounding box caches are updated (needed for view frustum culling).
   The default Quarter/SoQt/SoWin/SoXt viewers will handle this at their
   end (which is the proper way to do it), so we don't do this by default.

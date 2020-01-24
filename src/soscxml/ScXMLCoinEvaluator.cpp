@@ -37,7 +37,7 @@
   \brief implements the evaluator for the custom profile named "x-coin".
 
   The x-coin profile extends over the minimum profile with data interpretation,
-  logical operators, arithmetic expressions, and some convenience datamodel
+  logical operators, arithmetic expressions, and some convenience data model
   features like access to the scene graph and temporary storage of variables.
 
   \ingroup soscxml
@@ -392,7 +392,7 @@ ScXMLCoinEvaluator::locate(const char * location) const
 }
 
 /*!
-  Clears out all the temporary variables that has the same lifespan as the processing
+  Clears out all the temporary variables that have the same lifespan as the processing
   of one event.
 */
 void

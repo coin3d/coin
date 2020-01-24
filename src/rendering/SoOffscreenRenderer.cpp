@@ -32,15 +32,15 @@
 
 /*!
   \class SoOffscreenRenderer SoOffscreenRenderer.h Inventor/SoOffscreenRenderer.h
-  \brief The SoOffscreenRenderer class is used for rendering scenes in offscreen buffers.
+  \brief The SoOffscreenRenderer class is used for rendering scenes to offscreen buffers.
 
   \ingroup general
 
   If you want to render to a memory buffer instead of an on-screen
   OpenGL context, use this class. Rendering to a memory buffer can be
   used to generate texture maps on-the-fly, or for saving snapshots of
-  the scene to disk files (as pixel bitmaps or as Postscript files for
-  sending to a Postscript-capable printer).
+  the scene to disk files (as pixel bitmaps or as PostScript files for
+  sending to a PostScript capable printer).
 
   Here's a dead simple usage example, just the code directly related
   to the SoOffscreenRenderer:
@@ -53,7 +53,7 @@
   // [then use image buffer in a texture, or write it to file, or whatever]
   \endcode
 
-  And here a complete stand-alone example with a moving camera saving multiple
+  And here a complete standalone example with a moving camera saving multiple
   frames to disk as JPGs:
 
   \code
@@ -133,7 +133,7 @@
 
   Note that the SoOffscreenRenderer potentially allocates a fairly
   large amount of resources, both OpenGL and general system resources,
-  for each instance. You will therefore be well adviced to try to
+  for each instance. You will therefore be well advised to try to
   reuse SoOffscreenRenderer instances, instead of constructing and
   destructing a new instance e.g. for each frame when generating
   pictures for video.
@@ -143,9 +143,9 @@
   Win32), AGL (old-style OpenGL on the Mac OS X) or CGL (new-style Mac OS X).
 
   If the OpenGL driver supports the pbuffer extension, it is detected
-  and used to provide hardware-accelerated offscreen rendering.
+  and used to provide hardware accelerated offscreen rendering.
 
-  The pixeldata is fetched from the OpenGL buffer with glReadPixels(),
+  The pixel data is fetched from the OpenGL buffer with glReadPixels(),
   with the format and type arguments set to GL_RGBA and
   GL_UNSIGNED_BYTE, respectively. This means that the maximum
   resolution is 32 bits, 8 bits for each of the R/G/B/A components.
@@ -166,7 +166,7 @@
   file, for instance in MPEG format, from the set of files dumped to
   disk from the iterative process above.
 
-  The code would go something like the following (pseudo-code
+  The code would go something like the following (pseudo code
   style). First we need to stop the Coin library itself from doing any
   automatic updating of the \c realTime field, so your application
   initialization for Coin should look something like:
@@ -227,7 +227,7 @@
   need to modify the camera a bit while rendering to be sure that
   everything you see in the current view is visible in the snapshot.
 
-  Below you'll find some pseude-code that does this. There are
+  Below you'll find some pseudo code that does this. There are
   probably other ways to do this as well.
 
   \code
@@ -436,7 +436,7 @@ public:
   int glcanvassize[2];
 
   int numsubscreens[2];
-  // The subscreen size of the current tile. (Less than max if it's a
+  // The subscreen size of the current tile. (Less than max if it is a
   // right- or bottom-border tile.)
   unsigned int subsize[2];
   // Keeps track of the current tile to be rendered.
@@ -587,7 +587,7 @@ SoOffscreenRenderer::setViewportRegion(const SbViewportRegion & region)
 }
 
 /*!
-  Returns the viewerport region.
+  Returns the viewport region.
 */
 const SbViewportRegion &
 SoOffscreenRenderer::getViewportRegion(void) const
@@ -647,7 +647,7 @@ pre_render_cb(void * COIN_UNUSED_ARG(userdata), SoGLRenderAction * action)
 
 // *************************************************************************
 
-// Callback when rendering scenegraph to subscreens. Detects when a
+// Callback when rendering scene graph to subscreens. Detects when a
 // camera has just been traversed, and then invokes the method which
 // narrows the camera viewport according to the current tile we're
 // rendering to.
@@ -843,7 +843,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
     this->visitedcamera = NULL;
     this->renderaction->setAbortCallback(SoOffscreenRendererP::GLRenderAbortCallback, this);
 
-    // Render entire scenegraph for each subscreen.
+    // Render entire scene graph for each subscreen.
     for (int y=0; y < this->numsubscreens[1]; y++) {
       for (int x=0; x < this->numsubscreens[0]; x++) {
         this->currenttile = SbVec2s(x, y);
@@ -911,7 +911,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 
     if (!this->visitedcamera) {
       SoDebugError::postWarning("SoOffscreenRenderer::renderFromBase",
-                                "No camera node found in scenegraph while rendering offscreen image. "
+                                "No camera node found in scene graph while rendering offscreen image. "
                                 "The result will most likely be incorrect.");
     }
 
@@ -966,22 +966,22 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 }
 
 /*!
-  Render the scenegraph rooted at \a scene into our internal pixel
+  Render the scene graph rooted at \a scene into our internal pixel
   buffer.
 
 
   Important note: make sure you pass in a \a scene node pointer which
-  has both a camera and at least one lightsource below it -- otherwise
+  has both a camera and at least one light source below it -- otherwise
   you are likely to end up with just a blank or black image buffer.
 
   This mistake is easily made if you use an SoOffscreenRenderer on a
-  scenegraph from one of the standard viewer components, as you will
+  scene graph from one of the standard viewer components, as you will
   often just leave the addition of a camera and a headlight
-  lightsource to the viewer to set up. This camera and lightsource are
+  light source to the viewer to set up. This camera and light source are
   then part of the viewer's private "super-graph" outside of the scope
-  of the scenegraph passed in by the application programmer. To make
-  sure the complete scenegraph (including the viewer's "private parts"
-  (*snicker*)) are passed to this method, you can get the scenegraph
+  of the scene graph passed in by the application programmer. To make
+  sure the complete scene graph (including the viewer's "private parts"
+  (*snicker*)) are passed to this method, you can get the scene graph
   root from the viewer's internal SoSceneManager instance instead of
   from the viewer's own getSceneGraph() method, like this:
 
@@ -1155,9 +1155,9 @@ SoOffscreenRendererP::writeToRGB(FILE * fp, unsigned int w, unsigned int h,
   open file. Returns \c FALSE if writing fails.
 
   Important note: do \e not use this method when the Coin library has
-  been compiled as an MSWindows DLL, as passing FILE* instances back
+  been compiled as an Microsoft Windows DLL, as passing FILE* instances back
   or forth to DLLs is dangerous and will most likely cause a
-  crash. This is an intrinsic limitation for MSWindows DLLs.
+  crash. This is an intrinsic limitation for Microsoft Windows DLLs.
 */
 SbBool
 SoOffscreenRenderer::writeToRGB(FILE * fp) const
@@ -1193,13 +1193,13 @@ SoOffscreenRenderer::writeToRGB(const char * filename) const
 }
 
 /*!
-  Writes the buffer in Postscript format by appending it to the
+  Writes the buffer in PostScript format by appending it to the
   already open file. Returns \c FALSE if writing fails.
 
   Important note: do \e not use this method when the Coin library has
-  been compiled as an MSWindows DLL, as passing FILE* instances back
+  been compiled as an Microsoft Windows DLL, as passing FILE* instances back
   or forth to DLLs is dangerous and will most likely cause a
-  crash. This is an intrinsic limitation for MSWindows DLLs.
+  crash. This is an intrinsic limitation for Microsoft Windows DLLs.
 */
 SbBool
 SoOffscreenRenderer::writeToPostScript(FILE * fp) const
@@ -1210,10 +1210,10 @@ SoOffscreenRenderer::writeToPostScript(FILE * fp) const
 
 /*!
   Opens a file with the given name and writes the offscreen buffer in
-  Postscript format to the new file. If the file already exists, it
-  will be overwritten (if permitted by the filesystem).
+  PostScript format to the new file. If the file already exists, it
+  will be overwritten (if permitted by the file system).
 
-  Returns \c TRUE if all went ok, otherwise \c FALSE.
+  Returns \c TRUE if all went OK, otherwise \c FALSE.
 */
 SbBool
 SoOffscreenRenderer::writeToPostScript(const char * filename) const
@@ -1230,13 +1230,13 @@ SoOffscreenRenderer::writeToPostScript(const char * filename) const
 }
 
 /*!
-  Writes the buffer to a file in Postscript format, with \a printsize
+  Writes the buffer to a file in PostScript format, with \a printsize
   dimensions.
 
   Important note: do \e not use this method when the Coin library has
-  been compiled as an MSWindows DLL, as passing FILE* instances back
+  been compiled as an Microsoft Windows DLL, as passing FILE* instances back
   or forth to DLLs is dangerous and will most likely cause a
-  crash. This is an intrinsic limitation for MSWindows DLLs.
+  crash. This is an intrinsic limitation for Microsoft Windows DLLs.
 */
 SbBool
 SoOffscreenRenderer::writeToPostScript(FILE * fp,
@@ -1347,9 +1347,9 @@ SoOffscreenRenderer::writeToPostScript(FILE * fp,
 
 /*!
   Opens a file with the given name and writes the offscreen buffer in
-  Postscript format with \a printsize dimensions to the new file. If
+  PostScript format with \a printsize dimensions to the new file. If
   the file already exists, it will be overwritten (if permitted by the
-  filesystem).
+  file system).
 
   Returns \c TRUE if all went ok, otherwise \c FALSE.
 */
@@ -1374,7 +1374,7 @@ SoOffscreenRenderer::writeToPostScript(const char * filename,
 //
 // UPDATE 20050711 mortene: it seems like TGS has extended their API
 // in an even worse way; by adding separate writeToJPEG(),
-// writeToPNG(), etc etc functions.
+// writeToPNG(), etc. functions.
 
 /*!
   Returns \c TRUE if the buffer can be saved as a file of type \a
@@ -1386,7 +1386,7 @@ SoOffscreenRenderer::writeToPostScript(const char * filename,
 
   Which formats are \e actually supported depends on the capabilities
   of Coin's support library for handling import and export of
-  pixel-data files: the simage library. If the simage library is not
+  pixel data files: the simage library. If the simage library is not
   installed on your system, no extension output formats will be
   supported.
 
@@ -1399,13 +1399,13 @@ SoOffscreenRenderer::writeToPostScript(const char * filename,
   The two built-in formats that are supported through the
   SoOffscreenRenderer::writeToRGB() and
   SoOffscreenRenderer::writeToPostScript() methods (for SGI RGB format
-  and for Adobe Postscript files, respectively) are \e not considered
+  and for Adobe PostScript files, respectively) are \e not considered
   by this method, as those two formats are guaranteed to \e always be
   supported through those functions.
 
   So if you want to be guaranteed to be able to export a screenshot in
   your wanted format, you will have to use either one of the above
-  mentioned method for writing SGI RGB or Adobe Postscript directly,
+  mentioned method for writing SGI RGB or Adobe PostScript directly,
   or make sure the Coin library has been built and is running on top
   of a version of the simage library (that you have preferably built
   yourself) with the file format(s) you want support for.
@@ -1444,7 +1444,7 @@ SoOffscreenRenderer::isWriteSupported(const SbName & filetypeextension) const
   which file formats you can expect to be present.
 
   Note that the two built-in export formats, SGI RGB and Adobe
-  Postscript, are not counted.
+  PostScript, are not counted.
 
   This method is an extension versus the original SGI Open Inventor
   API.
@@ -1467,7 +1467,7 @@ SoOffscreenRenderer::getNumWriteFiletypes(void) const
 /*!
   Returns information about an image exporter. \a extlist is a list
   of filename extensions for a file format. E.g. for JPEG it is legal
-  to use both jpg and jpeg. Extlist will contain const char * pointers
+  to use both jpg and jpeg. \a extlist will contain const char * pointers
   (you need to cast the void * pointers to const char * before using
   them).
 
@@ -1480,7 +1480,7 @@ SoOffscreenRenderer::getNumWriteFiletypes(void) const
   This method is an extension versus the original SGI Open Inventor
   API.
 
-  Here is a stand-alone, complete code example that shows how you can
+  Here is a standalone, complete code example that shows how you can
   check exactly which output formats are supported:
 
   \code
@@ -1497,7 +1497,7 @@ SoOffscreenRenderer::getNumWriteFiletypes(void) const
     if (num == 0) {
       (void)fprintf(stdout,
                     "No image formats supported by the "
-                    "SoOffscreenRenderer except SGI RGB and Postscript.\n");
+                    "SoOffscreenRenderer except SGI RGB and PostScript.\n");
     }
     else {
       for (int i=0; i < num; i++) {
@@ -1563,14 +1563,14 @@ SoOffscreenRenderer::getWriteFiletypeInfo(const int idx,
 }
 
 /*!
-  Saves the buffer to \a filename, in the filetype specified by \a
+  Saves the buffer to \a filename, in the file type specified by \a
   filetypeextensions.
 
   Note that you must still specify the \e full \a filename for the
   first argument, i.e. the second argument will not automatically be
-  attached to the filename -- it is only used to decide the filetype.
+  attached to the filename -- it is only used to decide the file type.
 
-  This method is an extension versus the orignal SGI Open Inventor
+  This method is an extension versus the original SGI Open Inventor
   API.
 
   \sa isWriteSupported()
@@ -1622,7 +1622,7 @@ SoOffscreenRenderer::writeToFile(const SbString & filename, const SbName & filet
   Coin has internal heuristics to figure out if pbuffers are available
   and can be allocated and used for the SoOffscreenRenderer.  The
   SoOffscreenRenderer will also automatically fall back on "soft"
-  buffers if it can not use pbuffers (or any other hardware
+  buffers if it cannot use pbuffers (or any other hardware
   accelerated rendering technique).
 
   \since Coin 3.1
@@ -1670,7 +1670,7 @@ SoOffscreenRendererP::setCameraViewvolForTile(SoCamera * cam)
   SoState * state = (PUBLIC(this)->getGLRenderAction())->getState();
 
   // A small trick to change the aspect ratio without changing the
-  // scenegraph camera.
+  // scene graph camera.
   SbViewVolume vv;
   const float aspectratio = this->viewport.getViewportAspectRatio();
   const SbVec2s vporigin = this->viewport.getViewportOriginPixels();
@@ -1716,7 +1716,7 @@ SoOffscreenRendererP::setCameraViewvolForTile(SoCamera * cam)
   const SbVec2s fullsize = this->viewport.getViewportSizePixels();
   const float left = float(LEFTINTPOS) / float(fullsize[0]);
   const float right = float(RIGHTINTPOS) / float(fullsize[0]);
-  // Swap top / bottom, to flip the coordinate system for the Y axis
+  // Swap top / bottom, to flip the coordinate system for the Y-axis
   // the way we want it.
   const float top = float(BOTTOMINTPOS) / float(fullsize[1]);
   const float bottom = float(TOPINTPOS) / float(fullsize[1]);
@@ -1760,7 +1760,7 @@ SoOffscreenRendererP::offscreenContextsNotSupported(void)
   //
   // (It is however important to be robust and handle cases where it
   // still fails, as this can happen due to e.g. lack of resources or
-  // other causes that may change during run-time.)
+  // other causes that may change during runtime.)
 
 #ifdef HAVE_GLX
   return FALSE;

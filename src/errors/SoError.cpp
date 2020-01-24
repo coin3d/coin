@@ -42,7 +42,7 @@
   Being able to override the default handler is useful when you want
   to collect error messages upon e.g. model import for later
   presentation of the messages to the user in any custom manner (like
-  for instance in a GUI messagebox).
+  for instance in a GUI message box).
 
   The SoError class is not designed to be particularly useful for
   "direct use". Within the Coin library it is only used through its
@@ -167,7 +167,7 @@ SoError::isOfType(const SoType type) const
   this class.
 
   Note that this will not override the error/debug message handler for
-  subclasses, these will have to be overrided by calling the subclass'
+  subclasses, these will have to be overridden by calling the subclass'
   setHandlerCallback() method.
 
   \sa defaultHandlerCB()
@@ -225,7 +225,7 @@ SoError::getDebugString(void) const
 
 /*!
   This method posts an error message.  The \a format string and the
-  trailing aguments should follow the printf() standard.
+  trailing arguments should follow the printf() standard.
 */
 void
 SoError::post(const char * const format, ...)

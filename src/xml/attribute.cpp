@@ -109,7 +109,7 @@ cc_xml_attr_delete_x(cc_xml_attr * attr)
 // *************************************************************************
 
 /*!
-  Sets the name-part of the attribute.  Old name-information will be freed.
+  Sets the name part of the attribute.  Old name information will be freed.
   The \a name argument can be NULL to clear the setting.
 */
 
@@ -122,7 +122,7 @@ cc_xml_attr_set_name_x(cc_xml_attr * attr, const char * name)
 }
 
 /*!
-  Returns the name-part of the attribute if one is set, and NULL otherwise.
+  Returns the name part of the attribute if one is set, and NULL otherwise.
 */
 
 const char *
@@ -132,7 +132,7 @@ cc_xml_attr_get_name(const cc_xml_attr * attr)
 }
 
 /*!
-  Sets the value-part of the attribute.  Old information will be freed.
+  Sets the value part of the attribute.  Old information will be freed.
   The \a value argument can be NULL to clear the information.
 */
 

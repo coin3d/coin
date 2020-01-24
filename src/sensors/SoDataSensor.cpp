@@ -80,7 +80,7 @@ SoDataSensor::SoDataSensor(void)
 
 /*!
   Constructor taking as parameters the sensor callback function and
-  the userdata which will be passed the callback.
+  the userdata which will be passed to the callback.
 
   \sa setFunction(), setData()
 */
@@ -208,7 +208,7 @@ SoDataSensor::getTriggerPathFlag(void) const
 }
 
 /*!
-  Returns the type of the scenegraph operation on the node that caused
+  Returns the type of the scene graph operation on the node that caused
   the sensor to trigger.
 
   \sa getTriggerNode(), getTriggerField(), getTriggerGroupChild()
@@ -302,7 +302,7 @@ SoDataSensor::trigger(void)
 
   If this is an immediate sensor, the field and node (if any) causing
   the change will be stored and can be fetched by getTriggerField()
-  and getTriggerNode(). If the triggerpath flag has been set, the path
+  and getTriggerNode(). If the trigger path flag has been set, the path
   down to the node is also found and stored for later retrieval by
   getTriggerPath().
 

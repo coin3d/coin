@@ -36,7 +36,7 @@
 
   \ingroup nodes
 
-  Like SoMatrixTransform, nodes of this type gives the application
+  Like SoMatrixTransform, nodes of this type give the application
   programmer maximum flexibility when specifying geometry
   transformations in a scene graph. If you want to set and keep the
   various components of the transformation matrix in separate
@@ -90,8 +90,8 @@
   mytransformnode->rotation.setValue(0, 0, 1, 1.5707963f);
   \endcode
 
-  The programmer clearly tries to set a PI/2 rotation around the Z
-  axis, but this will fail, as the SbRotation constructor invoked
+  The programmer clearly tries to set a PI/2 rotation around the Z-axis,
+  but this will fail, as the SbRotation constructor invoked
   above is the one that takes as arguments the 4 floats of a \e
   quaternion. What the programmer almost certainly wanted to do was to
   use the SbRotation constructor that takes a rotation vector and a

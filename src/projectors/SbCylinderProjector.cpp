@@ -76,14 +76,14 @@
 /*!
   \fn virtual SbRotation SbCylinderProjector::getRotation(const SbVec3f & point1, const SbVec3f & point2)
 
-  Returns rotation on the projection surface which re-orients \a
+  Returns rotation on the projection surface which reorients \a
   point1 to \a point2.
 */
 
 
 
 /*!
-  Default constructor sets up a cylinder along the Y axis with height
+  Default constructor sets up a cylinder along the Y-axis with height
   1.
 */
 SbCylinderProjector::SbCylinderProjector(const SbBool orienttoeye)
@@ -188,7 +188,7 @@ SbCylinderProjector::isFront(void) const
 }
 
 /*!
-  Check if \a point is on the frontside or the backside of the
+  Check if \a point is on the front side or the back side of the
   cylinder.
 */
 SbBool

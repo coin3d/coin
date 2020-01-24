@@ -38,7 +38,7 @@
 
 /*!
   \class SoBaseKit SoBaseKit.h Inventor/nodekits/SoBaseKit.h
-  \brief The SoBaseKit class is the toplevel superclass for nodekits.
+  \brief The SoBaseKit class is the top level superclass for nodekits.
 
   \ingroup nodekits
 
@@ -46,7 +46,7 @@
   node kits which are part of some other node kit, will only be referred
   to as nodes or parts, see catalogs and parts), organized in a way
   that is convenient for its use. A node kit inherits SoNode and can
-  thus be inserted into a scenegraph as any other node.
+  thus be inserted into a scene graph as any other node.
 
   The organizing of the nodes and node kits of some node kit, is done
   through catalogs. A node kit's catalog describes the nodes that can
@@ -55,7 +55,7 @@
   user.
 
   Each part in the catalog has some values saying something about the
-  part itself and about the role the part plays in the scenegraph.
+  part itself and about the role the part plays in the scene graph.
   Those values are:
 
   <dl>
@@ -66,7 +66,7 @@
   <dt> Default Type
   <dd> If the part's type is an abstract superclass, this value will hold
   the default subclass used by this part.
-  <dt> Created by Default?
+  <dt> Created by default?
   <dd> Holds \c TRUE if the part should be instantiated when the node kit
   is instantiated, otherwise the part is kept empty until it is set by some
   of the means applicable.
@@ -74,35 +74,35 @@
   <dd> The name of the part that is this part's parent.
   <dt> Right Sibling
   <dd> The name of the part that is the part immediately to the right of
-  this part in the node kit scenegraph.
-  <dt> Is it a List?
+  this part in the node kit scene graph.
+  <dt> Is it a list?
   <dd> Holds \c TRUE if the part is a list, otherwise it is \c FALSE. See
   SoNodeKitListPart for more info on node kit lists.
-  <dt> List Cointainer Type
+  <dt> List Container Type
   <dd> The type of group node used to hold the items if the part is a list.
   <dt> List Element Type
   <dd> The types of nodes that is allowed to be held by this part if the part
   is a list.
-  <dt> Is It Public?
-  <dd> Holds \c TRUE if the part should be publically available, otherwise
+  <dt> Is it public?
+  <dd> Holds \c TRUE if the part should be publicly available, otherwise
   it holds \c FALSE.
   </dl>
 
-  Node kits use lazy instantiation when it creates it's parts. This means
+  Node kits use lazy instantiation when it creates its parts. This means
   that the nodes making up the parts of the nodekit only are created when
-  they are needed. If the "Created by Default?" holds TRUE, then the part
+  they are needed. If the "Created by default?" holds TRUE, then the part
   is created when the node kit itself is instantiated. If not, parts are
   created when they are requested through SoBaseKit::getPart() or the
   SO_GET_PART() macro, or created with SoBaseKit::set(). Also, if a part is
   set with SoBaseKit::setPart() or the SO_SET_PART() macro, any previously
-  uncreated parts above the set part in the hierarchy, is created
+  uncreated parts above the set part in the hierarchy, are created
   automatically.
 
-  The advantages of using node kits to represent a scenegraph are many.
+  The advantages of using node kits to represent a scene graph are many.
   \li Since a node kit collects nodes into a single unit, it becomes
       an extra abstraction layer for the application programmer. Such
       a layer can represent a model of a human being as one unit where
-      subunits as arms, legs, textures, etc are contained within. Thus
+      subunits as arms, legs, textures, etc. are contained within. Thus
       we can instantiate a model of a human by creating an instance of
       the node kit, instead of having to create a possibly large
       amount of nodes needed for such a model.
@@ -119,14 +119,14 @@
       node kit type, making it possible to create hierarchies of node kits.
       Having a node kit of a human, it might be feasible to have sub node
       kits describing the different body parts.
-  \li Node kits are an efficient way of creating scenegraphs. If some
+  \li Node kits are an efficient way of creating scene graphs. If some
       part of it isn't needed at the moment of node kit instantiation,
       they aren't created. Thus parts are only created when needed, either
       by the application or some other part.
   \li The application code becomes smaller and easier to read, as the node
       kits provides simple routines for creating and setting parts.
   \li New node kits can be created through subclassing to obtain simple
-      setups of scenegraphs best fitted to the application.
+      setups of scene graphs best fitted to the application.
 
   The usage of a node kit is straightforward. Below follows a code
   example showing some simple SoShapeKit usage.
@@ -151,10 +151,10 @@
     // Swapping the sphere with a cube.
     shapekit->setPart("shape", new SoCube);
     // Setting the cube to be rendered in the color red. The shape kit
-    // has a SoAppearanceKit as one of it's parts. The "material" part
+    // has a SoAppearanceKit as one of its parts. The "material" part
     // used to set the color of the shape, really belongs the
     // appearance kit. If the SoShapeKit::set() is used, it will
-    // check if some of its sub kits has a part with the name given,
+    // check if some of its sub kits have a part with the name given,
     // and delegate the setting to the correct kit.
     shapekit->set("material", "diffuseColor 1 0 0");
 
@@ -212,7 +212,7 @@
 
   Following is a complete example of a node kit extension. The node
   kit is a kit which automatically scales a shape so it will be the
-  same size in screen-pixels, no matter which distance it is from the
+  same size in screen pixels, no matter which distance it is from the
   camera. This is useful for marker graphics. The shape defaults to a
   cube, but can be set by the programmer to any shape or scene
   sub-graph.
@@ -815,7 +815,7 @@ static const char *
 skip_spaces(const char * ptr)
 {
   // ANSI C isspace() takes the current locale into account. Under
-  // MSWindows, this can lead to "interesting" artifacts, like a case
+  // Microsoft Windows, this can lead to "interesting" artifacts, like a case
   // with RR tracked down and fixed by <thammer@sim.no> where a
   // character (was it ü?) with ASCII value > 127 made isspace()
   // return non-nil on a German system. So we're using our own
@@ -1267,7 +1267,7 @@ SoBaseKit::countMyFields(SoOutput * out)
 
   This is a virtual method, and the code in it should call
   SoField::setDefault() with argument \c TRUE on part fields that
-  should not be written upon scenegraph export operations.
+  should not be written upon scene graph export operations.
 
   This is typically done when:
 
@@ -1280,7 +1280,7 @@ SoBaseKit::countMyFields(SoOutput * out)
   <LI> it is a leaf listpart with no children and an SoGroup or
   SoSeparator container </LI>
 
-  <LI> it is a non-leaf part and it's of SoGroup type and all fields
+  <LI> it is a non-leaf part and it is of SoGroup type and all fields
   are at their default values </LI>
 
   </OL>
@@ -1423,7 +1423,7 @@ SoBaseKit::getChildren(void) const
   \endverbatim
 
   The arrows denote new entries in the catalog for the particular
-  class versus it's superclass. (Apart from the root entry, of
+  class versus its superclass. (Apart from the root entry, of
   course.)
 
   For a more detailed catalog dump, see SoBaseKit::printTable().
@@ -1493,7 +1493,7 @@ SoBaseKit::printSubDiagram(const SbName & rootname, int level)
         "contents",  SoSeparator  ---
   \endverbatim
 
-  \c PVT denotes that it's a private entry in the catalog, then
+  \c PVT denotes that it is a private entry in the catalog, then
   follows the part name and the part type. If the part is a list, the
   allowed node types for the list is given in square brackets, and if
   not there's a triple hyphen. If the part type is abstract, the
@@ -1681,17 +1681,17 @@ SoBaseKit::getContainerNode(const SbName & listname, SbBool makeifneeded)
   \c TRUE) or just return \c NULL (if \a makeifneeded is \c FALSE).
 
   If \a leafcheck is \c TRUE, a pointer to the part will only be
-  returned if it's a leaf in the catalog (otherwise \c NULL is
+  returned if it is a leaf in the catalog (otherwise \c NULL is
   returned).
 
   If \a publiccheck is \c TRUE, a pointer to the part will only be
-  returned if it's a public catalog part (otherwise \c NULL is
+  returned if it is a public catalog part (otherwise \c NULL is
   returned).
 
 
   The \a partname input argument should be given as a \e "path" of
   catalog part names down to the wanted leaf part. The syntax for
-  specifiying \a partname "paths" is as follows (given in Backus-Naur
+  specifying \a partname "paths" is as follows (given in Backus-Naur
   Form (BNF)):
 
   \verbatim
@@ -1792,7 +1792,7 @@ SoBaseKit::getAnyPart(const SbName & partname, SbBool makeifneeded,
   \a pathtoextend is a path through the nodekit instance catalog
   hierarchy, where we should pick up and continue to create the path
   from where \a pathtoextend terminates. If \a pathtoextend is \c
-  NULL, we simply start at the "this" toplevel node.
+  NULL, we simply start at the "this" top level node.
 
   Returns \c NULL on failure, for any of the possible reasons
   described above (part ends in non-leaf or private catalog entry,
@@ -2628,7 +2628,7 @@ SoBaseKitP::setParts(SbList <SoNode*> partlist, const SbBool leafparts)
       SbBool leaftst = catalog->isLeaf(i);
       if (leaftst == leafparts) { // correct pass ?
         if (!leaftst) {
-          // if it's not a leaf, remove children as the correct children
+          // if it is not a leaf, remove children as the correct children
           // will be added  when children parts are set.
           assert(node->getChildren());
           node->getChildren()->truncate(0);

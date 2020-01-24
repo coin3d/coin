@@ -65,7 +65,7 @@ struct cc_xml_elt {
 // *************************************************************************
 
 /*!
-  Creates a new element with no type, no attributes, and no children elements.
+  Creates a new element with no type, no attributes, and no child elements.
 */
 
 cc_xml_elt *
@@ -945,7 +945,7 @@ cc_xml_elt_get_traversal_next(const cc_xml_elt * root, cc_xml_elt * here)
           ++idx;
           here = cc_xml_elt_get_child(parent, idx);
 
-          // return this element if it's not a "cdata" element.
+          // return this element if it is not a "cdata" element.
           if (strcmp(COIN_XML_CDATA_TYPE, here->type) != 0) return here;
 
       } while (idx != (cc_xml_elt_get_num_children(parent) - 1));
@@ -1059,7 +1059,7 @@ cc_xml_elt_calculate_size(const cc_xml_elt * elt, int indent, int indentincremen
 #define ADVANCE_STRING_LITERAL(str) \
   do { static const char strobj[] = str; bytes += (sizeof(strobj) - 1); } while (0)
 
-// macro to increment bytecount for run-time string
+// macro to increment bytecount for runtime string
 #define ADVANCE_STRING(str) \
   do { bytes += strlen(str); } while (0)
 
@@ -1136,7 +1136,7 @@ cc_xml_elt_write_to_buffer(const cc_xml_elt * elt, char * buffer, size_t bufsize
        strncpy(hereptr, strobj, strlength);        \
        ADVANCE_NUM_BYTES(strlength); } while (0)
 
-// macro to copy in a run-time string and advance pointers
+// macro to copy in a runtime string and advance pointers
 #define ADVANCE_STRING(str)                                 \
   do { const int strlength = static_cast<int>(strlen(str)); \
        strncpy(hereptr, str, strlength);                    \

@@ -41,7 +41,7 @@
   receive the same callbacks as for the SoSelection node.
 
   The application programmer interface of this class is somewhat
-  complex, due to it's non-trivial functionality. To see an \e
+  complex, due to its non-trivial functionality. To see an \e
   extensive usage example of the SoExtSelection node, we advise you to
   go look at the "extselection" example application in the "nodes/"
   directory of the SoGuiExamples Mercurial repository. Further information and
@@ -607,7 +607,7 @@ point_in_poly(const SbList <SbVec2s> & coords, const SbVec2s & point)
   return c;
 }
 
-// do a bbox rejection test before calling this method. It's not fast,
+// do a bounding box rejection test before calling this method. It's not fast,
 // but testing will usually (always) be done on polygon vs triangle in
 // which case it should be pretty fast.
 static SbBool
@@ -665,7 +665,7 @@ poly_line_intersect(const SbList <SbVec2s> & poly,
   return FALSE;
 }
 
-// do a bbox rejection test before calling this method
+// do a bounding box rejection test before calling this method
 static SbBool
 poly_tri_intersect(const SbList <SbVec2s> & poly,
                    const SbVec2s & v0,
@@ -702,7 +702,7 @@ test_quad_intersect(const SbList <SbVec2s> & poly,
   return FALSE;
 }
 
-// do a bbox rejection test before calling this method
+// do a bounding box rejection test before calling this method
 static SbBool
 poly_projbox_intersect(const SbList <SbVec2s> & poly,
                        const SbVec2s * projpts)
@@ -1298,7 +1298,7 @@ SoExtSelection::getLassoCoordsWC (int &COIN_UNUSED_ARG(numCoords))
 }
 
 /*!
-  Returns a pathlist containing selected objects.
+  Returns a path list containing selected objects.
 
   This function is currently just stubbed.
 */
@@ -1567,7 +1567,7 @@ project_pt(const SbMatrix & projmatrix, const SbVec3f & v,
                  (short) SbClamp(normpt[1], -32768.0f, 32767.0f));
 }
 
-// test for intersection between bbox and lasso/rectangle
+// test for intersection between bounding box and lasso/rectangle
 SoCallbackAction::Response
 SoExtSelectionP::testBBox(SoCallbackAction * action,
                           const SbMatrix & projmatrix,
@@ -2430,7 +2430,7 @@ SoExtSelectionP::checkOffscreenRendererCapabilities()
   glGetBooleanv(GL_RGBA_MODE, &rgbmode);
   if (!rgbmode) {
     SoDebugError::post("SoExtSelectionP::checkOffscreenRendererCapabilities",
-                       "Couldn't get an RGBA OpenGL context -- can not "
+                       "Couldn't get an RGBA OpenGL context -- cannot "
                        "proceed with VISIBLE_SHAPES selection. Check your "
                        "system for driver errors.");
     return FALSE;
@@ -2616,7 +2616,7 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
 
     // Check OpenGL capabilities
     SbBool setupok = this->checkOffscreenRendererCapabilities();
-    // Ai, ai. OpenGL context can not be used with VISIBLE_SHAPE
+    // Ai, ai. OpenGL context cannot be used with VISIBLE_SHAPE
     // selection.  We'll spit out informative error messages within
     // checkOffscreenRendererCapabilities().
     if (!setupok) {
@@ -2752,7 +2752,7 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
 }
 
 //
-// avoid an empty viewport bbox (support for a single click and 
+// avoid an empty viewport bounding box (support for a single click and 
 // a 1-pixel-size rectangles/lassos).
 //
 void 

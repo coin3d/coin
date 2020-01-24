@@ -44,28 +44,27 @@
   for intersection detections, by using the setRay() method.
 
   Because a very common operation is to check for intersections along
-  the ray from the mousecursor upon mouseclicks, it also contains
+  the ray from the mouse cursor upon mouse clicks, it also contains
   convenience methods for setting up a ray from the near plane to the
-  far plane from the 2D mousecursor coordinates. See the setPoint()
+  far plane from the 2D mouse cursor coordinates. See the setPoint()
   and setNormalizedPoint() methods. A simple usage example for this
   case is presented below.
 
-
-  Note that one common mistake when using a raypick action to
-  intersect from a point under the mousecursor after a mouseclick is
-  that one tries to apply it to a scenegraph that does not contain a
+  Note that one common mistake when using a ray pick action to
+  intersect from a point under the mouse cursor after a mouse click is
+  that one tries to apply it to a scene graph that does not contain a
   camera \e explicitly set up by the application programmer. Without a
-  camera as part of the traversal, the raypick action does not know
+  camera as part of the traversal, the ray pick action does not know
   which view volume to send the ray through.
 
   In this regard, be aware that the getSceneGraph() call in the
   So*-libraries' viewer classes will return the root of the
-  user-supplied scenegraph, not the "real" internal scenegraph root
+  user-supplied scene graph, not the "real" internal scene graph root
   used by the viewer (which should always contain a camera node). So
-  raypicks done from the application code will fail when doing this:
+  ray picks done from the application code will fail when doing this:
 
   \code
-  // initializing viewer scenegraph
+  // initializing viewer scene graph
   SoSeparator * root = new SoSeparator;
   root->ref();
 
@@ -78,24 +77,24 @@
   viewer->setSceneGraph( root );
   // -- [snip] -------------------------
 
-  // attempting raypick in the event_cb() callback method
+  // attempting ray pick in the event_cb() callback method
   SoRayPickAction rp( viewer->getViewportRegion() );
   rp.setPoint(mouseevent->getPosition());
   rp.apply(viewer->getSceneGraph());
   // BUG: results will not be what you expected, as no camera was
-  // part of the "user's scenegraph"
+  // part of the "user's scene graph"
   \endcode
 
   While this is the correct way to do it:
 
   \code
-  // initializing viewer scenegraph
+  // initializing viewer scene graph
   SoSeparator * root = new SoSeparator;
   root->ref();
 
-  // Need to set up our own camera in the "user scenegraph", or else
-  // the raypick action will fail because the camera is hidden in the
-  // viewer-specific root of the scenegraph.
+  // Need to set up our own camera in the "user scene graph", or else
+  // the ray pick action will fail because the camera is hidden in the
+  // viewer-specific root of the scene graph.
   SoPerspectiveCamera * pcam = new SoPerspectiveCamera;
   root->addChild(pcam);
 
@@ -109,7 +108,7 @@
   pcam->viewAll( root, viewer->getViewportRegion() );
   // -- [snip] -------------------------
 
-  // attempting raypick in the event_cb() callback method
+  // attempting ray pick in the event_cb() callback method
   SoRayPickAction rp( viewer->getViewportRegion() );
   rp.setPoint(mouseevent->getPosition());
   rp.apply(viewer->getSceneGraph());
@@ -117,7 +116,7 @@
 
   Or if you do want the convenience of having the viewer set up a
   camera for you implicitly, you can get hold of the root-node of the
-  "complete" scenegraph by simply calling:
+  "complete" scene graph by simply calling:
 
   \code
   SoNode * realroot = viewer->getSceneManager()->getSceneGraph();
@@ -339,7 +338,7 @@ SoRayPickAction::getRadius(void) const
 }
 
 /*!
-  Sets the intersection ray in world-space coordinates.
+  Sets the intersection ray in world space coordinates.
 
   Use this method if you want to send any ray through the scene to
   detect intersections, independently of mouse cursor position upon
@@ -469,7 +468,7 @@ SoRayPickAction::getPickedPointList(void) const
   Returns the picked point with \a index in the list of picked points.
 
   Returns \c NULL if less than \a index + 1 points where picked during
-  the last raypick action.
+  the last ray pick action.
 */
 SoPickedPoint *
 SoRayPickAction::getPickedPoint(const int index) const

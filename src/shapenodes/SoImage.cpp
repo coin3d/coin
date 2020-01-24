@@ -37,14 +37,14 @@
   \ingroup nodes
 
   An image can be specified either by using the image field, or by
-  specifying a filename. If width and or height is specified, the
+  specifying a filename. If width and/or height is specified, the
   image will be resized to match those values before it is displayed.
 
   The current modelview matrix will be used to find the viewport
   position, and the image is rendered in that position, with
   z-buffer testing activated.
 
-  Here's a simple, stand-alone example on how to set up and show an
+  Here's a simple, standalone example on how to set up and show an
   SoImage:
 
   \code
@@ -119,13 +119,13 @@
   }
   \endcode
 
-  Note that an SoImage node in the scene graph will have it's
+  Note that an SoImage node in the scene graph will have its
   positioning / rendering influenced by the current viewport and
   camera. This has important implications for how to layout your scene
   graph for the best possible rendering performance. See the note
   about this issue in the SoText2 class documentation.
 
-  SoScale nodes can not be used to influence the dimensions of the
+  SoScale nodes cannot be used to influence the dimensions of the
   rendering output of SoImage nodes.
 
   <b>FILE FORMAT/DEFAULTS:</b>
@@ -206,7 +206,7 @@
 */
 /*!
   \var SoImage::HorAlignment SoImage::RIGHT
-  Horizontal alignment ar right border.
+  Horizontal alignment at right border.
 */
 
 
@@ -214,13 +214,13 @@
   \var SoSFInt32 SoImage::width
 
   If bigger than 0, resize image to this width before rendering.
-  Default value is -1 (ie "don't resize").
+  Default value is -1 (i.e. "don't resize").
 */
 /*!
   \var SoSFInt32 SoImage::height
 
   If bigger than 0, resize image to this height before rendering.
-  Default value is -1 (ie "don't resize").
+  Default value is -1 (i.e. "don't resize").
 */
 /*!
   \var SoSFEnum SoImage::vertAlignment
@@ -660,7 +660,7 @@ SoImage::notify(SoNotList * list)
 }
 
 /*!
-  Returns \e TRUE if node was read ok.
+  Returns \e TRUE if node was read OK.
 */
 int
 SoImage::getReadStatus(void)
@@ -679,7 +679,7 @@ SoImage::setReadStatus(SbBool flag)
 
 /*!
   Returns the screen coordinates for the point in (0,0,0) projected
-  onto the screen. The z-value is stored in the third (z) coordinate.
+  onto the screen. The Z-value is stored in the third (Z) coordinate.
 */
 SbVec3f
 SoImage::getNilpoint(SoState * state)

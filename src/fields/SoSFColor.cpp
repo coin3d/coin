@@ -37,7 +37,7 @@
   \ingroup fields
 
   This field is used where nodes, engines or other field containers
-  needs to store a single color value (i.e. Red + Green + Blue).
+  need to store a single color value (i.e. Red + Green + Blue).
 
   Fields of this type stores their value to file as a "R G B" triple
   component, where each color component value is between 0.0 and 1.0.

@@ -68,20 +68,20 @@
   \var SoLightModel::Model SoLightModel::BASE_COLOR
 
   Use the current diffuse material color for subsequent geometry, and
-  do not let any lightsources influence the appearance of the
+  do not let any light sources influence the appearance of the
   rendering primitives.
 */
 /*!
   \var SoLightModel::Model SoLightModel::PHONG
 
-  Use Phong-style shading for the geometry.
+  Use Phong style shading for the geometry.
 */
 
 
 /*!
   \var SoSFEnum SoLightModel::model
 
-  Lightmodel to use. Defaults to SoLightModel::PHONG.
+  Light model to use. Defaults to SoLightModel::PHONG.
 */
 
 // *************************************************************************

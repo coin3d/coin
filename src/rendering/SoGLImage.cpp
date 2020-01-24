@@ -55,7 +55,7 @@
 
 // *************************************************************************
 
-// FIXME: Add TEX3 enviroment variables (or general TEX variables?)
+// FIXME: Add TEX3 environment variables (or general TEX variables?)
 // (kintel 20011112)
 
 // *************************************************************************
@@ -84,23 +84,23 @@
   to a power of two will always be scaled up if textureQuality is
   greater or equal to this value.  Default value is 0.7. If
   textureQuality is lower than this value, and the width or height is
-  larger than 256 pixels, the texture is only scaled up if it's
+  larger than 256 pixels, the texture is only scaled up if it is
   relatively close to the next power of two size. This could save a
   lot of texture memory.
 
   \li COIN_TEX2_USE_GLTEXSUBIMAGE: When set, and when the new texture
-  data has the same attributes as the old data, glTexSubImage() will
+  data have the same attributes as the old data, glTexSubImage() will
   be used to copy new data into the texture instead of recreating the
   texture.  This is not enabled by default, since it seems to trigger
   a bug in the Linux nVidia drivers. It just happens in some
-  unreproducable cases.  It could be a bug in our glTexSubImage()
+  unreproduceable cases.  It could be a bug in our glTexSubImage()
   code, of course. :)
 
   \li COIN_TEX2_USE_SGIS_GENERATE_MIPMAP: When set, use the
-  GL_SGIS_generate_mip extension (if available) to generate mipmaps,
+  GL_SGIS_generate_mipmap extension (if available) to generate mipmaps,
   otherwise use a fast internal routine to generate them. Use of
-  SGIS_generate_mipmap is not enabled by default since we suspect some
-  ATi drivers have problems with this extensions.
+  GL_SGIS_generate_mipmap is not enabled by default since we suspect some
+  ATi drivers have problems with this extension.
 
   \li COIN_ENABLE_CONFORMANT_GL_CLAMP: When set, GL_CLAMP will be used
   when SoGLImage::CLAMP is specified as the texture wrap mode. By
@@ -144,7 +144,7 @@
 
   Can be used to tune/optimize the GL texture handling. Normally the
   texture quality will be used to decide scaling and filtering, and
-  the image data will be scanned to decide if the image is (partly)
+  the image data will be scanned to decide if the image is (partially)
   transparent, and if the texture can be rendered using the cheaper
   alpha test instead of blending if it does contain transparency. If
   you know the contents of your texture image, or if you have special
@@ -170,14 +170,14 @@
   \e state is the current state at the time of resizing.
   \e newsize is the requested new image size. Note that the z size of a
   2D image is 0.
-  \e destbuffer is a pre-allocated buffer big enough to hold the pixels
+  \e destbuffer is a preallocated buffer big enough to hold the pixels
   for the resized image. The # of bytes per pixel is the same as for the
   original image.
   \e reason is a hint about why the image is resized. At the moment,
   only IMAGE is supported.
   \e image is the original image.
 
-  Return value: TRUE if the resize ahs been resized, FALSE if not.
+  Return value: TRUE if the resize has been resized, FALSE if not.
   If FALSE is returned, Coin will resize the image instead.
 */
 
@@ -989,7 +989,7 @@ SoGLImage::setData(const SbImage * image,
   Sets the data for this GL image. Should only be called when one
   of the parameters have changed, since this will cause the GL texture
   object to be recreated.  Caller is responsible for sending legal
-  Wrap values.  CLAMP_TO_EDGE is only supported on OpenGL v1.2
+  wrap values.  CLAMP_TO_EDGE is only supported on OpenGL v1.2
   implementations, and as an extension on some earlier SGI
   implementations (GL_SGIS_texture_edge_clamp).
 
@@ -1192,10 +1192,10 @@ SoGLImage::~SoGLImage()
 }
 
 /*!
-  This class has a private destuctor since we want users to supply
+  This class has a private destructor since we want users to supply
   the current GL state when deleting the image. This is to make sure
-  gl texture objects are freed as soon as possible. If you supply
-  NULL to this method, the gl texture objects won't be deleted
+  GL texture objects are freed as soon as possible. If you supply
+  NULL to this method, the GL texture objects won't be deleted
   until the next time an GLRenderAction is applied in the image's
   cache context(s).
 */
@@ -1238,7 +1238,7 @@ SoGLImage::getImage(void) const
 
 /*!
   Returns or creates a SoGLDisplayList to be used for rendering.
-  Returns NULL if no SoDLDisplayList could be created.
+  Returns NULL if no SoGLDisplayList could be created.
 */
 SoGLDisplayList *
 SoGLImage::getGLDisplayList(SoState *state)
@@ -1280,7 +1280,7 @@ SoGLImage::getGLDisplayList(SoState *state)
 
 
 /*!
-  Returns \e TRUE if this texture has some pixels with alpha != 255
+  Returns \e TRUE if this texture has some pixels with alpha value != 255
 */
 SbBool
 SoGLImage::hasTransparency(void) const
@@ -1351,7 +1351,7 @@ SoGLImage::getQuality(void) const
 }
 
 /*!
-  Returns an unique if for this GL image. This id can be used to
+  Returns an unique id for this GL image. This id can be used to
   test for changes in an SoGLImage's internal data.
 */
 uint32_t
@@ -1362,7 +1362,7 @@ SoGLImage::getGLImageId(void) const
 
 /*!
   Virtual method that will be called once each frame.  The method
-  should unref display lists that has an age bigger or equal to \a
+  should unref display lists that have an age bigger or equal to \a
   maxage, and increment the age for other display lists.
 */
 void

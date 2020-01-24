@@ -279,7 +279,7 @@ SoMultiTextureCoordinateElement::getInstance(SoState * const state)
 /*!
   This method returns texture coordinate for the given point and normal.
   The coordinate is returned as a 4D vector where the r and q coordinates
-  may be set to 0 and 1 respecively depending on what texture coordinate
+  may be set to 0 and 1 respectively depending on what texture coordinate
   dimension we're using.
 
   This method should only be used if the CoordType is FUNCTION.
@@ -447,7 +447,7 @@ SoMultiTextureCoordinateElement::getNum(const int unit) const
   return ud.numCoords;
 }
 
-//! FIXME: write doc. (for backwards compability. Use getDimension() instead).
+//! FIXME: write doc. (for backwards compatibility. Use getDimension() instead).
 
 //$ EXPORT INLINE
 SbBool

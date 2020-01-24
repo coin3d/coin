@@ -32,7 +32,7 @@
 
 /*!
   \class SoVectorizePSAction SoVectorizePSAction.h Inventor/annex/HardCopy/SoVectorizePSAction.h
-  \brief The SoVectorizePSAction class is used for rendering to a Postscript file.
+  \brief The SoVectorizePSAction class is used for rendering to a PostScript file.
 
   \ingroup hardcopy
 
@@ -69,7 +69,7 @@ public:
   enum {
     // max setdash vector length
     // FIXME: this seems to be the limit hardcoded into Ghostscript.
-    // The postscript language reference doesn't say anything about
+    // The PostScript language reference doesn't say anything about
     // the maximum length of the setdash vector. pederb, 2004-10-21
     DASH_LIMIT = 10
   };
@@ -148,9 +148,9 @@ SoVectorizePSAction::~SoVectorizePSAction()
   Gouraud shading. A smaller value will yield more accurate Gouraud
   shading. Default is 0.1.
 
-  Since the postscript language has no support for Gouraud shaded
+  Since the PostScript language has no support for Gouraud shaded
   triangles, each triangle will be split into subtriangles
-  approximately of size \a eps postscript units. One postscript unit
+  approximately of size \a eps PostScript units. One PostScript unit
   is approximately 1/72 inch.
 */
 void
@@ -502,7 +502,7 @@ SoVectorizePSActionP::updateLineAttribs(const SoVectorizeLine * line)
 }
 
 //
-// will output a line in postscript format
+// will output a line in PostScript format
 //
 void
 SoVectorizePSActionP::printLine(const SoVectorizeLine * item)
@@ -535,7 +535,7 @@ SoVectorizePSActionP::printLine(const SoVectorizeLine * item)
 }
 
 //
-// will print a postscript circle
+// will print a PostScript circle
 //
 void
 SoVectorizePSActionP::printCircle(const SbVec3f & v, const SbColor & c, const float radius) const
@@ -548,7 +548,7 @@ SoVectorizePSActionP::printCircle(const SbVec3f & v, const SbColor & c, const fl
 }
 
 //
-// will print a postscript square centered in 'v'
+// will print a PostScript square centered in 'v'
 //
 void
 SoVectorizePSActionP::printSquare(const SbVec3f & v, const SbColor & c, const float size) const
@@ -570,7 +570,7 @@ SoVectorizePSActionP::printSquare(const SbVec3f & v, const SbColor & c, const fl
 
 
 //
-// will output a point in postscript format
+// will output a point in PostScript format
 //
 void
 SoVectorizePSActionP::printPoint(const SoVectorizePoint * item) const
@@ -634,7 +634,7 @@ SoVectorizePSActionP::printTriangle(const SbVec3f * v, const SbColor * c)
   }
   this->dummycnt++;
 
-  // FIXME: For some reason the gouraud-triangle macro fails if it's
+  // FIXME: For some reason the gouraud-triangle macro fails if it is
   // the first triangle that is drawn. We work around this by always
   // rendering the first triangle as a flatshaded triangle, and then
   // overwriting it again with the gouraud version... Really strange,
@@ -645,7 +645,7 @@ SoVectorizePSActionP::printTriangle(const SbVec3f * v, const SbColor * c)
 }
 
 //
-// will output a triangle in postscript format
+// will output a triangle in PostScript format
 //
 void
 SoVectorizePSActionP::printTriangle(const SoVectorizeTriangle * item)
@@ -671,7 +671,7 @@ SoVectorizePSActionP::printTriangle(const SoVectorizeTriangle * item)
 }
 
 //
-// will output an image in postscript format
+// will output an image in PostScript format
 //
 void
 SoVectorizePSActionP::printImage(const SoVectorizeImage * item) const
@@ -747,7 +747,7 @@ SoVectorizePSActionP::printImage(const SoVectorizeImage * item) const
 }
 
 //
-// will output text in postscript format
+// will output text in PostScript format
 //
 void
 SoVectorizePSActionP::printText(const SoVectorizeText * item)

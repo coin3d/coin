@@ -49,7 +49,7 @@
   \typedef void * SbProfilingNodeKey
 
   Type definition for the key node. This is a void * to ensure
-  that it is not inadvertantly dereferenced.
+  that it is not inadvertently dereferenced.
 */
 
 /*!
@@ -187,7 +187,7 @@ SbProfilingData::SbProfilingData(const SbProfilingData & rhs)
 }
 
 /*!
-  Desctructor.
+  Destructor.
 */
 SbProfilingData::~SbProfilingData(void)
 {
@@ -734,7 +734,7 @@ SbProfilingData::getIndexForwardNoCreate(const SoFullPath * fullpath, int pathle
 // *************************************************************************
 
 /*!
-  This function calls the index-version of setNodeTiming after having
+  This function calls the index version of setNodeTiming after having
   fetched the index.
 */
 void
@@ -752,7 +752,7 @@ SbProfilingData::setNodeTiming(const SoPath * path, SbTime timing)
   This method sets the timing for a node, as if it was new data to
   be registered. This means that counters of various types are
   implicitly incremented and similar things.  To avoid those
-  sideeffects, use offsetNodeTiming, which leaves all the counters
+  side effects, use offsetNodeTiming, which leaves all the counters
   alone.
 
   \sa offsetNodeTiming

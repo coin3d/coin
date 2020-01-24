@@ -77,7 +77,7 @@ namespace {
 
   void rootChangedCB(void * data, SoSensor * COIN_UNUSED_ARG(sense)){
     // FIXME 20071109 rolvs: Is it possible to automatically detect structural changes
-    // in the scenegraph? Perhaps from Inventor/misc/SoNotRec.h or something. Now
+    // in the scene graph? Perhaps from Inventor/misc/SoNotRec.h or something. Now
     // we build the SoNodeVisualize-tree on every root-change
     SoProfilerVisualizeKit * kit = (SoProfilerVisualizeKit*)data;
     if(!kit->getPart("visualtree", FALSE))

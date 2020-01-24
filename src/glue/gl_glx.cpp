@@ -167,7 +167,7 @@ static COIN_PFNGLXDESTROYPBUFFER glxglue_glXDestroyPbuffer;
 /* Sanity checks for enum extension value assumed to be equal to the
  * final / "proper" / standard OpenGL enum values. (If not, we could
  * end up with hard-to-find bugs because of mismatches with the
- * compiled values versus the run-time values.)
+ * compiled values versus the runtime values.)
  *
  * This doesn't really _fix_ anything, it is just meant as an aid to
  * smoke out platforms where we're getting unexpected enum values.
@@ -503,7 +503,7 @@ glxglue_init(cc_glglue * w)
     /* Note: be aware that glXQueryServerString(),
        glXGetClientString() and glXQueryExtensionsString() are all
        from GLX 1.1 -- just in case there are ever compile-time,
-       link-time or run-time problems with this.  */
+       link-time or runtime problems with this.  */
 
     Display * d = glxglue_get_display(w);
     w->glx.serverversion = glXQueryServerString(d, glxglue_screen, GLX_VERSION);

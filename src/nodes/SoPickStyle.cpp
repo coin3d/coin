@@ -42,7 +42,7 @@
   actions, use the SoPickStyle::UNPICKABLE.
 
   You can also optimize pick operations by using the
-  SoPickStyle::BOUNDING_BOX pickstyle.
+  SoPickStyle::BOUNDING_BOX pick style.
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
@@ -117,7 +117,7 @@
 
   The behaviour of this setting will also depend on the SoShapeStyle
   vertexOrdering and shapeType setting, which are used to flip
-  frontfaces to become backfaces and vice versa and to turn backface
+  front faces to become back faces and vice versa and to turn backface
   culling on and off.
 
   \since Coin 3.0

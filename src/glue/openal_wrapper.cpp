@@ -201,7 +201,7 @@ openal_wrapper(void)
       const char * debug = coin_getenv("COIN_DEBUG_AUDIO");
       if (debug && atoi(debug)) {
         cc_debugerror_postinfo("openal_wrapper", "OpenAL using %s linking.", 
-                               oal->runtime ? "run-time" : "build-time");
+                               oal->runtime ? "runtime" : "build-time");
         
         str = oal->alGetString(AL_VENDOR);
         cc_debugerror_postinfo("openal_wrapper", "AL_VENDOR=='%s'", str);

@@ -39,7 +39,7 @@
   Use nodes of this type if you want to set up profiles that are
   smooth curves.
 
-  Use ProfileCoordinate2 for nonrational profile where weight is 1.0 (default),
+  Use ProfileCoordinate2 for nonrational profile curves where weight is 1.0 (default),
   and ProfileCoordinate3 for rational profile curves to specify the weight.
   Weight is analogous to having magnets pulling on the curve.
 
@@ -91,7 +91,7 @@
   Note that the coordinates of the NurbsProfile live in the parametric
   space of the trimmed SoNurbsSurface, and that the same complexity
   setting (which is calculated based on the dimensions of the bounding
-  box of the nurbs surface) is used to determine the sampling
+  box of the NurbsSurface) is used to determine the sampling
   tolerance both for the SoNurbsSurface and the SoNurbsProfile.
 
   This means that if you want to change the tessellation of the
@@ -125,7 +125,7 @@
   \endcode
 
   However, keep in mind that increasing the accuracy of the trimming
-  curve results in a much more complex tesselation of the trimmed
+  curve results in a much more complex tessellation of the trimmed
   surface. As a general rule of thumb, the extent of the trimming
   curve coordinates should never be greater than its "real" extents in
   relation to the trimmed surface, and often can be much lower.
@@ -176,7 +176,7 @@
 
 /*!
   \var SoMFFloat SoNurbsProfile::knotVector
-  Knot values for the nurbs curve.
+  Knot values for the NURBS curve.
 */
 
 // *************************************************************************
@@ -402,7 +402,7 @@ SoNurbsProfile::getVertices(SoState * state, int32_t & numvertices,
     cmplx = cmplx * cmplx * cmplx;
     GLUWrapper()->gluNurbsProperty(this->nurbsrenderer, (GLenum) GLU_U_STEP, float(numpoints)*cmplx);
 
-    // these values are not important as we're not using screen-space
+    // these values are not important as we're not using screen space
     // complexity (yet)
     SbMatrix modelmatrix = SbMatrix::identity();
     SbMatrix affine, proj;

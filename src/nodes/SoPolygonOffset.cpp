@@ -36,7 +36,7 @@
 
   \ingroup nodes
 
-  A common problem with realtime 3D rendering systems is that rendered
+  A common problem with real time 3D rendering systems is that rendered
   primitives which are at approximately the same depth with regard to
   the camera viewpoint will appear to flicker. I.e.: from one angle
   one primitive will appear to be closer, while at another angle,
@@ -48,10 +48,10 @@
   attempt to put a wireframe grid as an outline on top of filled
   polygons.
 
-  The cause of the problem described above is that the Z-buffer of any
+  The cause of the problem described above is that the z-buffer of any
   render system has a limited resolution, often at 16, 24 or 32
   bits. Because of this, primitives which are close will sometimes get
-  the \e same depth value in the Z-buffer, even though they are \a not
+  the \e same depth value in the z-buffer, even though they are \a not
   actually at the same depth-coordinate.
 
   To rectify the flickering problem, this node can be inserted in the
@@ -82,10 +82,10 @@
   "units" to values with different signs, i.e. "factor" to a negative
   value and "units" to a positive value, or vice versa.
 
-  The pixels would then be "pushed back" in z-order by one part of the
+  The pixels would then be "pushed back" in Z-order by one part of the
   equation, but at the same time be "pushed forward" by the other part
   of the equation. This would most likely give very inconsistent
-  results, but which may at first look ok.
+  results, but which may at first look OK.
 
   We mention this potential for making a mistake, as it seems to be a
   quite common error.
@@ -120,7 +120,7 @@
   }
   \endverbatim
 
-  Without the polygonoffset node in the above example, the lines may
+  Without the polygon offset node in the above example, the lines may
   look irregularly stippled with some graphics card drivers, as parts
   of it will show through the faceset, others not. This happen on
   seemingly random parts, as the z-buffer floating point calculations
@@ -128,7 +128,7 @@
   will be closer to the camera.
 
   See the API documentation of the SoPolygonOffset::styles field below
-  for a discussion of one important limitation of OpenGL's Z-buffer
+  for a discussion of one important limitation of OpenGL's z-buffer
   offset mechanism: it only works with polygons or polygons rendered
   in line or point mode, using the SoDrawStyle::style field.
 
@@ -182,13 +182,13 @@
 
   Offset translation multiplication factor. Will be multiplied with
   the value which represents the smallest discrete step that can be
-  distinguished with the underlying Z-buffer resolution.
+  distinguished with the underlying z-buffer resolution.
 
   See SoPolygonOffset's main class documentation above for detailed
   information on how the units value is used.
 
   Note that positive values will push geometry "away" into the
-  Z-buffer, while negative values will "move" geometry closer.
+  z-buffer, while negative values will "move" geometry closer.
 
   Default value is 1.0.
 */
@@ -201,14 +201,14 @@
   the same time.
 
   There is one very important OpenGL limitation to know about in this
-  regard: Z-buffer offsetting can \e only be done for either polygons,
+  regard: z-buffer offsetting can \e only be done for either polygons,
   or for \e polygons rendered \e as \e lines or \e as \e points.
 
   So attempts at using this node to offset e.g. SoLineSet /
   SoIndexedLineSet or SoPointSet primitives will \e not work.
 
   See the comments in the scene graph below for a detailed example on
-  what SoPolygonOffset can and can not do:
+  what SoPolygonOffset can and cannot do:
 
   \code
   #Inventor V2.1 ascii

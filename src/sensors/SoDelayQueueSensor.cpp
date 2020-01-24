@@ -38,13 +38,13 @@
 
   Delay queue sensors are invoked upon various events \e not related
   to time occurrences. See documentation of subclasses to see which
-  types of events can be surveilled by the builtin sensor types.
+  types of events can be surveilled by the built-in sensor types.
 
   The priority values can be used to queue events by their importance,
   so the sensors are triggered in the sequence you want.
 
   The queue of delay sensors (i.e. instances of subclasses of
-  SoDelayQueueSensor) will be processed as soon as either the run-time
+  SoDelayQueueSensor) will be processed as soon as either the runtime
   system is idle, or if it is continually busy they will be processed
   within a fixed amount of time.
 
@@ -76,7 +76,7 @@ SoDelayQueueSensor::SoDelayQueueSensor(void)
 
 /*!
   Constructor taking as arguments the sensor callback function and
-  the userdata which will be passed the callback.
+  the userdata which will be passed to the callback.
 
   \sa setFunction(), setData()
  */
@@ -166,7 +166,7 @@ SoDelayQueueSensor::trigger(void)
 /*!
   Put the sensor in the global delay queue. This means it will be
   triggered either when the CPU is idle, or when the specified delay
-  queue time-out is reached.
+  queue timeout is reached.
 
   \sa SoDB::setDelaySensorTimeout(), unschedule(), isScheduled()
  */

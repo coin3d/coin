@@ -52,8 +52,8 @@
   Also note that support for multiple values in ambientColor,
   emissiveColor, specularColor and shininess was obsoleted in Open
   Inventor 2.1. The reason for this design change was performance
-  driven, since it's relatively slow to change the OpenGL material
-  properties. Changing the diffuse color value is fast though, so it's
+  driven, since it is relatively slow to change the OpenGL material
+  properties. Changing the diffuse color value is fast though, so it is
   still possible to have multiple diffuseColor and transparency
   values.
 
@@ -193,16 +193,16 @@
   \var SoMFColor SoMaterial::ambientColor
 
   Ambient material part color values. Will by default contain a single
-  color value of [0.2, 0.2, 0.2] (ie dark gray).
+  color value of [0.2, 0.2, 0.2] (i.e. dark gray).
 
   The ambient part of the material is not influenced by any
-  lightsources, and should be thought of conceptually as the constant,
+  light sources, and should be thought of conceptually as the constant,
   but small contribution of light to a scene "seeping in" from
   everywhere.
 
   (Think of the ambient contribution in the context that there's
-  always photons fizzing around everywhere -- even in a black,
-  lightsource-less room, for instance).
+  always photons fizzing around everywhere -- even in a black room without
+  light sources, for instance).
 
   Only the first value in this field will be used. All other values
   will be ignored.
@@ -223,7 +223,7 @@
   diffuse color and transparency.  To get around this problem if you
   need to override one without the other, set the environment
   variable "COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE".  This is
-  a Coin extension, and  will not work on the other Open Inventor
+  a Coin extension, and will not work on other Open Inventor
   implementations.
 */
 /*!
@@ -242,7 +242,7 @@
   The color of the light "emitted" by the subsequent geometry,
   independent of lighting / shading.
 
-  Defaults to contain a single color value of [0, 0, 0] (black, ie no
+  Defaults to contain a single color value of [0, 0, 0] (black, i.e. no
   contribution).
 
   Only the first value in this field will be used. All other values will be ignored.
@@ -274,7 +274,7 @@
   transparency and diffuse color.  To get around this problem if you
   need to override one without the other, set the environment
   variable "COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE".  This is
-  a Coin extension, and  will not work on the other Open Inventor
+  a Coin extension, and  will not work on other Open Inventor
   implementations.
 */
 

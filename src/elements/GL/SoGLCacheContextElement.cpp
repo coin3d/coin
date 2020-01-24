@@ -298,7 +298,7 @@ SoGLCacheContextElement::getExtID(const char * str)
 /*!
   Returns TRUE if the extension is supported for the current context.
   \a extid must be an id returned from getExtId(). The test result
-  is cached so this method is pretty fast and can be used run-time.
+  is cached so this method is pretty fast and can be used at runtime.
 */
 SbBool
 SoGLCacheContextElement::extSupported(SoState * state, int extid)

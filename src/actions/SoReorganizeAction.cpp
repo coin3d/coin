@@ -123,7 +123,7 @@
   these nodes haven't got index arrays, and the only bindings supported
   are PER_VERTEX and OVERALL.
 
-  If it's inconvenient to create vertex array ready scene graphs
+  If it is inconvenient to create vertex array ready scene graphs
   directly from your application, it's also possible to use
   SoReorganizeAction to reorganize the geometry before rendering.
 */

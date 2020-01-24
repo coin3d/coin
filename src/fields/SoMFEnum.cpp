@@ -37,7 +37,7 @@
   \ingroup fields
 
   This field is used where nodes, engines or other field containers
-  needs to store values constrained to be from an enumerated set.
+  need to store values constrained to be from an enumerated set.
 
   A field of this type stores its values to file as the symbolic
   names, rather than the actual integer values.

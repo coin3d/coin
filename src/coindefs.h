@@ -164,7 +164,7 @@ static void inline COIN_CONCAT(compile_only_before_nofunction,__LINE__) () { \
 
 /*
   Grep for POTENTIAL_ROTTING_DOCUMENTATION and update the version
-  number when you have checked all occurences of this. Some places
+  number when you have checked all occurrences of this. Some places
   this marker is used in a pure comment, so do not content yourself
   with checking every place that fails.
 */

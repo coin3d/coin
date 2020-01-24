@@ -36,7 +36,7 @@
 
   \ingroup nodes
 
-  Pointlights emits light equally in all directions from a specified
+  Point lights emits light equally in all directions from a specified
   3D location.
 
   See also documentation of parent class for important information
@@ -78,7 +78,7 @@
 
 /*!
   \var SoSFVec3f SoPointLight::location
-  3D position of lightsource. Default value is <0, 0, 1>.
+  3D position of light source. Default value is <0, 0, 1>.
 */
 
 // *************************************************************************

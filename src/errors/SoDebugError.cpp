@@ -42,7 +42,7 @@
   conditions are passed to the programmer which is using the Coin
   library API for building applications.  These messages are generated
   when API methods are used in an incorrect manner, or if actions on
-  the library has caused it to enter an inconsistent state. Coin
+  the library have caused it to enter an inconsistent state. Coin
   programmers should then quickly be able to trace down errors in
   their application code.
 
@@ -59,8 +59,8 @@
   Coin supports an environment variable to set conditional
   breakpoints.  The COIN_DEBUG_BREAK environment variable can be set
   to any number of functions in the form of a list separated by commas
-  or spaces.  The functionnames must be given as
-  "classname::functioname" (ie without return type, parenthesis or
+  or spaces.  The function names must be given as
+  "classname::functionname" (i.e. without return type, parenthesis or
   argument types or names).  If a debug message is posted from one of
   those functions, your program will be stopped (using assert(0)).
 
@@ -135,7 +135,7 @@ void * SoDebugError::callbackData = NULL;
 
 #if COIN_DEBUG
 
-// variables for run-time breakpoints
+// variables for runtime breakpoints
 static int num_breakpoints = 0;
 static char ** breakpoints = NULL;
 

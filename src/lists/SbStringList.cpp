@@ -32,14 +32,14 @@
 
 /*!
   \class SbStringList SbStringList.h Inventor/lists/SbStringList.h
-  \brief The SbStringList class is a container for arrays of SbString pointers.
+  \brief The SbStringList class is a container for pointers to SbString objects.
 
   \ingroup base
 
   Note that upon using the equality and inequality operators, the
   strings themselves are not compared, only the pointer values.  
   
-  This class do not allocate or deallocate strings. It's the callers
+  This class does not allocate or deallocate strings. It's the callers
   responsibility to allocate/deallocate the SbString instances.
 
   \sa SbPList

@@ -214,7 +214,7 @@ SoSF_Typename_::countWriteRefs(SoOutput * out) const
 //    - copyFrom() is called (typically from SoFieldData::overlay())
 //    - copyFrom() calls operator=()
 //    - operator=() calls setValue()
-//    - we have a local copy (ie not from SoSubField.h) of setValue()
+//    - we have a local copy (i.e. not from SoSubField.h) of setValue()
 //      that sets up auditing and references the item
 //
 // <mortene@sim.no>

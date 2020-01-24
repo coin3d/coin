@@ -69,7 +69,7 @@
 # else
 /* For any platform which uses this definition and supports more than
    one calling convention, we need to extend this definition to
-   declare the convention used on that platform, if it's possible to
+   declare the convention used on that platform, if it is possible to
    do so.
 
    If this is the case for your platform, please file a bug report

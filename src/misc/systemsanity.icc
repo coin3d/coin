@@ -5,7 +5,7 @@
 // EXECUTION OF YOUR COIN APPLICATION - THE CONSEQUENCES OF SOME OF THESE
 // TESTS FAILING IS THAT COIN WOULD OPERATE WITH SERIOUS PROBLEMS / BUGS
 // ANYWAYS.  These tests just expose symptoms of a build environment that
-// can not be used to build a working Coin.
+// cannot be used to build a working Coin.
 
 // *************************************************************************
 // this code should just make sure we can't compile this file (compilation

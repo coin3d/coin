@@ -36,7 +36,7 @@
 
   \ingroup nodes
 
-  The node types which have actual geometry to render inherits this
+  The node types which have actual geometry to render inherit this
   class. For convenience, the SoShape class contains various common
   code used by the subclasses.
 */
@@ -226,7 +226,7 @@ public:
   }
 
   // we can use a per-instance mutex here instead of this class-wide
-  // one, but we go for the class-wide one since at least MSWindows
+  // one, but we go for the class-wide one since at least Microsoft Windows
   // might have a rather strict limit on the total amount of mutex
   // resources a process / user can hold at any one time.
   //

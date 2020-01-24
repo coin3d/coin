@@ -114,7 +114,7 @@
   \var SoSFVec3f SoDirectionalLight::direction
 
   The direction of the light source. Defaults to pointing along the
-  negative z-axis.
+  negative Z-axis.
 */
 
 // *************************************************************************

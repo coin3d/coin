@@ -41,7 +41,7 @@
   transparent for the rest of the Coin code whether or not we're reading
   from a file, from a memory buffer or from stdin.
 
-  SoInput also takes care of checking file validity, aswell as handling
+  SoInput also takes care of checking file validity, as well as handling
   information about features in the various file formats which are
   supported.
 
@@ -68,11 +68,11 @@
 
 
   Important note: there are several public and protected methods which
-  makes it possible to pass in or get returned FILE* structures in
+  make it possible to pass in or get returned FILE* structures in
   this class. Do \e not use these methods when the Coin library has
-  been compiled as an MSWindows DLL, as passing FILE* instances back
-  or forth to DLLs is dangerous and will most likely cause a
-  crash. This is an intrinsic limitation for MSWindows DLLs.
+  been compiled as an Microsoft Windows DLL, as passing FILE* instances
+  back or forth to DLLs is dangerous and will most likely cause a
+  crash. This is an intrinsic limitation for Microsoft Windows DLLs.
 
 
   This class supports one environment variable called
@@ -81,7 +81,7 @@
   resolving USE keywords. This makes it possible to reference nodes in
   other files. The reason for introducing this feature is that the
   SoFile node rereads the file whenever the name field changes.  The
-  first time the file is read, it's possible to reference nodes in the
+  first time the file is read, it is possible to reference nodes in the
   parent file, using the USE keyword. But, when the file is reread
   this is no longer possible, since the reading now starts at the
   SoFile node, with an empty dictionary.
@@ -105,7 +105,7 @@
 /* According to Coin user Ralf Corsepius, at least SunOS4 needs to
    include sys/types.h before netinet/in.h. There have also been a
    problem report for FreeBSD which seems to indicate that the same
-   dependency exists on that platform aswell. */
+   dependency exists on that platform as well. */
 #include <sys/types.h>
 #endif // HAVE_SYS_TYPES_H
 #include <cctype>
@@ -134,7 +134,7 @@
 // files for MSVC++ 6.0.
 #ifndef S_ISDIR
  // The _S_IFDIR bitpattern is not in the POSIX standard, but MSVC++
- // header files has it.
+ // header files have it.
  #ifdef _S_IFDIR
  #define S_ISDIR(s) ((s) & _S_IFDIR)
  #else // Ai.
@@ -180,7 +180,7 @@ soinput_destruct_tls_data(void * closure)
 // *************************************************************************
 
 /*!
-  Constructor. If no filepointer is set, input will be read from stdin.
+  Constructor. If no file pointer is set, input will be read from stdin.
  */
 SoInput::SoInput(void)
 {
@@ -213,7 +213,7 @@ SoInput::constructorsCommon(void)
   // invoked from app code, as it is common to just have an SoInput on
   // the stack of the main() function.
   //
-  // But since SoInput uses threads, which needs to be initialized, we
+  // But since SoInput uses threads, which need to be initialized, we
   // need to check for SoDB::init() here, and invoke it if it was not
   // yet called.
   if (!SoDB::isInitialized()) { SoDB::init(); }
@@ -273,7 +273,7 @@ SoInput::~SoInput(void)
 
 /*!
   Adds a ROUTE from \a fromnode's \a fromfield, to \a tonode's
-  \a tofield. This makes it possible to defines ROUTEs in files
+  \a tofield. This makes it possible to define ROUTEs in files
   before the \a fromnode or \a tonode is parsed.
 
   \COIN_FUNCTION_EXTENSION
@@ -308,7 +308,7 @@ SoInput::findProto(const SbName & name)
 }
 
 /*!
-  Adds a Proto which should be active in the current scope.
+  Adds a PROTO \a proto which should be active in the current scope.
 
   \COIN_FUNCTION_EXTENSION
 
@@ -324,7 +324,7 @@ SoInput::addProto(SoProto * proto)
 }
 
 /*!
-  Pushed a Proto onto the Proto stack. The Proto stack is used during
+  Pushed a PROTO \a proto onto the PROTO stack. The PROTO stack is used during
   VRML2 file parsing.
 
   \COIN_FUNCTION_EXTENSION
@@ -341,7 +341,7 @@ SoInput::pushProto(SoProto * proto)
 }
 
 /*!
-  Pops a Proto off the Proto stack.
+  Pops a PROTO off the PROTO stack.
 
   \COIN_FUNCTION_EXTENSION
 
@@ -357,7 +357,7 @@ SoInput::popProto(void)
 }
 
 /*!
-  Returns the Proto at the top of the Proto stack.
+  Returns the PROTO at the top of the PROTO stack.
 
   \COIN_FUNCTION_EXTENSION
 
@@ -375,7 +375,7 @@ SoInput::getCurrentProto(void) const
 /*!
   Checks if the next bytes in \a in is the IS keyword. Returns \c TRUE
   if the IS keyword was found, \a readok will be set to \c FALSE if
-  some error occured while searching for the IS keyword.
+  some error occurred while searching for the IS keyword.
 
   \COIN_FUNCTION_EXTENSION
 
@@ -445,13 +445,13 @@ SoInput::checkISReference(SoFieldContainer * container,
 
 /*!
   Uses the given file pointer as the input file. The input stack of
-  files will be emptied first. Closing a file passed in by it's file
+  files will be emptied first. Closing a file passed in by its file
   pointer is the library user's responsibility.
 
   Important note: do \e not use this method when the Coin library has
-  been compiled as an MSWindows DLL, as passing FILE* instances back
+  been compiled as a Microsoft Windows DLL, as passing FILE* instances back
   or forth to DLLs is dangerous and will most likely cause a
-  crash. This is an intrinsic limitation for MSWindows DLLs.
+  crash. This is an intrinsic limitation for Microsoft Windows DLLs.
 
   Note that it is not allowed to pass a FILE* to a gzip-compressed
   file under Mac OS X.
@@ -528,14 +528,14 @@ SoInput::openFile(const char * fileName, SbBool okIfNotFound)
 SbBool
 SoInput::pushFile(const char * filename)
 {
-  // Get rid of default stdin filepointer if it has not yet been read
+  // Get rid of default stdin file pointer if it has not yet been read
   // from. The reason for this is that <stdin> is put on the stack as
   // the default reader by the constructor.  If pushFile is called
   // before <stdin> is read from, it should not be used for reading,
   // so we remove it.  This case happens e.g. when running the code:
   //
   // SoFile * f = new SoFile;
-  // f->name = "nonexistant.iv";
+  // f->name = "nonexistent.iv";
   //
   // The name-field has a callback function that calls
   // File::readNamedFile, which calls pushFile. No other files than
@@ -639,9 +639,9 @@ SoInput::isValidBuffer(void)
   "file" is actually a memory buffer, returns \c NULL.
 
   Important note: do \e not use this method when the Coin library has
-  been compiled as an MSWindows DLL, as passing FILE* instances back
+  been compiled as an Microsoft Windows DLL, as passing FILE* instances back
   or forth to DLLs is dangerous and will most likely cause a
-  crash. This is an intrinsic limitation for MSWindows DLLs.
+  crash. This is an intrinsic limitation for Microsoft Windows DLLs.
 
   \sa getCurFileName()
 */
@@ -655,7 +655,7 @@ SoInput::getCurFile(void) const
 
 /*!
   Returns the name of the file on top of the input stack. \c NULL will
-  be returned if the toplevel "file" is a memory buffer.
+  be returned if the top level "file" is a memory buffer.
 
   \sa getCurFile()
 */
@@ -848,7 +848,7 @@ SoInput::getASCIIFile(char & c)
 }
 
 /*!
-  Reads an  unsigned integer in hexidecimal format from the current stream.
+  Reads an unsigned integer in hexadecimal format from the current stream.
   Note that no error checking is done to see if it actually is a hex
   format value.
 
@@ -1598,14 +1598,14 @@ SoInput::removeReference(const SbName & name)
 }
 
 /*!
-  Finds an SoBase derived object which has been mapped to \a name earlier
+  Finds a SoBase derived object which has been mapped to \a name earlier
   during the import process.
 
   The Coin library will by default only search through the previously
   loaded nodes from the \e same file. By setting the environment
   variable \c COIN_SOINPUT_SEARCH_GLOBAL_DICT to "1", you can force
   the import process to search for USE-references through \e all nodes
-  that has been loaded or otherwise instantiated.
+  that have been loaded or otherwise instantiated.
 
   \sa addReference(), removeReference()
  */
@@ -1834,9 +1834,9 @@ SoInput::clearDirectories(void)
 }
 
 /*!
-  Returns the list of directories which'll be searched upon loading
+  Returns the list of directories which will be searched upon loading
   Coin and VRML format files. Directory searches will be done whenever
-  any external references appears in a file, for instance to texture images.
+  any external references appears in a file, for instance for texture images.
  */
 const SbStringList &
 SoInput::getDirectories(void)
@@ -1990,7 +1990,7 @@ test_filename(const SbString & filename)
   search, returns the full name of the file found.
 
   In addition to looking at the root of each directory in \a
-  directories, all \a subdirectories is also searched for each item in
+  directories, all \a subdirectories are also searched for each item in
   \a directories.
 
   If no file matching \a basename could be found in any of the
@@ -2093,7 +2093,7 @@ SoInput::initFile(FILE * /* newFP */, const char * /* fileName */,
 }
 
 /*!
-  Returns \c TRUE if the current stream has had it's header parsed.
+  Returns \c TRUE if the current stream has had its header parsed.
   If it hasn't, this method will attempt to read the header and returns
   \c TRUE if it could be done.
 
@@ -2150,7 +2150,7 @@ SoInput::skipWhiteSpace(void)
 
 /*!
   Pop the topmost file off the stack. Returns \c FALSE if there was no
-  files on the stack to pop. A file is only popped when there is more
+  file on the stack to pop. A file is only popped when there is more
   than one file on the stack.
 
   \sa pushFile(), openFile(), closeFile()
@@ -2511,9 +2511,9 @@ SoInput::getTopOfStack(void) const
   return \c NULL.
 
   Important note: do \e not use this method when the Coin library has
-  been compiled as an MSWindows DLL, as passing FILE* instances back
+  been compiled as an Microsoft Windows DLL, as passing FILE* instances back
   or forth to DLLs is dangerous and will most likely cause a
-  crash. This is an intrinsic limitation for MSWindows DLLs.
+  crash. This is an intrinsic limitation for Microsoft Windows DLLs.
  */
 FILE *
 SoInput::findFile(const char * basename, SbString & fullname)

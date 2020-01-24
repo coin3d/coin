@@ -161,7 +161,7 @@ heap_heapify_up(cc_heap * h, uintptr_t i)
 
   \a support_remove specifies if the heap should support removal of
   elements (other than the top element) after they are added; this
-  requires use of a hash table to be efficent, but as a slight runtime
+  requires use of a hash table to be efficient, but as a slight runtime
   overhead will be incurred for the add and extract_top functions the
   support can be disabled if you don't need it.
 
@@ -324,7 +324,7 @@ cc_heap_elements(cc_heap * h)
 }
 
 /*!
-  Returns TRUE of the heap \a h is empty; otherwise FALSE.
+  Returns TRUE of the heap \a h is empty, otherwise FALSE.
 */
 SbBool
 cc_heap_empty(cc_heap * h)

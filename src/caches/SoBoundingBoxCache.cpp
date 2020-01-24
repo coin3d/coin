@@ -160,7 +160,7 @@ SoBoundingBoxCache::getCenter(void) const
   reason this is important to know for the client code is because it
   might need to add an "epsilon" slack value to the calculated
   bounding box to account for smoothing / anti-aliasing effects in the
-  renderer, so lines and points graphics is not accidently clipped by
+  renderer, so line and point graphics are not accidentally clipped by
   near and far clipping planes, for instance.
 
   This method is a static method on the class. It will upon invocation

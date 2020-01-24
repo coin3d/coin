@@ -149,7 +149,7 @@ ScXMLEvaluator::setStateMachine(ScXMLStateMachine * sm)
   Does nothing - overridden in derived classes.
 
   The intention of this function is to clear out temporary variables that
-  has the scope of only one event being processed by the scxml state machine.
+  have the scope of only one event being processed by the scxml state machine.
 */
 void
 ScXMLEvaluator::clearTemporaryVariables(void)

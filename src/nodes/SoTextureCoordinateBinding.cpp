@@ -90,8 +90,8 @@
 /*!
   \var SoSFEnum SoTextureCoordinateBinding::value
 
-  Type of texturemap binding for subsequent shape nodes in the
-  scenegraph. Default field value is
+  Type of texture map binding for subsequent shape nodes in the
+  scene graph. Default field value is
   SoTextureCoordinateBinding::PER_VERTEX_INDEXED.
 */
 

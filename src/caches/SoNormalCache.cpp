@@ -761,7 +761,7 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
 }
 
 /*!
-  Generates one normal per triangle strips (avarages all triangle normals).
+  Generates one normal per triangle strips (averages all triangle normals).
 */
 void
 SoNormalCache::generatePerStrip(const SbVec3f * const coords,

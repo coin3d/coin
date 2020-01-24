@@ -89,7 +89,7 @@
 
   * larsa on Performer vs Inventor:
 
-    [...] both are scene-graph based.
+    [...] both are scene graph based.
 
     The main difference is that Open Inventor is data-driven (and
     event-based), while Performer is application-driven.  It basically

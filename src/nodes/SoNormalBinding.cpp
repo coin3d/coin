@@ -68,7 +68,7 @@
   Enumeration of available types of mappings. See documentation of
   SoMaterialBinding node for explanation of the different values.
 
-  Note that SoNormalBinding::DEFAULT and SoNormalBinding::NONE has
+  Note that SoNormalBinding::DEFAULT and SoNormalBinding::NONE have
   been obsoleted and are both mapped to
   SoNormalBinding::PER_VERTEX_INDEXED.
 */

@@ -37,7 +37,7 @@
   \ingroup actions
 
   Applying this method at a root node for a scene graph, path or
-  pathlist will render all sound-related nodes contained within that instance to
+  path list will render all sound-related nodes contained within that instance to
   the current SoAudioDevice.
  */
 

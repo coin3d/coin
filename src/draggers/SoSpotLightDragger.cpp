@@ -50,17 +50,17 @@
 
   This dragger is well suited for setting up the fields of a
   SoSpotLight node, as it provides geometry for the end-user to
-  interact with a directional vector for the spotlight, to set up it's
+  interact with a directional vector for the spotlight, to set up its
   position and to control the cut-off angle for the "lampshade" around
-  the lightsource.
+  the light source.
 
-  Note that there is one aspect of SoSpotLight nodes that can not be
+  Note that there is one aspect of SoSpotLight nodes that cannot be
   controlled with this dragger: the SoSpotLight::dropOffRate field.
 
   The Coin library includes a manipulator class, SoSpotLightManip,
   which wraps the functionality provided by this class inside the
   necessary mechanisms for connecting it to SoSpotLight node instances
-  in a scenegraph.
+  in a scene graph.
 
   \sa SoSpotLightManip, SoSpotLight
   \sa SoDirectionalLightDragger, SoPointLightDragger
@@ -97,7 +97,7 @@
   automatically).
 
   It may also of course be connected to any other rotation field
-  controlling the direction of scenegraph geometry, it does not have
+  controlling the direction of scene graph geometry, it does not have
   to part of a SoSpotLight node specifically.
 */
 
@@ -111,7 +111,7 @@
 /*!
   \var SoSFFloat SoSpotLightDragger::angle
 
-  The cut-off angle for the "lampshade" around the lightsource.
+  The cut-off angle for the "lampshade" around the light source.
 
   Typically connected to a SoSpotLight::cutOffAngle field.
 */
@@ -149,7 +149,7 @@ SoSpotLightDragger::initClass(void)
 }
 
 // FIXME: document which parts need to be present in the geometry
-// scenegraph, and what role they play in the dragger. 20010913 mortene.
+// scene graph, and what role they play in the dragger. 20010913 mortene.
 /*!
   \DRAGGER_CONSTRUCTOR
 
@@ -494,7 +494,7 @@ SoSpotLightDragger::dragFinish(void)
 
 /*!
   Scales the geometry representing the "lampshade" around the
-  lightsource to represent the given \a beamangle.
+  light source to represent the given \a beamangle.
  */
 void
 SoSpotLightDragger::setBeamScaleFromAngle(float beamangle)

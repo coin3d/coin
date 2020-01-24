@@ -37,11 +37,11 @@
   \ingroup nodes
 
   This node either uses the coordinates currently on the state
-  (typically set up by a leading SoCoordinate3 node in the scenegraph)
+  (typically set up by a leading SoCoordinate3 node in the scene graph)
   or from a SoVertexProperty node attached to this node to render a
   set of 3D points.
 
-  Here's a simple usage example of SoIndexedPointSet in a scenegraph:
+  Here's a simple usage example of SoIndexedPointSet in a scene graph:
 
   \verbatim
   #Inventor V2.1 ascii

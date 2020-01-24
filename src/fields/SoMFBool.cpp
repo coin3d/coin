@@ -37,7 +37,7 @@
   \ingroup fields
 
   This field is used where nodes, engines or other field containers
-  needs to store multiple boolean on/off or TRUE/FALSE values.
+  need to store multiple boolean on/off or TRUE/FALSE values.
 
   This field supports application data sharing through a
   setValuesPointer() method. See SoMField documentation for

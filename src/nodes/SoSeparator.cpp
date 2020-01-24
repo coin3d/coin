@@ -40,7 +40,7 @@
   as they push and pop the traversal state before and after traversal
   of its children.
 
-  SoSeparator nodes also provides options for traversal optimalization
+  SoSeparator nodes also provides options for traversal optimization
   through the use of caching.
 
   <b>FILE FORMAT/DEFAULTS:</b>
@@ -121,9 +121,9 @@ int SoSeparator::numrendercaches = 2;
 /*!
   \enum SoSeparator::CacheEnabled
 
-  Enumeration of flags for the fields deciding which optimalizations
+  Enumeration of flags for the fields deciding which optimizations
   to do in SoSeparator nodes. There are two types of settings
-  available: caching policies or culling policies. See doumentation of
+  available: caching policies or culling policies. See documentation of
   fields.
 */
 /*!
@@ -166,10 +166,10 @@ int SoSeparator::numrendercaches = 2;
 
      Otherwise, the code in Coin will do a bit of testing and decide
      by some heuristics whether or not to enable it. That will make
-     the rendering be a tiny bit slower right after start-up than with
+     the rendering be a tiny bit slower right after startup than with
      renderCaching set to \c ON.
 
-     (The slow-down should hardly be noticable, though, so we don't
+     (The slow-down should hardly be noticeable, though, so we don't
      advice application programmers to do this.)
    </li>
 
@@ -179,7 +179,7 @@ int SoSeparator::numrendercaches = 2;
      node can contain before we don't do caching when
      SoSeparator::renderCaching is set to \c AUTO.
 
-     The reason we do this is because OpenGL renderlists can
+     The reason we do this is because OpenGL render lists can
      potentially suck up a lot of memory resources on the graphics
      card.
 
@@ -196,11 +196,11 @@ int SoSeparator::numrendercaches = 2;
 
   There are good reasons for setting renderCaching to \c OFF, like
   when you know the geometry will be changing a lot. Still, Coin
-  should work fairly well without even this optimization.  (If
+  should work fairly well even without this optimization.  (If
   renderCaching is \c AUTO over a sub-graph with changing geometry or
   other cache smashing nodes, the caching heuristics will stop the
   SoSeparator node from trying to make caches -- at least after a few
-  tries has been made and failed.)
+  tries have been made and failed.)
 
 
   The short story about how auto-caching works is as follows:
@@ -211,11 +211,11 @@ int SoSeparator::numrendercaches = 2;
         where the geometry is detected to be fairly static, caching is
         enabled.</li>
 
-    <li>For shapes with more than 1000 trangles, it is disabled, to
+    <li>For shapes with more than 1000 triangles, it is disabled, to
         avoid spending too much of the on-board graphics card's memory
         resources.</li>
 
-    <li>For shapes with between 100 and 1000 shapes, displaylist
+    <li>For shapes with between 100 and 1000 shapes, display list
         caching will be turned on if our heuristics decides that the
         geometry can be considered static.</li>
 
@@ -224,7 +224,7 @@ int SoSeparator::numrendercaches = 2;
   The maximum threshold (of 1000) is higher when doing remote
   rendering (as when rendering from one X11-based system to another).
 
-  Disabling the displaylist caching takes precedence over enabling, so
+  Disabling the display list caching takes precedence over enabling, so
   if you have an SoSeparator with a shape with more than 1000
   triangles and a shape with fewer than 100 triangles, caching will be
   disabled for the SoSeparator.
@@ -320,7 +320,7 @@ public:
 
 #ifdef COIN_THREADSAFE
   // FIXME: a mutex for every SoSeparator instance seems a bit
-  // excessive, especially since MSWindows might have rather strict
+  // excessive, especially since Microsoft Windows might have rather strict
   // limits on the total amount of mutex resources a process (or even
   // a user) can allocate. so consider making this a class-wide
   // instance instead.  -mortene.
@@ -903,7 +903,7 @@ SoSeparator::getMatrix(SoGetMatrixAction * action)
   The value can also be changed globally by setting the host system's
   environment variable IV_SEPARATOR_MAX_CACHES to the wanted
   number. This is primarily meant as an aid during debugging, to make
-  it easy to turn off rendercaching completely (by setting
+  it easy to turn off render caching completely (by setting
   "IV_SEPARATOR_MAX_CACHES=0") without having to change any
   application code.
 */

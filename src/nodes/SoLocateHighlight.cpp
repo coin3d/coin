@@ -107,7 +107,7 @@
 */
 /*!
   \var SoLocateHighlight::Styles SoLocateHighlight::EMISSIVE_DIFFUSE
-  Highlight useing emissive and diffuse color override.
+  Highlight using emissive and diffuse color override.
 */
 
 /*!

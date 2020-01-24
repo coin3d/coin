@@ -177,7 +177,7 @@ SO_ELEMENT_SOURCE(SoGLLazyElement);
 
 /*!
   This static method initializes static data for the
-  SoDiffuseColorElement class.
+  SoGLLazyElement class.
 */
 
 void

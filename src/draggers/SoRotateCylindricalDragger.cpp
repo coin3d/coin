@@ -48,12 +48,12 @@
   \image html rotatecylindrical.png "Screen Shot of Default Dragger"
   </center>
 
-  Use an instance of this dragger class in your scenegraph to let the
-  end-users of your application rotate geometry around a pre-defined
+  Use an instance of this dragger class in your scene graph to let the
+  end-users of your application rotate geometry around a predefined
   axis vector in 3D.
 
   For the dragger orientation and positioning itself, use some kind of
-  transformation node in your scenegraph, as usual.
+  transformation node in your scene graph, as usual.
 */
 
 #include <Inventor/draggers/SoRotateCylindricalDragger.h>
@@ -85,7 +85,7 @@ SO_KIT_SOURCE(SoRotateCylindricalDragger);
   This field is continuously updated to contain the rotation of the
   current direction vector of the dragger.
 
-  The application programmer using this dragger in his scenegraph
+  The application programmer using this dragger in his scene graph
   should connect the relevant node fields in the scene to this field
   to make them follow the dragger orientation.
 */
@@ -112,7 +112,7 @@ SoRotateCylindricalDragger::initClass(void)
 }
 
 // FIXME: document which parts need to be present in the geometry
-// scenegraph, and what role they play in the dragger. 20010913 mortene.
+// scene graph, and what role they play in the dragger. 20010913 mortene.
 /*!
   \DRAGGER_CONSTRUCTOR
 
@@ -181,7 +181,7 @@ SoRotateCylindricalDragger::SoRotateCylindricalDragger(void)
   this->setPartAsDefault("feedback", "rotateCylindricalFeedback");
   this->setPartAsDefault("feedbackActive", "rotateCylindricalFeedbackActive");
 
-  // initialize swich values
+  // initialize switch values
   SoSwitch *sw;
   sw = SO_GET_ANY_PART(this, "rotatorSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, 0);

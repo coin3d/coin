@@ -117,7 +117,7 @@ public:
   supported by a wide variety of computer-aided design programs.  STL
   models are, because of their intended purpose, always
   representations of solid objects.  STL is short for
-  Stereolithography, the process used for 3D printing.
+  stereolithography, the process used for 3D printing.
 
   Ordinary STL models do not contain color information.  There are,
   however, two extensions to the binary file format for specifying
@@ -170,7 +170,7 @@ SoSTLFileKit::initClass(void)
 }
 
 /*!
-  Returns wether or not \a filename is identified as an STL file.
+  Returns whether or not \a filename is identified as an STL file.
 */
 
 SbBool
@@ -244,7 +244,7 @@ SoSTLFileKit::canReadFile(const char * filename) const
 }
 
 /*!
-  Reads in an STL file.  Both ascii and binary files are supported.
+  Reads in an STL file.  Both ASCII and binary files are supported.
   For binary files, the color extensions are not implemented yet.
 
   Returns FALSE if \a filename could not be opened or parsed

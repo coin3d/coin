@@ -98,7 +98,7 @@
   actual value is unspecified, and you should not depend on it.
 */
 SbRotation::SbRotation(void)
-  // This translates to zero rotation around the positive Z axis.
+  // This translates to zero rotation around the positive Z-axis.
   : quat(0.0f, 0.0f, 0.0f, 1.0f)
 {
 }
@@ -125,7 +125,7 @@ SbRotation::SbRotation(const SbVec3f & axis, const float radians)
   The array must be ordered as follows:
 
   q[0] = x, q[1] = y, q[2] = z and q[3] = w, where the quaternion is
-  specified by q=w+xi+yj+zk.
+  specified by q = w + xi + yj + zk.
  */
 SbRotation::SbRotation(const float q[4])
 {
@@ -503,9 +503,9 @@ SbRotation::setValue(const SbVec3f & rotateFrom, const SbVec3f & rotateTo)
     // Ok, so they are parallel and pointing in the opposite direction
     // of each other.
     else {
-      // Try crossing with x axis.
+      // Try crossing with X-axis.
       SbVec3f t = from.cross(SbVec3f(1.0f, 0.0f, 0.0f));
-      // If not ok, cross with y axis.
+      // If not ok, cross with Y-axis.
       if (t.normalize() == 0.0f) {
         t = from.cross(SbVec3f(0.0f, 1.0f, 0.0f));
         (void) t.normalize();
@@ -576,7 +576,7 @@ operator==(const SbRotation & q1, const SbRotation & q2)
 /*!
   \relates SbRotation
 
-  Check if the two rotations are unequal.
+  Check if the two rotations are not equal.
 
   \sa equals().
  */
@@ -715,7 +715,7 @@ SbRotation::toString() const
 }
 
 /*!
-  Convert from a string representation, return wether this is a valid conversion
+  Convert from a string representation, return whether this is a valid conversion
 */
 SbBool
 SbRotation::fromString(const SbString & str)
@@ -726,9 +726,8 @@ SbRotation::fromString(const SbString & str)
 }
 
 /*!
-  Dump the state of this object to the \a fp file stream. Only works
-  in debug version of library, method does nothing in an optimized
-  compile.
+  Dump the state of this object to the \a fp file stream. Only works in
+  debug version of library, method does nothing in an optimized build.
  */
 void
 SbRotation::print(FILE * fp) const

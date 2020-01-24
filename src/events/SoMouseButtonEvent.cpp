@@ -33,13 +33,13 @@
 /*!
   \class SoMouseButtonEvent SoMouseButtonEvent.h Inventor/events/SoMouseButtonEvent.h
   \brief The SoMouseButtonEvent class contains information about
-  mousebutton interaction.
+  mouse button interaction.
 
   \ingroup events
 
   When the user presses any buttons on the mouse, these will be
   translated from a system specific event into a Coin event and sent
-  to the scenegraph by using instances of this class.
+  to the scene graph by using instances of this class.
 
   \sa SoEvent, SoButtonEvent, SoSpaceballButtonEvent, SoKeyboardEvent
   \sa SoEventCallback, SoHandleEventAction */
@@ -73,12 +73,12 @@
 */
 /*!
   \var SoMouseButtonEvent::Button SoMouseButtonEvent::BUTTON4
-  Fourth mouse button (typically from a wheelmouse). This is
+  Fourth mouse button (typically from a wheel mouse). This is
   \e not part of the original Open Inventor API.
 */
 /*!
   \var SoMouseButtonEvent::Button SoMouseButtonEvent::BUTTON5
-  Fifth mouse button (typically from a wheelmouse). This is
+  Fifth mouse button (typically from a wheel mouse). This is
   \e not part of the original Open Inventor API.
 */
 

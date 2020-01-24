@@ -43,12 +43,12 @@
 
   One important issue with SoBase-derived classes is that they should
   \e not be statically allocated, neither in static module memory nor
-  on function's stack-frames. SoBase-derived classes must \e always be
+  on function's stack frames. SoBase-derived classes must \e always be
   allocated dynamically from the memory heap with the \c new operator.
 
   This is so because SoBase-derived instances are reference counted,
-  and will self-destruct on the approriate time. For this to work,
-  they must be explicitly allocated in heap-memory. See the class
+  and will self destruct on the appropriate time. For this to work,
+  they must be explicitly allocated in heap memory. See the class
   documentation of SoNode for more information.
 */
 
@@ -106,7 +106,7 @@
   \fn SoType SoBase::getTypeId(void) const
 
   \brief Returns the type identification of an object derived from a
-  class inheriting SoBase. This is used for run-time type checking and
+  class inheriting SoBase. This is used for runtime type checking and
   "downward" casting.
 
   Usage example:
@@ -126,13 +126,13 @@
   nodes, engines, nodekits, draggers or others: this method needs to
   be overridden in \e all subclasses. This is typically done as part
   of setting up the full type system for extension classes, which is
-  usually accomplished by using the pre-defined macros available
+  usually accomplished by using the predefined macros available
   through for instance Inventor/nodes/SoSubNode.h (SO_NODE_INIT_CLASS
   and SO_NODE_CONSTRUCTOR for node classes),
   Inventor/engines/SoSubEngine.h (for engine classes) and so on.
 
   For more information on writing Coin extensions, see the class
-  documentation of the toplevel superclasses for the various class
+  documentation of the top level superclasses for the various class
   groups.
 */
 
@@ -146,10 +146,10 @@
 
   It reads a definition of an instance from the input stream \a in.
   The input stream state points to the start of a serialized /
-  persistant representation of an instance of this class type.
+  persistent representation of an instance of this class type.
 
   \c TRUE or \c FALSE is returned, depending on if the instantiation
-  and configuration of the new object of this class type went ok or
+  and configuration of the new object of this class type went OK or
   not.  The import process should be robust and handle corrupted input
   streams by returning \c FALSE.
 
@@ -172,7 +172,7 @@ SoType SoBase::classTypeId STATIC_SOTYPE_INIT;
 // to be randomly assigned to a memory byte upon destruction. I chose
 // "1101".
 //
-// The 4 bits allocated for the "alive" bitpattern is used in
+// The 4 bits allocated for the "alive" bitpattern are used in
 // SoBase::ref() to try to detect when the instance has been
 // prematurely destructed.
 //
@@ -353,7 +353,7 @@ SoBase::initClass(void)
   //
   // Set up to run after most other atexit-code, since we depend on
   // Coin cleaning up internal nodes etc (like the static
-  // sub-scenegraphs in draggers).
+  // sub-scene graphs in draggers).
   //
   // -mortene.
   coin_atexit((coin_atexit_f *)SoBase::PImpl::check_for_leaks, CC_ATEXIT_TRACK_SOBASE_INSTANCES);
@@ -432,8 +432,8 @@ SoBase::cleanClass(void)
 
   This is used internally in Coin (in for instance SoBase::ref()) to
   try to detect when the instance has been prematurely
-  destructed. This is a very common mistake to make by application
-  programmers (letting the refcount dip to zero before it should, that
+  destructed. This is a very common mistake made by application
+  programmers (letting the refcount drop to zero before it should, that
   is), so the extra piece of assistance through the accompanying
   assert() in this method to detect dangling references to the object,
   with subsequent memory corruption and mysterious crashes, should be
@@ -462,7 +462,7 @@ SoBase::assertAlive(void) const
 
 /*!
   Increase the reference count of the object. This might be necessary
-  to do explicitly from user code for certain situations (chiefly to
+  to do explicitly from user code for certain situations (mainly to
   avoid premature deletion), but is usually called from other instances
   within the Coin library when objects are made dependent on each other.
 
@@ -603,7 +603,7 @@ SoBase::touch(void)
   \brief Returns \c TRUE if the type of this object is either of the
   same type or inherited from \a type.
 
-  This is used for run-time type checking and "downward" casting.
+  This is used for runtime type checking and "downward" casting.
 
   Usage example:
 
@@ -678,7 +678,7 @@ SoBase::setName(const SbName & newname)
 
   // This may look peculiar, but it is useful in combination with the
   // COIN_DEBUG_TRACK_SOBASE_INSTANCES envvar to track down where
-  // un-deallocated SoBase-instances were allocated from. (Ie run it
+  // un-deallocated SoBase-instances were allocated from. (I.e., run it
   // in a debugger and check the backtrace.)  -mortene.
 #if 0 // debug
   static SbBool checked = FALSE;
@@ -918,10 +918,10 @@ SoBase::addWriteReference(SoOutput * out, SbBool isfromfield)
 
 /*!
   Returns \c TRUE if this object should be written out during a write action.
-  Will return \c FALSE if no references to this object has been made in the
+  Will return \c FALSE if no references to this object have been made in the
   scene graph.
 
-  Note that connections from the fields of fieldcontainer objects is not
+  Note that connections from the fields of field container objects is not
   alone a valid reason for writing out the object -- there must also be at
   least one reference directly from another SoBase (like a parent/child
   relationship, for instance).
@@ -955,7 +955,7 @@ SoBase::decrementCurrentWriteCounter(void)
 
 /*!
   Returns the object of \a type, or derived from \a type, registered
-  under \a name. If several has been registered under the same name
+  under \a name. If several objects have been registered under the same name
   with the same type, returns the \e last one which was registered.
 
   If no object of a valid type or subtype has been registered with the
@@ -1029,7 +1029,7 @@ SoBase::getNamedBases(const SbName & name, SoBaseList & baselist, SoType type)
 
   2. \a in didn't have a valid identifier name at the stream for us to
   read. This happens either in the case of errors, or when all child
-  nodes of a group has been read. Check if the next character in the
+  nodes of a group have been read. Check if the next character in the
   stream is a '}' to detect the latter case.
 
   3. A child was given as the \c NULL keyword. This can happen when
@@ -1178,7 +1178,7 @@ SoBase::getTraceRefs(void)
 /*!
   Returns \c TRUE if this object will be written more than once upon
   export. Note that the result from this method is only valid during the
-  second pass of a write action (and partly during the COUNT_REFS pass).
+  second pass of a write action (and partially during the COUNT_REFS pass).
  */
 SbBool
 SoBase::hasMultipleWriteRefs(void) const
@@ -1762,7 +1762,7 @@ DEF root Separator {
 
 	   SbList<SbString> node_names(15);
 	   if(j==1)
-		BOOST_CHECK_MESSAGE(dont_mangle_output_names(scenegraph)==TRUE,"don't mangel should be TRUE");
+		BOOST_CHECK_MESSAGE(dont_mangle_output_names(scenegraph)==TRUE,"don't mangle should be TRUE");
 	   else
 		BOOST_CHECK_MESSAGE(dont_mangle_output_names(scenegraph)==FALSE,"don't mangle should be FALSE");
 

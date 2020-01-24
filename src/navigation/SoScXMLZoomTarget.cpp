@@ -34,7 +34,7 @@
 
 /*!
   \class SoScXMLZoomTarget SoScXMLZoomTarget.h Inventor/scxml/SoScXMLZoomTarget.h
-  \brief SCXML event target service for zoom-behaviour.
+  \brief SCXML event target service for zoom behaviour.
 
   Events:
 

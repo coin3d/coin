@@ -72,7 +72,7 @@ SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoGLVBOElement);
 
 /*!
   This static method initializes static data for the
-  SoMultiTextureCoordinateElement class.
+  SoGLVBOElement class.
 */
 
 void

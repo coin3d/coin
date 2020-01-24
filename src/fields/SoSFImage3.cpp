@@ -342,7 +342,7 @@ SoSFImage3::startEditing(SbVec3s & size, int & nc)
 }
 
 /*!
-  Notify the field's auditors that the image data has been
+  Notify the field's auditors that the image data have been
   modified.
 */
 void

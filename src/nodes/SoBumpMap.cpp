@@ -55,7 +55,7 @@
   Bump mapping in Coin requires OpenGL 1.3, or the following OpenGL
   extensions: GL_ARB_multitexture, GL_ARB_texture_cube_map,
   GL_ARB_texture_env_combine and GL_ARB_texture_env_dot3 (or the
-  corresponding EXT extensions). If the run-time system doesn't meet
+  corresponding EXT extensions). If the runtime system doesn't meet
   these requirements, Coin will post a warning and the bump map will
   simply be ignored.
 

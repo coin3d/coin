@@ -43,17 +43,17 @@
 
   Renders a sphere with the size given by the SoSphere::radius
   field. The sphere is rendered with the current material, texture and
-  drawstyle settings (if any, otherwise the default settings are
+  draw style settings (if any, otherwise the default settings are
   used).
 
   The SoSphere node class is provided as a convenient abstraction for
   the application programmer to use "complex" shapes of this type
   without having to do the tessellation to polygons and other
-  low-level programming herself.
+  low level programming herself.
 
   A good trick for rendering ellipsoidal 3D shapes is to use an
   SoSphere prefixed with an SoScale transformation to "flatten" it
-  along one or more of the principal axes. (Ie use for instance an
+  along one or more of the principal axes. (I.e., use for instance an
   SoScale node with SoScale::scaleFactor equal to [1, 1, 0.1] to
   flatten it along the Z direction.)
 

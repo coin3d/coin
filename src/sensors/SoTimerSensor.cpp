@@ -38,11 +38,11 @@
 
   Use sensors of this class when you want a job repeated at a certain
   interval, without explicitly needing to reschedule the sensor
-  (i.e. SoTimerSensor automatically re-schedules itself after it has
+  (i.e. SoTimerSensor automatically reschedules itself after it has
   been triggered).
 
-  SoTimerSensor instances is commonly used to trigger animation
-  updates at a constant framerate.
+  SoTimerSensor instances are commonly used to trigger animation
+  updates at a constant frame rate.
 */
 
 #include <Inventor/sensors/SoTimerSensor.h>
@@ -67,7 +67,7 @@ SoTimerSensor::SoTimerSensor(void)
 
 /*!
   Constructor taking as parameters the sensor callback function and
-  the userdata which will be passed the callback.
+  the userdata which will be passed to the callback.
 
   \sa setFunction(), setData()
  */
@@ -251,7 +251,7 @@ SoTimerSensor::unschedule(void)
 }
 
 /*!
-  Overides the virtual trigger() method to be able to reschedule
+  Overrides the virtual trigger() method to be able to reschedule
   ourselves after we've been triggered.
 */
 void

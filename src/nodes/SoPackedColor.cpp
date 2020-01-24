@@ -78,10 +78,10 @@
 
   Set of packed 32-bit RGBA vectors.
 
-  The most significant 24 bits specifies 8 bits each for the red,
+  The most significant 24 bits specify 8 bits each for the red,
   green and blue components.
 
-  The least significant 8 bits specifies the transparency value, where
+  The least significant 8 bits specify the transparency value, where
   0x00 means completely transparent, and 0xff completely opaque.
 */
 

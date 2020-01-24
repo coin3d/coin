@@ -206,7 +206,7 @@ SoWWWAnchor::setFullURLName(const SbString & url)
 }
 
 /*!
-  Returns the full URL if it's set by
+  Returns the full URL if it is set by
   SoWWWAnchor::setFullURLName(). Otherwise the contents of
   SoWWWAnchor::name is returned.
 

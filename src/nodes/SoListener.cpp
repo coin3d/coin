@@ -38,7 +38,7 @@
   \ingroup sound
 
   When rendering geometry, one needs to have a camera defining certain
-  attributes related to vieweing. The SoListener plays a similar
+  attributes related to viewing. The SoListener plays a similar
   role when it comes to rendering audio.
 
   If no SoListener has been encountered when a SoVRMLSound node
@@ -46,7 +46,7 @@
   current camera. In this case, a gain of 1, a dopplerVelocity of 0
   and a dopplerFactor of 0 will be assumed.
 
-  Coin does not currently support doppler effects, so the
+  Coin does not currently support Doppler effects, so the
   dopplerVelocity and dopplerFactor fields are currently ignored.
 
   <b>FILE FORMAT/DEFAULTS:</b>
@@ -92,7 +92,7 @@
 
   Listener orientation specified as a rotation value from the default
   orientation where the listener is looking pointing along the
-  negative z-axis, with "up" along the positive y-axis. Defaults to
+  negative Z-axis, with "up" along the positive Y-axis. Defaults to
   SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f).
 
 */
@@ -103,7 +103,7 @@
   The gain is a scalar amplitude multiplier that attenuates all sounds
   in the scene. The legal range is [0.0f, any), however a gain value >
   1.0f might be clamped to 1.0f by the audio device. Defaults to 1.0f,
-  meaning that the sound is un-attenuated. A gain value of 0.5f would
+  meaning that the sound is unattenuated. A gain value of 0.5f would
   be equivalent to a 6dB attenuation. If gain is set to 0.0f, no sound
   can be heard.
 
@@ -112,23 +112,23 @@
 /*!
   \var SoSFVec3f SoListener::dopplerVelocity
 
-  The doppler velocity of the sound. It is the application
+  The Doppler velocity of the sound. It is the application
   programmer's responsibility to set this value. Coin does not update
   this value automatically based on changes in a sound's
   position. The default value is (0.0f, 0.0f, 0.0f).
 
-  Coin does not yet support doppler effects.  
+  Coin does not yet support Doppler effects.  
 */
 
 /*!
   \var SoSFFloat SoListener::dopplerFactor
 
-  The amount of doppler effect applied to the sound. The legal range
-  is [0.0f, any>, where 0.0f is default and disable all doppler
-  effects, 1.0f would be a typical value for this field if doppler
+  The amount of Doppler effect applied to the sound. The legal range
+  is [0.0f, any>, where 0.0f is default and disable all Doppler
+  effects, 1.0f would be a typical value for this field if Doppler
   effects are required.
 
-  Coin does not yet support doppler effects.  
+  Coin does not yet support Doppler effects.  
 */
 
 

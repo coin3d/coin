@@ -41,7 +41,7 @@
   information on how to use this function.
 
   This field is used where nodes, engines or other field containers
-  needs to store a group of multiple short unsigned integer values.
+  need to store a group of multiple short unsigned integer values.
 
   \sa SoSFUShort
 */

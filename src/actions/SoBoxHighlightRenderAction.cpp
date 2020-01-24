@@ -338,7 +338,7 @@ SoBoxHighlightRenderAction::setVisible(const SbBool visible)
 }
 
 /*!
-  Return if highlighted boxes are to be visible.
+  Returns \c TRUE if highlighted boxes are visible otherwise \c FALSE.
 */
 SbBool
 SoBoxHighlightRenderAction::isVisible(void) const
@@ -357,7 +357,7 @@ SoBoxHighlightRenderAction::setColor(const SbColor & color)
 }
 
 /*!
-  Returns rendering color of the highlighted boxes.
+  Returns the rendering color of the highlighted boxes.
 */
 const SbColor &
 SoBoxHighlightRenderAction::getColor(void)
@@ -376,7 +376,7 @@ SoBoxHighlightRenderAction::setLinePattern(unsigned short pattern)
 }
 
 /*!
-  Returns line pattern used when drawing boxes.
+  Returns the line pattern used when drawing boxes.
 */
 unsigned short
 SoBoxHighlightRenderAction::getLinePattern(void) const

@@ -293,12 +293,12 @@
 
 /*!
   \var SoSFTime SoVRMLViewpoint::bindTime
-  An event out that is sent when the viewpoint is bound.
+  An eventOut that is sent when the viewpoint is bound.
 */
 
 /*!
   \var SoSFBool SoVRMLViewpoint::isBound
-  An event out that is sent when the viewpoint is bound/unbound.
+  An eventOut that is sent when the viewpoint is bound/unbound.
 */
 
 #include <Inventor/VRMLnodes/SoVRMLViewpoint.h>

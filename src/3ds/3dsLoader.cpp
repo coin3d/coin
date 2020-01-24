@@ -1086,7 +1086,7 @@ CHUNK(LoadFaceArray)
     if (flags != 7 && coin_debug_3ds() >= 2)
       SoDebugError::postWarning("LoadFaceArray",
                                 "Non-standard face flags: %x, investigate it.\n", flags);
-    con->faceList[i].init(con, a,b,c,flags); // vertex ordering is counter-clockwise.
+    con->faceList[i].init(con, a,b,c,flags); // vertex ordering is counterclockwise.
 
     if (!con->minMaxValid) {
       con->minMaxValid = TRUE;

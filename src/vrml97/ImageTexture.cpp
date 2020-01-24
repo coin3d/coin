@@ -97,7 +97,7 @@
 
   \ENDWEB3D
 
-  One common flaw with many programs that has support for exporting
+  One common flaw with many programs that have support for exporting
   VRML or Inventor files, is that the same texture file is exported
   several times, but as different nodes. This can cause excessive
   texture memory usage and slow rendering. Below is an example program
@@ -573,7 +573,7 @@ SoVRMLImageTexture::readInstance(SoInput * in,
   this->setReadStatus((int) ret);
   if (ret) {
     // need to copy the SoInput directories, so that the texture is
-    // found again if it's thrown out of memory (can happen when it's
+    // found again if it is thrown out of memory (can happen when it's
     // a long time since it has been used)
     PRIVATE(this)->setSearchDirs(SoInput::getDirectories());
     if (!this->loadUrl()) {
@@ -752,7 +752,7 @@ SoVRMLImageTexture::image_read_cb(const SbString & filename, SbImage * image, vo
   }
   else {
     // schedule a sensor to read the image as soon as the delay sensor
-    // queue is processed (typically when the run-time system is idle)
+    // queue is processed (typically when the runtime system is idle)
     SoOneShotSensor * sensor = new SoOneShotSensor(oneshot_readimage_cb, data);
     sensor->schedule();
   }

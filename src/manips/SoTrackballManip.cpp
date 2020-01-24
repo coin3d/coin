@@ -46,15 +46,15 @@
   SoTrackballDragger in a simple and convenient API for the
   application programmer, making it automatically surround the
   geometry it influences and taking care of the book-keeping routines
-  for it's interaction with the relevant fields of an SoTransformation
+  for its interaction with the relevant fields of an SoTransformation
   node.
 
   <center>
   \image html trackball.png "Example of Trackball Manipulator"
   </center>
 
-  Here's a dead simple, stand-alone example on how to set up an
-  SoTrackballManip in a scenegraph:
+  Here's a dead simple, standalone example on how to set up an
+  SoTrackballManip in a scene graph:
 
   \code
   #include <Inventor/Qt/SoQt.h>
@@ -88,8 +88,8 @@
   }
   \endcode
 
-  Compile and hit 'ESC' to go into scenegraph interaction mode in the
-  examinerviewer, then change the rotation of the cone by interacting
+  Compile and hit 'ESC' to go into scene graph interaction mode in the
+  examiner viewer, then change the rotation of the cone by interacting
   with the dragger bands.
 
   <center>
@@ -121,7 +121,7 @@ SoTrackballManip::initClass(void)
 /*!
   Default constructor. Allocates an SoTrackballDragger and an
   SoSurroundScale node to surround the geometry within our part of the
-  scenegraph.
+  scene graph.
 */
 SoTrackballManip::SoTrackballManip(void)
 {

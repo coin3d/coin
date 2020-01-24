@@ -1739,8 +1739,8 @@ initScan(const ENCODING * const *encodingTable,
       if (ptr[0] == '\0') {
         /* 0 isn't a legal data character. Furthermore a document
            entity can only start with ASCII characters.  So the only
-           way this can fail to be big-endian UTF-16 if it it's an
-           external parsed general entity that's labelled as
+           way this can fail to be big-endian UTF-16 if it it is an
+           external parsed general entity that's labeled as
            UTF-16LE.
         */
         if (state == XML_CONTENT_STATE && INIT_ENC_INDEX(enc) == UTF_16LE_ENC)

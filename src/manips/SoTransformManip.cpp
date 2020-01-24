@@ -43,12 +43,12 @@
   \ingroup manips
 
   A manipulator is used by replacing the node you want to edit in the
-  graph with the manipulator. Draggers are used to to manipulate the
+  graph with the manipulator. Draggers are used to manipulate the
   node. When manipulation is finished, the node is put back into the
   graph, replacing the manipulator.
 
   The SoTransformManip class is an abstract class which should not be
-  used directly -- use one of it's subclasses.
+  used directly -- use one of its subclasses.
 */
 
 // *************************************************************************
@@ -211,7 +211,7 @@ SoTransformManip::getDragger(void)
 // *************************************************************************
 
 /*!
-  Replaces a node at the tail end of \a path with this manipulator.
+  Replaces a node at the tail of \a path with this manipulator.
   The node must be an instance of a node class derived from
   SoTransform.
 
@@ -259,7 +259,7 @@ SoTransformManip::replaceNode(SoPath * path)
   }
 
   // This will happen if the path contains nothing but the single
-  // SoTransform node (ie, the node is root, head and tail of the
+  // SoTransform node (i.e., the node is root, head and tail of the
   // path).
   if (fullpath->getLength() < 2) {
 #if COIN_DEBUG

@@ -355,7 +355,7 @@ SoScXMLPanTarget::panCamera(SoCamera * camera,
                             const SbVec2f & previous,
                             const SbVec2f & current)
 {
-  if (camera == NULL) return; // can happen for empty scenegraph
+  if (camera == NULL) return; // can happen for empty scene graph
   if (current == previous) return; // useless invocation
 
   // Find projection points for the last and current mouse coordinates.

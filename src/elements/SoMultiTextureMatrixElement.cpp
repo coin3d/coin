@@ -159,7 +159,7 @@ SoMultiTextureMatrixElement::multElt(const int unit, const SbMatrix & matrix)
 
 /*!
   virtual method which is called from set(). Sets \a matrix
-  intp element matrix.
+  into element matrix.
 */
 void
 SoMultiTextureMatrixElement::setElt(const int unit, const SbMatrix & matrix)

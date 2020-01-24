@@ -50,7 +50,7 @@
 
 /*!
   Constructor with \a isccw indicating if polygons are specified
-  in counter clockwise order. The \a approxVertices can be used
+  in counterclockwise order. The \a approxVertices can be used
   to optimize normal generation.
 */
 SoNormalGenerator::SoNormalGenerator(const SbBool isccw,

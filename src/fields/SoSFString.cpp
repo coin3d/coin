@@ -37,7 +37,7 @@
   \ingroup fields
 
   This field is used where nodes, engines or other field containers
-  needs to store a single string.
+  need to store a single string.
 
   Fields of this type stores their value to file as a the string
   within quotes.

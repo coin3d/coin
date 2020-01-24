@@ -96,7 +96,7 @@ SoGLTextureEnabledElement::set(SoState * const state,
 
 /*!
   Enables GL_TEXTURE_RECTANGLE_EXT/NV. GL_TEXTURE_2D/GL_TEXTURE_CUBE_MAP will be
-  disabled if it's enabled earlier.
+  disabled if it is enabled earlier.
 
   \since Coin 2.2
 */
@@ -109,7 +109,7 @@ SoGLTextureEnabledElement::enableRectangle(SoState * state, SoNode * node)
 
 /*!
   Enables GL_TEXTURE_CUBE+MAP. GL_TEXTURE_2D and/or
-  GL_TEXTURE_RECTANGLE will be disabled if it's enabled earlier.
+  GL_TEXTURE_RECTANGLE will be disabled if it is enabled earlier.
 */
 void
 SoGLTextureEnabledElement::enableCubeMap(SoState * state, SoNode * node)

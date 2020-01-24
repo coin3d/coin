@@ -37,7 +37,7 @@
   \ingroup fields
 
   This field is used where nodes, engines or other field containers
-  needs to store an array of vectors with three elements.
+  need to store an array of vectors with three elements.
 
   This field supports application data sharing through a
   setValuesPointer() method. See SoMField documentation for

@@ -34,7 +34,7 @@
 
 /*!
   \class SbVec3fList SbVec3fList.h Inventor/lists/SbVec3fList.h
-  \brief The SbVec3fList class is a container for arrays of SbVec3f pointers.
+  \brief The SbVec3fList class is a container for pointers to SbVec3f objects.
 
   \ingroup base
 

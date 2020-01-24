@@ -55,7 +55,7 @@
   The Coin library also includes a manipulator class,
   SoPointLightManip, which wraps the functionality provided by this
   class inside the necessary mechanisms for connecting it to
-  SoPointLight node instances in a scenegraph.
+  SoPointLight node instances in a scene graph.
 
   \sa SoPointLightManip
 */
@@ -77,13 +77,13 @@
   \var SoSFVec3f SoPointLightDragger::translation
 
   This field is continuously updated to contain the translation of the
-  pointlight dragger. The application programmer will typically
+  point light dragger. The application programmer will typically
   connect this to the SoPointLight::location field of a SoPointLight
   node (unless using the SoPointLightManip class, where this is taken
   care of automatically).
 
   It may also of course be connected to any other location /
-  translation field controlling the position of scenegraph geometry,
+  translation field controlling the position of scene graph geometry,
   it does not have to part of a SoPointLight node specifically.
 */
 
@@ -101,7 +101,7 @@ SoPointLightDragger::initClass(void)
 }
 
 // FIXME: document which parts need to be present in the geometry
-// scenegraph, and what role they play in the dragger. 20010913 mortene.
+// scene graph, and what role they play in the dragger. 20010913 mortene.
 /*!
   \DRAGGER_CONSTRUCTOR
 

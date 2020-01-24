@@ -37,7 +37,7 @@
   \ingroup elements
 
   The element holds all planes the geometry should be inside, and
-  keeps a bitflag to signal which planes need to be tested.
+  keeps a bit flag to signal which planes need to be tested.
 
   This element is an extension for Coin, and is not available in the
   original Open Inventor.

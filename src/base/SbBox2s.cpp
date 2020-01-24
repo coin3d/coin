@@ -240,7 +240,7 @@ SbBox2s::intersect(const SbVec2s & point) const
 }
 
 /*!
-  Check if \a box lies wholly or partly within the boundaries
+  Check if \a box lies entirely or partially within the boundaries
   of this box.
 */
 SbBool

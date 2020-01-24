@@ -130,12 +130,12 @@ cc_internal_ftime(cc_time * t)
 #ifdef HAVE__FTIME
   struct _timeb timebuffer;
   _ftime(&timebuffer);
-  /* FIXME: should use timezone field of struct _timeb aswell. 20011023 mortene. */
+  /* FIXME: should use timezone field of struct _timeb as well. 20011023 mortene. */
   *t = (double)timebuffer.time + (double)timebuffer.millitm / 1000.0;
   return TRUE;
 #elif defined(HAVE_FTIME)
   struct timeb timebuffer;
-  /* FIXME: should use timezone field of struct _timeb aswell. 20011023 mortene. */
+  /* FIXME: should use timezone field of struct _timeb as well. 20011023 mortene. */
   ftime(&timebuffer);
   *t = static_cast<double>(timebuffer.time) + static_cast<double>(timebuffer.millitm) / 1000.0;
   return TRUE;

@@ -42,7 +42,7 @@
 
   The material binding specified in nodes of this type decides how the
   vertex attribute values of SoVertexAttribute nodes are mapped on the
-  builtin geometry shape nodes.
+  built-in geometry shape nodes.
 
   Here is a simple usage example:
 

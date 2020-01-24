@@ -108,7 +108,7 @@ SoJavaScriptEngineP::executeJSScript(JSScript * script) const
 // FIXME: imported from SquirrelMonkey/src/jsutils.cpp
 // 20050719 erikgors.
 /*!
-  Prints a stacktrace for the pending exception.
+  Prints a stack trace for the pending exception.
   Does nothing if there aren't any pending exceptions.
 */
 static void printJSException(JSContext *cx)
@@ -325,7 +325,7 @@ SoJavaScriptEngine::setGlobal(JSObject * global)
 }
 
 /*!
- Init the spidermonkey runtime.
+  Initialize the spidermonkey runtime.
  */
 SbBool
 SoJavaScriptEngine::init(uint32_t maxBytes)
@@ -367,7 +367,7 @@ SoJavaScriptEngine::init(uint32_t maxBytes)
 }
 
 /*!
- Shutdown the spidermonkey runtime.
+  Shutdown the spidermonkey runtime.
  */
 void
 SoJavaScriptEngine::shutdown(void)
@@ -394,7 +394,7 @@ SoJavaScriptEngine::debug(void)
 }
 
 /*!
-  Turn on/off the automatic reference-count handling of Coin nodes
+  Turn on/off the automatic reference count handling of Coin nodes
   created in JavaScript. When switched off, the programmer must
   explicitly call ref()/unref() for the Coin nodes JavaScript.
   
@@ -505,7 +505,7 @@ SoJavaScriptEngine::field2jsval(const SoField * f, jsval * v) const
 {
   int n = PRIVATE(this)->handlerList.getLength();
 
-  // go backwards. new handlers has precedence. 20050719 erikgors.
+  // go backwards. new handlers have precedence. 20050719 erikgors.
   while (n --> 0) {
     const SoJavaScriptEngineP::JavascriptHandler & handler = PRIVATE(this)->handlerList[n];
 
@@ -546,7 +546,7 @@ SoJavaScriptEngine::jsval2field(const jsval v, SoField * f) const
 {
   int n = PRIVATE(this)->handlerList.getLength();
 
-  // go backwards. new handlers has precedence. 20050719 erikgors.
+  // go backwards. new handlers have precedence. 20050719 erikgors.
   while (n --> 0) {
     const SoJavaScriptEngineP::JavascriptHandler & handler = PRIVATE(this)->handlerList[n];
 

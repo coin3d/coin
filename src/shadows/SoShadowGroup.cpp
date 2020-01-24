@@ -36,7 +36,7 @@
 
   \ingroup fxviz
 
-  Children of this node can recieve shadows, and cast shadows on other children.
+  Children of this node can receive shadows, and cast shadows on other children.
   Use the SoShadowStyle node to control shadow casters and shadow receivers.
 
   Please note that all shadow casters will be rendered twice. Once to
@@ -46,7 +46,7 @@
 
   The algorithm used to render the shadows is Variance Shadow Maps
   (http://www.punkuser.net/vsm/). As an extra bonus, all geometry
-  rendered with shadows can also be rendered with per fragment phong
+  rendered with shadows can also be rendered with per fragment Phong
   lighting.
 
   This node will search its subgraph and calculate shadows for all
@@ -164,8 +164,8 @@
   \var SoSFFloat SoShadowGroup::quality
 
   Can be used to tune the shader program complexity. A higher value
-  will mean that more calculations are done per-fragment instead of
-  per-vertex. Default value is 0.5.
+  will mean that more calculations are done per fragment instead of
+  per vertex. Default value is 0.5.
 
 */
 
@@ -200,7 +200,7 @@
 /*!
   \var SoSFEnum SoShadowGroup::visibilityFlag
 
-  Determines how visibilityRadius and visibilitNearRadius is used to
+  Determines how visibilityRadius and visibilitNearRadius are used to
   calculate near and far clipping planes for the shadow volume.
 */
 
@@ -213,14 +213,14 @@
 /*!
   SoShadowGroup::VisibilityFlag SoShadowGroup::LONGEST_BBOX_EDGE_FACTOR
 
-  The longest bbox edge will be used to determine near and far clipping planes.
+  The longest bounding box edge will be used to determine near and far clipping planes.
 
 */
 
 /*!
   SoShadowGroup::VisibilityFlag SoShadowGroup::PROJECTED_BBOX_DEPTH_FACTOR
 
-  The bbox depth (projected to face the camera) will be used to calculate the clipping planes.
+  The bounding box depth (projected to face the camera) will be used to calculate the clipping planes.
 
 */
 
@@ -233,7 +233,7 @@
   Used to add shadow border smoothing. This is currently done as a
   post processing step on the shadow map. The algorithm used is Gauss
   Smoothing, but in the future we'll probably change this, and use a
-  summed area sampling merhod instead. The value should be a
+  summed area sampling method instead. The value should be a
   number between 0 (no smoothing), and 1 (max smoothing).
 
   If you want to enable smoothing, choosing a low value (~0.1) works
@@ -920,7 +920,7 @@ SoShadowGroup::notify(SoNotList * nl)
 
   By default, the SoShadowGroup node will search its subgraph for new
   spot lights whenever a group node under it is touched. However, this
-  might lead to bad performance in some cases so it's possible to
+  might lead to bad performance in some cases so it is possible to
   disable this feature using this method. If you do disable this
   feature, make sure you enable it again before inserting a new spot
   light, or insert all spot lights in the scene graph before you

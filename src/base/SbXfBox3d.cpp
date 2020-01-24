@@ -184,7 +184,7 @@ SbXfBox3d::extendBy(const SbVec3d & pt)
   The two given boxes will be combined in such a way so that the resultant
   bounding box always has the smallest possible volume. To accomplish this,
   the transformation on this SbXfBox3f will sometimes be flattened before
-  it's combined with \a bb.
+  it is combined with \a bb.
 */
 void
 SbXfBox3d::extendBy(const SbBox3d & bb)
@@ -289,7 +289,7 @@ SbXfBox3d::extendBy(const SbBox3d & bb)
 
   The given box is assumed to be in transformed space.
 
-  Note: is not guaranteed to give an optimal result if used for bbox
+  Note: is not guaranteed to give an optimal result if used for bounding box
   calculation since the transformation matrix might change. See
   documentation in SoGetBoundingBoxAction for more details.
 */
@@ -567,7 +567,7 @@ intersect_box_box(const SbVec3d & min,
 }
 
 /*!
-  Check if the given \a box lies wholly or partly within the boundaries
+  Check if the given \a box lies entirely or partially within the boundaries
   of this box.
 
   The given box is assumed to be in transformed space.
@@ -653,7 +653,7 @@ SbXfBox3d::project(void) const
 
 /*!
   Check if \a b1 and \a b2 are equal. Return 1 if they are equal,
-  or 0 if they are unequal. Note that the method will do a dumb
+  or 0 if they are not equal. Note that the method will do a dumb
   component by component comparison.
 */
 int
@@ -667,8 +667,8 @@ operator == (const SbXfBox3d & b1, const SbXfBox3d & b2)
 }
 
 /*!
-  Check if \a b1 and \a b2 are unequal. Return 0 if they are equal,
-  or 1 if they are unequal. See the note on operator==().
+  Check if \a b1 and \a b2 are not equal. Return 0 if they are equal,
+  or 1 if they are not equal. See the note on operator==().
  */
 int
 operator != (const SbXfBox3d & b1, const SbXfBox3d & b2)
@@ -716,7 +716,7 @@ SbXfBox3d::getVolume(void) const
   // rows of the determinant swaps the sign. In one dimension, the
   // determinant is just the number, but if you "plot" that number on
   // a number line, it's the (signed) length of the line. If it goes
-  // in the positive direction from the origin, it's positive, and
+  // in the positive direction from the origin, it is positive, and
   // negative otherwise. In three dimensions, consider three vectors
   // (x0,y0,z0), (x1,y1,z1), and (x2,y2,z2). If you draw them from
   // the origin, they form the principle edges of a parallelepiped,

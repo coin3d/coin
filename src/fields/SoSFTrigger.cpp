@@ -72,7 +72,7 @@ SoSFTrigger::operator=(const SoSFTrigger & COIN_UNUSED_ARG(field))
 
 /*!
   This field class does not actually contain any value, so we
-  just triggers an update by calling touch() within this method.
+  just trigger an update by calling touch() within this method.
  */
 void
 SoSFTrigger::setValue(void)

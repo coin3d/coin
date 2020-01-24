@@ -50,7 +50,7 @@
   camera positioning.
 
   One common issue with newcomers to the API is that you should not
-  and can not use the C++ delete operator on nodes -- the destructor
+  and cannot use the C++ delete operator on nodes -- the destructor
   is protected. This is because node instances are using a common
   technique for memory resource handling called "reference
   counting". Nodes are deleted (actually, they delete themselves) when
@@ -58,10 +58,10 @@
 
   One important side-effect of this is that SoNode-derived classes
   should \e not be statically allocated, neither in static module
-  memory nor on function's stack-frames. SoNode-derived classes must
+  memory nor on functions stack frames. SoNode-derived classes must
   \e always be allocated dynamically from the memory heap with the \c
   new operator (or else the scheme with self-destruction upon
-  de-referencing to 0 would not work).
+  dereferencing to 0 would not work).
 
 
   Usually application programmers won't manually ref() and unref()
@@ -73,7 +73,7 @@
   Make sure you do ref() nodes that you keep pointers to so they
   aren't accidentally deleted prematurely due to an unref() call from
   within the library itself.  If you haven't manually called ref() on
-  a top-level root node, it will then be deleted automatically. This
+  a top level root node, it will then be deleted automatically. This
   code shows how to do it:
 
   \code
@@ -89,8 +89,8 @@
 
   // [misc visualization and processing]
 
-  // myviewer will let go of it's reference to the root node, thereby
-  // decreasing it's referencecount by 1
+  // myviewer will let go of its reference to the root node, thereby
+  // decreasing its reference count by 1
   myviewer->setSceneGraph(NULL);
 
   // root's refcount goes from +1 to 0, and it will self-destruct controllably
@@ -169,7 +169,7 @@
   \endcode
 
   You can then override for instance the GLRender() method to have
-  your new class render OpenGL geometry different from it's
+  your new class render OpenGL geometry different from its
   superclass.
 
   \TOOLMAKER_REF
@@ -404,7 +404,7 @@ SoNode::~SoNode()
 
   If \a copyconnections is \c TRUE, we also copy the connections to
   fields within this node (and ditto for any children and children's
-  children etc).
+  children etc.).
 
 
   Note that this function has been made virtual in Coin, which is not
@@ -422,7 +422,7 @@ SoNode::~SoNode()
 
   For that purpose, override the copyContents() method. Your
   overridden copyContents() method should then \e both copy internal
-  data aswell as calling the parent superclass' copyContents() method
+  data as well as calling the parent superclass' copyContents() method
   for automatically handling of fields and other common data.
 */
 SoNode *
@@ -487,7 +487,7 @@ SoNode::getActionMethodIndex(const SoType type)
   \COININTERNAL
 
   Only in TGS Inventor on Win32 -- to avoid needing to export the
-  nextActionMethodIndex member, see SoNode.h for more info.
+  nextActionMethodIndex member, see SoNode.h for more information.
  */
 void
 SoNode::setNextActionMethodIndex(int index)
@@ -499,7 +499,7 @@ SoNode::setNextActionMethodIndex(int index)
   \COININTERNAL
 
   Only in TGS Inventor on Win32 -- to avoid needing to export the
-  nextActionMethodIndex member, see SoNode.h for more info.
+  nextActionMethodIndex member, see SoNode.h for more information.
 */
 int
 SoNode::getNextActionMethodIndex(void)
@@ -511,7 +511,7 @@ SoNode::getNextActionMethodIndex(void)
   \COININTERNAL
 
   Only in TGS Inventor on Win32 -- to avoid needing to export the
-  nextActionMethodIndex member, see SoNode.h for more info.
+  nextActionMethodIndex member, see SoNode.h for more information.
  */
 void
 SoNode::incNextActionMethodIndex(void)
@@ -698,8 +698,8 @@ SoNode::initClasses(void)
   the field values of other nodes of the same type during scene graph
   traversal.
 
-  A common applicaton for "override nodes" is to place them at the top
-  of the tree as a convenient way to force e.g. a common drawstyle on
+  A common application for "override nodes" is to place them at the top
+  of the tree as a convenient way to force e.g. a common draw style on
   the complete tree.
 
   The override flag does not exist in the Inventor file format.  This
@@ -782,7 +782,7 @@ SoNode::getByName(const SbName & name)
 }
 
 /*!
-  Finds all nodes with \a name and appends them to the \a l nodelist.
+  Finds all nodes with \a name and appends them to the \a l node list.
   Returns the number of nodes with the specified name.
 
   \sa SoBase::setName()
@@ -816,7 +816,7 @@ SoNode::doAction(SoAction * COIN_UNUSED_ARG(action))
   Returns \c TRUE if the node could have any effect on the state
   during traversal.
 
-  If it returns \c FALSE, no data in the traversal-state will change
+  If it returns \c FALSE, no data in the traversal state will change
   from the pre-traversal state to the post-traversal state. The
   SoSeparator node will for instance return \c FALSE, as it pushes and
   pops the state before and after traversal of its children. All
@@ -858,8 +858,8 @@ SoNode::getBoundingBoxS(SoAction * action, SoNode * node)
   node and to shift the center point for the scene more towards the
   one for this node.
 
-  Nodes influencing how geometry nodes calculates their bounding box
-  also overrides this method to change the relevant state variables.
+  Nodes influencing how geometry nodes calculate their bounding box
+  also override this method to change the relevant state variables.
 */
 void
 SoNode::getBoundingBox(SoGetBoundingBoxAction * COIN_UNUSED_ARG(action))
@@ -886,8 +886,8 @@ SoNode::getPrimitiveCountS(SoAction * action, SoNode * node)
   Calculates the number of triangle, line segment and point primitives
   for the node and adds these to the counters of the \a action.
 
-  Nodes influencing how geometry nodes calculates their primitive
-  count also overrides this method to change the relevant state
+  Nodes influencing how geometry nodes calculate their primitive
+  count also override this method to change the relevant state
   variables.
 */
 void
@@ -947,8 +947,8 @@ SoNode::GLRenderS(SoAction * action, SoNode * node)
   Action method for the SoGLRenderAction.
 
   This is called during rendering traversals. Nodes influencing the
-  rendering state in any way or who wants to throw geometry primitives
-  at OpenGL overrides this method.
+  rendering state in any way or want to throw geometry primitives
+  at OpenGL override this method.
 */
 void
 SoNode::GLRender(SoGLRenderAction * COIN_UNUSED_ARG(action))
@@ -1077,7 +1077,7 @@ SoNode::handleEventS(SoAction * action, SoNode * node)
   something which this node should react to.
 
   Nodes influencing relevant state variables for how event handling is
-  done also overrides this method.
+  done also override this method.
 */
 void
 SoNode::handleEvent(SoHandleEventAction * COIN_UNUSED_ARG(action))
@@ -1133,7 +1133,7 @@ SoNode::rayPickS(SoAction * action, SoNode * node)
   intersection with the data of the node.
 
   Nodes influencing relevant state variables for how picking is done
-  also overrides this method.
+  also override this method.
 */
 void
 SoNode::rayPick(SoRayPickAction * action)
@@ -1340,7 +1340,7 @@ SoNode::grabEventsCleanup(void)
 /*!
   This returns the node's current unique identification number. It is
   unlikely that application programmers will ever need use this method
-  fom client application code, unless working with extensions to the
+  from client application code, unless working with extensions to the
   core library (and probably not even then).
 
   The id number is only valid for as long as the node is kept
@@ -1348,7 +1348,7 @@ SoNode::grabEventsCleanup(void)
   updated (in the notify() method), and the old id number forgotten.
 
   The technique described above plays an important role in the way
-  internal scenegraph caches are set up and invalidated.
+  internal scene graph caches are set up and invalidated.
 
   \sa SoNode::getNextNodeId()
 */

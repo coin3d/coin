@@ -36,7 +36,7 @@
 
   \ingroup nodes
 
-  Basically, every polygon-, line- or point-based shape will inherit
+  Basically, every polygon, line, or point based shape will inherit
   this class.  It contains methods for organizing the normal cache,
   and also holds the SoVertexShape::vertexProperty field which can be
   used to set vertex data inside the node.
@@ -71,14 +71,14 @@
 
   If you set the vertexProperty field, it should be with an
   SoVertexProperty node. Otherwise it will simply be
-  ignored. Nodetypes inheriting SoVertexShape will then get their
+  ignored. Node types inheriting SoVertexShape will then get their
   coordinate data from the vertexProperty node instead of from the
   global traversal state.
 
   The vertexProperty field of SoVertexShape-derived nodes breaks
   somewhat with the basic design of Open Inventor, as its contents are
   not passed to the global state. This is done to provide a simple
-  path to highly optimized rendering of vertexbased shapes.
+  path to highly optimized rendering of vertex based shapes.
 
   \sa SoVertexProperty
 
@@ -93,7 +93,7 @@ public:
   SoNormalCache * normalcache;
 
   // we can use a per-instance mutex here instead of this class-wide
-  // one, but we go for the class-wide one since at least MSWindows
+  // one, but we go for the class-wide one since at least Microsoft Windows
   // might have a rather strict limit on the total amount of mutex
   // resources a process / user can hold at any one time.
   //
@@ -263,7 +263,7 @@ SoVertexShape::getNormalCache(void) const
 
   When returning from this method, the normal cache will be
   read locked, and the caller should call readUnlockNormalCache()
-  when the normals in the cache is no longer needed.
+  when the normals in the cache are no longer needed.
 
   \COIN_FUNCTION_EXTENSION
 
@@ -305,7 +305,7 @@ SoVertexShape::generateAndReadLockNormalCache(SoState * const state)
 
 /*!
   Convenience method that returns the current coordinate and normal
-  element. This method is not part of the OIV API.
+  element. This method is not part of the Open Inventor API.
 */
 void
 SoVertexShape::getVertexData(SoState * state,

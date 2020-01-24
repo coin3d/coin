@@ -670,7 +670,7 @@ ScXMLStateMachine::isFinished(void) const
 /*!
   Returns the number of active states in the state machine.  This number
   should currently be 1, but in the future, when &lt;parallel&gt; is implemented,
-  it can be more.
+  it can be greater.
 */
 int
 ScXMLStateMachine::getNumActiveStates(void) const

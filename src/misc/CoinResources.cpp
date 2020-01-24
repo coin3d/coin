@@ -55,7 +55,7 @@
 
   The file on disk can be an updated version, compared to the
   compiled-in buffer, which is why the externalized files are prioritized
-  over the builtin buffers.
+  over the built-in buffers.
 
   A resource does not need to have a corresponding external file.  This is
   configured in the flags parameter when the resource is set.  You can in
@@ -169,8 +169,8 @@ CoinResources::init(void)
 
 /*!
   Returns a resource if one exists. If the Coin installation permits,
-  the resource will be loaded from file, but if the file can not be
-  located or loaded, builtin versions will be returned instead.
+  the resource will be loaded from file, but if the file cannot be
+  located or loaded, built-in versions will be returned instead.
 
   \return TRUE on success, and FALSE if there is no such resource.
 */
@@ -282,7 +282,7 @@ CoinResources::get(const char * resloc)
   should take the form "coin:" followed by a relative file path that should
   lead to the file representation of the resource from where the COINDIR
   environment variable points.  The relative path should use / for directory
-  separation, and not \ if on MS Windows.
+  separation, and not \ if on Microsoft Windows.
 
   If you put COIN_RESOURCE_NOT_A_FILE in the \a flags argument, then the
   automatic file searching will not be performed.

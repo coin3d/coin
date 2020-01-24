@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 // The purpose of the class in this file is to try to aid in detecting
-// when multiple Coin DLLs are loaded into the same run-time process
+// when multiple Coin DLLs are loaded into the same runtime process
 // image under Windows.
 //
 // This is useful because linking with multiple instances of Coin, for
@@ -151,7 +151,7 @@ CoinStaticObjectInDLL::CoinStaticObjectInDLL(void)
                "Detected two instances of the Coin library in the same\n"
                "process image!!\n\n"
 
-               "Application can not continue without errors, and\n"
+               "Application cannot continue without errors, and\n"
                "will exit when you quit this dialog box.\n\n"
 
                "This is an indication of a serious problem with the\n"

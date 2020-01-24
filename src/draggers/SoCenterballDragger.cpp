@@ -108,7 +108,7 @@
   \image html centerballdragger_actionexample.png "CenterBall Dragger Action Shot"
   </center>
 
-  The figure above shows the example scenegraph in a viewer with the nearest cross
+  The figure above shows the example scene graph in a viewer with the nearest cross
   on the centerball dragger selected. Moving the dragger then moves the associated clip plane
   over the geometry (the sphere in this case).
 */
@@ -171,7 +171,7 @@ SoCenterballDragger::initClass(void)
 }
 
 // FIXME: document which parts need to be present in the geometry
-// scenegraph, and what role they play in the dragger. 20010913 mortene.
+// scene graph, and what role they play in the dragger. 20010913 mortene.
 /*!
   \DRAGGER_CONSTRUCTOR
 
@@ -614,7 +614,7 @@ SoCenterballDragger::kidStartCB(void * d , SoDragger * child)
 
 /*!
   \COININTERNAL
-  Needed to deactive some feedback.
+  Needed to deactivate some feedback.
 */
 void
 SoCenterballDragger::kidFinishCB(void * d, SoDragger * COIN_UNUSED_ARG(child))

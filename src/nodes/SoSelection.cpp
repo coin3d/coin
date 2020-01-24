@@ -37,17 +37,17 @@
   \ingroup nodes
 
   Inserting an SoSelection node in your scene graph enables you to let
-  the user "pick" with the left mousebutton to select/deselect objects
+  the user "pick" with the left mouse button to select/deselect objects
   below the SoSelection node.
 
   Using an SoBoxHighlightRenderAction or an
-  SoLineHighlightRenderAction to render scenegraphs containing
+  SoLineHighlightRenderAction to render scene graphs containing
   SoSelection nodes provides a convenient way of providing visual
   feedback about the selections to the application user.
 
   Beware that one common faulty assumption which is made about the
   node is that the scene will automatically be re-rendered whenever
-  the user pick objects. This is not the case, the application
+  the user is picking objects. This is not the case, the application
   programmer must himself schedule a redraw. A straightforward way to
   accomplish this is to SoNode::touch() the SoSelection node in the
   selection / deselection callback.
@@ -122,9 +122,9 @@
   With regard to using multiple SoSelection nodes at the same time in
   the same scene graph: this is possible, but it is not
   straightforward. The standard viewers provided by SoQt, SoWin, et
-  al, will only snoop on one SoSelection node (part of the the legacy
+  al., will only snoop on one SoSelection node (part of the legacy
   API from SGI's InventorXt), so selection changes on the others
-  doesn't trigger redraws. You don't necessarily see what's happening
+  don't trigger redraws. You don't necessarily see what's happening
   in other words.  You'll have to hook up manually and trigger redraws
   yourself.
 
@@ -380,7 +380,7 @@ SoSelection::select(const SoPath * path)
 
 /*!
   Adds \a node to the list of selected objects. The scene graph
-  below the Selection node will be searched, and the path to
+  below the selection node will be searched, and the path to
   \a node will be added if found.
  */
 void
@@ -415,7 +415,7 @@ SoSelection::deselect(const int which)
 
 /*!
   Remove \a node from the list of selected objects. The scene graph
-  below the Selection node will be searched, and the path to
+  below the selection node will be searched, and the path to
   \a node will be removed if found.
 */
 void
@@ -575,7 +575,7 @@ SoSelection::removeDeselectionCallback(SoSelectionPathCB * f, void * userData)
 }
 
 /*!
-  Adds a callback which will be invoked when the user start an interactive
+  Adds a callback which will be invoked when the user starts an interactive
   change to the list of selected objects.
   
   This callback is useful for storing the old selection list for undo/redo
@@ -642,14 +642,14 @@ SoSelection::removeFinishCallback(SoSelectionClassCB * f, void * userData)
     halted.</li>
   <li> A path: the path will be selected/deselected. The handle event
     action will be halted. </li>
-  <li> A path containing only the Selection node: as NULL, but action
+  <li> A path containing only the selection node: as NULL, but action
     will not be halted. </li>
-  <li> An empty path or a path not containing the Selection node: the
+  <li> An empty path or a path not containing the selection node: the
     pick will be ignored. </li>
   </ul>
 
   if \a callOnlyIfSelectable is \c TRUE, the callback will only be
-  called if the Selection node is in the picked path.  
+  called if the selection node is in the picked path.  
 */
 void
 SoSelection::setPickFilterCallback(SoSelectionPickCB * f,

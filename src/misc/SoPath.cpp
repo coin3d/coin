@@ -395,7 +395,7 @@ SoPath::append(SoNode * const node, const int index)
   VRML nodes with hidden children), you have to use
   SoFullPath::getTail(). You don't have to create an SoFullPath
   instance to do this, just cast the SoPath instance to SoFullPath
-  before gettting the tail node:
+  before getting the tail node:
 
   \code
   SoNode * tail = static_cast<SoFullPath*>(path)->getTail();
@@ -745,7 +745,7 @@ SoPath::copy(const int startfromnodeindex, int numnodes) const
 // *************************************************************************
 
 /*!
-  This static method is for retrieving an SoPath by it's \a name.  The
+  This static method is for retrieving an SoPath by its \a name.  The
   last registered SoPath with the given \a name is returned, or \c
   NULL if no SoPath by \a name exists.
 */
@@ -775,7 +775,7 @@ SoPath::getByName(const SbName name, SoPathList & l)
 
 /*!
   This method is called when a node in the path chain has a child
-  added, to update the index of it's child.
+  added, to update the index of its child.
 
   \a newindex is the index of the child which was inserted. If \a
   newindex is lower than the index value of the child node stored in
@@ -804,7 +804,7 @@ SoPath::insertIndex(SoNode * const parent, const int newindex)
 
 /*!
   This method is called when a node in the path chain has a child
-  removed, to update the index of it's child.
+  removed, to update the index of its child.
 
   \a oldindex was the index of the removed child. If \a oldindex is
   lower than or equal to the index value of the child node stored in
@@ -958,8 +958,8 @@ SoPath::replaceIndex(SoNode * const parent, const int index,
     }
   \endcode
 
-  ..and as you can see, \e both the Cone and the Cube nodes has
-  vanished, as they was not important for the part per se, and not
+  ..and as you can see, \e both the Cone and the Cube nodes have
+  vanished, as they were not important for the part per se, and not
   written as part of it.
 
   This is why we do full subgraph export for head nodes in paths.
@@ -1081,7 +1081,7 @@ SoPath::getTypeId(void) const
 }
 
 // This static method creates a new SoPath object and returns a
-// pointer to it. Used by the run-time type system.
+// pointer to it. Used by the runtime type system.
 void *
 SoPath::createInstance(void)
 {

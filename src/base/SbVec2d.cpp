@@ -379,8 +379,8 @@ SbVec2d::setValue(const SbVec2i32 & v)
 */
 
 /*!
-  Dump the state of this object to the \a file stream. Only works in
-  debug version of library, method does nothing in an optimized compile.
+  Dump the state of this object to the \a fp file stream. Only works in
+  debug version of library, method does nothing in an optimized build.
 */
 
 void

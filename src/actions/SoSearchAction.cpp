@@ -57,7 +57,7 @@
   you're not careful. Since SoSearchAction keeps a list of the path(s)
   found in the latest search, the nodes in these paths will be
   unref'ed when the SoSearchAction stack instance is destructed at the
-  end of your function. If the root of your scene-graph then has
+  end of your function. If the root of your scene graph then has
   ref-count zero (it is often useful to do a unrefNoDelete() before
   returning a node from a function to leave the referencing to the
   caller), the root node will be destructed! It might be better to
@@ -89,7 +89,7 @@
 /*!
   \enum SoSearchAction::Interest
 
-  Values used when specifiying what node(s) we are interested in: the
+  Values used when specifying what node(s) we are interested in: the
   first one found, the last one or all of them.
 */
 
@@ -335,7 +335,7 @@ SoSearchAction::getPath(void) const
 }
 
 /*!
-  Returns a pathlist of all nodes that matched the search criterions.
+  Returns a path list of all nodes that matched the search criterions.
 
   Note that if interest were only \c FIRST or \c LAST,
   SoSearchAction::getPath() should be used instead of this method.
@@ -397,7 +397,7 @@ SoSearchAction::isFound(void) const
   \COININTERNAL
 
   Sets the path, or adds the path to the path list, depending on the
-  interest configuration.  The path is not copied, so it can not be
+  interest configuration.  The path is not copied, so it cannot be
   modified after being added without side effects.
 */
 void

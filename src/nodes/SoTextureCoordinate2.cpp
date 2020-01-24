@@ -36,22 +36,22 @@
 
   \ingroup nodes
 
-  When encountering nodes of this type during traversal, the
+  When encountering a node of this type during traversal, the
   coordinates it contains will be put on the state stack. Some shape
   nodes (for instance SoIndexedFaceSet, among many others) can then
   use these coordinates for explicit, detailed control of how textures
-  are mapped to it's surfaces.
+  are mapped to its surfaces.
 
-  (If texturemapping is used without any SoTextureCoordinate2 nodes in
-  the scenegraph leading up to a shape node, all shape types have
+  (If texture mapping is used without any SoTextureCoordinate2 nodes in
+  the scene graph leading up to a shape node, all shape types have
   default fallbacks. So SoTextureCoordinate2 nodes are only necessary
   to use if you are not satisfied with the default mapping.)
 
   Note that an SoTextureCoordinate2 node will \e replace the
   coordinates already present in the state (if any).
 
-  Here's a very simple example (in Inventor scenegraph file format --
-  mapping it to sourcecode is straightforward) that shows how to set
+  Here's a very simple example (in Inventor scene graph file format --
+  mapping it to source code is straightforward) that shows how to set
   up two quadratic polygons, one mapped 1:1 to the texture, the other
   using only the upper left quarter of the texture:
 
@@ -130,7 +130,7 @@ Separator {
   empty set.
 
   Texture coordinates are usually specified in normalized coordinates,
-  ie in the range [0, 1]. (0, 0) is the lower left corner, while
+  i.e. in the range [0, 1]. (0, 0) is the lower left corner, while
   (1, 1) is the upper right corner of the texture image. Coordinates
   outside the [0, 1] range can be used to repeat the texture across a
   surface.

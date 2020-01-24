@@ -199,7 +199,7 @@ SbTime::maxTime(void)
   Returns an SbTime instance representing the maximum representable
   time/date.
 
-  This method is not available under MSWindows, as max() crashes with
+  This method is not available under Microsoft Windows, as max() crashes with
   a define macro Microsoft has polluted the global namespace with.
 
   \sa zero().
@@ -318,7 +318,7 @@ SbTime::getValue(struct timeval * tv) const
   Inventor design). The problem is that an unsigned long wraps around
   in a fairly short time when used for counting milliseconds: in less
   than 50 days. (And since SbTime instances are often initialized to
-  be the time since the start of the epoch (ie 1970-01-01 00:00), the
+  be the time since the start of the epoch (i.e. 1970-01-01 00:00), the
   value will have wrapped around many, many times.)
 
   You are probably better off using the getValue() method which
@@ -608,7 +608,7 @@ SbTime::parsedate(const char * const date)
 
   const char * dateptr = date;
   while (*dateptr != ' ' && *dateptr != '\t' && *dateptr != '\0')
-    dateptr++; // we don't care if it's wednesday
+    dateptr++; // we don't care if it is wednesday
   if (*dateptr == '\0') return FALSE;
   dateptr -= 2; // step back
   if ( dateptr < date ) return FALSE;
@@ -1052,8 +1052,8 @@ SbTime::addToString(SbString & str, const double v) const
 
 
 /*!
-  Dump the state of this object to the \a file stream. Only works in
-  debug version of library, method does nothing in an optimized compile.
+  Dump the state of this object to the \a fp file stream. Only works in
+  debug version of library, method does nothing in an optimized build.
  */
 void
 SbTime::print(FILE * fp) const

@@ -45,7 +45,7 @@
   This class is not supposed to be used directly by the application
   programmer, as it is more a place-holder for the common interface of
   picking operations. It does not contain any actual code for doing
-  scenegraph picks.
+  scene graph picks.
 
   Coin provides a fully functional picking action for the application
   programmer to use through the SoRayPickAction class (which inherits

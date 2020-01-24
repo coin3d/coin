@@ -42,7 +42,7 @@
 // *************************************************************************
 
 // FIXME: no checking is done to see whether "shader objects" (as for
-// GL_ARB_shader_objects) is actually supported or not. 20050124 mortene.
+// GL_ARB_shader_objects) are actually supported or not. 20050124 mortene.
 
 // *************************************************************************
 

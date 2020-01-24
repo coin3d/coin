@@ -73,7 +73,7 @@
  * HAVE_SOUND
  *
  * Define this if you want Coin to have sound support.  You will need
- * OpenAL on the run-time system as well for sound to work.
+ * OpenAL on the runtime system as well for sound to work.
  *
  * Default is to have sound enabled.
  */

@@ -120,17 +120,17 @@
 
 /*!
   \var SoSFTime SoVRMLVisibilitySensor::enterTime
-  An event out that is triggered when the region becomes visible.
+  An eventOut that is triggered when the region becomes visible.
 */
 
 /*!
   \var SoSFTime SoVRMLVisibilitySensor::exitTime
-  An event out that is triggered when the region becomes not visible.
+  An eventOut that is triggered when the region becomes not visible.
 */
 
 /*!
   \var SoSFBool SoVRMLVisibilitySensor::isActive
-  An event out that is generated when the visibility state changes.
+  An eventOut that is generated when the visibility state changes.
 */
 
 #include <Inventor/VRMLnodes/SoVRMLVisibilitySensor.h>
@@ -206,7 +206,7 @@ SoVRMLVisibilitySensor::GLRender(SoGLRenderAction * action)
                 c[0]+s[0], c[1]+s[1], c[2]+s[2]);
     if (!SoCullElement::cullTest(action->getState(), box, TRUE)) {
       // FIXME: the SoCullElement cull test only tests if box is outside
-      // one of the planes, and the box might not be culled even if it's
+      // one of the planes, and the box might not be culled even if it is
       // not visible for some cases. pederb, 2002-05-16
       visible = TRUE;
     }

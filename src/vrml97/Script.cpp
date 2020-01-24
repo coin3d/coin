@@ -34,7 +34,7 @@
 // through callback-plugins, for maximum flexibility. 20050606 mortene.
 
 // FIXME: another idea; factor out all the internal Javascript
-// handling, connecting up to fields, etc etc to a more generic
+// handling, connecting up to fields, etc. to a more generic
 // internal interface -- as thammer's project would like to connect
 // Javascript programs/routines to any scene graph field. 20050606 mortene.
 

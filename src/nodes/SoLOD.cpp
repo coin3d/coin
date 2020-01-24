@@ -42,7 +42,7 @@
   level-of-detail mechanism is, and why and how to use it.
 
   (The main difference between SoLOD and SoLevelOfDetail is that SoLOD
-  uses the speedier "distance-to-viewer" technique for implementing
+  uses the faster "distance-to-viewer" technique for implementing
   level-of-detail functionality, versus the more correct (but
   potentially slower) "projected-bbox-area" technique used by
   SoLevelOfDetail.)
@@ -62,11 +62,11 @@
   }
   \endcode
 
-  For the sub-scenegraph above, when the LOD-object is less than 10
+  For the sub-scene graph above, when the LOD-object is less than 10
   units away from the viewpoint camera, an SoSphere will be shown. For
   distances 10 - 20 units away, this will be changed to the
   SoCylinder, and so on. For distances of \e more than 40 units from
-  the camera, an SoInfo node will be traversed / rendered -- ie,
+  the camera, an SoInfo node will be traversed / rendered -- i.e.,
   nothing will be shown. (This is a common "trick" used to optimize
   rendering when models get far enough away from the camera that we
   want to remove them completely).
@@ -347,7 +347,7 @@ SoLOD::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   // FIXME: SGI OIV seems to do some extra work here, but the manual
   // pages states that it should do a normal SoGroup traversal.
-  // we should _not_ use whichToTraverse() to calculate bbox as
+  // we should _not_ use whichToTraverse() to calculate bounding box as
   // this would cause cache dependencies on the camera and
   // the model matrix.                       pederb, 2001-02-21
   inherited::getBoundingBox(action);

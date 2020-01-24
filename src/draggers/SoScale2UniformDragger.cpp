@@ -53,7 +53,7 @@
   of the dragger to position it and re-orient it to scale in any
   plane.)
 
-  Scaling with this dragger can only be done in a uniform manner, ie
+  Scaling with this dragger can only be done in a uniform manner, i.e.
   the X component of the SoScale2UniformDragger::scaleFactor will
   always equal the Y component.
 
@@ -85,7 +85,7 @@
   the X, Y and Z axes.
 
   For the SoScale2UniformDragger, only the X and Y components are
-  used, the Z component will always be equal to 1 (ie no scaling).
+  used, the Z component will always be equal to 1 (i.e. no scaling).
 */
 
 /*!
@@ -114,7 +114,7 @@ SoScale2UniformDragger::initClass(void)
 }
 
 // FIXME: document which parts need to be present in the geometry
-// scenegraph, and what role they play in the dragger. 20010913 mortene.
+// scene graph, and what role they play in the dragger. 20010913 mortene.
 /*!
   \DRAGGER_CONSTRUCTOR
 
@@ -183,7 +183,7 @@ SoScale2UniformDragger::SoScale2UniformDragger(void)
   this->setPartAsDefault("feedback", "scale2UniformFeedback");
   this->setPartAsDefault("feedbackActive", "scale2UniformFeedbackActive");
 
-  // initialize swich values
+  // initialize switch values
   SoSwitch *sw;
   sw = SO_GET_ANY_PART(this, "scalerSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, 0);

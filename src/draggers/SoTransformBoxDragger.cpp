@@ -61,7 +61,7 @@
   For the application programmer's convenience, the Coin library also
   provides a manipulator class called SoTransformBoxManip, which wraps
   the SoTransformBoxDragger into the necessary mechanisms for making
-  direct insertion of this dragger into a scenegraph possible with
+  direct insertion of this dragger into a scene graph possible with
   very little effort.
 
   \sa SoTransformBoxManip
@@ -135,7 +135,7 @@ SoTransformBoxDragger::initClass(void)
 }
 
 // FIXME: document which parts need to be present in the geometry
-// scenegraph, and what role they play in the dragger. 20010913 mortene.
+// scene graph, and what role they play in the dragger. 20010913 mortene.
 /*!
   \DRAGGER_CONSTRUCTOR
 

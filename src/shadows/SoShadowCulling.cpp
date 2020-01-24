@@ -84,7 +84,7 @@
 /*!
   \var SoShadowCulling::Style SoShadowCulling::NO_CULLING
 
-  Render both backfacing and frontfacting triangles into the shadow map.
+  Render both back facing and front facing triangles into the shadow map.
 */
 
 

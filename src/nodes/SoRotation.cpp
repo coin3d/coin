@@ -36,7 +36,7 @@
 
   \ingroup nodes
 
-  Use nodes of this class type to re-orient geometry data within the
+  Use nodes of this class type to reorient geometry data within the
   scene graph.
 
   See SoTransformation class documentation for a short usage example.
@@ -71,7 +71,7 @@
 
 
   Note that there is one \e very common mistake that is easy to make
-  when setting the value of a an SoSFRotation field, and that is to
+  when setting the value of an SoSFRotation field, and that is to
   inadvertently use the wrong SbRotation constructor. This example
   should clarify the problem:
 
@@ -79,8 +79,8 @@
   mytransformnode->rotation.setValue(0, 0, 1, 1.5707963f);
   \endcode
 
-  The programmer clearly tries to set a PI/2 rotation around the Z
-  axis, but this will fail, as the SbRotation constructor invoked
+  The programmer clearly tries to set a PI/2 rotation around the Z-axis,
+  but this will fail, as the SbRotation constructor invoked
   above is the one that takes as arguments the 4 floats of a \e
   quaternion. What the programmer almost certainly wanted to do was to
   use the SbRotation constructor that takes a rotation vector and a

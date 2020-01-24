@@ -36,7 +36,7 @@
   \class ScXMLInitialElt ScXMLInitialElt.h Inventor/scxml/ScXMLInitialElt.h
   \brief implements the &lt;initial&gt; SCXML element.
 
-  An &lt;initial&gt; elements has no attributes, and should contain one
+  An &lt;initial&gt; element has no attributes, and should contain one
   conditionless &lt;transition&gt; element with a target attribute that
   identifies a descendant state element of the parent state element.
 

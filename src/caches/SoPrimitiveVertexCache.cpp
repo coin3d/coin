@@ -330,7 +330,7 @@ SoPrimitiveVertexCache::isValid(const SoState * state) const
 }
 
 /*!
-  Closes the cache after it's created. Takes care of SoGLLazyElement synchronization.
+  Closes the cache after it is created. Takes care of SoGLLazyElement synchronization.
 */
 void 
 SoPrimitiveVertexCache::close(SoState * state)

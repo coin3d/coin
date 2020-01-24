@@ -49,7 +49,7 @@
 
   The convention for using these preTraversal and postTraversal
   methods is that the parent node only applies these around child
-  traversal invokations, and not around itself.  This is really
+  traversal invocations, and not around itself.  This is really
   important to get straight.  As a consequence of this, the applying
   action also needs to add preTraversal()/postTraversal() around
   invoking traversal of the root.

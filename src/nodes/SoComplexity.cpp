@@ -32,7 +32,7 @@
 
 /*!
   \class SoComplexity SoComplexity.h Inventor/nodes/SoComplexity.h
-  \brief The SoComplexity class is a node type which is used to set the tradeoff between quality and performance.
+  \brief The SoComplexity class is a node type which is used to set the trade-off between quality and performance.
 
   \ingroup nodes
 
@@ -54,7 +54,7 @@
   manner, or in a quick way which doesn't look as appealing by
   modifying the value of the SoComplexity::textureQuality field. By
   setting the SoComplexity::textureQuality field to a value of 0.0,
-  you can also turn texturemapping completely off.
+  you can also turn texture mapping completely off.
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
@@ -91,7 +91,7 @@
   \var SoComplexity::Type SoComplexity::OBJECT_SPACE
 
   Use the SoComplexity::value in calculations based on the geometry's
-  size in world-space 3D.
+  size in world space 3D.
 */
 /*!
   \var SoComplexity::Type SoComplexity::SCREEN_SPACE
@@ -105,7 +105,7 @@
   \var SoComplexity::Type SoComplexity::BOUNDING_BOX
 
   Render further geometry in the scene graph as bounding boxes only
-  for superfast rendering.
+  for super fast rendering.
 */
 
 
@@ -127,8 +127,8 @@
 /*!
   \var SoSFFloat SoComplexity::textureQuality
 
-  Sets the quality value for texturemapping. Valid range is from 0.0
-  (texturemapping off, rendering will be much faster for most
+  Sets the quality value for texture mapping. Valid range is from 0.0
+  (texture mapping off, rendering will be much faster for most
   platforms) to 1.0 (best quality, rendering might be slow).
 
   The same value for this field on different platforms can yield
@@ -139,7 +139,7 @@
   \e not the shape nodes. There is an important consequence of this
   that the application programmer need to know about: you need to
   insert your SoComplexity node(s) \e before the SoTexture2 node(s) in
-  the scenegraph for them to have any influence on the textured
+  the scene graph for them to have any influence on the textured
   shapes.
 */
 

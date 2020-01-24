@@ -260,7 +260,7 @@ SbBox3d::intersect(const SbVec3d & point) const
 }
 
 /*!
-  Check if the given \a box lies wholly or partly within the boundaries
+  Check if the given \a box lies entirely or partially within the boundaries
   of this box.
  */
 SbBool
@@ -428,8 +428,8 @@ SbBox3d::transform(const SbDPMatrix & matrix)
 }
 
 /*!
-  Dump the state of this object to the \a file stream. Only works in
-  debug version of library, method does nothing in an optimized compile.
+  Dump the state of this object to the \a fp file stream. Only works in
+  debug version of library, method does nothing in an optimized build.
  */
 void
 SbBox3d::print(FILE * fp) const

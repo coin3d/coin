@@ -547,7 +547,7 @@ cc_string_vsprintf(cc_string * me, const char * formatstr, va_list args)
     length = coin_vsnprintf(me->pointer, (unsigned int)me->bufsize, formatstr, args);
     expand = (length == -1);
     if ( expand ) {
-      /* Note: On MSWindows, using Microsoft's CRT, _vsnprintf(),
+      /* Note: On Microsoft Windows, using Microsoft's CRT, _vsnprintf(),
          called by coin_vsnprintf(), doesn't add a terminating '0' at
          the end of the buffer if the number of characters to write is
          equal to or larger than the buffer size (second parameter to

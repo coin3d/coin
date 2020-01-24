@@ -428,8 +428,8 @@ SoChildList::traverse(SoAction * const action)
 }
 
 /*!
-  Traverse the node at \a index (and possibly its children, if its a
-  group node), applying the nodes' method for the given \a action.
+  Traverse the node at \a index (and possibly its children, if it is a
+  group node), applying the node's method for the given \a action.
 */
 void
 SoChildList::traverse(SoAction * const action, const int index)
@@ -439,8 +439,8 @@ SoChildList::traverse(SoAction * const action, const int index)
 }
 
 /*!
-  Traverse the \a node (and possibly its children, if its a group
-  node), applying the nodes' method for the given \a action.
+  Traverse the \a node (and possibly its children, if it is a group
+  node), applying the nodes method for the given \a action.
 */
 void
 SoChildList::traverse(SoAction * const action, SoNode * node)

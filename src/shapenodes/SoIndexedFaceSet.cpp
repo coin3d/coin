@@ -36,7 +36,7 @@
 
   \ingroup nodes
 
-  Faces are specified using the coordIndex field. Each face must be
+  Facesets are specified using the coordIndex field. Each face must be
   terminated by a negative (-1) index. Coordinates, normals, materials
   and texture coordinates from the current state (or from the
   vertexProperty node if set), can be indexed to create triangles,
@@ -256,7 +256,7 @@ public:
 
 #ifdef COIN_THREADSAFE
   // FIXME: a mutex for every instance seems a bit excessive,
-  // especially since MSWindows might have rather strict limits on the
+  // especially since Microsoft Windows might have rather strict limits on the
   // total amount of mutex resources a process (or even a user) can
   // allocate. so consider making this a class-wide instance instead.
   // -mortene.

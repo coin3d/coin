@@ -160,7 +160,7 @@ namespace {
 
     if (!GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
       // GLU < 1.3 does not support view-independent error metrics
-      // for tesselation accuracy. => Fall back to pixel-based metric.
+      // for tessellation accuracy. => Fall back to pixel-based metric.
 
       // Settings chosen by visual inspection of same sample curves and
       // surfaces, and comparison with the result of using the object-

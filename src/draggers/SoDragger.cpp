@@ -54,8 +54,8 @@
   This is the common superclass for all dragger classes.
 
   It holds the current motion matrix, and offers lots of convenience
-  methods to build from for it's subclasses -- that is, the
-  non-abstract dragger classes to use as nodes in your scenegraph.
+  methods to build from for its subclasses -- that is, the
+  non-abstract dragger classes to use as nodes in your scene graph.
 
   The motion matrix is used to modify the model matrix during
   traversal, and this is a common dragger mechanism -- all draggers
@@ -66,9 +66,9 @@
   SoTrackballDragger / SoTrackballManip pair.
 
   The matching manipulator class for any dragger class has basically
-  two convenient additions to the functionality of the stand-alone
+  two convenient additions to the functionality of the standalone
   dragger: 1) it makes swapping the dragger in and out of the
-  scenegraph very straightforward (something which is often done for
+  scene graph very straightforward (something which is often done for
   draggers in 3D user interfaces), 2) it wraps up the dragger with
   SoSurroundScale and SoAntiSquish nodes where applicable, so the
   dragger geometry automatically scales up or down to match the
@@ -86,7 +86,7 @@
   variable \c SO_DRAGGER_DIR to point to a directory with replacement
   geometry files. The name of the new files and the name of the nodes
   / sub-graphs with the replacement geometries must follow a rigid
-  scheme. We advise you to look at the Coin sourcecode directory
+  scheme. We advise you to look at the Coin source code directory
   Coin/data/draggerDefaults/ to see how the replacement geometry files
   should be named. Setting \c SO_DRAGGER_DIR to this directory and
   modifying the files there provides a convenient way to play around
@@ -94,7 +94,7 @@
 
 
   As mentioned above, SoDragger::setPart() can be used to modify the
-  appearance of a dragger by changing it's default geometry. One
+  appearance of a dragger by changing its default geometry. One
   common technique is for instance to take advantage of this to use
   only \e parts of a dragger, by replacing / disabling the geometry
   that you don't want the end-user to interact with. The following
@@ -470,7 +470,7 @@ SoDragger::updateElements(SoState * state)
     SoMaterialBindingElement::set(state, SoMaterialBindingElement::DEFAULT);
   }
   if (state->isElementEnabled(SoLazyElement::getClassStackIndex())) {
-    // we need phong shading for our geometry
+    // we need Phong shading for our geometry
     SoLazyElement::setLightModel(state, SoLazyElement::PHONG);
   }
 
@@ -788,7 +788,7 @@ SoDragger::unregisterChildDragger(SoDragger * child)
 }
 
 /*!
-  Should be called by compund draggers to register child draggers that
+  Should be called by compound draggers to register child draggers that
   should move independently of their parent.
 */
 void
@@ -802,7 +802,7 @@ SoDragger::registerChildDraggerMovingIndependently(SoDragger * child)
 }
 
 /*!
-  Should be called by compund draggers to unregister child draggers.
+  Should be called by compound draggers to unregister child draggers.
   \sa registerChildDraggerMovingIndependently()
 */
 void
@@ -944,7 +944,7 @@ SoDragger::transformMatrixToLocalSpace(const SbMatrix & frommatrix, SbMatrix & t
 /*!
   Sets a new current motion matrix for the dragger geometry.
 
-  Triggers value changed callbacks if \a matrix is unequal to the
+  Triggers value changed callbacks if \a matrix is not equal to the
   previous motion matrix.
 */
 void
@@ -1355,7 +1355,7 @@ SoDragger::appendTranslation(const SbMatrix & matrix, const SbVec3f & translatio
 }
 
 /*!
-  Returns \a matrix after \a scale and \a scalecenter has been
+  Returns \a matrix after \a scale and \a scalecenter have been
   appended.  If \a conversion != \c NULL it is used to transform scale
   into the space \a matrix is defined.
 */
@@ -1778,7 +1778,7 @@ SoDragger::transferMotion(SoDragger * child)
 }
 
 /*!
-  Sets whether dragger geometry should be ignored when calculating bbox.
+  Sets whether dragger geometry should be ignored when calculating bounding box.
 */
 void
 SoDragger::setIgnoreInBbox(SbBool val)
@@ -1787,7 +1787,7 @@ SoDragger::setIgnoreInBbox(SbBool val)
 }
 
 /*!
-  Returns whether dragger geometry should be ignored when calculating bbox.
+  Returns whether dragger geometry should be ignored when calculating bounding box.
 */
 SbBool
 SoDragger::isIgnoreInBbox(void)

@@ -56,7 +56,7 @@
 //
 // Substituting x, y and z with the parametric line equations, and we
 // can find zero, one or two solutions for t. We have to check the y-value
-// afterwards to see if it's between +/- (h/2)
+// afterwards to see if it is between +/- (h/2)
 //
 
 static int

@@ -37,7 +37,7 @@
   \ingroup fields
 
   This field is used where nodes, engines or other field containers
-  needs to store a 4x4 matrix.
+  need to store a 4x4 matrix.
 
   Fields of this type stores their value to file as a set of 16
   floating point values, written from the matrix in row-major mode.

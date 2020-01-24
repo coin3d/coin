@@ -191,7 +191,7 @@ public:
     /////
     //
     // ANSI C isspace() takes the current locale into account. Under
-    // MSWindows, this can lead to "interesting" artifacts, like a
+    // Microsoft Windows, this can lead to "interesting" artifacts, like a
     // case with RR tracked down and fixed by <thammer@sim.no> where a
     // character (was it ü?) with ASCII value > 127 made isspace()
     // return non-nil on a German system. So we're using our own

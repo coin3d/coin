@@ -41,7 +41,7 @@
 /*!
   \typedef struct cc_sched cc_sched
   \ingroup threads
-  \brief The type definition for the thread schduler structure.
+  \brief The type definition for the thread scheduler structure.
 */
 
 /*! \file sched.h */
@@ -199,7 +199,7 @@ cc_sched_construct(int numthreads)
   Destruct the scheduler.
 
   This method will block until all currently executing jobs have finished.
-  Any remaining scheduled jobs will be cancelled.
+  Any remaining scheduled jobs will be canceled.
 
   Note that this differs from Coin-2. To emulate Coin-2 behavior, call
   cc_sched_wait_all() before calling this method.

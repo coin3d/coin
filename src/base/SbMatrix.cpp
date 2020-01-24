@@ -148,7 +148,7 @@ public:
   // matrix->quaternion decomposition, which also exists in
   // SbRotation::setValue(SbMatrix&)), and 2) the remaining code
   // snippets look generally useful outside the purpose of breaking down
-  // a matrix into it's transformation components). 20010114 mortene.
+  // a matrix into its transformation components). 20010114 mortene.
 
   /*
    * declarations for polar_decomp algorithm from Graphics Gems IV,
@@ -182,7 +182,7 @@ public:
     // adds up a total, as it sometimes seems from documentation). So
     // this should be very quick for non-identity matrices.
     //
-    // Also, we check the first value on it's own, to avoid the function
+    // Also, we check the first value on its own, to avoid the function
     // call for the most common case.
     return (fm[0][0]==1.0f) && memcmp(&fm[0][1], &IDENTITYMATRIX[0][1], (4 * 3 + 3) * sizeof(float)) == 0;
 #endif
@@ -818,7 +818,7 @@ operator ==(const SbMatrix & m1, const SbMatrix & m2)
   \relates SbMatrix
 
   Compare matrices to see if they are not equal. For two matrices to not be
-  equal, it is enough that at least one of their elements are unequal.
+  equal, it is enough that at least one of their elements are not equal.
 
   \sa equals().
 */
@@ -953,7 +953,7 @@ SbMatrix::setTransform(const SbVec3f & t, const SbRotation & r, const SbVec3f & 
   scale orientation. The resulting matrix gets calculated like this:
 
   \code
-  M = Ro-¹ * S * Ro * R * T
+  M = Ro^-1 * S * Ro * R * T
   \endcode
 
   where \a Ro is the scale orientation, and \a S, \a R
@@ -1023,7 +1023,7 @@ SbMatrix::setTransform(const SbVec3f & t, const SbRotation & r,
   calculated like this:
 
   \code
-  M = -Tc * Ro-¹ * S * Ro * R * T * Tc
+  M = -Tc * Ro^-1 * S * Ro * R * T * Tc
   \endcode
 
   where \a Tc is the center point, \a Ro the scale orientation, \a S,
@@ -1089,7 +1089,7 @@ SbMatrix::setTransform(const SbVec3f & translation,
 
 /*!
   Factor the matrix back into its translation, rotation, scale and
-  scaleorientation components.
+  scale orientation components.
 
   \sa factor()
  */
@@ -1566,7 +1566,7 @@ SbMatrix::print(FILE * fp) const
 // matrix->quaternion decomposition, which also exists in
 // SbRotation::setValue(SbMatrix&)), and 2) the remaining code
 // snippets look generally useful outside the purpose of breaking down
-// a matrix into it's transformation components). 20010114 mortene.
+// a matrix into its transformation components). 20010114 mortene.
 
 
 /**** Decompose.c ****/
@@ -1833,7 +1833,7 @@ SbMatrixP::spect_decomp(SbMatrixP::HMatrix S, SbMatrixP::HMatrix U)
           // We also have a report about a crash assumed to be in this
           // code with Coin built with MSVC6.0 with /O2 optimalization
           // (very suspect that there's a problem with both g++ and
-          // MSVC++), for the following stand-alone example:
+          // MSVC++), for the following standalone example:
           //
           // ----8<----- [snip] ---------8<----- [snip] -----
           //  #include <Inventor/SoDB.h>
