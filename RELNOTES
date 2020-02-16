@@ -8,6 +8,16 @@ The changes described here are issues that might have an effect on the
 compatibility of your source code when upgrading the library.
 
 
+Coin 4.1.0 (so far)
+==========
+
+Reference line for text rendered with the built-in default font was changed
+(before: descender line, now: base line). Thus text rendered with default
+font will appear a few pixels lower than before, but now consistent
+with text using non-default fonts.
+(see https://github.com/coin3d/coin/pull/368)
+
+
 Coin 4.0.0
 ==========
 

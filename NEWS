@@ -1,4 +1,9 @@
-New in Coin v4.0.0 (so far):
+New in Coin v4.1.0 (so far):
+* bugfixes:
+  - fixed crash when reading font glyphs fails
+  - use font base line as bearing point for default font
+
+New in Coin v4.0.0 (2019-12-23):
 * new:
   - Kongsberg Oil & Gas Technologies AS ended Coin as a commercial product
     and re-licensed it under the BSD 3-clause license as a service to the
