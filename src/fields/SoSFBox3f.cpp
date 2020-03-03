@@ -60,7 +60,9 @@ SO_SFIELD_SOURCE(SoSFBox3f, SbBox3f, const SbBox3f &);
 
 // *************************************************************************
 
-// Override from parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoSFBox3f::initClass(void)
 {

@@ -70,7 +70,9 @@ SoTextDetail::~SoTextDetail()
 {
 }
 
-// Doc in superclass.
+/*!
+  \copybrief SoDetail::initClass(void)
+*/
 void
 SoTextDetail::initClass(void)
 {

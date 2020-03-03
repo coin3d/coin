@@ -30,6 +30,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*!
+  \class SoNodeVisualize Inventor/annex/Profiler/nodekits/SoNodeVisualize.h
+  \brief The SoNodeVisualize class is yet to be documented.
+
+  \ingroup elements
+
+  FIXME: write doc.
+*/
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif // HAVE_CONFIG_H

@@ -324,7 +324,9 @@ SoSelection::~SoSelection()
   if (this->mouseDownPickPath) this->mouseDownPickPath->unref();
 }
 
-// doc in parent
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoSelection::initClass(void)
 {

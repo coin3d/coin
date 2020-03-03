@@ -315,7 +315,9 @@ SoIndexedFaceSet::~SoIndexedFaceSet()
   delete PRIVATE(this);
 }
 
-// doc from parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoIndexedFaceSet::initClass(void)
 {

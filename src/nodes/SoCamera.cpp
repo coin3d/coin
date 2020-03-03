@@ -372,6 +372,9 @@ SoCamera::~SoCamera()
 }
 
 // Doc in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoCamera::initClass(void)
 {

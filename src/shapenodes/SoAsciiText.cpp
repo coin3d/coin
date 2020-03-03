@@ -129,6 +129,7 @@
     }
   \endcode
 
+  \sa SoFont, SoFontStyle, SoText2, SoText3
   \since SGI Inventor 2.1
 */
 
@@ -170,57 +171,63 @@
 
 // *************************************************************************
 
-/*!  \enum SoAsciiText::Justification
-  The font justification values control the text
-  alignment. Justification can have three distinct values.  The
-  default value is SoAsciiText::LEFT, and the strings are rendered
-  with a common left border. The second value is SoAsciiText::RIGHT,
-  and renders the strings with a common right border. The last value
-  is SoAsciiText::CENTER, in which the strings are rendered with their
-  centers aligned. The origo of the three alignments are respectively
-  left, right and center, located at the baseline of the first line of
-  text.
+/*!
+  \enum SoAsciiText::Justification
+  Used to specify horizontal string alignment.
 */
-
-/*!  \var SoAsciiText::Justification SoAsciiText::LEFT
-  The strings are left-aligned; rendered with a common left
-  border. This is the default alignment.
+/*!
+  \var SoAsciiText::Justification SoAsciiText::LEFT
+  Left edges of strings are aligned.
 */
-
-/*!  \var SoAsciiText::Justification SoAsciiText::RIGHT
-  The strings are right-aligned; rendered with a common right border.
+/*!
+  \var SoAsciiText::Justification SoAsciiText::RIGHT
+  Right edges of strings are aligned.
 */
-
-/*!  \var SoAsciiText::Justification SoAsciiText::CENTER
-  The text is center-aligned; all strings are centered.
+/*!
+  \var SoAsciiText::Justification SoAsciiText::CENTER
+  Centers of strings are aligned.
 */
 
 /*!  \var SoMFString SoAsciiText::string 
 
-  Lines of text to render. Several strings can be specified for this
-  multifield, where each string represents a line.
+  The set of strings to render.  Each string in the multiple value
+  field will be rendered on a separate line.
 
-  Default value is a single empty string.
+  The default value of the field is a single empty string.
 */
 /*!
   \var SoSFFloat SoAsciiText::spacing
-  Spacing between each line. Defaults to 1.0.
+
+  Vertical spacing between the baselines of two consecutive horizontal lines.
+  Default value is 1.0, which means that it is equal to the vertical size of
+  the highest character in the bitmap alphabet.
 */
 /*!
   \var SoSFEnum SoAsciiText::justification
-  Horizontal alignment. Default SoAsciiText::LEFT.
+
+  Determines horizontal alignment of text strings.
+
+  If justification is set to SoAsciiText::LEFT, the left edge of the first string
+  is at the origin and all strings are aligned with their left edges.
+  If set to SoAsciiText::RIGHT, the right edge of the first string is
+  at the origin and all strings are aligned with their right edges. Otherwise,
+  if set to SoAsciiText::CENTER, the center of the first string is at the
+  origin and all strings are aligned with their centers.
+  The origin is always located at the baseline of the first line of text.
+
+  Default value is SoAsciiText::LEFT.
 */
 
 /*!  \var SoMFFloat SoAsciiText::width
-  Defines the width of each line. The text is scaled to be within the
-  specified units. The size of the characters will remain the same;
-  only the X-positions are scaled. When width <= 0, the width
-  value is ignored and the text rendered as normal. The exact width of
+  Defines the width of each line.  The text is scaled to be within the
+  specified units.  The size of the characters will remain the same;
+  only the X-positions are scaled.  When width <= 0, the width
+  value is ignored and the text rendered as normal.  The exact width of
   the rendered text depends not only on the width field, but also on
-  the maximum character width in the rendered string. The string will
+  the maximum character width in the rendered string.  The string will
   be attempted to fit within the specified width, but if it is unable
   to do so, it uses the largest character in the string as the
-  width. If fewer widths are specified than the number of strings, the
+  width.  If fewer widths are specified than the number of strings, the
   strings without matching widths are rendered with default width.
 */
 
@@ -299,7 +306,9 @@ SoAsciiText::~SoAsciiText()
   delete PRIVATE(this);
 }
 
-// Doc in parent.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoAsciiText::initClass(void)
 {

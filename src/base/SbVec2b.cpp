@@ -44,7 +44,7 @@
 #endif // COIN_DEBUG
 
 /*!
-  \class SbVec2b Inventor/SbVec2b.h
+  \class SbVec2b SbVec2b.h Inventor/SbVec2b.h
   \brief a vector class for containing two byte integers.
 
   \sa SbVec2ub

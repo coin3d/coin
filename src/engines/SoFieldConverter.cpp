@@ -109,7 +109,9 @@ SoFieldConverter::~SoFieldConverter()
 {
 }
 
-// doc in super
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoFieldConverter::initClass(void)
 {
@@ -117,6 +119,10 @@ SoFieldConverter::initClass(void)
   SoFieldConverter::initClasses();
 }
 
+/*!
+  Initializes all field conversions. Automatically called from
+  SoFieldConverter::initClass() upon initialization of Coin.
+*/
 void
 SoFieldConverter::initClasses(void)
 {

@@ -81,7 +81,9 @@ SO_NODE_ABSTRACT_SOURCE(SoVRMLGeometry);
 
 // *************************************************************************
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLGeometry::initClass(void)
 {

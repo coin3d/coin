@@ -104,7 +104,9 @@ SO_KIT_SOURCE(SoRotateCylindricalDragger);
 */
 
 
-// doc in superclass
+/*!
+  \copydetails SoDragger::initClass(void)
+*/
 void
 SoRotateCylindricalDragger::initClass(void)
 {

@@ -134,7 +134,9 @@
 
 SO_NODE_SOURCE(SoListener);
 
-// Doc in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void SoListener::initClass()
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoListener, SO_FROM_COIN_2_0);

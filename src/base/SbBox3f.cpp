@@ -81,6 +81,30 @@
 */
 
 /*!
+  \fn SbBox3f::SbBox3f(const SbBox3d & box)
+
+  Constructs an SbBox3f instance from the value in an SbBox3d instance.
+
+  \since Coin 2.5
+*/
+
+/*!
+  \fn SbBox3f::SbBox3f(const SbBox3s & box)
+
+  Constructs an SbBox3f instance from the value in an SbBox3s instance.
+
+  \since Coin 2.5
+*/
+
+/*!
+  \fn SbBox3f::SbBox3f(const SbBox3i32 & box)
+
+  Constructs an SbBox3f instance from the value in an SbBox3i32 instance.
+
+  \since Coin 2.5
+*/
+
+/*!
   \fn SbBox3f & SbBox3f::setBounds(float minx, float miny, float minz, float maxx, float maxy, float maxz)
 
   Reset the boundaries of the box.
@@ -188,13 +212,13 @@ SbBox3f::setBounds(const SbBox3i32 & box)
 /*!
   \fn SbVec3f & SbBox3f::getMin(void)
 
-  Returns a modifiable reference the minimum point.
+  Returns a modifiable reference to the minimum point.
 */
 
 /*!
   \fn SbVec3f & SbBox3f::getMax(void)
 
-  Returns a modifiable reference the maximum point.
+  Returns a modifiable reference to the maximum point.
 */
 
 /*!
@@ -336,14 +360,15 @@ SbBox3f::makeEmpty(void)
   \fn SbBool SbBox3f::hasVolume(void) const
 
   Check if the box has been correctly specified and by that virtue
-  has volume.
+  has "positive" volume, i.e. all coordinates of its upper right corner
+  (the maximum point) are greater than the corresponding coordinates 
+  of its lower left corner (the minimum point).
 */
 
 /*!
   \fn float SbBox3f::getVolume(void) const
 
-  Check if the box has "positive" volume, i.e. the lower left corner is
-  actually lower and more left than the maximum point.
+  Returns the volume of the box.
 */
 
 /*!

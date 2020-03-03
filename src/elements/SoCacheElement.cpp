@@ -84,7 +84,10 @@ SO_ELEMENT_SOURCE(SoCacheElement);
 
 // *************************************************************************
 
-// Doc in superclass.
+/*!
+  \copydetails SoElement::initClass(void)
+*/
+
 void
 SoCacheElement::initClass(void)
 {
@@ -99,7 +102,7 @@ SoCacheElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoCacheElement::~SoCacheElement(void)

@@ -96,7 +96,9 @@
 
 SO_ENGINE_SOURCE(SoTriggerAny);
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTriggerAny::initClass(void)
 {

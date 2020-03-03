@@ -78,6 +78,11 @@
 
 #define SO_INTERPOLATE_INTERNAL_INIT_CLASS(_class_) \
  \
+/*! \
+  Sets up initialization for data common to all instances of \
+  this class, like submitting necessary information to the Coin type \
+  system. \
+*/ \
 void \
 _class_::initClass(void) \
 { \
@@ -107,28 +112,47 @@ const SoFieldData ** _class_::parentinputdata = NULL; \
 SoEngineOutputData * _class_::outputdata = NULL; \
 const SoEngineOutputData ** _class_::parentoutputdata = NULL; \
  \
+/*! \
+  Returns the SoFieldData class which holds information about inputs \
+  in this engine. \
+*/ \
 const SoFieldData ** _class_::getInputDataPtr(void) \
 { \
   assert(0 && "function not in use for _class_"); \
   return NULL; \
 } \
  \
+/*! \
+  Returns the SoFieldData class which holds information about inputs \
+  in this engine. \
+*/ \
 const SoFieldData * _class_::getFieldData(void) const \
 { \
   return this->dynamicinput; \
 } \
  \
+/*! \
+  Returns the SoEngineOutputData class which holds information about \
+  the outputs in this engine. \
+*/ \
 const SoEngineOutputData ** _class_::getOutputDataPtr(void) \
 { \
   assert(0 && "function not in use for _class_"); \
   return NULL; \
 } \
  \
+/*! \
+  Returns the SoEngineOutputData class which holds information about \
+  the outputs in this engine. \
+*/ \
 const SoEngineOutputData * _class_::getOutputData(void) const \
 { \
   return this->dynamicoutput; \
 } \
  \
+/*! \
+  Creates a new instance of the class type corresponding to the SoType object. \
+*/ \
 void * _class_::createInstance(void) \
 { \
   return new _class_; \

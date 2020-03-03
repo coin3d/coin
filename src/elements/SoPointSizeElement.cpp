@@ -51,7 +51,9 @@
 
 SO_ELEMENT_SOURCE(SoPointSizeElement);
 
-// Doc in super.
+/*!
+  \copydetails SoElement::initClass(void)
+*/
 void
 SoPointSizeElement::initClass(void)
 {
@@ -65,7 +67,10 @@ SoPointSizeElement::~SoPointSizeElement(void)
 {
 }
 
-// Doc in super.
+/*!
+  Initializes the element to its default value. The default
+  value for point size is 0.0.
+*/
 void
 SoPointSizeElement::init(SoState * state)
 {

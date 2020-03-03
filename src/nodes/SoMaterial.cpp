@@ -360,7 +360,9 @@ SoMaterial::~SoMaterial()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoMaterial::initClass(void)
 {

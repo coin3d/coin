@@ -121,7 +121,7 @@
     }
   \endcode
 
-  \sa SoText2, SoAsciiText, SoProfile
+  \sa SoFont, SoFontStyle, SoText2, SoAsciiText, SoProfile
 */
 
 // *************************************************************************
@@ -211,27 +211,43 @@
 */
 /*!
   \var SoText3::Justification SoText3::CENTER
-  Strings are centered.
+  Centers of strings are aligned.
 */
 
 
 /*!
   \var SoMFString SoText3::string
 
-  The strings to render.
+  The set of strings to render.  Each string in the multiple value
+  field will be rendered on a separate line.
 
-  Array defaults to contain a single empty string.
+  The default value of the field is a single empty string.
 */
 /*!
   \var SoSFFloat SoText3::spacing
-  Vertical spacing. 1.0 is the default spacing.
+
+  Vertical spacing between the baselines of two consecutive horizontal lines.
+  Default value is 1.0, which means that it is equal to the vertical size of
+  the highest character in the bitmap alphabet.
 */
 /*!
   \var SoSFEnum SoText3::justification
-  Horizontal justification. Default is alignment at the left border.
+
+  Determines horizontal alignment of text strings.
+
+  If justification is set to SoText3::LEFT, the left edge of the first string
+  is at the origin and all strings are aligned with their left edges.
+  If set to SoText3::RIGHT, the right edge of the first string is
+  at the origin and all strings are aligned with their right edges. Otherwise,
+  if set to SoText3::CENTER, the center of the first string is at the
+  origin and all strings are aligned with their centers.
+  The origin is always located at the baseline of the first line of text.
+
+  Default value is SoText3::LEFT.
 */
 /*!
   \var SoSFBitMask SoText3::parts
+
   Character parts. Default is to show only the front facing part.
 */
 
@@ -318,7 +334,9 @@ SoText3::~SoText3()
   delete PRIVATE(this);
 }
 
-// doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoText3::initClass(void)
 {

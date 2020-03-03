@@ -125,8 +125,7 @@ get_transp_node_id(SoNode * node, const int numtransp,
 SO_ELEMENT_SOURCE(SoLazyElement);
 
 /*!
-  This static method initializes static data for the
-  SoDiffuseColorElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -150,7 +149,9 @@ SoLazyElement::initClass()
   }
 }
 
-// ! FIXME: write doc
+/*!
+  Destructor.
+*/
 
 SoLazyElement::~SoLazyElement()
 {

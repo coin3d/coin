@@ -52,7 +52,10 @@
 
 SO_ELEMENT_SOURCE(SoBumpMapMatrixElement);
 
-// doc from parent
+/*!
+  \copydetails SoElement::initClass(void)
+*/
+
 void
 SoBumpMapMatrixElement::initClass(void)
 {
@@ -60,7 +63,7 @@ SoBumpMapMatrixElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 SoBumpMapMatrixElement::~SoBumpMapMatrixElement(void)
 {

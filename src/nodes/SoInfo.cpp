@@ -86,7 +86,9 @@ SoInfo::~SoInfo()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoInfo::initClass(void)
 {

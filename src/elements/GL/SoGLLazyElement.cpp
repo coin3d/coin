@@ -176,8 +176,7 @@ create_matrix_bitmap(int intensity, unsigned char * bitmap,
 SO_ELEMENT_SOURCE(SoGLLazyElement);
 
 /*!
-  This static method initializes static data for the
-  SoGLLazyElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -196,7 +195,9 @@ SoGLLazyElement::initClass()
   }
 }
 
-// ! FIXME: write doc
+/*!
+  Destructor.
+*/
 
 SoGLLazyElement::~SoGLLazyElement()
 {

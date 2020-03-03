@@ -57,8 +57,7 @@
 SO_ELEMENT_SOURCE(SoGLLinePatternElement);
 
 /*!
-  This static method initializes static data for the
-  SoGLLinePatternElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -68,7 +67,7 @@ SoGLLinePatternElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoGLLinePatternElement::~SoGLLinePatternElement(void)

@@ -57,19 +57,26 @@
 #include <cassert>
 
 /*!
-  \fn SoInt32Element::data
+  \var int32_t SoInt32Element::data
 
   The 32-bit integer value of the element.
 */
 
 SO_ELEMENT_ABSTRACT_SOURCE(SoInt32Element);
 
-// documented in superclass
+/*!
+  \copydetails SoElement::initClass(void)
+*/
+
 void
 SoInt32Element::initClass(void)
 {
   SO_ELEMENT_INIT_ABSTRACT_CLASS(SoInt32Element, inherited);
 }
+
+/*!
+  Destructor.
+*/
 
 SoInt32Element::~SoInt32Element(void)
 {
@@ -111,7 +118,10 @@ SoInt32Element::print(FILE * file) const
                 getTypeId().getName().getString(), this, this->data);
 }
 
-// documented in superclass
+/*!
+  Static method for setting the \a value of an element in the given \a
+  state at the given stack \a index.
+ */
 void
 SoInt32Element::set(const int index,
                     SoState * const state,
@@ -125,8 +135,9 @@ SoInt32Element::set(const int index,
 }
 
 /*!
-  FIXME: write doc.
-*/
+  Static method for setting the \a value of an element in the given \a
+  state at the given \a stackIndex.
+ */
 void
 SoInt32Element::set(const int index, SoState * const state,
                     const int32_t value)
@@ -134,8 +145,10 @@ SoInt32Element::set(const int index, SoState * const state,
   set(index, state, NULL, value);
 }
 
-//! FIXME: write doc.
-
+/*!
+  Static method to fetch the value of the element of this type from
+  the given \a state at the given stack \a index.
+ */
 int32_t
 SoInt32Element::get(const int index,
                     SoState * const state)
@@ -147,15 +160,19 @@ SoInt32Element::get(const int index,
   return 0;
 }
 
-//! FIXME: write doc.
-
+/*!
+  Set element value.
+ */
 void
 SoInt32Element::setElt(int32_t value)
 {
   this->data = value;
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes the element to its default value. The default
+  value for the int32 value is 0.
+*/
 
 void
 SoInt32Element::init(SoState * state)

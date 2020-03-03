@@ -189,7 +189,9 @@ SO_NODE_SOURCE(SoClipPlaneManip);
 
 // *************************************************************************
 
-// Documented in superclass
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoClipPlaneManip::initClass(void)
 {

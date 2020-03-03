@@ -142,7 +142,9 @@ SO_NODE_SOURCE(SoVRMLPixelTexture);
 
 // *************************************************************************
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLPixelTexture::initClass(void)
 {

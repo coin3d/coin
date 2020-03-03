@@ -51,7 +51,10 @@
 
 SO_ELEMENT_SOURCE(SoLineWidthElement);
 
-// doc in super
+/*!
+  \copydetails SoElement::initClass(void)
+*/
+
 void
 SoLineWidthElement::initClass(void)
 {
@@ -65,7 +68,10 @@ SoLineWidthElement::~SoLineWidthElement()
 {
 }
 
-// doc in super
+/*!
+  Initializes the element to its default value. The default
+  value is 0.0.
+*/
 void
 SoLineWidthElement::init(SoState * state)
 {

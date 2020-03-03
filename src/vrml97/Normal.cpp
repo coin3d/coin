@@ -84,7 +84,9 @@ class SoVRMLNormalP {
 
 #define PRIVATE(obj) obj->pimpl
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLNormal::initClass(void)
 {

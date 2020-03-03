@@ -45,10 +45,20 @@
 
 SO_ELEMENT_SOURCE(SoComplexityElement);
 
+/*!
+  \fn static SoType SoComplexityElement::getClassTypeId(void)
+
+  This static method returns the class type.
+*/
 
 /*!
-  This static method initializes static data for the SoComplexityElement
-  class.
+  \fn static int SoComplexityElement::getClassStackIndex(void)
+
+  This static method returns the state stack index for the class.
+*/
+
+/*!
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -58,7 +68,7 @@ SoComplexityElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoComplexityElement::~SoComplexityElement(// virtual protected

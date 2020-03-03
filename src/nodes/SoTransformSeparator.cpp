@@ -103,6 +103,9 @@ SoTransformSeparator::~SoTransformSeparator()
 }
 
 // Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTransformSeparator::initClass(void)
 {

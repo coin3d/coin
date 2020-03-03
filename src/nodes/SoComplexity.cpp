@@ -172,7 +172,9 @@ SoComplexity::~SoComplexity()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoComplexity::initClass(void)
 {

@@ -30,6 +30,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*!
+  \class SoProfilerTopEngine Inventor/annex/Profiler/engines/SoProfilerTopEngine.h
+  \brief The SoProfilerTopEngine class is yet to be documented.
+
+  \ingroup elements
+
+  FIXME: write doc.
+*/
+
 #include <Inventor/annex/Profiler/engines/SoProfilerTopEngine.h>
 
 #include <cstdlib>

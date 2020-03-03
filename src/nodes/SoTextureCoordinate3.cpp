@@ -126,6 +126,9 @@ SoTextureCoordinate3::~SoTextureCoordinate3()
 }
 
 // Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTextureCoordinate3::initClass(void)
 {

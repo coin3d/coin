@@ -319,6 +319,9 @@ SoLevelOfDetail::~SoLevelOfDetail()
 }
 
 // Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoLevelOfDetail::initClass(void)
 {

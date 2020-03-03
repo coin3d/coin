@@ -58,7 +58,9 @@ SO_SFIELD_SOURCE(SoSFUShort, unsigned short, unsigned short);
 
 // *************************************************************************
 
-// Override from parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoSFUShort::initClass(void)
 {

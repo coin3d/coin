@@ -95,7 +95,18 @@ private: \
 // *************************************************************************
 
 #define PRIVATE_NODE_TYPESYSTEM_SOURCE(_class_) \
+ \
+/*! \
+  This static method returns the SoType object associated with \
+  objects of this class. \
+*/ \
 SoType _class_::getClassTypeId(void) { return _class_::classTypeId; } \
+ \
+/*!
+  Returns the type identification of an object derived from a \
+  class inheriting SoBase. This is used for runtime type checking and \
+  "downward" casting. \
+*/ \
 SoType _class_::getTypeId(void) const { return _class_::classTypeId; } \
 SoType _class_::classTypeId STATIC_SOTYPE_INIT
 
@@ -108,6 +119,12 @@ unsigned int _class_::classinstances = 0; \
 const SoFieldData ** _class_::parentFieldData = NULL; \
 SoFieldData * _class_::fieldData = NULL; \
  \
+/*! \
+  \COININTERNAL \
+ \
+  Returns the SoFieldData class which holds information about fields \
+  in this node. \
+ */ \
 const SoFieldData ** \
 _class_::getFieldDataPtr(void) \
 { \

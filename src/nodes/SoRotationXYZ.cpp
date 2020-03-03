@@ -68,6 +68,18 @@
   \enum SoRotationXYZ::Axis
   Enumerated values for the 3 axes.
 */
+/*!
+  \var SoRotationXYZ::Axis SoRotationXYZ::X
+  Rotation around X-axis.
+*/
+/*!
+  \var SoRotationXYZ::Axis SoRotationXYZ::Y
+  Rotation around Y-axis.
+*/
+/*!
+  \var SoRotationXYZ::Axis SoRotationXYZ::Z
+  Rotation around Z-axis.
+*/
 
 /*!
   \var SoSFEnum SoRotationXYZ::axis
@@ -106,7 +118,9 @@ SoRotationXYZ::~SoRotationXYZ()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoRotationXYZ::initClass(void)
 {

@@ -104,7 +104,9 @@ SoCameraKit::~SoCameraKit()
 {
 }
 
-// Documented in superclass.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoCameraKit::initClass(void)
 {

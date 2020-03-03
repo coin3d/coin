@@ -115,6 +115,9 @@ SoUnknownNode::~SoUnknownNode()
 }
 
 // doc in super
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoUnknownNode::initClass(void)
 {

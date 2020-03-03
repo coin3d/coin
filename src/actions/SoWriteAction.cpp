@@ -125,7 +125,9 @@ public:
 SO_ACTION_SOURCE(SoWriteAction);
 
 
-// Overridden from parent class.
+/*!
+  \copydetails SoAction::initClass(void)
+*/
 void
 SoWriteAction::initClass(void)
 {

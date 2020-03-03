@@ -136,7 +136,7 @@ SoDetail::isOfType(const SoType type) const
 }
 
 /*!
-  Returns the type for this class.
+  Returns the type identification for this class.
 */
 SoType
 SoDetail::getClassTypeId(void)

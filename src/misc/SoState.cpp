@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoState Inventor/misc/SoState.h
+  \class SoState SoState.h Inventor/misc/SoState.h
   \brief The SoState class manages the Coin scene graph traversal state data.
 
   \ingroup general

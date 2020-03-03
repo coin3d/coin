@@ -62,7 +62,9 @@ SO_SFIELD_SOURCE(SoSFBool, SbBool, SbBool);
 
 // *************************************************************************
 
-// Override from parent.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoSFBool::initClass(void)
 {

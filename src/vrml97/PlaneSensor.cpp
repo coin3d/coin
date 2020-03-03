@@ -175,7 +175,9 @@
 
 SO_NODE_SOURCE(SoVRMLPlaneSensor);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLPlaneSensor::initClass(void)
 {

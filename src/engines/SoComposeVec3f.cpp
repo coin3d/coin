@@ -74,7 +74,9 @@ SoComposeVec3f::SoComposeVec3f()
   SO_ENGINE_ADD_OUTPUT(vector,SoMFVec3f);
 }
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoComposeVec3f::initClass()
 {

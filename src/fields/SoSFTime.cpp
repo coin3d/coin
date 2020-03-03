@@ -64,7 +64,9 @@ SO_SFIELD_SOURCE(SoSFTime, SbTime, const SbTime &);
 
 // *************************************************************************
 
-// Override from parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoSFTime::initClass(void)
 {

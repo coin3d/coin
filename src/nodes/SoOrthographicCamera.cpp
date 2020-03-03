@@ -122,6 +122,9 @@ SoOrthographicCamera::~SoOrthographicCamera()
 }
 
 // Doc in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoOrthographicCamera::initClass(void)
 {

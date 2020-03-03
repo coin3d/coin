@@ -155,7 +155,9 @@ SoIndexedNurbsCurve::~SoIndexedNurbsCurve()
   delete PRIVATE(this);
 }
 
-// doc from parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoIndexedNurbsCurve::initClass(void)
 {

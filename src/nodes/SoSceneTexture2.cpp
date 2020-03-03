@@ -132,6 +132,10 @@
   \var SoSceneTexture2::Wrap SoSceneTexture2::CLAMP
   Clamp coordinate between 0 and 1.
 */
+/*!
+  \var SoSceneTexture2::Wrap SoSceneTexture2::CLAMP_TO_BORDER
+  Clamp coordinate to range [1/2N, 1 - 1/2N], where N is the size of the texture in the direction of clamping.
+*/
 
 /*!
   \enum SoSceneTexture2::TransparencyFunction
@@ -425,6 +429,9 @@ public:
 SO_NODE_SOURCE(SoSceneTexture2);
 
 // Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoSceneTexture2::initClass(void)
 {

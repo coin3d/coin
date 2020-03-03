@@ -61,7 +61,9 @@ SO_MFIELD_SOURCE(SoMFString, SbString, const SbString &);
 
 // *************************************************************************
 
-// Override from parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoMFString::initClass(void)
 {

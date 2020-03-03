@@ -202,7 +202,9 @@ SO_NODE_SOURCE(SoVRMLText);
 
 // *************************************************************************
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLText::initClass(void)
 {

@@ -121,7 +121,9 @@ SoShadowStyle::~SoShadowStyle()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoShadowStyle::initClass(void)
 {

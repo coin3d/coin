@@ -71,7 +71,9 @@ SoDecomposeVec2f::SoDecomposeVec2f()
   SO_ENGINE_ADD_OUTPUT(y,SoMFFloat);
 }
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoDecomposeVec2f::initClass()
 {

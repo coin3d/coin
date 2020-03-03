@@ -108,6 +108,9 @@ SoMultipleCopy::~SoMultipleCopy()
 }
 
 // Doc in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoMultipleCopy::initClass(void)
 {

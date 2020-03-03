@@ -97,7 +97,9 @@ SoInterpolate::SoInterpolate(void)
   SO_ENGINE_ADD_INPUT(alpha, (0.0f));
 }
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoInterpolate::initClass(void)
 {

@@ -146,7 +146,9 @@ SoPathSwitch::~SoPathSwitch()
 {
 }
 
-// doc in parent
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoPathSwitch::initClass(void)
 {

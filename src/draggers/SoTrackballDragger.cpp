@@ -182,7 +182,9 @@ get_current_time(void)
 
 SO_KIT_SOURCE(SoTrackballDragger);
 
-// doc in superclass
+/*!
+  \copydetails SoDragger::initClass(void)
+*/
 void
 SoTrackballDragger::initClass(void)
 {

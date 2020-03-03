@@ -221,6 +221,9 @@ SoSceneTextureCubeMap::~SoSceneTextureCubeMap()
 }
 
 // Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoSceneTextureCubeMap::initClass(void)
 {

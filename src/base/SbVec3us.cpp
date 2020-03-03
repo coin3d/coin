@@ -39,7 +39,7 @@
 #include "coinString.h"
 
 /*!
-  \class SbVec3us Inventor/SbVec3us.h
+  \class SbVec3us SbVec3us.h Inventor/SbVec3us.h
 
   \since Coin 2.5
 */

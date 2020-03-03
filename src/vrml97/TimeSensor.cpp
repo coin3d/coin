@@ -245,7 +245,9 @@ public:
 
 SO_NODEENGINE_SOURCE(SoVRMLTimeSensor);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLTimeSensor::initClass(void) // static
 {

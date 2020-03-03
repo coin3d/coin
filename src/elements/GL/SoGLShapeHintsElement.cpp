@@ -79,8 +79,7 @@
 SO_ELEMENT_SOURCE(SoGLShapeHintsElement);
 
 /*!
-  This static method initializes static data for the
-  SoGLShapeHintsElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -90,7 +89,7 @@ SoGLShapeHintsElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoGLShapeHintsElement::~SoGLShapeHintsElement(void)

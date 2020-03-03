@@ -47,11 +47,11 @@
   The SoError class is not designed to be particularly useful for
   "direct use". Within the Coin library it is only used through its
   subclasses.
-
 */
 
 // *************************************************************************
 
+/*! \file SoError.h */
 #include <Inventor/errors/SoErrors.h>
 
 #include "coindefs.h"
@@ -70,6 +70,13 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
+
+/*!
+  \typedef void SoErrorCB(const class SoError * error, void * data)
+
+  The type definition of the callback function that is called for messages posted via
+  this class.
+*/
 
 // *************************************************************************
 
@@ -94,7 +101,6 @@ SoError::callbackForwarder(const cc_error * error, void * COIN_UNUSED_ARG(data))
   assert(SoError::callback != NULL);
   (*SoError::callback)(&wrappederr, SoError::callbackData);
 }
-
 
 /*!
   \fn SoError::~SoError()

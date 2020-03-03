@@ -84,7 +84,10 @@ float SoGLLineWidthElement::sizerange[2] = { RANGE_NOT_CHECKED, -1.0f};
 
 SO_ELEMENT_SOURCE(SoGLLineWidthElement);
 
-// doc in super
+/*!
+  \copydetails SoElement::initClass(void)
+*/
+
 void
 SoGLLineWidthElement::initClass(void)
 {
@@ -98,14 +101,14 @@ SoGLLineWidthElement::~SoGLLineWidthElement(void)
 {
 }
 
-// doc in super
+// doc in superclass
 void
 SoGLLineWidthElement::init(SoState * stateptr)
 {
   inherited::init(stateptr);
 }
 
-// doc in super
+// doc in superclass
 void
 SoGLLineWidthElement::push(SoState * stateptr)
 {
@@ -116,7 +119,7 @@ SoGLLineWidthElement::push(SoState * stateptr)
   prev->capture(stateptr);
 }
 
-// doc in super
+// doc in superclass
 void
 SoGLLineWidthElement::pop(SoState * COIN_UNUSED_ARG(stateptr), const SoElement * prevTopElement)
 {
@@ -126,7 +129,7 @@ SoGLLineWidthElement::pop(SoState * COIN_UNUSED_ARG(stateptr), const SoElement *
   }
 }
 
-// doc in super
+// doc in superclass
 void
 SoGLLineWidthElement::setElt(float width)
 {

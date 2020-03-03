@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SbTri3f collision/SbTri3f.h
+  \class SbTri3f SbTri3f.h collision/SbTri3f.h
   \brief A class that at this point in time has one purpose - figuring out
   if two triangles intersect each other.
 

@@ -192,7 +192,9 @@ SoSelectOne::initialize(const SoType inputfieldtype)
   this->output->setContainer(this);
 }
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoSelectOne::initClass(void)
 {

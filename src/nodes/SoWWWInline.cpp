@@ -249,6 +249,9 @@ SoWWWInline::~SoWWWInline()
 }
 
 // doc in super
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoWWWInline::initClass(void)
 {

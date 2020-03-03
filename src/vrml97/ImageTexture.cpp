@@ -311,7 +311,9 @@ SO_NODE_SOURCE(SoVRMLImageTexture);
 
 // *************************************************************************
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLImageTexture::initClass(void) // static
 {

@@ -147,7 +147,9 @@ public:
 SO_KIT_SOURCE(SoJackDragger);
 
 
-// doc in superclass
+/*!
+  \copydetails SoDragger::initClass(void)
+*/
 void
 SoJackDragger::initClass(void)
 {

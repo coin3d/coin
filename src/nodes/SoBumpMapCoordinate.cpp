@@ -103,7 +103,9 @@ SoBumpMapCoordinate::~SoBumpMapCoordinate()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoBumpMapCoordinate::initClass(void)
 {

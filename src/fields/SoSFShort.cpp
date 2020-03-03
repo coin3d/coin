@@ -58,7 +58,9 @@ SO_SFIELD_SOURCE(SoSFShort, short, short);
 
 // *************************************************************************
 
-// Override parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoSFShort::initClass(void)
 {

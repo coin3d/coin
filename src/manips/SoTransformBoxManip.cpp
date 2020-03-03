@@ -91,7 +91,9 @@ public:
 SO_NODE_SOURCE(SoTransformBoxManip);
 
 
-// doc in super
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoTransformBoxManip::initClass(void)
 {

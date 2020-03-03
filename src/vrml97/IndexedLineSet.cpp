@@ -182,6 +182,9 @@ class SoVRMLIndexedLineSetP {
 
 SO_NODE_SOURCE(SoVRMLIndexedLineSet);
 
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLIndexedLineSet::initClass(void) // static
 {

@@ -475,7 +475,9 @@ SoTextureCombine::~SoTextureCombine()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTextureCombine::initClass(void)
 {

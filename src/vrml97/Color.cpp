@@ -132,7 +132,9 @@ private:
 
 SO_NODE_SOURCE(SoVRMLColor);
 
-// doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLColor::initClass(void) // static
 {

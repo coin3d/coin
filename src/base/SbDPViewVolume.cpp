@@ -1378,6 +1378,10 @@ SbDPViewVolume::getPlaneRectangle(const double distance, SbVec3d & lowerleft,
   }
 }
 
+/*!
+  Copies all values of a single precision SbViewVolume \a vv 
+  to the current double precision instance.
+*/
 void 
 SbDPViewVolume::copyValues(SbViewVolume & vv)
 {

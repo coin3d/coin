@@ -134,7 +134,9 @@ SO_NODE_SOURCE(SoVRMLSwitch);
 
 // *************************************************************************
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLSwitch::initClass(void)
 {

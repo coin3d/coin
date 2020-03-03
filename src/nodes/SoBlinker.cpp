@@ -155,7 +155,9 @@ SoBlinker::~SoBlinker()
   delete PRIVATE(this);
 }
 
-// doc in parent
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoBlinker::initClass(void)
 {

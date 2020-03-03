@@ -151,6 +151,9 @@ SoTextureCoordinateSphere::~SoTextureCoordinateSphere()
 }
 
 // Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTextureCoordinateSphere::initClass(void)
 {

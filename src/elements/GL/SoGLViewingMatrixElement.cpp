@@ -62,7 +62,10 @@
 
 SO_ELEMENT_SOURCE(SoGLViewingMatrixElement);
 
-// doc in parent
+/*!
+  \copydetails SoElement::initClass(void)
+*/
+
 void
 SoGLViewingMatrixElement::initClass(void)
 {
@@ -71,7 +74,7 @@ SoGLViewingMatrixElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 SoGLViewingMatrixElement::~SoGLViewingMatrixElement(void)
 {

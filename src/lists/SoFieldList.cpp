@@ -68,29 +68,45 @@
 /*!
   \fn void SoFieldList::set(const int index, SoField * item)
 
-  Overridden from parent to accept an SoField pointer argument.
+  Overloaded from parent to accept an SoField pointer argument.
 */
 
 /*!
   \fn void SoFieldList::append(SoField * field)
 
-  Overridden from parent to accept an SoField pointer argument.
+  \copydetails SbPList::append()
+
+  Overloaded from parent to accept an SoField pointer argument.
+
+  \sa SbPList::append()
 */
 
 /*!
   \fn void SoFieldList::insert(SoField * field, const int insertbefore)
 
-  Overridden from parent to accept an SoField pointer argument.
+  \copydetails SbPList::insert(void * item, const int insertbefore)
+
+  Overloaded from parent to accept an SoField pointer argument.
+
+  \sa SbPList::insert()
 */
   
 /*!
   \fn SoField * SoFieldList::operator [](const int idx) const
 
-  Overridden from parent to return an SoField pointer.
+  \copydetails SbPList::operator[](const int index) const
+
+  Overloaded from parent to return an SoField pointer.
+
+  \sa SbPList::operator[]()
 */
 
 /*!
   \fn SoField * SoFieldList::get(const int idx) const
 
-  Overridden from parent to return an SoField pointer.
+  \copydetails SbPList::get(const int index) const
+
+  Overloaded from parent to return an SoField pointer.
+
+  \sa SbPList::get()
 */

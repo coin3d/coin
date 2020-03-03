@@ -52,8 +52,7 @@
 SO_ELEMENT_SOURCE(SoNormalBindingElement);
 
 /*!
-  This static method initializes static methods for the
-  SoNormalBindingElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -63,7 +62,7 @@ SoNormalBindingElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoNormalBindingElement::~SoNormalBindingElement(void)
@@ -82,7 +81,10 @@ SoNormalBindingElement::set(SoState * const state,
   SoInt32Element::set(classStackIndex, state, node, binding);
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes the element to its default value. The default
+  value for normalBinding is SoNormalBindingElement::DEFAULT.
+*/
 
 void
 SoNormalBindingElement::init(SoState * state)

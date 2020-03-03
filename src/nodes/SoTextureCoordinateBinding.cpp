@@ -123,6 +123,9 @@ SoTextureCoordinateBinding::~SoTextureCoordinateBinding()
 }
 
 // Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTextureCoordinateBinding::initClass(void)
 {

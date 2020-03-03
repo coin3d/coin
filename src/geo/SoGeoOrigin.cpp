@@ -271,7 +271,9 @@ SoGeoOrigin::~SoGeoOrigin()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoGeoOrigin::initClass(void)
 {

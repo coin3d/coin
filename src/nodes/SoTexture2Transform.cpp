@@ -121,6 +121,9 @@ SoTexture2Transform::~SoTexture2Transform()
 }
 
 // Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTexture2Transform::initClass(void)
 {

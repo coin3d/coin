@@ -112,7 +112,9 @@ SoLightKit::~SoLightKit()
 {
 }
 
-// Documented in superclass.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoLightKit::initClass(void)
 {

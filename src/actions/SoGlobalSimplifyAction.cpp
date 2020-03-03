@@ -35,7 +35,7 @@
 // obviously).  --mortene.
 
 /*!
-  \class SoGlobalSimplifyAction Inventor/actions/SoGlobalSimplifyAction.h
+  \class SoGlobalSimplifyAction SoGlobalSimplifyAction.h Inventor/actions/SoGlobalSimplifyAction.h
   \brief The SoGlobalSimplifyAction class is for globally simplifying the
   geometry of a scene graph, globally.
 */
@@ -47,7 +47,9 @@
 
 SO_ACTION_SOURCE(SoGlobalSimplifyAction);
 
-// Override from parent class.
+/*!
+  \copydetails SoAction::initClass(void)
+*/
 void
 SoGlobalSimplifyAction::initClass(void)
 {

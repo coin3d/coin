@@ -132,6 +132,9 @@ SoTexture3Transform::~SoTexture3Transform()
 }
 
 // Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTexture3Transform::initClass(void)
 {

@@ -70,7 +70,9 @@
 
 SO_NODE_ABSTRACT_SOURCE(SoVRMLLight);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLLight::initClass(void)
 {

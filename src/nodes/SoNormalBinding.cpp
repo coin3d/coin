@@ -72,6 +72,92 @@
   been obsoleted and are both mapped to
   SoNormalBinding::PER_VERTEX_INDEXED.
 */
+/*!
+  \var SoNormalBinding::Binding SoNormalBinding::PER_PART
+
+  Get a new normal from the pool of normal values for each \e part
+  of the shape, where the definition of a \e part depends on the shape
+  type.
+
+  Normals are fetched from index 0 and onwards, incrementing the
+  index into the normal pool by 1 for each new part in the order
+  defined by the particular shape type.
+
+  Important portability note: it was previously allowed with the SGI
+  Inventor library to supply too few colors versus the number of parts
+  of the subsequent shapes in the scene graph. Coloring would then
+  cycle through the available colors.
+
+  Since SGI Open Inventor v2.1, this was disallowed, though -- enough
+  normals for all parts must be supplied, or behavior will be
+  unspecified (likely to cause a crash, in fact).  Note that the
+  &laquo;Inventor Mentor&raquo; book contains a description of the \e old, \e
+  invalid behavior in Chapter 5, section "Binding Nodes" (middle of
+  page 128 in the 10th printing).
+*/
+/*!
+  \var SoNormalBinding::Binding SoNormalBinding::PER_PART_INDEXED
+
+  Get a new normal from the pool of normal values for each \e part
+  of the shape, where the definition of a \e part depends on the shape
+  type.
+
+  Normals are fetched by the index value settings of the shape.
+*/
+/*!
+  \var SoNormalBinding::Binding SoNormalBinding::PER_FACE
+
+  Get a new normal from the pool of normal values for each polygon
+  \e face of the shape.
+
+  Normals are fetched from index 0 and onwards, incrementing the
+  index into the normal pool by 1 for each new face of the shape
+  node.
+
+  Note that individual faces after tessellation of complex shapes
+  (like SoCylinder nodes) are \e not considered to be separate
+  entities, and so this binding will be treated in the same manner as
+  SoNormalBinding::PER_PART for those.
+*/
+/*!
+  \var SoNormalBinding::Binding SoNormalBinding::PER_FACE_INDEXED
+
+  Get a new normal from the pool of normal values for each polygon
+  \e face of the shape.
+
+  Normals are fetched by the index value settings of the shape.
+
+  Note that individual faces after tessellation of complex shapes
+  (like SoCylinder nodes) are \e not considered to be separate
+  entities, and so this binding will be treated in the same manner as
+  SoNormalBinding::PER_PART_INDEXED for those.
+*/
+/*!
+  \var SoNormalBinding::Binding SoNormalBinding::PER_VERTEX
+
+  Get a new normal from the pool of normal values for each
+  polygon, line or point \e vertex of the shape.
+
+  Normals are fetched from index 0 and onwards, incrementing the
+  index into the normal pool by 1 for each new vertex of the shape
+  node.
+*/
+/*!
+  \var SoNormalBinding::Binding SoNormalBinding::PER_VERTEX_INDEXED
+
+  Get a new normal from the pool of normal values for each
+  polygon, line or point \e vertex of the shape.
+
+  Normals are fetched by the index value settings of the shape.
+*/
+/*!
+  \var SoNormalBinding::Binding SoNormalBinding::DEFAULT
+  Obsolete. Don't use this value.
+*/
+/*!
+  \var SoNormalBinding::Binding SoNormalBinding::NONE
+  Obsolete. Don't use this value.
+*/
 
 /*!
   \var SoSFEnum SoNormalBinding::value
@@ -113,7 +199,9 @@ SoNormalBinding::~SoNormalBinding()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoNormalBinding::initClass(void)
 {

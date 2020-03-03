@@ -127,7 +127,9 @@ public:
 SO_KIT_SOURCE(SoTransformBoxDragger);
 
 
-// doc in superclass
+/*!
+  \copydetails SoDragger::initClass(void)
+*/
 void
 SoTransformBoxDragger::initClass(void)
 {

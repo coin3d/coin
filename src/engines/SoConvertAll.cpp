@@ -677,7 +677,9 @@ static void convertall_cleanup_dict(void)
 
 } // extern "C"
 
-// doc in super
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoConvertAll::initClass(void)
 {

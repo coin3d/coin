@@ -83,8 +83,7 @@ SoTextureCombineElement::SoTextureCombineElement(void)
 }
 
 /*!
-  This static method initializes static data for the
-  SoTextureCombineElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -94,7 +93,7 @@ SoTextureCombineElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoTextureCombineElement::~SoTextureCombineElement()
@@ -102,7 +101,7 @@ SoTextureCombineElement::~SoTextureCombineElement()
   delete PRIVATE(this);
 }
 
-//! FIXME: write doc.
+// Doc from superclass.
 
 void
 SoTextureCombineElement::init(SoState * state)

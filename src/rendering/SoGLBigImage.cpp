@@ -227,6 +227,7 @@ SoGLBigImage::~SoGLBigImage()
   delete PRIVATE(this);
 }
 
+// Doc in superclass.
 void
 SoGLBigImage::unref(SoState * state)
 {
@@ -235,7 +236,7 @@ SoGLBigImage::unref(SoState * state)
 }
 
 /*!
-  \COININTERNAL
+  This static method initializes static data for the SoGLBigImage class.
 */
 void
 SoGLBigImage::initClass(void)
@@ -246,7 +247,10 @@ SoGLBigImage::initClass(void)
   coin_atexit((coin_atexit_f*) soglbigimagep_cleanup, CC_ATEXIT_NORMAL);
 }
 
-// Doc in superclass.
+/*!
+  This static method returns the SoType object associated with
+  objects of this class.
+*/
 SoType
 SoGLBigImage::getClassTypeId(void)
 {

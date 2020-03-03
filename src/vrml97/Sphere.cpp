@@ -101,7 +101,9 @@
 
 SO_NODE_SOURCE(SoVRMLSphere);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLSphere::initClass(void)
 {

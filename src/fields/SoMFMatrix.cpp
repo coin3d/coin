@@ -61,7 +61,9 @@ SO_MFIELD_SOURCE(SoMFMatrix, SbMatrix, const SbMatrix &);
 
 // *************************************************************************
 
-// Override from parent.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoMFMatrix::initClass(void)
 {

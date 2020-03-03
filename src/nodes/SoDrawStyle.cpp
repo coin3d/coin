@@ -197,7 +197,9 @@ SoDrawStyle::~SoDrawStyle()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoDrawStyle::initClass(void)
 {

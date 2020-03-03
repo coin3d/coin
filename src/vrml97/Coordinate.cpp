@@ -83,7 +83,9 @@ class SoVRMLCoordinateP {
   SoVBO * vbo;
 };
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLCoordinate::initClass(void) // static
 {

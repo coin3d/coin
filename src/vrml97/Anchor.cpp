@@ -202,7 +202,9 @@ void * SoVRMLAnchor::userdata;
 
 SO_NODE_SOURCE(SoVRMLAnchor);
 
-// doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLAnchor::initClass(void) // static
 {

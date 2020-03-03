@@ -160,6 +160,9 @@ SoPickStyle::~SoPickStyle()
 }
 
 // doc in super
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoPickStyle::initClass(void)
 {

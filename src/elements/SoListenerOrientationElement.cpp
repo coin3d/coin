@@ -69,8 +69,7 @@
 SO_ELEMENT_SOURCE(SoListenerOrientationElement);
 
 /*!
-  This static method initializes static data for the
-  SoListenerOrientationElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -80,7 +79,7 @@ SoListenerOrientationElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoListenerOrientationElement::~SoListenerOrientationElement(void)

@@ -113,7 +113,9 @@ SO_NODE_SOURCE(SoTransformManip);
 
 // *************************************************************************
 
-// Documented in superclass
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoTransformManip::initClass(void)
 {

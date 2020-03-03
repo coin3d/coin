@@ -128,7 +128,9 @@ public:
 SO_KIT_SOURCE(SoDirectionalLightDragger);
 
 
-// Doc in superclass.
+/*!
+  \copydetails SoDragger::initClass(void)
+*/
 void
 SoDirectionalLightDragger::initClass(void)
 {

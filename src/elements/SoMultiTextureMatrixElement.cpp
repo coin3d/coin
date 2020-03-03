@@ -61,7 +61,9 @@ public:
 
 SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoMultiTextureMatrixElement);
 
-// doc from parent
+/*!
+  \copydetails SoElement::initClass(void)
+*/
 void
 SoMultiTextureMatrixElement::initClass(void)
 {
@@ -69,7 +71,7 @@ SoMultiTextureMatrixElement::initClass(void)
 }
 
 /*!
-  The constructor.
+  Constructor.
  */
 SoMultiTextureMatrixElement::SoMultiTextureMatrixElement(void)
 {
@@ -80,7 +82,7 @@ SoMultiTextureMatrixElement::SoMultiTextureMatrixElement(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 SoMultiTextureMatrixElement::~SoMultiTextureMatrixElement(void)
 {

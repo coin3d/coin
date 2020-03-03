@@ -60,7 +60,9 @@
 
 SO_NODE_ABSTRACT_SOURCE(SoVRMLTexture);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLTexture::initClass(void)
 {

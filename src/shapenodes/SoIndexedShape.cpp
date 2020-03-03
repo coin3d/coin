@@ -95,7 +95,9 @@ SoIndexedShape::~SoIndexedShape()
 {
 }
 
-// Documented in superclass.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoIndexedShape::initClass(void)
 {

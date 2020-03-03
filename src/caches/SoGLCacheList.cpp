@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoGLCacheList include/Inventor/caches/SoGLCacheList.h
+  \class SoGLCacheList SoGLCacheList.h Inventor/caches/SoGLCacheList.h
   \brief The SoGLCacheList class is used to store and manage OpenGL caches.
 
   \ingroup caches

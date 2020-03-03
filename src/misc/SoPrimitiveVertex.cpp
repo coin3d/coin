@@ -215,6 +215,16 @@ SoPrimitiveVertex::~SoPrimitiveVertex()
 */
 
 /*!
+  \fn void SoPrimitiveVertex::setTextureCoords(float tx, float ty, float tz, float tw)
+
+  Used internally from library client code setting up an
+  SoPrimitiveVertex instance.
+
+  \COIN_FUNCTION_EXTENSION
+  \since Coin 2.5
+*/
+
+/*!
   \fn void SoPrimitiveVertex::setMaterialIndex(int index)
 
   Used internally from library client code setting up an

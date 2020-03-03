@@ -67,8 +67,37 @@
 /*!
   \enum SoAntiSquish::Sizing
 
-  Different strategies for "unsquishing" a scale. Values are used by
+  Different strategies for "unsquishing" a nonuniform scaling. Values are used by
   the SoAntiSquish::sizing field.
+*/
+/*!
+  \var SoAntiSquish::Sizing SoAntiSquish::X
+  The X-axis scaling factor is used.
+*/
+/*!
+  \var SoAntiSquish::Sizing SoAntiSquish::Y
+  The Y-axis scaling factor is used.
+*/
+/*!
+  \var SoAntiSquish::Sizing SoAntiSquish::Z
+  The Z-axis scaling factor is used.
+*/
+/*!
+  \var SoAntiSquish::Sizing SoAntiSquish::AVERAGE_DIMENSION
+  The average value of the scaling factors is used.
+*/
+/*!
+  \var SoAntiSquish::Sizing SoAntiSquish::BIGGEST_DIMENSION
+  The biggest of all scaling factors is used.
+*/
+/*!
+  \var SoAntiSquish::Sizing SoAntiSquish::SMALLEST_DIMENSION
+  The smallest of all scaling factors is used.
+*/
+/*!
+  \var SoAntiSquish::Sizing SoAntiSquish::LONGEST_DIAGONAL
+  A unit cube is transformed by the current state transformation matrix.
+  The scaling factor is set to the value of its longest diagonal.
 */
 
 
@@ -124,7 +153,9 @@ SoAntiSquish::~SoAntiSquish()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoAntiSquish::initClass(void)
 {

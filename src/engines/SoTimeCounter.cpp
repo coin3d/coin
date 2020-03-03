@@ -160,7 +160,9 @@ SoTimeCounter::SoTimeCounter(void)
   this->timeIn.connectFrom(realtime);
 }
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTimeCounter::initClass(void)
 {

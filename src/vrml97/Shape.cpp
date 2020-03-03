@@ -175,6 +175,9 @@ static void sovrmlshape_cleanup(void) {
 
 // *************************************************************************
 
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLShape::initClass(void) // static
 {

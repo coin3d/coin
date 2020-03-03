@@ -173,7 +173,9 @@ SoEnvironment::~SoEnvironment()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoEnvironment::initClass(void)
 {

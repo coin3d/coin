@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoRenderManager Inventor/SoRenderManager.h
+  \class SoRenderManager SoRenderManager.h Inventor/SoRenderManager.h
   \brief The SoRenderManager class is used for controlling the rendering of a scene graph.
 
   You can use this class to configure things like clipping planes,

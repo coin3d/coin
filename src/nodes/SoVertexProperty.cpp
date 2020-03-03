@@ -296,6 +296,9 @@ SoVertexProperty::~SoVertexProperty()
 }
 
 // Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoVertexProperty::initClass(void)
 {

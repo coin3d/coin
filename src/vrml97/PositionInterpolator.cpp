@@ -79,7 +79,9 @@
 
 SO_NODEENGINE_SOURCE(SoVRMLPositionInterpolator);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLPositionInterpolator::initClass(void) // static
 {

@@ -119,6 +119,9 @@ foreignfilekit_cleanup(void)
   SoForeignFileKitP::fileexts = NULL;
 }
 
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoForeignFileKit::initClass(void)
 {

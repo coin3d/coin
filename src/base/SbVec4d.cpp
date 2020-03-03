@@ -316,7 +316,7 @@ SbVec4d::setValue(const SbVec4i32 & v)
 */
 
 /*!
-  SbVec4d & SbVec4d::operator /= (double d)
+  \fn SbVec4d & SbVec4d::operator /= (double d)
 
   Divides components of vector with value \a d. Returns reference to self.
 */

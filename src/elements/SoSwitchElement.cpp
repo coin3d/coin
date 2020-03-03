@@ -47,7 +47,7 @@
 SO_ELEMENT_SOURCE(SoSwitchElement);
 
 /*!
-  This static method initializes static data for the SoSwitchElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -57,7 +57,7 @@ SoSwitchElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoSwitchElement::~SoSwitchElement(void)
@@ -74,7 +74,10 @@ SoSwitchElement::set(SoState * const state,
   SoInt32Element::set(classStackIndex, state, node, index);
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes the element to its default value. The default
+  value is -1 (SO_SWITCH_NONE).
+*/
 
 void
 SoSwitchElement::init(SoState * state)

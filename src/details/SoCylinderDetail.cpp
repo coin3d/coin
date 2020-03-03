@@ -69,7 +69,9 @@ SoCylinderDetail::~SoCylinderDetail()
 {
 }
 
-// doc in super
+/*!
+  \copybrief SoDetail::initClass(void)
+*/
 void
 SoCylinderDetail::initClass(void)
 {

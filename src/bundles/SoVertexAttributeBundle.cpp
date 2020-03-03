@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoVertexAttributeBundle include/Inventor/bundles/SoVertexAttributeBundle.h
+  \class SoVertexAttributeBundle SoVertexAttributeBundle.h Inventor/bundles/SoVertexAttributeBundle.h
   \brief The SoVertexAttributeBundle class simplifies vertex attribute handling.
 
   \ingroup bundles

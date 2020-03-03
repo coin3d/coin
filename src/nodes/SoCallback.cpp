@@ -90,7 +90,9 @@ SoCallback::~SoCallback()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoCallback::initClass(void)
 {

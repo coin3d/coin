@@ -136,7 +136,9 @@ SO_NODE_SOURCE(SoVRMLAppearance);
 
 // *************************************************************************
 
-// doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLAppearance::initClass(void)
 {

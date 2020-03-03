@@ -126,7 +126,9 @@ SoTransparencyType::~SoTransparencyType()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTransparencyType::initClass(void)
 {

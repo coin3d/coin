@@ -114,7 +114,9 @@ SO_ENGINE_SOURCE(SoElapsedTime);
 
 // *************************************************************************
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoElapsedTime::initClass(void)
 {

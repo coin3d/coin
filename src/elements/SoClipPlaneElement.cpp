@@ -65,7 +65,10 @@ SoClipPlaneElement::so_plane_data::so_plane_data(const SbPlane &planeref, const 
 
 SO_ELEMENT_SOURCE(SoClipPlaneElement);
 
-// doc from parent
+/*!
+  \copydetails SoElement::initClass(void)
+*/
+
 void
 SoClipPlaneElement::initClass(void)
 {
@@ -73,7 +76,7 @@ SoClipPlaneElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 SoClipPlaneElement::~SoClipPlaneElement()
 {

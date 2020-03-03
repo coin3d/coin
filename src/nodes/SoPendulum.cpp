@@ -128,7 +128,9 @@ SoPendulum::~SoPendulum()
   this->timer->unref();
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoPendulum::initClass(void)
 {

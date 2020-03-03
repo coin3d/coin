@@ -31,11 +31,19 @@
 \**************************************************************************/
 
 /*!
-  \class SbBox3i32 Inventor/SbBox3i32.h
-*/
-// FIXME: class doc missing.  -mortene.
+  \class SbBox3i32 SbBox3i32.h Inventor/SbBox3i32.h
+  \brief The SbBox3i32 class is a 3 dimensional box with 32-bit
+  integer coordinates.
 
-// *************************************************************************
+  \ingroup base
+
+  This box class is used by other classes in Coin for data
+  exchange. It provides storage for two box corners with 32-bit integer
+  coordinates, which is among other things useful for representing
+  screen or canvas areas in absolute window coordinates.
+
+  \sa SbBox2f, SbBox2d, SbBox3s, SbBox3f, SbBox3d, SbXfBox3f.
+*/
 
 #include <Inventor/SbBox3i32.h>
 
@@ -48,6 +56,81 @@
 #include <Inventor/errors/SoDebugError.h>
 
 // *************************************************************************
+
+/*!
+  \fn SbBox3i32::SbBox3i32(void)
+  The default constructor makes an empty box.
+*/
+
+/*!
+  \fn SbBox3i32::SbBox3i32(int32_t xmin, int32_t ymin, int32_t zmin, int32_t xmax, int32_t ymax, int32_t zmax)
+
+  Constructs a box with the given corners.
+
+  \a xmin should be less than \a xmax, \a ymin should be less than
+  \a ymax and \a zmin should be less than \a zmax if you want to make
+  a valid box.
+*/
+
+/*!
+  \fn SbBox3i32::SbBox3i32(const SbVec3i32 & minpoint, const SbVec3i32 & maxpoint)
+
+  Constructs a box with the given corners.
+
+  The coordinates of \a minpoint should be less than the coordinates of
+  \a maxpoint if you want to make a valid box.
+*/
+
+/*!
+  \fn SbBox3i32::SbBox3i32(const SbBox3s & box)
+
+  Constructs an SbBox3i32 instance from the value in an SbBox3s instance.
+
+  \since Coin 2.5
+*/
+
+/*!
+  \fn SbBox3i32::SbBox3i32(const SbBox3f & box)
+
+  Constructs an SbBox3i32 instance from the value in an SbBox3f instance.
+
+  \since Coin 2.5
+*/
+
+/*!
+  \fn SbBox3i32::SbBox3i32(const SbBox3d & box)
+
+  Constructs an SbBox3i32 instance from the value in an SbBox3d instance.
+
+  \since Coin 2.5
+*/
+
+/*!
+  \fn SbBox3i32 & SbBox3i32::setBounds(int32_t xmin, int32_t ymin, int32_t zmin, int32_t xmax, int32_t ymax, int32_t zmax)
+
+  Reset the boundaries of the box.
+
+  \a xmin should be less than \a xmax, \a ymin should be less than
+  \a ymax and \a zmin should be less than \a zmax if you want to make
+  a valid box.
+
+  Returns reference to self.
+
+  \sa getBounds().
+*/
+
+/*!
+  \fn SbBox3i32 & SbBox3i32::setBounds(const SbVec3i32 & minpoint, const SbVec3i32 & maxpoint)
+
+  Reset the boundaries of the box with the given corners.
+
+  The coordinates of \a minpoint should be less than the coordinates of
+  \a maxpoint if you want to make a valid box.
+
+  Returns reference to self.
+
+  \sa getBounds().
+*/
 
 /*!
   Reset the boundaries to the boundaries of the given \a box.
@@ -109,6 +192,46 @@ SbBox3i32::setBounds(const SbBox3d & box)
   return *this;
 }
 
+/*!
+  \fn const SbVec3i32 & SbBox3i32::getMin(void) const
+
+  Returns the minimum point. This should usually be the lower left corner
+  point of the box.
+
+  \sa getOrigin(), getMax().
+*/
+
+/*!
+  \fn const SbVec3i32 & SbBox3i32::getMax(void) const
+
+  Returns the maximum point. This should usually be the upper right corner
+  point of the box.
+
+  \sa getMin().
+*/
+
+/*!
+  \fn SbVec3i32 & SbBox3i32::getMin(void)
+
+  Returns a modifiable reference to the minimum point.
+*/
+
+/*!
+  \fn SbVec3i32 & SbBox3i32::getMax(void)
+
+  Returns a modifiable reference to the maximum point.
+*/
+
+/*!
+  \fn SbVec3i32 SbBox3i32::getCenter(void) const
+
+  Returns the center point of the box.
+*/
+
+/*!
+  Extend the boundaries of the box by the given point, i.e. make the
+  point fit inside the box if it isn't already within it.
+ */
 void
 SbBox3i32::extendBy(const SbVec3i32 & point)
 {
@@ -124,28 +247,42 @@ SbBox3i32::extendBy(const SbVec3i32 & point)
   }
 }
 
+/*!
+  Extend the boundaries of the box by the given \a box parameter. This
+  is equal to calling extendBy() twice with the corner points.
+ */
 void
-SbBox3i32::extendBy(const SbBox3i32 & bb)
+SbBox3i32::extendBy(const SbBox3i32 & box)
 {
-  if (!bb.isEmpty()) {
-    extendBy(bb.getMin());
-    extendBy(bb.getMax());
+  if (!box.isEmpty()) {
+    extendBy(box.getMin());
+    extendBy(box.getMax());
   }
 }
 
+/*!
+  Extend the boundaries of the box by the given point, i.e. make the
+  point fit inside the box if it isn't already within it.
+ */
 void
-SbBox3i32::extendBy(const SbVec3f & pt)
+SbBox3i32::extendBy(const SbVec3f & point)
 {
-  SbVec3i32 ptmax(pt), ptmin(pt);
-  if (float(ptmax[0]) < pt[0]) ++ptmax[0];
-  if (float(ptmax[1]) < pt[1]) ++ptmax[1];
-  if (float(ptmax[2]) < pt[2]) ++ptmax[2];
+  SbVec3i32 ptmax(point), ptmin(point);
+  if (float(ptmax[0]) < point[0]) ++ptmax[0];
+  if (float(ptmax[1]) < point[1]) ++ptmax[1];
+  if (float(ptmax[2]) < point[2]) ++ptmax[2];
   extendBy(ptmin);
   extendBy(ptmax);
 }
 
+/*!
+  Transform the box by the matrix, and change its boundaries to contain
+  the transformed box.
+
+  Doesn't touch illegal/empty boxes.
+*/
 void
-SbBox3i32::transform(const SbMatrix & m)
+SbBox3i32::transform(const SbMatrix & matrix)
 {
 #if COIN_DEBUG
   if (this->isEmpty()) {
@@ -164,12 +301,55 @@ SbBox3i32::transform(const SbMatrix & m)
   for (int i = 0; i < 8; ++i) {
     //Find all corners the "binary" way :-)
     corner.setValue(points[(i&4)>>2][0], points[(i&2)>>1][1], points[i&1][2]);
-    m.multVecMatrix(corner, dst);
+    matrix.multVecMatrix(corner, dst);
     newbox.extendBy(dst);
   }
   this->setBounds(newbox.minpt, newbox.maxpt);
 }
 
+/*!
+  \fn void SbBox3i32::getBounds(int32_t & xmin, int32_t & ymin, int32_t & zmin, int32_t & xmax, int32_t & ymax, int32_t & zmax) const
+
+  Returns the box boundaries.
+
+  \sa setBounds().
+*/
+
+/*!
+  \fn void SbBox3i32::getBounds(SbVec3i32 & minpoint, SbVec3i32 & maxpoint) const
+
+  Returns the box corner points.
+
+  \sa setBounds().
+*/
+
+/*!
+  \fn void SbBox3i32::getOrigin(int32_t & originX, int32_t & originY, int32_t & originZ) const
+
+  Returns the coordinates of the box origin (i.e. the lower left corner).
+
+  \sa getMin().
+*/
+
+/*!
+  \fn void SbBox3i32::getSize(int32_t & sizeX, int32_t & sizeY, int32_t & sizeZ) const
+
+  Returns width, height and depth of box.
+*/
+
+/*!
+  \fn SbVec3i32 SbBox3i32::getSize(void) const
+
+  Returns width, height and depth of box as a 3D vector.
+
+  \since Coin 3.0
+*/
+
+/*!
+  Marks this as an empty box.
+
+  \sa isEmpty().
+*/
 void
 SbBox3i32::makeEmpty(void)
 {
@@ -177,36 +357,57 @@ SbBox3i32::makeEmpty(void)
   maxpt.setValue(-std::numeric_limits<int32_t>::max(), -std::numeric_limits<int32_t>::max(), -std::numeric_limits<int32_t>::max());
 }
 
+/*!
+  Check if the given point lies within the boundaries of this box.
+ */
 SbBool
-SbBox3i32::intersect(const SbVec3i32 & pt) const
+SbBox3i32::intersect(const SbVec3i32 & point) const
 {
-  return !(pt[0] < minpt[0] || pt[0] > maxpt[0] ||
-           pt[1] < minpt[1] || pt[1] > maxpt[1] ||
-           pt[2] < minpt[2] || pt[2] > maxpt[2]);
+  return !(point[0] < minpt[0] || point[0] > maxpt[0] ||
+           point[1] < minpt[1] || point[1] > maxpt[1] ||
+           point[2] < minpt[2] || point[2] > maxpt[2]);
 }
 
+/*!
+  Check if \a box lies entirely or partially within the boundaries
+  of this box.
+ */
 SbBool
-SbBox3i32::intersect(const SbBox3i32 & bb) const
+SbBox3i32::intersect(const SbBox3i32 & box) const
 {
-  return !((bb.maxpt[0] < minpt[0]) || (bb.minpt[0] > maxpt[0]) ||
-           (bb.maxpt[1] < minpt[1]) || (bb.minpt[1] > maxpt[1]) ||
-           (bb.maxpt[2] < minpt[2]) || (bb.minpt[2] > maxpt[2]));
+  return !((box.maxpt[0] < minpt[0]) || (box.minpt[0] > maxpt[0]) ||
+           (box.maxpt[1] < minpt[1]) || (box.minpt[1] > maxpt[1]) ||
+           (box.maxpt[2] < minpt[2]) || (box.minpt[2] > maxpt[2]));
 }
 
+/*!
+  Check if the given point lies within the boundaries of this box.
+ */
 SbBool
-SbBox3i32::intersect(const SbVec3f & pt) const
+SbBox3i32::intersect(const SbVec3f & point) const
 {
-  SbVec3i32 ptmax(pt), ptmin(pt);
-  if (float(ptmax[0]) < pt[0]) ++ptmax[0];
-  if (float(ptmax[1]) < pt[1]) ++ptmax[1];
-  if (float(ptmax[2]) < pt[2]) ++ptmax[2];
+  SbVec3i32 ptmax(point), ptmin(point);
+  if (float(ptmax[0]) < point[0]) ++ptmax[0];
+  if (float(ptmax[1]) < point[1]) ++ptmax[1];
+  if (float(ptmax[2]) < point[2]) ++ptmax[2];
   return !((ptmin[0] < minpt[0]) || (ptmax[0] > maxpt[0]) ||
            (ptmin[1] < minpt[1]) || (ptmax[1] > maxpt[1]) ||
            (ptmin[2] < minpt[2]) || (ptmax[2] > maxpt[2]));
 }
 
+/*!
+  Check if the box is outside the view volume defined by the \a mvp
+  matrix. Sets \a cullbits according to which planes we're inside or
+  outside. Bit 0 (0x1) is cleared when box is completely inside left
+  and right clipping planes. Bit 1 (0x2) is cleared when box is inside
+  top and bottom clipping planes. Bit 2 (0x4) is cleared when box is
+  inside near and far clipping planes.
+
+  Returns \c TRUE if box is completely outside one of the clipping
+  planes. \c FALSE otherwise.
+*/
 SbBool
-SbBox3i32::outside(const SbMatrix & MVP, int & cullbits) const
+SbBox3i32::outside(const SbMatrix & mvp, int & cullbits) const
 {
   // FIXME: this function is untested (code written by
   // pederb). 20000615 mortene.
@@ -218,7 +419,7 @@ SbBox3i32::outside(const SbMatrix & MVP, int & cullbits) const
     tmp[0] = i & 4 ? float(minpt[0]) : float(maxpt[0]);
     tmp[1] = i & 2 ? float(minpt[1]) : float(maxpt[1]);
     tmp[2] = i & 1 ? float(minpt[2]) : float(maxpt[2]);
-    MVP.multVecMatrix(tmp, clip[i]);
+    mvp.multVecMatrix(tmp, clip[i]);
   }
   for (int j = 0; j < 3; j++) {
     if (cullbits & (1<<j)) {
@@ -239,10 +440,13 @@ SbBox3i32::outside(const SbMatrix & MVP, int & cullbits) const
   return FALSE;
 }
 
+/*!
+  Return the point on the box closest to the given \a point.
+*/
 SbVec3f
-SbBox3i32::getClosestPoint(const SbVec3f & pt) const
+SbBox3i32::getClosestPoint(const SbVec3f & point) const
 {
-  SbVec3f closest = pt;
+  SbVec3f closest = point;
 
   SbVec3f center = this->getCenter();
   float devx = closest[0] - center[0];
@@ -268,6 +472,50 @@ SbBox3i32::getClosestPoint(const SbVec3f & pt) const
   return closest;
 }
 
+/*!
+  \fn SbBool SbBox3i32::isEmpty(void) const
+
+  Check if this has been marked as an empty box.
+
+  \sa makeEmpty().
+*/
+
+/*!
+  \fn SbBool SbBox3i32::hasVolume(void) const
+
+  Check if the box has been correctly specified and by that virtue
+  has "positive" volume, i.e. all coordinates of its upper right corner
+  (the maximum point) are greater than the corresponding coordinates 
+  of its lower left corner (the minimum point).
+*/
+
+/*!
+  \fn float SbBox3i32::getVolume(void) const
+
+  Returns the volume of the box.
+*/
+
+/*!
+  \fn int operator == (const SbBox3i32 & b1, const SbBox3i32 & b2)
+  \relates SbBox3i32
+
+  Check \a b1 and \a b2 for equality.
+*/
+
+/*!
+  \fn int operator != (const SbBox3i32 & b1, const SbBox3i32 & b2)
+  \relates SbBox3i32
+
+  Check \a b1 and \a b2 for inequality.
+*/
+
+/*!
+  Find the span of the box in the given direction (i.e. how much room in
+  the given direction the box needs). The distance is returned as the minimum
+  and maximum distance from origo to the closest and furthest plane defined
+  by the direction vector and each of the box' corners. The difference
+  between these values gives the span.
+*/
 void
 SbBox3i32::getSpan(const SbVec3f & dir, float & dmin, float & dmax) const
 {

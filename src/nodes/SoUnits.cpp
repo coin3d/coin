@@ -142,7 +142,9 @@ SoUnits::~SoUnits()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoUnits::initClass(void)
 {

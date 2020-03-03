@@ -106,7 +106,9 @@ public:
 SO_KIT_SOURCE(SoScale2UniformDragger);
 
 
-// doc in superclass
+/*!
+  \copydetails SoDragger::initClass(void)
+*/
 void
 SoScale2UniformDragger::initClass(void)
 {

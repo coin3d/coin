@@ -68,7 +68,9 @@ public:
 
 SO_NODE_SOURCE(SoTabBoxManip);
 
-// Doc in superclass.
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoTabBoxManip::initClass(void)
 {

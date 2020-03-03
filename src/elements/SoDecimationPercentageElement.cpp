@@ -47,8 +47,19 @@
 SO_ELEMENT_SOURCE(SoDecimationPercentageElement);
 
 /*!
-  This static method initializes static data for the
-  SoDecimationPercentageElement class.
+  \fn static SoType SoDecimationPercentageElement::getClassTypeId(void)
+
+  This static method returns the class type.
+*/
+
+/*!
+  \fn static int SoDecimationPercentageElement::getClassStackIndex(void)
+
+  This static method returns the state stack index for the class.
+*/
+
+/*!
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -58,7 +69,7 @@ SoDecimationPercentageElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoDecimationPercentageElement::~SoDecimationPercentageElement(// virtual protected

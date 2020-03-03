@@ -284,12 +284,52 @@ SbUniqueId is not really a class, just a \c typedef.
 
 /*!
   \var SoNode::NodeType SoNode::COIN_1_0
-  Node was part of Coin version 1.
+  Node was part of Coin version 1.0.
 */
 
 /*!
   \var SoNode::NodeType SoNode::COIN_2_0
   Node was introduced with Coin 2.0.
+*/
+
+/*!
+  \var SoNode::NodeType SoNode::COIN_2_2
+  Node was introduced with Coin 2.2.
+*/
+
+/*!
+  \var SoNode::NodeType SoNode::COIN_2_3
+  Node was introduced with Coin 2.3.
+*/
+
+/*!
+  \var SoNode::NodeType SoNode::COIN_2_4
+  Node was introduced with Coin 2.4.
+*/
+
+/*!
+  \var SoNode::NodeType SoNode::INVENTOR_5_0
+  Node was introduced with TGS Inventor version 5.0.
+*/
+
+/*!
+  \var SoNode::NodeType SoNode::COIN_2_5
+  Node was introduced with Coin 2.5.
+*/
+
+/*!
+  \var SoNode::NodeType SoNode::COIN_3_0
+  Node was introduced with Coin 3.0.
+*/
+
+/*!
+  \var SoNode::NodeType SoNode::INVENTOR_6_0
+  Node was introduced with TGS Inventor version 6.0.
+*/
+
+/*!
+  \var SoNode::NodeType SoNode::COIN_4_0
+  Node was introduced with Coin 4.0.
 */
 
 /*!
@@ -311,7 +351,10 @@ static void init_action_methods(void);
 
 // *************************************************************************
 
-// Overridden from parent.
+/*!
+  This static method returns the SoType object associated with
+  objects of this class.
+*/
 SoType
 SoNode::getClassTypeId(void)
 {
@@ -519,7 +562,9 @@ SoNode::incNextActionMethodIndex(void)
   SoNode::nextActionMethodIndex++;
 }
 
-// doc in super
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoNode::initClass(void)
 {
@@ -1478,7 +1523,10 @@ SoNode::getNextNodeId(void)
 
 /*!
   \COININTERNAL
- */
+
+  Returns the SoFieldData class which holds information about fields
+  in this node.
+*/
 const SoFieldData **
 SoNode::getFieldDataPtr(void)
 {
@@ -1536,9 +1584,9 @@ SoNode::setCompatibilityTypes(const SoType & nodetype, const uint32_t bitmask)
   compatibility_dict->put(nodetype.getKey(), bitmask);
 }
 
-//
-// called by atexit()
-//
+/*!
+  This static method cleans up static data of the SoNode class.
+*/
 void
 SoNode::cleanupClass(void)
 {

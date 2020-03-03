@@ -121,7 +121,9 @@ SoAppearanceKit::~SoAppearanceKit()
 {
 }
 
-// Documented in superclass.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoAppearanceKit::initClass(void)
 {

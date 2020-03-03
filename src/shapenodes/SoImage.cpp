@@ -297,7 +297,9 @@ SoImage::~SoImage()
   delete this->filenamesensor;
 }
 
-// doc from parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoImage::initClass(void)
 {

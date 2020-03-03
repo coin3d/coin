@@ -61,19 +61,38 @@
   list to \a sizehint. Note that the list will still initially contain
   zero items.
 
-  \sa SbList::SbList(const int sizehint)
+  \sa SbPList::SbPList(const int sizehint)
+*/
+
+/*!
+  \fn void SoPickedPointList::append(SoPickedPoint * pp)
+
+  \copydetails SbPList::append(void * item)
+
+  Overloaded from parent to accept an SoPickedPoint pointer argument.
+
+  \sa SbPList::append()
+*/
+
+/*!
+  \fn void SoPickedPointList::insert(SoPickedPoint * pp, const int insertbefore)
+
+  \copydetails SbPList::insert(void * item, const int insertbefore)
+
+  Overloaded from parent to accept an SoPickedPoint pointer argument.
+
+  \sa SbPList::insert()
 */
 
 /*!
   \fn SoPickedPoint * SoPickedPointList::operator[](const int idx) const
 
-  Returns element at \a idx.
+  \copydetails SbPList::operator[](const int index) const
 
-  Will automatically expand the size of the internal array if \a idx
-  is outside the current bounds of the list. The values of any
-  additional pointers are then set to \c NULL.
+  Overloaded from parent to return an SoPickedPoint pointer.
+
+  \sa SbPList::operator[]()
 */
-
 
 /*!
   Copy constructor. Will copy picked points, not just pointers.
@@ -90,7 +109,11 @@ SoPickedPointList::SoPickedPointList(const SoPickedPointList & l)
 }
 
 /*!
-  Overridden to delete truncated items.
+  \copydetails SbPList::truncate(const int length, const int fit)
+
+  Overloaded from parent to delete truncated items.
+
+  \sa SbPList::truncate()
 */
 void 
 SoPickedPointList::truncate(const int start, const int fit) 
@@ -104,7 +127,11 @@ SoPickedPointList::truncate(const int start, const int fit)
 }
 
 /*!
-  Overridden to destruct the replaced item.
+  \copydetails SbPList::set(const int index, void * item)
+
+  Overloaded from parent to destruct the replaced item.
+
+  \sa SbPList::set()
 */
 void 
 SoPickedPointList::set(const int idx, SoPickedPoint * pp)

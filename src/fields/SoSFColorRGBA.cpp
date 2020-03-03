@@ -63,7 +63,9 @@ SO_SFIELD_SOURCE(SoSFColorRGBA, SbColor4f, const SbColor4f &);
 
 // *************************************************************************
 
-// Override from parent.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoSFColorRGBA::initClass(void)
 {

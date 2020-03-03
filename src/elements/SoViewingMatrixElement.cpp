@@ -54,8 +54,7 @@
 SO_ELEMENT_SOURCE(SoViewingMatrixElement);
 
 /*!
-  This static method initializes static data for the SoViewingMatrixElement
-  class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -65,7 +64,7 @@ SoViewingMatrixElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoViewingMatrixElement::~SoViewingMatrixElement(void)
@@ -101,7 +100,10 @@ SoViewingMatrixElement::get(SoState * const state)
   return element->viewingMatrix;
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes the element to its default value. The default
+  value is the identity matrix.
+*/
 
 void
 SoViewingMatrixElement::init(SoState * state)

@@ -255,7 +255,9 @@ SoMaterialBinding::~SoMaterialBinding()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoMaterialBinding::initClass(void)
 {

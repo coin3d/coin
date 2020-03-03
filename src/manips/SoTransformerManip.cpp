@@ -72,7 +72,9 @@ public:
 SO_NODE_SOURCE(SoTransformerManip);
 
 
-// doc in super
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoTransformerManip::initClass(void)
 {

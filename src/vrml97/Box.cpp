@@ -105,7 +105,9 @@
 
 SO_NODE_SOURCE(SoVRMLBox);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLBox::initClass(void) // static
 {

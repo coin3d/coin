@@ -55,8 +55,10 @@
 
 SO_ELEMENT_SOURCE(SoGLMultiTextureMatrixElement);
 
+/*!
+  \copydetails SoElement::initClass(void)
+*/
 
-// doc from parent
 void
 SoGLMultiTextureMatrixElement::initClass(void)
 {
@@ -64,7 +66,7 @@ SoGLMultiTextureMatrixElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoGLMultiTextureMatrixElement::~SoGLMultiTextureMatrixElement(void)
@@ -85,6 +87,7 @@ SoGLMultiTextureMatrixElement::init(SoState * state)
   this->cachecontext = glaction->getCacheContext();
 }
 
+// doc from parent
 void
 SoGLMultiTextureMatrixElement::push(SoState * state)
 {

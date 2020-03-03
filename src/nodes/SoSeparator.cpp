@@ -468,7 +468,9 @@ SoSeparator::~SoSeparator()
   }
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoSeparator::initClass(void)
 {

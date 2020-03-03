@@ -53,7 +53,7 @@
 SO_ELEMENT_SOURCE(SoTextureScalePolicyElement);
 
 /*!
-  This static method initializes static data for the SoTextureScalePolicyElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -63,7 +63,7 @@ SoTextureScalePolicyElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoTextureScalePolicyElement::~SoTextureScalePolicyElement(void)
@@ -80,7 +80,10 @@ SoTextureScalePolicyElement::set(SoState * const state,
   inherited::set(classStackIndex, state, node, static_cast<int>(policy));
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes the element to its default value. The default
+  value is SoTextureScalePolicyElement::USE_TEXTURE_QUALITY.
+*/
 
 void
 SoTextureScalePolicyElement::init(SoState * state)

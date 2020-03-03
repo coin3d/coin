@@ -79,7 +79,9 @@ SoComposeVec4f::SoComposeVec4f()
   SO_ENGINE_ADD_OUTPUT(vector,SoMFVec4f);
 }
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoComposeVec4f::initClass()
 {

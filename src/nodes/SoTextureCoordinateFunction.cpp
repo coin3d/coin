@@ -64,6 +64,9 @@ SoTextureCoordinateFunction::~SoTextureCoordinateFunction()
 }
 
 // doc in super
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTextureCoordinateFunction::initClass(void)
 {
