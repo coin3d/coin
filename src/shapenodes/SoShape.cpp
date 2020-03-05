@@ -361,7 +361,9 @@ SoShape::~SoShape()
   delete PRIVATE(this);
 }
 
-// Doc in parent.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoShape::initClass(void)
 {

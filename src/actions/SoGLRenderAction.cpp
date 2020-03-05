@@ -202,9 +202,9 @@
 
   Polygons rendered with only transparent textures are not shown as
   being transparent when using this mode. The reason being that the
-  SCREEN_DOOR mode is working on polygons, not pixels. To render
-  polygons with dither pattern, a material node has to be inserted
-  into the scene graph with its transparency field set.
+  SoGLRenderAction::SCREEN_DOOR mode is working on polygons, not pixels.
+  To render polygons with dither pattern, a material node has to be
+  inserted into the scene graph with its transparency field set.
 */
 
 /*!
@@ -222,9 +222,8 @@
 /*!
   \var SoGLRenderAction::TransparencyType SoGLRenderAction::DELAYED_ADD
 
-  SoGLRenderAction::DELAYED_ADD Transparent objects are rendered using
-  additive alpha blending, in a second rendering pass with depth
-  buffer updates disabled.
+  Transparent objects are rendered using additive alpha blending,
+  in a second rendering pass with depth buffer updates disabled.
 
 */
 
@@ -266,7 +265,7 @@
   projected to screen). Since the transparent objects are rendered
   after opaque ones, you'll not have to worry about putting the
   transparent objects at the end of your scene graph. It will not be
-  as fast as the BLEND transparency type, of course, since the scene
+  as fast as the SoGLRenderAction::BLEND transparency type, of course, since the scene
   graph is traversed twice.
 
 */
@@ -297,8 +296,8 @@
   Transparent objects are rendered back to front, and triangles in
   each object are sorted back to front before rendering.
 
-  See description for SORTED_OBJECT_SORTED_TRIANGLE_BLEND for more
-  information about this transparency type.
+  See description for SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND
+  for more information about this transparency type.
 
 */
 
@@ -317,7 +316,7 @@
   lots of triangles, since all triangles have to be sorted before
   rendering, and an unoptimized rendering loop is used when rendering.
   Lines and points are not sorted before rendering. They are rendered
-  as in the normal SORTED_OBJECT_BLEND transparency type.
+  as in the normal SoGLRenderAction::SORTED_OBJECT_BLEND transparency type.
 
   Please note that this transparency mode does not guarantee
   "correct" transparency rendering. It is almost impossible to find an
@@ -352,7 +351,7 @@
 
   This mode is different from all other modes in that it overrides the
   SoTransparencyType nodes in the scene graph; all objects are drawn using
-  SORTED_LAYERS_BLEND.
+  SoGLRenderAction::SORTED_LAYERS_BLEND.
 
   There are currently two separate code paths for this mode. Both
   paths are heavily based on OpenGL extensions. The first method is
@@ -390,9 +389,9 @@
   your viewer. See the API documentation of the \c setAlphaChannel()
   method of either SoXtGLWidget, SoQtGLWidget or SoWinGLWidget.
 
-  The detection of whether or not the SORTED_LAYERS_BLEND mode can be
-  used will be done automatically by the Coin internals. If one or
-  more of the necessary conditions listed above are unavailable,
+  The detection of whether or not the SoGLRenderAction::SORTED_LAYERS_BLEND
+  mode can be used will be done automatically by the Coin internals. If one
+  or more of the necessary conditions listed above are unavailable,
   SoGLRenderAction::SORTED_OBJECT_BLEND will be used as the
   transparency type instead.
 
@@ -412,7 +411,7 @@
   Everitt at NVIDIA;
 
   "Interactive Order-Independent Transparency"
-  http:://developer.nvidia.com/object/order_independent_transparency.html
+  https://www.nvidia.com/en-us/drivers/Interactive-Order-Transparency/
 
   \since Coin 2.2
   \since TGS Inventor 4.0
@@ -637,7 +636,9 @@ static int COIN_GLBBOX = 0;
 
 // *************************************************************************
 
-// Override from parent class.
+/*!
+  \copydetails SoAction::initClass(void)
+*/
 void
 SoGLRenderAction::initClass(void)
 {

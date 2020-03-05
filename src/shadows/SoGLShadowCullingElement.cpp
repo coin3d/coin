@@ -54,7 +54,9 @@
 
 SO_ELEMENT_SOURCE(SoGLShadowCullingElement);
 
-// doc in parent
+/*!
+  \copydetails SoElement::initClass(void)
+*/
 void
 SoGLShadowCullingElement::initClass(void)
 {
@@ -62,7 +64,7 @@ SoGLShadowCullingElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoGLShadowCullingElement::~SoGLShadowCullingElement(void)
@@ -79,7 +81,10 @@ SoGLShadowCullingElement::set(SoState * const state,
   SoInt32Element::set(classStackIndex, state, node, mode);
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes the element to its default value. The default
+  value is SoGLShadowCullingElement::AS_IS_CULLING.
+*/
 
 void
 SoGLShadowCullingElement::init(SoState * state)

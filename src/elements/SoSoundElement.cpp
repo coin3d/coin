@@ -66,8 +66,7 @@
 SO_ELEMENT_SOURCE(SoSoundElement);
 
 /*!
-  This static method initializes static data for the
-  SoSoundElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -77,7 +76,7 @@ SoSoundElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoSoundElement::~SoSoundElement(void)

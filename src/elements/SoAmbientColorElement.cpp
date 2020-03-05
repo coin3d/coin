@@ -51,8 +51,7 @@
 SO_ELEMENT_SOURCE(SoAmbientColorElement);
 
 /*!
-  This static method initializes static data for the
-  SoAmbientColorElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -71,7 +70,7 @@ SoAmbientColorElement::init(SoState * stateptr)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoAmbientColorElement::~SoAmbientColorElement()

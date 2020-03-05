@@ -89,7 +89,9 @@ SO_MFIELD_MALLOC_SOURCE(SoMFPath, SoPath *);
 // copied.
 
 
-// Override from parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoMFPath::initClass(void)
 {

@@ -178,7 +178,9 @@ sovrmlinline_cleanup(void)
 
 SO_NODE_SOURCE(SoVRMLInline);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLInline::initClass(void)
 {

@@ -48,8 +48,7 @@
 SO_ELEMENT_SOURCE(SoLinePatternElement);
 
 /*!
-  This static method initializes static data for the
-  SoLinePatternElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -59,7 +58,7 @@ SoLinePatternElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoLinePatternElement::~SoLinePatternElement(void)

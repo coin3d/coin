@@ -126,7 +126,9 @@ SoFile::~SoFile()
   delete this->children;
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoFile::initClass(void)
 {

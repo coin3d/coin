@@ -55,8 +55,7 @@
 SO_ELEMENT_SOURCE(SoLightModelElement);
 
 /*!
-  This static method initializes static data for the
-  SoLightModelElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -66,14 +65,14 @@ SoLightModelElement::initClass()
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoLightModelElement::~SoLightModelElement()
 {
 }
 
-//! FIXME: write doc.
+// Doc from superclass
 
 void
 SoLightModelElement::init(SoState * /* state */)

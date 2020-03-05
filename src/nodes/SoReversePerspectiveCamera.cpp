@@ -112,6 +112,9 @@ SoReversePerspectiveCamera::~SoReversePerspectiveCamera()
 }
 
 // Doc in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoReversePerspectiveCamera::initClass(void)
 {

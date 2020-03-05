@@ -125,7 +125,9 @@ is_material_per_vertex(SoVRMLPointSet * ps, SoState * state)
 
 SO_NODE_SOURCE(SoVRMLPointSet);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLPointSet::initClass(void)
 {

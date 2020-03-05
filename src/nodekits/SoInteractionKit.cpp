@@ -259,7 +259,9 @@ SoInteractionKit::~SoInteractionKit()
   delete PRIVATE(this);
 }
 
-// doc in super
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoInteractionKit::initClass(void)
 {

@@ -106,6 +106,9 @@ SoTextureCoordinateReflectionMap::~SoTextureCoordinateReflectionMap()
 }
 
 // doc in super
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTextureCoordinateReflectionMap::initClass(void)
 {

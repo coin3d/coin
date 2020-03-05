@@ -59,7 +59,9 @@ SO_SFIELD_SOURCE(SoSFInt32, int32_t, int32_t);
 
 // *************************************************************************
 
-// Override from parent.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoSFInt32::initClass(void)
 {

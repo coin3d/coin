@@ -45,8 +45,7 @@
 SO_ELEMENT_SOURCE(SoBBoxModelMatrixElement);
 
 /*!
-  This static method initializes static data for the
-  SoBBoxModelMatrixElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -56,7 +55,7 @@ SoBBoxModelMatrixElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoBBoxModelMatrixElement::~SoBBoxModelMatrixElement()

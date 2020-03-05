@@ -378,7 +378,9 @@ namespace { namespace SoGL { namespace TriStripSet {
 
 } } } // namespace
 
-// doc from parent
+/*!
+  \copydetails SoEngine::initClass(void)
+*/
 void
 SoTriangleStripSet::initClass(void)
 {

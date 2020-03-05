@@ -70,7 +70,9 @@ SoComposeVec2f::SoComposeVec2f(void)
   SO_ENGINE_ADD_OUTPUT(vector,SoMFVec2f);
 }
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoComposeVec2f::initClass(void)
 {

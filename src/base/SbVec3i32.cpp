@@ -44,7 +44,7 @@
 #endif // COIN_DEBUG
 
 /*!
-  \class SbVec3i32 Inventor/SbVec3i32.h
+  \class SbVec3i32 SbVec3i32.h Inventor/SbVec3i32.h
 
   \since Coin 2.5
 */

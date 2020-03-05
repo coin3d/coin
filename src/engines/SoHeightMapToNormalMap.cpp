@@ -85,7 +85,7 @@
 SO_ENGINE_SOURCE(SoHeightMapToNormalMap);
 
 /*!
-  Class initializer.
+  \copybrief SoBase::initClass(void)
 */
 void
 SoHeightMapToNormalMap::initClass(void)

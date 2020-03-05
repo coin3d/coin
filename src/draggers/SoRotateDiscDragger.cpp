@@ -107,7 +107,9 @@ public:
 SO_KIT_SOURCE(SoRotateDiscDragger);
 
 
-// doc in superclass
+/*!
+  \copydetails SoDragger::initClass(void)
+*/
 void
 SoRotateDiscDragger::initClass(void)
 {

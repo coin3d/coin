@@ -387,7 +387,9 @@
 
 SO_NODE_ABSTRACT_SOURCE(SoShaderParameter);
 
-// doc from parent
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoShaderParameter::initClass(void)
 {
@@ -440,6 +442,9 @@ public:
 
 SO_NODE_ABSTRACT_SOURCE(SoUniformShaderParameter);
 
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoUniformShaderParameter::initClass(void)
 {
@@ -492,6 +497,9 @@ SoUniformShaderParameter::getGLShaderParameter(const uint32_t cachecontext)
 
 SO_NODE_SOURCE(SoShaderParameter1f);
 
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void SoShaderParameter1f::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameter1f,
@@ -525,6 +533,9 @@ SoShaderParameter1f::updateParameter(SoGLShaderObject *shader)
 
 SO_NODE_SOURCE(SoShaderParameter2f);
 
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void SoShaderParameter2f::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameter2f,
@@ -557,6 +568,9 @@ void SoShaderParameter2f::updateParameter(SoGLShaderObject *shader)
 
 SO_NODE_SOURCE(SoShaderParameter3f);
 
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void SoShaderParameter3f::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameter3f,
@@ -589,6 +603,9 @@ void SoShaderParameter3f::updateParameter(SoGLShaderObject *shader)
 
 SO_NODE_SOURCE(SoShaderParameter4f);
 
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void SoShaderParameter4f::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameter4f,
@@ -620,6 +637,9 @@ void SoShaderParameter4f::updateParameter(SoGLShaderObject *shader)
 
 SO_NODE_SOURCE(SoShaderStateMatrixParameter);
 
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void SoShaderStateMatrixParameter::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderStateMatrixParameter,
@@ -754,6 +774,9 @@ SoShaderStateMatrixParameter::updateValue(SoState *state)
 
 SO_NODE_SOURCE(SoShaderParameterArray1f);
 
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void SoShaderParameterArray1f::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameterArray1f,
@@ -786,6 +809,9 @@ void SoShaderParameterArray1f::updateParameter(SoGLShaderObject *shader)
 
 SO_NODE_SOURCE(SoShaderParameterArray2f);
 
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void SoShaderParameterArray2f::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameterArray2f,
@@ -830,6 +856,9 @@ void SoShaderParameterArray2f::updateParameter(SoGLShaderObject *shader)
 
 SO_NODE_SOURCE(SoShaderParameterArray3f);
 
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void SoShaderParameterArray3f::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameterArray3f,
@@ -874,6 +903,9 @@ void SoShaderParameterArray3f::updateParameter(SoGLShaderObject *shader)
 
 SO_NODE_SOURCE(SoShaderParameterArray4f);
 
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void SoShaderParameterArray4f::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameterArray4f,
@@ -920,6 +952,9 @@ void SoShaderParameterArray4f::updateParameter(SoGLShaderObject *shader)
 
 SO_NODE_SOURCE(SoShaderParameterMatrix);
 
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void SoShaderParameterMatrix::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameterMatrix,
@@ -954,6 +989,9 @@ void SoShaderParameterMatrix::updateParameter(SoGLShaderObject *shader)
 
 SO_NODE_SOURCE(SoShaderParameterMatrixArray);
 
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void SoShaderParameterMatrixArray::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameterMatrixArray,
@@ -1005,6 +1043,9 @@ void SoShaderParameterMatrixArray::updateParameter(SoGLShaderObject *shader)
 
 SO_NODE_SOURCE(SoShaderParameter1i);
 
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void SoShaderParameter1i::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShaderParameter1i,
@@ -1047,6 +1088,9 @@ SoShaderParameter2i::~SoShaderParameter2i()
 {
 }
 
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoShaderParameter2i::initClass()
 {
@@ -1080,6 +1124,9 @@ SoShaderParameter3i::~SoShaderParameter3i()
 {
 }
 
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoShaderParameter3i::initClass()
 {
@@ -1113,6 +1160,9 @@ SoShaderParameter4i::~SoShaderParameter4i()
 {
 }
 
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoShaderParameter4i::initClass()
 {
@@ -1146,6 +1196,9 @@ SoShaderParameterArray1i::~SoShaderParameterArray1i()
 {
 }
 
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoShaderParameterArray1i::initClass()
 {
@@ -1180,6 +1233,9 @@ SoShaderParameterArray2i::~SoShaderParameterArray2i()
 {
 }
 
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoShaderParameterArray2i::initClass()
 {
@@ -1214,6 +1270,9 @@ SoShaderParameterArray3i::~SoShaderParameterArray3i()
 {
 }
 
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoShaderParameterArray3i::initClass()
 {
@@ -1248,6 +1307,9 @@ SoShaderParameterArray4i::~SoShaderParameterArray4i()
 {
 }
 
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoShaderParameterArray4i::initClass()
 {

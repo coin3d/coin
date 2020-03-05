@@ -134,7 +134,9 @@ SoIndexedLineSet::~SoIndexedLineSet()
   delete PRIVATE(this);
 }
 
-// doc from parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoIndexedLineSet::initClass(void)
 {

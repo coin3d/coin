@@ -169,6 +169,12 @@ SbVec2d::length(void) const
 }
 
 /*!
+  \fn double SbVec2d::sqrLength(void) const
+
+  Returns the square of the length of the vector.
+*/
+
+/*!
   \fn void SbVec2d::negate(void)
 
   Negate the vector (i.e. point it in the opposite direction).

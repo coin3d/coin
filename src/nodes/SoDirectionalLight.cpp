@@ -140,7 +140,9 @@ SoDirectionalLight::~SoDirectionalLight()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoDirectionalLight::initClass(void)
 {

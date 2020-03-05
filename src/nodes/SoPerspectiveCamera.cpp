@@ -96,6 +96,9 @@ SoPerspectiveCamera::~SoPerspectiveCamera()
 }
 
 // Doc in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoPerspectiveCamera::initClass(void)
 {

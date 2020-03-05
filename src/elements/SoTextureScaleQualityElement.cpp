@@ -48,7 +48,7 @@
 SO_ELEMENT_SOURCE(SoTextureScaleQualityElement);
 
 /*!
-  This static method initializes static data for the SoTextureScaleQualityElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -58,7 +58,7 @@ SoTextureScaleQualityElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoTextureScaleQualityElement::~SoTextureScaleQualityElement(void)
@@ -75,7 +75,10 @@ SoTextureScaleQualityElement::set(SoState * state,
   inherited::set(classStackIndex, state, node, quality);
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes the element to its default value. The default
+  value is 0.5.
+*/
 
 void
 SoTextureScaleQualityElement::init(SoState * state)

@@ -110,7 +110,9 @@ SoComputeBoundingBox::SoComputeBoundingBox(void)
   this->bboxaction = new SoGetBoundingBoxAction(SbViewportRegion());
 }
 
-// doc in parent
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoComputeBoundingBox::initClass(void)
 {

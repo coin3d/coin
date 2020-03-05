@@ -237,7 +237,9 @@ public:
 SO_ACTION_SOURCE(SoRayPickAction);
 
 
-// Override from parent class.
+/*!
+  \copydetails SoAction::initClass(void)
+*/
 void
 SoRayPickAction::initClass(void)
 {

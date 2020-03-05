@@ -37,7 +37,7 @@
 #include <Inventor/SbVec2ui32.h>
 
 /*!
-  \class SbVec2ub Inventor/SbVec2ub.h
+  \class SbVec2ub SbVec2ub.h Inventor/SbVec2ub.h
 
   \since Coin 2.5
 */

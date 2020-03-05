@@ -170,6 +170,9 @@ SoTextureCoordinate2::~SoTextureCoordinate2()
 }
 
 // Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTextureCoordinate2::initClass(void)
 {

@@ -126,7 +126,9 @@ SoSphere::~SoSphere()
 {
 }
 
-// Documented in superclass.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoSphere::initClass(void)
 {

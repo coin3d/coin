@@ -99,6 +99,10 @@ SoChildList::~SoChildList()
 
   Automatically notifies parent node and any SoPath instances auditing
   paths with nodes from this list.
+
+  Overloaded from parent to accept an SoNode pointer argument.
+
+  \sa SbPList::insert()
 */
 void
 SoChildList::append(SoNode * const node)
@@ -121,6 +125,10 @@ SoChildList::append(SoNode * const node)
 
   Automatically notifies parent node and any SoPath instances auditing
   paths with nodes from this list.
+
+  Overloaded from parent to accept an SoNode pointer argument.
+
+  \sa SbPList::insert()
 */
 void
 SoChildList::insert(SoNode * const node, const int addbefore)
@@ -142,10 +150,14 @@ SoChildList::insert(SoNode * const node, const int addbefore)
 }
 
 /*!
-  Remove the child node pointer at \a index.
+  \copydetails SbPList::remove(const int index)
 
   Automatically notifies parent node and any SoPath instances auditing
   paths with nodes from this list.
+
+  Overloaded from parent to handle notification.
+
+  \sa SbPList::remove(const int index)
 */
 void
 SoChildList::remove(const int index)
@@ -170,7 +182,13 @@ SoChildList::remove(const int index)
   SoNodeList::remove(index);
 }
 
-// Documented in superclass. Overridden to handle notification.
+/*!
+  \copydetails SbPList::truncate(const int length, const int fit)
+
+  Overloaded from parent to handle notification.
+
+  \sa SbPList::truncate()
+*/ 
 void
 SoChildList::truncate(const int length)
 {
@@ -183,10 +201,10 @@ SoChildList::truncate(const int length)
         SoNodeList::operator[](i)->removeAuditor(this->parent, SoNotRec::PARENT);
       }
       /* FIXME: shouldn't we move this startNotify() call to the end of
-	 the function?  pederb, 2002-10-02 */
+         the function?  pederb, 2002-10-02 */
       /* notify before truncation, so that the notification source gets
-	 the chance to operate on the child to be removed. 20100426
-	 tamer. */
+         the chance to operate on the child to be removed. 20100426
+         tamer. */
       this->parent->startNotify();
       for (int k=0; k < this->auditors.getLength(); k++) {
         for (int j=n-1; j >= length; --j) {
@@ -200,12 +218,14 @@ SoChildList::truncate(const int length)
 
 /*!
   Copy contents of \a cl into this list.
+
+  Overloaded from parent to handle notification.
+
+  \sa SbPList::copy()
 */
 void
 SoChildList::copy(const SoChildList & cl)
 {
-  // Overridden from superclass to handle notification.
-
   if (this == &cl) return;
 
   // Call truncate() explicitly here to get the path notification.
@@ -223,8 +243,11 @@ SoChildList::copy(const SoChildList & cl)
 }
 
 /*!
-  Index operator to set element at \a index. Does \e not expand array
-  bounds if \a index is outside the list.
+  \copydetails SbPList::set(const int index, void * item)
+
+  Overloaded from parent to handle notification.
+
+  \sa SbPList::set()
 */
 void
 SoChildList::set(const int index, SoNode * const node)

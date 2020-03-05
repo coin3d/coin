@@ -120,7 +120,9 @@ SoCounter::~SoCounter()
 {
 }
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoCounter::initClass()
 {

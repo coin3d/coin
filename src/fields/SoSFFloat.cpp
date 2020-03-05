@@ -60,7 +60,9 @@ SO_SFIELD_SOURCE(SoSFFloat, float, float);
 
 // *************************************************************************
 
-// Override from parent.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoSFFloat::initClass(void)
 {

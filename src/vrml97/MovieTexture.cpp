@@ -180,7 +180,9 @@
 
 SO_NODE_SOURCE(SoVRMLMovieTexture);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLMovieTexture::initClass(void)
 {

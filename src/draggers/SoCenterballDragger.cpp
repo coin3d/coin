@@ -163,7 +163,9 @@ public:
 
 SO_KIT_SOURCE(SoCenterballDragger);
 
-// doc in superclass
+/*!
+  \copydetails SoDragger::initClass(void)
+*/
 void
 SoCenterballDragger::initClass(void)
 {

@@ -72,7 +72,9 @@ class SoMultiTextureEnabledElementP {
 
 SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoMultiTextureEnabledElement);
 
-// doc from parent
+/*!
+  \copydetails SoElement::initClass(void)
+*/
 void
 SoMultiTextureEnabledElement::initClass(void)
 {
@@ -80,7 +82,7 @@ SoMultiTextureEnabledElement::initClass(void)
 }
 
 /*!
-  The constructor.
+  Constructor.
 */
 SoMultiTextureEnabledElement::SoMultiTextureEnabledElement(void)
 {
@@ -91,7 +93,7 @@ SoMultiTextureEnabledElement::SoMultiTextureEnabledElement(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 SoMultiTextureEnabledElement::~SoMultiTextureEnabledElement(void)
 {

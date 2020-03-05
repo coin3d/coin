@@ -225,7 +225,9 @@ public:
 SO_ACTION_SOURCE(SoGetBoundingBoxAction);
 
 
-// Overridden from parent class.
+/*!
+  \copydetails SoAction::initClass(void)
+*/
 void
 SoGetBoundingBoxAction::initClass(void)
 {

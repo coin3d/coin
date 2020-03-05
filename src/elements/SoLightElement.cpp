@@ -62,8 +62,10 @@
 // need a custom constructor to disable refcounting in node list
 SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoLightElement);
 
+/*!
+  \copydetails SoElement::initClass(void)
+*/
 
-// doc from parent
 void
 SoLightElement::initClass(void)
 {
@@ -71,7 +73,7 @@ SoLightElement::initClass(void)
 }
 
 /*!
-  The constructor
+  Constructor.
 */
 SoLightElement::SoLightElement(void)
 {
@@ -83,7 +85,7 @@ SoLightElement::SoLightElement(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 SoLightElement::~SoLightElement(void)
 {

@@ -62,7 +62,9 @@
 
 SO_ELEMENT_SOURCE(SoGLColorIndexElement);
 
-// doc in parent
+/*!
+  \copydetails SoElement::initClass(void)
+*/
 void
 SoGLColorIndexElement::initClass(void)
 {
@@ -70,7 +72,7 @@ SoGLColorIndexElement::initClass(void)
 }
 
 
-// doc in parent
+// doc in superclass
 void
 SoGLColorIndexElement::init(SoState * stateptr)
 {
@@ -79,7 +81,7 @@ SoGLColorIndexElement::init(SoState * stateptr)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 SoGLColorIndexElement::~SoGLColorIndexElement()
 {
@@ -124,6 +126,9 @@ SoGLColorIndexElement::getInstance(SoState *state)
     state->getElementNoPush(classStackIndex);
 }
 
+/*!
+  Returns the index'th color index in element.
+*/
 int32_t
 SoGLColorIndexElement::get(const int index) const
 {
@@ -131,6 +136,9 @@ SoGLColorIndexElement::get(const int index) const
   return SoLazyElement::getColorIndices(this->state)[index];
 }
 
+/*!
+  Returns the default color index in element.
+*/
 int32_t
 SoGLColorIndexElement::getDefault(void)
 {

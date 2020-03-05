@@ -54,8 +54,7 @@
 SO_ELEMENT_SOURCE(SoViewportRegionElement);
 
 /*!
-  This static method initializes static data for the SoViewportRegionElement
-  class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -65,15 +64,14 @@ SoViewportRegionElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoViewportRegionElement::~SoViewportRegionElement(void)
 {
 }
 
-//! FIXME: write doc.
-
+// Doc from superclass
 void
 SoViewportRegionElement::init(SoState * state)
 {

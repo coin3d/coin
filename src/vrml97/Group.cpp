@@ -223,7 +223,9 @@ SO_NODE_SOURCE(SoVRMLGroup);
 
 // *************************************************************************
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLGroup::initClass(void)
 {

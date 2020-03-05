@@ -106,6 +106,9 @@ SoScale::~SoScale()
 }
 
 // Doc in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoScale::initClass(void)
 {

@@ -84,7 +84,7 @@
       mechanisms for automatically converting between different field
       types.
 
-  \li Fields provide persistance for scene graph import (and export)
+  \li Fields provide persistence for scene graph import (and export)
       operations. This includes animating entities, so animations can
       be stored within ordinary Inventor format files.
 
@@ -643,6 +643,9 @@ SoField_cleanupClass(void)
   SoField::cleanupClass();
 }
 
+/*!
+  This static method cleans up static data of the SoField class.
+*/
 void
 SoField::cleanupClass(void)
 {

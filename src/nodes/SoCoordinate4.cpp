@@ -111,7 +111,9 @@ SoCoordinate4::~SoCoordinate4()
   delete PRIVATE(this);
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoCoordinate4::initClass(void)
 {

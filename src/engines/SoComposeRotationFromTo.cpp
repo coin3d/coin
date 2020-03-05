@@ -74,7 +74,9 @@ SoComposeRotationFromTo::SoComposeRotationFromTo(void)
   SO_ENGINE_ADD_OUTPUT(rotation,SoMFRotation);
 }
 
-// doc in parent
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoComposeRotationFromTo::initClass(void)
 {

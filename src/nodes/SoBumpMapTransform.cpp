@@ -114,6 +114,9 @@ SoBumpMapTransform::~SoBumpMapTransform()
 }
 
 // Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoBumpMapTransform::initClass(void)
 {

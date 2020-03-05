@@ -190,7 +190,9 @@ SoIndexedNurbsSurface::~SoIndexedNurbsSurface()
   delete PRIVATE(this);
 }
 
-// doc from parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoIndexedNurbsSurface::initClass(void)
 {

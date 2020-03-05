@@ -124,7 +124,9 @@ SoCube::~SoCube()
 {
 }
 
-// Doc in parent.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoCube::initClass(void)
 {

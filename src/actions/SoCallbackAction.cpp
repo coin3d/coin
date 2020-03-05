@@ -388,7 +388,9 @@ public:
 SO_ACTION_SOURCE(SoCallbackAction);
 
 
-// Override from parent class.
+/*!
+  \copydetails SoAction::initClass(void)
+*/
 void
 SoCallbackAction::initClass(void)
 {

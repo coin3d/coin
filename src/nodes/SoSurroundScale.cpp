@@ -267,6 +267,9 @@ SoSurroundScale::~SoSurroundScale()
 }
 
 // Doc in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoSurroundScale::initClass(void)
 {

@@ -78,7 +78,18 @@ private: \
 // *************************************************************************
 
 #define PRIVATE_ENGINE_TYPESYSTEM_SOURCE(_class_) \
+ \
+/*! \
+  This static method returns the SoType object associated with \
+  objects of this class. \
+*/ \
 SoType _class_::getClassTypeId(void) { return _class_::classTypeId; } \
+ \
+/*!
+  Returns the type identification of an object derived from a \
+  class inheriting SoBase. This is used for runtime type checking and \
+  "downward" casting. \
+*/ \
 SoType _class_::getTypeId(void) const { return _class_::classTypeId; } \
 SoType _class_::classTypeId STATIC_SOTYPE_INIT
 
@@ -91,24 +102,40 @@ const SoFieldData ** _class_::parentinputdata = NULL; \
 SoEngineOutputData * _class_::outputdata = NULL; \
 const SoEngineOutputData ** _class_::parentoutputdata = NULL; \
  \
+/*! \
+  Returns the SoFieldData class which holds information about inputs \
+  in this engine. \
+*/ \
 const SoFieldData ** \
 _class_::getInputDataPtr(void) \
 { \
   return const_cast<const SoFieldData **>(&_class_::inputdata); \
 } \
  \
+/*! \
+  Returns the SoFieldData class which holds information about inputs \
+  in this engine. \
+*/ \
 const SoFieldData * \
 _class_::getFieldData(void) const \
 { \
   return _class_::inputdata; \
 } \
  \
+/*! \
+  Returns the SoEngineOutputData class which holds information about \
+  the outputs in this engine. \
+*/ \
 const SoEngineOutputData ** \
 _class_::getOutputDataPtr(void) \
 { \
   return const_cast<const SoEngineOutputData**>(&_class_::outputdata); \
 } \
  \
+/*! \
+  Returns the SoEngineOutputData class which holds information about \
+  the outputs in this engine. \
+*/ \
 const SoEngineOutputData * \
 _class_::getOutputData(void) const \
 { \
@@ -133,6 +160,9 @@ _class_::atexit_cleanup(void) \
 #define SO_ENGINE_SOURCE(_class_) \
 SO_ENGINE_ABSTRACT_SOURCE(_class_); \
  \
+/*! \
+  Creates a new instance of the class type corresponding to the SoType object. \
+*/ \
 void * \
 _class_::createInstance(void) \
 { \

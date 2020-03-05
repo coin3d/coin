@@ -104,7 +104,9 @@
 
 SO_NODE_ABSTRACT_SOURCE(SoVRMLDragSensor);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLDragSensor::initClass(void)
 {

@@ -54,8 +54,7 @@
 SO_ELEMENT_SOURCE(SoGLPolygonOffsetElement);
 
 /*!
-  This static method initializes static data for the
-  SoGLPolygonOffsetElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -65,7 +64,7 @@ SoGLPolygonOffsetElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoGLPolygonOffsetElement::~SoGLPolygonOffsetElement(void)

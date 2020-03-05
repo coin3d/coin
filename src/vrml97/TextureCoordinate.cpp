@@ -111,7 +111,9 @@ class SoVRMLTextureCoordinateP {
 
 SO_NODE_SOURCE(SoVRMLTextureCoordinate);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLTextureCoordinate::initClass(void)
 {

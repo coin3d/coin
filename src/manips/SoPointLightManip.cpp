@@ -96,7 +96,9 @@ public:
 SO_NODE_SOURCE(SoPointLightManip);
 
 
-// Documented in superclass
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoPointLightManip::initClass(void)
 {

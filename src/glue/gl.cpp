@@ -45,7 +45,7 @@
 
   The cc_glglue interface is part of the public API of Coin, but is
   not documented on the public documentation pages at
-  https://coin3d.github.io/Coin/ yet. The status for client application
+  https://coin3d.github.io/Coin/html/ yet. The status for client application
   usage is "unofficial, use at own risk, interface may change without
   warning for major version number upgrade releases".
 

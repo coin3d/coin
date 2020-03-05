@@ -35,7 +35,7 @@
 // obviously).  --mortene.
 
 /*!
-  \class SoShapeSimplifyAction Inventor/actions/SoShapeSimplifyAction.h
+  \class SoShapeSimplifyAction SoShapeSimplifyAction.h Inventor/actions/SoShapeSimplifyAction.h
   \brief The SoShapeSimplifyAction class replaces complex primitives
   with simplified polygon representations.
 */
@@ -47,7 +47,9 @@
 
 SO_ACTION_SOURCE(SoShapeSimplifyAction);
 
-// Overridden from parent class.
+/*!
+  \copydetails SoAction::initClass(void)
+*/
 void
 SoShapeSimplifyAction::initClass(void)
 {

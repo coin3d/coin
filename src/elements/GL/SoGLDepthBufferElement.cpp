@@ -48,9 +48,8 @@
 SO_ELEMENT_SOURCE(SoGLDepthBufferElement);
 
 /*!
-  Initializes the SoGLDepthBufferElement class type.
+  \copydetails SoElement::initClass(void)
 */
-
 void
 SoGLDepthBufferElement::initClass(void)
 {
@@ -58,15 +57,13 @@ SoGLDepthBufferElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 SoGLDepthBufferElement::~SoGLDepthBufferElement(void)
 {
 }
 
-/*!
-  Internal Coin method.
-*/
+// doc in superclass
 void
 SoGLDepthBufferElement::init(SoState * state)
 {

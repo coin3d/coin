@@ -67,7 +67,9 @@ SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFVec4f, SbVec4f, float);
 
 // *************************************************************************
 
-// Override from parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoMFVec4f::initClass(void)
 {

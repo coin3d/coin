@@ -57,7 +57,9 @@
 
 SO_NODE_ABSTRACT_SOURCE(SoVRMLIndexedLine);
 
-// Doc in superclass.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLIndexedLine::initClass(void) // static
 {

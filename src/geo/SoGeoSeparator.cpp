@@ -127,7 +127,9 @@ SoGeoSeparator::~SoGeoSeparator(void)
 {
 }
 
-// Doc from superclass.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoGeoSeparator::initClass(void)
 {

@@ -67,7 +67,9 @@ SO_MFIELD_SOURCE(SoMFColorRGBA, SbColor4f, const SbColor4f &);
 SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFColorRGBA, SbColor4f, float);
 SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFColorRGBA, SbColor4f, SbColor4f);
 
-// Override from parent.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoMFColorRGBA::initClass(void)
 {

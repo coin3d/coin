@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoGLDisplayList Inventor/elements/SoGLCacheContextElement.h
+  \class SoGLDisplayList Inventor/elements/SoGLDisplayList.h
   \brief The SoGLDisplayList class stores and manages OpenGL display lists.
 
   \ingroup elements

@@ -35,7 +35,10 @@
 
 SO_ELEMENT_SOURCE(SoResetMatrixElement);
 
-// doc in parent
+/*!
+  \copydetails SoElement::initClass(void)
+*/
+
 void
 SoResetMatrixElement::initClass(void)
 {
@@ -43,7 +46,7 @@ SoResetMatrixElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 SoResetMatrixElement::~SoResetMatrixElement(void)
 {

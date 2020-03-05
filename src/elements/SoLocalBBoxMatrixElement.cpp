@@ -57,8 +57,7 @@
 SO_ELEMENT_SOURCE(SoLocalBBoxMatrixElement);
 
 /*!
-  This static method initializes static data for the
-  SoLocalBBoxMatrixElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -68,14 +67,17 @@ SoLocalBBoxMatrixElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoLocalBBoxMatrixElement::~SoLocalBBoxMatrixElement(void)
 {
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes the element to its default value. The default
+  value for localMatrix and modelInverseMatrix is the identity matrix.
+*/
 
 void
 SoLocalBBoxMatrixElement::init(SoState * state)

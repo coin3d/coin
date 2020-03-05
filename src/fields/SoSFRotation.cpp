@@ -82,7 +82,9 @@ SO_SFIELD_SOURCE(SoSFRotation, SbRotation, const SbRotation &);
 
 // *************************************************************************
 
-// Override from parent.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoSFRotation::initClass(void)
 {

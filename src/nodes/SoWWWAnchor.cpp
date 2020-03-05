@@ -185,6 +185,9 @@ SoWWWAnchor::~SoWWWAnchor()
 }
 
 // doc in super
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoWWWAnchor::initClass(void)
 {

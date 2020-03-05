@@ -401,7 +401,9 @@ namespace { namespace SoGL { namespace FaceSet {
 
 } } } // namespace
 
-// doc from parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoFaceSet::initClass(void)
 {

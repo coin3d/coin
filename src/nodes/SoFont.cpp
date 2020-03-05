@@ -269,7 +269,9 @@ SoFont::~SoFont()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoFont::initClass(void)
 {

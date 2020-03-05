@@ -47,8 +47,7 @@
 SO_ELEMENT_SOURCE(SoAnnoText3CharOrientElement);
 
 /*!
-  This static method initializes static data for the
-  SoAnnoText3CharOrientElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -58,11 +57,10 @@ SoAnnoText3CharOrientElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
-SoAnnoText3CharOrientElement::~SoAnnoText3CharOrientElement(// virtual protected
-    void)
+SoAnnoText3CharOrientElement::~SoAnnoText3CharOrientElement()
 {
 }
 

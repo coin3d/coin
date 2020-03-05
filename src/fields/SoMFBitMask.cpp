@@ -56,7 +56,9 @@
 
 SO_MFIELD_DERIVED_SOURCE(SoMFBitMask, not_used, not_used);
 
-// Override from parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoMFBitMask::initClass(void)
 {

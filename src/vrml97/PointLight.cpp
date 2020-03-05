@@ -115,7 +115,9 @@
 
 SO_NODE_SOURCE(SoVRMLPointLight);
 
-// doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLPointLight::initClass(void)
 {

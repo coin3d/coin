@@ -84,6 +84,30 @@
 */
 
 /*!
+  \fn SbBox3s::SbBox3s(const SbBox3i32 & box)
+
+  Constructs an SbBox3s instance from the value in an SbBox3i32 instance.
+
+  \since Coin 2.5
+*/
+
+/*!
+  \fn SbBox3s::SbBox3s(const SbBox3f & box)
+
+  Constructs an SbBox3s instance from the value in an SbBox3f instance.
+
+  \since Coin 2.5
+*/
+
+/*!
+  \fn SbBox3s::SbBox3s(const SbBox3d & box)
+
+  Constructs an SbBox3s instance from the value in an SbBox3d instance.
+
+  \since Coin 2.5
+*/
+
+/*!
   \fn SbBox3s & SbBox3s::setBounds(short xmin, short ymin, short zmin, short xmax, short ymax, short zmax)
 
   Reset the boundaries of the box.
@@ -183,6 +207,14 @@ SbBox3s::makeEmpty(void)
 }
 
 /*!
+  \fn SbBool SbBox3s::isEmpty(void) const
+
+  Check if this has been marked as an empty box.
+
+  \sa makeEmpty().
+*/
+
+/*!
   \fn const SbVec3s & SbBox3s::getMin(void) const
 
   Returns the minimum point. This should usually be the lower left corner
@@ -198,6 +230,24 @@ SbBox3s::makeEmpty(void)
   point of the box.
 
   \sa getMin().
+*/
+
+/*!
+  \fn SbVec3s & SbBox3s::getMin(void)
+
+  Returns a modifiable reference to the minimum point.
+*/
+
+/*!
+  \fn SbVec3s & SbBox3s::getMax(void)
+
+  Returns a modifiable reference to the maximum point.
+*/
+
+/*!
+  \fn SbVec3s SbBox3s::getCenter(void) const
+
+  Returns the center point of the box.
 */
 
 /*!
@@ -260,8 +310,8 @@ SbBox3s::intersect(const SbBox3s & box) const
 }
 
 /*!
+  Return the point on the box closest to the given \a point.
 */
-
 SbVec3f
 SbBox3s::getClosestPoint(const SbVec3f & pt) const
 {
@@ -322,6 +372,14 @@ SbBox3s::getClosestPoint(const SbVec3f & pt) const
 */
 
 /*!
+  \fn SbVec3s SbBox3s::getSize(void) const
+
+  Returns width, height and depth of box as a 3D vector.
+
+  \since Coin 3.0
+*/
+
+/*!
   \fn int operator == (const SbBox3s & b1, const SbBox3s & b2)
   \relates SbBox3s
 
@@ -337,6 +395,17 @@ SbBox3s::getClosestPoint(const SbVec3f & pt) const
 
 /*!
   \fn SbBool SbBox3s::hasVolume(void) const
+
+  Check if the box has been correctly specified and by that virtue
+  has "positive" volume, i.e. all coordinates of its upper right corner
+  (the maximum point) are greater than the corresponding coordinates 
+  of its lower left corner (the minimum point).
+*/
+
+/*!
+  \fn int SbBox3s::getVolume(void) const
+
+  Returns the volume of the box.
 */
 
 #ifdef COIN_TEST_SUITE

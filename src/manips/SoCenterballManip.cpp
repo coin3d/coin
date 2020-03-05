@@ -70,7 +70,9 @@ public:
 SO_NODE_SOURCE(SoCenterballManip);
 
 
-// doc in super
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoCenterballManip::initClass(void)
 {

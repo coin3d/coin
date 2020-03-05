@@ -163,7 +163,9 @@ free_marker_images(void)
   delete markerlist;
 }
 
-// doc in super
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoMarkerSet::initClass(void)
 {

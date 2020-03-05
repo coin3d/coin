@@ -234,7 +234,9 @@ public:
 
 // *************************************************************************
 
-// Overridden from parent class.
+/*!
+  \copydetails SoAction::initClass(void)
+*/
 void
 SoToVRMLAction::initClass(void)
 {
@@ -371,102 +373,161 @@ SoToVRMLAction::beginTraversal(SoNode * COIN_UNUSED_ARG(node))
   assert(0 && "should never get here");
 }
 
+/*!
+  Returns the VRML scene graph.
+*/
 SoNode *
 SoToVRMLAction::getVRMLSceneGraph(void) const
 {
   return PRIVATE(this)->vrmlroot;
 }
 
+/*!
+  Sets whether SoFile nodes are expanded (i.e. their contents is copied)
+  in the new scene graph or not.
+*/
 void
 SoToVRMLAction::expandSoFile(SbBool flag)
 {
   PRIVATE(this)->expandsofile = flag;
 }
 
+/*!
+  Returns whether SoFile nodes are expanded (i.e. their contents is copied)
+  in the new scene graph or not.
+*/
 SbBool
 SoToVRMLAction::areSoFileExpanded(void) const
 {
   return PRIVATE(this)->expandsofile;
 }
 
+/*!
+  Sets the URL (directory) where VRML inline nodes are written to.
+*/
 void
 SoToVRMLAction::setUrlName(const SbString name)
 {
   PRIVATE(this)->urlname = name;
 }
 
+/*!
+  Returns the URL (directory) where VRML inline nodes are written to.
+*/
 SbString
 SoToVRMLAction::getUrlName(void) const
 {
   return PRIVATE(this)->urlname;
 }
 
+/*!
+  Sets whether texture coordinates are written to the new scene
+  graph or not.
+*/
 void
 SoToVRMLAction::writeTexCoords(SbBool flag)
 {
   PRIVATE(this)->writetexcoords = flag;
 }
 
+/*!
+  Returns whether texture coordinates are written to the new scene
+  graph or not.
+*/
 SbBool
 SoToVRMLAction::areTexCoordWritten(void) const
 {
   return PRIVATE(this)->writetexcoords;
 }
 
+/*!
+  Sets whether texture files are expanded (i.e. their contents is copied)
+  in the new scene graph or not.
+*/
 void
 SoToVRMLAction::expandTexture2Node(SbBool flag)
 {
   PRIVATE(this)->expandtexture2node = flag;
 }
 
+/*!
+  Returns whether texture files are expanded (i.e. their contents is copied)
+  in the new scene graph or not.
+*/
 SbBool
 SoToVRMLAction::areTexture2NodeExpanded(void) const
 {
   return PRIVATE(this)->expandtexture2node;
 }
 
+/*!
+  Sets whether unknown nodes are preserved in the new scene graph or not.
+*/
 void
 SoToVRMLAction::keepUnknownNodes(SbBool flag)
 {
   PRIVATE(this)->keepunknownnodes = flag;
 }
 
+/*!
+  Returns whether unknown nodes are preserved in the new scene graph or not.
+*/
 SbBool
 SoToVRMLAction::areUnknownNodeKept(void) const
 {
   return PRIVATE(this)->keepunknownnodes;
 }
 
+/*!
+  Sets whether inline nodes are converted to VRML in the new scene graph or not.
+*/
 void
 SoToVRMLAction::convertInlineNodes(SbBool flag)
 {
   PRIVATE(this)->convertinlinenodes = flag;
 }
 
+/*!
+  Returns whether inline nodes are converted to VRML in the new scene graph or not.
+*/
 SbBool
 SoToVRMLAction::doConvertInlineNodes(void) const
 {
   return PRIVATE(this)->convertinlinenodes;
 }
 
+/*!
+  Sets whether inline nodes are conditionally converted to VRML in the new scene graph or not.
+*/
 void
 SoToVRMLAction::conditionalConversion(SbBool flag)
 {
   PRIVATE(this)->conditionalconversion = flag;
 }
 
+/*!
+  Returns whether inline nodes are conditionally converted to VRML in the new scene graph or not.
+*/
 SbBool
 SoToVRMLAction::doConditionalConversion(void) const
 {
   return PRIVATE(this)->conditionalconversion;
 }
 
+/*!
+  Sets whether additional information should be written to output during
+  the conversion process.
+*/
 void
 SoToVRMLAction::setVerbosity(SbBool flag)
 {
   PRIVATE(this)->isverbose = flag;
 }
 
+/*!
+  Returns whether additional information should be written to output
+  during the conversion process.
+*/
 SbBool
 SoToVRMLAction::isVerbose(void) const
 {

@@ -137,7 +137,7 @@
   
   \details
   One element usually corresponds to one item of information, or
-  sometimes a group of related information values. The elements work
+  sometimes a group of related information values.  The elements work
   like a stack that is pushed and popped as the action traverses in
   and out of SoSeparator nodes, and the action will always just
   inspect the top of the stack when it needs to know a value.

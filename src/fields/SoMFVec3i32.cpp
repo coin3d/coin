@@ -69,7 +69,9 @@ SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFVec3i32, SbVec3i32, int32_t);
 
 // *************************************************************************
 
-// Override from parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoMFVec3i32::initClass(void)
 {

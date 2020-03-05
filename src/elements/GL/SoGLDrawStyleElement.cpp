@@ -50,13 +50,18 @@
 
 SO_ELEMENT_SOURCE(SoGLDrawStyleElement);
 
-// doc in superclass
+/*!
+  \copydetails SoElement::initClass(void)
+*/
 void
 SoGLDrawStyleElement::initClass(void)
 {
   SO_ELEMENT_INIT_CLASS(SoGLDrawStyleElement, inherited);
 }
 
+/*!
+  Destructor.
+*/
 SoGLDrawStyleElement::~SoGLDrawStyleElement(void)
 {
 }

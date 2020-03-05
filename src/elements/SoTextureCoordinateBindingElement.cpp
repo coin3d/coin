@@ -53,8 +53,7 @@
 SO_ELEMENT_SOURCE(SoTextureCoordinateBindingElement);
 
 /*!
-  This static method initializes static data for the
-  SoTextureCoordinateBindingElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -64,7 +63,7 @@ SoTextureCoordinateBindingElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoTextureCoordinateBindingElement::~SoTextureCoordinateBindingElement(void)
@@ -82,7 +81,10 @@ SoTextureCoordinateBindingElement::set(SoState * const state,
   SoInt32Element::set(classStackIndex, state, node, binding);
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes the element to its default value. The default
+  value is SoTextureCoordinateBindingElement::PER_VERTEX_INDEXED.
+*/
 
 void
 SoTextureCoordinateBindingElement::init(SoState * state)

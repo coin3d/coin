@@ -78,8 +78,7 @@
 SO_ELEMENT_SOURCE(SoPolygonOffsetElement);
 
 /*!
-  This static method initializes static data for the SoPolygonOffsetElement
-  class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -89,14 +88,20 @@ SoPolygonOffsetElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoPolygonOffsetElement::~SoPolygonOffsetElement(void)
 {
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes the element to its default values. The default
+  value for SoPolygonOffsetElement::offsetfactor is 0.0,
+  for SoPolygonOffsetElement::offsetunits is 0.0, for
+  SoPolygonOffsetElement::style is SoPolygonOffsetElement::FILLED,
+  and for SoPolygonOffsetElement::active is on.
+*/
 
 void
 SoPolygonOffsetElement::init(SoState * state)

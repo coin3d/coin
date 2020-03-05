@@ -300,14 +300,19 @@ somfield_mutex_cleanup(void)
 
 // *************************************************************************
 
-// Overridden from parent class.
+
+/*!
+  \copydetails SoField::getClassTypeId(void)
+*/
 SoType
 SoMField::getClassTypeId(void)
 {
   return SoMField::classTypeId;
 }
 
-// Overridden from parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoMField::initClass(void)
 {

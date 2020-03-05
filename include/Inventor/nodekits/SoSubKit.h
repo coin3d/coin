@@ -76,18 +76,30 @@ protected: SoSFNode _entry_
 SoNodekitCatalog * _class_::classcatalog = NULL; \
 const SoNodekitCatalog ** _class_::parentcatalogptr = NULL; \
  \
+/*! \
+  Returns the nodekit catalog which defines the layout of this \
+  class' kit. \
+*/ \
 const SoNodekitCatalog * \
 _class_::getClassNodekitCatalog(void) \
 { \
   return _class_::classcatalog; \
 } \
  \
+/*! \
+  Returns the nodekit catalog which defines the layout of this \
+  class' kit. \
+*/ \
 const SoNodekitCatalog * \
 _class_::getNodekitCatalog(void) const \
 { \
   return _class_::classcatalog; \
 } \
  \
+/*! \
+  Returns the pointer to the pointer of the nodekit catalog \
+  for this class. \
+*/ \
 const SoNodekitCatalog ** \
 _class_::getClassNodekitCatalogPtr(void) \
 { \

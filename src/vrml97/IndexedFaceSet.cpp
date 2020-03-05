@@ -296,7 +296,9 @@ SO_NODE_SOURCE(SoVRMLIndexedFaceSet);
 
 // *************************************************************************
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLIndexedFaceSet::initClass(void) // static
 {

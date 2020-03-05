@@ -67,11 +67,11 @@ using std::memset;
   The type definition used locally for a hash key.
 */
 
-/*
+/*!
   \struct cc_hash hash.h Inventor/C/base/hash.h
 
-  Note that the cc_hash structure has been obsolete and should no longer be
-  used. It is maintained purely for backwards compatability.
+  Note that the cc_hash structure has been obsoleted and should no longer be
+  used. It is maintained purely for backwards compatibility.
   
   cc_dict is now the preferred structure.
 */

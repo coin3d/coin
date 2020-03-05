@@ -392,7 +392,9 @@ SoCalculator::~SoCalculator(void)
   delete PRIVATE(this);
 }
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoCalculator::initClass(void)
 {

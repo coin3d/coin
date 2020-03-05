@@ -184,7 +184,9 @@ SoBoolOperation::SoBoolOperation(void)
   SO_ENGINE_ADD_OUTPUT(inverse, SoMFBool);
 }
 
-// doc from parent
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoBoolOperation::initClass(void)
 {

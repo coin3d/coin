@@ -31,12 +31,10 @@
 \**************************************************************************/
 
 /*!
-  \class SoGLTextureEnabledElement Inventor/elements/SoGLTextureEnabledElement.h
-  \brief The SoGLTextureEnabledElement class is an element which controls whether texturing is enabled or not.
+  \class SoGLMultiTextureEnabledElement Inventor/elements/SoGLMultiTextureEnabledElement.h
+  \brief The SoGLMultiTextureEnabledElement class is an element which controls whether texturing is enabled or not.
 
   \ingroup elements
-
-  \sa SoGLTexture3EnabledElement
 */
 
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
@@ -54,7 +52,9 @@
 
 SO_ELEMENT_SOURCE(SoGLMultiTextureEnabledElement);
 
-// doc from parent
+/*!
+  \copydetails SoElement::initClass(void)
+*/
 void
 SoGLMultiTextureEnabledElement::initClass(void)
 {
@@ -62,7 +62,7 @@ SoGLMultiTextureEnabledElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 SoGLMultiTextureEnabledElement::~SoGLMultiTextureEnabledElement(void)
 {

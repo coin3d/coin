@@ -804,7 +804,7 @@ SoGLImage::SoGLImage(void)
 
 
 /*!
-  \COININTERNAL
+  This static method initializes static data for the SoGLImage class.
 */
 void
 SoGLImage::initClass(void)
@@ -823,9 +823,9 @@ SoGLImage::initClass(void)
   SoGLCubeMapImage::initClass();
 }
 
-//
-// called by atexit()
-//
+/*!
+  This static method cleans up static data for the SoGLImage class.
+*/
 void
 SoGLImage::cleanupClass(void)
 {
@@ -843,7 +843,8 @@ SoGLImage::cleanupClass(void)
 }
 
 /*!
-  Returns the type id for this class.
+  This static method returns the SoType object associated with
+  objects of this class.
 */
 SoType
 SoGLImage::getClassTypeId(void)
@@ -852,12 +853,10 @@ SoGLImage::getClassTypeId(void)
   return SoGLImageP::classTypeId;
 }
 
-
-// FIXME: grab better version of getTypeId() doc from SoBase, SoAction
-// and / or SoDetail?  At least if this ever makes it into the public
-// API.  20010913 mortene.
 /*!
-  Returns the type id for an SoGLImage instance.
+  Returns the type identification of an object derived from a
+  class inheriting SoGLImage. This is used for runtime type checking and
+  "downward" casting.
 */
 SoType
 SoGLImage::getTypeId(void) const
@@ -866,8 +865,9 @@ SoGLImage::getTypeId(void) const
 }
 
 /*!
-  Returns whether an SoGLImage instance inherits (or is of) type \a
-  type.
+  Returns \c TRUE if the type of this object is either of the
+  same type or inherited from \a type. This is used for runtime type
+  checking and "downward" casting.
 */
 SbBool
 SoGLImage::isOfType(SoType type) const

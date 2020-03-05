@@ -188,8 +188,7 @@ FIXME: write doc.
 SO_ELEMENT_SOURCE(SoOverrideElement);
 
 /*!
-This static method initializes static data for the
-SoOverrideElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -199,14 +198,17 @@ SoOverrideElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoOverrideElement::~SoOverrideElement(void)
 {
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes the element to its default value. The default
+  value for flags is 0.
+*/
 
 void
 SoOverrideElement::init(SoState * state)

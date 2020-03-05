@@ -154,7 +154,7 @@
 */
 
 /*!
-  SbVec3s & SbVec3s::setValue(short x, short y, short z)
+  \fn SbVec3s & SbVec3s::setValue(short x, short y, short z)
 
   Set new coordinates for the vector. Returns reference to self.
 

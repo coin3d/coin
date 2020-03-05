@@ -70,9 +70,9 @@ public:
   const SbVec3i32 & getMax(void) const { return maxpt; }
   SbVec3i32 & getMax(void) { return maxpt; }
 
-  void extendBy(const SbVec3i32 & pt);
-  void extendBy(const SbBox3i32 & bb);
-  void extendBy(const SbVec3f & pt);
+  void extendBy(const SbVec3i32 & point);
+  void extendBy(const SbBox3i32 & box);
+  void extendBy(const SbVec3f & point);
   void transform(const SbMatrix & m);
   void makeEmpty(void);
   SbBool isEmpty(void) const { return (maxpt[0] < minpt[0]); }
@@ -81,12 +81,12 @@ public:
   float getVolume(void) const
     { int32_t dx = 0, dy = 0, dz = 0; getSize(dx, dy, dz); return (float(dx) * float(dy) * float(dz)); }
 
-  SbBool intersect(const SbVec3i32 & pt) const;
-  SbBool intersect(const SbBox3i32 & bb) const;
-  SbBool intersect(const SbVec3f & pt) const;
+  SbBool intersect(const SbVec3i32 & point) const;
+  SbBool intersect(const SbBox3i32 & box) const;
+  SbBool intersect(const SbVec3f & point) const;
 
-  SbBool outside(const SbMatrix & MVP, int & cullBits) const;
-  SbVec3f getClosestPoint(const SbVec3f & pt) const;
+  SbBool outside(const SbMatrix & mvp, int & cullBits) const;
+  SbVec3f getClosestPoint(const SbVec3f & point) const;
 
   SbVec3f getCenter(void) const { return SbVec3f(minpt + maxpt) * 0.5f; }
   void getOrigin(int32_t & originX, int32_t & originY, int32_t & originZ) const

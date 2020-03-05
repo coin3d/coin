@@ -82,7 +82,10 @@ float SoGLPointSizeElement::sizerange[2] = { RANGE_NOT_CHECKED, 0.0f };
 
 SO_ELEMENT_SOURCE(SoGLPointSizeElement);
 
-// Doc in super.
+/*!
+  \copydetails SoElement::initClass(void)
+*/
+
 void
 SoGLPointSizeElement::initClass(void)
 {
@@ -90,7 +93,7 @@ SoGLPointSizeElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 SoGLPointSizeElement::~SoGLPointSizeElement(void)
 {

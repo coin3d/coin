@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoSimplifyAction Inventor/actions/SoSimplifyAction.h
+  \class SoSimplifyAction SoSimplifyAction.h Inventor/actions/SoSimplifyAction.h
   \brief The SoSimplifyAction class is the base class for the simplify
   action classes.
 */
@@ -49,7 +49,9 @@ public:
 
 SO_ACTION_SOURCE(SoSimplifyAction);
 
-// Overridden from parent class.
+/*!
+  \copydetails SoAction::initClass(void)
+*/
 void
 SoSimplifyAction::initClass(void)
 {

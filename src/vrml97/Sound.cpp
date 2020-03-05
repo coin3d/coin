@@ -329,7 +329,9 @@ double SoVRMLSoundP::defaultSleepTime = 0.100; // 100ms
 
 SO_NODE_SOURCE(SoVRMLSound);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLSound::initClass(void)
 {

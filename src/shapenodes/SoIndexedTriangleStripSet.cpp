@@ -130,7 +130,9 @@ SoIndexedTriangleStripSet::~SoIndexedTriangleStripSet()
 {
 }
 
-// Documented in superclass.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoIndexedTriangleStripSet::initClass(void)
 {

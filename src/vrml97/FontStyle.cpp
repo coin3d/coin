@@ -267,7 +267,9 @@
 
 SO_NODE_SOURCE(SoVRMLFontStyle);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLFontStyle::initClass(void) // static
 {

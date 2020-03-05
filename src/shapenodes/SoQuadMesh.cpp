@@ -783,7 +783,9 @@ namespace { namespace SoGL { namespace QuadMesh {
 
 } } } // namespace
 
-// Documented in superclass.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoQuadMesh::initClass(void)
 {

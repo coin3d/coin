@@ -53,8 +53,7 @@
 SO_ELEMENT_SOURCE(SoMaterialBindingElement);
 
 /*!
-  This static method initializes static data for the
-  SoMaterialBindingElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -64,7 +63,7 @@ SoMaterialBindingElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoMaterialBindingElement::~SoMaterialBindingElement(void)
@@ -84,7 +83,10 @@ SoMaterialBindingElement::set(SoState * const state,
   SoInt32Element::set(classStackIndex, state, node, binding);
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes the element to its default value. The default
+  value for materialBinding is SoMaterialBindingElement::DEFAULT.
+*/
 
 void
 SoMaterialBindingElement::init(SoState * state)

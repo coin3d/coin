@@ -795,7 +795,9 @@ SoShadowGroup::~SoShadowGroup()
   delete PRIVATE(this);
 }
 
-// Doc from superclass.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoShadowGroup::initClass(void)
 {

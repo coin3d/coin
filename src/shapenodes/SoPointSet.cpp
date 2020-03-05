@@ -147,7 +147,9 @@ SoPointSet::~SoPointSet()
 {
 }
 
-// doc from parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoPointSet::initClass(void)
 {

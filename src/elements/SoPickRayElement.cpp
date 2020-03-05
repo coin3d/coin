@@ -52,7 +52,7 @@
 SO_ELEMENT_SOURCE(SoPickRayElement);
 
 /*!
-  This static method initializes static data for the SoPickRayElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -62,14 +62,16 @@ SoPickRayElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoPickRayElement::~SoPickRayElement(void)
 {
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes the element to its default value.
+*/
 
 void
 SoPickRayElement::init(SoState * state)

@@ -92,7 +92,9 @@
 
 SO_NODEENGINE_SOURCE(SoVRMLOrientationInterpolator);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLOrientationInterpolator::initClass(void)
 {

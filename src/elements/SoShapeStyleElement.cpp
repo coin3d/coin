@@ -66,7 +66,7 @@
 SO_ELEMENT_SOURCE(SoShapeStyleElement);
 
 /*!
-  This static method initializes static data for the SoShapeStyleElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -76,14 +76,17 @@ SoShapeStyleElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoShapeStyleElement::~SoShapeStyleElement()
 {
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes the element to its default value. The default
+  value for flags is SoShapeStyleElement::LIGHTING.
+*/
 
 void
 SoShapeStyleElement::init(SoState * state)

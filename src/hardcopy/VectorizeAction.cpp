@@ -195,7 +195,9 @@ SO_ACTION_SOURCE(SoVectorizeAction);
 
 // *************************************************************************
 
-// Doc in parent
+/*!
+  \copydetails SoAction::initClass(void)
+*/
 void
 SoVectorizeAction::initClass(void)
 {

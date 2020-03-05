@@ -262,7 +262,9 @@
 
 SO_NODE_SOURCE(SoVRMLNavigationInfo);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLNavigationInfo::initClass(void) // static
 {

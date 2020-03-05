@@ -138,7 +138,9 @@ public:
 SO_KIT_SOURCE(SoHandleBoxDragger);
 
 
-// doc in superclass
+/*!
+  \copydetails SoDragger::initClass(void)
+*/
 void
 SoHandleBoxDragger::initClass(void)
 {

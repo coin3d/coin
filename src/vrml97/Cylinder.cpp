@@ -141,7 +141,9 @@
 
 SO_NODE_SOURCE(SoVRMLCylinder);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLCylinder::initClass(void)
 {

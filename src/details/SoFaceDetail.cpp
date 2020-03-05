@@ -74,7 +74,9 @@ SoFaceDetail::~SoFaceDetail()
   delete [] this->pointsarray;
 }
 
-// doc in super
+/*!
+  \copybrief SoDetail::initClass(void)
+*/
 void
 SoFaceDetail::initClass(void)
 {
@@ -108,7 +110,7 @@ SoFaceDetail::getNumPoints(void) const
 
 /*!
   Returns a pointer into the array of vertices, starting at the \a
-  idx'th vertice of the polygon.
+  idx'th vertex of the polygon.
 
   The array will contain (SoFaceDetail::getNumPoints() - \a idx)
   elements.

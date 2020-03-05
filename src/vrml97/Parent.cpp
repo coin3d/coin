@@ -125,7 +125,9 @@ SO_NODE_ABSTRACT_SOURCE(SoVRMLParent);
 
 // *************************************************************************
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLParent::initClass(void)
 {

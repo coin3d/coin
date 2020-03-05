@@ -54,7 +54,7 @@
 SO_ELEMENT_SOURCE(SoViewVolumeElement);
 
 /*!
-  This static method initializes static data for the SoViewVolumeElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -64,7 +64,7 @@ SoViewVolumeElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoViewVolumeElement::~SoViewVolumeElement(void)
@@ -99,7 +99,11 @@ SoViewVolumeElement::get(SoState * const state)
   return element->viewVolume;
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes the element to its default value. The default
+  value is rectangular box with 
+  (left: -1.0, right: 1.0, bottom: -1.0, top: 1.0, near: -1.0, far: 1.0).
+*/
 
 void
 SoViewVolumeElement::init(SoState * state)

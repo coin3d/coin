@@ -137,7 +137,9 @@ public:
 SO_KIT_SOURCE(SoTranslate1Dragger);
 
 
-// doc in superclass
+/*!
+  \copydetails SoDragger::initClass(void)
+*/
 void
 SoTranslate1Dragger::initClass(void)
 {

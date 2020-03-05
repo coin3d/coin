@@ -96,7 +96,9 @@ SO_NODE_SOURCE(SoDirectionalLightManip);
 */
 
 
-// documented in superclass
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoDirectionalLightManip::initClass(void)
 {

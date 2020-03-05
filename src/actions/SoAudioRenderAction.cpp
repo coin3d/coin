@@ -79,6 +79,9 @@ public:
 
 SO_ACTION_SOURCE(SoAudioRenderAction);
 
+/*!
+  \copybrief SoAction::initClass(void)
+*/
 void SoAudioRenderAction::initClass()
 {
   SO_ACTION_INTERNAL_INIT_CLASS(SoAudioRenderAction, SoAction);

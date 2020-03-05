@@ -63,7 +63,9 @@ SO_SFIELD_SOURCE(SoSFColor, SbColor, const SbColor &);
 
 // *************************************************************************
 
-// Override from parent.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoSFColor::initClass(void)
 {

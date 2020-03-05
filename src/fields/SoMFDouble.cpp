@@ -67,7 +67,9 @@ SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFDouble, double, double);
 
 // *************************************************************************
 
-// Override from parent.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoMFDouble::initClass(void)
 {

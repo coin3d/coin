@@ -76,7 +76,9 @@ SoDecomposeVec3f::SoDecomposeVec3f()
   SO_ENGINE_ADD_OUTPUT(z,SoMFFloat);
 }
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoDecomposeVec3f::initClass()
 {

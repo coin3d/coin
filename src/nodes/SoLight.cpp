@@ -55,7 +55,7 @@
 
   \code
       #include <Inventor/elements/SoGLLightIdElement.h>
-#include <Inventor/nodes/SoSubNodeP.h>
+      #include <Inventor/nodes/SoSubNodeP.h>
       // ...[snip]...
       int nrlights = SoGLLightIdElement::getMaxGLSources();
   \endcode
@@ -122,7 +122,9 @@ SoLight::~SoLight()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoLight::initClass(void)
 {

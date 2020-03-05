@@ -145,7 +145,9 @@ SoIndexedPointSet::~SoIndexedPointSet()
   delete this->vaindexer;
 }
 
-// doc from parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoIndexedPointSet::initClass(void)
 {

@@ -97,7 +97,22 @@
 
 SO_ELEMENT_SOURCE(SoCullElement);
 
-// doc from parent
+/*!
+  \fn static SoType SoCullElement::getClassTypeId(void)
+
+  This static method returns the class type.
+*/
+
+/*!
+  \fn static int SoCullElement::getClassStackIndex(void)
+
+  This static method returns the state stack index for the class.
+*/
+
+/*!
+  \copydetails SoElement::initClass(void)
+*/
+
 void
 SoCullElement::initClass(void)
 {
@@ -105,7 +120,7 @@ SoCullElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 SoCullElement::~SoCullElement()
 {

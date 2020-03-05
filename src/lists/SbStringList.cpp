@@ -63,28 +63,52 @@
   \sa SPbList::SbList(const int sizehint)
 */
 
+/*!
+  \fn void SbStringList::append(SbString * string)
+
+  \copydetails SbPList::append(void * item)
+
+  Overloaded from parent to accept an SbString pointer argument.
+
+  \sa SbPList::append()
+*/
 
 /*!
   \fn int SbStringList::find(SbString * string) const
 
-  Overridden from parent to accept an SbString argument.
+  \copydetails SbPList::find(const void * item) const
+
+  Overloaded from parent to accept an SbString pointer argument.
+
+  \sa SbPList::find()
 */
 
 /*!
   \fn void SbStringList::insert(SbString * string, int insertbefore)
 
-  Overridden from parent to accept an SbString argument.
+  \copydetails SbPList::insert(void * item, const int insertbefore)
+
+  Overloaded from parent to accept an SbString pointer argument.
+
+  \sa SbPList::insert()
 */
 
 /*!
-  
   \fn SbString *& SbStringList::operator[](const int idx) const
 
-  Overridden from parent to return an SbString pointer.
+  \copydetails SbPList::operator[](const int index) const
+
+  Overloaded from parent to return an SbString pointer.
+
+  \sa SbPList::operator[]()
 */ 
 
 /*!
   \fn const SbString ** SbStringList::getArrayPtr(void) const 
-  
-  Overridden from parent to return an SbString pointer array.
+
+  \copydetails SbPList::getArrayPtr(const int start = 0) const
+
+  Overloaded from parent to return an SbString pointer array.
+
+  \sa SbPList::getArrayPtr()
 */

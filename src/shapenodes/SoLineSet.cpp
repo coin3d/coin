@@ -370,7 +370,9 @@ namespace { namespace SoGL { namespace LineSet {
 
 } } } // namespace
 
-// doc from parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoLineSet::initClass(void)
 {

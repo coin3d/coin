@@ -100,7 +100,9 @@ SoColorIndex::~SoColorIndex()
 {
 }
 
-// doc in parent
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoColorIndex::initClass(void)
 {

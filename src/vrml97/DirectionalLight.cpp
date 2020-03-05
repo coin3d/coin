@@ -96,7 +96,9 @@
 
 SO_NODE_SOURCE(SoVRMLDirectionalLight);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLDirectionalLight::initClass(void) // static
 {

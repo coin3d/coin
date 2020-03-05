@@ -157,6 +157,9 @@ SoArray::~SoArray()
 }
 
 // Doc in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoArray::initClass(void)
 {

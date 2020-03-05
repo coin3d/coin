@@ -104,7 +104,9 @@ SoPointLight::~SoPointLight()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoPointLight::initClass(void)
 {

@@ -67,7 +67,9 @@ public:
 SO_NODE_SOURCE(SoJackManip);
 
 
-// doc in super
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoJackManip::initClass(void)
 {

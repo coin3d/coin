@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoTextureCoordinateBundle include/Inventor/bundles/SoTextureCoordinateBundle.h
+  \class SoTextureCoordinateBundle SoTextureCoordinateBundle.h Inventor/bundles/SoTextureCoordinateBundle.h
   \brief The SoTextureCoordinateBundle class simplifies texture coordinate handling.
 
   \ingroup bundles

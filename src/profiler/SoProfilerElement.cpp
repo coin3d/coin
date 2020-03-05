@@ -52,6 +52,9 @@
 
 SO_ELEMENT_SOURCE(SoProfilerElement);
 
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoProfilerElement::initClass(void)
 {

@@ -81,6 +81,9 @@ public:
 
 SO_NODEENGINE_SOURCE(SoVRMLCoordinateInterpolator);
 
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLCoordinateInterpolator::initClass(void) // static
 {

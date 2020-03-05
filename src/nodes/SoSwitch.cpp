@@ -192,6 +192,9 @@ SoSwitch::~SoSwitch()
 }
 
 // doc in super
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoSwitch::initClass(void)
 {

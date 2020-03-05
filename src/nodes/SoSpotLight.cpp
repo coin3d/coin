@@ -138,6 +138,9 @@ SoSpotLight::~SoSpotLight()
 }
 
 // Doc in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoSpotLight::initClass(void)
 {

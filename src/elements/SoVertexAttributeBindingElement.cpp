@@ -53,8 +53,7 @@
 SO_ELEMENT_SOURCE(SoVertexAttributeBindingElement);
 
 /*!
-  This static method initializes static data for the
-  SoVertexAttributeBindingElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -64,7 +63,7 @@ SoVertexAttributeBindingElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoVertexAttributeBindingElement::~SoVertexAttributeBindingElement(void)
@@ -84,7 +83,10 @@ SoVertexAttributeBindingElement::set(SoState * const state,
   SoInt32Element::set(classStackIndex, state, node, binding);
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes the element to its default value. The default
+  value for the VertexAttributeBinding is SoVertexAttributeBindingElement::DEFAULT.
+*/
 
 void
 SoVertexAttributeBindingElement::init(SoState * state)

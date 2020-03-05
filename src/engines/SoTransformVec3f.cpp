@@ -65,7 +65,9 @@
 
 SO_ENGINE_SOURCE(SoTransformVec3f);
 
-// doc in parent
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTransformVec3f::initClass(void)
 {

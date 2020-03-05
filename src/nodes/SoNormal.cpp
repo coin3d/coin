@@ -108,6 +108,9 @@ SoNormal::~SoNormal()
 }
 
 // Doc in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoNormal::initClass(void)
 {

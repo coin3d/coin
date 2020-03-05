@@ -125,6 +125,9 @@ SoTextureCoordinateNormalMap::~SoTextureCoordinateNormalMap()
 }
 
 // doc in super
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTextureCoordinateNormalMap::initClass(void)
 {

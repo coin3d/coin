@@ -137,7 +137,9 @@ SoNodeEngine::destroy(void)
 #endif // debug
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoNodeEngine::initClass(void)
 {
@@ -145,7 +147,9 @@ SoNodeEngine::initClass(void)
     SoType::createType(SoNode::getClassTypeId(), SbName("NodeEngine"));
 }
 
-// Documented in superclass.
+/*!
+  \copydetails SoEngine::getClassTypeId(void)
+*/
 SoType
 SoNodeEngine::getClassTypeId(void)
 {

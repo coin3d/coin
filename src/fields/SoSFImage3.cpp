@@ -159,7 +159,9 @@ SoSFImage3::operator=(const SoSFImage3 & field)
 #endif // DOXYGEN_SKIP_THIS
 
 
-// Override from parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoSFImage3::initClass(void)
 {

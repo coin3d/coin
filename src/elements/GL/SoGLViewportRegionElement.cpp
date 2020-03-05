@@ -56,8 +56,7 @@
 SO_ELEMENT_SOURCE(SoGLViewportRegionElement);
 
 /*!
-  This static method initializes static data for the
-  SoGLViewportRegionElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -67,7 +66,7 @@ SoGLViewportRegionElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoGLViewportRegionElement::~SoGLViewportRegionElement()

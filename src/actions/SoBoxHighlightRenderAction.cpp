@@ -192,7 +192,9 @@ SoBoxHighlightRenderActionP::drawHighlightBox(const SoPath * path)
 
 SO_ACTION_SOURCE(SoBoxHighlightRenderAction);
 
-// Overridden from parent class.
+/*!
+  \copydetails SoAction::initClass(void)
+*/
 void
 SoBoxHighlightRenderAction::initClass(void)
 {

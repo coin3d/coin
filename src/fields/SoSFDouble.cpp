@@ -60,7 +60,9 @@ SO_SFIELD_SOURCE(SoSFDouble, double, double);
 
 // *************************************************************************
 
-// Override from parent.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoSFDouble::initClass(void)
 {

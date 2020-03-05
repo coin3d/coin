@@ -54,7 +54,7 @@
 SO_ELEMENT_SOURCE(SoShininessElement);
 
 /*!
-  This static method initializes static data for the SoShininessElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -64,14 +64,14 @@ SoShininessElement::initClass()
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoShininessElement::~SoShininessElement()
 {
 }
 
-//! FIXME: write doc.
+// Doc from superclass
 
 void
 SoShininessElement::init(SoState * stateptr)

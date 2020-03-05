@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoNormalGenerator include/Inventor/misc/SoNormalGenerator.h
+  \class SoNormalGenerator SoNormalGenerator.h include/Inventor/misc/SoNormalGenerator.h
   \brief The SoNormalGenerator class is used to generate normals.
 
   \ingroup general

@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoFullPath Inventor/SoFullPath.h
+  \class SoFullPath SoFullPath.h Inventor/SoFullPath.h
   \brief The SoFullPath class allows examination of hidden children in paths.
 
   \ingroup general

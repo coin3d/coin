@@ -102,6 +102,9 @@ SoTextureMatrixTransform::~SoTextureMatrixTransform()
 }
 
 // Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTextureMatrixTransform::initClass(void)
 {

@@ -99,6 +99,9 @@ SoProfileCoordinate3::~SoProfileCoordinate3()
 }
 
 // doc in super
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoProfileCoordinate3::initClass(void)
 {

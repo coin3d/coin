@@ -114,7 +114,9 @@ SO_NODE_ABSTRACT_SOURCE(SoVRMLVertexShape);
 
 // *************************************************************************
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLVertexShape::initClass(void)
 {

@@ -105,7 +105,9 @@ SoType SoSField::classTypeId STATIC_SOTYPE_INIT;
 
 // *************************************************************************
 
-// Overridden from parent class.
+/*!
+  \copydetails SoField::getClassTypeId(void)
+*/
 SoType
 SoSField::getClassTypeId(void)
 {
@@ -128,7 +130,9 @@ SoSField::~SoSField()
 {
 }
 
-// Overridden from parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoSField::initClass(void)
 {

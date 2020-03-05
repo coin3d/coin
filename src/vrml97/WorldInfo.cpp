@@ -80,7 +80,9 @@
 
 SO_NODE_SOURCE(SoVRMLWorldInfo);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLWorldInfo::initClass(void)
 {

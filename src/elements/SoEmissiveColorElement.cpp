@@ -52,8 +52,7 @@
 SO_ELEMENT_SOURCE(SoEmissiveColorElement);
 
 /*!
-  This static method initializes static data for the SoEmissiveColorElement
-  class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -63,15 +62,14 @@ SoEmissiveColorElement::initClass()
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoEmissiveColorElement::~SoEmissiveColorElement()
 {
 }
 
-//! FIXME: write doc.
-
+// doc from superclass
 void
 SoEmissiveColorElement::init(SoState * stateptr)
 {

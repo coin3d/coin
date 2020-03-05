@@ -170,7 +170,9 @@ SoShadowSpotLight::~SoShadowSpotLight()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoShadowSpotLight::initClass(void)
 {

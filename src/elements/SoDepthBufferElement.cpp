@@ -49,8 +49,21 @@
 SO_ELEMENT_SOURCE(SoDepthBufferElement);
 
 /*!
-  This function initializes the SoDepthBufferElement class type for Coin.
+  \fn static SoType SoDepthBufferElement::getClassTypeId(void)
+
+  This static method returns the class type.
 */
+
+/*!
+  \fn static int SoDepthBufferElement::getClassStackIndex(void)
+
+  This static method returns the state stack index for the class.
+*/
+
+/*!
+  \copydetails SoElement::initClass(void)
+*/
+
 void
 SoDepthBufferElement::initClass(void)
 {
@@ -58,7 +71,7 @@ SoDepthBufferElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 SoDepthBufferElement::~SoDepthBufferElement(void)
 {

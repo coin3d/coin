@@ -200,7 +200,9 @@ SO_NODE_SOURCE(SoVRMLBillboard);
 
 // *************************************************************************
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLBillboard::initClass(void)
 {

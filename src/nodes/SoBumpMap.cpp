@@ -242,6 +242,9 @@ SoBumpMap::~SoBumpMap()
 }
 
 // Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoBumpMap::initClass(void)
 {

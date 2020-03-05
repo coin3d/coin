@@ -86,6 +86,9 @@
 
 SO_NODEENGINE_ABSTRACT_SOURCE(SoVRMLInterpolator);
 
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLInterpolator::initClass(void) // static
 {

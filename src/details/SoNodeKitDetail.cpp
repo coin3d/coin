@@ -86,7 +86,9 @@ SoNodeKitDetail::~SoNodeKitDetail()
   if (this->myPart) myPart->unref();
 }
 
-// Doc in superclass.
+/*!
+  \copybrief SoDetail::initClass(void)
+*/
 void
 SoNodeKitDetail::initClass(void)
 {

@@ -147,7 +147,9 @@ SO_KIT_SOURCE(SoTranslate2Dragger);
 #define PRIVATE(obj) ((obj)->pimpl)
 #define THISP(d) static_cast<SoTranslate2Dragger *>(d)
 
-// doc in superclass
+/*!
+  \copydetails SoDragger::initClass(void)
+*/
 void
 SoTranslate2Dragger::initClass(void)
 {

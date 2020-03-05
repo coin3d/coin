@@ -122,7 +122,7 @@
 
   Without the polygon offset node in the above example, the lines may
   look irregularly stippled with some graphics card drivers, as parts
-  of it will show through the faceset, others not. This happen on
+  of it will show through the faceset, others not. This happens on
   seemingly random parts, as the z-buffer floating point calculations
   will be fickle with regard to whether or not the polygon or the line
   will be closer to the camera.
@@ -164,6 +164,18 @@
 
   Enumeration of the rendering primitives which can be influenced by
   an SoPolygonOffset node.
+*/
+/*!
+  \var SoPolygonOffset::Style SoPolygonOffset::FILLED
+  The polygon face should be offset.
+*/
+/*!
+  \var SoPolygonOffset::Style SoPolygonOffset::LINES
+  The polygon edges should be offset.
+*/
+/*!
+  \var SoPolygonOffset::Style SoPolygonOffset::POINTS
+  The polygon vertices should be offset.
 */
 
 /*!
@@ -294,6 +306,9 @@ SoPolygonOffset::~SoPolygonOffset()
 }
 
 // doc in super
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoPolygonOffset::initClass(void)
 {

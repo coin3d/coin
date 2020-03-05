@@ -83,7 +83,9 @@
 SO_SFIELD_REQUIRED_SOURCE(SoSFNode);
 
 
-// Override from parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoSFNode::initClass(void)
 {

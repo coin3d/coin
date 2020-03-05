@@ -202,7 +202,9 @@ SoTextureScalePolicy::~SoTextureScalePolicy()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTextureScalePolicy::initClass(void)
 {

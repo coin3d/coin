@@ -52,7 +52,10 @@
 
 SO_ELEMENT_SOURCE(SoListenerGainElement);
 
-// doc from parent
+/*!
+  \copydetails SoElement::initClass(void)
+*/
+
 void
 SoListenerGainElement::initClass(void)
 {
@@ -60,13 +63,16 @@ SoListenerGainElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 SoListenerGainElement::~SoListenerGainElement(void)
 {
 }
 
-// doc from parent
+/*!
+  Initializes the element to its default value. The default
+  value is 1.0.
+*/
 void
 SoListenerGainElement::init(SoState * state)
 {

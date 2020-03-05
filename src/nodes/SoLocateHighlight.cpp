@@ -220,6 +220,9 @@ SoLocateHighlight::~SoLocateHighlight()
 }
 
 // doc from parent
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoLocateHighlight::initClass(void)
 {

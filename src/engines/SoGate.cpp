@@ -153,7 +153,9 @@ SoGate::SoGate(SoType type)
 }
 
 
-// doc from parent
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoGate::initClass(void)
 {

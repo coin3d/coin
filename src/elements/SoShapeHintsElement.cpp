@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoShapehintsElement Inventor/elements/SoShapeHintsElement.h
+  \class SoShapeHintsElement Inventor/elements/SoShapeHintsElement.h
   \brief The SoShapeHintsElement class is yet to be documented.
 
   \ingroup elements
@@ -50,8 +50,7 @@
 SO_ELEMENT_SOURCE(SoShapeHintsElement);
 
 /*!
-  This static method initializes static data for the SoShapeHintsElement
-  class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -61,14 +60,19 @@ SoShapeHintsElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoShapeHintsElement::~SoShapeHintsElement(void)
 {
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes the element to its default values. The default
+  value for vertexOrdering is SoShapeHintsElement::UNKNOWN_ORDERING,
+  for shapeType is SoShapeHintsElement::UNKNOWN_SHAPE_TYPE, and
+  for faceType is SoShapeHintsElement::CONVEX.
+*/
 
 void
 SoShapeHintsElement::init(SoState * state)
