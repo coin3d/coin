@@ -61,7 +61,9 @@ SO_SFIELD_SOURCE(SoSFVec2i32, SbVec2i32, const SbVec2i32 &);
 
 // *************************************************************************
 
-// Override from parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoSFVec2i32::initClass(void)
 {

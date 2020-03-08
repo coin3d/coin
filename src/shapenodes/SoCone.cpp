@@ -106,6 +106,18 @@
   Enumerates the various parts of the cone, for setting inclusion or
   exclusion from the shape.
 */
+/*!
+  \var SoCone::Part SoCone::SIDES
+  Sides of cone.
+*/
+/*!
+  \var SoCone::Part SoCone::BOTTOM
+  Bottom of cone.
+*/
+/*!
+  \var SoCone::Part SoCone::ALL
+  All parts.
+*/
 
 /*!
   \var SoSFBitMask SoCone::parts
@@ -151,7 +163,9 @@ SoCone::~SoCone()
 }
 
 
-// Doc from parent.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoCone::initClass(void)
 {

@@ -161,7 +161,9 @@ SoClipPlane::~SoClipPlane()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoClipPlane::initClass(void)
 {

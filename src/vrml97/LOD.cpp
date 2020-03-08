@@ -161,7 +161,9 @@ SO_NODE_SOURCE(SoVRMLLOD);
 
 // *************************************************************************
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLLOD::initClass(void) // static
 {

@@ -77,6 +77,9 @@ SoTextureCoordinateDefault::~SoTextureCoordinateDefault()
 }
 
 // doc in super
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTextureCoordinateDefault::initClass(void)
 {

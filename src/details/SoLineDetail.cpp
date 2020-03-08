@@ -65,7 +65,9 @@ SoLineDetail::~SoLineDetail()
 {
 }
 
-// Doc in superclass.
+/*!
+  \copybrief SoDetail::initClass(void)
+*/
 void
 SoLineDetail::initClass(void)
 {

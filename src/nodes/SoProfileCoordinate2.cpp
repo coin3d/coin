@@ -94,6 +94,9 @@ SoProfileCoordinate2::~SoProfileCoordinate2()
 }
 
 // doc in super
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoProfileCoordinate2::initClass(void)
 {

@@ -68,7 +68,9 @@ SoConeDetail::~SoConeDetail()
 {
 }
 
-// doc in super
+/*!
+  \copybrief SoDetail::initClass(void)
+*/
 void
 SoConeDetail::initClass(void)
 {

@@ -121,7 +121,24 @@
 
 /*!
   \enum SoCylinder::Part
-  The parts of a cylinder shape.
+  Enumerates the various parts of the cylinder, for setting inclusion or
+  exclusion from the shape.
+*/
+/*!
+  \var SoCylinder::Part SoCylinder::SIDES
+  Sides of cylinder.
+*/
+/*!
+  \var SoCylinder::Part SoCylinder::TOP
+  Top of cylinder.
+*/
+/*!
+  \var SoCylinder::Part SoCylinder::BOTTOM
+  Bottom of cylinder.
+*/
+/*!
+  \var SoCylinder::Part SoCylinder::ALL
+  All parts.
 */
 
 
@@ -169,7 +186,9 @@ SoCylinder::~SoCylinder()
 {
 }
 
-// Doc in parent.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoCylinder::initClass(void)
 {

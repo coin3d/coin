@@ -120,7 +120,9 @@ SoEventCallback::~SoEventCallback()
   if (this->path) this->path->unref();
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoEventCallback::initClass(void)
 {

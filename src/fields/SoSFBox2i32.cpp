@@ -60,7 +60,9 @@ SO_SFIELD_SOURCE(SoSFBox2i32, SbBox2i32, const SbBox2i32 &);
 
 // *************************************************************************
 
-// Override from parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoSFBox2i32::initClass(void)
 {

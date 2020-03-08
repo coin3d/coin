@@ -84,7 +84,9 @@ SoLabel::~SoLabel()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoLabel::initClass(void)
 {

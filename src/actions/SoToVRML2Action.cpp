@@ -190,7 +190,9 @@ static SoNode * tovrml2_new_node(SoNode * newnode, const SoNode * oldnode)
 
 // *************************************************************************
 
-// Overridden from parent class.
+/*!
+  \copydetails SoAction::initClass(void)
+*/
 void
 SoToVRML2Action::initClass(void)
 {

@@ -88,8 +88,7 @@
 SO_ELEMENT_SOURCE(SoModelMatrixElement);
 
 /*!
-  This static method initializes static data for the
-  SoModelMatrixElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -99,7 +98,7 @@ SoModelMatrixElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoModelMatrixElement::~SoModelMatrixElement(void)
@@ -427,7 +426,10 @@ SoModelMatrixElement::popMatrixElt(const SbMatrix & matrix)
   this->modelMatrix = matrix;
 }
 
-// doc from parent
+/*!
+  Initializes the element to its default value. The default
+  value for modelMatrix is the identity matrix.
+*/
 void
 SoModelMatrixElement::init(SoState * state)
 {
@@ -461,6 +463,9 @@ SoModelMatrixElement::push(SoState * state)
   this->copyNodeIds(prev);
 }
 
+/*!
+  Returns the current model matrix.
+*/
 const SbMatrix &
 SoModelMatrixElement::getModelMatrix(void) const
 {

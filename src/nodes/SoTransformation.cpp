@@ -113,7 +113,9 @@ SoTransformation::~SoTransformation()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTransformation::initClass(void)
 {

@@ -64,7 +64,9 @@
 
 SO_NODE_ABSTRACT_SOURCE(SoVRMLVertexPoint);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLVertexPoint::initClass(void)
 {

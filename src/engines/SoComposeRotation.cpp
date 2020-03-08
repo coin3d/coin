@@ -92,7 +92,9 @@ SoComposeRotation::SoComposeRotation()
   SO_ENGINE_ADD_OUTPUT(rotation,SoMFRotation);
 }
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoComposeRotation::initClass()
 {

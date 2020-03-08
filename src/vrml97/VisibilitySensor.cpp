@@ -160,7 +160,9 @@ visibilitysensor_get_current_time(void)
   return SbTime::getTimeOfDay();
 }
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLVisibilitySensor::initClass(void)
 {

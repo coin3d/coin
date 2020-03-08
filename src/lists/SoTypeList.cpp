@@ -66,7 +66,11 @@
 */
 
 /*!
-  Overridden from parent to accept an SoType argument.
+  \copydetails SbPList::append(void * item)
+
+  Overloaded from parent to accept an SoType pointer argument.
+
+  \sa SbPList::append()
 */
 void
 SoTypeList::append(const SoType type)
@@ -78,7 +82,11 @@ SoTypeList::append(const SoType type)
 }
 
 /*!
-  Overridden from parent to accept an SoType argument.
+  \copydetails SbPList::find(const void * item) const
+
+  Overloaded from parent to accept an SoType argument.
+
+  \sa SbPList::find()
 */
 int
 SoTypeList::find(const SoType type) const
@@ -90,7 +98,11 @@ SoTypeList::find(const SoType type) const
 }
 
 /*!
-  Overridden from parent to accept an SoType argument.
+  \copydetails SbPList::insert(void * item, const int insertbefore)
+
+  Overloaded from parent to accept an SoType argument.
+
+  \sa SbPList::insert()
 */
 void
 SoTypeList::insert(const SoType type, const int insertbefore)
@@ -102,7 +114,11 @@ SoTypeList::insert(const SoType type, const int insertbefore)
 }
 
 /*!
-  Overridden from parent to return an SoType instance.
+  \copydetails SbPList::operator[](const int index) const
+
+  Overloaded from parent to return an SoType instance.
+
+  \sa SbPList::operator[]()
 */
 SoType
 SoTypeList::operator[](const int idx) const
@@ -115,8 +131,11 @@ SoTypeList::operator[](const int idx) const
 }
 
 /*!
-  This method sets the element at \a index to \a item. Overridden
-  to accept an SoType argument.
+  \copydetails SbPList::set(const int index, void * item)
+
+  Overloaded from parent to accept an SoType argument.
+
+  \sa SbPList::set()
 */
 void
 SoTypeList::set(const int index, const SoType item)

@@ -519,7 +519,9 @@ SoGroup::findChild(const SoNode * node) const
   return this->getChildren()->find((SoNode *) node);
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoGroup::initClass(void)
 {

@@ -99,7 +99,9 @@ public:
 
 SO_NODEENGINE_SOURCE(SoVRMLNormalInterpolator);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLNormalInterpolator::initClass(void)
 {

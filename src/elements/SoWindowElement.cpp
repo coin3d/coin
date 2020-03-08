@@ -75,7 +75,9 @@
 
 SO_ELEMENT_SOURCE(SoWindowElement);
 
-// doc in parent
+/*!
+  \copydetails SoElement::initClass(void)
+*/
 void
 SoWindowElement::initClass(void)
 {
@@ -83,7 +85,7 @@ SoWindowElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 SoWindowElement::~SoWindowElement(void)
 {

@@ -149,7 +149,9 @@ SO_ACTION_SOURCE(SoLineHighlightRenderAction);
 
 // *************************************************************************
 
-// Override from parent class.
+/*!
+  \copydetails SoAction::initClass(void)
+*/
 void
 SoLineHighlightRenderAction::initClass(void)
 {

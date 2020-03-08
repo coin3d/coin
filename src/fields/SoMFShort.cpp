@@ -66,7 +66,9 @@ SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFShort, short, short);
 
 // *************************************************************************
 
-// Override from parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoMFShort::initClass(void)
 {

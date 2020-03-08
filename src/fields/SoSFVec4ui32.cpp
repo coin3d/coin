@@ -62,7 +62,9 @@ SO_SFIELD_SOURCE(SoSFVec4ui32, SbVec4ui32, const SbVec4ui32 &);
 
 // *************************************************************************
 
-// Override from parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoSFVec4ui32::initClass(void)
 {

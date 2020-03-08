@@ -106,7 +106,9 @@
 
 SO_ENGINE_SOURCE(SoOneShot);
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoOneShot::initClass(void)
 {

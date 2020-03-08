@@ -137,7 +137,9 @@
 
 SO_NODE_SOURCE(SoVRMLTextureTransform);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLTextureTransform::initClass(void)
 {

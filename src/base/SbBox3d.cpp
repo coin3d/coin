@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SbBox3d Inventor/SbBox3d.h
+  \class SbBox3d SbBox3d.h Inventor/SbBox3d.h
   \brief The SbBox3d class is an abstraction for an axis aligned 3 dimensional box.
 
   \ingroup base
@@ -80,6 +80,30 @@
 
   The coordinates of \a min should be less than the coordinates of \a
   max if you want to make a valid box.
+*/
+
+/*!
+  \fn SbBox3d::SbBox3d(const SbBox3f & box)
+
+  Constructs an SbBox3d instance from the value in an SbBox3f instance.
+
+  \since Coin 2.5
+*/
+
+/*!
+  \fn SbBox3d::SbBox3d(const SbBox3s & box)
+
+  Constructs an SbBox3d instance from the value in an SbBox3s instance.
+
+  \since Coin 2.5
+*/
+
+/*!
+  \fn SbBox3d::SbBox3d(const SbBox3i32 & box)
+
+  Constructs an SbBox3d instance from the value in an SbBox3i32 instance.
+
+  \since Coin 2.5
 */
 
 /*!
@@ -336,14 +360,15 @@ SbBox3d::makeEmpty(void)
   \fn SbBool SbBox3d::hasVolume(void) const
 
   Check if the box has been correctly specified and by that virtue
-  has volume.
+  has "positive" volume, i.e. all coordinates of its upper right corner
+  (the maximum point) are greater than the corresponding coordinates 
+  of its lower left corner (the minimum point).
 */
 
 /*!
   \fn double SbBox3d::getVolume(void) const
 
-  Check if the box has "positive" volume, i.e. the lower left corner is
-  actually lower and more left than the maximum point.
+  Returns the volume of the box.
 */
 
 /*!

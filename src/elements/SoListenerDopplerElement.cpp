@@ -72,8 +72,7 @@
 SO_ELEMENT_SOURCE(SoListenerDopplerElement);
 
 /*!
-  This static method initializes static data for the
-  SoListenerDopplerElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -83,17 +82,19 @@ SoListenerDopplerElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoListenerDopplerElement::~SoListenerDopplerElement(void)
 {
 }
 
-/*!  Initializes the element to its default value. The default value
+/*!
+  Initializes the element to its default value. The default value
   for the velocity is (0.0, 0.0, 0.0), in other words, the listener
   is not moving. The default value for the dopplerFactor is 0.0, in
-  other words, Doppler effect is disabled.  */
+  other words, Doppler effect is disabled.
+*/
 
 void
 SoListenerDopplerElement::init(SoState * state)

@@ -34,38 +34,38 @@
   \page elements The Element Classes
 
   Elements are mostly internal to Coin, unless you create new extension
-  nodes over Coin. Then you will probably need to know about them.
+  nodes over Coin.  Then you will probably need to know about them. \n
 
-  Elements are part of the design for scene graph traversal in Coin.
+  Elements are part of the design for scene graph traversal in Coin. \n
 
   It works like this: any traversal action instantiates and keeps a
-  single SoState instance during traversal. The SoState instance uses
+  single SoState instance during traversal.  The SoState instance uses
   SoElement objects as "memory units" to keep track of the current
-  state for any feature of the scene graph nodes.
+  state for any feature of the scene graph nodes. \n
 
   As an example, consider the SoPointSize node: when the SoPointSize
   node is traversed by for instance a SoGLRenderAction, it will itself
   push a SoPointSizeElement onto the SoGLRenderAction's SoState stack.
   Later, when a SoPointSet node occurs in the scene graph, it will
   request the current point size value from the SoState by reading off
-  the value of its SoPointSizeElement.
+  the value of its SoPointSizeElement. \n
 
   SoSeparator nodes will push and pop elements on and off the state
   stack, so anything that changes state below a SoSeparator node will
-  not influence anything \e above the SoSeparator.
+  not influence anything \e above the SoSeparator. \n
 
 
   For more information on the theoretical underpinnings of this
   traversal design, you should consider reading available literature
-  on the so-called "Visitor pattern". We recommend "Design Patterns",
-  by Gamma, Helm, Johnson, Vlissides (aka the "Gang Of Four"). This
+  on the so-called "Visitor pattern".  We recommend "Design Patterns",
+  by Gamma, Helm, Johnson, Vlissides (aka the "Gang Of Four").  This
   book actually uses the Inventor API traversal mechanism as the case
-  study for explaining the Visitor pattern.
+  study for explaining the Visitor pattern. \n
 
-  \TOOLMAKER_REF
+  \TOOLMAKER_REF \n
 
   The following is a complete example on how to extend Coin with your
-  own traversal elements. First, the class declaration of the new
+  own traversal elements.  First, the class declaration of the new
   element (i.e. the header include file):
 
   \code
@@ -345,7 +345,8 @@
 
 /*!
   \fn SoType SoElement::getClassTypeId(void)
-  This static method returns the class type.
+  This static method returns the SoType object associated with
+  objects of this class.
 */
 /*!
   \var SoElement::classStackIndex

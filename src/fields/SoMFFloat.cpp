@@ -66,7 +66,9 @@ SO_MFIELD_SETVALUESPOINTER_SOURCE(SoMFFloat, float, float);
 
 // *************************************************************************
 
-// Override from parent.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoMFFloat::initClass(void)
 {

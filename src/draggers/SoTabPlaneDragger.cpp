@@ -141,7 +141,9 @@ public:
 
 SO_KIT_SOURCE(SoTabPlaneDragger);
 
-// doc in superclass
+/*!
+  \copydetails SoDragger::initClass(void)
+*/
 void
 SoTabPlaneDragger::initClass(void)
 {

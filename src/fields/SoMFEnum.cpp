@@ -112,7 +112,9 @@ SoMFEnum::~SoMFEnum()
 #endif // DOXYGEN_SKIP_THIS
 
 
-// Override from parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoMFEnum::initClass(void)
 {

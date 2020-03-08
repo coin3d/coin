@@ -1527,6 +1527,7 @@ SoBase::doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type)
 }
 
 /*!
+  Lock access to static data.
   \internal
   \since Coin 2.3
 */
@@ -1537,6 +1538,7 @@ SoBase::staticDataLock(void)
 }
 
 /*!
+  Unlock access to static data.
   \internal
   \since Coin 2.3
 */
@@ -1547,6 +1549,7 @@ SoBase::staticDataUnlock(void)
 }
 
 /*!
+  Create a record entry for notification lists.
   \internal
 */
 SoNotRec

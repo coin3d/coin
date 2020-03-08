@@ -89,7 +89,9 @@ SoSFTrigger::getValue(void) const
   // Does nothing.
 }
 
-// Override from parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoSFTrigger::initClass(void)
 {

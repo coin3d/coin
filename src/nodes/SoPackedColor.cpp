@@ -122,7 +122,9 @@ SoPackedColor::~SoPackedColor()
   delete PRIVATE(this);
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoPackedColor::initClass(void)
 {

@@ -89,7 +89,9 @@
 
 SO_NODEENGINE_SOURCE(SoVRMLColorInterpolator);
 
-// doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLColorInterpolator::initClass(void) // static
 {

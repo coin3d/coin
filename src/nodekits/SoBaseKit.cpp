@@ -588,24 +588,6 @@ SbBool SoBaseKit::searchchildren = FALSE;
 
 SO_KIT_SOURCE(SoBaseKit);
 
-/*!
-  \fn const SoNodekitCatalog * SoBaseKit::getClassNodekitCatalog(void)
-  Returns the nodekit catalog which defines the layout of this
-  class' kit.
-*/
-
-/*!
-  \fn const SoNodekitCatalog * SoBaseKit::getNodekitCatalog(void) const
-  Returns the nodekit catalog which defines the layout of this
-  class' kit.
-*/
-
-/*!
-  \fn const SoNodekitCatalog ** SoBaseKit::getClassNodekitCatalogPtr(void)
-  Returns the pointer to the pointer of the nodekit catalog
-  for this class.
-*/
-
 
 /*!
   \var SoChildList * SoBaseKit::children
@@ -688,7 +670,9 @@ SoBaseKit::~SoBaseKit()
   delete PRIVATE(this);
 }
 
-// Doc in superclass
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoBaseKit::initClass(void)
 {

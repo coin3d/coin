@@ -57,7 +57,9 @@ SO_MFIELD_SOURCE(SoMFPlane, SbPlane, const SbPlane &);
 
 // *************************************************************************
 
-// Override from parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoMFPlane::initClass(void)
 {

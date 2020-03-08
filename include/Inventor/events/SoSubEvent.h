@@ -40,6 +40,9 @@
 #define SO_EVENT_HEADER() \
 private: \
   static SoType classTypeId; \
+  /*! \
+    This static method cleans up static data of the class. \
+  */ \
   static void cleanupClass(void) { classTypeId STATIC_SOTYPE_INIT; }; \
   static void * createInstance(void); \
 public: \
@@ -49,6 +52,9 @@ public: \
 #define SO_EVENT_ABSTRACT_HEADER() \
 private: \
   static SoType classTypeId; \
+  /*! \
+    This static method cleans up static data of the class. \
+  */ \
   static void cleanupClass(void) { classTypeId STATIC_SOTYPE_INIT; }; \
 public: \
   static SoType getClassTypeId(void); \
@@ -57,13 +63,39 @@ public: \
 // *************************************************************************
 
 #define SO_EVENT_ABSTRACT_SOURCE(_class_) \
+ \
+/*! \
+  This static method returns the SoType object associated with \
+  objects of this class. \
+*/ \
 SoType _class_::getClassTypeId(void) { return _class_::classTypeId; } \
+ \
+/*!
+  Returns the type identification of an object derived from a \
+  class inheriting SoEvent. This is used for runtime type checking and \
+  "downward" casting. \
+*/ \
 SoType _class_::getTypeId(void) const { return _class_::classTypeId; } \
 SoType _class_::classTypeId STATIC_SOTYPE_INIT
 
 #define SO_EVENT_SOURCE(_class_) \
+ \
+/*! \
+  This static method returns the SoType object associated with \
+  objects of this class. \
+*/ \
 SoType _class_::getClassTypeId(void) { return _class_::classTypeId; } \
+ \
+/*!
+  Returns the type identification of an object derived from a \
+  class inheriting SoEvent. This is used for runtime type checking and \
+  "downward" casting. \
+*/ \
 SoType _class_::getTypeId(void) const { return _class_::classTypeId; } \
+/*! \COININTERNAL \
+ \
+  Creates a new instance of the class type corresponding to the SoType object. \
+*/ \
 void * _class_::createInstance(void) { return static_cast<void *>(new _class_); } \
 SoType _class_::classTypeId STATIC_SOTYPE_INIT
 

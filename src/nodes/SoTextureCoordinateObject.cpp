@@ -113,6 +113,9 @@ SoTextureCoordinateObject::~SoTextureCoordinateObject()
 }
 
 // doc from parent
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTextureCoordinateObject::initClass(void)
 {

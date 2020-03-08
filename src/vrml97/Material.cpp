@@ -192,7 +192,9 @@ private:
 
 SO_NODE_SOURCE(SoVRMLMaterial);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLMaterial::initClass(void)
 {

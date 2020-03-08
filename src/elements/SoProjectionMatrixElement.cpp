@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoProjectionMatrix Inventor/elements/SoProjectionMatrixElement.h
+  \class SoProjectionMatrixElement Inventor/elements/SoProjectionMatrixElement.h
   \brief The SoProjectionMatrixElement class is yet to be documented.
 
   \ingroup elements
@@ -45,11 +45,16 @@
 
 #include <cassert>
 
+/*!
+  \fn SoProjectionMatrixElement::projectionMatrix
+
+  FIXME: write doc.
+*/
+
 SO_ELEMENT_SOURCE(SoProjectionMatrixElement);
 
 /*!
-  This static method initializes static data for the SoProjectionMatrixElement
-  class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -59,15 +64,16 @@ SoProjectionMatrixElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoProjectionMatrixElement::~SoProjectionMatrixElement(void)
 {
 }
 
-//! FIXME: write doc.
-
+/*!
+  Sets the current projection matrix to \a matrix.
+*/
 void
 SoProjectionMatrixElement::set(SoState * const state,
                                SoNode * const node,
@@ -83,8 +89,9 @@ SoProjectionMatrixElement::set(SoState * const state,
   }
 }
 
-//! FIXME: write doc.
-
+/*!
+  Returns the current projection matrix.
+*/
 const SbMatrix &
 SoProjectionMatrixElement::get(SoState * const state)
 {
@@ -96,7 +103,10 @@ SoProjectionMatrixElement::get(SoState * const state)
   return element->projectionMatrix;
 }
 
-//! FIXME: write doc.
+/*!
+  virtual method which is called from the static method
+  set(). Sets element projection matrix to \a matrix.
+*/
 
 void
 SoProjectionMatrixElement::setElt(SbMatrix const & matrix)
@@ -104,7 +114,10 @@ SoProjectionMatrixElement::setElt(SbMatrix const & matrix)
   this->projectionMatrix = matrix;
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes the element to its default value. The default
+  value for projectionMatrix is the identity matrix.
+*/
 
 void
 SoProjectionMatrixElement::init(SoState * state)

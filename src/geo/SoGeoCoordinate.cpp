@@ -118,7 +118,9 @@ SoGeoCoordinate::~SoGeoCoordinate(void)
 {
 }
 
-// Doc from superclass.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoGeoCoordinate::initClass(void)
 {

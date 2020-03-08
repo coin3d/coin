@@ -63,8 +63,7 @@ SO_ELEMENT_SOURCE(SoGLLightIdElement);
 // *************************************************************************
 
 /*!
-  This static method initializes static data for the
-  SoGLLightIdElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -74,7 +73,7 @@ SoGLLightIdElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoGLLightIdElement::~SoGLLightIdElement(void)

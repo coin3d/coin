@@ -113,7 +113,9 @@ SoResetTransform::~SoResetTransform()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoResetTransform::initClass(void)
 {

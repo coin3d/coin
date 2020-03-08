@@ -107,7 +107,9 @@ public:
 SO_KIT_SOURCE(SoTabBoxDragger);
 
 
-// doc in superclass
+/*!
+  \copydetails SoDragger::initClass(void)
+*/
 void
 SoTabBoxDragger::initClass(void)
 {

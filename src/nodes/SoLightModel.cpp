@@ -108,7 +108,9 @@ SoLightModel::~SoLightModel()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoLightModel::initClass(void)
 {

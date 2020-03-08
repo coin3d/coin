@@ -90,10 +90,34 @@
   \enum SoFontStyle::Family
   Enumeration of the font family to use.
 */
+/*!
+  \var SoFontStyle::Family SoFontStyle::SERIF
+  Serif font family should be used.
+*/
+/*!
+  \var SoFontStyle::Family SoFontStyle::SANS
+  Sans serif font family should be used.
+*/
+/*!
+  \var SoFontStyle::Family SoFontStyle::TYPEWRITER
+  Type writer font family should be used.
+*/
 
 /*!
   \enum SoFontStyle::Style
   Enumeration of font style characteristics.
+*/
+/*!
+  \var SoFontStyle::Style SoFontStyle::NONE
+  No modification to the style attributes of the font family.
+*/
+/*!
+  \var SoFontStyle::Style SoFontStyle::BOLD
+  The bold font of the font family should be used.
+*/
+/*!
+  \var SoFontStyle::Style SoFontStyle::ITALIC
+  The italic font of the font family should be used.
 */
 
 /*!
@@ -138,7 +162,9 @@ SoFontStyle::~SoFontStyle()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoFontStyle::initClass(void)
 {

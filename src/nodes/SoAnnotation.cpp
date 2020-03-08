@@ -88,6 +88,9 @@ SoAnnotation::~SoAnnotation()
 }
 
 // Doc in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoAnnotation::initClass(void)
 {

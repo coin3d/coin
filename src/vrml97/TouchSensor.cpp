@@ -256,7 +256,9 @@ touchsensor_get_current_time(void)
 
 SO_NODE_SOURCE(SoVRMLTouchSensor);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLTouchSensor::initClass(void)
 {

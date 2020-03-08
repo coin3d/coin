@@ -255,7 +255,9 @@ SoNurbsProfile::~SoNurbsProfile()
   }
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoNurbsProfile::initClass(void)
 {

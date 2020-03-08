@@ -144,7 +144,9 @@ SoConcatenate::SoConcatenate(SoType type)
 }
 
 
-// doc from parent
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoConcatenate::initClass(void)
 {

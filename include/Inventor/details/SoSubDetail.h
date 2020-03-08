@@ -48,13 +48,27 @@ public: \
 private: \
   static SoType classTypeId; \
 public: \
+  /*! \
+    This static method cleans up static data of the class. \
+  */ \
   static void cleanupClass(void) { _class_::classTypeId STATIC_SOTYPE_INIT; }
 
 // *************************************************************************
 
 #define SO_DETAIL_SOURCE(_class_) \
 SoType _class_::classTypeId STATIC_SOTYPE_INIT; \
+ \
+/*!
+  Returns the type identification of an object derived from a \
+  class inheriting SoDetail. This is used for runtime type checking and \
+  "downward" casting. \
+*/ \
 SoType _class_::getTypeId(void) const { return _class_::classTypeId; } \
+ \
+/*! \
+  This static method returns the SoType object associated with \
+  objects of this class. \
+*/ \
 SoType _class_::getClassTypeId(void) { return _class_::classTypeId; }
 
 // *************************************************************************

@@ -30,8 +30,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*! \file SbBasic.h */
 /*!
-  \class SbBool SbBasic.h Inventor/SbBasic.h
+  \typedef int SbBool
   \brief SbBool is a compiler portable boolean type.
 
   \ingroup base
@@ -46,6 +47,7 @@
 
 /* *********************************************************************** */
 
+/*! \file SoDB.h */
 /*!
   \class SoDB SoDB.h Inventor/SoDB.h
   \brief The SoDB class keeps track of internal global data.
@@ -151,7 +153,9 @@ const char * SoDBP::EnvVars::COIN_PROFILER = "COIN_PROFILER";
 const char * SoDBP::EnvVars::COIN_PROFILER_OVERLAY = "COIN_PROFILER_OVERLAY";
 #endif // DOXYGEN_SKIP_THIS
 
-/*!*************************************************************************
+// *************************************************************************
+
+/*!
   \typedef void SoDBHeaderCB(void * data, SoInput * input)
 
   The type definition for the pre and post callback functions that may be

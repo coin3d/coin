@@ -93,7 +93,9 @@ public:
 
 SO_KIT_SOURCE(SoPointLightDragger);
 
-// doc in superclass
+/*!
+  \copydetails SoDragger::initClass(void)
+*/
 void
 SoPointLightDragger::initClass(void)
 {

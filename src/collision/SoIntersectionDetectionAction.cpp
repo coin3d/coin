@@ -31,10 +31,10 @@
 \**************************************************************************/
 
 /*!
-  \class SoIntersectionDetectionAction Inventor/collision/SoIntersectionDetectionAction.h
+  \class SoIntersectionDetectionAction SoIntersectionDetectionAction.h Inventor/collision/SoIntersectionDetectionAction.h
   \brief The SoIntersectionDetectionAction class is for detecting intersecting primitives in a scene.
 
-  Note that only collisions between actual geometry in the scene is
+  Note that only collisions between actual geometry in the scene are
   detected, so the contents of some special nodes like e.g. SoText2
   and SoImage (which projects to screen-plane bitmap graphics, and not
   actual polygons) will not be considered for collision detection.
@@ -43,9 +43,9 @@
   high-performance component in Coin.  Using it in a continuous manner
   over complex scene graphs is doomed to be a performance killer.
 
-  Below is a simple usage example for this class. It was written as a
+  Below is a simple usage example for this class.  It was written as a
   standalone framework set up for profiling and optimization of the
-  SoIntersectionDetectionAction. It tests intersection of all shapes
+  SoIntersectionDetectionAction.  It tests intersection of all shapes
   against each other for the loaded file.
 
   \code
@@ -313,6 +313,9 @@ ida_debug(void)
 
 SO_ACTION_SOURCE(SoIntersectionDetectionAction);
 
+/*!
+  \copybrief SoAction::initClass(void)
+*/
 void
 SoIntersectionDetectionAction::initClass(void)
 {

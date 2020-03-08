@@ -35,6 +35,8 @@
   \brief The SoGLMultiTextureImageElement class is used to control the current GL texture for texture units.
 
   \ingroup elements
+
+  FIXME: write doc.
 */
 
 // *************************************************************************
@@ -87,9 +89,9 @@ public:
 
 SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoGLMultiTextureImageElement);
 
+
 /*!
-  This static method initializes static data in the
-  SoGLMultiTextureImageElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -97,6 +99,10 @@ SoGLMultiTextureImageElement::initClass(void)
 {
   SO_ELEMENT_INIT_CLASS(SoGLMultiTextureImageElement, inherited);
 }
+
+/*!
+  Constructor.
+*/
 
 SoGLMultiTextureImageElement::SoGLMultiTextureImageElement(void)
 {
@@ -107,7 +113,7 @@ SoGLMultiTextureImageElement::SoGLMultiTextureImageElement(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoGLMultiTextureImageElement::~SoGLMultiTextureImageElement(void)

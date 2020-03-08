@@ -65,13 +65,39 @@
 */
 
 /*!
+  \fn void SoDetailList::append(SoDetail * item)
+
+  \copydetails SbPList::append(void * item)
+
+  Overloaded from parent to accept an SoDetail pointer argument.
+
+  \sa SbPList::append()
+*/
+
+/*!
+  \fn void SoDetailList::insert(SoDetail * item, const int insertbefore)
+
+  \copydetails SbPList::insert(void * item, const int insertbefore)
+
+  Overloaded from parent to accept an SoDetail pointer argument.
+
+  \sa SbPList::insert()
+*/
+
+/*!
   \fn SoDetail * SoDetailList::operator[](const int idx) const
 
-  Returns element at \a idx.
+  \copydetails SbPList::operator[](const int index) const
 
-  Will automatically expand the size of the internal array if \a idx
-  is outside the current bounds of the list. The values of any
-  additional pointers are then set to \c NULL.
+  Overloaded from parent to return an SoDetail pointer.
+
+  \sa SbPList::operator[]()
+*/
+
+/*!
+  \fn SoDetailList & SoDetailList::operator=(const SoDetailList & l)
+
+  \copydetails SbPList::copy(const SbPList & l)
 */
 
 
@@ -93,7 +119,11 @@ SoDetailList::~SoDetailList()
 }
 
 /*!
-  Overridden to delete truncated items.
+  \copydetails SbPList::truncate(const int length, const int fit)
+
+  Overloaded from parent to delete truncated items.
+
+  \sa SbPList::truncate()
 */ 
 void 
 SoDetailList::truncate(const int length, const int fit) 
@@ -107,7 +137,11 @@ SoDetailList::truncate(const int length, const int fit)
 }
 
 /*!
-  Overridden to copy items, not just pointers.
+  \copydetails SbPList::copy(const SbPList & l)
+
+  Overloaded from parent to copy items, not just pointers.
+
+  \sa SbPList::copy()
 */
 void 
 SoDetailList::copy(const SoDetailList & l)
@@ -119,7 +153,11 @@ SoDetailList::copy(const SoDetailList & l)
 }
 
 /*!
-  Overridden to delete old item.
+  \copydetails SbPList::set(const int index, void * item)
+
+  Overloaded from parent to destruct the replaced item.
+
+  \sa SbPList::set()
 */
 void
 SoDetailList::set(const int idx, SoDetail * detail) 

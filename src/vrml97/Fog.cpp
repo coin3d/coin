@@ -165,7 +165,9 @@ public:
 };
 
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLFog::initClass(void)
 {

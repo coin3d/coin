@@ -48,7 +48,9 @@
 
 SO_ELEMENT_SOURCE(SoShadowStyleElement);
 
-// doc in parent
+/*!
+  \copydetails SoElement::initClass(void)
+*/
 void
 SoShadowStyleElement::initClass(void)
 {
@@ -56,7 +58,7 @@ SoShadowStyleElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoShadowStyleElement::~SoShadowStyleElement(void)
@@ -73,7 +75,10 @@ SoShadowStyleElement::set(SoState * const state,
   SoInt32Element::set(classStackIndex, state, node, style);
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes the element to its default value. The default
+  value is SoShadowStyleElement::CASTS_SHADOW_AND_SHADOWED.
+*/
 
 void
 SoShadowStyleElement::init(SoState * state)

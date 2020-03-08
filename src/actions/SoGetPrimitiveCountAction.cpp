@@ -70,7 +70,9 @@ public:
 SO_ACTION_SOURCE(SoGetPrimitiveCountAction);
 
 
-// Override from parent class.
+/*!
+  \copydetails SoAction::initClass(void)
+*/
 void
 SoGetPrimitiveCountAction::initClass(void)
 {

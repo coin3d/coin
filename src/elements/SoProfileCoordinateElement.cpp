@@ -76,7 +76,9 @@ SbVec2f * SoProfileCoordinateElement::initdefaultcoords = NULL;
 
 SO_ELEMENT_SOURCE(SoProfileCoordinateElement);
 
-// doc from parent
+/*!
+  \copydetails SoElement::initClass(void)
+*/
 void
 SoProfileCoordinateElement::initClass(void)
 {
@@ -94,7 +96,7 @@ SoProfileCoordinateElement::clean(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 SoProfileCoordinateElement::~SoProfileCoordinateElement(void)
 {

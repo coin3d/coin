@@ -50,28 +50,28 @@
   #Inventor V2.1 ascii
   
   ShaderProgram {
-      shaderObject [ 
-                    VertexShader {
-                       sourceProgram "vertex.glsl"
-                    }
-                 ]
-   }
+    shaderObject [
+      VertexShader {
+        sourceProgram "vertex.glsl"
+      }
+    ]
+  }
 
-   Coordinate3 {
-      point [ 0 0 0, 1 0 0, 1 1 0 ]
-   }
+  Coordinate3 {
+    point [ 0 0 0, 1 0 0, 1 1 0 ]
+  }
 
-   VertexAttributeBinding { value OVERALL }
+  VertexAttributeBinding { value OVERALL }
 
-   VertexAttribute {
-      typeName "SoMFVec3f"
-      name "color"
-      values [ 1.0 0.0 0.0 ]
-   }
+  VertexAttribute {
+    typeName "SoMFVec3f"
+    name "color"
+    values [ 1.0 0.0 0.0 ]
+  }
 
-   IndexedFaceSet {
-      coordIndex [ 0, 1, 2, -1 ]
-   }
+  IndexedFaceSet {
+    coordIndex [ 0, 1, 2, -1 ]
+  }
   \endverbatim
 
   The vertex shader (vertex.glsl):
@@ -190,7 +190,9 @@ SoVertexAttributeBinding::~SoVertexAttributeBinding()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoVertexAttributeBinding::initClass(void)
 {

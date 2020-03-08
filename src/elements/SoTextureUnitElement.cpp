@@ -49,7 +49,7 @@
 SO_ELEMENT_SOURCE(SoTextureUnitElement);
 
 /*!
-  This static method initializes static data for the SoTextureUnitElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -59,7 +59,7 @@ SoTextureUnitElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoTextureUnitElement::~SoTextureUnitElement(void)
@@ -76,7 +76,10 @@ SoTextureUnitElement::set(SoState * const state,
   SoInt32Element::set(classStackIndex, state, node, unit);
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes the element to its default value. The default
+  value is 0.
+*/
 
 void
 SoTextureUnitElement::init(SoState * state)

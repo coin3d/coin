@@ -61,20 +61,43 @@
   Copy constructor.
 */
 
-// void append(SoEngineOutput * output);
-// void insert(SoEngineOutput * output, const int insertbefore);
+/*!
+  \fn void SoEngineOutputList::append(SoEngineOutput * output)
+
+  \copydetails SbPList::append(void * item)
+
+  Overloaded from parent to accept an SoEngineOutput pointer argument.
+
+  \sa SbPList::append()
+*/
 
 /*!
-  \fn SoEngineOutput * SoEngineOutput::operator[](const int idx) const
+  \fn void SoEngineOutputList::insert(SoEngineOutput * output, const int insertbefore)
 
-  Returns element at \a idx.
+  \copydetails SbPList::insert(void * item, const int insertbefore)
 
-  Will automatically expand the size of the internal array if \a idx
-  is outside the current bounds of the list. The values of any
-  additional pointers are then set to \c NULL.
+  Overloaded from parent to accept an SoEngineOutput pointer argument.
+
+  \sa SbPList::insert()
+*/
+
+/*!
+  \fn SoEngineOutput * SoEngineOutputList::operator[](const int idx) const
+
+  \copydetails SbPList::operator[](const int index) const
+
+  Overloaded from parent to return an SoEngineOutput pointer.
+
+  \sa SbPList::operator[]()
 */
 
 
 /*!
   \fn void SoEngineOutputList::set(const int index, SoEngineOutput * item)
+
+  \copydetails SbPList::set(const int index, void * item)
+
+  Overloaded from parent to destruct the replaced item.
+
+  \sa SbPList::set()
 */

@@ -50,8 +50,7 @@
 SO_ELEMENT_SOURCE(SoTransparencyElement);
 
 /*!
-  This static method initializes static data for the
-  SoTransparencyElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -61,14 +60,14 @@ SoTransparencyElement::initClass()
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoTransparencyElement::~SoTransparencyElement()
 {
 }
 
-//! FIXME: write doc.
+// Doc from superclass
 
 void
 SoTransparencyElement::init(SoState * stateptr)

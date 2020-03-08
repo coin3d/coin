@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoType Inventor/SoType.h
+  \class SoType SoType.h Inventor/SoType.h
   \brief The SoType class is the basis for the runtime type system in Coin.
 
   \ingroup general

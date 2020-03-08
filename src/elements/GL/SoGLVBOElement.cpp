@@ -71,8 +71,7 @@ class SoGLVBOElementP {
 SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoGLVBOElement);
 
 /*!
-  This static method initializes static data for the
-  SoGLVBOElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -83,7 +82,7 @@ SoGLVBOElement::initClass()
 
 
 /*!
-  The constructor.
+  Constructor.
 */
 SoGLVBOElement::SoGLVBOElement(void)
 {
@@ -94,7 +93,7 @@ SoGLVBOElement::SoGLVBOElement(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoGLVBOElement::~SoGLVBOElement()

@@ -145,7 +145,9 @@ SO_NODE_SOURCE(SoGeometryShader);
 
 // *************************************************************************
 
-// doc from parent
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoGeometryShader::initClass(void)
 {

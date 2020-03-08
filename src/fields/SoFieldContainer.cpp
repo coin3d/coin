@@ -233,7 +233,10 @@ sofieldcontainer_get_copydict(void)
 
 // *************************************************************************
 
-// Overridden from parent class.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
+
 void
 SoFieldContainer::initClass(void)
 {
@@ -263,6 +266,9 @@ SoFieldContainer_cleanupClass(void)
   SoFieldContainer::cleanupClass();
 }
 
+/*!
+  This static method cleans up static data for the SoFieldContainer class.
+*/
 void
 SoFieldContainer::cleanupClass(void)
 {
@@ -270,7 +276,9 @@ SoFieldContainer::cleanupClass(void)
 }
 
 
-// Overridden from parent class.
+/*!
+  \copybrief SoBase::getClassTypeId(void)
+*/
 SoType
 SoFieldContainer::getClassTypeId(void)
 {

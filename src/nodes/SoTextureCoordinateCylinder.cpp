@@ -155,6 +155,9 @@ SoTextureCoordinateCylinder::~SoTextureCoordinateCylinder()
 }
 
 // Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTextureCoordinateCylinder::initClass(void)
 {

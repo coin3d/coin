@@ -113,7 +113,9 @@ public:
 SO_KIT_SOURCE(SoRotateSphericalDragger);
 
 
-// doc in superclass
+/*!
+  \copydetails SoDragger::initClass(void)
+*/
 void
 SoRotateSphericalDragger::initClass(void)
 {

@@ -63,7 +63,9 @@ void * SoReadError::callbackData = NULL;
 
 // *************************************************************************
 
-// Documented for parent class.
+/*!
+  \copybrief SoError::initClass(void)
+*/
 void
 SoReadError::initClass(void)
 {
@@ -73,7 +75,9 @@ SoReadError::initClass(void)
     SoType::createType(SoError::getClassTypeId(), "ReadError");
 }
 
-// Documented for parent class.
+/*!
+  \copydetails SoError::getClassTypeId(void)
+*/
 SoType
 SoReadError::getClassTypeId(void)
 {
@@ -87,7 +91,9 @@ SoReadError::getTypeId(void) const
   return SoReadError::classTypeId;
 }
 
-// Documented for parent class.
+/*!
+  \copydetails SoError::setHandlerCallback(SoErrorCB * const function, void * const data)
+*/
 void
 SoReadError::setHandlerCallback(SoErrorCB * const function, void * const data)
 {
@@ -95,14 +101,18 @@ SoReadError::setHandlerCallback(SoErrorCB * const function, void * const data)
   SoReadError::callbackData = data;
 }
 
-// Documented for parent class.
+/*!
+  \copydetails SoError::getHandlerCallback(void)
+*/
 SoErrorCB *
 SoReadError::getHandlerCallback(void)
 {
   return SoReadError::callback;
 }
 
-// Documented for parent class.
+/*!
+  \copydetails SoError::getHandlerData(void)
+*/
 void *
 SoReadError::getHandlerData(void)
 {

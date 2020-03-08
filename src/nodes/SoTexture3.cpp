@@ -233,6 +233,9 @@ SoTexture3::~SoTexture3()
 }
 
 // doc from parent
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTexture3::initClass(void)
 {

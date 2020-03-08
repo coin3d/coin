@@ -306,7 +306,9 @@ SoVRMLScriptP::useSpiderMonkey(void)
 
 SoType SoVRMLScript::classTypeId STATIC_SOTYPE_INIT;
 
-// Doc in superclass
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLScript::initClass(void) // static
 {
@@ -320,6 +322,9 @@ SoVRMLScript::initClass(void) // static
 
 // *************************************************************************
 
+/*!
+  Constructor.
+*/
 SoVRMLScript::SoVRMLScript(void)
   : fielddata(NULL)
 {
@@ -361,6 +366,9 @@ SoVRMLScript::SoVRMLScript(void)
   this->initFieldData();
 }
 
+/*!
+  Destructor.
+*/
 SoVRMLScript::~SoVRMLScript()
 {
   delete PRIVATE(this);
@@ -377,14 +385,18 @@ SoVRMLScript::~SoVRMLScript()
 
 // *************************************************************************
 
-// Doc in superclass
+/*!
+  \copydetails SoNode::getClassTypeId(void)
+*/
 SoType
 SoVRMLScript::getClassTypeId(void)
 {
   return SoVRMLScript::classTypeId;
 }
 
-// Doc in superclass
+/*!
+  \copydetails SoNode::getTypeId(void) const
+*/
 SoType
 SoVRMLScript::getTypeId(void) const
 {

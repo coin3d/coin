@@ -46,7 +46,6 @@
 #include "coindefs.h"
 #include "SbBasicP.h"
 
-/*! \file SoMultiTextureCoordinateElement.h */
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
 #include <Inventor/nodes/SoNode.h>
@@ -95,8 +94,7 @@ public:
 SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoMultiTextureCoordinateElement);
 
 /*!
-  This static method initializes static data for the
-  SoMultiTextureCoordinateElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -107,7 +105,7 @@ SoMultiTextureCoordinateElement::initClass()
 
 
 /*!
-  The constructor.
+  Constructor.
 */
 SoMultiTextureCoordinateElement::SoMultiTextureCoordinateElement(void)
 {
@@ -118,7 +116,7 @@ SoMultiTextureCoordinateElement::SoMultiTextureCoordinateElement(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoMultiTextureCoordinateElement::~SoMultiTextureCoordinateElement()

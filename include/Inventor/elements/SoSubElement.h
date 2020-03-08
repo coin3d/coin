@@ -81,7 +81,16 @@ public: \
 #define PRIVATE_SOELEMENT_VARIABLES(_class_) \
 int _class_::classStackIndex; \
 SoType _class_::classTypeId STATIC_SOTYPE_INIT; \
+ \
+/*! \
+  This static method returns the SoType object associated with \
+  objects of this class. \
+*/ \
 SoType _class_::getClassTypeId(void) { return _class_::classTypeId; } \
+ \
+/*!
+  This static method returns the state stack index for the class. \
+*/ \
 int _class_::getClassStackIndex(void) { return _class_::classStackIndex; }
 
 
@@ -93,7 +102,10 @@ _class_::_class_(void) { }
 PRIVATE_SOELEMENT_VARIABLES(_class_) \
 _class_::_class_(void) { this->setTypeId(_class_::classTypeId); \
                          this->setStackIndex(_class_::classStackIndex); } \
-/*! \COININTERNAL */ \
+/*! \COININTERNAL \
+ \
+  Creates a new instance of the class type corresponding to the SoType object. \
+*/ \
 void * _class_::createInstance(void) { return static_cast<void *>(new _class_); }
 
 /*
@@ -101,7 +113,10 @@ void * _class_::createInstance(void) { return static_cast<void *>(new _class_); 
 */
 #define SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(_class_) \
 PRIVATE_SOELEMENT_VARIABLES(_class_) \
-/*! \COININTERNAL */ \
+/*! \COININTERNAL \
+ \
+  Creates a new instance of the class type corresponding to the SoType object. \
+*/ \
 void * _class_::createInstance(void) { return static_cast<void *>(new _class_); }
 
 // *************************************************************************

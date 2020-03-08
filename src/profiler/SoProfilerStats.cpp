@@ -351,7 +351,9 @@ SO_NODE_SOURCE(SoProfilerStats);
 
 // *************************************************************************
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoProfilerStats::initClass(void)
 {

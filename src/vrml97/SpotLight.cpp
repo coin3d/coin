@@ -204,7 +204,9 @@
 
 SO_NODE_SOURCE(SoVRMLSpotLight);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLSpotLight::initClass(void)
 {

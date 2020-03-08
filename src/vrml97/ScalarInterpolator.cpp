@@ -79,7 +79,9 @@
 
 SO_NODEENGINE_SOURCE(SoVRMLScalarInterpolator);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLScalarInterpolator::initClass(void) // static
 {

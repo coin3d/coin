@@ -128,7 +128,9 @@ SoProfile::~SoProfile()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoProfile::initClass(void)
 {

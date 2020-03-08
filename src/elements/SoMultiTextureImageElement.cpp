@@ -77,8 +77,7 @@ SoMultiTextureImageElement::SoMultiTextureImageElement(void)
 }
 
 /*!
-  This static method initializes static data for the
-  SoMultiTextureImageElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -88,7 +87,7 @@ SoMultiTextureImageElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoMultiTextureImageElement::~SoMultiTextureImageElement()
@@ -96,7 +95,9 @@ SoMultiTextureImageElement::~SoMultiTextureImageElement()
   delete PRIVATE(this);
 }
 
-//! FIXME: write doc.
+/*!
+  Initializes the element to its default value.
+*/
 
 void
 SoMultiTextureImageElement::init(SoState * state)

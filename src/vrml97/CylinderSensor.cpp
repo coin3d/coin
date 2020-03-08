@@ -194,7 +194,9 @@
 
 SO_NODE_SOURCE(SoVRMLCylinderSensor);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLCylinderSensor::initClass(void)
 {

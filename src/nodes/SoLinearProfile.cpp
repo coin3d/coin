@@ -126,7 +126,9 @@ SoLinearProfile::~SoLinearProfile()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoLinearProfile::initClass(void)
 {

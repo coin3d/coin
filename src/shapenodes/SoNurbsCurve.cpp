@@ -198,7 +198,9 @@ SoNurbsCurve::~SoNurbsCurve()
   delete PRIVATE(this);
 }
 
-// Doc from parent class.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoNurbsCurve::initClass(void)
 {

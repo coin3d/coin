@@ -53,7 +53,7 @@
 SO_ELEMENT_SOURCE(SoGLNormalElement);
 
 /*!
-  This static method initializes static data for the SoGLNormalElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -63,7 +63,7 @@ SoGLNormalElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoGLNormalElement::~SoGLNormalElement(void)

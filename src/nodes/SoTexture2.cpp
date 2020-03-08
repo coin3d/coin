@@ -460,6 +460,9 @@ SoTexture2::~SoTexture2()
 }
 
 // Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTexture2::initClass(void)
 {

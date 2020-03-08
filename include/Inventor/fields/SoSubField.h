@@ -162,8 +162,23 @@ _class_::operator==(const _class_ & field) const \
 
 
 #define PRIVATE_TYPEID_SOURCE(_class_) \
+ \
+/*!
+  Returns the type identification of an object derived from a \
+  class inheriting SoField. This is used for runtime type checking and \
+  "downward" casting. \
+*/ \
 SoType _class_::getTypeId(void) const { return _class_::classTypeId; } \
+ \
+/*! \
+  This static method returns the SoType object associated with \
+  objects of this class. \
+*/ \
 SoType _class_::getClassTypeId(void) { return _class_::classTypeId; } \
+/*! \COININTERNAL \
+ \
+  Creates a new instance of the class type corresponding to the SoType object. \
+*/ \
 void * _class_::createInstance(void) { return new _class_; } \
 SoType _class_::classTypeId STATIC_SOTYPE_INIT
 

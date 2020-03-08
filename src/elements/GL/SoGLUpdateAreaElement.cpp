@@ -63,8 +63,7 @@
 SO_ELEMENT_SOURCE(SoGLUpdateAreaElement);
 
 /*!
-  This static method initializes static data for the
-  SoGLUpdateAreaElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -74,7 +73,7 @@ SoGLUpdateAreaElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoGLUpdateAreaElement::~SoGLUpdateAreaElement()

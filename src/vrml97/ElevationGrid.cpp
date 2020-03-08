@@ -335,7 +335,9 @@ SO_NODE_SOURCE(SoVRMLElevationGrid);
 
 // *************************************************************************
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLElevationGrid::initClass(void)
 {

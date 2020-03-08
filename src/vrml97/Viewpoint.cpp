@@ -312,7 +312,9 @@
 
 SO_NODE_SOURCE(SoVRMLViewpoint);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLViewpoint::initClass(void)
 {

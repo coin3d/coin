@@ -70,7 +70,9 @@
 SO_ELEMENT_ABSTRACT_SOURCE(SoReplacedElement);
 
 
-// Documented in superclass.
+/*!
+  \copydetails SoElement::initClass(void)
+*/
 void
 SoReplacedElement::initClass(void)
 {

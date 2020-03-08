@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoGlyphCache caches/SoGlyphCache.h
+  \class SoGlyphCache SoGlyphCache.h Inventor/caches/SoGlyphCache.h
   The SoGlyphClass is used to cache glyphs.
 
   \internal

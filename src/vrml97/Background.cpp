@@ -369,7 +369,9 @@ background_bbfix(SoAction * action, SoNode * COIN_UNUSED_ARG(node))
   SoCacheElement::invalidate(action->getState());
 }
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLBackground::initClass(void) // static
 {

@@ -39,7 +39,6 @@
 
 // *************************************************************************
 
-/*! \file SoGLCacheContextElement.h */
 #include "coindefs.h"
 #include <Inventor/elements/SoGLCacheContextElement.h>
 
@@ -162,7 +161,10 @@ SoGLCacheContextElement::cleanupContext(uint32_t contextid, void * COIN_UNUSED_A
 
 // *************************************************************************
 
-// doc from parent
+/*!
+  \copydetails SoElement::initClass(void)
+*/
+
 void
 SoGLCacheContextElement::initClass(void)
 {

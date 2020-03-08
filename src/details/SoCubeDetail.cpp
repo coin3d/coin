@@ -71,7 +71,9 @@ SoCubeDetail::~SoCubeDetail()
 {
 }
 
-// doc in super
+/*!
+  \copybrief SoDetail::initClass(void)
+*/
 void
 SoCubeDetail::initClass(void)
 {

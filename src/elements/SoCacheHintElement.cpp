@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoShapehintsElement Inventor/elements/SoCacheHintElement.h
+  \class SoCacheHintElement Inventor/elements/SoCacheHintElement.h
   \brief The SoCacheHintElement class is yet to be documented.
 
   \ingroup elements
@@ -62,8 +62,7 @@ public:
 SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoCacheHintElement);
 
 /*!
-  This static method initializes static data for the SoCacheHintElement
-  class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -72,6 +71,9 @@ SoCacheHintElement::initClass(void)
   SO_ELEMENT_INIT_CLASS(SoCacheHintElement, inherited);
 }
 
+/*!
+  Constructor.
+*/
 
 SoCacheHintElement::SoCacheHintElement(void)
 {
@@ -81,7 +83,7 @@ SoCacheHintElement::SoCacheHintElement(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoCacheHintElement::~SoCacheHintElement(void)

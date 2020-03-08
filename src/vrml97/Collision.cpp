@@ -162,7 +162,9 @@
 
 SO_NODE_SOURCE(SoVRMLCollision);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLCollision::initClass(void) // static
 {

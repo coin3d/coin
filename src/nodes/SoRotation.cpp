@@ -120,7 +120,9 @@ SoRotation::~SoRotation()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoRotation::initClass(void)
 {

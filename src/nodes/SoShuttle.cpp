@@ -134,7 +134,9 @@ SoShuttle::~SoShuttle()
   this->timer->unref();
 }
 
-// doc in parent
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoShuttle::initClass(void)
 {

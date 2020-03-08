@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoGeo Inventor/misc/SoGeo.h
+  \class SoGeo SoGeo.h Inventor/misc/SoGeo.h
   \brief The SoGeo class is used to initialize the geo nodes in Coin, and has some utility geo coordinate functions.
   
   

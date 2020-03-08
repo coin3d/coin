@@ -233,7 +233,9 @@ SO_NODE_ABSTRACT_SOURCE(SoShaderObject);
 
 // *************************************************************************
 
-// doc from parent
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void SoShaderObject::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoShaderObject,

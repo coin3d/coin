@@ -68,7 +68,9 @@ public:
 
 SO_NODE_SOURCE(SoHandleBoxManip);
 
-// Doc in super.
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoHandleBoxManip::initClass(void)
 {

@@ -535,6 +535,17 @@ SbString::print(std::FILE * fp) const
   API.
 */
 
+/*!
+  \fn void SbString::apply(char (*func)(char input))
+
+  Apply the conversion function \a func to every character of the
+  current string.  \a func is a pointer to a function that takes a
+  character as input and returns a (probably converted) character.
+
+  Note that this function is not part of the original Open Inventor
+  API.
+*/
+
 #ifdef COIN_TEST_SUITE
 #include <Inventor/SbString.h>
 

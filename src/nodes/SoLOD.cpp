@@ -199,6 +199,9 @@ SoLOD::~SoLOD()
 }
 
 // Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoLOD::initClass(void)
 {

@@ -821,6 +821,9 @@ SoExtSelection::~SoExtSelection()
 // *************************************************************************
 
 // doc in superclass
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoExtSelection::initClass(void)
 {

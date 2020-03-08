@@ -31,8 +31,17 @@
 \**************************************************************************/
 
 /*!
-  \class SoPrimitiveVertexCache include/Inventor/caches/SoPrimitiveVertexCache.h
+  \class SoPrimitiveVertexCache SoPrimitiveVertexCache.h Inventor/caches/SoPrimitiveVertexCache.h
   The SoPrimitiveVertexClass is used to cache generated triangles.
+*/
+
+/*!
+  \class SoPrimitiveVertexCache SoPrimitiveVertexCache.h Inventor/caches/SoPrimitiveVertexCache.h
+  \brief This cache contains an organized version of the geometry in vertex array form.
+
+  \ingroup caches
+
+  \since Coin 3.0
 */
 
 // *************************************************************************
@@ -73,13 +82,6 @@
 #include "rendering/SoVBO.h"
 #include "rendering/SoVertexArrayIndexer.h"
 #include "SbBasicP.h"
-
-/*!
-  \class SoPrimtiveVertexCache SoPrimitiveVertexCache.h Inventor/caches/SoPrimitiveVertexCache.h
-  \brief This cache contains an organized version of the geometry in vertex array form.
-
-  \since Coin 3.0
-*/
 
 // *************************************************************************
 

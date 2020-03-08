@@ -111,7 +111,9 @@ public:
 SO_NODE_SOURCE(SoTrackballManip);
 
 
-// doc in super
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoTrackballManip::initClass(void)
 {

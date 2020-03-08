@@ -187,6 +187,9 @@ SoTextureCoordinatePlane::~SoTextureCoordinatePlane()
 }
 
 // doc from parent
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTextureCoordinatePlane::initClass(void)
 {

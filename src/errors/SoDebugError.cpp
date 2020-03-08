@@ -161,9 +161,23 @@ debug_break_cleanup(void)
 
   Specifies the available severity levels of the debug messages.
 */
+/*!
+  \var SoDebugError::Severity SoDebugError::ERROR
+  Severity level for errors.
+*/
+/*!
+  \var SoDebugError::Severity SoDebugError::WARNING
+  Severity level for warnings.
+*/
+/*!
+  \var SoDebugError::Severity SoDebugError::INFO
+  Severity level for additional information.
+*/
 
 
-// Documented for parent class.
+/*!
+  \copydetails SoError::initClass(void)
+*/
 void
 SoDebugError::initClass(void)
 {
@@ -246,7 +260,9 @@ SoDebugError::callbackForwarder(const struct cc_debugerror * error,
   SoDebugError::callback(&wrappederr, SoDebugError::callbackData);
 }
 
-// Documented for parent class.
+/*!
+  \copydetails SoError::setHandlerCallback(SoErrorCB * const function, void * const data)
+*/
 void
 SoDebugError::setHandlerCallback(SoErrorCB * const function, void * const data)
 {
@@ -263,21 +279,27 @@ SoDebugError::setHandlerCallback(SoErrorCB * const function, void * const data)
   SoDebugError::callbackData = data;
 }
 
-// Documented for parent class.
+/*!
+  \copydetails SoError::getHandlerCallback(void)
+*/
 SoErrorCB *
 SoDebugError::getHandlerCallback(void)
 {
   return SoDebugError::callback;
 }
 
-// Documented for parent class.
+/*!
+  \copydetails SoError::getHandlerData(void)
+*/
 void *
 SoDebugError::getHandlerData(void)
 {
   return SoDebugError::callbackData;
 }
 
-// Documented for parent class.
+/*!
+  \copydetails SoError::getClassTypeId(void)
+*/
 SoType
 SoDebugError::getClassTypeId(void)
 {

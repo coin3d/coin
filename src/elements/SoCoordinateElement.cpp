@@ -80,8 +80,7 @@ SbVec3f * SoCoordinateElement::initialdefaultcoords = NULL;
 SO_ELEMENT_SOURCE(SoCoordinateElement);
 
 /*!
-  This static method initializes static data for the
-  SoCoordinateElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -104,7 +103,7 @@ SoCoordinateElement::clean(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoCoordinateElement::~SoCoordinateElement(void)

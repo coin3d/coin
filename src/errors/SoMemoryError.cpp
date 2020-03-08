@@ -82,7 +82,9 @@ void * SoMemoryError::callbackData = NULL;
 
 // *************************************************************************
 
-// Documented for parent class.
+/*!
+  \copydetails SoError::initClass(void)
+*/
 void
 SoMemoryError::initClass(void)
 {
@@ -92,7 +94,9 @@ SoMemoryError::initClass(void)
     SoType::createType(SoError::getClassTypeId(), "MemoryError");
 }
 
-// Documented for parent class.
+/*!
+  \copydetails SoError::getClassTypeId(void)
+*/
 SoType
 SoMemoryError::getClassTypeId(void)
 {
@@ -106,7 +110,9 @@ SoMemoryError::getTypeId(void) const
   return SoMemoryError::classTypeId;
 }
 
-// Documented for parent class.
+/*!
+  \copydetails SoError::setHandlerCallback(SoErrorCB * const function, void * const data)
+*/
 void
 SoMemoryError::setHandlerCallback(SoErrorCB * const function,
                                   void * const data)
@@ -120,14 +126,18 @@ SoMemoryError::setHandlerCallback(SoErrorCB * const function,
   SoMemoryError::callbackData = data;
 }
 
-// Documented for parent class.
+/*!
+  \copydetails SoError::getHandlerCallback(void)
+*/
 SoErrorCB *
 SoMemoryError::getHandlerCallback(void)
 {
   return SoMemoryError::callback;
 }
 
-// Documented for parent class.
+/*!
+  \copydetails SoError::getHandlerData(void)
+*/
 void *
 SoMemoryError::getHandlerData(void)
 {

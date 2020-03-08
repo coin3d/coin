@@ -196,7 +196,9 @@
 
 SO_NODE_SOURCE(SoVRMLTransform);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLTransform::initClass(void)
 {

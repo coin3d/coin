@@ -39,7 +39,7 @@
 */
 
 /*!
-  \class SoCache Inventor/caches/SoCache.h
+  \class SoCache SoCache.h Inventor/caches/SoCache.h
   \brief The SoCache class is the superclass for all internal cache classes.
 
   \ingroup caches
@@ -70,7 +70,7 @@
   a cache to make the cache dependencies work. Basically you have to
   do it like this:
   
-  \verbatim
+  \code
   SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
   state->push();
   SoMyCache * cache = new SoMyCache(state);
@@ -79,7 +79,7 @@
   buildMyCache();
   state->pop();
   SoCacheElement::setInvalid(storedinvalid);
-  \endverbatim
+  \endcode
   
   First you reset and store the old value of the cache
   invalid-flag. Then you push the state so that the cache can detect

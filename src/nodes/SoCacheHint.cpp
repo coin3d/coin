@@ -101,6 +101,9 @@ SoCacheHint::~SoCacheHint()
 }
 
 // doc in super
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoCacheHint::initClass(void)
 {

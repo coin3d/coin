@@ -72,7 +72,9 @@ SoDecomposeRotation::SoDecomposeRotation()
   SO_ENGINE_ADD_OUTPUT(angle, SoMFFloat);
 }
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoDecomposeRotation::initClass()
 {

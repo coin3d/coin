@@ -248,7 +248,9 @@ SO_NODE_SOURCE(SoShaderProgram);
 
 // *************************************************************************
 
-// doc from parent
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoShaderProgram::initClass(void)
 {

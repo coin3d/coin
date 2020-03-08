@@ -164,7 +164,9 @@ SoShadowDirectionalLight::~SoShadowDirectionalLight()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoShadowDirectionalLight::initClass(void)
 {

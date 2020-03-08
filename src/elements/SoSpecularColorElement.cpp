@@ -54,8 +54,7 @@
 SO_ELEMENT_SOURCE(SoSpecularColorElement);
 
 /*!
-  This static method initializes static data for the SoSpecularColorElement
-  class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -65,14 +64,14 @@ SoSpecularColorElement::initClass()
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoSpecularColorElement::~SoSpecularColorElement()
 {
 }
 
-//! FIXME: write doc.
+// Doc from superclass
 
 void
 SoSpecularColorElement::init(SoState * stateptr)

@@ -87,7 +87,9 @@ SO_MFIELD_MALLOC_SOURCE(SoMFEngine, SoEngine *);
 // copied.
 
 
-// Override from parent class.
+/*!
+  \copydetails SoField::initClass(void)
+*/
 void
 SoMFEngine::initClass(void)
 {

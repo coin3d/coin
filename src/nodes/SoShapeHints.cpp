@@ -237,6 +237,14 @@
   assuming that the polygons are in a form handled by OpenGL.
 */
 
+/*!
+  \enum SoShapeHints::WindingType
+  Enumeration of different winding types.
+*/
+/*!
+  \var SoShapeHints::WindingType SoShapeHints::NO_WINDING_TYPE
+  Draw without holes.
+*/
 
 /*!
   \var SoSFEnum SoShapeHints::vertexOrdering
@@ -260,6 +268,14 @@
 
   Hint about whether or not polygon faces are known to be convex.
   Default value is SoShapeHints::CONVEX.
+*/
+/*!
+  \var SoSFEnum SoShapeHints::windingType
+
+  Hint about the winding type that is used to define holes in a polygon.
+  Default value is SoShapeHints::NO_WINDING_TYPE, i.e. no winding type
+  is used and therefore no holes are drawn.
+  Up to now Coin does not support other winding types than the default.
 */
 /*!
   \var SoSFFloat SoShapeHints::creaseAngle
@@ -316,6 +332,9 @@ SoShapeHints::~SoShapeHints()
 }
 
 // doc in super
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoShapeHints::initClass(void)
 {

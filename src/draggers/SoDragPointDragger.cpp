@@ -108,7 +108,9 @@ public:
 
 SO_KIT_SOURCE(SoDragPointDragger);
 
-// Doc in superclass.
+/*!
+  \copydetails SoDragger::initClass(void)
+*/
 void
 SoDragPointDragger::initClass(void)
 {

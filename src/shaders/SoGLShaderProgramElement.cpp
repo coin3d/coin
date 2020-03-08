@@ -30,6 +30,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*!
+  \class SoGLShaderProgramElement Inventor/elements/SoGLShaderProgramElement.h
+  \brief The SoGLShaderProgramElement class is yet to be documented.
+
+  \ingroup elements
+
+  FIXME: write doc.
+*/
+
 #include <Inventor/elements/SoGLShaderProgramElement.h>
 
 #include <cassert>
@@ -43,11 +52,19 @@ SO_ELEMENT_SOURCE(SoGLShaderProgramElement);
 
 // *************************************************************************
 
+/*!
+  \copydetails SoElement::initClass(void)
+*/
+
 void
 SoGLShaderProgramElement::initClass(void)
 {
   SO_ELEMENT_INIT_CLASS(SoGLShaderProgramElement, inherited);
 }
+
+/*!
+  Destructor.
+*/
 
 SoGLShaderProgramElement::~SoGLShaderProgramElement()
 {

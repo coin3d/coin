@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoMaterialBundle include/Inventor/bundles/SoMaterialBundle.h
+  \class SoMaterialBundle SoMaterialBundle.h Inventor/bundles/SoMaterialBundle.h
   \brief The SoMaterialBundle class simplifies material handling.
 
   \ingroup bundles

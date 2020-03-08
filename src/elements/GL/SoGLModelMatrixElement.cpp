@@ -60,8 +60,7 @@ SO_ELEMENT_SOURCE(SoGLModelMatrixElement);
 static int COIN_HANDLE_STACK_OVERFLOW = 0;
 
 /*!
-  This static method initializes static data for the
-  SoGLModelMatrixElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -75,7 +74,7 @@ SoGLModelMatrixElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoGLModelMatrixElement::~SoGLModelMatrixElement(void)

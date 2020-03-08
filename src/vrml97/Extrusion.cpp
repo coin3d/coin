@@ -478,7 +478,9 @@ SO_NODE_SOURCE(SoVRMLExtrusion);
 
 // *************************************************************************
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLExtrusion::initClass(void) // static
 {

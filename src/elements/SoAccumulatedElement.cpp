@@ -61,17 +61,25 @@
 
 SO_ELEMENT_ABSTRACT_SOURCE(SoAccumulatedElement);
 
-// doc from parent
+/*!
+  \copydetails SoElement::initClass(void)
+*/
+
 void
 SoAccumulatedElement::initClass(void)
 {
   SO_ELEMENT_INIT_ABSTRACT_CLASS(SoAccumulatedElement, inherited);
 }
 
+/*!
+  Destructor.
+*/
+
 SoAccumulatedElement::~SoAccumulatedElement(void)
 {
 }
 
+// Doc in superclass.
 void
 SoAccumulatedElement::init(SoState * state)
 {

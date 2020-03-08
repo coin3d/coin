@@ -132,7 +132,9 @@ SO_NODE_SOURCE(SoVRMLCone);
 
 #define CONE_SIDE_NUMTRIS 40.0f
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLCone::initClass(void) // static
 {

@@ -110,6 +110,9 @@ SoProtoInstance::initClass(void)
   coin_atexit((coin_atexit_f*) SoProtoInstance::cleanupClass, CC_ATEXIT_NORMAL);
 }
 
+/*!
+  This static method cleans up static data of the SoProtoInstance class.
+*/
 void
 SoProtoInstance::cleanupClass(void)
 {

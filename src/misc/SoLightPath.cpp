@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoLightPath Inventor/misc/SoLightPath.h
+  \class SoLightPath SoLightPath.h Inventor/misc/SoLightPath.h
   \brief The SoLightPath class is a light version of SoPath.
 
   \ingroup general

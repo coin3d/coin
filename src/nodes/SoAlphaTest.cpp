@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoAlphaTest SoAlphaTest.h
+  \class SoAlphaTest SoAlphaTest.h Inventor/nodes/SoAlphaTest.h
   \brief The SoAlphaTest class is a node used to control the GL alpha test function.
 
   With this node you can control the OpenGL alpha test function. The
@@ -126,6 +126,9 @@
 
 SO_NODE_SOURCE(SoAlphaTest);
 
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoAlphaTest::initClass(void)
 {

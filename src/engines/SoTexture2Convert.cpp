@@ -44,6 +44,9 @@
 
 SO_ENGINE_ABSTRACT_SOURCE(SoTexture2Convert);
 
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTexture2Convert::initClass(void)
 {

@@ -90,7 +90,9 @@ SoOnOff::SoOnOff(void)
   this->state = FALSE;
 }
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoOnOff::initClass(void)
 {

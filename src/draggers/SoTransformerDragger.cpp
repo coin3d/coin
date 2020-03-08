@@ -231,7 +231,9 @@ int SoTransformerDraggerP::colinearThreshold = 3; // FIXME: find default value f
 
 SO_KIT_SOURCE(SoTransformerDragger);
 
-// doc in superclass
+/*!
+  \copydetails SoDragger::initClass(void)
+*/
 void
 SoTransformerDragger::initClass(void)
 {

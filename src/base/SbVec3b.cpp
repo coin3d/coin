@@ -41,7 +41,7 @@
 #include <Inventor/SbVec3d.h>
 
 /*!
-  \class SbVec3b Inventor/SbVec3b.h
+  \class SbVec3b SbVec3b.h Inventor/SbVec3b.h
 
   \since Coin 2.5
 */

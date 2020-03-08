@@ -68,8 +68,7 @@
 SO_ELEMENT_SOURCE(SoListenerPositionElement);
 
 /*!
-  This static method initializes static data for the
-  SoListenerPositionElement class.
+  \copydetails SoElement::initClass(void)
 */
 
 void
@@ -79,7 +78,7 @@ SoListenerPositionElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 
 SoListenerPositionElement::~SoListenerPositionElement(void)

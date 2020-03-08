@@ -85,12 +85,36 @@
   Specify the search criterion. This can be a bitwise combination of
   the available values.
 */
+/*!
+  \var SoSearchAction::LookFor SoSearchAction::NODE
+  Search for a node by pointer.
+*/
+/*!
+  \var SoSearchAction::LookFor SoSearchAction::TYPE
+  Search for a node by type.
+*/
+/*!
+  \var SoSearchAction::LookFor SoSearchAction::NAME
+  Search for a node by name.
+*/
 
 /*!
   \enum SoSearchAction::Interest
 
   Values used when specifying what node(s) we are interested in: the
   first one found, the last one or all of them.
+*/
+/*!
+  \var SoSearchAction::Interest SoSearchAction::FIRST
+  Return the path to the first node found.
+*/
+/*!
+  \var SoSearchAction::Interest SoSearchAction::LAST
+  Return the path to the last node found.
+*/
+/*!
+  \var SoSearchAction::Interest SoSearchAction::ALL
+  Return paths to all nodes found.
 */
 
 /*!
@@ -118,7 +142,9 @@ SO_ACTION_SOURCE(SoSearchAction);
 SbBool SoSearchAction::duringSearchAll = FALSE;
 
 
-// Overridden from parent class.
+/*!
+  \copydetails SoAction::initClass(void)
+*/
 void
 SoSearchAction::initClass(void)
 {

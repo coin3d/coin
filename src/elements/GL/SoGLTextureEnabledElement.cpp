@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoGLTextureEnabledElement SoGLTextureEnabledElement.h Inventor/elements/SoGLTextureEnabledElement.h
+  \class SoGLTextureEnabledElement Inventor/elements/SoGLTextureEnabledElement.h
   \brief The SoGLTextureEnabledElement class is an element which controls whether texturing is enabled or not.
 
   \ingroup elements
@@ -66,7 +66,10 @@
 
 SO_ELEMENT_SOURCE(SoGLTextureEnabledElement);
 
-// doc from parent
+/*!
+  \copydetails SoElement::initClass(void)
+*/
+
 void
 SoGLTextureEnabledElement::initClass(void)
 {
@@ -74,13 +77,13 @@ SoGLTextureEnabledElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 SoGLTextureEnabledElement::~SoGLTextureEnabledElement(void)
 {
 }
 
-/*
+/*!
   Sets the state of this element. Used for enabling GL_TEXTURE_2D and
   disabling GL_TEXTURE_2D, GL_TEXTURE_RECTANGLE_EXT or
   GL_TEXTURE_CUBE_MAP.

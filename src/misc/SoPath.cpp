@@ -1066,7 +1066,9 @@ SoPath::auditPath(const SbBool flag)
   this->isauditing = flag;
 }
 
-// Override from parent.
+/*!
+  \copybrief SoBase::getClassTypeId(void)
+*/
 SoType
 SoPath::getClassTypeId(void)
 {
@@ -1082,13 +1084,21 @@ SoPath::getTypeId(void) const
 
 // This static method creates a new SoPath object and returns a
 // pointer to it. Used by the runtime type system.
+/*!
+  \COININTERNAL
+
+  This static method creates a new SoPath object and returns a
+  pointer to it. Used by the runtime type system.
+*/
 void *
 SoPath::createInstance(void)
 {
   return (void *)new SoPath;
 }
 
-// Override from parent.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoPath::initClass(void)
 {
@@ -1102,6 +1112,9 @@ SoPath::initClass(void)
                                            &SoPath::createInstance);
 }
 
+/*!
+  This static method cleans up static data of the SoPath class.
+*/
 void
 SoPath::cleanupClass(void)
 {

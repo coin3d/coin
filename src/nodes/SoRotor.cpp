@@ -173,6 +173,9 @@ SoRotor::~SoRotor()
 }
 
 // Doc from parent.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoRotor::initClass(void)
 {

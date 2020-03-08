@@ -137,7 +137,9 @@ SoIndexedMarkerSet::~SoIndexedMarkerSet()
 {
 }
 
-// doc from parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoIndexedMarkerSet::initClass(void)
 {

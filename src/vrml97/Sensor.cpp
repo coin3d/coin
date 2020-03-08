@@ -49,6 +49,9 @@
 
 SO_NODE_ABSTRACT_SOURCE(SoVRMLSensor);
 
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLSensor::initClass(void)
 {

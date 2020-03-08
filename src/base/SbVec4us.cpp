@@ -36,6 +36,12 @@
 #include <Inventor/SbVec4ub.h>
 #include <Inventor/SbVec4ui32.h>
 
+/*!
+  \class SbVec4us SbVec4us.h Inventor/SbVec4us.h
+
+  \since Coin 2.5
+*/
+
 SbVec4us &
 SbVec4us::setValue(const SbVec4s & v)
 {

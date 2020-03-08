@@ -157,7 +157,7 @@ public:
 SO_KIT_SOURCE(SoSTLFileKit)
 
 /*!
-  Initializes class and registers file identification functions.
+  \copydetails SoNode::initClass(void)
 */
 
 void

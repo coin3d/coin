@@ -129,7 +129,7 @@
 */
 
 /*!
-  \class SoReorganizeAction Inventor/actions/SoReorganizeAction.h
+  \class SoReorganizeAction SoReorganizeAction.h Inventor/actions/SoReorganizeAction.h
   \ingroup actions
   \brief The SoReorganizeAction class reorganizes your scene graph to optimize traversal/rendering.
 
@@ -383,7 +383,9 @@ class SoReorganizeActionP {
 
 SO_ACTION_SOURCE(SoReorganizeAction);
 
-// Override from parent class.
+/*!
+  \copydetails SoAction::initClass(void)
+*/
 void
 SoReorganizeAction::initClass(void)
 {

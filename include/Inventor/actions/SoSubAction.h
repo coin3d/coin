@@ -88,11 +88,43 @@ private: \
 #define SO_ACTION_SOURCE(_classname_) \
 SoEnabledElementsList * _classname_::enabledElements = NULL; \
 SoActionMethodList * _classname_::methods = NULL; \
+/*! \
+  Returns list of enabled elements for this class. \
+ \
+  The enabledElements and methods variables are protected in \
+  the original OIV API. This is not such a good idea, since \
+  exposed static class member variables is a major grievance \
+  with regard to Win32 DLLs. \
+  \COIN_FUNCTION_EXTENSION \
+*/ \
 SoEnabledElementsList * _classname_::getClassEnabledElements(void) { return _classname_::enabledElements; } \
+/*! \
+  Returns list of action methods for this class. \
+ \
+  The enabledElements and methods variables are protected in \
+  the original OIV API. This is not such a good idea, since \
+  exposed static class member variables is a major grievance \
+  with regard to Win32 DLLs. \
+  \COIN_FUNCTION_EXTENSION \
+*/ \
 SoActionMethodList * _classname_::getClassActionMethods(void) { return _classname_::methods; } \
 SoType _classname_::classTypeId STATIC_SOTYPE_INIT; \
+ \
+/*! \
+  This static method returns the SoType object associated with \
+  objects of this class. \
+*/ \
 SoType _classname_::getClassTypeId(void) { return _classname_::classTypeId; } \
+ \
+/*!
+  Returns the type identification of an object derived from a \
+  class inheriting SoAction. This is used for runtime type checking and \
+  "downward" casting. \
+*/ \
 SoType _classname_::getTypeId(void) const { return _classname_::classTypeId; } \
+/*! \
+  Returns list of enabled elements. \
+*/ \
 const SoEnabledElementsList & _classname_::getEnabledElements(void) const \
 { \
   assert(_classname_::enabledElements); \

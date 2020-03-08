@@ -148,7 +148,9 @@
 
 SO_NODE_SOURCE(SoVRMLSphereSensor);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLSphereSensor::initClass(void)
 {

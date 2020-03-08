@@ -323,6 +323,9 @@ SoTextureCubeMap::~SoTextureCubeMap()
 }
 
 // Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTextureCubeMap::initClass(void)
 {

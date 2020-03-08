@@ -126,6 +126,9 @@ SoTextureCoordinateEnvironment::~SoTextureCoordinateEnvironment()
 }
 
 // doc in super
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTextureCoordinateEnvironment::initClass(void)
 {

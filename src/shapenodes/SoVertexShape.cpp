@@ -129,7 +129,9 @@ SO_NODE_ABSTRACT_SOURCE(SoVertexShape);
 // *************************************************************************
 
 
-// doc from superclass
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVertexShape::initClass(void)
 {

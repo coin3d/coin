@@ -315,7 +315,9 @@ cleanup_audioclip(void)
 
 SO_NODE_SOURCE(SoVRMLAudioClip);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoVRMLAudioClip::initClass(void) // static
 {

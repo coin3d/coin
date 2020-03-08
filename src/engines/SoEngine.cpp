@@ -155,7 +155,9 @@ SoEngine::destroy(void)
 #endif // debug
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoEngine::initClass(void)
 {
@@ -208,7 +210,9 @@ SoEngine::initClasses(void)
   SoHeightMapToNormalMap::initClass();
 }
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::getClassTypeId(void)
+*/
 SoType
 SoEngine::getClassTypeId(void)
 {

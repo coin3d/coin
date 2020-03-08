@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoConvexDataCache Inventor/caches/SoConvexDataCache.h
+  \class SoConvexDataCache SoConvexDataCache.h Inventor/caches/SoConvexDataCache.h
   \brief The SoConvexDataCache class is used to cache convexified polygons.
 
   \ingroup caches

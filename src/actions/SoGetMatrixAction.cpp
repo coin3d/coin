@@ -105,7 +105,9 @@ public:
 SO_ACTION_SOURCE(SoGetMatrixAction);
 
 
-// Overridden from parent.
+/*!
+  \copybrief SoAction::initClass(void)
+*/
 void
 SoGetMatrixAction::initClass(void)
 {

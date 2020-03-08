@@ -30,6 +30,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*!
+  \class SoGLVertexAttributeElement Inventor/elements/SoGLVertexAttributeElement.h
+  \brief The SoGLVertexAttributeElement class is yet to be documented.
+
+  \ingroup elements
+
+  FIXME: write doc.
+*/
+
 #include <Inventor/elements/SoGLVertexAttributeElement.h>
 #include <Inventor/elements/SoGLShaderProgramElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
@@ -50,6 +59,10 @@
 
 SO_ELEMENT_SOURCE(SoGLVertexAttributeElement);
 
+/*!
+  \copydetails SoElement::initClass(void)
+*/
+
 void
 SoGLVertexAttributeElement::initClass(void)
 {
@@ -66,14 +79,16 @@ SoGLVertexAttributeElement::init(SoState * state)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 SoGLVertexAttributeElement::~SoGLVertexAttributeElement()
 {
 
 }
 
-
+/*!
+  Returns a read-only element instance.
+*/
 const SoGLVertexAttributeElement *
 SoGLVertexAttributeElement::getInstance(SoState * const state)
 {

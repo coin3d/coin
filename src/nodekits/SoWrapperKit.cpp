@@ -115,7 +115,9 @@ SoWrapperKit::~SoWrapperKit()
 {
 }
 
-// Documented in superclass.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoWrapperKit::initClass(void)
 {

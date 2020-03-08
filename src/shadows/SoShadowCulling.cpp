@@ -114,7 +114,9 @@ SoShadowCulling::~SoShadowCulling()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoShadowCulling::initClass(void)
 {

@@ -66,7 +66,9 @@ SO_NODE_SOURCE(SoVertexShader);
 
 // *************************************************************************
 
-// doc from parent
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoVertexShader::initClass(void)
 {

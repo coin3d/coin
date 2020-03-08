@@ -168,7 +168,9 @@ SoShapeKit::~SoShapeKit()
 {
 }
 
-// Documented in superclass.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoShapeKit::initClass(void)
 {

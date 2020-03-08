@@ -94,7 +94,9 @@ public:
 
 SO_ACTION_SOURCE(SoHandleEventAction);
 
-// Overridden from parent class.
+/*!
+  \copydetails SoAction::initClass(void)
+*/
 void
 SoHandleEventAction::initClass(void)
 {

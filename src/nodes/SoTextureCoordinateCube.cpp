@@ -156,6 +156,9 @@ SoTextureCoordinateCube::~SoTextureCoordinateCube()
 }
 
 // Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoTextureCoordinateCube::initClass(void)
 {

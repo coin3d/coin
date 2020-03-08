@@ -89,7 +89,9 @@ SoDecomposeMatrix::SoDecomposeMatrix()
   SO_ENGINE_ADD_OUTPUT(scaleOrientation,SoMFRotation);
 }
 
-// Documented in superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoDecomposeMatrix::initClass()
 {

@@ -91,7 +91,9 @@ SoMatrixTransform::~SoMatrixTransform()
 {
 }
 
-// Doc from superclass.
+/*!
+  \copybrief SoBase::initClass(void)
+*/
 void
 SoMatrixTransform::initClass(void)
 {

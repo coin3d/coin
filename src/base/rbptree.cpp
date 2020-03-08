@@ -65,7 +65,7 @@ using std::free;
   The type definition for the rbptree node structure.
 */
 
-/*
+/*!
   \struct cc_rbptree rbptree.h Inventor/C/base/rbptree.h
 
   The structure for the whole rbptree.

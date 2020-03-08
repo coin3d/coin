@@ -74,7 +74,9 @@
 
 SO_NODE_ABSTRACT_SOURCE(SoVRMLIndexedShape);
 
-// Doc in parent
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void 
 SoVRMLIndexedShape::initClass(void)
 {

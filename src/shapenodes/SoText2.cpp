@@ -167,32 +167,50 @@
 
 /*!
   \enum SoText2::Justification
-
-  Enum contains the various options for how the horizontal text layout
-  should be done. Valid values are LEFT, RIGHT and CENTER.
+  Used to specify horizontal string alignment.
 */
-
+/*!
+  \var SoText2::Justification SoText2::LEFT
+  Left edges of strings are aligned.
+*/
+/*!
+  \var SoText2::Justification SoText2::RIGHT
+  Right edges of strings are aligned.
+*/
+/*!
+  \var SoText2::Justification SoText2::CENTER
+  Centers of strings are aligned.
+*/
 
 /*!
   \var SoMFString SoText2::string
 
   The set of strings to render.  Each string in the multiple value
-  field will be rendered on its own line.
+  field will be rendered on a separate line.
 
   The default value of the field is a single empty string.
 */
 /*!
   \var SoSFFloat SoText2::spacing
 
-  Spacing between each consecutive vertical line.  Default value is
-  1.0, which means that the space between the uppermost line of each
-  rendered string will equal the vertical size of the highest
-  character in the bitmap alphabet.
+  Vertical spacing between the baselines of two consecutive horizontal lines.
+  Default value is 1.0, which means that it is equal to the vertical size of
+  the highest character in the bitmap alphabet.
 */
 /*!
   \var SoSFEnum SoText2::justification
 
-  Decides how the horizontal layout of the text strings is done.
+  Determines horizontal alignment of text strings.
+
+  If justification is set to SoText2::LEFT, the left edge of the first string
+  is at the origin and all strings are aligned with their left edges.
+  If set to SoText2::RIGHT, the right edge of the first string is
+  at the origin and all strings are aligned with their right edges. Otherwise,
+  if set to SoText2::CENTER, the center of the first string is at the
+  origin and all strings are aligned with their centers.
+  The origin is always located at the baseline of the first line of text.
+
+  Default value is SoText2::LEFT.
 */
 
 
@@ -302,7 +320,9 @@ SoText2::~SoText2()
   delete PRIVATE(this);
 }
 
-// doc in super
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoText2::initClass(void)
 {

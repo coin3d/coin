@@ -223,7 +223,9 @@ SoNurbsSurface::~SoNurbsSurface()
   delete PRIVATE(this);
 }
 
-// Documented in superclass.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoNurbsSurface::initClass(void)
 {

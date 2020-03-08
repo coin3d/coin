@@ -66,7 +66,9 @@ SO_NODE_SOURCE(SoFragmentShader);
 
 // *************************************************************************
 
-// doc from parent
+/*!
+  \copybrief SoNode::initClass(void)
+*/
 void
 SoFragmentShader::initClass(void)
 {
