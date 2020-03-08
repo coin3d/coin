@@ -703,7 +703,7 @@ cc_dl_open(const char * filename)
     if (cc_dl_debugging() && (h->nativehnd == NULL)) {
       cc_string funcstr;
       cc_string_construct(&funcstr);
-      cc_string_sprintf(&funcstr, "LoadLibrary(\"%s\")", filename ? filename : "(null)");
+      cc_string_sprintf(&funcstr, "LoadLibrary(\"%s\")", filename);
       cc_win32_print_error("cc_dl_open", cc_string_get_text(&funcstr), GetLastError());
       cc_string_clean(&funcstr);
     }
