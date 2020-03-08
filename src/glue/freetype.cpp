@@ -59,9 +59,9 @@
 #ifdef HAVE_FREETYPE /* In case we're _not_ doing runtime linking. */
 #define FREETYPEGLUE_ASSUME_FREETYPE 1
 #include <ft2build.h>
-#include <freetype/freetype.h>
-#include <freetype/ftglyph.h>
-#include <freetype/ftoutln.h>
+#include FT_FREETYPE_H
+#include FT_GLYPH_H
+#include FT_OUTLINE_H
 #endif /* FREETYPEGLUE_ASSUME_FREETYPE */
 
 #include <Inventor/C/basic.h>

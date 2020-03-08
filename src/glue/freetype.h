@@ -96,8 +96,8 @@ int cc_fcglue_FcPatternAddDouble(FcPattern *pattern, const char *object, double 
 
 #ifdef HAVE_FREETYPE
 #include <ft2build.h>
-#include <freetype/freetype.h>
-#include <freetype/ftglyph.h>
+#include FT_FREETYPE_H
+#include FT_GLYPH_H
 #else /* HAVE_FREETYPE */
 
 #include <Inventor/C/basic.h>
