@@ -700,7 +700,7 @@ public:
     this->shadowlights.truncate(0);
   }
 
-  static bool supported(const cc_glglue * glctx, SbString reason);
+  static bool supported(const cc_glglue * glctx, SbString& reason);
 
   static void shader_enable_cb(void * closure,
                                SoState * state,
@@ -795,7 +795,9 @@ SoShadowGroup::~SoShadowGroup()
   delete PRIVATE(this);
 }
 
-// Doc from superclass.
+/*!
+  \copydetails SoNode::initClass(void)
+*/
 void
 SoShadowGroup::initClass(void)
 {
@@ -2104,7 +2106,7 @@ SoShadowGroupP::shader_enable_cb(void * closure,
 }
 
 bool
-SoShadowGroupP::supported(const cc_glglue * glue, SbString reason)
+SoShadowGroupP::supported(const cc_glglue * glue, SbString& reason)
 {
   const bool supported =
     cc_glglue_glversion_matches_at_least(glue, 2, 0, 0) &&
