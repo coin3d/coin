@@ -47,6 +47,7 @@ extern "C" {
 
 int coin_default2dfont_get_height(float size);
 int coin_default2dfont_get_width(float size);
+int coin_default2dfont_get_bearing(float size);
 const unsigned char * coin_default2dfont_get_data(float size);
 
 const float ** coin_default3dfont_get_coords(void);
