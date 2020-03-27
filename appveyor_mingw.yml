@@ -116,7 +116,7 @@ install:
   - cmd: |
       choco install jq
       rem Work around for outdated curl version giving problems with GitHub Authentication when redirected.
-      if "%CMAKE_GENERATOR%" == "MSYS Makefiles" set PATH=C:\msys64\%COMPILER_ID%\bin;C:\msys64\usr\bin;%PATH%
+      if "%CMAKE_GENERATOR%" == "MSYS Makefiles" set PATH=C:\msys64\%COMPILER_ID%\bin;C:\msys64\usr\bin\;%PATH%
       curl --version
       cd %APPVEYOR_BUILD_FOLDER%
   - git submodule update --init --recursive
@@ -158,8 +158,8 @@ before_build:
       cd $APPVEYOR_BUILD_FOLDER
       mkdir $APPVEYOR_BUILD_FOLDER/downloads
       export COMPILER_ID=$APPVEYOR_BUILD_WORKER_IMAGE-$COMPILER_ID`$COMPILER_ID -dumpversion | tr '.' '\n'`
-      if [ -z "${APPVEYOR_REPO_TAG_NAME+x}" ]; then export SUPERGLU_REPO_TAG_NAME=$SUPERGLU_VERSION; else export SUPERGLU_REPO_TAG_NAME=latest; fi
       ###############
+      if [ -z "${APPVEYOR_REPO_TAG_NAME+x}" ]; then export SUPERGLU_REPO_TAG_NAME=$SUPERGLU_VERSION; else export SUPERGLU_REPO_TAG_NAME=latest; fi
       DOWNLOAD_FILE_SUPERGLU=superglu-$SUPERGLU_REPO_TAG_NAME-$COMPILER_ID-$CMAKE_PLATFORM.tar.gz
       echo download file $DOWNLOAD_FILE_SUPERGLU
       if [ -z "${APPVEYOR_REPO_TAG_NAME+x}" ]; then
@@ -170,8 +170,7 @@ before_build:
         export DOWNLOAD_ADDRESS_SUPERGLU=https://api.github.com/repos/coin3d/superglu/releases/assets/$ASSET_ID
       fi
       echo download address $DOWNLOAD_ADDRESS_SUPERGLU
-      echo Account Name $APPVEYOR_ACCOUNT_NAME
-      curl -s -L -H "Accept: application/octet-stream" -H "Authorization: token $GH_AUTH_TOKEN" -o $DOWNLOAD_FILE_SUPERGLU $DOWNLOAD_ADDRESS_SUPERGLU
+      curl -s -S -L -H "Authorization: token $GH_AUTH_TOKEN" -H "Accept: application/octet-stream" -o $DOWNLOAD_FILE_SUPERGLU $DOWNLOAD_ADDRESS_SUPERGLU
       tar -xzf $DOWNLOAD_FILE_SUPERGLU -C $APPVEYOR_BUILD_FOLDER/downloads
       ###############
       export CFLAGS=$CMAKE_ARCH_FLAGS
@@ -203,7 +202,6 @@ after_build:
       appveyor DownloadFile https://ci.appveyor.com/api/buildjobs/%APPVEYOR_JOB_ID%/log -FileName %APPVEYOR_PROJECT_NAME%-%CI_REPO_TAG_NAME%-%COMPILER_ID%-%CMAKE_PLATFORM%.log
   - sh: |
       cd $APPVEYOR_BUILD_FOLDER
-      export COMPILER_ID=$APPVEYOR_BUILD_WORKER_IMAGE-$COMPILER_ID`$COMPILER_ID -dumpversion | tr '.' '\n'`
       if [ -z "${APPVEYOR_REPO_TAG_NAME+x}" ]; then export CI_REPO_TAG_NAME=${APPVEYOR_REPO_TAG_NAME:1}; else export CI_REPO_TAG_NAME=latest; fi
       BUILD_ARCHIVE=$APPVEYOR_PROJECT_NAME-$CI_REPO_TAG_NAME-$COMPILER_ID-$CMAKE_PLATFORM.tar.gz
       tar -czf $BUILD_ARCHIVE Coin3D/*
@@ -219,10 +217,6 @@ artifacts:
 
 test_script:
   - cmd: |
-      if "%CMAKE_GENERATOR%" == "MSYS Makefiles" cd build_release
-      if not "%CMAKE_GENERATOR%" == "MSYS Makefiles" cd build
-      rem ctest -C Release -VV
-  - sh: |
       cd build_release
       ctest -C Release -VV
 
