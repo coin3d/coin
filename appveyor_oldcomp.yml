@@ -182,7 +182,7 @@ deploy:
     artifact: CIArchives, CIArchivesTGZ, logs
     tag: 'CI builds'
     description: 'Results of CI builds for various platforms'
-    draft: true
+    draft: false
     prerelease: true
     force_update: true
     on:

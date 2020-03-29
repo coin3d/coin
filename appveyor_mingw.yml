@@ -217,6 +217,10 @@ artifacts:
 
 test_script:
   - cmd: |
+      if "%CMAKE_GENERATOR%" == "MSYS Makefiles" cd build_release
+      if not "%CMAKE_GENERATOR%" == "MSYS Makefiles" cd build
+      rem ctest -C Release -VV
+  - sh: |
       cd build_release
       ctest -C Release -VV
 
@@ -237,7 +241,7 @@ deploy:
     artifact: CIArchives, CIArchivesTGZ, logs
     tag: 'CI builds'
     description: 'Results of CI builds for various platforms'
-    draft: true
+    draft: false
     prerelease: true
     force_update: true
     on:
