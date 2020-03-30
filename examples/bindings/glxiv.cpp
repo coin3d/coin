@@ -215,7 +215,7 @@ event_loop(WindowData * win)
       }
     }
     
-    // FIXME: should do this properly á la SoXt, to avoid using ~100%
+    // FIXME: should do this properly as in SoXt, to avoid using ~100%
     // CPU. 20031113 mortene.
     SoDB::getSensorManager()->processTimerQueue();
     SoDB::getSensorManager()->processDelayQueue(TRUE);

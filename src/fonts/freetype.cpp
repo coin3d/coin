@@ -42,7 +42,6 @@
    20050613 mortene. */
 
 #include "coindefs.h"
-#include "fonts/freetype.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -53,6 +52,8 @@
 
 #include "glue/freetype.h"
 #include "glue/GLUWrapper.h"
+
+#include "fonts/freetype.h"
 
 /* ************************************************************************* */
 
