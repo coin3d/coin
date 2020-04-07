@@ -529,32 +529,87 @@ SbBox3f::outside(const SbMatrix & mvp, int & cullbits) const
 
 /*!
   Return the point on the box closest to the given \a point.
+  If the given point equals the center, the center point of
+  the positive Z face is returned.
 */
 SbVec3f
 SbBox3f::getClosestPoint(const SbVec3f & point) const
 {
-  SbVec3f closest = point;
+  if (isEmpty()) return point;
 
-  SbVec3f center = this->getCenter();
-  float devx = closest[0] - center[0];
-  float devy = closest[1] - center[1];
-  float devz = closest[2] - center[2];
   float halfwidth = (this->maxpt[0] - this->minpt[0]) / 2.0f;
   float halfheight = (this->maxpt[1] - this->minpt[1]) / 2.0f;
   float halfdepth = (this->maxpt[2] - this->minpt[2]) / 2.0f;
 
-  // Move point to be on the nearest plane of the box.
-  if ((fabs(devx) > fabs(devy)) && (fabs(devx) > fabs(devz)))
-    closest[0] = center[0] + halfwidth * ((devx < 0.0f) ? -1.0f : 1.0f);
-  else if (fabs(devy) > fabs(devz))
-    closest[1] = center[1] + halfheight * ((devy < 0.0f) ? -1.0f : 1.0f);
-  else
-    closest[2] = center[2] + halfdepth * ((devz < 0.0f) ? -1.0f : 1.0f);
+  SbVec3f center = this->getCenter();
+  if (point == center)
+    return SbVec3f(halfwidth, halfheight, this->maxpt[2]);
 
-  // Clamp to be inside box.
-  closest[0] = SbMin(SbMax(closest[0], this->minpt[0]), this->maxpt[0]);
-  closest[1] = SbMin(SbMax(closest[1], this->minpt[1]), this->maxpt[1]);
-  closest[2] = SbMin(SbMax(closest[2], this->minpt[2]), this->maxpt[2]);
+  SbVec3f vec = point - center;
+
+  SbVec3f absvec;
+  absvec[0] = (float)fabs(vec[0] / halfwidth);
+  absvec[1] = (float)fabs(vec[1] / halfheight);
+  absvec[2] = (float)fabs(vec[2] / halfdepth);
+
+  SbVec3f closest;
+
+  // Clamp to be on box hull.
+  closest[0] = SbMin(absvec[0], 1.0f);
+  closest[1] = SbMin(absvec[1], 1.0f);
+  closest[2] = SbMin(absvec[2], 1.0f);
+
+  // Move point to be on the nearest plane of the unit box ((-1 -1 -1), (1 1 1)).
+  if ((absvec[0] > absvec[1]) && (absvec[0] > absvec[2])) // yz-plane
+    closest[0] = 1.0f;
+  else if ((absvec[1] > absvec[0]) && (absvec[1] > absvec[2])) // xz-plane
+    closest[1] = 1.0f;
+  else if ((absvec[2] > absvec[0]) && (absvec[2] > absvec[1])) // xy-plane
+    closest[2] = 1.0f;
+  else if ((absvec[0] == absvec[1]) && (absvec[0] == absvec[2])) // corner
+    closest = SbVec3f(1.0f, 1.0f, 1.0f);
+  else if (absvec[0] == absvec[1]) { // edge parallel to z-axis
+    closest[0] = 1.0f;
+    closest[1] = 1.0f;
+  }
+  else if (absvec[0] == absvec[2]) { // edge parallel to y-axis
+    closest[0] = 1.0f;
+    closest[2] = 1.0f;
+  }
+  else if (absvec[1] == absvec[2]) { // edge parallel to x-axis
+    closest[1] = 1.0f;
+    closest[2] = 1.0f;
+  }
+
+  if (vec[0] < 0.0f) closest[0] *= -1.0f;
+  if (vec[1] < 0.0f) closest[1] *= -1.0f;
+  if (vec[2] < 0.0f) closest[2] *= -1.0f;
+
+  closest[0] *= halfwidth;
+  closest[1] *= halfheight;
+  closest[2] *= halfdepth;
+
+  closest += center;
 
   return closest;
 }
+
+#ifdef COIN_TEST_SUITE
+BOOST_AUTO_TEST_CASE(checkGetClosestPoint) {
+  SbVec3f point(1524 , 13794 , 851);
+  SbVec3f min(1557, 3308, 850);
+  SbVec3f max(3113, 30157, 1886);
+
+  SbBox3f box(min, max);
+  SbVec3f expected(1557, 13794, 851);
+
+  BOOST_CHECK_MESSAGE(box.getClosestPoint(point) == expected,
+                      "Closest point does not fit");
+
+  SbVec3f sizes = box.getSize();
+  SbVec3f expectedCenterQuery(sizes[0]/2.0f, sizes[1]/2.0f, max[2]);
+
+  BOOST_CHECK_MESSAGE(box.getClosestPoint(box.getCenter()) == expectedCenterQuery,
+                      "Closest point for center query does not fit");
+}
+#endif //COIN_TEST_SUITE
