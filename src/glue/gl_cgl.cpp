@@ -213,7 +213,7 @@ cglglue_context_create_software(struct cglglue_contextdata * ctx)
     kCGLPFAAlphaSize, 8,
     kCGLPFADepthSize, 24,
     kCGLPFAStencilSize, 1,
-    NULL
+    0
   };
 
   /* FIXME: the following is a hack to get around a problem which
@@ -318,7 +318,7 @@ cglglue_context_create_pbuffer(struct cglglue_contextdata * ctx)
     kCGLPFAClosestPolicy, 
     kCGLPFAAccelerated, 
     kCGLPFANoRecovery,
-    NULL
+    0
   };
 
   /* FIXME: this is a hack. See comment elsewhere in the file where
