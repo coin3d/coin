@@ -1032,13 +1032,15 @@ SoInput::read(SbString & s)
             // newlines, Inventor/VRML V1.0 doesn't.  This also checks
             // for a special case in Inventor/VRML 1.0 files where the
             // last two characters of a line containing a quoted
-            // string is \". In this case, the backslash should be
+            // string are \". In this case, the backslash should be
             // considered literal and the quote should terminate the
             // string.
             if (!this->isFileVRML2() && fi->get(c)) {
               fi->putBack(c);
-              if (c == '\n') fi->putBack('\"');
-              else *buf = '\"';
+              if ((c == '\r') || (c == '\n'))
+                fi->putBack('\"');
+              else
+                *buf = '\"';
             }
             else {
               *buf = c;
