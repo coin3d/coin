@@ -461,9 +461,9 @@ SbBox3i32::getClosestPoint(const SbVec3f & point) const
   SbVec3f vec = point - center;
 
   SbVec3f absvec;
-  absvec[0] = (float)fabs(vec[0] / halfwidth);
-  absvec[1] = (float)fabs(vec[1] / halfheight);
-  absvec[2] = (float)fabs(vec[2] / halfdepth);
+  absvec[0] = float(halfwidth > 0.0f ? fabs(vec[0] / halfwidth) : fabs(vec[0]));
+  absvec[1] = float(halfheight > 0.0f ? fabs(vec[1] / halfheight) : fabs(vec[1]));
+  absvec[2] = float(halfdepth > 0.0f ? fabs(vec[2] / halfdepth) : fabs(vec[2]));
 
   SbVec3f closest;
 
@@ -494,13 +494,9 @@ SbBox3i32::getClosestPoint(const SbVec3f & point) const
     closest[2] = 1.0f;
   }
 
-  if (vec[0] < 0.0f) closest[0] *= -1.0f;
-  if (vec[1] < 0.0f) closest[1] *= -1.0f;
-  if (vec[2] < 0.0f) closest[2] *= -1.0f;
-
-  closest[0] *= halfwidth;
-  closest[1] *= halfheight;
-  closest[2] *= halfdepth;
+  closest[0] *= (vec[0] < 0.0f) ? -halfwidth : halfwidth;
+  closest[1] *= (vec[1] < 0.0f) ? -halfheight : halfheight;
+  closest[2] *= (vec[2] < 0.0f) ? -halfdepth : halfdepth;
 
   closest += center;
 

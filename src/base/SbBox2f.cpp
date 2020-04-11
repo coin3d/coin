@@ -329,8 +329,8 @@ SbBox2f::getClosestPoint(const SbVec2f & point) const
   SbVec2f vec = point - center;
 
   SbVec2f absvec;
-  absvec[0] = (float)fabs(vec[0] / halfwidth);
-  absvec[1] = (float)fabs(vec[1] / halfheight);
+  absvec[0] = float(halfwidth > 0.0f ? fabs(vec[0] / halfwidth) : fabs(vec[0]));
+  absvec[1] = float(halfheight > 0.0f ? fabs(vec[1] / halfheight) : fabs(vec[1]));
 
   SbVec2f closest;
 
@@ -346,7 +346,7 @@ SbBox2f::getClosestPoint(const SbVec2f & point) const
   else if (absvec[0] == absvec[1]) // corner
     closest = SbVec2f(1.0f, 1.0f);
 
-  closest[0] *= (vec[0] < 0.0f) ? -halfwidth  : halfwidth;
+  closest[0] *= (vec[0] < 0.0f) ? -halfwidth : halfwidth;
   closest[1] *= (vec[1] < 0.0f) ? -halfheight : halfheight;
 
   closest += center;
