@@ -288,7 +288,9 @@ SoInput_FileInfo::putBack(const char c)
   // generated files. NB: the line counting is not working 100% if
   // we start putting back and re-reading multiple parts of '\r\n'
   // sequences.
-  if (!this->isbinary && ((c == '\r') || (c == '\n'))) this->linenr--;
+  if (!this->isbinary && ((c == '\r') || ((c == '\n') &&
+                                          (this->lastputback != (int)'\r'))))
+    this->linenr--;
 
   this->lastputback = (int)c;
   this->lastchar = -1;
