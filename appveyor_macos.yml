@@ -38,11 +38,11 @@ install:
 # Assumes that we use the vx.y.z tagging scheme (e.g. v1.3.0)
 before_build:
   - sh: |
-      if [ -z "${APPVEYOR_REPO_TAG_NAME+x}" ]; then export CI_REPO_TAG_NAME=${APPVEYOR_REPO_TAG_NAME:1}; else export CI_REPO_TAG_NAME=latest; fi
-      BUILD_SOURCE_ARCHIVE=$APPVEYOR_PROJECT_NAME-$CI_REPO_TAG_NAME-src.tar.gz
+      if [ -n "${APPVEYOR_REPO_TAG_NAME}" ]; then export CI_REPO_VERSION=${APPVEYOR_REPO_TAG_NAME:1}; else export CI_REPO_VERSION=latest; fi
+      BUILD_SOURCE_ARCHIVE=$APPVEYOR_PROJECT_NAME-$CI_REPO_VERSION-src.tar.gz
       if [ ! -d "$APPVEYOR_BUILD_FOLDER/../$APPVEYOR_PROJECT_NAME" ]; then cp -r $APPVEYOR_BUILD_FOLDER $APPVEYOR_BUILD_FOLDER/../$APPVEYOR_PROJECT_NAME; fi
       cd $APPVEYOR_BUILD_FOLDER/..
-      tar -czf $BUILD_SOURCE_ARCHIVE $APPVEYOR_PROJECT_NAME
+      tar czf $BUILD_SOURCE_ARCHIVE --exclude .git $APPVEYOR_PROJECT_NAME
       mv $BUILD_SOURCE_ARCHIVE $APPVEYOR_BUILD_FOLDER
       cd $APPVEYOR_BUILD_FOLDER
       mkdir $APPVEYOR_BUILD_FOLDER/downloads
@@ -61,10 +61,10 @@ build_script:
 after_build:
   - sh: |
       cd $APPVEYOR_BUILD_FOLDER
-      if [ -z "${APPVEYOR_REPO_TAG_NAME+x}" ]; then export CI_REPO_TAG_NAME=${APPVEYOR_REPO_TAG_NAME:1}; else export CI_REPO_TAG_NAME=latest; fi
-      BUILD_ARCHIVE=$APPVEYOR_PROJECT_NAME-$CI_REPO_TAG_NAME-$COMPILER_ID-$CMAKE_PLATFORM.tar.gz
-      tar -czf $BUILD_ARCHIVE Coin3D/*
-      appveyor DownloadFile https://ci.appveyor.com/api/buildjobs/$APPVEYOR_JOB_ID/log -FileName $APPVEYOR_PROJECT_NAME-$CI_REPO_TAG_NAME-$COMPILER_ID-$CMAKE_PLATFORM.log
+      if [ -n "${APPVEYOR_REPO_TAG_NAME}" ]; then export CI_REPO_VERSION=${APPVEYOR_REPO_TAG_NAME:1}; else export CI_REPO_VERSION=latest; fi
+      BUILD_ARCHIVE=$APPVEYOR_PROJECT_NAME-$CI_REPO_VERSION-$COMPILER_ID-$CMAKE_PLATFORM.tar.gz
+      tar czf $BUILD_ARCHIVE Coin3D/*
+      appveyor DownloadFile https://ci.appveyor.com/api/buildjobs/$APPVEYOR_JOB_ID/log -FileName $APPVEYOR_PROJECT_NAME-$CI_REPO_VERSION-$COMPILER_ID-$CMAKE_PLATFORM.log
 
 artifacts:
   - path: $(APPVEYOR_PROJECT_NAME)*.zip
@@ -83,7 +83,7 @@ notifications:
   - provider: Email
     to:
       - '{{commitAuthorEmail}}'
-#      - coin-support@coin3d.org
+      - coin-support@coin3d.org
     on_build_success: false
     on_build_failure: true
     on_build_status_changed: true
@@ -100,7 +100,8 @@ deploy:
     prerelease: true
     force_update: true
     on:
-      branch: master                # release from master branch only
+      APPVEYOR_REPO_TAG: false      # deploy on untagged builds only
+#      branch: master                # release from master branch only
 
   # Deploy to GitHub Releases
   - provider: GitHub
@@ -109,8 +110,8 @@ deploy:
     artifact: CIArchives, CIArchivesTGZ
     tag: $(APPVEYOR_REPO_TAG_NAME)
     description: 'Release build'
-    draft: false
+    draft: true
     prerelease: true
     force_update: true
     on:
-      appveyor_repo_tag: true       # deploy on tag push only
+      APPVEYOR_REPO_TAG: true       # deploy on tag push only
