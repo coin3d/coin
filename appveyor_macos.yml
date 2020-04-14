@@ -61,7 +61,6 @@ build_script:
 after_build:
   - sh: |
       cd $APPVEYOR_BUILD_FOLDER
-      export COMPILER_ID=$APPVEYOR_BUILD_WORKER_IMAGE-$COMPILER_ID`$COMPILER_ID -dumpversion | tr '.' '\n'`
       if [ -n "${APPVEYOR_REPO_TAG_NAME}" ]; then export CI_REPO_VERSION=${APPVEYOR_REPO_TAG_NAME:1}; else export CI_REPO_VERSION=latest; fi
       BUILD_ARCHIVE=$APPVEYOR_PROJECT_NAME-$CI_REPO_VERSION-$COMPILER_ID-$CMAKE_PLATFORM.tar.gz
       tar czf $BUILD_ARCHIVE Coin3D/*
