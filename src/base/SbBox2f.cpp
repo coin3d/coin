@@ -311,27 +311,45 @@ SbBox2f::intersect(const SbBox2f & box) const
 
 /*!
   Return the point on the box closest to the given point \a p.
+  If the given point equals the center, the center point on
+  the positive X-side is returned.
  */
 SbVec2f
-SbBox2f::getClosestPoint(const SbVec2f & p) const
+SbBox2f::getClosestPoint(const SbVec2f & point) const
 {
-  SbVec2f closest = p;
+  if (isEmpty()) return point;
+
+  float halfwidth = (this->maxpt[0] - this->minpt[0]) / 2.0f;
+  float halfheight = (this->maxpt[1] - this->minpt[1]) / 2.0f;
 
   SbVec2f center = this->getCenter();
-  float devx = closest[0] - center[0];
-  float devy = closest[1] - center[1];
-  float halfwidth = (maxpt[0] - minpt[0]) / 2.0f;
-  float halfheight = (maxpt[1] - minpt[1]) / 2.0f;
+  if (point == center)
+    return SbVec2f(this->maxpt[0], halfheight);
 
-  // Move point to be on the nearest line of the box.
-  if (fabs(devx) > fabs(devy))
-    closest[0] = center[0] + halfwidth * ((devx < 0.0f) ? -1.0f : 1.0f);
-  else
-    closest[1] = center[1] + halfheight * ((devy < 0.0f) ? -1.0f : 1.0f);
+  SbVec2f vec = point - center;
 
-  // Clamp to be inside box.
-  closest[0] = SbMin(SbMax(closest[0], this->minpt[0]), this->maxpt[0]);
-  closest[1] = SbMin(SbMax(closest[1], this->minpt[1]), this->maxpt[1]);
+  SbVec2f absvec;
+  absvec[0] = float(halfwidth > 0.0f ? fabs(vec[0] / halfwidth) : fabs(vec[0]));
+  absvec[1] = float(halfheight > 0.0f ? fabs(vec[1] / halfheight) : fabs(vec[1]));
+
+  SbVec2f closest;
+
+  // Clamp to be on box hull.
+  closest[0] = SbMin(absvec[0], 1.0f);
+  closest[1] = SbMin(absvec[1], 1.0f);
+
+  // Move point to be on the nearest side of the unit box ((-1 -1), (1 1)).
+  if (absvec[0] > absvec[1]) // x-axis
+    closest[0] = 1.0f;
+  else if (absvec[1] > absvec[0]) // y-axis
+    closest[1] = 1.0f;
+  else if (absvec[0] == absvec[1]) // corner
+    closest = SbVec2f(1.0f, 1.0f);
+
+  closest[0] *= (vec[0] < 0.0f) ? -halfwidth : halfwidth;
+  closest[1] *= (vec[1] < 0.0f) ? -halfheight : halfheight;
+
+  closest += center;
 
   return closest;
 }
@@ -402,11 +420,26 @@ BOOST_AUTO_TEST_CASE(checkSize) {
 
   SbVec2f diff = max - min;
 
-  
   SbBox2f box(min, max);
 
   BOOST_CHECK_MESSAGE(box.getSize() == diff,
                       "Box has incorrect size");
+}
+BOOST_AUTO_TEST_CASE(checkGetClosestPoint) {
+  SbVec2f point(1524, 13794);
+  SbVec2f min(1557, 3308);
+  SbVec2f max(3113, 30157);
 
+  SbBox2f box(min, max);
+  SbVec2f expected(1557, 13794);
+
+  BOOST_CHECK_MESSAGE(box.getClosestPoint(point) == expected,
+                      "Closest point does not fit");
+
+  SbVec2f sizes = box.getSize();
+  SbVec2f expectedCenterQuery(max[0], sizes[1] / 2.0f);
+
+  BOOST_CHECK_MESSAGE(box.getClosestPoint(box.getCenter()) == expectedCenterQuery,
+                      "Closest point for center query does not fit");
 }
 #endif //COIN_TEST_SUITE
