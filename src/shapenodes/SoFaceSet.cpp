@@ -94,12 +94,15 @@
 #include <Inventor/caches/SoConvexDataCache.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
+#include <Inventor/elements/SoGLVBOElement.h>
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbRWMutex.h>
 #endif // COIN_THREADSAFE
 
 #include "nodes/SoSubNodeP.h"
+#include "rendering/SoVBO.h"
 #include "rendering/SoGL.h"
 
 // *************************************************************************
@@ -570,18 +573,43 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
       goto glrender_done;
     }
 
+    const uint32_t contextid = action->getCacheContext();
+    int numcoords = coords ? coords->getNum() : 0;
+    SoGLLazyElement* lelem = NULL;
     // check if we can render things using glDrawArrays
-    if (SoGLDriverDatabase::isSupported(sogl_glue_instance(state), SO_GL_VERTEX_ARRAY) &&
-        ((PRIVATE(this)->primitivetype == GL_TRIANGLES) ||
-        (PRIVATE(this)->primitivetype == GL_QUADS)) &&
-        (nbind != PER_FACE) &&
-        (mbind != PER_FACE) &&
-        !tb.isFunction()) {
+    SbBool dova =
+      SoVBO::shouldRenderAsVertexArrays(state, contextid, numcoords) &&
+      ((PRIVATE(this)->primitivetype == GL_TRIANGLES) ||
+       (PRIVATE(this)->primitivetype == GL_QUADS)) &&
+      (nbind != PER_FACE) &&
+      (mbind != PER_FACE) &&
+      !tb.isFunction() &&
+      SoGLDriverDatabase::isSupported(sogl_glue_instance(state), SO_GL_VERTEX_ARRAY);
+
+    const SoGLVBOElement* vboelem = SoGLVBOElement::getInstance(state);
+    SoVBO* colorvbo = NULL;
+
+    if (dova && (mbind != OVERALL)) {
+      dova = FALSE;
+      if (mbind == PER_VERTEX) {
+        lelem = (SoGLLazyElement*)SoLazyElement::getInstance(state);
+        colorvbo = vboelem->getColorVBO();
+        if (colorvbo) dova = TRUE;
+        else {
+          // we might be able to do VA-rendering, but need to check the
+          // diffuse color type first.
+          if (!lelem->isPacked() && lelem->getNumTransparencies() <= 1) {
+            dova = TRUE;
+          }
+        }
+      }
+    }
+    if (dova) {
       SbBool dovbo = this->startVertexArray(action,
                                             coords,
                                             nbind == PER_VERTEX ? normals : NULL,
                                             doTextures,
-                                            (mbind == PER_VERTEX));
+                                            mbind == PER_VERTEX);
       int numprimitives = this->numVertices.getNum();
       if (PRIVATE(this)->primitivetype == GL_TRIANGLES) numprimitives *= 3;
       else numprimitives *= 4; // quads
