@@ -8,8 +8,24 @@ The changes described here are issues that might have an effect on the
 compatibility of your source code when upgrading the library.
 
 
-Coin 4.1.0 (so far)
+Coin 4.0.1 (so far)
 ==========
+
+This is a bugfix release.
+
+Fixed incorrect rendering of SoFaceSet. Conditions when to render as
+VertexArrayObject were not properly checked.
+
+Fixed incorrect line ending handling for Windows CR/LF.
+
+Fixed incorrect closest point calculation for bounding boxes.
+
+Applied some distribution patches from Fedora, Rosa, and Gentoo.
+
+Added some class documentation and fixed numerous documentation issues.
+
+cpack.d was made optional and disabled by default (add -DCOIN_USE_CPACK=ON
+to the cmake commandline to enable it).
 
 Reference line for text rendered with the built-in default font was changed
 (before: descender line, now: base line). Thus text rendered with default
@@ -17,6 +33,12 @@ font will appear a few pixels lower than before, but now consistent
 with text using non-default fonts.
 (see https://github.com/coin3d/coin/pull/368)
 
+Fixed crash when call to cc_flww32_get_bitmap() failed.
+
+Home of Coin3d organization has been changed from https://bitbucket.org/Coin3D
+to https://github.com/coin3d due to Bitbucket ending Mercurial support.
+
+Version control system has been changed from Mercurial to Git.
 
 Coin 4.0.0
 ==========
