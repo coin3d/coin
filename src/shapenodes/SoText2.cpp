@@ -162,7 +162,6 @@
 // windows.h and GL/glx.h are available. If that works fine, remove
 // the "#define WIN32_LEAN_AND_MEAN" hack. 20030625 mortene.
 
-
 #include "fonts/glyph2d.h"
 
 /*!
@@ -212,7 +211,6 @@
 
   Default value is SoText2::LEFT.
 */
-
 
 class SoText2P {
 public:
@@ -381,7 +379,7 @@ SoText2::GLRender(SoGLRenderAction * action)
       textscreenoffsetx = (nilpoint[0] + bbmin[0] - PRIVATE(this)->maxwidth / 2.0f);
       break;
     }
-    
+
     // Set new state.
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
@@ -401,7 +399,7 @@ SoText2::GLRender(SoGLRenderAction * action)
     int bitmapsize[2];
     const unsigned char * buffer = NULL;
     cc_glyph2d * prevglyph = NULL;
-    
+
     const int nrlines = this->string.getNum();
 
     // get the current diffuse color
@@ -410,15 +408,15 @@ SoText2::GLRender(SoGLRenderAction * action)
     unsigned char green = (unsigned char) (diffuse[1] * 255.0f);
     unsigned char blue  = (unsigned char) (diffuse[2] * 255.0f);
     const unsigned int alpha = (unsigned int)((1.0f - SoLazyElement::getTransparency(state, 0)) * 256);
-    
+
     state->push();
-    
+
     // disable textures for all units
     SoGLMultiTextureEnabledElement::disableAll(state);
-    
+
     glPushAttrib(GL_ENABLE_BIT | GL_PIXEL_MODE_BIT | GL_COLOR_BUFFER_BIT);
     glPushClientAttrib(GL_CLIENT_PIXEL_STORE_BIT);
-    
+
     SbBool drawPixelBuffer = FALSE;
 
     for (int i = 0; i < nrlines; i++) {
@@ -507,8 +505,8 @@ SoText2::GLRender(SoGLRenderAction * action)
               static SbBool once = TRUE;
               if (once) {
                 SoDebugError::post("SoText2::GLRender",
-                	               "Unable to copy glyph to memory buffer. Position [%d,%d], size [%d,%d], buffer size [%d,%d]",
-                	               memx, memy, bitmapsize[0], bitmapsize[1], bbsize[0], bbsize[1]);
+                                   "Unable to copy glyph to memory buffer. Position [%d,%d], size [%d,%d], buffer size [%d,%d]",
+                                   memx, memy, bitmapsize[0], bitmapsize[1], bbsize[0], bbsize[1]);
                 once = FALSE;
               }
             }
@@ -535,6 +533,8 @@ SoText2::GLRender(SoGLRenderAction * action)
     }
 
     if (drawPixelBuffer) {
+      glEnable(GL_ALPHA_TEST);
+      glAlphaFunc(GL_GREATER, 0.3f);
       glEnable(GL_BLEND);
       glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
       glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
@@ -569,7 +569,6 @@ SoText2::GLRender(SoGLRenderAction * action)
 
 // **************************************************************************
 
-
 // doc in super
 void
 SoText2::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
@@ -589,7 +588,7 @@ SoText2::rayPick(SoRayPickAction * action)
   PRIVATE(this)->lock();
   PRIVATE(this)->buildGlyphCache(action->getState());
   action->setObjectSpace();
-  
+
   SbVec3f v0, v1, v2, v3;
   if (!PRIVATE(this)->getQuad(action->getState(), v0, v1, v2, v3)) {
     PRIVATE(this)->unlock();
@@ -660,7 +659,7 @@ SoText2::rayPick(SoRayPickAction * action)
         i = strlength;
       }
     }
-    
+
 
     if (charidx >= 0 && charidx < strlength) { // we have a hit!
       SoPickedPoint * pp = action->addIntersection(isect);
@@ -681,7 +680,7 @@ SoText2::rayPick(SoRayPickAction * action)
 void
 SoText2::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  if (!this->shouldPrimitiveCount(action)) 
+  if (!this->shouldPrimitiveCount(action))
     return;
 
   action->addNumText(this->string.getNum());
@@ -694,7 +693,6 @@ SoText2::generatePrimitives(SoAction * COIN_UNUSED_ARG(action))
   // This is supposed to be empty. There are no primitives.
 }
 
-
 // SoText2P methods below
 
 void
@@ -706,7 +704,6 @@ SoText2P::flushGlyphCache()
   this->bbox.makeEmpty();
 }
 
-
 // Calculates a quad around the text in 3D.
 //  Return FALSE if the quad is empty.
 SbBool
@@ -717,11 +714,11 @@ SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
 
   short xmin, ymin, xmax, ymax;
   this->bbox.getBounds(xmin, ymin, xmax, ymax);
-  
+
   // FIXME: Why doesn't the SbBox2s have an 'isEmpty()' method as well?
   // (20040308 handegar)
   if (xmax < xmin) return FALSE;
-  
+
   SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
   const SbMatrix & mat = SoModelMatrixElement::get(state);
   mat.multVecMatrix(nilpoint, nilpoint);
@@ -730,22 +727,22 @@ SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
 
   SbVec3f screenpoint;
   vv.projectToScreen(nilpoint, screenpoint);
-  
+
   const SbViewportRegion & vp = SoViewportRegionElement::get(state);
   SbVec2s vpsize = vp.getViewportSizePixels();
-  
+
   SbVec2f n0, n1, n2, n3, center;
   SbVec2s sp((short) (screenpoint[0] * vpsize[0]), (short)(screenpoint[1] * vpsize[1]));
-  
-  n0 = SbVec2f(float(sp[0] + xmin)/float(vpsize[0]), 
+
+  n0 = SbVec2f(float(sp[0] + xmin)/float(vpsize[0]),
                float(sp[1] + ymax)/float(vpsize[1]));
-  n1 = SbVec2f(float(sp[0] + xmax)/float(vpsize[0]), 
+  n1 = SbVec2f(float(sp[0] + xmax)/float(vpsize[0]),
                float(sp[1] + ymax)/float(vpsize[1]));
-  n2 = SbVec2f(float(sp[0] + xmax)/float(vpsize[0]), 
+  n2 = SbVec2f(float(sp[0] + xmax)/float(vpsize[0]),
                float(sp[1] + ymin)/float(vpsize[1]));
-  n3 = SbVec2f(float(sp[0] + xmin)/float(vpsize[0]), 
+  n3 = SbVec2f(float(sp[0] + xmin)/float(vpsize[0]),
                float(sp[1] + ymin)/float(vpsize[1]));
-  
+
   float w = n1[0]-n0[0];
   float halfw = w*0.5f;
   switch (PUBLIC(this)->justification.getValue()) {
@@ -767,7 +764,7 @@ SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
     assert(0 && "unknown alignment");
     break;
   }
-  
+
   // get distance from nilpoint to camera plane
   float dist = -vv.getPlane(0.0f).getDistance(nilpoint);
 
@@ -935,7 +932,6 @@ SoText2P::buildGlyphCache(SoState * state)
     }
 
     ypos -= (int)(((int)fontsize) * PUBLIC(this)->spacing.getValue());
-
   }
 
   // extent bbox to include maxoverhang at the maxwidth string
@@ -962,7 +958,7 @@ SoText2P::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     return; // empty
   }
   box.makeEmpty();
-  
+
   box.extendBy(v0);
   box.extendBy(v1);
   box.extendBy(v2);
@@ -973,7 +969,7 @@ SoText2P::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 
 // Sets the raster position for GL raster operations.
 // Handles the special case where the x/y coordinates are negative
-void 
+void
 SoText2P::setRasterPos3f(GLfloat x, GLfloat y, GLfloat z)
 {
   float rpx = x >= 0 ? x : 0;
