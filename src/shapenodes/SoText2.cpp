@@ -419,6 +419,7 @@ SoText2::GLRender(SoGLRenderAction * action)
     glPushAttrib(GL_ENABLE_BIT | GL_PIXEL_MODE_BIT | GL_COLOR_BUFFER_BIT);
     glPushClientAttrib(GL_CLIENT_PIXEL_STORE_BIT);
     
+    SbBool didenableblend = FALSE;
     SbBool drawPixelBuffer = FALSE;
 
     for (int i = 0; i < nrlines; i++) {
@@ -466,6 +467,11 @@ SoText2::GLRender(SoGLRenderAction * action)
 
         if (buffer) {
           if (cc_glyph2d_getmono(glyph)) {
+            if (didenableblend) {
+              glDisable(GL_BLEND);
+              glDisable(GL_ALPHA_TEST);
+              didenableblend = FALSE;
+            }
             SoText2P::setRasterPos3f((float)rasterx + textscreenoffsetx, (float)rastery + (int)nilpoint[1], -nilpoint[2]);
             glBitmap(ix,iy,0,0,0,0,(const GLubyte *)buffer);
           }
@@ -535,8 +541,14 @@ SoText2::GLRender(SoGLRenderAction * action)
     }
 
     if (drawPixelBuffer) {
-      glEnable(GL_BLEND);
-      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+      if (!didenableblend) {
+        glEnable(GL_ALPHA_TEST);
+        glAlphaFunc(GL_GREATER, 0.3f);
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        didenableblend = TRUE;
+      }
       glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
 
       rastery = (int)floor(nilpoint[1]+0.5) - bbsize[1] + bbmax[1];
