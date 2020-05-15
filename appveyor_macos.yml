@@ -32,7 +32,7 @@ install:
   - sh: |
       brew install jq
       brew install boost
-      brew install doxygen
+      #brew install doxygen
   - git submodule update --init --recursive
 
 # Assumes that we use the vx.y.z tagging scheme (e.g. v1.3.0)
