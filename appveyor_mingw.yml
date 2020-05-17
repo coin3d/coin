@@ -90,11 +90,11 @@ environment:
 #      CMAKE_ARCHITECTURE: x64
 #      CMAKE_PLATFORM: x64
 #      COMPILER_ID: msvc16
-#
-#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-#      CMAKE_GENERATOR: 'MSYS Makefiles'
-#      CMAKE_PLATFORM: i686
-#      COMPILER_ID: mingw32
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      CMAKE_GENERATOR: 'MSYS Makefiles'
+      CMAKE_PLATFORM: i686
+      COMPILER_ID: mingw32
 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       CMAKE_GENERATOR: 'MSYS Makefiles'
