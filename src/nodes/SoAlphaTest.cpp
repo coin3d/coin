@@ -34,6 +34,8 @@
   \class SoAlphaTest SoAlphaTest.h Inventor/nodes/SoAlphaTest.h
   \brief The SoAlphaTest class is a node used to control the GL alpha test function.
 
+  \ingroup nodes
+
   With this node you can control the OpenGL alpha test function. The
   alpha test function enables you to discard fragments based on its
   alpha value. For instance, if you set the function to GREATER and
@@ -50,7 +52,14 @@
   TransparencyType node with value = NONE, and an AlphaTest node with
   \e function set to GREATER and \e value set to for instance 0.01.
 
-  \ingroup nodes
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    AlphaTest {
+        function NONE
+        value 0.5
+    }
+  \endcode
+
   \COIN_CLASS_EXTENSION
   \since Coin 4.0
 */

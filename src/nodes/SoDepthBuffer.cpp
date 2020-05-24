@@ -34,6 +34,8 @@
   \class SoDepthBuffer SoDepthBuffer.h Inventor/nodes/SoDepthBuffer.h
   \brief The SoDepthBuffer class is a node used to control the GL depth buffer.
 
+  \ingroup nodes
+
   With this node you can control properties related to the OpenGL depth buffer
   in a variety of ways.
 
@@ -50,7 +52,16 @@
   optimal depth buffer resolution distribution than what a single, uniform
   depth buffer value range can give you.
 
-  \ingroup nodes
+  <b>FILE FORMAT/DEFAULTS:</b>
+  \code
+    DepthBuffer {
+        test TRUE
+        write TRUE
+        function LESS
+        range 0 1
+    }
+  \endcode
+
   \COIN_CLASS_EXTENSION
   \since Coin 3.0
 */
@@ -108,12 +119,6 @@
 */
 
 /*!
-  \var SoSFEnum SoDepthBuffer::function
-
-  Which depth function to use. Defaults to LESS.
-*/
-
-/*!
   \var SoSFBool SoDepthBuffer::test
 
   Enable depth buffer testing. Defaults to TRUE.
@@ -126,10 +131,16 @@
 */
 
 /*!
+  \var SoSFEnum SoDepthBuffer::function
+
+  Which depth function to use. Defaults to LESS.
+*/
+
+/*!
   \var SoSFVec2f SoDepthBuffer::range
 
-  The value range for the depth buffer data. Defaults to [0.0-1.0].
-  The range will be clamped to [0.0-1.0].
+  The value range for the depth buffer data. Defaults to [0.0, 1.0].
+  The range will be clamped to [0.0, 1.0].
 */
 
 SO_NODE_SOURCE(SoDepthBuffer);
