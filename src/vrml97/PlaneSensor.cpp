@@ -148,17 +148,17 @@
 
 /*!
   \var SoSFVec2f SoVRMLPlaneSensor::minPosition
-  The minimum position.
+  The minimum position. Initial value is [0, 0].
 */
 
 /*!
   \var SoSFVec2f SoVRMLPlaneSensor::maxPosition
-  The maximum position.
+  The maximum position. Initial value is [-1, -1].
 */
 
 /*!
   \var SoSFVec3f SoVRMLPlaneSensor::offset
-  Current position. Initial value is (0, 0).
+  Current position. Initial value is [0, 0, 0].
 */
 
 /*!
