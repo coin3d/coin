@@ -74,7 +74,7 @@ public:
 
   void reset(SoState* state, uint32_t bitmask) const;
 
-  typedef struct COIN_DLL_API {
+  struct COIN_DLL_API GLState {
     uint32_t cachebitmask;
     uint32_t diffuse;
     SbColor ambient;
@@ -97,7 +97,7 @@ public:
     SbUniqueId diffusenodeid;
     SbUniqueId transpnodeid;
     uint32_t reserved[4];
-  } GLState;
+  };
 
   virtual void setDiffuseElt(SoNode*,  int32_t numcolors,
                              const SbColor * colors, SoColorPacker * packer);
