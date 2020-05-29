@@ -489,7 +489,7 @@ public:
   }
   ~SoShadowLightCache() {
     if (this->depthmapscene) this->depthmapscene->unref();
-    if (this->bboxnode) this->bboxnode->ref();
+    if (this->bboxnode) this->bboxnode->unref();
     if (this->maxshadowdistance) this->maxshadowdistance->unref();
     if (this->vsm_program) this->vsm_program->unref();
     if (this->vsm_farval) this->vsm_farval->unref();
