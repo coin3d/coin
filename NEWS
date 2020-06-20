@@ -12,12 +12,17 @@ New in Coin v4.0.1 (so far):
   - partially incorporated coin4.0.0a-patch from Gentoo developers
   - incorporated patches 0005, 0009, and 0010 from Fedora developers
   - incorporated coin-3.1.3-freetype251.patch from Rosa developers
-  - fixed private function signature to support return of error string
-  - fixed incorrect closest point calculation for bounding boxes
+  - private function signature fixed to support return of error string
+  - incorrect closest point calculation for bounding boxes
   - silence GL deprecation warnings for macOS build
-  - fixed incorrect line ending handling for Windows CR/LF
-  - fixed incorrect rendering of SoFaceSet - conditions when to render as
-    VertexArrayObject were not properly checked
+  - incorrect line ending handling for Windows CR/LF in SoInput
+  - SoText2 regression: alpha test for glyph rendering was disabled
+  - incorrect rendering of SoFaceSet - conditions when to render as
+    vertex buffer object were not properly checked
+  - file format documentation to SoAlphaTest and SoDepthBuffer added
+  - memory leak in SoShadowLightCache fixed
+  - missing coin-default.cfg added
+  - operator arguments on some base types fixed to use const references rather than copies
 
 New in Coin v4.0.0 (2019-12-23):
 * new:
