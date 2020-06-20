@@ -72,8 +72,8 @@ public:
   const double * getValue(void) const { return vec; }
   void getValue(double & x, double & y, double & z) const { x = vec[0]; y = vec[1]; z = vec[2]; }
 
-  double & operator [] (const int i) { return vec[i]; }
-  const double & operator [] (const int i) const { return vec[i]; }
+  double & operator [] (int i) { return vec[i]; }
+  const double & operator [] (int i) const { return vec[i]; }
 
   SbVec3d cross(const SbVec3d & v) const;
   double dot(const SbVec3d & v) const { return vec[0] * v.vec[0] + vec[1] * v.vec[1] + vec[2] * v.vec[2]; }

@@ -1,8 +1,29 @@
-New in Coin v4.1.0 (so far):
+New in Coin v4.0.1 (so far):
+* new:
+  - Version control system has been changed from Mercurial to Git
+  - Home of Coin3d organization has been changed from https://bitbucket.org/Coin3D
+    to https://github.com/coin3d due to Bitbucket ending Mercurial support
 * bugfixes:
   - fixed crash when reading font glyphs fails
   - use font base line as bearing point for default font
-
+  - cpack.d was made optional and disabled by default (add -DCOIN_USE_CPACK=ON
+    to the cmake commandline to enable it)
+  - added some class documentation and fixed numerous documentation issues
+  - partially incorporated coin4.0.0a-patch from Gentoo developers
+  - incorporated patches 0005, 0009, and 0010 from Fedora developers
+  - incorporated coin-3.1.3-freetype251.patch from Rosa developers
+  - private function signature fixed to support return of error string
+  - incorrect closest point calculation for bounding boxes
+  - silence GL deprecation warnings for macOS build
+  - incorrect line ending handling for Windows CR/LF in SoInput
+  - SoText2 regression: alpha test for glyph rendering was disabled
+  - incorrect rendering of SoFaceSet - conditions when to render as
+    vertex buffer object were not properly checked
+  - file format documentation to SoAlphaTest and SoDepthBuffer added
+  - memory leak in SoShadowLightCache fixed
+  - missing coin-default.cfg added
+  - operator arguments on some base types fixed to use const references rather than copies
+
 New in Coin v4.0.0 (2019-12-23):
 * new:
   - Kongsberg Oil & Gas Technologies AS ended Coin as a commercial product

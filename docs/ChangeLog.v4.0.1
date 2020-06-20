@@ -1,0 +1,1495 @@
+2020-06-20 13:48:06 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (b29a46bae)
+
+	Update NEWS file
+
+M	NEWS
+
+2020-06-20 13:35:23 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (42066e212)
+
+	Compile fix for 4.0.1
+
+M	src/misc/SoType.cpp
+
+2020-06-20 13:29:40 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (cdf8bf2fd)
+
+	Fix operator arguments on some base types to use const references rather than copies.
+
+M	include/Inventor/SbColor4f.h
+M	include/Inventor/SbLinear.h
+M	include/Inventor/SbRotation.h
+M	include/Inventor/SbVec2b.h
+M	include/Inventor/SbVec2i32.h
+M	include/Inventor/SbVec2s.h
+M	include/Inventor/SbVec2ub.h
+M	include/Inventor/SbVec2us.h
+M	include/Inventor/SbVec3b.h
+M	include/Inventor/SbVec3d.h
+M	include/Inventor/SbVec3f.h
+M	include/Inventor/SbVec3s.h
+M	include/Inventor/SbVec3ub.h
+M	include/Inventor/SbVec3us.h
+M	include/Inventor/SbVec4b.h
+M	include/Inventor/SbVec4ub.h
+M	src/base/SbColor4f.cpp
+
+2020-05-10 15:24:20 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (fd8057eb5)
+
+	Added coin-default.cfg.
+
+A	coin.cfg.cmake.in
+M	src/CMakeLists.txt
+
+2020-05-10 15:21:48 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (bbe2b2274)
+
+	Bump version number
+
+M	CMakeLists.txt
+M	configure
+M	configure.ac
+
+2020-05-03 14:47:32 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (c1d7fd9f5)
+
+	Updated RELNOTES and NEWS for upcoming 4.0.1 release.
+
+M	NEWS
+M	RELNOTES
+
+2020-04-27 22:20:31 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (84026f139)
+
+	Mixed up line endings in previous commit.
+
+M	src/io/SoInput.cpp
+M	src/io/SoInput_FileInfo.cpp
+
+2020-04-18 22:58:54 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (5df35c17e)
+
+	Added Github Actions workflow (up to now for pull requests only). [skip ci]
+
+D	.circleci/config.yml
+A	.github/workflows/continuous-integration-workflow.yml
+
+2020-04-14 19:56:03 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (8ff53d9e0)
+
+	Fixed naming issues for build artifaces.
+
+M	appveyor_macos.yml
+M	appveyor_mingw.yml
+
+2020-04-13 22:42:46 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (e91f39c22)
+
+	AppVeyor CI: Re-added compiler id.
+
+M	appveyor_macos.yml
+M	appveyor_mingw.yml
+
+2020-04-13 22:21:12 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (d497ddfc6)
+
+	AppVeyor CI: Version control information from src package excluded. Enable to build tagged versions.
+
+M	appveyor_macos.yml
+M	appveyor_mingw.yml
+M	appveyor_newcomp.yml
+M	appveyor_oldcomp.yml
+
+2020-04-11 17:31:00 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (975db2a30)
+
+	Added further files to exclude for repo language determination. [skip ci]
+
+A	.gitattributes
+
+2020-04-11 15:28:30 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (a8629ab44)
+
+	Avoided division by zero.
+
+M	src/base/SbBox2d.cpp
+M	src/base/SbBox2f.cpp
+M	src/base/SbBox3d.cpp
+M	src/base/SbBox3f.cpp
+M	src/base/SbBox3i32.cpp
+M	src/base/SbBox3s.cpp
+
+2020-04-11 15:03:33 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (4978b7b82)
+
+	Fixed incorrect line ending handling for Windows CR/LF.
+
+M	src/io/SoInput.cpp
+M	src/io/SoInput_FileInfo.cpp
+
+2020-04-10 20:46:14 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (4ce2cc410)
+
+	Silence GL deprecation warnings for macOS build. [skip ci]
+
+M	CMakeLists.txt
+
+2020-04-10 20:39:37 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (9c7ae3da2)
+
+	Fixed warnings for macOS build. [skip ci]
+
+M	src/glue/gl_cgl.cpp
+
+2020-04-10 20:29:45 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (f409d58ff)
+
+	Added macOS to AppVeyor CI script. [skip ci]
+
+A	appveyor_macos.yml
+
+2020-04-07 22:55:02 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (b451b8920)
+
+	Fix incorrect closest point calculation for bounding boxes.
+
+M	src/base/SbBox2d.cpp
+M	src/base/SbBox2f.cpp
+M	src/base/SbBox3d.cpp
+M	src/base/SbBox3f.cpp
+M	src/base/SbBox3i32.cpp
+M	src/base/SbBox3s.cpp
+
+2020-03-29 23:55:26 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (0390d7942)
+
+	Skip coin tests for MSYS. Set prerelease tag.
+
+M	appveyor_mingw.yml
+M	appveyor_newcomp.yml
+M	appveyor_oldcomp.yml
+
+2020-03-28 00:17:54 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (54cb8e004)
+
+	Updated AppVeyor CI script. [skip ci]
+
+M	appveyor_mingw.yml
+
+2020-03-27 15:38:15 +0100  Volker Enderlein  <volker.enderlein@ifm-chemnitz.de> (c34a84569)
+
+	Updated AppVeyor CI scripts.
+
+A	appveyor_mingw.yml
+M	appveyor_newcomp.yml
+M	appveyor_oldcomp.yml
+
+2020-03-08 14:30:02 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (5443853bb)
+
+	Fixed double checking filename for being valid.
+
+M	src/glue/dl.cpp
+
+2020-03-08 14:28:29 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (896794963)
+
+	Fixed private function signature to support return of error string.
+
+M	src/shadows/SoShadowGroup.cpp
+
+2020-03-08 14:24:29 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (9a36b15d6)
+
+	Partially incorporating coin4.0.0a-patch from gentoo
+
+M	CMakeLists.txt
+
+2020-03-08 14:09:29 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (e8c20b94c)
+
+	Incorporating coin-3.1.3-freetype251.patch from Rosa2019.1
+
+M	src/glue/freetype.cpp
+M	src/glue/freetype.h
+
+2020-03-08 14:06:21 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (68a993442)
+
+	Incorporating patches 0005, 0009, and 0010 from Fedora
+
+M	examples/bindings/glxiv.cpp
+M	include/Inventor/SbBasic.h
+M	src/fonts/freetype.cpp
+
+2020-03-03 21:40:20 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (2e40ba184)
+
+	Added some class documentation. Fixed numerous documentation issues.
+
+M	docs/coin.doxygen.cmake.in
+M	include/Inventor/SbBox3i32.h
+M	include/Inventor/actions/SoSubAction.h
+M	include/Inventor/details/SoSubDetail.h
+M	include/Inventor/elements/SoSubElement.h
+M	include/Inventor/engines/SoSubEngine.h
+M	include/Inventor/events/SoSubEvent.h
+M	include/Inventor/fields/SoSubField.h
+M	include/Inventor/nodekits/SoSubKit.h
+M	include/Inventor/nodes/SoSubNode.h
+M	src/actions/SoAudioRenderAction.cpp
+M	src/actions/SoBoxHighlightRenderAction.cpp
+M	src/actions/SoCallbackAction.cpp
+M	src/actions/SoGLRenderAction.cpp
+M	src/actions/SoGetBoundingBoxAction.cpp
+M	src/actions/SoGetMatrixAction.cpp
+M	src/actions/SoGetPrimitiveCountAction.cpp
+M	src/actions/SoGlobalSimplifyAction.cpp
+M	src/actions/SoHandleEventAction.cpp
+M	src/actions/SoLineHighlightRenderAction.cpp
+M	src/actions/SoPickAction.cpp
+M	src/actions/SoRayPickAction.cpp
+M	src/actions/SoReorganizeAction.cpp
+M	src/actions/SoSearchAction.cpp
+M	src/actions/SoShapeSimplifyAction.cpp
+M	src/actions/SoSimplifyAction.cpp
+M	src/actions/SoToVRML2Action.cpp
+M	src/actions/SoToVRMLAction.cpp
+M	src/actions/SoWriteAction.cpp
+M	src/base/SbBox2d.cpp
+M	src/base/SbBox2f.cpp
+M	src/base/SbBox2i32.cpp
+M	src/base/SbBox2s.cpp
+M	src/base/SbBox3d.cpp
+M	src/base/SbBox3f.cpp
+M	src/base/SbBox3i32.cpp
+M	src/base/SbBox3s.cpp
+M	src/base/SbDPViewVolume.cpp
+M	src/base/SbString.cpp
+M	src/base/SbVec2b.cpp
+M	src/base/SbVec2d.cpp
+M	src/base/SbVec2ub.cpp
+M	src/base/SbVec2ui32.cpp
+M	src/base/SbVec2us.cpp
+M	src/base/SbVec3b.cpp
+M	src/base/SbVec3i32.cpp
+M	src/base/SbVec3s.cpp
+M	src/base/SbVec3ub.cpp
+M	src/base/SbVec3ui32.cpp
+M	src/base/SbVec3us.cpp
+M	src/base/SbVec4b.cpp
+M	src/base/SbVec4d.cpp
+M	src/base/SbVec4i32.cpp
+M	src/base/SbVec4s.cpp
+M	src/base/SbVec4ub.cpp
+M	src/base/SbVec4ui32.cpp
+M	src/base/SbVec4us.cpp
+M	src/base/hash.cpp
+M	src/base/rbptree.cpp
+M	src/bundles/SoBundle.cpp
+M	src/bundles/SoMaterialBundle.cpp
+M	src/bundles/SoNormalBundle.cpp
+M	src/bundles/SoTextureCoordinateBundle.cpp
+M	src/bundles/SoVertexAttributeBundle.cpp
+M	src/caches/SoBoundingBoxCache.cpp
+M	src/caches/SoCache.cpp
+M	src/caches/SoConvexDataCache.cpp
+M	src/caches/SoGLCacheList.cpp
+M	src/caches/SoGLRenderCache.cpp
+M	src/caches/SoGlyphCache.cpp
+M	src/caches/SoPrimitiveVertexCache.cpp
+M	src/caches/SoShaderProgramCache.cpp
+M	src/caches/SoTextureCoordinateCache.cpp
+M	src/caches/SoVBOCache.cpp
+M	src/collision/SbTri3f.cpp
+M	src/collision/SoIntersectionDetectionAction.cpp
+M	src/details/SoConeDetail.cpp
+M	src/details/SoCubeDetail.cpp
+M	src/details/SoCylinderDetail.cpp
+M	src/details/SoDetail.cpp
+M	src/details/SoFaceDetail.cpp
+M	src/details/SoLineDetail.cpp
+M	src/details/SoNodeKitDetail.cpp
+M	src/details/SoPointDetail.cpp
+M	src/details/SoTextDetail.cpp
+M	src/doc/Coin_modules.dox
+M	src/draggers/SoCenterballDragger.cpp
+M	src/draggers/SoDirectionalLightDragger.cpp
+M	src/draggers/SoDragPointDragger.cpp
+M	src/draggers/SoHandleBoxDragger.cpp
+M	src/draggers/SoJackDragger.cpp
+M	src/draggers/SoPointLightDragger.cpp
+M	src/draggers/SoRotateCylindricalDragger.cpp
+M	src/draggers/SoRotateDiscDragger.cpp
+M	src/draggers/SoRotateSphericalDragger.cpp
+M	src/draggers/SoScale1Dragger.cpp
+M	src/draggers/SoScale2Dragger.cpp
+M	src/draggers/SoScale2UniformDragger.cpp
+M	src/draggers/SoScaleUniformDragger.cpp
+M	src/draggers/SoSpotLightDragger.cpp
+M	src/draggers/SoTabBoxDragger.cpp
+M	src/draggers/SoTabPlaneDragger.cpp
+M	src/draggers/SoTrackballDragger.cpp
+M	src/draggers/SoTransformBoxDragger.cpp
+M	src/draggers/SoTransformerDragger.cpp
+M	src/draggers/SoTranslate1Dragger.cpp
+M	src/draggers/SoTranslate2Dragger.cpp
+M	src/elements/GL/SoGLCacheContextElement.cpp
+M	src/elements/GL/SoGLClipPlaneElement.cpp
+M	src/elements/GL/SoGLColorIndexElement.cpp
+M	src/elements/GL/SoGLCoordinateElement.cpp
+M	src/elements/GL/SoGLDepthBufferElement.cpp
+M	src/elements/GL/SoGLDisplayList.cpp
+M	src/elements/GL/SoGLDrawStyleElement.cpp
+M	src/elements/GL/SoGLEnvironmentElement.cpp
+M	src/elements/GL/SoGLLazyElement.cpp
+M	src/elements/GL/SoGLLightIdElement.cpp
+M	src/elements/GL/SoGLLinePatternElement.cpp
+M	src/elements/GL/SoGLLineWidthElement.cpp
+M	src/elements/GL/SoGLModelMatrixElement.cpp
+M	src/elements/GL/SoGLMultiTextureCoordinateElement.cpp
+M	src/elements/GL/SoGLMultiTextureEnabledElement.cpp
+M	src/elements/GL/SoGLMultiTextureImageElement.cpp
+M	src/elements/GL/SoGLMultiTextureMatrixElement.cpp
+M	src/elements/GL/SoGLNormalElement.cpp
+M	src/elements/GL/SoGLPointSizeElement.cpp
+M	src/elements/GL/SoGLPolygonOffsetElement.cpp
+M	src/elements/GL/SoGLProjectionMatrixElement.cpp
+M	src/elements/GL/SoGLRenderPassElement.cpp
+M	src/elements/GL/SoGLShapeHintsElement.cpp
+M	src/elements/GL/SoGLTextureEnabledElement.cpp
+M	src/elements/GL/SoGLUpdateAreaElement.cpp
+M	src/elements/GL/SoGLVBOElement.cpp
+M	src/elements/GL/SoGLVertexAttributeElement.cpp
+M	src/elements/GL/SoGLViewingMatrixElement.cpp
+M	src/elements/GL/SoGLViewportRegionElement.cpp
+M	src/elements/GL/SoResetMatrixElement.cpp
+M	src/elements/SoAccumulatedElement.cpp
+M	src/elements/SoAmbientColorElement.cpp
+M	src/elements/SoAnnoText3CharOrientElement.cpp
+M	src/elements/SoAnnoText3FontSizeHintElement.cpp
+M	src/elements/SoAnnoText3RenderPrintElement.cpp
+M	src/elements/SoBBoxModelMatrixElement.cpp
+M	src/elements/SoBumpMapCoordinateElement.cpp
+M	src/elements/SoBumpMapElement.cpp
+M	src/elements/SoBumpMapMatrixElement.cpp
+M	src/elements/SoCacheElement.cpp
+M	src/elements/SoCacheHintElement.cpp
+M	src/elements/SoClipPlaneElement.cpp
+M	src/elements/SoComplexityElement.cpp
+M	src/elements/SoComplexityTypeElement.cpp
+M	src/elements/SoCoordinateElement.cpp
+M	src/elements/SoCreaseAngleElement.cpp
+M	src/elements/SoCullElement.cpp
+M	src/elements/SoDecimationPercentageElement.cpp
+M	src/elements/SoDecimationTypeElement.cpp
+M	src/elements/SoDepthBufferElement.cpp
+M	src/elements/SoDiffuseColorElement.cpp
+M	src/elements/SoDrawStyleElement.cpp
+M	src/elements/SoElement.cpp
+M	src/elements/SoEmissiveColorElement.cpp
+M	src/elements/SoEnvironmentElement.cpp
+M	src/elements/SoFloatElement.cpp
+M	src/elements/SoFocalDistanceElement.cpp
+M	src/elements/SoFontNameElement.cpp
+M	src/elements/SoFontSizeElement.cpp
+M	src/elements/SoInt32Element.cpp
+M	src/elements/SoLazyElement.cpp
+M	src/elements/SoLightAttenuationElement.cpp
+M	src/elements/SoLightElement.cpp
+M	src/elements/SoLightModelElement.cpp
+M	src/elements/SoLinePatternElement.cpp
+M	src/elements/SoLineWidthElement.cpp
+M	src/elements/SoListenerDopplerElement.cpp
+M	src/elements/SoListenerGainElement.cpp
+M	src/elements/SoListenerOrientationElement.cpp
+M	src/elements/SoListenerPositionElement.cpp
+M	src/elements/SoLocalBBoxMatrixElement.cpp
+M	src/elements/SoMaterialBindingElement.cpp
+M	src/elements/SoModelMatrixElement.cpp
+M	src/elements/SoMultiTextureCoordinateElement.cpp
+M	src/elements/SoMultiTextureEnabledElement.cpp
+M	src/elements/SoMultiTextureImageElement.cpp
+M	src/elements/SoMultiTextureMatrixElement.cpp
+M	src/elements/SoNormalBindingElement.cpp
+M	src/elements/SoNormalElement.cpp
+M	src/elements/SoOverrideElement.cpp
+M	src/elements/SoPickRayElement.cpp
+M	src/elements/SoPickStyleElement.cpp
+M	src/elements/SoPointSizeElement.cpp
+M	src/elements/SoPolygonOffsetElement.cpp
+M	src/elements/SoProfileCoordinateElement.cpp
+M	src/elements/SoProjectionMatrixElement.cpp
+M	src/elements/SoReplacedElement.cpp
+M	src/elements/SoShapeHintsElement.cpp
+M	src/elements/SoShapeStyleElement.cpp
+M	src/elements/SoShininessElement.cpp
+M	src/elements/SoSoundElement.cpp
+M	src/elements/SoSpecularColorElement.cpp
+M	src/elements/SoSwitchElement.cpp
+M	src/elements/SoTextOutlineEnabledElement.cpp
+M	src/elements/SoTextureCombineElement.cpp
+M	src/elements/SoTextureCoordinateBindingElement.cpp
+M	src/elements/SoTextureOverrideElement.cpp
+M	src/elements/SoTextureQualityElement.cpp
+M	src/elements/SoTextureScalePolicyElement.cpp
+M	src/elements/SoTextureScaleQualityElement.cpp
+M	src/elements/SoTextureUnitElement.cpp
+M	src/elements/SoTransparencyElement.cpp
+M	src/elements/SoUnitsElement.cpp
+M	src/elements/SoVertexAttributeBindingElement.cpp
+M	src/elements/SoVertexAttributeElement.cpp
+M	src/elements/SoViewVolumeElement.cpp
+M	src/elements/SoViewingMatrixElement.cpp
+M	src/elements/SoViewportRegionElement.cpp
+M	src/elements/SoWindowElement.cpp
+M	src/engines/SoBoolOperation.cpp
+M	src/engines/SoCalculator.cpp
+M	src/engines/SoComposeMatrix.cpp
+M	src/engines/SoComposeRotation.cpp
+M	src/engines/SoComposeRotationFromTo.cpp
+M	src/engines/SoComposeVec2f.cpp
+M	src/engines/SoComposeVec3f.cpp
+M	src/engines/SoComposeVec4f.cpp
+M	src/engines/SoComputeBoundingBox.cpp
+M	src/engines/SoConcatenate.cpp
+M	src/engines/SoConvertAll.cpp
+M	src/engines/SoCounter.cpp
+M	src/engines/SoDecomposeMatrix.cpp
+M	src/engines/SoDecomposeRotation.cpp
+M	src/engines/SoDecomposeVec2f.cpp
+M	src/engines/SoDecomposeVec3f.cpp
+M	src/engines/SoDecomposeVec4f.cpp
+M	src/engines/SoElapsedTime.cpp
+M	src/engines/SoEngine.cpp
+M	src/engines/SoFieldConverter.cpp
+M	src/engines/SoGate.cpp
+M	src/engines/SoHeightMapToNormalMap.cpp
+M	src/engines/SoInterpolate.cpp
+M	src/engines/SoNodeEngine.cpp
+M	src/engines/SoOnOff.cpp
+M	src/engines/SoOneShot.cpp
+M	src/engines/SoSelectOne.cpp
+M	src/engines/SoSubEngineP.h
+M	src/engines/SoTexture2Convert.cpp
+M	src/engines/SoTimeCounter.cpp
+M	src/engines/SoTransformVec3f.cpp
+M	src/engines/SoTriggerAny.cpp
+M	src/errors/SoDebugError.cpp
+M	src/errors/SoError.cpp
+M	src/errors/SoMemoryError.cpp
+M	src/errors/SoReadError.cpp
+M	src/events/SoSpaceballButtonEvent.cpp
+M	src/fields/SoField.cpp
+M	src/fields/SoFieldContainer.cpp
+M	src/fields/SoMFBitMask.cpp
+M	src/fields/SoMFBool.cpp
+M	src/fields/SoMFColor.cpp
+M	src/fields/SoMFColorRGBA.cpp
+M	src/fields/SoMFDouble.cpp
+M	src/fields/SoMFEngine.cpp
+M	src/fields/SoMFEnum.cpp
+M	src/fields/SoMFFloat.cpp
+M	src/fields/SoMFInt32.cpp
+M	src/fields/SoMFMatrix.cpp
+M	src/fields/SoMFName.cpp
+M	src/fields/SoMFNode.cpp
+M	src/fields/SoMFPath.cpp
+M	src/fields/SoMFPlane.cpp
+M	src/fields/SoMFRotation.cpp
+M	src/fields/SoMFShort.cpp
+M	src/fields/SoMFString.cpp
+M	src/fields/SoMFTime.cpp
+M	src/fields/SoMFUInt32.cpp
+M	src/fields/SoMFUShort.cpp
+M	src/fields/SoMFVec2b.cpp
+M	src/fields/SoMFVec2d.cpp
+M	src/fields/SoMFVec2f.cpp
+M	src/fields/SoMFVec2i32.cpp
+M	src/fields/SoMFVec2s.cpp
+M	src/fields/SoMFVec3b.cpp
+M	src/fields/SoMFVec3d.cpp
+M	src/fields/SoMFVec3f.cpp
+M	src/fields/SoMFVec3i32.cpp
+M	src/fields/SoMFVec3s.cpp
+M	src/fields/SoMFVec4b.cpp
+M	src/fields/SoMFVec4d.cpp
+M	src/fields/SoMFVec4f.cpp
+M	src/fields/SoMFVec4i32.cpp
+M	src/fields/SoMFVec4s.cpp
+M	src/fields/SoMFVec4ub.cpp
+M	src/fields/SoMFVec4ui32.cpp
+M	src/fields/SoMFVec4us.cpp
+M	src/fields/SoMField.cpp
+M	src/fields/SoSFBitMask.cpp
+M	src/fields/SoSFBool.cpp
+M	src/fields/SoSFBox2d.cpp
+M	src/fields/SoSFBox2f.cpp
+M	src/fields/SoSFBox2i32.cpp
+M	src/fields/SoSFBox2s.cpp
+M	src/fields/SoSFBox3d.cpp
+M	src/fields/SoSFBox3f.cpp
+M	src/fields/SoSFBox3i32.cpp
+M	src/fields/SoSFBox3s.cpp
+M	src/fields/SoSFColor.cpp
+M	src/fields/SoSFColorRGBA.cpp
+M	src/fields/SoSFDouble.cpp
+M	src/fields/SoSFEngine.cpp
+M	src/fields/SoSFEnum.cpp
+M	src/fields/SoSFFloat.cpp
+M	src/fields/SoSFImage.cpp
+M	src/fields/SoSFImage3.cpp
+M	src/fields/SoSFInt32.cpp
+M	src/fields/SoSFMatrix.cpp
+M	src/fields/SoSFName.cpp
+M	src/fields/SoSFNode.cpp
+M	src/fields/SoSFPath.cpp
+M	src/fields/SoSFPlane.cpp
+M	src/fields/SoSFRotation.cpp
+M	src/fields/SoSFShort.cpp
+M	src/fields/SoSFString.cpp
+M	src/fields/SoSFTime.cpp
+M	src/fields/SoSFTrigger.cpp
+M	src/fields/SoSFUInt32.cpp
+M	src/fields/SoSFUShort.cpp
+M	src/fields/SoSFVec2b.cpp
+M	src/fields/SoSFVec2d.cpp
+M	src/fields/SoSFVec2f.cpp
+M	src/fields/SoSFVec2i32.cpp
+M	src/fields/SoSFVec2s.cpp
+M	src/fields/SoSFVec3b.cpp
+M	src/fields/SoSFVec3d.cpp
+M	src/fields/SoSFVec3f.cpp
+M	src/fields/SoSFVec3i32.cpp
+M	src/fields/SoSFVec3s.cpp
+M	src/fields/SoSFVec4b.cpp
+M	src/fields/SoSFVec4d.cpp
+M	src/fields/SoSFVec4f.cpp
+M	src/fields/SoSFVec4i32.cpp
+M	src/fields/SoSFVec4s.cpp
+M	src/fields/SoSFVec4ub.cpp
+M	src/fields/SoSFVec4ui32.cpp
+M	src/fields/SoSFVec4us.cpp
+M	src/fields/SoSField.cpp
+M	src/foreignfiles/SoForeignFileKit.cpp
+M	src/foreignfiles/SoSTLFileKit.cpp
+M	src/geo/SoGeo.cpp
+M	src/geo/SoGeoCoordinate.cpp
+M	src/geo/SoGeoElement.cpp
+M	src/geo/SoGeoLocation.cpp
+M	src/geo/SoGeoOrigin.cpp
+M	src/geo/SoGeoSeparator.cpp
+M	src/glue/gl.cpp
+M	src/hardcopy/VectorizeAction.cpp
+M	src/hardcopy/VectorizePSAction.cpp
+M	src/lists/SbStringList.cpp
+M	src/lists/SbVec3fList.cpp
+M	src/lists/SoActionMethodList.cpp
+M	src/lists/SoBaseList.cpp
+M	src/lists/SoDetailList.cpp
+M	src/lists/SoEngineOutputList.cpp
+M	src/lists/SoFieldList.cpp
+M	src/lists/SoPickedPointList.cpp
+M	src/lists/SoTypeList.cpp
+M	src/manips/SoCenterballManip.cpp
+M	src/manips/SoClipPlaneManip.cpp
+M	src/manips/SoDirectionalLightManip.cpp
+M	src/manips/SoHandleBoxManip.cpp
+M	src/manips/SoJackManip.cpp
+M	src/manips/SoPointLightManip.cpp
+M	src/manips/SoSpotLightManip.cpp
+M	src/manips/SoTabBoxManip.cpp
+M	src/manips/SoTrackballManip.cpp
+M	src/manips/SoTransformBoxManip.cpp
+M	src/manips/SoTransformManip.cpp
+M	src/manips/SoTransformerManip.cpp
+M	src/misc/SoAudioDevice.cpp
+M	src/misc/SoBase.cpp
+M	src/misc/SoChildList.cpp
+M	src/misc/SoCompactPathList.cpp
+M	src/misc/SoDB.cpp
+M	src/misc/SoFullPath.cpp
+M	src/misc/SoLightPath.cpp
+M	src/misc/SoNormalGenerator.cpp
+M	src/misc/SoPath.cpp
+M	src/misc/SoPrimitiveVertex.cpp
+M	src/misc/SoProtoInstance.cpp
+M	src/misc/SoState.cpp
+M	src/misc/SoTempPath.cpp
+M	src/misc/SoType.cpp
+M	src/nodekits/SoAppearanceKit.cpp
+M	src/nodekits/SoBaseKit.cpp
+M	src/nodekits/SoCameraKit.cpp
+M	src/nodekits/SoInteractionKit.cpp
+M	src/nodekits/SoLightKit.cpp
+M	src/nodekits/SoShapeKit.cpp
+M	src/nodekits/SoWrapperKit.cpp
+M	src/nodes/SoAlphaTest.cpp
+M	src/nodes/SoAnnotation.cpp
+M	src/nodes/SoAntiSquish.cpp
+M	src/nodes/SoArray.cpp
+M	src/nodes/SoBaseColor.cpp
+M	src/nodes/SoBlinker.cpp
+M	src/nodes/SoBumpMap.cpp
+M	src/nodes/SoBumpMapCoordinate.cpp
+M	src/nodes/SoBumpMapTransform.cpp
+M	src/nodes/SoCacheHint.cpp
+M	src/nodes/SoCallback.cpp
+M	src/nodes/SoCamera.cpp
+M	src/nodes/SoClipPlane.cpp
+M	src/nodes/SoColorIndex.cpp
+M	src/nodes/SoComplexity.cpp
+M	src/nodes/SoCoordinate3.cpp
+M	src/nodes/SoCoordinate4.cpp
+M	src/nodes/SoDepthBuffer.cpp
+M	src/nodes/SoDirectionalLight.cpp
+M	src/nodes/SoDrawStyle.cpp
+M	src/nodes/SoEnvironment.cpp
+M	src/nodes/SoEventCallback.cpp
+M	src/nodes/SoExtSelection.cpp
+M	src/nodes/SoFile.cpp
+M	src/nodes/SoFont.cpp
+M	src/nodes/SoFontStyle.cpp
+M	src/nodes/SoFrustumCamera.cpp
+M	src/nodes/SoGroup.cpp
+M	src/nodes/SoInfo.cpp
+M	src/nodes/SoLOD.cpp
+M	src/nodes/SoLabel.cpp
+M	src/nodes/SoLevelOfDetail.cpp
+M	src/nodes/SoLight.cpp
+M	src/nodes/SoLightModel.cpp
+M	src/nodes/SoLinearProfile.cpp
+M	src/nodes/SoListener.cpp
+M	src/nodes/SoLocateHighlight.cpp
+M	src/nodes/SoMaterial.cpp
+M	src/nodes/SoMaterialBinding.cpp
+M	src/nodes/SoMatrixTransform.cpp
+M	src/nodes/SoMultipleCopy.cpp
+M	src/nodes/SoNode.cpp
+M	src/nodes/SoNormal.cpp
+M	src/nodes/SoNormalBinding.cpp
+M	src/nodes/SoNurbsProfile.cpp
+M	src/nodes/SoOrthographicCamera.cpp
+M	src/nodes/SoPackedColor.cpp
+M	src/nodes/SoPathSwitch.cpp
+M	src/nodes/SoPendulum.cpp
+M	src/nodes/SoPerspectiveCamera.cpp
+M	src/nodes/SoPickStyle.cpp
+M	src/nodes/SoPointLight.cpp
+M	src/nodes/SoPolygonOffset.cpp
+M	src/nodes/SoProfile.cpp
+M	src/nodes/SoProfileCoordinate2.cpp
+M	src/nodes/SoProfileCoordinate3.cpp
+M	src/nodes/SoResetTransform.cpp
+M	src/nodes/SoReversePerspectiveCamera.cpp
+M	src/nodes/SoRotation.cpp
+M	src/nodes/SoRotationXYZ.cpp
+M	src/nodes/SoRotor.cpp
+M	src/nodes/SoScale.cpp
+M	src/nodes/SoSceneTexture2.cpp
+M	src/nodes/SoSceneTextureCubeMap.cpp
+M	src/nodes/SoSelection.cpp
+M	src/nodes/SoSeparator.cpp
+M	src/nodes/SoShapeHints.cpp
+M	src/nodes/SoShuttle.cpp
+M	src/nodes/SoSpotLight.cpp
+M	src/nodes/SoSurroundScale.cpp
+M	src/nodes/SoSwitch.cpp
+M	src/nodes/SoTexture.cpp
+M	src/nodes/SoTexture2.cpp
+M	src/nodes/SoTexture2Transform.cpp
+M	src/nodes/SoTexture3.cpp
+M	src/nodes/SoTexture3Transform.cpp
+M	src/nodes/SoTextureCombine.cpp
+M	src/nodes/SoTextureCoordinate2.cpp
+M	src/nodes/SoTextureCoordinate3.cpp
+M	src/nodes/SoTextureCoordinateBinding.cpp
+M	src/nodes/SoTextureCoordinateCube.cpp
+M	src/nodes/SoTextureCoordinateCylinder.cpp
+M	src/nodes/SoTextureCoordinateDefault.cpp
+M	src/nodes/SoTextureCoordinateEnvironment.cpp
+M	src/nodes/SoTextureCoordinateFunction.cpp
+M	src/nodes/SoTextureCoordinateNormalMap.cpp
+M	src/nodes/SoTextureCoordinateObject.cpp
+M	src/nodes/SoTextureCoordinatePlane.cpp
+M	src/nodes/SoTextureCoordinateReflectionMap.cpp
+M	src/nodes/SoTextureCoordinateSphere.cpp
+M	src/nodes/SoTextureCubeMap.cpp
+M	src/nodes/SoTextureMatrixTransform.cpp
+M	src/nodes/SoTextureScalePolicy.cpp
+M	src/nodes/SoTextureUnit.cpp
+M	src/nodes/SoTransform.cpp
+M	src/nodes/SoTransformSeparator.cpp
+M	src/nodes/SoTransformation.cpp
+M	src/nodes/SoTranslation.cpp
+M	src/nodes/SoTransparencyType.cpp
+M	src/nodes/SoUnits.cpp
+M	src/nodes/SoUnknownNode.cpp
+M	src/nodes/SoVertexAttribute.cpp
+M	src/nodes/SoVertexAttributeBinding.cpp
+M	src/nodes/SoVertexProperty.cpp
+M	src/nodes/SoWWWAnchor.cpp
+M	src/nodes/SoWWWInline.cpp
+M	src/profiler/SoNodeVisualize.cpp
+M	src/profiler/SoProfilerElement.cpp
+M	src/profiler/SoProfilerOverlayKit.cpp
+M	src/profiler/SoProfilerStats.cpp
+M	src/profiler/SoProfilerTopEngine.cpp
+M	src/profiler/SoProfilerTopKit.cpp
+M	src/profiler/SoProfilerVisualizeKit.cpp
+M	src/profiler/SoScrollingGraphKit.cpp
+M	src/rendering/SoGLBigImage.cpp
+M	src/rendering/SoGLCubeMapImage.cpp
+M	src/rendering/SoGLImage.cpp
+M	src/rendering/SoRenderManager.cpp
+M	src/shaders/SoFragmentShader.cpp
+M	src/shaders/SoGLShaderProgramElement.cpp
+M	src/shaders/SoGeometryShader.cpp
+M	src/shaders/SoShaderObject.cpp
+M	src/shaders/SoShaderParameter.cpp
+M	src/shaders/SoShaderProgram.cpp
+M	src/shaders/SoVertexShader.cpp
+M	src/shadows/SoGLShadowCullingElement.cpp
+M	src/shadows/SoShadowCulling.cpp
+M	src/shadows/SoShadowDirectionalLight.cpp
+M	src/shadows/SoShadowGroup.cpp
+M	src/shadows/SoShadowSpotLight.cpp
+M	src/shadows/SoShadowStyle.cpp
+M	src/shadows/SoShadowStyleElement.cpp
+M	src/shapenodes/SoAsciiText.cpp
+M	src/shapenodes/SoCone.cpp
+M	src/shapenodes/SoCube.cpp
+M	src/shapenodes/SoCylinder.cpp
+M	src/shapenodes/SoFaceSet.cpp
+M	src/shapenodes/SoImage.cpp
+M	src/shapenodes/SoIndexedFaceSet.cpp
+M	src/shapenodes/SoIndexedLineSet.cpp
+M	src/shapenodes/SoIndexedMarkerSet.cpp
+M	src/shapenodes/SoIndexedNurbsCurve.cpp
+M	src/shapenodes/SoIndexedNurbsSurface.cpp
+M	src/shapenodes/SoIndexedPointSet.cpp
+M	src/shapenodes/SoIndexedShape.cpp
+M	src/shapenodes/SoIndexedTriangleStripSet.cpp
+M	src/shapenodes/SoLineSet.cpp
+M	src/shapenodes/SoMarkerSet.cpp
+M	src/shapenodes/SoNonIndexedShape.cpp
+M	src/shapenodes/SoNurbsCurve.cpp
+M	src/shapenodes/SoNurbsSurface.cpp
+M	src/shapenodes/SoPointSet.cpp
+M	src/shapenodes/SoQuadMesh.cpp
+M	src/shapenodes/SoShape.cpp
+M	src/shapenodes/SoSphere.cpp
+M	src/shapenodes/SoText2.cpp
+M	src/shapenodes/SoText3.cpp
+M	src/shapenodes/SoTriangleStripSet.cpp
+M	src/shapenodes/SoVertexShape.cpp
+M	src/vrml97/Anchor.cpp
+M	src/vrml97/Appearance.cpp
+M	src/vrml97/AudioClip.cpp
+M	src/vrml97/Background.cpp
+M	src/vrml97/Billboard.cpp
+M	src/vrml97/Box.cpp
+M	src/vrml97/Collision.cpp
+M	src/vrml97/Color.cpp
+M	src/vrml97/ColorInterpolator.cpp
+M	src/vrml97/Cone.cpp
+M	src/vrml97/Coordinate.cpp
+M	src/vrml97/CoordinateInterpolator.cpp
+M	src/vrml97/Cylinder.cpp
+M	src/vrml97/CylinderSensor.cpp
+M	src/vrml97/DirectionalLight.cpp
+M	src/vrml97/DragSensor.cpp
+M	src/vrml97/ElevationGrid.cpp
+M	src/vrml97/Extrusion.cpp
+M	src/vrml97/Fog.cpp
+M	src/vrml97/FontStyle.cpp
+M	src/vrml97/Geometry.cpp
+M	src/vrml97/Group.cpp
+M	src/vrml97/ImageTexture.cpp
+M	src/vrml97/IndexedFaceSet.cpp
+M	src/vrml97/IndexedLine.cpp
+M	src/vrml97/IndexedLineSet.cpp
+M	src/vrml97/IndexedShape.cpp
+M	src/vrml97/Inline.cpp
+M	src/vrml97/Interpolator.cpp
+M	src/vrml97/LOD.cpp
+M	src/vrml97/Light.cpp
+M	src/vrml97/Material.cpp
+M	src/vrml97/MovieTexture.cpp
+M	src/vrml97/NavigationInfo.cpp
+M	src/vrml97/Normal.cpp
+M	src/vrml97/NormalInterpolator.cpp
+M	src/vrml97/OrientationInterpolator.cpp
+M	src/vrml97/Parent.cpp
+M	src/vrml97/PixelTexture.cpp
+M	src/vrml97/PlaneSensor.cpp
+M	src/vrml97/PointLight.cpp
+M	src/vrml97/PointSet.cpp
+M	src/vrml97/PositionInterpolator.cpp
+M	src/vrml97/ProximitySensor.cpp
+M	src/vrml97/ScalarInterpolator.cpp
+M	src/vrml97/Script.cpp
+M	src/vrml97/Sensor.cpp
+M	src/vrml97/Shape.cpp
+M	src/vrml97/Sound.cpp
+M	src/vrml97/Sphere.cpp
+M	src/vrml97/SphereSensor.cpp
+M	src/vrml97/SpotLight.cpp
+M	src/vrml97/Switch.cpp
+M	src/vrml97/Text.cpp
+M	src/vrml97/Texture.cpp
+M	src/vrml97/TextureCoordinate.cpp
+M	src/vrml97/TextureTransform.cpp
+M	src/vrml97/TimeSensor.cpp
+M	src/vrml97/TouchSensor.cpp
+M	src/vrml97/Transform.cpp
+M	src/vrml97/VertexLine.cpp
+M	src/vrml97/VertexPoint.cpp
+M	src/vrml97/VertexShape.cpp
+M	src/vrml97/Viewpoint.cpp
+M	src/vrml97/VisibilitySensor.cpp
+M	src/vrml97/WorldInfo.cpp
+
+2020-02-16 10:18:58 +0100  Mario Koerner  <mario.koerner@gmx.de> (88b2abadc)
+
+	Updated NEWS and RELNOTES for changes in font handling
+
+M	NEWS
+M	RELNOTES
+
+2020-02-12 23:59:01 +0100  Giampiero Gabbiani  <giampiero@gabbiani.org> (efe55a29f)
+
+	Aligned to last version of cpack.d
+
+M	cpack.d
+
+2020-01-24 22:00:15 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (d6959dc9b)
+
+	Fixed dozens of typos and incorrect wording in documentation.
+
+M	docs/doxygen/header.html
+M	src/3ds/3dsLoader.cpp
+M	src/actions/SoAction.cpp
+M	src/actions/SoAudioRenderAction.cpp
+M	src/actions/SoBoxHighlightRenderAction.cpp
+M	src/actions/SoCallbackAction.cpp
+M	src/actions/SoGLRenderAction.cpp
+M	src/actions/SoGetBoundingBoxAction.cpp
+M	src/actions/SoGetMatrixAction.cpp
+M	src/actions/SoGetPrimitiveCountAction.cpp
+M	src/actions/SoHandleEventAction.cpp
+M	src/actions/SoPickAction.cpp
+M	src/actions/SoRayPickAction.cpp
+M	src/actions/SoReorganizeAction.cpp
+M	src/actions/SoSearchAction.cpp
+M	src/actions/SoSubActionP.h
+M	src/actions/SoToVRML2Action.cpp
+M	src/actions/SoToVRMLAction.cpp
+M	src/actions/SoWriteAction.cpp
+M	src/base/SbBox2d.cpp
+M	src/base/SbBox2f.cpp
+M	src/base/SbBox2i32.cpp
+M	src/base/SbBox2s.cpp
+M	src/base/SbBox3d.cpp
+M	src/base/SbBox3f.cpp
+M	src/base/SbBox3s.cpp
+M	src/base/SbColor.cpp
+M	src/base/SbColor4f.cpp
+M	src/base/SbCylinder.cpp
+M	src/base/SbDPLine.cpp
+M	src/base/SbDPMatrix.cpp
+M	src/base/SbDPPlane.cpp
+M	src/base/SbDPRotation.cpp
+M	src/base/SbDPViewVolume.cpp
+M	src/base/SbDict.cpp
+M	src/base/SbImage.cpp
+M	src/base/SbLine.cpp
+M	src/base/SbMatrix.cpp
+M	src/base/SbName.cpp
+M	src/base/SbOctTree.cpp
+M	src/base/SbPlane.cpp
+M	src/base/SbRotation.cpp
+M	src/base/SbSphere.cpp
+M	src/base/SbString.cpp
+M	src/base/SbTesselator.cpp
+M	src/base/SbTime.cpp
+M	src/base/SbVec2d.cpp
+M	src/base/SbVec2f.cpp
+M	src/base/SbVec2i32.cpp
+M	src/base/SbVec2s.cpp
+M	src/base/SbVec3d.cpp
+M	src/base/SbVec3f.cpp
+M	src/base/SbVec3s.cpp
+M	src/base/SbVec4d.cpp
+M	src/base/SbVec4f.cpp
+M	src/base/SbViewVolume.cpp
+M	src/base/SbViewportRegion.cpp
+M	src/base/SbXfBox3d.cpp
+M	src/base/SbXfBox3f.cpp
+M	src/base/heap.cpp
+M	src/base/namemap.cpp
+M	src/base/string.cpp
+M	src/base/time.cpp
+M	src/bundles/SoBundle.cpp
+M	src/bundles/SoMaterialBundle.cpp
+M	src/bundles/SoTextureCoordinateBundle.cpp
+M	src/caches/SoBoundingBoxCache.cpp
+M	src/caches/SoCache.cpp
+M	src/caches/SoGLCacheList.cpp
+M	src/caches/SoGlyphCache.cpp
+M	src/caches/SoNormalCache.cpp
+M	src/caches/SoPrimitiveVertexCache.cpp
+M	src/coindefs.h
+M	src/collision/SbTri3f.cpp
+M	src/collision/SoIntersectionDetectionAction.cpp
+M	src/details/SoCubeDetail.cpp
+M	src/details/SoDetail.cpp
+M	src/details/SoFaceDetail.cpp
+M	src/details/SoTextDetail.cpp
+M	src/doc/Coin_environment.dox
+M	src/doc/Coin_macros.dox
+M	src/doc/Coin_main.dox
+M	src/doc/Coin_modules.dox
+M	src/draggers/SoCenterballDragger.cpp
+M	src/draggers/SoDirectionalLightDragger.cpp
+M	src/draggers/SoDragPointDragger.cpp
+M	src/draggers/SoDragger.cpp
+M	src/draggers/SoHandleBoxDragger.cpp
+M	src/draggers/SoJackDragger.cpp
+M	src/draggers/SoPointLightDragger.cpp
+M	src/draggers/SoRotateCylindricalDragger.cpp
+M	src/draggers/SoRotateDiscDragger.cpp
+M	src/draggers/SoRotateSphericalDragger.cpp
+M	src/draggers/SoScale1Dragger.cpp
+M	src/draggers/SoScale2Dragger.cpp
+M	src/draggers/SoScale2UniformDragger.cpp
+M	src/draggers/SoScaleUniformDragger.cpp
+M	src/draggers/SoSpotLightDragger.cpp
+M	src/draggers/SoTabBoxDragger.cpp
+M	src/draggers/SoTabPlaneDragger.cpp
+M	src/draggers/SoTrackballDragger.cpp
+M	src/draggers/SoTransformBoxDragger.cpp
+M	src/draggers/SoTransformerDragger.cpp
+M	src/draggers/SoTranslate1Dragger.cpp
+M	src/draggers/SoTranslate2Dragger.cpp
+M	src/elements/GL/SoGLCacheContextElement.cpp
+M	src/elements/GL/SoGLColorIndexElement.cpp
+M	src/elements/GL/SoGLDisplayList.cpp
+M	src/elements/GL/SoGLLazyElement.cpp
+M	src/elements/GL/SoGLLinePatternElement.cpp
+M	src/elements/GL/SoGLLineWidthElement.cpp
+M	src/elements/GL/SoGLMultiTextureImageElement.cpp
+M	src/elements/GL/SoGLPointSizeElement.cpp
+M	src/elements/GL/SoGLShapeHintsElement.cpp
+M	src/elements/GL/SoGLTextureEnabledElement.cpp
+M	src/elements/GL/SoGLVBOElement.cpp
+M	src/elements/SoCacheHintElement.cpp
+M	src/elements/SoCullElement.cpp
+M	src/elements/SoElement.cpp
+M	src/elements/SoEmissiveColorElement.cpp
+M	src/elements/SoLazyElement.cpp
+M	src/elements/SoLineWidthElement.cpp
+M	src/elements/SoListenerDopplerElement.cpp
+M	src/elements/SoListenerOrientationElement.cpp
+M	src/elements/SoListenerPositionElement.cpp
+M	src/elements/SoLocalBBoxMatrixElement.cpp
+M	src/elements/SoModelMatrixElement.cpp
+M	src/elements/SoMultiTextureCoordinateElement.cpp
+M	src/elements/SoMultiTextureEnabledElement.cpp
+M	src/elements/SoMultiTextureMatrixElement.cpp
+M	src/elements/SoOverrideElement.cpp
+M	src/elements/SoPointSizeElement.cpp
+M	src/elements/SoReplacedElement.cpp
+M	src/elements/SoShininessElement.cpp
+M	src/elements/SoSoundElement.cpp
+M	src/elements/SoViewportRegionElement.cpp
+M	src/engines/SoCalculator.cpp
+M	src/engines/SoConvertAll.cpp
+M	src/engines/SoElapsedTime.cpp
+M	src/engines/SoEngine.cpp
+M	src/engines/SoEngineOutput.cpp
+M	src/engines/SoOneShot.cpp
+M	src/engines/SoOutputData.cpp
+M	src/engines/SoSelectOne.cpp
+M	src/engines/SoSubEngineP.h
+M	src/engines/SoSubNodeEngineP.h
+M	src/engines/SoTimeCounter.cpp
+M	src/engines/ivy/sobooloperation.scm
+M	src/engines/ivy/socalculator.scm
+M	src/engines/ivy/socomposerotationfromto.scm
+M	src/engines/ivy/socomposevec2f.scm
+M	src/engines/ivy/soconcatenate.scm
+M	src/engines/ivy/soelapsedtime.scm
+M	src/engines/ivy/sogate.scm
+M	src/engines/ivy/sointerpolatefloat.scm
+M	src/engines/ivy/sointerpolaterotation.scm
+M	src/engines/ivy/sooneshot.scm
+M	src/engines/ivy/soselectone.scm
+M	src/engines/ivy/sotimecounter.scm
+M	src/errors/SoDebugError.cpp
+M	src/errors/SoError.cpp
+M	src/errors/SoMemoryError.cpp
+M	src/events/SoEvent.cpp
+M	src/events/SoKeyboardEvent.cpp
+M	src/events/SoLocation2Event.cpp
+M	src/events/SoMotion3Event.cpp
+M	src/events/SoMouseButtonEvent.cpp
+M	src/events/SoSpaceballButtonEvent.cpp
+M	src/fields/MFNodeEnginePath.tpl
+M	src/fields/SFNodeEnginePath.tpl
+M	src/fields/SoField.cpp
+M	src/fields/SoFieldContainer.cpp
+M	src/fields/SoFieldData.cpp
+M	src/fields/SoMFBitMask.cpp
+M	src/fields/SoMFBool.cpp
+M	src/fields/SoMFColor.cpp
+M	src/fields/SoMFColorRGBA.cpp
+M	src/fields/SoMFDouble.cpp
+M	src/fields/SoMFEngine.cpp
+M	src/fields/SoMFEnum.cpp
+M	src/fields/SoMFFloat.cpp
+M	src/fields/SoMFInt32.cpp
+M	src/fields/SoMFNode.cpp
+M	src/fields/SoMFPath.cpp
+M	src/fields/SoMFPlane.cpp
+M	src/fields/SoMFRotation.cpp
+M	src/fields/SoMFShort.cpp
+M	src/fields/SoMFTime.cpp
+M	src/fields/SoMFUInt32.cpp
+M	src/fields/SoMFUShort.cpp
+M	src/fields/SoMFVec2b.cpp
+M	src/fields/SoMFVec2d.cpp
+M	src/fields/SoMFVec2f.cpp
+M	src/fields/SoMFVec2i32.cpp
+M	src/fields/SoMFVec2s.cpp
+M	src/fields/SoMFVec3b.cpp
+M	src/fields/SoMFVec3d.cpp
+M	src/fields/SoMFVec3f.cpp
+M	src/fields/SoMFVec3i32.cpp
+M	src/fields/SoMFVec3s.cpp
+M	src/fields/SoMFVec4b.cpp
+M	src/fields/SoMFVec4d.cpp
+M	src/fields/SoMFVec4f.cpp
+M	src/fields/SoMFVec4i32.cpp
+M	src/fields/SoMFVec4s.cpp
+M	src/fields/SoMFVec4ub.cpp
+M	src/fields/SoMFVec4ui32.cpp
+M	src/fields/SoMFVec4us.cpp
+M	src/fields/SoMField.cpp
+M	src/fields/SoSFBool.cpp
+M	src/fields/SoSFBox2d.cpp
+M	src/fields/SoSFBox2f.cpp
+M	src/fields/SoSFBox2i32.cpp
+M	src/fields/SoSFBox2s.cpp
+M	src/fields/SoSFBox3d.cpp
+M	src/fields/SoSFBox3f.cpp
+M	src/fields/SoSFBox3i32.cpp
+M	src/fields/SoSFBox3s.cpp
+M	src/fields/SoSFColor.cpp
+M	src/fields/SoSFColorRGBA.cpp
+M	src/fields/SoSFDouble.cpp
+M	src/fields/SoSFEngine.cpp
+M	src/fields/SoSFEnum.cpp
+M	src/fields/SoSFFloat.cpp
+M	src/fields/SoSFImage.cpp
+M	src/fields/SoSFImage3.cpp
+M	src/fields/SoSFInt32.cpp
+M	src/fields/SoSFMatrix.cpp
+M	src/fields/SoSFName.cpp
+M	src/fields/SoSFNode.cpp
+M	src/fields/SoSFPath.cpp
+M	src/fields/SoSFPlane.cpp
+M	src/fields/SoSFRotation.cpp
+M	src/fields/SoSFShort.cpp
+M	src/fields/SoSFString.cpp
+M	src/fields/SoSFTime.cpp
+M	src/fields/SoSFTrigger.cpp
+M	src/fields/SoSFUInt32.cpp
+M	src/fields/SoSFUShort.cpp
+M	src/fields/SoSFVec2b.cpp
+M	src/fields/SoSFVec2d.cpp
+M	src/fields/SoSFVec2f.cpp
+M	src/fields/SoSFVec2i32.cpp
+M	src/fields/SoSFVec2s.cpp
+M	src/fields/SoSFVec3b.cpp
+M	src/fields/SoSFVec3d.cpp
+M	src/fields/SoSFVec3f.cpp
+M	src/fields/SoSFVec3i32.cpp
+M	src/fields/SoSFVec3s.cpp
+M	src/fields/SoSFVec4b.cpp
+M	src/fields/SoSFVec4d.cpp
+M	src/fields/SoSFVec4f.cpp
+M	src/fields/SoSFVec4i32.cpp
+M	src/fields/SoSFVec4s.cpp
+M	src/fields/SoSFVec4ub.cpp
+M	src/fields/SoSFVec4ui32.cpp
+M	src/fields/SoSFVec4us.cpp
+M	src/fields/SoSubFieldP.h
+M	src/fields/shared.cpp
+M	src/fonts/fontlib_wrapper.cpp
+M	src/fonts/freetype.cpp
+M	src/fonts/glyph3d.cpp
+M	src/fonts/win32.cpp
+M	src/foreignfiles/SoForeignFileKit.cpp
+M	src/foreignfiles/SoSTLFileKit.cpp
+M	src/geo/SoGeoLocation.cpp
+M	src/geo/SoGeoOrigin.cpp
+M	src/geo/SoGeoSeparator.cpp
+M	src/glue/GLUWrapper.cpp
+M	src/glue/dl.cpp
+M	src/glue/gl.cpp
+M	src/glue/gl_glx.cpp
+M	src/glue/gl_wgl.cpp
+M	src/glue/openal_wrapper.cpp
+M	src/glue/simage_wrapper.cpp
+M	src/glue/simage_wrapper.h
+M	src/glue/spidermonkey.cpp
+M	src/hardcopy/HardCopy.cpp
+M	src/hardcopy/PSVectorOutput.cpp
+M	src/hardcopy/VectorizeAction.cpp
+M	src/hardcopy/VectorizePSAction.cpp
+M	src/io/SoInput.cpp
+M	src/io/SoInput_FileInfo.h
+M	src/io/SoOutput.cpp
+M	src/lists/SbIntList.cpp
+M	src/lists/SbList.cpp
+M	src/lists/SbPList.cpp
+M	src/lists/SbStringList.cpp
+M	src/lists/SbVec3fList.cpp
+M	src/lists/SoAuditorList.cpp
+M	src/lists/SoCallbackList.cpp
+M	src/lists/SoEnabledElementsList.cpp
+M	src/lists/SoPickedPointList.cpp
+M	src/lists/SoTypeList.cpp
+M	src/manips/SoCenterballManip.cpp
+M	src/manips/SoDirectionalLightManip.cpp
+M	src/manips/SoHandleBoxManip.cpp
+M	src/manips/SoJackManip.cpp
+M	src/manips/SoPointLightManip.cpp
+M	src/manips/SoSpotLightManip.cpp
+M	src/manips/SoTabBoxManip.cpp
+M	src/manips/SoTrackballManip.cpp
+M	src/manips/SoTransformBoxManip.cpp
+M	src/manips/SoTransformManip.cpp
+M	src/manips/SoTransformerManip.cpp
+M	src/manips/commoncode.cpp
+M	src/misc/AudioTools.cpp
+M	src/misc/CoinResources.cpp
+M	src/misc/CoinStaticObjectInDLL.cpp
+M	src/misc/SoAudioDevice.cpp
+M	src/misc/SoBase.cpp
+M	src/misc/SoChildList.cpp
+M	src/misc/SoCompactPathList.cpp
+M	src/misc/SoDB.cpp
+M	src/misc/SoDBP.cpp
+M	src/misc/SoDebug.cpp
+M	src/misc/SoEventManager.cpp
+M	src/misc/SoGlyph.cpp
+M	src/misc/SoInteraction.cpp
+M	src/misc/SoJavaScriptEngine.cpp
+M	src/misc/SoLightPath.cpp
+M	src/misc/SoLockManager.cpp
+M	src/misc/SoNormalGenerator.cpp
+M	src/misc/SoNotRec.cpp
+M	src/misc/SoPath.cpp
+M	src/misc/SoPick.cpp
+M	src/misc/SoPickedPoint.cpp
+M	src/misc/SoPrimitiveVertex.cpp
+M	src/misc/SoProto.cpp
+M	src/misc/SoProtoInstance.cpp
+M	src/misc/SoSceneManager.cpp
+M	src/misc/SoState.cpp
+M	src/misc/SoTempPath.cpp
+M	src/misc/SoType.cpp
+M	src/misc/cppmangle.icc
+M	src/misc/systemsanity.icc
+M	src/navigation/SoScXMLDollyTarget.cpp
+M	src/navigation/SoScXMLMiscTarget.cpp
+M	src/navigation/SoScXMLNavigationTarget.cpp
+M	src/navigation/SoScXMLPanTarget.cpp
+M	src/navigation/SoScXMLZoomTarget.cpp
+M	src/nodekits/SoBaseKit.cpp
+M	src/nodekits/SoInteractionKit.cpp
+M	src/nodekits/SoNodeKit.cpp
+M	src/nodekits/SoNodeKitListPart.cpp
+M	src/nodekits/SoNodeKitPath.cpp
+M	src/nodekits/SoNodekitCatalog.cpp
+M	src/nodekits/SoSubKitP.h
+M	src/nodes/SoAlphaTest.cpp
+M	src/nodes/SoAnnotation.cpp
+M	src/nodes/SoArray.cpp
+M	src/nodes/SoBaseColor.cpp
+M	src/nodes/SoBlinker.cpp
+M	src/nodes/SoBumpMap.cpp
+M	src/nodes/SoBumpMapTransform.cpp
+M	src/nodes/SoCacheHint.cpp
+M	src/nodes/SoCamera.cpp
+M	src/nodes/SoClipPlane.cpp
+M	src/nodes/SoColorIndex.cpp
+M	src/nodes/SoComplexity.cpp
+M	src/nodes/SoCoordinate3.cpp
+M	src/nodes/SoCoordinate4.cpp
+M	src/nodes/SoDirectionalLight.cpp
+M	src/nodes/SoDrawStyle.cpp
+M	src/nodes/SoEnvironment.cpp
+M	src/nodes/SoEventCallback.cpp
+M	src/nodes/SoExtSelection.cpp
+M	src/nodes/SoFile.cpp
+M	src/nodes/SoFont.cpp
+M	src/nodes/SoFontStyle.cpp
+M	src/nodes/SoGroup.cpp
+M	src/nodes/SoInfo.cpp
+M	src/nodes/SoLOD.cpp
+M	src/nodes/SoLabel.cpp
+M	src/nodes/SoLevelOfDetail.cpp
+M	src/nodes/SoLightModel.cpp
+M	src/nodes/SoListener.cpp
+M	src/nodes/SoLocateHighlight.cpp
+M	src/nodes/SoMaterial.cpp
+M	src/nodes/SoMaterialBinding.cpp
+M	src/nodes/SoMultipleCopy.cpp
+M	src/nodes/SoNode.cpp
+M	src/nodes/SoNormal.cpp
+M	src/nodes/SoNormalBinding.cpp
+M	src/nodes/SoNurbsProfile.cpp
+M	src/nodes/SoOrthographicCamera.cpp
+M	src/nodes/SoPackedColor.cpp
+M	src/nodes/SoPickStyle.cpp
+M	src/nodes/SoPointLight.cpp
+M	src/nodes/SoPolygonOffset.cpp
+M	src/nodes/SoProfile.cpp
+M	src/nodes/SoProfileCoordinate3.cpp
+M	src/nodes/SoReversePerspectiveCamera.cpp
+M	src/nodes/SoRotation.cpp
+M	src/nodes/SoScale.cpp
+M	src/nodes/SoSceneTexture2.cpp
+M	src/nodes/SoSelection.cpp
+M	src/nodes/SoSeparator.cpp
+M	src/nodes/SoShapeHints.cpp
+M	src/nodes/SoShuttle.cpp
+M	src/nodes/SoSpotLight.cpp
+M	src/nodes/SoSubNodeP.h
+M	src/nodes/SoSurroundScale.cpp
+M	src/nodes/SoSwitch.cpp
+M	src/nodes/SoTexture2.cpp
+M	src/nodes/SoTexture2Transform.cpp
+M	src/nodes/SoTexture3.cpp
+M	src/nodes/SoTexture3Transform.cpp
+M	src/nodes/SoTextureCombine.cpp
+M	src/nodes/SoTextureCoordinate2.cpp
+M	src/nodes/SoTextureCoordinate3.cpp
+M	src/nodes/SoTextureCoordinateBinding.cpp
+M	src/nodes/SoTextureCoordinateCube.cpp
+M	src/nodes/SoTextureCoordinateCylinder.cpp
+M	src/nodes/SoTextureCoordinateDefault.cpp
+M	src/nodes/SoTextureCoordinateEnvironment.cpp
+M	src/nodes/SoTextureCoordinateNormalMap.cpp
+M	src/nodes/SoTextureCoordinateSphere.cpp
+M	src/nodes/SoTextureCubeMap.cpp
+M	src/nodes/SoTextureScalePolicy.cpp
+M	src/nodes/SoTextureUnit.cpp
+M	src/nodes/SoTransform.cpp
+M	src/nodes/SoTransformSeparator.cpp
+M	src/nodes/SoTransparencyType.cpp
+M	src/nodes/SoVertexAttribute.cpp
+M	src/nodes/SoVertexAttributeBinding.cpp
+M	src/nodes/SoVertexProperty.cpp
+M	src/nodes/SoWWWAnchor.cpp
+M	src/nodes/SoWWWInline.cpp
+M	src/profiler/SbProfilingData.cpp
+M	src/profiler/SoNodeProfiling.h
+M	src/profiler/SoNodeVisualize.cpp
+M	src/profiler/SoProfiler.cpp
+M	src/profiler/SoProfilerOverlayKit.cpp
+M	src/profiler/SoProfilerStats.cpp
+M	src/profiler/SoProfilerVisualizeKit.cpp
+M	src/profiler/test-data/structure-types.iv
+M	src/profiler/todo.txt
+M	src/profiler/tools/inventify_texturenames.sh
+M	src/projectors/SbCylinderProjector.cpp
+M	src/projectors/SbCylinderSheetProjector.cpp
+M	src/projectors/SbLineProjector.cpp
+M	src/projectors/SbPlaneProjector.cpp
+M	src/projectors/SbProjector.cpp
+M	src/projectors/SbSphereProjector.cpp
+M	src/projectors/SbSphereSectionProjector.cpp
+M	src/projectors/SbSphereSheetProjector.cpp
+M	src/rendering/CoinOffscreenGLCanvas.cpp
+M	src/rendering/SoGL.cpp
+M	src/rendering/SoGLBigImage.cpp
+M	src/rendering/SoGLDriverDatabase.cpp
+M	src/rendering/SoGLImage.cpp
+M	src/rendering/SoGLNurbs.cpp
+M	src/rendering/SoOffscreenRenderer.cpp
+M	src/rendering/SoRenderManager.cpp
+M	src/rendering/SoVBO.cpp
+M	src/scxml/ScXML.cpp
+M	src/scxml/ScXMLAssignElt.cpp
+M	src/scxml/ScXMLDataElt.cpp
+M	src/scxml/ScXMLElt.cpp
+M	src/scxml/ScXMLEvaluator.cpp
+M	src/scxml/ScXMLEvent.cpp
+M	src/scxml/ScXMLEventTarget.cpp
+M	src/scxml/ScXMLIfElt.cpp
+M	src/scxml/ScXMLInitialElt.cpp
+M	src/scxml/ScXMLInvokeElt.cpp
+M	src/scxml/ScXMLObject.cpp
+M	src/scxml/ScXMLScxmlElt.cpp
+M	src/scxml/ScXMLSendElt.cpp
+M	src/scxml/ScXMLStateElt.cpp
+M	src/scxml/ScXMLStateMachine.cpp
+M	src/sensors/SoAlarmSensor.cpp
+M	src/sensors/SoDataSensor.cpp
+M	src/sensors/SoDelayQueueSensor.cpp
+M	src/sensors/SoFieldSensor.cpp
+M	src/sensors/SoIdleSensor.cpp
+M	src/sensors/SoNodeSensor.cpp
+M	src/sensors/SoOneShotSensor.cpp
+M	src/sensors/SoPathSensor.cpp
+M	src/sensors/SoSensor.cpp
+M	src/sensors/SoSensorManager.cpp
+M	src/sensors/SoTimerQueueSensor.cpp
+M	src/sensors/SoTimerSensor.cpp
+M	src/setup.h.cmake.in
+M	src/setup.h.in
+M	src/shaders/SoGLSLShaderProgram.cpp
+M	src/shaders/SoShader.cpp
+M	src/shaders/SoShaderObject.cpp
+M	src/shaders/SoShaderProgram.cpp
+M	src/shadows/SoShadowCulling.cpp
+M	src/shadows/SoShadowDirectionalLight.cpp
+M	src/shadows/SoShadowGroup.cpp
+M	src/shadows/SoShadowSpotLight.cpp
+M	src/shadows/SoShadowStyle.cpp
+M	src/shapenodes/SoAsciiText.cpp
+M	src/shapenodes/SoCone.cpp
+M	src/shapenodes/SoCube.cpp
+M	src/shapenodes/SoCylinder.cpp
+M	src/shapenodes/SoFaceSet.cpp
+M	src/shapenodes/SoImage.cpp
+M	src/shapenodes/SoIndexedFaceSet.cpp
+M	src/shapenodes/SoIndexedMarkerSet.cpp
+M	src/shapenodes/SoIndexedNurbsSurface.cpp
+M	src/shapenodes/SoIndexedPointSet.cpp
+M	src/shapenodes/SoIndexedShape.cpp
+M	src/shapenodes/SoLineSet.cpp
+M	src/shapenodes/SoMarkerSet.cpp
+M	src/shapenodes/SoNurbsCurve.cpp
+M	src/shapenodes/SoNurbsSurface.cpp
+M	src/shapenodes/SoPointSet.cpp
+M	src/shapenodes/SoQuadMesh.cpp
+M	src/shapenodes/SoShape.cpp
+M	src/shapenodes/SoSphere.cpp
+M	src/shapenodes/SoText2.cpp
+M	src/shapenodes/SoText3.cpp
+M	src/shapenodes/SoTriangleStripSet.cpp
+M	src/shapenodes/SoVertexShape.cpp
+M	src/shapenodes/soshape_bumprender.cpp
+M	src/soscxml/ScXMLCoinEvaluator.cpp
+M	src/soscxml/SoScXMLStateMachine.cpp
+M	src/threads/barrier.cpp
+M	src/threads/condvar.cpp
+M	src/threads/mutex.cpp
+M	src/threads/sched.cpp
+M	src/threads/thread.cpp
+M	src/threads/thread_win32.icc
+M	src/threads/wpool.cpp
+M	src/tidbits.cpp
+M	src/tidbitsp.h
+M	src/upgraders/SoPackedColorV20.cpp
+M	src/vrml97/Anchor.cpp
+M	src/vrml97/Appearance.cpp
+M	src/vrml97/AudioClip.cpp
+M	src/vrml97/Background.cpp
+M	src/vrml97/Billboard.cpp
+M	src/vrml97/CylinderSensor.cpp
+M	src/vrml97/Extrusion.cpp
+M	src/vrml97/Fog.cpp
+M	src/vrml97/ImageTexture.cpp
+M	src/vrml97/IndexedLineSet.cpp
+M	src/vrml97/Inline.cpp
+M	src/vrml97/Interpolator.cpp
+M	src/vrml97/JS_VRMLClasses.cpp
+M	src/vrml97/Parent.cpp
+M	src/vrml97/ProximitySensor.cpp
+M	src/vrml97/Script.cpp
+M	src/vrml97/Sound.cpp
+M	src/vrml97/TimeSensor.cpp
+M	src/vrml97/TouchSensor.cpp
+M	src/vrml97/Viewpoint.cpp
+M	src/vrml97/VisibilitySensor.cpp
+M	src/xml/attribute.cpp
+M	src/xml/document.cpp
+M	src/xml/element.cpp
+M	src/xml/expat/expat.h
+M	src/xml/expat/expat_external.h
+M	src/xml/expat/loadlibrary.c
+M	src/xml/expat/xmltok.c
+
+2020-01-19 15:53:41 +0100  Mario Koerner  <mario.koerner@gmx.de> (766852600)
+
+	Fixed bug (crash) when call to cc_flww32_get_bitmap() fails
+
+M	src/fonts/builtin2dfonts.icc
+M	src/fonts/default2dfont.cpp
+M	src/fonts/defaultfonts.h
+M	src/fonts/fontlib_wrapper.cpp
+
+2020-01-14 22:03:51 +0100  Giampiero Gabbiani  <giampiero@gabbiani.org> (be8e3d57a)
+
+	cpack.d is now optional
+
+M	CMakeLists.txt
+
+2020-01-13 12:16:15 +0100  Bastiaan Veelo  <veelo@users.noreply.github.com> (44fba517e)
+
+	Delete .hgsubstate
+
+D	.hgsubstate
+
+2020-01-13 12:15:26 +0100  Bastiaan Veelo  <veelo@users.noreply.github.com> (6e8c6670d)
+
+	Remove .hgsub
+
+D	.hgsub
+
+2020-01-12 17:12:07 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (b6de87bb3)
+
+	Replaced references to BitBucket with Github.
+
+M	INSTALL
+M	README
+M	README.MACOSX
+M	docs/doxygen/header.html
+M	src/Coin.rc.cmake.in
+M	src/Coin.rc.in
+M	src/doc/Coin_main.dox
+M	src/glue/gl.cpp
+M	src/nodes/SoExtSelection.cpp
+M	src/nodes/SoTexture2.cpp
+M	src/nodes/SoWWWAnchor.cpp
+M	src/rendering/SoOffscreenRenderer.cpp
+M	src/shadows/SoShadowGroup.cpp
+M	src/shapenodes/SoIndexedMarkerSet.cpp
+M	src/shapenodes/SoMarkerSet.cpp
+M	src/vrml97/AudioClip.cpp
+
+2020-01-10 14:47:38 +0100  Giampiero Gabbiani  <giampiero@gabbiani.org> (962e61360)
+
+	updated to cmake 3.14
+
+M	CMakeLists.txt
+
+2020-01-10 12:10:22 +0100  Bastiaan Veelo  <veelo@users.noreply.github.com> (105d6368f)
+
+	Spelling errors.
+
+M	src/scxml/ScXMLEventTarget.cpp
+
+2020-01-10 12:08:43 +0100  Bastiaan Veelo  <veelo@users.noreply.github.com> (97eabcbb4)
+
+	Spelling error.
+
+M	src/misc/SoShaderGenerator.cpp
+
+2020-01-10 12:04:47 +0100  Bastiaan Veelo  <veelo@users.noreply.github.com> (197a73615)
+
+	Spelling errors.
+
+M	data/shaders/lights/SpotLight.glsl
+
+2020-01-10 12:03:21 +0100  Bastiaan Veelo  <veelo@users.noreply.github.com> (4e2f63d8e)
+
+	Spelling error.
+
+M	src/hardcopy/VectorizePSAction.cpp
+
+2020-01-10 12:01:13 +0100  Bastiaan Veelo  <veelo@users.noreply.github.com> (8c3c6343d)
+
+	Spelling error.
+
+M	src/misc/SoJavaScriptEngine.cpp
+
+2019-12-25 17:28:42 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (273636a3c)
+
+	Added submodules to git repo.
+
+A	.gitmodules
+A	build/general
+A	cpack.d

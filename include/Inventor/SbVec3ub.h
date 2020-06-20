@@ -64,15 +64,15 @@ public:
   uint8_t & operator [] (int i) { return vec[i]; }
   const uint8_t & operator [] (int i) const { return vec[i]; }
 
-  int32_t dot(SbVec3ub v) const { return vec[0] * v[0] + vec[1] * v[1] + vec[2] * v[2]; }
+  int32_t dot(const SbVec3ub & v) const { return vec[0] * v[0] + vec[1] * v[1] + vec[2] * v[2]; }
   void negate(void);
 
   SbVec3ub & operator *= (int d) { vec[0] = uint8_t(vec[0] * d); vec[1] = uint8_t(vec[1] * d); vec[2] = uint8_t(vec[2] * d); return *this; }
   SbVec3ub & operator *= (double d);
   SbVec3ub & operator /= (int d) { SbDividerChk("SbVec3ub::operator/=(int)", d); vec[0] = uint8_t(vec[0] / d); vec[1] = uint8_t(vec[1] / d); vec[2] = uint8_t(vec[2] / d); return *this; }
   SbVec3ub & operator /= (double d) { SbDividerChk("SbVec3ub::operator/=(double)", d); return operator *= (1.0 / d); }
-  SbVec3ub & operator += (SbVec3ub v) { vec[0] += v[0]; vec[1] += v[1]; vec[2] += v[2]; return *this; }
-  SbVec3ub & operator -= (SbVec3ub v) { vec[0] -= v[0]; vec[1] -= v[1]; vec[2] -= v[2]; return *this; }
+  SbVec3ub & operator += (const SbVec3ub & v) { vec[0] += v[0]; vec[1] += v[1]; vec[2] += v[2]; return *this; }
+  SbVec3ub & operator -= (const SbVec3ub & v) { vec[0] -= v[0]; vec[1] -= v[1]; vec[2] -= v[2]; return *this; }
   SbVec3ub operator - (void) const { SbVec3ub v(*this); v.negate(); return v; }
 
 protected:
@@ -80,45 +80,45 @@ protected:
 
 }; // SbVec3ub
 
-COIN_DLL_API inline SbVec3ub operator * (SbVec3ub v, int d) {
+COIN_DLL_API inline SbVec3ub operator * (const SbVec3ub & v, int d) {
   SbVec3ub val(v); val *= d; return val;
 }
 
-COIN_DLL_API inline SbVec3ub operator * (SbVec3ub v, double d) {
+COIN_DLL_API inline SbVec3ub operator * (const SbVec3ub & v, double d) {
   SbVec3ub val(v); val *= d; return val;
 }
 
-COIN_DLL_API inline SbVec3ub operator * (int d, SbVec3ub v) {
+COIN_DLL_API inline SbVec3ub operator * (int d, const SbVec3ub & v) {
   SbVec3ub val(v); val *= d; return val;
 }
 
-COIN_DLL_API inline SbVec3ub operator * (double d, SbVec3ub v) {
+COIN_DLL_API inline SbVec3ub operator * (double d, const SbVec3ub & v) {
   SbVec3ub val(v); val *= d; return val;
 }
 
-COIN_DLL_API inline SbVec3ub operator / (SbVec3ub v, int d) {
+COIN_DLL_API inline SbVec3ub operator / (const SbVec3ub & v, int d) {
   SbDividerChk("operator/(SbVec3ub,int)", d);
   SbVec3ub val(v); val /= d; return val;
 }
 
-COIN_DLL_API inline SbVec3ub operator / (SbVec3ub v, double d) {
+COIN_DLL_API inline SbVec3ub operator / (const SbVec3ub & v, double d) {
   SbDividerChk("operator/(SbVec3ub,double)", d);
   SbVec3ub val(v); val /= d; return val;
 }
 
-COIN_DLL_API inline SbVec3ub operator + (SbVec3ub v1, SbVec3ub v2) {
+COIN_DLL_API inline SbVec3ub operator + (const SbVec3ub & v1, const SbVec3ub & v2) {
   SbVec3ub v(v1); v += v2; return v;
 }
 
-COIN_DLL_API inline SbVec3ub operator - (SbVec3ub v1, SbVec3ub v2) {
+COIN_DLL_API inline SbVec3ub operator - (const SbVec3ub & v1, const SbVec3ub & v2) {
   SbVec3ub v(v1); v -= v2; return v;
 }
 
-COIN_DLL_API inline int operator == (SbVec3ub v1, SbVec3ub v2) {
+COIN_DLL_API inline int operator == (const SbVec3ub & v1, const SbVec3ub & v2) {
   return ((v1[0] == v2[0]) && (v1[1] == v2[1]) && (v1[2] == v2[2]));
 }
 
-COIN_DLL_API inline int operator != (SbVec3ub v1, SbVec3ub v2) {
+COIN_DLL_API inline int operator != (const SbVec3ub & v1, const SbVec3ub & v2) {
   return !(v1 == v2);
 }
 

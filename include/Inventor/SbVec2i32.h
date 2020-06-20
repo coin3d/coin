@@ -69,8 +69,8 @@ public:
   const int32_t * getValue(void) const { return vec; }
   void getValue(int32_t & x, int32_t & y) const { x = vec[0]; y = vec[1]; }
 
-  int32_t & operator [] (const int i) { return vec[i]; }
-  const int32_t & operator [] (const int i) const { return vec[i]; }
+  int32_t & operator [] (int i) { return vec[i]; }
+  const int32_t & operator [] (int i) const { return vec[i]; }
 
   int32_t dot(const SbVec2i32 & v) const { return vec[0] * v[0] + vec[1] * v[1]; }
   void negate(void) { vec[0] = -vec[0]; vec[1] = -vec[1]; }

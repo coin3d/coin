@@ -471,7 +471,7 @@ typedef void __cdecl initClassFunction(void);
 typedef void initClassFunction(void);
 #endif
 
-POTENTIAL_ROTTING_DOCUMENTATION
+//POTENTIAL_ROTTING_DOCUMENTATION
 /*!
   This static function returns the SoType object associated with name \a name.
 
