@@ -34,6 +34,7 @@
 #include "SoGLSLShaderObject.h"
 
 #include <Inventor/errors/SoDebugError.h>
+#include <cstdio>
 
 // *************************************************************************
 
@@ -53,7 +54,7 @@ SoGLSLShaderParameter::~SoGLSLShaderParameter()
 
 SoShader::Type
 SoGLSLShaderParameter::shaderType(void) const
-{ 
+{
   return SoShader::GLSL_SHADER;
 }
 
@@ -135,7 +136,7 @@ SoGLSLShaderParameter::setMatrix(const SoGLShaderObject *shader,
     shader->GLContext()->glUniformMatrix4fvARB(this->location,1,FALSE,value);
 }
 
-  
+
 void
 SoGLSLShaderParameter::setMatrixArray(const SoGLShaderObject *shader,
                                       const int num, const float *value,
@@ -222,7 +223,31 @@ SoGLSLShaderParameter::set4iv(const SoGLShaderObject * shader,
     shader->GLContext()->glUniform4ivARB(this->location, num, (const GLint*)v);
 }
 
-#include <cstdio>
+SbBool
+SoGLSLShaderParameter::isEqual(GLenum type1, GLenum type2)
+{
+  if (type1 == type2)
+    return TRUE;
+
+  if (type2 == GL_INT) {
+    switch (type1) {
+    case GL_INT:
+    case GL_SAMPLER_1D_ARB:
+    case GL_SAMPLER_2D_ARB:
+    case GL_SAMPLER_3D_ARB:
+    case GL_SAMPLER_CUBE_ARB:
+    case GL_SAMPLER_1D_SHADOW_ARB:
+    case GL_SAMPLER_2D_SHADOW_ARB:
+    case GL_SAMPLER_2D_RECT_ARB:
+    case GL_SAMPLER_2D_RECT_SHADOW_ARB:
+      return TRUE;
+    default:
+      return FALSE;
+    }
+  }
+  return FALSE;
+}
+
 SbBool
 SoGLSLShaderParameter::isValid(const SoGLShaderObject * shader,
                                const char * name, GLenum type,
@@ -230,16 +255,16 @@ SoGLSLShaderParameter::isValid(const SoGLShaderObject * shader,
 {
   assert(shader);
   assert(shader->shaderType() == SoShader::GLSL_SHADER);
-  
+
   COIN_GLhandle pHandle = ((SoGLSLShaderObject*)shader)->programHandle;
   int32_t pId = ((SoGLSLShaderObject*)shader)->programid;
-  
+
   // return TRUE if uniform isn't active. We warned the user about
   // this when we found it to be inactive.
   if ((pId == this->programid) && (this->location > -1) && !this->isActive) return TRUE;
-  
-  if ((pId == this->programid) && (this->location > -1) && 
-      (this->cacheName == name) && (this->cacheType == type)) {
+
+  if ((pId == this->programid) && (this->location > -1) &&
+      (this->cacheName == name) && this->isEqual(this->cacheType, type)) {
     if (num) { // assume: ARRAY
       if (this->cacheSize < *num) {
         // FIXME: better error handling - 20050128 martin
@@ -253,14 +278,14 @@ SoGLSLShaderParameter::isValid(const SoGLShaderObject * shader,
     }
     return TRUE;
   }
-  
+
   const cc_glglue * g = shader->GLContext();
-  
-  this->cacheSize = 0;  
+
+  this->cacheSize = 0;
   this->location = g->glGetUniformLocationARB(pHandle,
                                               (const COIN_GLchar *)name);
   this->programid = pId;
-  
+
   if (this->location == -1)  {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoGLSLShaderParameter::isValid",
@@ -277,14 +302,14 @@ SoGLSLShaderParameter::isValid(const SoGLShaderObject * shader,
   GLenum tmpType;
   GLsizei length;
   COIN_GLchar myName[256];
-  
+
   this->cacheName = name;
   this->isActive = FALSE; // set uniform to inactive while searching
-  
+
   // this will only happen once after the variable has been added so
   // it's not a performance issue that we have to search for it here.
   for (i = 0; i < activeUniforms; i++) {
-    g->glGetActiveUniformARB(pHandle, i, 128, &length, &tmpSize, 
+    g->glGetActiveUniformARB(pHandle, i, 128, &length, &tmpSize,
                              &tmpType, myName);
     if (this->cacheName == myName) {
       this->cacheSize = tmpSize;
@@ -304,24 +329,15 @@ SoGLSLShaderParameter::isValid(const SoGLShaderObject * shader,
     return TRUE;
   }
 
-  if (type == GL_INT) {
-    switch (this->cacheType) {
-    case GL_INT:
-    case GL_SAMPLER_1D_ARB:
-    case GL_SAMPLER_2D_ARB:
-    case GL_SAMPLER_3D_ARB:
-    case GL_SAMPLER_CUBE_ARB:
-    case GL_SAMPLER_1D_SHADOW_ARB:
-    case GL_SAMPLER_2D_SHADOW_ARB:
-    case GL_SAMPLER_2D_RECT_ARB:
-    case GL_SAMPLER_2D_RECT_SHADOW_ARB: 
-      break;
-    default: 
-      return FALSE;
-    }
-  }
-  else if (this->cacheType != type)
+  if (!this->isEqual(this->cacheType, type)) {
+    SoDebugError::postWarning("SoGLSLShaderParameter::isValid",
+                              "parameter %s [%d] is "
+                              "of wrong type [%d]!",
+                              this->cacheName.getString(),
+                              this->cacheType, type);
+    this->cacheType = GL_FLOAT;
     return FALSE;
+  }
 
   if (num) { // assume: ARRAY
     if (this->cacheSize < *num) {
