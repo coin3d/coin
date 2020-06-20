@@ -325,8 +325,8 @@ SbColor4f::getHSVValue(float hsv[3]) const
   0 is red, 1 is green, 2 is blue and 3 is the transparency value.
  */
 //$ EXPORT INLINE
-float
-SbColor4f::operator[](const int idx) const
+const float &
+SbColor4f::operator[](int idx) const
 {
   return this->vec[idx];
 }
@@ -337,7 +337,7 @@ SbColor4f::operator[](const int idx) const
  */
 //$ EXPORT INLINE
 float &
-SbColor4f::operator[](const int idx)
+SbColor4f::operator[](int idx)
 {
   return this->vec[idx];
 }

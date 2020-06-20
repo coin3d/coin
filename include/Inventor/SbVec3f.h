@@ -36,7 +36,6 @@
 #include <cstdio>
 
 #include <Inventor/SbBasic.h>
-#include <Inventor/SbByteBuffer.h>
 #include <Inventor/SbString.h>
 #ifndef NDEBUG
 #include <Inventor/errors/SoDebugError.h>
