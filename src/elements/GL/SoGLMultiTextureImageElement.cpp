@@ -365,6 +365,13 @@ SoGLMultiTextureImageElement::updateGL(const int unit)
       dl->call(state);
     }
     cc_glglue_glActiveTexture(glue, (GLenum) GL_TEXTURE0);
+
+    GLenum glerror = sogl_glerror_debugging() ? glGetError() : GL_NO_ERROR;
+    while (glerror) {
+        SoDebugError::postWarning("SoGLMultiTextureImageElement::updateGL",
+            "glError() = %d\n", glerror);
+        glerror = glGetError();
+    }
   }
 }
 

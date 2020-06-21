@@ -88,6 +88,7 @@ private:
   SbBool isActive;
   int32_t programid;
 
+  SbBool isEqual(GLenum type1, GLenum type2);
   SbBool isValid(const SoGLShaderObject * shader, const char * name,
                  GLenum type, int * num = NULL);
 };
