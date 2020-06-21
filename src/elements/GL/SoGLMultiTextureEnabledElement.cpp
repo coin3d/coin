@@ -46,6 +46,7 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/system/gl.h>
 #include <Inventor/C/glue/gl.h>
 #include <cassert>
