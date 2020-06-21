@@ -340,6 +340,7 @@
 #include "glue/glp.h"
 #include "misc/SoShaderGenerator.h"
 #include "caches/SoShaderProgramCache.h"
+#include "rendering/SoGL.h"
 
 // *************************************************************************
 
@@ -2101,6 +2102,13 @@ SoShadowGroupP::shader_enable_cb(void * closure,
       if (enable) glEnable(GL_TEXTURE_2D);
       else glDisable(GL_TEXTURE_2D);
       cc_glglue_glActiveTexture(glue, GL_TEXTURE0);
+
+      GLenum glerror = sogl_glerror_debugging() ? glGetError() : GL_NO_ERROR;
+      while (glerror) {
+          SoDebugError::postWarning("SoShadowGroupP::shader_enable_cb",
+              "glError() = %d\n", glerror);
+          glerror = glGetError();
+      }
     }
   }
 }
