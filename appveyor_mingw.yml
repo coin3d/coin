@@ -19,12 +19,12 @@ environment:
   GH_AUTH_TOKEN:
     secure: 850frgRGZcc4Cljd2P7Ej68no4/kkl4EMB+DjnX725wcKBRJuFk/kGRdJGyKXd2u
   matrix:
-    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
-      CMAKE_GENERATOR: 'Unix Makefiles'
-      CMAKE_PLATFORM: x86
-      CMAKE_ARCH_FLAGS: -m32
-      COMPILER_ID: gcc
-
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+#      CMAKE_GENERATOR: 'Unix Makefiles'
+#      CMAKE_PLATFORM: x86
+#      CMAKE_ARCH_FLAGS: -m32
+#      COMPILER_ID: gcc
+#
     - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
       CMAKE_GENERATOR: 'Unix Makefiles'
       CMAKE_PLATFORM: x64
