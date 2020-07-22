@@ -101,6 +101,8 @@ SoGLSLShaderObject::load(const char* srcStr)
     break;
   }
 
+  SoGLSLShaderObject::didOpenGLErrorOccur("SoGLSLShaderObject::load() : previous errors");
+
   this->shaderHandle = this->glctx->glCreateShaderObjectARB(sType);
   this->programid = 0;
 
