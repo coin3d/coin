@@ -236,10 +236,9 @@ static Display *
 glxglue_get_display(const cc_glglue * currentcontext = NULL)
 {
   if (currentcontext && currentcontext->glx.glXGetCurrentDisplay) {
-    if (glxglue_screen == -1) {
-      glxglue_screen = XScreenNumberOfScreen(
-	XDefaultScreenOfDisplay(
-	  (Display*)currentcontext->glx.glXGetCurrentDisplay()));
+    Display *disp = (Display*)currentcontext->glx.glXGetCurrentDisplay();
+    if (glxglue_screen == -1 && disp != NULL) {
+      glxglue_screen = XScreenNumberOfScreen(XDefaultScreenOfDisplay(disp));
     }
 
     if (coin_glglue_debug()) {
@@ -248,7 +247,7 @@ glxglue_get_display(const cc_glglue * currentcontext = NULL)
 			     glxglue_screen);
     }
 
-    return (Display*)currentcontext->glx.glXGetCurrentDisplay();
+    return disp;
   }
 
   if ((glxglue_display == NULL) && !glxglue_opendisplay_failed) {
