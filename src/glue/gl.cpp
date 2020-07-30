@@ -5240,12 +5240,15 @@ coin_glglue_vbo_in_displaylist_supported(const cc_glglue * glw)
 SbBool
 coin_glglue_non_power_of_two_textures(const cc_glglue * glue)
 {
+  // ATi and Intel both have had problems with this feature, especially
+  // on old drivers.  Newer drivers are known to work.
+  static int disable = -1;
+  if (disable == -1) {
+    disable = glglue_resolve_envvar("COIN_GLGLUE_DISABLE_NON_POWER_OF_TWO_TEXTURES");
+  }
+  if (disable) { return FALSE; }
+
   if (!glglue_allow_newer_opengl(glue)) return FALSE;
-  
-  // ATi and Intel both seem to have problems with this feature,
-  // especially on old drivers. Disable for everything except nVidia
-  // until we can build a better driver database
-  if (!glue->vendor_is_nvidia) return FALSE;
   return glue->non_power_of_two_textures;
 }
 
