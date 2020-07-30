@@ -1586,6 +1586,7 @@ SoShadowGroupP::setFragmentShader(SoState * state)
 
   SoShaderGenerator & gen = this->fragmentgenerator;
   gen.reset(FALSE);
+  gen.setVersion("#version 120");
 
   SbBool perpixelspot = FALSE;
   SbBool perpixelother = FALSE;
@@ -1838,13 +1839,11 @@ SoShadowGroupP::setFragmentShader(SoState * state)
     break;
   case SoEnvironmentElement::FOG:
     gen.addMainStatement("float fog = exp(-gl_Fog.density * gl_FogFragCoord);\n");
-    gen.setVersion("#version 110");
     break;
   case SoEnvironmentElement::SMOKE:
     gen.addMainStatement("float fogfrag =  gl_FogFragCoord;");
     gen.addMainStatement("float fogdens =  gl_Fog.density;");
     gen.addMainStatement("float fog = exp(-fogdens * fogdens * fogfrag * fogfrag);\n");
-    gen.setVersion("#version 110");
     break;
   }
   if (fogType != SoEnvironmentElement::NONE) {
