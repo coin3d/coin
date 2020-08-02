@@ -91,12 +91,12 @@ environment:
 #      CMAKE_PLATFORM: x64
 #      COMPILER_ID: msvc16
 
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       CMAKE_GENERATOR: 'MSYS Makefiles'
       CMAKE_PLATFORM: i686
       COMPILER_ID: mingw32
 
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       CMAKE_GENERATOR: 'MSYS Makefiles'
       CMAKE_PLATFORM: x86_64
       COMPILER_ID: mingw64
