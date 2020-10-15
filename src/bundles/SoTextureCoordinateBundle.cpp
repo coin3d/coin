@@ -128,7 +128,7 @@ SoTextureCoordinateBundle(SoAction * const action,
         
       case SoMultiTextureCoordinateElement::TEXGEN:
         // texcoord won't be needed. This will only happen during SoGLRenderAction,
-        // when GL generates texture coorinates. Therefore, we will not set
+        // when GL generates texture coordinates. Therefore, we will not set
         // the FLAG_NEEDCOORDS here.
         this->flags |= FLAG_FUNCTION;
         if (!forRendering) {

@@ -45,11 +45,11 @@ class SoInput;
 class SoStream {
 public:
 
-  // Warning: Do not use chars together with << and >> operators, because some probably
-  // old compilers (like gcc 2.96) treats probably internaly chars as int32_t instead of
-  // (u)int8_t (sizeof still returns 1). This causes char is written to the stream as
-  // four bytes instead of one. Also do not try to append overloaded << and >> char
-  // operators, because it makes it imposible to compile the code on some compilers.
+  // Warning: Do not use chars together with << and >> operators, probably due to how
+  // some old compilers (like gcc 2.96) treat internal chars as int32_t instead of
+  // (u)int8_t (sizeof still returns 1). This causes char to be written to the stream
+  // as four bytes instead of one. Also do not try to append overloaded << and >> char
+  // operators, because it makes it impossible to compile the code on some compilers.
 
   inline SoStream& operator >> (int8_t &value)       { readInt8(value); return *this; }
   inline SoStream& operator << (const int8_t value)  { writeInt8(value); return *this; }

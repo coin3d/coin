@@ -11,7 +11,7 @@
 #-We assume the boost includes are in the form of fully qualified
 # includes, and not relative includes
 #
-#-This script needs to be called multiple times untill no errors are found.
+#-This script needs to be called multiple times until no errors are found.
 
 #Notes:
 #

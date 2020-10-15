@@ -11,9 +11,9 @@
 
 // This application attempts to check if applying an SoWrite action to
 // a scenegraph is thread-safe. A scenegraph is read from the file
-// specified on the comand line. Each thread applies an SoWriteAction
+// specified on the command line. Each thread applies an SoWriteAction
 // on the scene. The idea is that if the input file is big enough,
-// each thread will not have time to finsh its write operation before
+// each thread will not have time to finish its write operation before
 // the next thread starts.
 
 // Each thread will output an iv file. The contents of this file

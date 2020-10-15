@@ -164,7 +164,7 @@
 */
 
 //   FIXME: more class doc! The general concept of draggers should be
-//   explained in more detail here -- just refering to the Inventor
+//   explained in more detail here -- just referring to the Inventor
 //   Mentor is a cop-out. And include at least one general usage example
 //   and some screenshots.  20011219 mortene.
 
