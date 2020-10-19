@@ -238,7 +238,7 @@ SoSensorManagerP::assertAlive(SoSensorManagerP * that)
 #define PRIVATE(obj) ((obj)->pimpl)
 
 // Callback called whenever the timeoutsensor triggers
-// beacuse the system hasn't been idle for a while.
+// because the system hasn't been idle for a while.
 static void
 timeoutsensor_cb(void * userdata, SoSensor *)
 {

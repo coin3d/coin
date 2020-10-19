@@ -248,7 +248,7 @@ cc_xml_path_get_index(const cc_xml_path * path, int idx)
 int
 cc_xml_path_match_p(const cc_xml_path * path, const cc_xml_elt * elt)
 {
-  // consider using a doubly-linked list instead of continous head->tail traversal
+  // consider using a doubly-linked list instead of continuous head->tail traversal
   int length = cc_xml_path_get_length(path);
   struct path_node * head = path->head;
   int i, j;

@@ -715,7 +715,7 @@ SoShaderObjectP::updateAllParameters(const uint32_t cachecontext)
   shaderobject->setParametersDirty(FALSE);
 }
 
-// Update state matrix paramaters
+// Update state matrix parameters
 void
 SoShaderObjectP::updateStateMatrixParameters(const uint32_t cachecontext, SoState *state)
 {

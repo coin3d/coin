@@ -145,7 +145,7 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
   cc_string * fonttoload;
   cc_list * glyphlist = NULL;
 
-  /* Beacuse this function is the entry point for glyph3d, the mutex
+  /* because this function is the entry point for glyph3d, the mutex
      is initialized here. */
   if (glyph3d_fonthash_lock == NULL) 
     cc_glyph3d_initialize();

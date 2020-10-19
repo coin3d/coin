@@ -135,7 +135,7 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
   cc_list * glyphlist;
 
 
-  /* Beacuse this function is the entry point for glyph2d, the mutex
+  /* because this function is the entry point for glyph2d, the mutex
      is initialized here. */
   if (glyph2d_fonthash_lock == NULL) 
     cc_glyph2d_initialize();

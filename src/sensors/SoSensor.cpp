@@ -55,7 +55,7 @@
   functionality for combining and converting inputs and outputs), you
   just decide which engine you want, connect inputs and output and
   forget about it. Sensors are a lot more flexible in what you can do
-  when they trigger, as control is transfered internally from Coin to
+  when they trigger, as control is transferred internally from Coin to
   your registered callback functions.
 
   \sa SoSensorManager, SoEngine
