@@ -372,8 +372,13 @@ public:
     GLenum format = GL_RGBA;
     GLenum type = GL_FLOAT;
 
-    while (!coin_glglue_is_texture_size_legal(glue, maxsize, maxsize, 0, internalformat, format, type, TRUE)) {
+    while (!coin_glglue_is_texture_size_legal(glue, maxsize, maxsize, 0, internalformat, format, type, TRUE) && (maxsize != 0)) {
       maxsize >>= 1;
+    }
+    if (maxsize == 0) { // Can happen on CentOS 7 in VirtualBox
+      glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE, &maxsize);
+      glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxtexsize);
+      if (maxtexsize < maxsize) maxsize = maxtexsize;
     }
     const int TEXSIZE = coin_geq_power_of_two((int) (sg->precision.getValue() * SbMin(maxsize, maxtexsize)));
 
