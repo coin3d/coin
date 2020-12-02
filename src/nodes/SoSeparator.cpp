@@ -442,7 +442,7 @@ SoSeparator::commonConstructor(void)
   PRIVATE(this)->bboxcache_usecount = 0;
   PRIVATE(this)->bboxcache_destroycount = 0;
 
-  // This environment variable used for local stability / robustness /
+  // This environment variable is used for local stability / robustness /
   // correctness testing of the render caching. If set >= 1,
   // renderCaching will be set to "ON" with a probability of 0.5 for
   // every SoSeparator instantiated.
@@ -645,7 +645,7 @@ SoSeparator::GLRender(SoGLRenderAction * action)
   Inventor (and thereby also TGS') we have chosen to follow their
   implementation in this respect.
 
-  SoSeparator::GLRenderBelowPath() do not traverse its children using
+  SoSeparator::GLRenderBelowPath() does not traverse its children using
   SoChildList::traverse(), but calls GLRenderBelowPath() directly
   for all its children.
 */

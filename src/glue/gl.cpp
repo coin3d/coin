@@ -121,7 +121,7 @@
     implementation.
 
   - COIN_PREFER_GLPOLYGONOFFSET_EXT: when set to "1" and both
-    glPolygonOffset() and glPolygonOffsetEXT() is available, the
+    glPolygonOffset() and glPolygonOffsetEXT() are available, the
     latter will be used. This can be useful to work around a
     problematic glPolygonOffset() implementation for certain SGI
     platforms.

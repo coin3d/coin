@@ -32,7 +32,7 @@
 
 /*!
   \class SoOverrideElement Inventor/elements/SoOverrideElement.h
-  \brief The SoOverrideElement maintains a list of overridable elements and a list over which elements should be overridden.
+  \brief The SoOverrideElement maintains a list of overrideable elements and a list over which elements should be overridden.
 
   \ingroup elements
 
@@ -45,7 +45,7 @@
   transparency of the full scene graph, or parts of the scene
   graph.
 
-  In the original SGI Inventor, this is nigh impossible, as the API
+  In the original SGI Inventor, this is nearly impossible, as the API
   was designed to only make it possible to override all or none of the
   fields of a node. So calling SoNode::setOverride() on an SoMaterial
   node will cause all material settings of that node to override all

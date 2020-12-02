@@ -1048,7 +1048,7 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedtype)
   // Inventor. What we however /could/ do about it is:
   //
   // First, split out the SoBase::PImpl class definition to a separate
-  // interface, which can be accessed internally from Coin lirbary
+  // interface, which can be accessed internally from Coin library
   // code.
   //
   // Then, in this, write up /sensibly designed/ read()-function(s)

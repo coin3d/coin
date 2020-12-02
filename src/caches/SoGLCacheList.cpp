@@ -493,11 +493,11 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
         else if (PRIVATE(this)->numshapes < 10) {
           if (PRIVATE(this)->numframesok >= 3) shouldcreate = TRUE;
         }
-        else if (PRIVATE(this)->numshapes > 1000) {
-          if (PRIVATE(this)->numframesok >= 4) shouldcreate = TRUE;
-        }
         else if (PRIVATE(this)->numshapes > 100) {
           if (PRIVATE(this)->numframesok >= 3) shouldcreate = TRUE;
+        }
+        else if (PRIVATE(this)->numshapes > 1000) {
+          if (PRIVATE(this)->numframesok >= 4) shouldcreate = TRUE;
         }
         else {
           shouldcreate = TRUE;
@@ -544,7 +544,7 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
                                   PRIVATE(this)->opencache->getPostLazyState());
     PRIVATE(this)->opencache->open(state);
 
-    // force a dependency on the transparecy type
+    // force a dependency on the transparency type
     // FIXME: consider adding a new element for storing the
     // transparency type.  The dependency tracking on the transparency
     // type would then work automatically. pederb, 2005-02-18

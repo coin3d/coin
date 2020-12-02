@@ -140,8 +140,8 @@ SbGLUTessellator::cb_error(GLenum err, void *)
   // edges (a "bow-tie" polygon, for instance), but this may be hard
   // to avoid for the app programmer, so we have made it possible to
   // silence this error messages by an envvar (according to the GLU
-  // docs, the tessellator will be ok, it just ignored those polygons
-  // and generate no output):
+  // docs, the tessellator will be ok, it just ignores those polygons
+  // and generates no output):
   if (err == GLU_TESS_NEED_COMBINE_CALLBACK) {
     static int v = -1;
     if (v == -1) {
