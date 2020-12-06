@@ -1,10 +1,11 @@
 name: Continuous Integration Build
 
 on:
+  workflow_dispatch:  # Allow manual triggers
   pull_request:
     branches: [ master ]
-  push:
-    branches: [ master ]
+  #push:
+  #  branches: [ master ]
 
 jobs:
   ubuntu-build:
