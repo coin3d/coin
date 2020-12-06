@@ -829,15 +829,15 @@ SoMField::allocValues(int newnum)
       if (oldmaxnum != this->maxNum) {
         // FIXME: Umm.. aren't we supposed to use realloc() here?
         // 20000915 mortene.
+        size_t buffersize = this->maxNum * fsize;
         unsigned char * newblock = new unsigned char[this->maxNum * fsize];
-        int copysize = fsize * SbMin(this->num, newnum);
-        (void) memcpy(newblock, this->valuesPtr(), copysize);
+        size_t copysize = fsize * SbMin(this->num, newnum);
+        (void)memcpy(newblock, this->valuesPtr(), copysize);
         // we have to dereference old values in SoMFNode, SoMFPath and
         // SoMFEngine, so we just initialize the part of the array
         // with no defined values to NULL.
-        int rest = this->maxNum*fsize - copysize;
-        if (rest > 0) {
-          (void)memset(newblock + copysize, 0, rest);
+        if (buffersize > copysize) {
+          (void)memset(newblock + copysize, 0, buffersize - copysize);
         }
         if (!this->userDataIsUsed) {
           delete[] static_cast<unsigned char *>(this->valuesPtr());
@@ -847,10 +847,11 @@ SoMField::allocValues(int newnum)
       }
     }
     else {
-      unsigned char * data = new unsigned char[newnum * fsize];
+      size_t buffersize = newnum * fsize;
+      unsigned char * data = new unsigned char[buffersize];
       // we have to dereference old values in SoMFNode, SoMFPath and
       // SoMFEngine, so we just initialize the array to NULL.
-      (void)memset(data, 0, newnum * fsize);
+      (void)memset(data, 0, buffersize);
       this->setValuesPtr(data);
       this->userDataIsUsed = FALSE;
       this->maxNum = newnum;

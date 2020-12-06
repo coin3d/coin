@@ -884,7 +884,7 @@ cc_flw_get_bitmap(int font, unsigned int glyph)
       gs->fromdefaultfont = TRUE;
     }
     else if (bm && bm->buffer) {
-      buf = (unsigned char *)malloc(bm->pitch * bm->rows);
+      buf = (unsigned char *)malloc(size_t(bm->pitch) * size_t(bm->rows));
       /* Copy & reverse buffer to OpenGL "up" direction. */
       for (i = 0; i < bm->rows; i++) {
         (void)memcpy(buf + i*bm->pitch,

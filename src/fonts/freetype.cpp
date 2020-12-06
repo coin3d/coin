@@ -912,15 +912,15 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
   error = cc_ftglue_FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);
   if (error) {
     if (cc_font_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
-					    "FT_Load_Glyph() => error %d",
-					    error);
+                                            "FT_Load_Glyph() => error %d",
+                                            error);
     return NULL;
   }
   error = cc_ftglue_FT_Get_Glyph(face->glyph, &g);
   if (error) {
     if (cc_font_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
-					    "FT_Get_Glyph() => error %d",
-					    error);
+                                            "FT_Get_Glyph() => error %d",
+                                            error);
     return NULL;
   }
 
@@ -934,8 +934,8 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
     error = cc_ftglue_FT_Glyph_To_Bitmap(&g, ft_render_mode_normal, 0, 1);
     if (error) {
       if (cc_font_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
-					      "FT_Glyph_To_Bitmap() => error %d",
-					      error);
+                                              "FT_Glyph_To_Bitmap() => error %d",
+                                              error);
       return NULL;
     }
   }
@@ -944,7 +944,7 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
   tfbm = &tfbmg->bitmap;
 
   bm = (struct cc_font_bitmap *) malloc(sizeof(struct cc_font_bitmap));
-  bm->buffer = (unsigned char *) malloc(tfbm->rows * tfbm->pitch);
+  bm->buffer = (unsigned char *) malloc(size_t(tfbm->rows) * size_t(tfbm->pitch));
   bm->bearingX = tfbmg->left;
   bm->bearingY = tfbmg->top;
   bm->advanceX = (int)(face->glyph->advance.x / 64);
@@ -954,7 +954,7 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
   bm->pitch = tfbm->pitch;
   bm->mono = mono;
 
-  memcpy(bm->buffer, tfbm->buffer, tfbm->rows * tfbm->pitch);
+  memcpy(bm->buffer, tfbm->buffer, size_t(tfbm->rows) * size_t(tfbm->pitch));
   cc_ftglue_FT_Done_Glyph(g);
 
   return bm;

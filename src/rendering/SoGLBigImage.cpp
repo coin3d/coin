@@ -697,7 +697,7 @@ SoGLBigImageP::copySubImage(SoGLBigImageTls * tls,
       }
     }
 
-    memset(tls->averagebuf, 0, w*h*nc*sizeof(int)/div);
+    memset(tls->averagebuf, 0, size_t(w)* size_t(h)* size_t(nc)*sizeof(int) / size_t(div));
     unsigned int * aptr = tls->averagebuf;
     int y;
     for (y = 0; y < h; y++) {

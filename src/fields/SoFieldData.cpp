@@ -631,11 +631,9 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
   // descriptions. Phew, the OIV binary format sucks....
   SbBool writeallfields = out->isBinary() && ! object->getIsBuiltIn();
 
-  uint16_t i;
-
   if (out->getStage() == SoOutput::COUNT_REFS) {
     // Handle first stage of write operations.
-    for (i=0; i < this->getNumFields(); i++) {
+    for (int i=0; i < this->getNumFields(); i++) {
       SoField * f = this->getField(object, i);
       if (writeallfields || f->shouldWrite()) {
         f->write(out, this->getFieldName(i));
@@ -683,7 +681,7 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
 
   SoProto * proto = out->getCurrentProto();
 
-  for (i = 0; i < this->getNumFields(); i++) {
+  for (int i = 0; i < this->getNumFields(); i++) {
     SoField * f = this->getField(object, i);
     // Test if field has a PROTO IS reference
     SbName pname = proto ?

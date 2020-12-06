@@ -77,18 +77,16 @@ static void coin_pack_to_01(float * v)
 static void
 coin_create_normalization_cube_map(const int size)
 {
-  int i, j;
-
   float offset = 0.5f;
   float halfsize = size * 0.5f;
   float tmpvec[3];
   unsigned char * ptr;
-  unsigned char * data = (unsigned char*) malloc(size*size*3);
+  unsigned char * data = (unsigned char*) malloc(size_t(size)*size_t(size)*3);
 
   /* positive x */
   ptr = data;
-  for(j = 0; j < size; j++) {
-    for(i = 0; i < size; i++) {
+  for(int j = 0; j < size; j++) {
+    for(int i = 0; i < size; i++) {
       tmpvec[0] = halfsize;
       tmpvec[1] = -(((float)j)+offset-halfsize);
       tmpvec[2] = -(((float)i)+offset-halfsize);
@@ -108,8 +106,8 @@ coin_create_normalization_cube_map(const int size)
   /* negative x */
   ptr = data;
 
-  for(j = 0; j < size; j++) {
-    for(i = 0; i < size; i++) {
+  for(int j = 0; j < size; j++) {
+    for(int i = 0; i < size; i++) {
       tmpvec[0] = -halfsize;
       tmpvec[1] = -(((float)j)+offset-halfsize);
       tmpvec[2] = (((float)i)+offset-halfsize);
@@ -129,8 +127,8 @@ coin_create_normalization_cube_map(const int size)
   /* positive y */
   ptr=data;
 
-  for(j = 0; j < size; j++) {
-      for(i = 0; i < size; i++) {
+  for(int j = 0; j < size; j++) {
+      for(int i = 0; i < size; i++) {
         tmpvec[0] = ((float)i)+offset-halfsize;
         tmpvec[1] = halfsize;
         tmpvec[2] = ((float)j)+offset-halfsize;
@@ -150,8 +148,8 @@ coin_create_normalization_cube_map(const int size)
   /* negative y */
   ptr = data;
 
-  for(j = 0; j < size; j++) {
-    for(i = 0; i < size; i++) {
+  for(int j = 0; j < size; j++) {
+    for(int i = 0; i < size; i++) {
       tmpvec[0] = ((float)i)+offset-halfsize;
       tmpvec[1] = -halfsize;
       tmpvec[2] = -(((float)j)+offset-halfsize);
@@ -171,8 +169,8 @@ coin_create_normalization_cube_map(const int size)
   /* positive z */
   ptr = data;
 
-  for(j = 0; j < size; j++) {
-    for(i = 0; i < size; i++) {
+  for(int j = 0; j < size; j++) {
+    for(int i = 0; i < size; i++) {
       tmpvec[0] = ((float)i)+offset-halfsize;
       tmpvec[1] = -(((float)j)+offset-halfsize);
       tmpvec[2] = halfsize;
@@ -192,8 +190,8 @@ coin_create_normalization_cube_map(const int size)
   /* negative z */
   ptr=data;
 
-  for(j = 0; j < size; j++) {
-    for(i = 0; i < size; i++) {
+  for(int j = 0; j < size; j++) {
+    for(int i = 0; i < size; i++) {
       tmpvec[0] = -(((float)i)+offset-halfsize);
       tmpvec[1] = -(((float)j)+offset-halfsize);
       tmpvec[2] = -halfsize;

@@ -249,7 +249,7 @@ SoBase::~SoBase()
 #if COIN_DEBUG
   if (SoBase::PImpl::trackbaseobjects) {
     CC_MUTEX_LOCK(SoBase::PImpl::allbaseobj_mutex);
-    const SbBool ok = SoBase::PImpl::allbaseobj->erase(this);
+    const size_t ok = SoBase::PImpl::allbaseobj->erase(this);
     assert(ok && "something fishy going on in debug object tracking");
     CC_MUTEX_UNLOCK(SoBase::PImpl::allbaseobj_mutex);
   }
