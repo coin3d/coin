@@ -1103,13 +1103,13 @@ SoFieldContainer::getFieldsMemorySize(size_t & managed, size_t & unmanaged) cons
         SbVec2s size(0, 0);
         int nc = 0;
         imgfield->getValue(size, nc);
-        managed += size[0] * size[1] * nc;
+        managed += size_t(size[0]) * size_t(size[1]) * size_t(nc);
       } else if (sfield->getTypeId().isDerivedFrom(SoSFImage3::getClassTypeId())) {
         const SoSFImage3 * img3field = static_cast<const SoSFImage3 *>(sfield);
         SbVec3s size(0, 0, 0);
         int nc = 0;
         img3field->getValue(size, nc);
-        managed += size[0] * size[1] * size[2] * nc;
+        managed += size_t(size[0]) * size_t(size[1]) * size_t(size[2]) * size_t(nc);
       } else {
         // memory size estimation probably not needed
       }

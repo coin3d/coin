@@ -783,7 +783,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   //
   // If we need more space:
   const size_t bufsize =
-    fullsize[0] * fullsize[1] * PUBLIC(this)->getComponents();
+    size_t(fullsize[0]) * size_t(fullsize[1]) * size_t(PUBLIC(this)->getComponents());
   SbBool alloc = (bufsize > this->bufferbytesize);
   // or if old buffer was much larger, free up the memory by fitting
   // to smaller size:
