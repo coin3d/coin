@@ -181,6 +181,7 @@
 /*!
 \class SbUniqueId SbBasic.h Inventor/SbBasic.h
 \brief SbUniqueId is an integer type for node identifiers.
+
 \ingroup base
 
 SbUniqueId is meant to be a "32/64 bit portable" way of defining an
