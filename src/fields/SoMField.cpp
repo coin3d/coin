@@ -829,9 +829,9 @@ SoMField::allocValues(int newnum)
       if (oldmaxnum != this->maxNum) {
         // FIXME: Umm.. aren't we supposed to use realloc() here?
         // 20000915 mortene.
-        size_t buffersize = this->maxNum * fsize;
+        size_t buffersize = size_t(this->maxNum) * size_t(fsize);
         unsigned char * newblock = new unsigned char[this->maxNum * fsize];
-        size_t copysize = fsize * SbMin(this->num, newnum);
+        size_t copysize = size_t(fsize) * size_t(SbMin(this->num, newnum));
         (void)memcpy(newblock, this->valuesPtr(), copysize);
         // we have to dereference old values in SoMFNode, SoMFPath and
         // SoMFEngine, so we just initialize the part of the array
@@ -847,7 +847,7 @@ SoMField::allocValues(int newnum)
       }
     }
     else {
-      size_t buffersize = newnum * fsize;
+      size_t buffersize = size_t(newnum) * size_t(fsize);
       unsigned char * data = new unsigned char[buffersize];
       // we have to dereference old values in SoMFNode, SoMFPath and
       // SoMFEngine, so we just initialize the array to NULL.
