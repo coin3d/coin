@@ -509,8 +509,8 @@ SoTexture3::loadFilenames(SoInput * in)
           SbBool oldnotify = this->images.enableNotify(FALSE);
           unsigned char *volbytes = this->images.startEditing(volumeSize,
                                                               volumenc);
-          memcpy(volbytes+int(size[0])*int(size[1])*int(size[2])*nc*n,
-                 imgbytes, int(size[0])*int(size[1])*int(size[2])*nc);
+          size_t buffersize = size_t(size[0])*size_t(size[1])*size_t(size[2])*size_t(nc);
+          memcpy(volbytes + buffersize * size_t(n), imgbytes, buffersize);
           this->images.finishEditing();
           this->images.enableNotify(oldnotify);
           this->glimagevalid = FALSE; // recreate GL images in next GLRender()
