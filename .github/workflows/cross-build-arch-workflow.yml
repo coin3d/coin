@@ -1,4 +1,4 @@
-name: Continuous Integration Build
+name: Cross Build Architectures
 
 on:
   workflow_dispatch:  # Allow manual triggers
