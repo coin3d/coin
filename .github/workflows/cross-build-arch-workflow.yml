@@ -71,8 +71,7 @@ jobs:
                 ;;
               fedora*)
                 dnf -y update
-                dnf -y groupinstall "Development Tools"
-                dnf -y install @development-tools cmake git freeglut-devel boost-devel expat-devel
+                dnf -y install @development-tools cmake git which freeglut-devel boost-devel expat-devel
                 ;;
               alpine*)
                 apk update
