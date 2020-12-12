@@ -30,11 +30,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <assert.h>
-#include <stdio.h>
-#include <string.h>
+#include <cassert>
+#include <cstdio>
+#include <cstring>
 
-#if defined (_POSIX_SOURCE) || defined(__APPLE__) || defined(__FreeBSD__)
+#if defined (_POSIX_C_SOURCE) || defined (_POSIX_SOURCE) || defined(__APPLE__) || defined(__FreeBSD__)
 #define USE_POSIX
 #elif defined(_WIN32)
 #define USE_WIN32

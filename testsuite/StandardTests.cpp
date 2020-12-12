@@ -33,8 +33,8 @@
 #define BOOST_TEST_NO_LIB 1
 #include <boost/test/unit_test.hpp>
 
-#include <assert.h>
-#include <stdio.h>
+#include <cassert>
+#include <cstdio>
 #include <iostream>
 
 #include <Inventor/nodes/SoNode.h>
