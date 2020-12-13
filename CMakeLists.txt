@@ -745,20 +745,16 @@ if(HAVE_WINDLL_RUNTIME_BINDING OR HAVE_DYLD_RUNTIME_BINDING OR HAVE_DLD_LIB OR H
   set(HAVE_DYNAMIC_LINKING 1)
 endif()
 
-set(HASH_QUOTING_SRC_FILE "
-  #include <string.h>
+check_cxx_source_compiles("
   #define TEST_QUOTE(str) #str
-  int main(void) { return strcmp(\"sim\", TEST_QUOTE(sim)); }
-")
-check_c_source_runs("${HASH_QUOTING_SRC_FILE}" HAVE_HASH_QUOTING)
+  int main(void) { char xx[] = TEST_QUOTE(str) \"xxx\"; return 0; }
+" HAVE_HASH_QUOTING)
 
 if(NOT HAVE_HASH_QUOTING)
-  set(APOSTROPHES_QUOTING_SRC_FILE "
-    #include <string.h>
+  check_cxx_source_compiles("
     #define TEST_QUOTE(str) \"str\"
-    int main(void) { return strcmp(\"sim\", TEST_QUOTE(sim)); }
-  ")
-  check_c_source_runs("${APOSTROPHES_QUOTING_SRC_FILE}" HAVE_APOSTROPHES_QUOTING)
+    int main(void) { char xx[] = (TEST_QUOTE(\"str\") \"xxx\"; return 0; }
+  " HAVE_APOSTROPHES_QUOTING)
 endif()
 
 if(HAVE_3DS_IMPORT_CAPABILITIES)
