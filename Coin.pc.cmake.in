@@ -1,22 +1,32 @@
-prefix=@CMAKE_INSTALL_PREFIX@
-exec_prefix=${prefix}
-bindir=@CMAKE_INSTALL_FULL_BINDIR@
-libdir=@CMAKE_INSTALL_FULL_LIBDIR@
-includedir=@CMAKE_INSTALL_FULL_INCLUDEDIR@
-datarootdir=@CMAKE_INSTALL_FULL_DATAROOTDIR@
-datadir=@CMAKE_INSTALL_FULL_DATADIR@
-docdir=@CMAKE_INSTALL_FULL_DOCDIR@
-infodir=@CMAKE_INSTALL_FULL_INFODIR@
-mandir=@CMAKE_INSTALL_FULL_MANDIR@
-htmldir=${docdir}/html
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+bindir=@bindir@
+libdir=@libdir@
+includedir=@includedir@
+datarootdir=@datarootdir@
+datadir=@datadir@
+docdir=@docdir@
+infodir=@infodir@
+mandir=@mandir@
 
 Name: @PROJECT_NAME@
 Description: A high-level 3D graphics toolkit, fully compatible with SGI Open Inventor 2.1
 Version: @PROJECT_VERSION@
-Requires:
-Conflicts:
-Libs: -L${libdir} -lCoin @COIN_EXTRA_LDFLAGS@ @COIN_EXTRA_LIBS@
-Cflags: -I${includedir} @COIN_EXTRA_CFLAGS@ @COIN_EXTRA_CPPFLAGS@
+URL: @PKG_CONFIG_URL@
+Requires: @PKG_CONFIG_REQUIRES@
+Requires.private: @PKG_CONFIG_REQUIRES_PRIVATE@
+Conflicts: @PKG_CONFIG_CONFLICTS@
+Libs: -L${libdir} @PKG_CONFIG_LDFLAGS@ @PKG_CONFIG_LIBS@
+Libs.private: @PKG_CONFIG_LIBS_PRIVATE@
+Cflags: -I${includedir} @PKG_CONFIG_CFLAGS@ @PKG_CONFIG_CPPFLAGS@
+
+coin_host=@PKG_CONFIG_HOST@
+compiler=@PKG_CONFIG_COMPILER@
+compiler_is_gcc=@PKG_CONFIG_COMPILER_IS_GCC@
+frameworkdir=@frameworkdir@
+htmldir=@htmldir@
+msvcrt=@PKG_CONFIG_MSVC_LIBC@
+objext=@PKG_CONFIG_OBJEXT@
 
 have_3ds_import=@FEAT_HAVE_3DS@
 have_vrml97=@FEAT_HAVE_VRML97@

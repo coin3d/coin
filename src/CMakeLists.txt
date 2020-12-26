@@ -28,11 +28,11 @@ include_directories(BEFORE
 )
 
 # add include dirs for non targets
-if(NOT "${COIN_TARGET_INCLUDE_DIRECTORIES}" STREQUAL "")
-  include_directories(${COIN_TARGET_INCLUDE_DIRECTORIES})
+if(NOT "${COIN_TARGET_INCLUDE_DIRECTORIES_PRIVATE}" STREQUAL "")
+  include_directories(${COIN_TARGET_INCLUDE_DIRECTORIES_PRIVATE})
 endif()
 # add include dirs for targets
-foreach(_tgt ${COIN_TARGET_LINK_LIBRARIES})
+foreach(_tgt ${COIN_TARGET_LINK_LIBRARIES_PRIVATE})
   if(TARGET ${_tgt} )
     include_directories($<TARGET_PROPERTY:${_tgt},INTERFACE_INCLUDE_DIRECTORIES>)
   endif()
@@ -209,7 +209,7 @@ if(WIN32)
   if(COIN_BUILD_SHARED_LIBS)
     configure_file(${PROJECT_NAME}.rc.cmake.in ${PROJECT_NAME}.rc)
     target_sources(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.rc")
-    target_compile_definitions(${PROJECT_NAME} INTERFACE COIN_DLL)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE COIN_MAKE_DLL INTERFACE COIN_DLL)
     if(MINGW)
       set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_NAME ${PROJECT_NAME}-${COIN_SO_VERSION})
     endif()
@@ -255,11 +255,18 @@ elseif(APPLE)
   endif()
 endif()
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${COIN_TARGET_INCLUDE_DIRECTORIES})
-target_link_libraries(${PROJECT_NAME} PRIVATE ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(${PROJECT_NAME} PRIVATE ${COIN_TARGET_INCLUDE_DIRECTORIES_PRIVATE})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${COIN_TARGET_LINK_LIBRARIES_PRIVATE})
+
 if(NOT COIN_BUILD_MAC_FRAMEWORK)
-  target_include_directories(${PROJECT_NAME} INTERFACE $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+  target_include_directories(${PROJECT_NAME}
+    INTERFACE
+      $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+      $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/Inventor/annex>
+  )
 endif()
+
+list(APPEND INCLUDE_DEPENDENCIES ${COIN_TARGET_INCLUDE_DIRECTORIES_PRIVATE})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${COIN_SO_VERSION})
 
@@ -274,26 +281,15 @@ set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVE
 # All non standard links must be created manually.
 if(COIN_BUILD_MAC_FRAMEWORK)
 
-# determine which subdirectory this file (header, resource) should be installed into.
-function(set_macosx_properties _removable_prefixes _install_prefix _source_files)
-  foreach(_file ${_source_files})
-    get_filename_component(_loc "${_file}" DIRECTORY)
-    foreach(_prefix ${_removable_prefixes})
-      string(REPLACE "${_prefix}" "" _loc "${_loc}")
-    endforeach()
-    set_source_files_properties(${_file} PROPERTIES MACOSX_PACKAGE_LOCATION ${_install_prefix}${_loc})
-  endforeach()
-endfunction()
-
 # ############################################################################
 # Add framework headers
 # ############################################################################
-  set_macosx_properties("${CMAKE_SOURCE_DIR}/include/Inventor;${CMAKE_BINARY_DIR}/include/Inventor"  "Headers" "${COMMON_HDRS}")
+  coin_set_macosx_properties("${CMAKE_SOURCE_DIR}/include/Inventor;${CMAKE_BINARY_DIR}/include/Inventor" "Headers" "${COMMON_HDRS}")
 
 # ############################################################################
 # Add framework data files
 # ############################################################################
-  set_macosx_properties("${CMAKE_SOURCE_DIR}/data;${CMAKE_BINARY_DIR}/data" "Resources" "${COMMON_RESOURCES}")
+  coin_set_macosx_properties("${CMAKE_SOURCE_DIR}/data;${CMAKE_BINARY_DIR}/data" "Resources" "${COMMON_RESOURCES}")
 
 # ############################################################################
 # Add framework documentation files
@@ -399,11 +395,78 @@ else()
   set(COIN_CONFIG_PACKAGE_LOCATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION})
   string(TOLOWER ${PROJECT_NAME} COIN_CONFIG_PACKAGE_BASENAME)
   if(UNIX OR MINGW)
-    configure_file("${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.pc.cmake.in" "${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc" @ONLY)
-    install(FILES "${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc" DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+    list(REMOVE_DUPLICATES LIB_DEPENDENCIES)
+    coin_add_pkg_config_lib_dependencies(PKG_CONFIG_LIBS "${LIB_DEPENDENCIES}")
+    list(REMOVE_DUPLICATES LIB_DEPENDENCIES_PRIVATE)
+    coin_add_pkg_config_lib_dependencies(PKG_CONFIG_LIBS_PRIVATE "${LIB_DEPENDENCIES_PRIVATE}")
+    list(REMOVE_DUPLICATES INCLUDE_DEPENDENCIES)
+
+    string(REGEX REPLACE "-I${CMAKE_INSTALL_PREFIX}" "-I\${prefix}" _full_inc_dir "-I${CMAKE_INSTALL_FULL_INCLUDEDIR}")
+    list(APPEND PKG_CONFIG_CPPFLAGS "${_full_inc_dir}" "${_full_inc_dir}/Inventor/annex" "$<$<BOOL:${INCLUDE_DEPENDENCIES}>:-I$<JOIN:${INCLUDE_DEPENDENCIES}, -I>>")
+    string(REGEX REPLACE "-L${CMAKE_INSTALL_PREFIX}" "-L\${exec_prefix}" _full_lib_dir "-L${CMAKE_INSTALL_FULL_LIBDIR}")
+    list(APPEND PKG_CONFIG_LDFLAGS "${_full_lib_dir}")
+
+    set(PKG_CONFIG_REQUIRES "$<$<BOOL:${PKG_CONFIG_REQUIRES}>:$<JOIN:${PKG_CONFIG_REQUIRES}, >>")
+    set(PKG_CONFIG_REQUIRES_PRIVATE "$<$<BOOL:${PKG_CONFIG_REQUIRES_PRIVATE}>:$<JOIN:${PKG_CONFIG_REQUIRES_PRIVATE}, >>")
+    set(PKG_CONFIG_LIBS "$<$<BOOL:${PKG_CONFIG_LIBS}>:$<JOIN:${PKG_CONFIG_LIBS}, >>")
+    set(PKG_CONFIG_LIBS_PRIVATE "$<$<BOOL:${PKG_CONFIG_LIBS_PRIVATE}>:$<JOIN:${PKG_CONFIG_LIBS_PRIVATE}, >>")
+
+    set(PKG_CONFIG_CPPFLAGS "$<$<BOOL:${PKG_CONFIG_CPPFLAGS}>:$<JOIN:${PKG_CONFIG_CPPFLAGS}, >>")
+    set(PKG_CONFIG_CFLAGS "${CMAKE_C_FLAGS} ${CMAKE_C_FLAGS_RELEASE} ${PKG_CONFIG_CFLAGS}")
+    set(PKG_CONFIG_CXXFLAGS "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_RELEASE} ${PKG_CONFIG_CXXFLAGS}")
+    set(PKG_CONFIG_LDFLAGS "$<$<BOOL:${PKG_CONFIG_LDFLAGS}>:$<JOIN:${PKG_CONFIG_LDFLAGS}, >>")
+
+    # PKG-CONFIG settings
+    # according to https://www.gnu.org/prep/standards/html_node/Directory-Variables.html
+    # .pc files should be written as ${prefix}/include instead of /usr/local/include
+    set(prefix "${CMAKE_INSTALL_PREFIX}")
+    set(exec_prefix "\${prefix}")
+    string(REGEX REPLACE "^${CMAKE_INSTALL_PREFIX}" "\${exec_prefix}" bindir "${CMAKE_INSTALL_FULL_BINDIR}")
+    string(REGEX REPLACE "^${CMAKE_INSTALL_PREFIX}" "\${exec_prefix}" libdir "${CMAKE_INSTALL_FULL_LIBDIR}")
+    string(REGEX REPLACE "^${CMAKE_INSTALL_PREFIX}" "\${prefix}" includedir "${CMAKE_INSTALL_FULL_INCLUDEDIR}")
+    string(REGEX REPLACE "^${CMAKE_INSTALL_PREFIX}" "\${prefix}" datarootdir "${CMAKE_INSTALL_FULL_DATAROOTDIR}")
+
+    string(REGEX REPLACE "^${CMAKE_INSTALL_FULL_DATAROOTDIR}" "\${datarootdir}" datadir "${CMAKE_INSTALL_FULL_DATADIR}")
+    string(REGEX REPLACE "^${CMAKE_INSTALL_FULL_DATAROOTDIR}" "\${datarootdir}" infodir "${CMAKE_INSTALL_FULL_INFODIR}")
+    string(REGEX REPLACE "^${CMAKE_INSTALL_FULL_DATAROOTDIR}" "\${datarootdir}" mandir "${CMAKE_INSTALL_FULL_MANDIR}")
+    string(REGEX REPLACE "^${CMAKE_INSTALL_FULL_DATAROOTDIR}" "\${datarootdir}" docdir "${CMAKE_INSTALL_FULL_DOCDIR}")
+
+    # HTMLDIR is not defined in GNUInstallDirs.cmake as of CMake 3.18
+    #string(REGEX REPLACE "^${CMAKE_INSTALL_FULL_DOCDIR}" "\${docdir}" htmldir "${CMAKE_INSTALL_FULL_HTMLDIR}")
+    set(htmldir "\${docdir}/html")
+    #set(frameworkdir "${PKG_CONFIG_FRAMEWORK_DIR}")
+
+    # Fix variable for MinGW
+    if(MINGW AND NOT CMAKE_CXX_LIBRARY_ARCHITECTURE)
+      if("${CMAKE_CXX_COMPILER}" MATCHES ".*/mingw64/.*$")
+        set(CMAKE_CXX_LIBRARY_ARCHITECTURE "x86_64-w64-mingw32")
+      elseif("${CMAKE_CXX_COMPILER}" MATCHES ".*/mingw32/.*$")
+        set(CMAKE_CXX_LIBRARY_ARCHITECTURE "i686-w64-mingw32")
+      endif()
+    endif()
+
+    set(PKG_CONFIG_URL "https://www.github.com/coin3d/coin")
+    set(PKG_CONFIG_HOST "${CMAKE_CXX_LIBRARY_ARCHITECTURE}")
+    set(PKG_CONFIG_COMPILER "${CMAKE_CXX_COMPILER}")
+    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+      set(PKG_CONFIG_COMPILER_IS_GCC "yes")
+    else()
+      set(PKG_CONFIG_COMPILER_IS_GCC "no")
+    endif()
+    string(REPLACE "." "" PKG_CONFIG_OBJEXT "${CMAKE_CXX_OUTPUT_EXTENSION}")
+
+    configure_file("${CMAKE_SOURCE_DIR}/Coin.pc.cmake.in" "${CMAKE_CURRENT_BINARY_DIR}/Coin.pc.in" @ONLY)
+    # Deal with items configured with generator expressions:
+    file(GENERATE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/Coin.pc" INPUT "${CMAKE_CURRENT_BINARY_DIR}/Coin.pc.in")
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/Coin.pc" DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
     install(PROGRAMS "${CMAKE_SOURCE_DIR}/bin/coin-config" DESTINATION ${CMAKE_INSTALL_BINDIR})
-    configure_file("${CMAKE_SOURCE_DIR}/coin.cfg.cmake.in" "${CMAKE_BINARY_DIR}/${PROJECT_NAME_LOWER}-default.cfg" @ONLY)
-    install(FILES "${CMAKE_BINARY_DIR}/${PROJECT_NAME_LOWER}-default.cfg" DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/Coin/conf)
+
+    set(PKG_CONFIG_LIBS "${PKG_CONFIG_LIBS} ${PKG_CONFIG_LIBS_PRIVATE}")
+    set(PKG_CONFIG_CPPFLAGS "${PKG_CONFIG_CXXFLAGS} ${PKG_CONFIG_CPPFLAGS}")
+    configure_file("${CMAKE_SOURCE_DIR}/coin.cfg.cmake.in" "${CMAKE_CURRENT_BINARY_DIR}/coin-default.cfg.in" @ONLY)
+    # Deal with items configured with generator expressions:
+    file(GENERATE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/coin-default.cfg" INPUT "${CMAKE_CURRENT_BINARY_DIR}/coin-default.cfg.in")
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/coin-default.cfg" DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/Coin/conf)
   endif()
 endif()
 

@@ -63,7 +63,7 @@ create_file_test("models/io/incorrect" "testIncorrectFile" true "(bug039|bug055-
 FILE(GLOB COIN_TEST_SOURCES "${CMAKE_CURRENT_BINARY_DIR}/*Test.cpp")
 
 add_executable(CoinTests TestSuiteMain.cpp TestSuiteUtils.cpp TestSuiteMisc.cpp ${COIN_TEST_SOURCES})
-target_link_libraries(CoinTests Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_link_libraries(CoinTests PRIVATE Coin ${COIN_TARGET_LINK_LIBRARIES_PRIVATE})
 target_include_directories(CoinTests PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}
 	${CMAKE_SOURCE_DIR}/include
@@ -72,7 +72,7 @@ target_include_directories(CoinTests PRIVATE
 	${COIN_TARGET_INCLUDE_DIRECTORIES}
 )
 if (USE_PTHREAD)
-	target_link_libraries(CoinTests pthread)
+	target_link_libraries(CoinTests PRIVATE pthread)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
