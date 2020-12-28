@@ -1,16 +1,11 @@
+# Coin. Open Inventor API implementation
 
-                              Coin 4.0.0
-
-               Copyright (C) Kongsberg Oil & Gas Technologies
-
-                     https://github.com/coin3d
-
-
-Introduction
-============
+## Introduction
 
 Coin is an OpenGL-based, 3D graphics library that has its roots in the
 Open Inventor 2.1 API, which Coin still is compatible with.
+
+![](docs/CoinProjectArchitecture.png)
 
 If you are not familiar with Open Inventor, it is a scene-graph based,
 retain-mode, rendering and model manipulation, C++ class library,
@@ -38,26 +33,7 @@ is the term we use on the larger group of libraries that all fall
 under the same license as Coin.  Coin is the core of Coin3D.
 
 
-Latest release
-==============
-
-Coin has historically been released quite infrequently.  To try to
-improve on this, we decided in 2007 to switch from feature-based
-release cycles to date-based release cycles, aiming for a new release
-every six months.  What we haven't switched is the decision to let
-the version number be decided based on ABI compatibility with earlier
-Coin versions.
-
-See the file NEWS for the summary of changes, the file RELNOTES for a
-more verbose description of the more significant updates, and the file
-ChangeLog for the detailed source code update list.
-
-See the file INSTALL for installation instructions, and all the other
-README.* files for platform-specific notes.
-
-
-Source Code and Binary Compatibility
-====================================
+## Source Code and Binary Compatibility
 
 Coin is one of three Open Inventor implementations.  All
 implementations are source code compatible across the Open Inventor
@@ -144,8 +120,7 @@ Coin 1.2.3 has major 1, minor 2 and micro 3.
   not be too difficult for a seasoned software developer.
 
 
-Historical Notes
-================
+## Historical Notes
 
 Coin started out, back in 1995, as a scene graph rendering library for
 VRML1.0 scenes.  It was originally based on SGI's Qv library for parsing
@@ -182,6 +157,28 @@ feedback to the core Coin developer team.  The file THANKS tries to
 credit all those helpful souls.  Our apologies to those who have been
 forgotten.
 
+## Latest release
 
--- 
+Coin has historically been released quite infrequently.  To try to
+improve on this, we decided in 2007 to switch from feature-based
+release cycles to date-based release cycles, aiming for a new release
+every six months.  What we haven't switched is the decision to let
+the version number be decided based on ABI compatibility with earlier
+Coin versions.
+
+See the file NEWS for the summary of changes, the file RELNOTES for a
+more verbose description of the more significant updates, and the file
+ChangeLog for the detailed source code update list.
+
+See the file INSTALL for installation instructions, and all the other
+README.* files for platform-specific notes.
+
+In 2019 a new major version was released, 4.0.0 which included some additional
+API changes to improve conformance to Open Inventor 2.1 API.
+
+## License and trademarks
+
+BSD License (c) Kongsberg Oil & Gas Technologies AS
+
 OpenGL and Open Inventor are trademarks of SGI Inc. 
+
