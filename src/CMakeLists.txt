@@ -32,7 +32,7 @@ if(NOT "${COIN_TARGET_INCLUDE_DIRECTORIES_PRIVATE}" STREQUAL "")
   include_directories(${COIN_TARGET_INCLUDE_DIRECTORIES_PRIVATE})
 endif()
 # add include dirs for targets
-foreach(_tgt ${COIN_TARGET_LINK_LIBRARIES_PRIVATE})
+foreach(_tgt ${COIN_TARGET_DEPENDENCIES_PRIVATE})
   if(TARGET ${_tgt} )
     include_directories($<TARGET_PROPERTY:${_tgt},INTERFACE_INCLUDE_DIRECTORIES>)
   endif()
@@ -256,7 +256,7 @@ elseif(APPLE)
 endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${COIN_TARGET_INCLUDE_DIRECTORIES_PRIVATE})
-target_link_libraries(${PROJECT_NAME} PRIVATE ${COIN_TARGET_LINK_LIBRARIES_PRIVATE})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${COIN_TARGET_DEPENDENCIES_PRIVATE} ${COIN_TARGET_LINK_LIBRARIES_PRIVATE})
 
 if(NOT COIN_BUILD_MAC_FRAMEWORK)
   target_include_directories(${PROJECT_NAME}
@@ -267,6 +267,11 @@ if(NOT COIN_BUILD_MAC_FRAMEWORK)
 endif()
 
 list(APPEND INCLUDE_DEPENDENCIES ${COIN_TARGET_INCLUDE_DIRECTORIES_PRIVATE})
+
+# Threads have already been handled separately
+set(_pkg_config_targets ${COIN_TARGET_DEPENDENCIES_PRIVATE})
+list(REMOVE_ITEM _pkg_config_targets Threads::Threads)
+coin_get_pkg_config_target_properties("${_pkg_config_targets}")
 
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${COIN_SO_VERSION})
 
@@ -399,22 +404,22 @@ else()
     coin_add_pkg_config_lib_dependencies(PKG_CONFIG_LIBS "${LIB_DEPENDENCIES}")
     list(REMOVE_DUPLICATES LIB_DEPENDENCIES_PRIVATE)
     coin_add_pkg_config_lib_dependencies(PKG_CONFIG_LIBS_PRIVATE "${LIB_DEPENDENCIES_PRIVATE}")
-    list(REMOVE_DUPLICATES INCLUDE_DEPENDENCIES)
 
     string(REGEX REPLACE "-I${CMAKE_INSTALL_PREFIX}" "-I\${prefix}" _full_inc_dir "-I${CMAKE_INSTALL_FULL_INCLUDEDIR}")
-    list(APPEND PKG_CONFIG_CPPFLAGS "${_full_inc_dir}" "${_full_inc_dir}/Inventor/annex" "$<$<BOOL:${INCLUDE_DEPENDENCIES}>:-I$<JOIN:${INCLUDE_DEPENDENCIES}, -I>>")
+    set(PKG_CONFIG_CPPFLAGS "${PKG_CONFIG_CPPFLAGS} ${_full_inc_dir} ${_full_inc_dir}/Inventor/annex")
     string(REGEX REPLACE "-L${CMAKE_INSTALL_PREFIX}" "-L\${exec_prefix}" _full_lib_dir "-L${CMAKE_INSTALL_FULL_LIBDIR}")
-    list(APPEND PKG_CONFIG_LDFLAGS "${_full_lib_dir}")
+    set(PKG_CONFIG_LDFLAGS "${PKG_CONFIG_LDFLAGS} ${_full_lib_dir}")
+
+    list(REMOVE_DUPLICATES INCLUDE_DEPENDENCIES)
+    foreach(_inc ${INCLUDE_DEPENDENCIES})
+      set(PKG_CONFIG_CPPFLAGS "${PKG_CONFIG_CPPFLAGS} -I${_inc}")
+    endforeach()
 
     set(PKG_CONFIG_REQUIRES "$<$<BOOL:${PKG_CONFIG_REQUIRES}>:$<JOIN:${PKG_CONFIG_REQUIRES}, >>")
     set(PKG_CONFIG_REQUIRES_PRIVATE "$<$<BOOL:${PKG_CONFIG_REQUIRES_PRIVATE}>:$<JOIN:${PKG_CONFIG_REQUIRES_PRIVATE}, >>")
-    set(PKG_CONFIG_LIBS "$<$<BOOL:${PKG_CONFIG_LIBS}>:$<JOIN:${PKG_CONFIG_LIBS}, >>")
-    set(PKG_CONFIG_LIBS_PRIVATE "$<$<BOOL:${PKG_CONFIG_LIBS_PRIVATE}>:$<JOIN:${PKG_CONFIG_LIBS_PRIVATE}, >>")
 
-    set(PKG_CONFIG_CPPFLAGS "$<$<BOOL:${PKG_CONFIG_CPPFLAGS}>:$<JOIN:${PKG_CONFIG_CPPFLAGS}, >>")
     set(PKG_CONFIG_CFLAGS "${CMAKE_C_FLAGS} ${CMAKE_C_FLAGS_RELEASE} ${PKG_CONFIG_CFLAGS}")
     set(PKG_CONFIG_CXXFLAGS "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_RELEASE} ${PKG_CONFIG_CXXFLAGS}")
-    set(PKG_CONFIG_LDFLAGS "$<$<BOOL:${PKG_CONFIG_LDFLAGS}>:$<JOIN:${PKG_CONFIG_LDFLAGS}, >>")
 
     # PKG-CONFIG settings
     # according to https://www.gnu.org/prep/standards/html_node/Directory-Variables.html
