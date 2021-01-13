@@ -261,7 +261,11 @@ if(NOT COIN_BUILD_MAC_FRAMEWORK)
   target_include_directories(${PROJECT_NAME} INTERFACE $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 endif()
 
-set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${COIN_SO_VERSION})
+if(WIN32 AND NOT MINGW)
+  set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${COIN_SO_VERSION})
+else()
+  set_target_properties(${PROJECT_NAME} PROPERTIES VERSION "${COIN_SO_VERSION}.${Coin_VERSION_MINOR}.${Coin_VERSION_PATCH}" SOVERSION ${COIN_SO_VERSION})
+endif()
 
 # Setting up a framework means adding all the files and links under a framework
 # directory. A single install command then moves the entire contents of the
