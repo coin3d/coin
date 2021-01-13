@@ -37,7 +37,7 @@
   \brief Base class for events sent to SCXML state machines.
 
   \since Coin 3.0
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>

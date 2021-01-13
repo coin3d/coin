@@ -39,7 +39,7 @@
   \class SoMFEngine SoMFEngine.h Inventor/fields/SoMFEngine.h
   \brief The SoMFEngine class is a container for engines.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field container stores an array of pointers to engines. It takes
   care of the necessary functionality for handling copy, import and

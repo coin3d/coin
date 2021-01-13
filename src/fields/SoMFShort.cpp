@@ -34,7 +34,7 @@
   \class SoMFShort SoMFShort.h Inventor/fields/SoMFShort.h
   \brief The SoMFShort class is a container for short integer values.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   need to store a group of multiple short integer values.

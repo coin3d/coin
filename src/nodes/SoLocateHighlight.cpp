@@ -34,7 +34,7 @@
   \class SoLocateHighlight SoLocateHighlight.h Inventor/nodes/SoLocateHighlight.h
   \brief The SoLocateHighlight class highlights geometry under the cursor.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Note: this node is supposed to draw to the front buffer. However, in
   Coin we always draw to the back buffer, forcing a scene redraw

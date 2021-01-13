@@ -34,7 +34,7 @@
   \class SoTransformSeparator SoTransformSeparator.h Inventor/nodes/SoTransformSeparator.h
   \brief The SoTransformSeparator class is a group node preserving the current transformations.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   This node works like the SoSeparator group node, except that it only
   stores and restores the current model matrix transformation. Other

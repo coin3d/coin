@@ -40,7 +40,7 @@
   \class SoNodeKitListPart SoNodeKitListPart.h Inventor/nodekits/SoNodeKitListPart.h
   \brief The SoNodeKitListPart class is a container node.
 
-  \ingroup nodekits
+  \ingroup coin_nodekits
 
   This node is basically just a container node with these differences versus
   the other group nodes:

@@ -34,7 +34,7 @@
   \class SoShapeHintsV10 SoShapeHintsV10.h
   \brief The SoShapeHintsV10 class is a node is for Inventor V1.0 support only.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   \sa SoShapeHints
 */

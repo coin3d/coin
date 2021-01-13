@@ -34,7 +34,7 @@
   \class SoEngineOutputData SoOutputData.h Inventor/engines/SoOutputData.h
   \brief The SoEngineOutputData class is a container for a prototype set of outputs.
 
-  \ingroup engines
+  \ingroup coin_engines
 
   This class is instantiated once for each class of objects which use
   outputs, and which need to be able to import and export them.

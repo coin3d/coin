@@ -34,7 +34,7 @@
   \class SoConvexDataCache SoConvexDataCache.h Inventor/caches/SoConvexDataCache.h
   \brief The SoConvexDataCache class is used to cache convexified polygons.
 
-  \ingroup caches
+  \ingroup coin_caches
 
   SoConvexDataCache is used to speed up rendering of concave polygons
   by tessellating all polygons into triangles and storing the newly

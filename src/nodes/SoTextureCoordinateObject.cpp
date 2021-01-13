@@ -34,7 +34,7 @@
   \class SoTextureCoordinateObject SoTextureCoordinateObject.h Inventor/nodes/SoTextureCoordinateObject.h
   \brief The SoTextureCoordinateObject class generates texture coordinates by...
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   FIXME: not implemented yet. pederb, 2005-04-20
 

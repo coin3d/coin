@@ -34,7 +34,7 @@
   \class SoVectorizePSAction SoVectorizePSAction.h Inventor/annex/HardCopy/SoVectorizePSAction.h
   \brief The SoVectorizePSAction class is used for rendering to a PostScript file.
 
-  \ingroup hardcopy
+  \ingroup coin_hardcopy
 
   \since Coin 2.1
   \since TGS provides HardCopy support as a separate extension for TGS Inventor.

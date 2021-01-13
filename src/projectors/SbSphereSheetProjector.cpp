@@ -34,7 +34,7 @@
   \class SbSphereSheetProjector SbSphereSheetProjector.h Inventor/projectors/SbSphereSheetProjector.h
   \brief The SbSphereSheetProjector class projects 2D points to 3D points on a sheet covering a spherical shape.
 
-  \ingroup projectors
+  \ingroup coin_projectors
 
   The following standalone example shows how screen space coordinates
   projects into 3D when mapped with an SbSphereSheetProjector. It

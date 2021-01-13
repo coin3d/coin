@@ -38,14 +38,14 @@
 
   The bundle classes are mostly internal to Coin.
 
-  \ingroup bundles
+  \ingroup coin_bundles
 */
 
 /*!
   \class SoBundle SoBundle.h Inventor/bundles/SoBundle.h
   \brief The SoBundle class is the superclass for all bundle classes.
 
-  \ingroup bundles
+  \ingroup coin_bundles
 */
 // FIXME: document class properly (write general explanation of what
 // bundles are used for. 20010828 mortene.

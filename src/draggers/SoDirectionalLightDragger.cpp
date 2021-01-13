@@ -40,7 +40,7 @@
   \class SoDirectionalLightDragger SoDirectionalLightDragger.h Inventor/draggers/SoDirectionalLightDragger.h
   \brief The SoDirectionalLightDragger class provides interactive geometry for manipulating a directional light source.
 
-  \ingroup draggers
+  \ingroup coin_draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT
 

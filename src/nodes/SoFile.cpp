@@ -34,7 +34,7 @@
   \class SoFile SoFile.h Inventor/nodes/SoFile.h
   \brief The SoFile class is node container for another model file.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   This node provides a way to split your models into a set of
   "component" models to include into larger "master" files.

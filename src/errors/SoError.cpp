@@ -34,7 +34,7 @@
   \class SoError SoError.h Inventor/errors/SoError.h
   \brief The SoError class is the base class for all the error handling classes.
 
-  \ingroup errors
+  \ingroup coin_errors
 
   The default error handler just prints messages on the standard error
   output channel, but this can be overridden by client applications.
@@ -51,7 +51,6 @@
 
 // *************************************************************************
 
-/*! \file SoError.h */
 #include <Inventor/errors/SoErrors.h>
 
 #include "coindefs.h"

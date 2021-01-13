@@ -34,7 +34,7 @@
   \class SoQuadMesh SoQuadMesh.h Inventor/nodes/SoQuadMesh.h
   \brief The SoQuadMesh class is used to render and optimize a quadrilateral mesh.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   This node uses the coordinates in order, either from the state or
   from the SoQuadMesh::vertexProperty node, to construct a

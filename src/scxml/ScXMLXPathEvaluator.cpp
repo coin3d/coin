@@ -37,7 +37,7 @@
   \class ScXMLXPathEvaluator ScXMLXPathEvaluator.h Inventor/scxml/ScXMLXPathEvaluator.h
   \brief implements the XPath evaluator.
 
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>

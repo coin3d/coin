@@ -37,7 +37,7 @@
   \brief implements the &lt;validate&gt; SCXML element.
 
   \since Coin 3.1
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>

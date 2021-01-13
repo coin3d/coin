@@ -48,7 +48,7 @@
   Currently, this node must be placed somewhere in the SoShadowGroup
   subgraph to cast shadows.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code

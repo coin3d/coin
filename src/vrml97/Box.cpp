@@ -40,7 +40,7 @@
   \class SoVRMLBox SoVRMLBox.h Inventor/VRMLnodes/SoVRMLBox.h
   \brief The SoVRMLBox class is used for representing a 3D box.
 
-  \ingroup VRMLnodes
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 

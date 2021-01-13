@@ -35,7 +35,7 @@
   \brief The SoSpaceballButtonEvent class contains information about
   spaceball button interaction.
 
-  \ingroup events
+  \ingroup coin_events
 
   When the user presses any buttons on a spaceball device, these will
   be translated from a system specific event into a Coin event and

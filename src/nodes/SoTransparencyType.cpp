@@ -34,7 +34,7 @@
   \class SoTransparencyType SoTransparencyType.h Inventor/nodes/SoTransparencyType.h
   \brief The SoTransparencyType class is a node for setting the transparency type for shapes.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   In earlier versions of Coin/Open Inventor it was only possible to
   set the transparency mode globally for an entire scene graph, which

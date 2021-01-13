@@ -34,7 +34,7 @@
   \class SoGLPointSizeElement Inventor/elements/SoGLPointSizeElement.h
   \brief The SoGLPointSizeElement class changes the point size setting of the OpenGL render state.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   Requests from the scene graph to change the point size when rendering
   point primitives will be made through this element, which forwards

@@ -34,7 +34,7 @@
   \class SbTesselator SbTesselator.h Inventor/SbTesselator.h
   \brief The SbTesselator class is used to tessellate polygons into triangles.
 
-  \ingroup base
+  \ingroup coin_base
 
   SbTesselator is used within Coin to split polygons into
   triangles. It handles concave polygons, does Delaunay triangulation
@@ -102,7 +102,6 @@
 
 // *************************************************************************
 
-/*! \file SbTesselator.h */
 #include <Inventor/SbTesselator.h>
 
 #include <cstdio>

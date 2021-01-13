@@ -30,7 +30,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file string.h */
 #include <Inventor/C/base/string.h>
 
 #include <cassert>
@@ -76,7 +75,7 @@ using std::printf;
   \struct cc_string string.h Inventor/C/base/string.h
   \brief The cc_string type is a C ADT for ASCII string management.
 
-  \ingroup base
+  \ingroup coin_base
 
   This is a Coin extension.
 */

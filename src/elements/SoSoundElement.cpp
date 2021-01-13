@@ -33,7 +33,7 @@
 /*!
   \class SoSoundElement Inventor/elements/SoSoundElement.h
   \brief The SoSoundElement is used for optimizing audio rendering and for turning off inactive SoVRMLSound nodes
-  \ingroup elements
+  \ingroup coin_elements
 
   \since Coin 2.0
 */

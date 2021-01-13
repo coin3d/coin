@@ -37,7 +37,7 @@
   \class SoScXMLMotionTarget SoScXMLMotionTarget.h Inventor/navigation/SoScXMLMotionTarget.h
   \brief to be used in parallel with other non-moving targets when parallel states are implemented.
 
-  \ingroup navigation
+  \ingroup coin_navigation
 */
 
 #include <cassert>

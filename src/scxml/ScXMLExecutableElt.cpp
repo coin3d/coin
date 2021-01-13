@@ -36,7 +36,7 @@
   \class ScXMLExecutableElt ScXMLExecutableElt.h Inventor/scxml/ScXMLExecutableElt.h
   \brief base class for all SCXML elements with executable content.
 
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>

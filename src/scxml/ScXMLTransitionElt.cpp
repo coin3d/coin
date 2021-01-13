@@ -95,7 +95,7 @@
 
   \since Coin 3.0
   \sa ScXMLIfElt, ScXMLAssignElt, ScXMLSendElt, ScXMLEventElt, ScXMLLogElt
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>

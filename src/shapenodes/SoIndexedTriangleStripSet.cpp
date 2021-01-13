@@ -34,7 +34,7 @@
   \class SoIndexedTriangleStripSet SoIndexedTriangleStripSet.h Inventor/nodes/SoIndexedTriangleStripSet.h
   \brief The SoIndexedTriangleStripSet class keeps data for rendering and otherwise representing triangle strips.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Use nodes of this type as an effective way of drawing triangles
   which are strung together.

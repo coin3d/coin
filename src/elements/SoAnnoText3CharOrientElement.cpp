@@ -34,7 +34,7 @@
   \class SoAnnoText3CharOrientElement Inventor/elements/SoAnnoText3CharOrientElement.h
   \brief The SoAnnoText3CharOrientElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

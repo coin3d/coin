@@ -34,7 +34,7 @@
   \class SoPrimitiveVertex SoPrimitiveVertex.h Inventor/SoPrimitiveVertex.h
   \brief The SoPrimitiveVertex class represents a single vertex of a generated primitive.
 
-  \ingroup general
+  \ingroup coin_general
 
   Instances of SoPrimitiveVertex are constructed when generating
   primitive data, primarily during an SoCallbackAction traversal.

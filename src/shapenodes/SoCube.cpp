@@ -39,7 +39,7 @@
   \class SoCube SoCube.h Inventor/nodes/SoCube.h
   \brief The SoCube class is for rendering cubes.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Insert a cube shape into the scene graph. The cube is rendered with
   the current material, texture and draw style settings (if any,

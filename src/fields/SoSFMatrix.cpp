@@ -34,7 +34,7 @@
   \class SoSFMatrix SoSFMatrix.h Inventor/fields/SoSFMatrix.h
   \brief The SoSFMatrix class is a container for an SbMatrix.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   need to store a 4x4 matrix.

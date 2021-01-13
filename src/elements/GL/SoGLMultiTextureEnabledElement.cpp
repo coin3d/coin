@@ -34,7 +34,7 @@
   \class SoGLMultiTextureEnabledElement Inventor/elements/SoGLMultiTextureEnabledElement.h
   \brief The SoGLMultiTextureEnabledElement class is an element which controls whether texturing is enabled or not.
 
-  \ingroup elements
+  \ingroup coin_elements
 */
 
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>

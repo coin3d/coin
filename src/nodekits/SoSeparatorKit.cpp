@@ -40,7 +40,7 @@
   \class SoSeparatorKit SoSeparatorKit.h Inventor/nodekits/SoSeparatorKit.h
   \brief The SoSeparatorKit class provides a typical set of nodes to influence a shape subgraph.
 
-  \ingroup nodekits
+  \ingroup coin_nodekits
 
   \NODEKIT_PRE_DIAGRAM
 

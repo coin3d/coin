@@ -30,7 +30,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file SbProfilingData.h */
+/*!
+  \struct SbNodeProfilingData
+  \brief Data structure for gathering scene graph traversal profiling information for one node.
+
+  \ingroup coin_profiler
+*/
+
+/*!
+  \class SbProfilingData SbProfilingData.h Inventor/annex/SbProfilingData.h
+  \brief Data structure for gathering scene graph traversal profiling information.
+
+  \ingroup coin_profiler
+*/
+
 #include <Inventor/annex/Profiler/SbProfilingData.h>
 #include "coindefs.h"
 
@@ -154,20 +167,6 @@ public:
 }; // SbProfilingDataP
 
 #define PRIVATE(obj) ((obj)->pimpl)
-
-/*!
-  \struct SbNodeProfilingData
-  \brief Data structure for gathering scene graph traversal profiling information for one node.
-
-  \ingroup profiler
-*/
-
-/*!
-  \class SbProfilingData
-  \brief Data structure for gathering scene graph traversal profiling information.
-
-  \ingroup profiler
-*/
 
 /*!
   Constructor.

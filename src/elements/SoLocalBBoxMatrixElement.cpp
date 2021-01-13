@@ -34,7 +34,7 @@
   \class SoLocalBBoxMatrixElement Inventor/elements/SoLocalBBoxMatrixElement.h
   \brief The SoLocalBBoxMatrixElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

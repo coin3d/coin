@@ -34,7 +34,7 @@
   \class SoSensorManager SoSensorManager.h Inventor/sensors/SoSensorManager.h
   \brief The SoSensorManager class handles the sensor queues.
 
-  \ingroup sensors
+  \ingroup coin_sensors
 
   There are two major sensor types in Coin, "delay" sensors and
   "timer" sensors:

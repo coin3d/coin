@@ -34,7 +34,7 @@
   \class SoLightAttenuationElement Inventor/elements/SoLightAttenuationElement.h
   \brief The SoLightAttenuationElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

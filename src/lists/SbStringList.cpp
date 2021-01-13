@@ -34,7 +34,7 @@
   \class SbStringList SbStringList.h Inventor/lists/SbStringList.h
   \brief The SbStringList class is a container for pointers to SbString objects.
 
-  \ingroup base
+  \ingroup coin_base
 
   Note that upon using the equality and inequality operators, the
   strings themselves are not compared, only the pointer values.  

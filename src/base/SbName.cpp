@@ -34,7 +34,7 @@
   \class SbName SbName.h Inventor/SbName.h
   \brief The SbName class stores strings by reference.
 
-  \ingroup base
+  \ingroup coin_base
 
   The class is used by Coin for storing keywords, names and other
   strings. They are stored in a manner where identical strings are

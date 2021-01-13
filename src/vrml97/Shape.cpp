@@ -40,7 +40,7 @@
   \class SoVRMLShape SoVRMLShape.h Inventor/VRMLnodes/SoVRMLShape.h
   \brief The SoVRMLShape class holds geometry and geometry appearance nodes.
 
-  \ingroup VRMLnodes
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 

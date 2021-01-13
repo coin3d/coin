@@ -3,7 +3,7 @@
 /*!
   \class SoSF_Typename_ SoSF_Typename_.h Inventor/fields/SoSF_Typename_.h
   \brief The SoSF_Typename_ class is a container for a single _typename_.
-  \ingroup fields
+  \ingroup coin_fields
 
   This field container stores a pointer to a Coin _typename_. It takes care
   of the necessary functionality for handling copy, import and export

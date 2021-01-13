@@ -34,7 +34,7 @@
   \class SoProfile SoProfile.h Inventor/nodes/SoProfile.h
   \brief The SoProfile class is the abstract superclass for profile definitions.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Node subclasses of SoProfile specify profiles for extruded 3D text
   and NURBS surface data.

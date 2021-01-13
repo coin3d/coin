@@ -64,32 +64,32 @@
  *   SbSqr(val)              - returns squared value
  */
 
-template <class Type>
+template <typename Type>
 inline Type SbAbs( Type Val ) {
   return (Val < 0) ? 0 - Val : Val;
 }
 
-template <class Type>
+template <typename Type>
 inline Type SbMax( const Type A, const Type B ) {
   return (A < B) ? B : A;
 }
 
-template <class Type>
+template <typename Type>
 inline Type SbMin( const Type A, const Type B ) {
   return (A < B) ? A : B;
 }
 
-template <class Type>
+template <typename Type>
 inline Type SbClamp( const Type Val, const Type Min, const Type Max ) {
   return (Val < Min) ? Min : (Val > Max) ? Max : Val;
 }
 
-template <class Type>
+template <typename Type>
 inline void SbSwap( Type & A, Type & B ) {
   Type T; T = A; A = B; B = T;
 }
 
-template <class Type>
+template <typename Type>
 inline Type SbSqr(const Type val) {
   return val * val;
 }

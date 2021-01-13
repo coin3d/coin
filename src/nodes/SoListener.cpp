@@ -34,8 +34,8 @@
   \class SoListener SoListener.h Inventor/nodes/SoListener.h
   \brief The SoListener class defines listener attributes used when rendering sound.
 
-  \ingroup nodes
-  \ingroup sound
+  \ingroup coin_nodes
+  \ingroup coin_sound
 
   When rendering geometry, one needs to have a camera defining certain
   attributes related to viewing. The SoListener plays a similar

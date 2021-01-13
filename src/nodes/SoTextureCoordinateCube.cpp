@@ -34,7 +34,7 @@
   \class SoTextureCoordinateCube include/Inventor/nodes/SoTextureCoordinateCube.h
   \brief The SoTextureCoordinateCube class generates cube mapped texture coordinates for shapes.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   The cube used for reference when mapping is the bounding box for the shape.
 

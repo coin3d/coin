@@ -34,7 +34,7 @@
   \class SoInterpolateVec4f SoInterpolateVec4f.h Inventor/engines/SoInterpolateVec4f.h
   \brief The SoInterpolateVec4f class is used to interpolate between pairs of 4D vectors.
 
-  \ingroup engines
+  \ingroup coin_engines
 */
 
 #include <Inventor/engines/SoInterpolateVec4f.h>

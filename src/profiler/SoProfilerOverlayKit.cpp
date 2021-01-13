@@ -34,7 +34,7 @@
   \class SoProfilerOverlayKit SoProfilerOverlayKit.h Inventor/annex/Profiler/nodekits/SoProfilerOverlayKit.h
   \brief The SoProfilerOverlayKit element class is yet to be documented.
 
-  \ingroup profiler
+  \ingroup coin_profiler
 */
 
 #ifdef HAVE_CONFIG_H

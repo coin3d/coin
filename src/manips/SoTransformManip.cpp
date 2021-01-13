@@ -40,7 +40,7 @@
   \class SoTransformManip SoTransformManip.h Inventor/manips/SoTransformManip.h
   \brief The SoTransformManip class is used to manipulate transformations.
 
-  \ingroup manips
+  \ingroup coin_manips
 
   A manipulator is used by replacing the node you want to edit in the
   graph with the manipulator. Draggers are used to manipulate the

@@ -47,7 +47,6 @@
   \since Coin 3.0
 */
 
-/*! \file SoRenderManager.h */
 #include <Inventor/SoRenderManager.h>
 
 #include <algorithm>

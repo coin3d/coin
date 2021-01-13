@@ -34,7 +34,7 @@
   \class SoMFDouble SoMFDouble.h Inventor/fields/SoMFDouble.h
   \brief The SoMFDouble class is a container for double float precision point values.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   need to store a group of multiple floating point values.

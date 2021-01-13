@@ -34,7 +34,7 @@
   \class SoNurbsSurface SoNurbsSurface.h Inventor/nodes/SoNurbsSurface.h
   \brief The SoNurbsSurface class is used to render smooth surfaces.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   A general explanation of NURBS is beyond the scope of the Coin
   documentation. For detailed information, refer to the specialized

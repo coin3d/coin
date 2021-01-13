@@ -34,7 +34,7 @@
   \class SoSFUInt32 SoSFUInt32.h Inventor/fields/SoSFUInt32.h
   \brief The SoSFUInt32 class is a container for a 32-bit unsigned integer value.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   need to store a single 32-bit unsigned integer value.

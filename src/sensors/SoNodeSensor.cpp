@@ -34,7 +34,7 @@
   \class SoNodeSensor SoNodeSensor.h Inventor/sensors/SoNodeSensor.h
   \brief The SoNodeSensor class detects changes to nodes.
 
-  \ingroup sensors
+  \ingroup coin_sensors
 
   Attach a node to a sensor of this type to put it under surveillance,
   so you can act upon changes to the node.

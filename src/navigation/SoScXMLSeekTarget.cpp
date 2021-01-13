@@ -38,7 +38,7 @@
 
    emits events .MISS and .DONE to the sessionid state-machine
 
-  \ingroup navigation
+  \ingroup coin_navigation
 */
 
 

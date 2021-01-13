@@ -40,7 +40,7 @@
   \class SoScale2Dragger SoScale2Dragger.h Inventor/draggers/SoScale2Dragger.h
   \brief The SoScale2Dragger class provides a mechanism for the end-user to scale in two dimensions.
 
-  \ingroup draggers
+  \ingroup coin_draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT
 

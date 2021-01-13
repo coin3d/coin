@@ -34,7 +34,7 @@
   \class SoGeoLocation SoGeoLocation.h Inventor/nodes/SoGeoLocation.h
   \brief The SoGeoLocation class is used to georeference the following nodes.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code

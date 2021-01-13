@@ -34,7 +34,7 @@
   \class SoWWWAnchor SoWWWAnchor.h Inventor/nodes/SoWWWAnchor.h
   \brief The SoWWWAnchor class adds URL callbacks to the highlighted geometry.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   In addition to highlighting geometry under the cursor, the application
   programmer can set callbacks. It is possible to set one callback for
@@ -74,7 +74,6 @@
 */
 
 
-/*! \file SoWWWAnchor.h */
 #include <Inventor/nodes/SoWWWAnchor.h>
 
 #include <Inventor/events/SoMouseButtonEvent.h>

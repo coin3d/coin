@@ -34,7 +34,7 @@
   \class SoProfilerVisualizeKit SoProfilerVisualizeKit.h Inventor/annex/Profiler/nodekits/SoProfilerVisualizeKit.h
   \brief The SoProfilerVisualizeKit element class is yet to be documented.
 
-  \ingroup profiler
+  \ingroup coin_profiler
 */
 
 #ifdef HAVE_CONFIG_H

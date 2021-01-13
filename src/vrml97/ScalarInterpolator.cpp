@@ -40,7 +40,7 @@
   \class SoVRMLScalarInterpolator SoVRMLScalarInterpolator.h Inventor/VRMLnodes/SoVRMLScalarInterpolator.h
   \brief The SoVRMLScalarInterpolator class is used to interpolate scalar values.
 
-  \ingroup VRMLnodes
+  \ingroup coin_VRMLnodes
   
   \verbatim
   ScalarInterpolator {

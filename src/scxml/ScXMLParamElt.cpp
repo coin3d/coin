@@ -36,7 +36,7 @@
   \class ScXMLParamElt ScXMLParamElt.h Inventor/scxml/ScXMLParamElt.h
   \brief implements the &lt;param&gt; SCXML element.
 
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>

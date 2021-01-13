@@ -35,7 +35,7 @@
   \brief The SbBox3s class is a 3 dimensional box with short
   integer coordinates.
 
-  \ingroup base
+  \ingroup coin_base
 
   This box class is used by other classes in Coin for data
   exchange. It provides storage for two box corners with short integer

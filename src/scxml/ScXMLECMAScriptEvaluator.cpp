@@ -37,7 +37,7 @@
   \class ScXMLECMAScriptEvaluator ScXMLECMAScriptEvaluator.h Inventor/scxml/ScXMLECMAScriptEvaluator.h
   \brief evaluator for the ECMAScript profile.
 
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>

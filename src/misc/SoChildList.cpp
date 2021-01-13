@@ -34,7 +34,7 @@
   \class SoChildList SoChildList.h Inventor/misc/SoChildList.h
   \brief The SoChildList class is a container for node children.
 
-  \ingroup general
+  \ingroup coin_general
 
   This class does automatic notification on the parent nodes upon
   adding or removing children.

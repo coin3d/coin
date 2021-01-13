@@ -30,21 +30,18 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file Inventor/C/threads/common.h */
-
 /*!
   \struct cc_barrier common.h Inventor/C/threads/common.h
-  \ingroup threads
+  \ingroup coin_threads
   \brief The structure for the thread barrier.
 */
 
 /*!
   \typedef struct cc_barrier cc_barrier
-  \ingroup threads
+  \ingroup coin_threads
   \brief The type definition for the thread barrier structure.
 */
 
-/*! \file barrier.h */
 #include <Inventor/C/threads/barrier.h>
 
 #include <cstdlib>

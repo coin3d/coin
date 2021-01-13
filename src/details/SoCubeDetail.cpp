@@ -34,7 +34,7 @@
   \class SoCubeDetail SoCubeDetail.h Inventor/details/SoCubeDetail.h
   \brief The SoCubeDetail class contains information about the parts of a SoCube shape.
 
-  \ingroup details
+  \ingroup coin_details
 
   Instances of this class are used for storing information about hit
   points on cone geometry after pick operations, and for storing

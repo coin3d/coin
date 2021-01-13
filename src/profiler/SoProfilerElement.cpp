@@ -34,7 +34,7 @@
   \class SoProfilerElement SoProfilerElement.h Inventor/annex/Profiler/SoProfilerElement.h
   \brief The SoProfilerElement element class is for registering statistics during scene graph traversals.
 
-  \ingroup profiler
+  \ingroup coin_profiler
 */
 
 // *************************************************************************

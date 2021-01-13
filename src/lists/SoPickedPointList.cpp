@@ -37,7 +37,7 @@
   \class SoPickedPointList SoPickedPointList.h Inventor/lists/SoPickedPointList.h
   \brief The SoPickedPointList class is a container for pointers to SoPickedPoint objects.
 
-  \ingroup general
+  \ingroup coin_general
 
   This list class will delete the picked points when
   destructed/truncated, or when a picked point in the list is replaced

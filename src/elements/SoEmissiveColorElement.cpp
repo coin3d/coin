@@ -34,7 +34,7 @@
   \class SoEmissiveColorElement Inventor/elements/SoEmissiveColorElement.h
   \brief The SoEmissiveColorElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

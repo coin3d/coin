@@ -34,7 +34,7 @@
   \class SoFloatElement Inventor/elements/SoFloatElement.h
   \brief SoFloatElement is an abstract base class for elements that consists of a single float value.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   This is the superclass of elements where the new element data \e
   replaces the old data, and where the data the element stores is a

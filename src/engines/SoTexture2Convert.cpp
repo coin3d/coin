@@ -37,7 +37,7 @@
   \class SoTexture2Convert SoTexture2Convert.h Inventor/engines/SoTexture2Convert.h
   \brief Abstract base class for texture filtering engines.
 
-  \ingroup engines
+  \ingroup coin_engines
   \COIN_CLASS_EXTENSION
   \since Coin 3.0
 */

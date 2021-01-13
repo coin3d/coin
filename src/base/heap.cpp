@@ -30,7 +30,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file heap.h */
 #include <Inventor/C/base/heap.h>
 #include <boost/lexical_cast.hpp>
 

@@ -233,7 +233,7 @@ New nodes:
 - SoFragmentShader
 - SoGeometryShader
 
-See also the \ref coin_shaders "Shaders in Coin" page for more
+See also the \ref coin_shaders_page "Shaders in Coin" page for more
 information.
 
 \section shadownodes Generic Shadow Rendering Functionality
@@ -254,7 +254,7 @@ giving great performance increases.  However, this is not universally
 enabled - it is necessary to organize the scene graphs in specific ways
 for VBOs to be used.
 
-See the \ref vbo_rendering "VBO Rendering in Coin" page for a
+See the \ref coin_vbo_rendering "VBO Rendering in Coin" page for a
 detailed description.
 
 Relevant classes:

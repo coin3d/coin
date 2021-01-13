@@ -34,7 +34,7 @@
   \class SoSeparator SoSeparator.h Inventor/nodes/SoSeparator.h
   \brief The SoSeparator class is a state-preserving group node.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Subgraphs parented by SoSeparator nodes will not affect the state,
   as they push and pop the traversal state before and after traversal

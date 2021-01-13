@@ -34,7 +34,7 @@
   \class SoVBOCache SoVBOCache.h Inventor/caches/SoVBOCache.h
   \brief The SoVBOCache is used to organize pointers to SoVBO and SoVertexArrayIndexer instances.
 
-  \ingroup caches
+  \ingroup coin_caches
 */
 
 #include "caches/SoVBOCache.h"

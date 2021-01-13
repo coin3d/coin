@@ -34,7 +34,7 @@
   \class SoTriggerAny SoTriggerAny.h Inventor/engines/SoTriggerAny.h
   \brief The SoTriggerAny class is a fan-in engine for triggers.
 
-  \ingroup engines
+  \ingroup coin_engines
 
   When any one of the input triggers are "pulsed", any field connected
   as a slave to the engine output will be notified.

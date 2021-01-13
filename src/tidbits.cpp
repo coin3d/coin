@@ -36,7 +36,6 @@
   Coin portable.
 */
 
-/*! \file tidbits.h */
 #include <Inventor/C/tidbits.h>
 
 #ifdef HAVE_CONFIG_H

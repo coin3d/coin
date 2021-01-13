@@ -34,7 +34,7 @@
   \class SoTextureCoordinateSphere include/Inventor/nodes/SoTextureCoordinateSphere.h
   \brief The SoTextureCoordinateSphere class generates sphere mapped texture coordinates for shapes.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code

@@ -34,7 +34,7 @@
   \class SoMFMatrix SoMFMatrix.h Inventor/fields/SoMFMatrix.h
   \brief The SoMFMatrix class is a container for SbMatrix values.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   needs to store matrices.

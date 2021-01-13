@@ -34,7 +34,7 @@
   \class SoInterpolateFloat SoInterpolateFloat.h Inventor/engines/SoInterpolateFloat.h
   \brief The SoInterpolateFloat class is used to interpolate two floating point values.
 
-  \ingroup engines
+  \ingroup coin_engines
 */
 
 #include <Inventor/engines/SoInterpolateFloat.h>

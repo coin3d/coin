@@ -40,7 +40,7 @@
   The &lt;elseif&gt; element is a separator element for the enclosing &lt;if&gt;
   element. It can only be used inside &lt;if&gt; elements.
 
-  \ingroup scxml
+  \ingroup coin_scxml
   \since Coin 3.1
 */
 

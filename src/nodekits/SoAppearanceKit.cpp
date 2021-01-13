@@ -40,7 +40,7 @@
   \class SoAppearanceKit SoAppearanceKit.h Inventor/nodekits/SoAppearanceKit.h
   \brief The SoAppearanceKit class is a node kit catalog that collects miscellaneous appearance node types.
 
-  \ingroup nodekits
+  \ingroup coin_nodekits
 
   \NODEKIT_PRE_DIAGRAM
 

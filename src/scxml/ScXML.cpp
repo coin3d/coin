@@ -39,7 +39,7 @@
   This is a static namespace class for ScXML-related functions.
 
   \since Coin 3.0
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #ifdef _MSC_VER
@@ -105,7 +105,7 @@
 // *************************************************************************
 
 /*!
-  \page scxml State Chart XML
+  \page coin_scxml_page State Chart XML
 
   The ScXML part of Coin is a basic, non-conformant, partial
   implementation of State Chart XML, based on the W3C Working Draft
@@ -146,7 +146,7 @@
   and look at the source files in src/navigation/ for the C++ counterparts
   to the same SCXML navigation system.
 
-  \ingroup scxml
+  \ingroup coin_scxml
   \since Coin 3.0
 */
 

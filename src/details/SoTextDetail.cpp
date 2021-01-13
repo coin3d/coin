@@ -34,7 +34,7 @@
   \class SoTextDetail SoTextDetail.h Inventor/details/SoTextDetail.h
   \brief The SoTextDetail stores information about a character in a string.
 
-  \ingroup details
+  \ingroup coin_details
 
   Instances of this class are used for storing information about hit
   points on textual 2D or 3D geometry after pick operations, and for

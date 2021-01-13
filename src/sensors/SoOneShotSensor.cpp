@@ -34,7 +34,7 @@
   \class SoOneShotSensor SoOneShotSensor.h Inventor/sensors/SoOneShotSensor.h
   \brief The SoOneShotSensor class is a sensor which will trigger once.
 
-  \ingroup sensors
+  \ingroup coin_sensors
 
   Since SoOneShotSensor is a subclass of SoDelayQueueSensor, it will
   trigger as soon as either the runtime system is idle, or if it is

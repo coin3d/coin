@@ -34,7 +34,7 @@
   \class SbProjector SbProjector.h Inventor/projectors/SbProjector.h
   \brief The SbProjector class is the abstract base projector class.
 
-  \ingroup projectors
+  \ingroup coin_projectors
 
   Projectors are used in the Coin library for mapping 2D coordinates
   (typically from the position of the mouse cursor in the rendering

@@ -34,7 +34,7 @@
   \class SoSFVec3s SoSFVec3s.h Inventor/fields/SoSFVec3s.h
   \brief The SoSFVec3s class is a container for an SbVec3s vector.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   need to store a single vector with three elements.

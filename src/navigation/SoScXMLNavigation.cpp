@@ -36,7 +36,7 @@
   \class SoScXMLNavigation SoScXMLNavigation.h Inventor/scxml/SoScXMLNavigation.h
   \brief Static class for some static init/cleanup/synchronization functions.
 
-  \ingroup navigation
+  \ingroup coin_navigation
 */
 
 #include <cassert>

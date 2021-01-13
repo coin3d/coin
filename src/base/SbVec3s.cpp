@@ -52,7 +52,7 @@
   \brief The SbVec3s class is a 3 dimensional vector with short integer
   coordinates.
 
-  \ingroup base
+  \ingroup coin_base
 
   This vector class provides storage for a 3 dimensional vector
   as well as simple integer arithmetic operations.

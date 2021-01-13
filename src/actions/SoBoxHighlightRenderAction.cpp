@@ -34,7 +34,7 @@
   \class SoBoxHighlightRenderAction SoBoxHighlightRenderAction.h Inventor/actions/SoBoxHighlightRenderAction.h
   \brief The SoBoxHighlightRenderAction class renders the scene with highlighted boxes around selections.
 
-  \ingroup actions
+  \ingroup coin_actions
 
   This action performs the same tasks as its parent class,
   SoGLRenderAction, with the added ability to render highlighted

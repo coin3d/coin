@@ -34,7 +34,7 @@
   \class SoGLDepthBufferElement Inventor/elements/SoGLDepthBufferElement.h
   \brief The SoGLDepthBufferElement controls the OpenGL depth buffer.
 
-  \ingroup elements
+  \ingroup coin_elements
   \COIN_CLASS_EXTENSION
   \since Coin 3.0
 */

@@ -34,7 +34,7 @@
   \class SoLightModelElement Inventor/elements/SoLightModelElement.h
   \brief The SoLightModelElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

@@ -34,7 +34,7 @@
   \class SoOutput SoOutput.h Inventor/SoOutput.h
   \brief The SoOutput class is an abstraction of an output stream.
 
-  \ingroup general
+  \ingroup coin_general
 
   SoOutput offers the ability to write basic types to a file or a
   memory buffer in either ASCII or binary format.
@@ -43,7 +43,7 @@
 */
 
 /*!
-  \page compression_overview File compression
+  \page coin_compression_overview File compression
 
   Coin can support reading and writing Inventor and VRML files compressed
   with either gzip or bzip2 (as of yet - more formats may come in the
@@ -72,7 +72,6 @@
 
 // *************************************************************************
 
-/*! \file SoOutput.h */
 #include <Inventor/SoOutput.h>
 
 #ifdef HAVE_CONFIG_H

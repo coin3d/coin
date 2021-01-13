@@ -66,7 +66,7 @@
 #pragma warning(disable:4275)
 #endif // _MSC_VER
 
-template <class Type>
+template <typename Type>
 class SbList {
   // Older compilers aren't too happy about const declarations in the
   // class definitions, so use the enum trick described by Scott

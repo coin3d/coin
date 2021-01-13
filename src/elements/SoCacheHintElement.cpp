@@ -34,7 +34,7 @@
   \class SoCacheHintElement Inventor/elements/SoCacheHintElement.h
   \brief The SoCacheHintElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   Please note that this is an experimental class. The API might change
   a lot before/if it is included in any official Coin release.

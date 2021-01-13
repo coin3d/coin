@@ -30,17 +30,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file Inventor/C/threads/common.h */
-
 /*!
   \struct cc_thread common.h Inventor/C/threads/common.h
-  \ingroup threads
+  \ingroup coin_threads
   \brief The structure for a thread.
 */
 
 /*!
   \typedef struct cc_thread cc_thread
-  \ingroup threads
+  \ingroup coin_threads
   \brief The type definition for the thread structure.
 */
 
@@ -51,17 +49,16 @@
     CC_TIMEOUT,
     CC_BUSY
   }
-  \ingroup threads
+  \ingroup coin_threads
   \brief The enumerator for return values of thread related functions.
 */
 
 /*!
   \typedef enum cc_retval cc_retval
-  \ingroup threads
+  \ingroup coin_threads
   \brief The type definition for the return value enumerator.
 */
 
-/*! \file thread.h */
 #include <Inventor/C/threads/thread.h>
 
 #include <cstdlib>
@@ -248,7 +245,7 @@ cc_thread_init(void)
 /* ********************************************************************** */
 
 /*!
-  \page multithreading_support Multithreading Support in Coin
+  \page coin_multithreading_support Multithreading Support in Coin
 
   The support in Coin for using multiple threads in application
   programs and the Coin library itself, consists of two main features:
@@ -339,7 +336,7 @@ cc_thread_init(void)
   \class SbThread Inventor/threads/SbThread.h
   \brief A class for managing threads.
 
-  \ingroup threads
+  \ingroup coin_threads
 
   This class provides a portable framework around the tasks of
   instantiating, starting, stopping and joining threads.
@@ -392,3 +389,4 @@ cc_thread_init(void)
 */
 
 /* ********************************************************************** */
+

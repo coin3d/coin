@@ -34,7 +34,7 @@
   \class SoAlarmSensor SoAlarmSensor.h Inventor/sensors/SoAlarmSensor.h
   \brief The SoAlarmSensor class is a sensor which will trigger once at a specified time.
 
-  \ingroup sensors
+  \ingroup coin_sensors
 
   SoAlarmSensor provides a convenient way of setting up triggers for
   jobs which should be executed only once when they are scheduled.

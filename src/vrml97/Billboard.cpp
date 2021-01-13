@@ -40,7 +40,7 @@
   \class SoVRMLBillboard SoVRMLBillboard.h Inventor/VRMLnodes/SoVRMLBillboard.h
   \brief The SoVRMLBillboard class is used for rotating geometry towards the viewpoint.
 
-  \ingroup VRMLnodes
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 

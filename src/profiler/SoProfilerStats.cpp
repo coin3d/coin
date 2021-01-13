@@ -68,7 +68,7 @@
   TODO: Describe functionality and provide usage example.
 
   \sa SoProfilerElement
-  \ingroup profiler
+  \ingroup coin_profiler
 */
 
 /*!

@@ -34,7 +34,7 @@
   \class SoTextureCoordinateEnvironment SoTextureCoordinateEnvironment.h Inventor/nodes/SoTextureCoordinateEnvironment.h
   \brief The SoTextureCoordinateEnvironment class generates texture coordinates by projecting onto a surrounding texture.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   The texture specifying the environment will be mapped around the 
   scene graph below this node using a sphere. The texture will be mapped

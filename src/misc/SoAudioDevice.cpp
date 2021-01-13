@@ -34,8 +34,8 @@
   \class SoAudioDevice SoAudioDevice.h Inventor/misc/SoAudioDevice.h
   \brief The SoAudioDevice class is used to control an audio device.
 
-  \ingroup general
-  \ingroup sound
+  \ingroup coin_general
+  \ingroup coin_sound
 
   The SoAudioDevice class is responsible for initialization of an 
   audio device, as well as enabling and disabling sound. It is a singleton

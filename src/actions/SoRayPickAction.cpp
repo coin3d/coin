@@ -34,7 +34,7 @@
   \class SoRayPickAction SoRayPickAction.h Inventor/actions/SoRayPickAction.h
   \brief The SoRayPickAction class does ray intersection with scene graphs.
 
-  \ingroup actions
+  \ingroup coin_actions
 
   For interaction with the scene graph geometry, it is necessary to be
   able to do intersection testing for rays. This functionality is

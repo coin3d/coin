@@ -34,7 +34,7 @@
   \class SoIndexedLineSet SoIndexedLineSet.h Inventor/nodes/SoIndexedLineSet.h
   \brief The SoIndexedLineSet class is used to render and otherwise represent indexed lines.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   The indexed counterpart of SoLineSet. Lines can specified using
   indices for coordinates, normals, materials and texture coordinates.

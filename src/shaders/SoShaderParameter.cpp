@@ -37,7 +37,7 @@
   In addition to the \a name and \a identifier field, all subclasses have a
   \a value field which is used for specifying the parameter value.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 */
 
 /*!
@@ -65,9 +65,9 @@
   uniform float shininess;
   \endverbatim
 
-  See \ref coin_shaders "Shaders in Coin" for more information.
+  See \ref coin_shaders_page "Shaders in Coin" for more information.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 */
 
 /*!
@@ -80,7 +80,7 @@
   \brief The SoShaderParameter1f class is used to define a floating point value as
          shader parameter.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 */
 
 /*!
@@ -94,7 +94,7 @@
   \brief The SoShaderParameter1i class is used to define an integer value as
          shader parameter.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 */
 
 /*!
@@ -108,7 +108,7 @@
   \brief The SoShaderParameter2f class is used to define a two-dimensional floating
          point value as shader parameter.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 */
 
 /*!
@@ -122,7 +122,7 @@
   \brief The SoShaderParameter2i class is used to define a two-dimensional integer
          value as shader parameter.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 */
 
 /*!
@@ -136,7 +136,7 @@
   \brief The SoShaderParameter3f class is used to define a three-dimensional floating
          point value as shader parameter.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 */
 
 /*!
@@ -150,7 +150,7 @@
   \brief The SoShaderParameter3i class is used to define a three-dimensional integer
          value as shader parameter.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 */
 
 /*!
@@ -164,7 +164,7 @@
   \brief The SoShaderParameter4f class is used to define a four-dimensional floating
          point value as shader parameter.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 */
 
 /*!
@@ -178,7 +178,7 @@
   \brief The SoShaderParameter4i class is used to define a four-dimensional integer
          value as shader parameter.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 */
 
 /*!
@@ -192,7 +192,7 @@
   \brief The SoShaderParameterArray1f class is used to define a floating point array as
          shader parameter.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 */
 
 /*!
@@ -206,7 +206,7 @@
   \brief The SoShaderParameterArray1i class is used to define an integer array as 
          shader parameter.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 */
 
 /*!
@@ -220,7 +220,7 @@
   \brief The SoShaderParameterArray2f class is used to define a two-dimensional floating
          point array as shader parameter.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 */
 
 /*!
@@ -234,7 +234,7 @@
   \brief The SoShaderParameterArray2i class is used to define a two-dimensional integer
          array as shader parameter.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 */
 
 /*!
@@ -248,7 +248,7 @@
   \brief The SoShaderParameterArray3f class is used to define a three-dimensional floating
          point array as shader parameter.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 */
 
 /*!
@@ -262,7 +262,7 @@
   \brief The SoShaderParameterArray3i class is used to define a three-dimensional integer
          array as shader parameter.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 */
 
 /*!
@@ -276,7 +276,7 @@
   \brief The SoShaderParameterArray4f class is used to define a four-dimensional floating
          point array as shader parameter.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 */
 
 /*!
@@ -290,7 +290,7 @@
   \brief The SoShaderParameterArray4i class is used to define a four-dimensional integer
          array as shader parameter.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 */
 
 /*!
@@ -303,7 +303,7 @@
   \class SoShaderParameterMatrix SoShaderParameter.h Inventor/nodes/SoShaderParameter.h
   \brief The SoShaderParameterMatrix class is used to define a matrix as shader parameter.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 */
 
 /*!
@@ -317,7 +317,7 @@
   \brief The SoShaderParameterMatrixArray class is used to define a matrix array as 
          shader parameter.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 */
 
 /*!
@@ -335,7 +335,7 @@
   value field. The value member is protected and updated automatically from the
   traversal state.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 */
 
 /*!

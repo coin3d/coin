@@ -34,7 +34,7 @@
   \class SoScrollingGraphKit SoScrollingGraphKit.h Inventor/annex/Profiler/nodekits/SoScrollingGraphKit.h
   \brief The SoScrollingGraphKit element class is yet to be documented.
 
-  \ingroup profiler
+  \ingroup coin_profiler
 */
 
 #ifdef HAVE_CONFIG_H

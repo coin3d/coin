@@ -34,7 +34,7 @@
   \class SoMFName SoMFName.h Inventor/fields/SoMFName.h
   \brief The SoMFName class is a container for SbName values.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   needs to store arrays of names.

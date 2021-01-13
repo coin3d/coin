@@ -42,7 +42,7 @@
   checking document containment, and provides some infrastructure hooks.
 
   \since Coin 3.1
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 /*!
@@ -50,7 +50,7 @@
   \brief base class for element reader objects
 
   \since Coin 3.1
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #ifdef _MSC_VER

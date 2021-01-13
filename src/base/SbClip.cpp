@@ -30,7 +30,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file SbClip.h */
 #include <Inventor/SbClip.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbPlane.h>
@@ -41,7 +40,7 @@
   \class SbClip SbClip.h include/Inventor/base/SbClip.h
   \brief The SbClip class is a generic polygon clipper class.
 
-  \ingroup base
+  \ingroup coin_base
 
   It is used by first adding all vertices in the polygon, and then
   clipping against any number of planes. If you need to supply

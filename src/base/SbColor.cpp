@@ -35,7 +35,7 @@
   \brief The SbColor class contains the red, green and blue components
   which make up a color value.
 
-  \ingroup base
+  \ingroup coin_base
 
   This class is used within other classes in Coin.  It inherits the
   SbVec3f class, interpreting the 3 component vector as a vector in

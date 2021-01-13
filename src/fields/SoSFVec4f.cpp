@@ -34,7 +34,7 @@
   \class SoSFVec4f SoSFVec4f.h Inventor/fields/SoSFVec4f.h
   \brief The SoSFVec4f class is a container for an SbVec4f vector.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   need to store a single vector with four elements.

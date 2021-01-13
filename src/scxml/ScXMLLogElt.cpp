@@ -36,7 +36,7 @@
   \class ScXMLLogElt ScXMLLogElt.h Inventor/scxml/ScXMLLogElt.h
   \brief implements the &lt;log&gt; SCXML element.
 
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>

@@ -34,7 +34,7 @@
   \class SoMFEnum SoMFEnum.h Inventor/fields/SoMFEnum.h
   \brief The SoMFEnum class is a container for a set of enumerated values.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   need to store values constrained to be from an enumerated set.

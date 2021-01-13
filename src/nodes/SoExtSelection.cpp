@@ -34,7 +34,7 @@
   \class SoExtSelection SoExtSelection.h Inventor/nodes/SoExtSelection.h
   \brief The SoExtSelection class can be used for extended selection functionality.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   This class enables you to select geometry by specifying a lasso (a
   polygon) or a rectangle on screen. When objects are selected, you'll
@@ -75,7 +75,6 @@
 
 // *************************************************************************
 
-/*! \file SoExtSelection.h */
 #include <Inventor/nodes/SoExtSelection.h>
 
 #include <cfloat>

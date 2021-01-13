@@ -34,7 +34,7 @@
   \class SoBoundingBoxCache SoBoundingBoxCache.h Inventor/caches/SoBoundingBoxCache.h
   \brief The SoBoundingBoxCache class is used to cache bounding boxes.
 
-  \ingroup caches
+  \ingroup coin_caches
 */
 
 // *************************************************************************

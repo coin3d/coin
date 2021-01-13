@@ -34,7 +34,7 @@
   \class SoShapeHintsElement Inventor/elements/SoShapeHintsElement.h
   \brief The SoShapeHintsElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

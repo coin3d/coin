@@ -36,7 +36,7 @@
 
   Currently only GLSL scripts are supported.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 */
 
 #include "misc/SoShaderGenerator.h"

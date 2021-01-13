@@ -73,7 +73,7 @@
   \class SoSceneTextureCubeMap SoSceneTextureCubeMap.h Inventor/nodes/SoSceneTextureCubeMap.h
   \brief Renders a scene into a texture cube map.
 
-  \ingroup nodes
+  \ingroup coin_nodes
   \since Coin 2.5
 */
 

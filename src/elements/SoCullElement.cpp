@@ -34,7 +34,7 @@
   \class SoCullElement SoCullElement.h Inventor/elements/SoCullElement.h
   \brief The SoCullElement class is used internally for render and pick culling.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   The element holds all planes the geometry should be inside, and
   keeps a bit flag to signal which planes need to be tested.

@@ -42,7 +42,7 @@
   shader objects specified there, and attach all objects into a
   program before binding it as the current shader program.
 
-  \ingroup shaders
+  \ingroup coin_shaders
 
   A typical scene graph with shaders will look something like this:
 
@@ -201,7 +201,6 @@
 
 */
 
-/*! \file SoShaderProgram.h */
 #include <Inventor/nodes/SoShaderProgram.h>
 #include "coindefs.h"
 

@@ -40,7 +40,7 @@
   \class SoVRMLFog SoVRMLFog.h Inventor/VRMLnodes/SoVRMLFog.h
   \brief The SoVRMLFog class is used to specify a global scene fog.
 
-  \ingroup VRMLnodes
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 

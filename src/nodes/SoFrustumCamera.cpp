@@ -44,7 +44,7 @@
   over the view frustum, such as in CAVE or other multipipe
   applications.
 
-  \ingroup nodes
+  \ingroup coin_nodes
   \since Coin 2.5
 */
 

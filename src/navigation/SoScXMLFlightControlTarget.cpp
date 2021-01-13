@@ -50,7 +50,7 @@
       _sessionid
       angle
 
-  \ingroup navigation
+  \ingroup coin_navigation
 */
 
 #include <cassert>

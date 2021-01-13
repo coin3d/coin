@@ -36,7 +36,7 @@
   \class SoTexture SoTexture.h Inventor/nodes/SoTexture.h
   \brief Common base class for texture nodes.
 
-  \ingroup nodes
+  \ingroup coin_nodes
   \COIN_CLASS_EXTENSION
   \since Coin 3.0
 */

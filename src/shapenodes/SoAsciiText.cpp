@@ -34,7 +34,7 @@
   \class SoAsciiText SoAsciiText.h Inventor/nodes/SoAsciiText.h
   \brief The SoAsciiText class renders flat 3D text.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   The text is rendered using 3D polygon geometry.
 

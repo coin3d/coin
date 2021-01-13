@@ -34,7 +34,7 @@
   \class SoText3 SoText3.h Inventor/nodes/SoText3.h
   \brief The SoText3 class renders extruded 3D text.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Render text as 3D geometry.
 

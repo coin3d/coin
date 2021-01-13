@@ -34,7 +34,7 @@
   \class SoCylinderDetail SoCylinderDetail.h Inventor/details/SoCylinderDetail.h
   \brief The SoCylinderDetail class contains information about the parts of a SoCylinder shape.
 
-  \ingroup details
+  \ingroup coin_details
 
   Instances of this class are used for storing information about hit
   points on cylinder geometry after pick operations, and for storing

@@ -30,16 +30,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file ScXMLStateMachine.h */
-#include <Inventor/scxml/ScXMLStateMachine.h>
-
 /*!
   \class ScXMLStateMachine ScXMLStateMachine.h Inventor/scxml/ScXMLStateMachine.h
   \brief Manager for processing events and setting states in SCXML structures.
 
   \since Coin 3.0
-  \ingroup scxml
+  \ingroup coin_scxml
 */
+
+#include <Inventor/scxml/ScXMLStateMachine.h>
 
 #ifdef _MSC_VER
 #pragma warning(disable:4786) // symbol truncated

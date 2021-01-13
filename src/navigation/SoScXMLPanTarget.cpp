@@ -36,7 +36,7 @@
   \class SoScXMLPanTarget SoScXMLPanTarget.h Inventor/scxml/SoScXMLPanTarget.h
   \brief Navigation system event target for panning operations.
 
-  \ingroup navigation
+  \ingroup coin_navigation
 */
 
 #include <cassert>

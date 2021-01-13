@@ -40,7 +40,7 @@
   \class SoSpotLightManip SoSpotLightManip.h Inventor/manips/SoSpotLightManip.h
   \brief The SoSpotLightManip class is used to manipulate spot light nodes.
 
-  \ingroup manips
+  \ingroup coin_manips
 
   A manipulator is used by replacing the node you want to edit in the
   graph with the manipulator. Draggers are used to manipulate the

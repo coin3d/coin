@@ -40,7 +40,7 @@
   \class SoTranslate1Dragger SoTranslate1Dragger.h Inventor/draggers/SoTranslate1Dragger.h
   \brief The SoTranslate1Dragger class provides a mechanism for the end-user to translate along an axis.
 
-  \ingroup draggers
+  \ingroup coin_draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT
 

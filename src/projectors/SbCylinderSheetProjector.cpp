@@ -34,7 +34,7 @@
   \class SbCylinderSheetProjector SbCylinderSheetProjector.h Inventor/projectors/SbCylinderSheetProjector.h
   \brief The SbCylinderSheetProjector class projects 2D points to 3D points on a sheet covering a cylindrical shape.
 
-  \ingroup projectors
+  \ingroup coin_projectors
  */
 
 // FIXME: we do not use a hyperbolic sheet, as we're supposed to do,

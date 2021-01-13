@@ -34,7 +34,7 @@
   \class SbSphereProjector SbSphereProjector.h Inventor/projectors/SbSphereProjector.h
   \brief The SbSphereProjector class is the abstract base class for mapping to spherical surfaces.
 
-  \ingroup projectors
+  \ingroup coin_projectors
 
   The sphere projectors map 2D points to various surface types based
   on spherical shapes.

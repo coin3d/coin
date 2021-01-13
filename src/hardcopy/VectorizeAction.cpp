@@ -34,7 +34,7 @@
   \class SoVectorizeAction SoVectorizeAction.h Inventor/annex/HardCopy/SoVectorizeAction.h
   \brief The SoVectorizeAction class is the base class for vectorizing Coin scene graphs.
 
-  \ingroup hardcopy
+  \ingroup coin_hardcopy
 
   SoVectorizeAction will traverse the scene graph and convert all
   supported geometry into vectorized data. Subclasses can then use

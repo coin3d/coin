@@ -34,7 +34,7 @@
   \class SoGLDisplayList Inventor/elements/SoGLDisplayList.h
   \brief The SoGLDisplayList class stores and manages OpenGL display lists.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   The TEXTURE_OBJECT type is not directly supported in Coin. We handle
   textures differently in a more flexible class called SoGLImage,

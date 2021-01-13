@@ -34,7 +34,7 @@
   \class SoGeoElement SoGeoElement.h Inventor/elements/SoGeoElement.h
   \brief The SoGeoElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 

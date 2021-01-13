@@ -34,7 +34,7 @@
   \class SoPackedColorV20 SoPackedColorV20.h
   \brief The SoPackedColorV20 class is a node is for Inventor V2.0 support only.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   \sa SoPackedColor
 */

@@ -42,7 +42,7 @@
   \class SoSFEngine SoSFEngine.h Inventor/fields/SoSFEngine.h
   \brief The SoSFEngine class is a container for a single engine.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field container stores a pointer to a Coin engine. It takes care
   of the necessary functionality for handling copy, import and export

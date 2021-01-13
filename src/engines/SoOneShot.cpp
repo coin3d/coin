@@ -34,7 +34,7 @@
   \class SoOneShot SoOneShot.h Inventor/engines/SoOneShot.h
   \brief The SoOneShot class is a timer that runs for a configurable time and then stops.
 
-  \ingroup engines
+  \ingroup coin_engines
 */
 
 #include <Inventor/engines/SoOneShot.h>

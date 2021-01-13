@@ -35,7 +35,7 @@
   \brief The SoSField class is the base class for fields which contains
   only a single value.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   All field types which should always contain only a single member
   value inherits this class. SoSField is an abstract class.

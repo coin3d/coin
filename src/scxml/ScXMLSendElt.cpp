@@ -109,7 +109,7 @@
   The \c hints attribute is not supported.
 
   \sa ScXMLEventTarget, ScXMLEventElt, ScXMLDataElt, ScXMLAssignElt
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>

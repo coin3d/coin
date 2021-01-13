@@ -40,7 +40,7 @@
   \class SoPointLightDragger SoPointLightDragger.h Inventor/draggers/SoPointLightDragger.h
   \brief The SoPointLightDragger class provides interactive geometry for manipulating a point light source.
 
-  \ingroup draggers
+  \ingroup coin_draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT
 

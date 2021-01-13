@@ -34,7 +34,7 @@
   \class SoIndexedNurbsSurface SoIndexedNurbsSurface.h Inventor/nodes/SoIndexedNurbsSurface.h
   \brief The SoIndexedNurbsSurface class can be used to render NURBS surfaces.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   It is very similar to the SoNurbsSurface class, but control points
   can be specified using indices.

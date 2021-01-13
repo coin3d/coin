@@ -34,7 +34,7 @@
   \class SoTimeCounter SoTimeCounter.h Inventor/engines/SoTimeCounter.h
   \brief The SoTimeCounter class is an integer counter engine.
 
-  \ingroup engines
+  \ingroup coin_engines
 
   The SoTimeCounter engine is by default connected to the realTime
   global field, and does stepwise updates on the SoTimeCounter::output

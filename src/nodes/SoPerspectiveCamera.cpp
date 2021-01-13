@@ -34,7 +34,7 @@
   \class SoPerspectiveCamera SoPerspectiveCamera.h Inventor/nodes/SoPerspectiveCamera.h
   \brief The SoPerspectiveCamera class defines a camera node with perspective rendering.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   For realistic looking 3D scene, the geometry should be rendered with
   perspective calculations. Use this camera type to accomplish this.

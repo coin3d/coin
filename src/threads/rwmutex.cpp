@@ -30,23 +30,21 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file Inventor/C/threads/common.h */
-
 /*!
   \struct cc_rwmutex common.h Inventor/C/threads/common.h
-  \ingroup threads
+  \ingroup coin_threads
   \brief The structure for a read-write mutex.
 */
 
 /*!
   \typedef struct cc_rwmutex cc_rwmutex
-  \ingroup threads
+  \ingroup coin_threads
   \brief The type definition for the read-write mutex structure.
 */
 
 /*!
   \enum cc_precedence {CC_READ_PRECEDENCE, CC_WRITE_PRECEDENCE}
-  \ingroup threads
+  \ingroup coin_threads
   \brief The precedence values for the read-write mutex.
   \details
   CC_READ_PRECEDENCE is the default.
@@ -54,11 +52,10 @@
 
 /*!
   \typedef enum cc_precedence cc_precedence
-  \ingroup threads
+  \ingroup coin_threads
   \brief The type definition of the cc_precedence enumerator.
 */
 
-/*! \file rwmutex.h */
 #include <Inventor/C/threads/rwmutex.h>
 
 #include <cstdlib>

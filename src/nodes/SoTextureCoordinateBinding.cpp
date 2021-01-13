@@ -34,7 +34,7 @@
   \class SoTextureCoordinateBinding SoTextureCoordinateBinding.h Inventor/nodes/SoTextureCoordinateBinding.h
   \brief The SoTextureCoordinateBinding class says how texture coordinates should be bound to shapes.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   SoTextureCoordinateBinding binds current coordinates to subsequent
   shapes by using either per vertex or per indexed vertex binding.

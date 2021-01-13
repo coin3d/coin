@@ -34,7 +34,7 @@
   \class SoRotationXYZ SoRotationXYZ.h Inventor/nodes/SoRotationXYZ.h
   \brief The SoRotationXYZ class is a node type for specifying rotation around a particular axis.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Application programmers can use nodes of this type instead of
   SoRotation nodes for simplicity and clarity if the rotation will

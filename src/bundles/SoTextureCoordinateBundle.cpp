@@ -34,7 +34,7 @@
   \class SoTextureCoordinateBundle SoTextureCoordinateBundle.h Inventor/bundles/SoTextureCoordinateBundle.h
   \brief The SoTextureCoordinateBundle class simplifies texture coordinate handling.
 
-  \ingroup bundles
+  \ingroup coin_bundles
 
   It is unlikely that application programmers should need to know how
   to use this class, as it is mostly intended for internal use.

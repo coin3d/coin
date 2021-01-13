@@ -34,7 +34,7 @@
   \class SoGLRenderPassElement Inventor/elements/SoGLRenderPassElement.h
   \brief The SoGLRenderPassElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

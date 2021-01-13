@@ -34,7 +34,7 @@
   \class SoMultiTextureMatrixElement Inventor/elements/SoMultiTextureMatrixElement.h
   \brief The SoMultiTextureMatrixElement class is used to manage the texture matrix stack for texture units &gt; 0.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   The texture matrix is used to transform texture coordinates before
   being used to map textures onto polygons.

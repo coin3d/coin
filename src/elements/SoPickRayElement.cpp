@@ -34,7 +34,7 @@
   \class SoPickRayElement Inventor/elements/SoPickRayElement.h
   \brief The SoPickRayElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

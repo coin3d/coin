@@ -49,7 +49,7 @@
   an SoEvent to the SCXML state machine.
 
   \since Coin 3.0
-  \ingroup soscxml
+  \ingroup coin_soscxml
 */
 
 // *************************************************************************

@@ -34,7 +34,7 @@
   \class SoGLLineWidthElement Inventor/elements/SoGLLineWidthElement.h
   \brief The SoGLLineWidthElement class changes the line width setting of the OpenGL render state.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   Requests from the scene graph to change the line width when rendering
   OpenGL line primitives will be made through this element, which

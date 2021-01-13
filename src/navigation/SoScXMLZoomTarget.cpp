@@ -71,7 +71,7 @@
     RESET
       _sessionid {string}
 
-  \ingroup navigation
+  \ingroup coin_navigation
   \since Coin 3.1
 */
 

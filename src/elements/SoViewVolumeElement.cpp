@@ -34,7 +34,7 @@
   \class SoViewVolumeElement Inventor/elements/SoViewVolumeElement.h
   \brief The SoViewVolumeElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

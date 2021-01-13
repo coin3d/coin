@@ -40,7 +40,7 @@
   \class SoTabPlaneDragger SoTabPlaneDragger.h Inventor/draggers/SoTabPlaneDragger.h
   \brief The SoTabPlaneDragger class is a dragger you can translate and scale within a plane.
 
-  \ingroup draggers
+  \ingroup coin_draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT
 

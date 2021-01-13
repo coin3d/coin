@@ -51,7 +51,7 @@
   \brief The SbVec4d class is a 4 dimensional vector with double precision
   floating point coordinates.
 
-  \ingroup base
+  \ingroup coin_base
 
   This vector class is not by many other classes in
   Coin. It provides storage for a 3 dimensional homogeneous

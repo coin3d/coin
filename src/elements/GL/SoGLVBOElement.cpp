@@ -34,7 +34,7 @@
   \class SoGLVBOElement Inventor/elements/SoGLVBOElement.h
   \brief The SoGLVBOElement class is used to store VBO state.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 

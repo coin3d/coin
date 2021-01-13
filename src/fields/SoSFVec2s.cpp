@@ -34,7 +34,7 @@
   \class SoSFVec2s SoSFVec2s.h Inventor/fields/SoSFVec2s.h
   \brief The SoSFVec2s class is a container for an SbVec2s vector.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   need to store a single vector with two elements.

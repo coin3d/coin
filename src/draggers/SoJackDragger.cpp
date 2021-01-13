@@ -40,7 +40,7 @@
   \class SoJackDragger SoJackDragger.h Inventor/draggers/SoJackDragger.h
   \brief The SoJackDragger class is a dragger you can translate, rotate and scale.
 
-  \ingroup draggers
+  \ingroup coin_draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT
 

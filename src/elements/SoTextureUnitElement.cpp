@@ -38,7 +38,7 @@
 
   FIXME: write doc.
 
-  \ingroup elements
+  \ingroup coin_elements
   \COIN_CLASS_EXTENSION
   \since Coin 2.2
 */

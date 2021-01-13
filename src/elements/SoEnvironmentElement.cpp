@@ -34,7 +34,7 @@
   \class SoEnvironmentElement Inventor/elements/SoEnvironmentElement.h
   \brief The SoEnvironmentElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

@@ -40,7 +40,7 @@
   \class SoVRMLTouchSensor SoVRMLTouchSensor.h Inventor/VRMLnodes/SoVRMLTouchSensor.h
   \brief The SoVRMLTouchSensor class tracks to pointer position and sends events based on user interaction.
 
-  \ingroup VRMLnodes
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 

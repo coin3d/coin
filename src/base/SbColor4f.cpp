@@ -35,7 +35,7 @@
   \brief The SbColor4f class contains the red, green, blue and alpha
   components which make up a color value.
 
-  \ingroup base
+  \ingroup coin_base
 
   This class is used internally within other classes in Coin.  It contains
   a 4 component vector as a position in the RGB cube with an additional

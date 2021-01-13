@@ -59,7 +59,7 @@
 // #define DEV_DEBUG 1
 
 /*!
-  \page xmlparsing XML Parsing with Coin
+  \page coin_xml_parsing XML Parsing with Coin
 
   For Coin 3.0, we added an XML parser to Coin.  This document describes
   how it can be used for generic purposes.
@@ -111,7 +111,7 @@
   This type is an opaque container object type for an XML document structure,
   and also the interface for configuring the parsing and writing code.
 
-  \ingroup XML
+  \ingroup coin_XML
 */
 
 struct cc_xml_doc {
@@ -336,7 +336,7 @@ cc_xml_doc_delete_parser_x(cc_xml_doc * doc)
 
   Creates a new cc_xml_doc object that is totally blank.
 
-  \ingroup XML
+  \ingroup coin_XML
   \relates cc_xml_doc
 */
 
@@ -361,7 +361,7 @@ cc_xml_doc_new(void)
 
   Frees up a cc_xml_doc object and all its resources.
 
-  \ingroup XML
+  \ingroup coin_XML
   \relates cc_xml_doc
 */
 
@@ -389,7 +389,7 @@ cc_xml_doc_delete_x(cc_xml_doc * doc)
   Elements can only be discarded as they are popped - on push they will be
   kept regardless of what the filter callback returns.
 
-  \ingroup XML
+  \ingroup coin_XML
   \relates cc_xml_doc
 */
 
@@ -405,7 +405,7 @@ cc_xml_doc_set_filter_cb_x(cc_xml_doc * doc, cc_xml_filter_cb * cb, void * userd
 
   Returns the set filter callback in the \a cb arg and \a userdata arg.
 
-  \ingroup XML
+  \ingroup coin_XML
   \relates cc_xml_doc
 */
 

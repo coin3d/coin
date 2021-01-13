@@ -34,7 +34,7 @@
   \class SoPickStyleElement Inventor/elements/SoPickStyleElement.h
   \brief The SoPickStyleElement is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

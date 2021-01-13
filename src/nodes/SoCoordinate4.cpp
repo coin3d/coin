@@ -34,7 +34,7 @@
   \class SoCoordinate4 SoCoordinate4.h Inventor/nodes/SoCoordinate4.h
   \brief The SoCoordinate4 class is a node for providing coordinates to shape nodes.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   When encountering nodes of this type during traversal, the
   coordinates it contains will be put on the state stack for later use

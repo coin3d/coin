@@ -34,7 +34,7 @@
   \class SoMFVec2d SoMFVec2d.h Inventor/fields/SoMFVec2d.h
   \brief The SoMFVec2d class is a container for SbVec2d vectors.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   need to store an array of vectors with two elements.

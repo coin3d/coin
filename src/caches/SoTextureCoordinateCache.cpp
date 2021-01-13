@@ -34,7 +34,7 @@
   \class SoTextureCoordinateCache SoTextureCoordinateCache.h Inventor/caches/SoTextureCoordinateCache.h
   \brief The SoTextureCoordinateCache class is used to cache generated texture coordinates.
 
-  \ingroup caches
+  \ingroup coin_caches
 */
 
 #include <Inventor/caches/SoTextureCoordinateCache.h>

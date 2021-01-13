@@ -40,7 +40,7 @@
   \class SoVRMLInline SoVRMLInline.h Inventor/VRMLnodes/SoVRMLInline.h
   \brief The SoVRMLInline class is used to insert VRML files into a scene.
 
-  \ingroup VRMLnodes
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
   
@@ -124,7 +124,6 @@
   Always display bounding box.
 */
 
-/*! \file SoVRMLInline.h */
 #include <Inventor/VRMLnodes/SoVRMLInline.h>
 #include "coindefs.h"
 

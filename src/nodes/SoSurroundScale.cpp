@@ -34,7 +34,7 @@
   \class SoSurroundScale SoSurroundScale.h Inventor/nodes/SoSurroundScale.h
   \brief The SoSurroundScale class is used to automatically scale geometry to surround other geometry.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   This node calculates a transformation (a translation and a scale)
   which will, when the node is traversed, be appended to the current

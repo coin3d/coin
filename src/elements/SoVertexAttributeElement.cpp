@@ -35,7 +35,7 @@
   \class SoVertexAttributeElement Inventor/elements/SoVertexAttributeElement.h
   \brief The SoVertexAttributeElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

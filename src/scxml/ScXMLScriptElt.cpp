@@ -36,7 +36,7 @@
   \class ScXMLScriptElt ScXMLScriptElt.h Inventor/scxml/ScXMLScriptElt.h
   \brief implements the &lt;script&gt; SCXML element.
 
-  \ingroup scxml
+  \ingroup coin_scxml
   \since Coin 3.1
 */
 

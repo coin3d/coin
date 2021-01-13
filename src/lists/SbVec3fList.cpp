@@ -36,7 +36,7 @@
   \class SbVec3fList SbVec3fList.h Inventor/lists/SbVec3fList.h
   \brief The SbVec3fList class is a container for pointers to SbVec3f objects.
 
-  \ingroup base
+  \ingroup coin_base
 
   Note that upon using the equality and inequality operators, the
   SbVec3f objects themselves are not compared, only the pointer

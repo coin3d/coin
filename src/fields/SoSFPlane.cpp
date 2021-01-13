@@ -34,7 +34,7 @@
   \class SoSFPlane SoSFPlane.h Inventor/fields/SoSFPlane.h
   \brief The SoSFPlane class is a container for an SbPlane value.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   need to store a single definition of a 3D plane.

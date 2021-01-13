@@ -34,7 +34,7 @@
   \class SoSFTime SoSFTime.h Inventor/fields/SoSFTime.h
   \brief The SoSFTime class is a container for an SbTime value.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   need to store a single time representation.

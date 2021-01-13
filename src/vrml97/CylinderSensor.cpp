@@ -40,7 +40,7 @@
   \class SoVRMLCylinderSensor SoVRMLCylinderSensor.h Inventor/VRMLnodes/SoVRMLCylinderSensor
   \brief The SoVRMLCylinderSensor class maps pointer motion into rotations around the Y-axis.
 
-  \ingroup VRMLnodes
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 

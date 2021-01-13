@@ -72,7 +72,7 @@
       [absmaxfocaldistance] {float}
       [motiontype] {string:exponential,linear}
 
-  \ingroup navigation
+  \ingroup coin_navigation
   \since Coin 3.1
 */
 

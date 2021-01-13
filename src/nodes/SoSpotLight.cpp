@@ -34,7 +34,7 @@
   \class SoSpotLight SoSpotLight.h Inventor/nodes/SoSpotLight.h
   \brief The SoSpotLight class is a node type for light sources with a cone shaped light volume.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Spotlights are light sources with a position and a direction. They
   can be thought of as a point light with a lampshade.

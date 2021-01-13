@@ -34,7 +34,7 @@
   \class SbString SbString.h Inventor/SbString.h
   \brief The SbString class is a string class with convenience functions for string operations.
 
-  \ingroup base
+  \ingroup coin_base
 
   This is the class used for storing and working with character
   strings. It automatically takes care of supporting all the

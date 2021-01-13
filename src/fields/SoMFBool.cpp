@@ -34,7 +34,7 @@
   \class SoMFBool SoMFBool.h Inventor/fields/SoMFBool.h
   \brief The SoMFBool class is a container for SbBool values.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   need to store multiple boolean on/off or TRUE/FALSE values.

@@ -34,7 +34,7 @@
   \class SoNormalGenerator SoNormalGenerator.h include/Inventor/misc/SoNormalGenerator.h
   \brief The SoNormalGenerator class is used to generate normals.
 
-  \ingroup general
+  \ingroup coin_general
 
   FIXME: document properly
 */

@@ -34,7 +34,7 @@
   \class SoSceneManager SoSceneManager.h Inventor/SoSceneManager.h
   \brief The SoSceneManager class provides the main interface between the scene graph and the GUI toolkit.
 
-  \ingroup general
+  \ingroup coin_general
 
   The render area class from the GUI toolkit you are using uses this
   class as the interface against the scene graph. Event handling and
@@ -48,7 +48,6 @@
 
 // *************************************************************************
 
-/*! \file SoSceneManager.h */
 #include <Inventor/SoSceneManager.h>
 
 #include <cassert>

@@ -34,7 +34,7 @@
   \class SoSceneTexture2 SoSceneTexture2.h Inventor/nodes/SoSceneTexture2.h
   \brief The SoSceneTexture2 class is used to create a 2D texture from a Coin scene graph.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Lets the rendering of a scene graph be specified as a texture image
   to be used in another scene graph. Set up the scene graph used for a

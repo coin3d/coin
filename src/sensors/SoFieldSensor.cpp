@@ -34,7 +34,7 @@
   \class SoFieldSensor SoFieldSensor.h Inventor/sensors/SoFieldSensor.h
   \brief The SoFieldSensor class detects changes to a field.
 
-  \ingroup sensors
+  \ingroup coin_sensors
 
   Attach a field to a sensor of this type to put it under
   surveillance, so you can act upon changes to the field.

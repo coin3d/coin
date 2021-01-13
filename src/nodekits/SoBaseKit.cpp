@@ -40,7 +40,7 @@
   \class SoBaseKit SoBaseKit.h Inventor/nodekits/SoBaseKit.h
   \brief The SoBaseKit class is the top level superclass for nodekits.
 
-  \ingroup nodekits
+  \ingroup coin_nodekits
 
   Node kits are collections of nodes and other node kits (from here on
   node kits which are part of some other node kit, will only be referred

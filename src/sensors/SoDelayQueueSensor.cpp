@@ -34,7 +34,7 @@
   \class SoDelayQueueSensor SoDelayQueueSensor.h Inventor/sensors/SoDelayQueueSensor.h
   \brief The SoDelayQueueSensor class is the abstract base class for priority scheduled sensors.
 
-  \ingroup sensors
+  \ingroup coin_sensors
 
   Delay queue sensors are invoked upon various events \e not related
   to time occurrences. See documentation of subclasses to see which

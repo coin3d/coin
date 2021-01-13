@@ -37,7 +37,7 @@
   \brief implements the &lt;state&gt; SCXML element.
 
   \since Coin 3.0
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>

@@ -34,7 +34,7 @@
   \class SoMFString SoMFString.h Inventor/fields/SoMFString.h
   \brief The SoMFString class is a container for SbString values.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   needs to store arrays of strings.

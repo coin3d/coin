@@ -34,7 +34,7 @@
   \class SbDPViewVolume SbDPViewVolume.h Inventor/SbDPViewVolume.h
   \brief The SbDPViewVolume class is a double precision viewing volume in 3D space.
 
-  \ingroup base
+  \ingroup coin_base
 
   This class contains the necessary information for storing a view
   volume.  It has methods for projection of primitives from or into

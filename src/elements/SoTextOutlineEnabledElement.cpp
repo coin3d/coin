@@ -34,7 +34,7 @@
   \class SoTextOutlineEnabledElement Inventor/elements/SoTextOutlineEnabledElement.h
   \brief The SoTextOutlineEnabledElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 

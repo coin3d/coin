@@ -34,7 +34,7 @@
   \class SoDepthBufferElement Inventor/elements/SoDepthBufferElement.h
   \brief The SoDepthBufferElement controls the depth buffer settings.
 
-  \ingroup elements
+  \ingroup coin_elements
   \COIN_CLASS_EXTENSION
   \since Coin 3.0
 */

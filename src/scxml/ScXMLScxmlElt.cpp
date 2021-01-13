@@ -54,7 +54,7 @@
   - datamodel - zero or one if the data model module is enabled
 
   \since Coin 3.0
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>

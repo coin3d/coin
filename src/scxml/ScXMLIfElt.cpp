@@ -36,7 +36,7 @@
   \class ScXMLIfElt ScXMLIfElt.h Inventor/scxml/ScXMLIfElt.h
   \brief implements the &lt;if&gt; SCXML element.
 
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>

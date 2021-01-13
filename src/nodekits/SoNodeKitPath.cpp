@@ -40,7 +40,7 @@
   \class SoNodeKitPath SoNodeKitPath.h Inventor/SoNodeKitPath.h
   \brief The SoNodeKitPath class is a path that contains only nodekit nodes.
 
-  \ingroup nodekits
+  \ingroup coin_nodekits
 
   All other nodes are hidden from the user.
 */

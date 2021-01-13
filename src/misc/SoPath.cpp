@@ -34,7 +34,7 @@
   \class SoPath SoPath.h Inventor/SoPath.h
   \brief The SoPath class is a container class for traversal path descriptions.
 
-  \ingroup general
+  \ingroup coin_general
 
   SoPath objects contain a list of SoNode pointers and a list of child
   indices. Indices are necessary to disambiguate situations where a

@@ -34,7 +34,7 @@
   \class SoIndexedFaceSet SoIndexedFaceSet.h Inventor/nodes/SoIndexedFaceSet.h
   \brief The SoIndexedFaceSet class is used to handle generic indexed facesets.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Facesets are specified using the coordIndex field. Each face must be
   terminated by a negative (-1) index. Coordinates, normals, materials

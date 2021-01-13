@@ -38,7 +38,7 @@
 
   \sa SoVertexAttribute
 
-  \ingroup shaders
+  \ingroup coin_shaders
 
   The material binding specified in nodes of this type decides how the
   vertex attribute values of SoVertexAttribute nodes are mapped on the

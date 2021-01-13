@@ -35,7 +35,7 @@
   \brief The SbVec2i32 class is a 2 dimensional vector with 32-bit signed 
   integer coordinates.
 
-  \ingroup base
+  \ingroup coin_base
 
   This vector class is used by many other classes in
   Coin. It provides storage for a vector in 2 dimensions

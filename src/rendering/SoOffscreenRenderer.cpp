@@ -34,7 +34,7 @@
   \class SoOffscreenRenderer SoOffscreenRenderer.h Inventor/SoOffscreenRenderer.h
   \brief The SoOffscreenRenderer class is used for rendering scenes to offscreen buffers.
 
-  \ingroup general
+  \ingroup coin_general
 
   If you want to render to a memory buffer instead of an on-screen
   OpenGL context, use this class. Rendering to a memory buffer can be

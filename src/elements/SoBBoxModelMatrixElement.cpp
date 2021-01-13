@@ -36,7 +36,7 @@
   matrix during a scene graph traversal.  It is used by amongst others the
   SoGetBoundingBoxAction class.
 
-  \ingroup elements
+  \ingroup coin_elements
 */
 
 #include <Inventor/elements/SoBBoxModelMatrixElement.h>

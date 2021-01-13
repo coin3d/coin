@@ -34,7 +34,7 @@
   \class SoGeoSeparator SoGeoSeparator.h Inventor/nodes/SoGeoSeparator.h
   \brief The SoGeoSeparator class is used to georeference a scene graph.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code

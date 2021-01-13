@@ -43,12 +43,12 @@
   environment variables are irrelevant at compile time when Coin is
   built.
 
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
-// referencing block that goes to the envvars module
+// referencing block that goes to the coin_envvars module
 /*!
-  \page Coin_envvars_profiler Scene Graph Profiler
+  \page coin_envvars_profiler Scene Graph Profiler
 
   The scene graph profiler subsystem uses the following environment
   variables:
@@ -62,7 +62,7 @@
   objects, but using these will of course cause you to profile special
   cases that may not be as important as you might think.
 
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
@@ -99,7 +99,7 @@
   using keywords, and setting the value to \c "1" is the same thing as
   setting it to \c "on".
 
-  \ingroup profiler
+  \ingroup coin_profiler coin_envvars
 */
 
 /*!
@@ -159,113 +159,195 @@
   of implementing this functionality.  This still works but just gives
   you one default view.  It cannot be combined with using keywords.
 
-  \ingroup profiler
+  \ingroup coin_profiler coin_envvars
 */
 
 /*
   FIXME: document all variables. pederb, 2004-03-22
 
   UPDATE: a good way to do this, imho, would be to set them up as
-  SoDBP::EnvVars members, as is done for a few already, and document
+  SoDBP::coin_envvars members, as is done for a few already, and document
   them one-by-one through Doxygen.  20071106 mortene.
 */
 
 /*!
-  \page Coin_environment_variables Environment variables
+  \page coin_environment_variables Environment variables
 
   Debug related:
 
-  \li \c COIN_DEBUG_GLU_INFO
-  \li \c COIN_DEBUG_FONTSUPPORT
-  \li \c COIN_DEBUG_3DS
-  \li \c COIN_DEBUG_AUDIO
-  \li \c COIN_DEBUG_BREAK
-  \li \c COIN_DEBUG_CACHING
-  \li \c COIN_DEBUG_DL
-  \li \c COIN_DEBUG_IMPORT
-  \li \c COIN_DEBUG_LISTMODULES
-  \li \c COIN_DEBUG_SOINPUT_FINDFILE
-  \li \c COIN_DEBUG_SOOFFSCREENRENDERER
-  \li \c COIN_DEBUG_WRITEREFS
-  \li \c COIN_RANDOMIZE_RENDER_CACHING
+  \li \ref COIN_DEBUG_3DS
+  \li \ref COIN_DEBUG_ASSERT_SOBASE_SETNAME
+  \li \ref COIN_DEBUG_AUDIO
+  \li \ref COIN_DEBUG_BINARY_INPUT
+  \li \ref COIN_DEBUG_BREAK
+  \li \ref COIN_DEBUG_CACHING
+  \li \ref COIN_DEBUG_CLEANUP
+  \li \ref COIN_DEBUG_DL
+  \li \ref COIN_DEBUG_EXTRA
+  \li \ref COIN_DEBUG_FLATTEN_NODEKITS_ON_WRITE
+  \li \ref COIN_DEBUG_FONTSUPPORT
+  \li \ref COIN_DEBUG_GLGLUE
+  \li \ref COIN_DEBUG_GLRENDER_TRAVERSAL
+  \li \ref COIN_DEBUG_GLUNURBSSURFACE
+  \li \ref COIN_DEBUG_GLU_INFO
+  \li \ref COIN_DEBUG_GLU_VERSION
+  \li \ref COIN_DEBUG_IMPORT
+  \li \ref COIN_DEBUG_INTERSECTIONDETECTIONACTION
+  \li \ref COIN_DEBUG_LISTMODULES
+  \li \ref COIN_DEBUG_MUTEXLOCK_MAXTIME
+  \li \ref COIN_DEBUG_MUTEXLOCK_TIMING
+  \li \ref COIN_DEBUG_MUTEX_COUNT
+  \li \ref COIN_DEBUG_NORMALIZE
+  \li \ref COIN_DEBUG_NPRINTF
+  \li \ref COIN_DEBUG_NURBS_COMPLEXITY
+  \li \ref COIN_DEBUG_ROOT_NOTIFICATIONS
+  \li \ref COIN_DEBUG_SIMAGE
+  \li \ref COIN_DEBUG_SOEXTSELECTION
+  \li \ref COIN_DEBUG_SOFILE_READ
+  \li \ref COIN_DEBUG_SOINPUT_FINDFILE
+  \li \ref COIN_DEBUG_SOOFFSCREENRENDERER
+  \li \ref COIN_DEBUG_SOOFFSCREENRENDERER_TILEPREFIX
+  \li \ref COIN_DEBUG_SPIDERMONKEY_BINDING
+  \li \ref COIN_DEBUG_STRING_GROW
+  \li \ref COIN_DEBUG_TRACK_SOBASE_INSTANCES
+  \li \ref COIN_DEBUG_VBO
+  \li \ref COIN_DEBUG_VRMLSCRIPT
+  \li \ref COIN_DEBUG_WRITEREFS
+  \li \ref COIN_GLERROR_DEBUGGING
+  \li \ref COIN_RANDOMIZE_RENDER_CACHING
 
   Font/Text rendering related:
 
-  \li \c COIN_FREETYPE2_LIBNAME
-  \li \c COIN_FORCE_FREETYPE_OFF
-  \li \c COIN_FORCE_WIN32FONTS_OFF
-  \li \c COIN_FONT_PATH
+  \li \ref COIN_FONT_PATH
+  \li \ref COIN_FONTCONFIG_LIBNAME
+  \li \ref COIN_FORCE_FONTCONFIG_OFF
+  \li \ref COIN_FREETYPE2_LIBNAME
+  \li \ref COIN_FORCE_FREETYPE_OFF
+  \li \ref COIN_FORCE_WIN32FONTS_OFF
 
-  \li \c COIN_DISABLE_UTF8
+  \li \ref COIN_DISABLE_UTF8
 
-  \li \c COIN_GLU_LIBNAME
-  \li \c COIN_AGLGLUE_NO_PBUFFERS
-  \li \c COIN_DEBUG_DL
-  \li \c COIN_SIMAGE_LIBNAME
-  \li \c COIN_GLXGLUE_NO_GLX13_PBUFFERS
-  \li \c COIN_GLXGLUE_NO_PBUFFERS
-  \li \c COIN_ZLIB_LIBNAME
-  \li \c COIN_BZIP2_LIBNAME
-  \li \c COIN_WGLGLUE_NO_PBUFFERS
-  \li \c COIN_DONT_MANGLE_OUTPUT_NAMES
-  \li \c COIN_EXTSELECTION_SAVE_OFFSCREENBUFFER
-  \li \c COIN_FORCE_TILED_OFFSCREENRENDERING
-  \li \c COIN_GLERROR_DEBUGGING
-  \li \c COIN_IDA_DEBUG
-  \li \c COIN_OFFSCREENRENDERER_MAX_TILESIZE
-  \li \c COIN_OFFSCREENRENDERER_TILEHEIGHT
-  \li \c COIN_OFFSCREENRENDERER_TILEWIDTH
-  \li \c COIN_OLDSTYLE_FORMATTING
-  \li \c COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE
-  \li \c COIN_SOINPUT_SEARCH_GLOBAL_DICT
-  \li \c COIN_SOOFFSCREENRENDERER_TILEPREFIX
-  \li \c COIN_SORTED_LAYERS_USE_NVIDIA_RC
+  Runtime linking related:
+
+  \li \ref COIN_BZIP2_LIBNAME
+  \li \ref COIN_CG_LIBNAME
+  \li \ref COIN_FONTCONFIG_LIBNAME
+  \li \ref COIN_FREETYPE2_LIBNAME
+  \li \ref COIN_GLU_LIBNAME
+  \li \ref COIN_OPENAL_LIBNAME
+  \li \ref COIN_SIMAGE_LIBNAME
+  \li \ref COIN_SPIDERMONKEY_LIBNAME
+  \li \ref COIN_ZLIB_LIBNAME
 
   Sound related:
 
-  \li \c COIN_SOUND_BUFFER_LENGTH
-  \li \c COIN_SOUND_DISABLE
-  \li \c COIN_SOUND_DRIVER_NAME
-  \li \c COIN_SOUND_ENABLE
-  \li \c COIN_SOUND_INTRO_PAUSE
-  \li \c COIN_SOUND_NUM_BUFFERS
-  \li \c COIN_SOUND_THREAD_SLEEP_TIME
-  \li \c COIN_OPENAL_LIBNAME
+  \li \ref COIN_OPENAL_LIBNAME
+  \li \ref COIN_SOUND_BUFFER_LENGTH
+  \li \ref COIN_SOUND_DISABLE
+  \li \ref COIN_SOUND_DRIVER_NAME
+  \li \ref COIN_SOUND_ENABLE
+  \li \ref COIN_SOUND_INTRO_PAUSE
+  \li \ref COIN_SOUND_NUM_BUFFERS
+  \li \ref COIN_SOUND_THREAD_SLEEP_TIME
 
   Texture control related:
 
-  \li \c COIN_TEX2_LINEAR_LIMIT
-  \li \c COIN_TEX2_LINEAR_MIPMAP_LIMIT
-  \li \c COIN_TEX2_MIPMAP_LIMIT
-  \li \c COIN_TEX2_SCALEUP_LIMIT
-  \li \c COIN_TEX2_USE_GLTEXSUBIMAGE
-  \li \c COIN_MAXIMUM_TEXTURE2_SIZE
-  \li \c COIN_MAXIMUM_TEXTURE3_SIZE
+  \li \ref COIN_MAXIMUM_TEXTURE2_SIZE
+  \li \ref COIN_MAXIMUM_TEXTURE3_SIZE
+  \li \ref COIN_TEX2_ANISOTROPIC_LIMIT
+  \li \ref COIN_TEX2_LINEAR_LIMIT
+  \li \ref COIN_TEX2_LINEAR_MIPMAP_LIMIT
+  \li \ref COIN_TEX2_MIPMAP_LIMIT
+  \li \ref COIN_TEX2_SCALEUP_LIMIT
+  \li \ref COIN_TEX2_USE_GLTEXSUBIMAGE
+  \li \ref COIN_TEX2_USE_SGIS_GENERATE_MIPMAP
 
   Rendering (OpenGL) related:
 
-  \li \c COIN_USE_GL_VERTEX_ARRAYS
-  \li \c COIN_NORMALIZATION_CUBEMAP_SIZE
-  \li \c OIV_NUM_SORTED_LAYERS_PASSES
-  \li \c COIN_MAX_VBO_MEMORY
-  \li \c COIN_NUM_SORTED_LAYERS_PASSES
-  \li \c COIN_QUADMESH_PRECISE_LIGHTING
-  \li \c COIN_ENABLE_CONFORMANT_GL_CLAMP
-  \li \c COIN_GLBBOX
+  \li \ref COIN_AGLGLUE_NO_PBUFFERS
+  \li \ref COIN_CGLGLUE_NO_PBUFFERS
+  \li \ref COIN_GLXGLUE_NO_PBUFFERS
+  \li \ref COIN_GLXGLUE_NO_GLX13_PBUFFERS
+  \li \ref COIN_WGLGLUE_NO_PBUFFERS
 
-  \li \c IV_SEPARATOR_MAX_CACHES
-  \li \c COIN_AUTOCACHE_LOCAL_MAX
-  \li \c COIN_AUTOCACHE_LOCAL_MIN
-  \li \c COIN_AUTOCACHE_REMOTE_MAX
-  \li \c COIN_AUTOCACHE_REMOTE_MIN
-  \li \c COIN_AUTO_CACHING
-  \li \c COIN_ENABLE_VBO
+  \li \ref COIN_ALLOW_SPIDERMONKEY
+  \li \ref COIN_DONT_MANGLE_OUTPUT_NAMES
+  \li \ref COIN_ENABLE_CONFORMANT_GL_CLAMP
+  \li \ref COIN_EXTSELECTION_SAVE_OFFSCREENBUFFER
+  \li \ref COIN_FORCE_TILED_OFFSCREENRENDERING
+  \li \ref COIN_GLBBOX
+  \li \ref COIN_HANDLE_STACK_OVERFLOW
+  \li \ref COIN_NORMALIZATION_CUBEMAP_SIZE
+  \li \ref COIN_NOT_STRICT_VRML97
+  \li \ref COIN_NO_SOTYPE_DYNLOAD
+  \li \ref OIV_NUM_SORTED_LAYERS_PASSES
+  \li \ref COIN_NUM_SORTED_LAYERS_PASSES
+  \li \ref COIN_OFFSCREENRENDERER_MAX_TILESIZE
+  \li \ref COIN_OFFSCREENRENDERER_TILEHEIGHT
+  \li \ref COIN_OFFSCREENRENDERER_TILEWIDTH
+  \li \ref COIN_OFFSCREEN_STENCIL_BITS
+  \li \ref COIN_OLDSTYLE_FORMATTING
+  \li \ref COIN_QUADMESH_PRECISE_LIGHTING
+  \li \ref COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE
+  \li \ref COIN_SOINPUT_SEARCH_GLOBAL_DICT
+  \li \ref COIN_SOOFFSCREENRENDERER_ALLOW_RESOURCEHOG
+  \li \ref COIN_SORTED_LAYERS_USE_NVIDIA_RC
+  \li \ref COIN_VBO_MAX_LIMIT
+  \li \ref COIN_VBO_MIN_LIMIT
+  \li \ref COIN_VERTEX_ARRAYS
+  \li \ref COIN_VIEWUP
 
-  \li \c COIN_SOOFFSCREENRENDERER_ALLOW_RESOURCEHOG
+  Caching related:
 
-  \li \c SO_DRAGGER_DIR
-  \li \c SO_SHADER_DIR
-  \li \c COINDIR
+  \li \ref COIN_AUTOCACHE_LOCAL_MAX
+  \li \ref COIN_AUTOCACHE_LOCAL_MIN
+  \li \ref COIN_AUTOCACHE_REMOTE_MAX
+  \li \ref COIN_AUTOCACHE_REMOTE_MIN
+  \li \ref COIN_AUTOCACHE_VBO_LIMIT
+  \li \ref COIN_AUTO_CACHING
+  \li \ref COIN_NESTED_CACHING
+  \li \ref COIN_SMART_CACHING
+  \li \ref IV_SEPARATOR_MAX_CACHES
+
+  Tessellation related:
+
+  \li \ref COIN_GLU_SILENCE_TESS_COMBINE_WARNING
+  \li \ref COIN_PREFER_GLU_TESSELLATOR
+
+  NURBS related:
+
+  \li \ref COIN_CALCULATE_NURBS_NORMALS
+  \li \ref COIN_OLD_NURBS_COMPLEXITY
+  \li \ref COIN_REDUCE_LINEAR_NURBS_STEPS
+
+  Work around driver bugs:
+
+  \li \ref COIN_DONT_INFORM_INDIRECT_RENDERING
+  \li \ref COIN_DONT_USE_FBO
+  \li \ref COIN_FORCE_AGL
+  \li \ref COIN_FORCE_GL1_0_ONLY
+  \li \ref COIN_FULL_INDIRECT_RENDERING
+  \li \ref COIN_GLGLUE_DISABLE_NON_POWER_OF_TWO_TEXTURES
+  \li \ref COIN_GLGLUE_DISABLE_PALETTED_TEXTURE
+  \li \ref COIN_GLGLUE_DISABLE_VBO_IN_DISPLAYLIST
+  \li \ref COIN_GLGLUE_NO_ELSA_WARNING
+  \li \ref COIN_GLGLUE_NO_G400_WARNING
+  \li \ref COIN_GLGLUE_NO_RADEON_WARNING
+  \li \ref COIN_GLGLUE_NO_SUN_EXPERT3D_WARNING
+  \li \ref COIN_GLGLUE_NO_TRIDENT_WARNING
+  \li \ref COIN_GLGLUE_SILENCE_DRIVER_WARNINGS
+  \li \ref COIN_GL_DISABLE_VBO
+  \li \ref COIN_GL_NO_CURRENT_CONTEXT_CHECK
+  \li \ref COIN_NO_NVIDIA_COLOR_PER_FACE_BUG_WORKAROUND
+  \li \ref COIN_PREFER_GLPOLYGONOFFSET_EXT
+  \li \ref COIN_VBO
+
+  Others:
+
+  \li \ref COINDIR
+  \li \ref SO_DRAGGER_DIR
+  \li \ref SO_SHADER_DIR
+  \li \ref WINDIR
 */
 
 /*
@@ -295,10 +377,10 @@ EnvironmentVariable COIN_DEBUG_BREAK;
 EnvironmentVariable COIN_DEBUG_CACHING;
 EnvironmentVariable COIN_DEBUG_CLEANUP;
 EnvironmentVariable COIN_DEBUG_DL;
-EnvironmentVariable COIN_DEBUG_DL;
 EnvironmentVariable COIN_DEBUG_EXTRA;
 EnvironmentVariable COIN_DEBUG_FLATTEN_NODEKITS_ON_WRITE;
 EnvironmentVariable COIN_DEBUG_FONTSUPPORT;
+EnvironmentVariable COIN_DEBUG_GLGLUE;
 EnvironmentVariable COIN_DEBUG_GLRENDER_TRAVERSAL;
 EnvironmentVariable COIN_DEBUG_GLUNURBSSURFACE;
 EnvironmentVariable COIN_DEBUG_GLU_INFO;
@@ -326,7 +408,9 @@ EnvironmentVariable COIN_DEBUG_VBO;
 EnvironmentVariable COIN_DEBUG_VRMLSCRIPT;
 EnvironmentVariable COIN_DEBUG_WRITEREFS;
 EnvironmentVariable COIN_DISABLE_UTF8;
+EnvironmentVariable COIN_DONT_INFORM_INDIRECT_RENDERING;
 EnvironmentVariable COIN_DONT_MANGLE_OUTPUT_NAMES;
+EnvironmentVariable COIN_DONT_USE_FBO;
 EnvironmentVariable COIN_ENABLE_CONFORMANT_GL_CLAMP;
 EnvironmentVariable COIN_ENABLE_VBO;
 EnvironmentVariable COIN_EXTSELECTION_SAVE_OFFSCREENBUFFER;
@@ -335,11 +419,22 @@ EnvironmentVariable COIN_FONT_PATH;
 EnvironmentVariable COIN_FORCE_AGL;
 EnvironmentVariable COIN_FORCE_FONTCONFIG_OFF;
 EnvironmentVariable COIN_FORCE_FREETYPE_OFF;
+EnvironmentVariable COIN_FORCE_GL1_0_ONLY;
 EnvironmentVariable COIN_FORCE_TILED_OFFSCREENRENDERING;
 EnvironmentVariable COIN_FORCE_WIN32FONTS_OFF;
 EnvironmentVariable COIN_FREETYPE2_LIBNAME;
+EnvironmentVariable COIN_FULL_INDIRECT_RENDERING;
 EnvironmentVariable COIN_GLBBOX;
 EnvironmentVariable COIN_GLERROR_DEBUGGING;
+EnvironmentVariable COIN_GLGLUE_DISABLE_NON_POWER_OF_TWO_TEXTURES;
+EnvironmentVariable COIN_GLGLUE_DISABLE_PALETTED_TEXTURE;
+EnvironmentVariable COIN_GLGLUE_DISABLE_VBO_IN_DISPLAYLIST;
+EnvironmentVariable COIN_GLGLUE_NO_ELSA_WARNING;
+EnvironmentVariable COIN_GLGLUE_NO_G400_WARNING;
+EnvironmentVariable COIN_GLGLUE_NO_RADEON_WARNING;
+EnvironmentVariable COIN_GLGLUE_NO_SUN_EXPERT3D_WARNING;
+EnvironmentVariable COIN_GLGLUE_NO_TRIDENT_WARNING;
+EnvironmentVariable COIN_GLGLUE_SILENCE_DRIVER_WARNINGS;
 EnvironmentVariable COIN_GLU_LIBNAME;
 EnvironmentVariable COIN_GLU_SILENCE_TESS_COMBINE_WARNING;
 EnvironmentVariable COIN_GLXGLUE_NO_GLX13_PBUFFERS;
@@ -347,10 +442,8 @@ EnvironmentVariable COIN_GLXGLUE_NO_PBUFFERS;
 EnvironmentVariable COIN_GL_DISABLE_VBO;
 EnvironmentVariable COIN_GL_NO_CURRENT_CONTEXT_CHECK;
 EnvironmentVariable COIN_HANDLE_STACK_OVERFLOW;
-EnvironmentVariable COIN_IDA_DEBUG;
 EnvironmentVariable COIN_MAXIMUM_TEXTURE2_SIZE;
 EnvironmentVariable COIN_MAXIMUM_TEXTURE3_SIZE;
-EnvironmentVariable COIN_MAX_VBO_MEMORY;
 EnvironmentVariable COIN_NESTED_CACHING;
 EnvironmentVariable COIN_NORMALIZATION_CUBEMAP_SIZE;
 EnvironmentVariable COIN_NOT_STRICT_VRML97;
@@ -364,6 +457,7 @@ EnvironmentVariable COIN_OFFSCREEN_STENCIL_BITS;
 EnvironmentVariable COIN_OLDSTYLE_FORMATTING;
 EnvironmentVariable COIN_OLD_NURBS_COMPLEXITY;
 EnvironmentVariable COIN_OPENAL_LIBNAME;
+EnvironmentVariable COIN_PREFER_GLPOLYGONOFFSET_EXT;
 EnvironmentVariable COIN_PREFER_GLU_TESSELLATOR;
 EnvironmentVariable COIN_PROFILER;
 EnvironmentVariable COIN_PROFILER_OVERLAY;
@@ -375,7 +469,6 @@ EnvironmentVariable COIN_SIMAGE_LIBNAME;
 EnvironmentVariable COIN_SMART_CACHING;
 EnvironmentVariable COIN_SOINPUT_SEARCH_GLOBAL_DICT;
 EnvironmentVariable COIN_SOOFFSCREENRENDERER_ALLOW_RESOURCEHOG;
-EnvironmentVariable COIN_SOOFFSCREENRENDERER_TILEPREFIX;
 EnvironmentVariable COIN_SORTED_LAYERS_USE_NVIDIA_RC;
 EnvironmentVariable COIN_SOUND_BUFFER_LENGTH;
 EnvironmentVariable COIN_SOUND_DISABLE;
@@ -392,7 +485,6 @@ EnvironmentVariable COIN_TEX2_MIPMAP_LIMIT;
 EnvironmentVariable COIN_TEX2_SCALEUP_LIMIT;
 EnvironmentVariable COIN_TEX2_USE_GLTEXSUBIMAGE;
 EnvironmentVariable COIN_TEX2_USE_SGIS_GENERATE_MIPMAP;
-EnvironmentVariable COIN_USE_GL_VERTEX_ARRAYS;
 EnvironmentVariable COIN_VBO;
 EnvironmentVariable COIN_VBO_MAX_LIMIT;
 EnvironmentVariable COIN_VBO_MIN_LIMIT;
@@ -412,7 +504,7 @@ EnvironmentVariable WINDIR;
 
   \todo Write debug information about the linked GLU library to console, at first use.
 
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
@@ -421,119 +513,192 @@ EnvironmentVariable WINDIR;
   \todo Force the GLU_VERSION string to be the version specified by
   COIN_DEBUG_GLU_VERSION
 
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_FONTSUPPORT
 
-  \todo Write documentation for this
-  \ingroup envvars
+  If this environment variable is set to a value &gt; 0, an
+  extensive amount of debug information about loading, initializing and
+  using fonts will be output. Issues like missing fonts and other
+  related problems will then be reported, so we advice you to first
+  try to use this debugging option when something does not work quite
+  as expected.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_3DS
 
-  \todo Write documentation for this
-  \ingroup envvars
+  By default only error messages are generated. COIN_DEBUG_3DS environment
+  variable can be used to specify amount of debug messages:
+  0 .. only error messages (default)
+  1 .. warnings that usually concerns data parsed from the 3ds file
+  2 .. print basic 3ds file structure info
+  3 .. print everything
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_AUDIO
 
-  \todo Write documentation for this
-  \ingroup envvars
+  If this environment variable is set to a value &gt; 0, additional debug
+  information is output when sound support is enabled.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_BREAK
 
-  \todo Write documentation for this
-  \ingroup envvars
+  This environment variable is supported by Coin to set conditional
+  breakpoints.  It can be set to any number of functions in the form
+  of a list separated by commas or spaces.  The function names must be
+  given as "classname::functionname" (i.e. without return type, parenthesis
+  or argument types or names).  If a debug message is posted from one of
+  those functions, your program will be stopped (using assert(0)).
+
+  This can be useful if you want to get core-dumps or enter a debugger
+  whenever for instance a warning or an error is posted from some
+  function (e.g. "SbVec3f::normalize"). This feature is only enabled
+  in the debug version of Coin.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_CACHING
 
-  \todo Write documentation for this
-  \ingroup envvars
+  If this environment variable is set to a value &gt; 0, additional debug
+  information is output about caching.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_DL
 
-  \todo Write documentation for this
-  \ingroup envvars
+  If this environment variable is set to a value &gt; 0, additional debug
+  information is output when loading dynamic libraries/shared objects.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_IMPORT
 
-  \todo Write documentation for this
-  \ingroup envvars
+  If this environment variable is set to a value &gt; 0, additional debug
+  information is output when importing files in Inventor format.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_LISTMODULES
 
-  \todo Write documentation for this
-  \ingroup envvars
+  If this environment variable is set to a value &gt; 0, additional debug
+  information is output under Win32 when loading multiple instances of the
+  same library.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_SOINPUT_FINDFILE
 
-  \todo Write documentation for this
-  \ingroup envvars
+  If this environment variable is set to a value &gt; 0, additional debug
+  information is output when scanning through the include directories
+  in order and trying to find a file in any of them (SoInput::findFile).
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_SOOFFSCREENRENDERER
 
-  \todo Write documentation for this
-  \ingroup envvars
+  If this environment variable is set to a value &gt; 0, additional debug
+  information is output when doing offscreen rendering.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_WRITEREFS
 
-  \todo Write documentation for this
-  \ingroup envvars
+  If this environment variable is set to a value &gt; 0, additional debug
+  information regarding writerefs is output.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_RANDOMIZE_RENDER_CACHING
 
-  \todo Write documentation for this
-  \ingroup envvars
+  This environment variable is used for local stability / robustness /
+  correctness testing of the render caching. If set to a value &gt; 0,
+  renderCaching will be set to "ON" with a probability of 0.5 for
+  every SoSeparator instantiated.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_FREETYPE2_LIBNAME
 
-  \todo Write documentation for this
-  \ingroup envvars
+  Set the system shared library name for the FreeType library.
+
+  \ingroup coin_envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_FORCE_FONTCONFIG_OFF
+
+  In case you intend to use your application on systems where the
+  \e Fontconfig library is expected to be not installed you
+  should not make use of \e Fontconfig's font pattern syntax.
+
+  If this environment variable is set to a value &gt; 0, the usage of
+  \e Fontconfig can be prevented.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_FORCE_FREETYPE_OFF
 
-  \todo Write documentation for this
-  \ingroup envvars
+  On Windows the Win32 GDI library is used. \e FreeType and \e
+  Fontconfig are dynamically loaded on demand by Coin if font support
+  is requested by a node. When font support is loaded on Windows,
+  FreeType will have precedence over Win32 if located. This can be
+  prevented if this environment variable is set to a value &gt; 0.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_FORCE_WIN32FONTS_OFF
 
-  \todo Write documentation for this
-  \ingroup envvars
+  If this environment variable is set to a value &gt; 0, the usage of Win32
+  fonts is disabled (even on Windows platform).
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_FONT_PATH
 
-  \todo Write documentation for this
-  \ingroup envvars
+  It is possible to specify the TrueType font file directly if \e
+  FreeType is used as font engine.  This is done by including
+  ".ttf" in the filename, i.e. "Comic_Sans_MS.ttf".  Coin will then
+  search the local path for the running program and then the path
+  specified by the "COIN_FONT_PATH" environment variable.  If the
+  program is using \e FreeType on a Windows platform, the
+  "$WINDIR/Fonts" directory will also be searched.
+
+  \ingroup coin_envvars
 */
 
 /*!
@@ -546,327 +711,477 @@ EnvironmentVariable WINDIR;
   behavior of treating all characters according to the Western Latin-1
   encoding.
 
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_GLBBOX
 
-  If the environment variable COIN_GLBBOX is set to 1, rendering action
+  If this environment variable is set to a value &gt; 0, rendering action
   traversals will apply a bounding box action before rendering.  This will make
   sure bounding box caches are updated (needed for view frustum culling).
   The default Quarter/SoQt/SoWin/SoXt viewers will handle this at their
   end (which is the proper way to do it), so we don't do this by default.
 
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_GLU_LIBNAME
 
-  \todo Write documentation for this
-  \ingroup envvars
+  Set the system shared library name for the GLU library.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_AGLGLUE_NO_PBUFFERS
 
-  \todo Write documentation for this
-  \ingroup envvars
+  If this environment variable is set to a value &gt; 0, software rendering of
+  offscreen contexts is forced for AGL (Mac OS X).
+
+  \ingroup coin_envvars
 */
 
 /*!
-  \var EnvironmentVariable COIN_DEBUG_DL
+  \var EnvironmentVariable COIN_CGLGLUE_NO_PBUFFERS
 
-  \todo Write documentation for this
-  \ingroup envvars
-*/
+  If this environment variable is set to a value &gt; 0, software rendering of
+  offscreen contexts is forced for CGL (Mac OS X).
 
-/*!
-  \var EnvironmentVariable COIN_SIMAGE_LIBNAME
-
-  \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_GLXGLUE_NO_GLX13_PBUFFERS
 
-  \todo Write documentation for this
-  \ingroup envvars
+  If this environment variable is set to a value &gt; 0, GLX 1.3 pbuffers support
+  will not be used, but it will be attempted to use pbuffers through extensions.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_GLXGLUE_NO_PBUFFERS
 
-  \todo Write documentation for this
-  \ingroup envvars
-*/
+  If this environment variable is set to a value &gt; 0, software rendering of
+  offscreen contexts is forced for GLX.
 
-/*!
-  \var EnvironmentVariable COIN_ZLIB_LIBNAME
-
-  \todo Write documentation for this
-  \ingroup envvars
-*/
-
-/*!
-  \var EnvironmentVariable COIN_BZIP2_LIBNAME
-
-  \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_WGLGLUE_NO_PBUFFERS
 
-  \todo Write documentation for this
-  \ingroup envvars
+  If this environment variable is set to a value &gt; 0, software rendering of
+  offscreen contexts is forced for WGL (Windows).
+
+  \ingroup coin_envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_SIMAGE_LIBNAME
+
+  Set the system shared library name for the simage library.
+
+  \ingroup coin_envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_ZLIB_LIBNAME
+
+  Set the system shared library name for the zlib library.
+
+  \ingroup coin_envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_BZIP2_LIBNAME
+
+  Set the system shared library name for the bzip2 library.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DONT_MANGLE_OUTPUT_NAMES
 
-  \todo Write documentation for this
-  \ingroup envvars
+  If this environment variable is set to a value &gt; 0, we try to
+  preserve the original node names as far as possible instead of
+  appending a "+<refid>" suffix.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_EXTSELECTION_SAVE_OFFSCREENBUFFER
 
-  \todo Write documentation for this
-  \ingroup envvars
+  If the environment variable is set to a file name, the content of the
+  offscreen buffer is stored to disk for investigation.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_FORCE_TILED_OFFSCREENRENDERING
 
-  \todo Write documentation for this
-  \ingroup envvars
+  If this environment variable is set to a value &gt; 0, offscreen rendering
+  is forced to tiled rendering even when it can be done in a
+  single chunk.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_GLERROR_DEBUGGING
 
-  \todo Write documentation for this
-  \ingroup envvars
-*/
+  The GL error test is disabled by default for the optimized
+  paths.  If you get a GL error reporting an error in the
+  Separator node, enable the error checking code by setting
+  this environment variable to a value &gt; 0, to see exactly which
+  node caused the error.
 
-/*!
-  \var EnvironmentVariable COIN_IDA_DEBUG
-
-  \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_OFFSCREENRENDERER_MAX_TILESIZE
 
-  \todo Write documentation for this
-  \ingroup envvars
+  Can be used to force a maximum size (width and height) of a rendering tile
+  in the offscreen renderer.
+
+  \sa COIN_OFFSCREENRENDERER_TILEHEIGHT, COIN_OFFSCREENRENDERER_TILEWIDTH
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_OFFSCREENRENDERER_TILEHEIGHT
 
-  \todo Write documentation for this
-  \ingroup envvars
+  Can be used to override the default height of a rendering tile in the
+  offscreen renderer.
+  Should prove useful for debugging problems on remote sites.
+
+  \sa COIN_OFFSCREENRENDERER_TILEWIDTH, COIN_OFFSCREENRENDERER_MAX_TILESIZE
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_OFFSCREENRENDERER_TILEWIDTH
 
-  \todo Write documentation for this
-  \ingroup envvars
+  Can be used to override the default width of a rendering tile in the
+  offscreen renderer.
+  Should prove useful for debugging problems on remote sites.
+
+  \sa COIN_OFFSCREENRENDERER_TILEHEIGHT, COIN_OFFSCREENRENDERER_MAX_TILESIZE
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_OLDSTYLE_FORMATTING
 
-  \todo Write documentation for this
-  \ingroup envvars
+  Can be used to enable the output of the old ugly-bugly formatting style,
+  in case someone, for some obscure reason, depends on it.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE
 
-  \todo Write documentation for this
-  \ingroup envvars
+  Traditional Open Inventor uses the same override bit for both
+  diffuse color and transparency.  To get around this problem if you
+  need to override one without the other, set this environment
+  variable to "1".  This is a Coin extension, and will not work on other
+  Open Inventor implementations.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_SOINPUT_SEARCH_GLOBAL_DICT
 
-  \todo Write documentation for this
-  \ingroup envvars
-*/
+  When set to "1", the global dictionary is searched after the current
+  file dictionary when resolving USE keywords. This makes it possible
+  to reference nodes in other files.
 
-/*!
-  \var EnvironmentVariable COIN_SOOFFSCREENRENDERER_TILEPREFIX
-
-  \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_SORTED_LAYERS_USE_NVIDIA_RC
 
-  \todo Write documentation for this
-  \ingroup envvars
+  Can be used to enable the usage of extensions for rendering SORTED_LAYERS_BLEND
+  transparency which are only available on NVIDIA chipsets (GeForce3 and above,
+  except GeForce4 MX).
+  These extensions are \c GL_NV_texture_shader, \c GL_NV_texture_rectangle or
+  \c GL_EXT_texture_rectangle, \c GL_NV_register_combiners, \c GL_ARB_shadow
+  and \c GL_ARB_depth_texture. If this environment variable is set to "1" these
+  extensions are used, otherwise the \c GL_ARB_fragment_program extension
+  is used that is currently supported by the GeForceFX family and the
+  Radeon 9500 and above.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_SOUND_BUFFER_LENGTH
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_SOUND_DISABLE
 
-  \todo Write documentation for this
-  \ingroup envvars
+  Sound support is considered experimental, and is therefore not enabled by
+  default, as sound support through OpenAL caused crashes under Linux.
+  Setting the environment variable COIN_SOUND_ENABLE support in SoAudioDevice.
+
+  \sa COIN_SOUND_ENABLE
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_SOUND_DRIVER_NAME
 
-  \todo Write documentation for this
-  \ingroup envvars
+  The user can control which device name OpenAL uses by setting
+  the COIN_SOUND_DRIVER_NAME environment variable.  On Microsoft
+  Windows, the default driver name is "DirectSound3D", which should
+  normally be what the user wants.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_SOUND_ENABLE
 
-  \todo Write documentation for this
-  \ingroup envvars
+  Sound support is considered experimental, and is therefore not enabled by
+  default, as sound support through OpenAL caused crashes under Linux.
+  Setting the environment variable COIN_SOUND_ENABLE to a value &gt; 0
+  enables sound support in SoAudioDevice. If set to 0 sound support is disabled.
+
+  \sa COIN_SOUND_DISABLE
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_SOUND_INTRO_PAUSE
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_SOUND_NUM_BUFFERS
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_SOUND_THREAD_SLEEP_TIME
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_OPENAL_LIBNAME
 
-  \todo Write documentation for this
-  \ingroup envvars
+  Set the system shared library name for the OpenAL library.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_TEX2_LINEAR_LIMIT
 
-  \todo Write documentation for this
-  \ingroup envvars
+  Linear filtering is enabled if Complexity::textureQuality is greater or
+  equal to this value.
+
+  Default value is 0.2
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_TEX2_LINEAR_MIPMAP_LIMIT
 
-  \todo Write documentation for this
-  \ingroup envvars
+  Linear filtering between mipmap levels is enabled if textureQuality is
+  greater or equal to this value.
+
+  Default value is 0.8
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_TEX2_MIPMAP_LIMIT
 
-  \todo Write documentation for this
-  \ingroup envvars
+  Mipmaps are created if textureQuality is greater or equal to this value.
+
+  Default value is 0.5
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_TEX2_SCALEUP_LIMIT
 
-  \todo Write documentation for this
-  \ingroup envvars
+  Textures with width or height not equal to a power of two will always
+  be scaled up if textureQuality is greater or equal to this value.
+
+  Default value is 0.7
+
+  If textureQuality is lower than this value, and the width or height is
+  larger than 256 pixels, the texture is only scaled up if its size
+  is relatively close to the next power of two. This could save a
+  lot of texture memory.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_TEX2_USE_GLTEXSUBIMAGE
 
-  \todo Write documentation for this
-  \ingroup envvars
+  When set, and when the new texture
+  data have the same attributes as the old data, glTexSubImage() will
+  be used to copy new data into the texture instead of recreating the
+  texture.  This is not enabled by default, since it seems to trigger
+  a bug in the Linux nVidia drivers. It just happens in some
+  unreproduceable cases.  It could be a bug in our glTexSubImage()
+  code, of course. :)
+
+  \ingroup coin_envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_TEX2_ANISOTROPIC_LIMIT
+
+  Anisotropic filtering is enabled for textures when the texture quality
+  is higher than this value.
+
+  Default value is 0.85
+
+  \ingroup coin_envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_TEX2_USE_SGIS_GENERATE_MIPMAP
+
+  When set, use the GL_SGIS_generate_mipmap extension (if available) to
+  generate mipmaps, otherwise use a fast internal routine to generate them.
+  Use of GL_SGIS_generate_mipmap is not enabled by default since we suspect
+  some ATi drivers have problems with this extension.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_MAXIMUM_TEXTURE2_SIZE
 
-  \todo Write documentation for this
-  \ingroup envvars
+  Can be used to limit the maximum supported size (width and height) of a
+  2D texture in the renderer.
+
+  \sa COIN_MAXIMUM_TEXTURE3_SIZE
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_MAXIMUM_TEXTURE3_SIZE
 
-  \todo Write documentation for this
-  \ingroup envvars
-*/
+  Can be used to limit the maximum supported size (width, height and depth)
+  of a 3D texture in the renderer.
 
-/*!
-  \var EnvironmentVariable COIN_USE_GL_VERTEX_ARRAYS
+  \sa COIN_MAXIMUM_TEXTURE2_SIZE
 
-  \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_NORMALIZATION_CUBEMAP_SIZE
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable OIV_NUM_SORTED_LAYERS_PASSES
 
-  \todo Write documentation for this
-  \ingroup envvars
-*/
+  To be able to render correct transparency independent of object
+  order, one have to render in multiple passes. This technique is
+  based on depth-peeling which strips away depth layers with each
+  successive pass. The number of passes is therefore an indication of
+  how deep into the scene transparent surfaces will be rendered with
+  transparency. A higher number will lead to a lower frame rate but
+  higher quality for scenes with a lot of transparent surfaces. The
+  default number of passes is '4' and can be specified by either using
+  SoGLRenderAction::setSortedLayersNumPasses() or by letting the
+  environment variable \c COIN_NUM_SORTED_LAYERS_PASSES respectively
+  \c OIV_NUM_SORTED_LAYERS_PASSES specify the number of passes.
 
-/*!
-  \var EnvironmentVariable COIN_MAX_VBO_MEMORY
+  \sa COIN_NUM_SORTED_LAYERS_PASSES
 
-  \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_NUM_SORTED_LAYERS_PASSES
 
-  \todo Write documentation for this
-  \ingroup envvars
+  To be able to render correct transparency independent of object
+  order, one have to render in multiple passes. This technique is
+  based on depth-peeling which strips away depth layers with each
+  successive pass. The number of passes is therefore an indication of
+  how deep into the scene transparent surfaces will be rendered with
+  transparency. A higher number will lead to a lower frame rate but
+  higher quality for scenes with a lot of transparent surfaces. The
+  default number of passes is '4' and can be specified by either using
+  SoGLRenderAction::setSortedLayersNumPasses() or by letting the
+  environment variable \c COIN_NUM_SORTED_LAYERS_PASSES respectively
+  \c OIV_NUM_SORTED_LAYERS_PASSES specify the number of passes.
+
+  \sa OIV_NUM_SORTED_LAYERS_PASSES
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_QUADMESH_PRECISE_LIGHTING
 
-  \todo Write documentation for this
-  \ingroup envvars
+  When shading SoQuadMesh instances the quads in the mesh are just
+  passed on to OpenGL's GL_QUAD primitive rendering. Under certain
+  circumstances, this can lead to artifacts in how your meshes are
+  shaded. This is an inherent problem with drawing quads in meshes.
+
+  By setting the this environment variable to "1", the quads will
+  be broken up into triangles before rendered, and shading will likely
+  look much better. Be aware that this technique causes rendering of
+  the SoQuadMesh to slow down by an approximate factor of 6.
+
+  The "precise lighting" technique is currently limited to work only
+  when SoQuadMesh rendering is parameterized with 3D coordinates, a
+  material binding that is \e not per vertex, and if texture mapping is
+  done is must be without using any of the SoTextureCoordinateFunction
+  subclass nodes.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_ENABLE_CONFORMANT_GL_CLAMP
 
-  \todo Write documentation for this
-  \ingroup envvars
+  When this environment variable is set, GL_CLAMP will be used
+  if SoGLImage::CLAMP is specified as the texture wrap mode. By
+  default GL_CLAMP_TO_EDGE is used, since this is usually what people
+  want.
+
+  \ingroup coin_envvars
 */
 
 /*!
@@ -878,59 +1193,81 @@ EnvironmentVariable WINDIR;
   Setting this value to 0 will disable display list caching, and this is often
   useful if you experience weird rendering bugs which are hard to track down.
 
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_AUTOCACHE_LOCAL_MAX
 
-  \todo Write documentation for this
-  \ingroup envvars
+  Can be used to change the disable-caching limit.
+
+  \sa COIN_AUTOCACHE_LOCAL_MIN, COIN_AUTOCACHE_REMOTE_MAX
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_AUTOCACHE_LOCAL_MIN
 
-  \todo Write documentation for this
-  \ingroup envvars
+  Can be used to change the enable-caching limit.
+
+  \sa COIN_AUTOCACHE_LOCAL_MAX, COIN_AUTOCACHE_REMOTE_MIN
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_AUTOCACHE_REMOTE_MAX
 
-  \todo Write documentation for this
-  \ingroup envvars
+  Can be used to change the disable-caching limit for remote rendering.
+
+  \sa COIN_AUTOCACHE_REMOTE_MIN, COIN_AUTOCACHE_LOCAL_MAX
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_AUTOCACHE_REMOTE_MIN
 
-  \todo Write documentation for this
-  \ingroup envvars
+  Can be used to change the enable-caching limit for remote rendering.
+
+  \sa COIN_AUTOCACHE_REMOTE_MAX, COIN_AUTOCACHE_LOCAL_MIN
+
+  \ingroup coin_envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_AUTOCACHE_VBO_LIMIT
+
+  Can be used to avoid creating caches when rendering large VBOs.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_AUTO_CACHING
 
-  \todo Write documentation for this
-  \ingroup envvars
+  If this environment variable is set to a value of 0, auto caching
+  will be disabled.  It is enabled by default.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_ENABLE_VBO
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_VBO
 
-  Set COIN_VBO=0 to disable VBO rendering in Coin. This is useful if
-  you suspect bugs in either Coin's VBO code or in the OpenGL driver
-  VBO handling.
+  If this environment variable is set to a value of 0, VBO rendering
+  in Coin will be disabled. This is useful if you suspect bugs in either
+  Coin's VBO code or in the OpenGL driver VBO handling.
 
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
@@ -947,7 +1284,7 @@ EnvironmentVariable WINDIR;
 
   \sa COIN_VBO_MIN_LIMIT
 
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
@@ -960,35 +1297,55 @@ EnvironmentVariable WINDIR;
   value is 20.
 
   \sa COIN_VBO_MAX_LIMIT
-  \ingroup envvars
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_SOOFFSCREENRENDERER_ALLOW_RESOURCEHOG
 
-  \todo Write documentation for this
-  \ingroup envvars
+  Since the operation of context destruction and reconstruction has
+  the potential to be such a costly operation (because GL caches
+  are smashed, among other things), we try hard to avoid it by checking
+  that if we already have a working GL context with size equal or larger to
+  the requested size.
+
+  We also check if the current GL canvas is much larger than what is
+  requested, as to then free up potentially large memory resources,
+  even if we already have a large enough canvas.
+
+  By setting this environment variable to a value &gt; 0, you can disable
+  this behavior and keep the much larger GL canvas.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable SO_DRAGGER_DIR
 
-  \todo Write documentation for this
-  \ingroup envvars
+  The appearance of draggers can be modified by setting this environment
+  variable to point to a directory with external replacement geometry files
+  in Inventor-format which the geometry parts are read from.  The names of
+  the new files and the names of the nodes / sub-graphs within the replacement
+  geometries must follow a rigid scheme.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable SO_SHADER_DIR
 
-  \todo Write documentation for this
-  \ingroup envvars
+  Set this environment variable to point to a directory that contains the
+  referenced external .arb, .cg, .glsl shader files.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COINDIR
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 
@@ -997,356 +1354,494 @@ EnvironmentVariable WINDIR;
   \var EnvironmentVariable COIN_ALLOW_SPIDERMONKEY
 
   \todo Write documentation for this
-  \ingroup envvars
-*/
-
-/*!
-  \var EnvironmentVariable COIN_AUTOCACHE_VBO_LIMIT
-
-  \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_CALCULATE_NURBS_NORMALS
 
-  \todo Write documentation for this
-  \ingroup envvars
-*/
+  If this environment variable is set to a value &gt; 0, normals will be
+  calculated for the knots of a NURBS surface.  This may greatly improve the
+  rendering quality.
 
-/*!
-  \var EnvironmentVariable COIN_CGLGLUE_NO_PBUFFERS
-
-  \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_CG_LIBNAME
 
-  \todo Write documentation for this
-  \ingroup envvars
+  Set the system shared library name for the CG library.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_ASSERT_SOBASE_SETNAME
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_BINARY_INPUT
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_CLEANUP
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_EXTRA
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_FLATTEN_NODEKITS_ON_WRITE
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_DEBUG_GLGLUE
+
+  If this environment variable is set to a value &gt; 0, make the wrapper
+  initialization spit out lots of info about the underlying OpenGL
+  implementation.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_GLRENDER_TRAVERSAL
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_GLUNURBSSURFACE
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_INTERSECTIONDETECTIONACTION
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_MUTEXLOCK_MAXTIME
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_MUTEXLOCK_TIMING
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_MUTEX_COUNT
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_NORMALIZE
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_NPRINTF
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_NURBS_COMPLEXITY
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_ROOT_NOTIFICATIONS
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_SIMAGE
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_SOEXTSELECTION
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_SOFILE_READ
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_SOOFFSCREENRENDERER_TILEPREFIX
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_SPIDERMONKEY_BINDING
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_STRING_GROW
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_TRACK_SOBASE_INSTANCES
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_VBO
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_DEBUG_VRMLSCRIPT
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_FONTCONFIG_LIBNAME
 
+  Set the system shared library name for the Fontconfig library.
+
+  \ingroup coin_envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_DONT_INFORM_INDIRECT_RENDERING
+
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_DONT_USE_FBO
+
+  \todo Write documentation for this
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_FORCE_AGL
 
-  \todo Write documentation for this
-  \ingroup envvars
+  If this environment variable is set to a value &gt; 0, prefer using the
+  old AGL bindings over CGL.  Note that AGL is not available on 64-bit
+  systems.  The AGL code is not compiled into Coin by default, but must be
+  enabled at configure-time using --enable-agl in addition to using this
+  environment variable.
+
+  \ingroup coin_envvars
 */
 
 /*!
-  \var EnvironmentVariable COIN_FORCE_FONTCONFIG_OFF
+  \var EnvironmentVariable COIN_FORCE_GL1_0_ONLY
+
+  If this environment variable is set to a value &gt; 0, disallow use of
+  OpenGL1.1+ and extensions under all circumstances.
+
+  \ingroup coin_envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_FULL_INDIRECT_RENDERING
+
+  If this environment variable is set to a value &gt; 0, let Coin take
+  advantage of OpenGL1.1+ and extensions even when doing remote/indirect
+  rendering.
+
+  \ingroup coin_envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_GLGLUE_DISABLE_NON_POWER_OF_TWO_TEXTURES
+
+  of non power of two textures.
+  ATi and Intel both have had problems with this feature, especially
+  on old drivers.  Newer drivers are known to work.
+
+  \ingroup coin_envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_GLGLUE_DISABLE_PALETTED_TEXTURE
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_GLGLUE_DISABLE_VBO_IN_DISPLAYLIST
+
+  If this environment variable is set to a value &gt; 0, disable the use
+  of VBOs in display lists.
+  Older ATI Windows/Linux drivers had a nasty bug which caused a crash
+  in OpenGL whenever a VBO render call was added to a display list.
+  Newer drivers are known to work.
+
+  \ingroup coin_envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_GLGLUE_NO_ELSA_WARNING
+
+  If this environment variable is set to a value &gt; 0, do not warn about
+  incompatible ELSA TNT2 Vanta/PCI/SSE graphics driver.
+
+  \ingroup coin_envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_GLGLUE_NO_G400_WARNING
+
+  If this environment variable is set to a value &gt; 0, do not warn about
+  incompatible Matrox G400 graphics driver.
+
+  \ingroup coin_envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_GLGLUE_NO_RADEON_WARNING
+
+  If this environment variable is set to a value &gt; 0, do not warn about
+  incompatible Radeon 7500 DDR x86/SSE2 graphics driver.
+
+  \ingroup coin_envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_GLGLUE_NO_SUN_EXPERT3D_WARNING
+
+  If this environment variable is set to a value &gt; 0, do not warn about
+  incompatible Sun Expert3D, VIS graphics driver.
+
+  \ingroup coin_envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_GLGLUE_NO_TRIDENT_WARNING
+
+  If this environment variable is set to a value &gt; 0, do not warn about
+  incompatible Trident Blade XP/AGP graphics driver.
+
+  \ingroup coin_envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_GLGLUE_SILENCE_DRIVER_WARNINGS
+
+  If this environment variable is set to a value &gt; 0, all known driver
+  bugs will just be silently accepted and attempted to work around.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_GLU_SILENCE_TESS_COMBINE_WARNING
 
-  \todo Write documentation for this
-  \ingroup envvars
+  If this environment variable is set to a value &gt; 0, polygons with
+  intersecting edges (a "bow-tie" polygon, for instance) will not be
+  warned about (according to the GLU docs, the tessellator will be ok,
+  it just ignores those polygons and generates no output).
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_GL_DISABLE_VBO
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_GL_NO_CURRENT_CONTEXT_CHECK
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_HANDLE_STACK_OVERFLOW
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_NESTED_CACHING
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_NOT_STRICT_VRML97
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_NO_NVIDIA_COLOR_PER_FACE_BUG_WORKAROUND
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_NO_SOTYPE_DYNLOAD
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_OFFSCREEN_STENCIL_BITS
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_OLD_NURBS_COMPLEXITY
 
-  \todo Write documentation for this
-  \ingroup envvars
+  If this environment variable is set to a value &gt; 0, the parametric
+  tolerance for the sampling method of a NURBS surface or curve is set
+  dependent on the size of their bounding box for both OBJECT_SPACE and
+  SCREEN_SPACE sampling.
+  If this environment variable is set to a value of 0, the parametric
+  tolerance for the sampling method of a NURBS surface or curve is set
+  dependent on their complexity value for both OBJECT_SPACE and
+  SCREEN_SPACE sampling.
+  If this environment variable is not set, the parametric tolerance for the
+  sampling method of a NURBS surface or curve is set dependent on the size
+  of their bounding box in SCREEN_SPACE and dependent on their complexity
+  value in OBJECT_SPACE.
+
+  \ingroup coin_envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_PREFER_GLPOLYGONOFFSET_EXT
+
+  If this environment variable is set to a value &gt; 0 and both
+  glPolygonOffset() and glPolygonOffsetEXT() are available, the
+  latter will be used. This can be useful to work around a
+  problematic glPolygonOffset() implementation for certain SGI
+  platforms.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_PREFER_GLU_TESSELLATOR
 
-  \todo Write documentation for this
-  \ingroup envvars
+  If this environment variable is set to a value &gt; 0, the GLU tessellator
+  is used instead of Coin's own tessellator implementation.  Try this if you
+  are facing bugs with respect to triangulation of complex facesets.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_REDUCE_LINEAR_NURBS_STEPS
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_SMART_CACHING
 
-  \todo Write documentation for this
-  \ingroup envvars
+  If this environment variable is set to a value &gt; 0, smart caching
+  is enabled.  That means the caches are updated less frequently dependent
+  on the number of shapes.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_SPIDERMONKEY_LIBNAME
 
-  \todo Write documentation for this
-  \ingroup envvars
-*/
+  Set the system shared library name for the SpiderMonkey library.
 
-/*!
-  \var EnvironmentVariable COIN_TEX2_ANISOTROPIC_LIMIT
-
-  \todo Write documentation for this
-  \ingroup envvars
-*/
-
-/*!
-  \var EnvironmentVariable COIN_TEX2_USE_SGIS_GENERATE_MIPMAP
-
-  \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_VERTEX_ARRAYS
 
-  \todo Write documentation for this
-  \ingroup envvars
+  If this environment variable is set to a value of 0, vertex array rendering
+  is disabled.
+
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable COIN_VIEWUP
 
   \todo Write documentation for this
-  \ingroup envvars
+  \ingroup coin_envvars
 */
 
 /*!
   \var EnvironmentVariable WINDIR
 
-  \ingroup envvars
   \%WINDIR\%/Fonts is always searched for fonts on Windows.
+  \ingroup coin_envvars
 */
 

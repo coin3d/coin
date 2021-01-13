@@ -34,7 +34,7 @@
   \class SbPList SbPList.h Inventor/lists/SbPList.h
   \brief The SbPList class is a container class for void pointers.
 
-  \ingroup base
+  \ingroup coin_base
 
 */
 

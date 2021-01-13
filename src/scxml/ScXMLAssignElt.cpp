@@ -66,7 +66,7 @@
   which means the event targets can read them out based on logical names
   instead of SCXML data model addresses.
 
-  \ingroup scxml
+  \ingroup coin_scxml
   \sa ScXMLDataModelElt, ScXMLDataElt, ScXMLSendElt
 */
 

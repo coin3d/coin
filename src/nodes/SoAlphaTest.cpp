@@ -34,7 +34,7 @@
   \class SoAlphaTest SoAlphaTest.h Inventor/nodes/SoAlphaTest.h
   \brief The SoAlphaTest class is a node used to control the GL alpha test function.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   With this node you can control the OpenGL alpha test function. The
   alpha test function enables you to discard fragments based on its

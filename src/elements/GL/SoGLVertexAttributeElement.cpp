@@ -34,7 +34,7 @@
   \class SoGLVertexAttributeElement Inventor/elements/SoGLVertexAttributeElement.h
   \brief The SoGLVertexAttributeElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

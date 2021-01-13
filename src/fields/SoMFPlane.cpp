@@ -34,7 +34,7 @@
   \class SoMFPlane SoMFPlane.h Inventor/fields/SoMFPlane.h
   \brief The SoMFPlane class is a container for SbPlane values.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   need to store multiple 3D plane definitions.

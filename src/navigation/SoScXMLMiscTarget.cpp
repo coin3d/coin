@@ -36,7 +36,7 @@
   \class SoScXMLMiscTarget SoScXMLMiscTarget.h Inventor/navigation/SoScXMLMiscTarget.h
   \brief Miscellaneous navigation utility functions.
 
-  \ingroup navigation
+  \ingroup coin_navigation
 */
 
 #include <cassert>

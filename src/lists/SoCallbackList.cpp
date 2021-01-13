@@ -34,14 +34,13 @@
   \class SoCallbackList SoCallbackList.h Inventor/lists/SoCallbackList.h
   \brief The SoCallbackList is a container for callback function pointers.
 
-  \ingroup general
+  \ingroup coin_general
 
   This list stores callback function pointers (along with
   user-specified extra data to pass to the callbacks) and provides a
   method for triggering the callback functions.
 */
 
-/*! \file Inventor/lists/SoCallbackList.h */
 #include <Inventor/lists/SoCallbackList.h>
 
 #if COIN_DEBUG

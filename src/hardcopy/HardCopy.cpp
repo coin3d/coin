@@ -33,7 +33,7 @@
 // *************************************************************************
 
 /*!
-  \page hardcopy_overview A HardCopy Overview
+  \page coin_hardcopy_overview A HardCopy Overview
 
   The main API for HardCopy support in Coin is the abstract class
   SoVectorizeAction. SoVectorizeAction will extract geometry from an
@@ -108,7 +108,7 @@
   graph. To create several layers, the beginViewport() and
   endViewport() functions can be used.
 
-  \ingroup hardcopy
+  \ingroup coin_hardcopy
   \since Coin 2.1
   \since TGS provides HardCopy support as a separate extension for TGS Inventor.
 */
@@ -119,7 +119,7 @@
   \class SoHardCopy SoHardCopy.h Inventor/annex/HardCopy/SoHardCopy.h
   \brief The SoHardCopy class is a static class for initializing the hardcopy support.
 
-  \ingroup hardcopy
+  \ingroup coin_hardcopy
 */
 
 // *************************************************************************

@@ -34,7 +34,7 @@
   \class SbTime SbTime.h Inventor/SbTime.h
   \brief The SbTime class instances represents time values.
 
-  \ingroup base
+  \ingroup coin_base
 
   SbTime is a convenient way of doing system independent
   representation and calculations on time values of high resolution.

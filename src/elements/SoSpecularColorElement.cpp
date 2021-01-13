@@ -34,7 +34,7 @@
   \class SoSpecularColorElement Inventor/elements/SoSpecularColorElement.h
   \brief The SoSpecularColorElement is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

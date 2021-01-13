@@ -34,7 +34,7 @@
   \class SoIndexedMarkerSet SoIndexedMarkerSet.h Inventor/nodes/SoIndexedMarkerSet.h
   \brief The SoIndexedMarkerSet class is used to display a set of bitmap markers at 3D positions.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   This node either uses the coordinates currently on the state
   (typically set up by a leading SoCoordinate3 node in the scene graph)
