@@ -264,7 +264,7 @@ endif()
 if(WIN32 AND NOT MINGW)
   set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${COIN_SO_VERSION})
 else()
-  set_target_properties(${PROJECT_NAME} PROPERTIES VERSION "${COIN_SO_VERSION}.${Coin_VERSION_MINOR}.${Coin_VERSION_PATCH}" SOVERSION ${COIN_SO_VERSION})
+  set_target_properties(${PROJECT_NAME} PROPERTIES VERSION "${COIN_SO_VERSION}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}" SOVERSION ${COIN_SO_VERSION})
 endif()
 
 # Setting up a framework means adding all the files and links under a framework
