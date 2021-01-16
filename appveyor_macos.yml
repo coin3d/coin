@@ -45,6 +45,8 @@ before_build:
       tar czf $BUILD_SOURCE_ARCHIVE --exclude .git $APPVEYOR_PROJECT_NAME
       mv $BUILD_SOURCE_ARCHIVE $APPVEYOR_BUILD_FOLDER
       cd $APPVEYOR_BUILD_FOLDER
+      md5sum -b $BUILD_SOURCE_ARCHIVE > $BUILD_SOURCE_ARCHIVE.md5
+      sha256sum -b $BUILD_SOURCE_ARCHIVE > $BUILD_SOURCE_ARCHIVE.sha256
       mkdir $APPVEYOR_BUILD_FOLDER/downloads
       export COMPILER_ID=$APPVEYOR_BUILD_WORKER_IMAGE-$COMPILER_ID`$COMPILER_ID -v 2>&1 | grep version | sed 's/^.*version \([0-9]*\)\.[0-9]*\.[0-9]*.*$/\1/g'`
       export CFLAGS=$CMAKE_ARCH_FLAGS
@@ -73,6 +75,10 @@ artifacts:
     name: CIArchivesTGZ
   - path: $(APPVEYOR_PROJECT_NAME)*.log
     name: logs
+  - path: $(APPVEYOR_PROJECT_NAME)*.md5
+    name: CImd5
+  - path: $(APPVEYOR_PROJECT_NAME)*.sha256
+    name: CIsha256
 
 test_script:
   - sh: |
@@ -93,7 +99,7 @@ deploy:
   - provider: GitHub
     auth_token:
       secure: 850frgRGZcc4Cljd2P7Ej68no4/kkl4EMB+DjnX725wcKBRJuFk/kGRdJGyKXd2u # your encrypted token from GitHub
-    artifact: CIArchives, CIArchivesTGZ, logs
+    artifact: CIArchives, CIArchivesTGZ, CImd5, CIsha256, logs
     tag: 'CI builds'
     description: 'Results of CI builds for various platforms'
     draft: false
@@ -107,7 +113,7 @@ deploy:
   - provider: GitHub
     auth_token:
       secure: 850frgRGZcc4Cljd2P7Ej68no4/kkl4EMB+DjnX725wcKBRJuFk/kGRdJGyKXd2u # your encrypted token from GitHub
-    artifact: CIArchives, CIArchivesTGZ
+    artifact: CIArchives, CIArchivesTGZ, CImd5, CIsha256
     tag: $(APPVEYOR_REPO_TAG_NAME)
     description: 'Release build'
     draft: true
