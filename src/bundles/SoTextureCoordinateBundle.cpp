@@ -345,7 +345,7 @@ SoTextureCoordinateBundle::initDefaultCallback(SoAction * action)
     shape->computeBBox(action, box, center);
   }
 
-  // just use som default values if the shape bbox is empty
+  // just use some default values if the shape bbox is empty
   SbVec3f size(1.0f, 1.0f, 1.0f);
   SbVec3f origo(0.f, 0.0f, 0.0f);
   if (!box.isEmpty()) {

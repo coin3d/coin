@@ -588,7 +588,7 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
 }
 
 // Add the item at the correct position in the entry list, where the
-// arguemtn "newitem" is guaranteed to have both parent and rigt
+// argument "newitem" is guaranteed to have both parent and right
 // sibling (if any) present in the catalog.
 SbBool
 SoNodekitCatalog::reallyAddEntry(CatalogItem * newitem)
@@ -649,7 +649,7 @@ SoNodekitCatalog::addListItemType(const SbName & name, SoType type)
   if (!this->hasListItemType(name, type)) {
     // FIXME: If a part name is invalid, this procedure bails out
     // elsewhere on an assert. The check and debug comment should be
-    // superflous? If it isn't, it should be possible to find a way to
+    // superfluous? If it isn't, it should be possible to find a way to
     // write this that expresses the code intentions better. 
     // 20021029 rolvs
     
@@ -808,7 +808,7 @@ SoNodekitCatalog::addListItemType(const SbList<class CatalogItem *> & l,
   assert( l[part]->islist &&
           "type must be a list-item type" );
   assert( l[part]->itemtypeslist.find( type ) == -1 &&
-          "trying to add item that allready exists" );
+          "trying to add item that already exists" );
 
   l[part]->itemtypeslist.append(type);
 }

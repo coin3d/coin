@@ -5,7 +5,7 @@
     of any Coin application.
 
     This causes a completely unnecessary delay at start-up, which may
-    be noticable on systems with a long list of directories with
+    be noticeable on systems with a long list of directories with
     shared object files (.so or .dll files)
 
     20060208 mortene.

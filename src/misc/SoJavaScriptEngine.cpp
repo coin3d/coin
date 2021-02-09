@@ -246,7 +246,7 @@ SoJavaScriptEngine::SoJavaScriptEngine()
   // FIXME: maybe this should be optional? 20050719 erikgors.
   spidermonkey()->JS_DefineFunction(cx, global, "print", JavascriptPrint, 0, 0);
 
-  // Make the engine accessable from within the context
+  // Make the engine accessible from within the context
   spidermonkey()->JS_SetContextPrivate(cx, this);
 
 #ifdef HAVE_VRML97

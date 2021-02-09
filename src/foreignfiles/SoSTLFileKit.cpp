@@ -128,7 +128,7 @@ public:
   get it right at once since we have write support (we don't want to
   inadvertently create a third color extension ;).
 
-  When writing STL files, certain STL model criterias are not enforced
+  When writing STL files, certain STL model criteria are not enforced
   by SoSTLFileKit.  These are:
 
   - STL models should represent complete solids - it is the user's

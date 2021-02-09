@@ -132,7 +132,7 @@ New in Coin v3.1.0 (2009-05-27):
   - node leaks when copying nodekits
   - name-dictionary memory fill (leaks) when copying scene graphs
   - more robust copying of VRML 2 scene graphs
-  - ambigious typing under 64-bit MS Windows
+  - ambiguous typing under 64-bit MS Windows
   - some array out-of-bounds and other memory access errors in obscure
     corners of the API
   - SoProfilerElement API exported as part of the public DLL API for
@@ -371,7 +371,7 @@ New in Coin v2.3.0 (2004-06-22):
   - corrected scene redraw logic not to depend on realtime field updates
   - and lots more...
 * optimizations:
-  - file reading should be noticable faster
+  - file reading should be noticeable faster
   - more/improved use of vertex array rendering and vertex buffer objects
 * other:
   - build setup updates, doc updates, Mac OS X packaging fixes

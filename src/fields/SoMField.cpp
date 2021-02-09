@@ -628,7 +628,7 @@ SoMField::writeBinaryValues(SoOutput * out) const
 }
 
 // Number of values written to each line during export to ASCII format
-// files. Override this in subclasses for prettier formating.
+// files. Override this in subclasses for prettier formatting.
 int
 SoMField::getNumValuesPerLine(void) const
 {

@@ -231,7 +231,7 @@ coin_SelectObject(HDC hdc, HGDIOBJ hgdiobj)
     
     /* not sure about this one, suddenly start assert'ing on
        SelectObject() failures may be too much of a shock for
-       exisiting code... but eventually, it should go in:     (mortene) */
+       existing code... but eventually, it should go in:     (mortene) */
     /* assert(FALSE && "unhandled error"); */
   }
   return previous;

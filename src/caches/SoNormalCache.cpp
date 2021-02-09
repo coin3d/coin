@@ -86,7 +86,7 @@ public:
 // *************************************************************************
 
 /*!
-  Contructor with \a state being the current state.
+  Constructor with \a state being the current state.
 */
 SoNormalCache::SoNormalCache(SoState * const state)
   : SoCache(state)

@@ -632,13 +632,13 @@ namespace {
   /// Evaluate the derivatives of degree d and below at (u,v).
   void nurbs::RationalSurfaceDerivsH(const float u, const float v, const int d, SbVec4f** skl) {
     int du = SbMin( d, udegree );
-    // Initalize the requested derivatives greater than the degree in u.
+    // Initialize the requested derivatives greater than the degree in u.
     for ( int k = uorder; k <= d; k++ )
       for ( int l = 0; l <= d - k; l++ )
         skl[k][l] = SbVec4f(0.0f, 0.0f, 0.0f, 1.0f);
 
     int dv = SbMin( d, vdegree );
-    // Initalize the requested derivatives greater than the degree in v.
+    // Initialize the requested derivatives greater than the degree in v.
     for ( int l = vorder; l <= d; l++ )
       for ( int k = 0; k <= d - l; k++ )
         skl[k][l] = SbVec4f(0.0f, 0.0f, 0.0f, 1.0f);

@@ -854,7 +854,7 @@ SoHandleBoxDragger::dragFinish(void)
 }
 
 /*!
-  Activate or deactive all dragger geometry parts.
+  Activate or deactivate all dragger geometry parts.
 */
 void
 SoHandleBoxDragger::setAllPartsActive(SbBool onoroff)

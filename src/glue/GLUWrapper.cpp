@@ -395,7 +395,7 @@ GLUWrapper(void)
 #elif (defined HAVE_OPENGL_GLU_H)
 
     /* On Mac OS X, GLU is part of the OpenGL framework, which at this
-       point is alrady loaded -> We can resolve symbols from the current
+       point is already loaded -> We can resolve symbols from the current
        process image. */
     GLU_libhandle = cc_dl_open(NULL);
     libname = "OpenGL.framework/Libraries/libGLU.dylib";

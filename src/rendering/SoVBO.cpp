@@ -441,7 +441,7 @@ void
 SoVBO::testGLPerformance(const uint32_t contextid)
 {
   SbBool isfast;
-  // did we alreay test this for this context?
+  // did we already test this for this context?
   assert(vbo_isfast_hash != NULL);
   if (vbo_isfast_hash->get(contextid, isfast)) return;
 

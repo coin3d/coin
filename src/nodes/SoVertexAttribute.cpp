@@ -177,7 +177,7 @@ SoVertexAttribute::initClass(void)
 SoVertexAttribute::SoVertexAttribute(void)
 {
   // We don't use SO_NODE_INTERNAL_CONSTRUCTOR(SoVertexAttribute) here because
-  // the fieldData setup has to be overriden in custom ways for this node...
+  // the fieldData setup has to be overridden in custom ways for this node...
 
   this->setNodeType(SoNode::COIN_3_0);
   this->isBuiltIn = TRUE;

@@ -319,7 +319,7 @@ SoAntiSquish::getUnsquishingMatrix(const SbMatrix & squishedmatrix,
     }
   default:
     assert(0 && "unknown sizing parameter");
-    val = (scale[0] + scale[1] + scale[2]) / 3.0f; // use avarage
+    val = (scale[0] + scale[1] + scale[2]) / 3.0f; // use average
     break;
   }
   scale[0] = scale[1] = scale[2] = val;

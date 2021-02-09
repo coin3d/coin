@@ -247,7 +247,7 @@ A:      The font support prior to Coin 2.1 was limited to a hardcoded font
         when using the Win32 library as all font handeling must be
         done through the operating system.
 
-        For more information, please read the API documention on SoFont.
+        For more information, please read the API documentation on SoFont.
         <URL:http://doc.coin3d.org/Coin/classSoFont.html>
 
 

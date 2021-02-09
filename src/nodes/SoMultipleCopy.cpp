@@ -218,7 +218,7 @@ SoMultipleCopy::pick(SoPickAction *action)
   // do not consider the translation inside this node before returning
   // the object space data from SoPickedPoint, since the path in
   // SoPickedPoint does not say anything about on which copy the pick
-  // occured.
+  // occurred.
   //
   // We solved this simply by extending SoPickedPoint for storing both
   // world space and object space data.

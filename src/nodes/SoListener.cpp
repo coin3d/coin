@@ -148,7 +148,7 @@ void SoListener::initClass()
 }
 
 /*!
-  Contructor.
+  Constructor.
 */
 SoListener::SoListener()
 {

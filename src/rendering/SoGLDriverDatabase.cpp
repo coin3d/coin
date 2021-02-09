@@ -1063,7 +1063,7 @@ SoGLDriverDatabaseP::addFeatures(const cc_glglue * COIN_UNUSED_ARG(context), con
     else {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoGLDriverDatabaseP::addFeature",
-      "Feature %s has unknown or no commment.",
+      "Feature %s has unknown or no comment.",
       featurename.getString());
 #endif
     }

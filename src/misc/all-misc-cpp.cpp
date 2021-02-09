@@ -37,7 +37,7 @@
 // This is caused by the SbHashFunc(void *) being declared only when
 // used. Hashing on (void *) is extremely dangerous, since we don't
 // have any control over which kind of types are hashed this way.
-// Indeed the very occurence of this problem is a symptom of the
+// Indeed the very occurrence of this problem is a symptom of the
 // problems of hashing on (void *). Since all the implementations for
 // (class *) are identical regardless of class, there shouldn't arise
 // any problems from doing this, but if we change the implementations,
