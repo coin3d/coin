@@ -132,7 +132,7 @@ In Detail:
 	  - changed API according to new SoGLShaderParameter API
 	  - constructor does not take arguments anymore
 	  - removed 'cgProgram' instance variable
-	  - introduced 'cacheType', 'cacheName', 'cacheSize' instance varibales
+	  - introduced 'cacheType', 'cacheName', 'cacheSize' instance variables
 	  - added 'SbBool isEqual(..)' and 'SbBool isValid(..)' private methods
 	  - got rid of some private methods
 

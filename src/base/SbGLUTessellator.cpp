@@ -130,7 +130,7 @@ SbGLUTessellator::cb_vertex(void * vertex_data, void * x)
 void APIENTRY
 SbGLUTessellator::cb_error(GLenum err, void *)
 {
-  // These would be user errrors on our side, so catch them:
+  // These would be user errors on our side, so catch them:
   assert(err != GLU_TESS_MISSING_BEGIN_POLYGON);
   assert(err != GLU_TESS_MISSING_END_POLYGON);
   assert(err != GLU_TESS_MISSING_BEGIN_CONTOUR);

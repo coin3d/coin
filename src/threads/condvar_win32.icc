@@ -38,7 +38,7 @@
 #define EVENT_BROADCAST 1
 
 /*
- * This implementation is based on the SetEvent (3.2) solution decribed at
+ * This implementation is based on the SetEvent (3.2) solution described at
  * http://www.cs.wustl.edu/~schmidt/win32-cv-1.html.
  */
 

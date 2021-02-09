@@ -228,7 +228,7 @@ SbBox2f::makeEmpty(void)
 /*!
   \fn SbVec2f & SbBox2f::getMin(void)
 
-  Returns a modifiable reference ot the lower left corner of the box.
+  Returns a modifiable reference to the lower left corner of the box.
 
   \sa getOrigin(), getMax().
 */

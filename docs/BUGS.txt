@@ -131,7 +131,7 @@ library:
 
 047 SoAntiSquish seems to trigger a bug in our matrix factoring code.
 
-    From a coin-discuss posting by Philippe Debanné:
+    From a coin-discuss posting by Philippe Debannï¿½:
 
     ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
 
@@ -147,13 +147,13 @@ library:
     (Y-axis rotation).
 
     When I comment out the SoAntiSquish part of RotTransDragger, this
-    unexpected behaviour dissapears (But obviously you want the
+    unexpected behaviour disappears (But obviously you want the
     AntiSquish's anti-squishing behaviour!).  Alternately, if I set
     its 'recalcAlways' field to FALSE, I get a different strange
     behaviour: manipulation of the RotTransDragger affects the
     rendering of the RotTransManip to the right of it: its
     antisquishing scaling factor and fluctuations of its wire-mesh
-    sphere.  All this seems to be independant of the AntiSquish
+    sphere.  All this seems to be independent of the AntiSquish
     'sizing' field, e.g.  BIGGEST_DIMENSION or LONGEST_DIAGONAL.
 
     ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
@@ -516,17 +516,17 @@ library:
     an ingenious way to use a texture multiple times with varying
     complexity settings, which now fails -- so there are indeed
     practical uses for this. So we should really consider this a bug,
-    and a fairly high priority item aswell, as this is a regression
+    and a fairly high priority item as well, as this is a regression
     versus older Coin versions.
 
     From Murry's bug report on coin-discuss:
 
         I have been using textures to show how some parameter (like
-        say temperature) varies over the surface of an
+        sayï¿½temperature) varies over the surface of an
         object. Sometimes I would like to see distinct color bands and
         other times I would like to see a continuous variation of
         color. So I have a SoTexture2 defined using 8 or 16 color
-        levels. Then I change bewteen a "banded" and a continuous
+        levels. Then I change between a "banded" and a continuous
         display using a SoComplexity node with textureQuality set to
         0.00001 for a banded display.
 
@@ -1343,7 +1343,7 @@ Separator {
     --------8<------------- [snip] --------------8<------------- [snip]
 
 
-    Scale2Dragger: Scale down alot, and you will have problems with
+    Scale2Dragger: Scale down a lot, and you will have problems with
     viewAll. Also had problems with grabbing the dragger. The geometry
     of the dragger does not get scaled properly. Some of these
     problems are probably related to the lack of a minimum scale
@@ -1388,7 +1388,7 @@ Separator {
 
 
     SoTransformBoxDragger: Unable to grab hold of the dragger tabs
-    when scale is small. This is probably also realted to the lack of
+    when scale is small. This is probably also related to the lack of
     minimum scale restriction when using child draggers.
 
     --------8<------------- [snip] --------------8<------------- [snip]
@@ -1417,7 +1417,7 @@ Separator {
 
 
     Scale2UniformDragger: viewAll does not work as expected when scaling
-    down alot. Also the geometry of the dragger gets strange when having
+    down a lot. Also the geometry of the dragger gets strange when having
     low scale.
 
     --------8<------------- [snip] --------------8<------------- [snip]
@@ -1477,7 +1477,7 @@ Separator {
     UPDATE 20061026 mortene: we have recurring support requests for
       this bug to be fixed.
 
-      The above suggestion for how to fix it may be be unnecesary
+      The above suggestion for how to fix it may be be unnecessary
       roundabout and complicated, BTW. I'm guessing it should be
       possible to just store the GL context id (taken from
       SoGLRenderAction::getCacheContext()) when a selection is first
@@ -1502,7 +1502,7 @@ Separator {
 
     So this needs to be fixed. Would probably best be done by changing
     the internals somewhat so that extension actions automatically
-    inherits a list of enabled elements from SoAction aswell, and not
+    inherits a list of enabled elements from SoAction as well, and not
     just from the other actions, where this works as it should
     already.
 
@@ -1540,29 +1540,29 @@ I have a little piece of code that demonstrate the problem. As far as
 I understand, all the print statements should output 1. But that is
 not the case..... The refcount of the children of lGroup is
 incremented during the copy, but never decremented :(
- 
-    SoVRMLGroup* lGroup = new SoVRMLGroup();
-    lGroup->ref();
- 
-    lGroup->addChild(new SoVRMLGroup());
-    ((SoVRMLGroup*)lGroup->getChild(0))->addChild(new SoVRMLGroup());
-    ((SoVRMLGroup*)((SoVRMLGroup*)lGroup->getChild(0))->getChild(0))->addChild(new SoVRMLGroup());
- 
-    LOG<12> () << lGroup->getRefCount();
-    LOG<12> () << ((SoVRMLGroup*)lGroup->getChild(0))->getRefCount();
-    LOG<12> () << ((SoVRMLGroup*)((SoVRMLGroup*)lGroup->getChild(0))->getChild(0))->getRefCount();
- 
-    SoVRMLGroup* lCopy = (SoVRMLGroup*)lGroup->copy();
-    lCopy->ref();
- 
-    LOG<12> () << lGroup->getRefCount();
-    LOG<12> () << ((SoVRMLGroup*)lGroup->getChild(0))->getRefCount();
-    LOG<12> () << ((SoVRMLGroup*)((SoVRMLGroup*)lGroup->getChild(0))->getChild(0))->getRefCount();
- 
-    LOG<12> () << lCopy->getRefCount();
-    LOG<12> () << ((SoVRMLGroup*)lCopy->getChild(0))->getRefCount();
-    LOG<12> () << ((SoVRMLGroup*)((SoVRMLGroup*)lCopy->getChild(0))->getChild(0))->getRefCount();
- ----8<----- [snip] --------------------8<----- [snip] ----------------
+ï¿½
+ï¿½ï¿½ï¿½ SoVRMLGroup* lGroup = new SoVRMLGroup();
+ï¿½ï¿½ï¿½ lGroup->ref();
+ï¿½
+ï¿½ï¿½ï¿½ lGroup->addChild(new SoVRMLGroup());
+ï¿½ï¿½ï¿½ ((SoVRMLGroup*)lGroup->getChild(0))->addChild(new SoVRMLGroup());
+ï¿½ï¿½ï¿½ ((SoVRMLGroup*)((SoVRMLGroup*)lGroup->getChild(0))->getChild(0))->addChild(new SoVRMLGroup());
+ï¿½
+ï¿½ï¿½ï¿½ LOG<12> () << lGroup->getRefCount();
+ï¿½ï¿½ï¿½ LOG<12> () << ((SoVRMLGroup*)lGroup->getChild(0))->getRefCount();
+ï¿½ï¿½ï¿½ LOG<12> () << ((SoVRMLGroup*)((SoVRMLGroup*)lGroup->getChild(0))->getChild(0))->getRefCount();
+ï¿½
+ï¿½ï¿½ï¿½ SoVRMLGroup* lCopy = (SoVRMLGroup*)lGroup->copy();
+ï¿½ï¿½ï¿½ lCopy->ref();
+ï¿½
+ï¿½ï¿½ï¿½ LOG<12> () << lGroup->getRefCount();
+ï¿½ï¿½ï¿½ LOG<12> () << ((SoVRMLGroup*)lGroup->getChild(0))->getRefCount();
+ï¿½ï¿½ï¿½ LOG<12> () << ((SoVRMLGroup*)((SoVRMLGroup*)lGroup->getChild(0))->getChild(0))->getRefCount();
+ï¿½
+ï¿½ï¿½ï¿½ LOG<12> () << lCopy->getRefCount();
+ï¿½ï¿½ï¿½ LOG<12> () << ((SoVRMLGroup*)lCopy->getChild(0))->getRefCount();
+ï¿½ï¿½ï¿½ LOG<12> () << ((SoVRMLGroup*)((SoVRMLGroup*)lCopy->getChild(0))->getChild(0))->getRefCount();
+ï¿½----8<----- [snip] --------------------8<----- [snip] ----------------
 
     At the least, this can lead to memory leaks as some nodes will
     never be destructed.

@@ -940,7 +940,7 @@ cc_xml_elt_get_traversal_next(const cc_xml_elt * root, cc_xml_elt * here)
       // if we're back to root, simply quit..
       if (here == root) return NULL;
     } else {
-      // there is more children than 'here' left, find someone thats not "cdata".
+      // there is more children than 'here' left, find someone that's not "cdata".
       do {
           ++idx;
           here = cc_xml_elt_get_child(parent, idx);

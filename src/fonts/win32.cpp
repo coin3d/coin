@@ -333,7 +333,7 @@ namespace {
       /* NOTE: 
       Apparently SelectObject only affects GetLastError if hdc was invalid.
       If that was not the case, the error message returned from GetLastError
-      will be the last error that occured *before* our call to SelectObject().
+      will be the last error that occurred *before* our call to SelectObject().
       wiesener 20090310
       */
       if (lastError){

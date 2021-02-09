@@ -744,7 +744,7 @@ SbBool
 SoFaceSet::generateDefaultNormals(SoState * /* state */,
                                   SoNormalBundle * /* nb */)
 {
-  // Normals are genereted directly in normal cache for this shape.
+  // Normals are generated directly in normal cache for this shape.
   return FALSE;
 }
 

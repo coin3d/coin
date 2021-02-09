@@ -15,7 +15,7 @@ GLRender profiling, pr nodetype
   happens; we don't catch the GLRenderBelow/In/OffPath() stuff in
   SoSeparator.
 
-* User-settable flag (envvar?) for triggering continous redrawing
+* User-settable flag (envvar?) for triggering continuous redrawing
 
 Scenegraph visualizer
 =====================

@@ -342,7 +342,7 @@ SoSwitch::affectsState(void) const
   // traverse all children. The worst that can happen is that we get a
   // "false positive", i.e. TRUE when it should be FALSE. That means the
   // action needs to traverse one level further down onto one of our
-  // children -- which will just take a miniscule amount of additional
+  // children -- which will just take a minuscule amount of additional
   // processing time.
 
   int n = this->getNumChildren();

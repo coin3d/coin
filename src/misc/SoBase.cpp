@@ -1704,7 +1704,7 @@ VRMLGroup {
 }
     */
 
-	   /* correct outputfile for default OIV behavoir:
+	   /* correct outputfile for default OIV behavior:
 #VRML V1.0 ascii
 
 DEF root Separator {

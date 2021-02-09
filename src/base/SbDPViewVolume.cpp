@@ -1288,7 +1288,7 @@ SbDPViewVolume::transform(const SbDPMatrix & matrix)
   matrix.multVecMatrix(this->ulf+oldprojpt, newulf);
   newulf -= newprojpt;
 
-  // Construct and tranform nearpt and farpt to find the new near and
+  // Construct and transform nearpt and farpt to find the new near and
   // far values.
   SbVec3d nearpt;
   SbVec3d farpt;

@@ -352,7 +352,7 @@ SbProfilingData::operator += (const SbProfilingData & rhs)
         dst.push_back(data);
         matchidx = dst.size() - 1;
       }
-      // acumulate data (something about this really doesn't make sense)
+      // accumulate data (something about this really doesn't make sense)
       dst[matchidx].traversaltime += src[c].traversaltime;
       dst[matchidx].memorysize += src[c].memorysize;
       dst[matchidx].texturesize += src[c].texturesize;

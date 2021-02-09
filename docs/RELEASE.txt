@@ -7,7 +7,7 @@ IMPORTANT CHANGES
 
 20041214 larsa:
 
-  Punting now includes generating and commiting the Windows build files
+  Punting now includes generating and committing the Windows build files
   after the version information has been updated, but before the source
   repository is tagged for release.  This dramatically increases the
   punting time.
@@ -153,7 +153,7 @@ PUNTING
 
 It is very important that all spiffing has been finished before embarking
 on this phase.  It can only be done once for each release, and should be
-done on a tight timeframe so chances of other people commiting anything to
+done on a tight timeframe so chances of other people committing anything to
 the library at the same time is minimal.  One should of course announce
 to all Subversion writers that punting will be done and nobody should commit
 anything.

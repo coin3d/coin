@@ -420,7 +420,7 @@ wglglue_contextdata_cleanup(struct wglglue_contextdata * ctx)
   if (ctx == NULL) { return; }
 
   /* FIXME: the error handling below can and should be simplified, by
-     implementing and using excpetion catching wrappers from
+     implementing and using exception catching wrappers from
      glue/win32api. 20031124 mortene. */
 
   if (ctx->wglcontext && ctx->noappglcontextavail) {

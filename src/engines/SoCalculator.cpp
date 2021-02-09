@@ -614,7 +614,7 @@ SoCalculator::inputChanged(SoField *which)
   }
 }
 
-// callback from evaluator. Reads values from temporay registers
+// callback from evaluator. Reads values from temporary registers
 void
 SoCalculator::readfieldcb(const char *fieldname, float *data, void *userdata)
 {

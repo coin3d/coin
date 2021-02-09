@@ -1,6 +1,6 @@
 /*
   This utility is just a hack to extract a monospaced bitmap font from an
-  image file and outputing it as C code.
+  image file and outputting it as C code.
 
   Windows building:
     coin-config --build extractfont extractfont.cpp -lsimage1
