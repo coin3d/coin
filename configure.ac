@@ -624,7 +624,7 @@ if $sim_ac_enable_threads; then
      [sim_ac_win32_threads_available=true
       sim_ac_threads_api="native Win32"
       AC_DEFINE([USE_W32THREAD], , [define to use the Win32 threads API])
-      AC_DEFINE([COIN_THREADID_TYPE], DWORD, [System dependant thread ID type])])
+      AC_DEFINE([COIN_THREADID_TYPE], DWORD, [System dependent thread ID type])])
       # (we just ignore failure, as we fall through to POSIX threads)
     AC_MSG_RESULT($sim_ac_win32_threads_available)
   fi

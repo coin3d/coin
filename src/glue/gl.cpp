@@ -2067,7 +2067,7 @@ glglue_check_driver(const char * vendor, const char * renderer,
     ------8<---- [snip] -----------8<---- [snip] -----
 
     I observe a bit of strange behaviour on my NT4 systems. I have an
-    appliction which uses the following bit of code:
+    application which uses the following bit of code:
 
     // Define line width
     SoDrawStyle *drawStyle = new SoDrawStyle;
@@ -2085,7 +2085,7 @@ glglue_check_driver(const char * vendor, const char * renderer,
     root->addChild(lineSet);
 
     It defines a line with a dashed pattern. When the line is in a
-    direction and the viewing direction is not parrallel to this line
+    direction and the viewing direction is not parallel to this line
     all works fine. In case the viewing direction is the same as the
     line direction one of my systems crashes [...]
 
@@ -4652,7 +4652,7 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
      SoOffscreenRendererP::renderFromBase() method. 20040714 mortene.
 
      UPDATE 20050712 mortene: this has now been fixed in
-     SoOffscreenRenderer -- it will try with sucessively smaller
+     SoOffscreenRenderer -- it will try with successively smaller
      sizes. I'm still keeping the max clamping below, though, to avoid
      unexpected problems with external applications, as we're
      currently between patch-level releases with Coin-2, and I have

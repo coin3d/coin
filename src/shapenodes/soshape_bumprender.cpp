@@ -265,7 +265,7 @@ soshape_bumprender::~soshape_bumprender()
 {
 
   // FIXME: Cannot delete programs just yet, as we dont know if the
-  // contex was valid or not. We must wait for new functionality to be
+  // context was valid or not. We must wait for new functionality to be
   // implemented for the context element code. (20040209 handegar)
   //this->diffuseprogramdict.applyToAll(soshape_bumprender_diffuseprogramdeletion);
   //this->specularprogramdict.applyToAll(soshape_bumprender_specularprogramdeletion);

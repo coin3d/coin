@@ -256,7 +256,7 @@ SoGLVBOElement::shouldCreateVBO(SoState * state, const int numdata)
 {
   const cc_glglue * glue = sogl_glue_instance(state);
   // don't use SoGLCacheContextElement to find the current cache
-  // context since we don't want this call to create a cache dependecy
+  // context since we don't want this call to create a cache dependency
   // on SoGLCacheContextElement.
   return
     SoGLDriverDatabase::isSupported(glue, SO_GL_FRAMEBUFFER_OBJECT) &&

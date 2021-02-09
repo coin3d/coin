@@ -1677,7 +1677,7 @@ SoDB::removeRoute(SoNode * fromnode, const char * eventout,
     else to->disconnect(output);
   }
 #if COIN_DEBUG
-  else { // some error occured
+  else { // some error occurred
     SoDebugError::postWarning("SoDB::removeRoute",
                               "Unable to remove route: %s.%s TO %s.%s",
                               fromnodename.getString(), eventout,

@@ -31,7 +31,7 @@
 (-> viewer-copy 'setscenegraph (-> (-> viewer 'getscenegraph) 'copy 1))
 (-> viewer-copy 'show)
 
-;; This used to trigger a bug; also stoping the engine in the copied
+;; This used to trigger a bug; also stopping the engine in the copied
 ;; scene graph (Bugzilla #206).
 (-> (-> elapsedtime 'on) 'setvalue 0)
 

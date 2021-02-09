@@ -257,7 +257,7 @@ SoNodeVisualize::visualize(SoNode * node) {
   this->node=node;
   if (node!=NULL) {
     SoType type = node->getTypeId();
-    //FIXME: Exhange all the named textures, with images
+    //FIXME: Exchange all the named textures, with images
     //FIXME: Make the images better fitting for its shape
     //FIXME: Check if cubes are better options for some of the nodetypes
     //FIXME: Make smaller textures

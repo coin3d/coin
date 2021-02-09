@@ -123,7 +123,7 @@ To
 coin_internal_assert_cast(From * ptr) {
   To retVal = coin_safe_cast<To>(ptr);
   //NOTE if we ever get an assert here, the error is on the caller,
-  //not here. Allthough it will be prudent to disable this assert in
+  //not here. Although it will be prudent to disable this assert in
   //any release before we have tested the calling code well enough. -
   //BFG 20080916
 #ifdef COIN_BETA_VERSION // COIN_BETA_VERSION is not defined in release versions

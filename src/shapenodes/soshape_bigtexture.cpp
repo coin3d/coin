@@ -254,7 +254,7 @@ soshape_bigtexture::clip_triangles(SoState * state)
     this->vertexlist[i]->setTextureCoords(tmp3);
   }
 
-  // Clip the triangles agains the clippingplanes of the windows it
+  // Clip the triangles against the clippingplanes of the windows it
   // passes through. Windows can be seen as the integer components of
   // the texturecoordinate. The number of windows a triangle passes
   // through is indicated by the bounding box of the triangle's

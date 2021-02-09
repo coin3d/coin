@@ -116,6 +116,8 @@ before_build:
       if defined APPVEYOR_REPO_TAG_NAME (set CI_REPO_VERSION=%APPVEYOR_REPO_TAG_NAME:~1%) else (set CI_REPO_VERSION=latest)
       set BUILD_SOURCE_ARCHIVE=%APPVEYOR_PROJECT_NAME%-%CI_REPO_VERSION%-src.zip
       7z a -xr!*\.git/ -tzip %BUILD_SOURCE_ARCHIVE% %APPVEYOR_BUILD_FOLDER%
+      C:\msys64\usr\bin\md5sum.exe -b %BUILD_SOURCE_ARCHIVE% > %BUILD_SOURCE_ARCHIVE%.md5
+      C:\msys64\usr\bin\sha256sum.exe -b %BUILD_SOURCE_ARCHIVE% > %BUILD_SOURCE_ARCHIVE%.sha256
       mkdir %APPVEYOR_BUILD_FOLDER%\downloads
       rem set DOWNLOAD_FILE_DOXYGEN=doxygen-1.8.14.windows.x64.bin.zip
       rem appveyor DownloadFile https://sourceforge.net/projects/doxygen/files/rel-1.8.14/%DOWNLOAD_FILE_DOXYGEN% -FileName %DOWNLOAD_FILE_DOXYGEN%
@@ -155,6 +157,10 @@ artifacts:
     name: CIArchivesTGZ
   - path: $(APPVEYOR_PROJECT_NAME)*.log
     name: logs
+  - path: $(APPVEYOR_PROJECT_NAME)*.md5
+    name: CImd5
+  - path: $(APPVEYOR_PROJECT_NAME)*.sha256
+    name: CIsha256
 
 test_script:
   - cmd: |
@@ -175,7 +181,7 @@ deploy:
   - provider: GitHub
     auth_token:
       secure: 850frgRGZcc4Cljd2P7Ej68no4/kkl4EMB+DjnX725wcKBRJuFk/kGRdJGyKXd2u # your encrypted token from GitHub
-    artifact: CIArchives, CIArchivesTGZ, logs
+    artifact: CIArchives, CIArchivesTGZ, CImd5, CIsha256, logs
     tag: 'CI builds'
     description: 'Results of CI builds for various platforms'
     draft: false
@@ -189,7 +195,7 @@ deploy:
   - provider: GitHub
     auth_token:
       secure: 850frgRGZcc4Cljd2P7Ej68no4/kkl4EMB+DjnX725wcKBRJuFk/kGRdJGyKXd2u # your encrypted token from GitHub
-    artifact: CIArchives, CIArchivesTGZ
+    artifact: CIArchives, CIArchivesTGZ, CImd5, CIsha256
     tag: $(APPVEYOR_REPO_TAG_NAME)
     description: 'Release build'
     draft: true

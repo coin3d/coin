@@ -651,7 +651,7 @@ SbTesselator::PImpl::area(Vertex * t)
 
 //
 // Returns the square of the radius of the circum circle through points starting at vertex t in projection plane.
-// Algorithm for calulating the center of the circle from comp.graphics.algorithms FAQ
+// Algorithm for calculating the center of the circle from comp.graphics.algorithms FAQ
 //
 double
 SbTesselator::PImpl::circleSize(Vertex * t)
@@ -718,10 +718,10 @@ SbTesselator::PImpl::calcPolygonNormal()
 }
 
 //
-// makes sure Vertexes are not allocated and deallocated
+// makes sure Vertices are not allocated and deallocated
 // all the time, by storing them in a growable array. This
-// way, the Vertexes will not be deleted until the tessellator
-// is destructed, and Vertexes can be reused.
+// way, the Vertices will not be deleted until the tessellator
+// is destructed, and Vertices can be reused.
 //
 SbTesselator::PImpl::Vertex *
 SbTesselator::PImpl::newVertex()

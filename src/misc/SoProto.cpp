@@ -766,7 +766,7 @@ soproto_find_node(SoNode * root, SbName name, SoSearchAction & sa)
 }
 
 //
-// Used to check for fieldname. Wil first test "<name>", then "set_<name>",
+// Used to check for fieldname. Will first test "<name>", then "set_<name>",
 // and then "<name>_changed".
 //
 static SbName
@@ -788,7 +788,7 @@ soproto_find_fieldname(SoNode * node, const SbName & name)
 }
 
 //
-// Used to check for outputname. Wil first test "<name>", then "set_<name>",
+// Used to check for outputname. Will first test "<name>", then "set_<name>",
 // and then "<name>_changed".
 //
 static SbName
@@ -1000,7 +1000,7 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
       if (!eventout) {
 #if COIN_DEBUG
         SoDebugError::postWarning("SoProto::connectISRefs",
-                                  "Destionation field '%s' is not found in node type '%s'. "
+                                  "Destination field '%s' is not found in node type '%s'. "
                                   "Unable to resolve IS reference.",
                                   fieldname.getString(), node->getTypeId().getName().getString());
 #endif // COIN_DEBUG

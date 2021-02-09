@@ -28,7 +28,7 @@ with new, experimental developments.
             event="x-coin-navigation.Misc.ViewAll" namelist="_sessionid"/>
     </transition>
 
-    <!-- just some debugging hacks - should be removed before commiting to Coin -->
+    <!-- just some debugging hacks - should be removed before committing to Coin -->
     <transition event="sim.coin3d.coin.SoKeyboardEvent.DOWN.E">
       <assign location="coin:temp.translation" expr="SbVec3f(1, 0, 0)"/>
       <assign location="coin:temp.factor" expr="1.0"/>

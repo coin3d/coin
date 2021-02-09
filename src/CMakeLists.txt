@@ -273,7 +273,11 @@ set(_pkg_config_targets ${COIN_TARGET_DEPENDENCIES_PRIVATE})
 list(REMOVE_ITEM _pkg_config_targets Threads::Threads)
 coin_get_pkg_config_target_properties("${_pkg_config_targets}")
 
-set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${COIN_SO_VERSION})
+if(WIN32 AND NOT MINGW)
+  set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} SOVERSION ${COIN_SO_VERSION})
+else()
+  set_target_properties(${PROJECT_NAME} PROPERTIES VERSION "${COIN_SO_VERSION}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}" SOVERSION ${COIN_SO_VERSION})
+endif()
 
 # Setting up a framework means adding all the files and links under a framework
 # directory. A single install command then moves the entire contents of the

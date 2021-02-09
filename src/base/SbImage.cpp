@@ -160,7 +160,7 @@ public:
   void writeLock(void) {
     //fprintf(stderr,"writelock: %p\n", this);
     this->rwmutex.writeLock();
-    //fprintf(stderr,"writelock achived: %p\n", this);
+    //fprintf(stderr,"writelock achieved: %p\n", this);
   }
   void writeUnlock(void) {
     //fprintf(stderr,"writeUnlock: %p\n", this);

@@ -2068,7 +2068,7 @@ SoGLRenderActionP::doSortedLayersBlendRendering(const SoState * state, SoNode * 
 
   }
 
-  // Blend together the aquired RGBA layers
+  // Blend together the acquired RGBA layers
   if (glue->has_arb_fragment_program && !this->usenvidiaregistercombiners)
     renderSortedLayersFP(state);
   else
