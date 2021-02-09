@@ -34,7 +34,7 @@
   \class SoBumpMapTransform SoBumpMapTransform.h Inventor/nodes/SoBumpMapTransform.h
   \brief The SoBumpMapTransform class is used to define 2D bump map transformations.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Bump maps applied to shapes in the scene can be transformed by
   "prefixing" in the state with instances of this node

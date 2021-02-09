@@ -30,13 +30,21 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+/*!
+  \class SoJavaScriptEngine SoJavaScriptEngine.h Inventor/misc/SoJavaScriptEngine.h
+  \brief The SoJavaScriptEngine class is yet to be documented.
+
+  \ingroup coin_general
+
+  \since Coin 2.0
+*/
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
 #ifdef COIN_HAVE_JAVASCRIPT
   
-/*! \file SoJavaScriptEngine.h */
 #include <Inventor/misc/SoJavaScriptEngine.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/tidbits.h>

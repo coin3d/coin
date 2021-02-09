@@ -34,7 +34,7 @@
   \class SoNormalBinding SoNormalBinding.h Inventor/nodes/SoNormalBinding.h
   \brief The SoNormalBinding class is a node for specifying normal vector bindings.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Use nodes of this type to specify how to map normal vectors from
   SoNormal nodes in the scene graph to shape nodes.

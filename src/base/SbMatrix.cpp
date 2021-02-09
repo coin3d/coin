@@ -34,7 +34,7 @@
   \class SbMatrix SbMatrix.h Inventor/SbMatrix.h
   \brief The SbMatrix class is a 4x4 dimensional representation of a matrix.
 
-  \ingroup base
+  \ingroup coin_base
 
   SbMatrix is used by many other classes in Coin.  It provides storage
   for a 4x4 matrix of single-precision floating point values.

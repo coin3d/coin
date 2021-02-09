@@ -36,7 +36,7 @@
   \class ScXMLElseElt ScXMLElseElt.h Inventor/scxml/ScXMLElseElt.h
   \brief implements the &lt;else&gt; SCXML element.
 
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>

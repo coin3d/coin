@@ -34,7 +34,7 @@
   \class SoViewingMatrixElement Inventor/elements/SoViewingMatrixElement.h
   \brief The SoViewingMatrixElement class stores the world-to-camera transformation.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   \sa SoModelMatrixElement
 */

@@ -34,7 +34,7 @@
   \class SoGLModelMatrixElement Inventor/elements/SoGLModelMatrixElement.h
   \brief The SoGLModelMatrixElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

@@ -35,7 +35,7 @@
   \brief The SoFieldContainer class is a base class for all classes that
   contain fields.
 
-  \ingroup general
+  \ingroup coin_general
 
   The classes containing fields in Coin are the node and engine
   classes, so they are all subclasses of SoFieldContainer.

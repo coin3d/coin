@@ -79,7 +79,6 @@
 
 // *************************************************************************
 
-/*! \file SoProto.h */
 #include <Inventor/misc/SoProto.h>
 
 #include <cstring>

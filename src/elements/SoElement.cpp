@@ -269,7 +269,7 @@
   }
   \endcode
 
-  \ingroup elements
+  \ingroup coin_elements
 */
 
 /*!
@@ -278,7 +278,7 @@
 
   This is the base class for all the element classes in Coin.
 
-  \ingroup elements
+  \ingroup coin_elements
 */
 
 // *************************************************************************

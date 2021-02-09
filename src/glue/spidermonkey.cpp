@@ -55,7 +55,6 @@
 #include <jsapi.h>
 #endif /* !defined(SPIDERMONKEY_RUNTIME_LINKING) && defined(HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING) */
 
-/*! \file spidermonkey.h */
 #include <Inventor/C/glue/spidermonkey.h>
 
 #include <Inventor/C/glue/dl.h>

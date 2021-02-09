@@ -34,7 +34,7 @@
   \class SoPickAction SoPickAction.h Inventor/actions/SoPickAction.h
   \brief The SoPickAction class is the base class for picking actions.
 
-  \ingroup actions
+  \ingroup coin_actions
 
   The basis for all interaction features that Coin provides for the
   application programmer is the pick actions. Draggers, manipulators,

@@ -52,7 +52,7 @@ class SoTypeList;
 class SoFieldData;
 class SbDict;
 struct SoTypeData;
-template <class Type> class SbList;
+template <typename Type> class SbList;
 
 // *************************************************************************
 

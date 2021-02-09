@@ -34,7 +34,7 @@
   \class SoBumpMapElement Inventor/elements/SoBumpMapElement.h
   \brief The SoBumpMapElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

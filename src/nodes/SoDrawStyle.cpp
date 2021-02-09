@@ -34,7 +34,7 @@
   \class SoDrawStyle SoDrawStyle.h Inventor/nodes/SoDrawStyle.h
   \brief The SoDrawStyle class specifies common rendering properties for shapes.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Use SoDrawStyle nodes to influence how shape nodes following them in
   the scene graph will be rendered.  This node type have fields to help

@@ -911,7 +911,7 @@ cc_xml_elt_dump_to_file(const cc_xml_elt * elt, int indent, FILE * fp)
 
   Utility function for flattening recursive traversals to do-while loops.
 
-  \ingroup cc_xml_elt
+  \ingroup coin_cc_xml_elt
 */
 
 cc_xml_elt *

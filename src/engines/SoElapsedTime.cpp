@@ -34,7 +34,7 @@
   \class SoElapsedTime SoElapsedTime.h Inventor/engines/SoElapsedTime.h
   \brief The SoElapsedTime class is a controllable time source engine.
 
-  \ingroup engines
+  \ingroup coin_engines
 
   The additional functionality provided by this engine versus just
   connecting to the realTime global field is the ability to control

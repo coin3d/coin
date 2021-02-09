@@ -34,7 +34,7 @@
   \class SoClipPlane SoClipPlane.h Inventor/nodes/SoClipPlane.h
   \brief The SoClipPlane class is a node type for specifying clipping planes.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   A scene graph \e without any SoClipPlane nodes uses six clipping
   planes to define the viewing frustum: top, bottom, left, right, near

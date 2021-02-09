@@ -34,7 +34,7 @@
   \class SbBox3d SbBox3d.h Inventor/SbBox3d.h
   \brief The SbBox3d class is an abstraction for an axis aligned 3 dimensional box.
 
-  \ingroup base
+  \ingroup coin_base
 
   This box abstraction class is used by other entities in the Coin
   library for data exchange and storage. It provides a representation

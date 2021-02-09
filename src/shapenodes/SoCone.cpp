@@ -39,7 +39,7 @@
   \class SoCone SoCone.h Inventor/nodes/SoCone.h
   \brief The SoCone class is for rendering cone shapes.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Insert a cone shape into the scene graph. The cone is rendered with
   the current material, texture and draw style settings (if any,

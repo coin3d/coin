@@ -40,7 +40,7 @@
   \class SoTabBoxManip SoTabBoxManip.h Inventor/manips/SoTabBoxManip.h
   \brief The SoTabBoxManip class wraps an SoTabBoxDragger.
 
-  \ingroup manips
+  \ingroup coin_manips
 
   The SoTabBoxManip provides a convenient mechanism for the
   application programmer for setting up an SoTabBoxDragger in the

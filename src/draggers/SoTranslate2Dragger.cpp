@@ -40,7 +40,7 @@
   \class SoTranslate2Dragger SoTranslate2Dragger.h Inventor/draggers/SoTranslate2Dragger.h
   \brief The SoTranslate2Dragger class provides a mechanism for the end-user to translate in a plane.
 
-  \ingroup draggers
+  \ingroup coin_draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT
 

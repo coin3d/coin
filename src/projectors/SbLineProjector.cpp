@@ -34,7 +34,7 @@
   \class SbLineProjector SbLineProjector.h Inventor/projectors/SbLineProjector.h
   \brief The SbLineProjector class projects 2D points to 3D points along a line.
 
-  \ingroup projectors
+  \ingroup coin_projectors
 
   The 3D projection of the 2D coordinates is for this projector class
   constrained to lie along a predefined line.

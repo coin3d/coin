@@ -40,7 +40,7 @@
   \class SoScaleUniformDragger SoScaleUniformDragger.h Inventor/draggers/SoScaleUniformDragger.h
   \brief The SoScaleUniformDragger class provides a mechanism for the end-user to scale in three dimensions.
 
-  \ingroup draggers
+  \ingroup coin_draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT
 

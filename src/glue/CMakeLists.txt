@@ -22,6 +22,7 @@ set(COIN_GLUE_FILES
 set(COIN_GLUE_INTERNAL_FILES
 	cg.h
 	cg.cpp
+	spidermonkey.cpp
 	gl_wgl.h
 	gl_wgl.cpp
 	gl_agl.h

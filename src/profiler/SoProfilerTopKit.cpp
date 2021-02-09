@@ -34,7 +34,7 @@
   \class SoProfilerTopKit SoProfilerTopKit.h Inventor/annex/Profiler/nodekits/SoProfilerTopKit.h
   \brief The SoProfilerTopKit element class is yet to be documented.
 
-  \ingroup profiler
+  \ingroup coin_profiler
 */
 
 #ifdef HAVE_CONFIG_H

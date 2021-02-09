@@ -34,7 +34,7 @@
   \class SoOverrideElement Inventor/elements/SoOverrideElement.h
   \brief The SoOverrideElement maintains a list of overridable elements and a list over which elements should be overridden.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   Only certain elements can be overridden.
 

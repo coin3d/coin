@@ -34,7 +34,7 @@
   \class SoGLProjectionMatrixElement Inventor/elements/SoGLProjectionMatrixElement.h
   \brief The SoGLProjectionMatrixElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

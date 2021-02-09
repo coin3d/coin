@@ -30,7 +30,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file SoProfilingReportGenerator.h */
 #include <Inventor/annex/Profiler/utils/SoProfilingReportGenerator.h>
 #include "coindefs.h"
 
@@ -56,7 +55,7 @@
   data report from an SbProfilingData object.
 
   \since Coin 3.0
-  \ingroup profiler
+  \ingroup coin_profiler
 */
 
 // *************************************************************************

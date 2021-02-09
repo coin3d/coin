@@ -34,7 +34,7 @@
   \class SoIndexedPointSet SoIndexedPointSet.h Inventor/nodes/SoIndexedPointSet.h
   \brief The SoIndexedPointSet class is used to display a set of 3D points.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   This node either uses the coordinates currently on the state
   (typically set up by a leading SoCoordinate3 node in the scene graph)

@@ -34,7 +34,7 @@
   \class SoCreaseAngleElement Inventor/elements/SoCreaseAngleElement.h
   \brief The SoCreaseAngleElement class stores the crease angle during a scene graph traversal.
 
-  \ingroup elements
+  \ingroup coin_elements
 */
 
 #include <Inventor/elements/SoCreaseAngleElement.h>

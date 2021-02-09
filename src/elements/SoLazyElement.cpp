@@ -34,7 +34,7 @@
   \class SoLazyElement Inventor/elements/SoLazyElement.h
   \brief The SoLazyElement class is used to handle material and shape properties.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   So[GL]LazyElement is, as the name implies, an element that is lazy
   about sending things to OpenGL. The changes are not sent to OpenGL

@@ -34,7 +34,7 @@
   \class SoTimerSensor SoTimerSensor.h Inventor/sensors/SoTimerSensor.h
   \brief The SoTimerSensor class is a sensor which will trigger at given intervals.
 
-  \ingroup sensors
+  \ingroup coin_sensors
 
   Use sensors of this class when you want a job repeated at a certain
   interval, without explicitly needing to reschedule the sensor

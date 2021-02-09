@@ -40,7 +40,7 @@
   \class SoTabBoxDragger SoTabBoxDragger.h Inventor/draggers/SoTabBoxDragger.h
   \brief The SoTabBoxDragger wraps a box around geometry you can then translate and scale.
 
-  \ingroup draggers
+  \ingroup coin_draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT
 

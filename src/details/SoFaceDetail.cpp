@@ -34,7 +34,7 @@
   \class SoFaceDetail SoFaceDetail.h Inventor/details/SoFaceDetail.h
   \brief The SoFaceDetail class is for storing detailed polygon information.
 
-  \ingroup details
+  \ingroup coin_details
 
   Instances of this class are used among other things for storing
   information about polygons after pick operations, and for storing

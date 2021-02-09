@@ -34,7 +34,7 @@
   \class SoSFEnum SoSFEnum.h Inventor/fields/SoSFEnum.h
   \brief The SoSFEnum class is a container for an enum value.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   needs to store one particular value out of an enumerated set.

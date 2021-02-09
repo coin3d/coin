@@ -35,7 +35,7 @@
   \brief The SbBox2f class is a 2 dimensional box with floating
   point corner coordinates.
 
-  \ingroup base
+  \ingroup coin_base
 
   This box class is used by many other classes in Coin for data
   exchange and storage. It provides two box corners with floating

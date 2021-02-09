@@ -40,7 +40,7 @@
   \class SoTransformerDragger SoTransformerDragger.h Inventor/draggers/SoTransformerDragger.h
   \brief The SoTransformerDragger provides geometry for translation, scaling and rotations.
 
-  \ingroup draggers
+  \ingroup coin_draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT
 

@@ -35,7 +35,7 @@
   \brief The SoGLLinePatternElement class changes the line stipple pattern
          of the OpenGL render state.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   Requests from the scene graph to change the stipple pattern when rendering
   OpenGL line primitives will be made through this element, which forwards

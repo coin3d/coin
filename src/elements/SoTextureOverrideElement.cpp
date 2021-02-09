@@ -34,7 +34,7 @@
   \class SoTextureOverrideElement Inventor/elements/SoTextureOverrideElement.h
   \brief The SoTextureOverrideElement makes it possible to override texture elements.
 
-  \ingroup elements
+  \ingroup coin_elements
 */
 
 

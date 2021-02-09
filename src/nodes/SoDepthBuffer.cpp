@@ -34,7 +34,7 @@
   \class SoDepthBuffer SoDepthBuffer.h Inventor/nodes/SoDepthBuffer.h
   \brief The SoDepthBuffer class is a node used to control the GL depth buffer.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   With this node you can control properties related to the OpenGL depth buffer
   in a variety of ways.

@@ -40,7 +40,7 @@
   \class SoCenterballManip SoCenterballManip.h Inventor/manips/SoCenterballManip.h
   \brief The SoCenterballManip wraps an SoCenterballDragger for convenience.
 
-  \ingroup manips
+  \ingroup coin_manips
 
   The manipulator class takes care of wrapping up the
   SoCenterballDragger in a simple and convenient API for the

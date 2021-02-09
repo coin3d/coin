@@ -34,7 +34,7 @@
   \class SbDPPlane SbDPPlane.h Inventor/SbLinear.h
   \brief The SbDPPlane class represents a plane in 3D space.
 
-  \ingroup base
+  \ingroup coin_base
 
   SbDPPlane is used by many other classes in Coin.  It provides a way of
   representing a plane, specified by a plane normal vector and a

@@ -34,7 +34,7 @@
   \class SoPickedPoint SoPickedPoint.h Inventor/SoPickedPoint.h
   \brief The SoPickedPoint class is used for specifying picked points.
 
-  \ingroup general
+  \ingroup coin_general
 
   It holds miscellaneous information about the picked point, such
   as position, normal, texture coordinate and material index in the

@@ -34,7 +34,7 @@
   \class SoMultiTextureCoordinateElement Inventor/elements/SoMultiTextureCoordinateElement.h
   \brief The SoMultiTextureCoordinateElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 

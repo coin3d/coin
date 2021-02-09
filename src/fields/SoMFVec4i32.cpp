@@ -34,7 +34,7 @@
   \class SoMFVec4i32 SoMFVec4i32.h Inventor/fields/SoMFVec4i32.h
   \brief The SoMFVec4i32 class is a container for SbVec4i32 vectors.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   need to store an array of vectors with four elements.

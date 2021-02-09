@@ -40,7 +40,7 @@
   \class SoVRMLNavigationInfo SoVRMLNavigationInfo.h Inventor/VRMLnodes/SoVRMLNavigationInfo.h
   \brief The SoVRMLNavigationInfo class is used to specify avatar and viewer settings.
 
-  \ingroup VRMLnodes
+  \ingroup coin_VRMLnodes
   
   \WEB3DCOPYRIGHT
 

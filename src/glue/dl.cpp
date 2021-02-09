@@ -185,7 +185,7 @@ Type cstyle_cast(FARPROC procaddr)
 /* ********************************************************************** */
 
 /*!
-  \page libraries Coin use of 3rd party libraries.
+  \page coin_libraries Coin use of 3rd party libraries.
 
   Coin may use a wide variety of 3rd party libraries, directly and
   indirectly, depending on how the Coin build was configured.  This

@@ -34,7 +34,7 @@
   \class SoToVRML2Action SoToVRML2Action.h Inventor/actions/SoToVRML2Action.h
   \brief The SoToVRML2Action class builds a new scene graph, using only VRML97/VRML2 nodes.
 
-  \ingroup actions
+  \ingroup coin_actions
 
   This action is used for converting a scene graph of VRML1/Coin nodes
   to a new scene graph using only VRML97/VRML2 nodes.

@@ -32,7 +32,7 @@
 
 
 /*!
-  \page profiling_intro Scene Graph Profiling
+  \page coin_profiling_intro Scene Graph Profiling
 
   <h2>Enabling profiling in Coin</h2>
 
@@ -101,7 +101,7 @@
   \class SoProfiler SoProfiler.h Profiler/SoProfiler.h
   \brief Main static class for initializing the scene graph profiling subsystem.
 
-  \ingroup profiler
+  \ingroup coin_profiler
 */
 
 namespace {

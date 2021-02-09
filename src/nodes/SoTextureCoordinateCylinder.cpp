@@ -34,7 +34,7 @@
   \class SoTextureCoordinateCylinder include/Inventor/nodes/SoTextureCoordinateCylinder.h
   \brief The SoTextureCoordinateCylinder class generates cylinder mapped texture coordinates for shapes.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code

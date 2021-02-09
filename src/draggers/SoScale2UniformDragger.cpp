@@ -40,7 +40,7 @@
   \class SoScale2UniformDragger SoScale2UniformDragger.h Inventor/draggers/SoScale2UniformDragger.h
   \brief The SoScale2UniformDragger class provides a mechanism for the end-user to scale in two dimensions.
 
-  \ingroup draggers
+  \ingroup coin_draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT
 

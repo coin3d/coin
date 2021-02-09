@@ -40,7 +40,7 @@
   have one child of type &lt;onentry&gt; and &lt;onexit&gt;.
 
   \since Coin 3.0
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>

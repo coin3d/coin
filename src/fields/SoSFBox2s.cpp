@@ -34,7 +34,7 @@
   \class SoSFBox2s SoSFBox2s.h Inventor/fields/SoSFBox2s.h
   \brief The SoSFBox2s class is a container for an SbBox2s vector.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   need to store a box.

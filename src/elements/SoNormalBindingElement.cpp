@@ -34,7 +34,7 @@
   \class SoNormalBindingElement Inventor/elements/SoNormalBindingElement.h
   \brief The SoNormalBindingElement is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

@@ -36,7 +36,7 @@
   \class ScXMLFinalizeElt ScXMLFinalizeElt.h Inventor/scxml/ScXMLFinalizeElt.h
   \brief implements the &lt;finalize&gt; SCXML element.
 
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>

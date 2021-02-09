@@ -34,7 +34,7 @@
   \class SoGLCacheContextElement Inventor/elements/SoGLCacheContextElement.h
   \brief The SoGLCacheContextElement class handles the OpenGL cache for a context.
 
-  \ingroup elements
+  \ingroup coin_elements
 */
 
 // *************************************************************************

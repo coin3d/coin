@@ -35,7 +35,7 @@
 
 #include <Inventor/C/threads/storage.h>
 
-template <class Type>
+template <typename Type>
 class SbTypedStorage {
 public:
   SbTypedStorage(unsigned int size) { this->storage = cc_storage_construct(size); }

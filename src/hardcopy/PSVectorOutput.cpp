@@ -34,7 +34,7 @@
   \class SoPSVectorOutput SoPSVectorOutput.h Inventor/Annex/HardCopy/SoPSVectorOutput.h
   \brief The SoPSVectorOutput class is used for writing PostScript.
 
-  \ingroup hardcopy
+  \ingroup coin_hardcopy
 
   \since Coin 2.1
   \since TGS provides HardCopy support as a separate extension for TGS Inventor.

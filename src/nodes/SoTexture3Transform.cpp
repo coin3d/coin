@@ -34,7 +34,7 @@
   \class SoTexture3Transform SoTexture3Transform.h Inventor/nodes/SoTexture3Transform.h
   \brief The SoTexture3Transform class is used to define 3D texture transformations.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Textures applied to shapes in the scene can be transformed by
   "prefixing" in the state with instances of this node

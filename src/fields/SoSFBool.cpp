@@ -34,7 +34,7 @@
   \class SoSFBool SoSFBool.h Inventor/fields/SoSFBool.h
   \brief The SoSFBool class is a container for an SbBool value.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   need to store a boolean on/off or TRUE/FALSE value, like for

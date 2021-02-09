@@ -34,7 +34,7 @@
   \class SoTextureCoordinateBindingElement Inventor/elements/SoTextureCoordinateBindingElement.h
   \brief The SoTextureCoordinateBindingElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

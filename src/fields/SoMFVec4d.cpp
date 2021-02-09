@@ -34,7 +34,7 @@
   \class SoMFVec4d SoMFVec4d.h Inventor/fields/SoMFVec4d.h
   \brief The SoMFVec4d class is a container for SbVec4d vectors.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   need to store an array of vectors with four elements.

@@ -30,21 +30,18 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file Inventor/C/threads/common.h */
-
 /*!
   \struct cc_sched common.h Inventor/C/threads/common.h
-  \ingroup threads
+  \ingroup coin_threads
   \brief The structure for the thread scheduler.
 */
 
 /*!
   \typedef struct cc_sched cc_sched
-  \ingroup threads
+  \ingroup coin_threads
   \brief The type definition for the thread scheduler structure.
 */
 
-/*! \file sched.h */
 #include <Inventor/C/threads/sched.h>
 
 #include <cassert>

@@ -36,7 +36,7 @@
   \class SoScXMLRotateTarget SoScXMLRotateTarget.h Inventor/scxml/SoScXMLRotateTarget.h
   \brief Navigation system event target for rotating operations.
 
-  \ingroup navigation
+  \ingroup coin_navigation
 */
 
 #

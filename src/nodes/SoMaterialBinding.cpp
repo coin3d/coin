@@ -34,7 +34,7 @@
   \class SoMaterialBinding SoMaterialBinding.h Inventor/nodes/SoMaterialBinding.h
   \brief The SoMaterialBinding class is a node for setting up how materials are mapped to shapes.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   The material binding specified in nodes of this type decides how the
   material values of SoMaterial nodes are mapped on the built-in

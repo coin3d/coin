@@ -34,7 +34,7 @@
   \class SoRotor SoRotor.h Inventor/nodes/SoRotor.h
   \brief The SoRotor class is a node used to animate rotations.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Insert this node in your hierarchy to apply a continuous rotation
   to some geometry. Since this node inherits the SoRotation node,

@@ -34,7 +34,7 @@
   \class SoScale SoScale.h Inventor/nodes/SoScale.h
   \brief The SoScale class is a node type for scaling scene graph geometry.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Use nodes of this type to apply scaling operations during scene graph
   traversals for e.g. rendering. Scale values are specified in a

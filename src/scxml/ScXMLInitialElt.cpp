@@ -41,7 +41,7 @@
   identifies a descendant state element of the parent state element.
 
   \since Coin 3.0
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>

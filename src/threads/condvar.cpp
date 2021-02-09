@@ -30,21 +30,18 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file Inventor/C/threads/common.h */
-
 /*!
   \struct cc_condvar common.h Inventor/C/threads/common.h
-  \ingroup threads
+  \ingroup coin_threads
   \brief The structure for a conditional variable.
 */
 
 /*!
   \typedef struct cc_condvar cc_condvar
-  \ingroup threads
+  \ingroup coin_threads
   \brief The type definition for the conditional variable structure.
 */
 
-/*! \file condvar.h */
 #include <Inventor/C/threads/condvar.h>
 
 #include <cstdlib>

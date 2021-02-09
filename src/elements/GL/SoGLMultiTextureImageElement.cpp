@@ -34,7 +34,7 @@
   \class SoGLMultiTextureImageElement Inventor/elements/SoGLMultiTextureImageElement.h
   \brief The SoGLMultiTextureImageElement class is used to control the current GL texture for texture units.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

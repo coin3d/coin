@@ -40,7 +40,7 @@
   \class SoVRMLMaterial SoVRMLMaterial.h Inventor/VRMLnodes/SoVRMLMaterial.h
   \brief The SoVRMLMaterial class is used to assign a material to geometry.
 
-  \ingroup VRMLnodes
+  \ingroup coin_VRMLnodes
   
   \WEB3DCOPYRIGHT
 

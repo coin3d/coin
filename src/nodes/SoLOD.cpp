@@ -34,7 +34,7 @@
   \class SoLOD SoLOD.h Inventor/nodes/SoLOD.h
   \brief The SoLOD class is used to choose a child based distance between viewer and object.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   The class documentation for the SoLOD node class would be similar
   enough to that of SoLevelOfDetail that we will refer you to look at

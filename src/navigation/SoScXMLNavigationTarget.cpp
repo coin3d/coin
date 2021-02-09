@@ -30,9 +30,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file SoScXMLNavigationTarget.h */
-#include <Inventor/navigation/SoScXMLNavigationTarget.h>
-
 /*!
   \class SoScXMLNavigationTarget SoScXMLNavigationTarget.h Inventor/navigation/SoScXMLNavigationTarget.h
   \brief base class for navigation system SCXML event target services
@@ -40,9 +37,11 @@
   This class contains some common, useful, utility functions for implementing
   navigation system event targets.
 
-  \ingroup navigation
+  \ingroup coin_navigation
   \since Coin 3.1
 */
+
+#include <Inventor/navigation/SoScXMLNavigationTarget.h>
 
 #include <cassert>
 #include <cstring>

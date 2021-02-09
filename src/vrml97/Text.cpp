@@ -40,7 +40,7 @@
   \class SoVRMLText SoVRMLText.h Inventor/VRMLnodes/SoVRMLText.h
   \brief The SoVRMLText class is used to represent text in a scene.
 
-  \ingroup VRMLnodes
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 

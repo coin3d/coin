@@ -34,7 +34,7 @@
   \class SoNodeKit SoNodeKit.h Inventor/nodekits/SoNodeKit.h
   \brief The SoNodeKit class is used to initialize the nodekit classes.
 
-  \ingroup nodekits
+  \ingroup coin_nodekits
 
   The sole function of SoNodeKit is to be just a placeholder for the
   top level initialization code for all nodekit-related classes.

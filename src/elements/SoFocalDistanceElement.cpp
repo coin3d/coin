@@ -34,7 +34,7 @@
   \class SoFocalDistanceElement Inventor/elements/SoFocalDistanceElement.h
   \brief The SoFocalDistanceElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

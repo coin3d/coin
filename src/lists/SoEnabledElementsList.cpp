@@ -34,7 +34,7 @@
   \class SoEnabledElementsList SoEnabledElementsList.h Inventor/lists/SoEnabledElementsList.h
   \brief The SoEnabledElementsList class is a container for type info for element types that are enabled in actions.
 
-  \ingroup actions
+  \ingroup coin_actions
 
   This class is probably not of interest for the application
   programmer.

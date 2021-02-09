@@ -40,7 +40,7 @@
   intended for communicating with such systems.  It also manages the external
   event queue for such systems (systems may also have internal event queues).
 
-  \ingroup scxml
+  \ingroup coin_scxml
   \since Coin 3.1
 */
 

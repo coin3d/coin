@@ -34,7 +34,7 @@
   \class SbImage SbImage.h Inventor/SbImage.h
   \brief The SbImage class is an abstract data type for 2D and 3D images.
 
-  \ingroup base
+  \ingroup coin_base
 
   \COIN_CLASS_EXTENSION
   \since Coin 1.0
@@ -44,8 +44,6 @@
 // quite common that the same image is used several times in a scene
 // and for different contexts. The API should stay the same though.
 // 20001026 mortene (original comment by pederb).
-
-/*! \file SbImage.h */
 
 /*!
   \typedef SbBool SbImageScheduleReadCB(const SbString &, SbImage *, void *)

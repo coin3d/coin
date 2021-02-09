@@ -34,7 +34,7 @@
   \class SoMFFloat SoMFFloat.h Inventor/fields/SoMFFloat.h
   \brief The SoMFFloat class is a container for floating point values.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   need to store a group of multiple floating point values.

@@ -34,7 +34,7 @@
   \class SoMatrixTransform SoMatrixTransform.h Inventor/nodes/SoMatrixTransform.h
   \brief The SoMatrixTransform class is a transformation node.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   This class is the most flexible transformation node, as you can use
   it to accumulate any kind of transformation matrix on top of the

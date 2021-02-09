@@ -39,7 +39,7 @@
   \class SoPrimitiveVertexCache SoPrimitiveVertexCache.h Inventor/caches/SoPrimitiveVertexCache.h
   \brief This cache contains an organized version of the geometry in vertex array form.
 
-  \ingroup caches
+  \ingroup coin_caches
 
   \since Coin 3.0
 */

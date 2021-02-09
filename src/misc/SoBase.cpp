@@ -35,7 +35,7 @@
   \brief The SoBase class is the top-level superclass for a number
   of class-hierarchies.
 
-  \ingroup general
+  \ingroup coin_general
 
   SoBase provides the basic interfaces and methods for doing reference
   counting, type identification and import/export. All classes in Coin

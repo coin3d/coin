@@ -36,7 +36,6 @@
 
 #ifdef HAVE_NODEKITS
 
-/*! \file SoForeignFileKit.h */
 #include <ForeignFiles/SoForeignFileKit.h>
 
 #include <cassert>
@@ -56,7 +55,7 @@
 #include "tidbitsp.h"
 
 /*!
-  \page foreignfilesupport Foreign File Format Support
+  \page coin_foreign_file_support Foreign File Format Support
 
   This is a page describing foreign file format support in Coin.
 
@@ -85,7 +84,7 @@
 
   Abstract base class for foreign file format support in Coin.
 
-  \relates foreignfilesupport
+  \relates coin_foreign_file_support
   \COIN_CLASS_EXTENSION
   \since Coin 3.0
 */

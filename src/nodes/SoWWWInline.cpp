@@ -34,7 +34,7 @@
   \class SoWWWInline SoWWWInline.h Inventor/nodes/SoWWWInline.h
   \brief The SoWWWInline class is a node used to include data from an URL.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   If the URL is not a local file, the application is responsible for
   supplying a callback to a function which will fetch the data of the
@@ -82,7 +82,6 @@
 
 // *************************************************************************
 
-/*! \file SoWWWInline.h */
 #include <Inventor/nodes/SoWWWInline.h>
 
 #include <cstddef>

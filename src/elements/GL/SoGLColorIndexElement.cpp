@@ -34,7 +34,7 @@
   \class SoGLColorIndexElement Inventor/elements/SoGLColorIndexElement.h
   \brief The SoGLColorIndexElement class sets the current OpenGL color.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   This element is only used when the OpenGL canvas is in color index
   mode, i.e. where colors for individual pixels are fetched from a color

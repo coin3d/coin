@@ -34,7 +34,7 @@
   \class SoClipPlaneElement Inventor/elements/SoClipPlaneElement.h
   \brief The SoClipPlaneElement class is used to manage the clip plane stack.
 
-  \ingroup elements
+  \ingroup coin_elements
 */
 
 #include <Inventor/elements/SoClipPlaneElement.h>

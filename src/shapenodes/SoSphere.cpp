@@ -39,7 +39,7 @@
   \class SoSphere SoSphere.h Inventor/nodes/SoSphere.h
   \brief The SoSphere class is for rendering sphere shapes.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Renders a sphere with the size given by the SoSphere::radius
   field. The sphere is rendered with the current material, texture and

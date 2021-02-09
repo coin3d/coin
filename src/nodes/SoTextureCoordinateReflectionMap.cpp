@@ -34,7 +34,7 @@
   \class SoTextureCoordinateReflectionMap SoTextureCoordinateReflectionMap.h Inventor/nodes/SoTextureCoordinateReflectionMap.h
   \brief The SoTextureCoordinateReflectionMap class generates 3D reflection texture coordinates.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   This node is usually used along with a SoCubeMapTexture node...
   

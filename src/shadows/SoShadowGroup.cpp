@@ -34,7 +34,7 @@
   \class SoShadowGroup SoShadowGroup.h FXViz/nodes/SoShadowGroup.h
   \brief The SoShadowGroup node is a group node used for shadow rendering.
 
-  \ingroup fxviz
+  \ingroup coin_fxviz
 
   Children of this node can receive shadows, and cast shadows on other children.
   Use the SoShadowStyle node to control shadow casters and shadow receivers.

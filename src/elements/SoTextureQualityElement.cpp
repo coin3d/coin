@@ -34,7 +34,7 @@
   \class SoTextureQualityElement Inventor/elements/SoTextureQualityElement.h
   \brief The SoTextureQualityElement is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

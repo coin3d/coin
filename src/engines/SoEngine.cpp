@@ -34,7 +34,7 @@
   \class SoEngine SoEngine.h Inventor/engines/SoEngine.h
   \brief SoEngine is the base class for Coin engines.
 
-  \ingroup engines
+  \ingroup coin_engines
 
   Engines enable the application programmers to make complex
   connections between fields.

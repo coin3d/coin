@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*!
-  \page vbo_rendering Vertex array and VBO rendering in Coin
+  \page coin_vbo_rendering Vertex array and VBO rendering in Coin
 
   Coin 2.5 added improved support for OpenGL vertex array and VBO
   rendering.  This might lead to major rendering performance
@@ -130,7 +130,7 @@
 
 /*!
   \class SoReorganizeAction SoReorganizeAction.h Inventor/actions/SoReorganizeAction.h
-  \ingroup actions
+  \ingroup coin_actions
   \brief The SoReorganizeAction class reorganizes your scene graph to optimize traversal/rendering.
 
   Note. This is work-in-progress. pederb, 2005-04-05.

@@ -34,7 +34,7 @@
   \class SoMaterialBundle SoMaterialBundle.h Inventor/bundles/SoMaterialBundle.h
   \brief The SoMaterialBundle class simplifies material handling.
 
-  \ingroup bundles
+  \ingroup coin_bundles
 
   Every shape node should create (on the stack) an instance of this
   class and call sendFirst() before sending anything to GL. During

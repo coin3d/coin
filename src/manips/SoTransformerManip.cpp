@@ -40,7 +40,7 @@
   \class SoTransformerManip SoTransformerManip.h Inventor/manips/SoTransformerManip.h
   \brief The SoTransformerManip wraps an SoTransformerDragger for convenience.
 
-  \ingroup manips
+  \ingroup coin_manips
 
   The manipulator class takes care of wrapping up the
   SoTransformerDragger in a simple and convenient API for the

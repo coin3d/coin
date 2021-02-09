@@ -34,7 +34,7 @@
   \class SoGLLightIdElement Inventor/elements/SoGLLightIdElement.h
   \brief The SoGLLightIdElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

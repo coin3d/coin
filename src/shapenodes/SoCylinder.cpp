@@ -39,7 +39,7 @@
   \class SoCylinder SoCylinder.h Inventor/nodes/SoCylinder.h
   \brief The SoCylinder class is for rendering cylinder shapes.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Insert a cylinder shape into the scene graph. The cylinder is
   rendered with the current material, texture and draw style settings

@@ -34,7 +34,7 @@
   \class SoContextHandler SoContextHandler.h Inventor/misc/SoContextHandler.h
   \brief The SoContextHandler class is for now to be treated as an internal class.
 
-  \ingroup general
+  \ingroup coin_general
 
   \since Coin 2.0
 */
@@ -58,7 +58,6 @@
 
 // *************************************************************************
 
-/*! \file SoContextHandler.h */
 #include <Inventor/misc/SoContextHandler.h>
 
 #include <cstdlib>

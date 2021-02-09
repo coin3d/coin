@@ -41,7 +41,7 @@
   state machines together with Coin events.
 
   \since Coin 3.0
-  \ingroup soscxml
+  \ingroup coin_soscxml
 */
 
 #include <boost/scoped_ptr.hpp>

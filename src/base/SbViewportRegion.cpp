@@ -34,7 +34,7 @@
   \class SbViewportRegion SbViewportRegion.h Inventor/SbViewportRegion.h
   \brief The SbViewportRegion class is a viewport within a full window.
 
-  \ingroup base
+  \ingroup coin_base
 
   The SbViewportRegion class contains information to represent a
   subview within a window. It stores information about the origin and

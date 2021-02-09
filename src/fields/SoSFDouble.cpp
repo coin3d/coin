@@ -34,7 +34,7 @@
   \class SoSFDouble SoSFDouble.h Inventor/fields/SoSFDouble.h
   \brief The SoSFDouble class is a container for a double precision floating point value.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   need to store a single floating point value.

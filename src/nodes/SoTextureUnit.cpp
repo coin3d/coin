@@ -34,7 +34,7 @@
   \class SoTextureUnit SoTextureUnit.h Inventor/nodes/SoTextureUnit.h
   \brief The SoTextureUnit class is a node for setting the active texture unit.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   When an SoTextureUnit node is inserted into the scene graph, all
   subsequent texture nodes (SoTexture2, SoTextureCoordinate2,

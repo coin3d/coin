@@ -34,7 +34,7 @@
   \class SoLevelOfDetail SoLevelOfDetail.h Inventor/nodes/SoLevelOfDetail.h
   \brief The SoLevelOfDetail class is used to choose a child based on projected size.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   A level-of-detail mechanism is typically used by application
   programmers to assist the library in speeding up the rendering.

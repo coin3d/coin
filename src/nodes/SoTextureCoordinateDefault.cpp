@@ -34,7 +34,7 @@
   \class SoTextureCoordinateDefault SoTextureCoordinateDefault.h Inventor/nodes/SoTextureCoordinateDefault.h
   \brief The SoTextureCoordinateDefault class removes texture coordinates from the state.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Shapes below this node in the scene graph will have to use its default 
   texture coordinates as SoTextureCoordinateDefault cleans out all previously

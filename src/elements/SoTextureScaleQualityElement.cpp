@@ -34,7 +34,7 @@
   \class SoTextureScaleQualityElement /elements/SoTextureScaleQualityElement.h
   \brief The SoTextureScaleQualityElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   This is currently an internal Coin element. The header file is not
   installed, and the API for this element might change without notice.

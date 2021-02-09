@@ -34,7 +34,7 @@
   \class SoSFBitMask SoSFBitMask.h Inventor/fields/SoSFBitMask.h
   \brief The SoSFBitMask class is a container for a set of bit flags.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   needs to store one particular set of bit flags from an enumerated

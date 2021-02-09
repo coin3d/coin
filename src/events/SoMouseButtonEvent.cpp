@@ -35,7 +35,7 @@
   \brief The SoMouseButtonEvent class contains information about
   mouse button interaction.
 
-  \ingroup events
+  \ingroup coin_events
 
   When the user presses any buttons on the mouse, these will be
   translated from a system specific event into a Coin event and sent

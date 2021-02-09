@@ -34,7 +34,7 @@
   \class SoField SoField.h Inventor/fields/SoField.h
   \brief The SoField class is the top-level abstract base class for fields.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   Fields is the mechanism used throughout Coin for encapsulating basic
   data types to detect changes made to them, and to provide

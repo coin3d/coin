@@ -34,7 +34,7 @@
   \class SoUpgrader SoUpgrader.h
   \brief The SoUpgrader class is used to support Inventor files with version < 2.1.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   This class is needed since some nodes in earlier versions of
   OpenInventor had different fields than nodes in Inventor V2.1.

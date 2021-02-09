@@ -35,7 +35,7 @@
   \brief The SoKeyboardEvent class contains information about
   keyboard interaction.
 
-  \ingroup events
+  \ingroup coin_events
 
   When the user presses any keys on the keyboard, these will be translated
   from a system specific event into a Coin event and sent to the

@@ -34,7 +34,7 @@
   \class SoComputeBoundingBox SoComputeBoundingBox.h Inventor/engines/SoComputeBoundingBox.h
   \brief The SoComputeBoundingBox class is used to calculate a bounding box.
 
-  \ingroup engines
+  \ingroup coin_engines
 
   This engine is simply a wrapper around the SoGetBoundingBoxAction,
   for a convenient way of having automatic updating of some data in

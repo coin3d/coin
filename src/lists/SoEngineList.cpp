@@ -34,7 +34,7 @@
   \class SoEngineList SoEngineList.h Inventor/lists/SoEngineList.h
   \brief The SoEngineList class is a container for SoEngine objects.
 
-  \ingroup engines
+  \ingroup coin_engines
 
   As this class inherits SoBaseList, referencing and dereferencing
   will default be done on the objects at append(), remove(), insert()

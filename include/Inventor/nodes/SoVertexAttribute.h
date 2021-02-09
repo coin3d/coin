@@ -87,14 +87,14 @@ private:
 
 // *************************************************************************
 
-template <int Type>
-class SoAnyVertexAttribute : public SoVertexAttribute {
-public:
-
-private:
-  SoAnyVertexAttribute(void) { }
-
-}; // SoAnyVertexAttribute
+//template <int Type>
+//class SoAnyVertexAttribute : public SoVertexAttribute {
+//public:
+//
+//private:
+//  SoAnyVertexAttribute(void) { }
+//
+//}; // SoAnyVertexAttribute
 
 // *************************************************************************
 

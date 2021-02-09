@@ -34,7 +34,7 @@
   \class SbRotation SbRotation.h Inventor/SbRotation.h
   \brief The SbRotation class represents a rotation in 3D space.
 
-  \ingroup base
+  \ingroup coin_base
 
   SbRotation is used extensively throughout the Coin library.
 

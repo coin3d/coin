@@ -35,7 +35,7 @@
   \brief A class that at this point in time has one purpose - figuring out
   if two triangles intersect each other.
 
-  \ingroup base
+  \ingroup coin_base
 
   This class is so limited in functionality that it is not included in the
   public Coin API for now.

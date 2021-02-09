@@ -34,7 +34,7 @@
   \class SoGLShadowCullingElement SoGLShadowCullingElement.h Inventor/annex/FXViz/elements/SoGLShadowCullingElement.h
   \brief The SoGLShadowCullingElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 

@@ -34,7 +34,7 @@
   \class SoGeoCoordinate SoGeoCoordinate.h Inventor/nodes/SoGeoCoordinate.h
   \brief The SoGeoCoordinate class is used to specify a list of geographical coordinates.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code

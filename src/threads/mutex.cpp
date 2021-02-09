@@ -40,21 +40,18 @@
    20050516 mortene.
 */
 
-/*! \file Inventor/C/threads/common.h */
-
 /*!
   \struct cc_mutex common.h Inventor/C/threads/common.h
-  \ingroup threads
+  \ingroup coin_threads
   \brief The structure for a mutex.
 */
 
 /*!
   \typedef struct cc_mutex cc_mutex
-  \ingroup threads
+  \ingroup coin_threads
   \brief The type definition for the mutex structure.
 */
 
-/*! \file mutex.h */
 #include <Inventor/C/threads/mutex.h>
 
 #include <cstdlib>
@@ -322,4 +319,4 @@ cc_mutex_global_unlock(void)
 {
   (void) cc_mutex_unlock(cc_global_mutex);
 }
- 
+

@@ -34,7 +34,7 @@
   \class SoShape SoShape.h Inventor/nodes/SoShape.h
   \brief The SoShape class is the superclass for geometry shapes.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   The node types which have actual geometry to render inherit this
   class. For convenience, the SoShape class contains various common

@@ -36,7 +36,7 @@
   \class ScXMLContentElt Inventor/scxml/ScXMLContentElt.h
   \brief implements the &lt;content&gt; SCXML element.
 
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>

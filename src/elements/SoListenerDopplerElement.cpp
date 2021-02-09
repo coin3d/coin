@@ -34,7 +34,7 @@
   \class SoListenerDopplerElement Inventor/elements/SoListenerDopplerElement.h
   \brief The SoListenerDopplerElement holds the Doppler velocity and factor of the current listener.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   The dopplerVelocity and dopplerFactor is set by SoListener nodes
   during audio rendering. The SoListenerDopplerElement is used when

@@ -57,7 +57,7 @@
   the misguided &lt;invoke&gt;-approach.
 
   \since Coin 3.0
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>

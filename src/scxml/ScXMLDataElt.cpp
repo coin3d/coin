@@ -63,7 +63,7 @@
 
   \since Coin 4.0
   \sa ScXMLDataModelElt, ScXMLAssignElt, ScXMLSendElt
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>

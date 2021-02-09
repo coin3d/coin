@@ -34,7 +34,7 @@
   \class SoComposeVec2f SoComposeVec2f.h Inventor/engines/SoComposeVec2f.h
   \brief The SoComposeVec2f class is used to compose 2D vectors from two floats.
 
-  \ingroup engines
+  \ingroup coin_engines
 */
 
 #include <Inventor/engines/SoComposeVec2f.h>

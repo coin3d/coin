@@ -34,7 +34,7 @@
   \class SoReversePerspectiveCamera SoReversePerspectiveCamera.h Inventor/nodes/SoReversePerspectiveCamera.h
   \brief The SoReversePerspectiveCamera class defines a camera node with reverse perspective rendering.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   For realistic looking 3D scene, the geometry should be rendered with
   perspective calculations. Use this camera type to accomplish this.

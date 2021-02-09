@@ -34,7 +34,7 @@
   \class SoDecomposeMatrix SoDecomposeMatrix.h Inventor/engines/SoDecomposeMatrix.h
   \brief The SoDecomposeMatrix class is used to decompose a matrix into simple transformations.
 
-  \ingroup engines
+  \ingroup coin_engines
 */
 
 #include <Inventor/engines/SoDecomposeMatrix.h>

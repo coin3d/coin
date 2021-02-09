@@ -34,7 +34,7 @@
   \class SbOctTree SbOctTree.h Inventor/SbOctTree.h
   \brief The SbOctTree class defines a generic octree for fast geometry searches.
 
-  \ingroup base
+  \ingroup coin_base
 
   \COIN_CLASS_EXTENSION
 */

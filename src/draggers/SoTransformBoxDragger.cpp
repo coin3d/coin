@@ -40,7 +40,7 @@
   \class SoTransformBoxDragger SoTransformBoxDragger.h Inventor/draggers/SoTransformBoxDragger.h
   \brief The SoTransformBoxDragger provides a box which can be translated, scaled and rotated.
 
-  \ingroup draggers
+  \ingroup coin_draggers
 
   \DRAGGER_DEFAULT_SCREENSHOT
 

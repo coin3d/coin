@@ -30,7 +30,28 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file error.h */
+/*!
+  \struct cc_error error.h Inventor/C/errors/error.h
+  \typedef struct cc_error cc_error
+  \brief The cc_error type is an internal Coin structure for error management.
+
+  \ingroup coin_errors
+
+  This is a Coin extension.
+*/
+
+/*!
+  \var cc_error::debugstring
+
+  The error message.
+*/
+
+/*!
+  \typedef void cc_error_cb(const cc_error * err, void * data)
+
+  The definition for an error callback handler.
+*/
+
 #include <Inventor/C/errors/error.h>
 
 #ifdef HAVE_CONFIG_H
@@ -52,28 +73,6 @@
 #include "tidbitsp.h"
 
 /* ********************************************************************** */
-
-/*!
-  \struct cc_error error.h Inventor/C/errors/error.h
-  \typedef struct cc_error cc_error
-  \brief The cc_error type is an internal Coin structure for error management.
-
-  \ingroup errors
-
-  This is a Coin extension.
-*/
-
-/*!
-  \var cc_error::debugstring
-
-  The error message.
-*/
-
-/*!
-  \typedef void cc_error_cb(const cc_error * err, void * data)
-
-  The definition for an error callback handler.
-*/
 
 #ifdef __cplusplus
 extern "C" {

@@ -1553,45 +1553,45 @@
     <docanchor file="coin200" title="Multi-Pipe Rendering Support">multipipe</docanchor>
   </compound>
   <compound kind="page">
-    <name>vbo_rendering</name>
+    <name>coin_vbo_rendering</name>
     <title>Vertex array and VBO rendering in Coin</title>
-    <filename>vbo_rendering</filename>
+    <filename>coin_vbo_rendering</filename>
   </compound>
   <compound kind="page">
-    <name>Coin_books</name>
+    <name>coin_books</name>
     <title>Books Related to Open Inventor / Coin</title>
-    <filename>Coin_books</filename>
-    <docanchor file="Coin_books" title="The Inventor Mentor">mentorbook</docanchor>
-    <docanchor file="Coin_books" title="The Inventor Toolmaker">toolmakerbook</docanchor>
-    <docanchor file="Coin_books" title="The Annotated VRML2.0 Reference Manual">vrml2refbook</docanchor>
-    <docanchor file="Coin_books" title="The Open GL Programming Manual">openglbook</docanchor>
-    <docanchor file="Coin_books" title="The Open Inventor C++ Reference Manual">oirefbook</docanchor>
+    <filename>coin_books</filename>
+    <docanchor file="coin_books" title="The Inventor Mentor">mentorbook</docanchor>
+    <docanchor file="coin_books" title="The Inventor Toolmaker">toolmakerbook</docanchor>
+    <docanchor file="coin_books" title="The Annotated VRML2.0 Reference Manual">vrml2refbook</docanchor>
+    <docanchor file="coin_books" title="The Open GL Programming Manual">openglbook</docanchor>
+    <docanchor file="coin_books" title="The Open Inventor C++ Reference Manual">oirefbook</docanchor>
   </compound>
   <compound kind="page">
-    <name>Coin_environment_variables</name>
+    <name>coin_environment_variables</name>
     <title>Environment variables</title>
-    <filename>Coin_environment_variables</filename>
+    <filename>coin_environment_variables</filename>
   </compound>
   <compound kind="page">
-    <name>foreignfilesupport</name>
+    <name>coin_foreign_file_support</name>
     <title>Foreign File Format Support</title>
-    <filename>foreignfilesupport</filename>
+    <filename>coin_foreign_file_support</filename>
   </compound>
   <compound kind="page">
-    <name>libraries</name>
+    <name>coin_libraries</name>
     <title>Coin use of 3rd party libraries.</title>
-    <filename>libraries</filename>
-    <docanchor file="libraries" title="The simage library">simage</docanchor>
+    <filename>coin_libraries</filename>
+    <docanchor file="coin_libraries" title="The simage library">simage</docanchor>
   </compound>
   <compound kind="page">
-    <name>compression_overview</name>
+    <name>coin_compression_overview</name>
     <title>File compression</title>
-    <filename>compression_overview</filename>
+    <filename>coin_compression_overview</filename>
   </compound>
   <compound kind="page">
-    <name>dynload_overview</name>
+    <name>coin_dynload_overview</name>
     <title>Dynamic Loading of Extension Nodes</title>
-    <filename>dynload_overview</filename>
+    <filename>coin_dynload_overview</filename>
   </compound>
   <compound kind="page">
     <name>coin_shaders</name>
@@ -1599,14 +1599,14 @@
     <filename>coin_shaders</filename>
   </compound>
   <compound kind="page">
-    <name>multithreading_support</name>
+    <name>coin_multithreading_support</name>
     <title>Multithreading Support in Coin</title>
-    <filename>multithreading_support</filename>
+    <filename>coin_multithreading_support</filename>
   </compound>
   <compound kind="page">
-    <name>xmlparsing</name>
+    <name>coin_xml_parsing</name>
     <title>XML Parsing with Coin</title>
-    <filename>xmlparsing</filename>
+    <filename>coin_xml_parsing</filename>
   </compound>
   <compound kind="group">
     <name>actions</name>

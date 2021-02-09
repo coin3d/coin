@@ -34,7 +34,7 @@
   \class SoSelection SoSelection.h Inventor/nodes/SoSelection.h
   \brief The SoSelection class manages a list of selected nodes.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Inserting an SoSelection node in your scene graph enables you to let
   the user "pick" with the left mouse button to select/deselect objects
@@ -151,7 +151,6 @@
 
 // *************************************************************************
 
-/*! \file SoSelection.h */
 #include <Inventor/nodes/SoSelection.h>
 
 #include <Inventor/actions/SoSearchAction.h>

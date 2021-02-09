@@ -36,7 +36,7 @@
   \class ScXMLEvaluator ScXMLEvaluator.h Inventor/scxml/ScXMLEvaluator.h
   \brief defines an interface for profile-dependent evaluators.
 
-  \ingroup scxml
+  \ingroup coin_scxml
   \since Coin 3.1
 */
 
@@ -162,7 +162,7 @@ ScXMLEvaluator::clearTemporaryVariables(void)
   \class ScXMLDataObj ScXMLEvaluator.h Inventor/scxml/ScXMLEvaluator.h
   \brief base class for evaluator data objects in the SCXML data module
 
-  \ingroup scxml
+  \ingroup coin_scxml
   \since Coin 3.1
 */
 
@@ -201,7 +201,7 @@ ScXMLDataObj::~ScXMLDataObj(void)
   \class ScXMLConstantDataObj ScXMLEvaluator.h Inventor/scxmlScXMLEvaluator.h
   \brief base class for immediate data values
 
-  \ingroup scxml
+  \ingroup coin_scxml
   \since Coin 3.1
 */
 
@@ -558,7 +558,7 @@ ScXMLExprDataObj::evaluate(ScXMLStateMachine * sm)
   \class ScXMLReferenceDataObj ScXMLEvaluator.h Inventor/scxml/ScXMLEvaluator.h
   \brief A data object representing a reference to another object in the data model.
 
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 SCXML_OBJECT_SOURCE(ScXMLReferenceDataObj);
@@ -650,7 +650,7 @@ ScXMLReferenceDataObj::evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj *& point
   \class ScXMLAndOpExprDataObj ScXMLEvaluator.h Inventor/scxml/ScXMLEvaluator.h
   \brief Implements the logical AND operator.
 
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 SCXML_OBJECT_SOURCE(ScXMLAndOpExprDataObj);
 

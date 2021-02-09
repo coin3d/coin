@@ -34,7 +34,7 @@
   \class SoRotation SoRotation.h Inventor/nodes/SoRotation.h
   \brief The SoRotation class specifies a rotation transformation.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Use nodes of this class type to reorient geometry data within the
   scene graph.

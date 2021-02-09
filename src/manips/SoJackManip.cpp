@@ -40,7 +40,7 @@
   \class SoJackManip SoJackManip.h Inventor/manips/SoJackManip.h
   \brief The SoJackManip wraps an SoJackDragger for convenience.
 
-  \ingroup manips
+  \ingroup coin_manips
 
   The manipulator class takes care of wrapping up the SoJackDragger in
   a simple and convenient API for the application programmer, making

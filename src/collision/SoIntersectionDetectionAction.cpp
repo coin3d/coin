@@ -107,7 +107,7 @@
   }
   \endcode
 
-  \ingroup actions
+  \ingroup coin_actions
   \since Coin 2.1
   \since TGS Inventor 2.4
 */
@@ -127,7 +127,6 @@
 
 // *************************************************************************
 
-/*! \file SoIntersectionDetectionAction.h */
 #include <Inventor/collision/SoIntersectionDetectionAction.h>
 
 #ifdef HAVE_CONFIG_H

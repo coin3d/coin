@@ -34,7 +34,7 @@
   \class SoMultiTextureImageElement Inventor/elements/SoMultiTextureImageElement.h
   \brief The SoMultiTextureImageElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 

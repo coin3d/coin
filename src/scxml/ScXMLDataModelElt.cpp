@@ -36,7 +36,7 @@
   \class ScXMLDataModelElt ScXMLDataModelElt.h Inventor/scxml/ScXMLDataModelElt.h
   \brief implements the &lt;datamodel&gt; SCXML element.
 
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>

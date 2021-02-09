@@ -36,7 +36,7 @@
   \class ScXMLMinimumExprDataObj ScXMLMinimumEvaluator.h Inventor/scxml/ScXMLMinimumEvaluator.h
   \brief implements the data objects for the evaluator for the minimum profile.
 
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 /*!
@@ -45,7 +45,7 @@
 
   - In()
 
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 #include <cassert>

@@ -34,7 +34,7 @@
   \class SoType SoType.h Inventor/SoType.h
   \brief The SoType class is the basis for the runtime type system in Coin.
 
-  \ingroup general
+  \ingroup coin_general
 
   Many of the classes in the Coin library must have their type
   information registered before any instances are created (including,
@@ -72,12 +72,12 @@
   information: super classes must be registered before any of their
   derived classes are.
 
-  See also \ref dynload_overview for some additional SoType-related
+  See also \ref coin_dynload_overview for some additional SoType-related
   information.
 */
 
 /*!
-  \page dynload_overview Dynamic Loading of Extension Nodes
+  \page coin_dynload_overview Dynamic Loading of Extension Nodes
 
   When Coin tries to get hold of a node type object (SoType) for a
   class based on the name string of the node type, it will - if no
@@ -129,7 +129,6 @@
 
 // *************************************************************************
 
-/*! \file SoType.h */
 #include <Inventor/SoType.h>
 
 #include <cassert>

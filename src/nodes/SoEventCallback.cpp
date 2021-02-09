@@ -34,7 +34,7 @@
   \class SoEventCallback SoEventCallback.h Inventor/nodes/SoEventCallback.h
   \brief The SoEventCallback class provides functionality for catching events.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Use SoEventCallback nodes in the scene graph for catching user
   interaction events with the scene graph's render canvas.
@@ -72,7 +72,6 @@
 
 // *************************************************************************
 
-/*! \file SoEventCallback.h */
 #include <Inventor/nodes/SoEventCallback.h>
 
 #include <Inventor/SoPath.h>

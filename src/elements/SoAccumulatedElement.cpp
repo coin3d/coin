@@ -34,7 +34,7 @@
   \class SoAccumulatedElement SoAccumulatedElement.h Inventor/elements/SoAccumulatedElement.h
   \brief The SoAccumulatedElement class is an abstract class for storing accumulated state.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   This is the superclass of elements where new element data \e
   accumulates with older data.

@@ -35,7 +35,7 @@
   \brief The SbDPRotation class represents a rotation in 3D space
   using double precision data.
 
-  \ingroup base
+  \ingroup coin_base
 
   SbDPRotation is used extensively throughout the Coin library.
 

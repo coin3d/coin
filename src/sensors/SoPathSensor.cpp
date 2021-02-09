@@ -34,7 +34,7 @@
   \class SoPathSensor SoPathSensor.h Inventor/sensors/SoPathSensor.h
   \brief The SoPathSensor class detects changes to paths.
 
-  \ingroup sensors
+  \ingroup coin_sensors
 
   If you need to know when a path changes (i.e. nodes in the path have
   been removed, or new nodes are added), use this sensor to get a

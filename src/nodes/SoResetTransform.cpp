@@ -34,7 +34,7 @@
   \class SoResetTransform SoResetTransform.h Inventor/nodes/SoResetTransform.h
   \brief The SoResetTransform class is a node type which makes it possible to "nullify" state during traversal.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   SoResetTransform is useful for setting up geometry in the scene
   graph which will not be influenced by the transformation nodes

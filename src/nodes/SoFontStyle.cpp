@@ -34,7 +34,7 @@
   \class SoFontStyle SoFontStyle.h Inventor/nodes/SoFontStyle.h
   \brief The SoFontStyle class changes the appearance of fonts for text rendering nodes.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Successive text rendering nodes will use fonts with the style
   settings of this node, if a font with the given settings can be

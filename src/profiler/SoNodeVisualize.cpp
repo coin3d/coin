@@ -34,7 +34,7 @@
   \class SoNodeVisualize Inventor/annex/Profiler/nodekits/SoNodeVisualize.h
   \brief The SoNodeVisualize class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

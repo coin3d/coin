@@ -40,7 +40,7 @@
   \class SoNodekitCatalog SoNodekitCatalog.h Inventor/nodekits/SoNodekitCatalog.h
   \brief The SoNodekitCatalog class is a container for nodekit layouts.
 
-  \ingroup nodekits
+  \ingroup coin_nodekits
 
   Nodekits store all their hierarchical layout information and part
   information in instances of this class.

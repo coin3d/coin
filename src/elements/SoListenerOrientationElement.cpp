@@ -34,7 +34,7 @@
   \class SoListenerOrientationElement Inventor/elements/SoListenerOrientationElement.h
   \brief The SoListenerOrientationElement holds the orientation of the current listener.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   This orientation is set by SoListener nodes and SoCamera Nodes during
   audio rendering. When a SoListener is visited by the SoAudioRenderAction,

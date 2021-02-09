@@ -40,7 +40,7 @@
   logical operators, arithmetic expressions, and some convenience data model
   features like access to the scene graph and temporary storage of variables.
 
-  \ingroup soscxml
+  \ingroup coin_soscxml
 */
 
 #include <cassert>

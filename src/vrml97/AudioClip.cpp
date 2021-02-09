@@ -40,8 +40,8 @@
   \class SoVRMLAudioClip SoVRMLAudioClip.h Inventor/VRMLnodes/SoVRMLAudioClip.h
   \brief The SoVRMLAudioClip class is used to load and store audio data.
 
-  \ingroup VRMLnodes
-  \ingroup sound
+  \ingroup coin_VRMLnodes
+  \ingroup coin_sound
 
   Audio data is loaded using the simage library, so make sure you have
   built the simage library with support for the audio file formats you
@@ -160,7 +160,6 @@
   This eventOut is sent when the sound starts/stops playing.
 */
 
-/*! \file SoVRMLAudioClip.h */
 #include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
 #include "coindefs.h"
 

@@ -40,7 +40,7 @@
   \class SoVRMLSpotLight SoVRMLSpotLight.h Inventor/VRMLnodes/SoVRMLSpotLight.h
   \brief The SoVRMLSpotLight class defines a spot light source.
 
-  \ingroup VRMLnodes
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 

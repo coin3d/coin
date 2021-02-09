@@ -34,7 +34,7 @@
   \class SoLockManager SoLockMgr.h Inventor/lock/SoLockMgr.h
   \brief The SoLockManager is a defunct software license lock mechanism.
 
-  \ingroup general
+  \ingroup coin_general
 
   This is just a dummy implementation of the TGS Inventor class used
   to provide a license locking mechanism. Since Coin can be used

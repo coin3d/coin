@@ -41,7 +41,7 @@
   \brief Base class for all SCXML objects.
 
   \since Coin 3.0
-  \ingroup scxml
+  \ingroup coin_scxml
 */
 
 /*!

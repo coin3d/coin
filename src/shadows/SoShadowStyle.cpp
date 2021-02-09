@@ -34,7 +34,7 @@
   \class SoShadowStyle SoShadowStyle.h Inventor/annex/FXViz/nodes/SoShadowStyle.h
   \brief The SoShadowStyle class is a node for setting the shadow style on nodes.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   <b>FILE FORMAT/DEFAULTS:</b>
   \code

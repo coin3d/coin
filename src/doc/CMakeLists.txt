@@ -8,6 +8,8 @@ if(COIN_BUILD_DOCUMENTATION)
 # ############################################################################
 # Setup documentation options
 # ############################################################################
+  set(DOXYGEN_GENERATE_TODOLIST NO)
+  set(DOXYGEN_GENERATE_DEPRECATEDLIST NO)
   set(GENERATE_HTMLHELP NO)
   set(DOXYGEN_GENERATE_MAN NO)
   set(GENERATE_QHP NO)

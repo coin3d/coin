@@ -34,7 +34,7 @@
   \class SoCallbackAction SoCallbackAction.h Inventor/actions/SoCallbackAction.h
   \brief The SoCallbackAction class invokes callbacks at specific nodes.
 
-  \ingroup actions
+  \ingroup coin_actions
 
   This action has mechanisms for tracking traversal position and
   traversal state.  In combination with the ability to pass geometry
@@ -177,7 +177,6 @@
 */
 
 
-/*! \file SoCallbackAction.h */
 #include <Inventor/actions/SoCallbackAction.h>
 
 #include <Inventor/SoPath.h>

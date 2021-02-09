@@ -40,7 +40,7 @@
   \class SoVRMLCollision SoVRMLCollision.h Inventor/VRMLnodes/SoVRMLCollision.h
   \brief The SoVRMLCollision class is used for collision detection with the avatar.
 
-  \ingroup VRMLnodes
+  \ingroup coin_VRMLnodes
 
   \WEB3DCOPYRIGHT
 

@@ -34,7 +34,7 @@
   \class SoComposeRotation SoComposeRotation.h Inventor/engines/SoComposeRotation.h
   \brief The SoComposeRotation class is used to compose rotations from angle and axis.
 
-  \ingroup engines
+  \ingroup coin_engines
 
   Simple usage example:
 

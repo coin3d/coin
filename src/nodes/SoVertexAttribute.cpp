@@ -105,7 +105,7 @@ The vertex shader (vertex.glsl)
   \endcode
 
   \sa SoVertexAttributeBinding
-  \ingroup shaders
+  \ingroup coin_shaders
   \COIN_CLASS_EXTENSION
   \since Coin 3.0
 */

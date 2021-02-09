@@ -34,7 +34,7 @@
   \class SoShapeHints SoShapeHints.h Inventor/nodes/SoShapeHints.h
   \brief The SoShapeHints class is a node containing hints about how to render geometry.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   The SoShapeHints node is used to set up clues to the rendering
   subsystem about how particular aspects of the subsequent geometry in

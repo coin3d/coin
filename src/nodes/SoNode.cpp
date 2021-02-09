@@ -34,7 +34,7 @@
   \class SoNode SoNode.h Inventor/nodes/SoNode.h
   \brief The SoNode class is the base class for nodes used in scene graphs.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   Coin is a \e retained \e mode 3D visualization library (built on top
   of the \e immediate \e mode OpenGL library). "Retained mode" means
@@ -182,7 +182,7 @@
 \class SbUniqueId SbBasic.h Inventor/SbBasic.h
 \brief SbUniqueId is an integer type for node identifiers.
 
-\ingroup base
+\ingroup coin_base
 
 SbUniqueId is meant to be a "32/64 bit portable" way of defining an
 integer type that is used for storing unique node identifiers.

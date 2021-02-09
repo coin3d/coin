@@ -52,7 +52,7 @@
 #pragma warning(disable:4251) // for DLL-interface warning
 #endif /* MSVC <8 */
 
-template <class T>
+template <typename T>
 class COIN_DLL_API SbLazyPimplPtr {
 public:
   SbLazyPimplPtr(void);

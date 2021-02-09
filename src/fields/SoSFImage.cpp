@@ -34,7 +34,7 @@
   \class SoSFImage SoSFImage.h Inventor/fields/SoSFImage.h
   \brief The SoSFImage class is used to store pixel images.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   The SoSFImage class provides storage for inline 2D image
   maps. Images in Coin are mainly used for texture mapping support.

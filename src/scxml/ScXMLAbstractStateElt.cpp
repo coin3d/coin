@@ -36,7 +36,7 @@
   \class ScXMLAbstractStateElt ScXMLAbstractStateElt.h Inventor/scxml/ScXMLAbstractStateElt
   \brief abstract base class for the SCXML 'state' elements.
 
-  \ingroup scxml
+  \ingroup coin_scxml
   \since Coin 3.1
 */
 

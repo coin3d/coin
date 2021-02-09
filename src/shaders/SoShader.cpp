@@ -32,7 +32,7 @@
 
 
 /*!
-  \page coin_shaders Shaders in Coin
+  \page coin_shaders_page Shaders in Coin
 
   Coin 2.5 added support for shaders. The main nodes used are SoShaderProgram,
   SoVertexShader, SoFragmentShader, and SoGeometryShader. A typical scene graph

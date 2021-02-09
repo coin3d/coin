@@ -34,7 +34,7 @@
   \class SoPathList SoPathList.h Inventor/lists/SoPathList.h
   \brief The SoPathList class is a container for pointers to SoPath objects.
 
-  \ingroup general
+  \ingroup coin_general
 
   As this class inherits SoBaseList, referencing and dereferencing
   will default be done on the objects at append(), remove(), insert()

@@ -34,7 +34,7 @@
   \class SoMFVec3i32 SoMFVec3i32.h Inventor/fields/SoMFVec3i32.h
   \brief The SoMFVec3i32 class is a container for SbVec3i32 vectors.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   need to store an array of vectors with three elements.

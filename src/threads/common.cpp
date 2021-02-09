@@ -30,7 +30,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file Inventor/C/threads/common.h */
 #include <Inventor/C/threads/common.h>
 
 #ifdef HAVE_CONFIG_H
@@ -45,13 +44,13 @@
     CC_PTHREAD    = 0,
     CC_W32THREAD
   }
-  \ingroup threads
+  \ingroup coin_threads
   \brief The definition of the enumerator for identification of the thread type implemented.
 */
 
 /*!
   \typedef enum cc_threads_implementation cc_threads_implementation
-  \ingroup threads
+  \ingroup coin_threads
   \brief The type definition for the implemented thread enumerator.
 */
 

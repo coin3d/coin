@@ -34,7 +34,7 @@
   \class SoDecimationTypeElement Inventor/elements/SoDecimationTypeElement.h
   \brief The SoDecimationTypeElement class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

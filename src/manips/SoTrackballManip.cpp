@@ -40,7 +40,7 @@
   \class SoTrackballManip SoTrackballManip.h Inventor/manips/SoTrackballManip.h
   \brief The SoTrackballManip wraps an SoTrackballDragger for convenience.
 
-  \ingroup manips
+  \ingroup coin_manips
 
   The manipulator class takes care of wrapping up the
   SoTrackballDragger in a simple and convenient API for the

@@ -34,7 +34,7 @@
   \class SoProfilerTopEngine Inventor/annex/Profiler/engines/SoProfilerTopEngine.h
   \brief The SoProfilerTopEngine class is yet to be documented.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   FIXME: write doc.
 */

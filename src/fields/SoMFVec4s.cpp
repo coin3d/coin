@@ -34,7 +34,7 @@
   \class SoMFVec4s SoMFVec4s.h Inventor/fields/SoMFVec4s.h
   \brief The SoMFVec4s class is a container for SbVec4s vectors.
 
-  \ingroup fields
+  \ingroup coin_fields
 
   This field is used where nodes, engines or other field containers
   need to store an array of vectors with four elements.

@@ -50,7 +50,7 @@
   \class SbVec4f SbVec4f.h Inventor/SbVec4f.h
   \brief The SbVec4f class is a 4 dimensional vector with floating point coordinates.
 
-  \ingroup base
+  \ingroup coin_base
 
   This vector class is used by many other classes in
   Coin. It provides storage for a 3 dimensional homogeneous

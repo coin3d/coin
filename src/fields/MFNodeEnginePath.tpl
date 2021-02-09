@@ -3,7 +3,7 @@
 /*!
   \class SoMF_Typename_ SoMF_Typename_.h Inventor/fields/SoMF_Typename_.h
   \brief The SoMF_Typename_ class is a container for _typename_s.
-  \ingroup fields
+  \ingroup coin_fields
 
   This field container stores an array of pointers to _typename_s. It takes
   care of the necessary functionality for handling copy, import and

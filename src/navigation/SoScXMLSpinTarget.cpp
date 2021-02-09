@@ -36,7 +36,7 @@
   \class SoScXMLSpinTarget SoScXMLSpinTarget.h Inventor/scxml/SoScXMLSpinTarget.h
   \brief Navigation system event target for spinning operations.
 
-  \ingroup navigation
+  \ingroup coin_navigation
 */
 
 #include <cassert>

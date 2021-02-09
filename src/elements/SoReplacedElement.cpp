@@ -34,7 +34,7 @@
   \class SoReplacedElement Inventor/elements/SoReplacedElement.h
   \brief The SoReplacedElement class is an abstract element superclass.
 
-  \ingroup elements
+  \ingroup coin_elements
 
   This is the superclass of all elements where the new element data \e
   replaces the old data, and where the data the element stores is not

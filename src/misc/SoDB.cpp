@@ -30,29 +30,27 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \file SbBasic.h */
-/*!
-  \typedef int SbBool
-  \brief SbBool is a compiler portable boolean type.
-
-  \ingroup base
-
-  SbBool is meant to be a "compiler portable" way of defining a
-  boolean type, since there are older compilers out there which don't
-  support the ISO-standard C++ \c bool keyword.
-
-  SbBool is not really a class, just a \c typedef.
-*/
+/// * !
+//  \typedef int SbBool
+//  \brief SbBool is a compiler portable boolean type.
+//
+//  \ingroup coin_base
+//
+//  SbBool is meant to be a "compiler portable" way of defining a
+//  boolean type, since there are older compilers out there which don't
+//  support the ISO-standard C++ \c bool keyword.
+//
+//  SbBool is not really a class, just a \c typedef.
+// * / 
 
 
 /* *********************************************************************** */
 
-/*! \file SoDB.h */
 /*!
   \class SoDB SoDB.h Inventor/SoDB.h
   \brief The SoDB class keeps track of internal global data.
 
-  \ingroup general
+  \ingroup coin_general
 
   This class collects various methods for initializing, setting and
   accessing common global data from the Coin library.
@@ -64,7 +62,6 @@
   any of the other Coin classes.
 */
 
-/*! \file SoDB.h */
 #include <Inventor/SoDB.h>
 
 #ifdef HAVE_CONFIG_H

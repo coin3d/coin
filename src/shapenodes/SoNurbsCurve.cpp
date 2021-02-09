@@ -34,7 +34,7 @@
   \class SoNurbsCurve SoNurbsCurve.h Inventor/nodes/SoNurbsCurve.h
   \brief The SoNurbsCurve class is a node for representing smooth curves.
 
-  \ingroup nodes
+  \ingroup coin_nodes
 
   A general explanation of NURBS is beyond the scope of the Coin
   documentation. For detailed information, refer to the specialized

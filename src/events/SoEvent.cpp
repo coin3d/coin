@@ -34,7 +34,7 @@
   \class SoEvent SoEvent.h Inventor/events/SoEvent.h
   \brief The SoEvent class is the base class for all Coin events.
 
-  \ingroup events
+  \ingroup coin_events
 
   Coin contains its own set of event classes, independent of the underlying
   window system.
@@ -51,7 +51,8 @@
 
   \sa SoButtonEvent, SoKeyboardEvent, SoLocation2Event, SoMotion3Event
   \sa SoMouseButtonEvent, SoSpaceballButtonEvent
-  \sa SoEventCallback, SoHandleEventAction */
+  \sa SoEventCallback, SoHandleEventAction
+*/
 
 #include <Inventor/events/SoEvent.h>
 

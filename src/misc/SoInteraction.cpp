@@ -34,7 +34,7 @@
   \class SoInteraction SoInteraction.h Inventor/SoInteraction.h
   \brief The SoInteraction class takes care of initializing internal classes.
 
-  \ingroup general
+  \ingroup coin_general
 
   SoInteraction is present for the sole purpose of providing an
   interface to the initialization methods of the classes in Coin which
