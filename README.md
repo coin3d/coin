@@ -5,7 +5,9 @@
 Coin is an OpenGL-based, 3D graphics library that has its roots in the
 Open Inventor 2.1 API, which Coin still is compatible with.
 
-![](docs/CoinProjectArchitecture.png)
+<p align="center">
+  <img src="docs/Coin3DElements.svg" width="480">
+</p>
 
 If you are not familiar with Open Inventor, it is a scene-graph based,
 retain-mode, rendering and model manipulation, C++ class library,
