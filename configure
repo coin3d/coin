@@ -21242,8 +21242,34 @@ fi
 
 
 if $sim_ac_enable_system_expat; then
+  sim_ac_save_LIBS=$LIBS
+  LIBS="$LIBS -lexpat"
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for system installation of expat" >&5
+$as_echo_n "checking for system installation of expat... " >&6; }
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <expat.h>
+int
+main ()
+{
+(void)XML_ParserCreate(0);
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
 
 $as_echo "#define HAVE_SYSTEM_EXPAT 1" >>confdefs.h
+
+    COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS -lexpat"
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: available" >&5
+$as_echo "available" >&6; }
+else
+  as_fn_error "expat library not found. (If you do not want to enable using the system installation of Expat library in Coin, do not specify the \"--enable-system-expat\" option to the configure script.)" "$LINENO" 5
+    LIBS=$sim_ac_save_LIBS
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
 
 
 if test x"${sim_ac_configuration_settings+set}" = x"set"; then
