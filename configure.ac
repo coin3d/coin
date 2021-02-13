@@ -436,7 +436,18 @@ AC_ARG_ENABLE(
 AM_CONDITIONAL([USE_SYSTEM_EXPAT], [$sim_ac_enable_system_expat])
 
 if $sim_ac_enable_system_expat; then
-  AC_DEFINE([HAVE_SYSTEM_EXPAT], 1, [Define this if you want to use a system installation of expat])
+  sim_ac_save_LIBS=$LIBS
+  LIBS="$LIBS -lexpat"
+  AC_MSG_CHECKING([for system installation of expat])
+  AC_TRY_LINK(
+   [#include <expat.h>],
+   [(void)XML_ParserCreate(0);],
+   [AC_DEFINE([HAVE_SYSTEM_EXPAT], 1, [Define this if you want to use the system installation of Expat])
+    COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS -lexpat"
+    AC_MSG_RESULT([available])],
+   [AC_MSG_ERROR([expat library not found. (If you do not want to enable using the system installation of Expat library in Coin, do not specify the "--enable-system-expat" option to the configure script.)])
+    LIBS=$sim_ac_save_LIBS])
+
   SIM_AC_CONFIGURATION_SETTING([Use system expat], [Yes])
 else
   SIM_AC_CONFIGURATION_SETTING([Use system expat], [No (default)])
