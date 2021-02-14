@@ -9,15 +9,15 @@ Open Inventor 2.1 API, which Coin still is compatible with.
   <img src="docs/Coin3DElements.svg" width="480">
 </p>
 
-If you are not familiar with Open Inventor, it is a scene-graph based,
-retain-mode, rendering and model manipulation, C++ class library,
+If you are not familiar with Open Inventor, it is a scene graph based,
+retained mode, rendering and model manipulation, C++ class library,
 originally designed by SGI.  It quickly became the de facto standard
 graphics library for 3D visualization and visual simulation software
 in the scientific and engineering community after its release.  It
 also became the basis for the VRML1 file format standard.  Several
 books exists on the subject of Open Inventor, most notably The
 Inventor Mentor, and The Inventor Toolmaker, both highly recommended
-for those who wants to learn how to use Open Inventor.
+for those who want to learn how to use Open Inventor.
 
 Coin is based on the API of this library, but was developed from
 scratch independently before SGI Open Inventor became open source.  It
@@ -60,9 +60,9 @@ called "major", "minor", and "micro" version numbers respectively.
 Coin 1.2.3 has major 1, minor 2 and micro 3.
 
 * All releases with the same major and minor version number have the
-  exact same API and ABI.  Such releases are called patchlevel
+  exact same API and ABI.  Such releases are called patch level
   releases, and only consist of bugfixes, documentation updates and
-  and updates to the packaging.
+  updates to the packaging.
 
 * All releases with the same major number are upwards binary
   compatible.  Such releases are called minor releases, and are
@@ -101,7 +101,7 @@ Coin 1.2.3 has major 1, minor 2 and micro 3.
 
   Run-time libraries with different major versions can safely coexist
   on a system at once, so installing Coin 3.0.0 does not mean that you
-  must scrap all the Coin 3.*-based applications you may have.  On
+  must scrap all the Coin 3.\*-based applications you may have.  On
   Windows, the DLLs are named differently for each major release, so
   there will be no mixups between coin3.dll and coin2.dll.  On UNIX
   systems, the application will at load-time look for a shared library
@@ -125,8 +125,8 @@ Coin 1.2.3 has major 1, minor 2 and micro 3.
 ## Historical Notes
 
 Coin started out, back in 1995, as a scene graph rendering library for
-VRML1.0 scenes.  It was originally based on SGI's Qv library for parsing
-files in the VRML1.0 format.  After years of extending this humble
+VRML 1.0 scenes.  It was originally based on SGI's Qv library for parsing
+files in the VRML 1.0 format.  After years of extending this humble
 beginning with new functionality like VRML1 and VRML2 rendering and
 export, the library was in late 1997 in dire need of a fundamental
 redesign.
@@ -134,7 +134,7 @@ redesign.
 On the surface, the API looked quite like Open Inventor already.  The
 concepts used by Open Inventor are also often mentioned as good design
 methodologies in many software engineering books, and some of our
-developers had had some experience with the library in advance and
+developers had some experience with the library in advance and
 found it incredibly convenient.  At the same time as we were
 contemplating a rewrite, the Free Software Movement got some great
 buzz going, and we saw the golden opportunity to homestead our library
@@ -154,7 +154,7 @@ and IRIX systems, but is now mostly developed under Linux, Windows
 with Cygwin, and Mac OS X systems.
 
 Many people have contributed through the years to the success of Coin,
-be it in the form of patches, problem-reports, or other kinds of
+be it in the form of patches, problem reports, or other kinds of
 feedback to the core Coin developer team.  The file THANKS tries to
 credit all those helpful souls.  Our apologies to those who have been
 forgotten.
