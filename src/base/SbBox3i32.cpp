@@ -613,7 +613,7 @@ BOOST_AUTO_TEST_CASE(checkGetClosestPoint) {
                       "Closest point does not fit");
 
   SbVec3i32 sizes = box.getSize();
-  SbVec3f expectedCenterQuery(sizes[0]/2.0f, sizes[1]/2.0f, max[2]);
+  SbVec3f expectedCenterQuery(sizes[0]/2.0f, sizes[1]/2.0f, (float)max[2]);
 
   BOOST_CHECK_MESSAGE(box.getClosestPoint(box.getCenter()) == expectedCenterQuery,
                       "Closest point for center query does not fit");

@@ -619,7 +619,7 @@ SoSTLFileKit::addFacet(const SbVec3f & v1, const SbVec3f & v2, const SbVec3f & v
   if (v1new) {
     v1idx = PRIVATE(this)->numvertices;
     coordinates->point.set1Value(v1idx, v1);
-    PRIVATE(this)->points->addPoint(v1, (void *) v1idx);
+    PRIVATE(this)->points->addPoint(v1, (void*) ((uintptr_t) v1idx));
     PRIVATE(this)->numvertices++;
   } else {
     PRIVATE(this)->numsharedvertices++;
@@ -629,7 +629,7 @@ SoSTLFileKit::addFacet(const SbVec3f & v1, const SbVec3f & v2, const SbVec3f & v
   if (v2new) {
     v2idx = PRIVATE(this)->numvertices;
     coordinates->point.set1Value(v2idx, v2);
-    PRIVATE(this)->points->addPoint(v2, (void *) v2idx);
+    PRIVATE(this)->points->addPoint(v2, (void*) ((uintptr_t) v2idx));
     PRIVATE(this)->numvertices++;
   } else {
     PRIVATE(this)->numsharedvertices++;
@@ -639,7 +639,7 @@ SoSTLFileKit::addFacet(const SbVec3f & v1, const SbVec3f & v2, const SbVec3f & v
   if (v3new) {
     v3idx = PRIVATE(this)->numvertices;
     coordinates->point.set1Value(v3idx, v3);
-    PRIVATE(this)->points->addPoint(v3, (void *) v3idx);
+    PRIVATE(this)->points->addPoint(v3, (void*) ((uintptr_t) v3idx));
     PRIVATE(this)->numvertices++;
   } else {
     PRIVATE(this)->numsharedvertices++;
@@ -650,7 +650,7 @@ SoSTLFileKit::addFacet(const SbVec3f & v1, const SbVec3f & v2, const SbVec3f & v
   if (nidx == -1) {
     nidx = PRIVATE(this)->numnormals;
     normals->vector.set1Value(nidx, n);
-    PRIVATE(this)->normals->addPoint(n, (void *) nidx);
+    PRIVATE(this)->normals->addPoint(n, (void*) ((uintptr_t) nidx));
     PRIVATE(this)->numnormals++;
   } else {
     PRIVATE(this)->numsharednormals++;
