@@ -107,7 +107,7 @@ internal_join(cc_thread * thread,
     }
   }
   else if (retvalptr) {
-    *retvalptr = (void *)exitcode;
+    *retvalptr = reinterpret_cast<void *>(static_cast<uintptr_t>(exitcode));
   }
   /* termination could be forced with TerminateThread() - but this
    * will result in memory leaks - or bigger problems - see Platform

@@ -743,7 +743,7 @@ BOOST_AUTO_TEST_CASE(copyConstruct)
   }
 
   for (size_t i=0;i<sizeof(buf); ++i) {
-    foo.getValue(tmp1,tmp2)[i]=sizeof(buf)-i;
+    foo.getValue(tmp1,tmp2)[i]=(unsigned char)(sizeof(buf)-i);
   }
 
   for (size_t i=0;i<sizeof(buf); ++i) {

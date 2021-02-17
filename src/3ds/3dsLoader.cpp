@@ -314,7 +314,7 @@ struct tagMaterial;
 struct tagContext;
 
 
-typedef struct {
+typedef struct tagVertex {
   SbVec3f point;
   SbVec2f texturePoint;
   SbList<tagFace*> faceList;
@@ -369,7 +369,7 @@ namespace DefaultFaceGroup {
   static SoIndexedTriangleStripSet* createSoIndexedTriStripSet_i(tagContext *con);
 }
 
-typedef struct {
+typedef struct tagEdge {
   SbList<Face*> faceList;
 } Edge;
 
