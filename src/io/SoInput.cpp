@@ -193,10 +193,10 @@ SoInput::SoInput(void)
  */
 SoInput::SoInput(SoInput * dictIn)
 {
+  this->constructorsCommon();
   if (dictIn && dictIn->filestack.getLength()) {
     PRIVATE(this)->copied_references = dictIn->getTopOfStack()->getReferences();
   }
-  this->constructorsCommon();
 }
 
 /*!
