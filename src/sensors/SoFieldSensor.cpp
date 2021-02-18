@@ -148,11 +148,12 @@ SoFieldSensor::notify(SoNotList * l)
 void
 SoFieldSensor::dyingReference(void)
 {
-  SoFieldContainer * dyingcontainer = this->getAttachedField()->getContainer();
+  SoFieldContainer * dyingcontainer = this->getAttachedField() ?
+    this->getAttachedField()->getContainer() : NULL;
 
   this->invokeDeleteCallback();
 
-  if (this->getAttachedField() != NULL &&
+  if (this->getAttachedField() &&
       this->getAttachedField()->getContainer() == dyingcontainer) {
     // sensor is attached, and to the same field-container
     this->detach();
