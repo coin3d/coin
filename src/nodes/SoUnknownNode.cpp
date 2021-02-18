@@ -351,7 +351,7 @@ SoUnknownNode::copyContents(const SoFieldContainer * from,
     dstfield->fixCopy(copyconnections);
     // handle connections
     if (copyconnections && srcfield->isConnected()) {
-      dstfield->copyConnection(dstfield);
+      dstfield->copyConnection(srcfield);
     }
   }
   if (PRIVATE(src)->privatechildren == NULL) return;

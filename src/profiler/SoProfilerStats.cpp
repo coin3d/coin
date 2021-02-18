@@ -219,14 +219,13 @@ SoProfilerStatsP::updateNodeTypeTimingMap(SoProfilerElement * e)
     SbProfilingNodeTypeKey k = keys[i];
     std::map<int16_t, TypeTimings>::iterator it = this->type_timings.find(k);
     if (it != this->type_timings.end()) {
-      /*TypeTimings & timings = */it->second;
+      TypeTimings & timings = it->second;
       SbTime totaltime, maxtime;
       uint32_t count;
       data.getStatsForType(k, totaltime, maxtime, count);
-      it->second.total += totaltime;
-      it->second.max += maxtime;
-      it->second.count += count;
-
+      timings.total += totaltime;
+      timings.max += maxtime;
+      timings.count += count;
     } else {
       TypeTimings timings;
       SbTime totaltime, maxtime;
