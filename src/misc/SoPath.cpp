@@ -1093,7 +1093,7 @@ SoPath::getTypeId(void) const
 void *
 SoPath::createInstance(void)
 {
-  return (void *)new SoPath;
+  return new SoPath;
 }
 
 /*!

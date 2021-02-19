@@ -619,7 +619,7 @@ SoVRMLScript::notify(SoNotList * l)
 void *
 SoVRMLScript::createInstance(void)
 {
-  return (void *)new SoVRMLScript;
+  return new SoVRMLScript;
 }
 
 // Doc in superclass

@@ -96,7 +96,7 @@ SoType _class_::getTypeId(void) const { return _class_::classTypeId; } \
  \
   Creates a new instance of the class type corresponding to the SoType object. \
 */ \
-void * _class_::createInstance(void) { return static_cast<void *>(new _class_); } \
+void * _class_::createInstance(void) { return new _class_; } \
 SoType _class_::classTypeId STATIC_SOTYPE_INIT
 
 // *************************************************************************

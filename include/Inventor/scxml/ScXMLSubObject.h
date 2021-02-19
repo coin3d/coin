@@ -96,7 +96,7 @@ classname::getTypeId(void) const                                \
 void *                                                          \
 classname::createInstance(void)                                 \
 {                                                               \
-  return static_cast<void *>(new classname);                    \
+  return new classname;                                         \
 }
 
 // *************************************************************************
