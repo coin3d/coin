@@ -106,7 +106,7 @@ _class_::_class_(void) { this->setTypeId(_class_::classTypeId); \
  \
   Creates a new instance of the class type corresponding to the SoType object. \
 */ \
-void * _class_::createInstance(void) { return static_cast<void *>(new _class_); }
+void * _class_::createInstance(void) { return new _class_; }
 
 /*
   Specific to Coin. Added 2003-10-27.
@@ -117,7 +117,7 @@ PRIVATE_SOELEMENT_VARIABLES(_class_) \
  \
   Creates a new instance of the class type corresponding to the SoType object. \
 */ \
-void * _class_::createInstance(void) { return static_cast<void *>(new _class_); }
+void * _class_::createInstance(void) { return new _class_; }
 
 // *************************************************************************
 
