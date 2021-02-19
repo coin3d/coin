@@ -1460,8 +1460,7 @@ SoShape::getBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     box = PRIVATE(this)->bboxcache->getProjectedBox();
     // we know center will be set, so just fetch it from the cache
     center = PRIVATE(this)->bboxcache->getCenter();
-  }
-  if (isvalid) {
+
     return;
   }
 
