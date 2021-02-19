@@ -170,7 +170,7 @@ ScXMLEventElt::search(const char * attrname, const char * attrvalue) const
     return hit;
   }
   if (strcmp(attrname, "name") == 0) {
-    if (this->name && strcmp(attrvalue, this->name)) {
+    if (this->name && (strcmp(attrvalue, this->name) == 0)) {
       return this;
     }
   }
