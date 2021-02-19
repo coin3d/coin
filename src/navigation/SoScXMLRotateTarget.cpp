@@ -391,11 +391,8 @@ SoScXMLRotateTarget::processOneEvent(const ScXMLEvent * event)
       useupvector = TRUE;
     }
 
-    if (!useupvector) {
-      SoScXMLRotateTarget::setFocalPoint(camera, worldspace);
-    } else {
-      SoScXMLRotateTarget::setFocalPoint(camera, worldspace, upvector);
-    }
+    SoScXMLRotateTarget::setFocalPoint(camera, worldspace, upvector);
+
     if (usefocaldistance) {
       SoScXMLDollyTarget::jump(camera, float(focaldistance));
     }

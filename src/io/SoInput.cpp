@@ -474,7 +474,7 @@ SoInput::setFilePointer(FILE * newFP)
   }
   SoInput_FileInfo * newfile =
     new SoInput_FileInfo(reader, PRIVATE(this)->copied_references);
-  if (newfile) this->filestack.insert(newfile, 0);
+  this->filestack.insert(newfile, 0);
 }
 
 /*!
