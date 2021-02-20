@@ -433,7 +433,7 @@ SoType::removeType(const SbName & name)
       "}";
 
     SoInput in;
-    in.setBuffer((void *)ivscene, strlen(ivscene));
+    in.setBuffer(ivscene, strlen(ivscene));
     SoSeparator * root = SoDB::readAll(&in);
     root->ref();
 

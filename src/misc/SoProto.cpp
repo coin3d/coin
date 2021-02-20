@@ -61,7 +61,7 @@
   "ColorCube { color 1 0 0 size 2 1 1 }\n";
 
   SoInput in;
-  in.setBuffer((void*) myproto, strlen(myproto));
+  in.setBuffer(myproto, strlen(myproto));
   SoVRMLGroup * protoroot = SoDB::readAllVRML(&in);
 
   \endcode

@@ -320,7 +320,7 @@ BOOST_AUTO_TEST_CASE(GlobalField)
 
   // read scene
   SoInput in;
-  in.setBuffer((void *) inlinescenegraph, strlen(inlinescenegraph));
+  in.setBuffer(inlinescenegraph, strlen(inlinescenegraph));
   SoSeparator * top = SoDB::readAll(&in);
   BOOST_REQUIRE(top);
   top->ref();
@@ -338,7 +338,7 @@ BOOST_AUTO_TEST_CASE(GlobalField)
   top = NULL;
 
   // read scene again to check if realTime field was written
-  in.setBuffer((void *)buffer, strlen(buffer));
+  in.setBuffer(buffer, strlen(buffer));
   top = SoDB::readAll(&in);
   BOOST_REQUIRE(top);
   top->ref();

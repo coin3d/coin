@@ -96,7 +96,7 @@ cc_sync_begin(void * id)
     cc_sync_init();
   }
   if (!cc_dict_get(sync_hash_table, (uintptr_t)id, &mutex)) {
-    mutex = (void*) cc_mutex_construct();
+    mutex = cc_mutex_construct();
     (void) cc_dict_put(sync_hash_table, (uintptr_t)id, mutex);
   }
 

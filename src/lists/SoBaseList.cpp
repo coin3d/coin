@@ -106,7 +106,7 @@ void
 SoBaseList::append(SoBase * ptr)
 {
   if (this->referencing && ptr) ptr->ref();
-  SbPList::append((void *)ptr);
+  SbPList::append(ptr);
 }
 
 /*!
@@ -122,7 +122,7 @@ void
 SoBaseList::insert(SoBase * ptr, const int addbefore)
 {
   if (this->referencing && ptr) ptr->ref();
-  SbPList::insert((void *)ptr, addbefore);
+  SbPList::insert(ptr, addbefore);
 }
 
 /*!

@@ -263,12 +263,12 @@ SoGLVertexAttributeElement::addElt(SoVertexAttributeData * attribdata)
 void
 SoGLVertexAttributeElement::enableVBO(SoGLRenderAction * action) const
 {
-  this->applyToAttributes(enable_vbo, (void *) action);
+  this->applyToAttributes(enable_vbo, action);
 }
 
 //! FIXME: write doc.
 void
 SoGLVertexAttributeElement::disableVBO(SoGLRenderAction * action) const
 {
-  this->applyToAttributes(disable_vbo, (void *) action);
+  this->applyToAttributes(disable_vbo, action);
 }

@@ -97,7 +97,7 @@
     (void)coin_setenv("COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE", "1", TRUE);
 
     SoInput * in = new SoInput;
-    in->setBuffer((void *)scene, strlen(scene));
+    in->setBuffer(scene, strlen(scene));
     SoSeparator * root = SoDB::readAll(in);
     assert(root);
     delete in;
