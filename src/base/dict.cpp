@@ -169,7 +169,7 @@ cc_dict_clear(cc_dict * ht)
     entry = ht->buckets[i];
     while (entry) {
       next = entry->next;
-      cc_memalloc_deallocate(ht->memalloc, (void*) entry);
+      cc_memalloc_deallocate(ht->memalloc, entry);
       entry = next;
     }
   }
@@ -264,7 +264,7 @@ cc_dict_remove(cc_dict * ht, uintptr_t key)
       else {
         prev->next = next;
       }
-      cc_memalloc_deallocate(ht->memalloc, (void*) he);
+      cc_memalloc_deallocate(ht->memalloc, he);
       return TRUE;
     }
     prev = he;

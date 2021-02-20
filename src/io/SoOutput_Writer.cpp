@@ -270,7 +270,7 @@ SoOutput_GZFileWriter::write(const char * buf, size_t numbytes, const SbBool COI
     // FIXME: the numbytes cast (as size_t can be 64 bits wide) is
     // there to humour the interface of *gzwrite() -- should really be
     // fixed in the interface instead. 20050526 mortene.
-    return cc_zlibglue_gzwrite(this->gzfp, (void*)buf, (int)numbytes);
+    return cc_zlibglue_gzwrite(this->gzfp, buf, (int)numbytes);
   }
   return 0;
 }

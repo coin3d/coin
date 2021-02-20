@@ -1150,7 +1150,7 @@ coin_atexit_cleanup(void)
     }
     data->func();
     free(data->name);
-    free((void*)data);
+    free(data);
   }
 
   /* Close stdin/stdout/stderr if any of them have been opened */

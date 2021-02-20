@@ -908,7 +908,7 @@ SoBaseKit::set(const char * namevaluepairliststring)
         node = list->getChild(listIdx);
       }
     }
-    memInput.setBuffer((void *)start, stringlen - (start-namevaluepairliststring));
+    memInput.setBuffer(start, stringlen - (start-namevaluepairliststring));
     SbBool dummy;
     if (!node->getFieldData()->read(&memInput, node, TRUE, dummy)) {
 #if COIN_DEBUG
@@ -973,7 +973,7 @@ SoBaseKit::set(const char * partnamestring, const char * parameterstring)
     if (node) {
       SoInput memInput;
       SbBool dummy;
-      memInput.setBuffer((void *)parameterstring, strlen(parameterstring));
+      memInput.setBuffer(parameterstring, strlen(parameterstring));
       const SoFieldData * fielddata = node->getFieldData();
       return fielddata->read(&memInput, node, TRUE, dummy);
     }

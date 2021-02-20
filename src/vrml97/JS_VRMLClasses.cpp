@@ -654,7 +654,7 @@ static JSBool SFNode_toString(JSContext * cx, JSObject * obj, uintN COIN_UNUSED_
   SoOutput out;
   out.setHeaderString("#VRML V2.0 utf8");
   size_t buffer_size = 1024;
-  void *buffer = (void *)malloc(buffer_size);
+  void *buffer = malloc(buffer_size);
   out.setBuffer(buffer, buffer_size, buffer_realloc);
 
   SoWriteAction wa(&out);

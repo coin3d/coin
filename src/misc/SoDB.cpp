@@ -1727,7 +1727,7 @@ BOOST_AUTO_TEST_CASE(readChildList)
   static const char scene[] = "#VRML V2.0 utf8\n"
                               "DEF TestGroup Group { children [Group{}, Group{}, Group{}] }";
   SoInput in;
-  in.setBuffer((void *) scene, strlen(scene));
+  in.setBuffer(scene, strlen(scene));
   SoSeparator * root = SoDB::readAll(&in);
   BOOST_REQUIRE(root);
   root->ref();
@@ -1749,7 +1749,7 @@ BOOST_AUTO_TEST_CASE(readEmptyChildList)
   static const char scene[] = "#VRML V2.0 utf8\n"
                               "DEF TestGroup Group { children }";
   SoInput in;
-  in.setBuffer((void *) scene, strlen(scene));
+  in.setBuffer(scene, strlen(scene));
   SoSeparator * root = SoDB::readAll(&in);
   if (root) {
     SoGroup * group = (SoGroup *) SoNode::getByName("TestGroup");
@@ -1771,7 +1771,7 @@ BOOST_AUTO_TEST_CASE(readNullChildList)
                               "PROTO Object [ field MFNode testChildren NULL ] { }\n"
                               "DEF TestObject Object { }";
   SoInput in;
-  in.setBuffer((void *) scene, strlen(scene));
+  in.setBuffer(scene, strlen(scene));
   SoSeparator * root = SoDB::readAll(&in);
   if (root) {
     SoNode * object = (SoNode *) SoNode::getByName("TestObject");
@@ -1793,7 +1793,7 @@ BOOST_AUTO_TEST_CASE(readInvalidChildList)
   static const char scene[] = "#VRML V2.0 utf8\n"
                               "Group { children[0] }";
   SoInput in;
-  in.setBuffer((void *) scene, strlen(scene));
+  in.setBuffer(scene, strlen(scene));
   SoSeparator * root = SoDB::readAll(&in);
   BOOST_CHECK_MESSAGE(root == NULL, "Expected the import to fail");
 
@@ -1810,7 +1810,7 @@ BOOST_AUTO_TEST_CASE(testAlternateRepNull)
   static const char scene[] = "#Inventor V2.1 ascii\n"
                               "ExtensionNode { fields [ SFNode alternateRep ] }";
   SoInput in;
-  in.setBuffer((void *) scene, strlen(scene));
+  in.setBuffer(scene, strlen(scene));
   SoSeparator * root = SoDB::readAll(&in);
   BOOST_CHECK_MESSAGE(root, "Import should succeed");
   root->ref();

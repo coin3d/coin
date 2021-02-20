@@ -494,7 +494,7 @@ SoInteractionKit::readDefaultParts(const char * fileName,
   }
 
   if (!root && defaultBuffer) {
-    input.setBuffer((void *)defaultBuffer, defBufSize);
+    input.setBuffer(defaultBuffer, defBufSize);
     root = (SoNode *)SoDB::readAll(&input);
   }
 

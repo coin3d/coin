@@ -149,7 +149,7 @@ hash_resize(cc_hash * ht, unsigned int newsize)
       cc_hash_put(ht, he->key, he->val);
       prev = he;
       he = he->next;
-      cc_memalloc_deallocate(ht->memalloc, (void*) prev);
+      cc_memalloc_deallocate(ht->memalloc, prev);
     }
   }
   free(oldbuckets);
@@ -227,7 +227,7 @@ cc_hash_clear(cc_hash * ht)
     entry = ht->buckets[i];
     while (entry) {
       next = entry->next;
-      cc_memalloc_deallocate(ht->memalloc, (void*) entry);
+      cc_memalloc_deallocate(ht->memalloc, entry);
       entry = next;
     }
   }
@@ -322,7 +322,7 @@ cc_hash_remove(cc_hash * ht, cc_hash_key key)
       else {
         prev->next = next;
       }
-      cc_memalloc_deallocate(ht->memalloc, (void*) he);
+      cc_memalloc_deallocate(ht->memalloc, he);
       return TRUE;
     }
     prev = he;

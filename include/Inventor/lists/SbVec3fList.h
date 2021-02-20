@@ -43,13 +43,12 @@ public:
 
   void append(const SbVec3f * item) {
     SbVec3f * vec = new SbVec3f(*item);
-    
-    ((SbPList*)this)->append((void*)vec);
+    ((SbPList*)this)->append(vec);
   }
 
   void insert(const SbVec3f * item, const int insertbefore) {
     SbVec3f * vec = new SbVec3f(*item);
-    ((SbPList*)this)->insert((void*)vec, insertbefore);
+    ((SbPList*)this)->insert(vec, insertbefore);
   }
 
   SbVec3f * operator[](const int idx) const {

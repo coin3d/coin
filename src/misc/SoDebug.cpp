@@ -233,7 +233,7 @@ SoDebug_internal::delete_namedict(void)
       iter!=namedict->const_end();
       ++iter
       ) {
-    if ( iter->obj ) free((void *) iter->obj);
+    if ( iter->obj ) free(iter->obj);
   }
 
   delete namedict;

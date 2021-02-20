@@ -880,7 +880,7 @@ SoBase::getAuditors(void) const
   else {
     (*SoBase::PImpl::auditordict)[this] = new SoAuditorList;
   }
-  cc_rbptree_traverse(&this->auditortree, (cc_rbptree_traversecb*)sobase_audlist_add, (void*) l);
+  cc_rbptree_traverse(&this->auditortree, (cc_rbptree_traversecb*)sobase_audlist_add, l);
 
   CC_MUTEX_UNLOCK(SoBase::PImpl::auditor_mutex);
 
