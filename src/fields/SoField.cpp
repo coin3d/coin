@@ -1403,7 +1403,7 @@ SoField::get(SbString & valuestring)
   valuestring = static_cast<char *>(buffer) + offset;
 
   // dealloc tmp memory buffer
-  if (bufferptr) { free(bufferptr); }
+  free(bufferptr);
 
   CC_MUTEX_LOCK(sofield_mutex);
   size_t isok = SoFieldP::getReallocHash()->erase(bufferptr ? bufferptr : initbuffer);

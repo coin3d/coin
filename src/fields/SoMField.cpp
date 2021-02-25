@@ -391,11 +391,9 @@ static size_t mfield_buffer_size = 0;
 static void
 mfield_buffer_cleanup(void)
 {
-  if (mfield_buffer) {
-    free(mfield_buffer);
-    mfield_buffer = NULL;
-    mfield_buffer_size = 0;
-  }
+  free(mfield_buffer);
+  mfield_buffer = NULL;
+  mfield_buffer_size = 0;
 }
 
 static void *
