@@ -112,7 +112,7 @@ cc_condvar_construct(void)
 void
 cc_condvar_destruct(cc_condvar * condvar)
 {
-  assert((condvar != NULL));
+  assert(condvar != NULL);
   cc_condvar_struct_clean(condvar);
   free(condvar);
 }
