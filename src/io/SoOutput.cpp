@@ -784,7 +784,7 @@ SoOutput::write(const char * s)
 {
   const size_t writelen = strlen(s);
   if (this->isBinary()) { this->write((int)writelen); }
-  this->writeBytesWithPadding(s, (int)writelen);
+  this->writeBytesWithPadding(s, writelen);
 }
 
 /*!
