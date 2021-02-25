@@ -381,8 +381,8 @@ SoBase::PImpl::readBaseInstance(SoInput * in, const SbName & classname,
     const char * occ = strstr(strp, SoBase::PImpl::refwriteprefix->getString());
 
     if (occ != strp) { // They will be equal if the name is only a refcount.
-      const ptrdiff_t offset = occ - strp - 1;
-      if (occ) instancename = instancename.getSubString(0, (int)offset);
+      const ptrdiff_t offset = occ - strp;
+      if (occ) instancename = instancename.getSubString(0, (int)offset - 1);
       // Set name identifier for newly created SoBase instance.
       base->setName(instancename);
     }
