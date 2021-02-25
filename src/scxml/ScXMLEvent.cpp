@@ -167,7 +167,8 @@ ScXMLEvent::copyContents(const ScXMLEvent * rhs)
   SbList<const char *> keys;
   size_t numkeys = rhs->getAssociationKeys(keys);
   for (size_t i = 0; i < numkeys; ++i) {
-    this->setAssociation(keys[i], rhs->getAssociation(keys[i]));
+    const char * akey = keys[(int)i];
+    this->setAssociation(akey, rhs->getAssociation(akey));
   }
 }
 

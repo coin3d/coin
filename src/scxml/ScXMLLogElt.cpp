@@ -233,8 +233,9 @@ ScXMLLogElt::execute(ScXMLStateMachine * statemachine) const
     SbList<const char *> keylist;
     size_t numkeys = event->getAssociationKeys(keylist);
     for (size_t i = 0; i < numkeys; ++i) {
-      const char * value = event->getAssociation(keylist[i]);
-      printf("> - key '%s' carries value '%s'\n", keylist[i], value);
+      const char * akey = keylist[(int)i];
+      const char * value = event->getAssociation(akey);
+      printf("> - key '%s' carries value '%s'\n", akey, value);
     }
   }
   for (int i = 0; i < statemachine->getNumActiveStates(); ++i) {

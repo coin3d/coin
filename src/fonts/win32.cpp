@@ -510,8 +510,9 @@ cc_flww32_get_font(const char * fontname, int sizey, float angle, float complexi
   realname = cc_string_construct_new();
   cc_flww32_get_font_name(wfont, realname);
 
-  if (cc_string_length(realname) != strlen(fontname) ||
-      coin_strncasecmp(cc_string_get_text(realname), fontname, (int) strlen(fontname))) {
+  size_t fontnamelen = strlen(fontname);
+  if (cc_string_length(realname) != fontnamelen ||
+      coin_strncasecmp(cc_string_get_text(realname), fontname, (int)fontnamelen)) {
     /*
     The names are different, we probably got a bogus font (Arial plain)
     Let's try stripping the bold/italic part from the font name and set those as flags instead
@@ -1067,8 +1068,8 @@ flww32_getVerticesFromPath(HDC hdc)
         flww32_addTessVertex(p_points[i].x, p_points[i].y);
       }
     }
-    if (p_points != NULL) free(p_points);
-    if (p_types != NULL) free(p_types);
+    free(p_points);
+    free(p_types);
   }
 
 }
