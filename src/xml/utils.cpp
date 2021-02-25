@@ -49,7 +49,7 @@ cc_xml_load_file(const char * path)
   const long bufsize = ftell(fd);
   fseek(fd, 0, SEEK_SET);
   char * buffer = new char [ bufsize + 1 ];
-  long pos = 0, bytes;
+  size_t pos = 0, bytes;
   while ( pos != bufsize ) {
     bytes = fread(buffer + pos, 1, bufsize - pos, fd);
     if ( bytes < 0 ) {
@@ -66,7 +66,7 @@ cc_xml_load_file(const char * path)
 // *************************************************************************
 
 char *
-cc_xml_strndup(const char * str, int len)
+cc_xml_strndup(const char * str, size_t len)
 {
   char * buf = new char [ len + 1 ];
   assert(buf != NULL);

@@ -249,7 +249,7 @@ findPath(const std::vector<SbNodeProfilingData> & src, std::vector<SbNodeProfili
   // By going from 0 and outwards, the source-vector parent node
   // will always already exist in the target-vector, which should
   // help a lot.
-  const int numdestentries = dst.size();
+  const int numdestentries = (int)dst.size();
 
   // FIXME: optimize this part
 
@@ -337,7 +337,7 @@ SbProfilingData::operator += (const SbProfilingData & rhs)
   std::vector<SbNodeProfilingData> & dst = PRIVATE(this)->nodeData;
 
   { // nodeData
-    const int numsrcentries = src.size();
+    const int numsrcentries = (int)src.size();
     for (int c = 0; c < numsrcentries; ++c) {
       int matchidx = -1, parentidx = -1;
       findPath(src, dst, c, matchidx, parentidx);
@@ -349,7 +349,7 @@ SbProfilingData::operator += (const SbProfilingData & rhs)
         data.nodetype = src[c].nodetype;
         data.nodename = src[c].nodename;
         dst.push_back(data);
-        matchidx = dst.size() - 1;
+        matchidx = (int)dst.size() - 1;
       }
       // accumulate data (something about this really doesn't make sense)
       dst[matchidx].traversaltime += src[c].traversaltime;
@@ -550,7 +550,7 @@ SbProfilingData::getIndexCreate(const SoFullPath * fullpath, int COIN_UNUSED_ARG
 {
 
   std::vector<int> lastentrypathindexes;
-  int idx = PRIVATE(this)->nodeData.size() - 1;
+  int idx = (int)PRIVATE(this)->nodeData.size() - 1;
   while (idx != -1) {
     lastentrypathindexes.push_back(idx);
     idx = PRIVATE(this)->nodeData[idx].parentidx;
@@ -586,7 +586,7 @@ SbProfilingData::getIndexCreate(const SoFullPath * fullpath, int COIN_UNUSED_ARG
 
     ++samelength;
     lastentrypathindexes.clear();
-    lastentrypathindexes.push_back(PRIVATE(this)->nodeData.size() - 1);
+    lastentrypathindexes.push_back((int)PRIVATE(this)->nodeData.size() - 1);
   }
 
   int pos = samelength;
@@ -611,7 +611,7 @@ SbProfilingData::getIndexNoCreate(const SoPath * path, int COIN_UNUSED_ARG(pathl
   const SoFullPath * fullpath = static_cast<const SoFullPath *>(path);
 
   std::vector<int> lastentrypathindexes;
-  int idx = PRIVATE(this)->nodeData.size() - 1;
+  int idx = (int)PRIVATE(this)->nodeData.size() - 1;
   while (idx != -1) {
 
     lastentrypathindexes.push_back(idx);
@@ -680,7 +680,7 @@ SbProfilingData::getIndexForwardCreate(const SoFullPath * fullpath, int pathlen,
   assert(parent == PRIVATE(this)->nodeData[parentidx].node);
   assert(pidx == PRIVATE(this)->nodeData[parentidx].childidx);
 
-  const int nodedatacount = PRIVATE(this)->nodeData.size();
+  const int nodedatacount = (int)PRIVATE(this)->nodeData.size();
   for (int idx = parentidx + 1; idx < nodedatacount; ++idx) {
     if ((PRIVATE(this)->nodeData[idx].node == tail) &&
         (PRIVATE(this)->nodeData[idx].childidx == tidx)) { // found it!
@@ -697,7 +697,7 @@ SbProfilingData::getIndexForwardCreate(const SoFullPath * fullpath, int pathlen,
   data.childidx = tidx;
   PRIVATE(this)->nodeData.push_back(data);
 
-  return PRIVATE(this)->nodeData.size() - 1;
+  return (int)PRIVATE(this)->nodeData.size() - 1;
 }
 
 /*
@@ -720,7 +720,7 @@ SbProfilingData::getIndexForwardNoCreate(const SoFullPath * fullpath, int pathle
   assert(parent == PRIVATE(this)->nodeData[parentidx].node);
   assert(pidx == PRIVATE(this)->nodeData[parentidx].childidx);
 
-  const int nodedatacount = PRIVATE(this)->nodeData.size();
+  const int nodedatacount = (int)PRIVATE(this)->nodeData.size();
   for (int idx = parentidx + 1; idx < nodedatacount; ++idx) {
     if ((PRIVATE(this)->nodeData[idx].node == tail) &&
         (PRIVATE(this)->nodeData[idx].childidx == tidx)) { // found it!
@@ -1075,15 +1075,15 @@ SbProfilingData::getNodeName(int idx) const
 int
 SbProfilingData::getLongestNameLength(void) const
 {
-  int longest = 0;
+  size_t longest = 0;
   std::map<SbProfilingNodeNameKey, SbNameProfilingData>::const_iterator it =
     PRIVATE(this)->nodeNameData.begin();
   while (it != PRIVATE(this)->nodeNameData.end()) {
-    const int len = strlen(it->first);
+    const size_t len = strlen(it->first);
     if (len > longest) longest = len;
     ++it;
   }
-  return longest;
+  return (int)longest;
 }
 
 /*!
@@ -1092,16 +1092,16 @@ SbProfilingData::getLongestNameLength(void) const
 int
 SbProfilingData::getLongestTypeNameLength(void) const
 {
-  int longest = 0;
+  size_t longest = 0;
   std::map<SbProfilingNodeTypeKey, SbTypeProfilingData>::const_iterator it =
     PRIVATE(this)->nodeTypeData.begin();
   while (it != PRIVATE(this)->nodeTypeData.end()) {
     SoType type = SoType::fromKey(it->first);
-    const int len = strlen(type.getName().getString());
+    const size_t len = strlen(type.getName().getString());
     if (len > longest) longest = len;
     ++it;
   }
-  return longest;
+  return (int)longest;
 }
 
 /*!
@@ -1110,7 +1110,7 @@ SbProfilingData::getLongestTypeNameLength(void) const
 int
 SbProfilingData::getNumNodeEntries(void) const
 {
-  return PRIVATE(this)->nodeData.size();
+  return (int)PRIVATE(this)->nodeData.size();
 }
 
 /*!
@@ -1118,8 +1118,8 @@ SbProfilingData::getNumNodeEntries(void) const
 void
 SbProfilingData::reportAll(SbProfilingDataCB * callback, void * userdata) const
 {
-  std::vector<SbNodeProfilingData>::const_iterator it = PRIVATE(this)->nodeData.begin();
-  const int numnodedata = PRIVATE(this)->nodeData.size();
+  //std::vector<SbNodeProfilingData>::const_iterator it = PRIVATE(this)->nodeData.begin();
+  const int numnodedata = (int)PRIVATE(this)->nodeData.size();
   for (int idx = 0; idx < numnodedata; ++idx) {
     SbList<SoNode *> pointers;
     SbList<int> indices;
@@ -1238,7 +1238,7 @@ SbProfilingData::operator == (const SbProfilingData & rhs) const
   if (PRIVATE(this)->nodeData.size() != PRIVATE(&rhs)->nodeData.size())
     return FALSE;
 
-  for (int c = PRIVATE(this)->nodeData.size() - 1; c >= 0; --c) {
+  for (int c = (int)PRIVATE(this)->nodeData.size() - 1; c >= 0; --c) {
     if (PRIVATE(this)->nodeData[c] != PRIVATE(&rhs)->nodeData[c])
       return FALSE;
   }

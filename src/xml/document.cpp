@@ -691,7 +691,7 @@ SbBool
 cc_xml_doc_write_to_buffer(const cc_xml_doc * doc, char *& buffer, size_t & bytes)
 {
   assert(doc);
-  bytes = static_cast<int>(cc_xml_doc_calculate_size(doc));
+  bytes = cc_xml_doc_calculate_size(doc);
   buffer = new char [ bytes + 1 ];
 
   size_t bytesleft = bytes;
@@ -699,20 +699,20 @@ cc_xml_doc_write_to_buffer(const cc_xml_doc * doc, char *& buffer, size_t & byte
 
 // macro to advance buffer pointer and decrement bytesleft count
 #define ADVANCE_NUM_BYTES(len)          \
-  do { const int length = (len);        \
+  do { const size_t length = (len);        \
        hereptr += length;               \
        bytesleft -= length; } while (0)
 
 // macro to copy in a string literal and advance pointers
 #define ADVANCE_STRING_LITERAL(str)                \
   do { static const char strobj[] = str;           \
-       const int strlength = (sizeof(strobj) - 1); \
+       const size_t strlength = (sizeof(strobj) - 1); \
        strncpy(hereptr, strobj, strlength);        \
        ADVANCE_NUM_BYTES(strlength); } while (0)
 
 // macro to copy in a runtime string and advance pointers
 #define ADVANCE_STRING(str)                      \
-  do { const int strlength = strlen(str);        \
+  do { const size_t strlength = strlen(str);        \
        strncpy(hereptr, str, strlength);         \
        ADVANCE_NUM_BYTES(strlength); } while (0)
 
