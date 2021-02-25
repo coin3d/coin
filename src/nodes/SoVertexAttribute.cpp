@@ -191,14 +191,15 @@ SoVertexAttribute::SoVertexAttribute(void)
   // initialize attribute data
   PRIVATE(this)->publ = this;
   PRIVATE(this)->isreading = FALSE;
-  PRIVATE(this)->attributedata = new SoVertexAttributeData;
-  PRIVATE(this)->attributedata->name = SbName::empty();
-  PRIVATE(this)->attributedata->index = -1;
-  PRIVATE(this)->attributedata->state = NULL;
-  PRIVATE(this)->attributedata->data = NULL;
-  PRIVATE(this)->attributedata->shaderobj = 0;
-  PRIVATE(this)->attributedata->nodeid = NULL;
-  PRIVATE(this)->attributedata->vbo = NULL;
+  SoVertexAttributeData* attributedata = new SoVertexAttributeData;
+  attributedata->name = SbName::empty();
+  attributedata->index = -1;
+  attributedata->state = NULL;
+  attributedata->data = NULL;
+  attributedata->shaderobj = 0;
+  attributedata->nodeid = NULL;
+  attributedata->vbo = NULL;
+  PRIVATE(this)->attributedata = attributedata;
 }
 
 /*!
