@@ -181,13 +181,13 @@ cc_xml_attr_write_to_buffer(const cc_xml_attr * attr, char * buffer, size_t bufs
   const char * const origbufferptr = buffer;
   const size_t assumed = cc_xml_attr_calculate_size(attr);
   assert(assumed < bufsize);
-  int namelen = strlen(attr->name);
+  size_t namelen = strlen(attr->name);
   strcpy(buffer, attr->name);
   buffer += namelen;
   strcpy(buffer, "=\"");
   buffer += 2;
   if (attr->value) {
-    int valuelen = strlen(attr->value);
+    size_t valuelen = strlen(attr->value);
     // FIXME: count quotables, and insert quoting in value string if needed
     strcpy(buffer, attr->value);
     buffer += valuelen;

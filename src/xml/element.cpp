@@ -216,7 +216,7 @@ cc_xml_elt_set_cdata_x(cc_xml_elt * elt, const char * cdata)
     //  assert(endptr > startptr && "makes no sense at all");
     endptr++;
     if( endptr > startptr) {
-      elt->data = cc_xml_strndup(startptr, static_cast<int>(endptr - startptr));
+      elt->data = cc_xml_strndup(startptr, endptr - startptr);
     }
   }
 }
@@ -866,7 +866,7 @@ cont2:
   endptr++;
   if ( (startptr == elt->data) &&
        (endptr == (startptr + strlen(startptr))) ) return;
-  char * substr = cc_xml_strndup(startptr, static_cast<int>(endptr - startptr));
+  char * substr = cc_xml_strndup(startptr, endptr - startptr);
   cc_xml_elt_set_cdata_x(elt, substr);
   delete [] substr;
 }
@@ -1124,7 +1124,7 @@ cc_xml_elt_write_to_buffer(const cc_xml_elt * elt, char * buffer, size_t bufsize
 
 // macro to advance buffer pointer and decrement bytesleft count
 #define ADVANCE_NUM_BYTES(len)          \
-  do { const int length = (len);        \
+  do { const size_t length = (len);        \
        bytes += length;                 \
        hereptr += length;               \
        bytesleft -= length; } while (0)
@@ -1132,19 +1132,19 @@ cc_xml_elt_write_to_buffer(const cc_xml_elt * elt, char * buffer, size_t bufsize
 // macro to copy in a string literal and advance pointers
 #define ADVANCE_STRING_LITERAL(str)                \
   do { static const char strobj[] = str;           \
-       const int strlength = (sizeof(strobj) - 1); \
+       const size_t strlength = (sizeof(strobj) - 1); \
        strncpy(hereptr, strobj, strlength);        \
        ADVANCE_NUM_BYTES(strlength); } while (0)
 
 // macro to copy in a runtime string and advance pointers
 #define ADVANCE_STRING(str)                                 \
-  do { const int strlength = static_cast<int>(strlen(str)); \
+  do { const size_t strlength = strlen(str); \
        strncpy(hereptr, str, strlength);                    \
        ADVANCE_NUM_BYTES(strlength); } while (0)
 
 // macro to advance a number of blanks (indentation)
 #define ADVANCE_NUM_SPACES(num)                  \
-  do { const int strlength = (num);              \
+  do { const size_t strlength = (num);              \
        memset(hereptr, ' ', strlength);          \
        ADVANCE_NUM_BYTES(strlength); } while (0)
 
