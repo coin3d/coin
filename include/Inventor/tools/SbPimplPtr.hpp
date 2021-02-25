@@ -68,9 +68,7 @@ template <typename T>
 void
 SbPimplPtr<T>::set(T * value)
 {
-  if (this->ptr) {
-    delete this->ptr;
-  }
+  delete this->ptr;
   this->ptr = value;
 }
 

@@ -67,9 +67,7 @@ template <typename T>
 void
 SbLazyPimplPtr<T>::set(T * value)
 {
-  if (this->ptr) {
-    delete this->ptr;
-  }
+  delete this->ptr;
   this->ptr = value;
 }
 

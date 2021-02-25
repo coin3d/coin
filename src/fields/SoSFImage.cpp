@@ -140,7 +140,7 @@ public:
   }
   ~SoSFImageP() {
     delete this->image;
-    if (this->freeimage) free(this->freeimage);
+    free(this->freeimage);
     delete[] this->deleteimage;
   }
   SbImage * image;
@@ -399,10 +399,8 @@ SoSFImage::setValue(const SbVec2s & size, const int nc,
                     SoSFImage::CopyPolicy copypolicy)
 {
   // free old data
-  if (PRIVATE(this)->freeimage) {
-    free(PRIVATE(this)->freeimage);
-    PRIVATE(this)->freeimage = NULL;
-  }
+  free(PRIVATE(this)->freeimage);
+  PRIVATE(this)->freeimage = NULL;
   delete[] PRIVATE(this)->deleteimage;
   PRIVATE(this)->deleteimage = NULL;
   // set new data
