@@ -272,7 +272,7 @@ SoGLCgShaderParameter::isValid(const SoGLShaderObject * shader,
 {
   assert(shader->shaderType() == SoShader::CG_SHADER);
 
-  if (strlen(name) == 0) return FALSE;
+  if (!name || name[0] == '\0') return FALSE;
 
   // FIXME: how to handle a new compiled shader object? -- martin
   if (this->isEqual(this->cacheType, type) && (this->cacheName == name) &&

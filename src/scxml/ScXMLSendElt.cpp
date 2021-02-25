@@ -397,8 +397,7 @@ ScXMLSendElt::createEvent(ScXMLEventTarget * host) const
     event->setAssociation("_sessionid", sm->getSessionId().getString());
   }
 
-  if (this->namelist &&
-      (strlen(this->namelist) > 0) &&
+  if (this->namelist && this->namelist[0] != '\0' &&
       host->isOfType(ScXMLStateMachine::getClassTypeId()))
   {
     ScXMLStateMachine * sm = static_cast<ScXMLStateMachine *>(host);
