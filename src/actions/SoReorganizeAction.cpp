@@ -665,13 +665,11 @@ SoReorganizeActionP::initShape(SoCallbackAction * action)
     switch (celem->getType()) {
     case SoMultiTextureCoordinateElement::DEFAULT:
     case SoMultiTextureCoordinateElement::EXPLICIT:
+    case SoMultiTextureCoordinateElement::FUNCTION:
       this->needtexcoords[0] = TRUE;
       break;
     case SoMultiTextureCoordinateElement::TEXGEN:
       // don't need texcoords for unit0
-      break;
-    case SoMultiTextureCoordinateElement::FUNCTION:
-      this->needtexcoords[0] = TRUE;
       break;
     default:
       canrenderasvertexarray = FALSE;
@@ -694,13 +692,11 @@ SoReorganizeActionP::initShape(SoCallbackAction * action)
         switch (melem->getType(i)) {
         case SoMultiTextureCoordinateElement::DEFAULT:
         case SoMultiTextureCoordinateElement::EXPLICIT:
+        case SoMultiTextureCoordinateElement::FUNCTION:
           this->needtexcoords[i] = TRUE;
           break;
         case SoMultiTextureCoordinateElement::TEXGEN:
           // don't need texcoords for unit i
-          break;
-        case SoMultiTextureCoordinateElement::FUNCTION:
-          this->needtexcoords[i] = TRUE;
           break;
         default:
           canrenderasvertexarray = FALSE;
