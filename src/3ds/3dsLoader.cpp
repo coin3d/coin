@@ -793,7 +793,7 @@ CHUNK(LoadNamedObject)
 
   if (con->cObj) {
     // set object name
-    if (con->loadObjNames && strlen(con->objectName) > 0)
+    if (con->loadObjNames && con->objectName[0] != '\0')
       con->cObj->setName(con->objectName);
 
     // add cObj to the main scene graph
