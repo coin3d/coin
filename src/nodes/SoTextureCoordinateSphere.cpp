@@ -104,7 +104,7 @@ public:
   SoTextureCoordinateSphereP(SoTextureCoordinateSphere * texturenode)
     : master(texturenode) { }
 
-  SbVec4f calculateTextureCoordinate(SbVec3f point, SbVec3f n);
+  SbVec4f calculateTextureCoordinate(const SbVec3f & point, const SbVec3f & n);
 
   so_texcoordsphere_data * so_texcoord_get_data() {
     so_texcoordsphere_data * data = NULL;
@@ -209,7 +209,7 @@ textureCoordinateSphereCallback(void * userdata,
 }
 
 SbVec4f
-SoTextureCoordinateSphereP::calculateTextureCoordinate(SbVec3f point, SbVec3f COIN_UNUSED_ARG(n))
+SoTextureCoordinateSphereP::calculateTextureCoordinate(const SbVec3f & point, const SbVec3f & COIN_UNUSED_ARG(n))
 {
 
   // FIXME: This way of mapping will always lead to artifacts in the

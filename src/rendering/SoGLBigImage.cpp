@@ -167,7 +167,7 @@ public:
   void resetCache(void);
   static void reset(SoGLBigImageTls * tls, SoState * state = NULL);
   static void unrefOldDL(SoGLBigImageTls * tls, SoState * state, const uint32_t maxage);
-  void createCache(const unsigned char * bytes, const SbVec2s size, const int nc);
+  void createCache(const unsigned char * bytes, const SbVec2s & size, const int nc);
 };
 
 SoType SoGLBigImageP::classTypeId STATIC_SOTYPE_INIT;
@@ -870,7 +870,7 @@ image_downsample_fast(const int width, const int height, const int nc,
 }
 
 void
-SoGLBigImageP::createCache(const unsigned char * bytes, const SbVec2s size, const int nc)
+SoGLBigImageP::createCache(const unsigned char * bytes, const SbVec2s& size, const int nc)
 {
   int levels = 0;
 
