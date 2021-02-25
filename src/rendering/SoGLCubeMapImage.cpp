@@ -322,7 +322,7 @@ SoGLCubeMapImage::getGLDisplayList(SoState * state)
 
       for (int i = 0; i < 6; i++) {
         const SbImage * img = &PRIVATE(this)->image[i];
-        if (img && img->hasData()) {
+        if (img->hasData()) {
           SbVec2s size;
           int numcomponents;
           unsigned char * bytes = img->getValue(size, numcomponents);
