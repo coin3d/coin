@@ -127,7 +127,7 @@ namespace CoinResources { namespace {
       ResourceMap::iterator it = resourcemap->begin();
       while (it != resourcemap->end()) {
         delete it->second;
-        it++;
+        ++it;
       }
       delete resourcemap;
       resourcemap = NULL;

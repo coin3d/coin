@@ -289,7 +289,7 @@ ScXMLP::cleanup_namespacedict(NamespaceDict * dict)
   NamespaceDict::iterator it = dict->begin();
   while (it != dict->end()) {
     delete it->second;
-    it++;
+    ++it;
   }
 }
 
@@ -302,7 +302,7 @@ ScXMLP::cleanup_targettypes(void)
     ScXMLP::NamespaceDict * dict = it->second;
     cleanup_namespacedict(dict);
     delete dict;
-    it++;
+    ++it;
   }
   delete ScXMLP::targettypes;
   ScXMLP::targettypes = NULL;
