@@ -1037,7 +1037,7 @@ SoVRMLTextP::updateFontStyle(void)
   this->fontstyle = SoVRMLFontStyle::PLAIN;
 
   const char * family = fs->family[0].getString();
-  if (strlen(family) != 0) {
+  if (family && family[0] != '\0') {
     if (!strcmp(family, "SERIF"))
       this->fontfamily = SoVRMLFontStyle::SERIF;
     else if (!strcmp(family, "SANS"))
@@ -1047,7 +1047,7 @@ SoVRMLTextP::updateFontStyle(void)
   }
       
   const char * style = fs->style[0].getString();
-  if (strlen(style) != 0) {
+  if (style && style[0] != '\0') {
     if (!strcmp(style, "PLAIN"))
       this->fontstyle = SoVRMLFontStyle::PLAIN;
     else if (!strcmp(style, "BOLD"))

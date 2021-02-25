@@ -293,7 +293,7 @@ ScXMLAssignElt::execute(ScXMLStateMachine * statemachine) const
     }
     //printf("result: '%s'\n", strval.getString());
     SbString loc;
-    if (this->getDataIDAttribute() && strlen(this->getDataIDAttribute()) > 0) {
+    if (this->getDataIDAttribute() && this->getDataIDAttribute()[0] != '\0') {
       loc.sprintf("_data.%s", this->getDataIDAttribute());
     } else {
       loc = this->getLocationAttribute();

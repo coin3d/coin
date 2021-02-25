@@ -440,8 +440,7 @@ ScXMLTransitionElt::search(const char * attrname, const char * attrvalue) const
 SbBool
 ScXMLTransitionElt::isConditionLess(void) const
 {
-  if (this->cond == NULL) return TRUE;
-  if (strlen(this->cond) == 0) return TRUE;
+  if (!this->cond || this->cond[0] == '\0') return TRUE;
   return FALSE;
 }
 

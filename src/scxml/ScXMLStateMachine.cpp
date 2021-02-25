@@ -933,7 +933,7 @@ ScXMLStateMachine::PImpl::enterState(ScXMLElt * object)
     const ScXMLElt * container = final->getContainer();
     assert(container);
     const char * id = container->getXMLAttribute("id");
-    if (!id || strlen(id) == 0) {
+    if (!id || id[0] == '\0') {
       if (container->isOfType(ScXMLDocument::getClassTypeId())) {
         // there is not ParentID to post a ParentID.done event in
         // this case. study SCXML state to see what to do?

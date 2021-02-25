@@ -925,7 +925,7 @@ SoVRMLAudioClipP::loadUrl()
 
   for (int i=0; i<PUBLIC(this)->url.getNum(); i++) {
     const char * str = PUBLIC(this)->url[i].getString();
-    if ( (str == NULL) || (strlen(str)==0) )
+    if (!str || str[0] == '\0')
       continue; // ignore empty url
 
     SbString filename =

@@ -1672,7 +1672,7 @@ void
 SoInput::addDirectoryIdx(const int idx, const char * dirName)
 {
   assert(idx > -2);
-  if (strlen(dirName) == 0) return; // Don't add empty dirs
+  if (!dirName || dirName[0] == '\0') return; // Don't add empty dirs
   SbStringList * dirs = SoInput::dirsearchlist;
 
   if (soinput_tls) {

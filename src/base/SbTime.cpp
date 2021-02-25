@@ -535,7 +535,7 @@ SbTime::formatDate(const char * const fmt) const
 #endif // ! HAVE_WIN32_API
   }
 
-  if (strlen(format) == 0) return SbString("");
+  if (format[0] == '\0') return SbString("");
 
   const size_t buffersize = 256;
   char buffer[buffersize];
