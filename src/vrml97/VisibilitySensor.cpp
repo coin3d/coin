@@ -197,13 +197,13 @@ SoVRMLVisibilitySensor::~SoVRMLVisibilitySensor()
 void
 SoVRMLVisibilitySensor::GLRender(SoGLRenderAction * action)
 {
-  SbVec3f c = this->center.getValue();
   SbVec3f s = this->size.getValue();
 
   SbBool wasvisible = this->isActive.getValue();
   SbBool visible = FALSE;
 
   if (s != SbVec3f(0.0f, 0.0f, 0.0f)) {
+    SbVec3f c = this->center.getValue();
     SbBox3f box(c[0]-s[0], c[1]-s[1], c[2]-s[2],
                 c[0]+s[0], c[1]+s[1], c[2]+s[2]);
     if (!SoCullElement::cullTest(action->getState(), box, TRUE)) {
