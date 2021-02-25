@@ -129,15 +129,14 @@
 class SbTesselator::PImpl {
 public:
   struct Vertex {
+    SbVec3f v;
     SbTesselator::PImpl * thisp;
 
-    SbVec3f v;
     void * data;
+    Vertex * prev, * next;
 
     double weight;
     int dirtyweight;
-
-    Vertex * prev, * next;
   };
 
   PImpl(void) : bsptree(256) { }

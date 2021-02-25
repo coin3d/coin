@@ -138,10 +138,10 @@ SoMarkerSet::~SoMarkerSet()
 // ----------------------------------------------------------------------
 
 typedef struct {
+  unsigned char *data;
   int width;
   int height;
   int align;
-  unsigned char *data;
   SbBool deletedata;
 } so_marker;
 

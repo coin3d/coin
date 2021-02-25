@@ -239,13 +239,13 @@
 
 class SoTextureCubeMapP {
 public:
-  int readstatus;
-  SoGLCubeMapImage * glimage;
-  SbBool glimagevalid;
-  SoFieldSensor * filenames_sensor;
 #ifdef COIN_THREADSAFE
   SbMutex mutex;
 #endif // COIN_THREADSAFE
+  SoGLCubeMapImage * glimage;
+  SoFieldSensor * filenames_sensor;
+  int readstatus;
+  SbBool glimagevalid;
 };
 
 

@@ -255,8 +255,8 @@ static SbStorage * glimage_bufferstorage = NULL;
 
 typedef struct {
   unsigned char * buffer;
-  int buffersize;
   unsigned char * mipmapbuffer;
+  int buffersize;
   int mipmapbuffersize;
 } soglimage_buffer;
 

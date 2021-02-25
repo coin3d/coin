@@ -376,12 +376,11 @@
 
 class SoTexture2P {
 public:
-  int readstatus;
   SoGLImage * glimage;
-  SbBool glimagevalid;
   SoFieldSensor * filenamesensor;
-
   static SbMutex * mutex;
+  int readstatus;
+  SbBool glimagevalid;
 
   static void cleanup(void) {
     delete SoTexture2P::mutex;

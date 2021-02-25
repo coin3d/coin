@@ -256,18 +256,19 @@ public:
 
   class StaticData {
   public:
-    StaticData(void) {
-      this->pauseBetweenTracks = 2.0;
-      this->introPause = 0.0;
-      this->defaultTimerInterval = 0.1f;
-      this->defaultSampleRate = 44100;
-      this->warnAboutMissingSimage = TRUE;
+    StaticData(void)
+      : pauseBetweenTracks(2.0)
+      , introPause(0.0)
+      , defaultTimerInterval(0.1f)
+      , defaultSampleRate(44100)
+      , warnAboutMissingSimage(TRUE)
+    {
     }
     SbStringList subdirectories;
     SbTime pauseBetweenTracks;
     SbTime introPause;
-    int defaultSampleRate;
     SbTime defaultTimerInterval;
+    int defaultSampleRate;
     SbBool warnAboutMissingSimage;
   };
 

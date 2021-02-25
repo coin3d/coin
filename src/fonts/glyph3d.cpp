@@ -61,10 +61,10 @@ static void glyph3d_calcboundingbox(cc_glyph3d * g);
 
 struct cc_glyph3d {
   struct cc_glyph c; /* "c" for "common" glyph data (2d & 3d). */
-
-  float width; /* FIXME: is this one really in use? 20060109 mortene. */
-  float bbox[4];
   struct cc_font_vector_glyph * vectorglyph;
+
+  float bbox[4];
+  float width; /* FIXME: is this one really in use? 20060109 mortene. */
   SbBool didallocvectorglyph;
 };
 
