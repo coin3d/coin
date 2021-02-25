@@ -561,7 +561,7 @@ public:
     strcpy((char *)buf+8, "https://github.com/coin3d/");
     fwrite(buf, 1, 500, fp);
 
-    tmpbuf = (unsigned char *) malloc(width);
+    tmpbuf = new unsigned char[width];
 
     for (c = 0; c < comp; c++) {
       for (y = 0; y < height; y++) {
@@ -571,9 +571,9 @@ public:
         fwrite(tmpbuf, 1, width, fp);
       }
     }
-    free(tmpbuf);
+    delete tmpbuf;
     fclose(fp);
-    delete[] bytes;
+    delete [] bytes;
     return 1;
   }
   SbBox3f toCameraSpace(const SbXfBox3f & worldbox) const;
