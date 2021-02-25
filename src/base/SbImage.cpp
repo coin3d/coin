@@ -107,7 +107,8 @@ public:
       datatype(SETVALUEPTR_DATA),
       size(0,0,0),
       bpp(0),
-      schedulecb(NULL)
+      schedulecb(NULL),
+      scheduleclosure(NULL)
 #ifdef COIN_THREADSAFE
     , rwmutex(SbRWMutex::READ_PRECEDENCE)
 #endif // COIN_THREADSAFE
