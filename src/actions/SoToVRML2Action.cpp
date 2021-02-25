@@ -316,6 +316,7 @@ public:
     delete this->vrmlnormals;
     delete this->vrmlcolors;
     delete this->vrmltexcoords;
+    delete this->bboxaction;
   }
 
   void init(void)
