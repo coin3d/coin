@@ -46,6 +46,7 @@ extern "C" {
 #endif
 
   struct cc_font_bitmap {
+    unsigned char * buffer; /* bitmap data */
     int bearingX; /* left side of bitmap relative to pen */
     int bearingY; /* top of bitmap relative to pen */
     unsigned int rows; /* height of bitmap */
@@ -53,7 +54,6 @@ extern "C" {
     unsigned int pitch; /* number of bytes occupied by each row (rows are padded to nearest byte) */
     int advanceX; /* where to position pen for next glyph */
     int advanceY;
-    unsigned char * buffer; /* bitmap data */
     SbBool mono; /* monochrome or antialiased gray level bitmap */
   };
 
