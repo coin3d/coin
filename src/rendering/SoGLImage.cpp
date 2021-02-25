@@ -186,7 +186,7 @@
 #include <Inventor/misc/SoGLImage.h>
 
 #include <cassert>
-#include <list>
+#include <vector>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -2116,9 +2116,10 @@ void
 SoGLImage::endFrame(SoState *state)
 {
   if (glimage_reglist) {
-    std::list<std::pair<void (*)(void *), void *> > cb_list;
+    std::vector<std::pair<void (*)(void *), void *> > cb_list;
     LOCK_GLIMAGE;
     int n = glimage_reglist->getLength();
+    cb_list.reserve(n);
     for (int i = 0; i < n; i++) {
       SoGLImage *img = (*glimage_reglist)[i];
       img->unrefOldDL(state, glimage_maxage);
@@ -2130,7 +2131,7 @@ SoGLImage::endFrame(SoState *state)
 
     // the actual invocation of the callbacks should be performed outside
     // the locked region to avoid deadlocks
-    for (std::list<std::pair<void (*)(void *), void *> >::iterator it = cb_list.begin(),
+    for (std::vector<std::pair<void (*)(void *), void *> >::iterator it = cb_list.begin(),
            end = cb_list.end(); it != end; ++it)
       it->first(it->second);
   }
