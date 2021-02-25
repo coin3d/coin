@@ -278,7 +278,7 @@ SoFieldData::overlay(SoFieldContainer * to, const SoFieldContainer * from,
 
   const SoFieldData * fd0 = to->getFieldData();
   const SoFieldData * fd1 = from->getFieldData();
-  if (!fd0 && !fd1) return;
+  if (!fd0 || !fd1) return;
 
   // The field containers should have equal SoFieldData sets.
   assert(fd0 && fd1 && *fd0==*fd1);
