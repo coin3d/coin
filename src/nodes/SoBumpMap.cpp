@@ -170,7 +170,7 @@ public:
   int isgrayscale; // -1 = unknown, 0 = no, 1 = yes
 
   void testGrayscale(const unsigned char * srcptr,
-                     const SbVec2s size,
+                     const SbVec2s & size,
                      const int nc)
   {
     // check if we have a cached value

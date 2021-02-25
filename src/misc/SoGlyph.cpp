@@ -409,7 +409,7 @@ public:
   
   // Note: bitmap glyphs have valid size, polygonal glyphs have size=-1.0
   SbBool matches(const unsigned int characterarg, const float sizearg, 
-                 const SbName fontarg, const float anglearg) {
+                 const SbName & fontarg, const float anglearg) {
     return (this->character == characterarg) && (this->size == sizearg) && (this->font == fontarg) && (this->angle == anglearg);
   }
   

@@ -104,7 +104,7 @@ public:
   SoTextureCoordinateCylinderP(SoTextureCoordinateCylinder * texturenode) 
     : master(texturenode) { }
   
-  SbVec4f calculateTextureCoordinate(SbVec3f point, SbVec3f n);
+  SbVec4f calculateTextureCoordinate(const SbVec3f & point, const SbVec3f & n);
   
   so_texcoordcylinder_data * so_texcoord_get_data() {
     so_texcoordcylinder_data * data = NULL;
@@ -212,7 +212,7 @@ textureCoordinateCylinderCallback(void * userdata,
 }
 
 SbVec4f
-SoTextureCoordinateCylinderP::calculateTextureCoordinate(SbVec3f point, SbVec3f n)
+SoTextureCoordinateCylinderP::calculateTextureCoordinate(const SbVec3f & point, const SbVec3f & n)
 {
  
   // FIXME: This way of mapping will always lead to artifacts in the
