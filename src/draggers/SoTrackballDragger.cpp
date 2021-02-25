@@ -580,8 +580,6 @@ SoTrackballDragger::dragStart(void)
       PRIVATE(this)->sphereProj->setWorkingSpace(wk2ws);
       switch (this->getFrontOnProjector()) {
       case FRONT:
-        PRIVATE(this)->sphereProj->setFront(TRUE);
-        break;
       case BACK:
         PRIVATE(this)->sphereProj->setFront(TRUE);
         break;

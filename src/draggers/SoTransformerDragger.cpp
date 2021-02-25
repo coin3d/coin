@@ -1264,8 +1264,6 @@ SoTransformerDragger::dragStart(void)
 
       switch (this->getFrontOnProjector()) {
       case FRONT:
-        this->sphereProj->setFront(TRUE);
-        break;
       case BACK:
         this->sphereProj->setFront(TRUE);
         break;

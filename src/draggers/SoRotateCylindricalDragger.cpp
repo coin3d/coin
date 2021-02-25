@@ -378,8 +378,6 @@ SoRotateCylindricalDragger::dragStart(void)
 
   switch (this->getFrontOnProjector()) {
   case FRONT:
-    this->cylinderProj->setFront(TRUE);
-    break;
   case BACK:
     this->cylinderProj->setFront(TRUE);
     break;
