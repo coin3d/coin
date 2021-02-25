@@ -307,7 +307,7 @@ SoVRMLProximitySensor::doAction(SoAction * action)
       this->position_changed = viewer;
     }
   }
-  else if (!inside && wasactive) {
+  else if (wasactive) {
     this->isActive = FALSE;
     this->exitTime = currtime;
   }  

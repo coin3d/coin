@@ -1814,7 +1814,7 @@ SoExtSelectionP::triangleCB(void * userData,
 
       thisp->addTriangleToOffscreenBuffer(action, v1, v2, v3, thisp->offscreencolorcounteroverflow);
 
-    } else if (thisp->triangleFilterCB && thisp->primcbdata.allshapes) {
+    } else if (thisp->triangleFilterCB) {
 
       // Present accepted triangle to 'user' through a callback.
       if(thisp->triangleFilterCB(thisp->triangleFilterCBData,
@@ -2015,7 +2015,7 @@ SoExtSelectionP::lineSegmentCB(void *userData,
 
       thisp->addLineToOffscreenBuffer(action, v1, v2, thisp->offscreencolorcounteroverflow);
 
-    } else if (thisp->lineFilterCB && thisp->primcbdata.allshapes) {
+    } else if (thisp->lineFilterCB) {
 
       if (thisp->lineFilterCB(thisp->lineFilterCBData,
                               action, v1, v2)) {
@@ -2167,7 +2167,7 @@ SoExtSelectionP::pointCB(void *userData,
 
       thisp->addPointToOffscreenBuffer(action, v, thisp->offscreencolorcounteroverflow);
 
-    } else if (thisp->pointFilterCB && thisp->primcbdata.allshapes) {
+    } else if (thisp->pointFilterCB) {
 
       if (thisp->pointFilterCB(thisp->pointFilterCBData, action, v)) {
         // select shape
