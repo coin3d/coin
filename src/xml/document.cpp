@@ -705,15 +705,14 @@ cc_xml_doc_write_to_buffer(const cc_xml_doc * doc, char *& buffer, size_t & byte
 
 // macro to copy in a string literal and advance pointers
 #define ADVANCE_STRING_LITERAL(str)                \
-  do { static const char strobj[] = str;           \
-       const size_t strlength = (sizeof(strobj) - 1); \
-       strncpy(hereptr, strobj, strlength);        \
+  do { const size_t strlength = (sizeof(str) - 1); \
+       strcpy(hereptr, str);        \
        ADVANCE_NUM_BYTES(strlength); } while (0)
 
 // macro to copy in a runtime string and advance pointers
 #define ADVANCE_STRING(str)                      \
   do { const size_t strlength = strlen(str);        \
-       strncpy(hereptr, str, strlength);         \
+       strcpy(hereptr, str);         \
        ADVANCE_NUM_BYTES(strlength); } while (0)
 
   // duplicate block, see cc_xml_doc_calculate_size()
@@ -806,7 +805,7 @@ cc_xml_doc_calculate_size(const cc_xml_doc * doc)
 
 // macro to increment bytecount for string literal
 #define ADVANCE_STRING_LITERAL(str) \
-  do { static const char strobj[] = str; bytes += (sizeof(strobj) - 1); } while (0)
+  do { bytes += (sizeof(str) - 1); } while (0)
 
 // macro to increment bytecount for runtime string
 #define ADVANCE_STRING(str) \
