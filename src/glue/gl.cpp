@@ -5179,7 +5179,7 @@ coin_glglue_add_instance_created_callback(coin_glglue_instance_created_cb * cb,
     gl_instance_created_cblist = cc_list_construct();
     coin_atexit((coin_atexit_f *)cleanup_instance_created_list, CC_ATEXIT_NORMAL);
   }
-  cc_list_append(gl_instance_created_cblist, cb);
+  cc_list_append(gl_instance_created_cblist, (void*)cb);
   cc_list_append(gl_instance_created_cblist, closure);
 }
 

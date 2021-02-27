@@ -79,7 +79,7 @@ SoCallbackList::addCallback(SoCallbackListCB * f, void * userdata)
 {
   // FIXME: Shouldn't we check if the callback is already in the list?
   // 20050723 kyrah.
-  this->funclist.append(f);
+  this->funclist.append((void*)f);
   this->datalist.append(userdata);
 }
 
