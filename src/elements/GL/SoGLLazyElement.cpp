@@ -67,10 +67,10 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/C/tidbits.h>
-#include "../../rendering/SoVBO.h"
+#include "rendering/SoVBO.h"
 #include <coindefs.h> // COIN_OBSOLETED
 
-#include "../../shaders/SoGLShaderProgram.h"
+#include "shaders/SoGLShaderProgram.h"
 
 // *************************************************************************
 
