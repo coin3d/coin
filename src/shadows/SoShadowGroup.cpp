@@ -521,23 +521,15 @@ public:
   }
 
   int dumpBitmap(const char * filename) const {
-    int width;
-    int height;
-    int comp;
-
     GLint vp[4];
     glGetIntegerv(GL_VIEWPORT, vp);
-    width = vp[2];
-    height = vp[3];
-    comp = 1;
+    int width = vp[2];
+    int height = vp[3];
+    int comp = 1;
 
     unsigned char * bytes = new unsigned char[width*height*comp];
     glFlush();
     glReadPixels(0,0, width, height, GL_RED, GL_UNSIGNED_BYTE, bytes);
-
-    int x, y, c;
-    unsigned char * tmpbuf;
-    unsigned char buf[500];
 
     FILE * fp = fopen(filename, "wb");
     if (!fp) {
@@ -556,13 +548,15 @@ public:
     write_short(fp, (unsigned short) height);
     write_short(fp, (unsigned short) comp);
 
+    unsigned char buf[500];
     memset(buf, 0, 500);
     buf[7] = 255; /* set maximum pixel value to 255 */
     strcpy((char *)buf+8, "https://github.com/coin3d/");
     fwrite(buf, 1, 500, fp);
 
-    tmpbuf = new unsigned char[width];
+    unsigned char * tmpbuf = new unsigned char[width];
 
+    int x, y, c;
     for (c = 0; c < comp; c++) {
       for (y = 0; y < height; y++) {
         for (x = 0; x < width; x++) {
@@ -571,11 +565,11 @@ public:
         fwrite(tmpbuf, 1, width, fp);
       }
     }
-    delete tmpbuf;
+    delete [] tmpbuf;
     fclose(fp);
     delete [] bytes;
     return 1;
-  }
+  }	
   SbBox3f toCameraSpace(const SbXfBox3f & worldbox) const;
   static void shadowmap_glcallback(void * closure, SoAction * action);
   static void shadowmap_post_glcallback(void * closure, SoAction * action);
