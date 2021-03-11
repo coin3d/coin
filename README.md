@@ -1,5 +1,7 @@
 # Coin. Open Inventor API implementation
 
+[![Packaging status](https://repology.org/badge/tiny-repos/coin3d.svg)](https://repology.org/project/coin3d/versions)
+
 ## Introduction
 
 Coin is an OpenGL-based, 3D graphics library that has its roots in the
