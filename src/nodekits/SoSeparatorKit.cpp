@@ -222,14 +222,14 @@ SoSeparatorKit::setUpConnections(SbBool onoff, SbBool doitalways)
     return onoff;
 
   if (onoff) {
-    inherited::setUpConnections(onoff, FALSE);
+    (void)inherited::setUpConnections(onoff, FALSE);
     PRIVATE(this)->connectFields(TRUE);
     PRIVATE(this)->attachSensor(TRUE);
   }
   else {
     PRIVATE(this)->attachSensor(FALSE);
     PRIVATE(this)->connectFields(FALSE);
-    inherited::setUpConnections(onoff, FALSE);
+    (void)inherited::setUpConnections(onoff, FALSE);
   }
   return !(this->connectionsSetUp = onoff);
 }
