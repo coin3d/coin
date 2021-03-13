@@ -563,8 +563,7 @@ SoVRMLBackground::GLRender(SoGLRenderAction * action)
 void
 SoVRMLBackgroundP::buildGeometry(void)
 {
-
-  float sphereradius = 1.5;
+  double sphereradius = 1.5;
   SbList <float> angles;
   const int slices = 30; // Number of slices, i.e. vertical resolution of the spheres.
   
@@ -689,7 +688,7 @@ SoVRMLBackgroundP::buildGeometry(void)
 
   if ((PUBLIC(this)->groundAngle.getNum() > 0) || (PUBLIC(this)->groundColor.getNum() > 0)) {
 
-    sphereradius = sphereradius * 0.9f;
+    sphereradius = sphereradius * 0.9;
     angles.truncate(0);
     angles.append(0);
     float angle = 0;
