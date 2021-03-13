@@ -657,11 +657,11 @@ SoNodeVisualize::handleEvent(SoHandleEventAction * action)
   if (!pp) { return; }
 
   SoFullPath * path = static_cast<SoFullPath*>(pp->getPath());
-  SoShape* shape = static_cast<SoShape*>(this->getAnyPart("shape",TRUE));
+  SoShape* shapenode = static_cast<SoShape*>(this->getAnyPart("shape",TRUE));
 
   //REVIEW: BFG - Not sure what I'm doing here, the getDetail is
   //from an example source
-  if (path->containsNode(shape) && pp->getDetail(shape) == NULL) {
+  if (path->containsNode(shapenode) && pp->getDetail(shapenode) == NULL) {
     SbVec3f point = pp->getPoint();
     this->clicked();
   }
