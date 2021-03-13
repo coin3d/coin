@@ -185,10 +185,8 @@ SoInputP::isNameStartCharVRML1(unsigned char c, SbBool validIdent)
       0x22, 0x23, 0x26, 0x27, 0x28, 0x29, 0x2b, 0x2c, 0x2e, 0x5b, 0x5c, 0x5d, 0x7b, 0x7c, 0x7d, 0x00 }; // 0x7d = 125
     //'"',  '#',   '&', ''',  '(',  ')',  '+',  ',',  '.',  '[',  '\',   ']',  '{',  '|',  '}'
 
-    for (int c = 0; c < 256; ++c) {
-      invalid_vrml1_table[c] = 0;
-      valid_ident_invalid_vrml1_table[c] = 0;
-    }
+    (void)memset(invalid_vrml1_table, 0, 256);
+    (void)memset(valid_ident_invalid_vrml1_table, 0, 256);
 
     const unsigned char * ptr = invalid_vrml1;
     while (*ptr) { invalid_vrml1_table[*ptr] = 1; ++ptr; }
@@ -219,10 +217,8 @@ SoInputP::isNameStartCharVRML2(unsigned char c, SbBool validIdent)
 
     const unsigned char * valid_ident_invalid_vrml2 = invalid_vrml2;
 
-    for (int c = 0; c < 256; ++c) {
-      invalid_vrml2_table[c] = 0;
-      valid_ident_invalid_vrml2_table[c] = 0;
-    }
+    (void)memset(invalid_vrml2_table, 0, 256);
+    (void)memset(valid_ident_invalid_vrml2_table, 0, 256);
 
     const unsigned char * ptr = invalid_vrml2;
     while (*ptr) { invalid_vrml2_table[*ptr] = 1; ++ptr; }
@@ -280,10 +276,8 @@ SoInputP::isNameCharVRML1(unsigned char c, SbBool validIdent)
       0x22, 0x23, 0x26, 0x27, 0x28, 0x29, 0x2b, 0x2c, 0x2e, 0x5b, 0x5c, 0x5d, 0x7b, 0x7c, 0x7d, 0x00 }; // 0x7d = 125
     //'"',  '#',   '&', ''',  '(',  ')',  '+',  ',',  '.',  '[',  '\',   ']',  '{',  ,'|',  '}'
 
-    for (int c = 0; c < 256; ++c) {
-      invalid_vrml1_table[c] = 0;
-      valid_ident_invalid_vrml1_table[c] = 0;
-    }
+    (void)memset(invalid_vrml1_table, 0, 256);
+    (void)memset(valid_ident_invalid_vrml1_table, 0, 256);
 
     const unsigned char * ptr = invalid_vrml1;
     while (*ptr) { invalid_vrml1_table[*ptr] = 1; ++ptr; }
@@ -314,10 +308,8 @@ SoInputP::isNameCharVRML2(unsigned char c, SbBool validIdent)
 
     const unsigned char * valid_ident_invalid_vrml2 = invalid_vrml2;
 
-    for (int c = 0; c < 256; ++c) {
-      invalid_vrml2_table[c] = 0;
-      valid_ident_invalid_vrml2_table[c] = 0;
-    }
+    (void)memset(invalid_vrml2_table, 0, 256);
+    (void)memset(valid_ident_invalid_vrml2_table, 0, 256);
 
     const unsigned char * ptr = invalid_vrml2;
     while (*ptr) { invalid_vrml2_table[*ptr] = 1; ++ptr; }

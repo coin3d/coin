@@ -341,11 +341,11 @@ SoScXMLRotateTarget::processOneEvent(const ScXMLEvent * event)
         double fromtime = SbTime::getTimeOfDay().getValue();
         updatetimestr = SbStringConvert::toString(fromtime);
 
-        ScXMLEvent event;
-        event.setEventName(TRIGGER_SPIN());
-        event.setAssociation("rotation", rotationstr.getString());
-        event.setAssociation("from", updatetimestr.getString());
-        statemachine->queueEvent(&event);
+        ScXMLEvent triggerspinevent;
+        triggerspinevent.setEventName(TRIGGER_SPIN());
+        triggerspinevent.setAssociation("rotation", rotationstr.getString());
+        triggerspinevent.setAssociation("from", updatetimestr.getString());
+        statemachine->queueEvent(&triggerspinevent);
       }
     }
 
