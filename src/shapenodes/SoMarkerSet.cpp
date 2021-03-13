@@ -157,7 +157,7 @@ free_marker_images(void)
     // markers have been added.. free marker->data
     for (int i = SoMarkerSet::NUM_MARKERS; i < markerlist->getLength(); i++) {
       so_marker * tmp = &(*markerlist)[i];
-      if (tmp->deletedata) delete tmp->data;
+      if (tmp->deletedata) delete[] tmp->data;
     }
   }
   delete markerlist;
@@ -1447,7 +1447,7 @@ SoMarkerSet::addMarker(int idx, const SbVec2s & size,
   temp->align = 1;
 
   int datasize = ((size[0] + 7) / 8) * size[1];
-  if (temp->deletedata) delete temp->data;
+  if (temp->deletedata) delete[] temp->data;
   temp->deletedata = TRUE;
   temp->data = new unsigned char[ datasize ];
   memcpy(temp->data,bytes,datasize);
@@ -1494,7 +1494,7 @@ SoMarkerSet::removeMarker(int idx)
   if (idx == NONE ||
       idx >= markerlist->getLength()) return FALSE;
   so_marker * tmp = &(*markerlist)[idx];
-  if (tmp->deletedata) delete tmp->data;
+  if (tmp->deletedata) delete[] tmp->data;
   markerlist->remove(idx);
   return TRUE;
 }
