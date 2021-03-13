@@ -874,7 +874,7 @@ SoGLBigImageP::createCache(const unsigned char * bytes, const SbVec2s& size, con
 {
   int levels = 0;
 
-  while (((size[0]>>levels) > 0) || ((size[1]>>levels) > 0)) {
+  while (((size[0]>>levels) != 0) || ((size[1]>>levels) != 0)) {
     levels++;
   }
   if (levels == 0) return;
