@@ -57,7 +57,7 @@ public:
   void endShape(SoState * state, SoMaterialBundle & mb);
 
   typedef struct {
-    int idx : 31;
+    signed int idx : 31;
     unsigned int backface : 1;
     float dist;
   } sorted_triangle;

@@ -94,8 +94,8 @@ struct SbNodeProfilingData {
   int traversalcount;
 
   struct {
-    int glcached : 1;
-    int culled : 1;
+    unsigned int glcached : 1;
+    unsigned int culled : 1;
   } flags;
 
   inline SbNodeProfilingData(void);
