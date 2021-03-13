@@ -121,8 +121,8 @@ private:
   static SoType classTypeId;
 
   struct {
-    mutable int referencecount  : 28;
-    mutable unsigned int alive  :  4;
+    mutable signed int referencecount : 28;
+    mutable unsigned int alive : 4;
   } objdata;
 
   void doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type);
