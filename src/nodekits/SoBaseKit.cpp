@@ -1577,7 +1577,7 @@ SoBaseKit::copyContents(const SoFieldContainer * fromfc,
   const SoBaseKit * srckit = (const SoBaseKit*) fromfc;
 
   // convenient reference
-  /*const SbList <SoSFNode*> & srcfields =*/ srckit->getCatalogInstances();
+  /*const SbList <SoSFNode*> & srcfields = srckit->getCatalogInstances();*/
 
   const int n = PRIVATE(this)->instancelist.getLength();
 
