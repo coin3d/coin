@@ -52,7 +52,7 @@ cc_xml_load_file(const char * path)
   size_t pos = 0, bytes;
   while ( pos != bufsize ) {
     bytes = fread(buffer + pos, 1, bufsize - pos, fd);
-    if ( bytes < 0 ) {
+    if ( bytes == 0 ) {
       // fprintf(stderr, "fread() returned %d\n", bytes);
     } else {
       pos += bytes;
