@@ -68,7 +68,20 @@
 
 class SoHandleEventActionP {
 public:
-  SoHandleEventActionP(void) : owner(NULL) { }
+  SoHandleEventActionP(void)
+    : event(NULL)
+    , grabber(NULL)
+    , pickroot(NULL)
+    , pickvalid(FALSE)
+    , didpickall(FALSE)
+    , pickaction(NULL)
+    , owner(NULL)
+  { }
+  ~SoHandleEventActionP()
+  {
+    if (pickroot) pickroot->unref();
+    delete pickaction;
+  }
 
   // Hidden private methods.
 
@@ -106,7 +119,6 @@ SoHandleEventAction::initClass(void)
   SO_ENABLE(SoHandleEventAction, SoViewVolumeElement);
   SO_ENABLE(SoHandleEventAction, SoViewportRegionElement);
   SO_ENABLE(SoHandleEventAction, SoWindowElement);
-
 }
 
 /*!
@@ -120,12 +132,6 @@ SoHandleEventAction::SoHandleEventAction(const SbViewportRegion & viewportregion
 {
   PRIVATE(this)->owner = this;
   PRIVATE(this)->viewport = viewportregion;
-  PRIVATE(this)->event = NULL;
-  PRIVATE(this)->grabber = NULL;
-  PRIVATE(this)->pickroot = NULL;
-  PRIVATE(this)->pickvalid = FALSE;
-  PRIVATE(this)->didpickall = FALSE;
-  PRIVATE(this)->pickaction = NULL;
 
   SO_ACTION_CONSTRUCTOR(SoHandleEventAction);
 }
@@ -135,8 +141,6 @@ SoHandleEventAction::SoHandleEventAction(const SbViewportRegion & viewportregion
 */
 SoHandleEventAction::~SoHandleEventAction()
 {
-  if (PRIVATE(this)->pickroot) PRIVATE(this)->pickroot->unref();
-  delete PRIVATE(this)->pickaction;
 }
 
 /*!
