@@ -253,6 +253,7 @@ cc_xml_elt_remove_all_attributes_x(cc_xml_elt * elt)
 {
   assert(elt);
   if (elt->attributes.getLength()) {
+    // FIXME: implement proper action
   }
 }
 

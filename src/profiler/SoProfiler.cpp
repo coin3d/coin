@@ -509,15 +509,18 @@ SoProfilerP::parseCoinProfilerOverlayVariable(void)
             ++it;
           }
         } else {
+          // FIXME: implement proper action
         }
       }
 
       // configure charts
       else if (param[0].compare("graph") == 0) {
+        // FIXME: implement proper action
       }
 
       // configure scene graph view
       else if (param[0].compare("sceneview") == 0) {
+        // FIXME: implement proper action
       }
 
       // fallthrough

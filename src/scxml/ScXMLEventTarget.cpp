@@ -636,8 +636,10 @@ ScXMLEventTarget::sendExternalEvent(const ScXMLSendElt * sendelt)
   }
 
   if (strcmp(sendtargettypeattr, "scxml") == 0) {
+    // FIXME: implement proper action
   }
   else if (strcmp(sendtargettypeattr, "x-coin-navigation") == 0) {
+    // FIXME: implement proper action
   }
   else {
     this->queueInternalEvent(SbName("error.send.TargetTypeInvalid"));

@@ -287,9 +287,11 @@ SoSTLFileKit::readFile(const char * filename)
   while ( loop ) {
     const int peekval = stl_reader_peek(reader);
     if ( peekval == STL_BEGIN ) {
+      // FIXME: implement proper action
     } else if ( peekval == STL_INIT_INFO ) {
       // FIXME: set info
     } else if ( peekval == STL_EXIT_INFO ) {
+      // FIXME: implement proper action
     } else if ( peekval == STL_END ) {
       loop = FALSE;
     } else if ( peekval == STL_FACET ) {

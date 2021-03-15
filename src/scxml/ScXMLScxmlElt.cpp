@@ -400,6 +400,7 @@ ScXMLScxmlElt::handleXMLAttributes(void)
 
   if (this->version) {
     if (strcmp(this->version, "1.0") == 0) {
+      // FIXME: implement proper action
     }
     else {
       SoDebugError::post("ScXMLScxmlElt::handleXMLAttributes",
@@ -414,8 +415,10 @@ ScXMLScxmlElt::handleXMLAttributes(void)
 
   if (this->profile) {
     if (strcmp(this->profile, "minimum") == 0) {
+      // FIXME: implement proper action
     }
     else if (strcmp(this->profile, "x-coin") == 0) {
+      // FIXME: implement proper action
     }
     else if (strcmp(this->profile, "ecmascript") == 0) {
       SoDebugError::postInfo("ScXMLScxmlElt::handleXMLAttributes",
@@ -440,8 +443,10 @@ ScXMLScxmlElt::handleXMLAttributes(void)
   if (this->exmode) {
     if (strcmp(this->exmode, "lax") == 0 ||
         strcmp(this->exmode, "") == 0) {
+      // FIXME: implement proper action
     }
     else if (strcmp(this->exmode, "strict") == 0) {
+      // FIXME: implement proper action
     }
     else {
       SoDebugError::postInfo("ScXMLScxmlElt::handleXMLAttributes",
