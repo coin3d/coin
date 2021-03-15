@@ -956,9 +956,10 @@ SoShadowGroupP::updateShadowLights(SoGLRenderAction * action)
     float gaussstandarddeviation = 0.6f;
 
     // just hardcode some values for now
-    if (smoothing > 0.9) gaussmatrixsize = 7;
-    else if (smoothing > 0.5) gaussmatrixsize = 5;
-    else if (smoothing > 0.01) gaussmatrixsize = 3;
+    // FIXME: reactivate when properly implemented
+    //if (smoothing > 0.9) gaussmatrixsize = 7;
+    //else if (smoothing > 0.5) gaussmatrixsize = 5;
+    //else if (smoothing > 0.01) gaussmatrixsize = 3;
 
     const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
 
