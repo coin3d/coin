@@ -271,9 +271,12 @@ SoSensorManager::~SoSensorManager()
 {
   delete PRIVATE(this)->timeoutsensor;
 
-  // FIXME: remove entries. 19990225 mortene.
-  if(PRIVATE(this)->delayqueue.getLength() != 0) {}
-  if(PRIVATE(this)->timerqueue.getLength() != 0) {}
+  if(PRIVATE(this)->delayqueue.getLength() != 0) {
+    // FIXME: remove entries. 19990225 mortene.
+  }
+  if(PRIVATE(this)->timerqueue.getLength() != 0) {
+    // FIXME: remove entries. 19990225 mortene.
+  }
 
   delete PRIVATE(this);
 }

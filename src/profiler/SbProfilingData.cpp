@@ -816,7 +816,7 @@ SbProfilingData::setNodeTiming(int idx, SbTime timing)
         if (idx == parentidx) {
           data.count += 1;
         } else {
-
+          // FIXME: implement proper action
         }
         PRIVATE(this)->nodeNameData.insert(std::pair<SbProfilingNodeNameKey, SbNameProfilingData>(namekey, data));
       }

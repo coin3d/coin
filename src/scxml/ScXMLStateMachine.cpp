@@ -375,8 +375,8 @@ ScXMLStateMachine::processOneEvent(const ScXMLEvent * event)
   if (PRIVATE(this)->activestatelist.size() == 0) {
     if (PRIVATE(this)->initializer.get() == NULL) {
       PRIVATE(this)->initializer.reset(new ScXMLTransitionElt);
-      // FIXME
       if (PRIVATE(this)->description->getRoot()->getInitial()) {
+        // FIXME: implement proper action
       } else {
         PRIVATE(this)->initializer->setTargetAttribute(PRIVATE(this)->description->getRoot()->getInitialAttribute());
       }

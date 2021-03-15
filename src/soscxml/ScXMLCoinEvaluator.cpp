@@ -266,9 +266,6 @@ ScXMLCoinEvaluator::setAtLocation(const char * location, ScXMLDataObj * obj)
   }
 
   if (fieldcontainer) {
-  }
-
-  if (fieldcontainer) {
     fieldcontainer->unrefNoDelete();
   }
 
@@ -383,10 +380,13 @@ ScXMLCoinEvaluator::locate(const char * location) const
   }
 
   if (strncmp(location, "coin:camera.", 12) == 0) {
+    // FIXME: implement proper action
   }
   if (strncmp(location, "coin:scene.", 11) == 0) {
+    // FIXME: implement proper action
   }
   if (strncmp(location, "coin:global.", 12) == 0) {
+    // FIXME: implement proper action
   }
   return NULL;
 }
