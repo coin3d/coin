@@ -26779,6 +26779,60 @@ fi
 rm -f core conftest.err conftest.$ac_objext \
     conftest$ac_exeext conftest.$ac_ext
 
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for localtime_s() function" >&5
+$as_echo_n "checking for localtime_s() function... " >&6; }
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <time.h>
+int
+main ()
+{
+  time_t t;
+  struct tm buf;
+  (void) localtime_s(&buf, &t);
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_compile "$LINENO"; then :
+
+$as_echo "#define HAVE_LOCALTIME_S 1" >>confdefs.h
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: available" >&5
+$as_echo "available" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: not available" >&5
+$as_echo "not available" >&6; }
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for localtime_r() function" >&5
+$as_echo_n "checking for localtime_r() function... " >&6; }
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include <time.h>
+int
+main ()
+{
+  time_t t;
+  struct tm buf;
+  (void) localtime_r(&buf, &t);
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_compile "$LINENO"; then :
+
+$as_echo "#define HAVE_LOCALTIME_R 1" >>confdefs.h
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: available" >&5
+$as_echo "available" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: not available" >&5
+$as_echo "not available" >&6; }
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+
 # *******************************************************************
 # Test for misc functions, typically not part of neither ISO C or POSIX.
 

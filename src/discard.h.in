@@ -258,6 +258,12 @@
 /* define if you have the simage library */
 #undef HAVE_LIBSIMAGE
 
+/* define if localtime_s() is available */
+#undef HAVE_LOCALTIME_S
+
+/* define if localtime_r() is available */
+#undef HAVE_LOCALTIME_R
+
 /* Define to 1 if you have the <mach-o/dyld.h> header file. */
 #undef HAVE_MACH_O_DYLD_H
 
