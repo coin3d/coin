@@ -1283,6 +1283,26 @@ AC_TRY_LINK([
   AC_MSG_RESULT([no])
 ])
 
+AC_MSG_CHECKING([for localtime_s() function])
+AC_TRY_COMPILE(
+ [#include <time.h>], [
+  time_t t;
+  struct tm buf;
+  (void) localtime_s(&buf, &t);
+ ], [AC_DEFINE(HAVE_LOCALTIME_S, 1, [define if localtime_s() is available])
+  AC_MSG_RESULT([available])],
+ [AC_MSG_RESULT([not available])])
+
+AC_MSG_CHECKING([for localtime_r() function])
+AC_TRY_COMPILE(
+ [#include <time.h>], [
+  time_t t;
+  struct tm buf;
+  (void) localtime_r(&t, &buf);
+], [AC_DEFINE(HAVE_LOCALTIME_R, 1, [define if localtime_r() is available])
+  AC_MSG_RESULT([available])],
+ [AC_MSG_RESULT([not available])])
+
 # *******************************************************************
 # Test for misc functions, typically not part of neither ISO C or POSIX.
 
