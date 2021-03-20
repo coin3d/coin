@@ -409,6 +409,8 @@ SoReorganizeAction::SoReorganizeAction(SoSimplifier * COIN_UNUSED_ARG(simplifier
 
 SoReorganizeAction::~SoReorganizeAction(void)
 {
+  if (PRIVATE(this)->pvcache)
+    PRIVATE(this)->pvcache->unref();
 }
 
 SoSeparator *

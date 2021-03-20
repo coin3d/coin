@@ -667,6 +667,7 @@ SoBaseKit::SoBaseKit(void)
 SoBaseKit::~SoBaseKit()
 {
   delete this->children;
+  delete PRIVATE(this)->writedata;
   delete PRIVATE(this);
 }
 
