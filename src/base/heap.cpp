@@ -93,9 +93,6 @@ heap_swap(void ** left, void ** right) {
 static void
 heap_heapify_down(cc_heap * h, uintptr_t i)
 {
-  if (i < 0)
-    return;
-
   uintptr_t largest = i;
 
   while (1) {
@@ -127,7 +124,7 @@ heap_heapify_down(cc_heap * h, uintptr_t i)
 static void
 heap_heapify_up(cc_heap * h, uintptr_t i)
 {
-  if (i <= 0)
+  if (i == 0)
     return;
 
   /* If o is greater than its parent, swap them and proceed up on the parent */
