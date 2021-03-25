@@ -32,7 +32,7 @@
 
 #include "defaultfonts.h"
 
-static float defaultfont_coords_33[] = {
+static const float defaultfont_coords_33[] = {
  0.001111f, 0.631111f,
  0.004444f, 0.593333f,
  0.000000f, 0.657778f,
@@ -64,7 +64,7 @@ static float defaultfont_coords_33[] = {
  0.114444f, 0.068889f,
  0.120000f, 0.046667f
 };
-static int defaultfont_faceidx_33[] = {
+static const int defaultfont_faceidx_33[] = {
  0, 2, 1,
  2, 3, 1,
  3, 4, 1,
@@ -94,7 +94,7 @@ static int defaultfont_faceidx_33[] = {
  -1
 };
 
-static int defaultfont_edgeidx_33[] = {
+static const int defaultfont_edgeidx_33[] = {
  13, 15, 
  15, 14, 
  14, 11, 
@@ -131,7 +131,7 @@ static int defaultfont_edgeidx_33[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_34[] = {
+static const float defaultfont_coords_34[] = {
  0.003333f, 0.665556f,
  0.013333f, 0.603333f,
  0.000000f, 0.705556f,
@@ -159,7 +159,7 @@ static float defaultfont_coords_34[] = {
  0.277778f, 0.665556f,
  0.282222f, 0.705556f
 };
-static int defaultfont_faceidx_34[] = {
+static const int defaultfont_faceidx_34[] = {
  0, 2, 1,
  2, 3, 1,
  3, 4, 1,
@@ -185,7 +185,7 @@ static int defaultfont_faceidx_34[] = {
  -1
 };
 
-static int defaultfont_edgeidx_34[] = {
+static const int defaultfont_edgeidx_34[] = {
  9, 12, 
  12, 11, 
  11, 10, 
@@ -218,7 +218,7 @@ static int defaultfont_edgeidx_34[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_35[] = {
+static const float defaultfont_coords_35[] = {
  0.000000f, 0.240000f,
  0.118889f, 0.240000f,
  0.000000f, 0.301111f,
@@ -252,7 +252,7 @@ static float defaultfont_coords_35[] = {
  0.545556f, 0.450000f,
  0.545556f, 0.511111f
 };
-static int defaultfont_faceidx_35[] = {
+static const int defaultfont_faceidx_35[] = {
  0, 2, 1,
  2, 3, 1,
  4, 6, 5,
@@ -288,7 +288,7 @@ static int defaultfont_faceidx_35[] = {
  -1
 };
 
-static int defaultfont_edgeidx_35[] = {
+static const int defaultfont_edgeidx_35[] = {
  23, 29, 
  29, 28, 
  28, 22, 
@@ -327,7 +327,7 @@ static int defaultfont_edgeidx_35[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_36[] = {
+static const float defaultfont_coords_36[] = {
  0.016667f, 0.201111f,
  0.000000f, 0.201111f,
  0.000000f, 0.056667f,
@@ -397,7 +397,7 @@ static float defaultfont_coords_36[] = {
  0.454444f, 0.234444f,
  0.458889f, 0.193333f
 };
-static int defaultfont_faceidx_36[] = {
+static const int defaultfont_faceidx_36[] = {
  0, 2, 1,
  0, 3, 2,
  0, 4, 3,
@@ -469,7 +469,7 @@ static int defaultfont_faceidx_36[] = {
  -1
 };
 
-static int defaultfont_edgeidx_36[] = {
+static const int defaultfont_edgeidx_36[] = {
  18, 9, 
  9, 7, 
  7, 5, 
@@ -546,7 +546,7 @@ static int defaultfont_edgeidx_36[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_37[] = {
+static const float defaultfont_coords_37[] = {
  0.004444f, 0.514444f,
  0.000000f, 0.472222f,
  0.003333f, 0.433333f,
@@ -643,7 +643,7 @@ static float defaultfont_coords_37[] = {
  0.785556f, 0.327778f,
  0.790000f, 0.290000f
 };
-static int defaultfont_faceidx_37[] = {
+static const int defaultfont_faceidx_37[] = {
  0, 2, 1,
  0, 3, 2,
  0, 4, 3,
@@ -742,7 +742,7 @@ static int defaultfont_faceidx_37[] = {
  -1
 };
 
-static int defaultfont_edgeidx_37[] = {
+static const int defaultfont_edgeidx_37[] = {
  52, 55, 
  55, 54, 
  54, 53, 
@@ -844,7 +844,7 @@ static int defaultfont_edgeidx_37[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_38[] = {
+static const float defaultfont_coords_38[] = {
  0.187778f, 0.636667f,
  0.177778f, 0.576667f,
  0.187778f, 0.502222f,
@@ -943,7 +943,7 @@ static float defaultfont_coords_38[] = {
  0.783333f, 0.103333f,
  0.786667f, 0.111111f
 };
-static int defaultfont_faceidx_38[] = {
+static const int defaultfont_faceidx_38[] = {
  0, 2, 1,
  0, 3, 2,
  0, 4, 3,
@@ -1046,7 +1046,7 @@ static int defaultfont_faceidx_38[] = {
  -1
 };
 
-static int defaultfont_edgeidx_38[] = {
+static const int defaultfont_edgeidx_38[] = {
  30, 3, 
  3, 2, 
  2, 1, 
@@ -1150,7 +1150,7 @@ static int defaultfont_edgeidx_38[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_39[] = {
+static const float defaultfont_coords_39[] = {
  0.000000f, 0.686667f,
  0.006667f, 0.658889f,
  0.005556f, 0.716667f,
@@ -1175,7 +1175,7 @@ static float defaultfont_coords_39[] = {
  0.143333f, 0.700000f,
  0.154444f, 0.644444f
 };
-static int defaultfont_faceidx_39[] = {
+static const int defaultfont_faceidx_39[] = {
  0, 2, 1,
  2, 3, 1,
  3, 4, 1,
@@ -1200,7 +1200,7 @@ static int defaultfont_faceidx_39[] = {
  -1
 };
 
-static int defaultfont_edgeidx_39[] = {
+static const int defaultfont_edgeidx_39[] = {
  19, 11, 
  11, 10, 
  10, 9, 
@@ -1230,7 +1230,7 @@ static int defaultfont_edgeidx_39[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_40[] = {
+static const float defaultfont_coords_40[] = {
  0.097778f, 0.193333f,
  0.095556f, 0.250000f,
  0.091111f, -0.022222f,
@@ -1262,7 +1262,7 @@ static float defaultfont_coords_40[] = {
  0.274444f, 0.751111f,
  0.284444f, 0.733333f
 };
-static int defaultfont_faceidx_40[] = {
+static const int defaultfont_faceidx_40[] = {
  0, 2, 1,
  0, 3, 2,
  3, 4, 2,
@@ -1294,7 +1294,7 @@ static int defaultfont_faceidx_40[] = {
  -1
 };
 
-static int defaultfont_edgeidx_40[] = {
+static const int defaultfont_edgeidx_40[] = {
  28, 29, 
  29, 27, 
  27, 24, 
@@ -1331,7 +1331,7 @@ static int defaultfont_edgeidx_40[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_41[] = {
+static const float defaultfont_coords_41[] = {
  0.000000f, 0.733333f,
  0.062222f, 0.682222f,
  0.013333f, 0.751111f,
@@ -1363,7 +1363,7 @@ static float defaultfont_coords_41[] = {
  0.278889f, 0.192222f,
  0.284444f, 0.263333f
 };
-static int defaultfont_faceidx_41[] = {
+static const int defaultfont_faceidx_41[] = {
  0, 2, 1,
  2, 3, 1,
  3, 4, 1,
@@ -1395,7 +1395,7 @@ static int defaultfont_faceidx_41[] = {
  -1
 };
 
-static int defaultfont_edgeidx_41[] = {
+static const int defaultfont_edgeidx_41[] = {
  21, 11, 
  11, 10, 
  10, 9, 
@@ -1432,7 +1432,7 @@ static int defaultfont_edgeidx_41[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_42[] = {
+static const float defaultfont_coords_42[] = {
  0.000000f, 0.425556f,
  0.007778f, 0.402222f,
  0.003333f, 0.446667f,
@@ -1514,7 +1514,7 @@ static float defaultfont_coords_42[] = {
  0.398889f, 0.448889f,
  0.403333f, 0.428889f
 };
-static int defaultfont_faceidx_42[] = {
+static const int defaultfont_faceidx_42[] = {
  0, 2, 1,
  2, 3, 1,
  3, 4, 1,
@@ -1596,7 +1596,7 @@ static int defaultfont_faceidx_42[] = {
  -1
 };
 
-static int defaultfont_edgeidx_42[] = {
+static const int defaultfont_edgeidx_42[] = {
  32, 27, 
  27, 13, 
  13, 11, 
@@ -1683,7 +1683,7 @@ static int defaultfont_edgeidx_42[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_43[] = {
+static const float defaultfont_coords_43[] = {
  0.000000f, 0.244444f,
  0.243333f, 0.244444f,
  0.000000f, 0.317778f,
@@ -1697,7 +1697,7 @@ static float defaultfont_coords_43[] = {
  0.560000f, 0.244444f,
  0.560000f, 0.317778f
 };
-static int defaultfont_faceidx_43[] = {
+static const int defaultfont_faceidx_43[] = {
  0, 2, 1,
  2, 3, 1,
  4, 6, 5,
@@ -1709,7 +1709,7 @@ static int defaultfont_faceidx_43[] = {
  -1
 };
 
-static int defaultfont_edgeidx_43[] = {
+static const int defaultfont_edgeidx_43[] = {
  0, 2, 
  2, 3, 
  3, 1, 
@@ -1728,7 +1728,7 @@ static int defaultfont_edgeidx_43[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_44[] = {
+static const float defaultfont_coords_44[] = {
  0.007778f, 0.084444f,
  0.000000f, 0.048889f,
  0.005556f, 0.022222f,
@@ -1754,7 +1754,7 @@ static float defaultfont_coords_44[] = {
  0.143333f, 0.062222f,
  0.154444f, 0.006667f
 };
-static int defaultfont_faceidx_44[] = {
+static const int defaultfont_faceidx_44[] = {
  0, 2, 1,
  0, 3, 2,
  0, 4, 3,
@@ -1780,7 +1780,7 @@ static int defaultfont_faceidx_44[] = {
  -1
 };
 
-static int defaultfont_edgeidx_44[] = {
+static const int defaultfont_edgeidx_44[] = {
  20, 12, 
  12, 11, 
  11, 10, 
@@ -1811,19 +1811,19 @@ static int defaultfont_edgeidx_44[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_45[] = {
+static const float defaultfont_coords_45[] = {
  0.000000f, 0.244444f,
  0.560000f, 0.244444f,
  0.000000f, 0.317778f,
  0.560000f, 0.317778f
 };
-static int defaultfont_faceidx_45[] = {
+static const int defaultfont_faceidx_45[] = {
  0, 2, 1,
  2, 3, 1,
  -1
 };
 
-static int defaultfont_edgeidx_45[] = {
+static const int defaultfont_edgeidx_45[] = {
  0, 2, 
  2, 3, 
  3, 1, 
@@ -1834,7 +1834,7 @@ static int defaultfont_edgeidx_45[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_46[] = {
+static const float defaultfont_coords_46[] = {
  0.000000f, 0.047778f,
  0.005556f, 0.020000f,
  0.004444f, 0.072222f,
@@ -1850,7 +1850,7 @@ static float defaultfont_coords_46[] = {
  0.117778f, 0.071111f,
  0.123333f, 0.047778f
 };
-static int defaultfont_faceidx_46[] = {
+static const int defaultfont_faceidx_46[] = {
  0, 2, 1,
  2, 3, 1,
  3, 4, 1,
@@ -1866,7 +1866,7 @@ static int defaultfont_faceidx_46[] = {
  -1
 };
 
-static int defaultfont_edgeidx_46[] = {
+static const int defaultfont_edgeidx_46[] = {
  12, 13, 
  13, 11, 
  11, 9, 
@@ -1887,19 +1887,19 @@ static int defaultfont_edgeidx_46[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_47[] = {
+static const float defaultfont_coords_47[] = {
  0.254444f, 0.751111f,
  0.000000f, -0.015556f,
  0.075556f, -0.015556f,
  0.328889f, 0.751111f
 };
-static int defaultfont_faceidx_47[] = {
+static const int defaultfont_faceidx_47[] = {
  0, 2, 1,
  0, 3, 2,
  -1
 };
 
-static int defaultfont_edgeidx_47[] = {
+static const int defaultfont_edgeidx_47[] = {
  0, 3, 
  3, 2, 
  2, 1, 
@@ -1910,7 +1910,7 @@ static int defaultfont_edgeidx_47[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_48[] = {
+static const float defaultfont_coords_48[] = {
  0.000000f, 0.367778f,
  0.010000f, 0.251111f,
  0.002222f, 0.421111f,
@@ -1966,7 +1966,7 @@ static float defaultfont_coords_48[] = {
  0.498889f, 0.421111f,
  0.502222f, 0.367778f
 };
-static int defaultfont_faceidx_48[] = {
+static const int defaultfont_faceidx_48[] = {
  0, 2, 1,
  2, 3, 1,
  3, 4, 1,
@@ -2024,7 +2024,7 @@ static int defaultfont_faceidx_48[] = {
  -1
 };
 
-static int defaultfont_edgeidx_48[] = {
+static const int defaultfont_edgeidx_48[] = {
  52, 53, 
  53, 50, 
  50, 48, 
@@ -2085,7 +2085,7 @@ static int defaultfont_edgeidx_48[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_49[] = {
+static const float defaultfont_coords_49[] = {
  0.000000f, 0.634444f,
  0.035556f, 0.647778f,
  0.000000f, 0.650000f,
@@ -2109,7 +2109,7 @@ static float defaultfont_coords_49[] = {
  0.314444f, 0.000000f,
  0.314444f, 0.016667f
 };
-static int defaultfont_faceidx_49[] = {
+static const int defaultfont_faceidx_49[] = {
  0, 2, 1,
  2, 3, 1,
  2, 4, 3,
@@ -2133,7 +2133,7 @@ static int defaultfont_faceidx_49[] = {
  -1
 };
 
-static int defaultfont_edgeidx_49[] = {
+static const int defaultfont_edgeidx_49[] = {
  14, 16, 
  16, 15, 
  15, 8, 
@@ -2162,7 +2162,7 @@ static int defaultfont_edgeidx_49[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_50[] = {
+static const float defaultfont_coords_50[] = {
  0.001111f, 0.530000f,
  0.024444f, 0.524444f,
  0.016667f, 0.586667f,
@@ -2203,7 +2203,7 @@ static float defaultfont_coords_50[] = {
  0.480000f, 0.157778f,
  0.494444f, 0.152222f
 };
-static int defaultfont_faceidx_50[] = {
+static const int defaultfont_faceidx_50[] = {
  0, 2, 1,
  2, 3, 1,
  3, 4, 1,
@@ -2244,7 +2244,7 @@ static int defaultfont_faceidx_50[] = {
  -1
 };
 
-static int defaultfont_edgeidx_50[] = {
+static const int defaultfont_edgeidx_50[] = {
  25, 18, 
  18, 16, 
  16, 15, 
@@ -2290,7 +2290,7 @@ static int defaultfont_edgeidx_50[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_51[] = {
+static const float defaultfont_coords_51[] = {
  0.021111f, 0.620000f,
  0.002222f, 0.571111f,
  0.018889f, 0.566667f,
@@ -2355,7 +2355,7 @@ static float defaultfont_coords_51[] = {
  0.426667f, 0.290000f,
  0.431111f, 0.240000f
 };
-static int defaultfont_faceidx_51[] = {
+static const int defaultfont_faceidx_51[] = {
  0, 2, 1,
  0, 3, 2,
  0, 4, 3,
@@ -2420,7 +2420,7 @@ static int defaultfont_faceidx_51[] = {
  -1
 };
 
-static int defaultfont_edgeidx_51[] = {
+static const int defaultfont_edgeidx_51[] = {
  31, 16, 
  16, 14, 
  14, 13, 
@@ -2490,7 +2490,7 @@ static int defaultfont_edgeidx_51[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_52[] = {
+static const float defaultfont_coords_52[] = {
  0.044445f, 0.256667f,
  0.000000f, 0.256667f,
  0.000000f, 0.185556f,
@@ -2507,7 +2507,7 @@ static float defaultfont_coords_52[] = {
  0.511111f, 0.185556f,
  0.511111f, 0.256667f
 };
-static int defaultfont_faceidx_52[] = {
+static const int defaultfont_faceidx_52[] = {
  0, 2, 1,
  0, 3, 2,
  3, 4, 2,
@@ -2526,7 +2526,7 @@ static int defaultfont_faceidx_52[] = {
  -1
 };
 
-static int defaultfont_edgeidx_52[] = {
+static const int defaultfont_edgeidx_52[] = {
  11, 14, 
  14, 13, 
  13, 10, 
@@ -2548,7 +2548,7 @@ static int defaultfont_edgeidx_52[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_53[] = {
+static const float defaultfont_coords_53[] = {
  0.043333f, 0.457778f,
  0.143333f, 0.443333f,
  0.118889f, 0.553333f,
@@ -2596,7 +2596,7 @@ static float defaultfont_coords_53[] = {
  0.441111f, 0.764444f,
  0.451111f, 0.756667f
 };
-static int defaultfont_faceidx_53[] = {
+static const int defaultfont_faceidx_53[] = {
  0, 2, 1,
  2, 3, 1,
  2, 4, 3,
@@ -2644,7 +2644,7 @@ static int defaultfont_faceidx_53[] = {
  -1
 };
 
-static int defaultfont_edgeidx_53[] = {
+static const int defaultfont_edgeidx_53[] = {
  27, 9, 
  9, 8, 
  8, 7, 
@@ -2697,7 +2697,7 @@ static int defaultfont_edgeidx_53[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_54[] = {
+static const float defaultfont_coords_54[] = {
  0.007778f, 0.405556f,
  0.000000f, 0.323333f,
  0.004444f, 0.241111f,
@@ -2761,7 +2761,7 @@ static float defaultfont_coords_54[] = {
  0.477778f, 0.294444f,
  0.482222f, 0.242222f
 };
-static int defaultfont_faceidx_54[] = {
+static const int defaultfont_faceidx_54[] = {
  0, 2, 1,
  0, 3, 2,
  0, 4, 3,
@@ -2827,7 +2827,7 @@ static int defaultfont_faceidx_54[] = {
  -1
 };
 
-static int defaultfont_edgeidx_54[] = {
+static const int defaultfont_edgeidx_54[] = {
  60, 61, 
  61, 59, 
  59, 56, 
@@ -2896,7 +2896,7 @@ static int defaultfont_edgeidx_54[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_55[] = {
+static const float defaultfont_coords_55[] = {
  0.388889f, 0.653333f,
  0.168889f, -0.008889f,
  0.241111f, -0.008889f,
@@ -2911,7 +2911,7 @@ static float defaultfont_coords_55[] = {
  0.147778f, 0.653333f,
  0.476667f, 0.735556f
 };
-static int defaultfont_faceidx_55[] = {
+static const int defaultfont_faceidx_55[] = {
  0, 2, 1,
  0, 3, 2,
  4, 6, 5,
@@ -2926,7 +2926,7 @@ static int defaultfont_faceidx_55[] = {
  -1
 };
 
-static int defaultfont_edgeidx_55[] = {
+static const int defaultfont_edgeidx_55[] = {
  8, 12, 
  12, 3, 
  3, 2, 
@@ -2946,7 +2946,7 @@ static int defaultfont_edgeidx_55[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_56[] = {
+static const float defaultfont_coords_56[] = {
  0.084445f, 0.173333f,
  0.093333f, 0.238889f,
  0.080000f, 0.317778f,
@@ -3017,7 +3017,7 @@ static float defaultfont_coords_56[] = {
  0.425556f, 0.221111f,
  0.432222f, 0.166667f
 };
-static int defaultfont_faceidx_56[] = {
+static const int defaultfont_faceidx_56[] = {
  0, 2, 1,
  2, 3, 1,
  2, 4, 3,
@@ -3092,7 +3092,7 @@ static int defaultfont_faceidx_56[] = {
  -1
 };
 
-static int defaultfont_edgeidx_56[] = {
+static const int defaultfont_edgeidx_56[] = {
  7, 6, 
  6, 4, 
  4, 3, 
@@ -3168,7 +3168,7 @@ static int defaultfont_edgeidx_56[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_57[] = {
+static const float defaultfont_coords_57[] = {
  0.015556f, 0.586667f,
  0.000000f, 0.483333f,
  0.010000f, 0.410000f,
@@ -3233,7 +3233,7 @@ static float defaultfont_coords_57[] = {
  0.471111f, 0.505556f,
  0.476667f, 0.440000f
 };
-static int defaultfont_faceidx_57[] = {
+static const int defaultfont_faceidx_57[] = {
  0, 2, 1,
  0, 3, 2,
  3, 4, 2,
@@ -3300,7 +3300,7 @@ static int defaultfont_faceidx_57[] = {
  -1
 };
 
-static int defaultfont_edgeidx_57[] = {
+static const int defaultfont_edgeidx_57[] = {
  54, 22, 
  22, 20, 
  20, 17, 
@@ -3370,7 +3370,7 @@ static int defaultfont_edgeidx_57[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_58[] = {
+static const float defaultfont_coords_58[] = {
  0.000000f, 0.047778f,
  0.005556f, 0.020000f,
  0.004444f, 0.072222f,
@@ -3400,7 +3400,7 @@ static float defaultfont_coords_58[] = {
  0.117778f, 0.470000f,
  0.123333f, 0.446667f
 };
-static int defaultfont_faceidx_58[] = {
+static const int defaultfont_faceidx_58[] = {
  0, 2, 1,
  2, 3, 1,
  3, 4, 1,
@@ -3428,7 +3428,7 @@ static int defaultfont_faceidx_58[] = {
  -1
 };
 
-static int defaultfont_edgeidx_58[] = {
+static const int defaultfont_edgeidx_58[] = {
  12, 13, 
  13, 11, 
  11, 9, 
@@ -3463,7 +3463,7 @@ static int defaultfont_edgeidx_58[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_59[] = {
+static const float defaultfont_coords_59[] = {
  0.007778f, 0.084444f,
  0.000000f, 0.048889f,
  0.005556f, 0.022222f,
@@ -3503,7 +3503,7 @@ static float defaultfont_coords_59[] = {
  0.143333f, 0.062222f,
  0.154444f, 0.006667f
 };
-static int defaultfont_faceidx_59[] = {
+static const int defaultfont_faceidx_59[] = {
  0, 2, 1,
  0, 3, 2,
  0, 4, 3,
@@ -3541,7 +3541,7 @@ static int defaultfont_faceidx_59[] = {
  -1
 };
 
-static int defaultfont_edgeidx_59[] = {
+static const int defaultfont_edgeidx_59[] = {
  34, 12, 
  12, 11, 
  11, 10, 
@@ -3586,7 +3586,7 @@ static int defaultfont_edgeidx_59[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_60[] = {
+static const float defaultfont_coords_60[] = {
  0.092222f, 0.281111f,
  0.000000f, 0.315556f,
  0.000000f, 0.246667f,
@@ -3595,7 +3595,7 @@ static float defaultfont_coords_60[] = {
  0.564444f, 0.495556f,
  0.564444f, 0.571111f
 };
-static int defaultfont_faceidx_60[] = {
+static const int defaultfont_faceidx_60[] = {
  0, 2, 1,
  0, 3, 2,
  0, 4, 3,
@@ -3604,7 +3604,7 @@ static int defaultfont_faceidx_60[] = {
  -1
 };
 
-static int defaultfont_edgeidx_60[] = {
+static const int defaultfont_edgeidx_60[] = {
  1, 6, 
  6, 5, 
  5, 0, 
@@ -3618,7 +3618,7 @@ static int defaultfont_edgeidx_60[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_61[] = {
+static const float defaultfont_coords_61[] = {
  0.000000f, 0.133333f,
  0.560000f, 0.133333f,
  0.000000f, 0.206667f,
@@ -3628,7 +3628,7 @@ static float defaultfont_coords_61[] = {
  0.000000f, 0.428889f,
  0.560000f, 0.428889f
 };
-static int defaultfont_faceidx_61[] = {
+static const int defaultfont_faceidx_61[] = {
  0, 2, 1,
  2, 3, 1,
  4, 6, 5,
@@ -3636,7 +3636,7 @@ static int defaultfont_faceidx_61[] = {
  -1
 };
 
-static int defaultfont_edgeidx_61[] = {
+static const int defaultfont_edgeidx_61[] = {
  0, 2, 
  2, 3, 
  3, 1, 
@@ -3651,7 +3651,7 @@ static int defaultfont_edgeidx_61[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_62[] = {
+static const float defaultfont_coords_62[] = {
  0.472222f, 0.281111f,
  0.000000f, 0.066667f,
  0.000000f, -0.008889f,
@@ -3660,7 +3660,7 @@ static float defaultfont_coords_62[] = {
  0.000000f, 0.571111f,
  0.564444f, 0.315556f
 };
-static int defaultfont_faceidx_62[] = {
+static const int defaultfont_faceidx_62[] = {
  0, 2, 1,
  0, 3, 2,
  4, 5, 0,
@@ -3669,7 +3669,7 @@ static int defaultfont_faceidx_62[] = {
  -1
 };
 
-static int defaultfont_edgeidx_62[] = {
+static const int defaultfont_edgeidx_62[] = {
  5, 6, 
  6, 3, 
  3, 2, 
@@ -3683,7 +3683,7 @@ static int defaultfont_edgeidx_62[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_63[] = {
+static const float defaultfont_coords_63[] = {
  0.055556f, 0.521111f,
  0.074444f, 0.525556f,
  0.056667f, 0.650000f,
@@ -3741,7 +3741,7 @@ static float defaultfont_coords_63[] = {
  0.382222f, 0.604444f,
  0.384444f, 0.566667f
 };
-static int defaultfont_faceidx_63[] = {
+static const int defaultfont_faceidx_63[] = {
  0, 2, 1,
  2, 3, 1,
  2, 4, 3,
@@ -3797,7 +3797,7 @@ static int defaultfont_faceidx_63[] = {
  -1
 };
 
-static int defaultfont_edgeidx_63[] = {
+static const int defaultfont_edgeidx_63[] = {
  29, 46, 
  46, 45, 
  45, 43, 
@@ -3860,7 +3860,7 @@ static int defaultfont_edgeidx_63[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_64[] = {
+static const float defaultfont_coords_64[] = {
  0.311111f, 0.257778f,
  0.306667f, 0.301111f,
  0.304444f, 0.163333f,
@@ -3975,7 +3975,7 @@ static float defaultfont_coords_64[] = {
  0.762222f, 0.491111f,
  0.770000f, 0.423333f
 };
-static int defaultfont_faceidx_64[] = {
+static const int defaultfont_faceidx_64[] = {
  0, 2, 1,
  0, 3, 2,
  3, 4, 2,
@@ -4092,7 +4092,7 @@ static int defaultfont_faceidx_64[] = {
  -1
 };
 
-static int defaultfont_edgeidx_64[] = {
+static const int defaultfont_edgeidx_64[] = {
  17, 97, 
  97, 95, 
  95, 94, 
@@ -4212,7 +4212,7 @@ static int defaultfont_edgeidx_64[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_65[] = {
+static const float defaultfont_coords_65[] = {
  0.026667f, 0.025556f,
  0.000000f, 0.021111f,
  0.000000f, 0.000000f,
@@ -4246,7 +4246,7 @@ static float defaultfont_coords_65[] = {
  0.767778f, 0.000000f,
  0.767778f, 0.021111f
 };
-static int defaultfont_faceidx_65[] = {
+static const int defaultfont_faceidx_65[] = {
  0, 2, 1,
  0, 3, 2,
  3, 4, 2,
@@ -4282,7 +4282,7 @@ static int defaultfont_faceidx_65[] = {
  -1
 };
 
-static int defaultfont_edgeidx_65[] = {
+static const int defaultfont_edgeidx_65[] = {
  9, 11, 
  11, 10, 
  10, 2, 
@@ -4321,7 +4321,7 @@ static int defaultfont_edgeidx_65[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_66[] = {
+static const float defaultfont_coords_66[] = {
  0.000000f, 0.714444f,
  0.054444f, 0.707778f,
  0.000000f, 0.735556f,
@@ -4395,7 +4395,7 @@ static float defaultfont_coords_66[] = {
  0.635556f, 0.235556f,
  0.640000f, 0.195556f
 };
-static int defaultfont_faceidx_66[] = {
+static const int defaultfont_faceidx_66[] = {
  0, 2, 1,
  2, 3, 1,
  4, 6, 5,
@@ -4473,7 +4473,7 @@ static int defaultfont_faceidx_66[] = {
  -1
 };
 
-static int defaultfont_edgeidx_66[] = {
+static const int defaultfont_edgeidx_66[] = {
  6, 3, 
  3, 1, 
  1, 0, 
@@ -4552,7 +4552,7 @@ static int defaultfont_edgeidx_66[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_67[] = {
+static const float defaultfont_coords_67[] = {
  0.007778f, 0.455556f,
  0.000000f, 0.367778f,
  0.007778f, 0.271111f,
@@ -4613,7 +4613,7 @@ static float defaultfont_coords_67[] = {
  0.666667f, 0.117778f,
  0.672222f, 0.125556f
 };
-static int defaultfont_faceidx_67[] = {
+static const int defaultfont_faceidx_67[] = {
  0, 2, 1,
  0, 3, 2,
  3, 4, 2,
@@ -4674,7 +4674,7 @@ static int defaultfont_faceidx_67[] = {
  -1
 };
 
-static int defaultfont_edgeidx_67[] = {
+static const int defaultfont_edgeidx_67[] = {
  55, 58, 
  58, 57, 
  57, 56, 
@@ -4740,7 +4740,7 @@ static int defaultfont_edgeidx_67[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_68[] = {
+static const float defaultfont_coords_68[] = {
  0.050000f, 0.026667f,
  0.000000f, 0.021111f,
  0.000000f, 0.000000f,
@@ -4796,7 +4796,7 @@ static float defaultfont_coords_68[] = {
  0.738889f, 0.306667f,
  0.743333f, 0.365556f
 };
-static int defaultfont_faceidx_68[] = {
+static const int defaultfont_faceidx_68[] = {
  0, 2, 1,
  0, 3, 2,
  0, 4, 3,
@@ -4854,7 +4854,7 @@ static int defaultfont_faceidx_68[] = {
  -1
 };
 
-static int defaultfont_edgeidx_68[] = {
+static const int defaultfont_edgeidx_68[] = {
  51, 53, 
  53, 52, 
  52, 50, 
@@ -4915,7 +4915,7 @@ static int defaultfont_edgeidx_68[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_69[] = {
+static const float defaultfont_coords_69[] = {
  0.210000f, 0.364444f,
  0.381111f, 0.362222f,
  0.210000f, 0.408889f,
@@ -4967,7 +4967,7 @@ static float defaultfont_coords_69[] = {
  0.618889f, 0.187778f,
  0.650000f, 0.187778f
 };
-static int defaultfont_faceidx_69[] = {
+static const int defaultfont_faceidx_69[] = {
  0, 2, 1,
  2, 3, 1,
  3, 4, 1,
@@ -5019,7 +5019,7 @@ static int defaultfont_faceidx_69[] = {
  -1
 };
 
-static int defaultfont_edgeidx_69[] = {
+static const int defaultfont_edgeidx_69[] = {
  11, 13, 
  13, 12, 
  12, 10, 
@@ -5076,7 +5076,7 @@ static int defaultfont_edgeidx_69[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_70[] = {
+static const float defaultfont_coords_70[] = {
  0.050000f, 0.026667f,
  0.000000f, 0.021111f,
  0.000000f, 0.000000f,
@@ -5121,7 +5121,7 @@ static float defaultfont_coords_70[] = {
  0.565556f, 0.576667f,
  0.593333f, 0.576667f
 };
-static int defaultfont_faceidx_70[] = {
+static const int defaultfont_faceidx_70[] = {
  0, 2, 1,
  3, 5, 4,
  3, 6, 5,
@@ -5166,7 +5166,7 @@ static int defaultfont_faceidx_70[] = {
  -1
 };
 
-static int defaultfont_edgeidx_70[] = {
+static const int defaultfont_edgeidx_70[] = {
  10, 12, 
  12, 11, 
  11, 2, 
@@ -5216,7 +5216,7 @@ static int defaultfont_edgeidx_70[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_71[] = {
+static const float defaultfont_coords_71[] = {
  0.006667f, 0.447778f,
  0.000000f, 0.378889f,
  0.005556f, 0.283333f,
@@ -5286,7 +5286,7 @@ static float defaultfont_coords_71[] = {
  0.752222f, 0.373333f,
  0.752222f, 0.393333f
 };
-static int defaultfont_faceidx_71[] = {
+static const int defaultfont_faceidx_71[] = {
  0, 2, 1,
  0, 3, 2,
  0, 4, 3,
@@ -5356,7 +5356,7 @@ static int defaultfont_faceidx_71[] = {
  -1
 };
 
-static int defaultfont_edgeidx_71[] = {
+static const int defaultfont_edgeidx_71[] = {
  56, 67, 
  67, 66, 
  66, 65, 
@@ -5431,7 +5431,7 @@ static int defaultfont_edgeidx_71[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_72[] = {
+static const float defaultfont_coords_72[] = {
  0.054444f, 0.027778f,
  0.000000f, 0.021111f,
  0.000000f, 0.000000f,
@@ -5485,7 +5485,7 @@ static float defaultfont_coords_72[] = {
  0.758889f, 0.714444f,
  0.758889f, 0.735556f
 };
-static int defaultfont_faceidx_72[] = {
+static const int defaultfont_faceidx_72[] = {
  0, 2, 1,
  3, 5, 4,
  3, 6, 5,
@@ -5538,7 +5538,7 @@ static int defaultfont_faceidx_72[] = {
  -1
 };
 
-static int defaultfont_edgeidx_72[] = {
+static const int defaultfont_edgeidx_72[] = {
  10, 12, 
  12, 11, 
  11, 2, 
@@ -5598,7 +5598,7 @@ static int defaultfont_edgeidx_72[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_73[] = {
+static const float defaultfont_coords_73[] = {
  0.056667f, 0.025556f,
  0.000000f, 0.021111f,
  0.000000f, 0.000000f,
@@ -5624,7 +5624,7 @@ static float defaultfont_coords_73[] = {
  0.330000f, 0.714444f,
  0.330000f, 0.735556f
 };
-static int defaultfont_faceidx_73[] = {
+static const int defaultfont_faceidx_73[] = {
  0, 2, 1,
  3, 5, 4,
  3, 6, 5,
@@ -5650,7 +5650,7 @@ static int defaultfont_faceidx_73[] = {
  -1
 };
 
-static int defaultfont_edgeidx_73[] = {
+static const int defaultfont_edgeidx_73[] = {
  10, 12, 
  12, 11, 
  11, 2, 
@@ -5681,7 +5681,7 @@ static int defaultfont_edgeidx_73[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_74[] = {
+static const float defaultfont_coords_74[] = {
  0.013333f, 0.100000f,
  0.000000f, 0.065556f,
  0.005556f, 0.040000f,
@@ -5719,7 +5719,7 @@ static float defaultfont_coords_74[] = {
  0.400000f, 0.714444f,
  0.400000f, 0.735556f
 };
-static int defaultfont_faceidx_74[] = {
+static const int defaultfont_faceidx_74[] = {
  0, 2, 1,
  0, 3, 2,
  0, 4, 3,
@@ -5757,7 +5757,7 @@ static int defaultfont_faceidx_74[] = {
  -1
 };
 
-static int defaultfont_edgeidx_74[] = {
+static const int defaultfont_edgeidx_74[] = {
  23, 35, 
  35, 34, 
  34, 33, 
@@ -5800,7 +5800,7 @@ static int defaultfont_edgeidx_74[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_75[] = {
+static const float defaultfont_coords_75[] = {
  0.051111f, 0.026667f,
  0.000000f, 0.021111f,
  0.000000f, 0.000000f,
@@ -5865,7 +5865,7 @@ static float defaultfont_coords_75[] = {
  0.765556f, 0.000000f,
  0.765556f, 0.021111f
 };
-static int defaultfont_faceidx_75[] = {
+static const int defaultfont_faceidx_75[] = {
  0, 2, 1,
  3, 5, 4,
  3, 6, 5,
@@ -5930,7 +5930,7 @@ static int defaultfont_faceidx_75[] = {
  -1
 };
 
-static int defaultfont_edgeidx_75[] = {
+static const int defaultfont_edgeidx_75[] = {
  10, 12, 
  12, 11, 
  11, 2, 
@@ -6000,7 +6000,7 @@ static int defaultfont_edgeidx_75[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_76[] = {
+static const float defaultfont_coords_76[] = {
  0.000000f, 0.714444f,
  0.044444f, 0.707778f,
  0.000000f, 0.735556f,
@@ -6033,7 +6033,7 @@ static float defaultfont_coords_76[] = {
  0.623333f, 0.193333f,
  0.651111f, 0.193333f
 };
-static int defaultfont_faceidx_76[] = {
+static const int defaultfont_faceidx_76[] = {
  0, 2, 1,
  2, 3, 1,
  4, 6, 5,
@@ -6066,7 +6066,7 @@ static int defaultfont_faceidx_76[] = {
  -1
 };
 
-static int defaultfont_edgeidx_76[] = {
+static const int defaultfont_edgeidx_76[] = {
  6, 3, 
  3, 1, 
  1, 0, 
@@ -6104,7 +6104,7 @@ static int defaultfont_edgeidx_76[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_77[] = {
+static const float defaultfont_coords_77[] = {
  0.052222f, 0.027778f,
  0.000000f, 0.021111f,
  0.000000f, 0.000000f,
@@ -6152,7 +6152,7 @@ static float defaultfont_coords_77[] = {
  0.945556f, 0.714444f,
  0.945556f, 0.735556f
 };
-static int defaultfont_faceidx_77[] = {
+static const int defaultfont_faceidx_77[] = {
  0, 2, 1,
  3, 5, 4,
  3, 6, 5,
@@ -6200,7 +6200,7 @@ static int defaultfont_faceidx_77[] = {
  -1
 };
 
-static int defaultfont_edgeidx_77[] = {
+static const int defaultfont_edgeidx_77[] = {
  11, 13, 
  13, 12, 
  12, 2, 
@@ -6253,7 +6253,7 @@ static int defaultfont_edgeidx_77[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_78[] = {
+static const float defaultfont_coords_78[] = {
  0.052222f, 0.027778f,
  0.000000f, 0.021111f,
  0.000000f, 0.000000f,
@@ -6294,7 +6294,7 @@ static float defaultfont_coords_78[] = {
  0.772222f, 0.714444f,
  0.772222f, 0.735556f
 };
-static int defaultfont_faceidx_78[] = {
+static const int defaultfont_faceidx_78[] = {
  0, 2, 1,
  3, 5, 4,
  3, 6, 5,
@@ -6335,7 +6335,7 @@ static int defaultfont_faceidx_78[] = {
  -1
 };
 
-static int defaultfont_edgeidx_78[] = {
+static const int defaultfont_edgeidx_78[] = {
  11, 13, 
  13, 12, 
  12, 2, 
@@ -6381,7 +6381,7 @@ static int defaultfont_edgeidx_78[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_79[] = {
+static const float defaultfont_coords_79[] = {
  0.126667f, 0.367778f,
  0.131111f, 0.454444f,
  0.113333f, 0.654444f,
@@ -6447,7 +6447,7 @@ static float defaultfont_coords_79[] = {
  0.718889f, 0.282222f,
  0.726667f, 0.366667f
 };
-static int defaultfont_faceidx_79[] = {
+static const int defaultfont_faceidx_79[] = {
  0, 2, 1,
  2, 3, 1,
  2, 4, 3,
@@ -6515,7 +6515,7 @@ static int defaultfont_faceidx_79[] = {
  -1
 };
 
-static int defaultfont_edgeidx_79[] = {
+static const int defaultfont_edgeidx_79[] = {
  55, 25, 
  25, 23, 
  23, 22, 
@@ -6586,7 +6586,7 @@ static int defaultfont_edgeidx_79[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_80[] = {
+static const float defaultfont_coords_80[] = {
  0.053333f, 0.030000f,
  0.000000f, 0.021111f,
  0.000000f, 0.000000f,
@@ -6639,7 +6639,7 @@ static float defaultfont_coords_80[] = {
  0.577778f, 0.584444f,
  0.584444f, 0.535556f
 };
-static int defaultfont_faceidx_80[] = {
+static const int defaultfont_faceidx_80[] = {
  0, 2, 1,
  3, 5, 4,
  3, 6, 5,
@@ -6694,7 +6694,7 @@ static int defaultfont_faceidx_80[] = {
  -1
 };
 
-static int defaultfont_edgeidx_80[] = {
+static const int defaultfont_edgeidx_80[] = {
  10, 12, 
  12, 11, 
  11, 2, 
@@ -6752,7 +6752,7 @@ static int defaultfont_edgeidx_80[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_81[] = {
+static const float defaultfont_coords_81[] = {
  0.126667f, 0.366667f,
  0.131111f, 0.454444f,
  0.113333f, 0.653333f,
@@ -6828,7 +6828,7 @@ static float defaultfont_coords_81[] = {
  0.741111f, -0.196667f,
  0.741111f, -0.176667f
 };
-static int defaultfont_faceidx_81[] = {
+static const int defaultfont_faceidx_81[] = {
  0, 2, 1,
  2, 3, 1,
  2, 4, 3,
@@ -6906,7 +6906,7 @@ static int defaultfont_faceidx_81[] = {
  -1
 };
 
-static int defaultfont_edgeidx_81[] = {
+static const int defaultfont_edgeidx_81[] = {
  36, 25, 
  25, 23, 
  23, 22, 
@@ -6987,7 +6987,7 @@ static int defaultfont_edgeidx_81[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_82[] = {
+static const float defaultfont_coords_82[] = {
  0.052222f, 0.028889f,
  0.000000f, 0.021111f,
  0.000000f, 0.000000f,
@@ -7044,7 +7044,7 @@ static float defaultfont_coords_82[] = {
  0.713333f, 0.000000f,
  0.713333f, 0.021111f
 };
-static int defaultfont_faceidx_82[] = {
+static const int defaultfont_faceidx_82[] = {
  0, 2, 1,
  3, 5, 4,
  3, 6, 5,
@@ -7103,7 +7103,7 @@ static int defaultfont_faceidx_82[] = {
  -1
 };
 
-static int defaultfont_edgeidx_82[] = {
+static const int defaultfont_edgeidx_82[] = {
  10, 12, 
  12, 11, 
  11, 2, 
@@ -7165,7 +7165,7 @@ static int defaultfont_edgeidx_82[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_83[] = {
+static const float defaultfont_coords_83[] = {
  0.000000f, 0.221111f,
  0.033333f, -0.014444f,
  0.025556f, 0.221111f,
@@ -7231,7 +7231,7 @@ static float defaultfont_coords_83[] = {
  0.484444f, 0.113333f,
  0.498889f, 0.185556f
 };
-static int defaultfont_faceidx_83[] = {
+static const int defaultfont_faceidx_83[] = {
  0, 2, 1,
  2, 3, 1,
  3, 4, 1,
@@ -7297,7 +7297,7 @@ static int defaultfont_faceidx_83[] = {
  -1
 };
 
-static int defaultfont_edgeidx_83[] = {
+static const int defaultfont_edgeidx_83[] = {
  61, 63, 
  63, 62, 
  62, 60, 
@@ -7368,7 +7368,7 @@ static int defaultfont_edgeidx_83[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_84[] = {
+static const float defaultfont_coords_84[] = {
  0.217778f, 0.028889f,
  0.158889f, 0.021111f,
  0.158889f, 0.000000f,
@@ -7398,7 +7398,7 @@ static float defaultfont_coords_84[] = {
  0.613333f, 0.546667f,
  0.640000f, 0.546667f
 };
-static int defaultfont_faceidx_84[] = {
+static const int defaultfont_faceidx_84[] = {
  0, 2, 1,
  3, 5, 4,
  3, 6, 5,
@@ -7428,7 +7428,7 @@ static int defaultfont_faceidx_84[] = {
  -1
 };
 
-static int defaultfont_edgeidx_84[] = {
+static const int defaultfont_edgeidx_84[] = {
  10, 12, 
  12, 11, 
  11, 2, 
@@ -7463,7 +7463,7 @@ static int defaultfont_edgeidx_84[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_85[] = {
+static const float defaultfont_coords_85[] = {
  0.100000f, 0.614444f,
  0.100000f, 0.235556f,
  0.103333f, 0.194444f,
@@ -7518,7 +7518,7 @@ static float defaultfont_coords_85[] = {
  0.767778f, 0.714444f,
  0.767778f, 0.735556f
 };
-static int defaultfont_faceidx_85[] = {
+static const int defaultfont_faceidx_85[] = {
  0, 2, 1,
  3, 5, 4,
  5, 6, 4,
@@ -7573,7 +7573,7 @@ static int defaultfont_faceidx_85[] = {
  -1
 };
 
-static int defaultfont_edgeidx_85[] = {
+static const int defaultfont_edgeidx_85[] = {
  41, 52, 
  52, 51, 
  51, 50, 
@@ -7633,7 +7633,7 @@ static int defaultfont_edgeidx_85[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_86[] = {
+static const float defaultfont_coords_86[] = {
  0.000000f, 0.714444f,
  0.033333f, 0.708889f,
  0.000000f, 0.735556f,
@@ -7667,7 +7667,7 @@ static float defaultfont_coords_86[] = {
  0.756667f, 0.714444f,
  0.756667f, 0.735556f
 };
-static int defaultfont_faceidx_86[] = {
+static const int defaultfont_faceidx_86[] = {
  0, 2, 1,
  2, 3, 1,
  2, 4, 3,
@@ -7701,7 +7701,7 @@ static int defaultfont_faceidx_86[] = {
  -1
 };
 
-static int defaultfont_edgeidx_86[] = {
+static const int defaultfont_edgeidx_86[] = {
  25, 31, 
  31, 30, 
  30, 29, 
@@ -7740,7 +7740,7 @@ static int defaultfont_edgeidx_86[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_87[] = {
+static const float defaultfont_coords_87[] = {
  0.000000f, 0.714444f,
  0.038889f, 0.704444f,
  0.000000f, 0.735556f,
@@ -7794,7 +7794,7 @@ static float defaultfont_coords_87[] = {
  1.030000f, 0.714444f,
  1.030000f, 0.735556f
 };
-static int defaultfont_faceidx_87[] = {
+static const int defaultfont_faceidx_87[] = {
  0, 2, 1,
  3, 5, 4,
  5, 6, 4,
@@ -7848,7 +7848,7 @@ static int defaultfont_faceidx_87[] = {
  -1
 };
 
-static int defaultfont_edgeidx_87[] = {
+static const int defaultfont_edgeidx_87[] = {
  8, 1, 
  1, 0, 
  0, 2, 
@@ -7907,7 +7907,7 @@ static int defaultfont_edgeidx_87[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_88[] = {
+static const float defaultfont_coords_88[] = {
  0.037778f, 0.026667f,
  0.000000f, 0.021111f,
  0.000000f, 0.000000f,
@@ -7974,7 +7974,7 @@ static float defaultfont_coords_88[] = {
  0.771111f, 0.000000f,
  0.771111f, 0.021111f
 };
-static int defaultfont_faceidx_88[] = {
+static const int defaultfont_faceidx_88[] = {
  0, 2, 1,
  0, 3, 2,
  3, 4, 2,
@@ -8041,7 +8041,7 @@ static int defaultfont_faceidx_88[] = {
  -1
 };
 
-static int defaultfont_edgeidx_88[] = {
+static const int defaultfont_edgeidx_88[] = {
  9, 11, 
  11, 10, 
  10, 2, 
@@ -8113,7 +8113,7 @@ static int defaultfont_edgeidx_88[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_89[] = {
+static const float defaultfont_coords_89[] = {
  0.000000f, 0.714444f,
  0.032222f, 0.707778f,
  0.000000f, 0.735556f,
@@ -8159,7 +8159,7 @@ static float defaultfont_coords_89[] = {
  0.756667f, 0.714444f,
  0.756667f, 0.735556f
 };
-static int defaultfont_faceidx_89[] = {
+static const int defaultfont_faceidx_89[] = {
  0, 2, 1,
  2, 3, 1,
  2, 4, 3,
@@ -8205,7 +8205,7 @@ static int defaultfont_faceidx_89[] = {
  -1
 };
 
-static int defaultfont_edgeidx_89[] = {
+static const int defaultfont_edgeidx_89[] = {
  20, 24, 
  24, 22, 
  22, 21, 
@@ -8256,7 +8256,7 @@ static int defaultfont_edgeidx_89[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_90[] = {
+static const float defaultfont_coords_90[] = {
  0.485556f, 0.693333f,
  0.000000f, 0.016667f,
  0.151111f, 0.042222f,
@@ -8281,7 +8281,7 @@ static float defaultfont_coords_90[] = {
  0.627778f, 0.195556f,
  0.653333f, 0.195556f
 };
-static int defaultfont_faceidx_90[] = {
+static const int defaultfont_faceidx_90[] = {
  0, 2, 1,
  0, 3, 2,
  4, 6, 5,
@@ -8306,7 +8306,7 @@ static int defaultfont_faceidx_90[] = {
  -1
 };
 
-static int defaultfont_edgeidx_90[] = {
+static const int defaultfont_edgeidx_90[] = {
  21, 22, 
  22, 17, 
  17, 14, 
@@ -8336,7 +8336,7 @@ static int defaultfont_edgeidx_90[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_91[] = {
+static const float defaultfont_coords_91[] = {
  0.084444f, -0.087778f,
  0.000000f, 0.735556f,
  0.000000f, -0.173333f,
@@ -8352,7 +8352,7 @@ static float defaultfont_coords_91[] = {
  0.234444f, 0.707778f,
  0.234444f, 0.735556f
 };
-static int defaultfont_faceidx_91[] = {
+static const int defaultfont_faceidx_91[] = {
  0, 2, 1,
  0, 3, 2,
  3, 4, 2,
@@ -8368,7 +8368,7 @@ static int defaultfont_faceidx_91[] = {
  -1
 };
 
-static int defaultfont_edgeidx_91[] = {
+static const int defaultfont_edgeidx_91[] = {
  5, 7, 
  7, 6, 
  6, 2, 
@@ -8389,19 +8389,19 @@ static int defaultfont_edgeidx_91[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_92[] = {
+static const float defaultfont_coords_92[] = {
  0.000000f, 0.751111f,
  0.253333f, -0.015556f,
  0.074444f, 0.751111f,
  0.328889f, -0.015556f
 };
-static int defaultfont_faceidx_92[] = {
+static const int defaultfont_faceidx_92[] = {
  0, 2, 1,
  2, 3, 1,
  -1
 };
 
-static int defaultfont_edgeidx_92[] = {
+static const int defaultfont_edgeidx_92[] = {
  0, 2, 
  2, 3, 
  3, 1, 
@@ -8412,7 +8412,7 @@ static int defaultfont_edgeidx_92[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_93[] = {
+static const float defaultfont_coords_93[] = {
  0.100000f, -0.145556f,
  0.000000f, -0.145556f,
  0.000000f, -0.173333f,
@@ -8428,7 +8428,7 @@ static float defaultfont_coords_93[] = {
  0.234444f, 0.735556f,
  0.142222f, 0.683333f
 };
-static int defaultfont_faceidx_93[] = {
+static const int defaultfont_faceidx_93[] = {
  0, 2, 1,
  0, 3, 2,
  3, 4, 2,
@@ -8444,7 +8444,7 @@ static int defaultfont_faceidx_93[] = {
  -1
 };
 
-static int defaultfont_edgeidx_93[] = {
+static const int defaultfont_edgeidx_93[] = {
  12, 4, 
  4, 2, 
  2, 1, 
@@ -8465,7 +8465,7 @@ static int defaultfont_edgeidx_93[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_94[] = {
+static const float defaultfont_coords_94[] = {
  0.201111f, 0.735556f,
  0.000000f, 0.330000f,
  0.075556f, 0.330000f,
@@ -8474,7 +8474,7 @@ static float defaultfont_coords_94[] = {
  0.393333f, 0.330000f,
  0.468889f, 0.330000f
 };
-static int defaultfont_faceidx_94[] = {
+static const int defaultfont_faceidx_94[] = {
  0, 2, 1,
  0, 3, 2,
  0, 4, 3,
@@ -8483,7 +8483,7 @@ static int defaultfont_faceidx_94[] = {
  -1
 };
 
-static int defaultfont_edgeidx_94[] = {
+static const int defaultfont_edgeidx_94[] = {
  0, 4, 
  4, 6, 
  6, 5, 
@@ -8497,19 +8497,19 @@ static int defaultfont_edgeidx_94[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_95[] = {
+static const float defaultfont_coords_95[] = {
  0.000000f, -0.138889f,
  0.555556f, -0.138889f,
  0.000000f, -0.083333f,
  0.555556f, -0.083333f
 };
-static int defaultfont_faceidx_95[] = {
+static const int defaultfont_faceidx_95[] = {
  0, 2, 1,
  2, 3, 1,
  -1
 };
 
-static int defaultfont_edgeidx_95[] = {
+static const int defaultfont_edgeidx_95[] = {
  0, 2, 
  2, 3, 
  3, 1, 
@@ -8520,7 +8520,7 @@ static int defaultfont_edgeidx_95[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_96[] = {
+static const float defaultfont_coords_96[] = {
  0.014444f, 0.644444f,
  0.000000f, 0.587778f,
  0.010000f, 0.531111f,
@@ -8545,7 +8545,7 @@ static float defaultfont_coords_96[] = {
  0.147778f, 0.514444f,
  0.154444f, 0.545556f
 };
-static int defaultfont_faceidx_96[] = {
+static const int defaultfont_faceidx_96[] = {
  0, 2, 1,
  0, 3, 2,
  0, 4, 3,
@@ -8570,7 +8570,7 @@ static int defaultfont_faceidx_96[] = {
  -1
 };
 
-static int defaultfont_edgeidx_96[] = {
+static const int defaultfont_edgeidx_96[] = {
  20, 22, 
  22, 21, 
  21, 19, 
@@ -8600,7 +8600,7 @@ static int defaultfont_edgeidx_96[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_97[] = {
+static const float defaultfont_coords_97[] = {
  0.104444f, 0.353333f,
  0.118889f, 0.386667f,
  0.113333f, 0.430000f,
@@ -8670,7 +8670,7 @@ static float defaultfont_coords_97[] = {
  0.450000f, 0.044444f,
  0.450000f, 0.073333f
 };
-static int defaultfont_faceidx_97[] = {
+static const int defaultfont_faceidx_97[] = {
  0, 2, 1,
  3, 5, 4,
  5, 6, 4,
@@ -8741,7 +8741,7 @@ static int defaultfont_faceidx_97[] = {
  -1
 };
 
-static int defaultfont_edgeidx_97[] = {
+static const int defaultfont_edgeidx_97[] = {
  32, 53, 
  53, 51, 
  51, 50, 
@@ -8817,7 +8817,7 @@ static int defaultfont_edgeidx_97[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_98[] = {
+static const float defaultfont_coords_98[] = {
  0.073333f, 0.060000f,
  0.077778f, 0.044444f,
  0.073333f, 0.636667f,
@@ -8871,7 +8871,7 @@ static float defaultfont_coords_98[] = {
  0.504444f, 0.352222f,
  0.516667f, 0.264444f
 };
-static int defaultfont_faceidx_98[] = {
+static const int defaultfont_faceidx_98[] = {
  0, 2, 1,
  3, 5, 4,
  5, 6, 4,
@@ -8927,7 +8927,7 @@ static int defaultfont_faceidx_98[] = {
  -1
 };
 
-static int defaultfont_edgeidx_98[] = {
+static const int defaultfont_edgeidx_98[] = {
  50, 51, 
  51, 49, 
  49, 48, 
@@ -8986,7 +8986,7 @@ static int defaultfont_edgeidx_98[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_99[] = {
+static const float defaultfont_coords_99[] = {
  0.085556f, 0.281111f,
  0.090000f, 0.335556f,
  0.078889f, 0.442222f,
@@ -9032,7 +9032,7 @@ static float defaultfont_coords_99[] = {
  0.414444f, 0.173333f,
  0.430000f, 0.163333f
 };
-static int defaultfont_faceidx_99[] = {
+static const int defaultfont_faceidx_99[] = {
  0, 2, 1,
  2, 3, 1,
  2, 4, 3,
@@ -9078,7 +9078,7 @@ static int defaultfont_faceidx_99[] = {
  -1
 };
 
-static int defaultfont_edgeidx_99[] = {
+static const int defaultfont_edgeidx_99[] = {
  21, 22, 
  22, 20, 
  20, 18, 
@@ -9129,7 +9129,7 @@ static int defaultfont_edgeidx_99[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_100[] = {
+static const float defaultfont_coords_100[] = {
  0.098889f, 0.216667f,
  0.095556f, 0.274444f,
  0.084444f, 0.027778f,
@@ -9188,7 +9188,7 @@ static float defaultfont_coords_100[] = {
  0.515556f, 0.046667f,
  0.515556f, 0.064444f
 };
-static int defaultfont_faceidx_100[] = {
+static const int defaultfont_faceidx_100[] = {
  0, 2, 1,
  0, 3, 2,
  3, 4, 2,
@@ -9247,7 +9247,7 @@ static int defaultfont_faceidx_100[] = {
  -1
 };
 
-static int defaultfont_edgeidx_100[] = {
+static const int defaultfont_edgeidx_100[] = {
  39, 40, 
  40, 38, 
  38, 37, 
@@ -9311,7 +9311,7 @@ static int defaultfont_edgeidx_100[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_101[] = {
+static const float defaultfont_coords_101[] = {
  0.005556f, 0.307778f,
  0.000000f, 0.237778f,
  0.003333f, 0.181111f,
@@ -9359,7 +9359,7 @@ static float defaultfont_coords_101[] = {
  0.435556f, 0.155556f,
  0.443333f, 0.174444f
 };
-static int defaultfont_faceidx_101[] = {
+static const int defaultfont_faceidx_101[] = {
  0, 2, 1,
  0, 3, 2,
  0, 4, 3,
@@ -9409,7 +9409,7 @@ static int defaultfont_faceidx_101[] = {
  -1
 };
 
-static int defaultfont_edgeidx_101[] = {
+static const int defaultfont_edgeidx_101[] = {
  43, 45, 
  45, 44, 
  44, 42, 
@@ -9462,7 +9462,7 @@ static int defaultfont_edgeidx_101[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_102[] = {
+static const float defaultfont_coords_102[] = {
  0.001111f, 0.464444f,
  0.092222f, 0.464444f,
  0.001111f, 0.500000f,
@@ -9502,7 +9502,7 @@ static float defaultfont_coords_102[] = {
  0.398889f, 0.670000f,
  0.403333f, 0.691111f
 };
-static int defaultfont_faceidx_102[] = {
+static const int defaultfont_faceidx_102[] = {
  0, 2, 1,
  2, 3, 1,
  4, 6, 5,
@@ -9541,7 +9541,7 @@ static int defaultfont_faceidx_102[] = {
  -1
 };
 
-static int defaultfont_edgeidx_102[] = {
+static const int defaultfont_edgeidx_102[] = {
  7, 14, 
  14, 10, 
  10, 1, 
@@ -9587,7 +9587,7 @@ static int defaultfont_edgeidx_102[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_103[] = {
+static const float defaultfont_coords_103[] = {
  0.050000f, 0.060000f,
  0.054444f, 0.038889f,
  0.051111f, 0.074444f,
@@ -9682,7 +9682,7 @@ static float defaultfont_coords_103[] = {
  0.491111f, 0.431111f,
  0.491111f, 0.474444f
 };
-static int defaultfont_faceidx_103[] = {
+static const int defaultfont_faceidx_103[] = {
  0, 2, 1,
  2, 3, 1,
  3, 4, 1,
@@ -9781,7 +9781,7 @@ static int defaultfont_faceidx_103[] = {
  -1
 };
 
-static int defaultfont_edgeidx_103[] = {
+static const int defaultfont_edgeidx_103[] = {
  42, 6, 
  6, 4, 
  4, 1, 
@@ -9881,7 +9881,7 @@ static int defaultfont_edgeidx_103[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_104[] = {
+static const float defaultfont_coords_104[] = {
  0.001111f, 0.692222f,
  0.022222f, 0.693333f,
  0.001111f, 0.710000f,
@@ -9935,7 +9935,7 @@ static float defaultfont_coords_104[] = {
  0.531111f, 0.000000f,
  0.531111f, 0.016667f
 };
-static int defaultfont_faceidx_104[] = {
+static const int defaultfont_faceidx_104[] = {
  0, 2, 1,
  2, 3, 1,
  2, 4, 3,
@@ -9989,7 +9989,7 @@ static int defaultfont_faceidx_104[] = {
  -1
 };
 
-static int defaultfont_edgeidx_104[] = {
+static const int defaultfont_edgeidx_104[] = {
  14, 16, 
  16, 15, 
  15, 6, 
@@ -10048,7 +10048,7 @@ static int defaultfont_edgeidx_104[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_105[] = {
+static const float defaultfont_coords_105[] = {
  0.004444f, 0.433333f,
  0.048889f, 0.437778f,
  0.004444f, 0.450000f,
@@ -10083,7 +10083,7 @@ static float defaultfont_coords_105[] = {
  0.263333f, 0.000000f,
  0.263333f, 0.016667f
 };
-static int defaultfont_faceidx_105[] = {
+static const int defaultfont_faceidx_105[] = {
  0, 2, 1,
  2, 3, 1,
  3, 4, 1,
@@ -10116,7 +10116,7 @@ static int defaultfont_faceidx_105[] = {
  -1
 };
 
-static int defaultfont_edgeidx_105[] = {
+static const int defaultfont_edgeidx_105[] = {
  22, 27, 
  27, 26, 
  26, 25, 
@@ -10156,7 +10156,7 @@ static int defaultfont_edgeidx_105[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_106[] = {
+static const float defaultfont_coords_106[] = {
  0.013333f, -0.150000f,
  0.000000f, -0.180000f,
  0.007778f, -0.207778f,
@@ -10197,7 +10197,7 @@ static float defaultfont_coords_106[] = {
  0.288889f, 0.678889f,
  0.293333f, 0.702222f
 };
-static int defaultfont_faceidx_106[] = {
+static const int defaultfont_faceidx_106[] = {
  0, 2, 1,
  0, 3, 2,
  0, 4, 3,
@@ -10236,7 +10236,7 @@ static int defaultfont_faceidx_106[] = {
  -1
 };
 
-static int defaultfont_edgeidx_106[] = {
+static const int defaultfont_edgeidx_106[] = {
  22, 25, 
  25, 24, 
  24, 20, 
@@ -10282,7 +10282,7 @@ static int defaultfont_edgeidx_106[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_107[] = {
+static const float defaultfont_coords_107[] = {
  0.000000f, 0.692222f,
  0.033333f, 0.694444f,
  0.000000f, 0.710000f,
@@ -10338,7 +10338,7 @@ static float defaultfont_coords_107[] = {
  0.553333f, 0.000000f,
  0.553333f, 0.016667f
 };
-static int defaultfont_faceidx_107[] = {
+static const int defaultfont_faceidx_107[] = {
  0, 2, 1,
  2, 3, 1,
  2, 4, 3,
@@ -10394,7 +10394,7 @@ static int defaultfont_faceidx_107[] = {
  -1
 };
 
-static int defaultfont_edgeidx_107[] = {
+static const int defaultfont_edgeidx_107[] = {
  15, 17, 
  17, 16, 
  16, 7, 
@@ -10455,7 +10455,7 @@ static int defaultfont_edgeidx_107[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_108[] = {
+static const float defaultfont_coords_108[] = {
  0.000000f, 0.692222f,
  0.037778f, 0.694444f,
  0.000000f, 0.710000f,
@@ -10478,7 +10478,7 @@ static float defaultfont_coords_108[] = {
  0.264444f, 0.000000f,
  0.264444f, 0.016667f
 };
-static int defaultfont_faceidx_108[] = {
+static const int defaultfont_faceidx_108[] = {
  0, 2, 1,
  2, 3, 1,
  2, 4, 3,
@@ -10501,7 +10501,7 @@ static int defaultfont_faceidx_108[] = {
  -1
 };
 
-static int defaultfont_edgeidx_108[] = {
+static const int defaultfont_edgeidx_108[] = {
  13, 15, 
  15, 14, 
  14, 7, 
@@ -10529,7 +10529,7 @@ static int defaultfont_edgeidx_108[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_109[] = {
+static const float defaultfont_coords_109[] = {
  0.003333f, 0.442222f,
  0.038889f, 0.446667f,
  0.003333f, 0.461111f,
@@ -10607,7 +10607,7 @@ static float defaultfont_coords_109[] = {
  0.843333f, 0.000000f,
  0.843333f, 0.016667f
 };
-static int defaultfont_faceidx_109[] = {
+static const int defaultfont_faceidx_109[] = {
  0, 2, 1,
  2, 3, 1,
  2, 4, 3,
@@ -10685,7 +10685,7 @@ static int defaultfont_faceidx_109[] = {
  -1
 };
 
-static int defaultfont_edgeidx_109[] = {
+static const int defaultfont_edgeidx_109[] = {
  12, 14, 
  14, 13, 
  13, 6, 
@@ -10768,7 +10768,7 @@ static int defaultfont_edgeidx_109[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_110[] = {
+static const float defaultfont_coords_110[] = {
  0.000000f, 0.442222f,
  0.032222f, 0.446667f,
  0.000000f, 0.461111f,
@@ -10818,7 +10818,7 @@ static float defaultfont_coords_110[] = {
  0.521111f, 0.000000f,
  0.521111f, 0.016667f
 };
-static int defaultfont_faceidx_110[] = {
+static const int defaultfont_faceidx_110[] = {
  0, 2, 1,
  2, 3, 1,
  2, 4, 3,
@@ -10868,7 +10868,7 @@ static int defaultfont_faceidx_110[] = {
  -1
 };
 
-static int defaultfont_edgeidx_110[] = {
+static const int defaultfont_edgeidx_110[] = {
  12, 14, 
  14, 13, 
  13, 6, 
@@ -10923,7 +10923,7 @@ static int defaultfont_edgeidx_110[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_111[] = {
+static const float defaultfont_coords_111[] = {
  0.015556f, 0.351111f,
  0.000000f, 0.253333f,
  0.004444f, 0.198889f,
@@ -10976,7 +10976,7 @@ static float defaultfont_coords_111[] = {
  0.484444f, 0.310000f,
  0.490000f, 0.253333f
 };
-static int defaultfont_faceidx_111[] = {
+static const int defaultfont_faceidx_111[] = {
  0, 2, 1,
  0, 3, 2,
  0, 4, 3,
@@ -11031,7 +11031,7 @@ static int defaultfont_faceidx_111[] = {
  -1
 };
 
-static int defaultfont_edgeidx_111[] = {
+static const int defaultfont_edgeidx_111[] = {
  49, 50, 
  50, 48, 
  48, 45, 
@@ -11089,7 +11089,7 @@ static int defaultfont_edgeidx_111[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_112[] = {
+static const float defaultfont_coords_112[] = {
  0.004444f, 0.436667f,
  0.035556f, 0.437778f,
  0.004444f, 0.454444f,
@@ -11153,7 +11153,7 @@ static float defaultfont_coords_112[] = {
  0.512222f, 0.324444f,
  0.516667f, 0.272222f
 };
-static int defaultfont_faceidx_112[] = {
+static const int defaultfont_faceidx_112[] = {
  0, 2, 1,
  2, 3, 1,
  2, 4, 3,
@@ -11219,7 +11219,7 @@ static int defaultfont_faceidx_112[] = {
  -1
 };
 
-static int defaultfont_edgeidx_112[] = {
+static const int defaultfont_edgeidx_112[] = {
  14, 19, 
  19, 18, 
  18, 17, 
@@ -11288,7 +11288,7 @@ static int defaultfont_edgeidx_112[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_113[] = {
+static const float defaultfont_coords_113[] = {
  0.004444f, 0.291111f,
  0.000000f, 0.235556f,
  0.003333f, 0.176667f,
@@ -11346,7 +11346,7 @@ static float defaultfont_coords_113[] = {
  0.515556f, -0.241111f,
  0.515556f, -0.225556f
 };
-static int defaultfont_faceidx_113[] = {
+static const int defaultfont_faceidx_113[] = {
  0, 2, 1,
  0, 3, 2,
  0, 4, 3,
@@ -11405,7 +11405,7 @@ static int defaultfont_faceidx_113[] = {
  -1
 };
 
-static int defaultfont_edgeidx_113[] = {
+static const int defaultfont_edgeidx_113[] = {
  44, 50, 
  50, 49, 
  49, 47, 
@@ -11469,7 +11469,7 @@ static int defaultfont_edgeidx_113[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_114[] = {
+static const float defaultfont_coords_114[] = {
  0.002222f, 0.433333f,
  0.040000f, 0.437778f,
  0.002222f, 0.451111f,
@@ -11510,7 +11510,7 @@ static float defaultfont_coords_114[] = {
  0.362222f, 0.475556f,
  0.366667f, 0.451111f
 };
-static int defaultfont_faceidx_114[] = {
+static const int defaultfont_faceidx_114[] = {
  0, 2, 1,
  2, 3, 1,
  2, 4, 3,
@@ -11551,7 +11551,7 @@ static int defaultfont_faceidx_114[] = {
  -1
 };
 
-static int defaultfont_edgeidx_114[] = {
+static const int defaultfont_edgeidx_114[] = {
  14, 16, 
  16, 15, 
  15, 6, 
@@ -11597,7 +11597,7 @@ static int defaultfont_edgeidx_114[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_115[] = {
+static const float defaultfont_coords_115[] = {
  0.001111f, -0.004444f,
  0.015556f, -0.004444f,
  0.001111f, 0.168889f,
@@ -11651,7 +11651,7 @@ static float defaultfont_coords_115[] = {
  0.322222f, 0.175556f,
  0.330000f, 0.132222f
 };
-static int defaultfont_faceidx_115[] = {
+static const int defaultfont_faceidx_115[] = {
  0, 2, 1,
  2, 3, 1,
  3, 4, 1,
@@ -11705,7 +11705,7 @@ static int defaultfont_faceidx_115[] = {
  -1
 };
 
-static int defaultfont_edgeidx_115[] = {
+static const int defaultfont_edgeidx_115[] = {
  50, 51, 
  51, 49, 
  49, 17, 
@@ -11764,7 +11764,7 @@ static int defaultfont_edgeidx_115[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_116[] = {
+static const float defaultfont_coords_116[] = {
  0.063333f, 0.130000f,
  0.071111f, 0.060000f,
  0.063333f, 0.464444f,
@@ -11794,7 +11794,7 @@ static float defaultfont_coords_116[] = {
  0.281111f, 0.085556f,
  0.295556f, 0.073333f
 };
-static int defaultfont_faceidx_116[] = {
+static const int defaultfont_faceidx_116[] = {
  0, 2, 1,
  3, 5, 4,
  5, 6, 4,
@@ -11824,7 +11824,7 @@ static int defaultfont_faceidx_116[] = {
  -1
 };
 
-static int defaultfont_edgeidx_116[] = {
+static const int defaultfont_edgeidx_116[] = {
  26, 27, 
  27, 25, 
  25, 23, 
@@ -11859,7 +11859,7 @@ static int defaultfont_edgeidx_116[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_117[] = {
+static const float defaultfont_coords_117[] = {
  0.068889f, 0.133333f,
  0.072222f, 0.092222f,
  0.068889f, 0.413333f,
@@ -11902,7 +11902,7 @@ static float defaultfont_coords_117[] = {
  0.522222f, 0.040000f,
  0.522222f, 0.055556f
 };
-static int defaultfont_faceidx_117[] = {
+static const int defaultfont_faceidx_117[] = {
  0, 2, 1,
  3, 5, 4,
  1, 2, 6,
@@ -11945,7 +11945,7 @@ static int defaultfont_faceidx_117[] = {
  -1
 };
 
-static int defaultfont_edgeidx_117[] = {
+static const int defaultfont_edgeidx_117[] = {
  27, 24, 
  24, 21, 
  21, 19, 
@@ -11993,7 +11993,7 @@ static int defaultfont_edgeidx_117[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_118[] = {
+static const float defaultfont_coords_118[] = {
  0.000000f, 0.483333f,
  0.032222f, 0.474444f,
  0.000000f, 0.500000f,
@@ -12030,7 +12030,7 @@ static float defaultfont_coords_118[] = {
  0.508889f, 0.483333f,
  0.508889f, 0.500000f
 };
-static int defaultfont_faceidx_118[] = {
+static const int defaultfont_faceidx_118[] = {
  0, 2, 1,
  2, 3, 1,
  3, 4, 1,
@@ -12067,7 +12067,7 @@ static int defaultfont_faceidx_118[] = {
  -1
 };
 
-static int defaultfont_edgeidx_118[] = {
+static const int defaultfont_edgeidx_118[] = {
  29, 34, 
  34, 33, 
  33, 32, 
@@ -12109,7 +12109,7 @@ static int defaultfont_edgeidx_118[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_119[] = {
+static const float defaultfont_coords_119[] = {
  0.000000f, 0.483333f,
  0.031111f, 0.466667f,
  0.000000f, 0.500000f,
@@ -12166,7 +12166,7 @@ static float defaultfont_coords_119[] = {
  0.747778f, 0.483333f,
  0.747778f, 0.500000f
 };
-static int defaultfont_faceidx_119[] = {
+static const int defaultfont_faceidx_119[] = {
  0, 2, 1,
  2, 3, 1,
  3, 4, 1,
@@ -12223,7 +12223,7 @@ static int defaultfont_faceidx_119[] = {
  -1
 };
 
-static int defaultfont_edgeidx_119[] = {
+static const int defaultfont_edgeidx_119[] = {
  50, 54, 
  54, 53, 
  53, 52, 
@@ -12285,7 +12285,7 @@ static int defaultfont_edgeidx_119[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_120[] = {
+static const float defaultfont_coords_120[] = {
  0.037778f, 0.026667f,
  0.000000f, 0.016667f,
  0.000000f, 0.000000f,
@@ -12337,7 +12337,7 @@ static float defaultfont_coords_120[] = {
  0.513333f, 0.000000f,
  0.513333f, 0.016667f
 };
-static int defaultfont_faceidx_120[] = {
+static const int defaultfont_faceidx_120[] = {
  0, 2, 1,
  0, 3, 2,
  0, 4, 3,
@@ -12389,7 +12389,7 @@ static int defaultfont_faceidx_120[] = {
  -1
 };
 
-static int defaultfont_edgeidx_120[] = {
+static const int defaultfont_edgeidx_120[] = {
  6, 8, 
  8, 7, 
  7, 2, 
@@ -12446,7 +12446,7 @@ static int defaultfont_edgeidx_120[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_121[] = {
+static const float defaultfont_coords_121[] = {
  0.000000f, 0.484444f,
  0.027778f, 0.475556f,
  0.000000f, 0.500000f,
@@ -12494,7 +12494,7 @@ static float defaultfont_coords_121[] = {
  0.512222f, 0.483333f,
  0.512222f, 0.500000f
 };
-static int defaultfont_faceidx_121[] = {
+static const int defaultfont_faceidx_121[] = {
  0, 2, 1,
  2, 3, 1,
  3, 4, 1,
@@ -12542,7 +12542,7 @@ static int defaultfont_faceidx_121[] = {
  -1
 };
 
-static int defaultfont_edgeidx_121[] = {
+static const int defaultfont_edgeidx_121[] = {
  27, 33, 
  33, 32, 
  32, 31, 
@@ -12595,7 +12595,7 @@ static int defaultfont_edgeidx_121[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_122[] = {
+static const float defaultfont_coords_122[] = {
  0.295556f, 0.466667f,
  0.000000f, 0.016667f,
  0.118889f, 0.033333f,
@@ -12618,7 +12618,7 @@ static float defaultfont_coords_122[] = {
  0.414444f, 0.154444f,
  0.434444f, 0.150000f
 };
-static int defaultfont_faceidx_122[] = {
+static const int defaultfont_faceidx_122[] = {
  0, 2, 1,
  0, 3, 2,
  4, 6, 5,
@@ -12641,7 +12641,7 @@ static int defaultfont_faceidx_122[] = {
  -1
 };
 
-static int defaultfont_edgeidx_122[] = {
+static const int defaultfont_edgeidx_122[] = {
  19, 20, 
  20, 15, 
  15, 12, 
@@ -12669,7 +12669,7 @@ static int defaultfont_edgeidx_122[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_123[] = {
+static const float defaultfont_coords_123[] = {
  0.094444f, -0.045556f,
  0.096667f, -0.091111f,
  0.094444f, 0.151111f,
@@ -12714,7 +12714,7 @@ static float defaultfont_coords_123[] = {
  0.277778f, 0.743333f,
  0.277778f, 0.755556f
 };
-static int defaultfont_faceidx_123[] = {
+static const int defaultfont_faceidx_123[] = {
  0, 2, 1,
  3, 5, 4,
  6, 8, 7,
@@ -12759,7 +12759,7 @@ static int defaultfont_faceidx_123[] = {
  -1
 };
 
-static int defaultfont_edgeidx_123[] = {
+static const int defaultfont_edgeidx_123[] = {
  17, 19, 
  19, 18, 
  18, 16, 
@@ -12809,19 +12809,19 @@ static int defaultfont_edgeidx_123[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_124[] = {
+static const float defaultfont_coords_124[] = {
  0.000000f, -0.015556f,
  0.073333f, -0.015556f,
  0.000000f, 0.751111f,
  0.073333f, 0.751111f
 };
-static int defaultfont_faceidx_124[] = {
+static const int defaultfont_faceidx_124[] = {
  0, 2, 1,
  2, 3, 1,
  -1
 };
 
-static int defaultfont_edgeidx_124[] = {
+static const int defaultfont_edgeidx_124[] = {
  0, 2, 
  2, 3, 
  3, 1, 
@@ -12832,7 +12832,7 @@ static int defaultfont_edgeidx_124[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_125[] = {
+static const float defaultfont_coords_125[] = {
  0.101111f, 0.420000f,
  0.104444f, 0.366667f,
  0.101111f, 0.606667f,
@@ -12877,7 +12877,7 @@ static float defaultfont_coords_125[] = {
  0.230000f, 0.295556f,
  0.277778f, 0.277778f
 };
-static int defaultfont_faceidx_125[] = {
+static const int defaultfont_faceidx_125[] = {
  0, 2, 1,
  3, 5, 4,
  6, 8, 7,
@@ -12922,7 +12922,7 @@ static int defaultfont_faceidx_125[] = {
  -1
 };
 
-static int defaultfont_edgeidx_125[] = {
+static const int defaultfont_edgeidx_125[] = {
  27, 36, 
  36, 34, 
  34, 1, 
@@ -12972,7 +12972,7 @@ static int defaultfont_edgeidx_125[] = {
 
 /* -------------- */
 
-static float defaultfont_coords_126[] = {
+static const float defaultfont_coords_126[] = {
  0.050000f, 0.323333f,
  0.000000f, 0.258889f,
  0.040000f, 0.203333f,
@@ -12996,7 +12996,7 @@ static float defaultfont_coords_126[] = {
  0.473333f, 0.358889f,
  0.513333f, 0.303333f
 };
-static int defaultfont_faceidx_126[] = {
+static const int defaultfont_faceidx_126[] = {
  0, 2, 1,
  0, 3, 2,
  0, 4, 3,
@@ -13020,7 +13020,7 @@ static int defaultfont_faceidx_126[] = {
  -1
 };
 
-static int defaultfont_edgeidx_126[] = {
+static const int defaultfont_edgeidx_126[] = {
  20, 21, 
  21, 19, 
  19, 17, 

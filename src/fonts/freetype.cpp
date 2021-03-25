@@ -267,7 +267,7 @@ static FT_Library library;
    file names (in sorted order of priority), then a NULL pointer, then
    a new generic font name, etc.
 */
-static const char * fontfilenames[] = {
+static const char * const fontfilenames[] = {
   /* FIXME: different font _styles_ are just jumbled together below,
      and are not really supported. It will take some work to sort out
      that mess. 20030606 mortene. */
