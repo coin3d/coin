@@ -199,7 +199,7 @@ SoMarkerSet::findMaterialBinding(SoState * const state) const
   return binding;
 }
 
-static char marker_char_bitmaps[] =
+static const char marker_char_bitmaps[] =
 {
   // CROSS_5_5
   "         "
