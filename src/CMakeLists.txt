@@ -278,26 +278,15 @@ endif()
 # All non standard links must be created manually.
 if(COIN_BUILD_MAC_FRAMEWORK)
 
-# determine which subdirectory this file (header, resource) should be installed into.
-function(set_macosx_properties _removable_prefixes _install_prefix _source_files)
-  foreach(_file ${_source_files})
-    get_filename_component(_loc "${_file}" DIRECTORY)
-    foreach(_prefix ${_removable_prefixes})
-      string(REPLACE "${_prefix}" "" _loc "${_loc}")
-    endforeach()
-    set_source_files_properties(${_file} PROPERTIES MACOSX_PACKAGE_LOCATION ${_install_prefix}${_loc})
-  endforeach()
-endfunction()
-
 # ############################################################################
 # Add framework headers
 # ############################################################################
-  set_macosx_properties("${CMAKE_SOURCE_DIR}/include/Inventor;${CMAKE_BINARY_DIR}/include/Inventor"  "Headers" "${COMMON_HDRS}")
+  coin_set_macosx_properties("${CMAKE_SOURCE_DIR}/include/Inventor;${CMAKE_BINARY_DIR}/include/Inventor" "Headers" "${COMMON_HDRS}")
 
 # ############################################################################
 # Add framework data files
 # ############################################################################
-  set_macosx_properties("${CMAKE_SOURCE_DIR}/data;${CMAKE_BINARY_DIR}/data" "Resources" "${COMMON_RESOURCES}")
+  coin_set_macosx_properties("${CMAKE_SOURCE_DIR}/data;${CMAKE_BINARY_DIR}/data" "Resources" "${COMMON_RESOURCES}")
 
 # ############################################################################
 # Add framework documentation files
