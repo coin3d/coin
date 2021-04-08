@@ -114,7 +114,6 @@ public:
     delete normalvbo;
     delete texcoord0vbo;
     delete rgbavbo;
-    delete rgbavbo;
     delete tangentvbo;
 
     for (int i = 0; i < multitexvbo.getLength(); i++) {
