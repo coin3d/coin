@@ -54,8 +54,8 @@ public:
   // executable content
   virtual int getNumExecutables(void) const;
   virtual ScXMLExecutableElt * getExecutable(int idx) const;
-  virtual void addExecutable(ScXMLExecutableElt * exectable);
-  virtual void removeExecutable(ScXMLExecutableElt * exectable);
+  virtual void addExecutable(ScXMLExecutableElt * executable);
+  virtual void removeExecutable(ScXMLExecutableElt * executable);
   virtual void clearAllExecutables(void);
 
   virtual void copyContents(const ScXMLElt * rhs);

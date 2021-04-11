@@ -762,15 +762,15 @@ contin2:
 # search for file by name
 sub FindFile { #############################################################
     local( $filename ) = ( @_[0] );
-    local( $i, $file, $retur );
+    local( $i, $file, $return );
 
-    $retur = "";
+    $return = "";
     for ( $i = 0; $i < scalar( @incpath ); $i++ ) {
         $temp = $incpath[$i] . "/" . $filename;
         $temp =~ s/^\.\///g;
-        $retur = $temp if ( -f $temp && $retur eq "" );
+        $return = $temp if ( -f $temp && $return eq "" );
     }
-    $retur;
+    $return;
 }
 
 # returns true if file has changed
