@@ -87,7 +87,7 @@ Separator {
       Cylinder { }
    }
 
-   # (ROW 6) Test bondary conditions
+   # (ROW 6) Test boundary conditions
    Translation { translation 0 +4 0 }
    Separator {
       Cylinder { radius 0 }

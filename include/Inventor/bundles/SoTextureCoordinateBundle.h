@@ -73,7 +73,7 @@ private:
   const SoGLMultiTextureCoordinateElement *glElt;
   unsigned int flags;
 
-  // misc stuff for default texture coordinate mappping
+  // misc stuff for default texture coordinate mapping
   static const SbVec4f & defaultCB(void * userdata,
                                    const SbVec3f & point,
                                    const SbVec3f & normal);

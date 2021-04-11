@@ -13,7 +13,7 @@
 /***************************************************************************
  * HAVE_VRML97
  *
- * If you want to disable VRML97 suport in Coin, do not set this define.
+ * If you want to disable VRML97 support in Coin, do not set this define.
  * The reason to disable this is mostly to avoid compiling a lot of code
  * that causes the Coin library to grow considerably if you need a
  * particularly small version of Coin.
