@@ -680,8 +680,8 @@ SoVRMLAudioClipP::stopPlaying()
     before the sound figures out it should also stop playing,
     read() might try to open the next file (or reopen the
     existing file if loop==TRUE) and we might get an "echo-effect".
-    We should perhaps keep an internal isActive that is "allways"
-    equal to the external isActive, allthough this should
+    We should perhaps keep an internal isActive that is "always"
+    equal to the external isActive, although this should
     be synchronized, so read() can check it safely, and
     decide to not open a file if it is FALSE.
     Investigate this further.

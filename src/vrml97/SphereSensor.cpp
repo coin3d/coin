@@ -134,7 +134,7 @@
 /*!
   \var SoSFRotation SoVRMLSphereSensor::rotation_changed
 
-  An eventOut that is updated during interaction. Holds the differense
+  An eventOut that is updated during interaction. Holds the difference
   between the current rotation and the sensor rotation value.
 
 */

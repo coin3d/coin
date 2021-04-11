@@ -804,7 +804,7 @@ SoVRMLScriptP::initialize(void)
   }
 
   // FIXME: should scriptFields be set before or after the script has been
-  // executed? After script feels most correct from a languange independent
+  // executed? After script feels most correct from a language independent
   // viewpoint.  200507011 erikgors.
 
   // FIXME: is getName() a sensiable identificator for script? 20050719 erikgors.

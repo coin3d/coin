@@ -711,7 +711,7 @@ SoVRMLBackgroundP::buildGeometry(void)
         } 
         angles.append(angle);
       }
-      if (angles.getLength() < 3) // A 'sphere' must have atleast 3 faces
+      if (angles.getLength() < 3) // A 'sphere' must have at least 3 faces
         angles.append(angle);
 
     }

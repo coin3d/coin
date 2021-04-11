@@ -161,7 +161,7 @@ SoVRMLSwitch::SoVRMLSwitch(int choices)
   this->commonConstructor();
 }
 
-// commen constructor
+// common constructor
 void
 SoVRMLSwitch::commonConstructor(void)
 {

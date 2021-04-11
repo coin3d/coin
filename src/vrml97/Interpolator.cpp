@@ -102,7 +102,7 @@ SoVRMLInterpolator::SoVRMLInterpolator(void) // protected
   SO_VRMLNODE_ADD_EVENT_IN(set_fraction);
 
   // initialize set_fraction to some value, since if set_fraction is
-  // never set, we'll attempt to read an unitialized value when the
+  // never set, we'll attempt to read an uninitialized value when the
   // interpolator is destructed (all engines evaluates when
   // destructed)
   this->set_fraction.enableNotify(FALSE);

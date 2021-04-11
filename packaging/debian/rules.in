@@ -3,7 +3,7 @@
 # This file is public domain software, originally written by Joey Hess.
 #
 # This version is for a multibinary package. It also allows you to build any
-# of the binary packages independantly, via binary-<package> targets.
+# of the binary packages independently, via binary-<package> targets.
 
 # Uncomment this to turn on verbose mode. 
 #export DH_VERBOSE=1
@@ -72,11 +72,11 @@ binary-common:
 	dh_md5sums
 	dh_builddeb
 
-# Build architecture independant packages using the common target.
+# Build architecture independent packages using the common target.
 binary-indep: build install
 	$(MAKE) -f debian/rules binary-common DH_OPTIONS=-i
 
-# Build architecture dependant packages using the common target.
+# Build architecture dependent packages using the common target.
 binary-arch: build install
 	$(MAKE) -f debian/rules binary-common DH_OPTIONS=-a
 
