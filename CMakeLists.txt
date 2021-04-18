@@ -221,6 +221,7 @@ else()
 endif()
 
 set(CMAKE_THREAD_PREFER_PTHREAD 1)
+set(THREADS_PREFER_PTHREAD_FLAG 1)
 find_package(Threads)
 if(Threads_FOUND)
   set(HAVE_THREADS 1)
@@ -231,26 +232,22 @@ if(Threads_FOUND)
     set(USE_PTHREAD 1)
     set(COIN_THREADID_TYPE pthread_t)
   endif()
-  #include_directories("${THREADS_INCLUDE_DIRS}")
-  if (NOT TARGET Threads::Threads)
-    list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${THREADS_INCLUDE_DIRS})
-    list(APPEND COIN_TARGET_LINK_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
-  else()
-    list(APPEND COIN_TARGET_LINK_LIBRARIES Threads::Threads)
-  endif()
+  list(APPEND COIN_TARGET_LINK_LIBRARIES Threads::Threads)
+  #pthreads does not provide pkg-config file, therefore not added here
 endif()
 
 if(USE_EXTERNAL_EXPAT)
   find_package(EXPAT)
   if(EXPAT_FOUND)
     set(HAVE_EXPAT 1)
-    #include_directories("${EXPAT_INCLUDE_DIRS}")
-    if (NOT TARGET EXPAT::EXPAT)
-      list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${EXPAT_INCLUDE_DIRS})
-      list(APPEND COIN_TARGET_LINK_LIBRARIES ${EXPAT_LIBRARIES})
-    else()
-      list(APPEND COIN_TARGET_LINK_LIBRARIES EXPAT::EXPAT)
+    if(NOT TARGET EXPAT::EXPAT)
+      add_library(EXPAT::EXPAT UNKNOWN IMPORTED)
+      set_target_properties(EXPAT::EXPAT PROPERTIES
+        IMPORTED_LINK_INTERFACE_LANGUAGES "C"
+        IMPORTED_LOCATION "${EXPAT_LIBRARIES}"
+        INTERFACE_INCLUDE_DIRECTORIES "${EXPAT_INCLUDE_DIRS}")
     endif()
+    list(APPEND COIN_TARGET_LINK_LIBRARIES EXPAT::EXPAT)
   endif()
 else()
   if(NOT WIN32)
@@ -290,14 +287,19 @@ if(HAVE_SOUND)
     find_package(OpenAL)
     if(OpenAL_FOUND)
       set(HAVE_OPENAL 1)
-      #include_directories("${OPENAL_INCLUDE_DIRS}")
-      list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${OPENAL_INCLUDE_DIRS})
-      list(APPEND COIN_TARGET_LINK_LIBRARIES ${OPENAL_LIBRARY})
       # Checks specific OpenAL configurations
       set(CMAKE_REQUIRED_INCLUDES ${OPENGL_INCLUDE_DIR})
       check_include_file(AL/al.h HAVE_AL_AL_H)
       check_include_file(OpenAL/al.h HAVE_OPENAL_AL_H)
       set(CMAKE_REQUIRED_INCLUDES)
+      if(NOT TARGET OpenAL::OpenAL)
+        add_library(OpenAL::OpenAL UNKNOWN IMPORTED)
+        set_target_properties(OpenAL::OpenAL PROPERTIES
+          IMPORTED_LINK_INTERFACE_LANGUAGES "C"
+          IMPORTED_LOCATION "${OPENAL_LIBRARY}"
+          INTERFACE_INCLUDE_DIRECTORIES "${OPENAL_INCLUDE_DIR}")
+      endif()
+      list(APPEND COIN_TARGET_LINK_LIBRARIES OpenAL::OpenAL)
     endif()
   endif()
 endif()
@@ -306,13 +308,32 @@ if(NOT ZLIB_RUNTIME_LINKING)
   find_package(ZLIB)
   if(ZLIB_FOUND)
     set(HAVE_ZLIB 1)
-    #include_directories("${ZLIB_INCLUDE_DIRS}")
-    if (NOT TARGET ZLIB::ZLIB)
-      list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${ZLIB_INCLUDE_DIRS})
-      list(APPEND COIN_TARGET_LINK_LIBRARIES ${ZLIB_LIBRARIES})
-    else()
-      list(APPEND COIN_TARGET_LINK_LIBRARIES ZLIB::ZLIB)
+    if(NOT TARGET ZLIB::ZLIB)
+      add_library(ZLIB::ZLIB UNKNOWN IMPORTED)
+      set_target_properties(ZLIB::ZLIB PROPERTIES
+        IMPORTED_LINK_INTERFACE_LANGUAGES "C"
+        INTERFACE_INCLUDE_DIRECTORIES "${ZLIB_INCLUDE_DIRS}")
+
+      if(ZLIB_LIBRARY_RELEASE)
+        set_property(TARGET ZLIB::ZLIB APPEND PROPERTY
+          IMPORTED_CONFIGURATIONS RELEASE)
+        set_target_properties(ZLIB::ZLIB PROPERTIES
+          IMPORTED_LOCATION_RELEASE "${ZLIB_LIBRARY_RELEASE}")
+      endif()
+
+      if(ZLIB_LIBRARY_DEBUG)
+        set_property(TARGET ZLIB::ZLIB APPEND PROPERTY
+          IMPORTED_CONFIGURATIONS DEBUG)
+        set_target_properties(ZLIB::ZLIB PROPERTIES
+          IMPORTED_LOCATION_DEBUG "${ZLIB_LIBRARY_DEBUG}")
+      endif()
+
+      if(NOT ZLIB_LIBRARY_RELEASE AND NOT ZLIB_LIBRARY_DEBUG)
+        set_property(TARGET ZLIB::ZLIB APPEND PROPERTY
+          IMPORTED_LOCATION "${ZLIB_LIBRARY}")
+      endif()
     endif()
+    list(APPEND COIN_TARGET_LINK_LIBRARIES ZLIB::ZLIB)
   endif()
 endif()
 
@@ -320,13 +341,32 @@ if(NOT LIBBZIP2_RUNTIME_LINKING)
   find_package(BZip2)
   if(BZip2_FOUND)
     set(HAVE_BZIP2 1)
-    #include_directories("${BZIP2_INCLUDE_DIRS}")
-    if (NOT TARGET BZip2::BZip2)
-      list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${BZIP2_INCLUDE_DIRS})
-      list(APPEND COIN_TARGET_LINK_LIBRARIES ${BZIP2_LIBRARIES})
-    else()
-      list(APPEND COIN_TARGET_LINK_LIBRARIES BZip2::BZip2)
+    if(NOT TARGET BZip2::BZip2)
+      add_library(BZip2::BZip2 UNKNOWN IMPORTED)
+      set_target_properties(BZip2::BZip2 PROPERTIES
+        IMPORTED_LINK_INTERFACE_LANGUAGES "C"
+        INTERFACE_INCLUDE_DIRECTORIES "${BZIP2_INCLUDE_DIRS}")
+
+      if(BZIP2_LIBRARY_RELEASE)
+        set_property(TARGET BZip2::BZip2 APPEND PROPERTY
+          IMPORTED_CONFIGURATIONS RELEASE)
+        set_target_properties(BZip2::BZip2 PROPERTIES
+          IMPORTED_LOCATION_RELEASE "${BZIP2_LIBRARY_RELEASE}")
+      endif()
+
+      if(BZIP2_LIBRARY_DEBUG)
+        set_property(TARGET BZip2::BZip2 APPEND PROPERTY
+          IMPORTED_CONFIGURATIONS DEBUG)
+        set_target_properties(BZip2::BZip2 PROPERTIES
+          IMPORTED_LOCATION_DEBUG "${BZIP2_LIBRARY_DEBUG}")
+      endif()
+
+      if(NOT BZIP2_LIBRARY_RELEASE AND NOT BZIP2_LIBRARY_DEBUG)
+        set_property(TARGET BZip2::BZip2 APPEND PROPERTY
+          IMPORTED_LOCATION "${BZIP2_LIBRARY}")
+      endif()
     endif()
+    list(APPEND COIN_TARGET_LINK_LIBRARIES BZip2::BZip2)
   endif()
 endif()
 
@@ -334,25 +374,49 @@ if(NOT FREETYPE_RUNTIME_LINKING)
   find_package(Freetype)
   if(Freetype_FOUND)
     set(HAVE_FREETYPE 1)
-    #include_directories("${FREETYPE_INCLUDE_DIRS}")
-    if (NOT TARGET Freetype::Freetype)
-      list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${FREETYPE_INCLUDE_DIRS})
-      list(APPEND COIN_TARGET_LINK_LIBRARIES ${FREETYPE_LIBRARIES})
-    else()
-      list(APPEND COIN_TARGET_LINK_LIBRARIES Freetype::Freetype)
+    if(NOT TARGET Freetype::Freetype)
+      add_library(Freetype::Freetype UNKNOWN IMPORTED)
+      set_target_properties(Freetype::Freetype PROPERTIES
+        IMPORTED_LINK_INTERFACE_LANGUAGES "C"
+        INTERFACE_INCLUDE_DIRECTORIES "${FREETYPE_INCLUDE_DIRS}")
+
+      if(FREETYPE_LIBRARY_RELEASE)
+        set_property(TARGET Freetype::Freetype APPEND PROPERTY
+          IMPORTED_CONFIGURATIONS RELEASE)
+        set_target_properties(Freetype::Freetype PROPERTIES
+          IMPORTED_LOCATION_RELEASE "${FREETYPE_LIBRARY_RELEASE}")
+      endif()
+
+      if(FREETYPE_LIBRARY_DEBUG)
+        set_property(TARGET Freetype::Freetype APPEND PROPERTY
+          IMPORTED_CONFIGURATIONS DEBUG)
+        set_target_properties(Freetype::Freetype PROPERTIES
+          IMPORTED_LOCATION_DEBUG "${FREETYPE_LIBRARY_DEBUG}")
+      endif()
+
+      if(NOT FREETYPE_LIBRARY_RELEASE AND NOT FREETYPE_LIBRARY_DEBUG)
+        set_target_properties(Freetype::Freetype PROPERTIES
+          IMPORTED_LOCATION "${FREETYPE_LIBRARY}")
+      endif()
     endif()
     set(HAVE_FREETYPE_H 1)
+    list(APPEND COIN_TARGET_LINK_LIBRARIES Freetype::Freetype)
   endif()
 endif()
 
 if(NOT FONTCONFIG_RUNTIME_LINKING)
   find_package(Fontconfig)
-  if(FONTCONFIG_FOUND)
+  if(Fontconfig_FOUND)
     set(HAVE_FONTCONFIG 1)
-    #include_directories("${FONTCONFIG_INCLUDE_DIR}")
-    list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${FONTCONFIG_INCLUDE_DIR})
-    list(APPEND COIN_TARGET_LINK_LIBRARIES ${FONTCONFIG_LIBRARY})
-    set(HAVE_FONTCONFIG_H 1)
+    if(NOT TARGET Fontconfig::Fontconfig)
+      add_library(Fontconfig::Fontconfig UNKNOWN IMPORTED)
+      set_target_properties(Fontconfig::Fontconfig PROPERTIES
+        IMPORTED_LOCATION "${FONTCONFIG_LIBRARIES}"
+        INTERFACE_COMPILE_OPTIONS "${FONTCONFIG_COMPILE_OPTIONS}"
+        INTERFACE_INCLUDE_DIRECTORIES "${FONTCONFIG_INCLUDE_DIR}"
+      )
+    endif()
+    list(APPEND COIN_TARGET_LINK_LIBRARIES Fontconfig::Fontconfig)
   endif()
 endif()
 
@@ -361,10 +425,15 @@ if(HAVE_VRML97 AND COIN_HAVE_JAVASCRIPT)
     find_package(SpiderMonkey)
     if(SPIDERMONKEY_FOUND)
       set(HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING 1)
-      #include_directories("${SPIDERMONKEY_INCLUDE_DIRS}")
-      list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${SPIDERMONKEY_INCLUDE_DIRS})
-      list(APPEND COIN_TARGET_LINK_LIBRARIES ${SPIDERMONKEY_LIBRARIES})
       set(HAVE_SPIDERMONKEY_H 1)
+      if(NOT TARGET SpiderMonkey::SpiderMonkey)
+        add_library(SpiderMonkey::SpiderMonkey UNKNOWN IMPORTED)
+        set_target_properties(SpiderMonkey::SpiderMonkey PROPERTIES
+          IMPORTED_LOCATION "${SPIDERMONKEY_LIBRARIES}"
+          INTERFACE_INCLUDE_DIRECTORIES "${SPIDERMONKEY_INCLUDE_DIRS}"
+        )
+      endif()
+      list(APPEND COIN_TARGET_LINK_LIBRARIES SpiderMonkey::SpiderMonkey)
     endif()
   endif()
 endif()
