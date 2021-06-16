@@ -239,14 +239,18 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   if (this->coordIndex.getNum() < 2) return;
   SoState * state = action->getState();
 
-  if (!this->shouldGLRender(action)) return;
-
   SbBool didpush = FALSE;
 
   if (this->vertexProperty.getValue()) {
     state->push();
     didpush = TRUE;
     this->vertexProperty.getValue()->GLRender(action);
+  }
+
+  if (!this->shouldGLRender(action)) {
+    if (didpush)
+      state->pop();
+    return;
   }
 
   SoMaterialBundle mb(action);
