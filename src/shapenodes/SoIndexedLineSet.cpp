@@ -144,13 +144,55 @@ SoIndexedLineSet::initClass(void)
 }
 
 //
+// translates current material binding into the internal Binding enum
+//
+SoIndexedLineSet::Binding
+SoIndexedLineSet::findMaterialBinding(SoState * state)
+{
+  Binding binding = OVERALL;
+  SoMaterialBindingElement::Binding matbind =
+    (SoMaterialBindingElement::Binding) SoMaterialBindingElement::get(state);
+
+  switch (matbind) {
+  case SoMaterialBindingElement::OVERALL:
+    binding = OVERALL;
+    break;
+  case SoMaterialBindingElement::PER_VERTEX:
+    binding = PER_VERTEX;
+    break;
+  case SoMaterialBindingElement::PER_VERTEX_INDEXED:
+    binding = PER_VERTEX_INDEXED;
+    break;
+  case SoMaterialBindingElement::PER_PART:
+    binding = PER_SEGMENT;
+    break;
+  case SoMaterialBindingElement::PER_PART_INDEXED:
+    binding = PER_SEGMENT_INDEXED;
+    break;
+  case SoMaterialBindingElement::PER_FACE:
+    binding = PER_LINE;
+    break;
+  case SoMaterialBindingElement::PER_FACE_INDEXED:
+    binding = PER_LINE_INDEXED;
+    break;
+  default:
+#if COIN_DEBUG
+    SoDebugError::postWarning("SoIndexedLineSet::findMaterialBinding",
+                              "unknown material binding setting");
+#endif // COIN_DEBUG
+    break;
+  }
+  return binding;
+}
+
+
+//
 // translates current normal binding into the internal Binding enum
 //
 SoIndexedLineSet::Binding
-SoIndexedLineSet::findNormalBinding(SoState * state)
+SoIndexedLineSet::findNormalBinding(SoState* state)
 {
   Binding binding = PER_VERTEX_INDEXED;
-
   SoNormalBindingElement::Binding normbind =
     (SoNormalBindingElement::Binding) SoNormalBindingElement::get(state);
 
@@ -183,51 +225,6 @@ SoIndexedLineSet::findNormalBinding(SoState * state)
 #endif // COIN_DEBUG
     break;
   }
-
-  return binding;
-}
-
-//
-// translates current material binding into the internal Binding enum
-//
-SoIndexedLineSet::Binding
-SoIndexedLineSet::findMaterialBinding(SoState * state)
-{
-  Binding binding = OVERALL;
-
-  SoMaterialBindingElement::Binding matbind =
-    (SoMaterialBindingElement::Binding) SoMaterialBindingElement::get(state);
-
-  switch (matbind) {
-  case SoMaterialBindingElement::OVERALL:
-    binding = OVERALL;
-    break;
-  case SoMaterialBindingElement::PER_VERTEX:
-    binding = PER_VERTEX;
-    break;
-  case SoMaterialBindingElement::PER_VERTEX_INDEXED:
-    binding = PER_VERTEX_INDEXED;
-    break;
-  case SoMaterialBindingElement::PER_PART:
-    binding = PER_SEGMENT;
-    break;
-  case SoMaterialBindingElement::PER_PART_INDEXED:
-    binding = PER_SEGMENT_INDEXED;
-    break;
-  case SoMaterialBindingElement::PER_FACE:
-    binding = PER_LINE;
-    break;
-  case SoMaterialBindingElement::PER_FACE_INDEXED:
-    binding = PER_LINE_INDEXED;
-    break;
-  default:
-#if COIN_DEBUG
-    SoDebugError::postWarning("SoIndexedFaceSet::findNormalBinding",
-                              "unknown normal binding setting");
-#endif // COIN_DEBUG
-    break;
-  }
-
   return binding;
 }
 
@@ -239,23 +236,22 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   if (this->coordIndex.getNum() < 2) return;
   SoState * state = action->getState();
 
-  SbBool didpush = FALSE;
+  SbBool hasvp = FALSE;
 
   if (this->vertexProperty.getValue()) {
+    hasvp = TRUE;
     state->push();
-    didpush = TRUE;
     this->vertexProperty.getValue()->GLRender(action);
   }
 
   if (!this->shouldGLRender(action)) {
-    if (didpush)
+    if (hasvp)
       state->pop();
     return;
   }
 
-  SoMaterialBundle mb(action);
-  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
-  SbBool doTextures = tb.needCoordinates();
+  Binding mbind = this->findMaterialBinding(state);
+  Binding nbind = this->findNormalBinding(state);
 
   const SoCoordinateElement * coords;
   const SbVec3f * normals;
@@ -264,25 +260,27 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   const int32_t * nindices;
   const int32_t * tindices;
   const int32_t * mindices;
+  SbBool doTextures;
   SbBool normalCacheUsed;
 
+  SoMaterialBundle mb(action);
+
+  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+  doTextures = tb.needCoordinates();
   SbBool sendNormals = !mb.isColorOnly() || tb.isFunction();
 
-  getVertexData(state, coords, normals, cindices,
-                nindices, tindices, mindices, numindices,
-                sendNormals, normalCacheUsed);
+  this->getVertexData(state, coords, normals, cindices,
+                      nindices, tindices, mindices, numindices,
+                      sendNormals, normalCacheUsed);
 
   if (sendNormals && normals == NULL) {
-    if (!didpush) {
+    if (!hasvp) {
       state->push();
-      didpush = TRUE;
+      hasvp = TRUE;
     }
     sendNormals = FALSE;
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
   }
-
-  Binding mbind = this->findMaterialBinding(state);
-  Binding nbind = this->findNormalBinding(state);
 
   if (this->getNodeType() == SoNode::VRML1) {
     // For VRML1, PER_VERTEX means per vertex in shape, not PER_VERTEX
@@ -331,6 +329,7 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   const SoGLVBOElement * vboelem = SoGLVBOElement::getInstance(state);
   SoVBO * colorvbo = NULL;
 
+  SbBool didrenderasvbo = FALSE;
   if (dova && (mbind != OVERALL)) {
     dova = FALSE;
     if ((mbind == PER_VERTEX_INDEXED) && ((mindices == cindices) || (mindices == NULL))) {
@@ -346,7 +345,6 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
       }
     }
   }
-  SbBool didrenderasvbo = FALSE;
   if (dova) {
     SbBool dovbo = this->startVertexArray(action,
                                           coords,
@@ -354,10 +352,10 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
                                           doTextures,
                                           mbind != OVERALL);
     didrenderasvbo = dovbo;
+
     LOCK_VAINDEXER(this);
     if (PRIVATE(this)->vaindexer == NULL) {
       SoVertexArrayIndexer * indexer = new SoVertexArrayIndexer;
-
       int i = 0;
       while (i < numindices) {
         int cnt = 0;
@@ -409,7 +407,7 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
                         drawPoints ? 1 : 0);
   }
 
-  if (didpush) {
+  if (hasvp) {
     state->pop();
   }
   // send approx number of lines for autocache handling
