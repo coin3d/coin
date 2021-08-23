@@ -6,6 +6,6 @@ Building instructions:
 
     cd <source path of example>
     mkdir build && cd build
-    cmake -DQt5_DIR=<path of Qt5> -DCoin_DIR=<path of Coin3d lib> -DSoQt_DIR=<path of SoQt lib> ..
+    cmake -DQt5_DIR=<Qt5 path> -DCoin_DIR=<Coin3d path> -DSoQt_DIR=<SoQt path> ..
     cmake --build .
 
