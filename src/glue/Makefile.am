@@ -3,7 +3,7 @@ RegularSources = \
 	spidermonkey.cpp \
 	dl.cpp \
 	gl.cpp \
-	gl_wgl.cpp gl_agl.cpp gl_cgl.cpp gl_glx.cpp \
+	gl_wgl.cpp gl_agl.cpp gl_cgl.cpp gl_egl.cpp gl_glx.cpp \
 	GLUWrapper.cpp \
 	simage_wrapper.cpp \
 	openal_wrapper.cpp \
@@ -26,6 +26,7 @@ PrivateHeaders = \
 	freetype.h \
 	gl_agl.h \
 	gl_cgl.h \
+	gl_egl.h \
 	gl_glx.h \
 	gl_wgl.h \
 	glp.h \

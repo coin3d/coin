@@ -7,6 +7,7 @@ set(COIN_GLUE_FILES
 	gl_wgl.cpp
 	gl_agl.cpp
 	gl_cgl.cpp
+	gl_egl.cpp
 	gl_glx.cpp
 	GLUWrapper.cpp
 	simage_wrapper.cpp
@@ -29,6 +30,8 @@ set(COIN_GLUE_INTERNAL_FILES
 	gl_agl.cpp
 	gl_cgl.h
 	gl_cgl.cpp
+	gl_egl.h
+	gl_egl.cpp
 	gl_glx.h
 	gl_glx.cpp
 	GLUWrapper.h

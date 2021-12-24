@@ -124,6 +124,9 @@
 /* define if you have CGL OpenGL bindings */
 /* #undef HAVE_CGL */
 
+/* define if you have EGL bindings */
+/* #undef HAVE_EGL */
+
 /* The CPP compiler has a variable containing the current function name */
 /* #undef HAVE_CPP_COMPILER_FUNCTION_NAME_VAR */
 
