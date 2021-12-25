@@ -11501,7 +11501,7 @@ fi
 
 AC_DEFUN([SIM_AC_HAVE_EGL_IFELSE], [
 sim_ac_save_libs=$LIBS
-sim_ac_egl_libs="-lEGL -lGLESv2"
+sim_ac_egl_libs="-lEGL"
 LIBS="$LIBS $sim_ac_egl_libs"
 
 AC_CACHE_CHECK(

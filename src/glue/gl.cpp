@@ -200,12 +200,12 @@
 #error More than one of HAVE_WGL, HAVE_GLX , HAVE_EGL, and HAVE_AGL|HAVE_CGL set simultaneously!
 #endif
 
-#if defined(HAVE_GLX) && (defined(HAVE_EGL) || defined(HAVE_AGL) || defined(HAVE_CGL))
+#if defined(HAVE_EGL) && (defined(HAVE_GLX) || defined(HAVE_AGL) || defined(HAVE_CGL))
 #error More than one of HAVE_WGL, HAVE_GLX, HAVE_EGL and HAVE_AGL|HAVE_CGL set simultaneously!
 #endif
 
-#if defined(HAVE_EGL) && (defined(HAVE_AGL) || defined(HAVE_CGL))
-#error More than one of HAVE_WGL, HAVE_GLX, HAVE_EGL and HAVE_AGL|HAVE_CGL set simultaneously!
+#if defined(HAVE_GLX) && (defined(HAVE_AGL) || defined(HAVE_CGL))
+#error More than one of HAVE_WGL, HAVE_GLX and HAVE_AGL|HAVE_CGL set simultaneously!
 #endif
 
 // Define HAVE_NOGL if no platform GL binding exists

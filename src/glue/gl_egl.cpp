@@ -110,7 +110,7 @@ typedef void * EGLPbuffer;
 struct eglglue_contextdata;
 
 #define CASE_STR( value ) case value: return #value;
-const char* eglGetErrorString( EGLint error )
+const char* eglErrorString( EGLint error )
 {
     switch( error )
     {
@@ -135,12 +135,12 @@ const char* eglGetErrorString( EGLint error )
 #undef CASE_STR
 
 struct eglglue_contextdata {
-  EGLDisplay * display;
+  EGLDisplay display;
   EGLConfig config;
-  EGLContext eglcontext;
-  EGLSurface eglpbuffer;
+  EGLContext context;
+  EGLSurface surface;
   EGLContext storedcontext;
-  EGLSurface storedpbuffer;
+  EGLSurface storedsurface;
   unsigned int width;
   unsigned int height;
 };
@@ -177,7 +177,7 @@ eglglue_context_create_offscreen(unsigned int width, unsigned int height)
 {
   struct eglglue_contextdata * ctx;
   EGLint format;
-  EGLint numConfig;
+  EGLint numConfigs;
   EGLConfig config;
   EGLint attrib[] = {
     EGL_RENDERABLE_TYPE, EGL_OPENGL_BIT,
@@ -194,8 +194,8 @@ eglglue_context_create_offscreen(unsigned int width, unsigned int height)
   EGLint surface_attrib[] = {
     EGL_TEXTURE_FORMAT, EGL_TEXTURE_RGBA,
     EGL_TEXTURE_TARGET, EGL_TEXTURE_2D,
-    EGL_WIDTH, ctx->width,
-    EGL_HEIGHT, ctx->height,
+    EGL_WIDTH, (EGLint) ctx->width,
+    EGL_HEIGHT, (EGLint) ctx->height,
     EGL_NONE
   };
 
@@ -217,7 +217,7 @@ eglglue_context_create_offscreen(unsigned int width, unsigned int height)
     cc_debugerror_post("eglglue_context_create_offscreen",
                        "Display not found.");
     eglglue_contextdata_cleanup(ctx);
-    return FALSE;
+    return NULL;
   }
 
   if (eglInitialize(ctx->display, NULL, NULL) == EGL_FALSE) {
@@ -225,7 +225,7 @@ eglglue_context_create_offscreen(unsigned int width, unsigned int height)
                        "Couldn't initialize EGL. %s",
                         eglErrorString(eglGetError()));
     eglglue_contextdata_cleanup(ctx);
-    return FALSE;
+    return NULL;
   }
 
   const char * env = coin_getenv("COIN_CGLGLUE_NO_PBUFFERS");
@@ -237,7 +237,7 @@ eglglue_context_create_offscreen(unsigned int width, unsigned int height)
     }
   }
 
-  eglChooseConfig(ctx->display, attribs, &config, 1, &numConfigs);
+  eglChooseConfig(ctx->display, attrib, &config, 1, &numConfigs);
   if (numConfigs == 0) {
     if (attrib[3] == EGL_PBUFFER_BIT) {
       if (coin_glglue_debug()) {
@@ -246,7 +246,7 @@ eglglue_context_create_offscreen(unsigned int width, unsigned int height)
                                "by the OpenGL driver. Try software rendering.");
       }
       attrib[3] = EGL_PIXMAP_BIT;
-      eglChooseConfig(ctx->display, attribs, &config, 1, &numConfigs);
+      eglChooseConfig(ctx->display, attrib, &config, 1, &numConfigs);
     }
   }
   if (numConfigs == 0) {
@@ -254,11 +254,11 @@ eglglue_context_create_offscreen(unsigned int width, unsigned int height)
                        "No matching EGL config. %s",
                        eglErrorString(eglGetError()));
     eglglue_contextdata_cleanup(ctx);
-    return FALSE;
+    return NULL;
   }
 
   if (attrib[3] == EGL_PBUFFER_BIT) {
-    ctx->surface = eglCreatePbufferSurface(ctx->display, config, 0, surface_attrib);
+    ctx->surface = eglCreatePbufferSurface(ctx->display, config, surface_attrib);
   } else {
     ctx->surface = eglCreatePixmapSurface(ctx->display, config, 0, surface_attrib);
   }
@@ -267,7 +267,7 @@ eglglue_context_create_offscreen(unsigned int width, unsigned int height)
                        "Couldn't create EGL surface. %s",
                        eglErrorString(eglGetError()));
     eglglue_contextdata_cleanup(ctx);
-    return FALSE;
+    return NULL;
   }
 
   ctx->context = eglCreateContext(ctx->display, config, EGL_NO_CONTEXT, NULL);
@@ -277,7 +277,7 @@ eglglue_context_create_offscreen(unsigned int width, unsigned int height)
                        "Couldn't create EGL context. %s",
                        eglErrorString(eglGetError()));
     eglglue_contextdata_cleanup(ctx);
-    return FALSE;
+    return NULL;
   }
 
   if (coin_glglue_debug()) {
@@ -286,7 +286,7 @@ eglglue_context_create_offscreen(unsigned int width, unsigned int height)
                            attrib[3] == EGL_PBUFFER_BIT ? "pBuffer" : "software",
                            ctx->context);
   }
-  return TRUE;
+  return ctx;
 }
 
 SbBool
@@ -371,7 +371,7 @@ SbBool
 eglglue_context_pbuffer_is_bound(void * ctx)
 {
   struct eglglue_contextdata * context = (struct eglglue_contextdata *)ctx;
-  GLInt buffer = EGL_NONE;
+  GLint buffer = EGL_NONE;
 
   if(eglQueryContext(context->display, context->context, EGL_RENDER_BUFFER, &buffer) == EGL_FALSE) {
     cc_debugerror_post("eglglue_context_pbuffer_is_bound()"
