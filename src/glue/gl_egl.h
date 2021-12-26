@@ -37,14 +37,15 @@
 #error this is a private header file
 #endif
 
-#include <Inventor/SbBasic.h> // SbBool
+#include <Inventor/C/glue/gl.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
+void eglglue_init(cc_glglue * w);
 
-void * eglglue_getprocaddress(const char * fname);
+void * eglglue_getprocaddress(const cc_glglue * w, const char * fname);
 void * eglglue_context_create_offscreen(unsigned int width,
                                         unsigned int height);
 SbBool eglglue_context_make_current(void * ctx);

@@ -60,7 +60,7 @@
 
 #ifndef HAVE_EGL
 
-void * eglglue_getprocaddress(const char * fname)
+void * eglglue_getprocaddress(const cc_glglue * glue_in, const char * fname)
 {
   assert(FALSE); return NULL;
 }
@@ -96,17 +96,6 @@ SbBool eglglue_context_pbuffer_max(void * ctx, unsigned int * lims)
 
 #include <EGL/egl.h>
 
-#ifndef HAVE_EGL_PBUFFER 
-
-/* 
- * pBuffer functions are picked up at runtime, so the only thing
- * we need from the EGL headers is the EGLPBuffer type, which is
- * void* anyways...  
- */
-typedef void * EGLPbuffer;  
-
-#endif /* !HAVE_EGL_PBUFFER */
-
 struct eglglue_contextdata;
 
 #define CASE_STR( value ) case value: return #value;
@@ -129,6 +118,16 @@ const char* eglErrorString( EGLint error )
     CASE_STR( EGL_BAD_NATIVE_PIXMAP   )
     CASE_STR( EGL_BAD_NATIVE_WINDOW   )
     CASE_STR( EGL_CONTEXT_LOST        )
+    default: return "Unknown";
+    }
+}
+const char* eglAPIString( EGLenum api )
+{
+    switch( api )
+    {
+    CASE_STR( EGL_OPENGL_API          )
+    CASE_STR( EGL_OPENGL_ES_API          )
+    CASE_STR( EGL_OPENVG_API          )
     default: return "Unknown";
     }
 }
@@ -159,6 +158,65 @@ eglglue_contextdata_init(unsigned int width, unsigned int height)
   ctx->width = width;
   ctx->height = height;
   return ctx;
+}
+
+void
+eglglue_init(cc_glglue * w)
+{
+  EGLDisplay display;
+  w->glx.isdirect = 1;
+  w->glx.serverversion = NULL;
+  w->glx.servervendor = NULL;
+  w->glx.serverextensions = NULL;
+  w->glx.clientversion = NULL;
+  w->glx.clientvendor = NULL;
+  w->glx.clientextensions = NULL;
+  w->glx.glxextensions = NULL;
+
+  w->glx.glXGetCurrentDisplay = (COIN_PFNGLXGETCURRENTDISPLAYPROC)eglglue_getprocaddress(w, "eglGetCurrentDisplay");
+
+  if (eglBindAPI(EGL_OPENGL_API) == EGL_FALSE) {
+    cc_debugerror_post("eglglue_init",
+                       "eglBindAPI(EGL_OPENGL_API) failed. %s",
+                       eglErrorString(eglGetError()));
+    return;
+  }
+
+  display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+  if (display == EGL_NO_DISPLAY) {
+    cc_debugerror_post("eglglue_init",
+                       "Display not found.");
+    return;
+  }
+
+  if (eglInitialize(display, &w->glx.version.major, &w->glx.version.minor) == EGL_FALSE) {
+    cc_debugerror_post("eglglue_init",
+                       "Couldn't initialize EGL. %s",
+                        eglErrorString(eglGetError()));
+    return;
+  }
+
+  if (coin_glglue_debug()) {
+    cc_debugerror_postinfo("eglglue_init",
+                           "EGL version: %d.%d",
+                            w->glx.version.major,
+                            w->glx.version.minor);
+    cc_debugerror_postinfo("eglglue_init",
+                           "eglQueryString(EGL_VERSION)=='%s'",
+                            eglQueryString(display, EGL_VERSION));
+    cc_debugerror_postinfo("eglglue_init",
+                           "eglQueryString(EGL_VENDOR)=='%s'",
+                            eglQueryString(display, EGL_VENDOR));
+    cc_debugerror_postinfo("eglglue_init",
+                           "eglQueryString(EGL_CLIENT_APIS)=='%s'",
+                            eglQueryString(display, EGL_CLIENT_APIS));
+    cc_debugerror_postinfo("eglglue_init",
+                           "eglQueryAPI()=='%s'",
+                           eglAPIString(eglQueryAPI()));
+    cc_debugerror_postinfo("eglglue_init",
+                           "eglQueryString(EGL_EXTENSIONS)=='%s'",
+                            eglQueryString(display, EGL_EXTENSIONS));
+  }
 }
 
 static void
@@ -212,23 +270,21 @@ eglglue_context_create_offscreen(unsigned int width, unsigned int height)
                            "Creating offscreen context.");
   }
 
+  if (eglBindAPI(EGL_OPENGL_API) == EGL_FALSE) {
+    cc_debugerror_post("eglglue_context_create_offscreen",
+                       "eglBindAPI(EGL_OPENGL_API) failed. %s",
+                       eglErrorString(eglGetError()));
+    return NULL;
+  }
+
   ctx->display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
   if (ctx->display == EGL_NO_DISPLAY) {
     cc_debugerror_post("eglglue_context_create_offscreen",
                        "Display not found.");
-    eglglue_contextdata_cleanup(ctx);
     return NULL;
   }
 
-  if (eglInitialize(ctx->display, NULL, NULL) == EGL_FALSE) {
-    cc_debugerror_post("eglglue_context_create_offscreen",
-                       "Couldn't initialize EGL. %s",
-                        eglErrorString(eglGetError()));
-    eglglue_contextdata_cleanup(ctx);
-    return NULL;
-  }
-
-  const char * env = coin_getenv("COIN_CGLGLUE_NO_PBUFFERS");
+  const char * env = coin_getenv("COIN_EGLGLUE_NO_PBUFFERS");
   if (env && atoi(env) > 0) {
     attrib[3] = EGL_PIXMAP_BIT;
     if (coin_glglue_debug()) {
@@ -414,7 +470,7 @@ eglglue_context_pbuffer_max(void * ctx, unsigned int * lims)
 }
 
 void *
-eglglue_getprocaddress(const char * fname)
+eglglue_getprocaddress(const cc_glglue * glue_in, const char * fname)
 {
   return (void *)eglGetProcAddress(fname);
 }
