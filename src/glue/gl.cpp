@@ -594,7 +594,7 @@ cc_glglue_getprocaddress(const cc_glglue * glue, const char * symname)
   ptr = coin_wgl_getprocaddress(glue, symname);
   if (ptr) goto returnpoint;
 
-  ptr = eglglue_getprocaddress(symname);
+  ptr = eglglue_getprocaddress(glue, symname);
   if (ptr) goto returnpoint;
 
   ptr = glxglue_getprocaddress(glue, symname);
@@ -2293,7 +2293,11 @@ cc_glglue_instance(int contextid)
     assert(glGetError() == GL_NO_ERROR && "GL error when calling glGetString() -- no current GL context?");
 
     glglue_set_glVersion(gi);
+#ifdef HAVE_GLX
     glxglue_init(gi);
+#elif defined(HAVE_EGL)
+    eglglue_init(gi);
+#endif
 
     gi->vendorstr = (const char *)glGetString(GL_VENDOR);
     gi->vendor_is_SGI = strcmp((const char *)gi->vendorstr, "SGI") == 0;
