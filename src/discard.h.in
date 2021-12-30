@@ -402,6 +402,9 @@
 /* define if vsnprintf() is available */
 #undef HAVE_VSNPRINTF
 
+/* define if you have EGL OpenGL bindings */
+#undef HAVE_EGL
+
 /* define if you have WGL Win32 OpenGL bindings */
 #undef HAVE_WGL
 
