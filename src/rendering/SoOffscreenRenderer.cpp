@@ -1764,6 +1764,8 @@ SoOffscreenRendererP::offscreenContextsNotSupported(void)
 
 #ifdef HAVE_GLX
   return FALSE;
+#elif defined(HAVE_EGL)
+  return FALSE;
 #elif defined(HAVE_WGL)
   return FALSE;
 #elif defined(COIN_MACOS_10)
