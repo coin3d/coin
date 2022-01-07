@@ -635,6 +635,8 @@ glglue_cleanup(void)
 
 #ifdef HAVE_GLX
   glxglue_cleanup();
+#elif defined(HAVE_EGL)
+  eglglue_cleanup();
 #elif defined(HAVE_WGL)
   wglglue_cleanup();
 #else
