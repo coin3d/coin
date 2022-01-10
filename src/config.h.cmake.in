@@ -121,9 +121,6 @@
 /* define if you have CGL OpenGL bindings */
 #cmakedefine HAVE_CGL
 
-/* define if you have EGL OpenGL bindings */
-#cmakedefine HAVE_EGL
-
 /* define if you have the CoreText framework */
 #cmakedefine HAVE_CORETEXT
 

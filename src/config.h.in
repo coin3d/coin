@@ -123,9 +123,6 @@
 /* define if you have CGL OpenGL bindings */
 #undef HAVE_CGL
 
-/* define if you have EGL OpenGL bindings */
-#undef HAVE_EGL
-
 /* define if you have the CoreText framework */
 #undef HAVE_CORETEXT
 

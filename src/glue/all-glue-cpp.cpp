@@ -35,7 +35,6 @@
 #include "gl_glx.cpp"
 #include "gl_agl.cpp"
 #include "gl_cgl.cpp"
-#include "gl_egl.cpp"
 
 #include "cg.cpp"
 #include "spidermonkey.cpp"
