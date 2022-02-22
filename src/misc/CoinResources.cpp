@@ -222,7 +222,7 @@ CoinResources::get(const char * resloc)
         handle->filenotfound = TRUE;
         break;
       }
-      filename.sprintf("%s/share/Coin/%s", coindirenv, resloc + 5);
+      filename.sprintf("%s/%s/%s", coindirenv, COIN_DATADIR, resloc + 5);
 #endif // !COIN_MACOSX_FRAMEWORK
       if (COIN_DEBUG && 0) {
         SoDebugError::postInfo("CoinResources::get", "trying to load '%s'.",

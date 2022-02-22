@@ -477,3 +477,6 @@
 
 /* define for runtime linking with zlib */
 #cmakedefine ZLIB_RUNTIME_LINKING 1
+
+/* define Coin DATADIR for resource access */
+#define COIN_DATADIR    "@CMAKE_INSTALL_DATADIR@"
