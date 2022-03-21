@@ -162,6 +162,8 @@ after_build:
       if defined APPVEYOR_REPO_TAG_NAME (set CI_REPO_VERSION=%APPVEYOR_REPO_TAG_NAME:~1%) else (set CI_REPO_VERSION=latest)
       set BUILD_ARCHIVE=%APPVEYOR_PROJECT_NAME%-%CI_REPO_VERSION%-%COMPILER_ID%-%CMAKE_PLATFORM%.zip
       7z a -tzip %BUILD_ARCHIVE% Coin3D
+      C:\msys64\usr\bin\md5sum.exe -b %BUILD_ARCHIVE% > %BUILD_ARCHIVE%.md5
+      C:\msys64\usr\bin\sha256sum.exe -b %BUILD_ARCHIVE% > %BUILD_ARCHIVE%.sha256
       appveyor DownloadFile https://ci.appveyor.com/api/buildjobs/%APPVEYOR_JOB_ID%/log -FileName %APPVEYOR_PROJECT_NAME%-%CI_REPO_VERSION%-%COMPILER_ID%-%CMAKE_PLATFORM%.log
 
 artifacts:
