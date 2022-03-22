@@ -48,7 +48,7 @@ jobs:
           echo download file %DOWNLOAD_FILE_BOOST% from address %DOWNLOAD_ADDRESS_BOOST%
           curl -L -o %DOWNLOAD_FILE_BOOST% %DOWNLOAD_ADDRESS_BOOST%
           7z x %DOWNLOAD_FILE_BOOST% -ocmake_download_dir
-          cmake -S . -B cmake_build_dir -G "Visual Studio 16 2019" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=cmake_install_dir -DBOOST_ROOT=cmake_download_dir/boost_1_72_0
+          cmake -S . -B cmake_build_dir -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=cmake_install_dir -DBOOST_ROOT=cmake_download_dir/boost_1_72_0
       - name: Build project
         run: cmake --build cmake_build_dir --target INSTALL --config Release -- /nologo /verbosity:minimal /maxcpucount:2 /property:MultiProcessorCompilation=true
       - name: Run tests
