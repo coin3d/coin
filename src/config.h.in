@@ -488,3 +488,6 @@
 
 /* define for runtime linking with zlib */
 #undef ZLIB_RUNTIME_LINKING
+
+/* define Coin DATADIR for resource access */
+#define COIN_DATADIR    "share/Coin"
