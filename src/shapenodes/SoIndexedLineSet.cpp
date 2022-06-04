@@ -36,7 +36,7 @@
 
   \ingroup coin_nodes
 
-  The indexed counterpart of SoLineSet. Lines can specified using
+  The indexed counterpart of SoLineSet. Lines can be specified using
   indices for coordinates, normals, materials and texture coordinates.
 
   If no normals are supplied on the stack (or in the vertexProperty
