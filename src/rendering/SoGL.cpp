@@ -908,12 +908,9 @@ namespace { namespace SoGL { namespace IndexedLineSet {
     if (is3d) glVertex3fv((const GLfloat*) (coords3d + _idx_)); \
     else glVertex4fv((const GLfloat*) (coords4d + _idx_));
 
-    if ((AttributeBinding)MaterialBinding == PER_VERTEX_INDEXED) {
-      if (matindices == NULL) matindices = indices;
-    }
-    if ((AttributeBinding)NormalBinding == PER_VERTEX_INDEXED) {
-      if (normindices == NULL) normindices = indices;
-    }
+    // just in case someone forgot
+    if (matindices == NULL) matindices = indices;
+    if (normindices == NULL) normindices = indices;
 
     int matnr = 0;
     int texidx = 0;
@@ -923,7 +920,7 @@ namespace { namespace SoGL { namespace IndexedLineSet {
     SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
     const SbVec3f *currnormal = &dummynormal;
     if (normals) currnormal = normals;
-    if ((AttributeBinding)MaterialBinding == OVERALL) {
+    if ((AttributeBinding)NormalBinding == OVERALL) {
       glNormal3fv((const GLfloat*)currnormal);
     }
 
