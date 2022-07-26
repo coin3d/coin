@@ -1,5 +1,5 @@
 gpp
-    - rudimentory pre-processor for multi-version doc-files.
+    - rudimentary pre-processor for multi-version doc-files.
 
 templant
     - C++ source modifying tool.  in-file macro expansion through templates.

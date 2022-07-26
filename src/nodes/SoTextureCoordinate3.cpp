@@ -91,7 +91,7 @@
   i.e. in the range [0, 1]. Coordinates outside the [0, 1] range can be
   used to repeat the texture across a surface.
 
-  \sa SoTexture3::wrapR, SoTexure3::wrapS, SoTexture3::wrapT 
+  \sa SoTexture3::wrapR, SoTexture3::wrapS, SoTexture3::wrapT 
 */
 
 // *************************************************************************

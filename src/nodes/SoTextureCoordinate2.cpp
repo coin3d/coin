@@ -135,7 +135,7 @@ Separator {
   outside the [0, 1] range can be used to repeat the texture across a
   surface.
 
-  \sa SoTexure2::wrapS, SoTexture2::wrapT
+  \sa SoTexture2::wrapS, SoTexture2::wrapT
 */
 
 // *************************************************************************

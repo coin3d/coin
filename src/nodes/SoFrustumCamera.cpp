@@ -169,7 +169,7 @@ SoFrustumCamera::viewBoundingBox(const SbBox3f & box, float aspect, float slack)
 
   // First, we want to move the camera in such a way that it is
   // pointing straight at the center of the scene bounding box -- but
-  // without modifiying the rotation value (so we can't use
+  // without modifying the rotation value (so we can't use
   // SoCamera::pointAt()).
   SbVec3f cameradirection;
   this->orientation.getValue().multVec(SbVec3f(0, 0, -1), cameradirection);

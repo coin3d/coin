@@ -213,7 +213,7 @@ Separator {
       }
    }
 
-   # (ROW 3) Check how texure quality setting influences rendering
+   # (ROW 3) Check how texture quality setting influences rendering
    Translation { translation 0 +4 0 }
    Separator {
       USE stdtex

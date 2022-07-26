@@ -166,7 +166,7 @@ Separator {
       }
    }
 
-   # (ROW 2) Check texure/material combination models
+   # (ROW 2) Check texture/material combination models
    Translation { translation 0 +4 0 }
    Separator {
       Texture2 {
@@ -269,7 +269,7 @@ Separator {
    }
 
 
-   # (ROW 3) Check how texure quality setting influences rendering
+   # (ROW 3) Check how texture quality setting influences rendering
    Translation { translation 0 +4 0 }
    Separator {
       Texture2 {

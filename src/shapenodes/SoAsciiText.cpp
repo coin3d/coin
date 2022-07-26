@@ -565,7 +565,7 @@ void SoAsciiTextP::calculateStringStretch(const int i, const cc_font_specificati
       originalxpos += kerningx * fontspec->size;
     }
 
-    // Find the maxmimum endposition in the x-direction
+    // Find the maximum endposition in the x-direction
     float endx = originalxpos * stretchfactor + glyphwidth;
     if (endx > maxx) {
       originalmaxxpos = originalxpos;
