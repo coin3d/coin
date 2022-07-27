@@ -71,7 +71,7 @@
   \var SoSFFloat SoPerspectiveCamera::heightAngle
 
   The vertical angle of the viewport, also known as "field of view".
-  Default value is 45� (note: value is specified in radians).
+  Default value is 45 degrees (note: value is specified in radians).
 */
 
 // *************************************************************************
@@ -85,7 +85,7 @@ SoPerspectiveCamera::SoPerspectiveCamera()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoPerspectiveCamera);
 
-  SO_NODE_ADD_FIELD(heightAngle, (float(M_PI)/4.0f));  // 45�.
+  SO_NODE_ADD_FIELD(heightAngle, (float(M_PI)/4.0f));  // 45 degrees.
 }
 
 /*!
