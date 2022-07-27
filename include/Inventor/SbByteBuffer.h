@@ -73,7 +73,7 @@ class COIN_DLL_API SbByteBuffer {
 
 #endif // !COIN_SBBYTEBUFFER_H
 
-//The SBBYTEBUFFER_PRIVATE_VARIABLES must service an inclusion from the .icc file
+//The SBBYTEBUFFER_PRIVATE_VARIABLES must survive an inclusion from the .icc file
 #ifndef COIN_ICC_INCLUDE
 #undef SBBYTEBUFFER_PRIVATE_VARIABLES
 #endif //COIN_ICC_INCLUDE
