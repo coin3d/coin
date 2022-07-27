@@ -102,7 +102,7 @@
  * define.
  *
  * Default is to not have this define set, as the import code has not been
- * thoroughty tested and robustified by the main Coin developers yet.
+ * thoroughly tested and robustified by the main Coin developers yet.
  */
 
 #undef HAVE_3DS_IMPORT_CAPABILITIES

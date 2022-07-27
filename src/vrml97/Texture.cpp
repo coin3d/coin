@@ -43,12 +43,12 @@
 
 /*!
   \var SoSFBool SoVRMLTexture::repeatS
-  TRUE if texure should be repeated in the S direction. Default is TRUE.
+  TRUE if texture should be repeated in the S direction. Default is TRUE.
 */
 
 /*!
   \var SoSFBool SoVRMLTexture::repeatT
-  TRUE if texure should be repeated in the T direction. Default is TRUE.
+  TRUE if texture should be repeated in the T direction. Default is TRUE.
 */
 
 #include <Inventor/VRMLnodes/SoVRMLTexture.h>

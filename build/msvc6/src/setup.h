@@ -103,7 +103,7 @@
  * define.
  *
  * Default is to not have this define set, as the import code has not been
- * thoroughty tested and robustified by the main Coin developers yet.
+ * thoroughly tested and robustified by the main Coin developers yet.
  */
 
 #define HAVE_3DS_IMPORT_CAPABILITIES 
@@ -114,7 +114,7 @@
  * All the SpiderMonkey javascript code is wrapped in this
  * define. This is done to make sure the code in Coin-2 and Coin-dev
  * is as equal as possible, making it easier to port fixes and
- * enchancements.
+ * enhancements.
  *
  * Default is to have this define set.
  * If VRML97 is disabled, JavaScript support is also disabled.

@@ -294,7 +294,7 @@ SoNodeKitPath::clean(void)
 }
 
 //
-// returns a search action to be used while serching for nodes
+// returns a search action to be used while searching for nodes
 //
 SoSearchAction *
 SoNodeKitPath::getSearchAction(void)

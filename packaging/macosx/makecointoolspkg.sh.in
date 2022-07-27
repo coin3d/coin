@@ -7,7 +7,7 @@
 # 
 # Usage: makecointoolspkg.sh [-v] -r /path/to/coin/prefix
 #  -v   verbose
-#  -r   Location of tools intallation dir (coin configure prefix)
+#  -r   Location of tools installation dir (coin configure prefix)
 #
 # Authors:
 #   Marius Kintel <kintel@sim.no>

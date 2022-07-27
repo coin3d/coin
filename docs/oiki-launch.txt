@@ -11,7 +11,7 @@ Common Lisp community.
 The site is a Wiki authored web site.  It was therefore named OIki.
 If it has to be an acronym (it has, hasn't it?), let's say it is
 "Open Inventor knowledge index".  The name choice was done just to
-get the pronounciation pun, but don't tell anyone...
+get the pronunciation pun, but don't tell anyone...
 
 Anyways, the main point is that editing is open for everyone.  Amazingly,
 this seems to generally work fine (as in no abuse) for other open Wiki

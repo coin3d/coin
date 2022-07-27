@@ -231,7 +231,7 @@
     drivers. 2002-08-02 handegar.
 
     UPDATE 2004-10-27 mortene: I found a grave overflow error in the
-    calculation of maximumcolorcounter from the values returned fom
+    calculation of maximumcolorcounter from the values returned from
     glGetInteger() -- could the problem mentioned above actually be
     due to this? The explanation given above doesn't seem very
     likely...

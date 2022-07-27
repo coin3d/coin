@@ -600,11 +600,11 @@ public:
   void texgenEnable(SbBool enable);
   void eyeLinearTexgen();
 
-  // NVIDIA spesific methods for sorted layers blend
+  // NVIDIA specific methods for sorted layers blend
   void setupRegisterCombinersNV();
   void renderSortedLayersNV(const SoState * state);
 
-  // ARB_fragment_program spesific methods for sorted layers blend
+  // ARB_fragment_program specific methods for sorted layers blend
   void setupFragmentProgram();
   void renderSortedLayersFP(const SoState * state);
 
