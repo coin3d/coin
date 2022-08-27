@@ -244,7 +244,7 @@ A:      The font support prior to Coin 2.1 was limited to a hardcoded font
         searched for in the working directory. The path specified by
         the COIN_FONT_PATH environment variable will then be
         searched. It is not possible to explicitly specify a font file
-        when using the Win32 library as all font handeling must be
+        when using the Win32 library as all font handling must be
         done through the operating system.
 
         For more information, please read the API documentation on SoFont.

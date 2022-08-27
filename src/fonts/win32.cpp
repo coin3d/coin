@@ -1006,7 +1006,7 @@ flww32_getVerticesFromPath(HDC hdc)
   uintptr_t tmp;
 
   if (FlattenPath(hdc) == 0) {
-    cc_win32_print_error("flww32_getVerticesFromPath", "Failed when handeling TrueType font; "
+    cc_win32_print_error("flww32_getVerticesFromPath", "Failed when handling TrueType font; "
                          "FlattenPath()", GetLastError());
     /* The system cannot convert splines to vectors. Aborting. */
     return;
@@ -1015,7 +1015,7 @@ flww32_getVerticesFromPath(HDC hdc)
   /* determine the number of endpoints in the path*/
   numpoints = GetPath(hdc, NULL, NULL, 0);
   if (numpoints < 0) {
-    cc_win32_print_error("flww32_getVerticesFromPath", "Failed when handeling TrueType font; "
+    cc_win32_print_error("flww32_getVerticesFromPath", "Failed when handling TrueType font; "
                          "GetPath()", GetLastError());
     return;
   }
