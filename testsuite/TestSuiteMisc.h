@@ -39,29 +39,29 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbTypeInfo.h>
 
-#ifndef TEST_SUITE_THOROUGNESS
+#ifndef TEST_SUITE_THOROUGHNESS
 /*
-  TEST_SUITE_THOROUGNESS levels are:
+  TEST_SUITE_THOROUGHNESS levels are:
   1 Just quick tests
   2 More thorough
   3 Expansive
 */
-#define TEST_SUITE_THOROUGNESS 1
-#endif //TEST_SUITE_THOROUGNESS
+#define TEST_SUITE_THOROUGHNESS 1
+#endif //TEST_SUITE_THOROUGHNESS
 
-#if TEST_SUITE_THOROUGNESS == 1
+#if TEST_SUITE_THOROUGHNESS == 1
 #define TEST_SUITE_QUICK
-#elif TEST_SUITE_THOROUGNESS == 2
+#elif TEST_SUITE_THOROUGHNESS == 2
 #define TEST_SUITE_THOROUG
-#elif TEST_SUITE_THOROUGNESS == 3
+#elif TEST_SUITE_THOROUGHNESS == 3
 #define TEST_SUITE_EXPANSIVE
-#endif //TEST_SUITE_THOROUGNESS
+#endif //TEST_SUITE_THOROUGHNESS
 
 // Test for almostEquality
 /*
   Note the difference between last parameter as float or int Last
   parameter as float, means relative tolerance, last parameter as int,
-  means maximal numer of orders difference in an ordered set of all
+  means maximal number of orders difference in an ordered set of all
   floats
 */
 inline bool floatEquals(float Ain, float Bin, unsigned int maxUlps)
