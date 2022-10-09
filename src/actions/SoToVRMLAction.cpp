@@ -148,6 +148,16 @@ public:
     this->vrmlroot = NULL;
   }
 
+  ~SoToVRMLActionP(void)
+  {
+    if (this->vrmlpath) {
+      this->vrmlpath->unref();
+    }
+    if (this->vrmlroot) {
+      this->vrmlroot->unref();
+    }
+  }
+
   void init(void) {
     if (this->vrmlpath) {
       this->vrmlpath->unref();
@@ -334,12 +344,6 @@ SoToVRMLAction::SoToVRMLAction(void)
 
 SoToVRMLAction::~SoToVRMLAction(void)
 {
-  if (PRIVATE(this)->vrmlpath) {
-    PRIVATE(this)->vrmlpath->unref();
-  }
-  if (PRIVATE(this)->vrmlroot) {
-    PRIVATE(this)->vrmlroot->unref();
-  }
 }
 
 // Documented in superclass.
