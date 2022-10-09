@@ -28,7 +28,7 @@ DEF rotateSphericalFeedbackActive Separator {
 
 DEF ROTATESPHERICAL_RING Group {
    # As to why this node is necessary, see comments in
-   # centerballDragger.iv, the CENTERBALL_STRIPE sub-graph.
+   # centerballDragger.iv, the CENTERBALL_STRIPE subgraph.
    ShapeHints {
       shapeType UNKNOWN_SHAPE_TYPE
       vertexOrdering UNKNOWN_ORDERING

@@ -215,7 +215,7 @@
   same size in screen pixels, no matter which distance it is from the
   camera. This is useful for marker graphics. The shape defaults to a
   cube, but can be set by the programmer to any shape or scene
-  sub-graph.
+  subgraph.
 
   The header file:
 
@@ -1122,7 +1122,7 @@ SoBaseKit::write(SoWriteAction * action)
   //
   // Note that if the nodekit is a dragger, the resulting scene graph
   // export may still not look exactly the same as when the exported
-  // sub-graph is contained within the dragger, as
+  // subgraph is contained within the dragger, as
   // SoDragger::GLRender() sets a number of elements in the traversal
   // state to non-intrusive "default" values before rendering the
   // dragger geometry. These settings will not be part of the exported

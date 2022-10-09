@@ -42,11 +42,11 @@
 
   You don't have to apply an SoGetBoundingBoxAction to the \e root of
   a scene. When using the action, you will get the bounding box of the
-  node you are applying it to and that node's sub-tree in the scene
+  node you are applying it to and that node's subtree in the scene
   graph (if any).
 
   The calculated bounding box will be in the local coordinates of that
-  sub-tree. If applying it to a scene graph root node, the calculated
+  subtree. If applying it to a scene graph root node, the calculated
   bounding box will be in global coordinates.
 
   The use of bounding boxes is ubiquitous within the Coin library. It
@@ -55,7 +55,7 @@
 
 
   SoSeparator nodes are aggressively caching the results of bounding
-  box calculations, so that they are really only re-calculated
+  box calculations, so that they are really only recalculated
   whenever the scene graph rooted below any SoSeparator node has been
   modified. This means that applying this action to scene graphs, or
   parts of scene graphs, should be very quick on successive runs for

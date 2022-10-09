@@ -197,7 +197,7 @@ int SoSeparator::numrendercaches = 2;
   There are good reasons for setting renderCaching to \c OFF, like
   when you know the geometry will be changing a lot. Still, Coin
   should work fairly well even without this optimization.  (If
-  renderCaching is \c AUTO over a sub-graph with changing geometry or
+  renderCaching is \c AUTO over a subgraph with changing geometry or
   other cache smashing nodes, the caching heuristics will stop the
   SoSeparator node from trying to make caches -- at least after a few
   tries have been made and failed.)

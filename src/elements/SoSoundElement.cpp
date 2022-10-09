@@ -48,7 +48,7 @@
 /*!
   \fn SoSoundElement::sceneGraphHasSoundNode
 
-  The sceneGraphHasSoundNode flag is used to stop the SoAudioRenderAction in SoSeparator and SoVRMLGroup nodes for cases where the sub-graph does not contain any SoVRMLSound nodes.
+  The sceneGraphHasSoundNode flag is used to stop the SoAudioRenderAction in SoSeparator and SoVRMLGroup nodes for cases where the subgraph does not contain any SoVRMLSound nodes.
 */
 
 /*!

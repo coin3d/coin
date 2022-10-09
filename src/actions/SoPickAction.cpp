@@ -43,7 +43,7 @@
   various ways.
 
   This class is not supposed to be used directly by the application
-  programmer, as it is more a place-holder for the common interface of
+  programmer, as it is more a placeholder for the common interface of
   picking operations. It does not contain any actual code for doing
   scene graph picks.
 

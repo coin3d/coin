@@ -43,7 +43,7 @@
 
   The basic operation is to instantiate an action, set it up with
   miscellaneous parameters if necessary, then call its apply() method
-  on the root node of the scene graph (or sub-graph of a scene graph).
+  on the root node of the scene graph (or subgraph of a scene graph).
   The action then traverses the scene graph from the root node,
   depth-first and left-to-right, applying its specific processing at
   the nodes where it is applicable.
@@ -583,7 +583,6 @@ SoAction::apply(SoNode * root)
     }
 
     if (SoProfiler::isConsoleActive()) {
-      SoType profileactiontype = SoProfilerP::getActionType();
       if (this->isOfType(SoProfilerP::getActionType())) {
         SoProfilerElement * pelt = SoProfilerElement::get(state);
         if (pelt != NULL) {
