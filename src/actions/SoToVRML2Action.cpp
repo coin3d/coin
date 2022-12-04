@@ -1156,7 +1156,7 @@ SoToVRML2ActionP::push_levelofdetail_cb(void * closure, SoCallbackAction * actio
 
   // create a typical view volume
   SbViewVolume vv;
-  vv.perspective(float(M_PI)/4.0f, DEFAULT_VIEWPORT_WIDTH/DEFAULT_VIEWPORT_HEIGHT,
+  vv.perspective(float(M_PI)/4.0f, float(DEFAULT_VIEWPORT_WIDTH)/float(DEFAULT_VIEWPORT_HEIGHT),
                  1.0f, 10.0f);
 
 
