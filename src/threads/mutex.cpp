@@ -137,6 +137,17 @@ const char * COIN_DEBUG_MUTEX_COUNT = "COIN_DEBUG_MUTEX_COUNT";
 
 /**************************************************************************/
 
+/* Return value of COIN_DEBUG_MUTEX_COUNT environment variable. */
+static int coin_debug_mutex_count(void)
+{
+  static int d = -1;
+  if (d == -1) {
+    const char* val = coin_getenv("COIN_DEBUG_MUTEX_COUNT");
+    d = val ? atoi(val) : 0;
+  }
+  return d;
+}
+
 /*! Constructs a mutex. */
 cc_mutex *
 cc_mutex_construct(void)
@@ -146,13 +157,11 @@ cc_mutex_construct(void)
   assert(mutex != NULL);
   cc_mutex_struct_init(mutex);
 
-  { /* debugging */
-    const char * env = coin_getenv(COIN_DEBUG_MUTEX_COUNT);
-    if (env && (atoi(env) > 0)) {
-      cc_debug_mtxcount += 1;
-      (void)fprintf(stderr, "DEBUG: live mutexes +1 => %u (mutex++)\n",
-                    cc_debug_mtxcount);
-    }
+  /* debugging */
+  if (coin_debug_mutex_count() > 0) {
+    cc_debug_mtxcount += 1;
+    (void)fprintf(stderr, "DEBUG: live mutexes +1 => %u (mutex++)\n",
+                  cc_debug_mtxcount);
   }
 
   return mutex;
@@ -162,14 +171,12 @@ cc_mutex_construct(void)
 void
 cc_mutex_destruct(cc_mutex * mutex)
 {
-  { /* debugging */
-    const char * env = coin_getenv(COIN_DEBUG_MUTEX_COUNT);
-    if (env && (atoi(env) > 0)) {
-      assert((cc_debug_mtxcount > 0) && "skewed mutex construct/destruct pairing");
-      cc_debug_mtxcount -= 1;
-      (void)fprintf(stderr, "DEBUG: live mutexes -1 => %u (mutex--)\n",
-                    cc_debug_mtxcount);
-    }
+  /* debugging */
+  if (coin_debug_mutex_count() > 0) {
+    assert((cc_debug_mtxcount > 0) && "skewed mutex construct/destruct pairing");
+    cc_debug_mtxcount -= 1;
+    (void)fprintf(stderr, "DEBUG: live mutexes -1 => %u (mutex--)\n",
+                  cc_debug_mtxcount);
   }
 
   assert(mutex != NULL);
