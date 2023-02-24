@@ -18,11 +18,11 @@ environment:
   GH_AUTH_TOKEN:
     secure: 850frgRGZcc4Cljd2P7Ej68no4/kkl4EMB+DjnX725wcKBRJuFk/kGRdJGyKXd2u
   matrix:
-    - APPVEYOR_BUILD_WORKER_IMAGE: macos-catalina
-      CMAKE_GENERATOR: 'Unix Makefiles'
-      CMAKE_PLATFORM: x64
-      COMPILER_ID: clang
-
+#    - APPVEYOR_BUILD_WORKER_IMAGE: macos-catalina
+#      CMAKE_GENERATOR: 'Unix Makefiles'
+#      CMAKE_PLATFORM: x64
+#      COMPILER_ID: clang
+#
     - APPVEYOR_BUILD_WORKER_IMAGE: macos-bigsur
       CMAKE_GENERATOR: 'Unix Makefiles'
       CMAKE_PLATFORM: x64
