@@ -57,13 +57,13 @@ ARFLAGS = cru
 glue_lst_AR = $(AR) $(ARFLAGS)
 glue_lst_LIBADD =
 am__glue_lst_SOURCES_DIST = cg.cpp spidermonkey.cpp dl.cpp gl.cpp \
-	gl_wgl.cpp gl_agl.cpp gl_cgl.cpp gl_glx.cpp GLUWrapper.cpp \
+	gl_wgl.cpp gl_agl.cpp gl_cgl.cpp gl_egl.cpp gl_glx.cpp GLUWrapper.cpp \
 	simage_wrapper.cpp openal_wrapper.cpp win32api.cpp zlib.cpp \
 	bzip2.cpp freetype.cpp normalization_cubemap.cpp \
 	all-glue-cpp.cpp
 am__objects_1 = cg.$(OBJEXT) spidermonkey.$(OBJEXT) dl.$(OBJEXT) \
-	gl.$(OBJEXT) gl_wgl.$(OBJEXT) gl_agl.$(OBJEXT) \
-	gl_cgl.$(OBJEXT) gl_glx.$(OBJEXT) GLUWrapper.$(OBJEXT) \
+	gl.$(OBJEXT) gl_wgl.$(OBJEXT) gl_agl.$(OBJEXT) gl_cgl.$(OBJEXT) \
+	gl_egl.$(OBJEXT) gl_glx.$(OBJEXT) GLUWrapper.$(OBJEXT) \
 	simage_wrapper.$(OBJEXT) openal_wrapper.$(OBJEXT) \
 	win32api.$(OBJEXT) zlib.$(OBJEXT) bzip2.$(OBJEXT) \
 	freetype.$(OBJEXT) normalization_cubemap.$(OBJEXT)
@@ -72,10 +72,10 @@ am__objects_2 = all-glue-cpp.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_2)
 am_glue_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_glue_lst_SOURCES_DIST = GLUWrapper.h bzip2.h cg.h dlp.h \
-	freetype.h gl_agl.h gl_cgl.h gl_glx.h gl_wgl.h glp.h \
+	freetype.h gl_agl.h gl_cgl.h gl_egl.h gl_glx.h gl_wgl.h glp.h \
 	openal_wrapper.h simage_wrapper.h win32api.h zlib.h \
 	all-glue-cpp.cpp cg.cpp spidermonkey.cpp dl.cpp gl.cpp \
-	gl_wgl.cpp gl_agl.cpp gl_cgl.cpp gl_glx.cpp GLUWrapper.cpp \
+	gl_wgl.cpp gl_agl.cpp gl_cgl.cpp gl_egl.cpp gl_glx.cpp GLUWrapper.cpp \
 	simage_wrapper.cpp openal_wrapper.cpp win32api.cpp zlib.cpp \
 	bzip2.cpp freetype.cpp normalization_cubemap.cpp
 glue_lst_OBJECTS = $(am_glue_lst_OBJECTS)
@@ -84,12 +84,12 @@ libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 libglue_la_LIBADD =
 am__libglue_la_SOURCES_DIST = cg.cpp spidermonkey.cpp dl.cpp gl.cpp \
-	gl_wgl.cpp gl_agl.cpp gl_cgl.cpp gl_glx.cpp GLUWrapper.cpp \
+	gl_wgl.cpp gl_agl.cpp gl_cgl.cpp gl_egl.cpp gl_glx.cpp GLUWrapper.cpp \
 	simage_wrapper.cpp openal_wrapper.cpp win32api.cpp zlib.cpp \
 	bzip2.cpp freetype.cpp normalization_cubemap.cpp \
 	all-glue-cpp.cpp
 am__objects_6 = cg.lo spidermonkey.lo dl.lo gl.lo gl_wgl.lo gl_agl.lo \
-	gl_cgl.lo gl_glx.lo GLUWrapper.lo simage_wrapper.lo \
+	gl_cgl.lo gl_egl.lo gl_glx.lo GLUWrapper.lo simage_wrapper.lo \
 	openal_wrapper.lo win32api.lo zlib.lo bzip2.lo freetype.lo \
 	normalization_cubemap.lo
 am__objects_7 = all-glue-cpp.lo
@@ -97,25 +97,25 @@ am__objects_7 = all-glue-cpp.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_7)
 am_libglue_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libglue_la_SOURCES_DIST = GLUWrapper.h bzip2.h cg.h dlp.h \
-	freetype.h gl_agl.h gl_cgl.h gl_glx.h gl_wgl.h glp.h \
+	freetype.h gl_agl.h gl_cgl.h gl_egl.h gl_glx.h gl_wgl.h glp.h \
 	openal_wrapper.h simage_wrapper.h win32api.h zlib.h \
 	all-glue-cpp.cpp cg.cpp spidermonkey.cpp dl.cpp gl.cpp \
-	gl_wgl.cpp gl_agl.cpp gl_cgl.cpp gl_glx.cpp GLUWrapper.cpp \
+	gl_wgl.cpp gl_agl.cpp gl_cgl.cpp gl_egl.cpp gl_glx.cpp GLUWrapper.cpp \
 	simage_wrapper.cpp openal_wrapper.cpp win32api.cpp zlib.cpp \
 	bzip2.cpp freetype.cpp normalization_cubemap.cpp
 libglue_la_OBJECTS = $(am_libglue_la_OBJECTS)
 libglue@SUFFIX@LINKHACK_la_LIBADD =
 am__libglue@SUFFIX@LINKHACK_la_SOURCES_DIST = cg.cpp spidermonkey.cpp \
-	dl.cpp gl.cpp gl_wgl.cpp gl_agl.cpp gl_cgl.cpp gl_glx.cpp \
+	dl.cpp gl.cpp gl_wgl.cpp gl_agl.cpp gl_cgl.cpp gl_egl.cpp gl_glx.cpp \
 	GLUWrapper.cpp simage_wrapper.cpp openal_wrapper.cpp \
 	win32api.cpp zlib.cpp bzip2.cpp freetype.cpp \
 	normalization_cubemap.cpp all-glue-cpp.cpp
 am_libglue@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libglue@SUFFIX@LINKHACK_la_SOURCES_DIST = GLUWrapper.h \
-	bzip2.h cg.h dlp.h freetype.h gl_agl.h gl_cgl.h gl_glx.h \
+	bzip2.h cg.h dlp.h freetype.h gl_agl.h gl_cgl.h gl_egl.h gl_glx.h \
 	gl_wgl.h glp.h openal_wrapper.h simage_wrapper.h win32api.h \
 	zlib.h all-glue-cpp.cpp cg.cpp spidermonkey.cpp dl.cpp gl.cpp \
-	gl_wgl.cpp gl_agl.cpp gl_cgl.cpp gl_glx.cpp GLUWrapper.cpp \
+	gl_wgl.cpp gl_agl.cpp gl_cgl.cpp gl_egl.cpp gl_glx.cpp GLUWrapper.cpp \
 	simage_wrapper.cpp openal_wrapper.cpp win32api.cpp zlib.cpp \
 	bzip2.cpp freetype.cpp normalization_cubemap.cpp
 libglue@SUFFIX@LINKHACK_la_OBJECTS =  \
@@ -132,7 +132,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/freetype.Po ./$(DEPDIR)/gl.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/gl.Po ./$(DEPDIR)/gl_agl.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/gl_agl.Po ./$(DEPDIR)/gl_cgl.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/gl_cgl.Po ./$(DEPDIR)/gl_glx.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/gl_cgl.Po ./$(DEPDIR)/gl_egl.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/gl_egl.Po ./$(DEPDIR)/gl_glx.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/gl_glx.Po ./$(DEPDIR)/gl_wgl.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/gl_wgl.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/normalization_cubemap.Plo \
@@ -426,7 +427,7 @@ RegularSources = \
 	spidermonkey.cpp \
 	dl.cpp \
 	gl.cpp \
-	gl_wgl.cpp gl_agl.cpp gl_cgl.cpp gl_glx.cpp \
+	gl_wgl.cpp gl_agl.cpp gl_cgl.cpp gl_egl.cpp gl_glx.cpp \
 	GLUWrapper.cpp \
 	simage_wrapper.cpp \
 	openal_wrapper.cpp \
@@ -448,6 +449,7 @@ PrivateHeaders = \
 	freetype.h \
 	gl_agl.h \
 	gl_cgl.h \
+	gl_egl.h \
 	gl_glx.h \
 	gl_wgl.h \
 	glp.h \
@@ -602,6 +604,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gl_agl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gl_cgl.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gl_cgl.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gl_egl.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gl_egl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gl_glx.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gl_glx.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gl_wgl.Plo@am__quote@

@@ -196,8 +196,12 @@
    is either fiddling manually with config.h, or in case a change is
    made which breaks this protection in the configure script. */
 
-#if defined(HAVE_WGL) && (defined(HAVE_GLX) || defined(HAVE_AGL) || defined(HAVE_CGL))
-#error More than one of HAVE_WGL, HAVE_GLX and HAVE_AGL|HAVE_CGL set simultaneously!
+#if defined(HAVE_WGL) && (defined(HAVE_EGL) || defined(HAVE_GLX) || defined(HAVE_AGL) || defined(HAVE_CGL))
+#error More than one of HAVE_WGL, HAVE_GLX , HAVE_EGL, and HAVE_AGL|HAVE_CGL set simultaneously!
+#endif
+
+#if defined(HAVE_EGL) && (defined(HAVE_GLX) || defined(HAVE_AGL) || defined(HAVE_CGL))
+#error More than one of HAVE_WGL, HAVE_GLX, HAVE_EGL and HAVE_AGL|HAVE_CGL set simultaneously!
 #endif
 
 #if defined(HAVE_GLX) && (defined(HAVE_AGL) || defined(HAVE_CGL))
@@ -205,7 +209,7 @@
 #endif
 
 // Define HAVE_NOGL if no platform GL binding exists
-#if !defined(HAVE_WGL) && !defined(HAVE_GLX) && !(defined(HAVE_AGL) || defined(HAVE_CGL))
+#if !defined(HAVE_WGL) && !defined(HAVE_GLX) && !defined(HAVE_EGL) && !(defined(HAVE_AGL) || defined(HAVE_CGL))
 #define HAVE_NOGL 1
 #endif
 
@@ -232,6 +236,11 @@
 #include <GL/glx.h>
 #endif /* HAVE_GLX */
 
+#ifdef HAVE_EGL
+#include <EGL/egl.h>
+#include <EGL/eglext.h>
+#endif /* HAVE_EGL */
+
 #include <Inventor/C/glue/gl.h>
 
 #include <Inventor/C/errors/debugerror.h>
@@ -247,6 +256,7 @@
 #include "glue/dlp.h"
 #include "glue/gl_agl.h"
 #include "glue/gl_cgl.h"
+#include "glue/gl_egl.h"
 #include "glue/gl_glx.h"
 #include "glue/gl_wgl.h"
 #include "threads/threadsutilp.h"
@@ -584,6 +594,9 @@ cc_glglue_getprocaddress(const cc_glglue * glue, const char * symname)
   ptr = coin_wgl_getprocaddress(glue, symname);
   if (ptr) goto returnpoint;
 
+  ptr = eglglue_getprocaddress(glue, symname);
+  if (ptr) goto returnpoint;
+
   ptr = glxglue_getprocaddress(glue, symname);
   if (ptr) goto returnpoint;
 
@@ -622,6 +635,8 @@ glglue_cleanup(void)
 
 #ifdef HAVE_GLX
   glxglue_cleanup();
+#elif defined(HAVE_EGL)
+  eglglue_cleanup();
 #elif defined(HAVE_WGL)
   wglglue_cleanup();
 #else
@@ -2280,7 +2295,11 @@ cc_glglue_instance(int contextid)
     assert(glGetError() == GL_NO_ERROR && "GL error when calling glGetString() -- no current GL context?");
 
     glglue_set_glVersion(gi);
+#ifdef HAVE_GLX
     glxglue_init(gi);
+#elif defined(HAVE_EGL)
+    eglglue_init(gi);
+#endif
 
     gi->vendorstr = (const char *)glGetString(GL_VENDOR);
     gi->vendor_is_SGI = strcmp((const char *)gi->vendorstr, "SGI") == 0;
@@ -4389,6 +4408,8 @@ cc_glglue_context_create_offscreen(unsigned int width, unsigned int height)
   return NULL;
 #elif defined(HAVE_GLX)
   return glxglue_context_create_offscreen(width, height);
+#elif defined(HAVE_EGL)
+  return eglglue_context_create_offscreen(width, height);
 #elif defined(HAVE_WGL)
   return wglglue_context_create_offscreen(width, height);
 #else
@@ -4417,6 +4438,8 @@ cc_glglue_context_make_current(void * ctx)
   return FALSE;
 #elif defined(HAVE_GLX)
   return glxglue_context_make_current(ctx);
+#elif defined(HAVE_EGL)
+  return eglglue_context_make_current(ctx);
 #elif defined(HAVE_WGL)
   return wglglue_context_make_current(ctx);
 #else
@@ -4455,6 +4478,8 @@ cc_glglue_context_reinstate_previous(void * ctx)
   assert(FALSE && "unimplemented");
 #elif defined(HAVE_GLX)
   glxglue_context_reinstate_previous(ctx);
+#elif defined(HAVE_EGL)
+  eglglue_context_reinstate_previous(ctx);
 #elif defined(HAVE_WGL)
   wglglue_context_reinstate_previous(ctx);
 #else
@@ -4480,6 +4505,8 @@ cc_glglue_context_destruct(void * ctx)
   assert(FALSE && "unimplemented");
 #elif defined(HAVE_GLX)
   glxglue_context_destruct(ctx);
+#elif defined(HAVE_EGL)
+  eglglue_context_destruct(ctx);
 #elif defined(HAVE_WGL)
   wglglue_context_destruct(ctx);
 #else
@@ -4603,6 +4630,8 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
     ok = wglglue_context_pbuffer_max(ctx, pbufmax);
 #elif defined(HAVE_GLX)
     ok = glxglue_context_pbuffer_max(ctx, pbufmax);
+#elif defined(HAVE_EGL)
+    ok = eglglue_context_pbuffer_max(ctx, pbufmax);
 #elif defined(HAVE_AGL) || defined(HAVE_CGL)
     /* FIXME: implement check on max pbuffer width, height and number
        of pixels for AGL/CGL, if any such limits are imposed there.
@@ -4682,6 +4711,8 @@ cc_glglue_context_can_render_to_texture(void * COIN_UNUSED_ARG(ctx))
 
 #if defined(HAVE_GLX) || defined(HAVE_NOGL)
   return FALSE;
+#elif defined(HAVE_EGL)
+  return eglglue_context_can_render_to_texture(ctx);
 #elif defined(HAVE_WGL)
   return wglglue_context_can_render_to_texture(ctx);
 #else
@@ -4709,6 +4740,8 @@ cc_glglue_context_bind_pbuffer(void * COIN_UNUSED_ARG(ctx))
      equivalent to the aglTexImagePBuffer() and wglBindTexImageARB()
      calls).  kyrah 20031123. */
   assert(FALSE && "unimplemented");
+#elif defined(HAVE_EGL)
+  eglglue_context_bind_pbuffer(ctx);
 #elif defined(HAVE_WGL)
   wglglue_context_bind_pbuffer(ctx);
 #else
@@ -4732,6 +4765,8 @@ cc_glglue_context_release_pbuffer(void * COIN_UNUSED_ARG(ctx))
 #if defined(HAVE_GLX) || defined(HAVE_NOGL)
   /* FIXME: Implement for GLX. kyrah 20031123. */
   assert(FALSE && "unimplemented");
+#elif defined(HAVE_EGL)
+  eglglue_context_release_pbuffer(ctx);
 #elif defined(HAVE_WGL)
   wglglue_context_release_pbuffer(ctx);
 #else
@@ -4756,6 +4791,8 @@ cc_glglue_context_pbuffer_is_bound(void * COIN_UNUSED_ARG(ctx))
   /* FIXME: Implement for GLX. kyrah 20031123. */
   assert(FALSE && "unimplemented");
   return FALSE;
+#elif defined(HAVE_EGL)
+  return eglglue_context_pbuffer_is_bound(ctx);
 #elif defined(HAVE_WGL)
   return wglglue_context_pbuffer_is_bound(ctx);
 #else
@@ -5106,6 +5143,10 @@ coin_gl_current_context(void)
 #ifdef HAVE_GLX
   ctx = glXGetCurrentContext();
 #endif /* HAVE_GLX */
+
+#ifdef HAVE_EGL
+  ctx = eglGetCurrentContext();
+#endif /* HAVE_EGL */
 
 #ifdef HAVE_WGL
   ctx = wglGetCurrentContext();
