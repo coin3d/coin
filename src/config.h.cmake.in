@@ -480,3 +480,6 @@
 
 /* define Coin DATADIR for resource access */
 #define COIN_DATADIR    "@CMAKE_INSTALL_DATADIR@"
+
+/* Enable thread check in several central Coin functions. */
+#cmakedefine COIN_DEBUG_CHECK_THREAD

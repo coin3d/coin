@@ -108,7 +108,7 @@
 #include <Inventor/annex/ForeignFiles/SoForeignFileKit.h>
 #endif // HAVE_NODEKITS
 
-#include "coindefs.h" // COIN_STUB()
+#include "coindefs.h" // COIN_STUB(), COIN_INIT_CHECK_THREAD()
 #include "shaders/SoShader.h"
 #include "tidbitsp.h"
 #include "fields/SoGlobalField.h"
@@ -199,6 +199,8 @@ static uint32_t a_static_variable = 0xdeadbeef;
 void
 SoDB::init(void)
 {
+  COIN_INIT_CHECK_THREAD();
+
   // This is to catch the (unlikely) event that the C++ compiler adds
   // padding or rtti information to the SbVec3f (or similar) base classes.
   // We assume this isn't done several places in Coin, so the best thing to
