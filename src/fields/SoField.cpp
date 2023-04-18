@@ -143,7 +143,7 @@ inline unsigned int SbHashFunc(const void * key)
 {
   return SbHashFunc(reinterpret_cast<size_t>(key));
 }
-#include "coindefs.h" // COIN_STUB()
+#include "coindefs.h" // COIN_STUB(), COIN_CHECK_THREAD()
 
 #ifdef COIN_THREADSAFE
 #include "threads/recmutexp.h"
@@ -2223,6 +2223,7 @@ SoField::getDirty(void) const
 void
 SoField::setDirty(SbBool dirty)
 {
+  COIN_CHECK_THREAD();
   (void) this->changeStatusBits(FLAG_NEEDEVALUATION, dirty);
 }
 

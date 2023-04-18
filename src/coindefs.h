@@ -204,4 +204,37 @@ static void inline COIN_CONCAT(compile_only_before_nofunction,__LINE__) () { \
 #endif /* !unlikely */
 #endif /* !HAVE___BUILTIN_EXPECT */
 
+#ifdef COIN_DEBUG_CHECK_THREAD
+
+#include <thread>
+
+inline std::thread::id& coin_get_thread()
+{
+  static std::thread::id tid;
+  return tid;
+}
+
+#define COIN_INIT_CHECK_THREAD() \
+  do { \
+    coin_get_thread() = std::this_thread::get_id(); \
+  } while (0)
+
+#define COIN_CHECK_THREAD() \
+  do { \
+    if (coin_get_thread() != std::this_thread::get_id()) { \
+      SbString s; \
+      s.sprintf("%s:%u:%s", \
+                COIN_STUB_FILE ? COIN_STUB_FILE : "<>", \
+                COIN_STUB_LINE, \
+                COIN_STUB_FUNC_STRING); \
+      SoDebugError::post(s.getString(), \
+                         "Inventor access from wrong thread."); \
+    } \
+  } while (0)
+
+#else /* COIN_DEBUG_CHECK_THREAD */
+#define COIN_INIT_CHECK_THREAD() do { } while (0)
+#define COIN_CHECK_THREAD()      do { } while (0)
+#endif /* COIN_DEBUG_CHECK_THREAD */
+
 #endif /* !COIN_DEFS_H */

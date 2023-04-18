@@ -222,6 +222,7 @@ SbUniqueId is not really a class, just a \c typedef.
 #include "threads/threadsutilp.h"
 #include "glue/glp.h"
 #include "misc/SoDBP.h" // for global envvar COIN_PROFILER
+#include "coindefs.h"   // COIN_CHECK_THREAD
 
 // *************************************************************************
 
@@ -504,6 +505,8 @@ SoNode::startNotify(void)
 void
 SoNode::notify(SoNotList * l)
 {
+  COIN_CHECK_THREAD();
+
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoNode::notify", "node %p (%s \"%s\"), list %p",
                          this, this->getTypeId().getName().getString(),

@@ -93,6 +93,7 @@
 #include "tidbitsp.h"
 #include "io/SoInputP.h"
 #include "io/SoWriterefCounter.h"
+#include "coindefs.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -188,6 +189,8 @@ unsigned int SbHashFunc(const SoBase * key) {
  */
 SoBase::SoBase(void)
 {
+  COIN_CHECK_THREAD();
+
   // It is a common mistake to place e.g. nodes as static member
   // variables, or on the main()-function's stack-frame. This catches
   // some (but not all) of those cases.
@@ -474,6 +477,8 @@ SoBase::assertAlive(void) const
 void
 SoBase::ref(void) const
 {
+  COIN_CHECK_THREAD();
+
   if (COIN_DEBUG) this->assertAlive();
 
   CC_MUTEX_LOCK(SoBase::PImpl::mutex);
@@ -524,6 +529,8 @@ SoBase::ref(void) const
 void
 SoBase::unref(void) const
 {
+  COIN_CHECK_THREAD();
+
   if (COIN_DEBUG) this->assertAlive();
 
   CC_MUTEX_LOCK(SoBase::PImpl::mutex);
@@ -563,6 +570,8 @@ SoBase::unref(void) const
 void
 SoBase::unrefNoDelete(void) const
 {
+  COIN_CHECK_THREAD();
+
   if (COIN_DEBUG) this->assertAlive();
 
   this->objdata.referencecount--;
