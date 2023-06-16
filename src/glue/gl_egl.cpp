@@ -62,7 +62,7 @@
 
 void * eglglue_getprocaddress(const cc_glglue * glue_in, const char * fname)
 {
-  assert(FALSE); return NULL;
+  return NULL;
 }
 
 void * eglglue_context_create_offscreen(unsigned int COIN_UNUSED_ARG(width),
