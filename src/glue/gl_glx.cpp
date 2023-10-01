@@ -698,19 +698,27 @@ glxglue_contextdata_cleanup(struct glxglue_contextdata * ctx)
 static SbBool
 glxglue_context_create_software(struct glxglue_contextdata * context)
 {
-  /* Note that the value of the last argument (which indicates whether
-     or not we're asking for a DRI-capable context) is "False" on
-     purpose, as the man pages for glXCreateContext() says:
+  /* Note that the value of the last argument was "False" on
+     purpose, as the man pages for glXCreateContext() where saying:
 
           [...] direct rendering contexts [...] may be unable to
           render to GLX pixmaps [...]
 
-     Rendering to a GLX pixmap is of course exactly what we want to be
-     able to do. */
+     However, it still mentions:
+
+          It may not be possible to render to a GLX pixmap with a 
+	  direct rendering context.
+
+     But in for example in RHEL8 indirect rendering has been disabled
+     following X.Org Secutiry Advisory:
+     https://www.x.org/wiki/Development/Security/Advisory-2014-12-09/
+
+     This has now been changed to "True" to force direct rendering.
+     */
 
   Display * display = glxglue_get_display(NULL);
   context->glxcontext = glXCreateContext(display, context->visinfo, 0,
-                                         False);
+                                         True);
 
   if (context->glxcontext == NULL) {
     cc_debugerror_postwarning("glxglue_context_create_software",
