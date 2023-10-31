@@ -38,6 +38,9 @@
 
   - COIN_GLXGLUE_NO_GLX13_PBUFFERS: don't use GLX 1.3 pbuffers support
     (will then attempt to use pbuffers through extensions).
+
+  - COIN_GLX_PIXMAP_DIRECT_RENDERING: set to 1 to force direct rendering of
+    offscreen contexts
 */
 
 #include "glue/gl_glx.h"
@@ -698,8 +701,8 @@ glxglue_contextdata_cleanup(struct glxglue_contextdata * ctx)
 static SbBool
 glxglue_context_create_software(struct glxglue_contextdata * context)
 {
-  /* Note that the value of the last argument was "False" on
-     purpose, as the man pages for glXCreateContext() where saying:
+  /* Note that the value of the last argument of glXCreateContext()
+      was "False" on purpose, as the man pages where saying:
 
           [...] direct rendering contexts [...] may be unable to
           render to GLX pixmaps [...]
@@ -713,12 +716,22 @@ glxglue_context_create_software(struct glxglue_contextdata * context)
      following X.Org Secutiry Advisory:
      https://www.x.org/wiki/Development/Security/Advisory-2014-12-09/
 
-     This has now been changed to "True" to force direct rendering.
+     This argument can now be forced to a specific value by using the
+     environment variable COIN_GLX_PIXMAP_DIRECT_RENDERING
      */
+
+  static Bool direct_rendering = False;
+  static int check_direct = -1;
+
+  if (check_direct == -1) {
+    check_direct = 0;
+    const char * env = coin_getenv("COIN_GLX_PIXMAP_DIRECT_RENDERING");
+    direct_rendering = env && strtol(env, NULL, 10) >= 1 ? True : False;
+  }
 
   Display * display = glxglue_get_display(NULL);
   context->glxcontext = glXCreateContext(display, context->visinfo, 0,
-                                         True);
+                                         direct_rendering);
 
   if (context->glxcontext == NULL) {
     cc_debugerror_postwarning("glxglue_context_create_software",
