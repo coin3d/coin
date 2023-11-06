@@ -270,11 +270,6 @@ SoRenderManager::SoRenderManager(void)
 
   PRIVATE(this)->glaction = new SoGLRenderAction(SbViewportRegion(400, 400));
   PRIVATE(this)->audiorenderaction = new SoAudioRenderAction;
-
-  PRIVATE(this)->clipsensor =
-    new SoNodeSensor(SoRenderManagerP::updateClippingPlanesCB, PRIVATE(this));
-  PRIVATE(this)->clipsensor->setPriority(this->getRedrawPriority() - 1);
-
 }
 
 /*!
@@ -296,8 +291,6 @@ SoRenderManager::~SoRenderManager()
     delete PRIVATE(this)->superimpositions;
   }
 
-  delete PRIVATE(this)->clipsensor;
-
   if (PRIVATE(this)->scene)
     PRIVATE(this)->scene->unref();
   this->setCamera(NULL);
@@ -316,7 +309,6 @@ SoRenderManager::~SoRenderManager()
 void
 SoRenderManager::setSceneGraph(SoNode * const sceneroot)
 {
-  this->detachClipSensor();
   this->detachRootSensor();
   // Don't unref() until after we've set up the new root, in case the
   // old root == the new sceneroot. (Just to be that bit more robust.)
@@ -327,7 +319,6 @@ SoRenderManager::setSceneGraph(SoNode * const sceneroot)
   if (PRIVATE(this)->scene) {
     PRIVATE(this)->scene->ref();
     this->attachRootSensor(PRIVATE(this)->scene);
-    this->attachClipSensor(PRIVATE(this)->scene);
   }
   
   if (oldroot) oldroot->unref();
@@ -418,38 +409,6 @@ SoRenderManager::detachRootSensor(void)
 {
   if (PRIVATE(this)->rootsensor) {
     PRIVATE(this)->rootsensor->detach();
-  }
-}
-
-/*
-  Attaches this SoRenderManagers clipsensor to a scene
-
-  \param[in] sceneroot scene to attach to
-
-  \deprecated Will not be available in Coin 4
-*/
-void
-SoRenderManager::attachClipSensor(SoNode * const sceneroot)
-{
-  PRIVATE(this)->clipsensor->attach(sceneroot);
-  if (PRIVATE(this)->autoclipping != SoRenderManager::NO_AUTO_CLIPPING) {
-    PRIVATE(this)->clipsensor->schedule();
-  }
-}
-
-/*
-  Detaches the clipsensor from all tracked scenes
-
-  \deprecated Will not be available in Coin 4
-*/
-void
-SoRenderManager::detachClipSensor(void)
-{
-  if (PRIVATE(this)->clipsensor->isScheduled()) {
-    PRIVATE(this)->clipsensor->unschedule();
-  }
-  if (PRIVATE(this)->clipsensor->getAttachedNode()) {
-    PRIVATE(this)->clipsensor->detach();
   }
 }
 
@@ -983,21 +942,6 @@ void
 SoRenderManager::setAutoClipping(AutoClippingStrategy autoclipping)
 {
   PRIVATE(this)->autoclipping = autoclipping;
-
-  if (PRIVATE(this)->scene) {
-    switch (autoclipping) {
-    case SoRenderManager::NO_AUTO_CLIPPING:
-      this->detachClipSensor();
-      break;
-    case SoRenderManager::FIXED_NEAR_PLANE:
-    case SoRenderManager::VARIABLE_NEAR_PLANE:
-      if (!PRIVATE(this)->clipsensor->getAttachedNode()) {
-        PRIVATE(this)->clipsensor->attach(PRIVATE(this)->scene);
-      }
-      PRIVATE(this)->clipsensor->schedule();
-      break;
-    }
-  }
 }
 
 /*!
