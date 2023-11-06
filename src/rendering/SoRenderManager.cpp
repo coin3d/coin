@@ -779,6 +779,11 @@ SoRenderManager::renderScene( SoGLRenderAction * action,
     // This callback is removed again in the prerendercb function
     action->addPreRenderCallback(this->prerendercb, (void*) (uintptr_t) clearmask);
   }
+
+  if (PRIVATE(this)->autoclipping != SoRenderManager::NO_AUTO_CLIPPING) {
+    PRIVATE(this)->setClippingPlanes();
+  }
+
   action->apply(scene);
 }
 
