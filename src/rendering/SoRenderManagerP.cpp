@@ -35,6 +35,7 @@
 
 #include <Inventor/nodes/SoInfo.h>
 #include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -130,33 +131,57 @@ SoRenderManagerP::setClippingPlanes(void)
   xbox.transform(mat);
   SbBox3f box = xbox.project();
 
-  float nearval = -box.getMax()[2];
-  float farval = -box.getMin()[2];
+  const float SLACK = 0.001f;
+  float nearval;
+  float farval;
 
-  if (farval <= 0.0f) return;
+  if (camera->isOfType(SoOrthographicCamera::getClassTypeId())) {
+    float depth = SbAbs(box.getMax()[2] - box.getMin()[2]);
+    nearval = 1.0f;
+    farval = nearval + depth;
 
-  if (camera->isOfType(SoPerspectiveCamera::getClassTypeId())) {
-    float nearlimit;
-    if (this->autoclipping == SoRenderManager::FIXED_NEAR_PLANE) {
-      nearlimit = this->nearplanevalue;
-    } else {
-      int depthbits = -1; // FIXME:   (20070628 frodo)
-      if (depthbits < 0) depthbits = 32;
-      int use_bits = (int) (float(depthbits) * (1.0f - this->nearplanevalue));
-      float r = (float) pow(2.0, double(use_bits));
-      nearlimit = farval / r;
+    SbVec3f dir;
+    camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), dir);
+
+    float repositionDistance = box.getMax()[2] + nearval;
+    SbVec3f newpos = camera->position.getValue() - repositionDistance * dir;
+    if (!camera->position.getValue().equals(newpos, SLACK * SLACK)) {
+      camera->position = newpos;
     }
 
-    if (nearlimit >= farval) {
-      nearlimit = farval / 5000.0f;
+    float newfocal = camera->focalDistance.getValue() + repositionDistance;
+    const float focaleps = newfocal * SLACK * SLACK;
+    if (SbAbs(camera->focalDistance.getValue() - newfocal) > SbAbs(focaleps)) {
+      camera->focalDistance = newfocal;
     }
+  } else {
+    nearval = -box.getMax()[2];
+    farval = -box.getMin()[2];
 
-    if (nearval < nearlimit) {
-      nearval = nearlimit;
+    if (farval <= 0.0f) return;
+
+    if (camera->isOfType(SoPerspectiveCamera::getClassTypeId())) {
+      float nearlimit;
+      if (this->autoclipping == SoRenderManager::FIXED_NEAR_PLANE) {
+        nearlimit = this->nearplanevalue;
+      } else {
+        int depthbits = -1; // FIXME:   (20070628 frodo)
+        if (depthbits < 0) depthbits = 32;
+        int use_bits = (int) (float(depthbits) * (1.0f - this->nearplanevalue));
+        float r = (float) pow(2.0, double(use_bits));
+        nearlimit = farval / r;
+      }
+
+      if (nearlimit >= farval) {
+        nearlimit = farval / 5000.0f;
+      }
+
+      if (nearval < nearlimit) {
+        nearval = nearlimit;
+      }
     }
   }
 
-  const float SLACK = 0.001f;
   const float newnear = nearval * (1.0f - SLACK);
   const float newfar = farval * (1.0f + SLACK);
 
