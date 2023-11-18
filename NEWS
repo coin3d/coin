@@ -1,8 +1,15 @@
-New in Coin v4.0.1 (so far):
+New in Coin v4.0.1 (2023-11-18):
 * new:
   - Version control system has been changed from Mercurial to Git
   - Home of Coin3d organization has been changed from https://bitbucket.org/Coin3D
     to https://github.com/coin3d due to Bitbucket ending Mercurial support
+  - Updated included expat to 2.2.10
+  - Added CI for macOS, Windows, and Ubuntu per GitHub actions to repository
+  - Added checksum generation to AppVeyor CI
+  - Added macOS images to AppVeyor CI
+  - Optimized mutex debugging
+  - Introduced new COIN_DEBUG_CHECK_THREAD option
+  - Introduced COIN_GLX_PIXMAP_DIRECT_RENDERING environment variable to force direct rendering of offscreen contexts
 * bugfixes:
   - fixed crash when reading font glyphs fails
   - use font base line as bearing point for default font
@@ -23,6 +30,30 @@ New in Coin v4.0.1 (so far):
   - memory leak in SoShadowLightCache fixed
   - missing coin-default.cfg added
   - operator arguments on some base types fixed to use const references rather than copies
+  - fix improper comparison of parameter type in SoGLSLShaderParameter
+  - fix GLX glue trying to use NULL display
+  - do not disable VBO rendering for Intel graphics drivers anymore
+  - enable non power of two textures for ATi and Intel by default
+  - set GLSL shader version to 120 to avoid rendering issues with fog
+  - fix underlinking against X11
+  - removed obsolete ATI driver issue check
+  - fix shadow issues for Intel Graphics HD 630
+  - fix testing for maximum texture size
+  - fix for CMake 3.19.1 regression
+  - fix doc for SbUniqueId
+  - fix issues found by CodeQL static code analysis
+  - fix man page generation (prefix man pages with coin_)
+  - fix linking with system installation of expat
+  - fix private function signatures to avoid copying non POD
+  - reorder variables in private structs to improve memory foot print
+  - fix 'new[]' array freed with 'delete'
+  - fix issues found by LGTM static code analysis
+  - update SoSeparator documentation
+  - move constant data to read only data segment
+  - fix double free on cache destruction
+  - fix transparency issue on indexed lineset
+  - fix resource lookup when MULTIPLE_VERSION is enabled (issue #472)
+  - fix material and normal handling for indexed line set (issue #481)
 
 New in Coin v4.0.0 (2019-12-23):
 * new:

@@ -8,10 +8,60 @@ The changes described here are issues that might have an effect on the
 compatibility of your source code when upgrading the library.
 
 
-Coin 4.0.1 (so far)
+Coin 4.0.1
 ==========
 
 This is a bugfix release.
+
+Introduced COIN_GLX_PIXMAP_DIRECT_RENDERING environment variable to force direct rendering of offscreen contexts.
+
+Introduced new COIN_DEBUG_CHECK_THREAD option.
+
+Optimized mutex debugging.
+
+Fix integer division issue.
+
+Fix material and normal handling for indexed line set.
+
+Fix resource lookup when HAVE_MULTIPLE_VERSION is enabled in CMake build script.
+
+Fixed an transparency issue for indexed lineset.
+
+Move constant data to read only data segment to reduce size of shared object
+library (see https://randomascii.wordpress.com/2017/01/08/add-a-const-here-delete-a-const-there)
+
+Fixed numerous issues detected by static code analysis.
+
+The expat sources under coin/src/xml/expat were updated to version 2.2.10.
+
+Fix linking with system installation of expat.
+
+Fix broken ABI version on .so link.
+
+Do not run programs for determining hash quoting to support cross compiling.
+
+Fix testing for maximum texture size.
+
+Removed obsolete ATI driver issue check. Do not check for ATI driver issues
+fixed long time ago (see issue #412). We added environment variable
+COIN_GLGLUE_DISABLE_VBO_IN_DISPLAYLIST for compatibility with the old behaviour.
+
+Fix underlinking against X11 in CMake build scripts.
+
+Set GLSL shader version to 120 to avoid rendering issues with fog.
+
+Enable non power of two textures for ATi and Intel by default. For those who
+are in need of the old behavior, an environment variable
+COIN_GLGLUE_DISABLE_NON_POWER_OF_TWO_TEXTURES has been added.
+
+Do not disable VBO rendering for Intel graphics drivers anymore. Recent Intel
+graphics hardware is known to properly support VBO rendering. So we remove the
+code for disabling it by default.
+
+Fix GLX glue trying to use NULL display, i.e. when a unix platform has a
+non-GLX context: usually Wayland, but also might be offscreen or maybe EGL-X11.
+
+Fix operator arguments on some base types to use const references rather than copies.
 
 Fixed incorrect rendering of SoFaceSet. Conditions when to render as
 VertexArrayObject were not properly checked.
