@@ -1,9 +1,9 @@
-version: 4.0.0-{branch}-ci-{build}
+version: 4.0.1-{branch}-ci-{build}
 
 branches:
   only:
   - master
-  - /v\d*\.\d*\.\d*/
+  - /Coin-\d*\.\d*\.\d*/
 
 # do not build feature branches with open pull requests
 skip_branch_with_pr: true
