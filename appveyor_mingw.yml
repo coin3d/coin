@@ -3,7 +3,7 @@ version: 4.0.1-{branch}-ci-{build}
 branches:
   only:
   - master
-  - /Coin-\d*\.\d*\.\d*/
+  - /v\d*\.\d*\.\d*/
 
 # do not build feature branches with open pull requests
 skip_branch_with_pr: true
@@ -15,7 +15,7 @@ matrix:
   fast_finish: true # set this flag to immediately finish build once one of the jobs fails.
 
 environment:
-  SUPERGLU_VERSION: 1.3.0
+  SUPERGLU_VERSION: 1.3.1
   GH_AUTH_TOKEN:
     secure: 850frgRGZcc4Cljd2P7Ej68no4/kkl4EMB+DjnX725wcKBRJuFk/kGRdJGyKXd2u
   matrix:
@@ -142,7 +142,7 @@ before_build:
       mkdir %APPVEYOR_BUILD_FOLDER%\downloads
       rem ##############
       if defined APPVEYOR_REPO_TAG_NAME (set SUPERGLU_REPO_VERSION=%SUPERGLU_VERSION%) else (set SUPERGLU_REPO_VERSION=latest)
-      if defined APPVEYOR_REPO_TAG_NAME (set SUPERGLU_REPO_TAG_NAME=superglu-%SUPERGLU_VERSION%) else (set SUPERGLU_REPO_TAG_NAME=CI-builds)
+      if defined APPVEYOR_REPO_TAG_NAME (set SUPERGLU_REPO_TAG_NAME=v%SUPERGLU_VERSION%) else (set SUPERGLU_REPO_TAG_NAME=CI-builds)
       set DOWNLOAD_FILE_SUPERGLU=superglu-%SUPERGLU_REPO_VERSION%-%COMPILER_ID%-%CMAKE_PLATFORM%.zip
       for /f %%i in ('curl -s -H "Authorization: token %GH_AUTH_TOKEN%" https://api.github.com/repos/coin3d/superglu/releases ^| jq -r --arg SUPERGLU_REPO_TAG_NAME "%SUPERGLU_REPO_TAG_NAME%" ".[] | select(.tag_name==$SUPERGLU_REPO_TAG_NAME) | .id"') do set RELEASE_ID=%%i
       for /f %%i in ('curl -s -H "Authorization: token %GH_AUTH_TOKEN%" https://api.github.com/repos/coin3d/superglu/releases/%RELEASE_ID% ^| jq -r --arg DOWNLOAD_FILE_SUPERGLU "%DOWNLOAD_FILE_SUPERGLU%" ".assets[] | select(.name==$DOWNLOAD_FILE_SUPERGLU) | .id"') do set ASSET_ID=%%i
@@ -168,7 +168,7 @@ before_build:
       export COMPILER_ID=$APPVEYOR_BUILD_WORKER_IMAGE-$COMPILER_ID`$COMPILER_ID -dumpversion | tr '.' '\n'`
       ###############
       # if [ -n "${APPVEYOR_REPO_TAG_NAME}" ]; then export SUPERGLU_REPO_VERSION=$SUPERGLU_VERSION; else export SUPERGLU_REPO_VERSION=latest; fi
-      # if [ -n "${APPVEYOR_REPO_TAG_NAME}" ]; then export SUPERGLU_REPO_TAG_NAME=superglu-$SUPERGLU_VERSION; else export SUPERGLU_REPO_TAG_NAME=CI-builds; fi
+      # if [ -n "${APPVEYOR_REPO_TAG_NAME}" ]; then export SUPERGLU_REPO_TAG_NAME=v$SUPERGLU_VERSION; else export SUPERGLU_REPO_TAG_NAME=CI-builds; fi
       # DOWNLOAD_FILE_SUPERGLU=superglu-$SUPERGLU_REPO_VERSION-$COMPILER_ID-$CMAKE_PLATFORM.tar.gz
       # RELEASE_ID=`curl -s -H "Authorization: token $GH_AUTH_TOKEN" https://api.github.com/repos/coin3d/superglu/releases | jq -r --arg SUPERGLU_REPO_TAG_NAME "$SUPERGLU_REPO_TAG_NAME" '.[] | select(.tag_name==$SUPERGLU_REPO_TAG_NAME) | .id'`
       # ASSET_ID=`curl -s -H "Authorization: token $GH_AUTH_TOKEN" https://api.github.com/repos/coin3d/superglu/releases/$RELEASE_ID | jq -r --arg DOWNLOAD_FILE_SUPERGLU "$DOWNLOAD_FILE_SUPERGLU" '.assets[] | select(.name==$DOWNLOAD_FILE_SUPERGLU) | .id'`
