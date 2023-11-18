@@ -14,7 +14,7 @@ math(EXPR COIN_SO_VERSION ${PROJECT_VERSION_MAJOR}*20)
 
 # ############################################################################
 # these will be removed after upgrading CMake minimum version
-set(PROJECT_DESCRIPTION   "A high-level 3D visualization library with Open Inventor 2.1 API")
+set(PROJECT_DESCRIPTION "A high-level 3D visualization library with Open Inventor 2.1 API")
 # ############################################################################
 
 if(POLICY CMP0054)
