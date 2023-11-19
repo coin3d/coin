@@ -642,7 +642,7 @@ STUFF TO FIX IN COIN
         * Fix other known bugs where we have littered work-arounds in
           our SoQt-code.
 
-        * Fix the context-silliness problem reported by François
+        * Fix the context-silliness problem reported by FranÃ§ois
           Painchaud:
 
             void QGLContext::makeCurrent()
@@ -977,7 +977,7 @@ STUFF TO FIX IN COIN
     that, or add DirectX import / export support to simage.)
 
     UPDATE 2004-10-08: kyrah recommends not using DirectX, for two
-    reaons: inter-version incompatibilities, and number of output
+    reasons: inter-version incompatibilities, and number of output
     formats not matching number of input formats.
 
     kyrah and thammer recommends using GDI+ instead (binding
@@ -1006,7 +1006,7 @@ STUFF TO FIX IN COIN
 
     This is the old idea for RR, about "offline"/pre-processing
     occlusion culling to remove interior parts of objects, which now
-    should be possible to do with Øystein's SoExtSelection code.
+    should be possible to do with Ã˜ystein's SoExtSelection code.
 
     Refactor the "visible only" SoExtSelection code into an internal
     Coin interface, then use that from both SoExtSelection and the new
@@ -1053,7 +1053,7 @@ STUFF TO FIX IN COIN
 
 
 040 Add built-in version numbers to win32 DLLs.
-    2003-09-11 Barbara Langmüller <barbara@sim.no>
+    2003-09-11 Barbara LangmÃ¼ller <barbara@sim.no>
 
     win32 DLLs should have built-in version tags to be able to extract
     from which minor version the DLL was built from to avoid possible
@@ -1089,7 +1089,7 @@ STUFF TO FIX IN COIN
                   VALUE "FileDescription", "coin2d"
                   VALUE "FileVersion", "1, 0, 0, 1"
                   VALUE "InternalName", "coin2d"
-                  VALUE "LegalCopyright", "Copyright © 2003"
+                  VALUE "LegalCopyright", "Copyright Â© 2003"
                   VALUE "LegalTrademarks", ""
                   VALUE "OriginalFilename", "coin2d.dll"
                   VALUE "PrivateBuild", ""
