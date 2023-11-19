@@ -1910,7 +1910,7 @@
 
 	* configure.in:
 	
-	Report platforms not in SIM aswell as untested platforms.
+	Report platforms not in SIM as well as untested platforms.
 
 2001-11-19 23:54  mortene
 

@@ -1133,7 +1133,7 @@ SoVRMLAudioClipP::openFile(const char *filename)
     // FIXME: sound should stop playing.  20021101 thammer
     SoDebugError::postWarning("SoVRMLAudioClipP::openFile",
                               "Couldn't open file '%s'.\n"
-                              "Here's some advice for debbugging:\n\n"
+                              "Here's some advice for debugging:\n\n"
                               "Audio data is loaded using the \"simage\" library. "
                               "Make sure you have\n"
                               "built the simage library with support for the audio file formats you\n"

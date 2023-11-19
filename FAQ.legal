@@ -78,7 +78,7 @@ Q 0.2:  How can you sell a "Professional Edition License" when the
 A:      Kongsberg Oil & Gas Technologies can do this dual licensing "trick"
         with Coin because we are full copyright holders -- ie we own every
         single line of code written for the Coin library. Therefore we are
-        able to license the Coin library both as Free Software aswell as
+        able to license the Coin library both as Free Software as well as
         under a special purpose license for proprietary software
         vendors. (If you are familiar with TrollTech's "Qt" library,
         they use the same strategy.)

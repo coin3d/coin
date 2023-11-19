@@ -2250,7 +2250,7 @@ Therefore we define the value for GL_NUM_EXTENSIONS here
 #define GLU_SILHOUETTE 100013
 #endif /* ! GLU_SILHOUETTE */
 
-/* Tesselator */
+/* Tessellator */
 #ifndef GLU_TESS_BEGIN
 #define GLU_TESS_BEGIN 100100
 #endif /* ! GLU_TESS_BEGIN */

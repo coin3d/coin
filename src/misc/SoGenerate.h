@@ -38,7 +38,7 @@
 #endif /* !COIN_INTERNAL */
 
 //
-// reuseable code for generatePrimitives (OpenInventor, VRML and VRML2)
+// reusable code for generatePrimitives (OpenInventor, VRML and VRML2)
 //
 
 #include <Inventor/SbBasic.h>

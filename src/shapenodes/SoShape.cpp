@@ -1778,7 +1778,7 @@ SoShape::validatePVCache(SoGLRenderAction * action)
     // this _must_ be called after creating the pvcache
 
     // FIXME: consider if we should call a virtual function here to
-    // enable subclasses to modify the primtive vertex cache. Must be
+    // enable subclasses to modify the primitive vertex cache. Must be
     // done before to state->pop() call.
     state->pop();
     SoCacheElement::setInvalid(storedinvalid);

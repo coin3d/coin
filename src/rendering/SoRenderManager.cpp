@@ -836,7 +836,7 @@ SoRenderManager::renderSingle(SoGLRenderAction * action,
       SoOverrideElement::setMaterialBindingOverride(state, node, TRUE);
       this->actuallyRender(action, initmatrices, FALSE, FALSE);
 
-      // reenable draw masks
+      // re-enable draw masks
       glColorMask(GL_TRUE,GL_TRUE,GL_TRUE,GL_TRUE);
       SoPolygonOffsetElement::set(state, node, 0.0f, 0.0f,
                                   SoPolygonOffsetElement::FILLED, FALSE);

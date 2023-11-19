@@ -3542,7 +3542,7 @@
 
 2008-11-13 18:37  larsa
 
-	* [r12696] src/draggers/SoTransformerDragger.cpp: reenable testcase
+	* [r12696] src/draggers/SoTransformerDragger.cpp: re-enable testcase
 	  unrefs to avoid drowning in node-leaks
 
 2008-11-13 18:29  larsa

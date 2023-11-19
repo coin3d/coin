@@ -3745,7 +3745,7 @@
 
 	Killed 007:
 
-	The problem is really an issue of GLU's tesselator, which produces
+	The problem is really an issue of GLU's tessellator, which produces
 	bogus results if the knot vector is in the format [0,...,1]. (This
 	is reproducible in a stand-alone GLU example.) Probably related to
 	floating point issues.

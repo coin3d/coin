@@ -194,7 +194,7 @@ The problem was caused by the fact that when building Coin, we
 specifically set -L/usr/lib/gcc/darwin/default/private/, forcing the
 version of libstdc++.dylib in that directory to be linked in. Now when
 the user compiled an application in Project Builder, the application
-linked against a *different* version of libstc++, and when the
+linked against a *different* version of libstdc++, and when the
 application was run, that version of the library was used, leading to
 an undefined symbol error.  The only reason for having
 -L/usr/lib/gcc/darwin/default/private/ in the first place was a

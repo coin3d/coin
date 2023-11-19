@@ -2722,7 +2722,7 @@
 
 	* src/nodekits/SoBaseKit.cpp:
 
-	Bugfix. Reenable test that somebody has disabled at some time, causing extra
+	Bugfix. Re-enable test that somebody has disabled at some time, causing extra
 	list items to be added.
 
 2003-10-15 01:53:06  Rev 7152   larsa
@@ -3002,7 +3002,7 @@
 
 	* src/base/SbTesselator.cpp:
 
-	Fix tesselator bug caused by braindead programmer (me).
+	Fix tessellator bug caused by braindead programmer (me).
 
 2003-10-07 08:05:18  Rev 7107   mortene
 
@@ -4347,7 +4347,7 @@
 
 	* include/Inventor/system/gl.h.in:
 
-	Added GLU tesselator #defines.
+	Added GLU tessellator #defines.
 
 2003-09-05 11:09:49  Rev 6900   handegar
 
@@ -5489,7 +5489,7 @@
 
 	* src/base/SbMatrix.cpp:
 
-	Reenable optimized inverse() after a quick bugfix.
+	Re-enable optimized inverse() after a quick bugfix.
 
 2003-07-24 08:50:13  Rev 6730   pederb
 
@@ -10090,7 +10090,7 @@
 
 	* src/misc/SoOffscreenRenderer.cpp:
 
-	Kill hack for WGL aswell as GLX.
+	Kill hack for WGL as well as GLX.
 
 2003-03-10 20:18:38  Rev 6019   mortene
 

@@ -195,7 +195,7 @@ THE WISH LIST
 
   Update, mortene@sim.no 2001-05-01:
 
-    I think we also need to write a "panel" class aswell as layout
+    I think we also need to write a "panel" class as well as layout
     handling to do this properly.
 
   Update, mortene@sim.no 2001-05-01:
@@ -237,7 +237,7 @@ THE WISH LIST
   One could use ! instead of -, but bash (readline?) doesn't handle use of
   ! as gracefully as it ought to.
 
-  The last ocurrence of an option would be the result of a lookup.  That
+  The last occurrence of an option would be the result of a lookup.  That
   way, you can override previous settings by writing:
 
     COIN_OPTIONS="$COIN_OPTIONS,-RENDER_CACHING"
@@ -314,7 +314,7 @@ THE WISH LIST
 
   It is now not possible to store override information for nodes
   permanently in scenegraph "dumps" to .iv-files.  Being able to make
-  this information persistance would be more convenient for the
+  this information persistence would be more convenient for the
   application programmer.
 
   Note that it is very probable that fixing this would force us to
@@ -522,7 +522,7 @@ THE WISH LIST
         capable of working on the more obscure platforms out there
         also is not as trivial as it may seem.
 
-     2) It would IMO be preferrable to have this class implemented in
+     2) It would IMO be preferable to have this class implemented in
         "pure" C, for easier duplication into any other project /
         library, plus because we'd like to re-write many of the Sb*
         classes, So*Error classes and some other Coin classes in C
@@ -844,7 +844,7 @@ THE WISH LIST
   I suggest we add a static function to SoInput to set (user-supplied)
   callbacks for opening, reading, (possibly seeking and "telling" file
   position) and closing a datastream (which internally in SoInput
-  would be handled allmost identically to a file).
+  would be handled almost identically to a file).
 
   The callbacks would look something like this:
 

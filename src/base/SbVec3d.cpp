@@ -159,7 +159,7 @@ SbVec3d::SbVec3d(const SbDPPlane & p0, const SbDPPlane & p1, const SbDPPlane & p
   //   n2x*px + n2y*py + n2z*pz = d2   , where [px, py, pz] are the unknowns.
   //
   // This can be solved by applying the Gauss elimination method. See
-  // for instance "Advanced Engineering Mathemathics", Kreyszig, 6th edition,
+  // for instance "Advanced Engineering Mathematics", Kreyszig, 6th edition,
   // chapter 19.
   //                                                        19980817 mortene.
 

@@ -33,7 +33,7 @@ NEWS File Excerpt:
   - corrected scene redraw logic not to depend on realtime field updates
   - and lots more...
 * optimizations:
-  - file reading should be noticable faster
+  - file reading should be noticeable faster
   - more/improved use of vertex array rendering and vertex buffer objects
 * other:
   - build setup updates, doc updates, Mac OS X packaging fixes

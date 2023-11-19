@@ -451,7 +451,7 @@ SoGlyph::getGlyph(const char character, const SbName & font)
 {
 
   // FIXME: the API and implementation of this class isn't consistent
-  // with regard to the paraneters and variabls that are glyph codes
+  // with regard to the parameters and variables that are glyph codes
   // -- some places they are "char", other places "int", some places
   // signed, other places unsigned. Should audit and fix as much as
   // possible without breaking API and ABI compatibility. *sigh*

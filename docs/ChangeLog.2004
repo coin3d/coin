@@ -1617,7 +1617,7 @@
 
 	* src/caches/SoPrimitiveVertexCache.cpp:
 
-	reenable triangle sorting.
+	re-enable triangle sorting.
 
 2004-10-08 14:47:44  Rev 8531   pederb
 
@@ -3120,7 +3120,7 @@
 
 	* include/Inventor/C/basic.h.in:
 
-	Provide COIN_BETA_VERSION define for external aswell as internal code.
+	Provide COIN_BETA_VERSION define for external as well as internal code.
 
 2004-08-02 15:03:53  Rev 8305   jornskaa
 

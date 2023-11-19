@@ -17,8 +17,8 @@ of the release date, the newest version of doxygen 1.6.1 has a
 regression bug, which causes some errors when trying to build Coin.
 
 We have discontinued the use of our subversion repositories. All
-further development of Coin and associates is now occuring in
-Mercurial (http://mercurial.selenic.com). Our public repositiories are
+further development of Coin and associates is now occurring in
+Mercurial (http://mercurial.selenic.com). Our public repositories are
 available from http://hg.sim.no.
 
 It should also be mentioned that the Coin v3 series will be the last

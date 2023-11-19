@@ -158,7 +158,7 @@ SoShuttle::write(SoWriteAction * action)
 
   inherited::write(action);
 
-  // Reenable all connections to/from internal engine. (Only done at
+  // Re-enable all connections to/from internal engine. (Only done at
   // last pass.)
   if (out->getStage() == SoOutput::WRITE)
     this->reconnectInternalEngines();
@@ -178,7 +178,7 @@ SoShuttle::copy(SbBool copyconnections) const
 
   SoShuttle * cp = (SoShuttle *)inherited::copy(copyconnections);
 
-  // Reenable all connections to/from internal engines.
+  // Re-enable all connections to/from internal engines.
   ((SoShuttle *)this)->reconnectInternalEngines();
 
   return cp;
@@ -200,7 +200,7 @@ SoShuttle::deconnectInternalEngines(void)
 }
 
 
-// Reenable all connections to/from internal engines.
+// Re-enable all connections to/from internal engines.
 void
 SoShuttle::reconnectInternalEngines(void)
 {

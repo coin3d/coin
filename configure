@@ -31833,7 +31833,7 @@ fi
 # src/glue/dl.c, at least).
 
 # Will set $sim_ac_shlibext. Note: there's a dependency on this later in
-# the configure script aswell.
+# the configure script as well.
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for shared library suffix" >&5
 $as_echo_n "checking for shared library suffix... " >&6; }
