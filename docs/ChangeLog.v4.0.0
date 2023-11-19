@@ -493,7 +493,7 @@
 2019-03-23 22:04 +0100  Volker Enderlein  <volkerenderlein@hotmail.com>  (8fbec0cca7ce <spidermonkey>)
 
 	* src/glue/spidermonkey.cpp:
-	Fixed inadvertently changed include order to reenable static and
+	Fixed inadvertently changed include order to re-enable static and
 	dynamic linktime linking of spidermonkey.
 
 2019-03-08 19:00 +0100  Volker Enderlein  <volkerenderlein@hotmail.com>  (07e44893e008)

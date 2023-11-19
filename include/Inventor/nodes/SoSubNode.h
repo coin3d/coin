@@ -81,7 +81,7 @@ private: \
   static void atexit_cleanup(void); \
   static const SoFieldData ** parentFieldData; \
   static SoFieldData * fieldData; \
-  /* Counts number of instances of subclasses aswell as "direct" */ \
+  /* Counts number of instances of subclasses as well as "direct" */ \
   /* instances from non-abstract classes. */ \
   static unsigned int classinstances
 

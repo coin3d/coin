@@ -152,7 +152,7 @@ SoPendulum::write(SoWriteAction * action)
 
   inherited::write(action);
 
-  // Reenable all connections to/from internal engine. (Only done at
+  // Re-enable all connections to/from internal engine. (Only done at
   // last pass.)
   if (out->getStage() == SoOutput::WRITE)
     this->reconnectInternalEngine();
@@ -172,7 +172,7 @@ SoPendulum::copy(SbBool copyconnections) const
 
   SoPendulum * cp = (SoPendulum *)inherited::copy(copyconnections);
 
-  // Reenable all connections to/from internal engines.
+  // Re-enable all connections to/from internal engines.
   ((SoPendulum *)this)->reconnectInternalEngine();
 
   return cp;
@@ -194,7 +194,7 @@ SoPendulum::deconnectInternalEngine(void)
 }
 
 
-// Reenable all connections to/from internal engines.
+// Re-enable all connections to/from internal engines.
 void
 SoPendulum::reconnectInternalEngine(void)
 {

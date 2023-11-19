@@ -29,7 +29,7 @@ NEWS File Excerpt:
 
 * new:
   - Scene graph performance profiling subsystem
-  - SoDepthBuffer node for constrolling Z-buffer settings
+  - SoDepthBuffer node for controlling Z-buffer settings
   - Shaders: SoVertexAttribute and SoVertexAttributeBinding nodes
   - Shadows: SoShadowSpotLight node
   - SoHeightMapToNormalMap texture conversion engine

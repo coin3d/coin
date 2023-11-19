@@ -81,14 +81,14 @@ most notably,  for interpolation between rotations.
 Last month on comp.graphics.algorithms there was a thread "Euler
 angles...".  Mark Penacho posted a semi-correct message indicating the
 approach you can take to solve for Euler angles from a given rotation
-marix, but he got some of the conditions regarding the singularities
+matrix, but he got some of the conditions regarding the singularities
 pretty wrong, so if you get his message from Deja News, be sure also
 to look at my response to it.
 
 Hexapod's code, quoted below, tries to follow a similar path.
 
 >I did read Hexapod's Matrix and Quat FAQ, the resulting Matrix->Euler
->function follows. It doesnt work btw :)
+>function follows. It doesn't work btw :)
 >
 
 The first problem with Hexapod's code would be, as I stated above,

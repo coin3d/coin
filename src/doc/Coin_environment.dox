@@ -124,10 +124,10 @@
   a second, depending on how fast each frame is drawn.
 
   The \c stdout keyword causes the profiling data to be sent to stdout
-  instead of being overlayed on the GL view.
+  instead of being overlaid on the GL view.
 
   The \c stderr keyword causes the profiling data to be sent to stderr
-  instead of being overlayed on the GL view.
+  instead of being overlaid on the GL view.
 
   The \c clear keyword works with \c stdout and \c stderr, and makes
   Coin attempt to clear the console between each time it dumps

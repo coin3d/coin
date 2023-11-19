@@ -252,7 +252,7 @@ ScXMLStateMachine::setDescription(ScXMLDocument * document)
   PRIVATE(this)->finished = FALSE;
   PRIVATE(this)->activestatelist.clear();
 
-  // set up the correct evalutor and identify the modules that are enabled
+  // set up the correct evaluator and identify the modules that are enabled
   ScXMLElt * rootelt = document->getRoot();
   if (rootelt->isOfType(ScXMLScxmlElt::getClassTypeId())) {
     ScXMLScxmlElt * scxmlelt = static_cast<ScXMLScxmlElt *>(rootelt);

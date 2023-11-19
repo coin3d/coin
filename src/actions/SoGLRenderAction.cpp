@@ -1318,7 +1318,7 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
   be used.
 
   Please note that this will disable any antialiasing set using the
-  setNumPasses() method. You can reenable the internal antialiasing
+  setNumPasses() method. You can re-enable the internal antialiasing
   again by calling setNumPasses()
 
   \since Coin 3.1

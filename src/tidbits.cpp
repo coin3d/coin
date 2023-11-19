@@ -31,7 +31,7 @@
 \**************************************************************************/
 
 /*
-  This file contains various miniscule code fragments that don't really
+  This file contains various minuscule code fragments that don't really
   belong anywhere in Coin, but which is included to make it easier to keep
   Coin portable.
 */
@@ -101,7 +101,7 @@
 
 
    2) A portable snprintf under either GNU (L?)GPL or the "Frontier
-      Artistic Lisence" (wahtever that is):
+      Artistic License" (whatever that is):
 
       - http://www.ijs.si/software/snprintf/
 
@@ -567,7 +567,7 @@ coin_getenv(const char * envname)
       getenv() function.  We therefore have to do bookkeeping and maintain
       this linked list of allocated buffers that should be cleaned up on exit
       (atexit()).  We don't keep it for lookup of values - we actually can't
-      use the valus as value caches in case they have been changed from other
+      use the values as value caches in case they have been changed from other
       parts of the application.  We only keep them so we can free them later.
     */
 

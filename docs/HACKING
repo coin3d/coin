@@ -176,7 +176,7 @@ recompile and relink _all_ sourcecode depending on this class, not
 just the class itself. Or core dumps will happen. (See footnote 1 at
 the end of this document for an explanation of the term "ABI".)
 
-There are many, many ways to break ABI compatiblity in C++:
+There are many, many ways to break ABI compatibility in C++:
 
   - variables being added or removed from / to a class, making it's
     sizeof() change
@@ -324,7 +324,7 @@ and explains the principles applied fairly well.
 
     This define should be set to either 0 or 1.  It is therefore used
     with the #if directive, not the #ifdef directive.  Actually, this define
-    is now preferrably used as an if-condition to avoid littering the source
+    is now preferably used as an if-condition to avoid littering the source
     code with too many preprocessing directives.
 
   COIN_EXTRA_DEBUG
@@ -569,7 +569,7 @@ To cooperate in a painless way with Libtool, we choose to "convert" our
 MAJOR.MINOR.MICRO scheme to Libtool's idea of versioning like this:
 
 * Libtool's CURRENT number is increased when the MAJOR or MINOR number is
-  changed.  If development and realeases were dune in a linear fashion, we
+  changed.  If development and realeases were done in a linear fashion, we
   would just have to increase CURRENT by one when the above happens, but
   since we intend to continue to support Coin 1.* after the release of
   Coin 2.* we have had to make up a different scheme.  What we have done is
@@ -642,7 +642,7 @@ commit the new setup with a message about setting the version number
 again.
 
 These two version-increment commits should happen without getting any
-unrelated commits inbetween them so there won't be multiple states of
+unrelated commits in between them so there won't be multiple states of
 the Mercurial repository with a release version number.
 
 Then go back to the tag (hg update -rCoin-MAJOR.MINOR.MICRO) and
@@ -924,7 +924,7 @@ versus the code "layout" (to make it more easily readable):
       // all bets are off and we should simply terminate the import
       // operation. (flushInput() continues to read and scans for a
       // closing brace). Run with this code disabled for a while and axe
-      // it if nothing bad seems to come frome it. 20020531 mortene.
+      // it if nothing bad seems to come from it. 20020531 mortene.
       //
       // if (!ret && flush) SoBase::flushInput(in);
 
@@ -1149,9 +1149,9 @@ just one rule which is an absolute must:
           know when the API was extended -- in case they want to
           support a range of older versions of the library, for
           instance. Valid parameters to "\since" are:
-          * Coin x.y              - What Coin version it first occured in.
-          * TGS Inventor x.y[.z]  - What TGS OIV version it first occured in.
-          * Inventor x.y[.z]      - What SGI OIV version it first occured in.
+          * Coin x.y              - What Coin version it first occurred in.
+          * TGS Inventor x.y[.z]  - What TGS OIV version it first occurred in.
+          * Inventor x.y[.z]      - What SGI OIV version it first occurred in.
           * YYYY-MM-DD            - What date it was added to Coin. Will be
                                     converted to the correct COIN-x.y for each
                                     Coin release.
@@ -1176,7 +1176,7 @@ A few hints:
         * Cross-reference to other functions and / or classes with the
           "\sa" ("see also") tag where it seems helpful for the
           application programmer. Remember that Doxygen automatically
-          finds and crossreferences class or function names found in
+          finds and cross-references class or function names found in
           the doc anyway, so don't overuse the "\sa" tag.
 
         * We do not force a third-person vs an imperative style, or
@@ -1229,7 +1229,7 @@ Footnotes
     ------------------------------------------
 
     Matthias Ettrich and Lubos Lunak have published a document called
-    Binary Compatibility Issues Wth C++. It deals with the details a
+    Binary Compatibility Issues With C++. It deals with the details a
     developer should know about when working on APIs and
     RPC-Interfaces.
 

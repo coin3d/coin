@@ -203,7 +203,7 @@
   root->addChild(new SoCube);
   \endcode
 
-  ..so even for this miniscule mock-up example, you save on code
+  ..so even for this minuscule mock-up example, you save on code
   verbosity and complexity.
 
 
@@ -1010,7 +1010,7 @@ SoBaseKit::GLRender(SoGLRenderAction * action)
   SoBaseKit::doAction((SoAction *)action);
 }
 
-// Doc in superclass. Overriden to calculate bounding box center.
+// Doc in superclass. Overridden to calculate bounding box center.
 void
 SoBaseKit::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -1037,7 +1037,7 @@ SoBaseKit::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoBaseKit::getMatrix(SoGetMatrixAction * action)
 {
-  // SoBaseKit should be travesed like a normal SoGroup node, and the
+  // SoBaseKit should be traversed like a normal SoGroup node, and the
   // children should only be traversed if we're IN_PATH or OFF_PATH
   // (SoGetMatrixAction is only applied on a path or on a single node,
   // and we must not calculate when BELOW_PATH or NO_PATH).

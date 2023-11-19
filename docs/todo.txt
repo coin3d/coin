@@ -148,7 +148,7 @@ STUFF TO FIX IN COIN
 
     UPDATE 2002-06-17 mortene: pederb has laid out the foundations
     necessary by setting up bitmasks and API methods on
-    SoNode. Inventor2.0 import should be ok. Export "compability
+    SoNode. Inventor 2.0 import should be ok. Export "compatibility
     detection" has not been done yet, though.
 
     UPDATE 2002-10-29 mortene: one additional word of warning from
@@ -494,7 +494,7 @@ STUFF TO FIX IN COIN
     dependencies. Meeting even just a useful number of those when
     building Coin is quite a lot of hassle -- at least on Windows. I
     believe it's a real asset that Coin has so few hard dependencies
-    now. So it seems simpler to let people build Coin, but to donwload
+    now. So it seems simpler to let people build Coin, but to download
     a separate, full-featured simage binary -- to upgrade their
     ability to import and export the various supported media formats.
 
@@ -977,7 +977,7 @@ STUFF TO FIX IN COIN
     that, or add DirectX import / export support to simage.)
 
     UPDATE 2004-10-08: kyrah recommends not using DirectX, for two
-    reaons: inter-version incompabilities, and number of output
+    reaons: inter-version incompatibilities, and number of output
     formats not matching number of input formats.
 
     kyrah and thammer recommends using GDI+ instead (binding

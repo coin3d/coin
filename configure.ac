@@ -1985,7 +1985,7 @@ AC_DEFINE_UNQUOTED([OPENGL_SYSTEM_LIBRARY_NAME], ["$sim_ac_opengl_dll_name"],
 # * (IBM AIX, SGI IRIX 6.2 and IRIX 6.5 with standard settings are
 # * known to fail).
 # *
-# * This nasty hack also have a lot of positivie bieffects, such as
+# * This nasty hack also have a lot of positive byeffects, such as
 # * increasing optimization, and memory usage of the compiler, while
 # * reducing the compile time for a release build.
 # *******************************************************************

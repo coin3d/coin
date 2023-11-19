@@ -2061,6 +2061,6 @@ BOOST_AUTO_TEST_CASE(constructFromSbDPMatrix) {
   b.setValue(c);
   SbMatrix d = SbMatrix(a);
   BOOST_CHECK_MESSAGE(b == d,
-                      "Equality comparrison failed!");
+                      "Equality comparison failed!");
 }
 #endif //COIN_TEST_SUITE

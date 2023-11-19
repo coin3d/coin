@@ -284,7 +284,7 @@ SoDB::init(void)
 
   // Sanity check: if this breaks, the binary format import and export
   // routines will not work correctly. FIXME: the code should be fixed
-  // to use the int16_t type, then we can remove this stoopid check.
+  // to use the int16_t type, then we can remove this stupid check.
   assert(sizeof(short) == 2);
 
   if (sizeof(short) != 2) {

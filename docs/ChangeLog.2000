@@ -2732,7 +2732,7 @@
 	* src/engines/SoBoolOperation.cpp:
 	
 	Fixed buggy behavior for operations A_EQUALS_B and A_NOT_EQUALS_B,
-	aswell as cleaning up the variable naming so we don't intrude on
+	as well as cleaning up the variable naming so we don't intrude on
 	the compiler namespace.
 
 2000-09-13 17:40  mortene
@@ -5613,7 +5613,7 @@
 
 	* include/Inventor/misc/SoGL.h, src/misc/SoGL.cpp:
 	
-	Implemented a NURBS renderer/tesselator using GLU v1.3. Done by
+	Implemented a NURBS renderer/tessellator using GLU v1.3. Done by
 	pederb.
 
 2000-06-30 13:56  mortene
@@ -14585,7 +14585,7 @@
 
 	* src/misc/SoGL.cpp:
 	
-	Reenable OpenGL extension detection function.
+	Re-enable OpenGL extension detection function.
 
 2000-01-12 18:29  mortene
 

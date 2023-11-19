@@ -2343,9 +2343,9 @@ SoExtSelectionP::offscreenRenderLassoCallback(void * userdata, SoAction * action
   // This flag will be set to TRUE if the tesselatorcallbacks was executed.
   pimpl->lassostencilisdrawed = FALSE;
 
-  // Render all tris to offscreen buffer via a tesselator.
-  SbTesselator tesselator(pimpl->offscreenLassoTesselatorCallback,pimpl);
-  tesselator.beginPolygon();
+  // Render all tris to offscreen buffer via a tessellator.
+  SbTesselator tessellator(pimpl->offscreenLassoTesselatorCallback,pimpl);
+  tessellator.beginPolygon();
 
   int i;
   SbList <SbVec3f> tmplist;
@@ -2354,8 +2354,8 @@ SoExtSelectionP::offscreenRenderLassoCallback(void * userdata, SoAction * action
   }
   const SbVec3f * tmparray = tmplist.getArrayPtr();
   for(i = 0; i < pimpl->runningselection.coords.getLength(); i++)
-    tesselator.addVertex(tmparray[i],(void*)&tmparray[i]);
-  tesselator.endPolygon();
+    tessellator.addVertex(tmparray[i],(void*)&tmparray[i]);
+  tessellator.endPolygon();
 
   glMatrixMode(GL_PROJECTION);
   glPopMatrix();

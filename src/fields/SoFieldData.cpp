@@ -235,7 +235,7 @@ SoFieldData::addField(SoFieldContainer * base, const char * name,
 
     // FIXME: disabled yet, as we should first make a test program to
     // see if this robustness check is ok with the current Coin
-    // code. The check shuold simply run through all
+    // code. The check should simply run through all
     // SoFieldContainer-derived classes and make an instance of all
     // non-abstract ones. Then see if there'll be any asserting or
     // crashing from the below check.

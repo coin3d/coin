@@ -89,7 +89,7 @@ SbPolarStereographic::project(const SbGeoAngle & phi_in,
   double rho = (2 * a * k0 * t) / pow((pow((1.0 + e), (1.0 + e)) * pow((1.0 - e), (1.0 - e))), 0.5);
 
 #if 0
-  printf("projec:\n");
+  printf("project:\n");
   printf("tF = %f\n", tF);
   printf("mF = %f\n", mF);
   printf("k0 = %f\n", k0);

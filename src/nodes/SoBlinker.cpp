@@ -187,7 +187,7 @@ SoBlinker::write(SoWriteAction * action)
 
   inherited::write(action);
 
-  // Reenable all connections to/from internal engine. (Only done at
+  // Re-enable all connections to/from internal engine. (Only done at
   // last pass.)
   if (out->getStage() == SoOutput::WRITE)
     this->reconnectInternalEngine();
@@ -254,7 +254,7 @@ SoBlinker::copy(SbBool copyconnections) const
 
   SoBlinker * cp = (SoBlinker *)inherited::copy(copyconnections);
 
-  // Reenable all connections to/from internal engine.
+  // Re-enable all connections to/from internal engine.
   ((SoBlinker *)this)->reconnectInternalEngine();
 
   // Need to set this explicitly after reconnect, as the internal
