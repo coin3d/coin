@@ -569,7 +569,7 @@ To cooperate in a painless way with Libtool, we choose to "convert" our
 MAJOR.MINOR.MICRO scheme to Libtool's idea of versioning like this:
 
 * Libtool's CURRENT number is increased when the MAJOR or MINOR number is
-  changed.  If development and realeases were done in a linear fashion, we
+  changed.  If development and releases were done in a linear fashion, we
   would just have to increase CURRENT by one when the above happens, but
   since we intend to continue to support Coin 1.* after the release of
   Coin 2.* we have had to make up a different scheme.  What we have done is
@@ -725,9 +725,9 @@ First, the larger issues:
       the .cpp-file of the "real" class.
 
       This is a common design pattern that goes under many different
-      names; the Bridge pattern (from «Design Patterns», Gamma et al),
-      the Cheshire Cat (from the character in Lewis Carroll's «Alice's
-      Adventures in Wonderland»), pimpl (short for "private
+      names; the Bridge pattern (from Â«Design PatternsÂ», Gamma et al),
+      the Cheshire Cat (from the character in Lewis Carroll's Â«Alice's
+      Adventures in WonderlandÂ»), pimpl (short for "private
       implementation") or the d-pointer (for "data-pointer"). For
       consistency, it will be called "Cheshire Cat" from now on in
       this explanation.
