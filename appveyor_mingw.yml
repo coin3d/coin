@@ -37,6 +37,12 @@ environment:
       CMAKE_ARCH_FLAGS: -m64
       COMPILER_ID: gcc
 
+    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu2204
+      CMAKE_GENERATOR: 'Unix Makefiles'
+      CMAKE_PLATFORM: x64
+      CMAKE_ARCH_FLAGS: -m64
+      COMPILER_ID: gcc
+
 # older compilers are supported in a separate appveyor project
 #
 #    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
