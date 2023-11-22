@@ -62,7 +62,7 @@ jobs:
       run: |
         sudo apt-get -y update
         sudo apt-get -y install freeglut3-dev libboost-dev
-        cmake -S . -B cmake_build_dir -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=cmake_install_dir
+        cmake -S . -B cmake_build_dir -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCOIN_BUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=cmake_install_dir
 
     - name: Build project with CMake
       run: cmake --build cmake_build_dir --target all --config Release -- -j4
