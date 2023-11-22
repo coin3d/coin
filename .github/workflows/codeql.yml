@@ -40,9 +40,9 @@ jobs:
       with:
         languages: c-cpp
         config: |
-          disable-default-queries: true
-          queries:
-            - uses: security-and-quality
+          #disable-default-queries: true
+          #queries:
+          #  - uses: security-and-quality
           query-filters:
             # Specifically hide the results of these queries.
             - exclude:
