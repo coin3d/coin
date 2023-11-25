@@ -1,6 +1,0 @@
-queries:
-  # Specifically hide the results of these queries.
-  - exclude: cpp/assignment-does-not-return-this
-  - exclude: cpp/fixme-comment
-  - exclude: cpp/rule-of-two
-  - exclude: cpp/use-of-goto
