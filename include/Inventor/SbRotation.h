@@ -35,6 +35,7 @@
 
 #include <cstdio>
 #include <Inventor/SbVec4f.h>
+#include <Inventor/SbByteBuffer.h>
 #include <Inventor/SbString.h>
 
 class SbMatrix;

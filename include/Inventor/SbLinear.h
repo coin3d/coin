@@ -62,6 +62,7 @@
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbRotation.h>
+#include <Inventor/SbPlane.h>
 #include <Inventor/SbViewVolume.h>
 
 #endif // !COIN_SBLINEAR_H

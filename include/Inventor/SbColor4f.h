@@ -62,8 +62,8 @@ public:
   SbColor4f& setPackedValue(const uint32_t rgba);
   uint32_t getPackedValue() const;
 
-  float & operator[](int idx);
-  const float & operator[](int idx) const;
+  float operator[](const int idx) const;
+  float &operator[](const int idx);
 
   SbColor4f &operator*=(const float d);
   SbColor4f &operator/=(const float d);
