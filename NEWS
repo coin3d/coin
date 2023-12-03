@@ -1,3 +1,8 @@
+New in Coin v4.0.2 (2023-12-03):
+* bugfixes:
+  - ABI compatibility to version 4.0.0 was inadvertently changed and restored
+  - fixed typos found by Codespell
+
 New in Coin v4.0.1 (2023-11-18):
 * new:
   - Version control system has been changed from Mercurial to Git

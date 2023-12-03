@@ -8,6 +8,15 @@ The changes described here are issues that might have an effect on the
 compatibility of your source code when upgrading the library.
 
 
+Coin 4.0.2
+==========
+
+This is a bugfix release.
+
+ABI compatibility to version 4.0.0 was inadvertently changed and restored.
+
+Fixed numerous typos found by Codespell.
+
 Coin 4.0.1
 ==========
 
