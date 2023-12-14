@@ -116,15 +116,9 @@ environment:
 install:
   - sh: |
       sudo apt-get -y update
+      sudo apt-get -y install freeglut3-dev
+      sudo apt-get -y install doxygen jq libboost-all-dev
       cd $APPVEYOR_BUILD_FOLDER
-      if [ "$CMAKE_PLATFORM" == "x86" ]
-      then
-        sudo apt-get -y install freeglut3-dev:i386
-      elif [ "$CMAKE_PLATFORM" == "x64" ]
-      then
-        sudo apt-get -y install freeglut3-dev
-      fi
-      sudo apt-get -y install doxygen gcc-multilib g++-multilib jq libboost-all-dev
   - cmd: |
       choco install jq
       rem Work around for outdated curl version giving problems with GitHub Authentication when redirected.
