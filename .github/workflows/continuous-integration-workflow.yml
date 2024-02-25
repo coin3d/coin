@@ -65,7 +65,7 @@ jobs:
 
   macos-build:
     name: MacOS Build
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -74,7 +74,7 @@ jobs:
       - name: Create build directory and run CMake
         run: |
           brew install boost
-          cmake -S . -B cmake_build_dir -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=cmake_install_dir
+          cmake -S . -B cmake_build_dir -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=cmake_install_dir -DCMAKE_CXX_STANDARD=11
       - name: Build project
         run: cmake --build cmake_build_dir --target install --config Release -- -j4
       - name: Run tests
