@@ -23,12 +23,22 @@ environment:
 #      CMAKE_PLATFORM: x64
 #      COMPILER_ID: clang
 #
-    - APPVEYOR_BUILD_WORKER_IMAGE: macos-bigsur
+#    - APPVEYOR_BUILD_WORKER_IMAGE: macos-bigsur
+#      CMAKE_GENERATOR: 'Unix Makefiles'
+#      CMAKE_PLATFORM: x64
+#      COMPILER_ID: clang
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: macos-monterey
       CMAKE_GENERATOR: 'Unix Makefiles'
       CMAKE_PLATFORM: x64
       COMPILER_ID: clang
 
-    - APPVEYOR_BUILD_WORKER_IMAGE: macos-monterey
+    - APPVEYOR_BUILD_WORKER_IMAGE: macos-ventura
+      CMAKE_GENERATOR: 'Unix Makefiles'
+      CMAKE_PLATFORM: x64
+      COMPILER_ID: clang
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: macos-sonoma
       CMAKE_GENERATOR: 'Unix Makefiles'
       CMAKE_PLATFORM: x64
       COMPILER_ID: clang
@@ -55,8 +65,8 @@ before_build:
       export COMPILER_ID=$APPVEYOR_BUILD_WORKER_IMAGE-$COMPILER_ID`$COMPILER_ID -v 2>&1 | grep version | sed 's/^.*version \([0-9]*\)\.[0-9]*\.[0-9]*.*$/\1/g'`
       export CFLAGS=$CMAKE_ARCH_FLAGS
       export CXXFLAGS=$CMAKE_ARCH_FLAGS
-      #cmake -H. -Bbuild_debug   -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=Debug   -DCMAKE_POSITION_INDEPENDENT_CODE=true -DCMAKE_INSTALL_PREFIX=$APPVEYOR_BUILD_FOLDER/Coin3D
-      cmake -H. -Bbuild_release -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=true -DCMAKE_INSTALL_PREFIX=$APPVEYOR_BUILD_FOLDER/Coin3D
+      #cmake -H. -Bbuild_debug   -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=Debug   -DCMAKE_POSITION_INDEPENDENT_CODE=true -DCMAKE_INSTALL_PREFIX=$APPVEYOR_BUILD_FOLDER/Coin3D -DCMAKE_CXX_STANDARD=11
+      cmake -H. -Bbuild_release -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=true -DCMAKE_INSTALL_PREFIX=$APPVEYOR_BUILD_FOLDER/Coin3D -DCMAKE_CXX_STANDARD=11
 
 build_script:
   - sh: |
