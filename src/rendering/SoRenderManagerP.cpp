@@ -94,15 +94,6 @@ SoRenderManagerP::cleanup(void)
 }
 
 void
-SoRenderManagerP::updateClippingPlanesCB(void * closure, SoSensor * COIN_UNUSED_ARG(sensor))
-{
-  SoRenderManagerP * thisp = (SoRenderManagerP *) closure;
-  if (thisp->autoclipping != SoRenderManager::NO_AUTO_CLIPPING) {
-    thisp->setClippingPlanes();
-  }
-}
-
-void
 SoRenderManagerP::setClippingPlanes(void)
 {
   SoCamera * camera = this->camera;

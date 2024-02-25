@@ -220,9 +220,7 @@ protected:
 
 private:
   void attachRootSensor(SoNode * const sceneroot);
-  void attachClipSensor(SoNode * const sceneroot);
   void detachRootSensor(void);
-  void detachClipSensor(void);
   static void nodesensorCB(void * data, SoSensor *);
   static void prerendercb(void * userdata, SoGLRenderAction * action);
 
