@@ -258,7 +258,7 @@ SbTri3f::intersect(const SbTri3f & t) const
     case 1:
       break;
     case 2:
-      do { SbVec3f temp(a2); a2 = b2; b2 = b2; c2 = temp; } while (FALSE);
+      do { SbVec3f temp(a2); a2 = b2; b2 = c2; c2 = temp; } while (FALSE);
       break;
     case 3:
       do { SbVec3f temp(a2); a2 = c2; c2 = b2; b2 = temp; } while (FALSE);
