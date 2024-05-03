@@ -1143,7 +1143,6 @@ SbProfilingData::reportAll(SbProfilingDataCB * callback, void * userdata) const
     }
 
     callback(userdata, *this, pointers, indices, idx);
-    ++idx;
   }
 }
 
