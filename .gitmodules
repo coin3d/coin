@@ -4,3 +4,7 @@
 [submodule "cpack.d"]
 	path = cpack.d
 	url = https://github.com/coin3d/cpack.d
+[submodule "docs/doxygen-awesome"]
+	path = docs/doxygen-awesome
+	url = https://github.com/coin3d/doxygen-awesome-css.git
+	branch = coin3d
