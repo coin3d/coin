@@ -1,0 +1,343 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SbClip Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSbClip.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="classSbClip-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SbClip Class Reference<div class="ingroups"><a class="el" href="group__coin__base.html">Base Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSbClip.html" title="The SbClip class is a generic polygon clipper class.">SbClip</a> class is a generic polygon clipper class.  
+ <a href="classSbClip.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SbClip_8h_source.html">include/Inventor/base/SbClip.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ad84357d002b55482d098de8d44ff7d3e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbClip.html#ad84357d002b55482d098de8d44ff7d3e">SbClip</a> (SbClipCallback *callback=NULL, void *userdata=NULL)</td></tr>
+<tr class="separator:ad84357d002b55482d098de8d44ff7d3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a341c5e4129ebef7f8447d408350ae98a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbClip.html#a341c5e4129ebef7f8447d408350ae98a">addVertex</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;v, void *vdata=NULL)</td></tr>
+<tr class="separator:a341c5e4129ebef7f8447d408350ae98a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb59533f96dbca4e433fa8194e69677a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbClip.html#adb59533f96dbca4e433fa8194e69677a">clip</a> (const <a class="el" href="classSbPlane.html">SbPlane</a> &amp;plane)</td></tr>
+<tr class="separator:adb59533f96dbca4e433fa8194e69677a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addf1f7acf9e6eeccf8ec4190ba5a7a15"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbClip.html#addf1f7acf9e6eeccf8ec4190ba5a7a15">getNumVertices</a> (void) const</td></tr>
+<tr class="separator:addf1f7acf9e6eeccf8ec4190ba5a7a15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c567e8d2b7ffb6228459b48d0402dcd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbClip.html#a2c567e8d2b7ffb6228459b48d0402dcd">getVertex</a> (const int idx, <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;v, void **vdata=NULL) const</td></tr>
+<tr class="separator:a2c567e8d2b7ffb6228459b48d0402dcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a4ad6e7f17725791209f42091ca8d84"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbClip.html#a9a4ad6e7f17725791209f42091ca8d84">getVertexData</a> (const int idx) const</td></tr>
+<tr class="separator:a9a4ad6e7f17725791209f42091ca8d84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f4196a57e40383c33d04e9e19d2d5fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbClip.html#a0f4196a57e40383c33d04e9e19d2d5fc">reset</a> (void)</td></tr>
+<tr class="separator:a0f4196a57e40383c33d04e9e19d2d5fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSbClip.html" title="The SbClip class is a generic polygon clipper class.">SbClip</a> class is a generic polygon clipper class. </p>
+<p>It is used by first adding all vertices in the polygon, and then clipping against any number of planes. If you need to supply additional information per vertex (e.g. texture coordinates), you should supply a callback in the constructor, and a pointer to your vertex structure in <a class="el" href="classSbClip.html#a341c5e4129ebef7f8447d408350ae98a">addVertex()</a>. For every new vertex created, the callback is called with the line being clipped, including the pointers to your vertex structures and the position of the new (clipped against some plane) vertex. You should then create a new vertex structure, calculate your data (e.g. a new texture coordinate) and return a pointer to this structure. <br  />
+</p>
+<p>Be aware that this class is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ </p><dl class="section since"><dt>Since</dt><dd>Coin 2.0 </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ad84357d002b55482d098de8d44ff7d3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad84357d002b55482d098de8d44ff7d3e">&#9670;&nbsp;</a></span>SbClip()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbClip::SbClip </td>
+          <td>(</td>
+          <td class="paramtype">SbClipCallback *&#160;</td>
+          <td class="paramname"><em>callback</em> = <code>NULL</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>userdata</em> = <code>NULL</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A constructor. Supply a callback if you need to handle additional data per vertex. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a341c5e4129ebef7f8447d408350ae98a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a341c5e4129ebef7f8447d408350ae98a">&#9670;&nbsp;</a></span>addVertex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbClip::addVertex </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>vdata</em> = <code>NULL</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Adds a polygon vertex. <em>vdata</em> could be a pointer to your vertex structure. </p>
+
+</div>
+</div>
+<a id="adb59533f96dbca4e433fa8194e69677a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb59533f96dbca4e433fa8194e69677a">&#9670;&nbsp;</a></span>clip()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbClip::clip </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbPlane.html">SbPlane</a> &amp;&#160;</td>
+          <td class="paramname"><em>plane</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Clip polygon against <em>plane</em>. This might change the number of vertices in the polygon. For each time a new vertex is created, the callback supplied in the constructor (if != NULL) is called with the line being clipped and the new vertex calculated. The callback should return a new void pointer to be stored by the clipper. </p>
+
+</div>
+</div>
+<a id="addf1f7acf9e6eeccf8ec4190ba5a7a15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#addf1f7acf9e6eeccf8ec4190ba5a7a15">&#9670;&nbsp;</a></span>getNumVertices()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SbClip::getNumVertices </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the number of vertices in the polygon. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbClip.html#a2c567e8d2b7ffb6228459b48d0402dcd">SbClip::getVertex()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a2c567e8d2b7ffb6228459b48d0402dcd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c567e8d2b7ffb6228459b48d0402dcd">&#9670;&nbsp;</a></span>getVertex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbClip::getVertex </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>idx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void **&#160;</td>
+          <td class="paramname"><em>vdata</em> = <code>NULL</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the vertex at index <em>idx</em>. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbClip.html#addf1f7acf9e6eeccf8ec4190ba5a7a15">SbClip::getNumVertices()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a9a4ad6e7f17725791209f42091ca8d84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a4ad6e7f17725791209f42091ca8d84">&#9670;&nbsp;</a></span>getVertexData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void * SbClip::getVertexData </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>idx</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return the vertex data at index <em>idx</em>. </p>
+
+</div>
+</div>
+<a id="a0f4196a57e40383c33d04e9e19d2d5fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f4196a57e40383c33d04e9e19d2d5fc">&#9670;&nbsp;</a></span>reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbClip::reset </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Resets the clipper. This should be called before adding any vertices when reusing an <a class="el" href="classSbClip.html" title="The SbClip class is a generic polygon clipper class.">SbClip</a> instance. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SbClip_8h_source.html">SbClip.h</a></li>
+<li>SbClip.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSbClip.html">SbClip</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

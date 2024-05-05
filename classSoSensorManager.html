@@ -1,0 +1,592 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SoSensorManager Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSoSensorManager.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="classSoSensorManager-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SoSensorManager Class Reference<div class="ingroups"><a class="el" href="group__coin__sensors.html">Sensor Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSoSensorManager.html" title="The SoSensorManager class handles the sensor queues.">SoSensorManager</a> class handles the sensor queues.  
+ <a href="classSoSensorManager.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SoSensorManager_8h_source.html">Inventor/sensors/SoSensorManager.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:abeccc05aac1a5c6f9dd1acd2d840b3b1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensorManager.html#abeccc05aac1a5c6f9dd1acd2d840b3b1">SoSensorManager</a> (void)</td></tr>
+<tr class="separator:abeccc05aac1a5c6f9dd1acd2d840b3b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af814b68de590aa2f6c0969fd0fe9c545"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensorManager.html#af814b68de590aa2f6c0969fd0fe9c545">~SoSensorManager</a> ()</td></tr>
+<tr class="separator:af814b68de590aa2f6c0969fd0fe9c545"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4733de33513041df15133146fe5910f0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensorManager.html#a4733de33513041df15133146fe5910f0">doSelect</a> (int nfds, void *readfds, void *writefds, void *exceptfds, struct timeval *userTimeOut)</td></tr>
+<tr class="separator:a4733de33513041df15133146fe5910f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a1df40e1496ae286e383b2a8f6ef2bb"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbTime.html">SbTime</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensorManager.html#a2a1df40e1496ae286e383b2a8f6ef2bb">getDelaySensorTimeout</a> (void)</td></tr>
+<tr class="separator:a2a1df40e1496ae286e383b2a8f6ef2bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61330b4c7025160d37bcc33a13f6cd4d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensorManager.html#a61330b4c7025160d37bcc33a13f6cd4d">insertDelaySensor</a> (<a class="el" href="classSoDelayQueueSensor.html">SoDelayQueueSensor</a> *s)</td></tr>
+<tr class="separator:a61330b4c7025160d37bcc33a13f6cd4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fdfa6ddc1d24ddaa21353c07fa476b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensorManager.html#a7fdfa6ddc1d24ddaa21353c07fa476b8">insertTimerSensor</a> (<a class="el" href="classSoTimerQueueSensor.html">SoTimerQueueSensor</a> *s)</td></tr>
+<tr class="separator:a7fdfa6ddc1d24ddaa21353c07fa476b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23dad9c29887f3039ddc3f751af2e501"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensorManager.html#a23dad9c29887f3039ddc3f751af2e501">isDelaySensorPending</a> (void)</td></tr>
+<tr class="separator:a23dad9c29887f3039ddc3f751af2e501"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae598bb762c7a417b8f4f45f7a13fc80f"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensorManager.html#ae598bb762c7a417b8f4f45f7a13fc80f">isTimerSensorPending</a> (<a class="el" href="classSbTime.html">SbTime</a> &amp;tm)</td></tr>
+<tr class="separator:ae598bb762c7a417b8f4f45f7a13fc80f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa077dc9dd11e12cad63016c60e4c9af7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensorManager.html#aa077dc9dd11e12cad63016c60e4c9af7">processDelayQueue</a> (SbBool isidle)</td></tr>
+<tr class="separator:aa077dc9dd11e12cad63016c60e4c9af7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e6b511731fc72c3adb16f7f345d11d6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensorManager.html#a1e6b511731fc72c3adb16f7f345d11d6">processImmediateQueue</a> (void)</td></tr>
+<tr class="separator:a1e6b511731fc72c3adb16f7f345d11d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b5935cf5cdaeaf4825940260e5a142f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensorManager.html#a3b5935cf5cdaeaf4825940260e5a142f">processTimerQueue</a> (void)</td></tr>
+<tr class="separator:a3b5935cf5cdaeaf4825940260e5a142f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1566dfe9d1026d092bbbcf9135c31d5d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensorManager.html#a1566dfe9d1026d092bbbcf9135c31d5d">removeDelaySensor</a> (<a class="el" href="classSoDelayQueueSensor.html">SoDelayQueueSensor</a> *s)</td></tr>
+<tr class="separator:a1566dfe9d1026d092bbbcf9135c31d5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a189348611c49f36d58af5077f920a162"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensorManager.html#a189348611c49f36d58af5077f920a162">removeRescheduledTimer</a> (<a class="el" href="classSoTimerQueueSensor.html">SoTimerQueueSensor</a> *s)</td></tr>
+<tr class="separator:a189348611c49f36d58af5077f920a162"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2874c96dce48be7dc531fa0b3e005f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensorManager.html#ac2874c96dce48be7dc531fa0b3e005f8">removeTimerSensor</a> (<a class="el" href="classSoTimerQueueSensor.html">SoTimerQueueSensor</a> *s)</td></tr>
+<tr class="separator:ac2874c96dce48be7dc531fa0b3e005f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b09f419c039fa5917c2725eab33b82f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensorManager.html#a6b09f419c039fa5917c2725eab33b82f">rescheduleTimer</a> (<a class="el" href="classSoTimerSensor.html">SoTimerSensor</a> *s)</td></tr>
+<tr class="separator:a6b09f419c039fa5917c2725eab33b82f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5039008fb24defa335d63723528bc915"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensorManager.html#a5039008fb24defa335d63723528bc915">setChangedCallback</a> (void(*sensorQueueChangedCB)(void *), void *data)</td></tr>
+<tr class="separator:a5039008fb24defa335d63723528bc915"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a017db6daa54156ec1a2f8198fb30d531"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensorManager.html#a017db6daa54156ec1a2f8198fb30d531">setDelaySensorTimeout</a> (const <a class="el" href="classSbTime.html">SbTime</a> &amp;t)</td></tr>
+<tr class="separator:a017db6daa54156ec1a2f8198fb30d531"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSoSensorManager.html" title="The SoSensorManager class handles the sensor queues.">SoSensorManager</a> class handles the sensor queues. </p>
+<p>There are two major sensor types in Coin, "delay" sensors and "timer" sensors:</p>
+<ul>
+<li>Delay sensors trigger when the application is otherwise idle. In addition, to avoid starvation in applications that are continually busy, the delay sensor queue also has a timeout which, when reached, will empty the queue anyhow.</li>
+</ul>
+<ul>
+<li>Timer sensors are set up to trigger at specific, absolute times.</li>
+</ul>
+<p>Each of these two types has its own queue, which is handled by the <a class="el" href="classSoSensorManager.html" title="The SoSensorManager class handles the sensor queues.">SoSensorManager</a>. The queues are kept in sorted order by <a class="el" href="classSoSensorManager.html" title="The SoSensorManager class handles the sensor queues.">SoSensorManager</a>, either according to trigger time (for timer sensors) or by priority (for delay sensors).</p>
+<p>The <a class="el" href="classSoSensorManager.html" title="The SoSensorManager class handles the sensor queues.">SoSensorManager</a> provides methods for managing these queues, by insertion and removal of sensors, and processing (emptying) of the queues.</p>
+<p>The sensor mechanism is crucial in Coin for a number of important features, most notably automatic scheduling redraw upon changes, and for making it possible to set up animations in the scene graph which does <em>not</em> need any additional book-keeping from the application code.</p>
+<p><a class="el" href="classSoSensorManager.html" title="The SoSensorManager class handles the sensor queues.">SoSensorManager</a> should usually be considered as an internal class in the Coin API. It is only interesting for application programmers when <em>implementing</em> new window system specific libraries (like Kongsberg Oil &amp; Gas Technologies SoQt, SoXt, SoGtk, SoWin or Sc21) or wrappers. Then one has to set up code to empty the queues at the correct intervals. For detailed information on how to do that, we would advise you to look at the implementation of said mechanisms in the So*-libraries which SIM provides.</p>
+<p>Please note that before Coin 2.3.1, sensors with equal priority (or the same trigger time for SoTimerQueue sensors) were processed LIFO. This has now been changed to FIFO to be conformant to SGI Inventor.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoSensor.html" title="The SoSensor class is the abstract base class for all sensors.">SoSensor</a> <a class="el" href="classSoTimerQueueSensor.html" title="The SoTimerQueueSensor class is the abstract base class for sensors triggering on certain timer event...">SoTimerQueueSensor</a> <a class="el" href="classSoDelayQueueSensor.html" title="The SoDelayQueueSensor class is the abstract base class for priority scheduled sensors.">SoDelayQueueSensor</a> </dd>
+<dd>
+<a class="el" href="classSoTimerSensor.html" title="The SoTimerSensor class is a sensor which will trigger at given intervals.">SoTimerSensor</a> <a class="el" href="classSoAlarmSensor.html" title="The SoAlarmSensor class is a sensor which will trigger once at a specified time.">SoAlarmSensor</a> </dd>
+<dd>
+<a class="el" href="classSoIdleSensor.html" title="The SoIdleSensor class is a sensor which will trigger as soon as the application is idle.">SoIdleSensor</a> <a class="el" href="classSoDataSensor.html" title="The SoDataSensor class is the abstract base class for sensors monitoring changes in a scene graph.">SoDataSensor</a> <a class="el" href="classSoOneShotSensor.html" title="The SoOneShotSensor class is a sensor which will trigger once.">SoOneShotSensor</a> </dd>
+<dd>
+<a class="el" href="classSoPathSensor.html" title="The SoPathSensor class detects changes to paths.">SoPathSensor</a> <a class="el" href="classSoFieldSensor.html" title="The SoFieldSensor class detects changes to a field.">SoFieldSensor</a> <a class="el" href="classSoNodeSensor.html" title="The SoNodeSensor class detects changes to nodes.">SoNodeSensor</a> </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="abeccc05aac1a5c6f9dd1acd2d840b3b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abeccc05aac1a5c6f9dd1acd2d840b3b1">&#9670;&nbsp;</a></span>SoSensorManager()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoSensorManager::SoSensorManager </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Constructor. </p>
+
+</div>
+</div>
+<a id="af814b68de590aa2f6c0969fd0fe9c545"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af814b68de590aa2f6c0969fd0fe9c545">&#9670;&nbsp;</a></span>~SoSensorManager()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoSensorManager::~SoSensorManager </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Destructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a4733de33513041df15133146fe5910f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4733de33513041df15133146fe5910f0">&#9670;&nbsp;</a></span>doSelect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SoSensorManager::doSelect </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nfds</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>readfds</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>writefds</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>exceptfds</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct timeval *&#160;</td>
+          <td class="paramname"><em>usertimeout</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>NOTE: THIS METHOD IS OBSOLETED. DON'T USE IT.</p>
+<p>This is a wrapper around the standard select(2) call, which will make sure the sensor queues are updated while waiting for any action to happen on the given file descriptors.</p>
+<p>The void* arguments must be valid pointers to fd_set structures. We've changed this from the original SGI Inventor API to avoid messing up the header file with system specific includes.</p>
+<p>NOTE: THIS METHOD IS OBSOLETED. DON'T USE IT. </p>
+
+</div>
+</div>
+<a id="a2a1df40e1496ae286e383b2a8f6ef2bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a1df40e1496ae286e383b2a8f6ef2bb">&#9670;&nbsp;</a></span>getDelaySensorTimeout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbTime.html">SbTime</a> &amp; SoSensorManager::getDelaySensorTimeout </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the timeout value for sensors in the delay queue.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoSensorManager.html#a017db6daa54156ec1a2f8198fb30d531">setDelaySensorTimeout()</a>, <a class="el" href="classSoDelayQueueSensor.html" title="The SoDelayQueueSensor class is the abstract base class for priority scheduled sensors.">SoDelayQueueSensor</a> </dd></dl>
+
+</div>
+</div>
+<a id="a61330b4c7025160d37bcc33a13f6cd4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61330b4c7025160d37bcc33a13f6cd4d">&#9670;&nbsp;</a></span>insertDelaySensor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSensorManager::insertDelaySensor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoDelayQueueSensor.html">SoDelayQueueSensor</a> *&#160;</td>
+          <td class="paramname"><em>newentry</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Add a new entry to the queue of delay sensors.</p>
+<dl class="section see"><dt>See also</dt><dd>removeFromQueue() </dd></dl>
+
+</div>
+</div>
+<a id="a7fdfa6ddc1d24ddaa21353c07fa476b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fdfa6ddc1d24ddaa21353c07fa476b8">&#9670;&nbsp;</a></span>insertTimerSensor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSensorManager::insertTimerSensor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoTimerQueueSensor.html">SoTimerQueueSensor</a> *&#160;</td>
+          <td class="paramname"><em>newentry</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Add a new entry to the queue of timer sensors. The queue will be sorted in order of supposed trigger time.</p>
+<dl class="section see"><dt>See also</dt><dd>removeFromQueue() </dd></dl>
+
+</div>
+</div>
+<a id="a23dad9c29887f3039ddc3f751af2e501"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23dad9c29887f3039ddc3f751af2e501">&#9670;&nbsp;</a></span>isDelaySensorPending()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoSensorManager::isDelaySensorPending </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns <code>TRUE</code> if at least one delay sensor or immediate sensor is present in the respective queue, otherwise <code>FALSE</code>. </p>
+
+</div>
+</div>
+<a id="ae598bb762c7a417b8f4f45f7a13fc80f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae598bb762c7a417b8f4f45f7a13fc80f">&#9670;&nbsp;</a></span>isTimerSensorPending()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoSensorManager::isTimerSensorPending </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSbTime.html">SbTime</a> &amp;&#160;</td>
+          <td class="paramname"><em>tm</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns <code>TRUE</code> if at least one timer sensor is present in the queue, otherwise <code>FALSE</code>.</p>
+<p>If sensors are pending, the time interval until the next one should be triggered will be put in the <em>tm</em> variable. </p>
+
+</div>
+</div>
+<a id="aa077dc9dd11e12cad63016c60e4c9af7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa077dc9dd11e12cad63016c60e4c9af7">&#9670;&nbsp;</a></span>processDelayQueue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSensorManager::processDelayQueue </td>
+          <td>(</td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>isidle</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Trigger all delay queue entries in priority order.</p>
+<p>The <em>isidle</em> flag indicates whether or not the processing happens because the application is idle or because the delay queue timeout was reached.</p>
+<p>A delay queue sensor with priority &gt; 0 can only be triggered once during a call to this function. If a delay sensor is rescheduled during <a class="el" href="classSoSensorManager.html#aa077dc9dd11e12cad63016c60e4c9af7">processDelayQueue()</a>, it is not processed until the next time this function is called. This is done to avoid an infinite loop while processing the sensors.</p>
+<p>A delay queue sensor with priority 0 is called an immediate sensor.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoDB.html#a4a40b27b0ed0cd4f3ee94f9b97c97894">SoDB::setDelaySensorTimeout()</a> </dd>
+<dd>
+<a class="el" href="classSoSensorManager.html#a1e6b511731fc72c3adb16f7f345d11d6">SoSensorManager::processImmediateQueue()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a1e6b511731fc72c3adb16f7f345d11d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e6b511731fc72c3adb16f7f345d11d6">&#9670;&nbsp;</a></span>processImmediateQueue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSensorManager::processImmediateQueue </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Process all immediate sensors (delay sensors with priority 0).</p>
+<p>Be aware that you might risk an infinite loop using immediate sensors. Unlike delay queue sensors, immediate sensors can be rescheduled and triggered multiple times during immediate queue processing.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoDelayQueueSensor.html#abdf3c976cf2f6ca0a1cd67118b326de4">SoDelayQueueSensor::setPriority()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a3b5935cf5cdaeaf4825940260e5a142f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b5935cf5cdaeaf4825940260e5a142f">&#9670;&nbsp;</a></span>processTimerQueue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSensorManager::processTimerQueue </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Trigger all the timers which have expired. </p>
+
+</div>
+</div>
+<a id="a1566dfe9d1026d092bbbcf9135c31d5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1566dfe9d1026d092bbbcf9135c31d5d">&#9670;&nbsp;</a></span>removeDelaySensor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSensorManager::removeDelaySensor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoDelayQueueSensor.html">SoDelayQueueSensor</a> *&#160;</td>
+          <td class="paramname"><em>entry</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Remove an entry from the queue of prioritized sensors.</p>
+<dl class="section see"><dt>See also</dt><dd>addToQueue() </dd></dl>
+
+</div>
+</div>
+<a id="a189348611c49f36d58af5077f920a162"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a189348611c49f36d58af5077f920a162">&#9670;&nbsp;</a></span>removeRescheduledTimer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSensorManager::removeRescheduledTimer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoTimerQueueSensor.html">SoTimerQueueSensor</a> *&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+</p>
+
+</div>
+</div>
+<a id="ac2874c96dce48be7dc531fa0b3e005f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2874c96dce48be7dc531fa0b3e005f8">&#9670;&nbsp;</a></span>removeTimerSensor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSensorManager::removeTimerSensor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoTimerQueueSensor.html">SoTimerQueueSensor</a> *&#160;</td>
+          <td class="paramname"><em>entry</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Remove an entry from the queue of timer sensors. </p>
+
+</div>
+</div>
+<a id="a6b09f419c039fa5917c2725eab33b82f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b09f419c039fa5917c2725eab33b82f">&#9670;&nbsp;</a></span>rescheduleTimer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSensorManager::rescheduleTimer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoTimerSensor.html">SoTimerSensor</a> *&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+</p>
+
+</div>
+</div>
+<a id="a5039008fb24defa335d63723528bc915"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5039008fb24defa335d63723528bc915">&#9670;&nbsp;</a></span>setChangedCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSensorManager::setChangedCallback </td>
+          <td>(</td>
+          <td class="paramtype">void(*)(void *)&#160;</td>
+          <td class="paramname"><em>func</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>For setting up a callback function to be invoked whenever any of the sensor queues are changed.</p>
+<p>This callback should typically be responsible for updating the client-side mechanism which is used for processing the queues. </p>
+
+</div>
+</div>
+<a id="a017db6daa54156ec1a2f8198fb30d531"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a017db6daa54156ec1a2f8198fb30d531">&#9670;&nbsp;</a></span>setDelaySensorTimeout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSensorManager::setDelaySensorTimeout </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbTime.html">SbTime</a> &amp;&#160;</td>
+          <td class="paramname"><em>t</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Delay sensors are usually triggered only when the system is idle. But when there are continuous updates to the scene graph, there's a possibility that the delay queue will starve and sensors are never triggered. To make sure this won't happen, this is a timeout value for the delay queue. When this timeout has been reached, the sensors in the delay queue gets processed before other sensors and events. This method will let the user set this timeout value.</p>
+<p>The default value is 1/12 of a second.</p>
+<p>Specifying a zero time will disable the timeout, opening for potential delay queue starvation.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoSensorManager.html#a2a1df40e1496ae286e383b2a8f6ef2bb">getDelaySensorTimeout()</a>, <a class="el" href="classSoDelayQueueSensor.html" title="The SoDelayQueueSensor class is the abstract base class for priority scheduled sensors.">SoDelayQueueSensor</a> </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SoSensorManager_8h_source.html">SoSensorManager.h</a></li>
+<li>SoSensorManager.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSoSensorManager.html">SoSensorManager</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

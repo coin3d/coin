@@ -1,0 +1,1008 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SoToVRML2Action Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSoToVRML2Action.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
+<a href="classSoToVRML2Action-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SoToVRML2Action Class Reference<div class="ingroups"><a class="el" href="group__coin__actions.html">Action Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSoToVRML2Action.html" title="The SoToVRML2Action class builds a new scene graph, using only VRML97/VRML2 nodes.">SoToVRML2Action</a> class builds a new scene graph, using only VRML97/VRML2 nodes.  
+ <a href="classSoToVRML2Action.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SoToVRML2Action_8h_source.html">Inventor/actions/SoToVRML2Action.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for SoToVRML2Action:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classSoToVRML2Action.png" usemap="#SoToVRML2Action_map" alt=""/>
+  <map id="SoToVRML2Action_map" name="SoToVRML2Action_map">
+<area href="classSoToVRMLAction.html" title="The SoToVRMLAction class builds a new scene graph using only VRML 1.0 nodes." alt="SoToVRMLAction" shape="rect" coords="0,56,119,80"/>
+<area href="classSoAction.html" title="The SoAction class is the base class for all traversal actions." alt="SoAction" shape="rect" coords="0,0,119,24"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ae9dfb4df29e6659a3e192e5a4e6d190d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRML2Action.html#ae9dfb4df29e6659a3e192e5a4e6d190d">SoToVRML2Action</a> (void)</td></tr>
+<tr class="separator:ae9dfb4df29e6659a3e192e5a4e6d190d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a868097438817165ba7f671fca9fbf86b"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRML2Action.html#a868097438817165ba7f671fca9fbf86b">~SoToVRML2Action</a> (void)</td></tr>
+<tr class="separator:a868097438817165ba7f671fca9fbf86b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50f958020f0fff999c45a90862d22c25"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRML2Action.html#a50f958020f0fff999c45a90862d22c25">apply</a> (const <a class="el" href="classSoPathList.html">SoPathList</a> &amp;pathlist, SbBool obeysrules=FALSE)</td></tr>
+<tr class="separator:a50f958020f0fff999c45a90862d22c25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a441e2ef02901cadc1a03f460d8fde1a6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRML2Action.html#a441e2ef02901cadc1a03f460d8fde1a6">apply</a> (<a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a441e2ef02901cadc1a03f460d8fde1a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ed681262a6e1b92ece3712b355c325a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRML2Action.html#a7ed681262a6e1b92ece3712b355c325a">apply</a> (<a class="el" href="classSoPath.html">SoPath</a> *path)</td></tr>
+<tr class="separator:a7ed681262a6e1b92ece3712b355c325a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60acf22005c211ba4858e21e284f2dbe"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRML2Action.html#a60acf22005c211ba4858e21e284f2dbe">doReuseAppearanceNodes</a> (void) const</td></tr>
+<tr class="separator:a60acf22005c211ba4858e21e284f2dbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1180cf4ea25c8789a3532499cf241ba"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRML2Action.html#ac1180cf4ea25c8789a3532499cf241ba">doReuseGeometryNodes</a> (void) const</td></tr>
+<tr class="separator:ac1180cf4ea25c8789a3532499cf241ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e90bc44b7fcee4469eae76577d330c4"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRML2Action.html#a0e90bc44b7fcee4469eae76577d330c4">doReusePropertyNodes</a> (void) const</td></tr>
+<tr class="separator:a0e90bc44b7fcee4469eae76577d330c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3954c70029839ad7235d088c41d09569"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRML2Action.html#a3954c70029839ad7235d088c41d09569">getTypeId</a> (void) const</td></tr>
+<tr class="separator:a3954c70029839ad7235d088c41d09569"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8f239937c49ce619fa837c3d47ae955"><td class="memItemLeft" align="right" valign="top">class <a class="el" href="classSoVRMLGroup.html">SoVRMLGroup</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRML2Action.html#ab8f239937c49ce619fa837c3d47ae955">getVRML2SceneGraph</a> (void) const</td></tr>
+<tr class="separator:ab8f239937c49ce619fa837c3d47ae955"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab575be05157126fe8c66b443bc9d0d89"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRML2Action.html#ab575be05157126fe8c66b443bc9d0d89">reuseAppearanceNodes</a> (SbBool appearance)</td></tr>
+<tr class="separator:ab575be05157126fe8c66b443bc9d0d89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6adaa8a8190c272b5c46ce29efed2fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRML2Action.html#ae6adaa8a8190c272b5c46ce29efed2fa">reuseGeometryNodes</a> (SbBool geometry)</td></tr>
+<tr class="separator:ae6adaa8a8190c272b5c46ce29efed2fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e6471e6a88fd8720e67fd34c89d7963"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRML2Action.html#a0e6471e6a88fd8720e67fd34c89d7963">reusePropertyNodes</a> (SbBool property)</td></tr>
+<tr class="separator:a0e6471e6a88fd8720e67fd34c89d7963"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSoToVRMLAction"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSoToVRMLAction')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSoToVRMLAction.html">SoToVRMLAction</a></td></tr>
+<tr class="memitem:acc08b167cffde33b4c6d52544a470793 inherit pub_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#acc08b167cffde33b4c6d52544a470793">SoToVRMLAction</a> (void)</td></tr>
+<tr class="separator:acc08b167cffde33b4c6d52544a470793 inherit pub_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19c98494b8bf380ec2a4c330687d7141 inherit pub_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#a19c98494b8bf380ec2a4c330687d7141">~SoToVRMLAction</a> (void)</td></tr>
+<tr class="separator:a19c98494b8bf380ec2a4c330687d7141 inherit pub_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af52e30034b8b620e7f57a076963da736 inherit pub_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#af52e30034b8b620e7f57a076963da736">areSoFileExpanded</a> (void) const</td></tr>
+<tr class="separator:af52e30034b8b620e7f57a076963da736 inherit pub_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0bb10375814ceef671fe56ffe9db1f5f inherit pub_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#a0bb10375814ceef671fe56ffe9db1f5f">areTexCoordWritten</a> (void) const</td></tr>
+<tr class="separator:a0bb10375814ceef671fe56ffe9db1f5f inherit pub_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57bd5ac099e301d45fda746994285fc6 inherit pub_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#a57bd5ac099e301d45fda746994285fc6">areTexture2NodeExpanded</a> (void) const</td></tr>
+<tr class="separator:a57bd5ac099e301d45fda746994285fc6 inherit pub_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7ba517b15ff73023d49205ab486a984 inherit pub_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#ad7ba517b15ff73023d49205ab486a984">areUnknownNodeKept</a> (void) const</td></tr>
+<tr class="separator:ad7ba517b15ff73023d49205ab486a984 inherit pub_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2ca7bdb1e7045587a59f6e8e765f4b2 inherit pub_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#aa2ca7bdb1e7045587a59f6e8e765f4b2">conditionalConversion</a> (SbBool flag)</td></tr>
+<tr class="separator:aa2ca7bdb1e7045587a59f6e8e765f4b2 inherit pub_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6aca30a042f538c753a8db4a82a925f inherit pub_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#ad6aca30a042f538c753a8db4a82a925f">convertInlineNodes</a> (SbBool flag)</td></tr>
+<tr class="separator:ad6aca30a042f538c753a8db4a82a925f inherit pub_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a120990fed12e3d6c517b040852acf744 inherit pub_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#a120990fed12e3d6c517b040852acf744">doConditionalConversion</a> (void) const</td></tr>
+<tr class="separator:a120990fed12e3d6c517b040852acf744 inherit pub_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a375512901e939b3bbbc22dccc8528d99 inherit pub_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#a375512901e939b3bbbc22dccc8528d99">doConvertInlineNodes</a> (void) const</td></tr>
+<tr class="separator:a375512901e939b3bbbc22dccc8528d99 inherit pub_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70718d7f514c02f33c0a8ab40e507e97 inherit pub_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#a70718d7f514c02f33c0a8ab40e507e97">expandSoFile</a> (SbBool flag)</td></tr>
+<tr class="separator:a70718d7f514c02f33c0a8ab40e507e97 inherit pub_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0549643dab3cdec79a191559c273bea inherit pub_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#ab0549643dab3cdec79a191559c273bea">expandTexture2Node</a> (SbBool flag)</td></tr>
+<tr class="separator:ab0549643dab3cdec79a191559c273bea inherit pub_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21b8b84c7e2f012fcc60cec7f6796f0d inherit pub_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbString.html">SbString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#a21b8b84c7e2f012fcc60cec7f6796f0d">getUrlName</a> (void) const</td></tr>
+<tr class="separator:a21b8b84c7e2f012fcc60cec7f6796f0d inherit pub_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ce7ea688f1adf99233020e688d8993a inherit pub_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#a3ce7ea688f1adf99233020e688d8993a">getVRMLSceneGraph</a> (void) const</td></tr>
+<tr class="separator:a3ce7ea688f1adf99233020e688d8993a inherit pub_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47038cf0ce9f79a85b64de9b52bc8793 inherit pub_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#a47038cf0ce9f79a85b64de9b52bc8793">isVerbose</a> (void) const</td></tr>
+<tr class="separator:a47038cf0ce9f79a85b64de9b52bc8793 inherit pub_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1601843f353bd0c6e551f2643236e864 inherit pub_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#a1601843f353bd0c6e551f2643236e864">keepUnknownNodes</a> (SbBool flag)</td></tr>
+<tr class="separator:a1601843f353bd0c6e551f2643236e864 inherit pub_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27ed38cc6371e7e4ba90843394003f0b inherit pub_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#a27ed38cc6371e7e4ba90843394003f0b">setUrlName</a> (const <a class="el" href="classSbString.html">SbString</a> name)</td></tr>
+<tr class="separator:a27ed38cc6371e7e4ba90843394003f0b inherit pub_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecdaacc31757258a25af6cb4e26a1f96 inherit pub_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#aecdaacc31757258a25af6cb4e26a1f96">setVerbosity</a> (SbBool flag)</td></tr>
+<tr class="separator:aecdaacc31757258a25af6cb4e26a1f96 inherit pub_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0804ab84099ba9aa4f767252be3c64cf inherit pub_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#a0804ab84099ba9aa4f767252be3c64cf">writeTexCoords</a> (SbBool flag)</td></tr>
+<tr class="separator:a0804ab84099ba9aa4f767252be3c64cf inherit pub_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSoAction')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:ad2839c2461c998920de832d8bdaa34c1 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#ad2839c2461c998920de832d8bdaa34c1">~SoAction</a> (void)</td></tr>
+<tr class="separator:ad2839c2461c998920de832d8bdaa34c1 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a984b580685859d42c4505980249fd409 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a984b580685859d42c4505980249fd409">apply</a> (<a class="el" href="classSoAction.html">SoAction</a> *beingApplied)</td></tr>
+<tr class="separator:a984b580685859d42c4505980249fd409 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5920f3da63a6ba8577dc56621815341 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSoPath.html">SoPath</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#af5920f3da63a6ba8577dc56621815341">getCurPath</a> (void)</td></tr>
+<tr class="separator:af5920f3da63a6ba8577dc56621815341 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2b14e6d8f2d1a290c7d8bc90bc9f410 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoAction.html#a0942e2ce7d88ebc8e7cd10cf26310c67">PathCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#ac2b14e6d8f2d1a290c7d8bc90bc9f410">getCurPathCode</a> (void) const</td></tr>
+<tr class="separator:ac2b14e6d8f2d1a290c7d8bc90bc9f410 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e9810cb526353255fedf04792151c2d inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a4e9810cb526353255fedf04792151c2d">getCurPathTail</a> (void)</td></tr>
+<tr class="separator:a4e9810cb526353255fedf04792151c2d inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79ea01b9e731224d00fc792ea19a9802 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a79ea01b9e731224d00fc792ea19a9802">getNodeAppliedTo</a> (void) const</td></tr>
+<tr class="separator:a79ea01b9e731224d00fc792ea19a9802 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5062d853f79a06b4031622e9b59b8d18 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSoPathList.html">SoPathList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a5062d853f79a06b4031622e9b59b8d18">getOriginalPathListAppliedTo</a> (void) const</td></tr>
+<tr class="separator:a5062d853f79a06b4031622e9b59b8d18 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedea6d5b8b79997c9085937f5dcf517d inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoPath.html">SoPath</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#aedea6d5b8b79997c9085937f5dcf517d">getPathAppliedTo</a> (void) const</td></tr>
+<tr class="separator:aedea6d5b8b79997c9085937f5dcf517d inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42b2f4960252071194099b4a965eefa2 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoAction.html#a0942e2ce7d88ebc8e7cd10cf26310c67">PathCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a42b2f4960252071194099b4a965eefa2">getPathCode</a> (int &amp;numindices, const int *&amp;indices)</td></tr>
+<tr class="separator:a42b2f4960252071194099b4a965eefa2 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a791ea2da77f97bb290520f9d92fe4f3b inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSoPathList.html">SoPathList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a791ea2da77f97bb290520f9d92fe4f3b">getPathListAppliedTo</a> (void) const</td></tr>
+<tr class="separator:a791ea2da77f97bb290520f9d92fe4f3b inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a477a09961787e99a9621bb07e79c922c inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoState.html">SoState</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a477a09961787e99a9621bb07e79c922c">getState</a> (void) const</td></tr>
+<tr class="separator:a477a09961787e99a9621bb07e79c922c inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cf5dc15e2ea395a8bf9e05827e7c9f3 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoAction.html#a1c1dcf644f0e8bc1acd92f9cd8c917d3">AppliedCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a7cf5dc15e2ea395a8bf9e05827e7c9f3">getWhatAppliedTo</a> (void) const</td></tr>
+<tr class="separator:a7cf5dc15e2ea395a8bf9e05827e7c9f3 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af20b8fd5a41faad4f5f21bb7769a5f33 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#af20b8fd5a41faad4f5f21bb7769a5f33">hasTerminated</a> (void) const</td></tr>
+<tr class="separator:af20b8fd5a41faad4f5f21bb7769a5f33 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fbc8efc139853a56e707baecf02b357 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a3fbc8efc139853a56e707baecf02b357">invalidateState</a> (void)</td></tr>
+<tr class="separator:a3fbc8efc139853a56e707baecf02b357 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad953f48ef9f01d8b2c4596157a6e5cdc inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#ad953f48ef9f01d8b2c4596157a6e5cdc">isLastPathListAppliedTo</a> (void) const</td></tr>
+<tr class="separator:ad953f48ef9f01d8b2c4596157a6e5cdc inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5478020eea5f2b7d4e183e16d29d6611 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a5478020eea5f2b7d4e183e16d29d6611">isOfType</a> (<a class="el" href="classSoType.html">SoType</a> type) const</td></tr>
+<tr class="separator:a5478020eea5f2b7d4e183e16d29d6611 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88ceb9648c0f51d7ba87475ca8555f28 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a88ceb9648c0f51d7ba87475ca8555f28">popCurPath</a> (const <a class="el" href="classSoAction.html#a0942e2ce7d88ebc8e7cd10cf26310c67">PathCode</a> prevpathcode)</td></tr>
+<tr class="separator:a88ceb9648c0f51d7ba87475ca8555f28 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a989bcb87598bf55b31bf0704189abb11 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a989bcb87598bf55b31bf0704189abb11">popCurPath</a> (void)</td></tr>
+<tr class="separator:a989bcb87598bf55b31bf0704189abb11 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf8242136a44ff3af40ea102b372e4e1 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#adf8242136a44ff3af40ea102b372e4e1">popPushCurPath</a> (const int childindex, <a class="el" href="classSoNode.html">SoNode</a> *node=NULL)</td></tr>
+<tr class="separator:adf8242136a44ff3af40ea102b372e4e1 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a148ece4bf4cda79914ee3a2116c05d09 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a148ece4bf4cda79914ee3a2116c05d09">pushCurPath</a> (const int childindex, <a class="el" href="classSoNode.html">SoNode</a> *node=NULL)</td></tr>
+<tr class="separator:a148ece4bf4cda79914ee3a2116c05d09 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abebcc05d2d935803a3c95310c9447614 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#abebcc05d2d935803a3c95310c9447614">pushCurPath</a> (void)</td></tr>
+<tr class="separator:abebcc05d2d935803a3c95310c9447614 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accfc280f70bc8f888f61890f07a4aac2 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#accfc280f70bc8f888f61890f07a4aac2">switchToNodeTraversal</a> (<a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:accfc280f70bc8f888f61890f07a4aac2 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4285818426cf039bd556b537398d9ece inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a4285818426cf039bd556b537398d9ece">switchToPathTraversal</a> (<a class="el" href="classSoPath.html">SoPath</a> *path)</td></tr>
+<tr class="separator:a4285818426cf039bd556b537398d9ece inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a805627d07445a9c3a7e6324748aac2a9 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a805627d07445a9c3a7e6324748aac2a9">traverse</a> (<a class="el" href="classSoNode.html">SoNode</a> *const node)</td></tr>
+<tr class="separator:a805627d07445a9c3a7e6324748aac2a9 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea5650e3b7ae6207c4c3d675e83073b5 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#aea5650e3b7ae6207c4c3d675e83073b5">usePathCode</a> (int &amp;numindices, const int *&amp;indices)</td></tr>
+<tr class="separator:aea5650e3b7ae6207c4c3d675e83073b5 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a7fe000fd660af2b4d3c117f16a89932e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRML2Action.html#a7fe000fd660af2b4d3c117f16a89932e">addMethod</a> (const <a class="el" href="classSoType.html">SoType</a> type, SoActionMethod method)</td></tr>
+<tr class="separator:a7fe000fd660af2b4d3c117f16a89932e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8dcb257b57ea121250d8dc638a86a16"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRML2Action.html#af8dcb257b57ea121250d8dc638a86a16">enableElement</a> (const <a class="el" href="classSoType.html">SoType</a> type, const int stackindex)</td></tr>
+<tr class="separator:af8dcb257b57ea121250d8dc638a86a16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc6e4019d577981118a66d611d80f325"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRML2Action.html#abc6e4019d577981118a66d611d80f325">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:abc6e4019d577981118a66d611d80f325"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4cc54345c6eb7d018d84c1dcd61fa13"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRML2Action.html#aa4cc54345c6eb7d018d84c1dcd61fa13">initClass</a> (void)</td></tr>
+<tr class="separator:aa4cc54345c6eb7d018d84c1dcd61fa13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classSoToVRMLAction"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classSoToVRMLAction')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classSoToVRMLAction.html">SoToVRMLAction</a></td></tr>
+<tr class="memitem:ac0df94a3e5b074caa12af293e1da6265 inherit pub_static_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#ac0df94a3e5b074caa12af293e1da6265">addMethod</a> (const <a class="el" href="classSoType.html">SoType</a> type, SoActionMethod method)</td></tr>
+<tr class="separator:ac0df94a3e5b074caa12af293e1da6265 inherit pub_static_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47f756490237caf733073a93fcdceb11 inherit pub_static_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#a47f756490237caf733073a93fcdceb11">enableElement</a> (const <a class="el" href="classSoType.html">SoType</a> type, const int stackindex)</td></tr>
+<tr class="separator:a47f756490237caf733073a93fcdceb11 inherit pub_static_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b98a22f874e15d609f88102b07217f1 inherit pub_static_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#a0b98a22f874e15d609f88102b07217f1">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:a0b98a22f874e15d609f88102b07217f1 inherit pub_static_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b9b5920c8126c8684567418ef3ffd60 inherit pub_static_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#a2b9b5920c8126c8684567418ef3ffd60">initClass</a> (void)</td></tr>
+<tr class="separator:a2b9b5920c8126c8684567418ef3ffd60 inherit pub_static_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classSoAction')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a3a714aae7f852be330d276041f7bc26e inherit pub_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a3a714aae7f852be330d276041f7bc26e">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:a3a714aae7f852be330d276041f7bc26e inherit pub_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fca4d3db681ecea3bd1d5c24d1f160d inherit pub_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a6fca4d3db681ecea3bd1d5c24d1f160d">initClass</a> (void)</td></tr>
+<tr class="separator:a6fca4d3db681ecea3bd1d5c24d1f160d inherit pub_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c1f8064ac89d9e36d36a8d05365e26a inherit pub_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a9c1f8064ac89d9e36d36a8d05365e26a">initClasses</a> (void)</td></tr>
+<tr class="separator:a9c1f8064ac89d9e36d36a8d05365e26a inherit pub_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6dd54a728307c37d3cd87b2891b9359e inherit pub_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a6dd54a728307c37d3cd87b2891b9359e">nullAction</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a6dd54a728307c37d3cd87b2891b9359e inherit pub_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:ae48577473eb32dafeb9d825876c224f3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRML2Action.html#ae48577473eb32dafeb9d825876c224f3">beginTraversal</a> (<a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:ae48577473eb32dafeb9d825876c224f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3034a4d78badf2d9c17c85b69acd4a1c"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRML2Action.html#a3034a4d78badf2d9c17c85b69acd4a1c">getEnabledElements</a> (void) const</td></tr>
+<tr class="separator:a3034a4d78badf2d9c17c85b69acd4a1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSoAction')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a7f6ac9fad4b83a66a321adfa48ebacd1 inherit pro_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a7f6ac9fad4b83a66a321adfa48ebacd1">SoAction</a> (void)</td></tr>
+<tr class="separator:a7f6ac9fad4b83a66a321adfa48ebacd1 inherit pro_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9af52ee33d0effeba2f23d9c3d4d6ad0 inherit pro_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a9af52ee33d0effeba2f23d9c3d4d6ad0">endTraversal</a> (<a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a9af52ee33d0effeba2f23d9c3d4d6ad0 inherit pro_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa968d7390c6d9ec862e0c9c1c7e48de5 inherit pro_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#aa968d7390c6d9ec862e0c9c1c7e48de5">setTerminated</a> (const SbBool flag)</td></tr>
+<tr class="separator:aa968d7390c6d9ec862e0c9c1c7e48de5 inherit pro_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59700c3dd417a802e9531b6544ff6b81 inherit pro_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a59700c3dd417a802e9531b6544ff6b81">shouldCompactPathList</a> (void) const</td></tr>
+<tr class="separator:a59700c3dd417a802e9531b6544ff6b81 inherit pro_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:a3ccf42b9a2083faf59be34fe33083c9b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoActionMethodList.html">SoActionMethodList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRML2Action.html#a3ccf42b9a2083faf59be34fe33083c9b">getClassActionMethods</a> (void)</td></tr>
+<tr class="separator:a3ccf42b9a2083faf59be34fe33083c9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03e981f2324daa0199f1f28090e26ada"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRML2Action.html#a03e981f2324daa0199f1f28090e26ada">getClassEnabledElements</a> (void)</td></tr>
+<tr class="separator:a03e981f2324daa0199f1f28090e26ada"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_methods_classSoToVRMLAction"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classSoToVRMLAction')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classSoToVRMLAction.html">SoToVRMLAction</a></td></tr>
+<tr class="memitem:a2745841fce4e620ebc7e21b38a99c1da inherit pro_static_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoActionMethodList.html">SoActionMethodList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#a2745841fce4e620ebc7e21b38a99c1da">getClassActionMethods</a> (void)</td></tr>
+<tr class="separator:a2745841fce4e620ebc7e21b38a99c1da inherit pro_static_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea3507d93fa7882a9f119ea11497a218 inherit pro_static_methods_classSoToVRMLAction"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoToVRMLAction.html#aea3507d93fa7882a9f119ea11497a218">getClassEnabledElements</a> (void)</td></tr>
+<tr class="separator:aea3507d93fa7882a9f119ea11497a218 inherit pro_static_methods_classSoToVRMLAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_methods_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classSoAction')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a655c3dbf9f093cdfaa7cc896ca54c0f3 inherit pro_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoActionMethodList.html">SoActionMethodList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a655c3dbf9f093cdfaa7cc896ca54c0f3">getClassActionMethods</a> (void)</td></tr>
+<tr class="separator:a655c3dbf9f093cdfaa7cc896ca54c0f3 inherit pro_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3a072966a0f9fa9f96fa1affc44fe9b inherit pro_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#ac3a072966a0f9fa9f96fa1affc44fe9b">getClassEnabledElements</a> (void)</td></tr>
+<tr class="separator:ac3a072966a0f9fa9f96fa1affc44fe9b inherit pro_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_types_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSoAction')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a1c1dcf644f0e8bc1acd92f9cd8c917d3 inherit pub_types_classSoAction"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a1c1dcf644f0e8bc1acd92f9cd8c917d3">AppliedCode</a> { <b>NODE</b> = 0
+, <b>PATH</b> = 1
+, <b>PATH_LIST</b> = 2
+ }</td></tr>
+<tr class="separator:a1c1dcf644f0e8bc1acd92f9cd8c917d3 inherit pub_types_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0942e2ce7d88ebc8e7cd10cf26310c67 inherit pub_types_classSoAction"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a0942e2ce7d88ebc8e7cd10cf26310c67">PathCode</a> { <b>NO_PATH</b> = 0
+, <b>IN_PATH</b> = 1
+, <b>BELOW_PATH</b> = 2
+, <b>OFF_PATH</b> = 3
+ }</td></tr>
+<tr class="separator:a0942e2ce7d88ebc8e7cd10cf26310c67 inherit pub_types_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classSoAction')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a5b4ccb851346b95c3c3562b1824d258b inherit pro_attribs_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoState.html">SoState</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a5b4ccb851346b95c3c3562b1824d258b">state</a></td></tr>
+<tr class="separator:a5b4ccb851346b95c3c3562b1824d258b inherit pro_attribs_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00703b6a5c0bac45ac95756f7eb054af inherit pro_attribs_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoActionMethodList.html">SoActionMethodList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a00703b6a5c0bac45ac95756f7eb054af">traversalMethods</a></td></tr>
+<tr class="separator:a00703b6a5c0bac45ac95756f7eb054af inherit pro_attribs_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSoToVRML2Action.html" title="The SoToVRML2Action class builds a new scene graph, using only VRML97/VRML2 nodes.">SoToVRML2Action</a> class builds a new scene graph, using only VRML97/VRML2 nodes. </p>
+<p>This action is used for converting a scene graph of VRML1/Coin nodes to a new scene graph using only VRML97/VRML2 nodes.</p>
+<p>Due to the basic differences between VRML1/Coin and VRML2 (the latter does not really have a traversal state) the new scene graph will typically be somewhat larger. To minimize this effect the action tries to reuse nodes when possible.</p>
+<p>VRML1 nodes will be converted to their equivalent VRML2 nodes, while Coin nodes with no VRML2 equivalent are converted to IndexedFaceSet. If the DrawStyle is POINTS, all geometry will be built using PointSet; if it is LINES IndexedLineSet is used.</p>
+<p>Here's a basic usage example of this action, in the form of a complete, standalone program:</p>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;Inventor/SoDB.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/SoInteraction.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/SoInput.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/SoOutput.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/actions/SoWriteAction.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/actions/SoToVRML2Action.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/nodes/SoSeparator.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/VRMLnodes/SoVRMLGroup.h&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span></div>
+<div class="line">main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[])</div>
+<div class="line">{</div>
+<div class="line">  <a class="code" href="classSoDB.html#a970f42dfd362c33c69fa1869bfae72b5">SoDB::init</a>();</div>
+<div class="line">  <a class="code" href="classSoInteraction.html#a42c9aff2309ba6835c5a7a2171870a86">SoInteraction::init</a>();</div>
+<div class="line">  <a class="code" href="classSoInput.html">SoInput</a> in;</div>
+<div class="line">  in.<a class="code" href="classSoInput.html#a75df5c1deef8e619c1056aae2776abdc">openFile</a>(argv[1]);</div>
+<div class="line">  printf(<span class="stringliteral">&quot;Reading...\n&quot;</span>);</div>
+<div class="line">  <a class="code" href="classSoSeparator.html">SoSeparator</a> *root = <a class="code" href="classSoDB.html#a2ceee0dd279cd44b19660ae4fdd427de">SoDB::readAll</a>(&amp;in);</div>
+<div class="line"> </div>
+<div class="line">  <span class="keywordflow">if</span> (root) {</div>
+<div class="line">    root-&gt;<a class="code" href="classSoBase.html#ac01cf34901b2a2be1bc2671bb2463851">ref</a>();</div>
+<div class="line">    <a class="code" href="classSbString.html">SbString</a> hdr = in.<a class="code" href="classSoInput.html#a38f80ad59e0ca2e8ec1f6216a380f0ad">getHeader</a>();</div>
+<div class="line">    in.<a class="code" href="classSoInput.html#a1129eedac60a1c409d47558009a46ffb">closeFile</a>();</div>
+<div class="line"> </div>
+<div class="line">    printf(<span class="stringliteral">&quot;Converting...\n&quot;</span>);</div>
+<div class="line">    <a class="code" href="classSoToVRML2Action.html">SoToVRML2Action</a> tovrml2;</div>
+<div class="line">    tovrml2.<a class="code" href="classSoToVRML2Action.html#a441e2ef02901cadc1a03f460d8fde1a6">apply</a>(root);</div>
+<div class="line">    <a class="code" href="classSoVRMLGroup.html">SoVRMLGroup</a> *newroot = tovrml2.<a class="code" href="classSoToVRML2Action.html#ab8f239937c49ce619fa837c3d47ae955">getVRML2SceneGraph</a>();</div>
+<div class="line">    newroot-&gt;<a class="code" href="classSoBase.html#ac01cf34901b2a2be1bc2671bb2463851">ref</a>();</div>
+<div class="line">    root-&gt;<a class="code" href="classSoBase.html#a254b1ac395fe4d4d10438b994bdb3561">unref</a>();</div>
+<div class="line"> </div>
+<div class="line">    printf(<span class="stringliteral">&quot;Writing...\n&quot;</span>);</div>
+<div class="line"> </div>
+<div class="line">    <a class="code" href="classSoOutput.html">SoOutput</a> out;</div>
+<div class="line">    out.<a class="code" href="classSoOutput.html#a15bd93d4388bcbd7415c85241b2e9d3b">openFile</a>(<span class="stringliteral">&quot;out.wrl&quot;</span>);</div>
+<div class="line">    out.<a class="code" href="classSoOutput.html#ad993f2c040c1b39d7dc560784188847c">setHeaderString</a>(<span class="stringliteral">&quot;#VRML V2.0 utf8&quot;</span>);</div>
+<div class="line">    <a class="code" href="classSoWriteAction.html">SoWriteAction</a> wra(&amp;out);</div>
+<div class="line">    wra.apply(newroot);</div>
+<div class="line">    out.<a class="code" href="classSoOutput.html#a731b0fb2e9d1bc7022072c731a016e80">closeFile</a>();</div>
+<div class="line"> </div>
+<div class="line">    newroot-&gt;<a class="code" href="classSoBase.html#a254b1ac395fe4d4d10438b994bdb3561">unref</a>();</div>
+<div class="line">  }</div>
+<div class="line"> </div>
+<div class="line">  <span class="keywordflow">return</span> 0;</div>
+<div class="line">}</div>
+<div class="ttc" id="aclassSbString_html"><div class="ttname"><a href="classSbString.html">SbString</a></div><div class="ttdoc">The SbString class is a string class with convenience functions for string operations.</div><div class="ttdef"><b>Definition:</b> SbString.h:52</div></div>
+<div class="ttc" id="aclassSoBase_html_a254b1ac395fe4d4d10438b994bdb3561"><div class="ttname"><a href="classSoBase.html#a254b1ac395fe4d4d10438b994bdb3561">SoBase::unref</a></div><div class="ttdeci">void unref(void) const</div><div class="ttdef"><b>Definition:</b> SoBase.cpp:530</div></div>
+<div class="ttc" id="aclassSoBase_html_ac01cf34901b2a2be1bc2671bb2463851"><div class="ttname"><a href="classSoBase.html#ac01cf34901b2a2be1bc2671bb2463851">SoBase::ref</a></div><div class="ttdeci">void ref(void) const</div><div class="ttdef"><b>Definition:</b> SoBase.cpp:478</div></div>
+<div class="ttc" id="aclassSoDB_html_a2ceee0dd279cd44b19660ae4fdd427de"><div class="ttname"><a href="classSoDB.html#a2ceee0dd279cd44b19660ae4fdd427de">SoDB::readAll</a></div><div class="ttdeci">static SoSeparator * readAll(SoInput *input)</div><div class="ttdef"><b>Definition:</b> SoDB.cpp:682</div></div>
+<div class="ttc" id="aclassSoDB_html_a970f42dfd362c33c69fa1869bfae72b5"><div class="ttname"><a href="classSoDB.html#a970f42dfd362c33c69fa1869bfae72b5">SoDB::init</a></div><div class="ttdeci">static void init(void)</div><div class="ttdef"><b>Definition:</b> SoDB.cpp:200</div></div>
+<div class="ttc" id="aclassSoInput_html"><div class="ttname"><a href="classSoInput.html">SoInput</a></div><div class="ttdoc">The SoInput class is an abstraction of file import functionality.</div><div class="ttdef"><b>Definition:</b> SoInput.h:61</div></div>
+<div class="ttc" id="aclassSoInput_html_a1129eedac60a1c409d47558009a46ffb"><div class="ttname"><a href="classSoInput.html#a1129eedac60a1c409d47558009a46ffb">SoInput::closeFile</a></div><div class="ttdeci">virtual void closeFile(void)</div><div class="ttdef"><b>Definition:</b> SoInput.cpp:580</div></div>
+<div class="ttc" id="aclassSoInput_html_a38f80ad59e0ca2e8ec1f6216a380f0ad"><div class="ttname"><a href="classSoInput.html#a38f80ad59e0ca2e8ec1f6216a380f0ad">SoInput::getHeader</a></div><div class="ttdeci">virtual SbString getHeader(void)</div><div class="ttdef"><b>Definition:</b> SoInput.cpp:778</div></div>
+<div class="ttc" id="aclassSoInput_html_a75df5c1deef8e619c1056aae2776abdc"><div class="ttname"><a href="classSoInput.html#a75df5c1deef8e619c1056aae2776abdc">SoInput::openFile</a></div><div class="ttdeci">virtual SbBool openFile(const char *fileName, SbBool okIfNotFound=FALSE)</div><div class="ttdef"><b>Definition:</b> SoInput.cpp:495</div></div>
+<div class="ttc" id="aclassSoInteraction_html_a42c9aff2309ba6835c5a7a2171870a86"><div class="ttname"><a href="classSoInteraction.html#a42c9aff2309ba6835c5a7a2171870a86">SoInteraction::init</a></div><div class="ttdeci">static void init(void)</div><div class="ttdef"><b>Definition:</b> SoInteraction.cpp:127</div></div>
+<div class="ttc" id="aclassSoOutput_html"><div class="ttname"><a href="classSoOutput.html">SoOutput</a></div><div class="ttdoc">The SoOutput class is an abstraction of an output stream.</div><div class="ttdef"><b>Definition:</b> SoOutput.h:51</div></div>
+<div class="ttc" id="aclassSoOutput_html_a15bd93d4388bcbd7415c85241b2e9d3b"><div class="ttname"><a href="classSoOutput.html#a15bd93d4388bcbd7415c85241b2e9d3b">SoOutput::openFile</a></div><div class="ttdeci">virtual SbBool openFile(const char *const fileName)</div><div class="ttdef"><b>Definition:</b> SoOutput.cpp:413</div></div>
+<div class="ttc" id="aclassSoOutput_html_a731b0fb2e9d1bc7022072c731a016e80"><div class="ttname"><a href="classSoOutput.html#a731b0fb2e9d1bc7022072c731a016e80">SoOutput::closeFile</a></div><div class="ttdeci">virtual void closeFile(void)</div><div class="ttdef"><b>Definition:</b> SoOutput.cpp:439</div></div>
+<div class="ttc" id="aclassSoOutput_html_ad993f2c040c1b39d7dc560784188847c"><div class="ttname"><a href="classSoOutput.html#ad993f2c040c1b39d7dc560784188847c">SoOutput::setHeaderString</a></div><div class="ttdeci">virtual void setHeaderString(const SbString &amp;str)</div><div class="ttdef"><b>Definition:</b> SoOutput.cpp:674</div></div>
+<div class="ttc" id="aclassSoSeparator_html"><div class="ttname"><a href="classSoSeparator.html">SoSeparator</a></div><div class="ttdoc">The SoSeparator class is a state-preserving group node.</div><div class="ttdef"><b>Definition:</b> SoSeparator.h:44</div></div>
+<div class="ttc" id="aclassSoToVRML2Action_html"><div class="ttname"><a href="classSoToVRML2Action.html">SoToVRML2Action</a></div><div class="ttdoc">The SoToVRML2Action class builds a new scene graph, using only VRML97/VRML2 nodes.</div><div class="ttdef"><b>Definition:</b> SoToVRML2Action.h:40</div></div>
+<div class="ttc" id="aclassSoToVRML2Action_html_a441e2ef02901cadc1a03f460d8fde1a6"><div class="ttname"><a href="classSoToVRML2Action.html#a441e2ef02901cadc1a03f460d8fde1a6">SoToVRML2Action::apply</a></div><div class="ttdeci">virtual void apply(SoNode *node)</div><div class="ttdef"><b>Definition:</b> SoToVRML2Action.cpp:635</div></div>
+<div class="ttc" id="aclassSoToVRML2Action_html_ab8f239937c49ce619fa837c3d47ae955"><div class="ttname"><a href="classSoToVRML2Action.html#ab8f239937c49ce619fa837c3d47ae955">SoToVRML2Action::getVRML2SceneGraph</a></div><div class="ttdeci">class SoVRMLGroup * getVRML2SceneGraph(void) const</div><div class="ttdef"><b>Definition:</b> SoToVRML2Action.cpp:665</div></div>
+<div class="ttc" id="aclassSoVRMLGroup_html"><div class="ttname"><a href="classSoVRMLGroup.html">SoVRMLGroup</a></div><div class="ttdoc">The SoVRMLGroup class is used for grouping VRML nodes.</div><div class="ttdef"><b>Definition:</b> SoVRMLGroup.h:45</div></div>
+<div class="ttc" id="aclassSoWriteAction_html"><div class="ttname"><a href="classSoWriteAction.html">SoWriteAction</a></div><div class="ttdoc">The SoWriteAction class writes a scene graph to file.</div><div class="ttdef"><b>Definition:</b> SoWriteAction.h:42</div></div>
+</div><!-- fragment --><p>Note: if VRML97 support is not present in the Coin library, this action does nothing and getVRML2SceneGraph always returns <code>NULL</code>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoToVRMLAction.html" title="The SoToVRMLAction class builds a new scene graph using only VRML 1.0 nodes.">SoToVRMLAction</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.0 </dd>
+<dd>
+TGS Inventor 2.5 </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ae9dfb4df29e6659a3e192e5a4e6d190d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9dfb4df29e6659a3e192e5a4e6d190d">&#9670;&nbsp;</a></span>SoToVRML2Action()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoToVRML2Action::SoToVRML2Action </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Constructor. </p>
+
+</div>
+</div>
+<a id="a868097438817165ba7f671fca9fbf86b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a868097438817165ba7f671fca9fbf86b">&#9670;&nbsp;</a></span>~SoToVRML2Action()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoToVRML2Action::~SoToVRML2Action </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The destructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7fe000fd660af2b4d3c117f16a89932e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fe000fd660af2b4d3c117f16a89932e">&#9670;&nbsp;</a></span>addMethod()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoToVRML2Action::addMethod </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSoType.html">SoType</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SoActionMethod&#160;</td>
+          <td class="paramname"><em>method</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+ </p>
+
+</div>
+</div>
+<a id="a50f958020f0fff999c45a90862d22c25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50f958020f0fff999c45a90862d22c25">&#9670;&nbsp;</a></span>apply() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoToVRML2Action::apply </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSoPathList.html">SoPathList</a> &amp;&#160;</td>
+          <td class="paramname"><em>pathlist</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>obeysrules</em> = <code>FALSE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Applies action to the graphs defined by <em>pathlist</em>. If <em>obeysrules</em> is set to <code>TRUE</code>, <em>pathlist</em> must obey the following four conditions (which is the case for path lists returned from search actions for non-group nodes and path lists returned from picking actions):</p>
+<p>All paths must start at the same head node. All paths must be sorted in traversal order. The paths must be unique. No path can continue through the end point of another path.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoAction.html#a8f922db782cb971042da8adc64f61d47">SoAction::apply(SoPath * path)</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classSoToVRMLAction.html#a546fe08eb907daedd71c359901c18966">SoToVRMLAction</a>.</p>
+
+</div>
+</div>
+<a id="a441e2ef02901cadc1a03f460d8fde1a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a441e2ef02901cadc1a03f460d8fde1a6">&#9670;&nbsp;</a></span>apply() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoToVRML2Action::apply </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoNode.html">SoNode</a> *&#160;</td>
+          <td class="paramname"><em>root</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Applies the action to the scene graph rooted at <em>root</em>.</p>
+<p>Note that you should <em>not</em> apply an action to a node with a zero reference count. The behavior in that case is undefined. </p>
+
+<p>Reimplemented from <a class="el" href="classSoToVRMLAction.html#adc181fc090c32154320df859b2f0a7e8">SoToVRMLAction</a>.</p>
+
+</div>
+</div>
+<a id="a7ed681262a6e1b92ece3712b355c325a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ed681262a6e1b92ece3712b355c325a">&#9670;&nbsp;</a></span>apply() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoToVRML2Action::apply </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoPath.html">SoPath</a> *&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Applies the action to the parts of the graph defined by <em>path</em>.</p>
+<p>Note that an <a class="el" href="classSoPath.html" title="The SoPath class is a container class for traversal path descriptions.">SoPath</a> will also contain all nodes that may influence e.g. geometry nodes in the path. So for instance applying an <a class="el" href="classSoGLRenderAction.html" title="The SoGLRenderAction class renders the scene graph with OpenGL calls.">SoGLRenderAction</a> on an <a class="el" href="classSoPath.html" title="The SoPath class is a container class for traversal path descriptions.">SoPath</a> will render that path as expected in the view, where geometry will get its materials, textures, and other appearance settings correctly.</p>
+<p>If the <em>path</em> ends in an <a class="el" href="classSoGroup.html" title="The SoGroup class is a node which managed other node instances.">SoGroup</a> node, the action will also traverse the tail node's children. </p>
+
+<p>Reimplemented from <a class="el" href="classSoToVRMLAction.html#a497e262d0da5975e96ac1e97c052db4f">SoToVRMLAction</a>.</p>
+
+</div>
+</div>
+<a id="ae48577473eb32dafeb9d825876c224f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae48577473eb32dafeb9d825876c224f3">&#9670;&nbsp;</a></span>beginTraversal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoToVRML2Action::beginTraversal </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoNode.html">SoNode</a> *&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This virtual method is called from <a class="el" href="classSoAction.html#ad2d6ddb297b3a1f5b80026db5fd5e616">SoAction::apply()</a>, and is the entry point for the actual scene graph traversal.</p>
+<p>It can be overridden to initialize the action at traversal start, for specific initializations in the action subclasses inheriting <a class="el" href="classSoAction.html" title="The SoAction class is the base class for all traversal actions.">SoAction</a>.</p>
+<p>Default method just calls <a class="el" href="classSoAction.html#a805627d07445a9c3a7e6324748aac2a9">traverse()</a>, which any overridden implementation of the method must do too (or call <a class="el" href="classSoAction.html#a893a67a9bf2e7b5b5ef0f1f36f1b8097">SoAction::beginTraversal()</a>) to trigger the scene graph traversal. </p>
+
+<p>Reimplemented from <a class="el" href="classSoToVRMLAction.html#a66a505d879aa7f4935483691ba54312a">SoToVRMLAction</a>.</p>
+
+</div>
+</div>
+<a id="a60acf22005c211ba4858e21e284f2dbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60acf22005c211ba4858e21e284f2dbe">&#9670;&nbsp;</a></span>doReuseAppearanceNodes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoToVRML2Action::doReuseAppearanceNodes </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get the flag deciding if appearance nodes should be reused if possible. The default is FALSE.</p>
+<p>Please note that support for reusing Appearance nodes is not implemented yet, so this method will always return FALSE. </p>
+
+</div>
+</div>
+<a id="ac1180cf4ea25c8789a3532499cf241ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1180cf4ea25c8789a3532499cf241ba">&#9670;&nbsp;</a></span>doReuseGeometryNodes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoToVRML2Action::doReuseGeometryNodes </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get the flag deciding if geometry nodes should be reused if possible. The default is FALSE.</p>
+<p>Please note that support for reusing Geometry nodes is not implemented yet, so this function will always return FALSE. </p>
+
+</div>
+</div>
+<a id="a0e90bc44b7fcee4469eae76577d330c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e90bc44b7fcee4469eae76577d330c4">&#9670;&nbsp;</a></span>doReusePropertyNodes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoToVRML2Action::doReusePropertyNodes </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get the flag deciding if property nodes should be reused if possible. The default is FALSE. </p>
+
+</div>
+</div>
+<a id="af8dcb257b57ea121250d8dc638a86a16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8dcb257b57ea121250d8dc638a86a16">&#9670;&nbsp;</a></span>enableElement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoToVRML2Action::enableElement </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSoType.html">SoType</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>stackindex</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+ </p>
+
+</div>
+</div>
+<a id="a3ccf42b9a2083faf59be34fe33083c9b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ccf42b9a2083faf59be34fe33083c9b">&#9670;&nbsp;</a></span>getClassActionMethods()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoActionMethodList.html">SoActionMethodList</a> * SoToVRML2Action::getClassActionMethods </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns list of action methods for this class. The enabledElements and methods variables are protected in the original OIV API. This is not such a good idea, since exposed static class member variables is a major grievance with regard to Win32 DLLs. This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ <br  />
+ </p>
+
+</div>
+</div>
+<a id="a03e981f2324daa0199f1f28090e26ada"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03e981f2324daa0199f1f28090e26ada">&#9670;&nbsp;</a></span>getClassEnabledElements()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> * SoToVRML2Action::getClassEnabledElements </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns list of enabled elements for this class. The enabledElements and methods variables are protected in the original OIV API. This is not such a good idea, since exposed static class member variables is a major grievance with regard to Win32 DLLs. This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ <br  />
+ </p>
+
+</div>
+</div>
+<a id="abc6e4019d577981118a66d611d80f325"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc6e4019d577981118a66d611d80f325">&#9670;&nbsp;</a></span>getClassTypeId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoType.html">SoType</a> SoToVRML2Action::getClassTypeId </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This static method returns the <a class="el" href="classSoType.html" title="The SoType class is the basis for the runtime type system in Coin.">SoType</a> object associated with objects of this class. <br  />
+ </p>
+
+</div>
+</div>
+<a id="a3034a4d78badf2d9c17c85b69acd4a1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3034a4d78badf2d9c17c85b69acd4a1c">&#9670;&nbsp;</a></span>getEnabledElements()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> &amp; SoToVRML2Action::getEnabledElements </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns list of enabled elements. <br  />
+ </p>
+
+<p>Reimplemented from <a class="el" href="classSoToVRMLAction.html#ab5b88f6616f6e9067b129c70949728ac">SoToVRMLAction</a>.</p>
+
+</div>
+</div>
+<a id="a3954c70029839ad7235d088c41d09569"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3954c70029839ad7235d088c41d09569">&#9670;&nbsp;</a></span>getTypeId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoType.html">SoType</a> SoToVRML2Action::getTypeId </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the type identification of an object derived from a class inheriting <a class="el" href="classSoAction.html" title="The SoAction class is the base class for all traversal actions.">SoAction</a>. This is used for runtime type checking and "downward" casting. <br  />
+ </p>
+
+<p>Reimplemented from <a class="el" href="classSoToVRMLAction.html#ab40cd76d094c34356868725607816972">SoToVRMLAction</a>.</p>
+
+</div>
+</div>
+<a id="ab8f239937c49ce619fa837c3d47ae955"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8f239937c49ce619fa837c3d47ae955">&#9670;&nbsp;</a></span>getVRML2SceneGraph()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoVRMLGroup.html">SoVRMLGroup</a> * SoToVRML2Action::getVRML2SceneGraph </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return a pointer to the root node of the generated scene graph of only VRML2 / VRML97 nodes.</p>
+<p>Will return <code>NULL</code> if VRML97 support was not compiled into the library. </p>
+
+</div>
+</div>
+<a id="aa4cc54345c6eb7d018d84c1dcd61fa13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4cc54345c6eb7d018d84c1dcd61fa13">&#9670;&nbsp;</a></span>initClass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoToVRML2Action::initClass </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Initializes the runtime type system for this class, and sets up the enabled elements and action method list. </p>
+
+</div>
+</div>
+<a id="ab575be05157126fe8c66b443bc9d0d89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab575be05157126fe8c66b443bc9d0d89">&#9670;&nbsp;</a></span>reuseAppearanceNodes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoToVRML2Action::reuseAppearanceNodes </td>
+          <td>(</td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>appearance</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the flag deciding if appearance nodes should be reused if possible. The default is FALSE.</p>
+<p>Please note that support for reusing Appearance nodes is not implemented yet. </p>
+
+</div>
+</div>
+<a id="ae6adaa8a8190c272b5c46ce29efed2fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6adaa8a8190c272b5c46ce29efed2fa">&#9670;&nbsp;</a></span>reuseGeometryNodes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoToVRML2Action::reuseGeometryNodes </td>
+          <td>(</td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>geometry</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the flag deciding if geometry nodes should be reused if possible. The default is FALSE.</p>
+<p>Please note that support for reusing Geometry nodes is not implemented yet. </p>
+
+</div>
+</div>
+<a id="a0e6471e6a88fd8720e67fd34c89d7963"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e6471e6a88fd8720e67fd34c89d7963">&#9670;&nbsp;</a></span>reusePropertyNodes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoToVRML2Action::reusePropertyNodes </td>
+          <td>(</td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>property</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the flag deciding if property nodes should be reused if possible. The default is FALSE. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SoToVRML2Action_8h_source.html">SoToVRML2Action.h</a></li>
+<li>SoToVRML2Action.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSoToVRML2Action.html">SoToVRML2Action</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

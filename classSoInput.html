@@ -1,0 +1,3296 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SoInput Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSoInput.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
+<a href="classSoInput-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SoInput Class Reference<div class="ingroups"><a class="el" href="group__coin__general.html">Miscellaneous Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSoInput.html" title="The SoInput class is an abstraction of file import functionality.">SoInput</a> class is an abstraction of file import functionality.  
+ <a href="classSoInput.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SoInput_8h_source.html">Inventor/SoInput.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:aec1751434db4f9bc397d872f7efcf100"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#aec1751434db4f9bc397d872f7efcf100">SoInput</a> (<a class="el" href="classSoInput.html">SoInput</a> *dictIn)</td></tr>
+<tr class="separator:aec1751434db4f9bc397d872f7efcf100"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad6a27869faabd1cfc94d537881af73e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#aad6a27869faabd1cfc94d537881af73e">SoInput</a> (void)</td></tr>
+<tr class="separator:aad6a27869faabd1cfc94d537881af73e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf4e3d4e5d06959037323ed6f03f5df3"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#abf4e3d4e5d06959037323ed6f03f5df3">~SoInput</a> (void)</td></tr>
+<tr class="separator:abf4e3d4e5d06959037323ed6f03f5df3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57453400e374bd1719fff8b2f4a463df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a57453400e374bd1719fff8b2f4a463df">addProto</a> (<a class="el" href="classSoProto.html">SoProto</a> *proto)</td></tr>
+<tr class="separator:a57453400e374bd1719fff8b2f4a463df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdf22810734f06e0caad609d47ec07e2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#abdf22810734f06e0caad609d47ec07e2">addReference</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;name, <a class="el" href="classSoBase.html">SoBase</a> *base, SbBool addToGlobalDict=TRUE)</td></tr>
+<tr class="separator:abdf22810734f06e0caad609d47ec07e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45d7f8f6244662d288e6ea6a29e374fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a45d7f8f6244662d288e6ea6a29e374fb">addRoute</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;fromnode, const <a class="el" href="classSbName.html">SbName</a> &amp;fromfield, const <a class="el" href="classSbName.html">SbName</a> &amp;tonode, const <a class="el" href="classSbName.html">SbName</a> &amp;tofield)</td></tr>
+<tr class="separator:a45d7f8f6244662d288e6ea6a29e374fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bca1464e2a2895d274cf2ae88d3e475"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a3bca1464e2a2895d274cf2ae88d3e475">checkISReference</a> (<a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *container, const <a class="el" href="classSbName.html">SbName</a> &amp;fieldname, SbBool &amp;readok)</td></tr>
+<tr class="separator:a3bca1464e2a2895d274cf2ae88d3e475"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1129eedac60a1c409d47558009a46ffb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a1129eedac60a1c409d47558009a46ffb">closeFile</a> (void)</td></tr>
+<tr class="separator:a1129eedac60a1c409d47558009a46ffb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27f17706f0f5efa5f7394bb9497a9d9e"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a27f17706f0f5efa5f7394bb9497a9d9e">eof</a> (void) const</td></tr>
+<tr class="separator:a27f17706f0f5efa5f7394bb9497a9d9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0e25f354c7802977ea4f48dece877ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoProto.html">SoProto</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#ad0e25f354c7802977ea4f48dece877ca">findProto</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;name)</td></tr>
+<tr class="separator:ad0e25f354c7802977ea4f48dece877ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa429b59b79aca113941a10f8af97f219"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoBase.html">SoBase</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#aa429b59b79aca113941a10f8af97f219">findReference</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;name) const</td></tr>
+<tr class="separator:aa429b59b79aca113941a10f8af97f219"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5193596a25c9d0cc5fe6280acbdbf1f3"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a5193596a25c9d0cc5fe6280acbdbf1f3">get</a> (char &amp;c)</td></tr>
+<tr class="separator:a5193596a25c9d0cc5fe6280acbdbf1f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa9370afb9829d4e053eae82b56f0be7"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#aaa9370afb9829d4e053eae82b56f0be7">getASCIIBuffer</a> (char &amp;c)</td></tr>
+<tr class="separator:aaa9370afb9829d4e053eae82b56f0be7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e6a3babde6c7e217e2a29ff8a528f7f"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a7e6a3babde6c7e217e2a29ff8a528f7f">getASCIIFile</a> (char &amp;c)</td></tr>
+<tr class="separator:a7e6a3babde6c7e217e2a29ff8a528f7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad85a0f056f7a1d29567342ac203e90be"><td class="memItemLeft" align="right" valign="top">virtual FILE *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#ad85a0f056f7a1d29567342ac203e90be">getCurFile</a> (void) const</td></tr>
+<tr class="separator:ad85a0f056f7a1d29567342ac203e90be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a214ba56aae201b25cb30cb118b8b65c8"><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a214ba56aae201b25cb30cb118b8b65c8">getCurFileName</a> (void) const</td></tr>
+<tr class="separator:a214ba56aae201b25cb30cb118b8b65c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaf5aa23a28dc9a676aa380528066415"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoProto.html">SoProto</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#afaf5aa23a28dc9a676aa380528066415">getCurrentProto</a> (void) const</td></tr>
+<tr class="separator:afaf5aa23a28dc9a676aa380528066415"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38f80ad59e0ca2e8ec1f6216a380f0ad"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSbString.html">SbString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a38f80ad59e0ca2e8ec1f6216a380f0ad">getHeader</a> (void)</td></tr>
+<tr class="separator:a38f80ad59e0ca2e8ec1f6216a380f0ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32a5e6eaf4969d8ada1e5daf2e059269"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a32a5e6eaf4969d8ada1e5daf2e059269">getIVVersion</a> (void)</td></tr>
+<tr class="separator:a32a5e6eaf4969d8ada1e5daf2e059269"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ff842d89e6e787857a4fc17c2211b24"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a8ff842d89e6e787857a4fc17c2211b24">getLocationString</a> (<a class="el" href="classSbString.html">SbString</a> &amp;string) const</td></tr>
+<tr class="separator:a8ff842d89e6e787857a4fc17c2211b24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b387b407e09ecadfb86828f27f2aabf"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a1b387b407e09ecadfb86828f27f2aabf">getNumBytesRead</a> (void) const</td></tr>
+<tr class="separator:a1b387b407e09ecadfb86828f27f2aabf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a457936a22ca9585314552bcdfb2564b8"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a457936a22ca9585314552bcdfb2564b8">isBinary</a> (void)</td></tr>
+<tr class="separator:a457936a22ca9585314552bcdfb2564b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a317cb5abf19f4497e03ad18ccfd04303"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a317cb5abf19f4497e03ad18ccfd04303">isFileVRML1</a> (void)</td></tr>
+<tr class="separator:a317cb5abf19f4497e03ad18ccfd04303"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fa47e434f95ccf796a8bdffcac240c6"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a9fa47e434f95ccf796a8bdffcac240c6">isFileVRML2</a> (void)</td></tr>
+<tr class="separator:a9fa47e434f95ccf796a8bdffcac240c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a541a70c39fac93a91be4ad14b5de98b6"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a541a70c39fac93a91be4ad14b5de98b6">isValidBuffer</a> (void)</td></tr>
+<tr class="separator:a541a70c39fac93a91be4ad14b5de98b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a528a90823909957b417e2fefa743c91d"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a528a90823909957b417e2fefa743c91d">isValidFile</a> (void)</td></tr>
+<tr class="separator:a528a90823909957b417e2fefa743c91d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75df5c1deef8e619c1056aae2776abdc"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a75df5c1deef8e619c1056aae2776abdc">openFile</a> (const char *fileName, SbBool okIfNotFound=FALSE)</td></tr>
+<tr class="separator:a75df5c1deef8e619c1056aae2776abdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9b9b35394f090326900d83d203c45c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#af9b9b35394f090326900d83d203c45c0">popProto</a> (void)</td></tr>
+<tr class="separator:af9b9b35394f090326900d83d203c45c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a3279ca83ff540501a2fba2d27a04d3"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a7a3279ca83ff540501a2fba2d27a04d3">pushFile</a> (const char *fileName)</td></tr>
+<tr class="separator:a7a3279ca83ff540501a2fba2d27a04d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa117f260177b221870236d761005867b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#aa117f260177b221870236d761005867b">pushProto</a> (<a class="el" href="classSoProto.html">SoProto</a> *proto)</td></tr>
+<tr class="separator:aa117f260177b221870236d761005867b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3275a753ea5094c301dfd2b4d6ac118"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#aa3275a753ea5094c301dfd2b4d6ac118">putBack</a> (const char *str)</td></tr>
+<tr class="separator:aa3275a753ea5094c301dfd2b4d6ac118"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a581157f03a6367b675fd1a3053d2f27d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a581157f03a6367b675fd1a3053d2f27d">putBack</a> (const char c)</td></tr>
+<tr class="separator:a581157f03a6367b675fd1a3053d2f27d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae96f56efe2cd0e61e046ae976d46f6c5"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#ae96f56efe2cd0e61e046ae976d46f6c5">read</a> (char &amp;c)</td></tr>
+<tr class="separator:ae96f56efe2cd0e61e046ae976d46f6c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f5e23b8db88b37a9e154d4d0b3e2f43"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a9f5e23b8db88b37a9e154d4d0b3e2f43">read</a> (char &amp;c, SbBool skip)</td></tr>
+<tr class="separator:a9f5e23b8db88b37a9e154d4d0b3e2f43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcf3f1162ae979a5a410a1460f09dd8a"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#adcf3f1162ae979a5a410a1460f09dd8a">read</a> (double &amp;d)</td></tr>
+<tr class="separator:adcf3f1162ae979a5a410a1460f09dd8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b8edaa764bc0f01d03bdd08c5421823"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a8b8edaa764bc0f01d03bdd08c5421823">read</a> (float &amp;f)</td></tr>
+<tr class="separator:a8b8edaa764bc0f01d03bdd08c5421823"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0194dab35cf68149363ec635637147a"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#ae0194dab35cf68149363ec635637147a">read</a> (int &amp;i)</td></tr>
+<tr class="separator:ae0194dab35cf68149363ec635637147a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31a321770682fd2fc4b7b97441b420d1"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a31a321770682fd2fc4b7b97441b420d1">read</a> (<a class="el" href="classSbName.html">SbName</a> &amp;n, SbBool validIdent=FALSE)</td></tr>
+<tr class="separator:a31a321770682fd2fc4b7b97441b420d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81e213356becf52d09987bde2f646b25"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a81e213356becf52d09987bde2f646b25">read</a> (<a class="el" href="classSbString.html">SbString</a> &amp;s)</td></tr>
+<tr class="separator:a81e213356becf52d09987bde2f646b25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae25bc725ee5f2e106afc56d4dd05f93f"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#ae25bc725ee5f2e106afc56d4dd05f93f">read</a> (short &amp;s)</td></tr>
+<tr class="separator:ae25bc725ee5f2e106afc56d4dd05f93f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37eaf39d8c7015810439b78b88b6caf6"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a37eaf39d8c7015810439b78b88b6caf6">read</a> (unsigned int &amp;i)</td></tr>
+<tr class="separator:a37eaf39d8c7015810439b78b88b6caf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfab9a73baa1edaf02dac8a6944862db"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#acfab9a73baa1edaf02dac8a6944862db">read</a> (unsigned short &amp;s)</td></tr>
+<tr class="separator:acfab9a73baa1edaf02dac8a6944862db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a238e479498baa9e734bb489ab85e285e"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a238e479498baa9e734bb489ab85e285e">readBinaryArray</a> (double *d, int length)</td></tr>
+<tr class="separator:a238e479498baa9e734bb489ab85e285e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a560111581a01297b7169bc3980dd11be"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a560111581a01297b7169bc3980dd11be">readBinaryArray</a> (float *f, int length)</td></tr>
+<tr class="separator:a560111581a01297b7169bc3980dd11be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54ca5cab823c815fc199b7f685d469b4"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a54ca5cab823c815fc199b7f685d469b4">readBinaryArray</a> (int32_t *l, int length)</td></tr>
+<tr class="separator:a54ca5cab823c815fc199b7f685d469b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa24b5d57e230205637dfc475e29afe54"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#aa24b5d57e230205637dfc475e29afe54">readBinaryArray</a> (unsigned char *c, int length)</td></tr>
+<tr class="separator:aa24b5d57e230205637dfc475e29afe54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab36205986f083a4a972cfe98f6a5c23d"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#ab36205986f083a4a972cfe98f6a5c23d">readByte</a> (int8_t &amp;b)</td></tr>
+<tr class="separator:ab36205986f083a4a972cfe98f6a5c23d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6752d8a78312923963724e1d5f765954"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a6752d8a78312923963724e1d5f765954">readByte</a> (uint8_t &amp;b)</td></tr>
+<tr class="separator:a6752d8a78312923963724e1d5f765954"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a589f80db7bde345c47c64f8d12cc2bb7"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a589f80db7bde345c47c64f8d12cc2bb7">readHex</a> (uint32_t &amp;l)</td></tr>
+<tr class="separator:a589f80db7bde345c47c64f8d12cc2bb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cefe302eb15818d8479ef280db0ebbb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a4cefe302eb15818d8479ef280db0ebbb">removeReference</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;name)</td></tr>
+<tr class="separator:a4cefe302eb15818d8479ef280db0ebbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a587ea9cc13a516915fa0bb88cca2c61c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a587ea9cc13a516915fa0bb88cca2c61c">resetFilePointer</a> (FILE *fptr)</td></tr>
+<tr class="separator:a587ea9cc13a516915fa0bb88cca2c61c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66e89c33a5c320c3f40c7a4935445852"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a66e89c33a5c320c3f40c7a4935445852">setBuffer</a> (const void *bufpointer, size_t bufsize)</td></tr>
+<tr class="separator:a66e89c33a5c320c3f40c7a4935445852"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20f9f4b22af997659ca7c6ea561fa105"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a20f9f4b22af997659ca7c6ea561fa105">setFilePointer</a> (FILE *newFP)</td></tr>
+<tr class="separator:a20f9f4b22af997659ca7c6ea561fa105"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af28592d7aa017765fdaad6fbc6b3d99f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#af28592d7aa017765fdaad6fbc6b3d99f">setStringArray</a> (const char *strings[])</td></tr>
+<tr class="separator:af28592d7aa017765fdaad6fbc6b3d99f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:acf1c66aeaa773a2b667431f6a7b79e4e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#acf1c66aeaa773a2b667431f6a7b79e4e">addDirectoryFirst</a> (const char *dirName)</td></tr>
+<tr class="separator:acf1c66aeaa773a2b667431f6a7b79e4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab87aef010d6cef7fd7e342e0b0c56004"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#ab87aef010d6cef7fd7e342e0b0c56004">addDirectoryLast</a> (const char *dirName)</td></tr>
+<tr class="separator:ab87aef010d6cef7fd7e342e0b0c56004"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47aba07c24b063b8914411f1507b2598"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a47aba07c24b063b8914411f1507b2598">addEnvDirectoriesFirst</a> (const char *envVarName, const char *separator=&quot;:\t &quot;)</td></tr>
+<tr class="separator:a47aba07c24b063b8914411f1507b2598"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ab1c2a23e37a3474495ca9f01e4d5a9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a0ab1c2a23e37a3474495ca9f01e4d5a9">addEnvDirectoriesLast</a> (const char *envVarName, const char *separator=&quot;:\t &quot;)</td></tr>
+<tr class="separator:a0ab1c2a23e37a3474495ca9f01e4d5a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52cbdc5c911d65c8348314d0fe92ec5f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a52cbdc5c911d65c8348314d0fe92ec5f">clearDirectories</a> (void)</td></tr>
+<tr class="separator:a52cbdc5c911d65c8348314d0fe92ec5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79895ffc6452b899e0c6c559cc615c01"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSbString.html">SbString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a79895ffc6452b899e0c6c559cc615c01">getBasename</a> (const char *const filename)</td></tr>
+<tr class="separator:a79895ffc6452b899e0c6c559cc615c01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7225ea814b5ce0314c25b9aaeb851aad"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSbString.html">SbString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a7225ea814b5ce0314c25b9aaeb851aad">getBasename</a> (const <a class="el" href="classSbString.html">SbString</a> &amp;s)</td></tr>
+<tr class="separator:a7225ea814b5ce0314c25b9aaeb851aad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae39a7ead8ea676ad33786f79478ff504"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classSbStringList.html">SbStringList</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#ae39a7ead8ea676ad33786f79478ff504">getDirectories</a> (void)</td></tr>
+<tr class="separator:ae39a7ead8ea676ad33786f79478ff504"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9ea3c3871ac51b220cd6949e8682390"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSbString.html">SbString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#af9ea3c3871ac51b220cd6949e8682390">getPathname</a> (const char *const filename)</td></tr>
+<tr class="separator:af9ea3c3871ac51b220cd6949e8682390"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72c37c9264259441d013ae2d82f07a3b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSbString.html">SbString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a72c37c9264259441d013ae2d82f07a3b">getPathname</a> (const <a class="el" href="classSbString.html">SbString</a> &amp;s)</td></tr>
+<tr class="separator:a72c37c9264259441d013ae2d82f07a3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a522c7da748cada3332a488e3f0d0a943"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a522c7da748cada3332a488e3f0d0a943">init</a> (void)</td></tr>
+<tr class="separator:a522c7da748cada3332a488e3f0d0a943"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81232f02926735fc6be93225ae22dc6e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a81232f02926735fc6be93225ae22dc6e">removeDirectory</a> (const char *dirName)</td></tr>
+<tr class="separator:a81232f02926735fc6be93225ae22dc6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ee3f1b5422497cc59ec969050a05d1c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSbString.html">SbString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a6ee3f1b5422497cc59ec969050a05d1c">searchForFile</a> (const <a class="el" href="classSbString.html">SbString</a> &amp;basename, const <a class="el" href="classSbStringList.html">SbStringList</a> &amp;directories, const <a class="el" href="classSbStringList.html">SbStringList</a> &amp;subdirectories)</td></tr>
+<tr class="separator:a6ee3f1b5422497cc59ec969050a05d1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a819860391ac8abecd7dc8281646d012e"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a819860391ac8abecd7dc8281646d012e">checkHeader</a> (SbBool bValidateBufferHeader=FALSE)</td></tr>
+<tr class="separator:a819860391ac8abecd7dc8281646d012e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12c7f06ddcd60090e1465810dabbfefe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a12c7f06ddcd60090e1465810dabbfefe">convertDouble</a> (char *from, double *d)</td></tr>
+<tr class="separator:a12c7f06ddcd60090e1465810dabbfefe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc1fcf22e4561b47fb2b3c03886cebd4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#afc1fcf22e4561b47fb2b3c03886cebd4">convertDoubleArray</a> (char *from, double *to, int len)</td></tr>
+<tr class="separator:afc1fcf22e4561b47fb2b3c03886cebd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a993edbf51f25c038a9ab12b5e1d1a8df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a993edbf51f25c038a9ab12b5e1d1a8df">convertFloat</a> (char *from, float *f)</td></tr>
+<tr class="separator:a993edbf51f25c038a9ab12b5e1d1a8df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99fdf3aa13fdd31cb34a2dc1e6759091"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a99fdf3aa13fdd31cb34a2dc1e6759091">convertFloatArray</a> (char *from, float *to, int len)</td></tr>
+<tr class="separator:a99fdf3aa13fdd31cb34a2dc1e6759091"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f85a5dd4636f5f6884997c81bb1255f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a3f85a5dd4636f5f6884997c81bb1255f">convertInt32</a> (char *from, int32_t *l)</td></tr>
+<tr class="separator:a3f85a5dd4636f5f6884997c81bb1255f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71f898e1e1926f781e5d705444e999f4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a71f898e1e1926f781e5d705444e999f4">convertInt32Array</a> (char *from, int32_t *to, int len)</td></tr>
+<tr class="separator:a71f898e1e1926f781e5d705444e999f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35ad479e386e0349bd7b95ca365db523"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a35ad479e386e0349bd7b95ca365db523">convertShort</a> (char *from, short *s)</td></tr>
+<tr class="separator:a35ad479e386e0349bd7b95ca365db523"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af242d22b935e532793b644e59b9d38cb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#af242d22b935e532793b644e59b9d38cb">convertShortArray</a> (char *from, short *to, int len)</td></tr>
+<tr class="separator:af242d22b935e532793b644e59b9d38cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af720556440547befcb96c56fedcd43b8"><td class="memItemLeft" align="right" valign="top">FILE *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#af720556440547befcb96c56fedcd43b8">findFile</a> (const char *fileName, <a class="el" href="classSbString.html">SbString</a> &amp;fullName)</td></tr>
+<tr class="separator:af720556440547befcb96c56fedcd43b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d42ed81c251eca58b13f7eb2278c570"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a8d42ed81c251eca58b13f7eb2278c570">freeBytesInBuf</a> (void) const</td></tr>
+<tr class="separator:a8d42ed81c251eca58b13f7eb2278c570"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a857735729ad3180974d71468fd61349f"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a857735729ad3180974d71468fd61349f">fromBuffer</a> (void) const</td></tr>
+<tr class="separator:a857735729ad3180974d71468fd61349f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ac0fa29984e7206b9c903962f37f0f4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a6ac0fa29984e7206b9c903962f37f0f4">initFile</a> (FILE *newFP, const char *fileName, <a class="el" href="classSbString.html">SbString</a> *fullName, SbBool openedHere, <a class="el" href="classSbDict.html">SbDict</a> *refDict=NULL)</td></tr>
+<tr class="separator:a6ac0fa29984e7206b9c903962f37f0f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40f74151ef9b1a11cd8989e223f8d607"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a40f74151ef9b1a11cd8989e223f8d607">isFileURL</a> (const char *url)</td></tr>
+<tr class="separator:a40f74151ef9b1a11cd8989e223f8d607"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbea495763e468a62626067cf7363bfa"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#acbea495763e468a62626067cf7363bfa">IsURL</a> (const char *c_strng)</td></tr>
+<tr class="separator:acbea495763e468a62626067cf7363bfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a711dd686d1310b6c9c83b6812bb1bacd"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a711dd686d1310b6c9c83b6812bb1bacd">makeRoomInBuf</a> (size_t nBytes)</td></tr>
+<tr class="separator:a711dd686d1310b6c9c83b6812bb1bacd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31ca60fa51f3185a9f68269a5a651761"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a31ca60fa51f3185a9f68269a5a651761">popFile</a> (void)</td></tr>
+<tr class="separator:a31ca60fa51f3185a9f68269a5a651761"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2db70a69bd37b3ecfabdcbfe2415f962"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a2db70a69bd37b3ecfabdcbfe2415f962">readChar</a> (char *str, char charToRead)</td></tr>
+<tr class="separator:a2db70a69bd37b3ecfabdcbfe2415f962"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a358e925a83795e1fd5131a3cbccde540"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a358e925a83795e1fd5131a3cbccde540">readDigits</a> (char *str)</td></tr>
+<tr class="separator:a358e925a83795e1fd5131a3cbccde540"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5240cab86dd76f573c626fd0c9c66c8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#ab5240cab86dd76f573c626fd0c9c66c8">readHexDigits</a> (char *str)</td></tr>
+<tr class="separator:ab5240cab86dd76f573c626fd0c9c66c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1e04e4a618213d1093f2b890cf0a9db"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#ac1e04e4a618213d1093f2b890cf0a9db">readInteger</a> (int32_t &amp;l)</td></tr>
+<tr class="separator:ac1e04e4a618213d1093f2b890cf0a9db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e52331fcb571c6febcd8f636108e0ba"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a5e52331fcb571c6febcd8f636108e0ba">readReal</a> (double &amp;d)</td></tr>
+<tr class="separator:a5e52331fcb571c6febcd8f636108e0ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9c9afb18dbe1f4e4c579355eb0131d4"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#ae9c9afb18dbe1f4e4c579355eb0131d4">readUnsignedInteger</a> (uint32_t &amp;l)</td></tr>
+<tr class="separator:ae9c9afb18dbe1f4e4c579355eb0131d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bccd0c02785695f4398264af3764d84"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a3bccd0c02785695f4398264af3764d84">readUnsignedIntegerString</a> (char *str)</td></tr>
+<tr class="separator:a3bccd0c02785695f4398264af3764d84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8dd2208b78264e118d0e8050eec0f261"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a8dd2208b78264e118d0e8050eec0f261">setIVVersion</a> (float version)</td></tr>
+<tr class="separator:a8dd2208b78264e118d0e8050eec0f261"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a311a3e2c6e50fceadf569f4be8a5409b"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a311a3e2c6e50fceadf569f4be8a5409b">skipWhiteSpace</a> (void)</td></tr>
+<tr class="separator:a311a3e2c6e50fceadf569f4be8a5409b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0133eb4aa2ea9620989607d949de3e7"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#ad0133eb4aa2ea9620989607d949de3e7">URLToFile</a> (char *out_buf, const char *in_buf)</td></tr>
+<tr class="separator:ad0133eb4aa2ea9620989607d949de3e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:a90471ef7420a90b0e94abdd84ae1cb44"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInput.html#a90471ef7420a90b0e94abdd84ae1cb44">setDirectories</a> (<a class="el" href="classSbStringList.html">SbStringList</a> *dirs)</td></tr>
+<tr class="separator:a90471ef7420a90b0e94abdd84ae1cb44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSoInput.html" title="The SoInput class is an abstraction of file import functionality.">SoInput</a> class is an abstraction of file import functionality. </p>
+<p>This class takes care of most of the chores of doing data import in Coin. It puts a layer of abstraction over the read operations to make it transparent for the rest of the Coin code whether or not we're reading from a file, from a memory buffer or from stdin.</p>
+<p><a class="el" href="classSoInput.html" title="The SoInput class is an abstraction of file import functionality.">SoInput</a> also takes care of checking file validity, as well as handling information about features in the various file formats which are supported.</p>
+<p>Example usage: </p><div class="fragment"><div class="line"><span class="keywordtype">int</span></div>
+<div class="line">main(<span class="keywordtype">void</span>)</div>
+<div class="line">{</div>
+<div class="line">  <a class="code" href="classSoDB.html#a970f42dfd362c33c69fa1869bfae72b5">SoDB::init</a>();</div>
+<div class="line"> </div>
+<div class="line">  <a class="code" href="classSoInput.html">SoInput</a> in;</div>
+<div class="line">  <span class="keywordflow">if</span> (in.<a class="code" href="classSoInput.html#a75df5c1deef8e619c1056aae2776abdc">openFile</a>(<span class="stringliteral">&quot;fab_model.iv&quot;</span>)) {</div>
+<div class="line">    <a class="code" href="classSoSeparator.html">SoSeparator</a> * root = <a class="code" href="classSoDB.html#a2ceee0dd279cd44b19660ae4fdd427de">SoDB::readAll</a>(&amp;in);</div>
+<div class="line">    <span class="keywordflow">if</span> (root) {</div>
+<div class="line">      <span class="comment">// Do stuff with the imported scene graph here</span></div>
+<div class="line">      <span class="comment">// ...</span></div>
+<div class="line">      <span class="keywordflow">return</span> 0;</div>
+<div class="line">    }</div>
+<div class="line">  }</div>
+<div class="line"> </div>
+<div class="line">  <span class="keywordflow">return</span> 1;</div>
+<div class="line">}</div>
+<div class="ttc" id="aclassSoDB_html_a2ceee0dd279cd44b19660ae4fdd427de"><div class="ttname"><a href="classSoDB.html#a2ceee0dd279cd44b19660ae4fdd427de">SoDB::readAll</a></div><div class="ttdeci">static SoSeparator * readAll(SoInput *input)</div><div class="ttdef"><b>Definition:</b> SoDB.cpp:682</div></div>
+<div class="ttc" id="aclassSoDB_html_a970f42dfd362c33c69fa1869bfae72b5"><div class="ttname"><a href="classSoDB.html#a970f42dfd362c33c69fa1869bfae72b5">SoDB::init</a></div><div class="ttdeci">static void init(void)</div><div class="ttdef"><b>Definition:</b> SoDB.cpp:200</div></div>
+<div class="ttc" id="aclassSoInput_html"><div class="ttname"><a href="classSoInput.html">SoInput</a></div><div class="ttdoc">The SoInput class is an abstraction of file import functionality.</div><div class="ttdef"><b>Definition:</b> SoInput.h:61</div></div>
+<div class="ttc" id="aclassSoInput_html_a75df5c1deef8e619c1056aae2776abdc"><div class="ttname"><a href="classSoInput.html#a75df5c1deef8e619c1056aae2776abdc">SoInput::openFile</a></div><div class="ttdeci">virtual SbBool openFile(const char *fileName, SbBool okIfNotFound=FALSE)</div><div class="ttdef"><b>Definition:</b> SoInput.cpp:495</div></div>
+<div class="ttc" id="aclassSoSeparator_html"><div class="ttname"><a href="classSoSeparator.html">SoSeparator</a></div><div class="ttdoc">The SoSeparator class is a state-preserving group node.</div><div class="ttdef"><b>Definition:</b> SoSeparator.h:44</div></div>
+</div><!-- fragment --><p>Important note: there are several public and protected methods which make it possible to pass in or get returned FILE* structures in this class. Do <em>not</em> use these methods when the Coin library has been compiled as an Microsoft Windows DLL, as passing FILE* instances back or forth to DLLs is dangerous and will most likely cause a crash. This is an intrinsic limitation for Microsoft Windows DLLs.</p>
+<p>This class supports one environment variable called COIN_SOINPUT_SEARCH_GLOBAL_DICT. When set to "1", the global dictionary is searched after the current file dictionary when resolving USE keywords. This makes it possible to reference nodes in other files. The reason for introducing this feature is that the <a class="el" href="classSoFile.html" title="The SoFile class is node container for another model file.">SoFile</a> node rereads the file whenever the name field changes. The first time the file is read, it is possible to reference nodes in the parent file, using the USE keyword. But, when the file is reread this is no longer possible, since the reading now starts at the <a class="el" href="classSoFile.html" title="The SoFile class is node container for another model file.">SoFile</a> node, with an empty dictionary.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoOutput.html" title="The SoOutput class is an abstraction of an output stream.">SoOutput</a>, <a class="el" href="classSoDB.html" title="The SoDB class keeps track of internal global data.">SoDB</a> </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="aad6a27869faabd1cfc94d537881af73e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad6a27869faabd1cfc94d537881af73e">&#9670;&nbsp;</a></span>SoInput() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoInput::SoInput </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Constructor. If no file pointer is set, input will be read from stdin. </p>
+
+</div>
+</div>
+<a id="aec1751434db4f9bc397d872f7efcf100"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec1751434db4f9bc397d872f7efcf100">&#9670;&nbsp;</a></span>SoInput() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoInput::SoInput </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoInput.html">SoInput</a> *&#160;</td>
+          <td class="paramname"><em>dictIn</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A constructor which copies the reference mappings from <em>dictIn</em> upon initialization. </p>
+
+</div>
+</div>
+<a id="abf4e3d4e5d06959037323ed6f03f5df3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf4e3d4e5d06959037323ed6f03f5df3">&#9670;&nbsp;</a></span>~SoInput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoInput::~SoInput </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Destructor. Runs <a class="el" href="classSoInput.html#a1129eedac60a1c409d47558009a46ffb">SoInput::closeFile()</a> to close any open files. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="acf1c66aeaa773a2b667431f6a7b79e4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf1c66aeaa773a2b667431f6a7b79e4e">&#9670;&nbsp;</a></span>addDirectoryFirst()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::addDirectoryFirst </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>dirName</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Add a directory to the search list. The added directory will be searched before any of the other directories in the list.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#ab87aef010d6cef7fd7e342e0b0c56004">addDirectoryLast()</a>, <a class="el" href="classSoInput.html#a47aba07c24b063b8914411f1507b2598">addEnvDirectoriesFirst()</a>, <a class="el" href="classSoInput.html#a0ab1c2a23e37a3474495ca9f01e4d5a9">addEnvDirectoriesLast()</a> </dd>
+<dd>
+<a class="el" href="classSoInput.html#a81232f02926735fc6be93225ae22dc6e">removeDirectory()</a>, <a class="el" href="classSoInput.html#a52cbdc5c911d65c8348314d0fe92ec5f">clearDirectories()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ab87aef010d6cef7fd7e342e0b0c56004"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab87aef010d6cef7fd7e342e0b0c56004">&#9670;&nbsp;</a></span>addDirectoryLast()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::addDirectoryLast </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>dirName</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Add a directory to the search list. The added directory will be searched after any of the other directories in the list.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#acf1c66aeaa773a2b667431f6a7b79e4e">addDirectoryFirst()</a>, <a class="el" href="classSoInput.html#a47aba07c24b063b8914411f1507b2598">addEnvDirectoriesFirst()</a>, <a class="el" href="classSoInput.html#a0ab1c2a23e37a3474495ca9f01e4d5a9">addEnvDirectoriesLast()</a> </dd>
+<dd>
+<a class="el" href="classSoInput.html#a81232f02926735fc6be93225ae22dc6e">removeDirectory()</a>, <a class="el" href="classSoInput.html#a52cbdc5c911d65c8348314d0fe92ec5f">clearDirectories()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a47aba07c24b063b8914411f1507b2598"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47aba07c24b063b8914411f1507b2598">&#9670;&nbsp;</a></span>addEnvDirectoriesFirst()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::addEnvDirectoriesFirst </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>envVarName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>separator</em> = <code>&quot;:\t&#160;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Add in front of the list all directories in the environment variable <em>envVarName</em>. The <em>separator</em> string should contain all characters to be interpreted as separators in the environment variable string list. The default separators are ':', tab and space.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#acf1c66aeaa773a2b667431f6a7b79e4e">addDirectoryFirst()</a>, <a class="el" href="classSoInput.html#ab87aef010d6cef7fd7e342e0b0c56004">addDirectoryLast()</a> </dd>
+<dd>
+<a class="el" href="classSoInput.html#a0ab1c2a23e37a3474495ca9f01e4d5a9">addEnvDirectoriesLast()</a> </dd>
+<dd>
+<a class="el" href="classSoInput.html#a81232f02926735fc6be93225ae22dc6e">removeDirectory()</a>, <a class="el" href="classSoInput.html#a52cbdc5c911d65c8348314d0fe92ec5f">clearDirectories()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a0ab1c2a23e37a3474495ca9f01e4d5a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ab1c2a23e37a3474495ca9f01e4d5a9">&#9670;&nbsp;</a></span>addEnvDirectoriesLast()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::addEnvDirectoriesLast </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>envVarName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>separator</em> = <code>&quot;:\t&#160;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Add at the end of the list all directories in the environment variable <em>envVarName</em>. The <em>separator</em> string should contain all characters to be interpreted as separators in the environment variable string list. The default separators are ':', tab and space.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#acf1c66aeaa773a2b667431f6a7b79e4e">addDirectoryFirst()</a>, <a class="el" href="classSoInput.html#ab87aef010d6cef7fd7e342e0b0c56004">addDirectoryLast()</a> </dd>
+<dd>
+<a class="el" href="classSoInput.html#a47aba07c24b063b8914411f1507b2598">addEnvDirectoriesFirst()</a> </dd>
+<dd>
+<a class="el" href="classSoInput.html#a81232f02926735fc6be93225ae22dc6e">removeDirectory()</a>, <a class="el" href="classSoInput.html#a52cbdc5c911d65c8348314d0fe92ec5f">clearDirectories()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a57453400e374bd1719fff8b2f4a463df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57453400e374bd1719fff8b2f4a463df">&#9670;&nbsp;</a></span>addProto()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::addProto </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoProto.html">SoProto</a> *&#160;</td>
+          <td class="paramname"><em>proto</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Adds a PROTO <em>proto</em> which should be active in the current scope.</p>
+<p>This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ </p><dl class="section since"><dt>Since</dt><dd>Coin 2.0 </dd></dl>
+
+</div>
+</div>
+<a id="abdf22810734f06e0caad609d47ec07e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdf22810734f06e0caad609d47ec07e2">&#9670;&nbsp;</a></span>addReference()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::addReference </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbName.html">SbName</a> &amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSoBase.html">SoBase</a> *&#160;</td>
+          <td class="paramname"><em>base</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>addToGlobalDict</em> = <code>TRUE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Adds a name&lt;-&gt;<a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a> mapping to our dictionary.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#aa429b59b79aca113941a10f8af97f219">findReference()</a>, <a class="el" href="classSoInput.html#a4cefe302eb15818d8479ef280db0ebbb">removeReference()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a45d7f8f6244662d288e6ea6a29e374fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45d7f8f6244662d288e6ea6a29e374fb">&#9670;&nbsp;</a></span>addRoute()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::addRoute </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbName.html">SbName</a> &amp;&#160;</td>
+          <td class="paramname"><em>fromnode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbName.html">SbName</a> &amp;&#160;</td>
+          <td class="paramname"><em>fromfield</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbName.html">SbName</a> &amp;&#160;</td>
+          <td class="paramname"><em>tonode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbName.html">SbName</a> &amp;&#160;</td>
+          <td class="paramname"><em>tofield</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Adds a ROUTE from <em>fromnode's</em> <em>fromfield</em>, to <em>tonode's</em> <em>tofield</em>. This makes it possible to define ROUTEs in files before the <em>fromnode</em> or <em>tonode</em> is parsed.</p>
+<p>This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ </p><dl class="section since"><dt>Since</dt><dd>Coin 2.0 </dd></dl>
+
+</div>
+</div>
+<a id="a819860391ac8abecd7dc8281646d012e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a819860391ac8abecd7dc8281646d012e">&#9670;&nbsp;</a></span>checkHeader()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::checkHeader </td>
+          <td>(</td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>bValidateBufferHeader</em> = <code>FALSE</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns <code>TRUE</code> if the current stream has had its header parsed. If it hasn't, this method will attempt to read the header and returns <code>TRUE</code> if it could be done.</p>
+<p>If <em>bValidateBufferHeader</em> is <code>TRUE</code>, the returned flag will also be <code>FALSE</code> if the file stream header was not of a supported file format type. </p>
+
+</div>
+</div>
+<a id="a3bca1464e2a2895d274cf2ae88d3e475"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bca1464e2a2895d274cf2ae88d3e475">&#9670;&nbsp;</a></span>checkISReference()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::checkISReference </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *&#160;</td>
+          <td class="paramname"><em>container</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbName.html">SbName</a> &amp;&#160;</td>
+          <td class="paramname"><em>fieldname</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SbBool &amp;&#160;</td>
+          <td class="paramname"><em>readok</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Checks if the next bytes in <em>in</em> is the IS keyword. Returns <code>TRUE</code> if the IS keyword was found, <em>readok</em> will be set to <code>FALSE</code> if some error occurred while searching for the IS keyword.</p>
+<p>This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ </p><dl class="section since"><dt>Since</dt><dd>Coin 2.0 </dd></dl>
+
+</div>
+</div>
+<a id="a52cbdc5c911d65c8348314d0fe92ec5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52cbdc5c911d65c8348314d0fe92ec5f">&#9670;&nbsp;</a></span>clearDirectories()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::clearDirectories </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Remove all entries from the directory search list.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#acf1c66aeaa773a2b667431f6a7b79e4e">addDirectoryFirst()</a>, <a class="el" href="classSoInput.html#ab87aef010d6cef7fd7e342e0b0c56004">addDirectoryLast()</a> </dd>
+<dd>
+<a class="el" href="classSoInput.html#a47aba07c24b063b8914411f1507b2598">addEnvDirectoriesFirst()</a>, <a class="el" href="classSoInput.html#a0ab1c2a23e37a3474495ca9f01e4d5a9">addEnvDirectoriesLast()</a> </dd>
+<dd>
+<a class="el" href="classSoInput.html#a81232f02926735fc6be93225ae22dc6e">removeDirectory()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a1129eedac60a1c409d47558009a46ffb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1129eedac60a1c409d47558009a46ffb">&#9670;&nbsp;</a></span>closeFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::closeFile </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Removes all files from the internal stack. Any files opened by <a class="el" href="classSoInput.html#a75df5c1deef8e619c1056aae2776abdc">openFile()</a> or <a class="el" href="classSoInput.html#a7a3279ca83ff540501a2fba2d27a04d3">pushFile()</a> will also be closed, but not the files coming from <a class="el" href="classSoInput.html#a20f9f4b22af997659ca7c6ea561fa105">setFilePointer()</a> &ndash; which are the responsibility of the caller.</p>
+<p>You usually don't need to call this method explicitly, as it will automatically be triggered by the <a class="el" href="classSoInput.html" title="The SoInput class is an abstraction of file import functionality.">SoInput</a> destructor to close any open files when the <a class="el" href="classSoInput.html" title="The SoInput class is an abstraction of file import functionality.">SoInput</a> instance goes out of scope.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#a20f9f4b22af997659ca7c6ea561fa105">setFilePointer()</a>, <a class="el" href="classSoInput.html#a75df5c1deef8e619c1056aae2776abdc">openFile()</a>, <a class="el" href="classSoInput.html#a7a3279ca83ff540501a2fba2d27a04d3">pushFile()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a12c7f06ddcd60090e1465810dabbfefe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12c7f06ddcd60090e1465810dabbfefe">&#9670;&nbsp;</a></span>convertDouble()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::convertDouble </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>from</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>d</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Convert the bytes at <em>from</em> (which must be a double-precision floating point number in network format) to a double-precision floating point number in native format which is put at the <em>d</em> pointer. </p>
+
+</div>
+</div>
+<a id="afc1fcf22e4561b47fb2b3c03886cebd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc1fcf22e4561b47fb2b3c03886cebd4">&#9670;&nbsp;</a></span>convertDoubleArray()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::convertDoubleArray </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>from</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>to</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Convert a block of double-precision floating point numbers in network format to native format.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#a12c7f06ddcd60090e1465810dabbfefe">convertDouble()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a993edbf51f25c038a9ab12b5e1d1a8df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a993edbf51f25c038a9ab12b5e1d1a8df">&#9670;&nbsp;</a></span>convertFloat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::convertFloat </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>from</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>f</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Convert the bytes at <em>from</em> (which must be a single-precision floating point number in network format) to a single-precision floating point number in native format which is put at the <em>f</em> pointer. </p>
+
+</div>
+</div>
+<a id="a99fdf3aa13fdd31cb34a2dc1e6759091"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99fdf3aa13fdd31cb34a2dc1e6759091">&#9670;&nbsp;</a></span>convertFloatArray()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::convertFloatArray </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>from</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>to</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Convert a block of single-precision floating point numbers in network format to native format.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#a993edbf51f25c038a9ab12b5e1d1a8df">convertFloat()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a3f85a5dd4636f5f6884997c81bb1255f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f85a5dd4636f5f6884997c81bb1255f">&#9670;&nbsp;</a></span>convertInt32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::convertInt32 </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>from</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t *&#160;</td>
+          <td class="paramname"><em>l</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Convert the bytes at <em>from</em> (which must be a 32-bit integer in network format (i.e. most significant byte first)) to a 32-bit integer in native format which is put at the <em>l</em> pointer. </p>
+
+</div>
+</div>
+<a id="a71f898e1e1926f781e5d705444e999f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71f898e1e1926f781e5d705444e999f4">&#9670;&nbsp;</a></span>convertInt32Array()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::convertInt32Array </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>from</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t *&#160;</td>
+          <td class="paramname"><em>to</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Convert a block of 32-bit integer numbers in network format to native format.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#a3f85a5dd4636f5f6884997c81bb1255f">convertInt32()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a35ad479e386e0349bd7b95ca365db523"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35ad479e386e0349bd7b95ca365db523">&#9670;&nbsp;</a></span>convertShort()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::convertShort </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>from</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">short *&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Convert the bytes at <em>from</em> (which must be a short integer in network format (i.e. most significant byte first)) to a short integer in native format which is put at the <em>s</em> pointer. </p>
+
+</div>
+</div>
+<a id="af242d22b935e532793b644e59b9d38cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af242d22b935e532793b644e59b9d38cb">&#9670;&nbsp;</a></span>convertShortArray()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::convertShortArray </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>from</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">short *&#160;</td>
+          <td class="paramname"><em>to</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Convert a block of short numbers in network format to native format.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#a35ad479e386e0349bd7b95ca365db523">convertShort()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a27f17706f0f5efa5f7394bb9497a9d9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27f17706f0f5efa5f7394bb9497a9d9e">&#9670;&nbsp;</a></span>eof()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::eof </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns <code>TRUE</code> if we are at the end of the current stream, otherwise <code>FALSE</code>. </p>
+
+</div>
+</div>
+<a id="af720556440547befcb96c56fedcd43b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af720556440547befcb96c56fedcd43b8">&#9670;&nbsp;</a></span>findFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">FILE * SoInput::findFile </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>basename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>fullname</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+ Return the currently active stream.</p>
+<p>Scan through the include directories in order and try to find a file with the given name in any one of them. If file is found, put the full name with complete path from current directory of process into <em>fullname</em>, open the file and return the file pointer.</p>
+<p>If the file could either not be found or not opened for reading, return <code>NULL</code>.</p>
+<p>Important note: do <em>not</em> use this method when the Coin library has been compiled as an Microsoft Windows DLL, as passing FILE* instances back or forth to DLLs is dangerous and will most likely cause a crash. This is an intrinsic limitation for Microsoft Windows DLLs. </p>
+
+</div>
+</div>
+<a id="ad0e25f354c7802977ea4f48dece877ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0e25f354c7802977ea4f48dece877ca">&#9670;&nbsp;</a></span>findProto()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoProto.html">SoProto</a> * SoInput::findProto </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbName.html">SbName</a> &amp;&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Searches for PROTO named <em>name</em>. This function will only return PROTOs that have been read by the current <a class="el" href="classSoInput.html" title="The SoInput class is an abstraction of file import functionality.">SoInput</a> instance.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.3 </dd></dl>
+
+</div>
+</div>
+<a id="aa429b59b79aca113941a10f8af97f219"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa429b59b79aca113941a10f8af97f219">&#9670;&nbsp;</a></span>findReference()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoBase.html">SoBase</a> * SoInput::findReference </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbName.html">SbName</a> &amp;&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Finds a <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a> derived object which has been mapped to <em>name</em> earlier during the import process.</p>
+<p>The Coin library will by default only search through the previously loaded nodes from the <em>same</em> file. By setting the environment variable <code>COIN_SOINPUT_SEARCH_GLOBAL_DICT</code> to "1", you can force the import process to search for USE-references through <em>all</em> nodes that have been loaded or otherwise instantiated.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#abdf22810734f06e0caad609d47ec07e2">addReference()</a>, <a class="el" href="classSoInput.html#a4cefe302eb15818d8479ef280db0ebbb">removeReference()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a8d42ed81c251eca58b13f7eb2278c570"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d42ed81c251eca58b13f7eb2278c570">&#9670;&nbsp;</a></span>freeBytesInBuf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t SoInput::freeBytesInBuf </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function has been obsoleted in Coin. </p>
+
+</div>
+</div>
+<a id="a857735729ad3180974d71468fd61349f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a857735729ad3180974d71468fd61349f">&#9670;&nbsp;</a></span>fromBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::fromBuffer </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns <code>TRUE</code> if the current input stream is fetching data from a memory buffer, or <code>FALSE</code> if the input is from a file. </p>
+
+</div>
+</div>
+<a id="a5193596a25c9d0cc5fe6280acbdbf1f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5193596a25c9d0cc5fe6280acbdbf1f3">&#9670;&nbsp;</a></span>get()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::get </td>
+          <td>(</td>
+          <td class="paramtype">char &amp;&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Get next character in current stream. Returns <code>FALSE</code> on end of file.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#ae96f56efe2cd0e61e046ae976d46f6c5">read()</a> </dd></dl>
+
+</div>
+</div>
+<a id="aaa9370afb9829d4e053eae82b56f0be7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa9370afb9829d4e053eae82b56f0be7">&#9670;&nbsp;</a></span>getASCIIBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::getASCIIBuffer </td>
+          <td>(</td>
+          <td class="paramtype">char &amp;&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns next character in current stream. Don't use this method &ndash; <a class="el" href="classSoInput.html" title="The SoInput class is an abstraction of file import functionality.">SoInput</a> is supposed to <em>hide</em> whether or not you are reading from file or memory. It is only included for compatibility reasons. </p>
+
+</div>
+</div>
+<a id="a7e6a3babde6c7e217e2a29ff8a528f7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e6a3babde6c7e217e2a29ff8a528f7f">&#9670;&nbsp;</a></span>getASCIIFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::getASCIIFile </td>
+          <td>(</td>
+          <td class="paramtype">char &amp;&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns next character in current stream. Don't use this method &ndash; <a class="el" href="classSoInput.html" title="The SoInput class is an abstraction of file import functionality.">SoInput</a> is supposed to <em>hide</em> whether or not you are reading from file or memory. It is only included for compatibility reasons. </p>
+
+</div>
+</div>
+<a id="a79895ffc6452b899e0c6c559cc615c01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79895ffc6452b899e0c6c559cc615c01">&#9670;&nbsp;</a></span>getBasename() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbString.html">SbString</a> SoInput::getBasename </td>
+          <td>(</td>
+          <td class="paramtype">const char *const&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Finds and returns the part of the given filename which is the base name (i.e. the filename without the leading directory path). </p>
+
+</div>
+</div>
+<a id="a7225ea814b5ce0314c25b9aaeb851aad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7225ea814b5ce0314c25b9aaeb851aad">&#9670;&nbsp;</a></span>getBasename() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbString.html">SbString</a> SoInput::getBasename </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Finds and returns the part of the given filename which is the base name (i.e. the filename without the leading directory path). </p>
+
+</div>
+</div>
+<a id="ad85a0f056f7a1d29567342ac203e90be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad85a0f056f7a1d29567342ac203e90be">&#9670;&nbsp;</a></span>getCurFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">FILE * SoInput::getCurFile </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns file pointer of the file on top of the input stack. If the "file" is actually a memory buffer, returns <code>NULL</code>.</p>
+<p>Important note: do <em>not</em> use this method when the Coin library has been compiled as an Microsoft Windows DLL, as passing FILE* instances back or forth to DLLs is dangerous and will most likely cause a crash. This is an intrinsic limitation for Microsoft Windows DLLs.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#a214ba56aae201b25cb30cb118b8b65c8">getCurFileName()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a214ba56aae201b25cb30cb118b8b65c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a214ba56aae201b25cb30cb118b8b65c8">&#9670;&nbsp;</a></span>getCurFileName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char * SoInput::getCurFileName </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the name of the file on top of the input stack. <code>NULL</code> will be returned if the top level "file" is a memory buffer.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#ad85a0f056f7a1d29567342ac203e90be">getCurFile()</a> </dd></dl>
+
+</div>
+</div>
+<a id="afaf5aa23a28dc9a676aa380528066415"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afaf5aa23a28dc9a676aa380528066415">&#9670;&nbsp;</a></span>getCurrentProto()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoProto.html">SoProto</a> * SoInput::getCurrentProto </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the PROTO at the top of the PROTO stack.</p>
+<p>This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#aa117f260177b221870236d761005867b">pushProto()</a> </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.0 </dd></dl>
+
+</div>
+</div>
+<a id="ae39a7ead8ea676ad33786f79478ff504"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae39a7ead8ea676ad33786f79478ff504">&#9670;&nbsp;</a></span>getDirectories()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbStringList.html">SbStringList</a> &amp; SoInput::getDirectories </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the list of directories which will be searched upon loading Coin and VRML format files. Directory searches will be done whenever any external references appears in a file, for instance for texture images. </p>
+
+</div>
+</div>
+<a id="a38f80ad59e0ca2e8ec1f6216a380f0ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38f80ad59e0ca2e8ec1f6216a380f0ad">&#9670;&nbsp;</a></span>getHeader()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbString.html">SbString</a> SoInput::getHeader </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns header of current file. </p>
+
+</div>
+</div>
+<a id="a32a5e6eaf4969d8ada1e5daf2e059269"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32a5e6eaf4969d8ada1e5daf2e059269">&#9670;&nbsp;</a></span>getIVVersion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SoInput::getIVVersion </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the library version needed to read a file with the given header. If the header of the current file is not valid, this method returns <em>0.0f</em>. </p>
+
+</div>
+</div>
+<a id="a8ff842d89e6e787857a4fc17c2211b24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ff842d89e6e787857a4fc17c2211b24">&#9670;&nbsp;</a></span>getLocationString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::getLocationString </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Places the current line number location and file name in a string which is to be used in the output upon read errors. </p>
+
+</div>
+</div>
+<a id="a1b387b407e09ecadfb86828f27f2aabf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b387b407e09ecadfb86828f27f2aabf">&#9670;&nbsp;</a></span>getNumBytesRead()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t SoInput::getNumBytesRead </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns number of bytes read so far from the current file or memory buffer. You can only use this method while you're reading the file. When the reading has finished, the current file is popped off the file stack, and a more or less random number is returned. You should use the stat() system call to find the size of a file (or fseek() and ftell()). </p>
+
+</div>
+</div>
+<a id="af9ea3c3871ac51b220cd6949e8682390"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9ea3c3871ac51b220cd6949e8682390">&#9670;&nbsp;</a></span>getPathname() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbString.html">SbString</a> SoInput::getPathname </td>
+          <td>(</td>
+          <td class="paramtype">const char *const&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Finds and returns the part of the given filename which is the directory path name. </p>
+
+</div>
+</div>
+<a id="a72c37c9264259441d013ae2d82f07a3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72c37c9264259441d013ae2d82f07a3b">&#9670;&nbsp;</a></span>getPathname() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbString.html">SbString</a> SoInput::getPathname </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Finds and returns the part of the given filename which is the directory path name. </p>
+
+</div>
+</div>
+<a id="a522c7da748cada3332a488e3f0d0a943"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a522c7da748cada3332a488e3f0d0a943">&#9670;&nbsp;</a></span>init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::init </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Initialize static variables in class. Called from <a class="el" href="classSoDB.html#a970f42dfd362c33c69fa1869bfae72b5">SoDB::init()</a>. </p>
+
+</div>
+</div>
+<a id="a6ac0fa29984e7206b9c903962f37f0f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ac0fa29984e7206b9c903962f37f0f4">&#9670;&nbsp;</a></span>initFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::initFile </td>
+          <td>(</td>
+          <td class="paramtype">FILE *&#160;</td>
+          <td class="paramname"><em>newFP</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>fileName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbString.html">SbString</a> *&#160;</td>
+          <td class="paramname"><em>fullName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>openedHere</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbDict.html">SbDict</a> *&#160;</td>
+          <td class="paramname"><em>refDict</em> = <code>NULL</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function has been obsoleted in Coin. </p>
+
+</div>
+</div>
+<a id="a457936a22ca9585314552bcdfb2564b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a457936a22ca9585314552bcdfb2564b8">&#9670;&nbsp;</a></span>isBinary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::isBinary </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns <code>TRUE</code> if the current file is in binary format. </p>
+
+</div>
+</div>
+<a id="a40f74151ef9b1a11cd8989e223f8d607"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40f74151ef9b1a11cd8989e223f8d607">&#9670;&nbsp;</a></span>isFileURL()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::isFileURL </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>url</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function is part of the TGS Inventor API, but is not implemented in Coin. </p>
+
+</div>
+</div>
+<a id="a317cb5abf19f4497e03ad18ccfd04303"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a317cb5abf19f4497e03ad18ccfd04303">&#9670;&nbsp;</a></span>isFileVRML1()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::isFileVRML1 </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns <code>TRUE</code> if current file is a VRML V1.0 file.</p>
+<p>This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+</p>
+
+</div>
+</div>
+<a id="a9fa47e434f95ccf796a8bdffcac240c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fa47e434f95ccf796a8bdffcac240c6">&#9670;&nbsp;</a></span>isFileVRML2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::isFileVRML2 </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns <code>TRUE</code> if current file is a VRML 2 / VRML97 file.</p>
+<p>This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+</p>
+
+</div>
+</div>
+<a id="acbea495763e468a62626067cf7363bfa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acbea495763e468a62626067cf7363bfa">&#9670;&nbsp;</a></span>IsURL()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::IsURL </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>c_strng</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function is part of the TGS Inventor API, but is not implemented in Coin. </p>
+
+</div>
+</div>
+<a id="a541a70c39fac93a91be4ad14b5de98b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a541a70c39fac93a91be4ad14b5de98b6">&#9670;&nbsp;</a></span>isValidBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::isValidBuffer </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns <code>TRUE</code> if the current text buffer represents a valid iv-file which can be read by the Coin library.</p>
+<p>When reading files through e.g. <a class="el" href="classSoDB.html#a2ceee0dd279cd44b19660ae4fdd427de">SoDB::readAll()</a>, this is automatically checked for you, so application code should usually not need to use this method. </p>
+
+</div>
+</div>
+<a id="a528a90823909957b417e2fefa743c91d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a528a90823909957b417e2fefa743c91d">&#9670;&nbsp;</a></span>isValidFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::isValidFile </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Checks to see if the current file is a valid file which can be read by the Coin library.</p>
+<p>When reading files through e.g. <a class="el" href="classSoDB.html#a2ceee0dd279cd44b19660ae4fdd427de">SoDB::readAll()</a>, this is automatically checked for you, so application code should usually not need to use this method. </p>
+
+</div>
+</div>
+<a id="a711dd686d1310b6c9c83b6812bb1bacd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a711dd686d1310b6c9c83b6812bb1bacd">&#9670;&nbsp;</a></span>makeRoomInBuf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::makeRoomInBuf </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>nBytes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function has been obsoleted in Coin. </p>
+
+</div>
+</div>
+<a id="a75df5c1deef8e619c1056aae2776abdc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75df5c1deef8e619c1056aae2776abdc">&#9670;&nbsp;</a></span>openFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::openFile </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>fileName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>okIfNotFound</em> = <code>FALSE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Open the given file, and make it the only one in the file stack. If <em>okIfNotFound</em> is <code>FALSE</code>, show a warning message if the file could not be opened.</p>
+<p>Returns <code>TRUE</code> if file could be opened for reading, <code>FALSE</code> otherwise.</p>
+<p>Note: even if your attempt at opening a file is unsuccessful, the <a class="el" href="classSoInput.html" title="The SoInput class is an abstraction of file import functionality.">SoInput</a> instance will <em>not</em> default to reading from stdin after a call has been made to this method.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#a20f9f4b22af997659ca7c6ea561fa105">setFilePointer()</a>, <a class="el" href="classSoInput.html#a7a3279ca83ff540501a2fba2d27a04d3">pushFile()</a>, <a class="el" href="classSoInput.html#a1129eedac60a1c409d47558009a46ffb">closeFile()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a31ca60fa51f3185a9f68269a5a651761"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31ca60fa51f3185a9f68269a5a651761">&#9670;&nbsp;</a></span>popFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::popFile </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Pop the topmost file off the stack. Returns <code>FALSE</code> if there was no file on the stack to pop. A file is only popped when there is more than one file on the stack.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#a7a3279ca83ff540501a2fba2d27a04d3">pushFile()</a>, <a class="el" href="classSoInput.html#a75df5c1deef8e619c1056aae2776abdc">openFile()</a>, <a class="el" href="classSoInput.html#a1129eedac60a1c409d47558009a46ffb">closeFile()</a> </dd></dl>
+
+</div>
+</div>
+<a id="af9b9b35394f090326900d83d203c45c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9b9b35394f090326900d83d203c45c0">&#9670;&nbsp;</a></span>popProto()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::popProto </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Pops a PROTO off the PROTO stack.</p>
+<p>This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#aa117f260177b221870236d761005867b">pushProto()</a> </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.0 </dd></dl>
+
+</div>
+</div>
+<a id="a7a3279ca83ff540501a2fba2d27a04d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a3279ca83ff540501a2fba2d27a04d3">&#9670;&nbsp;</a></span>pushFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::pushFile </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Push a new file on top of the stack. Further read operations will take place with the new file until it reaches end-of-file, upon when the file will be popped of the stack and we'll continue with the next file in the stack.</p>
+<p>Returns <code>TRUE</code> if the file could be opened for reading, <code>FALSE</code> otherwise.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#a75df5c1deef8e619c1056aae2776abdc">openFile()</a> </dd></dl>
+
+</div>
+</div>
+<a id="aa117f260177b221870236d761005867b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa117f260177b221870236d761005867b">&#9670;&nbsp;</a></span>pushProto()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::pushProto </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoProto.html">SoProto</a> *&#160;</td>
+          <td class="paramname"><em>proto</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Pushed a PROTO <em>proto</em> onto the PROTO stack. The PROTO stack is used during VRML2 file parsing.</p>
+<p>This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#af9b9b35394f090326900d83d203c45c0">popProto()</a> </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.0 </dd></dl>
+
+</div>
+</div>
+<a id="aa3275a753ea5094c301dfd2b4d6ac118"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3275a753ea5094c301dfd2b4d6ac118">&#9670;&nbsp;</a></span>putBack() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::putBack </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Insert string <em>str</em> in stream at the current position. </p>
+
+</div>
+</div>
+<a id="a581157f03a6367b675fd1a3053d2f27d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a581157f03a6367b675fd1a3053d2f27d">&#9670;&nbsp;</a></span>putBack() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::putBack </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Insert character <em>c</em> in stream at the current position. </p>
+
+</div>
+</div>
+<a id="ae96f56efe2cd0e61e046ae976d46f6c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae96f56efe2cd0e61e046ae976d46f6c5">&#9670;&nbsp;</a></span>read() <span class="overload">[1/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::read </td>
+          <td>(</td>
+          <td class="paramtype">char &amp;&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Skips whitespace and reads next character in input stream. Returns <code>FALSE</code> if encountering end of file. </p>
+
+</div>
+</div>
+<a id="a9f5e23b8db88b37a9e154d4d0b3e2f43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f5e23b8db88b37a9e154d4d0b3e2f43">&#9670;&nbsp;</a></span>read() <span class="overload">[2/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::read </td>
+          <td>(</td>
+          <td class="paramtype">char &amp;&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>skip</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Reads next character in input stream, returns <code>FALSE</code> if encountering end of file. If <em>skip</em> is <code>TRUE</code>, skips whitespace before reading a character. </p>
+
+</div>
+</div>
+<a id="adcf3f1162ae979a5a410a1460f09dd8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adcf3f1162ae979a5a410a1460f09dd8a">&#9670;&nbsp;</a></span>read() <span class="overload">[3/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::read </td>
+          <td>(</td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>d</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Read double value from current file or buffer position and place it in <em>d</em>. Returns <code>FALSE</code> if we hit end of file prematurely. </p>
+
+</div>
+</div>
+<a id="a8b8edaa764bc0f01d03bdd08c5421823"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b8edaa764bc0f01d03bdd08c5421823">&#9670;&nbsp;</a></span>read() <span class="overload">[4/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::read </td>
+          <td>(</td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>f</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Read float value from current file or buffer position and place it in <em>f</em>. Returns <code>FALSE</code> if we hit end of file prematurely. </p>
+
+</div>
+</div>
+<a id="ae0194dab35cf68149363ec635637147a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0194dab35cf68149363ec635637147a">&#9670;&nbsp;</a></span>read() <span class="overload">[5/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::read </td>
+          <td>(</td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>i</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Read integer from current file or buffer position and place it in <em>i</em>. Returns <code>FALSE</code> if we hit end of file prematurely. </p>
+
+</div>
+</div>
+<a id="a31a321770682fd2fc4b7b97441b420d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31a321770682fd2fc4b7b97441b420d1">&#9670;&nbsp;</a></span>read() <span class="overload">[6/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::read </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSbName.html">SbName</a> &amp;&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>validIdent</em> = <code>FALSE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Read a name from the current stream and place it in <em>n</em>.</p>
+<p>This method should not be used specifically to read all instances of <a class="el" href="classSbName.html" title="The SbName class stores strings by reference.">SbName</a>. The semantics of the interface is such that it is designed to handle identifier tokens from the Inventor / VRML file formats. I.e. cases where node names, node types and field names are to be read. If your goal is to read the value of a <a class="el" href="classSbName.html" title="The SbName class stores strings by reference.">SbName</a> field that is not any of the above, and at least when the string might be quoted, then you should most likely use <a class="el" href="classSoInput.html#a81e213356becf52d09987bde2f646b25">SoInput::read(SbString &amp;)</a> instead.</p>
+<p>If <em>validIdent</em> is <code>TRUE</code> the name needs to be a valid identifier (no reserved characters etc), while <em>validIdent</em> equal to <code>FALSE</code> means we'll just read characters for the next word until we hit whitespace or one of the "{"/"}" delimiters.</p>
+<p>Returns <code>FALSE</code> on encountering end of file before a full name has been read &ndash; if <em>validIdent</em> is also <code>FALSE</code>. If <em>validIdent</em> is passed as <code>TRUE</code>, the return value will be <code>FALSE</code> if no valid name was found, but <em>not</em> necessarily on end of file. </p>
+
+</div>
+</div>
+<a id="a81e213356becf52d09987bde2f646b25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81e213356becf52d09987bde2f646b25">&#9670;&nbsp;</a></span>read() <span class="overload">[7/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::read </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Skips whitespace and extracts string. A string can be placed within quotes, in which case we will return all characters between the quotes (including spaces, tabs, newlines, etc). A quote character (i.e. <code>"'') can also be part of the string, but must then be preceded by a</code>\'' character.</p>
+<p>A string not contained in quotes is terminated by the first following whitespace character.</p>
+<p>Returns <code>FALSE</code> upon encountering end of file (EOF) before the string is fully parsed, or any other error. Note: This function does not return <code>FALSE</code> when encountering all EOFs. When multiple files are on the stack and a string is being parsed (the parser has found one or more valid characters) and EOF is encountered, the parsing stops and the read string along with <code>TRUE</code> is returned. The next time the read method is called, the stack is popped and a read string from the next file is returned - not always returning <code>FALSE</code> between the files (though it might on certain circumstances). The solution to this is to test for end of file after each successive read operation. </p>
+
+</div>
+</div>
+<a id="ae25bc725ee5f2e106afc56d4dd05f93f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae25bc725ee5f2e106afc56d4dd05f93f">&#9670;&nbsp;</a></span>read() <span class="overload">[8/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::read </td>
+          <td>(</td>
+          <td class="paramtype">short &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Read short integer from current file or buffer position and place it in <em>s</em>. Returns <code>FALSE</code> if we hit end of file prematurely. </p>
+
+</div>
+</div>
+<a id="a37eaf39d8c7015810439b78b88b6caf6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37eaf39d8c7015810439b78b88b6caf6">&#9670;&nbsp;</a></span>read() <span class="overload">[9/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::read </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramname"><em>i</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Read unsigned integer from current file or buffer position and place it in <em>i</em>. Returns <code>FALSE</code> if we hit end of file prematurely. </p>
+
+</div>
+</div>
+<a id="acfab9a73baa1edaf02dac8a6944862db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfab9a73baa1edaf02dac8a6944862db">&#9670;&nbsp;</a></span>read() <span class="overload">[10/10]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::read </td>
+          <td>(</td>
+          <td class="paramtype">unsigned short &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Read unsigned short integer from current file or buffer position and place it in <em>s</em>. Returns <code>FALSE</code> if we hit end of file prematurely. </p>
+
+</div>
+</div>
+<a id="a238e479498baa9e734bb489ab85e285e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a238e479498baa9e734bb489ab85e285e">&#9670;&nbsp;</a></span>readBinaryArray() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::readBinaryArray </td>
+          <td>(</td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>d</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Reads <em>length</em> double floats from the current stream into <em>d</em>. Returns <code>FALSE</code> if end of file is encountered before the given number of binary double float values could be read. </p>
+
+</div>
+</div>
+<a id="a560111581a01297b7169bc3980dd11be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a560111581a01297b7169bc3980dd11be">&#9670;&nbsp;</a></span>readBinaryArray() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::readBinaryArray </td>
+          <td>(</td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Reads <em>length</em> floats from the current stream into <em>f</em>. Returns <code>FALSE</code> if end of file is encountered before the given number of binary float values could be read. </p>
+
+</div>
+</div>
+<a id="a54ca5cab823c815fc199b7f685d469b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54ca5cab823c815fc199b7f685d469b4">&#9670;&nbsp;</a></span>readBinaryArray() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::readBinaryArray </td>
+          <td>(</td>
+          <td class="paramtype">int32_t *&#160;</td>
+          <td class="paramname"><em>l</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Reads <em>length</em> 32-bit integers from the current stream into <em>l</em>. Returns <code>FALSE</code> if end of file is encountered before the given number of integers could be read. </p>
+
+</div>
+</div>
+<a id="aa24b5d57e230205637dfc475e29afe54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa24b5d57e230205637dfc475e29afe54">&#9670;&nbsp;</a></span>readBinaryArray() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::readBinaryArray </td>
+          <td>(</td>
+          <td class="paramtype">unsigned char *&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Reads <em>length</em> characters from the current stream into <em>c</em>. Returns <code>FALSE</code> if end of file is encountered before the given number of bytes could be read. </p>
+
+</div>
+</div>
+<a id="ab36205986f083a4a972cfe98f6a5c23d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab36205986f083a4a972cfe98f6a5c23d">&#9670;&nbsp;</a></span>readByte() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::readByte </td>
+          <td>(</td>
+          <td class="paramtype">int8_t &amp;&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Read signed byte integer from current file or buffer position and place it in <em>b</em>. Returns <code>FALSE</code> if we hit end of file prematurely. </p>
+
+</div>
+</div>
+<a id="a6752d8a78312923963724e1d5f765954"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6752d8a78312923963724e1d5f765954">&#9670;&nbsp;</a></span>readByte() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::readByte </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t &amp;&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Read unsigned byte integer from current file or buffer position and place it in <em>b</em>. Returns <code>FALSE</code> if we hit end of file prematurely. </p>
+
+</div>
+</div>
+<a id="a2db70a69bd37b3ecfabdcbfe2415f962"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2db70a69bd37b3ecfabdcbfe2415f962">&#9670;&nbsp;</a></span>readChar()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SoInput::readChar </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>charToRead</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Reads the next character in stream and compares it to <em>charToRead</em>. Returns <code>1</code> on success, <code>0</code> on failure. Failure may come from either end of file, or from the next character in the stream being different than <em>charToRead</em>. </p>
+
+</div>
+</div>
+<a id="a358e925a83795e1fd5131a3cbccde540"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a358e925a83795e1fd5131a3cbccde540">&#9670;&nbsp;</a></span>readDigits()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SoInput::readDigits </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Read decimal base digits from the current input stream into <em>str</em> and returns the number of characters read. </p>
+
+</div>
+</div>
+<a id="a589f80db7bde345c47c64f8d12cc2bb7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a589f80db7bde345c47c64f8d12cc2bb7">&#9670;&nbsp;</a></span>readHex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::readHex </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t &amp;&#160;</td>
+          <td class="paramname"><em>l</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Reads an unsigned integer in hexadecimal format from the current stream. Note that no error checking is done to see if it actually is a hex format value.</p>
+<p>A number in hexadecimal format must have the "0x" prefix.</p>
+<p>Returns <code>FALSE</code> if end of file is encountered. </p>
+
+</div>
+</div>
+<a id="ab5240cab86dd76f573c626fd0c9c66c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5240cab86dd76f573c626fd0c9c66c8">&#9670;&nbsp;</a></span>readHexDigits()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SoInput::readHexDigits </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Read hexadecimal base digits from the current input stream into <em>str</em> and returns the number of characters read. </p>
+
+</div>
+</div>
+<a id="ac1e04e4a618213d1093f2b890cf0a9db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1e04e4a618213d1093f2b890cf0a9db">&#9670;&nbsp;</a></span>readInteger()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::readInteger </td>
+          <td>(</td>
+          <td class="paramtype">int32_t &amp;&#160;</td>
+          <td class="paramname"><em>l</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Reads 32-bit signed integer value from the current stream. Returns <code>FALSE</code> if we hit end of file prematurely. </p>
+
+</div>
+</div>
+<a id="a5e52331fcb571c6febcd8f636108e0ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e52331fcb571c6febcd8f636108e0ba">&#9670;&nbsp;</a></span>readReal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::readReal </td>
+          <td>(</td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>d</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Reads a double-precision floating point value from the current stream. Returns <code>FALSE</code> if we hit end of file prematurely or if no valid string representing a value could be read. </p>
+
+</div>
+</div>
+<a id="ae9c9afb18dbe1f4e4c579355eb0131d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9c9afb18dbe1f4e4c579355eb0131d4">&#9670;&nbsp;</a></span>readUnsignedInteger()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::readUnsignedInteger </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t &amp;&#160;</td>
+          <td class="paramname"><em>l</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Reads 32-bit unsigned integer value from the current stream. Returns <code>FALSE</code> if we hit end of file prematurely. </p>
+
+</div>
+</div>
+<a id="a3bccd0c02785695f4398264af3764d84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bccd0c02785695f4398264af3764d84">&#9670;&nbsp;</a></span>readUnsignedIntegerString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::readUnsignedIntegerString </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Reads a set of bytes from the stream making up an unsigned integer and puts them at <em>str</em>.</p>
+<p>Returns <code>FALSE</code> if no string representing an unsigned integer could be read. </p>
+
+</div>
+</div>
+<a id="a81232f02926735fc6be93225ae22dc6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81232f02926735fc6be93225ae22dc6e">&#9670;&nbsp;</a></span>removeDirectory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::removeDirectory </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>dirName</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Remove the given directory from the directory search list.</p>
+<p>The search list is scanned from last to first for the directory name, so directories can easily be "stacked" by pushing with <a class="el" href="classSoInput.html#ab87aef010d6cef7fd7e342e0b0c56004">addDirectoryLast()</a> and then removed with this method.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#acf1c66aeaa773a2b667431f6a7b79e4e">addDirectoryFirst()</a>, <a class="el" href="classSoInput.html#ab87aef010d6cef7fd7e342e0b0c56004">addDirectoryLast()</a> </dd>
+<dd>
+<a class="el" href="classSoInput.html#a47aba07c24b063b8914411f1507b2598">addEnvDirectoriesFirst()</a>, <a class="el" href="classSoInput.html#a0ab1c2a23e37a3474495ca9f01e4d5a9">addEnvDirectoriesLast()</a> </dd>
+<dd>
+<a class="el" href="classSoInput.html#a52cbdc5c911d65c8348314d0fe92ec5f">clearDirectories()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a4cefe302eb15818d8479ef280db0ebbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4cefe302eb15818d8479ef280db0ebbb">&#9670;&nbsp;</a></span>removeReference()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::removeReference </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbName.html">SbName</a> &amp;&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Removes a name&lt;-&gt;<a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a> mapping from our dictionary.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#aa429b59b79aca113941a10f8af97f219">findReference()</a>, <a class="el" href="classSoInput.html#abdf22810734f06e0caad609d47ec07e2">addReference()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a587ea9cc13a516915fa0bb88cca2c61c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a587ea9cc13a516915fa0bb88cca2c61c">&#9670;&nbsp;</a></span>resetFilePointer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::resetFilePointer </td>
+          <td>(</td>
+          <td class="paramtype">FILE *&#160;</td>
+          <td class="paramname"><em>fptr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function has been obsoleted in Coin. </p>
+
+</div>
+</div>
+<a id="a6ee3f1b5422497cc59ec969050a05d1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ee3f1b5422497cc59ec969050a05d1c">&#9670;&nbsp;</a></span>searchForFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbString.html">SbString</a> SoInput::searchForFile </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>basename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbStringList.html">SbStringList</a> &amp;&#160;</td>
+          <td class="paramname"><em>directories</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbStringList.html">SbStringList</a> &amp;&#160;</td>
+          <td class="paramname"><em>subdirectories</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Given a <em>basename</em> for a file and an array of <em>directories</em> to search, returns the full name of the file found.</p>
+<p>In addition to looking at the root of each directory in <em>directories</em>, all <em>subdirectories</em> are also searched for each item in <em>directories</em>.</p>
+<p>If no file matching <em>basename</em> could be found in any of the directories, returns an empty string.</p>
+<p>This method is a Coin extension, not part of the original Inventor API. </p>
+
+</div>
+</div>
+<a id="a66e89c33a5c320c3f40c7a4935445852"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66e89c33a5c320c3f40c7a4935445852">&#9670;&nbsp;</a></span>setBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::setBuffer </td>
+          <td>(</td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>bufpointer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>bufsize</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Sets up the input stream for reading from a memory buffer. Closes all open files in the file stack first.</p>
+<p>In the original SGI Inventor API this method was designed as "char * bufpointer", Coin followed this until Coin 3, but changed the signature to const from Coin 4.0. </p>
+
+</div>
+</div>
+<a id="a90471ef7420a90b0e94abdd84ae1cb44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90471ef7420a90b0e94abdd84ae1cb44">&#9670;&nbsp;</a></span>setDirectories()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::setDirectories </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSbStringList.html">SbStringList</a> *&#160;</td>
+          <td class="paramname"><em>dirs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set up the directory search path directly with the list of directories in <em>dirs</em>. Note that "." should be part of the directory list if you want to handle files specified by a relative path. </p>
+
+</div>
+</div>
+<a id="a20f9f4b22af997659ca7c6ea561fa105"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20f9f4b22af997659ca7c6ea561fa105">&#9670;&nbsp;</a></span>setFilePointer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::setFilePointer </td>
+          <td>(</td>
+          <td class="paramtype">FILE *&#160;</td>
+          <td class="paramname"><em>newFP</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Uses the given file pointer as the input file. The input stack of files will be emptied first. Closing a file passed in by its file pointer is the library user's responsibility.</p>
+<p>Important note: do <em>not</em> use this method when the Coin library has been compiled as a Microsoft Windows DLL, as passing FILE* instances back or forth to DLLs is dangerous and will most likely cause a crash. This is an intrinsic limitation for Microsoft Windows DLLs.</p>
+<p>Note that it is not allowed to pass a FILE* to a gzip-compressed file under Mac OS X.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#a75df5c1deef8e619c1056aae2776abdc">openFile()</a>, <a class="el" href="classSoInput.html#a1129eedac60a1c409d47558009a46ffb">closeFile()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a8dd2208b78264e118d0e8050eec0f261"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8dd2208b78264e118d0e8050eec0f261">&#9670;&nbsp;</a></span>setIVVersion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::setIVVersion </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>version</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Changes the file format version number for the stream at the top of the stack. </p>
+
+</div>
+</div>
+<a id="af28592d7aa017765fdaad6fbc6b3d99f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af28592d7aa017765fdaad6fbc6b3d99f">&#9670;&nbsp;</a></span>setStringArray()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoInput::setStringArray </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>strings</em>[]</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets up the input stream for reading from the strings pointed to by a NULL-terminated array of string pointers. It is intended for reading memory-inlined scene graphs.</p>
+<p>The rationale for this function is that there is a compiler portability problem with compiling large, static string buffers. Some compilers have fixed max-lengths on this feature, just over 1KB, which obviously becomes a problem real fast. This method lets you specify the buffer as an array of smaller string buffers, typically one string for each line in the Inventor file.</p>
+<div class="fragment"><div class="line"><a class="code" href="classSoNode.html">SoNode</a> *</div>
+<div class="line">makeSceneGraph(<span class="keywordtype">void</span>) {</div>
+<div class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> * inlinescenegraph[] = {</div>
+<div class="line">    <span class="stringliteral">&quot;#Inventor V2.1 ascii\n&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;\n&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;Separator {\n&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;  Cube {\n&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;  }\n&quot;</span>,</div>
+<div class="line">    <span class="stringliteral">&quot;}\n&quot;</span>,</div>
+<div class="line">    NULL</div>
+<div class="line">  };</div>
+<div class="line">  <a class="code" href="classSoInput.html">SoInput</a> in;</div>
+<div class="line">  <span class="keywordflow">if</span> ( !in.<a class="code" href="classSoInput.html#af28592d7aa017765fdaad6fbc6b3d99f">setStringArray</a>(inlinescenegraph) ) <span class="keywordflow">return</span> NULL;</div>
+<div class="line">  <span class="keywordflow">return</span> <a class="code" href="classSoDB.html#a2ceee0dd279cd44b19660ae4fdd427de">SoDB::readAll</a>(&amp;in);</div>
+<div class="line">}</div>
+<div class="ttc" id="aclassSoInput_html_af28592d7aa017765fdaad6fbc6b3d99f"><div class="ttname"><a href="classSoInput.html#af28592d7aa017765fdaad6fbc6b3d99f">SoInput::setStringArray</a></div><div class="ttdeci">void setStringArray(const char *strings[])</div><div class="ttdef"><b>Definition:</b> SoInput.cpp:707</div></div>
+<div class="ttc" id="aclassSoNode_html"><div class="ttname"><a href="classSoNode.html">SoNode</a></div><div class="ttdoc">The SoNode class is the base class for nodes used in scene graphs.</div><div class="ttdef"><b>Definition:</b> SoNode.h:56</div></div>
+</div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoInput.html#a66e89c33a5c320c3f40c7a4935445852">setBuffer()</a></dd></dl>
+<p>This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ </p><dl class="section since"><dt>Since</dt><dd>Coin 2.1 </dd></dl>
+
+</div>
+</div>
+<a id="a311a3e2c6e50fceadf569f4be8a5409b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a311a3e2c6e50fceadf569f4be8a5409b">&#9670;&nbsp;</a></span>skipWhiteSpace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoInput::skipWhiteSpace </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Move file pointer past whitespace in the current file or buffer. Returns <code>FALSE</code> if end of file is encountered. </p>
+
+</div>
+</div>
+<a id="ad0133eb4aa2ea9620989607d949de3e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0133eb4aa2ea9620989607d949de3e7">&#9670;&nbsp;</a></span>URLToFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">char * SoInput::URLToFile </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>out_buf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>in_buf</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function is part of the TGS Inventor API, but is not implemented in Coin. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SoInput_8h_source.html">SoInput.h</a></li>
+<li>SoInput.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSoInput.html">SoInput</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

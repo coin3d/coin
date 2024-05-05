@@ -1,0 +1,832 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: Node Classes</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('group__coin__nodes.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Macros</a>  </div>
+  <div class="headertitle">
+<div class="title">Node Classes</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Nodes are scene based objects performs various actions such as rendering.  
+<a href="#details">More...</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAlphaTest.html">SoAlphaTest</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoAlphaTest.html" title="The SoAlphaTest class is a node used to control the GL alpha test function.">SoAlphaTest</a> class is a node used to control the GL alpha test function.  <a href="classSoAlphaTest.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAnnotation.html">SoAnnotation</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoAnnotation.html" title="The SoAnnotation node draws all its child geometry on top of other geometry.">SoAnnotation</a> node draws all its child geometry on top of other geometry.  <a href="classSoAnnotation.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAntiSquish.html">SoAntiSquish</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoAntiSquish.html" title="The SoAntiSquish class is used to reset to uniform scaling.">SoAntiSquish</a> class is used to reset to uniform scaling.  <a href="classSoAntiSquish.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoArray.html">SoArray</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoArray.html" title="The SoArray class is a group node for setting up regular arrays of subgraphs.">SoArray</a> class is a group node for setting up regular arrays of subgraphs.  <a href="classSoArray.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAsciiText.html">SoAsciiText</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoAsciiText.html" title="The SoAsciiText class renders flat 3D text.">SoAsciiText</a> class renders flat 3D text.  <a href="classSoAsciiText.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBaseColor.html">SoBaseColor</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoBaseColor.html" title="The SoBaseColor class provides a node type for convenient setting of the base material color.">SoBaseColor</a> class provides a node type for convenient setting of the base material color.  <a href="classSoBaseColor.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBlinker.html">SoBlinker</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoBlinker.html" title="The SoBlinker class is a cycling switch node.">SoBlinker</a> class is a cycling switch node.  <a href="classSoBlinker.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBumpMap.html">SoBumpMap</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoBumpMap.html" title="The SoBumpMap class is used to map a bump map onto subsequent shapes.">SoBumpMap</a> class is used to map a bump map onto subsequent shapes.  <a href="classSoBumpMap.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBumpMapCoordinate.html">SoBumpMapCoordinate</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoBumpMapCoordinate.html" title="The SoBumpMapCoordinate class is a node for providing bump map coordinates to shape nodes.">SoBumpMapCoordinate</a> class is a node for providing bump map coordinates to shape nodes.  <a href="classSoBumpMapCoordinate.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBumpMapTransform.html">SoBumpMapTransform</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoBumpMapTransform.html" title="The SoBumpMapTransform class is used to define 2D bump map transformations.">SoBumpMapTransform</a> class is used to define 2D bump map transformations.  <a href="classSoBumpMapTransform.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCacheHint.html">SoCacheHint</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoCacheHint.html" title="The SoCacheHint class is a node containing hints about how to cache geometry.">SoCacheHint</a> class is a node containing hints about how to cache geometry.  <a href="classSoCacheHint.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallback.html">SoCallback</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoCallback.html" title="The SoCallback class is a node type which provides a means of setting callback hooks in the scene gra...">SoCallback</a> class is a node type which provides a means of setting callback hooks in the scene graph.  <a href="classSoCallback.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html">SoCamera</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoCamera.html" title="The SoCamera class is the abstract base class for camera definition nodes.">SoCamera</a> class is the abstract base class for camera definition nodes.  <a href="classSoCamera.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoClipPlane.html">SoClipPlane</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoClipPlane.html" title="The SoClipPlane class is a node type for specifying clipping planes.">SoClipPlane</a> class is a node type for specifying clipping planes.  <a href="classSoClipPlane.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoColorIndex.html">SoColorIndex</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoColorIndex.html" title="The SoColorIndex class is used to specify color indices for subsequent shapes.">SoColorIndex</a> class is used to specify color indices for subsequent shapes.  <a href="classSoColorIndex.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoComplexity.html">SoComplexity</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoComplexity.html" title="The SoComplexity class is a node type which is used to set the trade-off between quality and performa...">SoComplexity</a> class is a node type which is used to set the trade-off between quality and performance.  <a href="classSoComplexity.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCone.html">SoCone</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoCone.html" title="The SoCone class is for rendering cone shapes.">SoCone</a> class is for rendering cone shapes.  <a href="classSoCone.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCoordinate3.html">SoCoordinate3</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoCoordinate3.html" title="The SoCoordinate3 class is a node for providing coordinates to shape nodes.">SoCoordinate3</a> class is a node for providing coordinates to shape nodes.  <a href="classSoCoordinate3.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCoordinate4.html">SoCoordinate4</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoCoordinate4.html" title="The SoCoordinate4 class is a node for providing coordinates to shape nodes.">SoCoordinate4</a> class is a node for providing coordinates to shape nodes.  <a href="classSoCoordinate4.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCube.html">SoCube</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoCube.html" title="The SoCube class is for rendering cubes.">SoCube</a> class is for rendering cubes.  <a href="classSoCube.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCylinder.html">SoCylinder</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoCylinder.html" title="The SoCylinder class is for rendering cylinder shapes.">SoCylinder</a> class is for rendering cylinder shapes.  <a href="classSoCylinder.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDepthBuffer.html">SoDepthBuffer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoDepthBuffer.html" title="The SoDepthBuffer class is a node used to control the GL depth buffer.">SoDepthBuffer</a> class is a node used to control the GL depth buffer.  <a href="classSoDepthBuffer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDirectionalLight.html">SoDirectionalLight</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoDirectionalLight.html" title="The SoDirectionalLight class is a node type for specifying directional light sources.">SoDirectionalLight</a> class is a node type for specifying directional light sources.  <a href="classSoDirectionalLight.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDrawStyle.html">SoDrawStyle</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoDrawStyle.html" title="The SoDrawStyle class specifies common rendering properties for shapes.">SoDrawStyle</a> class specifies common rendering properties for shapes.  <a href="classSoDrawStyle.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoEnvironment.html">SoEnvironment</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoEnvironment.html" title="The SoEnvironment class is a node for specifying global rendering parameters.">SoEnvironment</a> class is a node for specifying global rendering parameters.  <a href="classSoEnvironment.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoEventCallback.html">SoEventCallback</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoEventCallback.html" title="The SoEventCallback class provides functionality for catching events.">SoEventCallback</a> class provides functionality for catching events.  <a href="classSoEventCallback.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoExtSelection.html">SoExtSelection</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoExtSelection.html" title="The SoExtSelection class can be used for extended selection functionality.">SoExtSelection</a> class can be used for extended selection functionality.  <a href="classSoExtSelection.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFaceSet.html">SoFaceSet</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoFaceSet.html" title="The SoFaceSet class is used to render and organize non-indexed polygonal face data.">SoFaceSet</a> class is used to render and organize non-indexed polygonal face data.  <a href="classSoFaceSet.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFile.html">SoFile</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoFile.html" title="The SoFile class is node container for another model file.">SoFile</a> class is node container for another model file.  <a href="classSoFile.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFont.html">SoFont</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoFont.html" title="The SoFont class is an appearance node for setting fonts.">SoFont</a> class is an appearance node for setting fonts.  <a href="classSoFont.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFontStyle.html">SoFontStyle</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoFontStyle.html" title="The SoFontStyle class changes the appearance of fonts for text rendering nodes.">SoFontStyle</a> class changes the appearance of fonts for text rendering nodes.  <a href="classSoFontStyle.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFrustumCamera.html">SoFrustumCamera</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoFrustumCamera.html" title="The SoFrustumCamera class defines a camera with a generic frustum..">SoFrustumCamera</a> class defines a camera with a generic frustum..  <a href="classSoFrustumCamera.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGeoCoordinate.html">SoGeoCoordinate</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGeoCoordinate.html" title="The SoGeoCoordinate class is used to specify a list of geographical coordinates.">SoGeoCoordinate</a> class is used to specify a list of geographical coordinates.  <a href="classSoGeoCoordinate.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGeoLocation.html">SoGeoLocation</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGeoLocation.html" title="The SoGeoLocation class is used to georeference the following nodes.">SoGeoLocation</a> class is used to georeference the following nodes.  <a href="classSoGeoLocation.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGeoOrigin.html">SoGeoOrigin</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGeoOrigin.html" title="The SoGeoOrigin class is used to specify an absolute geographic location against which geometry is re...">SoGeoOrigin</a> class is used to specify an absolute geographic location against which geometry is referenced.  <a href="classSoGeoOrigin.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGeoSeparator.html">SoGeoSeparator</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGeoSeparator.html" title="The SoGeoSeparator class is used to georeference a scene graph.">SoGeoSeparator</a> class is used to georeference a scene graph.  <a href="classSoGeoSeparator.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGroup.html">SoGroup</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGroup.html" title="The SoGroup class is a node which managed other node instances.">SoGroup</a> class is a node which managed other node instances.  <a href="classSoGroup.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoImage.html">SoImage</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoImage.html" title="The SoImage class draws a 2D image on the viewport.">SoImage</a> class draws a 2D image on the viewport.  <a href="classSoImage.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIndexedFaceSet.html">SoIndexedFaceSet</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoIndexedFaceSet.html" title="The SoIndexedFaceSet class is used to handle generic indexed facesets.">SoIndexedFaceSet</a> class is used to handle generic indexed facesets.  <a href="classSoIndexedFaceSet.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIndexedLineSet.html">SoIndexedLineSet</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoIndexedLineSet.html" title="The SoIndexedLineSet class is used to render and otherwise represent indexed lines.">SoIndexedLineSet</a> class is used to render and otherwise represent indexed lines.  <a href="classSoIndexedLineSet.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIndexedMarkerSet.html">SoIndexedMarkerSet</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoIndexedMarkerSet.html" title="The SoIndexedMarkerSet class is used to display a set of bitmap markers at 3D positions.">SoIndexedMarkerSet</a> class is used to display a set of bitmap markers at 3D positions.  <a href="classSoIndexedMarkerSet.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIndexedNurbsCurve.html">SoIndexedNurbsCurve</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoIndexedNurbsCurve.html" title="The SoIndexedNurbsCurve class is a node for representing smooth curves.">SoIndexedNurbsCurve</a> class is a node for representing smooth curves.  <a href="classSoIndexedNurbsCurve.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIndexedNurbsSurface.html">SoIndexedNurbsSurface</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoIndexedNurbsSurface.html" title="The SoIndexedNurbsSurface class can be used to render NURBS surfaces.">SoIndexedNurbsSurface</a> class can be used to render NURBS surfaces.  <a href="classSoIndexedNurbsSurface.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIndexedPointSet.html">SoIndexedPointSet</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoIndexedPointSet.html" title="The SoIndexedPointSet class is used to display a set of 3D points.">SoIndexedPointSet</a> class is used to display a set of 3D points.  <a href="classSoIndexedPointSet.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIndexedShape.html">SoIndexedShape</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoIndexedShape.html" title="The SoIndexedShape class is the superclass for all indexed vertex shapes.">SoIndexedShape</a> class is the superclass for all indexed vertex shapes.  <a href="classSoIndexedShape.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIndexedTriangleStripSet.html">SoIndexedTriangleStripSet</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoIndexedTriangleStripSet.html" title="The SoIndexedTriangleStripSet class keeps data for rendering and otherwise representing triangle stri...">SoIndexedTriangleStripSet</a> class keeps data for rendering and otherwise representing triangle strips.  <a href="classSoIndexedTriangleStripSet.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInfo.html">SoInfo</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoInfo.html" title="The SoInfo class is a node for holding text information.">SoInfo</a> class is a node for holding text information.  <a href="classSoInfo.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLabel.html">SoLabel</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoLabel.html" title="The SoLabel class is a node for holding label information in a scene graph.">SoLabel</a> class is a node for holding label information in a scene graph.  <a href="classSoLabel.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLevelOfDetail.html">SoLevelOfDetail</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoLevelOfDetail.html" title="The SoLevelOfDetail class is used to choose a child based on projected size.">SoLevelOfDetail</a> class is used to choose a child based on projected size.  <a href="classSoLevelOfDetail.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLight.html">SoLight</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoLight.html" title="The SoLight class is the base class for light emitting nodes.">SoLight</a> class is the base class for light emitting nodes.  <a href="classSoLight.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLightModel.html">SoLightModel</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoLightModel.html" title="The SoLightModel class is a node for specifying the model for geometry lighting.">SoLightModel</a> class is a node for specifying the model for geometry lighting.  <a href="classSoLightModel.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLinearProfile.html">SoLinearProfile</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoLinearProfile.html" title="The SoLinearProfile class is a node for specifying linear profile curves.">SoLinearProfile</a> class is a node for specifying linear profile curves.  <a href="classSoLinearProfile.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLineSet.html">SoLineSet</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoLineSet.html" title="The SoLineSet class is used to render and organize non-indexed polylines.">SoLineSet</a> class is used to render and organize non-indexed polylines.  <a href="classSoLineSet.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoListener.html">SoListener</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoListener.html" title="The SoListener class defines listener attributes used when rendering sound.">SoListener</a> class defines listener attributes used when rendering sound.  <a href="classSoListener.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLocateHighlight.html">SoLocateHighlight</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoLocateHighlight.html" title="The SoLocateHighlight class highlights geometry under the cursor.">SoLocateHighlight</a> class highlights geometry under the cursor.  <a href="classSoLocateHighlight.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLOD.html">SoLOD</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoLOD.html" title="The SoLOD class is used to choose a child based distance between viewer and object.">SoLOD</a> class is used to choose a child based distance between viewer and object.  <a href="classSoLOD.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMarkerSet.html">SoMarkerSet</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMarkerSet.html" title="The SoMarkerSet class displays a set of 2D bitmap markers in 3D.">SoMarkerSet</a> class displays a set of 2D bitmap markers in 3D.  <a href="classSoMarkerSet.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMaterial.html">SoMaterial</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMaterial.html" title="The SoMaterial class is a node type for setting up material values for scene geometry.">SoMaterial</a> class is a node type for setting up material values for scene geometry.  <a href="classSoMaterial.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMaterialBinding.html">SoMaterialBinding</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMaterialBinding.html" title="The SoMaterialBinding class is a node for setting up how materials are mapped to shapes.">SoMaterialBinding</a> class is a node for setting up how materials are mapped to shapes.  <a href="classSoMaterialBinding.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMatrixTransform.html">SoMatrixTransform</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMatrixTransform.html" title="The SoMatrixTransform class is a transformation node.">SoMatrixTransform</a> class is a transformation node.  <a href="classSoMatrixTransform.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMultipleCopy.html">SoMultipleCopy</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMultipleCopy.html" title="The SoMultipleCopy class redraws its children multiple times at different transformations.">SoMultipleCopy</a> class redraws its children multiple times at different transformations.  <a href="classSoMultipleCopy.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html">SoNode</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoNode.html" title="The SoNode class is the base class for nodes used in scene graphs.">SoNode</a> class is the base class for nodes used in scene graphs.  <a href="classSoNode.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNonIndexedShape.html">SoNonIndexedShape</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoNonIndexedShape.html" title="The SoNonIndexedShape class is the superclass for all non-indexed vertex based shapes.">SoNonIndexedShape</a> class is the superclass for all non-indexed vertex based shapes.  <a href="classSoNonIndexedShape.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNormal.html">SoNormal</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoNormal.html" title="The SoNormal class is a node for providing normals to the state.">SoNormal</a> class is a node for providing normals to the state.  <a href="classSoNormal.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNormalBinding.html">SoNormalBinding</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoNormalBinding.html" title="The SoNormalBinding class is a node for specifying normal vector bindings.">SoNormalBinding</a> class is a node for specifying normal vector bindings.  <a href="classSoNormalBinding.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNurbsCurve.html">SoNurbsCurve</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoNurbsCurve.html" title="The SoNurbsCurve class is a node for representing smooth curves.">SoNurbsCurve</a> class is a node for representing smooth curves.  <a href="classSoNurbsCurve.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNurbsProfile.html">SoNurbsProfile</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoNurbsProfile.html" title="The SoNurbsProfile class is a node for specifying smooth profile curves.">SoNurbsProfile</a> class is a node for specifying smooth profile curves.  <a href="classSoNurbsProfile.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNurbsSurface.html">SoNurbsSurface</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoNurbsSurface.html" title="The SoNurbsSurface class is used to render smooth surfaces.">SoNurbsSurface</a> class is used to render smooth surfaces.  <a href="classSoNurbsSurface.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoOrthographicCamera.html">SoOrthographicCamera</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoOrthographicCamera.html" title="The SoOrthographicCamera class defines a camera node with orthographic rendering.">SoOrthographicCamera</a> class defines a camera node with orthographic rendering.  <a href="classSoOrthographicCamera.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPackedColor.html">SoPackedColor</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoPackedColor.html" title="The SoPackedColor class is a node for setting diffuse and transparency material values.">SoPackedColor</a> class is a node for setting diffuse and transparency material values.  <a href="classSoPackedColor.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPathSwitch.html">SoPathSwitch</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoPathSwitch.html" title="The SoPathSwitch class traverses only when current path matches a configurable path.">SoPathSwitch</a> class traverses only when current path matches a configurable path.  <a href="classSoPathSwitch.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPendulum.html">SoPendulum</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoPendulum.html" title="The SoPendulum class is used to create oscillating rotations.">SoPendulum</a> class is used to create oscillating rotations.  <a href="classSoPendulum.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPerspectiveCamera.html">SoPerspectiveCamera</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoPerspectiveCamera.html" title="The SoPerspectiveCamera class defines a camera node with perspective rendering.">SoPerspectiveCamera</a> class defines a camera node with perspective rendering.  <a href="classSoPerspectiveCamera.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPickStyle.html">SoPickStyle</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoPickStyle.html" title="The SoPickStyle class is a node for setting up how to do picking.">SoPickStyle</a> class is a node for setting up how to do picking.  <a href="classSoPickStyle.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPointLight.html">SoPointLight</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoPointLight.html" title="The SoPointLight class is a node type for light sources.">SoPointLight</a> class is a node type for light sources.  <a href="classSoPointLight.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPointSet.html">SoPointSet</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoPointSet.html" title="The SoPointSet class is used to display a set of 3D points.">SoPointSet</a> class is used to display a set of 3D points.  <a href="classSoPointSet.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPolygonOffset.html">SoPolygonOffset</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoPolygonOffset.html" title="The SoPolygonOffset class is a node type for &quot;layering&quot; rendering primitives.">SoPolygonOffset</a> class is a node type for "layering" rendering primitives.  <a href="classSoPolygonOffset.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoProfile.html">SoProfile</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoProfile.html" title="The SoProfile class is the abstract superclass for profile definitions.">SoProfile</a> class is the abstract superclass for profile definitions.  <a href="classSoProfile.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoProfileCoordinate2.html">SoProfileCoordinate2</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoProfileCoordinate2.html" title="The SoProfileCoordinate2 class is a node specifying a set of 2D coordinates for profiles.">SoProfileCoordinate2</a> class is a node specifying a set of 2D coordinates for profiles.  <a href="classSoProfileCoordinate2.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoProfileCoordinate3.html">SoProfileCoordinate3</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoProfileCoordinate3.html" title="The SoProfileCoordinate3 class is a node specifying a set of 3D coordinates for profiles.">SoProfileCoordinate3</a> class is a node specifying a set of 3D coordinates for profiles.  <a href="classSoProfileCoordinate3.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoQuadMesh.html">SoQuadMesh</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoQuadMesh.html" title="The SoQuadMesh class is used to render and optimize a quadrilateral mesh.">SoQuadMesh</a> class is used to render and optimize a quadrilateral mesh.  <a href="classSoQuadMesh.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoResetTransform.html">SoResetTransform</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoResetTransform.html" title="The SoResetTransform class is a node type which makes it possible to &quot;nullify&quot; state during traversal...">SoResetTransform</a> class is a node type which makes it possible to "nullify" state during traversal.  <a href="classSoResetTransform.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoReversePerspectiveCamera.html">SoReversePerspectiveCamera</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoReversePerspectiveCamera.html" title="The SoReversePerspectiveCamera class defines a camera node with reverse perspective rendering.">SoReversePerspectiveCamera</a> class defines a camera node with reverse perspective rendering.  <a href="classSoReversePerspectiveCamera.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoRotation.html">SoRotation</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoRotation.html" title="The SoRotation class specifies a rotation transformation.">SoRotation</a> class specifies a rotation transformation.  <a href="classSoRotation.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoRotationXYZ.html">SoRotationXYZ</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoRotationXYZ.html" title="The SoRotationXYZ class is a node type for specifying rotation around a particular axis.">SoRotationXYZ</a> class is a node type for specifying rotation around a particular axis.  <a href="classSoRotationXYZ.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoRotor.html">SoRotor</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoRotor.html" title="The SoRotor class is a node used to animate rotations.">SoRotor</a> class is a node used to animate rotations.  <a href="classSoRotor.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoScale.html">SoScale</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoScale.html" title="The SoScale class is a node type for scaling scene graph geometry.">SoScale</a> class is a node type for scaling scene graph geometry.  <a href="classSoScale.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneTexture2.html">SoSceneTexture2</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSceneTexture2.html" title="The SoSceneTexture2 class is used to create a 2D texture from a Coin scene graph.">SoSceneTexture2</a> class is used to create a 2D texture from a Coin scene graph.  <a href="classSoSceneTexture2.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneTextureCubeMap.html">SoSceneTextureCubeMap</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a scene into a texture cube map.  <a href="classSoSceneTextureCubeMap.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSelection.html">SoSelection</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSelection.html" title="The SoSelection class manages a list of selected nodes.">SoSelection</a> class manages a list of selected nodes.  <a href="classSoSelection.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSeparator.html">SoSeparator</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSeparator.html" title="The SoSeparator class is a state-preserving group node.">SoSeparator</a> class is a state-preserving group node.  <a href="classSoSeparator.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoShadowCulling.html">SoShadowCulling</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoShadowCulling.html" title="The SoShadowCulling class is a node for setting the shadow style on nodes.">SoShadowCulling</a> class is a node for setting the shadow style on nodes.  <a href="classSoShadowCulling.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoShadowSpotLight.html">SoShadowSpotLight</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoShadowSpotLight.html" title="The SoShadowSpotLight class is a node for setting up a spot light which casts shadows.">SoShadowSpotLight</a> class is a node for setting up a spot light which casts shadows.  <a href="classSoShadowSpotLight.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoShadowStyle.html">SoShadowStyle</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoShadowStyle.html" title="The SoShadowStyle class is a node for setting the shadow style on nodes.">SoShadowStyle</a> class is a node for setting the shadow style on nodes.  <a href="classSoShadowStyle.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoShape.html">SoShape</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoShape.html" title="The SoShape class is the superclass for geometry shapes.">SoShape</a> class is the superclass for geometry shapes.  <a href="classSoShape.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoShapeHints.html">SoShapeHints</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoShapeHints.html" title="The SoShapeHints class is a node containing hints about how to render geometry.">SoShapeHints</a> class is a node containing hints about how to render geometry.  <a href="classSoShapeHints.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoShuttle.html">SoShuttle</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoShuttle.html" title="The SoShuttle class is used to oscillate between two translations.">SoShuttle</a> class is used to oscillate between two translations.  <a href="classSoShuttle.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSphere.html">SoSphere</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSphere.html" title="The SoSphere class is for rendering sphere shapes.">SoSphere</a> class is for rendering sphere shapes.  <a href="classSoSphere.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSpotLight.html">SoSpotLight</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSpotLight.html" title="The SoSpotLight class is a node type for light sources with a cone shaped light volume.">SoSpotLight</a> class is a node type for light sources with a cone shaped light volume.  <a href="classSoSpotLight.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSurroundScale.html">SoSurroundScale</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSurroundScale.html" title="The SoSurroundScale class is used to automatically scale geometry to surround other geometry.">SoSurroundScale</a> class is used to automatically scale geometry to surround other geometry.  <a href="classSoSurroundScale.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSwitch.html">SoSwitch</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSwitch.html" title="The SoSwitch class is a group node which selects one child subgraph for traversal.">SoSwitch</a> class is a group node which selects one child subgraph for traversal.  <a href="classSoSwitch.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoText2.html">SoText2</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoText2.html" title="The SoText2 class is a node type for visualizing 2D text aligned with the camera plane.">SoText2</a> class is a node type for visualizing 2D text aligned with the camera plane.  <a href="classSoText2.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoText3.html">SoText3</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoText3.html" title="The SoText3 class renders extruded 3D text.">SoText3</a> class renders extruded 3D text.  <a href="classSoText3.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTexture.html">SoTexture</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Common base class for texture nodes.  <a href="classSoTexture.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTexture2.html">SoTexture2</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTexture2.html" title="The SoTexture2 class is used to map a 2D texture onto subsequent geometry in the scene graph.">SoTexture2</a> class is used to map a 2D texture onto subsequent geometry in the scene graph.  <a href="classSoTexture2.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTexture2Transform.html">SoTexture2Transform</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTexture2Transform.html" title="The SoTexture2Transform class is used to define 2D texture transformations.">SoTexture2Transform</a> class is used to define 2D texture transformations.  <a href="classSoTexture2Transform.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTexture3.html">SoTexture3</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTexture3.html" title="The SoTexture3 class is used to map a 3D texture onto geometry.">SoTexture3</a> class is used to map a 3D texture onto geometry.  <a href="classSoTexture3.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTexture3Transform.html">SoTexture3Transform</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTexture3Transform.html" title="The SoTexture3Transform class is used to define 3D texture transformations.">SoTexture3Transform</a> class is used to define 3D texture transformations.  <a href="classSoTexture3Transform.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTextureCombine.html">SoTextureCombine</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTextureCombine.html" title="The SoTextureCombine class is a node for setting texture combine functions.">SoTextureCombine</a> class is a node for setting texture combine functions.  <a href="classSoTextureCombine.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTextureCoordinate2.html">SoTextureCoordinate2</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTextureCoordinate2.html" title="The SoTextureCoordinate2 class contains a set of coordinates for the mapping of 2D textures.">SoTextureCoordinate2</a> class contains a set of coordinates for the mapping of 2D textures.  <a href="classSoTextureCoordinate2.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTextureCoordinate3.html">SoTextureCoordinate3</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTextureCoordinate3.html" title="The SoTextureCoordinate3 class contains a set of coordinates for the mapping of 2D textures.">SoTextureCoordinate3</a> class contains a set of coordinates for the mapping of 2D textures.  <a href="classSoTextureCoordinate3.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTextureCoordinateBinding.html">SoTextureCoordinateBinding</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTextureCoordinateBinding.html" title="The SoTextureCoordinateBinding class says how texture coordinates should be bound to shapes.">SoTextureCoordinateBinding</a> class says how texture coordinates should be bound to shapes.  <a href="classSoTextureCoordinateBinding.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTextureCoordinateCube.html">SoTextureCoordinateCube</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTextureCoordinateCube.html" title="The SoTextureCoordinateCube class generates cube mapped texture coordinates for shapes.">SoTextureCoordinateCube</a> class generates cube mapped texture coordinates for shapes.  <a href="classSoTextureCoordinateCube.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTextureCoordinateCylinder.html">SoTextureCoordinateCylinder</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTextureCoordinateCylinder.html" title="The SoTextureCoordinateCylinder class generates cylinder mapped texture coordinates for shapes.">SoTextureCoordinateCylinder</a> class generates cylinder mapped texture coordinates for shapes.  <a href="classSoTextureCoordinateCylinder.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTextureCoordinateDefault.html">SoTextureCoordinateDefault</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTextureCoordinateDefault.html" title="The SoTextureCoordinateDefault class removes texture coordinates from the state.">SoTextureCoordinateDefault</a> class removes texture coordinates from the state.  <a href="classSoTextureCoordinateDefault.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTextureCoordinateEnvironment.html">SoTextureCoordinateEnvironment</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTextureCoordinateEnvironment.html" title="The SoTextureCoordinateEnvironment class generates texture coordinates by projecting onto a surroundi...">SoTextureCoordinateEnvironment</a> class generates texture coordinates by projecting onto a surrounding texture.  <a href="classSoTextureCoordinateEnvironment.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTextureCoordinateFunction.html">SoTextureCoordinateFunction</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTextureCoordinateFunction.html" title="The SoTextureCoordinateFunction class is an abstract base class for texture coordinate generating nod...">SoTextureCoordinateFunction</a> class is an abstract base class for texture coordinate generating nodes.  <a href="classSoTextureCoordinateFunction.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTextureCoordinateNormalMap.html">SoTextureCoordinateNormalMap</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTextureCoordinateNormalMap.html" title="The SoTextureCoordinateNormalMap class generates texture coordinates by projecting onto a surrounding...">SoTextureCoordinateNormalMap</a> class generates texture coordinates by projecting onto a surrounding texture.  <a href="classSoTextureCoordinateNormalMap.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTextureCoordinateObject.html">SoTextureCoordinateObject</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTextureCoordinateObject.html" title="The SoTextureCoordinateObject class generates texture coordinates by...">SoTextureCoordinateObject</a> class generates texture coordinates by...  <a href="classSoTextureCoordinateObject.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTextureCoordinatePlane.html">SoTextureCoordinatePlane</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTextureCoordinatePlane.html" title="The SoTextureCoordinatePlane class generates texture coordinates by projecting onto a plane.">SoTextureCoordinatePlane</a> class generates texture coordinates by projecting onto a plane.  <a href="classSoTextureCoordinatePlane.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTextureCoordinateReflectionMap.html">SoTextureCoordinateReflectionMap</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTextureCoordinateReflectionMap.html" title="The SoTextureCoordinateReflectionMap class generates 3D reflection texture coordinates.">SoTextureCoordinateReflectionMap</a> class generates 3D reflection texture coordinates.  <a href="classSoTextureCoordinateReflectionMap.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTextureCoordinateSphere.html">SoTextureCoordinateSphere</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTextureCoordinateSphere.html" title="The SoTextureCoordinateSphere class generates sphere mapped texture coordinates for shapes.">SoTextureCoordinateSphere</a> class generates sphere mapped texture coordinates for shapes.  <a href="classSoTextureCoordinateSphere.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTextureCubeMap.html">SoTextureCubeMap</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTextureCubeMap.html" title="The SoTextureCubeMap class is used to map a cube map onto subsequent shape nodes.">SoTextureCubeMap</a> class is used to map a cube map onto subsequent shape nodes.  <a href="classSoTextureCubeMap.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTextureMatrixTransform.html">SoTextureMatrixTransform</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTextureMatrixTransform.html" title="The SoTextureMatrixTransform class is used to define a texture matrix transformation.">SoTextureMatrixTransform</a> class is used to define a texture matrix transformation.  <a href="classSoTextureMatrixTransform.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTextureScalePolicy.html">SoTextureScalePolicy</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTextureScalePolicy.html" title="The SoTextureScalePolicy class is a node for controlling the texture scale policy.">SoTextureScalePolicy</a> class is a node for controlling the texture scale policy.  <a href="classSoTextureScalePolicy.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTextureUnit.html">SoTextureUnit</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTextureUnit.html" title="The SoTextureUnit class is a node for setting the active texture unit.">SoTextureUnit</a> class is a node for setting the active texture unit.  <a href="classSoTextureUnit.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTransform.html">SoTransform</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTransform.html" title="The SoTransform class is the &quot;all-purpose&quot; transformation node type.">SoTransform</a> class is the "all-purpose" transformation node type.  <a href="classSoTransform.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTransformation.html">SoTransformation</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTransformation.html" title="The SoTransformation class is the abstract base class for transformation nodes.">SoTransformation</a> class is the abstract base class for transformation nodes.  <a href="classSoTransformation.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTransformSeparator.html">SoTransformSeparator</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTransformSeparator.html" title="The SoTransformSeparator class is a group node preserving the current transformations.">SoTransformSeparator</a> class is a group node preserving the current transformations.  <a href="classSoTransformSeparator.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTranslation.html">SoTranslation</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTranslation.html" title="The SoTranslation class is a node type for specifying geometry translations.">SoTranslation</a> class is a node type for specifying geometry translations.  <a href="classSoTranslation.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTransparencyType.html">SoTransparencyType</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTransparencyType.html" title="The SoTransparencyType class is a node for setting the transparency type for shapes.">SoTransparencyType</a> class is a node for setting the transparency type for shapes.  <a href="classSoTransparencyType.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTriangleStripSet.html">SoTriangleStripSet</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTriangleStripSet.html" title="The SoTriangleStripSet class is used to render and control non-indexed triangle strips.">SoTriangleStripSet</a> class is used to render and control non-indexed triangle strips.  <a href="classSoTriangleStripSet.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoUnits.html">SoUnits</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoUnits.html" title="The SoUnits class is a node for setting unit types.">SoUnits</a> class is a node for setting unit types.  <a href="classSoUnits.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVertexProperty.html">SoVertexProperty</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoVertexProperty.html" title="The SoVertexProperty class collects the functionality of various appearance nodes.">SoVertexProperty</a> class collects the functionality of various appearance nodes.  <a href="classSoVertexProperty.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVertexShape.html">SoVertexShape</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoVertexShape.html" title="The SoVertexShape class is the superclass for all vertex based shapes.">SoVertexShape</a> class is the superclass for all vertex based shapes.  <a href="classSoVertexShape.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoWWWAnchor.html">SoWWWAnchor</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoWWWAnchor.html" title="The SoWWWAnchor class adds URL callbacks to the highlighted geometry.">SoWWWAnchor</a> class adds URL callbacks to the highlighted geometry.  <a href="classSoWWWAnchor.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoWWWInline.html">SoWWWInline</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoWWWInline.html" title="The SoWWWInline class is a node used to include data from an URL.">SoWWWInline</a> class is a node used to include data from an URL.  <a href="classSoWWWInline.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ga2bb0ff232b768799a8f33832780e23b0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__nodes.html#ga2bb0ff232b768799a8f33832780e23b0">SO_NODE_ABSTRACT_HEADER</a>(classname)</td></tr>
+<tr class="separator:ga2bb0ff232b768799a8f33832780e23b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga687f9e5e91d6cec3bb4f8aac7a753473"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__nodes.html#ga687f9e5e91d6cec3bb4f8aac7a753473">SO_NODE_ABSTRACT_SOURCE</a>(classname)</td></tr>
+<tr class="separator:ga687f9e5e91d6cec3bb4f8aac7a753473"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaba48e7967e2d337365375343dc650c45"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__nodes.html#gaba48e7967e2d337365375343dc650c45">SO_NODE_ADD_FIELD</a>(field,  defaultvalue)</td></tr>
+<tr class="separator:gaba48e7967e2d337365375343dc650c45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5aa0e28f57bbf350f271c1550156281f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__nodes.html#ga5aa0e28f57bbf350f271c1550156281f">SO_NODE_CONSTRUCTOR</a>(classname)</td></tr>
+<tr class="separator:ga5aa0e28f57bbf350f271c1550156281f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1c28d883c32ef2ac0e5b758d6061fcb2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__nodes.html#ga1c28d883c32ef2ac0e5b758d6061fcb2">SO_NODE_DEFINE_ENUM_VALUE</a>(enumname,  enumvalue)</td></tr>
+<tr class="separator:ga1c28d883c32ef2ac0e5b758d6061fcb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2c4d8b776be8aac5d22cf94b7b92235e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__nodes.html#ga2c4d8b776be8aac5d22cf94b7b92235e">SO_NODE_HEADER</a>(classname)</td></tr>
+<tr class="separator:ga2c4d8b776be8aac5d22cf94b7b92235e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab7e402b0a82fae1a3abdd4d9afe833cc"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__nodes.html#gab7e402b0a82fae1a3abdd4d9afe833cc">SO_NODE_INIT_ABSTRACT_CLASS</a>(classname,  parentclass,  parentname)</td></tr>
+<tr class="separator:gab7e402b0a82fae1a3abdd4d9afe833cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3498e0cf3179332511a984d81b6bbd62"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__nodes.html#ga3498e0cf3179332511a984d81b6bbd62">SO_NODE_INIT_CLASS</a>(classname,  parentclass,  parentname)</td></tr>
+<tr class="separator:ga3498e0cf3179332511a984d81b6bbd62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7342238d25c2224535918b8e5b3f8bfd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__nodes.html#ga7342238d25c2224535918b8e5b3f8bfd">SO_NODE_IS_FIRST_INSTANCE</a>()</td></tr>
+<tr class="separator:ga7342238d25c2224535918b8e5b3f8bfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0c812aee96f40bd1b759f8c5a9d09b48"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__nodes.html#ga0c812aee96f40bd1b759f8c5a9d09b48">SO_NODE_SOURCE</a>(classname)</td></tr>
+<tr class="separator:ga0c812aee96f40bd1b759f8c5a9d09b48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<p>Nodes are scene based objects performs various actions such as rendering. </p>
+<p>This is the set of nodes Coin implements using the original Open Inventor pattern, meaning they read and write to and from files using the Inventor/VRML1 format, and produce side-effects for subsequent siblings under the same <a class="el" href="classSoSeparator.html" title="The SoSeparator class is a state-preserving group node.">SoSeparator</a> node during action traversal.</p>
+<p>A subset of these nodes constitute the VRML1 format, and a bigger subset constitutes the Inventor format. The rest of the nodes are extensions that are not part of any standardized format.</p>
+<p>For VRML97 nodes, see the VRMLnodes page.</p>
+<p>The VRML1.0 specification is at <a href="http://www.web3d.org/x3d/specifications/vrml/VRML1.0/index.html">http://www.web3d.org/x3d/specifications/vrml/VRML1.0/index.html</a> </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ga2bb0ff232b768799a8f33832780e23b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2bb0ff232b768799a8f33832780e23b0">&#9670;&nbsp;</a></span>SO_NODE_ABSTRACT_HEADER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SO_NODE_ABSTRACT_HEADER</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">classname</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This macro adds standard declarations needed in Coin nodes for type identification. It differs from <a class="el" href="group__coin__nodes.html#ga2c4d8b776be8aac5d22cf94b7b92235e">SO_NODE_HEADER</a> in that the object creation part is omitted.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__coin__nodes.html#ga687f9e5e91d6cec3bb4f8aac7a753473">SO_NODE_ABSTRACT_SOURCE</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga687f9e5e91d6cec3bb4f8aac7a753473"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga687f9e5e91d6cec3bb4f8aac7a753473">&#9670;&nbsp;</a></span>SO_NODE_ABSTRACT_SOURCE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SO_NODE_ABSTRACT_SOURCE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">classname</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This macro sets up the implementation of the declarations in <a class="el" href="group__coin__nodes.html#ga2bb0ff232b768799a8f33832780e23b0">SO_NODE_ABSTRACT_HEADER</a>. It should be placed in the implementation file for abstract extension nodes.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__coin__nodes.html#ga2bb0ff232b768799a8f33832780e23b0">SO_NODE_ABSTRACT_HEADER</a> </dd></dl>
+
+</div>
+</div>
+<a id="gaba48e7967e2d337365375343dc650c45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaba48e7967e2d337365375343dc650c45">&#9670;&nbsp;</a></span>SO_NODE_ADD_FIELD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SO_NODE_ADD_FIELD</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">field, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">defaultvalue&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This registers a field for a node, and sets its value to the default value. For use in the constructor, below the <a class="el" href="group__coin__nodes.html#ga5aa0e28f57bbf350f271c1550156281f">SO_NODE_CONSTRUCTOR</a> macro. </p>
+
+</div>
+</div>
+<a id="ga5aa0e28f57bbf350f271c1550156281f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5aa0e28f57bbf350f271c1550156281f">&#9670;&nbsp;</a></span>SO_NODE_CONSTRUCTOR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SO_NODE_CONSTRUCTOR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">classname</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Place this in the node constructor. It sets up the field data object for the node class. </p>
+
+</div>
+</div>
+<a id="ga1c28d883c32ef2ac0e5b758d6061fcb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1c28d883c32ef2ac0e5b758d6061fcb2">&#9670;&nbsp;</a></span>SO_NODE_DEFINE_ENUM_VALUE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SO_NODE_DEFINE_ENUM_VALUE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">enumname, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">enumvalue&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This macro associates enum names with values, used for file input/output. </p>
+
+</div>
+</div>
+<a id="ga2c4d8b776be8aac5d22cf94b7b92235e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2c4d8b776be8aac5d22cf94b7b92235e">&#9670;&nbsp;</a></span>SO_NODE_HEADER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SO_NODE_HEADER</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">classname</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This macro adds standard declarations needed in Coin nodes for object creation and type identification.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__coin__nodes.html#ga0c812aee96f40bd1b759f8c5a9d09b48">SO_NODE_SOURCE</a> </dd></dl>
+
+</div>
+</div>
+<a id="gab7e402b0a82fae1a3abdd4d9afe833cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab7e402b0a82fae1a3abdd4d9afe833cc">&#9670;&nbsp;</a></span>SO_NODE_INIT_ABSTRACT_CLASS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SO_NODE_INIT_ABSTRACT_CLASS</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">classname, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">parentclass, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">parentname&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This macro is used in the initClass-function in abstract node classes. It registers the class by name (by creating a new <a class="el" href="classSoType.html" title="The SoType class is the basis for the runtime type system in Coin.">SoType</a> for the class) for type identification purposes.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__coin__nodes.html#ga3498e0cf3179332511a984d81b6bbd62">SO_NODE_INIT_CLASS</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga3498e0cf3179332511a984d81b6bbd62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3498e0cf3179332511a984d81b6bbd62">&#9670;&nbsp;</a></span>SO_NODE_INIT_CLASS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SO_NODE_INIT_CLASS</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">classname, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">parentclass, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">parentname&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This macro is used in the initClass-function in a node class. It registers the class by name (by creating a new <a class="el" href="classSoType.html" title="The SoType class is the basis for the runtime type system in Coin.">SoType</a> for the class), so file reading will be able to create a node of this type and fill it with its field values.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__coin__nodes.html#gab7e402b0a82fae1a3abdd4d9afe833cc">SO_NODE_INIT_ABSTRACT_CLASS</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga7342238d25c2224535918b8e5b3f8bfd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7342238d25c2224535918b8e5b3f8bfd">&#9670;&nbsp;</a></span>SO_NODE_IS_FIRST_INSTANCE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SO_NODE_IS_FIRST_INSTANCE</td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This macro can be used as a predicate to test if the constructed node is the first constructed instance of a node class, in case some extra initialization needs to be done that can't be done in the initClass() function. </p>
+
+</div>
+</div>
+<a id="ga0c812aee96f40bd1b759f8c5a9d09b48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0c812aee96f40bd1b759f8c5a9d09b48">&#9670;&nbsp;</a></span>SO_NODE_SOURCE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SO_NODE_SOURCE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">classname</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This macro sets up the implementation of the declarations in <a class="el" href="group__coin__nodes.html#ga2c4d8b776be8aac5d22cf94b7b92235e">SO_NODE_HEADER</a>. It should be placed in the implementation file for extension nodes.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__coin__nodes.html#ga2c4d8b776be8aac5d22cf94b7b92235e">SO_NODE_HEADER</a> </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

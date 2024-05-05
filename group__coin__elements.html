@@ -1,0 +1,708 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: Element Classes</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('group__coin__elements.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a>  </div>
+  <div class="headertitle">
+<div class="title">Element Classes</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The element classes in Coin are the containers of state information during action traversals of scene graphs.  
+<a href="#details">More...</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAccumulatedElement.html">SoAccumulatedElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoAccumulatedElement.html" title="The SoAccumulatedElement class is an abstract class for storing accumulated state.">SoAccumulatedElement</a> class is an abstract class for storing accumulated state.  <a href="classSoAccumulatedElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAmbientColorElement.html">SoAmbientColorElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoAmbientColorElement.html" title="The SoAmbientColorElement class is yet to be documented.">SoAmbientColorElement</a> class is yet to be documented.  <a href="classSoAmbientColorElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAnnoText3CharOrientElement.html">SoAnnoText3CharOrientElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoAnnoText3CharOrientElement.html" title="The SoAnnoText3CharOrientElement class is yet to be documented.">SoAnnoText3CharOrientElement</a> class is yet to be documented.  <a href="classSoAnnoText3CharOrientElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAnnoText3FontSizeHintElement.html">SoAnnoText3FontSizeHintElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoAnnoText3FontSizeHintElement.html" title="The SoAnnoText3FontSizeHintElement class is yet to be documented.">SoAnnoText3FontSizeHintElement</a> class is yet to be documented.  <a href="classSoAnnoText3FontSizeHintElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAnnoText3RenderPrintElement.html">SoAnnoText3RenderPrintElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoAnnoText3RenderPrintElement.html" title="The SoAnnoText3RenderPrintElement class is yet to be documented.">SoAnnoText3RenderPrintElement</a> class is yet to be documented.  <a href="classSoAnnoText3RenderPrintElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBBoxModelMatrixElement.html">SoBBoxModelMatrixElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoBBoxModelMatrixElement.html" title="The SoBBoxModelMatrixElement class keeps track of the current model matrix during a scene graph trave...">SoBBoxModelMatrixElement</a> class keeps track of the current model matrix during a scene graph traversal. It is used by amongst others the <a class="el" href="classSoGetBoundingBoxAction.html" title="The SoGetBoundingBoxAction class calculates bounding boxes for nodes and subgraphs.">SoGetBoundingBoxAction</a> class.  <a href="classSoBBoxModelMatrixElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBumpMapCoordinateElement.html">SoBumpMapCoordinateElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoBumpMapCoordinateElement.html" title="The SoBumpMapCoordinateElement class is yet to be documented.">SoBumpMapCoordinateElement</a> class is yet to be documented.  <a href="classSoBumpMapCoordinateElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBumpMapElement.html">SoBumpMapElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoBumpMapElement.html" title="The SoBumpMapElement class is yet to be documented.">SoBumpMapElement</a> class is yet to be documented.  <a href="classSoBumpMapElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBumpMapMatrixElement.html">SoBumpMapMatrixElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoBumpMapMatrixElement.html" title="The SoBumpMapMatrixElement class is used to manage the bump map matrix stack.">SoBumpMapMatrixElement</a> class is used to manage the bump map matrix stack.  <a href="classSoBumpMapMatrixElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCacheElement.html">SoCacheElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoCacheElement.html" title="The SoCacheElement class stores and manages the open caches.">SoCacheElement</a> class stores and manages the open caches.  <a href="classSoCacheElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCacheHintElement.html">SoCacheHintElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoCacheHintElement.html" title="The SoCacheHintElement class is yet to be documented.">SoCacheHintElement</a> class is yet to be documented.  <a href="classSoCacheHintElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoClipPlaneElement.html">SoClipPlaneElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoClipPlaneElement.html" title="The SoClipPlaneElement class is used to manage the clip plane stack.">SoClipPlaneElement</a> class is used to manage the clip plane stack.  <a href="classSoClipPlaneElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoComplexityElement.html">SoComplexityElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoComplexityElement.html" title="The SoComplexityElement class contains the current shape complexity for a graph traverser.">SoComplexityElement</a> class contains the current shape complexity for a graph traverser.  <a href="classSoComplexityElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoComplexityTypeElement.html">SoComplexityTypeElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoComplexityTypeElement.html" title="The SoComplexityTypeElement class is yet to be documented.">SoComplexityTypeElement</a> class is yet to be documented.  <a href="classSoComplexityTypeElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCoordinateElement.html">SoCoordinateElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoCoordinateElement.html" title="The SoCoordinateElement class is yet to be documented.">SoCoordinateElement</a> class is yet to be documented.  <a href="classSoCoordinateElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCreaseAngleElement.html">SoCreaseAngleElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoCreaseAngleElement.html" title="The SoCreaseAngleElement class stores the crease angle during a scene graph traversal.">SoCreaseAngleElement</a> class stores the crease angle during a scene graph traversal.  <a href="classSoCreaseAngleElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCullElement.html">SoCullElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoCullElement.html" title="The SoCullElement class is used internally for render and pick culling.">SoCullElement</a> class is used internally for render and pick culling.  <a href="classSoCullElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDecimationPercentageElement.html">SoDecimationPercentageElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoDecimationPercentageElement.html" title="The SoDecimationPercentageElement class is yet to be documented.">SoDecimationPercentageElement</a> class is yet to be documented.  <a href="classSoDecimationPercentageElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDecimationTypeElement.html">SoDecimationTypeElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoDecimationTypeElement.html" title="The SoDecimationTypeElement class is yet to be documented.">SoDecimationTypeElement</a> class is yet to be documented.  <a href="classSoDecimationTypeElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDepthBufferElement.html">SoDepthBufferElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoDepthBufferElement.html" title="The SoDepthBufferElement controls the depth buffer settings.">SoDepthBufferElement</a> controls the depth buffer settings.  <a href="classSoDepthBufferElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDiffuseColorElement.html">SoDiffuseColorElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoDiffuseColorElement.html" title="The SoDiffuseColorElement class is yet to be documented.">SoDiffuseColorElement</a> class is yet to be documented.  <a href="classSoDiffuseColorElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDrawStyleElement.html">SoDrawStyleElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoDrawStyleElement.html" title="The SoDrawStyleElement class is yet to be documented.">SoDrawStyleElement</a> class is yet to be documented.  <a href="classSoDrawStyleElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html">SoElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classSoElement.html" title="SoElement is the abstract base class for all elements.">SoElement</a> is the abstract base class for all elements.  <a href="classSoElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoEmissiveColorElement.html">SoEmissiveColorElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoEmissiveColorElement.html" title="The SoEmissiveColorElement class is yet to be documented.">SoEmissiveColorElement</a> class is yet to be documented.  <a href="classSoEmissiveColorElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoEnvironmentElement.html">SoEnvironmentElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoEnvironmentElement.html" title="The SoEnvironmentElement class is yet to be documented.">SoEnvironmentElement</a> class is yet to be documented.  <a href="classSoEnvironmentElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFloatElement.html">SoFloatElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classSoFloatElement.html" title="SoFloatElement is an abstract base class for elements that consists of a single float value.">SoFloatElement</a> is an abstract base class for elements that consists of a single float value.  <a href="classSoFloatElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFocalDistanceElement.html">SoFocalDistanceElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoFocalDistanceElement.html" title="The SoFocalDistanceElement class is yet to be documented.">SoFocalDistanceElement</a> class is yet to be documented.  <a href="classSoFocalDistanceElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFontNameElement.html">SoFontNameElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoFontNameElement.html" title="The SoFontNameElement class is yet to be documented.">SoFontNameElement</a> class is yet to be documented.  <a href="classSoFontNameElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFontSizeElement.html">SoFontSizeElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoFontSizeElement.html" title="The SoFontSizeElement class is yet to be documented.">SoFontSizeElement</a> class is yet to be documented.  <a href="classSoFontSizeElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGeoElement.html">SoGeoElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGeoElement.html" title="The SoGeoElement class is yet to be documented.">SoGeoElement</a> class is yet to be documented.  <a href="classSoGeoElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLCacheContextElement.html">SoGLCacheContextElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLCacheContextElement.html" title="The SoGLCacheContextElement class handles the OpenGL cache for a context.">SoGLCacheContextElement</a> class handles the OpenGL cache for a context.  <a href="classSoGLCacheContextElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLClipPlaneElement.html">SoGLClipPlaneElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLClipPlaneElement.html" title="The SoGLClipPlaneElement class is yet to be documented.">SoGLClipPlaneElement</a> class is yet to be documented.  <a href="classSoGLClipPlaneElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLColorIndexElement.html">SoGLColorIndexElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLColorIndexElement.html" title="The SoGLColorIndexElement class sets the current OpenGL color.">SoGLColorIndexElement</a> class sets the current OpenGL color.  <a href="classSoGLColorIndexElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLCoordinateElement.html">SoGLCoordinateElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLCoordinateElement.html" title="The SoGLCoordinateElement class is yet to be documented.">SoGLCoordinateElement</a> class is yet to be documented.  <a href="classSoGLCoordinateElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLDepthBufferElement.html">SoGLDepthBufferElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLDepthBufferElement.html" title="The SoGLDepthBufferElement controls the OpenGL depth buffer.">SoGLDepthBufferElement</a> controls the OpenGL depth buffer.  <a href="classSoGLDepthBufferElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLDisplayList.html">SoGLDisplayList</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLDisplayList.html" title="The SoGLDisplayList class stores and manages OpenGL display lists.">SoGLDisplayList</a> class stores and manages OpenGL display lists.  <a href="classSoGLDisplayList.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLDrawStyleElement.html">SoGLDrawStyleElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLDrawStyleElement.html" title="The SoGLDrawStyleElement updates the current draw style in OpenGL.">SoGLDrawStyleElement</a> updates the current draw style in OpenGL.  <a href="classSoGLDrawStyleElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLEnvironmentElement.html">SoGLEnvironmentElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLEnvironmentElement.html" title="The SoGLEnvironmentElement class is for setting GL fog etc.">SoGLEnvironmentElement</a> class is for setting GL fog etc.  <a href="classSoGLEnvironmentElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLLazyElement.html">SoGLLazyElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLLazyElement.html" title="The SoGLLazyElement class is meant to optimize GL rendering.">SoGLLazyElement</a> class is meant to optimize GL rendering.  <a href="classSoGLLazyElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLLightIdElement.html">SoGLLightIdElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLLightIdElement.html" title="The SoGLLightIdElement class is yet to be documented.">SoGLLightIdElement</a> class is yet to be documented.  <a href="classSoGLLightIdElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLLinePatternElement.html">SoGLLinePatternElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLLinePatternElement.html" title="The SoGLLinePatternElement class changes the line stipple pattern of the OpenGL render state.">SoGLLinePatternElement</a> class changes the line stipple pattern of the OpenGL render state.  <a href="classSoGLLinePatternElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLLineWidthElement.html">SoGLLineWidthElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLLineWidthElement.html" title="The SoGLLineWidthElement class changes the line width setting of the OpenGL render state.">SoGLLineWidthElement</a> class changes the line width setting of the OpenGL render state.  <a href="classSoGLLineWidthElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLModelMatrixElement.html">SoGLModelMatrixElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLModelMatrixElement.html" title="The SoGLModelMatrixElement class is yet to be documented.">SoGLModelMatrixElement</a> class is yet to be documented.  <a href="classSoGLModelMatrixElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLMultiTextureCoordinateElement.html">SoGLMultiTextureCoordinateElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLMultiTextureCoordinateElement.html" title="The SoGLMultiTextureCoordinateElement class stores the current gltexture coordinates for several unit...">SoGLMultiTextureCoordinateElement</a> class stores the current gltexture coordinates for several units.  <a href="classSoGLMultiTextureCoordinateElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLMultiTextureEnabledElement.html">SoGLMultiTextureEnabledElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLMultiTextureEnabledElement.html" title="The SoGLMultiTextureEnabledElement class is an element which controls whether texturing is enabled or...">SoGLMultiTextureEnabledElement</a> class is an element which controls whether texturing is enabled or not.  <a href="classSoGLMultiTextureEnabledElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLMultiTextureImageElement.html">SoGLMultiTextureImageElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLMultiTextureImageElement.html" title="The SoGLMultiTextureImageElement class is used to control the current GL texture for texture units.">SoGLMultiTextureImageElement</a> class is used to control the current GL texture for texture units.  <a href="classSoGLMultiTextureImageElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLMultiTextureMatrixElement.html">SoGLMultiTextureMatrixElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLMultiTextureMatrixElement.html" title="The SoGLMultiTextureMatrixElement class is used to update the OpenGL texture matrix.">SoGLMultiTextureMatrixElement</a> class is used to update the OpenGL texture matrix.  <a href="classSoGLMultiTextureMatrixElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLNormalElement.html">SoGLNormalElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLNormalElement.html" title="The SoGLNormalElement class is yet to be documented.">SoGLNormalElement</a> class is yet to be documented.  <a href="classSoGLNormalElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLPointSizeElement.html">SoGLPointSizeElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLPointSizeElement.html" title="The SoGLPointSizeElement class changes the point size setting of the OpenGL render state.">SoGLPointSizeElement</a> class changes the point size setting of the OpenGL render state.  <a href="classSoGLPointSizeElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLPolygonOffsetElement.html">SoGLPolygonOffsetElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLPolygonOffsetElement.html" title="The SoGLPolygonOffsetElement class is yet to be documented.">SoGLPolygonOffsetElement</a> class is yet to be documented.  <a href="classSoGLPolygonOffsetElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLProjectionMatrixElement.html">SoGLProjectionMatrixElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLProjectionMatrixElement.html" title="The SoGLProjectionMatrixElement class is yet to be documented.">SoGLProjectionMatrixElement</a> class is yet to be documented.  <a href="classSoGLProjectionMatrixElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderPassElement.html">SoGLRenderPassElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLRenderPassElement.html" title="The SoGLRenderPassElement class is yet to be documented.">SoGLRenderPassElement</a> class is yet to be documented.  <a href="classSoGLRenderPassElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLShadowCullingElement.html">SoGLShadowCullingElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLShadowCullingElement.html" title="The SoGLShadowCullingElement class is yet to be documented.">SoGLShadowCullingElement</a> class is yet to be documented.  <a href="classSoGLShadowCullingElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLShapeHintsElement.html">SoGLShapeHintsElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLShapeHintsElement.html" title="The SoGLShapeHintsElement class is yet to be documented.">SoGLShapeHintsElement</a> class is yet to be documented.  <a href="classSoGLShapeHintsElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLUpdateAreaElement.html">SoGLUpdateAreaElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLUpdateAreaElement.html" title="The SoGLUpdateAreaElement class is yet to be documented.">SoGLUpdateAreaElement</a> class is yet to be documented.  <a href="classSoGLUpdateAreaElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLVBOElement.html">SoGLVBOElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLVBOElement.html" title="The SoGLVBOElement class is used to store VBO state.">SoGLVBOElement</a> class is used to store VBO state.  <a href="classSoGLVBOElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLVertexAttributeElement.html">SoGLVertexAttributeElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLVertexAttributeElement.html" title="The SoGLVertexAttributeElement class is yet to be documented.">SoGLVertexAttributeElement</a> class is yet to be documented.  <a href="classSoGLVertexAttributeElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLViewingMatrixElement.html">SoGLViewingMatrixElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLViewingMatrixElement.html" title="The SoGLViewingMatrixElement class is used to store the current viewing matrix.">SoGLViewingMatrixElement</a> class is used to store the current viewing matrix.  <a href="classSoGLViewingMatrixElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLViewportRegionElement.html">SoGLViewportRegionElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoGLViewportRegionElement.html" title="The SoGLViewportRegionElement class is yet to be documented.">SoGLViewportRegionElement</a> class is yet to be documented.  <a href="classSoGLViewportRegionElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoInt32Element.html">SoInt32Element</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoInt32Element.html" title="The SoInt32Element class is the base class for elements that simply store a 32-bit integer.">SoInt32Element</a> class is the base class for elements that simply store a 32-bit integer.  <a href="classSoInt32Element.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLazyElement.html">SoLazyElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoLazyElement.html" title="The SoLazyElement class is used to handle material and shape properties.">SoLazyElement</a> class is used to handle material and shape properties.  <a href="classSoLazyElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLightAttenuationElement.html">SoLightAttenuationElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoLightAttenuationElement.html" title="The SoLightAttenuationElement class is yet to be documented.">SoLightAttenuationElement</a> class is yet to be documented.  <a href="classSoLightAttenuationElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLightElement.html">SoLightElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoLightElement.html" title="The SoLightElement class manages the currently active light sources.">SoLightElement</a> class manages the currently active light sources.  <a href="classSoLightElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLightModelElement.html">SoLightModelElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoLightModelElement.html" title="The SoLightModelElement class is yet to be documented.">SoLightModelElement</a> class is yet to be documented.  <a href="classSoLightModelElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLinePatternElement.html">SoLinePatternElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoLinePatternElement.html" title="The SoLinePatternElement class defines the line stipple pattern.">SoLinePatternElement</a> class defines the line stipple pattern.  <a href="classSoLinePatternElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLineWidthElement.html">SoLineWidthElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoLineWidthElement.html" title="The SoLineWidthElement class changes the line width setting of the render state.">SoLineWidthElement</a> class changes the line width setting of the render state.  <a href="classSoLineWidthElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoListenerDopplerElement.html">SoListenerDopplerElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoListenerDopplerElement.html" title="The SoListenerDopplerElement holds the Doppler velocity and factor of the current listener.">SoListenerDopplerElement</a> holds the Doppler velocity and factor of the current listener.  <a href="classSoListenerDopplerElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoListenerGainElement.html">SoListenerGainElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoListenerGainElement.html" title="The SoListenerGainElement class stores the SoListener gain during a scene graph traversal.">SoListenerGainElement</a> class stores the <a class="el" href="classSoListener.html" title="The SoListener class defines listener attributes used when rendering sound.">SoListener</a> gain during a scene graph traversal.  <a href="classSoListenerGainElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoListenerOrientationElement.html">SoListenerOrientationElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoListenerOrientationElement.html" title="The SoListenerOrientationElement holds the orientation of the current listener.">SoListenerOrientationElement</a> holds the orientation of the current listener.  <a href="classSoListenerOrientationElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoListenerPositionElement.html">SoListenerPositionElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoListenerPositionElement.html" title="The SoListenerPositionElement holds the position of the current listener.">SoListenerPositionElement</a> holds the position of the current listener.  <a href="classSoListenerPositionElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLocalBBoxMatrixElement.html">SoLocalBBoxMatrixElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoLocalBBoxMatrixElement.html" title="The SoLocalBBoxMatrixElement class is yet to be documented.">SoLocalBBoxMatrixElement</a> class is yet to be documented.  <a href="classSoLocalBBoxMatrixElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMaterialBindingElement.html">SoMaterialBindingElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMaterialBindingElement.html" title="The SoMaterialBindingElement class is yet to be documented.">SoMaterialBindingElement</a> class is yet to be documented.  <a href="classSoMaterialBindingElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoModelMatrixElement.html">SoModelMatrixElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoModelMatrixElement.html" title="The SoModelMatrixElement class is used to manage the current transformation.">SoModelMatrixElement</a> class is used to manage the current transformation.  <a href="classSoModelMatrixElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMultiTextureCoordinateElement.html">SoMultiTextureCoordinateElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMultiTextureCoordinateElement.html" title="The SoMultiTextureCoordinateElement class is yet to be documented.">SoMultiTextureCoordinateElement</a> class is yet to be documented.  <a href="classSoMultiTextureCoordinateElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMultiTextureEnabledElement.html">SoMultiTextureEnabledElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMultiTextureEnabledElement.html" title="The SoMultiTextureEnabledElement class is an element which stores whether texturing is enabled or not...">SoMultiTextureEnabledElement</a> class is an element which stores whether texturing is enabled or not.  <a href="classSoMultiTextureEnabledElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMultiTextureImageElement.html">SoMultiTextureImageElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMultiTextureImageElement.html" title="The SoMultiTextureImageElement class is yet to be documented.">SoMultiTextureImageElement</a> class is yet to be documented.  <a href="classSoMultiTextureImageElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMultiTextureMatrixElement.html">SoMultiTextureMatrixElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMultiTextureMatrixElement.html" title="The SoMultiTextureMatrixElement class is used to manage the texture matrix stack for texture units &gt; ...">SoMultiTextureMatrixElement</a> class is used to manage the texture matrix stack for texture units &gt; 0.  <a href="classSoMultiTextureMatrixElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNodeVisualize.html">SoNodeVisualize</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoNodeVisualize.html" title="The SoNodeVisualize class is yet to be documented.">SoNodeVisualize</a> class is yet to be documented.  <a href="classSoNodeVisualize.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNormalBindingElement.html">SoNormalBindingElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoNormalBindingElement.html" title="The SoNormalBindingElement is yet to be documented.">SoNormalBindingElement</a> is yet to be documented.  <a href="classSoNormalBindingElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNormalElement.html">SoNormalElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoNormalElement.html" title="The SoNormalElement class is yet to be documented.">SoNormalElement</a> class is yet to be documented.  <a href="classSoNormalElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoOverrideElement.html">SoOverrideElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoOverrideElement.html" title="The SoOverrideElement maintains a list of overridable elements and a list over which elements should ...">SoOverrideElement</a> maintains a list of overridable elements and a list over which elements should be overridden.  <a href="classSoOverrideElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPickRayElement.html">SoPickRayElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoPickRayElement.html" title="The SoPickRayElement class is yet to be documented.">SoPickRayElement</a> class is yet to be documented.  <a href="classSoPickRayElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPickStyleElement.html">SoPickStyleElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoPickStyleElement.html" title="The SoPickStyleElement is yet to be documented.">SoPickStyleElement</a> is yet to be documented.  <a href="classSoPickStyleElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPointSizeElement.html">SoPointSizeElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoPointSizeElement.html" title="The SoPointSizeElement changes the point size setting of the render state.">SoPointSizeElement</a> changes the point size setting of the render state.  <a href="classSoPointSizeElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPolygonOffsetElement.html">SoPolygonOffsetElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoPolygonOffsetElement.html" title="The SoPolygonOffsetElement class is yet to be documented.">SoPolygonOffsetElement</a> class is yet to be documented.  <a href="classSoPolygonOffsetElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoProfileCoordinateElement.html">SoProfileCoordinateElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoProfileCoordinateElement.html" title="The SoProfileCoordinateElement class is yet to be documented.">SoProfileCoordinateElement</a> class is yet to be documented.  <a href="classSoProfileCoordinateElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoProfileElement.html">SoProfileElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoProfileElement.html" title="The SoProfileElement class is yet to be documented.">SoProfileElement</a> class is yet to be documented.  <a href="classSoProfileElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoProfilerTopEngine.html">SoProfilerTopEngine</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoProfilerTopEngine.html" title="The SoProfilerTopEngine class is yet to be documented.">SoProfilerTopEngine</a> class is yet to be documented.  <a href="classSoProfilerTopEngine.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoProjectionMatrixElement.html">SoProjectionMatrixElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoProjectionMatrixElement.html" title="The SoProjectionMatrixElement class is yet to be documented.">SoProjectionMatrixElement</a> class is yet to be documented.  <a href="classSoProjectionMatrixElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoReplacedElement.html">SoReplacedElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoReplacedElement.html" title="The SoReplacedElement class is an abstract element superclass.">SoReplacedElement</a> class is an abstract element superclass.  <a href="classSoReplacedElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoShadowStyleElement.html">SoShadowStyleElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoShadowStyleElement.html" title="The SoShadowStyleElement class is yet to be documented.">SoShadowStyleElement</a> class is yet to be documented.  <a href="classSoShadowStyleElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoShapeHintsElement.html">SoShapeHintsElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoShapeHintsElement.html" title="The SoShapeHintsElement class is yet to be documented.">SoShapeHintsElement</a> class is yet to be documented.  <a href="classSoShapeHintsElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoShapeStyleElement.html">SoShapeStyleElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoShapeStyleElement.html" title="The SoShapeStyleElement class is yet to be documented.">SoShapeStyleElement</a> class is yet to be documented.  <a href="classSoShapeStyleElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoShininessElement.html">SoShininessElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoShininessElement.html" title="The SoShininessElement class is yet to be documented.">SoShininessElement</a> class is yet to be documented.  <a href="classSoShininessElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSoundElement.html">SoSoundElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSoundElement.html" title="The SoSoundElement is used for optimizing audio rendering and for turning off inactive SoVRMLSound no...">SoSoundElement</a> is used for optimizing audio rendering and for turning off inactive <a class="el" href="classSoVRMLSound.html" title="The SoVRMLSound class is used to represent a sound source.">SoVRMLSound</a> nodes.  <a href="classSoSoundElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSpecularColorElement.html">SoSpecularColorElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSpecularColorElement.html" title="The SoSpecularColorElement is yet to be documented.">SoSpecularColorElement</a> is yet to be documented.  <a href="classSoSpecularColorElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSwitchElement.html">SoSwitchElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSwitchElement.html" title="The SoSwitchElement class is yet to be documented.">SoSwitchElement</a> class is yet to be documented.  <a href="classSoSwitchElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTextOutlineEnabledElement.html">SoTextOutlineEnabledElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTextOutlineEnabledElement.html" title="The SoTextOutlineEnabledElement class is yet to be documented.">SoTextOutlineEnabledElement</a> class is yet to be documented.  <a href="classSoTextOutlineEnabledElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTextureCombineElement.html">SoTextureCombineElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTextureCombineElement.html" title="The SoTextureCombineElement class is yet to be documented.">SoTextureCombineElement</a> class is yet to be documented.  <a href="classSoTextureCombineElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTextureCoordinateBindingElement.html">SoTextureCoordinateBindingElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTextureCoordinateBindingElement.html" title="The SoTextureCoordinateBindingElement class is yet to be documented.">SoTextureCoordinateBindingElement</a> class is yet to be documented.  <a href="classSoTextureCoordinateBindingElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTextureOverrideElement.html">SoTextureOverrideElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTextureOverrideElement.html" title="The SoTextureOverrideElement makes it possible to override texture elements.">SoTextureOverrideElement</a> makes it possible to override texture elements.  <a href="classSoTextureOverrideElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTextureQualityElement.html">SoTextureQualityElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTextureQualityElement.html" title="The SoTextureQualityElement is yet to be documented.">SoTextureQualityElement</a> is yet to be documented.  <a href="classSoTextureQualityElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTextureUnitElement.html">SoTextureUnitElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTextureUnitElement.html" title="The SoTextureUnitElement class is yet to be documented.">SoTextureUnitElement</a> class is yet to be documented.  <a href="classSoTextureUnitElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoTransparencyElement.html">SoTransparencyElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoTransparencyElement.html" title="The SoTransparencyElement is yet to be documented.">SoTransparencyElement</a> is yet to be documented.  <a href="classSoTransparencyElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoUnitsElement.html">SoUnitsElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoUnitsElement.html" title="The SoUnitsElement class is yet to be documented.">SoUnitsElement</a> class is yet to be documented.  <a href="classSoUnitsElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVertexAttributeBindingElement.html">SoVertexAttributeBindingElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoVertexAttributeBindingElement.html" title="The SoVertexAttributeBindingElement class is yet to be documented.">SoVertexAttributeBindingElement</a> class is yet to be documented.  <a href="classSoVertexAttributeBindingElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVertexAttributeElement.html">SoVertexAttributeElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoVertexAttributeElement.html" title="The SoVertexAttributeElement class is yet to be documented.">SoVertexAttributeElement</a> class is yet to be documented.  <a href="classSoVertexAttributeElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoViewingMatrixElement.html">SoViewingMatrixElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoViewingMatrixElement.html" title="The SoViewingMatrixElement class stores the world-to-camera transformation.">SoViewingMatrixElement</a> class stores the world-to-camera transformation.  <a href="classSoViewingMatrixElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoViewportRegionElement.html">SoViewportRegionElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoViewportRegionElement.html" title="The SoViewportRegionElement class is yet to be documented.">SoViewportRegionElement</a> class is yet to be documented.  <a href="classSoViewportRegionElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoViewVolumeElement.html">SoViewVolumeElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoViewVolumeElement.html" title="The SoViewVolumeElement class is yet to be documented.">SoViewVolumeElement</a> class is yet to be documented.  <a href="classSoViewVolumeElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoWindowElement.html">SoWindowElement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoWindowElement.html" title="The SoWindowElement class is used to store current window attributes.">SoWindowElement</a> class is used to store current window attributes.  <a href="classSoWindowElement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<p>The element classes in Coin are the containers of state information during action traversals of scene graphs. </p>
+<p>One element usually corresponds to one item of information, or sometimes a group of related information values. The elements work like a stack that is pushed and popped as the action traverses in and out of <a class="el" href="classSoSeparator.html" title="The SoSeparator class is a state-preserving group node.">SoSeparator</a> nodes, and the action will always just inspect the top of the stack when it needs to know a value.</p>
+<p>Elements are internal implementation details of the workings of nodes and actions, and is not something one needs to worry about before writing ones own extension nodes. Writing extension elements is even more removed from plain Open Inventor usage, but is fully possible for the experienced Open Inventor developer. </p>
+
+
+<h3><a id="elements"></a>The Element Classes</h3><div class="textblock">Elements are mostly internal to Coin, unless you create new extension nodes over Coin. Then you will probably need to know about them. <br  />
+ Elements are part of the design for scene graph traversal in Coin. <br  />
+ It works like this: any traversal action instantiates and keeps a single <a class="el" href="classSoState.html" title="The SoState class manages the Coin scene graph traversal state data.">SoState</a> instance during traversal. The <a class="el" href="classSoState.html" title="The SoState class manages the Coin scene graph traversal state data.">SoState</a> instance uses <a class="el" href="classSoElement.html" title="SoElement is the abstract base class for all elements.">SoElement</a> objects as "memory units" to keep track of the current state for any feature of the scene graph nodes. <br  />
+ As an example, consider the SoPointSize node: when the SoPointSize node is traversed by for instance a <a class="el" href="classSoGLRenderAction.html" title="The SoGLRenderAction class renders the scene graph with OpenGL calls.">SoGLRenderAction</a>, it will itself push a <a class="el" href="classSoPointSizeElement.html" title="The SoPointSizeElement changes the point size setting of the render state.">SoPointSizeElement</a> onto the <a class="el" href="classSoGLRenderAction.html" title="The SoGLRenderAction class renders the scene graph with OpenGL calls.">SoGLRenderAction</a>'s <a class="el" href="classSoState.html" title="The SoState class manages the Coin scene graph traversal state data.">SoState</a> stack. Later, when a <a class="el" href="classSoPointSet.html" title="The SoPointSet class is used to display a set of 3D points.">SoPointSet</a> node occurs in the scene graph, it will request the current point size value from the <a class="el" href="classSoState.html" title="The SoState class manages the Coin scene graph traversal state data.">SoState</a> by reading off the value of its <a class="el" href="classSoPointSizeElement.html" title="The SoPointSizeElement changes the point size setting of the render state.">SoPointSizeElement</a>. <br  />
+ <a class="el" href="classSoSeparator.html" title="The SoSeparator class is a state-preserving group node.">SoSeparator</a> nodes will push and pop elements on and off the state stack, so anything that changes state below a <a class="el" href="classSoSeparator.html" title="The SoSeparator class is a state-preserving group node.">SoSeparator</a> node will not influence anything <em>above</em> the <a class="el" href="classSoSeparator.html" title="The SoSeparator class is a state-preserving group node.">SoSeparator</a>. <br  />
+For more information on the theoretical underpinnings of this traversal design, you should consider reading available literature on the so-called "Visitor pattern". We recommend "Design Patterns", by Gamma, Helm, Johnson, Vlissides (aka the "Gang Of Four"). This book actually uses the Inventor API traversal mechanism as the case study for explaining the Visitor pattern. <br  />
+ For extending the Coin library with your own classes, we strongly recommend that you make yourself acquainted with the excellent &laquo;The Inventor Toolmaker&raquo; book (ISBN 0-201-62493-1), which describes the tasks involved in detail. This book was written by the original SGI Inventor designers and explains many of the underlying design ideas, as well as having lots of hands-on examples on how to extend the Coin toolkit in ways that are true to the fundamental design ideas. (&laquo;The Inventor Toolmaker&raquo; is also available at SGI's online library, at no cost. See <a href="http://techpubs.sgi.com/library/tpl/cgi-bin/download.cgi?coll=0650&amp;db=bks&amp;docnumber=860-0107-002">Download The Inventor Toolmaker</a>.) Reading the source code of the built-in classes in Coin should also prove very helpful.<br  />
+ <br  />
+ The following is a complete example on how to extend Coin with your own traversal elements. First, the class declaration of the new element (i.e. the header include file):<div class="fragment"><div class="line"><span class="comment">// [texturefilenameelement.h]</span></div>
+<div class="line"><span class="preprocessor">#ifndef TEXTUREFILENAMEELEMENT_H</span></div>
+<div class="line"><span class="preprocessor">#define TEXTUREFILENAMEELEMENT_H</span></div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/elements/SoReplacedElement.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/SbString.h&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">class </span>TextureFilenameElement : <span class="keyword">public</span> <a class="code" href="classSoReplacedElement.html">SoReplacedElement</a> {</div>
+<div class="line">  <span class="keyword">typedef</span> <a class="code" href="classSoReplacedElement.html">SoReplacedElement</a> inherited;</div>
+<div class="line"> </div>
+<div class="line">  SO_ELEMENT_HEADER(TextureFilenameElement);</div>
+<div class="line"><span class="keyword">public</span>:</div>
+<div class="line">  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classSoReplacedElement.html#a547310fd47e760377b0727cfe3f5747a">initClass</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"> </div>
+<div class="line">  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classSoReplacedElement.html#aca56a97e24325fb4892226e6ef43e23f">init</a>(<a class="code" href="classSoState.html">SoState</a> * state);</div>
+<div class="line">  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="namespaceCoinResources.html#a8b0569648e56b569b882cf31566ed47b">set</a>(<a class="code" href="classSoState.html">SoState</a> * <span class="keyword">const</span> state, <a class="code" href="classSoNode.html">SoNode</a> * <span class="keyword">const</span> node,</div>
+<div class="line">                  <span class="keyword">const</span> <a class="code" href="classSbString.html">SbString</a> &amp; filename);</div>
+<div class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="classSbString.html">SbString</a> &amp; <a class="code" href="namespaceCoinResources.html#a27c6790b3c9c18123a8e640cfb28fcb2">get</a>(<a class="code" href="classSoState.html">SoState</a> * <span class="keyword">const</span> state);</div>
+<div class="line">  <span class="keyword">static</span> <span class="keyword">const</span> TextureFilenameElement * getInstance(<a class="code" href="classSoState.html">SoState</a> * state);</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">protected</span>:</div>
+<div class="line">  <span class="keyword">virtual</span> ~TextureFilenameElement();</div>
+<div class="line">  <span class="keyword">virtual</span> <span class="keywordtype">void</span> setElt(<span class="keyword">const</span> <a class="code" href="classSbString.html">SbString</a> &amp; filename);</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">private</span>:</div>
+<div class="line">  <a class="code" href="classSbString.html">SbString</a> filename;</div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#endif </span><span class="comment">// !TEXTUREFILENAMEELEMENT_H</span></div>
+<div class="ttc" id="aclassSbString_html"><div class="ttname"><a href="classSbString.html">SbString</a></div><div class="ttdoc">The SbString class is a string class with convenience functions for string operations.</div><div class="ttdef"><b>Definition:</b> SbString.h:52</div></div>
+<div class="ttc" id="aclassSoNode_html"><div class="ttname"><a href="classSoNode.html">SoNode</a></div><div class="ttdoc">The SoNode class is the base class for nodes used in scene graphs.</div><div class="ttdef"><b>Definition:</b> SoNode.h:56</div></div>
+<div class="ttc" id="aclassSoReplacedElement_html"><div class="ttname"><a href="classSoReplacedElement.html">SoReplacedElement</a></div><div class="ttdoc">The SoReplacedElement class is an abstract element superclass.</div><div class="ttdef"><b>Definition:</b> SoReplacedElement.h:39</div></div>
+<div class="ttc" id="aclassSoReplacedElement_html_a547310fd47e760377b0727cfe3f5747a"><div class="ttname"><a href="classSoReplacedElement.html#a547310fd47e760377b0727cfe3f5747a">SoReplacedElement::initClass</a></div><div class="ttdeci">static void initClass(void)</div><div class="ttdef"><b>Definition:</b> SoReplacedElement.cpp:77</div></div>
+<div class="ttc" id="aclassSoReplacedElement_html_aca56a97e24325fb4892226e6ef43e23f"><div class="ttname"><a href="classSoReplacedElement.html#aca56a97e24325fb4892226e6ef43e23f">SoReplacedElement::init</a></div><div class="ttdeci">virtual void init(SoState *state)</div><div class="ttdef"><b>Definition:</b> SoReplacedElement.cpp:91</div></div>
+<div class="ttc" id="aclassSoState_html"><div class="ttname"><a href="classSoState.html">SoState</a></div><div class="ttdoc">The SoState class manages the Coin scene graph traversal state data.</div><div class="ttdef"><b>Definition:</b> SoState.h:44</div></div>
+<div class="ttc" id="anamespaceCoinResources_html_a27c6790b3c9c18123a8e640cfb28fcb2"><div class="ttname"><a href="namespaceCoinResources.html#a27c6790b3c9c18123a8e640cfb28fcb2">CoinResources::get</a></div><div class="ttdeci">SbByteBuffer get(const char *resloc)</div><div class="ttdef"><b>Definition:</b> CoinResources.cpp:178</div></div>
+<div class="ttc" id="anamespaceCoinResources_html_a8b0569648e56b569b882cf31566ed47b"><div class="ttname"><a href="namespaceCoinResources.html#a8b0569648e56b569b882cf31566ed47b">CoinResources::set</a></div><div class="ttdeci">SbBool set(const char *resloc, const SbByteBuffer &amp;buffer, ResourceFlags flags=NONE)</div><div class="ttdef"><b>Definition:</b> CoinResources.cpp:294</div></div>
+</div><!-- fragment -->The implementation of the element:<div class="fragment"><div class="line"><span class="comment">// [texturefilenameelement.cpp]</span></div>
+<div class="line"><span class="comment">//</span></div>
+<div class="line"><span class="comment">// The purpose of the code in this file is to demonstrate how you can</span></div>
+<div class="line"><span class="comment">// make your own elements for scene graph traversals.</span></div>
+<div class="line"><span class="comment">//</span></div>
+<div class="line"><span class="comment">// Code by Peder Blekken &lt;pederb@sim.no&gt;. Copyright (C)</span></div>
+<div class="line"><span class="comment">// Kongsberg Oil &amp; Gas Technologies.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#include &quot;texturefilenameelement.h&quot;</span></div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line">SO_ELEMENT_SOURCE(TextureFilenameElement);</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span></div>
+<div class="line">TextureFilenameElement::initClass(<span class="keywordtype">void</span>)</div>
+<div class="line">{</div>
+<div class="line">  SO_ELEMENT_INIT_CLASS(TextureFilenameElement, inherited);</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span></div>
+<div class="line">TextureFilenameElement::init(<a class="code" href="classSoState.html">SoState</a> * state)</div>
+<div class="line">{</div>
+<div class="line">  this-&gt;filename = <span class="stringliteral">&quot;&lt;none&gt;&quot;</span>;</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">TextureFilenameElement::~TextureFilenameElement()</div>
+<div class="line">{</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span></div>
+<div class="line">TextureFilenameElement::set(<a class="code" href="classSoState.html">SoState</a> * <span class="keyword">const</span> state, <a class="code" href="classSoNode.html">SoNode</a> * <span class="keyword">const</span> node,</div>
+<div class="line">                            <span class="keyword">const</span> <a class="code" href="classSbString.html">SbString</a> &amp; filename)</div>
+<div class="line">{</div>
+<div class="line">  TextureFilenameElement * elem = (TextureFilenameElement *)</div>
+<div class="line">    <a class="code" href="classSoReplacedElement.html#a70833996b60d53f3e54ec90a3ea9fab5">SoReplacedElement::getElement</a>(state, classStackIndex, node);</div>
+<div class="line">  elem-&gt;setElt(filename);</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">const</span> <a class="code" href="classSbString.html">SbString</a> &amp;</div>
+<div class="line">TextureFilenameElement::get(<a class="code" href="classSoState.html">SoState</a> * <span class="keyword">const</span> state)</div>
+<div class="line">{</div>
+<div class="line">  <span class="keywordflow">return</span> TextureFilenameElement::getInstance(state)-&gt;filename;</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span></div>
+<div class="line">TextureFilenameElement::setElt(<span class="keyword">const</span> <a class="code" href="classSbString.html">SbString</a> &amp; filename)</div>
+<div class="line">{</div>
+<div class="line">  this-&gt;filename = filename;</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">const</span> TextureFilenameElement *</div>
+<div class="line">TextureFilenameElement::getInstance(<a class="code" href="classSoState.html">SoState</a> * state)</div>
+<div class="line">{</div>
+<div class="line">  <span class="keywordflow">return</span> (<span class="keyword">const</span> TextureFilenameElement *)</div>
+<div class="line">    <a class="code" href="classSoElement.html#ab8cb20060c9b527c8b2e343b1cf4032a">SoElement::getConstElement</a>(state, classStackIndex);</div>
+<div class="line">}</div>
+<div class="ttc" id="aclassSoElement_html_ab8cb20060c9b527c8b2e343b1cf4032a"><div class="ttname"><a href="classSoElement.html#ab8cb20060c9b527c8b2e343b1cf4032a">SoElement::getConstElement</a></div><div class="ttdeci">static const SoElement * getConstElement(SoState *const state, const int stackIndex)</div><div class="ttdef"><b>Definition:</b> SoElement.h:123</div></div>
+<div class="ttc" id="aclassSoReplacedElement_html_a70833996b60d53f3e54ec90a3ea9fab5"><div class="ttname"><a href="classSoReplacedElement.html#a70833996b60d53f3e54ec90a3ea9fab5">SoReplacedElement::getElement</a></div><div class="ttdeci">static SoElement * getElement(SoState *const state, const int stackIndex, SoNode *const node)</div><div class="ttdef"><b>Definition:</b> SoReplacedElement.cpp:142</div></div>
+</div><!-- fragment -->And a small, standalone test application putting the new element to use:<div class="fragment"><div class="line"><span class="comment">// [lstextures.cpp]</span></div>
+<div class="line"><span class="comment">//</span></div>
+<div class="line"><span class="comment">// The purpose of this file is to make a small wrapper &quot;tool&quot; around</span></div>
+<div class="line"><span class="comment">// the TextureFilenameElement extension element, just for showing</span></div>
+<div class="line"><span class="comment">// example code on how to make use of a user-defined custom element.</span></div>
+<div class="line"><span class="comment">//</span></div>
+<div class="line"><span class="comment">// The code goes like this:</span></div>
+<div class="line"><span class="comment">//</span></div>
+<div class="line"><span class="comment">// We initialize the element, enable it for the SoCallbackAction, read</span></div>
+<div class="line"><span class="comment">// a scene graph file, set callbacks on SoTexture2 and all shape nodes</span></div>
+<div class="line"><span class="comment">// and applies the SoCallbackAction. The callbacks will then print out</span></div>
+<div class="line"><span class="comment">// the texture filename information from the TextureFilenameElement</span></div>
+<div class="line"><span class="comment">// each time an interesting node is hit.</span></div>
+<div class="line"><span class="comment">//</span></div>
+<div class="line"><span class="comment">//</span></div>
+<div class="line"><span class="comment">// Code by Peder Blekken &lt;pederb@sim.no&gt;. Cleaned up, integrated in</span></div>
+<div class="line"><span class="comment">// Coin distribution and commented by Morten Eriksen</span></div>
+<div class="line"><span class="comment">// &lt;mortene@sim.no&gt;. Copyright (C) Kongsberg Oil &amp; Gas Technologies.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/SoDB.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/SoInput.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/actions/SoCallbackAction.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/nodes/SoSeparator.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/nodes/SoTexture2.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/nodes/SoShape.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/misc/SoState.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;cstdio&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#include &quot;texturefilenameelement.h&quot;</span></div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"><a class="code" href="classSoCallbackAction.html#a0aebf2c58836079af765be8e2ba4973d">SoCallbackAction::Response</a></div>
+<div class="line">pre_tex2_cb(<span class="keywordtype">void</span> * data, <a class="code" href="classSoCallbackAction.html">SoCallbackAction</a> * action, <span class="keyword">const</span> <a class="code" href="classSoNode.html">SoNode</a> * node)</div>
+<div class="line">{</div>
+<div class="line">  <span class="keyword">const</span> <a class="code" href="classSbString.html">SbString</a> &amp; filename = ((<a class="code" href="classSoTexture2.html">SoTexture2</a> *)node)-&gt;filename.getValue();</div>
+<div class="line">  TextureFilenameElement::set(action-&gt;<a class="code" href="classSoAction.html#a477a09961787e99a9621bb07e79c922c">getState</a>(), (<a class="code" href="classSoNode.html">SoNode</a> *)node, filename);</div>
+<div class="line"> </div>
+<div class="line">  (void)fprintf(stdout, <span class="stringliteral">&quot;=&gt; New texture: %s\n&quot;</span>,</div>
+<div class="line">                filename.<a class="code" href="classSbString.html#a118684a0c356938e183e88781c435a4a">getLength</a>() == 0 ?</div>
+<div class="line">                <span class="stringliteral">&quot;&lt;inlined&gt;&quot;</span> : filename.<a class="code" href="classSbString.html#a6bfa023105342c057fe9eb555772ed6c">getString</a>());</div>
+<div class="line"> </div>
+<div class="line">  <span class="keywordflow">return</span> <a class="code" href="classSoCallbackAction.html#a0aebf2c58836079af765be8e2ba4973da0d938b2f29d1633097595c14d4cd87cc">SoCallbackAction::CONTINUE</a>;</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><a class="code" href="classSoCallbackAction.html#a0aebf2c58836079af765be8e2ba4973d">SoCallbackAction::Response</a></div>
+<div class="line">pre_shape_cb(<span class="keywordtype">void</span> * data, <a class="code" href="classSoCallbackAction.html">SoCallbackAction</a> * action, <span class="keyword">const</span> <a class="code" href="classSoNode.html">SoNode</a> * node)</div>
+<div class="line">{</div>
+<div class="line">  <span class="keyword">const</span> <a class="code" href="classSbString.html">SbString</a> &amp; filename =</div>
+<div class="line">    TextureFilenameElement::get(action-&gt;<a class="code" href="classSoAction.html#a477a09961787e99a9621bb07e79c922c">getState</a>());</div>
+<div class="line"> </div>
+<div class="line">  (void)fprintf(stdout, <span class="stringliteral">&quot;   Texturemap on %s: %s\n&quot;</span>,</div>
+<div class="line">                node-&gt;<a class="code" href="classSoBase.html#a873b521c1386368d4d63ff893856590a">getTypeId</a>().<a class="code" href="classSoType.html#a8cef0c066ab2e5f276cf5ed2bf00a276">getName</a>().<a class="code" href="classSbName.html#af4025fc41df3195e640c748da108033e">getString</a>(),</div>
+<div class="line">                filename.<a class="code" href="classSbString.html#a118684a0c356938e183e88781c435a4a">getLength</a>() == 0 ?</div>
+<div class="line">                <span class="stringliteral">&quot;&lt;inlined&gt;&quot;</span> : filename.<a class="code" href="classSbString.html#a6bfa023105342c057fe9eb555772ed6c">getString</a>());</div>
+<div class="line"> </div>
+<div class="line">  <span class="keywordflow">return</span> <a class="code" href="classSoCallbackAction.html#a0aebf2c58836079af765be8e2ba4973da0d938b2f29d1633097595c14d4cd87cc">SoCallbackAction::CONTINUE</a>;</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span></div>
+<div class="line">usage(<span class="keyword">const</span> <span class="keywordtype">char</span> * appname)</div>
+<div class="line">{</div>
+<div class="line">  (void)fprintf(stderr, <span class="stringliteral">&quot;\n\tUsage: %s &lt;modelfile.iv&gt;\n\n&quot;</span>, appname);</div>
+<div class="line">  (void)fprintf(stderr,</div>
+<div class="line">                <span class="stringliteral">&quot;\tLists all texture filenames in the model file,\n&quot;</span></div>
+<div class="line">                <span class="stringliteral">&quot;\tand on which shape nodes they are used.\n\n&quot;</span></div>
+<div class="line">                <span class="stringliteral">&quot;\tThe purpose of this example utility is simply to\n&quot;</span></div>
+<div class="line">                <span class="stringliteral">&quot;\tshow how to create and use an extension element for\n&quot;</span></div>
+<div class="line">                <span class="stringliteral">&quot;\tscene graph traversal.\n\n&quot;</span>);</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span></div>
+<div class="line">main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> ** argv)</div>
+<div class="line">{</div>
+<div class="line">  <span class="keywordflow">if</span> (argc != 2) {</div>
+<div class="line">    usage(argv[0]);</div>
+<div class="line">    exit(1);</div>
+<div class="line">  }</div>
+<div class="line"> </div>
+<div class="line">  <a class="code" href="classSoDB.html#a970f42dfd362c33c69fa1869bfae72b5">SoDB::init</a>();</div>
+<div class="line"> </div>
+<div class="line">  TextureFilenameElement::initClass();</div>
+<div class="line">  SO_ENABLE(<a class="code" href="classSoCallbackAction.html">SoCallbackAction</a>, TextureFilenameElement);</div>
+<div class="line"> </div>
+<div class="line">  <a class="code" href="classSoInput.html">SoInput</a> input;</div>
+<div class="line">  <span class="keywordflow">if</span> (!input.<a class="code" href="classSoInput.html#a75df5c1deef8e619c1056aae2776abdc">openFile</a>(argv[1])) {</div>
+<div class="line">    (void)fprintf(stderr, <span class="stringliteral">&quot;ERROR: couldn&#39;t open file ``%s&#39;&#39;.\n&quot;</span>, argv[1]);</div>
+<div class="line">    exit(1);</div>
+<div class="line">  }</div>
+<div class="line"> </div>
+<div class="line">  <a class="code" href="classSoSeparator.html">SoSeparator</a> * root = <a class="code" href="classSoDB.html#a2ceee0dd279cd44b19660ae4fdd427de">SoDB::readAll</a>(&amp;input);</div>
+<div class="line">  <span class="keywordflow">if</span> (root) {</div>
+<div class="line">    root-&gt;<a class="code" href="classSoBase.html#ac01cf34901b2a2be1bc2671bb2463851">ref</a>();</div>
+<div class="line">    <a class="code" href="classSoCallbackAction.html">SoCallbackAction</a> cbaction;</div>
+<div class="line">    cbaction.<a class="code" href="classSoCallbackAction.html#abb911a2b72f56a19d0dd40819e7d351f">addPreCallback</a>(<a class="code" href="classSoTexture2.html#ad1143820c0fcc24f79dc7a6a796dd223">SoTexture2::getClassTypeId</a>(), pre_tex2_cb, NULL);</div>
+<div class="line">    cbaction.<a class="code" href="classSoCallbackAction.html#abb911a2b72f56a19d0dd40819e7d351f">addPreCallback</a>(<a class="code" href="classSoShape.html#a36b9d35d2dc6c891e1d048a9e589b5a2">SoShape::getClassTypeId</a>(), pre_shape_cb, NULL);</div>
+<div class="line">    cbaction.<a class="code" href="classSoAction.html#ad2d6ddb297b3a1f5b80026db5fd5e616">apply</a>(root);</div>
+<div class="line">    root-&gt;<a class="code" href="classSoBase.html#a254b1ac395fe4d4d10438b994bdb3561">unref</a>();</div>
+<div class="line">    <span class="keywordflow">return</span> 0;</div>
+<div class="line">  }</div>
+<div class="line">  <span class="keywordflow">return</span> 1;</div>
+<div class="line">}</div>
+<div class="ttc" id="aclassSbName_html_af4025fc41df3195e640c748da108033e"><div class="ttname"><a href="classSbName.html#af4025fc41df3195e640c748da108033e">SbName::getString</a></div><div class="ttdeci">const char * getString(void) const</div><div class="ttdef"><b>Definition:</b> SbName.cpp:144</div></div>
+<div class="ttc" id="aclassSbString_html_a118684a0c356938e183e88781c435a4a"><div class="ttname"><a href="classSbString.html#a118684a0c356938e183e88781c435a4a">SbString::getLength</a></div><div class="ttdeci">int getLength(void) const</div><div class="ttdef"><b>Definition:</b> SbString.h:76</div></div>
+<div class="ttc" id="aclassSbString_html_a6bfa023105342c057fe9eb555772ed6c"><div class="ttname"><a href="classSbString.html#a6bfa023105342c057fe9eb555772ed6c">SbString::getString</a></div><div class="ttdeci">const char * getString(void) const</div><div class="ttdef"><b>Definition:</b> SbString.h:84</div></div>
+<div class="ttc" id="aclassSoAction_html_a477a09961787e99a9621bb07e79c922c"><div class="ttname"><a href="classSoAction.html#a477a09961787e99a9621bb07e79c922c">SoAction::getState</a></div><div class="ttdeci">SoState * getState(void) const</div><div class="ttdef"><b>Definition:</b> SoAction.cpp:1084</div></div>
+<div class="ttc" id="aclassSoAction_html_ad2d6ddb297b3a1f5b80026db5fd5e616"><div class="ttname"><a href="classSoAction.html#ad2d6ddb297b3a1f5b80026db5fd5e616">SoAction::apply</a></div><div class="ttdeci">virtual void apply(SoNode *root)</div><div class="ttdef"><b>Definition:</b> SoAction.cpp:463</div></div>
+<div class="ttc" id="aclassSoBase_html_a254b1ac395fe4d4d10438b994bdb3561"><div class="ttname"><a href="classSoBase.html#a254b1ac395fe4d4d10438b994bdb3561">SoBase::unref</a></div><div class="ttdeci">void unref(void) const</div><div class="ttdef"><b>Definition:</b> SoBase.cpp:530</div></div>
+<div class="ttc" id="aclassSoBase_html_a873b521c1386368d4d63ff893856590a"><div class="ttname"><a href="classSoBase.html#a873b521c1386368d4d63ff893856590a">SoBase::getTypeId</a></div><div class="ttdeci">virtual SoType getTypeId(void) const =0</div><div class="ttdoc">Returns the type identification of an object derived from a class inheriting SoBase....</div></div>
+<div class="ttc" id="aclassSoBase_html_ac01cf34901b2a2be1bc2671bb2463851"><div class="ttname"><a href="classSoBase.html#ac01cf34901b2a2be1bc2671bb2463851">SoBase::ref</a></div><div class="ttdeci">void ref(void) const</div><div class="ttdef"><b>Definition:</b> SoBase.cpp:478</div></div>
+<div class="ttc" id="aclassSoCallbackAction_html"><div class="ttname"><a href="classSoCallbackAction.html">SoCallbackAction</a></div><div class="ttdoc">The SoCallbackAction class invokes callbacks at specific nodes.</div><div class="ttdef"><b>Definition:</b> SoCallbackAction.h:80</div></div>
+<div class="ttc" id="aclassSoCallbackAction_html_a0aebf2c58836079af765be8e2ba4973d"><div class="ttname"><a href="classSoCallbackAction.html#a0aebf2c58836079af765be8e2ba4973d">SoCallbackAction::Response</a></div><div class="ttdeci">Response</div><div class="ttdef"><b>Definition:</b> SoCallbackAction.h:94</div></div>
+<div class="ttc" id="aclassSoCallbackAction_html_a0aebf2c58836079af765be8e2ba4973da0d938b2f29d1633097595c14d4cd87cc"><div class="ttname"><a href="classSoCallbackAction.html#a0aebf2c58836079af765be8e2ba4973da0d938b2f29d1633097595c14d4cd87cc">SoCallbackAction::CONTINUE</a></div><div class="ttdeci">@ CONTINUE</div><div class="ttdef"><b>Definition:</b> SoCallbackAction.h:94</div></div>
+<div class="ttc" id="aclassSoCallbackAction_html_abb911a2b72f56a19d0dd40819e7d351f"><div class="ttname"><a href="classSoCallbackAction.html#abb911a2b72f56a19d0dd40819e7d351f">SoCallbackAction::addPreCallback</a></div><div class="ttdeci">void addPreCallback(const SoType type, SoCallbackActionCB *cb, void *userdata)</div><div class="ttdef"><b>Definition:</b> SoCallbackAction.cpp:520</div></div>
+<div class="ttc" id="aclassSoDB_html_a2ceee0dd279cd44b19660ae4fdd427de"><div class="ttname"><a href="classSoDB.html#a2ceee0dd279cd44b19660ae4fdd427de">SoDB::readAll</a></div><div class="ttdeci">static SoSeparator * readAll(SoInput *input)</div><div class="ttdef"><b>Definition:</b> SoDB.cpp:682</div></div>
+<div class="ttc" id="aclassSoDB_html_a970f42dfd362c33c69fa1869bfae72b5"><div class="ttname"><a href="classSoDB.html#a970f42dfd362c33c69fa1869bfae72b5">SoDB::init</a></div><div class="ttdeci">static void init(void)</div><div class="ttdef"><b>Definition:</b> SoDB.cpp:200</div></div>
+<div class="ttc" id="aclassSoInput_html"><div class="ttname"><a href="classSoInput.html">SoInput</a></div><div class="ttdoc">The SoInput class is an abstraction of file import functionality.</div><div class="ttdef"><b>Definition:</b> SoInput.h:61</div></div>
+<div class="ttc" id="aclassSoInput_html_a75df5c1deef8e619c1056aae2776abdc"><div class="ttname"><a href="classSoInput.html#a75df5c1deef8e619c1056aae2776abdc">SoInput::openFile</a></div><div class="ttdeci">virtual SbBool openFile(const char *fileName, SbBool okIfNotFound=FALSE)</div><div class="ttdef"><b>Definition:</b> SoInput.cpp:495</div></div>
+<div class="ttc" id="aclassSoSeparator_html"><div class="ttname"><a href="classSoSeparator.html">SoSeparator</a></div><div class="ttdoc">The SoSeparator class is a state-preserving group node.</div><div class="ttdef"><b>Definition:</b> SoSeparator.h:44</div></div>
+<div class="ttc" id="aclassSoShape_html_a36b9d35d2dc6c891e1d048a9e589b5a2"><div class="ttname"><a href="classSoShape.html#a36b9d35d2dc6c891e1d048a9e589b5a2">SoShape::getClassTypeId</a></div><div class="ttdeci">static SoType getClassTypeId(void)</div><div class="ttdef"><b>Definition:</b> SoShape.cpp:343</div></div>
+<div class="ttc" id="aclassSoTexture2_html"><div class="ttname"><a href="classSoTexture2.html">SoTexture2</a></div><div class="ttdoc">The SoTexture2 class is used to map a 2D texture onto subsequent geometry in the scene graph.</div><div class="ttdef"><b>Definition:</b> SoTexture2.h:49</div></div>
+<div class="ttc" id="aclassSoTexture2_html_ad1143820c0fcc24f79dc7a6a796dd223"><div class="ttname"><a href="classSoTexture2.html#ad1143820c0fcc24f79dc7a6a796dd223">SoTexture2::getClassTypeId</a></div><div class="ttdeci">static SoType getClassTypeId(void)</div><div class="ttdef"><b>Definition:</b> SoTexture2.cpp:407</div></div>
+<div class="ttc" id="aclassSoType_html_a8cef0c066ab2e5f276cf5ed2bf00a276"><div class="ttname"><a href="classSoType.html#a8cef0c066ab2e5f276cf5ed2bf00a276">SoType::getName</a></div><div class="ttdeci">SbName getName(void) const</div><div class="ttdef"><b>Definition:</b> SoType.cpp:675</div></div>
+</div><!-- fragment --> </div></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

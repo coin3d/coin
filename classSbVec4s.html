@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SbVec4s Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSbVec4s.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="classSbVec4s-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SbVec4s Class Reference</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p><code>#include &lt;<a class="el" href="SbVec4s_8h_source.html">Inventor/SbVec4s.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a47a1e38e36e2dbe758da29c3712b68e3"><td class="memItemLeft" align="right" valign="top"><a id="a47a1e38e36e2dbe758da29c3712b68e3"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SbVec4s</b> (const <a class="el" href="classSbVec4b.html">SbVec4b</a> &amp;v)</td></tr>
+<tr class="separator:a47a1e38e36e2dbe758da29c3712b68e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c88ddc9c2c7b110d331266dc609c1e8"><td class="memItemLeft" align="right" valign="top"><a id="a2c88ddc9c2c7b110d331266dc609c1e8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SbVec4s</b> (const <a class="el" href="classSbVec4d.html">SbVec4d</a> &amp;v)</td></tr>
+<tr class="separator:a2c88ddc9c2c7b110d331266dc609c1e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a576a720d4333a5df070d5d683c78491d"><td class="memItemLeft" align="right" valign="top"><a id="a576a720d4333a5df070d5d683c78491d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SbVec4s</b> (const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;v)</td></tr>
+<tr class="separator:a576a720d4333a5df070d5d683c78491d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bc5e132e9b8b33fae9bc7c5cc8ab908"><td class="memItemLeft" align="right" valign="top"><a id="a7bc5e132e9b8b33fae9bc7c5cc8ab908"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SbVec4s</b> (const <a class="el" href="classSbVec4i32.html">SbVec4i32</a> &amp;v)</td></tr>
+<tr class="separator:a7bc5e132e9b8b33fae9bc7c5cc8ab908"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a462ebef636a1001b55a24980304d0758"><td class="memItemLeft" align="right" valign="top"><a id="a462ebef636a1001b55a24980304d0758"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SbVec4s</b> (const <a class="el" href="classSbVec4us.html">SbVec4us</a> &amp;v)</td></tr>
+<tr class="separator:a462ebef636a1001b55a24980304d0758"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0dc88df0bf3be204394c41a36b5e0c76"><td class="memItemLeft" align="right" valign="top"><a id="a0dc88df0bf3be204394c41a36b5e0c76"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SbVec4s</b> (const short v[4])</td></tr>
+<tr class="separator:a0dc88df0bf3be204394c41a36b5e0c76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebb7408ce63a0d0e9588c55334cd9180"><td class="memItemLeft" align="right" valign="top"><a id="aebb7408ce63a0d0e9588c55334cd9180"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SbVec4s</b> (short x, short y, short z, short w)</td></tr>
+<tr class="separator:aebb7408ce63a0d0e9588c55334cd9180"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a199bca6544dfa34f2778ac84dc4353e2"><td class="memItemLeft" align="right" valign="top"><a id="a199bca6544dfa34f2778ac84dc4353e2"></a>
+int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>dot</b> (const <a class="el" href="classSbVec4s.html">SbVec4s</a> &amp;v) const</td></tr>
+<tr class="separator:a199bca6544dfa34f2778ac84dc4353e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a879808fa2decbfef0997dfeaa1516d2f"><td class="memItemLeft" align="right" valign="top"><a id="a879808fa2decbfef0997dfeaa1516d2f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>getValue</b> (short &amp;x, short &amp;y, short &amp;z, short &amp;w) const</td></tr>
+<tr class="separator:a879808fa2decbfef0997dfeaa1516d2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0cf43cbec6f6c43645c8ede0b430c41"><td class="memItemLeft" align="right" valign="top"><a id="ad0cf43cbec6f6c43645c8ede0b430c41"></a>
+const short *&#160;</td><td class="memItemRight" valign="bottom"><b>getValue</b> (void) const</td></tr>
+<tr class="separator:ad0cf43cbec6f6c43645c8ede0b430c41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a514bf6cb0acce31231615e096e6bb42e"><td class="memItemLeft" align="right" valign="top"><a id="a514bf6cb0acce31231615e096e6bb42e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>negate</b> (void)</td></tr>
+<tr class="separator:a514bf6cb0acce31231615e096e6bb42e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4abaa961ee5209d399090d85e3f2edf"><td class="memItemLeft" align="right" valign="top"><a id="aa4abaa961ee5209d399090d85e3f2edf"></a>
+<a class="el" href="classSbVec4s.html">SbVec4s</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator*=</b> (double d)</td></tr>
+<tr class="separator:aa4abaa961ee5209d399090d85e3f2edf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0c96522185422ecf523aac7036061f6"><td class="memItemLeft" align="right" valign="top"><a id="ae0c96522185422ecf523aac7036061f6"></a>
+<a class="el" href="classSbVec4s.html">SbVec4s</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator*=</b> (int d)</td></tr>
+<tr class="separator:ae0c96522185422ecf523aac7036061f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1515a125db607fac10e73b8821416ec1"><td class="memItemLeft" align="right" valign="top"><a id="a1515a125db607fac10e73b8821416ec1"></a>
+<a class="el" href="classSbVec4s.html">SbVec4s</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator+=</b> (const <a class="el" href="classSbVec4s.html">SbVec4s</a> &amp;v)</td></tr>
+<tr class="separator:a1515a125db607fac10e73b8821416ec1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e1239ba3c6036e6d62aaa4f1b19eef6"><td class="memItemLeft" align="right" valign="top"><a id="a1e1239ba3c6036e6d62aaa4f1b19eef6"></a>
+<a class="el" href="classSbVec4s.html">SbVec4s</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator-</b> (void) const</td></tr>
+<tr class="separator:a1e1239ba3c6036e6d62aaa4f1b19eef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a361999ee1e9b9b3755bf241a43b5069b"><td class="memItemLeft" align="right" valign="top"><a id="a361999ee1e9b9b3755bf241a43b5069b"></a>
+<a class="el" href="classSbVec4s.html">SbVec4s</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator-=</b> (const <a class="el" href="classSbVec4s.html">SbVec4s</a> &amp;v)</td></tr>
+<tr class="separator:a361999ee1e9b9b3755bf241a43b5069b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d20d10c00fb75eaf2f221693770cce6"><td class="memItemLeft" align="right" valign="top"><a id="a4d20d10c00fb75eaf2f221693770cce6"></a>
+<a class="el" href="classSbVec4s.html">SbVec4s</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator/=</b> (double d)</td></tr>
+<tr class="separator:a4d20d10c00fb75eaf2f221693770cce6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cde0596ccb091116c492e6220112b6f"><td class="memItemLeft" align="right" valign="top"><a id="a3cde0596ccb091116c492e6220112b6f"></a>
+<a class="el" href="classSbVec4s.html">SbVec4s</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator/=</b> (int d)</td></tr>
+<tr class="separator:a3cde0596ccb091116c492e6220112b6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abca8c0e85dc3d3fd4e1bfc123b69ba85"><td class="memItemLeft" align="right" valign="top"><a id="abca8c0e85dc3d3fd4e1bfc123b69ba85"></a>
+short &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (int i)</td></tr>
+<tr class="separator:abca8c0e85dc3d3fd4e1bfc123b69ba85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65f50be2412007556cbe6a1573df72a4"><td class="memItemLeft" align="right" valign="top"><a id="a65f50be2412007556cbe6a1573df72a4"></a>
+const short &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (int i) const</td></tr>
+<tr class="separator:a65f50be2412007556cbe6a1573df72a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09fdeb977c706924fae30b419ac4253f"><td class="memItemLeft" align="right" valign="top"><a id="a09fdeb977c706924fae30b419ac4253f"></a>
+<a class="el" href="classSbVec4s.html">SbVec4s</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>setValue</b> (const <a class="el" href="classSbVec4b.html">SbVec4b</a> &amp;v)</td></tr>
+<tr class="separator:a09fdeb977c706924fae30b419ac4253f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71761403f18fa42a8886dc1460bee614"><td class="memItemLeft" align="right" valign="top"><a id="a71761403f18fa42a8886dc1460bee614"></a>
+<a class="el" href="classSbVec4s.html">SbVec4s</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>setValue</b> (const <a class="el" href="classSbVec4d.html">SbVec4d</a> &amp;v)</td></tr>
+<tr class="separator:a71761403f18fa42a8886dc1460bee614"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ec1bb6e62dacd66bcfb040d3800f8a5"><td class="memItemLeft" align="right" valign="top"><a id="a7ec1bb6e62dacd66bcfb040d3800f8a5"></a>
+<a class="el" href="classSbVec4s.html">SbVec4s</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>setValue</b> (const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;v)</td></tr>
+<tr class="separator:a7ec1bb6e62dacd66bcfb040d3800f8a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5caf935d4be03c3c74496e9326efcd95"><td class="memItemLeft" align="right" valign="top"><a id="a5caf935d4be03c3c74496e9326efcd95"></a>
+<a class="el" href="classSbVec4s.html">SbVec4s</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>setValue</b> (const <a class="el" href="classSbVec4i32.html">SbVec4i32</a> &amp;v)</td></tr>
+<tr class="separator:a5caf935d4be03c3c74496e9326efcd95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0c2c1207b6e366d02e19102112cc7e7"><td class="memItemLeft" align="right" valign="top"><a id="ab0c2c1207b6e366d02e19102112cc7e7"></a>
+<a class="el" href="classSbVec4s.html">SbVec4s</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>setValue</b> (const <a class="el" href="classSbVec4s.html">SbVec4s</a> &amp;v)</td></tr>
+<tr class="separator:ab0c2c1207b6e366d02e19102112cc7e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a432955c47143e4fa1ca635edbeffe830"><td class="memItemLeft" align="right" valign="top"><a id="a432955c47143e4fa1ca635edbeffe830"></a>
+<a class="el" href="classSbVec4s.html">SbVec4s</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>setValue</b> (const <a class="el" href="classSbVec4us.html">SbVec4us</a> &amp;v)</td></tr>
+<tr class="separator:a432955c47143e4fa1ca635edbeffe830"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d22927a8bb7ff4745dd7b4d86477162"><td class="memItemLeft" align="right" valign="top"><a id="a7d22927a8bb7ff4745dd7b4d86477162"></a>
+<a class="el" href="classSbVec4s.html">SbVec4s</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>setValue</b> (const short v[4])</td></tr>
+<tr class="separator:a7d22927a8bb7ff4745dd7b4d86477162"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2dae0ae8d74618d7c4abe12163740b15"><td class="memItemLeft" align="right" valign="top"><a id="a2dae0ae8d74618d7c4abe12163740b15"></a>
+<a class="el" href="classSbVec4s.html">SbVec4s</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>setValue</b> (short x, short y, short z, short w)</td></tr>
+<tr class="separator:a2dae0ae8d74618d7c4abe12163740b15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a3081fa67ceb7895edc897a7f2b2eb25c"><td class="memItemLeft" align="right" valign="top"><a id="a3081fa67ceb7895edc897a7f2b2eb25c"></a>
+short&#160;</td><td class="memItemRight" valign="bottom"><b>vec</b> [4]</td></tr>
+<tr class="separator:a3081fa67ceb7895edc897a7f2b2eb25c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><dl class="section since"><dt>Since</dt><dd>Coin 2.5 </dd></dl>
+</div><hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SbVec4s_8h_source.html">SbVec4s.h</a></li>
+<li>SbVec4s.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSbVec4s.html">SbVec4s</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

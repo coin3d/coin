@@ -1,0 +1,1278 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SoSceneManager Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSoSceneManager.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="classSoSceneManager-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SoSceneManager Class Reference<div class="ingroups"><a class="el" href="group__coin__general.html">Miscellaneous Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSoSceneManager.html" title="The SoSceneManager class provides the main interface between the scene graph and the GUI toolkit.">SoSceneManager</a> class provides the main interface between the scene graph and the GUI toolkit.  
+ <a href="classSoSceneManager.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SoSceneManager_8h_source.html">Inventor/SoSceneManager.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a9704986971846565065a072c99484806"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a9704986971846565065a072c99484806">SoSceneManager</a> (void)</td></tr>
+<tr class="separator:a9704986971846565065a072c99484806"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a210e1ab4142ed3c45f1e476eab4b9bf4"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a210e1ab4142ed3c45f1e476eab4b9bf4">~SoSceneManager</a> ()</td></tr>
+<tr class="separator:a210e1ab4142ed3c45f1e476eab4b9bf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3fda334b83cac661f991216315d516d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#af3fda334b83cac661f991216315d516d">activate</a> (void)</td></tr>
+<tr class="separator:af3fda334b83cac661f991216315d516d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abaa12148fe20e11560eef2be8d4fa2a6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#abaa12148fe20e11560eef2be8d4fa2a6">deactivate</a> (void)</td></tr>
+<tr class="separator:abaa12148fe20e11560eef2be8d4fa2a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f754003569a25abea16d21e3e427b66"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a1f754003569a25abea16d21e3e427b66">getAntialiasing</a> (SbBool &amp;smoothing, int &amp;numPasses) const</td></tr>
+<tr class="separator:a1f754003569a25abea16d21e3e427b66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade2dbb57308ff3d6436dbd6486351349"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoAudioRenderAction.html">SoAudioRenderAction</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#ade2dbb57308ff3d6436dbd6486351349">getAudioRenderAction</a> (void) const</td></tr>
+<tr class="separator:ade2dbb57308ff3d6436dbd6486351349"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b30d94336a510293122c042f30c5da2"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbColor.html">SbColor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a3b30d94336a510293122c042f30c5da2">getBackgroundColor</a> (void) const</td></tr>
+<tr class="separator:a3b30d94336a510293122c042f30c5da2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d00b44dfdd3e8719c03b0c51bbc60d8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a6d00b44dfdd3e8719c03b0c51bbc60d8">getBackgroundIndex</a> (void) const</td></tr>
+<tr class="separator:a6d00b44dfdd3e8719c03b0c51bbc60d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adadc9dd053bcedac24cba3150ef98f88"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoCamera.html">SoCamera</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#adadc9dd053bcedac24cba3150ef98f88">getCamera</a> (void) const</td></tr>
+<tr class="separator:adadc9dd053bcedac24cba3150ef98f88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57efb0036632aeea94079df8ebac6645"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoGLRenderAction.html">SoGLRenderAction</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a57efb0036632aeea94079df8ebac6645">getGLRenderAction</a> (void) const</td></tr>
+<tr class="separator:a57efb0036632aeea94079df8ebac6645"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5abe264f10cf5b4d1ec24f001b3ca9f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoHandleEventAction.html">SoHandleEventAction</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#ac5abe264f10cf5b4d1ec24f001b3ca9f">getHandleEventAction</a> (void) const</td></tr>
+<tr class="separator:ac5abe264f10cf5b4d1ec24f001b3ca9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1115fb8c91d0dc8048231863abf3c4c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec2s.html">SbVec2s</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#ac1115fb8c91d0dc8048231863abf3c4c">getOrigin</a> (void) const</td></tr>
+<tr class="separator:ac1115fb8c91d0dc8048231863abf3c4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f38419c1c9031f42bb0d1ee1e8ab643"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a9f38419c1c9031f42bb0d1ee1e8ab643">getRedrawPriority</a> (void) const</td></tr>
+<tr class="separator:a9f38419c1c9031f42bb0d1ee1e8ab643"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02998b2fd828abdd6578934b4f4e8eb8"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a02998b2fd828abdd6578934b4f4e8eb8">getSceneGraph</a> (void) const</td></tr>
+<tr class="separator:a02998b2fd828abdd6578934b4f4e8eb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7d720e569fcbfc953f7a739a9d88d5f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec2s.html">SbVec2s</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#ae7d720e569fcbfc953f7a739a9d88d5f">getSize</a> (void) const</td></tr>
+<tr class="separator:ae7d720e569fcbfc953f7a739a9d88d5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae2e3460556782355b381692345b45f1"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#aae2e3460556782355b381692345b45f1">getViewportRegion</a> (void) const</td></tr>
+<tr class="separator:aae2e3460556782355b381692345b45f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1597c505daa83189c57a8324e23dbd01"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec2s.html">SbVec2s</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a1597c505daa83189c57a8324e23dbd01">getWindowSize</a> (void) const</td></tr>
+<tr class="separator:a1597c505daa83189c57a8324e23dbd01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47f5afd7ad41ac193f34feb6447b541a"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a47f5afd7ad41ac193f34feb6447b541a">isAutoRedraw</a> (void) const</td></tr>
+<tr class="separator:a47f5afd7ad41ac193f34feb6447b541a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adec542bd2ea542e0a7899a5f8c9ad856"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#adec542bd2ea542e0a7899a5f8c9ad856">isRGBMode</a> (void) const</td></tr>
+<tr class="separator:adec542bd2ea542e0a7899a5f8c9ad856"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a164724acbbba552857a20b55cb68cf8c"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a164724acbbba552857a20b55cb68cf8c">processEvent</a> (const <a class="el" href="classSoEvent.html">SoEvent</a> *const event)</td></tr>
+<tr class="separator:a164724acbbba552857a20b55cb68cf8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cef7afefe475fb47e0030b6693875a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a0cef7afefe475fb47e0030b6693875a9">reinitialize</a> (void)</td></tr>
+<tr class="separator:a0cef7afefe475fb47e0030b6693875a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cfa158a909124e3e720f9db8114c489"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a0cfa158a909124e3e720f9db8114c489">render</a> (const SbBool clearwindow=TRUE, const SbBool clearzbuffer=TRUE)</td></tr>
+<tr class="separator:a0cfa158a909124e3e720f9db8114c489"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aead5d7063b14361bd3a6d04285a3b33d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#aead5d7063b14361bd3a6d04285a3b33d">render</a> (<a class="el" href="classSoGLRenderAction.html">SoGLRenderAction</a> *action, const SbBool initmatrices=TRUE, const SbBool clearwindow=TRUE, const SbBool clearzbuffer=TRUE)</td></tr>
+<tr class="separator:aead5d7063b14361bd3a6d04285a3b33d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb650803938936b1fb57c73aa89dcf17"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#afb650803938936b1fb57c73aa89dcf17">scheduleRedraw</a> (void)</td></tr>
+<tr class="separator:afb650803938936b1fb57c73aa89dcf17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a275795206d10f49d4c4c0d855ca413a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a275795206d10f49d4c4c0d855ca413a9">setAntialiasing</a> (const SbBool smoothing, const int numPasses)</td></tr>
+<tr class="separator:a275795206d10f49d4c4c0d855ca413a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33b8c61c3e0741acba88e33d044b5a0e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a33b8c61c3e0741acba88e33d044b5a0e">setAudioRenderAction</a> (<a class="el" href="classSoAudioRenderAction.html">SoAudioRenderAction</a> *const action)</td></tr>
+<tr class="separator:a33b8c61c3e0741acba88e33d044b5a0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9aa44f74cb725133e94a98d1293cf282"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a9aa44f74cb725133e94a98d1293cf282">setBackgroundColor</a> (const <a class="el" href="classSbColor.html">SbColor</a> &amp;color)</td></tr>
+<tr class="separator:a9aa44f74cb725133e94a98d1293cf282"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa5be65f0d2cc11fcfa8c3a587e1e9cb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#afa5be65f0d2cc11fcfa8c3a587e1e9cb">setBackgroundIndex</a> (const int index)</td></tr>
+<tr class="separator:afa5be65f0d2cc11fcfa8c3a587e1e9cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bd55a2fcc75c5cec4d18f421673c653"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a7bd55a2fcc75c5cec4d18f421673c653">setCamera</a> (<a class="el" href="classSoCamera.html">SoCamera</a> *camera)</td></tr>
+<tr class="separator:a7bd55a2fcc75c5cec4d18f421673c653"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad24401b58d7c4eb56448188db83d2b57"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#ad24401b58d7c4eb56448188db83d2b57">setGLRenderAction</a> (<a class="el" href="classSoGLRenderAction.html">SoGLRenderAction</a> *const action)</td></tr>
+<tr class="separator:ad24401b58d7c4eb56448188db83d2b57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acdfb0b6ad76497d2f1d8678aaf2202ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#acdfb0b6ad76497d2f1d8678aaf2202ce">setHandleEventAction</a> (<a class="el" href="classSoHandleEventAction.html">SoHandleEventAction</a> *hea)</td></tr>
+<tr class="separator:acdfb0b6ad76497d2f1d8678aaf2202ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6853b808d00023c2dadc2547235eedc6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a6853b808d00023c2dadc2547235eedc6">setOrigin</a> (const <a class="el" href="classSbVec2s.html">SbVec2s</a> &amp;newOrigin)</td></tr>
+<tr class="separator:a6853b808d00023c2dadc2547235eedc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb6debb37351d62af837e9f1780b049c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#abb6debb37351d62af837e9f1780b049c">setRedrawPriority</a> (const uint32_t priority)</td></tr>
+<tr class="separator:abb6debb37351d62af837e9f1780b049c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a563bde529e8d5c10a1920fa62297857e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a563bde529e8d5c10a1920fa62297857e">setRenderCallback</a> (SoSceneManagerRenderCB *f, void *const userData=NULL)</td></tr>
+<tr class="separator:a563bde529e8d5c10a1920fa62297857e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2e05b78dc33de00413977cef0a35523"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#ad2e05b78dc33de00413977cef0a35523">setRGBMode</a> (const SbBool onOrOff)</td></tr>
+<tr class="separator:ad2e05b78dc33de00413977cef0a35523"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f41bd4e9b94ecd066a649f6c9b44b30"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a1f41bd4e9b94ecd066a649f6c9b44b30">setSceneGraph</a> (<a class="el" href="classSoNode.html">SoNode</a> *const sceneroot)</td></tr>
+<tr class="separator:a1f41bd4e9b94ecd066a649f6c9b44b30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cffa44277eeddbb65a94e0b4e76ba9c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a4cffa44277eeddbb65a94e0b4e76ba9c">setSize</a> (const <a class="el" href="classSbVec2s.html">SbVec2s</a> &amp;newsize)</td></tr>
+<tr class="separator:a4cffa44277eeddbb65a94e0b4e76ba9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5299ca92d36220e4c273435135eb118"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#ac5299ca92d36220e4c273435135eb118">setViewportRegion</a> (const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;newRegion)</td></tr>
+<tr class="separator:ac5299ca92d36220e4c273435135eb118"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc73c9086f66e7474e11c25557a425a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#afc73c9086f66e7474e11c25557a425a1">setWindowSize</a> (const <a class="el" href="classSbVec2s.html">SbVec2s</a> &amp;newsize)</td></tr>
+<tr class="separator:afc73c9086f66e7474e11c25557a425a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a2ccbbe194653b58779339b4a6de58bc2"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a2ccbbe194653b58779339b4a6de58bc2">enableRealTimeUpdate</a> (const SbBool flag)</td></tr>
+<tr class="separator:a2ccbbe194653b58779339b4a6de58bc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c50781f068ea9640f33c3ce71985508"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a9c50781f068ea9640f33c3ce71985508">getDefaultRedrawPriority</a> (void)</td></tr>
+<tr class="separator:a9c50781f068ea9640f33c3ce71985508"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30e5c9b856bd1bfaf344800372a3f8f0"><td class="memItemLeft" align="right" valign="top">static SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a30e5c9b856bd1bfaf344800372a3f8f0">isRealTimeUpdateEnabled</a> (void)</td></tr>
+<tr class="separator:a30e5c9b856bd1bfaf344800372a3f8f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a9ad986cbb1f719d90e3c25b983576376"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#a9ad986cbb1f719d90e3c25b983576376">isActive</a> (void) const</td></tr>
+<tr class="separator:a9ad986cbb1f719d90e3c25b983576376"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0bd90533913635a4d55717c7daea18d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSceneManager.html#ae0bd90533913635a4d55717c7daea18d">redraw</a> (void)</td></tr>
+<tr class="separator:ae0bd90533913635a4d55717c7daea18d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSoSceneManager.html" title="The SoSceneManager class provides the main interface between the scene graph and the GUI toolkit.">SoSceneManager</a> class provides the main interface between the scene graph and the GUI toolkit. </p>
+<p>The render area class from the GUI toolkit you are using uses this class as the interface against the scene graph. Event handling and providing "hooks" to do rendering are the main functions of the class.</p>
+<p>A Coin library instance within an application will typically contain a single <a class="el" href="classSoSceneManager.html" title="The SoSceneManager class provides the main interface between the scene graph and the GUI toolkit.">SoSceneManager</a> object. The pointer for this object is stored in the GUI render area class. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a9704986971846565065a072c99484806"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9704986971846565065a072c99484806">&#9670;&nbsp;</a></span>SoSceneManager()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoSceneManager::SoSceneManager </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Constructor. Sets up default <a class="el" href="classSoGLRenderAction.html" title="The SoGLRenderAction class renders the scene graph with OpenGL calls.">SoGLRenderAction</a> and <a class="el" href="classSoHandleEventAction.html" title="The SoHandleEventAction class distributes user events to the scene.">SoHandleEventAction</a> instances. </p>
+
+</div>
+</div>
+<a id="a210e1ab4142ed3c45f1e476eab4b9bf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a210e1ab4142ed3c45f1e476eab4b9bf4">&#9670;&nbsp;</a></span>~SoSceneManager()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoSceneManager::~SoSceneManager </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Destructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="af3fda334b83cac661f991216315d516d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3fda334b83cac661f991216315d516d">&#9670;&nbsp;</a></span>activate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSceneManager::activate </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Activate rendering and event handling. Default is <code>off</code>. </p>
+
+</div>
+</div>
+<a id="abaa12148fe20e11560eef2be8d4fa2a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abaa12148fe20e11560eef2be8d4fa2a6">&#9670;&nbsp;</a></span>deactivate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSceneManager::deactivate </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Deactivate rendering and event handling. </p>
+
+</div>
+</div>
+<a id="a2ccbbe194653b58779339b4a6de58bc2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ccbbe194653b58779339b4a6de58bc2">&#9670;&nbsp;</a></span>enableRealTimeUpdate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSceneManager::enableRealTimeUpdate </td>
+          <td>(</td>
+          <td class="paramtype">const SbBool&#160;</td>
+          <td class="paramname"><em>flag</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set whether or not for <a class="el" href="classSoSceneManager.html" title="The SoSceneManager class provides the main interface between the scene graph and the GUI toolkit.">SoSceneManager</a> instances to "touch" the global <code>realTime</code> field after a redraw. If this is not done, redrawing when animating the scene will only happen as fast as the <code>realTime</code> interval goes (which defaults to 12 times a second).</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoDB.html#aaa1018dd9fb76eab1af55c6322bd9019">SoDB::setRealTimeInterval()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a1f754003569a25abea16d21e3e427b66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f754003569a25abea16d21e3e427b66">&#9670;&nbsp;</a></span>getAntialiasing()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSceneManager::getAntialiasing </td>
+          <td>(</td>
+          <td class="paramtype">SbBool &amp;&#160;</td>
+          <td class="paramname"><em>smoothing</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>numpasses</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns rendering pass information.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoSceneManager.html#a275795206d10f49d4c4c0d855ca413a9">setAntialiasing()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ade2dbb57308ff3d6436dbd6486351349"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade2dbb57308ff3d6436dbd6486351349">&#9670;&nbsp;</a></span>getAudioRenderAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoAudioRenderAction.html">SoAudioRenderAction</a> * SoSceneManager::getAudioRenderAction </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns pointer to audio render action. </p>
+
+</div>
+</div>
+<a id="a3b30d94336a510293122c042f30c5da2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b30d94336a510293122c042f30c5da2">&#9670;&nbsp;</a></span>getBackgroundColor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbColor.html">SbColor</a> &amp; SoSceneManager::getBackgroundColor </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns color used for clearing the rendering area before rendering the scene. </p>
+
+</div>
+</div>
+<a id="a6d00b44dfdd3e8719c03b0c51bbc60d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d00b44dfdd3e8719c03b0c51bbc60d8">&#9670;&nbsp;</a></span>getBackgroundIndex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SoSceneManager::getBackgroundIndex </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns index of colormap for background filling.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoSceneManager.html#afa5be65f0d2cc11fcfa8c3a587e1e9cb">setBackgroundIndex()</a> </dd></dl>
+
+</div>
+</div>
+<a id="adadc9dd053bcedac24cba3150ef98f88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adadc9dd053bcedac24cba3150ef98f88">&#9670;&nbsp;</a></span>getCamera()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoCamera.html">SoCamera</a> * SoSceneManager::getCamera </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the current camera. </p>
+
+</div>
+</div>
+<a id="a9c50781f068ea9640f33c3ce71985508"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c50781f068ea9640f33c3ce71985508">&#9670;&nbsp;</a></span>getDefaultRedrawPriority()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t SoSceneManager::getDefaultRedrawPriority </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the default priority of the redraw sensor.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoDelayQueueSensor.html" title="The SoDelayQueueSensor class is the abstract base class for priority scheduled sensors.">SoDelayQueueSensor</a>, <a class="el" href="classSoSceneManager.html#abb6debb37351d62af837e9f1780b049c">setRedrawPriority()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a57efb0036632aeea94079df8ebac6645"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57efb0036632aeea94079df8ebac6645">&#9670;&nbsp;</a></span>getGLRenderAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoGLRenderAction.html">SoGLRenderAction</a> * SoSceneManager::getGLRenderAction </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns pointer to render action. </p>
+
+</div>
+</div>
+<a id="ac5abe264f10cf5b4d1ec24f001b3ca9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5abe264f10cf5b4d1ec24f001b3ca9f">&#9670;&nbsp;</a></span>getHandleEventAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoHandleEventAction.html">SoHandleEventAction</a> * SoSceneManager::getHandleEventAction </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns pointer to event handler action. </p>
+
+</div>
+</div>
+<a id="ac1115fb8c91d0dc8048231863abf3c4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1115fb8c91d0dc8048231863abf3c4c">&#9670;&nbsp;</a></span>getOrigin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbVec2s.html">SbVec2s</a> &amp; SoSceneManager::getOrigin </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns origin of rendering area viewport.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoSceneManager.html#a6853b808d00023c2dadc2547235eedc6">setOrigin()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a9f38419c1c9031f42bb0d1ee1e8ab643"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f38419c1c9031f42bb0d1ee1e8ab643">&#9670;&nbsp;</a></span>getRedrawPriority()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t SoSceneManager::getRedrawPriority </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns value of priority on the redraw sensor. </p>
+
+</div>
+</div>
+<a id="a02998b2fd828abdd6578934b4f4e8eb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02998b2fd828abdd6578934b4f4e8eb8">&#9670;&nbsp;</a></span>getSceneGraph()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoNode.html">SoNode</a> * SoSceneManager::getSceneGraph </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns pointer to root of scene graph. </p>
+
+</div>
+</div>
+<a id="ae7d720e569fcbfc953f7a739a9d88d5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7d720e569fcbfc953f7a739a9d88d5f">&#9670;&nbsp;</a></span>getSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbVec2s.html">SbVec2s</a> &amp; SoSceneManager::getSize </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns size of render area. </p>
+
+</div>
+</div>
+<a id="aae2e3460556782355b381692345b45f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae2e3460556782355b381692345b45f1">&#9670;&nbsp;</a></span>getViewportRegion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp; SoSceneManager::getViewportRegion </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns current viewport region used by the render action and the event handling.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoSceneManager.html#ac5299ca92d36220e4c273435135eb118">setViewportRegion()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a1597c505daa83189c57a8324e23dbd01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1597c505daa83189c57a8324e23dbd01">&#9670;&nbsp;</a></span>getWindowSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbVec2s.html">SbVec2s</a> &amp; SoSceneManager::getWindowSize </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the current render action window size.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoSceneManager.html#afc73c9086f66e7474e11c25557a425a1">setWindowSize()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a9ad986cbb1f719d90e3c25b983576376"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ad986cbb1f719d90e3c25b983576376">&#9670;&nbsp;</a></span>isActive()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SoSceneManager::isActive </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the <em>active</em> flag. </p>
+
+</div>
+</div>
+<a id="a47f5afd7ad41ac193f34feb6447b541a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47f5afd7ad41ac193f34feb6447b541a">&#9670;&nbsp;</a></span>isAutoRedraw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoSceneManager::isAutoRedraw </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns <code>TRUE</code> if the <a class="el" href="classSoSceneManager.html" title="The SoSceneManager class provides the main interface between the scene graph and the GUI toolkit.">SoSceneManager</a> automatically redraws the scene upon detecting changes in the scene graph.</p>
+<p>The automatic redraw is turned on and off by setting either a valid callback function with <a class="el" href="classSoSceneManager.html#a563bde529e8d5c10a1920fa62297857e">setRenderCallback()</a>, or by passing <code>NULL</code>. </p>
+
+</div>
+</div>
+<a id="a30e5c9b856bd1bfaf344800372a3f8f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30e5c9b856bd1bfaf344800372a3f8f0">&#9670;&nbsp;</a></span>isRealTimeUpdateEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoSceneManager::isRealTimeUpdateEnabled </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns whether or not we automatically notifies everything connected to the <code>realTime</code> field after a redraw. </p>
+
+</div>
+</div>
+<a id="adec542bd2ea542e0a7899a5f8c9ad856"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adec542bd2ea542e0a7899a5f8c9ad856">&#9670;&nbsp;</a></span>isRGBMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoSceneManager::isRGBMode </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the "truecolor or colorindex" mode flag. </p>
+
+</div>
+</div>
+<a id="a164724acbbba552857a20b55cb68cf8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a164724acbbba552857a20b55cb68cf8c">&#9670;&nbsp;</a></span>processEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoSceneManager::processEvent </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSoEvent.html">SoEvent</a> *const&#160;</td>
+          <td class="paramname"><em>event</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Process the given event by applying an <a class="el" href="classSoHandleEventAction.html" title="The SoHandleEventAction class distributes user events to the scene.">SoHandleEventAction</a> on the scene graph. </p>
+
+</div>
+</div>
+<a id="ae0bd90533913635a4d55717c7daea18d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0bd90533913635a4d55717c7daea18d">&#9670;&nbsp;</a></span>redraw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSceneManager::redraw </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Do an immediate redraw by calling the redraw callback function. </p>
+
+</div>
+</div>
+<a id="a0cef7afefe475fb47e0030b6693875a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0cef7afefe475fb47e0030b6693875a9">&#9670;&nbsp;</a></span>reinitialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSceneManager::reinitialize </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Reinitialize after parameters affecting the OpenGL context have changed. </p>
+
+</div>
+</div>
+<a id="a0cfa158a909124e3e720f9db8114c489"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0cfa158a909124e3e720f9db8114c489">&#9670;&nbsp;</a></span>render() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSceneManager::render </td>
+          <td>(</td>
+          <td class="paramtype">const SbBool&#160;</td>
+          <td class="paramname"><em>clearwindow</em> = <code>TRUE</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SbBool&#160;</td>
+          <td class="paramname"><em>clearzbuffer</em> = <code>TRUE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Render the scene graph.</p>
+<p>If <em>clearwindow</em> is <code>TRUE</code>, clear the rendering buffer before drawing. If <em>clearzbuffer</em> is <code>TRUE</code>, clear the depth buffer values before rendering. Both of these arguments should normally be <code>TRUE</code>, but they can be set to <code>FALSE</code> to optimize for special cases (e.g. when doing wireframe rendering one doesn't need a depth buffer). </p>
+
+</div>
+</div>
+<a id="aead5d7063b14361bd3a6d04285a3b33d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aead5d7063b14361bd3a6d04285a3b33d">&#9670;&nbsp;</a></span>render() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSceneManager::render </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoGLRenderAction.html">SoGLRenderAction</a> *&#160;</td>
+          <td class="paramname"><em>action</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SbBool&#160;</td>
+          <td class="paramname"><em>initmatrices</em> = <code>TRUE</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SbBool&#160;</td>
+          <td class="paramname"><em>clearwindow</em> = <code>TRUE</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SbBool&#160;</td>
+          <td class="paramname"><em>clearzbuffer</em> = <code>TRUE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Render method used for thread safe rendering.</p>
+<p>Since only one thread can use an <a class="el" href="classSoGLRenderAction.html" title="The SoGLRenderAction class renders the scene graph with OpenGL calls.">SoGLRenderAction</a>, this method enables you to supply your own thread-specific <a class="el" href="classSoGLRenderAction.html" title="The SoGLRenderAction class renders the scene graph with OpenGL calls.">SoGLRenderAction</a> to be used for rendering the scene.</p>
+<p>If <em>initmatrices</em> is <code>TRUE</code>, the OpenGL model and projection matrices will be initialized to identity matrices before applying the action.</p>
+<p>If <em>clearwindow</em> is <code>TRUE</code>, clear the rendering buffer before drawing. If <em>clearzbuffer</em> is <code>TRUE</code>, clear the depth buffer values before rendering.</p>
+<p>This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ </p><dl class="section since"><dt>Since</dt><dd>Coin 2.0 </dd></dl>
+
+</div>
+</div>
+<a id="afb650803938936b1fb57c73aa89dcf17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb650803938936b1fb57c73aa89dcf17">&#9670;&nbsp;</a></span>scheduleRedraw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSceneManager::scheduleRedraw </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Redraw at first opportunity as system becomes idle.</p>
+<p>Multiple calls to this method before an actual redraw has taken place will only result in a single redraw of the scene. </p>
+
+</div>
+</div>
+<a id="a275795206d10f49d4c4c0d855ca413a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a275795206d10f49d4c4c0d855ca413a9">&#9670;&nbsp;</a></span>setAntialiasing()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSceneManager::setAntialiasing </td>
+          <td>(</td>
+          <td class="paramtype">const SbBool&#160;</td>
+          <td class="paramname"><em>smoothing</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>numpasses</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Turn antialiased rendering on or off.</p>
+<p>See documentation for <a class="el" href="classSoGLRenderAction.html#a4da74726ed6caf63cc94aec9a5dd70eb">SoGLRenderAction::setSmoothing()</a> and <a class="el" href="classSoGLRenderAction.html#abaef725b835c9d34db262f85ce92c860">SoGLRenderAction::setNumPasses()</a>. </p>
+
+</div>
+</div>
+<a id="a33b8c61c3e0741acba88e33d044b5a0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33b8c61c3e0741acba88e33d044b5a0e">&#9670;&nbsp;</a></span>setAudioRenderAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSceneManager::setAudioRenderAction </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoAudioRenderAction.html">SoAudioRenderAction</a> *const&#160;</td>
+          <td class="paramname"><em>action</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the <em>action</em> to use for rendering audio. Overrides the default action made in the constructor. </p>
+
+</div>
+</div>
+<a id="a9aa44f74cb725133e94a98d1293cf282"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9aa44f74cb725133e94a98d1293cf282">&#9670;&nbsp;</a></span>setBackgroundColor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSceneManager::setBackgroundColor </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbColor.html">SbColor</a> &amp;&#160;</td>
+          <td class="paramname"><em>color</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets color of rendering canvas. </p>
+
+</div>
+</div>
+<a id="afa5be65f0d2cc11fcfa8c3a587e1e9cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa5be65f0d2cc11fcfa8c3a587e1e9cb">&#9670;&nbsp;</a></span>setBackgroundIndex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSceneManager::setBackgroundIndex </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set index of background color in the color lookup table if rendering in color index mode.</p>
+<p>Note: color index mode is not supported yet in Coin. </p>
+
+</div>
+</div>
+<a id="a7bd55a2fcc75c5cec4d18f421673c653"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7bd55a2fcc75c5cec4d18f421673c653">&#9670;&nbsp;</a></span>setCamera()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSceneManager::setCamera </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoCamera.html">SoCamera</a> *&#160;</td>
+          <td class="paramname"><em>camera</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the camera to be used. </p>
+
+</div>
+</div>
+<a id="ad24401b58d7c4eb56448188db83d2b57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad24401b58d7c4eb56448188db83d2b57">&#9670;&nbsp;</a></span>setGLRenderAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSceneManager::setGLRenderAction </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoGLRenderAction.html">SoGLRenderAction</a> *const&#160;</td>
+          <td class="paramname"><em>action</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the <em>action</em> to use for rendering. Overrides the default action made in the constructor. </p>
+
+</div>
+</div>
+<a id="acdfb0b6ad76497d2f1d8678aaf2202ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acdfb0b6ad76497d2f1d8678aaf2202ce">&#9670;&nbsp;</a></span>setHandleEventAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSceneManager::setHandleEventAction </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoHandleEventAction.html">SoHandleEventAction</a> *&#160;</td>
+          <td class="paramname"><em>hea</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the <em>action</em> to use for event handling. Overrides the default action made in the constructor. </p>
+
+</div>
+</div>
+<a id="a6853b808d00023c2dadc2547235eedc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6853b808d00023c2dadc2547235eedc6">&#9670;&nbsp;</a></span>setOrigin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSceneManager::setOrigin </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec2s.html">SbVec2s</a> &amp;&#160;</td>
+          <td class="paramname"><em>newOrigin</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set <em>only</em> the origin of the viewport region within the rendering window.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoSceneManager.html#ac5299ca92d36220e4c273435135eb118">setViewportRegion()</a>, <a class="el" href="classSoSceneManager.html#afc73c9086f66e7474e11c25557a425a1">setWindowSize()</a> </dd></dl>
+
+</div>
+</div>
+<a id="abb6debb37351d62af837e9f1780b049c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb6debb37351d62af837e9f1780b049c">&#9670;&nbsp;</a></span>setRedrawPriority()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSceneManager::setRedrawPriority </td>
+          <td>(</td>
+          <td class="paramtype">const uint32_t&#160;</td>
+          <td class="paramname"><em>priority</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set up the redraw <em>priority</em> for the <a class="el" href="classSoOneShotSensor.html" title="The SoOneShotSensor class is a sensor which will trigger once.">SoOneShotSensor</a> used to trigger redraws. By setting this lower than for your own sensors, you can make sure some code is always run before redraw happens.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoDelayQueueSensor.html" title="The SoDelayQueueSensor class is the abstract base class for priority scheduled sensors.">SoDelayQueueSensor</a> </dd></dl>
+
+</div>
+</div>
+<a id="a563bde529e8d5c10a1920fa62297857e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a563bde529e8d5c10a1920fa62297857e">&#9670;&nbsp;</a></span>setRenderCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSceneManager::setRenderCallback </td>
+          <td>(</td>
+          <td class="paramtype">SoSceneManagerRenderCB *&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *const&#160;</td>
+          <td class="paramname"><em>userdata</em> = <code>NULL</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the callback function <em>f</em> to invoke when rendering the scene. <em>userdata</em> will be passed as the first argument of the function. </p>
+
+</div>
+</div>
+<a id="ad2e05b78dc33de00413977cef0a35523"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2e05b78dc33de00413977cef0a35523">&#9670;&nbsp;</a></span>setRGBMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSceneManager::setRGBMode </td>
+          <td>(</td>
+          <td class="paramtype">const SbBool&#160;</td>
+          <td class="paramname"><em>yes</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Turn RGB truecolor mode on or off. If you turn truecolor mode off, colorindex mode will be used instead. </p>
+
+</div>
+</div>
+<a id="a1f41bd4e9b94ecd066a649f6c9b44b30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f41bd4e9b94ecd066a649f6c9b44b30">&#9670;&nbsp;</a></span>setSceneGraph()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSceneManager::setSceneGraph </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoNode.html">SoNode</a> *const&#160;</td>
+          <td class="paramname"><em>sceneroot</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set the node which is top of the scene graph we're managing. The <em>sceneroot</em> node reference count will be increased by 1, and any previously set scene graph top node will have its reference count decreased by 1.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoSceneManager.html#a02998b2fd828abdd6578934b4f4e8eb8">getSceneGraph()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a4cffa44277eeddbb65a94e0b4e76ba9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4cffa44277eeddbb65a94e0b4e76ba9c">&#9670;&nbsp;</a></span>setSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSceneManager::setSize </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec2s.html">SbVec2s</a> &amp;&#160;</td>
+          <td class="paramname"><em>newsize</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set size of rendering area for the viewport within the current window. </p>
+
+</div>
+</div>
+<a id="ac5299ca92d36220e4c273435135eb118"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5299ca92d36220e4c273435135eb118">&#9670;&nbsp;</a></span>setViewportRegion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSceneManager::setViewportRegion </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;&#160;</td>
+          <td class="paramname"><em>newregion</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Update our <a class="el" href="classSoGLRenderAction.html" title="The SoGLRenderAction class renders the scene graph with OpenGL calls.">SoGLRenderAction</a>'s viewport settings.</p>
+<p>This will change <em>both</em> the information about window dimensions and the actual viewport size and origin.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoSceneManager.html#afc73c9086f66e7474e11c25557a425a1">setWindowSize()</a> </dd></dl>
+
+</div>
+</div>
+<a id="afc73c9086f66e7474e11c25557a425a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc73c9086f66e7474e11c25557a425a1">&#9670;&nbsp;</a></span>setWindowSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoSceneManager::setWindowSize </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec2s.html">SbVec2s</a> &amp;&#160;</td>
+          <td class="paramname"><em>newsize</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Update window size of our <a class="el" href="classSoGLRenderAction.html" title="The SoGLRenderAction class renders the scene graph with OpenGL calls.">SoGLRenderAction</a>'s viewport settings.</p>
+<p>Note that this will <em>only</em> change the information about window dimensions, the actual viewport size and origin (i.e. the rectangle which redraws are confined to) will stay the same.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoSceneManager.html#ac5299ca92d36220e4c273435135eb118">setViewportRegion()</a> </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SoSceneManager_8h_source.html">SoSceneManager.h</a></li>
+<li>SoSceneManager.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSoSceneManager.html">SoSceneManager</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

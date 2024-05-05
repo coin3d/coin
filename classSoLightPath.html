@@ -1,0 +1,481 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SoLightPath Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSoLightPath.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="classSoLightPath-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SoLightPath Class Reference<div class="ingroups"><a class="el" href="group__coin__general.html">Miscellaneous Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSoLightPath.html" title="The SoLightPath class is a light version of SoPath.">SoLightPath</a> class is a light version of <a class="el" href="classSoPath.html" title="The SoPath class is a container class for traversal path descriptions.">SoPath</a>.  
+ <a href="classSoLightPath.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SoLightPath_8h_source.html">Inventor/misc/SoLightPath.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a7d4c7bf8dca8ec316755459ac3e7e2eb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLightPath.html#a7d4c7bf8dca8ec316755459ac3e7e2eb">SoLightPath</a> (const int approxlength)</td></tr>
+<tr class="separator:a7d4c7bf8dca8ec316755459ac3e7e2eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6417d3e79b7897e27bfb831c39305b4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLightPath.html#aa6417d3e79b7897e27bfb831c39305b4">SoLightPath</a> (<a class="el" href="classSoNode.html">SoNode</a> *node, const int approxlength)</td></tr>
+<tr class="separator:aa6417d3e79b7897e27bfb831c39305b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afecbb9d9e0695e03cc6f8806b4fb231e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLightPath.html#afecbb9d9e0695e03cc6f8806b4fb231e">~SoLightPath</a> ()</td></tr>
+<tr class="separator:afecbb9d9e0695e03cc6f8806b4fb231e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fa585d36c20b5e01da6db7729ab9940"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLightPath.html#a0fa585d36c20b5e01da6db7729ab9940">append</a> (const int childindex)</td></tr>
+<tr class="separator:a0fa585d36c20b5e01da6db7729ab9940"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a620646f3055829431afeb773e14a4513"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLightPath.html#a620646f3055829431afeb773e14a4513">getFullLength</a> () const</td></tr>
+<tr class="separator:a620646f3055829431afeb773e14a4513"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2aac51379b4e122bf7c6b6bc19b9176f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLightPath.html#a2aac51379b4e122bf7c6b6bc19b9176f">getHead</a> (void) const</td></tr>
+<tr class="separator:a2aac51379b4e122bf7c6b6bc19b9176f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdc3638af5a876ec25713dfb14ef47bc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLightPath.html#afdc3638af5a876ec25713dfb14ef47bc">getIndex</a> (const int index) const</td></tr>
+<tr class="separator:afdc3638af5a876ec25713dfb14ef47bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a099cebf3a5af40004551f9638873eea6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLightPath.html#a099cebf3a5af40004551f9638873eea6">getNode</a> (const int index) const</td></tr>
+<tr class="separator:a099cebf3a5af40004551f9638873eea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a159f305aaf4c708c0586d4bebc0b6379"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLightPath.html#a159f305aaf4c708c0586d4bebc0b6379">getTail</a> (void) const</td></tr>
+<tr class="separator:a159f305aaf4c708c0586d4bebc0b6379"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48d9aa40d536641ba91384046732fcda"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLightPath.html#a48d9aa40d536641ba91384046732fcda">makeTempPath</a> (<a class="el" href="classSoTempPath.html">SoTempPath</a> *path) const</td></tr>
+<tr class="separator:a48d9aa40d536641ba91384046732fcda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8604ef0faa3f748d564852b7ae335104"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLightPath.html#a8604ef0faa3f748d564852b7ae335104">pop</a> (void)</td></tr>
+<tr class="separator:a8604ef0faa3f748d564852b7ae335104"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a075988525734fab8a7061ab0fc383f31"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLightPath.html#a075988525734fab8a7061ab0fc383f31">push</a> (const int childindex)</td></tr>
+<tr class="separator:a075988525734fab8a7061ab0fc383f31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae08ffa24d57ca247235f05bb81959160"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLightPath.html#ae08ffa24d57ca247235f05bb81959160">setHead</a> (<a class="el" href="classSoNode.html">SoNode</a> *const node)</td></tr>
+<tr class="separator:ae08ffa24d57ca247235f05bb81959160"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7104ab0de18de563c80fbe5eca74e8a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLightPath.html#a7104ab0de18de563c80fbe5eca74e8a1">setTail</a> (const int childindex)</td></tr>
+<tr class="separator:a7104ab0de18de563c80fbe5eca74e8a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa080a9fe4dc28159b5e9047665794534"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoLightPath.html#aa080a9fe4dc28159b5e9047665794534">truncate</a> (const int startindex)</td></tr>
+<tr class="separator:aa080a9fe4dc28159b5e9047665794534"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSoLightPath.html" title="The SoLightPath class is a light version of SoPath.">SoLightPath</a> class is a light version of <a class="el" href="classSoPath.html" title="The SoPath class is a container class for traversal path descriptions.">SoPath</a>. </p>
+<p><a class="el" href="classSoLightPath.html" title="The SoLightPath class is a light version of SoPath.">SoLightPath</a> can be used if you only need a temporary path, and don't want the overhead that comes with an <a class="el" href="classSoPath.html" title="The SoPath class is a container class for traversal path descriptions.">SoPath</a> (ref, unref, auditing etc).</p>
+<p>It is your responsibility to make sure the path is valid before using it. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="aa6417d3e79b7897e27bfb831c39305b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6417d3e79b7897e27bfb831c39305b4">&#9670;&nbsp;</a></span>SoLightPath() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoLightPath::SoLightPath </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoNode.html">SoNode</a> *&#160;</td>
+          <td class="paramname"><em>headnodeptr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>approxlength</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A constructor. Supply the head node and the approximate length of the path. </p>
+
+</div>
+</div>
+<a id="a7d4c7bf8dca8ec316755459ac3e7e2eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d4c7bf8dca8ec316755459ac3e7e2eb">&#9670;&nbsp;</a></span>SoLightPath() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoLightPath::SoLightPath </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>approxlength</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A constructor. Supply the approximate length of the path. </p>
+
+</div>
+</div>
+<a id="afecbb9d9e0695e03cc6f8806b4fb231e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afecbb9d9e0695e03cc6f8806b4fb231e">&#9670;&nbsp;</a></span>~SoLightPath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoLightPath::~SoLightPath </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Destructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a0fa585d36c20b5e01da6db7729ab9940"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fa585d36c20b5e01da6db7729ab9940">&#9670;&nbsp;</a></span>append()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoLightPath::append </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>childindex</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Appends a <em>childindex</em> to the path. </p>
+
+</div>
+</div>
+<a id="a620646f3055829431afeb773e14a4513"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a620646f3055829431afeb773e14a4513">&#9670;&nbsp;</a></span>getFullLength()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SoLightPath::getFullLength </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the length of the path. </p>
+
+</div>
+</div>
+<a id="a2aac51379b4e122bf7c6b6bc19b9176f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2aac51379b4e122bf7c6b6bc19b9176f">&#9670;&nbsp;</a></span>getHead()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoNode.html">SoNode</a> * SoLightPath::getHead </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the head node. </p>
+
+</div>
+</div>
+<a id="afdc3638af5a876ec25713dfb14ef47bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdc3638af5a876ec25713dfb14ef47bc">&#9670;&nbsp;</a></span>getIndex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SoLightPath::getIndex </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the child index of the index'th node in the path. </p>
+
+</div>
+</div>
+<a id="a099cebf3a5af40004551f9638873eea6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a099cebf3a5af40004551f9638873eea6">&#9670;&nbsp;</a></span>getNode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoNode.html">SoNode</a> * SoLightPath::getNode </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the index'th node in path. </p>
+
+</div>
+</div>
+<a id="a159f305aaf4c708c0586d4bebc0b6379"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a159f305aaf4c708c0586d4bebc0b6379">&#9670;&nbsp;</a></span>getTail()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoNode.html">SoNode</a> * SoLightPath::getTail </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the tail node of the path. Uses <a class="el" href="classSoLightPath.html#a099cebf3a5af40004551f9638873eea6">getNode()</a>. </p>
+
+</div>
+</div>
+<a id="a48d9aa40d536641ba91384046732fcda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48d9aa40d536641ba91384046732fcda">&#9670;&nbsp;</a></span>makeTempPath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoLightPath::makeTempPath </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoTempPath.html">SoTempPath</a> *&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Updates <em>path</em> to be the same path as this path. </p>
+
+</div>
+</div>
+<a id="a8604ef0faa3f748d564852b7ae335104"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8604ef0faa3f748d564852b7ae335104">&#9670;&nbsp;</a></span>pop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoLightPath::pop </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Pops off the last child. </p>
+
+</div>
+</div>
+<a id="a075988525734fab8a7061ab0fc383f31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a075988525734fab8a7061ab0fc383f31">&#9670;&nbsp;</a></span>push()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoLightPath::push </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>childindex</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Same as <a class="el" href="classSoLightPath.html#a0fa585d36c20b5e01da6db7729ab9940">append()</a>. </p>
+
+</div>
+</div>
+<a id="ae08ffa24d57ca247235f05bb81959160"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae08ffa24d57ca247235f05bb81959160">&#9670;&nbsp;</a></span>setHead()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoLightPath::setHead </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoNode.html">SoNode</a> *const&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets head of path. Truncates path to length 1. </p>
+
+</div>
+</div>
+<a id="a7104ab0de18de563c80fbe5eca74e8a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7104ab0de18de563c80fbe5eca74e8a1">&#9670;&nbsp;</a></span>setTail()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoLightPath::setTail </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>childindex</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the tail of the path. </p>
+
+</div>
+</div>
+<a id="aa080a9fe4dc28159b5e9047665794534"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa080a9fe4dc28159b5e9047665794534">&#9670;&nbsp;</a></span>truncate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoLightPath::truncate </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>startindex</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Truncates the path from <em>startindex</em>. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SoLightPath_8h_source.html">SoLightPath.h</a></li>
+<li>SoLightPath.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSoLightPath.html">SoLightPath</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

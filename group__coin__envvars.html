@@ -1,0 +1,2597 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: Miscellaneous Environment Variables</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('group__coin__envvars.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#var-members">Variables</a>  </div>
+  <div class="headertitle">
+<div class="title">Miscellaneous Environment Variables</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Various aspects of the Coin runtime behaviour can be controlled through setting different environment variables to some value.  
+<a href="#details">More...</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:gaed99424a50e132d6d22e55ff257e3e9b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gaed99424a50e132d6d22e55ff257e3e9b">COIN_AGLGLUE_NO_PBUFFERS</a></td></tr>
+<tr class="separator:gaed99424a50e132d6d22e55ff257e3e9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4c89fd2b9ddf4a6b63e2880891093f08"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga4c89fd2b9ddf4a6b63e2880891093f08">COIN_ALLOW_SPIDERMONKEY</a></td></tr>
+<tr class="separator:ga4c89fd2b9ddf4a6b63e2880891093f08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae5b82c8a059f77d2c8e6bbc3f7da6062"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gae5b82c8a059f77d2c8e6bbc3f7da6062">COIN_AUTO_CACHING</a></td></tr>
+<tr class="separator:gae5b82c8a059f77d2c8e6bbc3f7da6062"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad6001c165dd6a19447f7c9cb9cef8134"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gad6001c165dd6a19447f7c9cb9cef8134">COIN_AUTOCACHE_LOCAL_MAX</a></td></tr>
+<tr class="separator:gad6001c165dd6a19447f7c9cb9cef8134"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae0e14afa32d5ffcf2a6d1cc55aaac462"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gae0e14afa32d5ffcf2a6d1cc55aaac462">COIN_AUTOCACHE_LOCAL_MIN</a></td></tr>
+<tr class="separator:gae0e14afa32d5ffcf2a6d1cc55aaac462"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga57e557edf508c6f196b62b753312cae3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga57e557edf508c6f196b62b753312cae3">COIN_AUTOCACHE_REMOTE_MAX</a></td></tr>
+<tr class="separator:ga57e557edf508c6f196b62b753312cae3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8008e2e4b71d235c550b2a1e188f4412"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga8008e2e4b71d235c550b2a1e188f4412">COIN_AUTOCACHE_REMOTE_MIN</a></td></tr>
+<tr class="separator:ga8008e2e4b71d235c550b2a1e188f4412"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0db997be15a8e8cb4e176f1a5950d141"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga0db997be15a8e8cb4e176f1a5950d141">COIN_AUTOCACHE_VBO_LIMIT</a></td></tr>
+<tr class="separator:ga0db997be15a8e8cb4e176f1a5950d141"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaccfa9bd01bec3355ec87015e4110b3fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gaccfa9bd01bec3355ec87015e4110b3fa">COIN_BZIP2_LIBNAME</a></td></tr>
+<tr class="separator:gaccfa9bd01bec3355ec87015e4110b3fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab02553d033733fc89b976850d958df7f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gab02553d033733fc89b976850d958df7f">COIN_CALCULATE_NURBS_NORMALS</a></td></tr>
+<tr class="separator:gab02553d033733fc89b976850d958df7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga163b4bee09739c7dba6e445cadde2f70"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga163b4bee09739c7dba6e445cadde2f70">COIN_CG_LIBNAME</a></td></tr>
+<tr class="separator:ga163b4bee09739c7dba6e445cadde2f70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4203b8bae9a614eb7f62c3405b0d09ac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga4203b8bae9a614eb7f62c3405b0d09ac">COIN_CGLGLUE_NO_PBUFFERS</a></td></tr>
+<tr class="separator:ga4203b8bae9a614eb7f62c3405b0d09ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaaef79266d00c91619db6970261283019"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gaaef79266d00c91619db6970261283019">COIN_DEBUG_3DS</a></td></tr>
+<tr class="separator:gaaef79266d00c91619db6970261283019"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8876240dd54921d0383450be383d0fdd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga8876240dd54921d0383450be383d0fdd">COIN_DEBUG_ASSERT_SOBASE_SETNAME</a></td></tr>
+<tr class="separator:ga8876240dd54921d0383450be383d0fdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga096cfb4c1b2af14362f0143706eb6e5b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga096cfb4c1b2af14362f0143706eb6e5b">COIN_DEBUG_AUDIO</a></td></tr>
+<tr class="separator:ga096cfb4c1b2af14362f0143706eb6e5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga91de9e91fc3bc34e259d9d415799b7fd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga91de9e91fc3bc34e259d9d415799b7fd">COIN_DEBUG_BINARY_INPUT</a></td></tr>
+<tr class="separator:ga91de9e91fc3bc34e259d9d415799b7fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadc1f729d9eba031babda1b1e5956d2e4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gadc1f729d9eba031babda1b1e5956d2e4">COIN_DEBUG_BREAK</a></td></tr>
+<tr class="separator:gadc1f729d9eba031babda1b1e5956d2e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1273bb807ef53967c55921ce1cc66557"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga1273bb807ef53967c55921ce1cc66557">COIN_DEBUG_CACHING</a></td></tr>
+<tr class="separator:ga1273bb807ef53967c55921ce1cc66557"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga377903ed55fa1f8d0a8e0d2b43c7c447"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga377903ed55fa1f8d0a8e0d2b43c7c447">COIN_DEBUG_CLEANUP</a></td></tr>
+<tr class="separator:ga377903ed55fa1f8d0a8e0d2b43c7c447"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6be7e716a13ad32f259283561d621791"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga6be7e716a13ad32f259283561d621791">COIN_DEBUG_DL</a></td></tr>
+<tr class="separator:ga6be7e716a13ad32f259283561d621791"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafb7d9a7f53267772a8917f799783e51a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gafb7d9a7f53267772a8917f799783e51a">COIN_DEBUG_EXTRA</a></td></tr>
+<tr class="separator:gafb7d9a7f53267772a8917f799783e51a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga98356c3ca0074918440a09b2fdf2204c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga98356c3ca0074918440a09b2fdf2204c">COIN_DEBUG_FLATTEN_NODEKITS_ON_WRITE</a></td></tr>
+<tr class="separator:ga98356c3ca0074918440a09b2fdf2204c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaaab43c306c49c92e8cc7837fbe98ebc0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gaaab43c306c49c92e8cc7837fbe98ebc0">COIN_DEBUG_FONTSUPPORT</a></td></tr>
+<tr class="separator:gaaab43c306c49c92e8cc7837fbe98ebc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad2485ddb1050b72aadc87ecbd4102e48"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gad2485ddb1050b72aadc87ecbd4102e48">COIN_DEBUG_GLGLUE</a></td></tr>
+<tr class="separator:gad2485ddb1050b72aadc87ecbd4102e48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7b535e23af93e5e4a885e4d5321d5708"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga7b535e23af93e5e4a885e4d5321d5708">COIN_DEBUG_GLRENDER_TRAVERSAL</a></td></tr>
+<tr class="separator:ga7b535e23af93e5e4a885e4d5321d5708"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac471927112b8114e3ff80638a0c41186"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gac471927112b8114e3ff80638a0c41186">COIN_DEBUG_GLU_INFO</a></td></tr>
+<tr class="separator:gac471927112b8114e3ff80638a0c41186"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa0c7252d566d12794c50afe2c949e26e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gaa0c7252d566d12794c50afe2c949e26e">COIN_DEBUG_GLU_VERSION</a></td></tr>
+<tr class="separator:gaa0c7252d566d12794c50afe2c949e26e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga29a24548846897fba18074098b242ebf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga29a24548846897fba18074098b242ebf">COIN_DEBUG_GLUNURBSSURFACE</a></td></tr>
+<tr class="separator:ga29a24548846897fba18074098b242ebf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8abcb9727bec09662a67bb2cb9c18beb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga8abcb9727bec09662a67bb2cb9c18beb">COIN_DEBUG_IMPORT</a></td></tr>
+<tr class="separator:ga8abcb9727bec09662a67bb2cb9c18beb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaef2e81d0e905622b24946f6fb9906c25"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gaef2e81d0e905622b24946f6fb9906c25">COIN_DEBUG_INTERSECTIONDETECTIONACTION</a></td></tr>
+<tr class="separator:gaef2e81d0e905622b24946f6fb9906c25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf5d7ce55f98908f97b1808319a5c2c63"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gaf5d7ce55f98908f97b1808319a5c2c63">COIN_DEBUG_LISTMODULES</a></td></tr>
+<tr class="separator:gaf5d7ce55f98908f97b1808319a5c2c63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga63be89e95dc4d5439662fc426e8b23f4"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga63be89e95dc4d5439662fc426e8b23f4">COIN_DEBUG_MUTEX_COUNT</a> = &quot;COIN_DEBUG_MUTEX_COUNT&quot;</td></tr>
+<tr class="separator:ga63be89e95dc4d5439662fc426e8b23f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0f3dec2e8867223f549730f6c85016c6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga0f3dec2e8867223f549730f6c85016c6">COIN_DEBUG_MUTEXLOCK_MAXTIME</a></td></tr>
+<tr class="separator:ga0f3dec2e8867223f549730f6c85016c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7d98e4e0dc3c2546fe6fa4f6bc2ffe74"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga7d98e4e0dc3c2546fe6fa4f6bc2ffe74">COIN_DEBUG_MUTEXLOCK_TIMING</a></td></tr>
+<tr class="separator:ga7d98e4e0dc3c2546fe6fa4f6bc2ffe74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6ec48b180882fd2359264bd67a6de5d3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga6ec48b180882fd2359264bd67a6de5d3">COIN_DEBUG_NORMALIZE</a></td></tr>
+<tr class="separator:ga6ec48b180882fd2359264bd67a6de5d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab88c648bca11e634df126a6d76785b69"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gab88c648bca11e634df126a6d76785b69">COIN_DEBUG_NPRINTF</a></td></tr>
+<tr class="separator:gab88c648bca11e634df126a6d76785b69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6da066644fe988322d4574b0078e82b0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga6da066644fe988322d4574b0078e82b0">COIN_DEBUG_NURBS_COMPLEXITY</a></td></tr>
+<tr class="separator:ga6da066644fe988322d4574b0078e82b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac5cc3ed62995b02c71abe08a9fa39a94"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gac5cc3ed62995b02c71abe08a9fa39a94">COIN_DEBUG_ROOT_NOTIFICATIONS</a></td></tr>
+<tr class="separator:gac5cc3ed62995b02c71abe08a9fa39a94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9c1f39ff63f06e2254efb230830450a9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga9c1f39ff63f06e2254efb230830450a9">COIN_DEBUG_SIMAGE</a></td></tr>
+<tr class="separator:ga9c1f39ff63f06e2254efb230830450a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga26044abce8cbe4888b6ded4c9faae61e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga26044abce8cbe4888b6ded4c9faae61e">COIN_DEBUG_SOEXTSELECTION</a></td></tr>
+<tr class="separator:ga26044abce8cbe4888b6ded4c9faae61e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad651e8252160322c989f48ad06579aeb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gad651e8252160322c989f48ad06579aeb">COIN_DEBUG_SOFILE_READ</a></td></tr>
+<tr class="separator:gad651e8252160322c989f48ad06579aeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafb8e1b4dad5ff10c6f0a06bef219175c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gafb8e1b4dad5ff10c6f0a06bef219175c">COIN_DEBUG_SOINPUT_FINDFILE</a></td></tr>
+<tr class="separator:gafb8e1b4dad5ff10c6f0a06bef219175c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf16ac7d963c63f0eadf747e84b75b84c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gaf16ac7d963c63f0eadf747e84b75b84c">COIN_DEBUG_SOOFFSCREENRENDERER</a></td></tr>
+<tr class="separator:gaf16ac7d963c63f0eadf747e84b75b84c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga069aef2c8faa2ecb5d70e224c19d0fd2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga069aef2c8faa2ecb5d70e224c19d0fd2">COIN_DEBUG_SOOFFSCREENRENDERER_TILEPREFIX</a></td></tr>
+<tr class="separator:ga069aef2c8faa2ecb5d70e224c19d0fd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa24faeaeabed94bc9ff732669b879a8a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gaa24faeaeabed94bc9ff732669b879a8a">COIN_DEBUG_SPIDERMONKEY_BINDING</a></td></tr>
+<tr class="separator:gaa24faeaeabed94bc9ff732669b879a8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6d847145f404a75f9f073f93331fb41a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga6d847145f404a75f9f073f93331fb41a">COIN_DEBUG_STRING_GROW</a></td></tr>
+<tr class="separator:ga6d847145f404a75f9f073f93331fb41a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadbcb0e2a26353d9156bc97e87f51df63"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gadbcb0e2a26353d9156bc97e87f51df63">COIN_DEBUG_TRACK_SOBASE_INSTANCES</a></td></tr>
+<tr class="separator:gadbcb0e2a26353d9156bc97e87f51df63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4c5d8f0cbc7641fa9ebe2be351498075"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga4c5d8f0cbc7641fa9ebe2be351498075">COIN_DEBUG_VBO</a></td></tr>
+<tr class="separator:ga4c5d8f0cbc7641fa9ebe2be351498075"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3f4905c7632cae1ecf879f2524f7a9b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga3f4905c7632cae1ecf879f2524f7a9b9">COIN_DEBUG_VRMLSCRIPT</a></td></tr>
+<tr class="separator:ga3f4905c7632cae1ecf879f2524f7a9b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae5ea9aff6622fd1236f2e74690fab1f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gae5ea9aff6622fd1236f2e74690fab1f1">COIN_DEBUG_WRITEREFS</a></td></tr>
+<tr class="separator:gae5ea9aff6622fd1236f2e74690fab1f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacc8788192252e09ed3f717b1eeb4a16a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gacc8788192252e09ed3f717b1eeb4a16a">COIN_DISABLE_UTF8</a></td></tr>
+<tr class="separator:gacc8788192252e09ed3f717b1eeb4a16a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga28acbe83dfc3704b73b39bdab69303a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga28acbe83dfc3704b73b39bdab69303a2">COIN_DONT_INFORM_INDIRECT_RENDERING</a></td></tr>
+<tr class="separator:ga28acbe83dfc3704b73b39bdab69303a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab314494bb3ca81e80c64aeb0fef8940c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gab314494bb3ca81e80c64aeb0fef8940c">COIN_DONT_MANGLE_OUTPUT_NAMES</a></td></tr>
+<tr class="separator:gab314494bb3ca81e80c64aeb0fef8940c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3b7fe664d596eacb148a8675457adfde"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga3b7fe664d596eacb148a8675457adfde">COIN_DONT_USE_FBO</a></td></tr>
+<tr class="separator:ga3b7fe664d596eacb148a8675457adfde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacc3ec6854a39775eff0c8eab3f1a9951"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gacc3ec6854a39775eff0c8eab3f1a9951">COIN_ENABLE_CONFORMANT_GL_CLAMP</a></td></tr>
+<tr class="separator:gacc3ec6854a39775eff0c8eab3f1a9951"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga25235c1cdc3c0286344c1eefdfe0e1b7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga25235c1cdc3c0286344c1eefdfe0e1b7">COIN_ENABLE_VBO</a></td></tr>
+<tr class="separator:ga25235c1cdc3c0286344c1eefdfe0e1b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa49b5e6b3aa71be0bc74a835d5b08cdc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gaa49b5e6b3aa71be0bc74a835d5b08cdc">COIN_EXTSELECTION_SAVE_OFFSCREENBUFFER</a></td></tr>
+<tr class="separator:gaa49b5e6b3aa71be0bc74a835d5b08cdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0aa96a2c671bb3c9d80fbbb617024dbc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga0aa96a2c671bb3c9d80fbbb617024dbc">COIN_FONT_PATH</a></td></tr>
+<tr class="separator:ga0aa96a2c671bb3c9d80fbbb617024dbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga204481c1d7cf268007bf6984c5ad5f30"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga204481c1d7cf268007bf6984c5ad5f30">COIN_FONTCONFIG_LIBNAME</a></td></tr>
+<tr class="separator:ga204481c1d7cf268007bf6984c5ad5f30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga933bff42283f134e529902b01a972225"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga933bff42283f134e529902b01a972225">COIN_FORCE_AGL</a></td></tr>
+<tr class="separator:ga933bff42283f134e529902b01a972225"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4257e1826f35d3e05faeaba07e9c4c5f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga4257e1826f35d3e05faeaba07e9c4c5f">COIN_FORCE_FONTCONFIG_OFF</a></td></tr>
+<tr class="separator:ga4257e1826f35d3e05faeaba07e9c4c5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacd5a3b63f91864450781ebeb03f4b893"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gacd5a3b63f91864450781ebeb03f4b893">COIN_FORCE_FREETYPE_OFF</a></td></tr>
+<tr class="separator:gacd5a3b63f91864450781ebeb03f4b893"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4a81e1b0083ca7ce6bdd518e429d5ab8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga4a81e1b0083ca7ce6bdd518e429d5ab8">COIN_FORCE_GL1_0_ONLY</a></td></tr>
+<tr class="separator:ga4a81e1b0083ca7ce6bdd518e429d5ab8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8ae1212fb971402447280627d0f4aee3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga8ae1212fb971402447280627d0f4aee3">COIN_FORCE_TILED_OFFSCREENRENDERING</a></td></tr>
+<tr class="separator:ga8ae1212fb971402447280627d0f4aee3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga08232d335b7fc29b5e0cee626c045f82"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga08232d335b7fc29b5e0cee626c045f82">COIN_FORCE_WIN32FONTS_OFF</a></td></tr>
+<tr class="separator:ga08232d335b7fc29b5e0cee626c045f82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga731b0e30e1939bd3abebe6b96680efb4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga731b0e30e1939bd3abebe6b96680efb4">COIN_FREETYPE2_LIBNAME</a></td></tr>
+<tr class="separator:ga731b0e30e1939bd3abebe6b96680efb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac9d5b6207d1646b1c5763fa0e2de47da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gac9d5b6207d1646b1c5763fa0e2de47da">COIN_FULL_INDIRECT_RENDERING</a></td></tr>
+<tr class="separator:gac9d5b6207d1646b1c5763fa0e2de47da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf5eed218d9d54e605f70cac6450384a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gaf5eed218d9d54e605f70cac6450384a4">COIN_GL_DISABLE_VBO</a></td></tr>
+<tr class="separator:gaf5eed218d9d54e605f70cac6450384a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7a624f62c581524264eacb8a7f770071"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga7a624f62c581524264eacb8a7f770071">COIN_GL_NO_CURRENT_CONTEXT_CHECK</a></td></tr>
+<tr class="separator:ga7a624f62c581524264eacb8a7f770071"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaebfb3f48ce42f98cf97cebda2fc8de7d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gaebfb3f48ce42f98cf97cebda2fc8de7d">COIN_GLBBOX</a></td></tr>
+<tr class="separator:gaebfb3f48ce42f98cf97cebda2fc8de7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga189bff7fbefd8c698889694d3a492cd5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga189bff7fbefd8c698889694d3a492cd5">COIN_GLERROR_DEBUGGING</a></td></tr>
+<tr class="separator:ga189bff7fbefd8c698889694d3a492cd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaacbd50b3422935145bf3097f3b0d3087"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gaacbd50b3422935145bf3097f3b0d3087">COIN_GLGLUE_DISABLE_NON_POWER_OF_TWO_TEXTURES</a></td></tr>
+<tr class="separator:gaacbd50b3422935145bf3097f3b0d3087"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0bcfbc654ab733a69eeed12d0ffeb94d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga0bcfbc654ab733a69eeed12d0ffeb94d">COIN_GLGLUE_DISABLE_PALETTED_TEXTURE</a></td></tr>
+<tr class="separator:ga0bcfbc654ab733a69eeed12d0ffeb94d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga17993d70c539212b7ea131c3a414aa08"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga17993d70c539212b7ea131c3a414aa08">COIN_GLGLUE_DISABLE_VBO_IN_DISPLAYLIST</a></td></tr>
+<tr class="separator:ga17993d70c539212b7ea131c3a414aa08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaaab7c4761acb993269c0b6defc6e87fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gaaab7c4761acb993269c0b6defc6e87fb">COIN_GLGLUE_NO_ELSA_WARNING</a></td></tr>
+<tr class="separator:gaaab7c4761acb993269c0b6defc6e87fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga340d38d82af4dd96d2faa754dcea3f28"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga340d38d82af4dd96d2faa754dcea3f28">COIN_GLGLUE_NO_G400_WARNING</a></td></tr>
+<tr class="separator:ga340d38d82af4dd96d2faa754dcea3f28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafe059aa362e52cf6c67bac9d80e76d2a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gafe059aa362e52cf6c67bac9d80e76d2a">COIN_GLGLUE_NO_RADEON_WARNING</a></td></tr>
+<tr class="separator:gafe059aa362e52cf6c67bac9d80e76d2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga65e6472cdd260290ae9274654b30ecfb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga65e6472cdd260290ae9274654b30ecfb">COIN_GLGLUE_NO_SUN_EXPERT3D_WARNING</a></td></tr>
+<tr class="separator:ga65e6472cdd260290ae9274654b30ecfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad66d93ef16d06ccf1b069ae5e904ff78"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gad66d93ef16d06ccf1b069ae5e904ff78">COIN_GLGLUE_NO_TRIDENT_WARNING</a></td></tr>
+<tr class="separator:gad66d93ef16d06ccf1b069ae5e904ff78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9726866bef40fba074f2fb44259cd8d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga9726866bef40fba074f2fb44259cd8d1">COIN_GLGLUE_SILENCE_DRIVER_WARNINGS</a></td></tr>
+<tr class="separator:ga9726866bef40fba074f2fb44259cd8d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gace7293f684f5a8226303a30b356bcc59"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gace7293f684f5a8226303a30b356bcc59">COIN_GLU_LIBNAME</a></td></tr>
+<tr class="separator:gace7293f684f5a8226303a30b356bcc59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadef74b6ad69768ef63db05eaee034341"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gadef74b6ad69768ef63db05eaee034341">COIN_GLU_SILENCE_TESS_COMBINE_WARNING</a></td></tr>
+<tr class="separator:gadef74b6ad69768ef63db05eaee034341"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf1c2093870e72ccf7c8f046fad4bfbb2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gaf1c2093870e72ccf7c8f046fad4bfbb2">COIN_GLX_PIXMAP_DIRECT_RENDERING</a></td></tr>
+<tr class="separator:gaf1c2093870e72ccf7c8f046fad4bfbb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga993070d4e52f9c51f4996f2f301ee52a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga993070d4e52f9c51f4996f2f301ee52a">COIN_GLXGLUE_NO_GLX13_PBUFFERS</a></td></tr>
+<tr class="separator:ga993070d4e52f9c51f4996f2f301ee52a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5258d9404c2bf90474f9be0d4da8f7e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga5258d9404c2bf90474f9be0d4da8f7e5">COIN_GLXGLUE_NO_PBUFFERS</a></td></tr>
+<tr class="separator:ga5258d9404c2bf90474f9be0d4da8f7e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga742145dc4b01b8a113e418b0a6ddee9f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga742145dc4b01b8a113e418b0a6ddee9f">COIN_HANDLE_STACK_OVERFLOW</a></td></tr>
+<tr class="separator:ga742145dc4b01b8a113e418b0a6ddee9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga83ce1001456f60648a778cc64e82d1a8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga83ce1001456f60648a778cc64e82d1a8">COIN_MAXIMUM_TEXTURE2_SIZE</a></td></tr>
+<tr class="separator:ga83ce1001456f60648a778cc64e82d1a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa5f9d6372d10298e698a7a17e7c4a4e9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gaa5f9d6372d10298e698a7a17e7c4a4e9">COIN_MAXIMUM_TEXTURE3_SIZE</a></td></tr>
+<tr class="separator:gaa5f9d6372d10298e698a7a17e7c4a4e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7283d138f95dc54c2d69b5520dcb5500"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga7283d138f95dc54c2d69b5520dcb5500">COIN_NESTED_CACHING</a></td></tr>
+<tr class="separator:ga7283d138f95dc54c2d69b5520dcb5500"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8c89a53ce2a0d1e3857ea3540ff3b358"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga8c89a53ce2a0d1e3857ea3540ff3b358">COIN_NO_NVIDIA_COLOR_PER_FACE_BUG_WORKAROUND</a></td></tr>
+<tr class="separator:ga8c89a53ce2a0d1e3857ea3540ff3b358"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9e117ec4223842e36e8d950b51697c46"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga9e117ec4223842e36e8d950b51697c46">COIN_NO_SOTYPE_DYNLOAD</a></td></tr>
+<tr class="separator:ga9e117ec4223842e36e8d950b51697c46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8ca3d1ee345ec75836f520539b699f9b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga8ca3d1ee345ec75836f520539b699f9b">COIN_NORMALIZATION_CUBEMAP_SIZE</a></td></tr>
+<tr class="separator:ga8ca3d1ee345ec75836f520539b699f9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga10737573873c9079b67bd66ba84175f4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga10737573873c9079b67bd66ba84175f4">COIN_NOT_STRICT_VRML97</a></td></tr>
+<tr class="separator:ga10737573873c9079b67bd66ba84175f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa6a3b1230da972797b4d774786345082"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gaa6a3b1230da972797b4d774786345082">COIN_NUM_SORTED_LAYERS_PASSES</a></td></tr>
+<tr class="separator:gaa6a3b1230da972797b4d774786345082"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2676124ca3ab75d2bc09ce1a1dec97fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga2676124ca3ab75d2bc09ce1a1dec97fa">COIN_OFFSCREEN_STENCIL_BITS</a></td></tr>
+<tr class="separator:ga2676124ca3ab75d2bc09ce1a1dec97fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga76c76e6c84bafaafae15b8173c684a2e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga76c76e6c84bafaafae15b8173c684a2e">COIN_OFFSCREENRENDERER_MAX_TILESIZE</a></td></tr>
+<tr class="separator:ga76c76e6c84bafaafae15b8173c684a2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga78a40fec5d1ba802d0768769fc6423fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga78a40fec5d1ba802d0768769fc6423fb">COIN_OFFSCREENRENDERER_TILEHEIGHT</a></td></tr>
+<tr class="separator:ga78a40fec5d1ba802d0768769fc6423fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae95acf0bc238fdf2c7ce3dc285f007a6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gae95acf0bc238fdf2c7ce3dc285f007a6">COIN_OFFSCREENRENDERER_TILEWIDTH</a></td></tr>
+<tr class="separator:gae95acf0bc238fdf2c7ce3dc285f007a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad475a1075ec8665f3000c2b8f9682f1b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gad475a1075ec8665f3000c2b8f9682f1b">COIN_OLD_NURBS_COMPLEXITY</a></td></tr>
+<tr class="separator:gad475a1075ec8665f3000c2b8f9682f1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaaca199dac7fb359e3fdc6741ab9bd872"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gaaca199dac7fb359e3fdc6741ab9bd872">COIN_OLDSTYLE_FORMATTING</a></td></tr>
+<tr class="separator:gaaca199dac7fb359e3fdc6741ab9bd872"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga36ca646a5704c19038a5fc8b3b01ee12"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga36ca646a5704c19038a5fc8b3b01ee12">COIN_OPENAL_LIBNAME</a></td></tr>
+<tr class="separator:ga36ca646a5704c19038a5fc8b3b01ee12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga55cd1878045be17d08279cc82f575c2e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga55cd1878045be17d08279cc82f575c2e">COIN_PREFER_GLPOLYGONOFFSET_EXT</a></td></tr>
+<tr class="separator:ga55cd1878045be17d08279cc82f575c2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabf5caa8df0f1e1dffc16540f6a0f2d5b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gabf5caa8df0f1e1dffc16540f6a0f2d5b">COIN_PREFER_GLU_TESSELLATOR</a></td></tr>
+<tr class="separator:gabf5caa8df0f1e1dffc16540f6a0f2d5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa961552d7a272cffa96986008e4559ef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gaa961552d7a272cffa96986008e4559ef">COIN_PROFILER</a></td></tr>
+<tr class="separator:gaa961552d7a272cffa96986008e4559ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7a452448717da283f227a6e0372d98e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga7a452448717da283f227a6e0372d98e1">COIN_PROFILER_OVERLAY</a></td></tr>
+<tr class="separator:ga7a452448717da283f227a6e0372d98e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadc08a2ed84e40e44d6eb805349bfdb1e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gadc08a2ed84e40e44d6eb805349bfdb1e">COIN_QUADMESH_PRECISE_LIGHTING</a></td></tr>
+<tr class="separator:gadc08a2ed84e40e44d6eb805349bfdb1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga46b8021248b01518f74e5df4f3c2bb9a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga46b8021248b01518f74e5df4f3c2bb9a">COIN_RANDOMIZE_RENDER_CACHING</a></td></tr>
+<tr class="separator:ga46b8021248b01518f74e5df4f3c2bb9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga165feb145cfd7f49df3cd6a97071c26d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga165feb145cfd7f49df3cd6a97071c26d">COIN_REDUCE_LINEAR_NURBS_STEPS</a></td></tr>
+<tr class="separator:ga165feb145cfd7f49df3cd6a97071c26d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8c8c8b0022fc3d2badd4c5c7bac82fcd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga8c8c8b0022fc3d2badd4c5c7bac82fcd">COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE</a></td></tr>
+<tr class="separator:ga8c8c8b0022fc3d2badd4c5c7bac82fcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga61addf80a3f7ad56c9df060afda037f4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga61addf80a3f7ad56c9df060afda037f4">COIN_SIMAGE_LIBNAME</a></td></tr>
+<tr class="separator:ga61addf80a3f7ad56c9df060afda037f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga117718249c07a559316a5ab06ee2d3ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga117718249c07a559316a5ab06ee2d3ad">COIN_SMART_CACHING</a></td></tr>
+<tr class="separator:ga117718249c07a559316a5ab06ee2d3ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5f815c4bd3e73423097eb410c530c604"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga5f815c4bd3e73423097eb410c530c604">COIN_SOINPUT_SEARCH_GLOBAL_DICT</a></td></tr>
+<tr class="separator:ga5f815c4bd3e73423097eb410c530c604"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3dd5609f80b099f4b86ee280a477292f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga3dd5609f80b099f4b86ee280a477292f">COIN_SOOFFSCREENRENDERER_ALLOW_RESOURCEHOG</a></td></tr>
+<tr class="separator:ga3dd5609f80b099f4b86ee280a477292f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga91e3e56e17045991d6b8e4a7afe2f056"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga91e3e56e17045991d6b8e4a7afe2f056">COIN_SORTED_LAYERS_USE_NVIDIA_RC</a></td></tr>
+<tr class="separator:ga91e3e56e17045991d6b8e4a7afe2f056"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga68e0a11c1fb3765f5f2513f7d71cf273"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga68e0a11c1fb3765f5f2513f7d71cf273">COIN_SOUND_BUFFER_LENGTH</a></td></tr>
+<tr class="separator:ga68e0a11c1fb3765f5f2513f7d71cf273"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga31b4b9e855837945ed7263bdcaa3307e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga31b4b9e855837945ed7263bdcaa3307e">COIN_SOUND_DISABLE</a></td></tr>
+<tr class="separator:ga31b4b9e855837945ed7263bdcaa3307e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaca77175c26f048fc7a56abea73c7a570"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gaca77175c26f048fc7a56abea73c7a570">COIN_SOUND_DRIVER_NAME</a></td></tr>
+<tr class="separator:gaca77175c26f048fc7a56abea73c7a570"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabc1642132634e56bcab3a54cdf552eef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gabc1642132634e56bcab3a54cdf552eef">COIN_SOUND_ENABLE</a></td></tr>
+<tr class="separator:gabc1642132634e56bcab3a54cdf552eef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3e2c52fc742c67a698efd763976ab3e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga3e2c52fc742c67a698efd763976ab3e0">COIN_SOUND_INTRO_PAUSE</a></td></tr>
+<tr class="separator:ga3e2c52fc742c67a698efd763976ab3e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7bdb8c1d7d7b80adc7a68a7dec828488"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga7bdb8c1d7d7b80adc7a68a7dec828488">COIN_SOUND_NUM_BUFFERS</a></td></tr>
+<tr class="separator:ga7bdb8c1d7d7b80adc7a68a7dec828488"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga45691a7924c93b53f1e812a1e32c8a26"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga45691a7924c93b53f1e812a1e32c8a26">COIN_SOUND_THREAD_SLEEP_TIME</a></td></tr>
+<tr class="separator:ga45691a7924c93b53f1e812a1e32c8a26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3186e3287f274b3af87e6d60e29d6ff5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga3186e3287f274b3af87e6d60e29d6ff5">COIN_SPIDERMONKEY_LIBNAME</a></td></tr>
+<tr class="separator:ga3186e3287f274b3af87e6d60e29d6ff5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga20f9cc473f3572486af7e18e2da0ef76"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga20f9cc473f3572486af7e18e2da0ef76">COIN_TEX2_ANISOTROPIC_LIMIT</a></td></tr>
+<tr class="separator:ga20f9cc473f3572486af7e18e2da0ef76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga185320717d5b7f2d13916760b8c5e045"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga185320717d5b7f2d13916760b8c5e045">COIN_TEX2_LINEAR_LIMIT</a></td></tr>
+<tr class="separator:ga185320717d5b7f2d13916760b8c5e045"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5c2d9df7b36ef9582ae011056f9bfb6c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga5c2d9df7b36ef9582ae011056f9bfb6c">COIN_TEX2_LINEAR_MIPMAP_LIMIT</a></td></tr>
+<tr class="separator:ga5c2d9df7b36ef9582ae011056f9bfb6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacf02c7b3e3a234c707c2da8692aff1e8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gacf02c7b3e3a234c707c2da8692aff1e8">COIN_TEX2_MIPMAP_LIMIT</a></td></tr>
+<tr class="separator:gacf02c7b3e3a234c707c2da8692aff1e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga37c3053a7d2e969fedbabc869b0dfad8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga37c3053a7d2e969fedbabc869b0dfad8">COIN_TEX2_SCALEUP_LIMIT</a></td></tr>
+<tr class="separator:ga37c3053a7d2e969fedbabc869b0dfad8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3877be7fd2ef906a7946909577281c4e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga3877be7fd2ef906a7946909577281c4e">COIN_TEX2_USE_GLTEXSUBIMAGE</a></td></tr>
+<tr class="separator:ga3877be7fd2ef906a7946909577281c4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaded751af564b7687a3137f5dcf0026b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gaded751af564b7687a3137f5dcf0026b3">COIN_TEX2_USE_SGIS_GENERATE_MIPMAP</a></td></tr>
+<tr class="separator:gaded751af564b7687a3137f5dcf0026b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga09298eef78a1fa87fd394142b93c78f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga09298eef78a1fa87fd394142b93c78f1">COIN_VBO</a></td></tr>
+<tr class="separator:ga09298eef78a1fa87fd394142b93c78f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga49c2d0f121c9621b0a22dd2e801a3f3a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga49c2d0f121c9621b0a22dd2e801a3f3a">COIN_VBO_MAX_LIMIT</a></td></tr>
+<tr class="separator:ga49c2d0f121c9621b0a22dd2e801a3f3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae490c79818e5b740fa4c0d70a0a3ce44"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gae490c79818e5b740fa4c0d70a0a3ce44">COIN_VBO_MIN_LIMIT</a></td></tr>
+<tr class="separator:gae490c79818e5b740fa4c0d70a0a3ce44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafff36f9cad1322e147739161279022dd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gafff36f9cad1322e147739161279022dd">COIN_VERTEX_ARRAYS</a></td></tr>
+<tr class="separator:gafff36f9cad1322e147739161279022dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1a8a23c9700aba9d269fc5d13a728c83"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga1a8a23c9700aba9d269fc5d13a728c83">COIN_VIEWUP</a></td></tr>
+<tr class="separator:ga1a8a23c9700aba9d269fc5d13a728c83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga70f080dfebc739f7c9743be051e8f514"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga70f080dfebc739f7c9743be051e8f514">COIN_WGLGLUE_NO_PBUFFERS</a></td></tr>
+<tr class="separator:ga70f080dfebc739f7c9743be051e8f514"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga58c4d2cf2da06b9e7ff1d28c558a3b47"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga58c4d2cf2da06b9e7ff1d28c558a3b47">COIN_ZLIB_LIBNAME</a></td></tr>
+<tr class="separator:ga58c4d2cf2da06b9e7ff1d28c558a3b47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga242bc75fbc202307ad1fb3ae0b8b316e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga242bc75fbc202307ad1fb3ae0b8b316e">COINDIR</a></td></tr>
+<tr class="separator:ga242bc75fbc202307ad1fb3ae0b8b316e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga160f0493fab38338b2f643e503f42c5a"><td class="memItemLeft" align="right" valign="top">typedef&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a></td></tr>
+<tr class="separator:ga160f0493fab38338b2f643e503f42c5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga68bb6f654e01bed206d40bedee84e756"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga68bb6f654e01bed206d40bedee84e756">IV_SEPARATOR_MAX_CACHES</a></td></tr>
+<tr class="separator:ga68bb6f654e01bed206d40bedee84e756"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0aeab0bd809f7e5cdc64f6b67ec1a9ac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga0aeab0bd809f7e5cdc64f6b67ec1a9ac">OIV_NUM_SORTED_LAYERS_PASSES</a></td></tr>
+<tr class="separator:ga0aeab0bd809f7e5cdc64f6b67ec1a9ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga55da7b788a9a910ce2ddfebad2a74c34"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#ga55da7b788a9a910ce2ddfebad2a74c34">SO_DRAGGER_DIR</a></td></tr>
+<tr class="separator:ga55da7b788a9a910ce2ddfebad2a74c34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa94c258a246eff7b6e4d36a01c786031"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gaa94c258a246eff7b6e4d36a01c786031">SO_SHADER_DIR</a></td></tr>
+<tr class="separator:gaa94c258a246eff7b6e4d36a01c786031"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaeb1dcdafd3fe5f8f015d07406747698c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__coin__envvars.html#gaeb1dcdafd3fe5f8f015d07406747698c">WINDIR</a></td></tr>
+<tr class="separator:gaeb1dcdafd3fe5f8f015d07406747698c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<p>Various aspects of the Coin runtime behaviour can be controlled through setting different environment variables to some value. </p>
+<p>Most of these variables are there for debugging and problem-workaround purposes, but a few are for telling Coin where to locate external resource files.</p>
+<p>Here we will set up a list of some of the environment variables Coin will check for and can alter behavior because of. </p>
+
+
+<h3><a id="coin_envvars_profiler"></a>Scene Graph Profiler</h3><div class="textblock">The scene graph profiler subsystem uses the following environment variables:</p><ul>
+<li><a class="el" href="group__coin__envvars.html#gaa961552d7a272cffa96986008e4559ef">COIN_PROFILER</a></li>
+<li><a class="el" href="group__coin__envvars.html#ga7a452448717da283f227a6e0372d98e1">COIN_PROFILER_OVERLAY</a></li>
+</ul>
+A lot of other environment variables will also affect the profiling and listing them all would be tedious. Most useful is perhaps the <a class="el" href="group__coin__envvars.html#ga68bb6f654e01bed206d40bedee84e756">IV_SEPARATOR_MAX_CACHES</a> variable for disabling caching, and those that disable features like vertex arrays and frame buffer objects, but using these will of course cause you to profile special cases that may not be as important as you might think. </div><h2 class="groupheader">Variable Documentation</h2>
+<a id="gaed99424a50e132d6d22e55ff257e3e9b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaed99424a50e132d6d22e55ff257e3e9b">&#9670;&nbsp;</a></span>COIN_AGLGLUE_NO_PBUFFERS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_AGLGLUE_NO_PBUFFERS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, software rendering of offscreen contexts is forced for AGL (Mac OS X). </p>
+
+</div>
+</div>
+<a id="ga4c89fd2b9ddf4a6b63e2880891093f08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4c89fd2b9ddf4a6b63e2880891093f08">&#9670;&nbsp;</a></span>COIN_ALLOW_SPIDERMONKEY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_ALLOW_SPIDERMONKEY</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gae5b82c8a059f77d2c8e6bbc3f7da6062"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae5b82c8a059f77d2c8e6bbc3f7da6062">&#9670;&nbsp;</a></span>COIN_AUTO_CACHING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_AUTO_CACHING</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value of 0, auto caching will be disabled. It is enabled by default. </p>
+
+</div>
+</div>
+<a id="gad6001c165dd6a19447f7c9cb9cef8134"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad6001c165dd6a19447f7c9cb9cef8134">&#9670;&nbsp;</a></span>COIN_AUTOCACHE_LOCAL_MAX</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_AUTOCACHE_LOCAL_MAX</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Can be used to change the disable-caching limit.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__coin__envvars.html#gae0e14afa32d5ffcf2a6d1cc55aaac462">COIN_AUTOCACHE_LOCAL_MIN</a>, <a class="el" href="group__coin__envvars.html#ga57e557edf508c6f196b62b753312cae3">COIN_AUTOCACHE_REMOTE_MAX</a> </dd></dl>
+
+</div>
+</div>
+<a id="gae0e14afa32d5ffcf2a6d1cc55aaac462"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae0e14afa32d5ffcf2a6d1cc55aaac462">&#9670;&nbsp;</a></span>COIN_AUTOCACHE_LOCAL_MIN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_AUTOCACHE_LOCAL_MIN</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Can be used to change the enable-caching limit.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__coin__envvars.html#gad6001c165dd6a19447f7c9cb9cef8134">COIN_AUTOCACHE_LOCAL_MAX</a>, <a class="el" href="group__coin__envvars.html#ga8008e2e4b71d235c550b2a1e188f4412">COIN_AUTOCACHE_REMOTE_MIN</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga57e557edf508c6f196b62b753312cae3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga57e557edf508c6f196b62b753312cae3">&#9670;&nbsp;</a></span>COIN_AUTOCACHE_REMOTE_MAX</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_AUTOCACHE_REMOTE_MAX</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Can be used to change the disable-caching limit for remote rendering.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__coin__envvars.html#ga8008e2e4b71d235c550b2a1e188f4412">COIN_AUTOCACHE_REMOTE_MIN</a>, <a class="el" href="group__coin__envvars.html#gad6001c165dd6a19447f7c9cb9cef8134">COIN_AUTOCACHE_LOCAL_MAX</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga8008e2e4b71d235c550b2a1e188f4412"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8008e2e4b71d235c550b2a1e188f4412">&#9670;&nbsp;</a></span>COIN_AUTOCACHE_REMOTE_MIN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_AUTOCACHE_REMOTE_MIN</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Can be used to change the enable-caching limit for remote rendering.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__coin__envvars.html#ga57e557edf508c6f196b62b753312cae3">COIN_AUTOCACHE_REMOTE_MAX</a>, <a class="el" href="group__coin__envvars.html#gae0e14afa32d5ffcf2a6d1cc55aaac462">COIN_AUTOCACHE_LOCAL_MIN</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga0db997be15a8e8cb4e176f1a5950d141"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0db997be15a8e8cb4e176f1a5950d141">&#9670;&nbsp;</a></span>COIN_AUTOCACHE_VBO_LIMIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_AUTOCACHE_VBO_LIMIT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Can be used to avoid creating caches when rendering large VBOs. </p>
+
+</div>
+</div>
+<a id="gaccfa9bd01bec3355ec87015e4110b3fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaccfa9bd01bec3355ec87015e4110b3fa">&#9670;&nbsp;</a></span>COIN_BZIP2_LIBNAME</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_BZIP2_LIBNAME</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the system shared library name for the bzip2 library. </p>
+
+</div>
+</div>
+<a id="gab02553d033733fc89b976850d958df7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab02553d033733fc89b976850d958df7f">&#9670;&nbsp;</a></span>COIN_CALCULATE_NURBS_NORMALS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_CALCULATE_NURBS_NORMALS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, normals will be calculated for the knots of a NURBS surface. This may greatly improve the rendering quality. </p>
+
+</div>
+</div>
+<a id="ga163b4bee09739c7dba6e445cadde2f70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga163b4bee09739c7dba6e445cadde2f70">&#9670;&nbsp;</a></span>COIN_CG_LIBNAME</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_CG_LIBNAME</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the system shared library name for the CG library. </p>
+
+</div>
+</div>
+<a id="ga4203b8bae9a614eb7f62c3405b0d09ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4203b8bae9a614eb7f62c3405b0d09ac">&#9670;&nbsp;</a></span>COIN_CGLGLUE_NO_PBUFFERS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_CGLGLUE_NO_PBUFFERS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, software rendering of offscreen contexts is forced for CGL (Mac OS X). </p>
+
+</div>
+</div>
+<a id="gaaef79266d00c91619db6970261283019"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaaef79266d00c91619db6970261283019">&#9670;&nbsp;</a></span>COIN_DEBUG_3DS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_3DS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>By default only error messages are generated. COIN_DEBUG_3DS environment variable can be used to specify amount of debug messages: 0 .. only error messages (default) 1 .. warnings that usually concerns data parsed from the 3ds file 2 .. print basic 3ds file structure info 3 .. print everything </p>
+
+</div>
+</div>
+<a id="ga8876240dd54921d0383450be383d0fdd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8876240dd54921d0383450be383d0fdd">&#9670;&nbsp;</a></span>COIN_DEBUG_ASSERT_SOBASE_SETNAME</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_ASSERT_SOBASE_SETNAME</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga096cfb4c1b2af14362f0143706eb6e5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga096cfb4c1b2af14362f0143706eb6e5b">&#9670;&nbsp;</a></span>COIN_DEBUG_AUDIO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_AUDIO</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, additional debug information is output when sound support is enabled. </p>
+
+</div>
+</div>
+<a id="ga91de9e91fc3bc34e259d9d415799b7fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga91de9e91fc3bc34e259d9d415799b7fd">&#9670;&nbsp;</a></span>COIN_DEBUG_BINARY_INPUT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_BINARY_INPUT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gadc1f729d9eba031babda1b1e5956d2e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadc1f729d9eba031babda1b1e5956d2e4">&#9670;&nbsp;</a></span>COIN_DEBUG_BREAK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_BREAK</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This environment variable is supported by Coin to set conditional breakpoints. It can be set to any number of functions in the form of a list separated by commas or spaces. The function names must be given as "classname::functionname" (i.e. without return type, parenthesis or argument types or names). If a debug message is posted from one of those functions, your program will be stopped (using assert(0)).</p>
+<p>This can be useful if you want to get core-dumps or enter a debugger whenever for instance a warning or an error is posted from some function (e.g. "SbVec3f::normalize"). This feature is only enabled in the debug version of Coin. </p>
+
+</div>
+</div>
+<a id="ga1273bb807ef53967c55921ce1cc66557"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1273bb807ef53967c55921ce1cc66557">&#9670;&nbsp;</a></span>COIN_DEBUG_CACHING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_CACHING</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, additional debug information is output about caching. </p>
+
+</div>
+</div>
+<a id="ga377903ed55fa1f8d0a8e0d2b43c7c447"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga377903ed55fa1f8d0a8e0d2b43c7c447">&#9670;&nbsp;</a></span>COIN_DEBUG_CLEANUP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_CLEANUP</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga6be7e716a13ad32f259283561d621791"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6be7e716a13ad32f259283561d621791">&#9670;&nbsp;</a></span>COIN_DEBUG_DL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_DL</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, additional debug information is output when loading dynamic libraries/shared objects. </p>
+
+</div>
+</div>
+<a id="gafb7d9a7f53267772a8917f799783e51a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafb7d9a7f53267772a8917f799783e51a">&#9670;&nbsp;</a></span>COIN_DEBUG_EXTRA</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_EXTRA</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga98356c3ca0074918440a09b2fdf2204c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga98356c3ca0074918440a09b2fdf2204c">&#9670;&nbsp;</a></span>COIN_DEBUG_FLATTEN_NODEKITS_ON_WRITE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_FLATTEN_NODEKITS_ON_WRITE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gaaab43c306c49c92e8cc7837fbe98ebc0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaaab43c306c49c92e8cc7837fbe98ebc0">&#9670;&nbsp;</a></span>COIN_DEBUG_FONTSUPPORT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_FONTSUPPORT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, an extensive amount of debug information about loading, initializing and using fonts will be output. Issues like missing fonts and other related problems will then be reported, so we advice you to first try to use this debugging option when something does not work quite as expected. </p>
+
+</div>
+</div>
+<a id="gad2485ddb1050b72aadc87ecbd4102e48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad2485ddb1050b72aadc87ecbd4102e48">&#9670;&nbsp;</a></span>COIN_DEBUG_GLGLUE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_GLGLUE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, make the wrapper initialization spit out lots of info about the underlying OpenGL implementation. </p>
+
+</div>
+</div>
+<a id="ga7b535e23af93e5e4a885e4d5321d5708"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7b535e23af93e5e4a885e4d5321d5708">&#9670;&nbsp;</a></span>COIN_DEBUG_GLRENDER_TRAVERSAL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_GLRENDER_TRAVERSAL</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gac471927112b8114e3ff80638a0c41186"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac471927112b8114e3ff80638a0c41186">&#9670;&nbsp;</a></span>COIN_DEBUG_GLU_INFO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_GLU_INFO</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gaa0c7252d566d12794c50afe2c949e26e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa0c7252d566d12794c50afe2c949e26e">&#9670;&nbsp;</a></span>COIN_DEBUG_GLU_VERSION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_GLU_VERSION</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga29a24548846897fba18074098b242ebf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga29a24548846897fba18074098b242ebf">&#9670;&nbsp;</a></span>COIN_DEBUG_GLUNURBSSURFACE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_GLUNURBSSURFACE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga8abcb9727bec09662a67bb2cb9c18beb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8abcb9727bec09662a67bb2cb9c18beb">&#9670;&nbsp;</a></span>COIN_DEBUG_IMPORT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_IMPORT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, additional debug information is output when importing files in Inventor format. </p>
+
+</div>
+</div>
+<a id="gaef2e81d0e905622b24946f6fb9906c25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaef2e81d0e905622b24946f6fb9906c25">&#9670;&nbsp;</a></span>COIN_DEBUG_INTERSECTIONDETECTIONACTION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_INTERSECTIONDETECTIONACTION</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gaf5d7ce55f98908f97b1808319a5c2c63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf5d7ce55f98908f97b1808319a5c2c63">&#9670;&nbsp;</a></span>COIN_DEBUG_LISTMODULES</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_LISTMODULES</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, additional debug information is output under Win32 when loading multiple instances of the same library. </p>
+
+</div>
+</div>
+<a id="ga63be89e95dc4d5439662fc426e8b23f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga63be89e95dc4d5439662fc426e8b23f4">&#9670;&nbsp;</a></span>COIN_DEBUG_MUTEX_COUNT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_MUTEX_COUNT = &quot;COIN_DEBUG_MUTEX_COUNT&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga0f3dec2e8867223f549730f6c85016c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0f3dec2e8867223f549730f6c85016c6">&#9670;&nbsp;</a></span>COIN_DEBUG_MUTEXLOCK_MAXTIME</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_MUTEXLOCK_MAXTIME</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga7d98e4e0dc3c2546fe6fa4f6bc2ffe74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7d98e4e0dc3c2546fe6fa4f6bc2ffe74">&#9670;&nbsp;</a></span>COIN_DEBUG_MUTEXLOCK_TIMING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_MUTEXLOCK_TIMING</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga6ec48b180882fd2359264bd67a6de5d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6ec48b180882fd2359264bd67a6de5d3">&#9670;&nbsp;</a></span>COIN_DEBUG_NORMALIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_NORMALIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gab88c648bca11e634df126a6d76785b69"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab88c648bca11e634df126a6d76785b69">&#9670;&nbsp;</a></span>COIN_DEBUG_NPRINTF</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_NPRINTF</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga6da066644fe988322d4574b0078e82b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6da066644fe988322d4574b0078e82b0">&#9670;&nbsp;</a></span>COIN_DEBUG_NURBS_COMPLEXITY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_NURBS_COMPLEXITY</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gac5cc3ed62995b02c71abe08a9fa39a94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac5cc3ed62995b02c71abe08a9fa39a94">&#9670;&nbsp;</a></span>COIN_DEBUG_ROOT_NOTIFICATIONS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_ROOT_NOTIFICATIONS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga9c1f39ff63f06e2254efb230830450a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9c1f39ff63f06e2254efb230830450a9">&#9670;&nbsp;</a></span>COIN_DEBUG_SIMAGE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_SIMAGE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga26044abce8cbe4888b6ded4c9faae61e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga26044abce8cbe4888b6ded4c9faae61e">&#9670;&nbsp;</a></span>COIN_DEBUG_SOEXTSELECTION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_SOEXTSELECTION</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gad651e8252160322c989f48ad06579aeb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad651e8252160322c989f48ad06579aeb">&#9670;&nbsp;</a></span>COIN_DEBUG_SOFILE_READ</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_SOFILE_READ</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gafb8e1b4dad5ff10c6f0a06bef219175c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafb8e1b4dad5ff10c6f0a06bef219175c">&#9670;&nbsp;</a></span>COIN_DEBUG_SOINPUT_FINDFILE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_SOINPUT_FINDFILE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, additional debug information is output when scanning through the include directories in order and trying to find a file in any of them (<a class="el" href="classSoInput.html#af720556440547befcb96c56fedcd43b8">SoInput::findFile</a>). </p>
+
+</div>
+</div>
+<a id="gaf16ac7d963c63f0eadf747e84b75b84c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf16ac7d963c63f0eadf747e84b75b84c">&#9670;&nbsp;</a></span>COIN_DEBUG_SOOFFSCREENRENDERER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_SOOFFSCREENRENDERER</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, additional debug information is output when doing offscreen rendering. </p>
+
+</div>
+</div>
+<a id="ga069aef2c8faa2ecb5d70e224c19d0fd2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga069aef2c8faa2ecb5d70e224c19d0fd2">&#9670;&nbsp;</a></span>COIN_DEBUG_SOOFFSCREENRENDERER_TILEPREFIX</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_SOOFFSCREENRENDERER_TILEPREFIX</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gaa24faeaeabed94bc9ff732669b879a8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa24faeaeabed94bc9ff732669b879a8a">&#9670;&nbsp;</a></span>COIN_DEBUG_SPIDERMONKEY_BINDING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_SPIDERMONKEY_BINDING</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga6d847145f404a75f9f073f93331fb41a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6d847145f404a75f9f073f93331fb41a">&#9670;&nbsp;</a></span>COIN_DEBUG_STRING_GROW</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_STRING_GROW</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gadbcb0e2a26353d9156bc97e87f51df63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadbcb0e2a26353d9156bc97e87f51df63">&#9670;&nbsp;</a></span>COIN_DEBUG_TRACK_SOBASE_INSTANCES</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_TRACK_SOBASE_INSTANCES</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga4c5d8f0cbc7641fa9ebe2be351498075"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4c5d8f0cbc7641fa9ebe2be351498075">&#9670;&nbsp;</a></span>COIN_DEBUG_VBO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_VBO</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga3f4905c7632cae1ecf879f2524f7a9b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3f4905c7632cae1ecf879f2524f7a9b9">&#9670;&nbsp;</a></span>COIN_DEBUG_VRMLSCRIPT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_VRMLSCRIPT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gae5ea9aff6622fd1236f2e74690fab1f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae5ea9aff6622fd1236f2e74690fab1f1">&#9670;&nbsp;</a></span>COIN_DEBUG_WRITEREFS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DEBUG_WRITEREFS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, additional debug information regarding writerefs is output. </p>
+
+</div>
+</div>
+<a id="gacc8788192252e09ed3f717b1eeb4a16a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacc8788192252e09ed3f717b1eeb4a16a">&#9670;&nbsp;</a></span>COIN_DISABLE_UTF8</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DISABLE_UTF8</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Coin from version 4.0 onwards expects all characters related to text rendering to be UTF-8 encoded.</p>
+<p>This variable should be a set, if you need to reinstate the old behavior of treating all characters according to the Western Latin-1 encoding. </p>
+
+</div>
+</div>
+<a id="ga28acbe83dfc3704b73b39bdab69303a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga28acbe83dfc3704b73b39bdab69303a2">&#9670;&nbsp;</a></span>COIN_DONT_INFORM_INDIRECT_RENDERING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DONT_INFORM_INDIRECT_RENDERING</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gab314494bb3ca81e80c64aeb0fef8940c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab314494bb3ca81e80c64aeb0fef8940c">&#9670;&nbsp;</a></span>COIN_DONT_MANGLE_OUTPUT_NAMES</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DONT_MANGLE_OUTPUT_NAMES</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, we try to preserve the original node names as far as possible instead of appending a "+&lt;refid&gt;" suffix. </p>
+
+</div>
+</div>
+<a id="ga3b7fe664d596eacb148a8675457adfde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3b7fe664d596eacb148a8675457adfde">&#9670;&nbsp;</a></span>COIN_DONT_USE_FBO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_DONT_USE_FBO</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gacc3ec6854a39775eff0c8eab3f1a9951"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacc3ec6854a39775eff0c8eab3f1a9951">&#9670;&nbsp;</a></span>COIN_ENABLE_CONFORMANT_GL_CLAMP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_ENABLE_CONFORMANT_GL_CLAMP</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>When this environment variable is set, GL_CLAMP will be used if SoGLImage::CLAMP is specified as the texture wrap mode. By default GL_CLAMP_TO_EDGE is used, since this is usually what people want. </p>
+
+</div>
+</div>
+<a id="ga25235c1cdc3c0286344c1eefdfe0e1b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga25235c1cdc3c0286344c1eefdfe0e1b7">&#9670;&nbsp;</a></span>COIN_ENABLE_VBO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_ENABLE_VBO</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gaa49b5e6b3aa71be0bc74a835d5b08cdc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa49b5e6b3aa71be0bc74a835d5b08cdc">&#9670;&nbsp;</a></span>COIN_EXTSELECTION_SAVE_OFFSCREENBUFFER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_EXTSELECTION_SAVE_OFFSCREENBUFFER</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If the environment variable is set to a file name, the content of the offscreen buffer is stored to disk for investigation. </p>
+
+</div>
+</div>
+<a id="ga0aa96a2c671bb3c9d80fbbb617024dbc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0aa96a2c671bb3c9d80fbbb617024dbc">&#9670;&nbsp;</a></span>COIN_FONT_PATH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_FONT_PATH</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>It is possible to specify the TrueType font file directly if <em>FreeType</em> is used as font engine. This is done by including ".ttf" in the filename, i.e. "Comic_Sans_MS.ttf". Coin will then search the local path for the running program and then the path specified by the "COIN_FONT_PATH" environment variable. If the program is using <em>FreeType</em> on a Windows platform, the "$WINDIR/Fonts" directory will also be searched. </p>
+
+</div>
+</div>
+<a id="ga204481c1d7cf268007bf6984c5ad5f30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga204481c1d7cf268007bf6984c5ad5f30">&#9670;&nbsp;</a></span>COIN_FONTCONFIG_LIBNAME</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_FONTCONFIG_LIBNAME</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the system shared library name for the Fontconfig library. </p>
+
+</div>
+</div>
+<a id="ga933bff42283f134e529902b01a972225"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga933bff42283f134e529902b01a972225">&#9670;&nbsp;</a></span>COIN_FORCE_AGL</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_FORCE_AGL</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, prefer using the old AGL bindings over CGL. Note that AGL is not available on 64-bit systems. The AGL code is not compiled into Coin by default, but must be enabled at configure-time using &ndash;enable-agl in addition to using this environment variable. </p>
+
+</div>
+</div>
+<a id="ga4257e1826f35d3e05faeaba07e9c4c5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4257e1826f35d3e05faeaba07e9c4c5f">&#9670;&nbsp;</a></span>COIN_FORCE_FONTCONFIG_OFF</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_FORCE_FONTCONFIG_OFF</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>In case you intend to use your application on systems where the <em>Fontconfig</em> library is expected to be not installed you should not make use of <em>Fontconfig's</em> font pattern syntax.</p>
+<p>If this environment variable is set to a value &gt; 0, the usage of <em>Fontconfig</em> can be prevented. </p>
+
+</div>
+</div>
+<a id="gacd5a3b63f91864450781ebeb03f4b893"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacd5a3b63f91864450781ebeb03f4b893">&#9670;&nbsp;</a></span>COIN_FORCE_FREETYPE_OFF</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_FORCE_FREETYPE_OFF</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>On Windows the Win32 GDI library is used. <em>FreeType</em> and <em>Fontconfig</em> are dynamically loaded on demand by Coin if font support is requested by a node. When font support is loaded on Windows, FreeType will have precedence over Win32 if located. This can be prevented if this environment variable is set to a value &gt; 0. </p>
+
+</div>
+</div>
+<a id="ga4a81e1b0083ca7ce6bdd518e429d5ab8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4a81e1b0083ca7ce6bdd518e429d5ab8">&#9670;&nbsp;</a></span>COIN_FORCE_GL1_0_ONLY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_FORCE_GL1_0_ONLY</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, disallow use of OpenGL1.1+ and extensions under all circumstances. </p>
+
+</div>
+</div>
+<a id="ga8ae1212fb971402447280627d0f4aee3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8ae1212fb971402447280627d0f4aee3">&#9670;&nbsp;</a></span>COIN_FORCE_TILED_OFFSCREENRENDERING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_FORCE_TILED_OFFSCREENRENDERING</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, offscreen rendering is forced to tiled rendering even when it can be done in a single chunk. </p>
+
+</div>
+</div>
+<a id="ga08232d335b7fc29b5e0cee626c045f82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga08232d335b7fc29b5e0cee626c045f82">&#9670;&nbsp;</a></span>COIN_FORCE_WIN32FONTS_OFF</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_FORCE_WIN32FONTS_OFF</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, the usage of Win32 fonts is disabled (even on Windows platform). </p>
+
+</div>
+</div>
+<a id="ga731b0e30e1939bd3abebe6b96680efb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga731b0e30e1939bd3abebe6b96680efb4">&#9670;&nbsp;</a></span>COIN_FREETYPE2_LIBNAME</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_FREETYPE2_LIBNAME</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the system shared library name for the FreeType library. </p>
+
+</div>
+</div>
+<a id="gac9d5b6207d1646b1c5763fa0e2de47da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac9d5b6207d1646b1c5763fa0e2de47da">&#9670;&nbsp;</a></span>COIN_FULL_INDIRECT_RENDERING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_FULL_INDIRECT_RENDERING</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, let Coin take advantage of OpenGL1.1+ and extensions even when doing remote/indirect rendering. </p>
+
+</div>
+</div>
+<a id="gaf5eed218d9d54e605f70cac6450384a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf5eed218d9d54e605f70cac6450384a4">&#9670;&nbsp;</a></span>COIN_GL_DISABLE_VBO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_GL_DISABLE_VBO</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga7a624f62c581524264eacb8a7f770071"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7a624f62c581524264eacb8a7f770071">&#9670;&nbsp;</a></span>COIN_GL_NO_CURRENT_CONTEXT_CHECK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_GL_NO_CURRENT_CONTEXT_CHECK</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gaebfb3f48ce42f98cf97cebda2fc8de7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaebfb3f48ce42f98cf97cebda2fc8de7d">&#9670;&nbsp;</a></span>COIN_GLBBOX</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_GLBBOX</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, rendering action traversals will apply a bounding box action before rendering. This will make sure bounding box caches are updated (needed for view frustum culling). The default Quarter/SoQt/SoWin/SoXt viewers will handle this at their end (which is the proper way to do it), so we don't do this by default. </p>
+
+</div>
+</div>
+<a id="ga189bff7fbefd8c698889694d3a492cd5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga189bff7fbefd8c698889694d3a492cd5">&#9670;&nbsp;</a></span>COIN_GLERROR_DEBUGGING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_GLERROR_DEBUGGING</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The GL error test is disabled by default for the optimized paths. If you get a GL error reporting an error in the Separator node, enable the error checking code by setting this environment variable to a value &gt; 0, to see exactly which node caused the error. </p>
+
+</div>
+</div>
+<a id="gaacbd50b3422935145bf3097f3b0d3087"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaacbd50b3422935145bf3097f3b0d3087">&#9670;&nbsp;</a></span>COIN_GLGLUE_DISABLE_NON_POWER_OF_TWO_TEXTURES</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_GLGLUE_DISABLE_NON_POWER_OF_TWO_TEXTURES</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>of non power of two textures. ATi and Intel both have had problems with this feature, especially on old drivers. Newer drivers are known to work. </p>
+
+</div>
+</div>
+<a id="ga0bcfbc654ab733a69eeed12d0ffeb94d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0bcfbc654ab733a69eeed12d0ffeb94d">&#9670;&nbsp;</a></span>COIN_GLGLUE_DISABLE_PALETTED_TEXTURE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_GLGLUE_DISABLE_PALETTED_TEXTURE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga17993d70c539212b7ea131c3a414aa08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga17993d70c539212b7ea131c3a414aa08">&#9670;&nbsp;</a></span>COIN_GLGLUE_DISABLE_VBO_IN_DISPLAYLIST</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_GLGLUE_DISABLE_VBO_IN_DISPLAYLIST</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, disable the use of VBOs in display lists. Older ATI Windows/Linux drivers had a nasty bug which caused a crash in OpenGL whenever a VBO render call was added to a display list. Newer drivers are known to work. </p>
+
+</div>
+</div>
+<a id="gaaab7c4761acb993269c0b6defc6e87fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaaab7c4761acb993269c0b6defc6e87fb">&#9670;&nbsp;</a></span>COIN_GLGLUE_NO_ELSA_WARNING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_GLGLUE_NO_ELSA_WARNING</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, do not warn about incompatible ELSA TNT2 Vanta/PCI/SSE graphics driver. </p>
+
+</div>
+</div>
+<a id="ga340d38d82af4dd96d2faa754dcea3f28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga340d38d82af4dd96d2faa754dcea3f28">&#9670;&nbsp;</a></span>COIN_GLGLUE_NO_G400_WARNING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_GLGLUE_NO_G400_WARNING</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, do not warn about incompatible Matrox G400 graphics driver. </p>
+
+</div>
+</div>
+<a id="gafe059aa362e52cf6c67bac9d80e76d2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafe059aa362e52cf6c67bac9d80e76d2a">&#9670;&nbsp;</a></span>COIN_GLGLUE_NO_RADEON_WARNING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_GLGLUE_NO_RADEON_WARNING</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, do not warn about incompatible Radeon 7500 DDR x86/SSE2 graphics driver. </p>
+
+</div>
+</div>
+<a id="ga65e6472cdd260290ae9274654b30ecfb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga65e6472cdd260290ae9274654b30ecfb">&#9670;&nbsp;</a></span>COIN_GLGLUE_NO_SUN_EXPERT3D_WARNING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_GLGLUE_NO_SUN_EXPERT3D_WARNING</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, do not warn about incompatible Sun Expert3D, VIS graphics driver. </p>
+
+</div>
+</div>
+<a id="gad66d93ef16d06ccf1b069ae5e904ff78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad66d93ef16d06ccf1b069ae5e904ff78">&#9670;&nbsp;</a></span>COIN_GLGLUE_NO_TRIDENT_WARNING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_GLGLUE_NO_TRIDENT_WARNING</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, do not warn about incompatible Trident Blade XP/AGP graphics driver. </p>
+
+</div>
+</div>
+<a id="ga9726866bef40fba074f2fb44259cd8d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9726866bef40fba074f2fb44259cd8d1">&#9670;&nbsp;</a></span>COIN_GLGLUE_SILENCE_DRIVER_WARNINGS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_GLGLUE_SILENCE_DRIVER_WARNINGS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, all known driver bugs will just be silently accepted and attempted to work around. </p>
+
+</div>
+</div>
+<a id="gace7293f684f5a8226303a30b356bcc59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gace7293f684f5a8226303a30b356bcc59">&#9670;&nbsp;</a></span>COIN_GLU_LIBNAME</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_GLU_LIBNAME</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the system shared library name for the GLU library. </p>
+
+</div>
+</div>
+<a id="gadef74b6ad69768ef63db05eaee034341"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadef74b6ad69768ef63db05eaee034341">&#9670;&nbsp;</a></span>COIN_GLU_SILENCE_TESS_COMBINE_WARNING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_GLU_SILENCE_TESS_COMBINE_WARNING</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, polygons with intersecting edges (a "bow-tie" polygon, for instance) will not be warned about (according to the GLU docs, the tessellator will be ok, it just ignores those polygons and generates no output). </p>
+
+</div>
+</div>
+<a id="gaf1c2093870e72ccf7c8f046fad4bfbb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf1c2093870e72ccf7c8f046fad4bfbb2">&#9670;&nbsp;</a></span>COIN_GLX_PIXMAP_DIRECT_RENDERING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_GLX_PIXMAP_DIRECT_RENDERING</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is used to control direct rendering in GLX for offscreen contexts. If the value is set to a value &gt; 0, direct rendering is forced. </p>
+
+</div>
+</div>
+<a id="ga993070d4e52f9c51f4996f2f301ee52a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga993070d4e52f9c51f4996f2f301ee52a">&#9670;&nbsp;</a></span>COIN_GLXGLUE_NO_GLX13_PBUFFERS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_GLXGLUE_NO_GLX13_PBUFFERS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, GLX 1.3 pbuffers support will not be used, but it will be attempted to use pbuffers through extensions. </p>
+
+</div>
+</div>
+<a id="ga5258d9404c2bf90474f9be0d4da8f7e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5258d9404c2bf90474f9be0d4da8f7e5">&#9670;&nbsp;</a></span>COIN_GLXGLUE_NO_PBUFFERS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_GLXGLUE_NO_PBUFFERS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, software rendering of offscreen contexts is forced for GLX. </p>
+
+</div>
+</div>
+<a id="ga742145dc4b01b8a113e418b0a6ddee9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga742145dc4b01b8a113e418b0a6ddee9f">&#9670;&nbsp;</a></span>COIN_HANDLE_STACK_OVERFLOW</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_HANDLE_STACK_OVERFLOW</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga83ce1001456f60648a778cc64e82d1a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga83ce1001456f60648a778cc64e82d1a8">&#9670;&nbsp;</a></span>COIN_MAXIMUM_TEXTURE2_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_MAXIMUM_TEXTURE2_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Can be used to limit the maximum supported size (width and height) of a 2D texture in the renderer.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__coin__envvars.html#gaa5f9d6372d10298e698a7a17e7c4a4e9">COIN_MAXIMUM_TEXTURE3_SIZE</a> </dd></dl>
+
+</div>
+</div>
+<a id="gaa5f9d6372d10298e698a7a17e7c4a4e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa5f9d6372d10298e698a7a17e7c4a4e9">&#9670;&nbsp;</a></span>COIN_MAXIMUM_TEXTURE3_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_MAXIMUM_TEXTURE3_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Can be used to limit the maximum supported size (width, height and depth) of a 3D texture in the renderer.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__coin__envvars.html#ga83ce1001456f60648a778cc64e82d1a8">COIN_MAXIMUM_TEXTURE2_SIZE</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga7283d138f95dc54c2d69b5520dcb5500"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7283d138f95dc54c2d69b5520dcb5500">&#9670;&nbsp;</a></span>COIN_NESTED_CACHING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_NESTED_CACHING</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga8c89a53ce2a0d1e3857ea3540ff3b358"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8c89a53ce2a0d1e3857ea3540ff3b358">&#9670;&nbsp;</a></span>COIN_NO_NVIDIA_COLOR_PER_FACE_BUG_WORKAROUND</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_NO_NVIDIA_COLOR_PER_FACE_BUG_WORKAROUND</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga9e117ec4223842e36e8d950b51697c46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9e117ec4223842e36e8d950b51697c46">&#9670;&nbsp;</a></span>COIN_NO_SOTYPE_DYNLOAD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_NO_SOTYPE_DYNLOAD</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga8ca3d1ee345ec75836f520539b699f9b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8ca3d1ee345ec75836f520539b699f9b">&#9670;&nbsp;</a></span>COIN_NORMALIZATION_CUBEMAP_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_NORMALIZATION_CUBEMAP_SIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga10737573873c9079b67bd66ba84175f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga10737573873c9079b67bd66ba84175f4">&#9670;&nbsp;</a></span>COIN_NOT_STRICT_VRML97</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_NOT_STRICT_VRML97</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gaa6a3b1230da972797b4d774786345082"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa6a3b1230da972797b4d774786345082">&#9670;&nbsp;</a></span>COIN_NUM_SORTED_LAYERS_PASSES</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_NUM_SORTED_LAYERS_PASSES</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>To be able to render correct transparency independent of object order, one have to render in multiple passes. This technique is based on depth-peeling which strips away depth layers with each successive pass. The number of passes is therefore an indication of how deep into the scene transparent surfaces will be rendered with transparency. A higher number will lead to a lower frame rate but higher quality for scenes with a lot of transparent surfaces. The default number of passes is '4' and can be specified by either using <a class="el" href="classSoGLRenderAction.html#a6114e3e6126cb0ed9eb66b43526960b7">SoGLRenderAction::setSortedLayersNumPasses()</a> or by letting the environment variable <code>COIN_NUM_SORTED_LAYERS_PASSES</code> respectively <code>OIV_NUM_SORTED_LAYERS_PASSES</code> specify the number of passes.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__coin__envvars.html#ga0aeab0bd809f7e5cdc64f6b67ec1a9ac">OIV_NUM_SORTED_LAYERS_PASSES</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga2676124ca3ab75d2bc09ce1a1dec97fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2676124ca3ab75d2bc09ce1a1dec97fa">&#9670;&nbsp;</a></span>COIN_OFFSCREEN_STENCIL_BITS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_OFFSCREEN_STENCIL_BITS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga76c76e6c84bafaafae15b8173c684a2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga76c76e6c84bafaafae15b8173c684a2e">&#9670;&nbsp;</a></span>COIN_OFFSCREENRENDERER_MAX_TILESIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_OFFSCREENRENDERER_MAX_TILESIZE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Can be used to force a maximum size (width and height) of a rendering tile in the offscreen renderer.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__coin__envvars.html#ga78a40fec5d1ba802d0768769fc6423fb">COIN_OFFSCREENRENDERER_TILEHEIGHT</a>, <a class="el" href="group__coin__envvars.html#gae95acf0bc238fdf2c7ce3dc285f007a6">COIN_OFFSCREENRENDERER_TILEWIDTH</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga78a40fec5d1ba802d0768769fc6423fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga78a40fec5d1ba802d0768769fc6423fb">&#9670;&nbsp;</a></span>COIN_OFFSCREENRENDERER_TILEHEIGHT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_OFFSCREENRENDERER_TILEHEIGHT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Can be used to override the default height of a rendering tile in the offscreen renderer. Should prove useful for debugging problems on remote sites.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__coin__envvars.html#gae95acf0bc238fdf2c7ce3dc285f007a6">COIN_OFFSCREENRENDERER_TILEWIDTH</a>, <a class="el" href="group__coin__envvars.html#ga76c76e6c84bafaafae15b8173c684a2e">COIN_OFFSCREENRENDERER_MAX_TILESIZE</a> </dd></dl>
+
+</div>
+</div>
+<a id="gae95acf0bc238fdf2c7ce3dc285f007a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae95acf0bc238fdf2c7ce3dc285f007a6">&#9670;&nbsp;</a></span>COIN_OFFSCREENRENDERER_TILEWIDTH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_OFFSCREENRENDERER_TILEWIDTH</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Can be used to override the default width of a rendering tile in the offscreen renderer. Should prove useful for debugging problems on remote sites.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__coin__envvars.html#ga78a40fec5d1ba802d0768769fc6423fb">COIN_OFFSCREENRENDERER_TILEHEIGHT</a>, <a class="el" href="group__coin__envvars.html#ga76c76e6c84bafaafae15b8173c684a2e">COIN_OFFSCREENRENDERER_MAX_TILESIZE</a> </dd></dl>
+
+</div>
+</div>
+<a id="gad475a1075ec8665f3000c2b8f9682f1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad475a1075ec8665f3000c2b8f9682f1b">&#9670;&nbsp;</a></span>COIN_OLD_NURBS_COMPLEXITY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_OLD_NURBS_COMPLEXITY</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, the parametric tolerance for the sampling method of a NURBS surface or curve is set dependent on the size of their bounding box for both OBJECT_SPACE and SCREEN_SPACE sampling. If this environment variable is set to a value of 0, the parametric tolerance for the sampling method of a NURBS surface or curve is set dependent on their complexity value for both OBJECT_SPACE and SCREEN_SPACE sampling. If this environment variable is not set, the parametric tolerance for the sampling method of a NURBS surface or curve is set dependent on the size of their bounding box in SCREEN_SPACE and dependent on their complexity value in OBJECT_SPACE. </p>
+
+</div>
+</div>
+<a id="gaaca199dac7fb359e3fdc6741ab9bd872"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaaca199dac7fb359e3fdc6741ab9bd872">&#9670;&nbsp;</a></span>COIN_OLDSTYLE_FORMATTING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_OLDSTYLE_FORMATTING</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Can be used to enable the output of the old ugly-bugly formatting style, in case someone, for some obscure reason, depends on it. </p>
+
+</div>
+</div>
+<a id="ga36ca646a5704c19038a5fc8b3b01ee12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga36ca646a5704c19038a5fc8b3b01ee12">&#9670;&nbsp;</a></span>COIN_OPENAL_LIBNAME</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_OPENAL_LIBNAME</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the system shared library name for the OpenAL library. </p>
+
+</div>
+</div>
+<a id="ga55cd1878045be17d08279cc82f575c2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga55cd1878045be17d08279cc82f575c2e">&#9670;&nbsp;</a></span>COIN_PREFER_GLPOLYGONOFFSET_EXT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_PREFER_GLPOLYGONOFFSET_EXT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0 and both glPolygonOffset() and glPolygonOffsetEXT() are available, the latter will be used. This can be useful to work around a problematic glPolygonOffset() implementation for certain SGI platforms. </p>
+
+</div>
+</div>
+<a id="gabf5caa8df0f1e1dffc16540f6a0f2d5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabf5caa8df0f1e1dffc16540f6a0f2d5b">&#9670;&nbsp;</a></span>COIN_PREFER_GLU_TESSELLATOR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_PREFER_GLU_TESSELLATOR</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, the GLU tessellator is used instead of Coin's own tessellator implementation. Try this if you are facing bugs with respect to triangulation of complex facesets. </p>
+
+</div>
+</div>
+<a id="gaa961552d7a272cffa96986008e4559ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa961552d7a272cffa96986008e4559ef">&#9670;&nbsp;</a></span>COIN_PROFILER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_PROFILER</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This variable should be a set of profiler settings keywords, separated by ":" characters.</p>
+<p>The keywords are:</p><ul>
+<li><code>on</code> </li>
+<li><code>off</code> </li>
+<li><code>syncgl</code> </li>
+</ul>
+<p>The <code>on</code> keyword just enables the profiling element so profiling data is recorded.</p>
+<p>The <code>off</code> keyword just disables the profiling subsystem. There is really no need for specifying this as it is off by default, but can for instance be used to override settings already in the environment at launch-time.</p>
+<p>The <code>syncgl</code> keyword will make GL rendering flush the GL pipeline between each node, so that the profiling data will better reflect which nodes actually cause work for Open GL. Note however that the GL rendering performance drops like a rock when enabling this. The <code>syncgl</code> keyword implies the <code>on</code> keyword.</p>
+<p><b>Old</b> <b>Usage:</b> When this was first implemented, just setting this environment variable to <code>"1"</code> or any positive integer value turned on the live scene graph profiling feature in Coin. This usage is still supported, but as the number of options grew, it was obvious that we needed a new scheme rather than one variable for each feature. The positive integer approach cannot be combined with using keywords, and setting the value to <code>"1"</code> is the same thing as setting it to <code>"on"</code>. </p>
+
+</div>
+</div>
+<a id="ga7a452448717da283f227a6e0372d98e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7a452448717da283f227a6e0372d98e1">&#9670;&nbsp;</a></span>COIN_PROFILER_OVERLAY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_PROFILER_OVERLAY</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This variable enables some default profiler statistics output techniques. It should be a set of profiler overlay settings keywords, separated by ":" characters.</p>
+<ul>
+<li><code>autoredraw=&lt;float&gt;</code> </li>
+<li><code>stdout</code> </li>
+<li><code>stderr</code> </li>
+<li><code>clear</code> </li>
+<li><code>header</code> </li>
+<li><code>lines=&lt;int&gt;</code> </li>
+<li><code>action=&lt;actionclass&gt;</code> </li>
+<li><code>category=&lt;nodes|types|names&gt;</code> </li>
+</ul>
+<p>The <code>autoredraw=&lt;float&gt;</code> option sets up the GL display to automatically redraw the display after a delay of <code>&lt;float&gt;</code> seconds. Example: <code>redraw=0.2</code> gives you somewhere below 5 redraws a second, depending on how fast each frame is drawn.</p>
+<p>The <code>stdout</code> keyword causes the profiling data to be sent to stdout instead of being overlaid on the GL view.</p>
+<p>The <code>stderr</code> keyword causes the profiling data to be sent to stderr instead of being overlaid on the GL view.</p>
+<p>The <code>clear</code> keyword works with <code>stdout</code> and <code>stderr</code>, and makes Coin attempt to clear the console between each time it dumps profiling data. It just uses the ANSI console escape sequence for clearing, which may not work on all types of terminals.</p>
+<p>The <code>header</code> keyword makes the profiling output be preceded by a header line that explains what each column means. It only works with <code>stdout</code> and <code>stderr</code>.</p>
+<p>The <code>lines=&lt;int&gt;</code> option lets you select the number of lines to output. The default is 20. This option only works with <code>stdout</code> and <code>stderr</code>.</p>
+<p>The <code>action=&lt;actionclass&gt;</code> option lets you select which action is to be profiled. The default is of course the <a class="el" href="classSoGLRenderAction.html" title="The SoGLRenderAction class renders the scene graph with OpenGL calls.">SoGLRenderAction</a>. This only works with <code>stdout</code> and <code>stderr</code>.</p>
+<p>The <code>category=&lt;keyword&gt;</code> option lets you specify which view you should have on the profiling data. A <code>nodes</code> view will give you one entry in the list for each node. A <code>types</code> view will summarize over each type and present one entry per node type. A <em>names</em> view will group nodes that belong under the same named node together and presents that summary as one entry.</p>
+<p><b>Old</b> <b>Usage:</b> Setting this environment variable to <code>"1"</code> (or any positive integer) turns on the live scene graph (primarily) profiling overlay feature in Coin, the way it was in the beginning of implementing this functionality. This still works but just gives you one default view. It cannot be combined with using keywords. </p>
+
+</div>
+</div>
+<a id="gadc08a2ed84e40e44d6eb805349bfdb1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadc08a2ed84e40e44d6eb805349bfdb1e">&#9670;&nbsp;</a></span>COIN_QUADMESH_PRECISE_LIGHTING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_QUADMESH_PRECISE_LIGHTING</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>When shading <a class="el" href="classSoQuadMesh.html" title="The SoQuadMesh class is used to render and optimize a quadrilateral mesh.">SoQuadMesh</a> instances the quads in the mesh are just passed on to OpenGL's GL_QUAD primitive rendering. Under certain circumstances, this can lead to artifacts in how your meshes are shaded. This is an inherent problem with drawing quads in meshes.</p>
+<p>By setting the this environment variable to "1", the quads will be broken up into triangles before rendered, and shading will likely look much better. Be aware that this technique causes rendering of the <a class="el" href="classSoQuadMesh.html" title="The SoQuadMesh class is used to render and optimize a quadrilateral mesh.">SoQuadMesh</a> to slow down by an approximate factor of 6.</p>
+<p>The "precise lighting" technique is currently limited to work only when <a class="el" href="classSoQuadMesh.html" title="The SoQuadMesh class is used to render and optimize a quadrilateral mesh.">SoQuadMesh</a> rendering is parameterized with 3D coordinates, a material binding that is <em>not</em> per vertex, and if texture mapping is done is must be without using any of the <a class="el" href="classSoTextureCoordinateFunction.html" title="The SoTextureCoordinateFunction class is an abstract base class for texture coordinate generating nod...">SoTextureCoordinateFunction</a> subclass nodes. </p>
+
+</div>
+</div>
+<a id="ga46b8021248b01518f74e5df4f3c2bb9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga46b8021248b01518f74e5df4f3c2bb9a">&#9670;&nbsp;</a></span>COIN_RANDOMIZE_RENDER_CACHING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_RANDOMIZE_RENDER_CACHING</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This environment variable is used for local stability / robustness / correctness testing of the render caching. If set to a value &gt; 0, renderCaching will be set to "ON" with a probability of 0.5 for every <a class="el" href="classSoSeparator.html" title="The SoSeparator class is a state-preserving group node.">SoSeparator</a> instantiated. </p>
+
+</div>
+</div>
+<a id="ga165feb145cfd7f49df3cd6a97071c26d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga165feb145cfd7f49df3cd6a97071c26d">&#9670;&nbsp;</a></span>COIN_REDUCE_LINEAR_NURBS_STEPS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_REDUCE_LINEAR_NURBS_STEPS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga8c8c8b0022fc3d2badd4c5c7bac82fcd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8c8c8b0022fc3d2badd4c5c7bac82fcd">&#9670;&nbsp;</a></span>COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Traditional Open Inventor uses the same override bit for both diffuse color and transparency. To get around this problem if you need to override one without the other, set this environment variable to "1". This is a Coin extension, and will not work on other Open Inventor implementations. </p>
+
+</div>
+</div>
+<a id="ga61addf80a3f7ad56c9df060afda037f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga61addf80a3f7ad56c9df060afda037f4">&#9670;&nbsp;</a></span>COIN_SIMAGE_LIBNAME</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_SIMAGE_LIBNAME</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the system shared library name for the simage library. </p>
+
+</div>
+</div>
+<a id="ga117718249c07a559316a5ab06ee2d3ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga117718249c07a559316a5ab06ee2d3ad">&#9670;&nbsp;</a></span>COIN_SMART_CACHING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_SMART_CACHING</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, smart caching is enabled. That means the caches are updated less frequently dependent on the number of shapes. </p>
+
+</div>
+</div>
+<a id="ga5f815c4bd3e73423097eb410c530c604"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5f815c4bd3e73423097eb410c530c604">&#9670;&nbsp;</a></span>COIN_SOINPUT_SEARCH_GLOBAL_DICT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_SOINPUT_SEARCH_GLOBAL_DICT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>When set to "1", the global dictionary is searched after the current file dictionary when resolving USE keywords. This makes it possible to reference nodes in other files. </p>
+
+</div>
+</div>
+<a id="ga3dd5609f80b099f4b86ee280a477292f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3dd5609f80b099f4b86ee280a477292f">&#9670;&nbsp;</a></span>COIN_SOOFFSCREENRENDERER_ALLOW_RESOURCEHOG</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_SOOFFSCREENRENDERER_ALLOW_RESOURCEHOG</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Since the operation of context destruction and reconstruction has the potential to be such a costly operation (because GL caches are smashed, among other things), we try hard to avoid it by checking that if we already have a working GL context with size equal or larger to the requested size.</p>
+<p>We also check if the current GL canvas is much larger than what is requested, as to then free up potentially large memory resources, even if we already have a large enough canvas.</p>
+<p>By setting this environment variable to a value &gt; 0, you can disable this behavior and keep the much larger GL canvas. </p>
+
+</div>
+</div>
+<a id="ga91e3e56e17045991d6b8e4a7afe2f056"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga91e3e56e17045991d6b8e4a7afe2f056">&#9670;&nbsp;</a></span>COIN_SORTED_LAYERS_USE_NVIDIA_RC</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_SORTED_LAYERS_USE_NVIDIA_RC</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Can be used to enable the usage of extensions for rendering SORTED_LAYERS_BLEND transparency which are only available on NVIDIA chipsets (GeForce3 and above, except GeForce4 MX). These extensions are <code>GL_NV_texture_shader</code>, <code>GL_NV_texture_rectangle</code> or <code>GL_EXT_texture_rectangle</code>, <code>GL_NV_register_combiners</code>, <code>GL_ARB_shadow</code> and <code>GL_ARB_depth_texture</code>. If this environment variable is set to "1" these extensions are used, otherwise the <code>GL_ARB_fragment_program</code> extension is used that is currently supported by the GeForceFX family and the Radeon 9500 and above. </p>
+
+</div>
+</div>
+<a id="ga68e0a11c1fb3765f5f2513f7d71cf273"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga68e0a11c1fb3765f5f2513f7d71cf273">&#9670;&nbsp;</a></span>COIN_SOUND_BUFFER_LENGTH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_SOUND_BUFFER_LENGTH</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga31b4b9e855837945ed7263bdcaa3307e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga31b4b9e855837945ed7263bdcaa3307e">&#9670;&nbsp;</a></span>COIN_SOUND_DISABLE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_SOUND_DISABLE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sound support is considered experimental, and is therefore not enabled by default, as sound support through OpenAL caused crashes under Linux. Setting the environment variable COIN_SOUND_ENABLE support in <a class="el" href="classSoAudioDevice.html" title="The SoAudioDevice class is used to control an audio device.">SoAudioDevice</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__coin__envvars.html#gabc1642132634e56bcab3a54cdf552eef">COIN_SOUND_ENABLE</a> </dd></dl>
+
+</div>
+</div>
+<a id="gaca77175c26f048fc7a56abea73c7a570"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaca77175c26f048fc7a56abea73c7a570">&#9670;&nbsp;</a></span>COIN_SOUND_DRIVER_NAME</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_SOUND_DRIVER_NAME</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The user can control which device name OpenAL uses by setting the COIN_SOUND_DRIVER_NAME environment variable. On Microsoft Windows, the default driver name is "DirectSound3D", which should normally be what the user wants. </p>
+
+</div>
+</div>
+<a id="gabc1642132634e56bcab3a54cdf552eef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabc1642132634e56bcab3a54cdf552eef">&#9670;&nbsp;</a></span>COIN_SOUND_ENABLE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_SOUND_ENABLE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sound support is considered experimental, and is therefore not enabled by default, as sound support through OpenAL caused crashes under Linux. Setting the environment variable COIN_SOUND_ENABLE to a value &gt; 0 enables sound support in <a class="el" href="classSoAudioDevice.html" title="The SoAudioDevice class is used to control an audio device.">SoAudioDevice</a>. If set to 0 sound support is disabled.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__coin__envvars.html#ga31b4b9e855837945ed7263bdcaa3307e">COIN_SOUND_DISABLE</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga3e2c52fc742c67a698efd763976ab3e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3e2c52fc742c67a698efd763976ab3e0">&#9670;&nbsp;</a></span>COIN_SOUND_INTRO_PAUSE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_SOUND_INTRO_PAUSE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga7bdb8c1d7d7b80adc7a68a7dec828488"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7bdb8c1d7d7b80adc7a68a7dec828488">&#9670;&nbsp;</a></span>COIN_SOUND_NUM_BUFFERS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_SOUND_NUM_BUFFERS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga45691a7924c93b53f1e812a1e32c8a26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga45691a7924c93b53f1e812a1e32c8a26">&#9670;&nbsp;</a></span>COIN_SOUND_THREAD_SLEEP_TIME</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_SOUND_THREAD_SLEEP_TIME</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga3186e3287f274b3af87e6d60e29d6ff5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3186e3287f274b3af87e6d60e29d6ff5">&#9670;&nbsp;</a></span>COIN_SPIDERMONKEY_LIBNAME</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_SPIDERMONKEY_LIBNAME</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the system shared library name for the SpiderMonkey library. </p>
+
+</div>
+</div>
+<a id="ga20f9cc473f3572486af7e18e2da0ef76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga20f9cc473f3572486af7e18e2da0ef76">&#9670;&nbsp;</a></span>COIN_TEX2_ANISOTROPIC_LIMIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_TEX2_ANISOTROPIC_LIMIT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Anisotropic filtering is enabled for textures when the texture quality is higher than this value.</p>
+<p>Default value is 0.85 </p>
+
+</div>
+</div>
+<a id="ga185320717d5b7f2d13916760b8c5e045"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga185320717d5b7f2d13916760b8c5e045">&#9670;&nbsp;</a></span>COIN_TEX2_LINEAR_LIMIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_TEX2_LINEAR_LIMIT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Linear filtering is enabled if Complexity::textureQuality is greater or equal to this value.</p>
+<p>Default value is 0.2 </p>
+
+</div>
+</div>
+<a id="ga5c2d9df7b36ef9582ae011056f9bfb6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5c2d9df7b36ef9582ae011056f9bfb6c">&#9670;&nbsp;</a></span>COIN_TEX2_LINEAR_MIPMAP_LIMIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_TEX2_LINEAR_MIPMAP_LIMIT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Linear filtering between mipmap levels is enabled if textureQuality is greater or equal to this value.</p>
+<p>Default value is 0.8 </p>
+
+</div>
+</div>
+<a id="gacf02c7b3e3a234c707c2da8692aff1e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacf02c7b3e3a234c707c2da8692aff1e8">&#9670;&nbsp;</a></span>COIN_TEX2_MIPMAP_LIMIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_TEX2_MIPMAP_LIMIT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Mipmaps are created if textureQuality is greater or equal to this value.</p>
+<p>Default value is 0.5 </p>
+
+</div>
+</div>
+<a id="ga37c3053a7d2e969fedbabc869b0dfad8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga37c3053a7d2e969fedbabc869b0dfad8">&#9670;&nbsp;</a></span>COIN_TEX2_SCALEUP_LIMIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_TEX2_SCALEUP_LIMIT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Textures with width or height not equal to a power of two will always be scaled up if textureQuality is greater or equal to this value.</p>
+<p>Default value is 0.7</p>
+<p>If textureQuality is lower than this value, and the width or height is larger than 256 pixels, the texture is only scaled up if its size is relatively close to the next power of two. This could save a lot of texture memory. </p>
+
+</div>
+</div>
+<a id="ga3877be7fd2ef906a7946909577281c4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3877be7fd2ef906a7946909577281c4e">&#9670;&nbsp;</a></span>COIN_TEX2_USE_GLTEXSUBIMAGE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_TEX2_USE_GLTEXSUBIMAGE</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>When set, and when the new texture data have the same attributes as the old data, glTexSubImage() will be used to copy new data into the texture instead of recreating the texture. This is not enabled by default, since it seems to trigger a bug in the Linux nVidia drivers. It just happens in some unreproduceable cases. It could be a bug in our glTexSubImage() code, of course. :) </p>
+
+</div>
+</div>
+<a id="gaded751af564b7687a3137f5dcf0026b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaded751af564b7687a3137f5dcf0026b3">&#9670;&nbsp;</a></span>COIN_TEX2_USE_SGIS_GENERATE_MIPMAP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_TEX2_USE_SGIS_GENERATE_MIPMAP</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>When set, use the GL_SGIS_generate_mipmap extension (if available) to generate mipmaps, otherwise use a fast internal routine to generate them. Use of GL_SGIS_generate_mipmap is not enabled by default since we suspect some ATi drivers have problems with this extension. </p>
+
+</div>
+</div>
+<a id="ga09298eef78a1fa87fd394142b93c78f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga09298eef78a1fa87fd394142b93c78f1">&#9670;&nbsp;</a></span>COIN_VBO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_VBO</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value of 0, VBO rendering in Coin will be disabled. This is useful if you suspect bugs in either Coin's VBO code or in the OpenGL driver VBO handling. </p>
+
+</div>
+</div>
+<a id="ga49c2d0f121c9621b0a22dd2e801a3f3a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga49c2d0f121c9621b0a22dd2e801a3f3a">&#9670;&nbsp;</a></span>COIN_VBO_MAX_LIMIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_VBO_MAX_LIMIT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Can be used to set the maximum number of items (coordinates, normals, texcoords or colors) allowed when creating a vertex buffer object. On most drivers it's actually slower to render large arrays with VBOs than with normal vertex array rendering.</p>
+<p>The default value is 256000, and when the number of items exceeds this Coin will fall back to normal vertex array or immediate mode rendering.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__coin__envvars.html#gae490c79818e5b740fa4c0d70a0a3ce44">COIN_VBO_MIN_LIMIT</a> </dd></dl>
+
+</div>
+</div>
+<a id="gae490c79818e5b740fa4c0d70a0a3ce44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae490c79818e5b740fa4c0d70a0a3ce44">&#9670;&nbsp;</a></span>COIN_VBO_MIN_LIMIT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_VBO_MIN_LIMIT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Can be used to set the minimum number of items (coordinates, normals, texcoords or colors) allowed when creating a vertex buffer object. It's a bit of overhead setting up the VBOs and the VBO rendering, so we avoid doing this for very small arrays. The default value is 20.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__coin__envvars.html#ga49c2d0f121c9621b0a22dd2e801a3f3a">COIN_VBO_MAX_LIMIT</a> </dd></dl>
+
+</div>
+</div>
+<a id="gafff36f9cad1322e147739161279022dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafff36f9cad1322e147739161279022dd">&#9670;&nbsp;</a></span>COIN_VERTEX_ARRAYS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_VERTEX_ARRAYS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value of 0, vertex array rendering is disabled. </p>
+
+</div>
+</div>
+<a id="ga1a8a23c9700aba9d269fc5d13a728c83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1a8a23c9700aba9d269fc5d13a728c83">&#9670;&nbsp;</a></span>COIN_VIEWUP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_VIEWUP</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga70f080dfebc739f7c9743be051e8f514"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga70f080dfebc739f7c9743be051e8f514">&#9670;&nbsp;</a></span>COIN_WGLGLUE_NO_PBUFFERS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_WGLGLUE_NO_PBUFFERS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this environment variable is set to a value &gt; 0, software rendering of offscreen contexts is forced for WGL (Windows). </p>
+
+</div>
+</div>
+<a id="ga58c4d2cf2da06b9e7ff1d28c558a3b47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga58c4d2cf2da06b9e7ff1d28c558a3b47">&#9670;&nbsp;</a></span>COIN_ZLIB_LIBNAME</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COIN_ZLIB_LIBNAME</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the system shared library name for the zlib library. </p>
+
+</div>
+</div>
+<a id="ga242bc75fbc202307ad1fb3ae0b8b316e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga242bc75fbc202307ad1fb3ae0b8b316e">&#9670;&nbsp;</a></span>COINDIR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> COINDIR</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga160f0493fab38338b2f643e503f42c5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga160f0493fab38338b2f643e503f42c5a">&#9670;&nbsp;</a></span>EnvironmentVariable</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">EnvironmentVariable</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><em> This is a fake type to peg documentation for environment variables that Coin uses on. </em></p>
+<p>Environment variables are variables you set on your system, which are read in by the Coin-based application at runtime. These environment variables are irrelevant at compile time when Coin is built. </p>
+
+</div>
+</div>
+<a id="ga68bb6f654e01bed206d40bedee84e756"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga68bb6f654e01bed206d40bedee84e756">&#9670;&nbsp;</a></span>IV_SEPARATOR_MAX_CACHES</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> IV_SEPARATOR_MAX_CACHES</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Can be used to tune the number of display list caches stored in each <a class="el" href="classSoSeparator.html" title="The SoSeparator class is a state-preserving group node.">SoSeparator</a>. The default value is 2.</p>
+<p>Setting this value to 0 will disable display list caching, and this is often useful if you experience weird rendering bugs which are hard to track down. </p>
+
+</div>
+</div>
+<a id="ga0aeab0bd809f7e5cdc64f6b67ec1a9ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0aeab0bd809f7e5cdc64f6b67ec1a9ac">&#9670;&nbsp;</a></span>OIV_NUM_SORTED_LAYERS_PASSES</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> OIV_NUM_SORTED_LAYERS_PASSES</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>To be able to render correct transparency independent of object order, one have to render in multiple passes. This technique is based on depth-peeling which strips away depth layers with each successive pass. The number of passes is therefore an indication of how deep into the scene transparent surfaces will be rendered with transparency. A higher number will lead to a lower frame rate but higher quality for scenes with a lot of transparent surfaces. The default number of passes is '4' and can be specified by either using <a class="el" href="classSoGLRenderAction.html#a6114e3e6126cb0ed9eb66b43526960b7">SoGLRenderAction::setSortedLayersNumPasses()</a> or by letting the environment variable <code>COIN_NUM_SORTED_LAYERS_PASSES</code> respectively <code>OIV_NUM_SORTED_LAYERS_PASSES</code> specify the number of passes.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__coin__envvars.html#gaa6a3b1230da972797b4d774786345082">COIN_NUM_SORTED_LAYERS_PASSES</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga55da7b788a9a910ce2ddfebad2a74c34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga55da7b788a9a910ce2ddfebad2a74c34">&#9670;&nbsp;</a></span>SO_DRAGGER_DIR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> SO_DRAGGER_DIR</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The appearance of draggers can be modified by setting this environment variable to point to a directory with external replacement geometry files in Inventor-format which the geometry parts are read from. The names of the new files and the names of the nodes / sub-graphs within the replacement geometries must follow a rigid scheme. </p>
+
+</div>
+</div>
+<a id="gaa94c258a246eff7b6e4d36a01c786031"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa94c258a246eff7b6e4d36a01c786031">&#9670;&nbsp;</a></span>SO_SHADER_DIR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> SO_SHADER_DIR</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set this environment variable to point to a directory that contains the referenced external .arb, .cg, .glsl shader files. </p>
+
+</div>
+</div>
+<a id="gaeb1dcdafd3fe5f8f015d07406747698c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaeb1dcdafd3fe5f8f015d07406747698c">&#9670;&nbsp;</a></span>WINDIR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__coin__envvars.html#ga160f0493fab38338b2f643e503f42c5a">EnvironmentVariable</a> WINDIR</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>%WINDIR%/Fonts is always searched for fonts on Windows. </p>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,1228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SoIntersectionDetectionAction Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSoIntersectionDetectionAction.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
+<a href="classSoIntersectionDetectionAction-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SoIntersectionDetectionAction Class Reference<div class="ingroups"><a class="el" href="group__coin__actions.html">Action Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSoIntersectionDetectionAction.html" title="The SoIntersectionDetectionAction class is for detecting intersecting primitives in a scene.">SoIntersectionDetectionAction</a> class is for detecting intersecting primitives in a scene.  
+ <a href="classSoIntersectionDetectionAction.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SoIntersectionDetectionAction_8h_source.html">Inventor/collision/SoIntersectionDetectionAction.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for SoIntersectionDetectionAction:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classSoIntersectionDetectionAction.png" usemap="#SoIntersectionDetectionAction_map" alt=""/>
+  <map id="SoIntersectionDetectionAction_map" name="SoIntersectionDetectionAction_map">
+<area href="classSoAction.html" title="The SoAction class is the base class for all traversal actions." alt="SoAction" shape="rect" coords="0,0,181,24"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a7cabec8b4ca7a656fe5a9b75e93ff26d"><td class="memItemLeft" align="right" valign="top"><a id="a7cabec8b4ca7a656fe5a9b75e93ff26d"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Resp</b> { <b>NEXT_PRIMITIVE</b>
+, <b>NEXT_SHAPE</b>
+, <b>ABORT</b>
+ }</td></tr>
+<tr class="separator:a7cabec8b4ca7a656fe5a9b75e93ff26d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca768354eb5c93a4f672303761fcf27e"><td class="memItemLeft" align="right" valign="top"><a id="aca768354eb5c93a4f672303761fcf27e"></a>
+typedef Resp&#160;</td><td class="memItemRight" valign="bottom"><b>SoIntersectionCB</b>(void *closure, const <a class="el" href="structSoIntersectingPrimitive.html">SoIntersectingPrimitive</a> *p1, const <a class="el" href="structSoIntersectingPrimitive.html">SoIntersectingPrimitive</a> *p2)</td></tr>
+<tr class="separator:aca768354eb5c93a4f672303761fcf27e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60251dc5fc72922cb8f1f277003ed006"><td class="memItemLeft" align="right" valign="top"><a id="a60251dc5fc72922cb8f1f277003ed006"></a>
+typedef SbBool&#160;</td><td class="memItemRight" valign="bottom"><b>SoIntersectionFilterCB</b>(void *closure, const <a class="el" href="classSoPath.html">SoPath</a> *p1, const <a class="el" href="classSoPath.html">SoPath</a> *p2)</td></tr>
+<tr class="separator:a60251dc5fc72922cb8f1f277003ed006"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1504121602e5d2c28e14a26ac827cdab"><td class="memItemLeft" align="right" valign="top"><a id="a1504121602e5d2c28e14a26ac827cdab"></a>
+typedef <a class="el" href="classSoCallbackAction.html#a0aebf2c58836079af765be8e2ba4973d">SoCallbackAction::Response</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SoIntersectionVisitationCB</b>(void *closure, const <a class="el" href="classSoPath.html">SoPath</a> *where)</td></tr>
+<tr class="separator:a1504121602e5d2c28e14a26ac827cdab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSoAction')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a1c1dcf644f0e8bc1acd92f9cd8c917d3 inherit pub_types_classSoAction"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a1c1dcf644f0e8bc1acd92f9cd8c917d3">AppliedCode</a> { <b>NODE</b> = 0
+, <b>PATH</b> = 1
+, <b>PATH_LIST</b> = 2
+ }</td></tr>
+<tr class="separator:a1c1dcf644f0e8bc1acd92f9cd8c917d3 inherit pub_types_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0942e2ce7d88ebc8e7cd10cf26310c67 inherit pub_types_classSoAction"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a0942e2ce7d88ebc8e7cd10cf26310c67">PathCode</a> { <b>NO_PATH</b> = 0
+, <b>IN_PATH</b> = 1
+, <b>BELOW_PATH</b> = 2
+, <b>OFF_PATH</b> = 3
+ }</td></tr>
+<tr class="separator:a0942e2ce7d88ebc8e7cd10cf26310c67 inherit pub_types_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:aef6643fd98e970744e6b7d19ede887d6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#aef6643fd98e970744e6b7d19ede887d6">addIntersectionCallback</a> (SoIntersectionCB *cb, void *closure=NULL)</td></tr>
+<tr class="separator:aef6643fd98e970744e6b7d19ede887d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a4f8140fb45f7a3fea7c8f105afce21"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#a4a4f8140fb45f7a3fea7c8f105afce21">addVisitationCallback</a> (<a class="el" href="classSoType.html">SoType</a> type, SoIntersectionVisitationCB *cb, void *closure)</td></tr>
+<tr class="separator:a4a4f8140fb45f7a3fea7c8f105afce21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a4595877a40aca2ab90306c7536ef0e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#a8a4595877a40aca2ab90306c7536ef0e">apply</a> (const <a class="el" href="classSoPathList.html">SoPathList</a> &amp;paths, SbBool obeysRules=FALSE)</td></tr>
+<tr class="separator:a8a4595877a40aca2ab90306c7536ef0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81fa441e145866d7eaa81ddb7d1ebdad"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#a81fa441e145866d7eaa81ddb7d1ebdad">apply</a> (<a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a81fa441e145866d7eaa81ddb7d1ebdad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a789ee88aa501678c6183150e3db487f9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#a789ee88aa501678c6183150e3db487f9">apply</a> (<a class="el" href="classSoPath.html">SoPath</a> *path)</td></tr>
+<tr class="separator:a789ee88aa501678c6183150e3db487f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a863afe018ef5d394496c88b7da46e451"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#a863afe018ef5d394496c88b7da46e451">getIntersectionDetectionEpsilon</a> (void) const</td></tr>
+<tr class="separator:a863afe018ef5d394496c88b7da46e451"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e60e5698086040c2011f1a6d48e4ce5"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#a6e60e5698086040c2011f1a6d48e4ce5">getTypeId</a> (void) const</td></tr>
+<tr class="separator:a6e60e5698086040c2011f1a6d48e4ce5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0bc322a27ee88530c221618650464d4c"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#a0bc322a27ee88530c221618650464d4c">isDraggersEnabled</a> (void) const</td></tr>
+<tr class="separator:a0bc322a27ee88530c221618650464d4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86a3ed12d4ae5023acfcd07b729cc373"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#a86a3ed12d4ae5023acfcd07b729cc373">isManipsEnabled</a> (void) const</td></tr>
+<tr class="separator:a86a3ed12d4ae5023acfcd07b729cc373"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a096abbbc2f19bbe9c94c8df5b61caa5c"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#a096abbbc2f19bbe9c94c8df5b61caa5c">isShapeInternalsEnabled</a> (void) const</td></tr>
+<tr class="separator:a096abbbc2f19bbe9c94c8df5b61caa5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89b7bcff2f039a06f9e2b5fcd1c3cb5f"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#a89b7bcff2f039a06f9e2b5fcd1c3cb5f">isTypeEnabled</a> (<a class="el" href="classSoType.html">SoType</a> type, SbBool checkgroups=FALSE) const</td></tr>
+<tr class="separator:a89b7bcff2f039a06f9e2b5fcd1c3cb5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8e66f4845cf44d8ef784939b83248d1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#ad8e66f4845cf44d8ef784939b83248d1">removeIntersectionCallback</a> (SoIntersectionCB *cb, void *closure=NULL)</td></tr>
+<tr class="separator:ad8e66f4845cf44d8ef784939b83248d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bcb8e8621853c5ae7ced047d1d79442"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#a9bcb8e8621853c5ae7ced047d1d79442">removeVisitationCallback</a> (<a class="el" href="classSoType.html">SoType</a> type, SoIntersectionVisitationCB *cb, void *closure)</td></tr>
+<tr class="separator:a9bcb8e8621853c5ae7ced047d1d79442"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add5f5aa4660bef116803849540787c3d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#add5f5aa4660bef116803849540787c3d">setDraggersEnabled</a> (SbBool enable)</td></tr>
+<tr class="separator:add5f5aa4660bef116803849540787c3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad439ca8d2c8d52b1a6df147e016831fd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#ad439ca8d2c8d52b1a6df147e016831fd">setFilterCallback</a> (SoIntersectionFilterCB *cb, void *closure=NULL)</td></tr>
+<tr class="separator:ad439ca8d2c8d52b1a6df147e016831fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d5dcab038e35d68ef492709e61d3eb2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#a5d5dcab038e35d68ef492709e61d3eb2">setIntersectionDetectionEpsilon</a> (float epsilon)</td></tr>
+<tr class="separator:a5d5dcab038e35d68ef492709e61d3eb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7d5f02e7a2b2a444624dafbe8712a60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#ad7d5f02e7a2b2a444624dafbe8712a60">setManipsEnabled</a> (SbBool enable)</td></tr>
+<tr class="separator:ad7d5f02e7a2b2a444624dafbe8712a60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49363d4b06e7c8e4ea05bbf32822696e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#a49363d4b06e7c8e4ea05bbf32822696e">setShapeInternalsEnabled</a> (SbBool enable)</td></tr>
+<tr class="separator:a49363d4b06e7c8e4ea05bbf32822696e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaff4034df4e40919e495f8b68271fed2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#aaff4034df4e40919e495f8b68271fed2">setTypeEnabled</a> (<a class="el" href="classSoType.html">SoType</a> type, SbBool enable)</td></tr>
+<tr class="separator:aaff4034df4e40919e495f8b68271fed2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSoAction')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:ad2839c2461c998920de832d8bdaa34c1 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#ad2839c2461c998920de832d8bdaa34c1">~SoAction</a> (void)</td></tr>
+<tr class="separator:ad2839c2461c998920de832d8bdaa34c1 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a984b580685859d42c4505980249fd409 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a984b580685859d42c4505980249fd409">apply</a> (<a class="el" href="classSoAction.html">SoAction</a> *beingApplied)</td></tr>
+<tr class="separator:a984b580685859d42c4505980249fd409 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5920f3da63a6ba8577dc56621815341 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSoPath.html">SoPath</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#af5920f3da63a6ba8577dc56621815341">getCurPath</a> (void)</td></tr>
+<tr class="separator:af5920f3da63a6ba8577dc56621815341 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2b14e6d8f2d1a290c7d8bc90bc9f410 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoAction.html#a0942e2ce7d88ebc8e7cd10cf26310c67">PathCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#ac2b14e6d8f2d1a290c7d8bc90bc9f410">getCurPathCode</a> (void) const</td></tr>
+<tr class="separator:ac2b14e6d8f2d1a290c7d8bc90bc9f410 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e9810cb526353255fedf04792151c2d inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a4e9810cb526353255fedf04792151c2d">getCurPathTail</a> (void)</td></tr>
+<tr class="separator:a4e9810cb526353255fedf04792151c2d inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79ea01b9e731224d00fc792ea19a9802 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a79ea01b9e731224d00fc792ea19a9802">getNodeAppliedTo</a> (void) const</td></tr>
+<tr class="separator:a79ea01b9e731224d00fc792ea19a9802 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5062d853f79a06b4031622e9b59b8d18 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSoPathList.html">SoPathList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a5062d853f79a06b4031622e9b59b8d18">getOriginalPathListAppliedTo</a> (void) const</td></tr>
+<tr class="separator:a5062d853f79a06b4031622e9b59b8d18 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedea6d5b8b79997c9085937f5dcf517d inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoPath.html">SoPath</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#aedea6d5b8b79997c9085937f5dcf517d">getPathAppliedTo</a> (void) const</td></tr>
+<tr class="separator:aedea6d5b8b79997c9085937f5dcf517d inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42b2f4960252071194099b4a965eefa2 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoAction.html#a0942e2ce7d88ebc8e7cd10cf26310c67">PathCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a42b2f4960252071194099b4a965eefa2">getPathCode</a> (int &amp;numindices, const int *&amp;indices)</td></tr>
+<tr class="separator:a42b2f4960252071194099b4a965eefa2 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a791ea2da77f97bb290520f9d92fe4f3b inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSoPathList.html">SoPathList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a791ea2da77f97bb290520f9d92fe4f3b">getPathListAppliedTo</a> (void) const</td></tr>
+<tr class="separator:a791ea2da77f97bb290520f9d92fe4f3b inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a477a09961787e99a9621bb07e79c922c inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoState.html">SoState</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a477a09961787e99a9621bb07e79c922c">getState</a> (void) const</td></tr>
+<tr class="separator:a477a09961787e99a9621bb07e79c922c inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cf5dc15e2ea395a8bf9e05827e7c9f3 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoAction.html#a1c1dcf644f0e8bc1acd92f9cd8c917d3">AppliedCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a7cf5dc15e2ea395a8bf9e05827e7c9f3">getWhatAppliedTo</a> (void) const</td></tr>
+<tr class="separator:a7cf5dc15e2ea395a8bf9e05827e7c9f3 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af20b8fd5a41faad4f5f21bb7769a5f33 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#af20b8fd5a41faad4f5f21bb7769a5f33">hasTerminated</a> (void) const</td></tr>
+<tr class="separator:af20b8fd5a41faad4f5f21bb7769a5f33 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fbc8efc139853a56e707baecf02b357 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a3fbc8efc139853a56e707baecf02b357">invalidateState</a> (void)</td></tr>
+<tr class="separator:a3fbc8efc139853a56e707baecf02b357 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad953f48ef9f01d8b2c4596157a6e5cdc inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#ad953f48ef9f01d8b2c4596157a6e5cdc">isLastPathListAppliedTo</a> (void) const</td></tr>
+<tr class="separator:ad953f48ef9f01d8b2c4596157a6e5cdc inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5478020eea5f2b7d4e183e16d29d6611 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a5478020eea5f2b7d4e183e16d29d6611">isOfType</a> (<a class="el" href="classSoType.html">SoType</a> type) const</td></tr>
+<tr class="separator:a5478020eea5f2b7d4e183e16d29d6611 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88ceb9648c0f51d7ba87475ca8555f28 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a88ceb9648c0f51d7ba87475ca8555f28">popCurPath</a> (const <a class="el" href="classSoAction.html#a0942e2ce7d88ebc8e7cd10cf26310c67">PathCode</a> prevpathcode)</td></tr>
+<tr class="separator:a88ceb9648c0f51d7ba87475ca8555f28 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a989bcb87598bf55b31bf0704189abb11 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a989bcb87598bf55b31bf0704189abb11">popCurPath</a> (void)</td></tr>
+<tr class="separator:a989bcb87598bf55b31bf0704189abb11 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf8242136a44ff3af40ea102b372e4e1 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#adf8242136a44ff3af40ea102b372e4e1">popPushCurPath</a> (const int childindex, <a class="el" href="classSoNode.html">SoNode</a> *node=NULL)</td></tr>
+<tr class="separator:adf8242136a44ff3af40ea102b372e4e1 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a148ece4bf4cda79914ee3a2116c05d09 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a148ece4bf4cda79914ee3a2116c05d09">pushCurPath</a> (const int childindex, <a class="el" href="classSoNode.html">SoNode</a> *node=NULL)</td></tr>
+<tr class="separator:a148ece4bf4cda79914ee3a2116c05d09 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abebcc05d2d935803a3c95310c9447614 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#abebcc05d2d935803a3c95310c9447614">pushCurPath</a> (void)</td></tr>
+<tr class="separator:abebcc05d2d935803a3c95310c9447614 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accfc280f70bc8f888f61890f07a4aac2 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#accfc280f70bc8f888f61890f07a4aac2">switchToNodeTraversal</a> (<a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:accfc280f70bc8f888f61890f07a4aac2 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4285818426cf039bd556b537398d9ece inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a4285818426cf039bd556b537398d9ece">switchToPathTraversal</a> (<a class="el" href="classSoPath.html">SoPath</a> *path)</td></tr>
+<tr class="separator:a4285818426cf039bd556b537398d9ece inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a805627d07445a9c3a7e6324748aac2a9 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a805627d07445a9c3a7e6324748aac2a9">traverse</a> (<a class="el" href="classSoNode.html">SoNode</a> *const node)</td></tr>
+<tr class="separator:a805627d07445a9c3a7e6324748aac2a9 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea5650e3b7ae6207c4c3d675e83073b5 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#aea5650e3b7ae6207c4c3d675e83073b5">usePathCode</a> (int &amp;numindices, const int *&amp;indices)</td></tr>
+<tr class="separator:aea5650e3b7ae6207c4c3d675e83073b5 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aeaacf05db0930feadd36ff98b0048e9d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#aeaacf05db0930feadd36ff98b0048e9d">addMethod</a> (const <a class="el" href="classSoType.html">SoType</a> type, SoActionMethod method)</td></tr>
+<tr class="separator:aeaacf05db0930feadd36ff98b0048e9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1fa904640ce674a654d3cc9537ecc3c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#ae1fa904640ce674a654d3cc9537ecc3c">enableElement</a> (const <a class="el" href="classSoType.html">SoType</a> type, const int stackindex)</td></tr>
+<tr class="separator:ae1fa904640ce674a654d3cc9537ecc3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a365b701fcd7ac2b7c1f728c0efa03dfa"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#a365b701fcd7ac2b7c1f728c0efa03dfa">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:a365b701fcd7ac2b7c1f728c0efa03dfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e2232327976c6a1c20c6b511bda8365"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#a3e2232327976c6a1c20c6b511bda8365">getIntersectionEpsilon</a> (void)</td></tr>
+<tr class="separator:a3e2232327976c6a1c20c6b511bda8365"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97eaf13baf13671698519d5efbe61c7b"><td class="memItemLeft" align="right" valign="top"><a id="a97eaf13baf13671698519d5efbe61c7b"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#a97eaf13baf13671698519d5efbe61c7b">initClass</a> (void)</td></tr>
+<tr class="separator:a97eaf13baf13671698519d5efbe61c7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a326524c74662879ccead63e582c02f00"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#a326524c74662879ccead63e582c02f00">setIntersectionEpsilon</a> (float epsilon)</td></tr>
+<tr class="separator:a326524c74662879ccead63e582c02f00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classSoAction')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a3a714aae7f852be330d276041f7bc26e inherit pub_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a3a714aae7f852be330d276041f7bc26e">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:a3a714aae7f852be330d276041f7bc26e inherit pub_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fca4d3db681ecea3bd1d5c24d1f160d inherit pub_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a6fca4d3db681ecea3bd1d5c24d1f160d">initClass</a> (void)</td></tr>
+<tr class="separator:a6fca4d3db681ecea3bd1d5c24d1f160d inherit pub_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c1f8064ac89d9e36d36a8d05365e26a inherit pub_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a9c1f8064ac89d9e36d36a8d05365e26a">initClasses</a> (void)</td></tr>
+<tr class="separator:a9c1f8064ac89d9e36d36a8d05365e26a inherit pub_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6dd54a728307c37d3cd87b2891b9359e inherit pub_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a6dd54a728307c37d3cd87b2891b9359e">nullAction</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a6dd54a728307c37d3cd87b2891b9359e inherit pub_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a3e0edd2f102899c666a115af8b439018"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#a3e0edd2f102899c666a115af8b439018">getEnabledElements</a> (void) const</td></tr>
+<tr class="separator:a3e0edd2f102899c666a115af8b439018"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSoAction')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a7f6ac9fad4b83a66a321adfa48ebacd1 inherit pro_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a7f6ac9fad4b83a66a321adfa48ebacd1">SoAction</a> (void)</td></tr>
+<tr class="separator:a7f6ac9fad4b83a66a321adfa48ebacd1 inherit pro_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a893a67a9bf2e7b5b5ef0f1f36f1b8097 inherit pro_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a893a67a9bf2e7b5b5ef0f1f36f1b8097">beginTraversal</a> (<a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a893a67a9bf2e7b5b5ef0f1f36f1b8097 inherit pro_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9af52ee33d0effeba2f23d9c3d4d6ad0 inherit pro_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a9af52ee33d0effeba2f23d9c3d4d6ad0">endTraversal</a> (<a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a9af52ee33d0effeba2f23d9c3d4d6ad0 inherit pro_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa968d7390c6d9ec862e0c9c1c7e48de5 inherit pro_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#aa968d7390c6d9ec862e0c9c1c7e48de5">setTerminated</a> (const SbBool flag)</td></tr>
+<tr class="separator:aa968d7390c6d9ec862e0c9c1c7e48de5 inherit pro_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59700c3dd417a802e9531b6544ff6b81 inherit pro_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a59700c3dd417a802e9531b6544ff6b81">shouldCompactPathList</a> (void) const</td></tr>
+<tr class="separator:a59700c3dd417a802e9531b6544ff6b81 inherit pro_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:a5249a6fc9593271fd139c670bc2ba2a1"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoActionMethodList.html">SoActionMethodList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#a5249a6fc9593271fd139c670bc2ba2a1">getClassActionMethods</a> (void)</td></tr>
+<tr class="separator:a5249a6fc9593271fd139c670bc2ba2a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95fd50ca50a4a3c6349bd32eaae7affe"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoIntersectionDetectionAction.html#a95fd50ca50a4a3c6349bd32eaae7affe">getClassEnabledElements</a> (void)</td></tr>
+<tr class="separator:a95fd50ca50a4a3c6349bd32eaae7affe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_methods_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classSoAction')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a655c3dbf9f093cdfaa7cc896ca54c0f3 inherit pro_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoActionMethodList.html">SoActionMethodList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a655c3dbf9f093cdfaa7cc896ca54c0f3">getClassActionMethods</a> (void)</td></tr>
+<tr class="separator:a655c3dbf9f093cdfaa7cc896ca54c0f3 inherit pro_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3a072966a0f9fa9f96fa1affc44fe9b inherit pro_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#ac3a072966a0f9fa9f96fa1affc44fe9b">getClassEnabledElements</a> (void)</td></tr>
+<tr class="separator:ac3a072966a0f9fa9f96fa1affc44fe9b inherit pro_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_attribs_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classSoAction')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a5b4ccb851346b95c3c3562b1824d258b inherit pro_attribs_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoState.html">SoState</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a5b4ccb851346b95c3c3562b1824d258b">state</a></td></tr>
+<tr class="separator:a5b4ccb851346b95c3c3562b1824d258b inherit pro_attribs_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00703b6a5c0bac45ac95756f7eb054af inherit pro_attribs_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoActionMethodList.html">SoActionMethodList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a00703b6a5c0bac45ac95756f7eb054af">traversalMethods</a></td></tr>
+<tr class="separator:a00703b6a5c0bac45ac95756f7eb054af inherit pro_attribs_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSoIntersectionDetectionAction.html" title="The SoIntersectionDetectionAction class is for detecting intersecting primitives in a scene.">SoIntersectionDetectionAction</a> class is for detecting intersecting primitives in a scene. </p>
+<p>Note that only collisions between actual geometry in the scene are detected, so the contents of some special nodes like e.g. <a class="el" href="classSoText2.html" title="The SoText2 class is a node type for visualizing 2D text aligned with the camera plane.">SoText2</a> and <a class="el" href="classSoImage.html" title="The SoImage class draws a 2D image on the viewport.">SoImage</a> (which projects to screen-plane bitmap graphics, and not actual polygons) will not be considered for collision detection.</p>
+<p>Note also that the <a class="el" href="classSoIntersectionDetectionAction.html" title="The SoIntersectionDetectionAction class is for detecting intersecting primitives in a scene.">SoIntersectionDetectionAction</a> class is not a high-performance component in Coin. Using it in a continuous manner over complex scene graphs is doomed to be a performance killer.</p>
+<p>Below is a simple usage example for this class. It was written as a standalone framework set up for profiling and optimization of the <a class="el" href="classSoIntersectionDetectionAction.html" title="The SoIntersectionDetectionAction class is for detecting intersecting primitives in a scene.">SoIntersectionDetectionAction</a>. It tests intersection of all shapes against each other for the loaded file.</p>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/SbTime.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/SoDB.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/SoInteraction.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/collision/SoIntersectionDetectionAction.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/errors/SoDebugError.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/nodekits/SoNodeKit.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/nodes/SoSeparator.h&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">static</span> SoIntersectionDetectionAction::Resp</div>
+<div class="line">intersectionCB(<span class="keywordtype">void</span> * closure,</div>
+<div class="line">               <span class="keyword">const</span> <a class="code" href="structSoIntersectingPrimitive.html">SoIntersectingPrimitive</a> * pr1,</div>
+<div class="line">               <span class="keyword">const</span> <a class="code" href="structSoIntersectingPrimitive.html">SoIntersectingPrimitive</a> * pr2)</div>
+<div class="line">{</div>
+<div class="line">  (void)fprintf(stdout, <span class="stringliteral">&quot;intersection hit!\n&quot;</span>);</div>
+<div class="line">  <span class="keywordflow">return</span> SoIntersectionDetectionAction::NEXT_PRIMITIVE;</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span></div>
+<div class="line">main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> ** argv)</div>
+<div class="line">{</div>
+<div class="line">  <a class="code" href="classSoDB.html#a970f42dfd362c33c69fa1869bfae72b5">SoDB::init</a>();</div>
+<div class="line">  <a class="code" href="classSoNodeKit.html#a008ec3602a4cc4127902c25b29cf55b4">SoNodeKit::init</a>();</div>
+<div class="line">  <a class="code" href="classSoInteraction.html#a42c9aff2309ba6835c5a7a2171870a86">SoInteraction::init</a>();</div>
+<div class="line"> </div>
+<div class="line">  <span class="keywordflow">if</span> (argc != 2) {</div>
+<div class="line">    (void)fprintf(stderr, <span class="stringliteral">&quot;\n\tUsage: testapp &lt;filename.iv&gt;\n\n&quot;</span>);</div>
+<div class="line">    exit(1);</div>
+<div class="line">  }</div>
+<div class="line"> </div>
+<div class="line">  <a class="code" href="classSoInput.html">SoInput</a> in;</div>
+<div class="line">  SbBool ok = in.<a class="code" href="classSoInput.html#a75df5c1deef8e619c1056aae2776abdc">openFile</a>(argv[1]);</div>
+<div class="line">  assert(ok);</div>
+<div class="line">  <a class="code" href="classSoSeparator.html">SoSeparator</a> * root = <a class="code" href="classSoDB.html#a2ceee0dd279cd44b19660ae4fdd427de">SoDB::readAll</a>(&amp;in);</div>
+<div class="line">  assert(root);</div>
+<div class="line"> </div>
+<div class="line">  root-&gt;<a class="code" href="classSoBase.html#ac01cf34901b2a2be1bc2671bb2463851">ref</a>();</div>
+<div class="line"> </div>
+<div class="line">  <a class="code" href="classSoIntersectionDetectionAction.html">SoIntersectionDetectionAction</a> ida;</div>
+<div class="line">  ida.<a class="code" href="classSoIntersectionDetectionAction.html#aef6643fd98e970744e6b7d19ede887d6">addIntersectionCallback</a>(intersectionCB, NULL);</div>
+<div class="line">  ida.<a class="code" href="classSoIntersectionDetectionAction.html#ad7d5f02e7a2b2a444624dafbe8712a60">setManipsEnabled</a>(FALSE);</div>
+<div class="line">  ida.<a class="code" href="classSoIntersectionDetectionAction.html#add5f5aa4660bef116803849540787c3d">setDraggersEnabled</a>(FALSE);</div>
+<div class="line">  ida.<a class="code" href="classSoIntersectionDetectionAction.html#a5d5dcab038e35d68ef492709e61d3eb2">setIntersectionDetectionEpsilon</a>(10.0f);</div>
+<div class="line"> </div>
+<div class="line">  <a class="code" href="classSbTime.html">SbTime</a> starttime = <a class="code" href="classSbTime.html#a6a24da27d9ba83fc848b860f164d00fc">SbTime::getTimeOfDay</a>();</div>
+<div class="line">  <a class="code" href="classSoDebugError.html#a0ec1038afce3f363d0566db878de8564">SoDebugError::postInfo</a>(<span class="stringliteral">&quot;main&quot;</span>, <span class="stringliteral">&quot;SoIntersectionDetectionAction::apply&quot;</span>);</div>
+<div class="line"> </div>
+<div class="line">  ida.<a class="code" href="classSoIntersectionDetectionAction.html#a81fa441e145866d7eaa81ddb7d1ebdad">apply</a>(root);</div>
+<div class="line"> </div>
+<div class="line">  <a class="code" href="classSoDebugError.html#a0ec1038afce3f363d0566db878de8564">SoDebugError::postInfo</a>(<span class="stringliteral">&quot;main&quot;</span>, <span class="stringliteral">&quot;apply() done after %f seconds.&quot;</span>,</div>
+<div class="line">                         (<a class="code" href="classSbTime.html#a6a24da27d9ba83fc848b860f164d00fc">SbTime::getTimeOfDay</a>() - starttime).getValue());</div>
+<div class="line"> </div>
+<div class="line">  root-&gt;<a class="code" href="classSoBase.html#a254b1ac395fe4d4d10438b994bdb3561">unref</a>();</div>
+<div class="line"> </div>
+<div class="line">  <span class="keywordflow">return</span> 0;</div>
+<div class="line">}</div>
+<div class="ttc" id="aclassSbTime_html"><div class="ttname"><a href="classSbTime.html">SbTime</a></div><div class="ttdoc">The SbTime class instances represents time values.</div><div class="ttdef"><b>Definition:</b> SbTime.h:50</div></div>
+<div class="ttc" id="aclassSbTime_html_a6a24da27d9ba83fc848b860f164d00fc"><div class="ttname"><a href="classSbTime.html#a6a24da27d9ba83fc848b860f164d00fc">SbTime::getTimeOfDay</a></div><div class="ttdeci">static SbTime getTimeOfDay(void)</div><div class="ttdef"><b>Definition:</b> SbTime.cpp:148</div></div>
+<div class="ttc" id="aclassSoBase_html_a254b1ac395fe4d4d10438b994bdb3561"><div class="ttname"><a href="classSoBase.html#a254b1ac395fe4d4d10438b994bdb3561">SoBase::unref</a></div><div class="ttdeci">void unref(void) const</div><div class="ttdef"><b>Definition:</b> SoBase.cpp:530</div></div>
+<div class="ttc" id="aclassSoBase_html_ac01cf34901b2a2be1bc2671bb2463851"><div class="ttname"><a href="classSoBase.html#ac01cf34901b2a2be1bc2671bb2463851">SoBase::ref</a></div><div class="ttdeci">void ref(void) const</div><div class="ttdef"><b>Definition:</b> SoBase.cpp:478</div></div>
+<div class="ttc" id="aclassSoDB_html_a2ceee0dd279cd44b19660ae4fdd427de"><div class="ttname"><a href="classSoDB.html#a2ceee0dd279cd44b19660ae4fdd427de">SoDB::readAll</a></div><div class="ttdeci">static SoSeparator * readAll(SoInput *input)</div><div class="ttdef"><b>Definition:</b> SoDB.cpp:682</div></div>
+<div class="ttc" id="aclassSoDB_html_a970f42dfd362c33c69fa1869bfae72b5"><div class="ttname"><a href="classSoDB.html#a970f42dfd362c33c69fa1869bfae72b5">SoDB::init</a></div><div class="ttdeci">static void init(void)</div><div class="ttdef"><b>Definition:</b> SoDB.cpp:200</div></div>
+<div class="ttc" id="aclassSoDebugError_html_a0ec1038afce3f363d0566db878de8564"><div class="ttname"><a href="classSoDebugError.html#a0ec1038afce3f363d0566db878de8564">SoDebugError::postInfo</a></div><div class="ttdeci">static void postInfo(const char *const source, const char *const format,...)</div><div class="ttdef"><b>Definition:</b> SoDebugError.cpp:412</div></div>
+<div class="ttc" id="aclassSoInput_html"><div class="ttname"><a href="classSoInput.html">SoInput</a></div><div class="ttdoc">The SoInput class is an abstraction of file import functionality.</div><div class="ttdef"><b>Definition:</b> SoInput.h:61</div></div>
+<div class="ttc" id="aclassSoInput_html_a75df5c1deef8e619c1056aae2776abdc"><div class="ttname"><a href="classSoInput.html#a75df5c1deef8e619c1056aae2776abdc">SoInput::openFile</a></div><div class="ttdeci">virtual SbBool openFile(const char *fileName, SbBool okIfNotFound=FALSE)</div><div class="ttdef"><b>Definition:</b> SoInput.cpp:495</div></div>
+<div class="ttc" id="aclassSoInteraction_html_a42c9aff2309ba6835c5a7a2171870a86"><div class="ttname"><a href="classSoInteraction.html#a42c9aff2309ba6835c5a7a2171870a86">SoInteraction::init</a></div><div class="ttdeci">static void init(void)</div><div class="ttdef"><b>Definition:</b> SoInteraction.cpp:127</div></div>
+<div class="ttc" id="aclassSoIntersectionDetectionAction_html"><div class="ttname"><a href="classSoIntersectionDetectionAction.html">SoIntersectionDetectionAction</a></div><div class="ttdoc">The SoIntersectionDetectionAction class is for detecting intersecting primitives in a scene.</div><div class="ttdef"><b>Definition:</b> SoIntersectionDetectionAction.h:52</div></div>
+<div class="ttc" id="aclassSoIntersectionDetectionAction_html_a5d5dcab038e35d68ef492709e61d3eb2"><div class="ttname"><a href="classSoIntersectionDetectionAction.html#a5d5dcab038e35d68ef492709e61d3eb2">SoIntersectionDetectionAction::setIntersectionDetectionEpsilon</a></div><div class="ttdeci">void setIntersectionDetectionEpsilon(float epsilon)</div><div class="ttdef"><b>Definition:</b> SoIntersectionDetectionAction.cpp:375</div></div>
+<div class="ttc" id="aclassSoIntersectionDetectionAction_html_a81fa441e145866d7eaa81ddb7d1ebdad"><div class="ttname"><a href="classSoIntersectionDetectionAction.html#a81fa441e145866d7eaa81ddb7d1ebdad">SoIntersectionDetectionAction::apply</a></div><div class="ttdeci">virtual void apply(SoNode *node)</div><div class="ttdef"><b>Definition:</b> SoIntersectionDetectionAction.cpp:658</div></div>
+<div class="ttc" id="aclassSoIntersectionDetectionAction_html_ad7d5f02e7a2b2a444624dafbe8712a60"><div class="ttname"><a href="classSoIntersectionDetectionAction.html#ad7d5f02e7a2b2a444624dafbe8712a60">SoIntersectionDetectionAction::setManipsEnabled</a></div><div class="ttdeci">void setManipsEnabled(SbBool enable)</div><div class="ttdef"><b>Definition:</b> SoIntersectionDetectionAction.cpp:459</div></div>
+<div class="ttc" id="aclassSoIntersectionDetectionAction_html_add5f5aa4660bef116803849540787c3d"><div class="ttname"><a href="classSoIntersectionDetectionAction.html#add5f5aa4660bef116803849540787c3d">SoIntersectionDetectionAction::setDraggersEnabled</a></div><div class="ttdeci">void setDraggersEnabled(SbBool enable)</div><div class="ttdef"><b>Definition:</b> SoIntersectionDetectionAction.cpp:494</div></div>
+<div class="ttc" id="aclassSoIntersectionDetectionAction_html_aef6643fd98e970744e6b7d19ede887d6"><div class="ttname"><a href="classSoIntersectionDetectionAction.html#aef6643fd98e970744e6b7d19ede887d6">SoIntersectionDetectionAction::addIntersectionCallback</a></div><div class="ttdeci">virtual void addIntersectionCallback(SoIntersectionCB *cb, void *closure=NULL)</div><div class="ttdef"><b>Definition:</b> SoIntersectionDetectionAction.cpp:628</div></div>
+<div class="ttc" id="aclassSoNodeKit_html_a008ec3602a4cc4127902c25b29cf55b4"><div class="ttname"><a href="classSoNodeKit.html#a008ec3602a4cc4127902c25b29cf55b4">SoNodeKit::init</a></div><div class="ttdeci">static void init(void)</div><div class="ttdef"><b>Definition:</b> SoNodeKit.cpp:87</div></div>
+<div class="ttc" id="aclassSoSeparator_html"><div class="ttname"><a href="classSoSeparator.html">SoSeparator</a></div><div class="ttdoc">The SoSeparator class is a state-preserving group node.</div><div class="ttdef"><b>Definition:</b> SoSeparator.h:44</div></div>
+<div class="ttc" id="astructSoIntersectingPrimitive_html"><div class="ttname"><a href="structSoIntersectingPrimitive.html">SoIntersectingPrimitive</a></div><div class="ttdoc">Struct with collision information.</div><div class="ttdef"><b>Definition:</b> SoIntersectionDetectionAction.h:41</div></div>
+</div><!-- fragment --><dl class="section since"><dt>Since</dt><dd>Coin 2.1 </dd>
+<dd>
+TGS Inventor 2.4 </dd></dl>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="aef6643fd98e970744e6b7d19ede887d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef6643fd98e970744e6b7d19ede887d6">&#9670;&nbsp;</a></span>addIntersectionCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoIntersectionDetectionAction::addIntersectionCallback </td>
+          <td>(</td>
+          <td class="paramtype">SoIntersectionCB *&#160;</td>
+          <td class="paramname"><em>cb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>closure</em> = <code>NULL</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Adds a callback to be called when two intersecting primitives are found in the scene.</p>
+<p>If the callback returns ABORT, the intersection detection is aborted. If the callback returns NEXT_SHAPE, the intersection detection between these two shapes are aborted and the action continues checking other shapes. If the callback returns NEXT_PRIMITIVE, the intersection detection testing continues checking the other primitives in these two shapes.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoIntersectionDetectionAction.html#ad8e66f4845cf44d8ef784939b83248d1">removeIntersectionCallback()</a> </dd></dl>
+
+</div>
+</div>
+<a id="aeaacf05db0930feadd36ff98b0048e9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeaacf05db0930feadd36ff98b0048e9d">&#9670;&nbsp;</a></span>addMethod()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoIntersectionDetectionAction::addMethod </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSoType.html">SoType</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SoActionMethod&#160;</td>
+          <td class="paramname"><em>method</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+ </p>
+
+</div>
+</div>
+<a id="a4a4f8140fb45f7a3fea7c8f105afce21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a4f8140fb45f7a3fea7c8f105afce21">&#9670;&nbsp;</a></span>addVisitationCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoIntersectionDetectionAction::addVisitationCallback </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoType.html">SoType</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SoIntersectionVisitationCB *&#160;</td>
+          <td class="paramname"><em>cb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>closure</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The scene graph traversal can be controlled with callbacks which you set with this method. Use just like you would use <a class="el" href="classSoCallbackAction.html#abb911a2b72f56a19d0dd40819e7d351f">SoCallbackAction::addPreCallback()</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoCallbackAction.html#abb911a2b72f56a19d0dd40819e7d351f">SoCallbackAction::addPreCallback()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a8a4595877a40aca2ab90306c7536ef0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a4595877a40aca2ab90306c7536ef0e">&#9670;&nbsp;</a></span>apply() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoIntersectionDetectionAction::apply </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSoPathList.html">SoPathList</a> &amp;&#160;</td>
+          <td class="paramname"><em>pathlist</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>obeysrules</em> = <code>FALSE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Applies action to the graphs defined by <em>pathlist</em>. If <em>obeysrules</em> is set to <code>TRUE</code>, <em>pathlist</em> must obey the following four conditions (which is the case for path lists returned from search actions for non-group nodes and path lists returned from picking actions):</p>
+<p>All paths must start at the same head node. All paths must be sorted in traversal order. The paths must be unique. No path can continue through the end point of another path.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoAction.html#a8f922db782cb971042da8adc64f61d47">SoAction::apply(SoPath * path)</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classSoAction.html#a311e03e553957474b6920afe03fb94fc">SoAction</a>.</p>
+
+</div>
+</div>
+<a id="a81fa441e145866d7eaa81ddb7d1ebdad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81fa441e145866d7eaa81ddb7d1ebdad">&#9670;&nbsp;</a></span>apply() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoIntersectionDetectionAction::apply </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoNode.html">SoNode</a> *&#160;</td>
+          <td class="paramname"><em>root</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Applies the action to the scene graph rooted at <em>root</em>.</p>
+<p>Note that you should <em>not</em> apply an action to a node with a zero reference count. The behavior in that case is undefined. </p>
+
+<p>Reimplemented from <a class="el" href="classSoAction.html#ad2d6ddb297b3a1f5b80026db5fd5e616">SoAction</a>.</p>
+
+</div>
+</div>
+<a id="a789ee88aa501678c6183150e3db487f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a789ee88aa501678c6183150e3db487f9">&#9670;&nbsp;</a></span>apply() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoIntersectionDetectionAction::apply </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoPath.html">SoPath</a> *&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Applies the action to the parts of the graph defined by <em>path</em>.</p>
+<p>Note that an <a class="el" href="classSoPath.html" title="The SoPath class is a container class for traversal path descriptions.">SoPath</a> will also contain all nodes that may influence e.g. geometry nodes in the path. So for instance applying an <a class="el" href="classSoGLRenderAction.html" title="The SoGLRenderAction class renders the scene graph with OpenGL calls.">SoGLRenderAction</a> on an <a class="el" href="classSoPath.html" title="The SoPath class is a container class for traversal path descriptions.">SoPath</a> will render that path as expected in the view, where geometry will get its materials, textures, and other appearance settings correctly.</p>
+<p>If the <em>path</em> ends in an <a class="el" href="classSoGroup.html" title="The SoGroup class is a node which managed other node instances.">SoGroup</a> node, the action will also traverse the tail node's children. </p>
+
+<p>Reimplemented from <a class="el" href="classSoAction.html#a8f922db782cb971042da8adc64f61d47">SoAction</a>.</p>
+
+</div>
+</div>
+<a id="ae1fa904640ce674a654d3cc9537ecc3c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1fa904640ce674a654d3cc9537ecc3c">&#9670;&nbsp;</a></span>enableElement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoIntersectionDetectionAction::enableElement </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSoType.html">SoType</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>stackindex</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+ </p>
+
+</div>
+</div>
+<a id="a5249a6fc9593271fd139c670bc2ba2a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5249a6fc9593271fd139c670bc2ba2a1">&#9670;&nbsp;</a></span>getClassActionMethods()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoActionMethodList.html">SoActionMethodList</a> * SoIntersectionDetectionAction::getClassActionMethods </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns list of action methods for this class. The enabledElements and methods variables are protected in the original OIV API. This is not such a good idea, since exposed static class member variables is a major grievance with regard to Win32 DLLs. This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ <br  />
+ </p>
+
+</div>
+</div>
+<a id="a95fd50ca50a4a3c6349bd32eaae7affe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95fd50ca50a4a3c6349bd32eaae7affe">&#9670;&nbsp;</a></span>getClassEnabledElements()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> * SoIntersectionDetectionAction::getClassEnabledElements </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns list of enabled elements for this class. The enabledElements and methods variables are protected in the original OIV API. This is not such a good idea, since exposed static class member variables is a major grievance with regard to Win32 DLLs. This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ <br  />
+ </p>
+
+</div>
+</div>
+<a id="a365b701fcd7ac2b7c1f728c0efa03dfa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a365b701fcd7ac2b7c1f728c0efa03dfa">&#9670;&nbsp;</a></span>getClassTypeId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoType.html">SoType</a> SoIntersectionDetectionAction::getClassTypeId </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This static method returns the <a class="el" href="classSoType.html" title="The SoType class is the basis for the runtime type system in Coin.">SoType</a> object associated with objects of this class. <br  />
+ </p>
+
+</div>
+</div>
+<a id="a3e0edd2f102899c666a115af8b439018"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e0edd2f102899c666a115af8b439018">&#9670;&nbsp;</a></span>getEnabledElements()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> &amp; SoIntersectionDetectionAction::getEnabledElements </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns list of enabled elements. <br  />
+ </p>
+
+<p>Reimplemented from <a class="el" href="classSoAction.html#ae4668ce77fd8b3fc5cbf496ca1721d62">SoAction</a>.</p>
+
+</div>
+</div>
+<a id="a863afe018ef5d394496c88b7da46e451"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a863afe018ef5d394496c88b7da46e451">&#9670;&nbsp;</a></span>getIntersectionDetectionEpsilon()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SoIntersectionDetectionAction::getIntersectionDetectionEpsilon </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the set intersection detection distance epsilon value for the action object. </p>
+
+</div>
+</div>
+<a id="a3e2232327976c6a1c20c6b511bda8365"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e2232327976c6a1c20c6b511bda8365">&#9670;&nbsp;</a></span>getIntersectionEpsilon()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SoIntersectionDetectionAction::getIntersectionEpsilon </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the globally set intersection detection distance epsilon value. </p>
+
+</div>
+</div>
+<a id="a6e60e5698086040c2011f1a6d48e4ce5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e60e5698086040c2011f1a6d48e4ce5">&#9670;&nbsp;</a></span>getTypeId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoType.html">SoType</a> SoIntersectionDetectionAction::getTypeId </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the type identification of an object derived from a class inheriting <a class="el" href="classSoAction.html" title="The SoAction class is the base class for all traversal actions.">SoAction</a>. This is used for runtime type checking and "downward" casting. <br  />
+ </p>
+
+<p>Implements <a class="el" href="classSoAction.html#a364ad60918a4d20ebdc9635457fe331c">SoAction</a>.</p>
+
+</div>
+</div>
+<a id="a0bc322a27ee88530c221618650464d4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0bc322a27ee88530c221618650464d4c">&#9670;&nbsp;</a></span>isDraggersEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoIntersectionDetectionAction::isDraggersEnabled </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns whether the actions is set up to test intersection on draggers in the scene or not.</p>
+<p>The default is that draggers are enabled for intersection testing with other geometry in the scene.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoIntersectionDetectionAction.html#add5f5aa4660bef116803849540787c3d">setDraggersEnabled()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a86a3ed12d4ae5023acfcd07b729cc373"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86a3ed12d4ae5023acfcd07b729cc373">&#9670;&nbsp;</a></span>isManipsEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoIntersectionDetectionAction::isManipsEnabled </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns whether the actions is set up to test intersection on manipulators in the scene or not.</p>
+<p>Note that when draggers are disabled with <a class="el" href="classSoIntersectionDetectionAction.html#add5f5aa4660bef116803849540787c3d">setDraggersEnabled()</a>, this setting has no effect - manipulators are disabled too.</p>
+<p>The default is that manipulators are enabled for intersection testing with other geometry in the scene.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoIntersectionDetectionAction.html#ad7d5f02e7a2b2a444624dafbe8712a60">setManipsEnabled()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a096abbbc2f19bbe9c94c8df5b61caa5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a096abbbc2f19bbe9c94c8df5b61caa5c">&#9670;&nbsp;</a></span>isShapeInternalsEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoIntersectionDetectionAction::isShapeInternalsEnabled </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns whether nodes in the scene graph will be checked for intersecting primitives within themselves.</p>
+<p>The default value for this setting is <code>FALSE</code>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoIntersectionDetectionAction.html#a49363d4b06e7c8e4ea05bbf32822696e">setShapeInternalsEnabled()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a89b7bcff2f039a06f9e2b5fcd1c3cb5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89b7bcff2f039a06f9e2b5fcd1c3cb5f">&#9670;&nbsp;</a></span>isTypeEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoIntersectionDetectionAction::isTypeEnabled </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoType.html">SoType</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>checkgroups</em> = <code>FALSE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns whether nodes of specific types are enabled or not. The <em>checkgroups</em> argument can be set to TRUE if you want the return value to reflect whether the node will be implicit enabled/disabled through the settings controlled by the <a class="el" href="classSoIntersectionDetectionAction.html#ad7d5f02e7a2b2a444624dafbe8712a60">setManipsEnabled()</a> and <a class="el" href="classSoIntersectionDetectionAction.html#add5f5aa4660bef116803849540787c3d">setDraggersEnabled()</a> functions.</p>
+<p>The default is that all node types are enabled.</p>
+<p>Note that derivation checks are not performed - the type needs to be the exact same type as has been disabled with <a class="el" href="classSoIntersectionDetectionAction.html#aaff4034df4e40919e495f8b68271fed2">setTypeEnabled()</a></p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoIntersectionDetectionAction.html#aaff4034df4e40919e495f8b68271fed2">setTypeEnabled()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ad8e66f4845cf44d8ef784939b83248d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8e66f4845cf44d8ef784939b83248d1">&#9670;&nbsp;</a></span>removeIntersectionCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoIntersectionDetectionAction::removeIntersectionCallback </td>
+          <td>(</td>
+          <td class="paramtype">SoIntersectionCB *&#160;</td>
+          <td class="paramname"><em>cb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>closure</em> = <code>NULL</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Removes a callback set with <a class="el" href="classSoIntersectionDetectionAction.html#aef6643fd98e970744e6b7d19ede887d6">addIntersectionCallback()</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoIntersectionDetectionAction.html#aef6643fd98e970744e6b7d19ede887d6">addIntersectionCallback()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a9bcb8e8621853c5ae7ced047d1d79442"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9bcb8e8621853c5ae7ced047d1d79442">&#9670;&nbsp;</a></span>removeVisitationCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoIntersectionDetectionAction::removeVisitationCallback </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoType.html">SoType</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SoIntersectionVisitationCB *&#160;</td>
+          <td class="paramname"><em>cb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>closure</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The scene graph traversal can be controlled with callbacks which you remove with this method. Use just like you would use SoCallbackAction::removePreCallback().</p>
+<dl class="section see"><dt>See also</dt><dd>SoCallbackAction::removePreCallback() </dd></dl>
+
+</div>
+</div>
+<a id="add5f5aa4660bef116803849540787c3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add5f5aa4660bef116803849540787c3d">&#9670;&nbsp;</a></span>setDraggersEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoIntersectionDetectionAction::setDraggersEnabled </td>
+          <td>(</td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>enable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets whether draggers in the scene graph should be tested for intersection with other geometry or not.</p>
+<p>Note that when you disable draggers, manipulators are also automatically disabled, although the isManipsDisabled() setting might reflect otherwise.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoIntersectionDetectionAction.html#a0bc322a27ee88530c221618650464d4c">isDraggersEnabled()</a>, <a class="el" href="classSoIntersectionDetectionAction.html#ad7d5f02e7a2b2a444624dafbe8712a60">setManipsEnabled()</a>, <a class="el" href="classSoIntersectionDetectionAction.html#aaff4034df4e40919e495f8b68271fed2">setTypeEnabled()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ad439ca8d2c8d52b1a6df147e016831fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad439ca8d2c8d52b1a6df147e016831fd">&#9670;&nbsp;</a></span>setFilterCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoIntersectionDetectionAction::setFilterCallback </td>
+          <td>(</td>
+          <td class="paramtype">SoIntersectionFilterCB *&#160;</td>
+          <td class="paramname"><em>cb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>closure</em> = <code>NULL</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This callback is called when two shapes are found to have intersecting bounding boxes, and are about to be checked for real intersection between their primitives.</p>
+<p>When intersection epsilon values are in use, bounding box intersection testing is done approximately and will trigger the filter callback on boxes that are further from each other than the epsilon length.</p>
+<p>If the callback returns TRUE, the intersection test will be performed. If the callback returns FALSE, the intersection testing will be skipped.</p>
+<p>The API allows only one filter callback. </p>
+
+</div>
+</div>
+<a id="a5d5dcab038e35d68ef492709e61d3eb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d5dcab038e35d68ef492709e61d3eb2">&#9670;&nbsp;</a></span>setIntersectionDetectionEpsilon()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoIntersectionDetectionAction::setIntersectionDetectionEpsilon </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>epsilon</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the intersection detection distance epsilon value for the action object. This overrides the global value.</p>
+<p>See also <a class="el" href="classSoIntersectionDetectionAction.html#a326524c74662879ccead63e582c02f00">SoIntersectionDetectionAction::setIntersectionEpsilon()</a> for important information about how this setting influences performance. </p>
+
+</div>
+</div>
+<a id="a326524c74662879ccead63e582c02f00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a326524c74662879ccead63e582c02f00">&#9670;&nbsp;</a></span>setIntersectionEpsilon()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoIntersectionDetectionAction::setIntersectionEpsilon </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>epsilon</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Sets the global intersection detection distance epsilon value.</p>
+<p>This makes primitives within the epsilon distance be considered to intersect each other.</p>
+<p>This will affect all intersection detection action objects in use that don't have a locally set value.</p>
+<p>The epsilon value is a world space value.</p>
+<p>Be aware that increasing the epsilon value can <em>dramatically</em> increase the number of primitive intersection tests being done to decide intersections. Increasing the epsilon value can therefore cause serious slow-downs in the running time of the intersections checks. </p>
+
+</div>
+</div>
+<a id="ad7d5f02e7a2b2a444624dafbe8712a60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7d5f02e7a2b2a444624dafbe8712a60">&#9670;&nbsp;</a></span>setManipsEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoIntersectionDetectionAction::setManipsEnabled </td>
+          <td>(</td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>enable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets whether manipulators in the scene graph should be tested for intersection with other geometry or not.</p>
+<p>Note that when draggers are disabled with <a class="el" href="classSoIntersectionDetectionAction.html#add5f5aa4660bef116803849540787c3d">setDraggersEnabled()</a>, this setting has no effect - manipulators are disabled too.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoIntersectionDetectionAction.html#a86a3ed12d4ae5023acfcd07b729cc373">isManipsEnabled()</a>, <a class="el" href="classSoIntersectionDetectionAction.html#add5f5aa4660bef116803849540787c3d">setDraggersEnabled()</a>, <a class="el" href="classSoIntersectionDetectionAction.html#aaff4034df4e40919e495f8b68271fed2">setTypeEnabled()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a49363d4b06e7c8e4ea05bbf32822696e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49363d4b06e7c8e4ea05bbf32822696e">&#9670;&nbsp;</a></span>setShapeInternalsEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoIntersectionDetectionAction::setShapeInternalsEnabled </td>
+          <td>(</td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>enable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets whether nodes in the scene graph should be checked for intersecting primitives within themselves.</p>
+<p>Default is <code>FALSE</code>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoIntersectionDetectionAction.html#a096abbbc2f19bbe9c94c8df5b61caa5c">isShapeInternalsEnabled()</a> </dd></dl>
+
+</div>
+</div>
+<a id="aaff4034df4e40919e495f8b68271fed2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaff4034df4e40919e495f8b68271fed2">&#9670;&nbsp;</a></span>setTypeEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoIntersectionDetectionAction::setTypeEnabled </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoType.html">SoType</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>enable</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets whether nodes of specific types (including derived objects) should be tested for intersection or not.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoIntersectionDetectionAction.html#a89b7bcff2f039a06f9e2b5fcd1c3cb5f">isTypeEnabled()</a>, <a class="el" href="classSoIntersectionDetectionAction.html#ad7d5f02e7a2b2a444624dafbe8712a60">setManipsEnabled()</a>, <a class="el" href="classSoIntersectionDetectionAction.html#add5f5aa4660bef116803849540787c3d">setDraggersEnabled()</a> </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SoIntersectionDetectionAction_8h_source.html">SoIntersectionDetectionAction.h</a></li>
+<li>SoIntersectionDetectionAction.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSoIntersectionDetectionAction.html">SoIntersectionDetectionAction</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

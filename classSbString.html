@@ -1,0 +1,1702 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SbString Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSbString.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#related">Related Functions</a> &#124;
+<a href="classSbString-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SbString Class Reference<div class="ingroups"><a class="el" href="group__coin__base.html">Base Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSbString.html" title="The SbString class is a string class with convenience functions for string operations.">SbString</a> class is a string class with convenience functions for string operations.  
+ <a href="classSbString.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SbString_8h_source.html">Inventor/SbString.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a3100d87da8215cf09b4386cb500ad464"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a3100d87da8215cf09b4386cb500ad464">SbString</a> (const char *s)</td></tr>
+<tr class="separator:a3100d87da8215cf09b4386cb500ad464"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5107e4772f6e2088d256d34da1e30730"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a5107e4772f6e2088d256d34da1e30730">SbString</a> (const char *s, int start, int end)</td></tr>
+<tr class="separator:a5107e4772f6e2088d256d34da1e30730"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39c40a499231bc125b14b802c0b85f70"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a39c40a499231bc125b14b802c0b85f70">SbString</a> (const int digits)</td></tr>
+<tr class="separator:a39c40a499231bc125b14b802c0b85f70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4aa2a3f963edba4e22746393f82d5855"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a4aa2a3f963edba4e22746393f82d5855">SbString</a> (const <a class="el" href="classSbString.html">SbString</a> &amp;s)</td></tr>
+<tr class="separator:a4aa2a3f963edba4e22746393f82d5855"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7dee6217016462d0a27715917fa2644b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a7dee6217016462d0a27715917fa2644b">SbString</a> (const wchar_t *s)</td></tr>
+<tr class="separator:a7dee6217016462d0a27715917fa2644b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8bd7fd681ed31cae3c2165b9575e65d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#ad8bd7fd681ed31cae3c2165b9575e65d">SbString</a> (void)</td></tr>
+<tr class="separator:ad8bd7fd681ed31cae3c2165b9575e65d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33b47eab7803f9d9cec6db6862ab2120"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a33b47eab7803f9d9cec6db6862ab2120">~SbString</a> ()</td></tr>
+<tr class="separator:a33b47eab7803f9d9cec6db6862ab2120"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac371e6d216d1f29b15b0fe6bd7023e99"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#ac371e6d216d1f29b15b0fe6bd7023e99">addIntString</a> (const int value)</td></tr>
+<tr class="separator:ac371e6d216d1f29b15b0fe6bd7023e99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43c6cd3980e2681859f01b645e48122b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a43c6cd3980e2681859f01b645e48122b">apply</a> (char(*func)(char input))</td></tr>
+<tr class="separator:a43c6cd3980e2681859f01b645e48122b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace634ce56b64231d4cc6b93a0ba5e0bc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#ace634ce56b64231d4cc6b93a0ba5e0bc">compareSubString</a> (const char *text, int offset=0) const</td></tr>
+<tr class="separator:ace634ce56b64231d4cc6b93a0ba5e0bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d14b085ab8efac7bf5ee5a3b4a88e4f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a7d14b085ab8efac7bf5ee5a3b4a88e4f">deleteSubString</a> (int startidx, int endidx=-1)</td></tr>
+<tr class="separator:a7d14b085ab8efac7bf5ee5a3b4a88e4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af13ccf36e4ec60eb22b23dca020f14c5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#af13ccf36e4ec60eb22b23dca020f14c5">find</a> (const <a class="el" href="classSbString.html">SbString</a> &amp;s) const</td></tr>
+<tr class="separator:af13ccf36e4ec60eb22b23dca020f14c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae363cd9a05e13f49e9ea6c7078597c5a"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#ae363cd9a05e13f49e9ea6c7078597c5a">findAll</a> (const <a class="el" href="classSbString.html">SbString</a> &amp;s, <a class="el" href="classSbIntList.html">SbIntList</a> &amp;found) const</td></tr>
+<tr class="separator:ae363cd9a05e13f49e9ea6c7078597c5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a118684a0c356938e183e88781c435a4a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a118684a0c356938e183e88781c435a4a">getLength</a> (void) const</td></tr>
+<tr class="separator:a118684a0c356938e183e88781c435a4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bfa023105342c057fe9eb555772ed6c"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a6bfa023105342c057fe9eb555772ed6c">getString</a> (void) const</td></tr>
+<tr class="separator:a6bfa023105342c057fe9eb555772ed6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a178c3857cb4bd08514aad93a1261aa6a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbString.html">SbString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a178c3857cb4bd08514aad93a1261aa6a">getSubString</a> (int startidx, int endidx=-1) const</td></tr>
+<tr class="separator:a178c3857cb4bd08514aad93a1261aa6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b029f547aa68f3679f7e9927921705d"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a5b029f547aa68f3679f7e9927921705d">hash</a> (void) const</td></tr>
+<tr class="separator:a5b029f547aa68f3679f7e9927921705d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa676eb974d064dae86adb2f9abb14566"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbString.html">SbString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#aa676eb974d064dae86adb2f9abb14566">lower</a> () const</td></tr>
+<tr class="separator:aa676eb974d064dae86adb2f9abb14566"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade6800edca5eb14538b266a61fede1e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#ade6800edca5eb14538b266a61fede1e4">makeEmpty</a> (SbBool freeold=TRUE)</td></tr>
+<tr class="separator:ade6800edca5eb14538b266a61fede1e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0332de1adccc10496a0ca9413e81b4b3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a0332de1adccc10496a0ca9413e81b4b3">operator!</a> (void) const</td></tr>
+<tr class="separator:a0332de1adccc10496a0ca9413e81b4b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b4907e540abc08f9e966105ed9f20a9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a7b4907e540abc08f9e966105ed9f20a9">operator+=</a> (const char *s)</td></tr>
+<tr class="separator:a7b4907e540abc08f9e966105ed9f20a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45c3f7f9f4c2b8798f2cb44ccf16dc17"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a45c3f7f9f4c2b8798f2cb44ccf16dc17">operator+=</a> (const char c)</td></tr>
+<tr class="separator:a45c3f7f9f4c2b8798f2cb44ccf16dc17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a876f50865efc300930a7b242a1417a4b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a876f50865efc300930a7b242a1417a4b">operator+=</a> (const <a class="el" href="classSbString.html">SbString</a> &amp;s)</td></tr>
+<tr class="separator:a876f50865efc300930a7b242a1417a4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff8574febe670eb6ed208c38ef9a530f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#aff8574febe670eb6ed208c38ef9a530f">operator=</a> (const char *s)</td></tr>
+<tr class="separator:aff8574febe670eb6ed208c38ef9a530f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48e6dd186644cb4248fa467873bda3bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a48e6dd186644cb4248fa467873bda3bb">operator=</a> (const <a class="el" href="classSbString.html">SbString</a> &amp;s)</td></tr>
+<tr class="separator:a48e6dd186644cb4248fa467873bda3bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25d142b4673f7c601bf484b5faf917c2"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a25d142b4673f7c601bf484b5faf917c2">operator[]</a> (int index) const</td></tr>
+<tr class="separator:a25d142b4673f7c601bf484b5faf917c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48a640f2d1caa056ed2bc684cec72f16"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a48a640f2d1caa056ed2bc684cec72f16">print</a> (std::FILE *fp) const</td></tr>
+<tr class="separator:a48a640f2d1caa056ed2bc684cec72f16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b8b394310de686b49033d6e5ef16280"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a5b8b394310de686b49033d6e5ef16280">sprintf</a> (const char *formatstr,...)</td></tr>
+<tr class="separator:a5b8b394310de686b49033d6e5ef16280"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b086168721f0b9cb8c96eb32e7128d7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbString.html">SbString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a9b086168721f0b9cb8c96eb32e7128d7">upper</a> () const</td></tr>
+<tr class="separator:a9b086168721f0b9cb8c96eb32e7128d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af55ef20fed88bf7dbb8cb1eaf2457af3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#af55ef20fed88bf7dbb8cb1eaf2457af3">vsprintf</a> (const char *formatstr, va_list args)</td></tr>
+<tr class="separator:af55ef20fed88bf7dbb8cb1eaf2457af3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aeb40745b411a8d8efb71f1c738e3df8d"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#aeb40745b411a8d8efb71f1c738e3df8d">hash</a> (const char *s)</td></tr>
+<tr class="separator:aeb40745b411a8d8efb71f1c738e3df8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
+Related Functions</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
+</td></tr>
+<tr class="memitem:a945d1b1666979a07478a3c2a62cbfc02"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a945d1b1666979a07478a3c2a62cbfc02">operator!=</a> (const char *s, const <a class="el" href="classSbString.html">SbString</a> &amp;str)</td></tr>
+<tr class="separator:a945d1b1666979a07478a3c2a62cbfc02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf471f54388214c31f6ffe6ec22f92f8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#acf471f54388214c31f6ffe6ec22f92f8">operator!=</a> (const <a class="el" href="classSbString.html">SbString</a> &amp;str, const char *s)</td></tr>
+<tr class="separator:acf471f54388214c31f6ffe6ec22f92f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7482060b03b437119ecae06d3986178"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#ac7482060b03b437119ecae06d3986178">operator!=</a> (const <a class="el" href="classSbString.html">SbString</a> &amp;str1, const <a class="el" href="classSbString.html">SbString</a> &amp;str2)</td></tr>
+<tr class="separator:ac7482060b03b437119ecae06d3986178"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54b38460b412035516ce1dca74affbec"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbString.html">SbString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a54b38460b412035516ce1dca74affbec">operator+</a> (const char *s, const <a class="el" href="classSbString.html">SbString</a> &amp;sbstr)</td></tr>
+<tr class="separator:a54b38460b412035516ce1dca74affbec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c85f017ad0d4f843049a0c0f5026fa8"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbString.html">SbString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a8c85f017ad0d4f843049a0c0f5026fa8">operator+</a> (const <a class="el" href="classSbString.html">SbString</a> &amp;sbstr, const char *s)</td></tr>
+<tr class="separator:a8c85f017ad0d4f843049a0c0f5026fa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9eaa950edece45dbdf394a3b39744c5d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbString.html">SbString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a9eaa950edece45dbdf394a3b39744c5d">operator+</a> (const <a class="el" href="classSbString.html">SbString</a> &amp;str1, const <a class="el" href="classSbString.html">SbString</a> &amp;str2)</td></tr>
+<tr class="separator:a9eaa950edece45dbdf394a3b39744c5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa12177547a85f71f17c1f7dad74c7642"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#aa12177547a85f71f17c1f7dad74c7642">operator&lt;</a> (const char *s, const <a class="el" href="classSbString.html">SbString</a> &amp;str)</td></tr>
+<tr class="separator:aa12177547a85f71f17c1f7dad74c7642"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecdc744cd949b395bd0bc03a9c14f65b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#aecdc744cd949b395bd0bc03a9c14f65b">operator&lt;</a> (const <a class="el" href="classSbString.html">SbString</a> &amp;str, const char *s)</td></tr>
+<tr class="separator:aecdc744cd949b395bd0bc03a9c14f65b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94ed21c674ca5fc0100e0babf1a680cb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a94ed21c674ca5fc0100e0babf1a680cb">operator&lt;</a> (const <a class="el" href="classSbString.html">SbString</a> &amp;str1, const <a class="el" href="classSbString.html">SbString</a> &amp;str2)</td></tr>
+<tr class="separator:a94ed21c674ca5fc0100e0babf1a680cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7666433b76c4b23ad15f3b3d1a3ecdd1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a7666433b76c4b23ad15f3b3d1a3ecdd1">operator==</a> (const char *s, const <a class="el" href="classSbString.html">SbString</a> &amp;str)</td></tr>
+<tr class="separator:a7666433b76c4b23ad15f3b3d1a3ecdd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab18c9b2b5f4930d0b07b071d2ae65bb1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#ab18c9b2b5f4930d0b07b071d2ae65bb1">operator==</a> (const <a class="el" href="classSbString.html">SbString</a> &amp;str, const char *s)</td></tr>
+<tr class="separator:ab18c9b2b5f4930d0b07b071d2ae65bb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a678e767b7619480700a63bc39c567734"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a678e767b7619480700a63bc39c567734">operator==</a> (const <a class="el" href="classSbString.html">SbString</a> &amp;str1, const <a class="el" href="classSbString.html">SbString</a> &amp;str2)</td></tr>
+<tr class="separator:a678e767b7619480700a63bc39c567734"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a122a86d3acf569399581832ebd444a3f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#a122a86d3acf569399581832ebd444a3f">operator&gt;</a> (const char *s, const <a class="el" href="classSbString.html">SbString</a> &amp;str)</td></tr>
+<tr class="separator:a122a86d3acf569399581832ebd444a3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af526dd67f3c8648e155c6c1c28d10850"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#af526dd67f3c8648e155c6c1c28d10850">operator&gt;</a> (const <a class="el" href="classSbString.html">SbString</a> &amp;str, const char *s)</td></tr>
+<tr class="separator:af526dd67f3c8648e155c6c1c28d10850"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af52285d09146696f46c923e786a6ad02"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbString.html#af52285d09146696f46c923e786a6ad02">operator&gt;</a> (const <a class="el" href="classSbString.html">SbString</a> &amp;str1, const <a class="el" href="classSbString.html">SbString</a> &amp;str2)</td></tr>
+<tr class="separator:af52285d09146696f46c923e786a6ad02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSbString.html" title="The SbString class is a string class with convenience functions for string operations.">SbString</a> class is a string class with convenience functions for string operations. </p>
+<p>This is the class used for storing and working with character strings. It automatically takes care of supporting all the "bookkeeping" tasks usually associated with working with character strings, like memory allocation and deallocation etc.</p>
+<p>This class should also be well suited for use by the application programmer throughout the application using the Coin library.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbName.html" title="The SbName class stores strings by reference.">SbName</a> </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ad8bd7fd681ed31cae3c2165b9575e65d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8bd7fd681ed31cae3c2165b9575e65d">&#9670;&nbsp;</a></span>SbString() <span class="overload">[1/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbString::SbString </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This is the default constructor. It initializes the string to be empty. </p>
+
+</div>
+</div>
+<a id="a3100d87da8215cf09b4386cb500ad464"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3100d87da8215cf09b4386cb500ad464">&#9670;&nbsp;</a></span>SbString() <span class="overload">[2/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbString::SbString </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This constructor assigns from the given string. </p>
+
+</div>
+</div>
+<a id="a7dee6217016462d0a27715917fa2644b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7dee6217016462d0a27715917fa2644b">&#9670;&nbsp;</a></span>SbString() <span class="overload">[3/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbString::SbString </td>
+          <td>(</td>
+          <td class="paramtype">const wchar_t *&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This constructor converts the given string to UTF-8 and assigns it. </p>
+
+</div>
+</div>
+<a id="a5107e4772f6e2088d256d34da1e30730"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5107e4772f6e2088d256d34da1e30730">&#9670;&nbsp;</a></span>SbString() <span class="overload">[4/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbString::SbString </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>end</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This constructor constructs a string from the given substring from <em>start</em> to <em>end</em> indices inclusive. If <em>end</em> is -1, the substring from <em>start</em> until the end of the string is used. </p>
+
+</div>
+</div>
+<a id="a4aa2a3f963edba4e22746393f82d5855"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4aa2a3f963edba4e22746393f82d5855">&#9670;&nbsp;</a></span>SbString() <span class="overload">[5/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbString::SbString </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This is the copy constructor. </p>
+
+</div>
+</div>
+<a id="a39c40a499231bc125b14b802c0b85f70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39c40a499231bc125b14b802c0b85f70">&#9670;&nbsp;</a></span>SbString() <span class="overload">[6/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbString::SbString </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>digits</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Construct an <a class="el" href="classSbString.html" title="The SbString class is a string class with convenience functions for string operations.">SbString</a> instance containing the <em>digits</em> of the integer argument. </p>
+
+</div>
+</div>
+<a id="a33b47eab7803f9d9cec6db6862ab2120"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33b47eab7803f9d9cec6db6862ab2120">&#9670;&nbsp;</a></span>~SbString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbString::~SbString </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The destructor. Deallocates any internal resources used during the lifetime of the <a class="el" href="classSbString.html" title="The SbString class is a string class with convenience functions for string operations.">SbString</a> instance. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ac371e6d216d1f29b15b0fe6bd7023e99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac371e6d216d1f29b15b0fe6bd7023e99">&#9670;&nbsp;</a></span>addIntString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbString::addIntString </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Constructs a string from the given integer (e.g. intToString(42) creates the string "42"), and adds this to the contents of the string. </p>
+
+</div>
+</div>
+<a id="a43c6cd3980e2681859f01b645e48122b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43c6cd3980e2681859f01b645e48122b">&#9670;&nbsp;</a></span>apply()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbString::apply </td>
+          <td>(</td>
+          <td class="paramtype">char(*)(char input)&#160;</td>
+          <td class="paramname"><em>func</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Apply the conversion function <em>func</em> to every character of the current string. <em>func</em> is a pointer to a function that takes a character as input and returns a (probably converted) character.</p>
+<p>Note that this function is not part of the original Open Inventor API. </p>
+
+</div>
+</div>
+<a id="ace634ce56b64231d4cc6b93a0ba5e0bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace634ce56b64231d4cc6b93a0ba5e0bc">&#9670;&nbsp;</a></span>compareSubString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SbString::compareSubString </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>offset</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Uses <em>text</em> as a substring to be compared to the string, starting at offset <em>offset</em>. Return value is 0 upon success, and the failing character comparison difference upon failure. </p>
+
+</div>
+</div>
+<a id="a7d14b085ab8efac7bf5ee5a3b4a88e4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d14b085ab8efac7bf5ee5a3b4a88e4f">&#9670;&nbsp;</a></span>deleteSubString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbString::deleteSubString </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>startidx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>endidx</em> = <code>-1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method deletes the substring defined by <em>startidx</em> and <em>endidx</em> (inclusive). If <em>endidx</em> is -1, the substring from <em>startidx</em> to the end of the string is deleted. </p>
+
+</div>
+</div>
+<a id="af13ccf36e4ec60eb22b23dca020f14c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af13ccf36e4ec60eb22b23dca020f14c5">&#9670;&nbsp;</a></span>find()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SbString::find </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>strarg</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If <em>s</em> is found, the method returns the first index where <em>s</em> starts. Otherwise it returns -1.</p>
+<p>Note: <a class="el" href="classSbString.html#af13ccf36e4ec60eb22b23dca020f14c5">SbString::find()</a> is a Coin specific extension to the original Open Inventor API.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbString.html#ae363cd9a05e13f49e9ea6c7078597c5a">SbString::findAll()</a> </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.0 </dd></dl>
+
+</div>
+</div>
+<a id="ae363cd9a05e13f49e9ea6c7078597c5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae363cd9a05e13f49e9ea6c7078597c5a">&#9670;&nbsp;</a></span>findAll()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SbString::findAll </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>strarg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbIntList.html">SbIntList</a> &amp;&#160;</td>
+          <td class="paramname"><em>found</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>All occurrences of <em>str</em> is represented in <em>found</em> as indices to the characters where <em>str</em> starts. If 1 or more is found, <code>TRUE</code> is returned, else <code>FALSE</code> is returned.</p>
+<p>Note: <a class="el" href="classSbString.html#ae363cd9a05e13f49e9ea6c7078597c5a">SbString::findAll()</a> is an extension to the original Open Inventor API.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbString.html#af13ccf36e4ec60eb22b23dca020f14c5">SbString::find()</a> </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.0 </dd></dl>
+
+</div>
+</div>
+<a id="a118684a0c356938e183e88781c435a4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a118684a0c356938e183e88781c435a4a">&#9670;&nbsp;</a></span>getLength()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SbString::getLength </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method returns the length of the string. </p>
+
+</div>
+</div>
+<a id="a6bfa023105342c057fe9eb555772ed6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6bfa023105342c057fe9eb555772ed6c">&#9670;&nbsp;</a></span>getString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char * SbString::getString </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method returns the pointer to the string (character array). </p>
+
+</div>
+</div>
+<a id="a178c3857cb4bd08514aad93a1261aa6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a178c3857cb4bd08514aad93a1261aa6a">&#9670;&nbsp;</a></span>getSubString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbString.html">SbString</a> SbString::getSubString </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>startidx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>endidx</em> = <code>-1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method returns a new string which contains a substring defined by the given indices <em>startidx</em> and <em>endidx</em> (inclusive).</p>
+<p>If <em>endidx</em> is -1, the substring from <em>startidx</em> to the end of the string is used.</p>
+<p>This will return a string which is (<em>endidx</em> - <em>startidx</em> + 1) characters long, i.e. if this string is "foo/bar" and we call by SbString::getSubString(0, 3), the returned string will be "foo/". </p>
+
+</div>
+</div>
+<a id="aeb40745b411a8d8efb71f1c738e3df8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb40745b411a8d8efb71f1c738e3df8d">&#9670;&nbsp;</a></span>hash() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t SbString::hash </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This static method returns a hash value for the given string. </p>
+
+</div>
+</div>
+<a id="a5b029f547aa68f3679f7e9927921705d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b029f547aa68f3679f7e9927921705d">&#9670;&nbsp;</a></span>hash() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t SbString::hash </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method returns a reasonable hash value for the current string.</p>
+<dl class="section see"><dt>See also</dt><dd>uint32_t <a class="el" href="classSbString.html#aeb40745b411a8d8efb71f1c738e3df8d">SbString::hash(const char * s)</a> </dd></dl>
+
+</div>
+</div>
+<a id="aa676eb974d064dae86adb2f9abb14566"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa676eb974d064dae86adb2f9abb14566">&#9670;&nbsp;</a></span>lower()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbString.html">SbString</a> SbString::lower </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Converts all of the characters to lowercase using tolower().</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 3.1 </dd></dl>
+
+</div>
+</div>
+<a id="ade6800edca5eb14538b266a61fede1e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade6800edca5eb14538b266a61fede1e4">&#9670;&nbsp;</a></span>makeEmpty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbString::makeEmpty </td>
+          <td>(</td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>freeold</em> = <code>TRUE</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method clears the string, making it an empty string (""). If <em>freeold</em> is <code>TRUE</code> (which is the default), the memory used by the old string is freed. Otherwise, memory will be kept and reused when the string is manipulated later. </p>
+
+</div>
+</div>
+<a id="a0332de1adccc10496a0ca9413e81b4b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0332de1adccc10496a0ca9413e81b4b3">&#9670;&nbsp;</a></span>operator!()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SbString::operator! </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This unary operator results in <code>TRUE</code> if the current string is empty ("") or <code>FALSE</code> otherwise. </p>
+
+</div>
+</div>
+<a id="a7b4907e540abc08f9e966105ed9f20a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b4907e540abc08f9e966105ed9f20a9">&#9670;&nbsp;</a></span>operator+=() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbString.html">SbString</a> &amp; SbString::operator+= </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Concatenate the given string to the end of the current one. </p>
+
+</div>
+</div>
+<a id="a45c3f7f9f4c2b8798f2cb44ccf16dc17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45c3f7f9f4c2b8798f2cb44ccf16dc17">&#9670;&nbsp;</a></span>operator+=() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbString.html">SbString</a> &amp; SbString::operator+= </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Concatenate the given character to the end of the current string.</p>
+<dl class="section note"><dt>Note</dt><dd>This member function is not compatible with OpenInventor. </dd></dl>
+
+</div>
+</div>
+<a id="a876f50865efc300930a7b242a1417a4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a876f50865efc300930a7b242a1417a4b">&#9670;&nbsp;</a></span>operator+=() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbString.html">SbString</a> &amp; SbString::operator+= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Concatenate the given string to the end of the current one. </p>
+
+</div>
+</div>
+<a id="aff8574febe670eb6ed208c38ef9a530f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff8574febe670eb6ed208c38ef9a530f">&#9670;&nbsp;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbString.html">SbString</a> &amp; SbString::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This is the assignment operator. </p>
+
+</div>
+</div>
+<a id="a48e6dd186644cb4248fa467873bda3bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48e6dd186644cb4248fa467873bda3bb">&#9670;&nbsp;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbString.html">SbString</a> &amp; SbString::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Assign from the given string. </p>
+
+</div>
+</div>
+<a id="a25d142b4673f7c601bf484b5faf917c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25d142b4673f7c601bf484b5faf917c2">&#9670;&nbsp;</a></span>operator[]()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">char SbString::operator[] </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns character at position <em>index</em> in the string.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbString.html#a178c3857cb4bd08514aad93a1261aa6a">getSubString()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a48a640f2d1caa056ed2bc684cec72f16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48a640f2d1caa056ed2bc684cec72f16">&#9670;&nbsp;</a></span>print()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbString::print </td>
+          <td>(</td>
+          <td class="paramtype">std::FILE *&#160;</td>
+          <td class="paramname"><em>fp</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Dump the state of this object to the <em>fp</em> file stream. Only works in debug version of library, method does nothing in an optimized build. </p>
+
+</div>
+</div>
+<a id="a5b8b394310de686b49033d6e5ef16280"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b8b394310de686b49033d6e5ef16280">&#9670;&nbsp;</a></span>sprintf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbString.html">SbString</a> &amp; SbString::sprintf </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>formatstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set <a class="el" href="classSbString.html" title="The SbString class is a string class with convenience functions for string operations.">SbString</a> instance to the formatted string <em>formatstr</em>, replacing the current contents. The control characters within <em>formatstr</em> and the remaining arguments should follow the conventions of the printf() call.</p>
+<p>Note that this function is not part of the original Open Inventor API. </p>
+
+</div>
+</div>
+<a id="a9b086168721f0b9cb8c96eb32e7128d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b086168721f0b9cb8c96eb32e7128d7">&#9670;&nbsp;</a></span>upper()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbString.html">SbString</a> SbString::upper </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Converts all of the characters to uppercase using toupper().</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 3.1 </dd></dl>
+
+</div>
+</div>
+<a id="af55ef20fed88bf7dbb8cb1eaf2457af3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af55ef20fed88bf7dbb8cb1eaf2457af3">&#9670;&nbsp;</a></span>vsprintf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbString.html">SbString</a> &amp; SbString::vsprintf </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>formatstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">va_list&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set <a class="el" href="classSbString.html" title="The SbString class is a string class with convenience functions for string operations.">SbString</a> instance to the formatted string <em>formatstr</em>, replacing the current contents. The control characters within <em>formatstr</em> and the arguments of the <em>args</em> argument list should follow the conventions of the printf() call.</p>
+<p>Note that this function is not part of the original Open Inventor API. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="a945d1b1666979a07478a3c2a62cbfc02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a945d1b1666979a07478a3c2a62cbfc02">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="classSbString.html#a0332de1adccc10496a0ca9413e81b4b3">operator!</a>= </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>str</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Inequality operator. </p>
+
+</div>
+</div>
+<a id="acf471f54388214c31f6ffe6ec22f92f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf471f54388214c31f6ffe6ec22f92f8">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="classSbString.html#a0332de1adccc10496a0ca9413e81b4b3">operator!</a>= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Inequality operator. </p>
+
+</div>
+</div>
+<a id="ac7482060b03b437119ecae06d3986178"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7482060b03b437119ecae06d3986178">&#9670;&nbsp;</a></span>operator!=() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="classSbString.html#a0332de1adccc10496a0ca9413e81b4b3">operator!</a>= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>str1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>str2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Inequality operator. </p>
+
+</div>
+</div>
+<a id="a54b38460b412035516ce1dca74affbec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54b38460b412035516ce1dca74affbec">&#9670;&nbsp;</a></span>operator+() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbString.html">SbString</a> operator+ </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>sbstr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Addition operator. </p>
+
+</div>
+</div>
+<a id="a8c85f017ad0d4f843049a0c0f5026fa8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c85f017ad0d4f843049a0c0f5026fa8">&#9670;&nbsp;</a></span>operator+() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbString.html">SbString</a> operator+ </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>sbstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Addition operator. </p>
+
+</div>
+</div>
+<a id="a9eaa950edece45dbdf394a3b39744c5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9eaa950edece45dbdf394a3b39744c5d">&#9670;&nbsp;</a></span>operator+() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbString.html">SbString</a> operator+ </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>str1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>str2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Addition operator. </p>
+
+</div>
+</div>
+<a id="aa12177547a85f71f17c1f7dad74c7642"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa12177547a85f71f17c1f7dad74c7642">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int operator&lt; </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>str</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Less than operator. Results in <code>TRUE</code> if the first character that does not match has a lower value in <em>s</em> than in <em>str</em>. </p>
+
+</div>
+</div>
+<a id="aecdc744cd949b395bd0bc03a9c14f65b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aecdc744cd949b395bd0bc03a9c14f65b">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int operator&lt; </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Less than operator. Results in <code>TRUE</code> if the first character that does not match has a lower value in <em>str</em> than in <em>s</em>. </p>
+
+</div>
+</div>
+<a id="a94ed21c674ca5fc0100e0babf1a680cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94ed21c674ca5fc0100e0babf1a680cb">&#9670;&nbsp;</a></span>operator&lt;() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int operator&lt; </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>str1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>str2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Less than operator. Results in <code>TRUE</code> if the first character that does not match has a lower value in <em>str1</em> than in <em>str2</em>. </p>
+
+</div>
+</div>
+<a id="a7666433b76c4b23ad15f3b3d1a3ecdd1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7666433b76c4b23ad15f3b3d1a3ecdd1">&#9670;&nbsp;</a></span>operator==() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int operator== </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>str</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Equality operator. Check if the strings have the same contents. </p>
+
+</div>
+</div>
+<a id="ab18c9b2b5f4930d0b07b071d2ae65bb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab18c9b2b5f4930d0b07b071d2ae65bb1">&#9670;&nbsp;</a></span>operator==() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Equality operator. Check if the strings have the same contents. </p>
+
+</div>
+</div>
+<a id="a678e767b7619480700a63bc39c567734"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a678e767b7619480700a63bc39c567734">&#9670;&nbsp;</a></span>operator==() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>str1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>str2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Equality operator. Check if the strings have the same contents. </p>
+
+</div>
+</div>
+<a id="a122a86d3acf569399581832ebd444a3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a122a86d3acf569399581832ebd444a3f">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int operator&gt; </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>str</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Greater than operator. Results in <code>TRUE</code> if the first character that does not match has a higher value in <em>s</em> than in <em>str</em>. </p>
+
+</div>
+</div>
+<a id="af526dd67f3c8648e155c6c1c28d10850"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af526dd67f3c8648e155c6c1c28d10850">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int operator&gt; </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Greater than operator. Results in <code>TRUE</code> if the first character that does not match has a higher value in <em>str</em> than in <em>s</em>. </p>
+
+</div>
+</div>
+<a id="af52285d09146696f46c923e786a6ad02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af52285d09146696f46c923e786a6ad02">&#9670;&nbsp;</a></span>operator&gt;() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int operator&gt; </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>str1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>str2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Greater than operator. Results in <code>TRUE</code> if the first character that does not match has a higher value in <em>str1</em> than in <em>str2</em>. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SbString_8h_source.html">SbString.h</a></li>
+<li>SbString.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSbString.html">SbString</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

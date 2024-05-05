@@ -1,0 +1,421 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SbLine Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSbLine.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="classSbLine-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SbLine Class Reference<div class="ingroups"><a class="el" href="group__coin__base.html">Base Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSbLine.html" title="The SbLine class represents a line in 3D space.">SbLine</a> class represents a line in 3D space.  
+ <a href="classSbLine.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SbLine_8h_source.html">Inventor/SbLine.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a5ab86e886ad329357c68bbb67c92d53c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbLine.html#a5ab86e886ad329357c68bbb67c92d53c">SbLine</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;origin, const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;point)</td></tr>
+<tr class="separator:a5ab86e886ad329357c68bbb67c92d53c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8db4c11f19c63d8431002d34edaa515"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbLine.html#aa8db4c11f19c63d8431002d34edaa515">SbLine</a> (void)</td></tr>
+<tr class="separator:aa8db4c11f19c63d8431002d34edaa515"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7545ac9b3f58a997210b4105b03172e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec3f.html">SbVec3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbLine.html#ad7545ac9b3f58a997210b4105b03172e">getClosestPoint</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;point) const</td></tr>
+<tr class="separator:ad7545ac9b3f58a997210b4105b03172e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ad1e9287b0bdf60dc571169b653d48b"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbLine.html#a1ad1e9287b0bdf60dc571169b653d48b">getClosestPoints</a> (const <a class="el" href="classSbLine.html">SbLine</a> &amp;line2, <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;ptOnThis, <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;ptOnLine2) const</td></tr>
+<tr class="separator:a1ad1e9287b0bdf60dc571169b653d48b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabaffac41aa2361adf612f33f7a7451f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbLine.html#aabaffac41aa2361adf612f33f7a7451f">getDirection</a> (void) const</td></tr>
+<tr class="separator:aabaffac41aa2361adf612f33f7a7451f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1aa72583aa021c8fb014cb1976bfea82"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbLine.html#a1aa72583aa021c8fb014cb1976bfea82">getPosition</a> (void) const</td></tr>
+<tr class="separator:a1aa72583aa021c8fb014cb1976bfea82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcc3a3f02dfa22e838569e0c5a553baa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbLine.html#abcc3a3f02dfa22e838569e0c5a553baa">print</a> (FILE *file) const</td></tr>
+<tr class="separator:abcc3a3f02dfa22e838569e0c5a553baa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4910d8a37e4e80c80eabc4caee321e6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbLine.html#ab4910d8a37e4e80c80eabc4caee321e6">setPosDir</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;position, const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;direction)</td></tr>
+<tr class="separator:ab4910d8a37e4e80c80eabc4caee321e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6beb09e9ca8cf702ddcf0b2a56793a1d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbLine.html#a6beb09e9ca8cf702ddcf0b2a56793a1d">setValue</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;origin, const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;point)</td></tr>
+<tr class="separator:a6beb09e9ca8cf702ddcf0b2a56793a1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSbLine.html" title="The SbLine class represents a line in 3D space.">SbLine</a> class represents a line in 3D space. </p>
+<p><a class="el" href="classSbLine.html" title="The SbLine class represents a line in 3D space.">SbLine</a> provides a way of specifying a directed line, through a 3D point (origin) and a vector direction in 3D space.</p>
+<p>It is context dependent whether or not an <a class="el" href="classSbLine.html" title="The SbLine class represents a line in 3D space.">SbLine</a> is considered as a <em>ray</em> extending from the starting point in only one direction, or as a <em>line</em> intersecting the origin point and extending infinitely from it in both directions.</p>
+<p><a class="el" href="classSbLine.html" title="The SbLine class represents a line in 3D space.">SbLine</a> is used by many other classes in Coin.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbVec3f.html" title="The SbVec3f class is a 3 dimensional vector with floating point coordinates.">SbVec3f</a> </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="aa8db4c11f19c63d8431002d34edaa515"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8db4c11f19c63d8431002d34edaa515">&#9670;&nbsp;</a></span>SbLine() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbLine::SbLine </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The default constructor does nothing. The line will be uninitialized until the first assignment or <a class="el" href="classSbLine.html#a6beb09e9ca8cf702ddcf0b2a56793a1d">setValue()</a> call. </p>
+
+</div>
+</div>
+<a id="a5ab86e886ad329357c68bbb67c92d53c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ab86e886ad329357c68bbb67c92d53c">&#9670;&nbsp;</a></span>SbLine() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbLine::SbLine </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>origin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>point</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Constructor with <em>origin</em> specifying the line origin point, and <em>point</em> specifying another point on the line that is used to determine the line's direction. <em>point</em> should not be the same as <em>origin</em>, as this will lead to the line having a null vector as the direction vector. This will cause division by zero problems in some of the other methods on this class.</p>
+<p>Be aware that the direction vector will be normalized and not be the same as <em>point</em> - <em>origin</em>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbLine.html#a6beb09e9ca8cf702ddcf0b2a56793a1d">setValue</a>, <a class="el" href="classSbLine.html#ab4910d8a37e4e80c80eabc4caee321e6">setPosDir</a>, getOrigin, <a class="el" href="classSbLine.html#aabaffac41aa2361adf612f33f7a7451f">getDirection</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ad7545ac9b3f58a997210b4105b03172e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7545ac9b3f58a997210b4105b03172e">&#9670;&nbsp;</a></span>getClosestPoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec3f.html">SbVec3f</a> SbLine::getClosestPoint </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>point</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the point on the line which is closest to <em>point:</em> </p>
+<pre class="fragment">                    _
+             Q      D
+    SP x-----x-------&gt;
+        \    |
+         \   |
+          \  |
+           \ |
+            \|
+             x P
+
+
+ P = argument point            _
+ SP = line starting point, and D = line direction of this line
+ Q = point to find and return from function</pre><p>The vector defined by <em>point</em> and the returned point will be normal to the line.</p>
+<p>Note that the <a class="el" href="classSbLine.html" title="The SbLine class represents a line in 3D space.">SbLine</a> instance is considered to be infinite in both directions from its definition point, as far as this function is concerned.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbLine.html#a1ad1e9287b0bdf60dc571169b653d48b">getClosestPoints()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a1ad1e9287b0bdf60dc571169b653d48b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ad1e9287b0bdf60dc571169b653d48b">&#9670;&nbsp;</a></span>getClosestPoints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SbLine::getClosestPoints </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbLine.html">SbLine</a> &amp;&#160;</td>
+          <td class="paramname"><em>line2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>ptOnThis</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>ptOnLine2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the two closest points on the lines. If the lines are parallel, all points are equally close and we return <code>FALSE</code>. If the lines are not parallel, the point positions will be stored in <em>ptOnThis</em> and <em>ptOnLine2</em>, and we'll return <code>TRUE</code>.</p>
+<p>Note that both <a class="el" href="classSbLine.html" title="The SbLine class represents a line in 3D space.">SbLine</a> instances are considered to be infinite in both directions from their definition points, as far as this function is concerned.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbLine.html#ad7545ac9b3f58a997210b4105b03172e">getClosestPoint()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="aabaffac41aa2361adf612f33f7a7451f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabaffac41aa2361adf612f33f7a7451f">&#9670;&nbsp;</a></span>getDirection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp; SbLine::getDirection </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return a vector representing the direction of the line. The direction vector will always be normalized. </p>
+
+</div>
+</div>
+<a id="a1aa72583aa021c8fb014cb1976bfea82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1aa72583aa021c8fb014cb1976bfea82">&#9670;&nbsp;</a></span>getPosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp; SbLine::getPosition </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return a vector representing the origin point on the line.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbLine.html#a6beb09e9ca8cf702ddcf0b2a56793a1d">setValue</a> </dd></dl>
+
+</div>
+</div>
+<a id="abcc3a3f02dfa22e838569e0c5a553baa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcc3a3f02dfa22e838569e0c5a553baa">&#9670;&nbsp;</a></span>print()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbLine::print </td>
+          <td>(</td>
+          <td class="paramtype">FILE *&#160;</td>
+          <td class="paramname"><em>fp</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Dump the state of this object to the <em>fp</em> file stream. Only works in debug version of library, method does nothing in an optimized build. </p>
+
+</div>
+</div>
+<a id="ab4910d8a37e4e80c80eabc4caee321e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4910d8a37e4e80c80eabc4caee321e6">&#9670;&nbsp;</a></span>setPosDir()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbLine::setPosDir </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>direction</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set position and direction.</p>
+<p>Be aware that the direction vector will be normalized and not be the same as provided to this method.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbLine.html#a6beb09e9ca8cf702ddcf0b2a56793a1d">setValue</a>, getOrigin, <a class="el" href="classSbLine.html#aabaffac41aa2361adf612f33f7a7451f">getDirection</a> </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>Coin 4.0 </dd></dl>
+
+</div>
+</div>
+<a id="a6beb09e9ca8cf702ddcf0b2a56793a1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6beb09e9ca8cf702ddcf0b2a56793a1d">&#9670;&nbsp;</a></span>setValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbLine::setValue </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>origin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>point</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set new position and direction of the line by specifying line origin and another point on the line that is used to determine the line's direction. <em>point</em> should not be the same as <em>origin</em>, as this will lead to having a null vector as the direction vector. This will cause division by zero problems in some of the other methods on this class.</p>
+<p>Be aware that the direction vector will be normalized and not be the same as <em>point</em> - <em>origin</em>.</p>
+<p>Method <em>setPosDir(position, direction)</em> should be preferred over a call to <em>setValue(position, position + direction)</em>, because the latter causes numerical problems when <em>position</em> has a very large magnitude and <em>direction</em> is a normalized direction vector.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbLine.html#ab4910d8a37e4e80c80eabc4caee321e6">setPosDir</a>, getOrigin, <a class="el" href="classSbLine.html#aabaffac41aa2361adf612f33f7a7451f">getDirection</a> </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SbLine_8h_source.html">SbLine.h</a></li>
+<li>SbLine.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSbLine.html">SbLine</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

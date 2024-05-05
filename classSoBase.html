@@ -1,0 +1,1695 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SoBase Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSoBase.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-types">Protected Types</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
+<a href="classSoBase-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SoBase Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span><div class="ingroups"><a class="el" href="group__coin__general.html">Miscellaneous Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a> class is the top-level superclass for a number of class-hierarchies.  
+ <a href="classSoBase.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SoBase_8h_source.html">Inventor/misc/SoBase.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for SoBase:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classSoBase.png" usemap="#SoBase_map" alt=""/>
+  <map id="SoBase_map" name="SoBase_map">
+<area href="classSoFieldContainer.html" title="The SoFieldContainer class is a base class for all classes that contain fields." alt="SoFieldContainer" shape="rect" coords="190,56,370,80"/>
+<area href="classSoPath.html" title="The SoPath class is a container class for traversal path descriptions." alt="SoPath" shape="rect" coords="855,56,1035,80"/>
+<area href="classSoEngine.html" title="SoEngine is the base class for Coin engines." alt="SoEngine" shape="rect" coords="0,112,180,136"/>
+<area href="classSoNode.html" title="The SoNode class is the base class for nodes used in scene graphs." alt="SoNode" shape="rect" coords="380,112,560,136"/>
+<area href="classSoFullPath.html" title="The SoFullPath class allows examination of hidden children in paths." alt="SoFullPath" shape="rect" coords="760,112,940,136"/>
+<area href="classSoNodeKitPath.html" title="The SoNodeKitPath class is a path that contains only nodekit nodes." alt="SoNodeKitPath" shape="rect" coords="950,112,1130,136"/>
+<area href="classSoBoolOperation.html" title="The SoBoolOperation engine evaluates expressions of boolean logic." alt="SoBoolOperation" shape="rect" coords="190,168,370,192"/>
+<area href="classSoCalculator.html" title="General purpose calculator for floats and 3D float vectors." alt="SoCalculator" shape="rect" coords="190,224,370,248"/>
+<area href="classSoComposeMatrix.html" title="The SoComposeMatrix class is used to compose a matrix from miscellaneous transformations." alt="SoComposeMatrix" shape="rect" coords="190,280,370,304"/>
+<area href="classSoComposeRotation.html" title="The SoComposeRotation class is used to compose rotations from angle and axis." alt="SoComposeRotation" shape="rect" coords="190,336,370,360"/>
+<area href="classSoComposeRotationFromTo.html" title="The SoComposeRotationFromTo class is used to compose rotations based on from and to vectors." alt="SoComposeRotationFromTo" shape="rect" coords="190,392,370,416"/>
+<area href="classSoComposeVec2f.html" title="The SoComposeVec2f class is used to compose 2D vectors from two floats." alt="SoComposeVec2f" shape="rect" coords="190,448,370,472"/>
+<area href="classSoComposeVec3f.html" title="The SoComposeVec3f class is used to compose 3D vectors from floats." alt="SoComposeVec3f" shape="rect" coords="190,504,370,528"/>
+<area href="classSoComposeVec4f.html" title="The SoComposeVec4f class is used to compose 4D vectors from four floats." alt="SoComposeVec4f" shape="rect" coords="190,560,370,584"/>
+<area href="classSoComputeBoundingBox.html" title="The SoComputeBoundingBox class is used to calculate a bounding box." alt="SoComputeBoundingBox" shape="rect" coords="190,616,370,640"/>
+<area href="classSoConcatenate.html" title="The SoConcatenate class is used to concatenate several inputs into one output." alt="SoConcatenate" shape="rect" coords="190,672,370,696"/>
+<area href="classSoCounter.html" title="The SoCounter class is an integer counter engine." alt="SoCounter" shape="rect" coords="190,728,370,752"/>
+<area href="classSoDecomposeMatrix.html" title="The SoDecomposeMatrix class is used to decompose a matrix into simple transformations." alt="SoDecomposeMatrix" shape="rect" coords="190,784,370,808"/>
+<area href="classSoDecomposeRotation.html" title="The SoDecomposeRotation class is used to decompose a rotation into angle and axis." alt="SoDecomposeRotation" shape="rect" coords="190,840,370,864"/>
+<area href="classSoDecomposeVec2f.html" title="The SoDecomposeVec2f class is used to decompose 2D vectors into two floats." alt="SoDecomposeVec2f" shape="rect" coords="190,896,370,920"/>
+<area href="classSoDecomposeVec3f.html" title="The SoDecomposeVec3f class is used to decompose 3D vectors into three floats." alt="SoDecomposeVec3f" shape="rect" coords="190,952,370,976"/>
+<area href="classSoDecomposeVec4f.html" title="The SoDecomposeVec4f class is used to decompose 4D vectors into four floats." alt="SoDecomposeVec4f" shape="rect" coords="190,1008,370,1032"/>
+<area href="classSoElapsedTime.html" title="The SoElapsedTime class is a controllable time source engine." alt="SoElapsedTime" shape="rect" coords="190,1064,370,1088"/>
+<area href="classSoFieldConverter.html" title="The SoFieldConverter class is the abstract base class for field converters." alt="SoFieldConverter" shape="rect" coords="190,1120,370,1144"/>
+<area href="classSoGate.html" title="The SoGate class is used to selectively copy values from input to output." alt="SoGate" shape="rect" coords="190,1176,370,1200"/>
+<area href="classSoInterpolate.html" title="The SoInterpolate class is the base class for all interpolator engines." alt="SoInterpolate" shape="rect" coords="190,1232,370,1256"/>
+<area href="classSoOnOff.html" title="The SoOnOff engine is a simple on/off switch." alt="SoOnOff" shape="rect" coords="190,1288,370,1312"/>
+<area href="classSoOneShot.html" title="The SoOneShot class is a timer that runs for a configurable time and then stops." alt="SoOneShot" shape="rect" coords="190,1344,370,1368"/>
+<area href="classSoProfilerTopEngine.html" title="The SoProfilerTopEngine class is yet to be documented." alt="SoProfilerTopEngine" shape="rect" coords="190,1400,370,1424"/>
+<area href="classSoSelectOne.html" title="The SoSelectOne class is used to select one value from a set of values." alt="SoSelectOne" shape="rect" coords="190,1456,370,1480"/>
+<area href="classSoTexture2Convert.html" title="Abstract base class for texture filtering engines." alt="SoTexture2Convert" shape="rect" coords="190,1512,370,1536"/>
+<area href="classSoTimeCounter.html" title="The SoTimeCounter class is an integer counter engine." alt="SoTimeCounter" shape="rect" coords="190,1568,370,1592"/>
+<area href="classSoTransformVec3f.html" title="The SoTransformVec3f class transforms 3D vectors by a matrix." alt="SoTransformVec3f" shape="rect" coords="190,1624,370,1648"/>
+<area href="classSoTriggerAny.html" title="The SoTriggerAny class is a fan-in engine for triggers." alt="SoTriggerAny" shape="rect" coords="190,1680,370,1704"/>
+<area href="classSoAlphaTest.html" title="The SoAlphaTest class is a node used to control the GL alpha test function." alt="SoAlphaTest" shape="rect" coords="570,168,750,192"/>
+<area href="classSoBaseColor.html" title="The SoBaseColor class provides a node type for convenient setting of the base material color." alt="SoBaseColor" shape="rect" coords="570,224,750,248"/>
+<area href="classSoBaseKit.html" title="The SoBaseKit class is the top level superclass for nodekits." alt="SoBaseKit" shape="rect" coords="570,280,750,304"/>
+<area href="classSoBumpMap.html" title="The SoBumpMap class is used to map a bump map onto subsequent shapes." alt="SoBumpMap" shape="rect" coords="570,336,750,360"/>
+<area href="classSoBumpMapCoordinate.html" title="The SoBumpMapCoordinate class is a node for providing bump map coordinates to shape nodes." alt="SoBumpMapCoordinate" shape="rect" coords="570,392,750,416"/>
+<area href="classSoBumpMapTransform.html" title="The SoBumpMapTransform class is used to define 2D bump map transformations." alt="SoBumpMapTransform" shape="rect" coords="570,448,750,472"/>
+<area href="classSoCacheHint.html" title="The SoCacheHint class is a node containing hints about how to cache geometry." alt="SoCacheHint" shape="rect" coords="570,504,750,528"/>
+<area href="classSoCallback.html" title="The SoCallback class is a node type which provides a means of setting callback hooks in the scene gra..." alt="SoCallback" shape="rect" coords="570,560,750,584"/>
+<area href="classSoCamera.html" title="The SoCamera class is the abstract base class for camera definition nodes." alt="SoCamera" shape="rect" coords="570,616,750,640"/>
+<area href="classSoClipPlane.html" title="The SoClipPlane class is a node type for specifying clipping planes." alt="SoClipPlane" shape="rect" coords="570,672,750,696"/>
+<area href="classSoColorIndex.html" title="The SoColorIndex class is used to specify color indices for subsequent shapes." alt="SoColorIndex" shape="rect" coords="570,728,750,752"/>
+<area href="classSoComplexity.html" title="The SoComplexity class is a node type which is used to set the trade-off between quality and performa..." alt="SoComplexity" shape="rect" coords="570,784,750,808"/>
+<area href="classSoCoordinate3.html" title="The SoCoordinate3 class is a node for providing coordinates to shape nodes." alt="SoCoordinate3" shape="rect" coords="570,840,750,864"/>
+<area href="classSoCoordinate4.html" title="The SoCoordinate4 class is a node for providing coordinates to shape nodes." alt="SoCoordinate4" shape="rect" coords="570,896,750,920"/>
+<area href="classSoDepthBuffer.html" title="The SoDepthBuffer class is a node used to control the GL depth buffer." alt="SoDepthBuffer" shape="rect" coords="570,952,750,976"/>
+<area href="classSoDrawStyle.html" title="The SoDrawStyle class specifies common rendering properties for shapes." alt="SoDrawStyle" shape="rect" coords="570,1008,750,1032"/>
+<area href="classSoEnvironment.html" title="The SoEnvironment class is a node for specifying global rendering parameters." alt="SoEnvironment" shape="rect" coords="570,1064,750,1088"/>
+<area href="classSoEventCallback.html" title="The SoEventCallback class provides functionality for catching events." alt="SoEventCallback" shape="rect" coords="570,1120,750,1144"/>
+<area href="classSoFile.html" title="The SoFile class is node container for another model file." alt="SoFile" shape="rect" coords="570,1176,750,1200"/>
+<area href="classSoFont.html" title="The SoFont class is an appearance node for setting fonts." alt="SoFont" shape="rect" coords="570,1232,750,1256"/>
+<area href="classSoGeoCoordinate.html" title="The SoGeoCoordinate class is used to specify a list of geographical coordinates." alt="SoGeoCoordinate" shape="rect" coords="570,1288,750,1312"/>
+<area href="classSoGeoOrigin.html" title="The SoGeoOrigin class is used to specify an absolute geographic location against which geometry is re..." alt="SoGeoOrigin" shape="rect" coords="570,1344,750,1368"/>
+<area href="classSoGroup.html" title="The SoGroup class is a node which managed other node instances." alt="SoGroup" shape="rect" coords="570,1400,750,1424"/>
+<area href="classSoInfo.html" title="The SoInfo class is a node for holding text information." alt="SoInfo" shape="rect" coords="570,1456,750,1480"/>
+<area href="classSoLabel.html" title="The SoLabel class is a node for holding label information in a scene graph." alt="SoLabel" shape="rect" coords="570,1512,750,1536"/>
+<area href="classSoLight.html" title="The SoLight class is the base class for light emitting nodes." alt="SoLight" shape="rect" coords="570,1568,750,1592"/>
+<area href="classSoLightModel.html" title="The SoLightModel class is a node for specifying the model for geometry lighting." alt="SoLightModel" shape="rect" coords="570,1624,750,1648"/>
+<area href="classSoListener.html" title="The SoListener class defines listener attributes used when rendering sound." alt="SoListener" shape="rect" coords="570,1680,750,1704"/>
+<area href="classSoMaterial.html" title="The SoMaterial class is a node type for setting up material values for scene geometry." alt="SoMaterial" shape="rect" coords="570,1736,750,1760"/>
+<area href="classSoMaterialBinding.html" title="The SoMaterialBinding class is a node for setting up how materials are mapped to shapes." alt="SoMaterialBinding" shape="rect" coords="570,1792,750,1816"/>
+<area href="classSoNodeEngine.html" title="SoNodeEngine is the base class for Coin node engines." alt="SoNodeEngine" shape="rect" coords="570,1848,750,1872"/>
+<area href="classSoNodeKitListPart.html" title="The SoNodeKitListPart class is a container node." alt="SoNodeKitListPart" shape="rect" coords="570,1904,750,1928"/>
+<area href="classSoNormal.html" title="The SoNormal class is a node for providing normals to the state." alt="SoNormal" shape="rect" coords="570,1960,750,1984"/>
+<area href="classSoNormalBinding.html" title="The SoNormalBinding class is a node for specifying normal vector bindings." alt="SoNormalBinding" shape="rect" coords="570,2016,750,2040"/>
+<area href="classSoPackedColor.html" title="The SoPackedColor class is a node for setting diffuse and transparency material values." alt="SoPackedColor" shape="rect" coords="570,2072,750,2096"/>
+<area href="classSoPickStyle.html" title="The SoPickStyle class is a node for setting up how to do picking." alt="SoPickStyle" shape="rect" coords="570,2128,750,2152"/>
+<area href="classSoPolygonOffset.html" title="The SoPolygonOffset class is a node type for &quot;layering&quot; rendering primitives." alt="SoPolygonOffset" shape="rect" coords="570,2184,750,2208"/>
+<area href="classSoProfile.html" title="The SoProfile class is the abstract superclass for profile definitions." alt="SoProfile" shape="rect" coords="570,2240,750,2264"/>
+<area href="classSoProfileCoordinate2.html" title="The SoProfileCoordinate2 class is a node specifying a set of 2D coordinates for profiles." alt="SoProfileCoordinate2" shape="rect" coords="570,2296,750,2320"/>
+<area href="classSoProfileCoordinate3.html" title="The SoProfileCoordinate3 class is a node specifying a set of 3D coordinates for profiles." alt="SoProfileCoordinate3" shape="rect" coords="570,2352,750,2376"/>
+<area href="classSoProfilerStats.html" title="The SoProfilerStats class is a node for exposing profiling results gathered by SoProfilerElement." alt="SoProfilerStats" shape="rect" coords="570,2408,750,2432"/>
+<area href="classSoProto.html" title="The SoProto class handles PROTO definitions." alt="SoProto" shape="rect" coords="570,2464,750,2488"/>
+<area href="classSoProtoInstance.html" title="The SoProtoInstance class handles PROTO instances." alt="SoProtoInstance" shape="rect" coords="570,2520,750,2544"/>
+<area href="classSoSceneTexture2.html" title="The SoSceneTexture2 class is used to create a 2D texture from a Coin scene graph." alt="SoSceneTexture2" shape="rect" coords="570,2576,750,2600"/>
+<area href="classSoSceneTextureCubeMap.html" title="Renders a scene into a texture cube map." alt="SoSceneTextureCubeMap" shape="rect" coords="570,2632,750,2656"/>
+<area href="classSoShaderObject.html" title="The SoShaderObject class is the superclass for all shader classes in Coin." alt="SoShaderObject" shape="rect" coords="570,2688,750,2712"/>
+<area href="classSoShaderParameter.html" title="The SoShaderParameter class is the base class for all shader parameter classes." alt="SoShaderParameter" shape="rect" coords="570,2744,750,2768"/>
+<area href="classSoShaderProgram.html" title="The SoShaderProgram class is used to specify a set of vertex/geometry/fragment objects." alt="SoShaderProgram" shape="rect" coords="570,2800,750,2824"/>
+<area href="classSoShadowCulling.html" title="The SoShadowCulling class is a node for setting the shadow style on nodes." alt="SoShadowCulling" shape="rect" coords="570,2856,750,2880"/>
+<area href="classSoShadowStyle.html" title="The SoShadowStyle class is a node for setting the shadow style on nodes." alt="SoShadowStyle" shape="rect" coords="570,2912,750,2936"/>
+<area href="classSoShape.html" title="The SoShape class is the superclass for geometry shapes." alt="SoShape" shape="rect" coords="570,2968,750,2992"/>
+<area href="classSoShapeHints.html" title="The SoShapeHints class is a node containing hints about how to render geometry." alt="SoShapeHints" shape="rect" coords="570,3024,750,3048"/>
+<area href="classSoTexture.html" title="Common base class for texture nodes." alt="SoTexture" shape="rect" coords="570,3080,750,3104"/>
+<area href="classSoTexture2Transform.html" title="The SoTexture2Transform class is used to define 2D texture transformations." alt="SoTexture2Transform" shape="rect" coords="570,3136,750,3160"/>
+<area href="classSoTexture3Transform.html" title="The SoTexture3Transform class is used to define 3D texture transformations." alt="SoTexture3Transform" shape="rect" coords="570,3192,750,3216"/>
+<area href="classSoTextureCombine.html" title="The SoTextureCombine class is a node for setting texture combine functions." alt="SoTextureCombine" shape="rect" coords="570,3248,750,3272"/>
+<area href="classSoTextureCoordinate2.html" title="The SoTextureCoordinate2 class contains a set of coordinates for the mapping of 2D textures." alt="SoTextureCoordinate2" shape="rect" coords="570,3304,750,3328"/>
+<area href="classSoTextureCoordinate3.html" title="The SoTextureCoordinate3 class contains a set of coordinates for the mapping of 2D textures." alt="SoTextureCoordinate3" shape="rect" coords="570,3360,750,3384"/>
+<area href="classSoTextureCoordinateBinding.html" title="The SoTextureCoordinateBinding class says how texture coordinates should be bound to shapes." alt="SoTextureCoordinateBinding" shape="rect" coords="570,3416,750,3440"/>
+<area href="classSoTextureCoordinateCube.html" title="The SoTextureCoordinateCube class generates cube mapped texture coordinates for shapes." alt="SoTextureCoordinateCube" shape="rect" coords="570,3472,750,3496"/>
+<area href="classSoTextureCoordinateCylinder.html" title="The SoTextureCoordinateCylinder class generates cylinder mapped texture coordinates for shapes." alt="SoTextureCoordinateCylinder" shape="rect" coords="570,3528,750,3552"/>
+<area href="classSoTextureCoordinateFunction.html" title="The SoTextureCoordinateFunction class is an abstract base class for texture coordinate generating nod..." alt="SoTextureCoordinateFunction" shape="rect" coords="570,3584,750,3608"/>
+<area href="classSoTextureCoordinateSphere.html" title="The SoTextureCoordinateSphere class generates sphere mapped texture coordinates for shapes." alt="SoTextureCoordinateSphere" shape="rect" coords="570,3640,750,3664"/>
+<area href="classSoTextureMatrixTransform.html" title="The SoTextureMatrixTransform class is used to define a texture matrix transformation." alt="SoTextureMatrixTransform" shape="rect" coords="570,3696,750,3720"/>
+<area href="classSoTextureScalePolicy.html" title="The SoTextureScalePolicy class is a node for controlling the texture scale policy." alt="SoTextureScalePolicy" shape="rect" coords="570,3752,750,3776"/>
+<area href="classSoTextureUnit.html" title="The SoTextureUnit class is a node for setting the active texture unit." alt="SoTextureUnit" shape="rect" coords="570,3808,750,3832"/>
+<area href="classSoTransformation.html" title="The SoTransformation class is the abstract base class for transformation nodes." alt="SoTransformation" shape="rect" coords="570,3864,750,3888"/>
+<area href="classSoTransparencyType.html" title="The SoTransparencyType class is a node for setting the transparency type for shapes." alt="SoTransparencyType" shape="rect" coords="570,3920,750,3944"/>
+<area href="classSoVRMLAppearance.html" title="The SoVRMLAppearance class specifies visual properties for shapes." alt="SoVRMLAppearance" shape="rect" coords="570,3976,750,4000"/>
+<area href="classSoVRMLAudioClip.html" title="The SoVRMLAudioClip class is used to load and store audio data." alt="SoVRMLAudioClip" shape="rect" coords="570,4032,750,4056"/>
+<area href="classSoVRMLBackground.html" title="The SoVRMLBackground class is used for specifying a viewer panorama." alt="SoVRMLBackground" shape="rect" coords="570,4088,750,4112"/>
+<area href="classSoVRMLColor.html" title="The SoVRMLColor class is used to specify multiple colors for a single shape." alt="SoVRMLColor" shape="rect" coords="570,4144,750,4168"/>
+<area href="classSoVRMLCoordinate.html" title="The SoVRMLCoordinate class is used to define 3D coordinates for shapes." alt="SoVRMLCoordinate" shape="rect" coords="570,4200,750,4224"/>
+<area href="classSoVRMLFog.html" title="The SoVRMLFog class is used to specify a global scene fog." alt="SoVRMLFog" shape="rect" coords="570,4256,750,4280"/>
+<area href="classSoVRMLFontStyle.html" title="The SoVRMLFontStyle class is used to define the current font." alt="SoVRMLFontStyle" shape="rect" coords="570,4312,750,4336"/>
+<area href="classSoVRMLInline.html" title="The SoVRMLInline class is used to insert VRML files into a scene." alt="SoVRMLInline" shape="rect" coords="570,4368,750,4392"/>
+<area href="classSoVRMLLight.html" title="The SoVRMLLight class is a superclass for VRML light nodes." alt="SoVRMLLight" shape="rect" coords="570,4424,750,4448"/>
+<area href="classSoVRMLMaterial.html" title="The SoVRMLMaterial class is used to assign a material to geometry." alt="SoVRMLMaterial" shape="rect" coords="570,4480,750,4504"/>
+<area href="classSoVRMLNavigationInfo.html" title="The SoVRMLNavigationInfo class is used to specify avatar and viewer settings." alt="SoVRMLNavigationInfo" shape="rect" coords="570,4536,750,4560"/>
+<area href="classSoVRMLNormal.html" title="The SoVRMLNormal class is used to bind normals to geometry." alt="SoVRMLNormal" shape="rect" coords="570,4592,750,4616"/>
+<area href="classSoVRMLProximitySensor.html" title="The SoVRMLProximitySensor class is used to generate events when the viewer enters or exits a region." alt="SoVRMLProximitySensor" shape="rect" coords="570,4648,750,4672"/>
+<area href="classSoVRMLScript.html" title="The SoVRMLScript class is used to control the scene using scripts." alt="SoVRMLScript" shape="rect" coords="570,4704,750,4728"/>
+<area href="classSoVRMLSensor.html" title="The SoVRMLSensor class is an abstract superclass for VRML sensors." alt="SoVRMLSensor" shape="rect" coords="570,4760,750,4784"/>
+<area href="classSoVRMLShape.html" title="The SoVRMLShape class holds geometry and geometry appearance nodes." alt="SoVRMLShape" shape="rect" coords="570,4816,750,4840"/>
+<area href="classSoVRMLSound.html" title="The SoVRMLSound class is used to represent a sound source." alt="SoVRMLSound" shape="rect" coords="570,4872,750,4896"/>
+<area href="classSoVRMLTexture.html" title="The SoVRMLTexture class is a superclass for VRML texture nodes." alt="SoVRMLTexture" shape="rect" coords="570,4928,750,4952"/>
+<area href="classSoVRMLTextureCoordinate.html" title="The SoVRMLTextureCoordinate class binds texture coordinates to vertex-based geometry." alt="SoVRMLTextureCoordinate" shape="rect" coords="570,4984,750,5008"/>
+<area href="classSoVRMLTextureTransform.html" title="The SoVRMLTextureTransform class defines a transformation applied to texture coordinates." alt="SoVRMLTextureTransform" shape="rect" coords="570,5040,750,5064"/>
+<area href="classSoVRMLTouchSensor.html" title="The SoVRMLTouchSensor class tracks to pointer position and sends events based on user interaction." alt="SoVRMLTouchSensor" shape="rect" coords="570,5096,750,5120"/>
+<area href="classSoVRMLViewpoint.html" title="The SoVRMLViewpoint class is a perspective camera class." alt="SoVRMLViewpoint" shape="rect" coords="570,5152,750,5176"/>
+<area href="classSoVRMLVisibilitySensor.html" title="The SoVRMLVisibilitySensor class will generate events based on visibility." alt="SoVRMLVisibilitySensor" shape="rect" coords="570,5208,750,5232"/>
+<area href="classSoVRMLWorldInfo.html" title="The SoVRMLWorldInfo class contains information about the VRML scene." alt="SoVRMLWorldInfo" shape="rect" coords="570,5264,750,5288"/>
+<area href="classSoVertexAttribute.html" title="A generic node for providing GL vertex attributes of various types." alt="SoVertexAttribute" shape="rect" coords="570,5320,750,5344"/>
+<area href="classSoVertexAttributeBinding.html" title="The SoVertexAttributeBinding class is a node for setting up how vertex attributes are mapped to shape..." alt="SoVertexAttributeBinding" shape="rect" coords="570,5376,750,5400"/>
+<area href="classSoVertexProperty.html" title="The SoVertexProperty class collects the functionality of various appearance nodes." alt="SoVertexProperty" shape="rect" coords="570,5432,750,5456"/>
+<area href="classSoWWWInline.html" title="The SoWWWInline class is a node used to include data from an URL." alt="SoWWWInline" shape="rect" coords="570,5488,750,5512"/>
+<area href="classSoTempPath.html" title="The SoTempPath class is used to store temporary paths." alt="SoTempPath" shape="rect" coords="760,168,940,192"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ae6df5f7ce9b7426544fa890d7c48b23a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#ae6df5f7ce9b7426544fa890d7c48b23a">addAuditor</a> (void *const auditor, const <a class="el" href="classSoNotRec.html#a3dadebf7917d6722df3485e7971ca25c">SoNotRec::Type</a> type)</td></tr>
+<tr class="separator:ae6df5f7ce9b7426544fa890d7c48b23a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dce35007a2d2f2c01e9e7200ca17327"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a4dce35007a2d2f2c01e9e7200ca17327">addWriteReference</a> (<a class="el" href="classSoOutput.html">SoOutput</a> *out, SbBool isfromfield=FALSE)</td></tr>
+<tr class="separator:a4dce35007a2d2f2c01e9e7200ca17327"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3323fa3136ee0b7b1130683cabd2f45"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#aa3323fa3136ee0b7b1130683cabd2f45">assertAlive</a> (void) const</td></tr>
+<tr class="separator:aa3323fa3136ee0b7b1130683cabd2f45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7129603ba417a658d975be39d07ab8f3"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSoAuditorList.html">SoAuditorList</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a7129603ba417a658d975be39d07ab8f3">getAuditors</a> (void) const</td></tr>
+<tr class="separator:a7129603ba417a658d975be39d07ab8f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1dbb536d70cf7045a96bc27165d378d0"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSbName.html">SbName</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a1dbb536d70cf7045a96bc27165d378d0">getName</a> (void) const</td></tr>
+<tr class="separator:a1dbb536d70cf7045a96bc27165d378d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81f6ccf0ce835794d59a492238f082bd"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a81f6ccf0ce835794d59a492238f082bd">getRefCount</a> (void) const</td></tr>
+<tr class="separator:a81f6ccf0ce835794d59a492238f082bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a873b521c1386368d4d63ff893856590a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a873b521c1386368d4d63ff893856590a">getTypeId</a> (void) const =0</td></tr>
+<tr class="memdesc:a873b521c1386368d4d63ff893856590a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the type identification of an object derived from a class inheriting <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a>. This is used for runtime type checking and "downward" casting.  <a href="classSoBase.html#a873b521c1386368d4d63ff893856590a">More...</a><br /></td></tr>
+<tr class="separator:a873b521c1386368d4d63ff893856590a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2861cbe3c2f43747bc289c7f55bbec3"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#aa2861cbe3c2f43747bc289c7f55bbec3">isOfType</a> (<a class="el" href="classSoType.html">SoType</a> type) const</td></tr>
+<tr class="memdesc:aa2861cbe3c2f43747bc289c7f55bbec3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>TRUE</code> if the type of this object is either of the same type or inherited from <em>type</em>.  <a href="classSoBase.html#aa2861cbe3c2f43747bc289c7f55bbec3">More...</a><br /></td></tr>
+<tr class="separator:aa2861cbe3c2f43747bc289c7f55bbec3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f7fb26481bfb35d5821acfef0fc10b5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a9f7fb26481bfb35d5821acfef0fc10b5">notify</a> (<a class="el" href="classSoNotList.html">SoNotList</a> *l)</td></tr>
+<tr class="separator:a9f7fb26481bfb35d5821acfef0fc10b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac01cf34901b2a2be1bc2671bb2463851"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#ac01cf34901b2a2be1bc2671bb2463851">ref</a> (void) const</td></tr>
+<tr class="separator:ac01cf34901b2a2be1bc2671bb2463851"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40434ac2a479164cbeee3f6583307b77"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a40434ac2a479164cbeee3f6583307b77">removeAuditor</a> (void *const auditor, const <a class="el" href="classSoNotRec.html#a3dadebf7917d6722df3485e7971ca25c">SoNotRec::Type</a> type)</td></tr>
+<tr class="separator:a40434ac2a479164cbeee3f6583307b77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9bb8b4387f5fb39d4aa3fe92ca81261"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#ab9bb8b4387f5fb39d4aa3fe92ca81261">setName</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;newname)</td></tr>
+<tr class="separator:ab9bb8b4387f5fb39d4aa3fe92ca81261"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f95394c79b081e482d94a15a823b32f"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a6f95394c79b081e482d94a15a823b32f">shouldWrite</a> (void)</td></tr>
+<tr class="separator:a6f95394c79b081e482d94a15a823b32f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8b4821e5eb780f9098d4b1a866e6a63"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#ad8b4821e5eb780f9098d4b1a866e6a63">startNotify</a> (void)</td></tr>
+<tr class="separator:ad8b4821e5eb780f9098d4b1a866e6a63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba7fd51b022505fa822d295095b7f6a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#aba7fd51b022505fa822d295095b7f6a7">touch</a> (void)</td></tr>
+<tr class="separator:aba7fd51b022505fa822d295095b7f6a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a254b1ac395fe4d4d10438b994bdb3561"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a254b1ac395fe4d4d10438b994bdb3561">unref</a> (void) const</td></tr>
+<tr class="separator:a254b1ac395fe4d4d10438b994bdb3561"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2efdb80168517b9e0a8dd8dc8c655fbb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a2efdb80168517b9e0a8dd8dc8c655fbb">unrefNoDelete</a> (void) const</td></tr>
+<tr class="separator:a2efdb80168517b9e0a8dd8dc8c655fbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a74952f1fd17c44eb0fc9c3dc3b69102a"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a74952f1fd17c44eb0fc9c3dc3b69102a">addName</a> (<a class="el" href="classSoBase.html">SoBase</a> *const base, const char *const name)</td></tr>
+<tr class="separator:a74952f1fd17c44eb0fc9c3dc3b69102a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0a10d7a457ae5403dac0e6a76d00984"><td class="memItemLeft" align="right" valign="top">static SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#ac0a10d7a457ae5403dac0e6a76d00984">connectRoute</a> (<a class="el" href="classSoInput.html">SoInput</a> *input, const <a class="el" href="classSbName.html">SbName</a> &amp;fromnodename, const <a class="el" href="classSbName.html">SbName</a> &amp;fromfieldname, const <a class="el" href="classSbName.html">SbName</a> &amp;tonodename, const <a class="el" href="classSbName.html">SbName</a> &amp;tofieldname)</td></tr>
+<tr class="separator:ac0a10d7a457ae5403dac0e6a76d00984"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9258013519caafda065433bb168ed126"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a9258013519caafda065433bb168ed126">decrementCurrentWriteCounter</a> (void)</td></tr>
+<tr class="separator:a9258013519caafda065433bb168ed126"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73ce238db093db6ba1b4009818cc9f27"><td class="memItemLeft" align="right" valign="top"><a id="a73ce238db093db6ba1b4009818cc9f27"></a>
+static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a73ce238db093db6ba1b4009818cc9f27">getClassTypeId</a> (void)</td></tr>
+<tr class="memdesc:a73ce238db093db6ba1b4009818cc9f27"><td class="mdescLeft">&#160;</td><td class="mdescRight">This static method returns the <a class="el" href="classSoType.html" title="The SoType class is the basis for the runtime type system in Coin.">SoType</a> object associated with objects of this class. <br /></td></tr>
+<tr class="separator:a73ce238db093db6ba1b4009818cc9f27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acda0e2703e0f76ef10f0b14ce19e6e42"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoBase.html">SoBase</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#acda0e2703e0f76ef10f0b14ce19e6e42">getNamedBase</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;name, <a class="el" href="classSoType.html">SoType</a> type)</td></tr>
+<tr class="separator:acda0e2703e0f76ef10f0b14ce19e6e42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64dd273d58c357da1b0df1b4212bfb29"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a64dd273d58c357da1b0df1b4212bfb29">getNamedBases</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;name, <a class="el" href="classSoBaseList.html">SoBaseList</a> &amp;baselist, <a class="el" href="classSoType.html">SoType</a> type)</td></tr>
+<tr class="separator:a64dd273d58c357da1b0df1b4212bfb29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc549cc4452943800c625056b264d1ff"><td class="memItemLeft" align="right" valign="top">static SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#adc549cc4452943800c625056b264d1ff">getTraceRefs</a> (void)</td></tr>
+<tr class="separator:adc549cc4452943800c625056b264d1ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73037fd0866b2d280e6770c1ff11649b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a73037fd0866b2d280e6770c1ff11649b">incrementCurrentWriteCounter</a> (void)</td></tr>
+<tr class="separator:a73037fd0866b2d280e6770c1ff11649b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8419a92b3ac808c6a789673db06776be"><td class="memItemLeft" align="right" valign="top"><a id="a8419a92b3ac808c6a789673db06776be"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a8419a92b3ac808c6a789673db06776be">initClass</a> (void)</td></tr>
+<tr class="memdesc:a8419a92b3ac808c6a789673db06776be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up initialization for data common to all instances of this class, like submitting necessary information to the Coin type system. <br /></td></tr>
+<tr class="separator:a8419a92b3ac808c6a789673db06776be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08ab1a0fb1b141d3afc2e745a998fc01"><td class="memItemLeft" align="right" valign="top">static SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a08ab1a0fb1b141d3afc2e745a998fc01">read</a> (<a class="el" href="classSoInput.html">SoInput</a> *input, <a class="el" href="classSoBase.html">SoBase</a> *&amp;base, <a class="el" href="classSoType.html">SoType</a> expectedtype)</td></tr>
+<tr class="separator:a08ab1a0fb1b141d3afc2e745a998fc01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6687c0316a76792276a0e0e5755f552"><td class="memItemLeft" align="right" valign="top">static SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#ab6687c0316a76792276a0e0e5755f552">readRoute</a> (<a class="el" href="classSoInput.html">SoInput</a> *input)</td></tr>
+<tr class="separator:ab6687c0316a76792276a0e0e5755f552"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a427c87fa9d48a2d09da950b7a0895fc7"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a427c87fa9d48a2d09da950b7a0895fc7">removeName</a> (<a class="el" href="classSoBase.html">SoBase</a> *const base, const char *const name)</td></tr>
+<tr class="separator:a427c87fa9d48a2d09da950b7a0895fc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24fef6a61e75a6bffb4f83d4cf10fca5"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a24fef6a61e75a6bffb4f83d4cf10fca5">setInstancePrefix</a> (const <a class="el" href="classSbString.html">SbString</a> &amp;c)</td></tr>
+<tr class="separator:a24fef6a61e75a6bffb4f83d4cf10fca5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4617280cf55689be859f44b1e332a414"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a4617280cf55689be859f44b1e332a414">setTraceRefs</a> (SbBool trace)</td></tr>
+<tr class="separator:a4617280cf55689be859f44b1e332a414"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-types"></a>
+Protected Types</h2></td></tr>
+<tr class="memitem:a42fedf98911431b5a47e7734a228746f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a42fedf98911431b5a47e7734a228746f">BaseFlags</a> { <b>IS_ENGINE</b> = 0x01
+, <b>IS_GROUP</b> = 0x02
+ }</td></tr>
+<tr class="separator:a42fedf98911431b5a47e7734a228746f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a30a12f045bf793692612e8420a2d8413"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a30a12f045bf793692612e8420a2d8413">SoBase</a> (void)</td></tr>
+<tr class="separator:a30a12f045bf793692612e8420a2d8413"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e09f562870ef14253a439aa8379c1ea"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a4e09f562870ef14253a439aa8379c1ea">~SoBase</a> ()</td></tr>
+<tr class="separator:a4e09f562870ef14253a439aa8379c1ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa41e45678b8c582b5202143a220ad76c"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoNotRec.html">SoNotRec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#aa41e45678b8c582b5202143a220ad76c">createNotRec</a> (void)</td></tr>
+<tr class="separator:aa41e45678b8c582b5202143a220ad76c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab102bb9166fc2453ff67e15337038691"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#ab102bb9166fc2453ff67e15337038691">destroy</a> (void)</td></tr>
+<tr class="separator:ab102bb9166fc2453ff67e15337038691"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ce37d35474a3c6a86c23c28b39d1a40"><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a1ce37d35474a3c6a86c23c28b39d1a40">getFileFormatName</a> (void) const</td></tr>
+<tr class="separator:a1ce37d35474a3c6a86c23c28b39d1a40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a217b8814e756eb35b3123c646dbb94bf"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a217b8814e756eb35b3123c646dbb94bf">hasMultipleWriteRefs</a> (void) const</td></tr>
+<tr class="separator:a217b8814e756eb35b3123c646dbb94bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4953769f9d9dd210153228a2f096a67"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#ab4953769f9d9dd210153228a2f096a67">readInstance</a> (<a class="el" href="classSoInput.html">SoInput</a> *input, unsigned short flags)=0</td></tr>
+<tr class="separator:ab4953769f9d9dd210153228a2f096a67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9d26d177755cb43299bb1201c94c989"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#aa9d26d177755cb43299bb1201c94c989">writeFooter</a> (<a class="el" href="classSoOutput.html">SoOutput</a> *out) const</td></tr>
+<tr class="separator:aa9d26d177755cb43299bb1201c94c989"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa08205585f2aea5d141e105b492df61f"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#aa08205585f2aea5d141e105b492df61f">writeHeader</a> (<a class="el" href="classSoOutput.html">SoOutput</a> *out, SbBool isgroup, SbBool isengine) const</td></tr>
+<tr class="separator:aa08205585f2aea5d141e105b492df61f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:a79a1022df39ae04dfefff5449d4ead24"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a79a1022df39ae04dfefff5449d4ead24">getCurrentWriteCounter</a> (void)</td></tr>
+<tr class="separator:a79a1022df39ae04dfefff5449d4ead24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a704e6447bdfacab4171721c803087b54"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a704e6447bdfacab4171721c803087b54">staticDataLock</a> (void)</td></tr>
+<tr class="separator:a704e6447bdfacab4171721c803087b54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7610ab9ef6c403635bb913cbf7a24032"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a7610ab9ef6c403635bb913cbf7a24032">staticDataUnlock</a> (void)</td></tr>
+<tr class="separator:a7610ab9ef6c403635bb913cbf7a24032"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a> class is the top-level superclass for a number of class-hierarchies. </p>
+<p><a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a> provides the basic interfaces and methods for doing reference counting, type identification and import/export. All classes in Coin which uses these mechanisms are descendent from this class.</p>
+<p>One important issue with SoBase-derived classes is that they should <em>not</em> be statically allocated, neither in static module memory nor on function's stack frames. SoBase-derived classes must <em>always</em> be allocated dynamically from the memory heap with the <code>new</code> operator.</p>
+<p>This is so because SoBase-derived instances are reference counted, and will self destruct on the appropriate time. For this to work, they must be explicitly allocated in heap memory. See the class documentation of <a class="el" href="classSoNode.html" title="The SoNode class is the base class for nodes used in scene graphs.">SoNode</a> for more information. </p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a42fedf98911431b5a47e7734a228746f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42fedf98911431b5a47e7734a228746f">&#9670;&nbsp;</a></span>BaseFlags</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classSoBase.html#a42fedf98911431b5a47e7734a228746f">SoBase::BaseFlags</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+</p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a30a12f045bf793692612e8420a2d8413"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30a12f045bf793692612e8420a2d8413">&#9670;&nbsp;</a></span>SoBase()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoBase::SoBase </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Constructor. The initial reference count will be set to zero. </p>
+
+</div>
+</div>
+<a id="a4e09f562870ef14253a439aa8379c1ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e09f562870ef14253a439aa8379c1ea">&#9670;&nbsp;</a></span>~SoBase()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoBase::~SoBase </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Destructor. There should not be any normal circumstance where you need to explicitly delete an object derived from the <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a> class, as the reference counting should take care of deallocating unused objects.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoBase.html#a254b1ac395fe4d4d10438b994bdb3561">unref()</a>, <a class="el" href="classSoBase.html#a2efdb80168517b9e0a8dd8dc8c655fbb">unrefNoDelete()</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae6df5f7ce9b7426544fa890d7c48b23a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6df5f7ce9b7426544fa890d7c48b23a">&#9670;&nbsp;</a></span>addAuditor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoBase::addAuditor </td>
+          <td>(</td>
+          <td class="paramtype">void *const&#160;</td>
+          <td class="paramname"><em>auditor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSoNotRec.html#a3dadebf7917d6722df3485e7971ca25c">SoNotRec::Type</a>&#160;</td>
+          <td class="paramname"><em>type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Add an auditor to notify whenever the object changes in any significant way.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoBase.html#a40434ac2a479164cbeee3f6583307b77">removeAuditor()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a74952f1fd17c44eb0fc9c3dc3b69102a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74952f1fd17c44eb0fc9c3dc3b69102a">&#9670;&nbsp;</a></span>addName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoBase::addName </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoBase.html">SoBase</a> *const&#160;</td>
+          <td class="paramname"><em>b</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *const&#160;</td>
+          <td class="paramname"><em>name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Adds a name&lt;-&gt;object mapping to the global dictionary. </p>
+
+</div>
+</div>
+<a id="a4dce35007a2d2f2c01e9e7200ca17327"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4dce35007a2d2f2c01e9e7200ca17327">&#9670;&nbsp;</a></span>addWriteReference()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoBase::addWriteReference </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoOutput.html">SoOutput</a> *&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>isfromfield</em> = <code>FALSE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method is used during the first write pass of a write action to count the number of references to this object in the scene graph. </p>
+
+<p>Reimplemented in <a class="el" href="classSoGroup.html#a447832a0dfc2c22475a547add04cb52b">SoGroup</a>, <a class="el" href="classSoBaseKit.html#a87a63c4f45dd2a46b9af1b7c76682a06">SoBaseKit</a>, and <a class="el" href="classSoFieldContainer.html#a8fe87d323c349aa7123ecbd2096a90dd">SoFieldContainer</a>.</p>
+
+</div>
+</div>
+<a id="aa3323fa3136ee0b7b1130683cabd2f45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3323fa3136ee0b7b1130683cabd2f45">&#9670;&nbsp;</a></span>assertAlive()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoBase::assertAlive </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+ There are 4 bits allocated for each SoBase-object for a bitpattern that indicates the object is still "alive". The pattern is changed when the object is destructed. If this method is then called after destruction, an assert will hit.</p>
+<p>This is used internally in Coin (in for instance <a class="el" href="classSoBase.html#ac01cf34901b2a2be1bc2671bb2463851">SoBase::ref()</a>) to try to detect when the instance has been prematurely destructed. This is a very common mistake made by application programmers (letting the refcount drop to zero before it should, that is), so the extra piece of assistance through the accompanying assert() in this method to detect dangling references to the object, with subsequent memory corruption and mysterious crashes, should be a Good Thing.</p>
+<p>This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ </p><dl class="section since"><dt>Since</dt><dd>Coin 2.0 </dd></dl>
+
+</div>
+</div>
+<a id="ac0a10d7a457ae5403dac0e6a76d00984"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0a10d7a457ae5403dac0e6a76d00984">&#9670;&nbsp;</a></span>connectRoute()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoBase::connectRoute </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoInput.html">SoInput</a> *&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbName.html">SbName</a> &amp;&#160;</td>
+          <td class="paramname"><em>fromnodename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbName.html">SbName</a> &amp;&#160;</td>
+          <td class="paramname"><em>fromfieldname</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbName.html">SbName</a> &amp;&#160;</td>
+          <td class="paramname"><em>tonodename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbName.html">SbName</a> &amp;&#160;</td>
+          <td class="paramname"><em>tofieldname</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Connect a route from the node named <em>fromnodename's</em> field <em>fromfieldname</em> to the node named <em>tonodename's</em> field <em>tofieldname</em>. This method will consider the fields types (event in, event out, etc) when connecting.</p>
+<p>This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ </p><dl class="section since"><dt>Since</dt><dd>Coin 2.0 </dd></dl>
+
+</div>
+</div>
+<a id="aa41e45678b8c582b5202143a220ad76c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa41e45678b8c582b5202143a220ad76c">&#9670;&nbsp;</a></span>createNotRec()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoNotRec.html">SoNotRec</a> SoBase::createNotRec </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Create a record entry for notification lists. </p>
+
+<p>Reimplemented in <a class="el" href="classSoGroup.html#aa8cac54a0a595403f5475cc502bebdd7">SoGroup</a>.</p>
+
+</div>
+</div>
+<a id="a9258013519caafda065433bb168ed126"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9258013519caafda065433bb168ed126">&#9670;&nbsp;</a></span>decrementCurrentWriteCounter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoBase::decrementCurrentWriteCounter </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+</p>
+
+</div>
+</div>
+<a id="ab102bb9166fc2453ff67e15337038691"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab102bb9166fc2453ff67e15337038691">&#9670;&nbsp;</a></span>destroy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoBase::destroy </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Cleans up all hanging references to and from this instance, and then commits suicide.</p>
+<p>Called automatically when the reference count goes to zero. </p>
+
+<p>Reimplemented in <a class="el" href="classSoProto.html#a2c430d9f50d1c1bb7e2e0f229c74bf31">SoProto</a>.</p>
+
+</div>
+</div>
+<a id="a7129603ba417a658d975be39d07ab8f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7129603ba417a658d975be39d07ab8f3">&#9670;&nbsp;</a></span>getAuditors()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSoAuditorList.html">SoAuditorList</a> &amp; SoBase::getAuditors </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns list of objects auditing this object.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoBase.html#ae6df5f7ce9b7426544fa890d7c48b23a">addAuditor()</a>, <a class="el" href="classSoBase.html#a40434ac2a479164cbeee3f6583307b77">removeAuditor()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a79a1022df39ae04dfefff5449d4ead24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79a1022df39ae04dfefff5449d4ead24">&#9670;&nbsp;</a></span>getCurrentWriteCounter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t SoBase::getCurrentWriteCounter </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+</p>
+
+</div>
+</div>
+<a id="a1ce37d35474a3c6a86c23c28b39d1a40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ce37d35474a3c6a86c23c28b39d1a40">&#9670;&nbsp;</a></span>getFileFormatName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char * SoBase::getFileFormatName </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the class name this object should be written under. Default string returned is the name of the class from the type system.</p>
+<p>User extensions nodes and engines override this method to return the name of the extension (instead of "UnknownNode" or "UnknownEngine"). </p>
+
+<p>Reimplemented in <a class="el" href="classSoProtoInstance.html#af7d8e4c3119a6f9949576971c3cfaaca">SoProtoInstance</a>.</p>
+
+</div>
+</div>
+<a id="a1dbb536d70cf7045a96bc27165d378d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1dbb536d70cf7045a96bc27165d378d0">&#9670;&nbsp;</a></span>getName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbName.html">SbName</a> SoBase::getName </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns name of object. If no name has been given to this object, the returned <a class="el" href="classSbName.html" title="The SbName class stores strings by reference.">SbName</a> will contain the empty string. </p>
+
+</div>
+</div>
+<a id="acda0e2703e0f76ef10f0b14ce19e6e42"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acda0e2703e0f76ef10f0b14ce19e6e42">&#9670;&nbsp;</a></span>getNamedBase()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoBase.html">SoBase</a> * SoBase::getNamedBase </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbName.html">SbName</a> &amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSoType.html">SoType</a>&#160;</td>
+          <td class="paramname"><em>type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the object of <em>type</em>, or derived from <em>type</em>, registered under <em>name</em>. If several objects have been registered under the same name with the same type, returns the <em>last</em> one which was registered.</p>
+<p>If no object of a valid type or subtype has been registered with the given name, returns <code>NULL</code>. </p>
+
+</div>
+</div>
+<a id="a64dd273d58c357da1b0df1b4212bfb29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64dd273d58c357da1b0df1b4212bfb29">&#9670;&nbsp;</a></span>getNamedBases()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SoBase::getNamedBases </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbName.html">SbName</a> &amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSoBaseList.html">SoBaseList</a> &amp;&#160;</td>
+          <td class="paramname"><em>baselist</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSoType.html">SoType</a>&#160;</td>
+          <td class="paramname"><em>type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the number of objects of type <em>type</em>, or derived from <em>type</em>, registered under <em>name</em>.</p>
+<p>All matches will also be appended to <em>baselist</em>. </p>
+
+</div>
+</div>
+<a id="a81f6ccf0ce835794d59a492238f082bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81f6ccf0ce835794d59a492238f082bd">&#9670;&nbsp;</a></span>getRefCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t SoBase::getRefCount </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns number of objects referring to this object. </p>
+
+</div>
+</div>
+<a id="adc549cc4452943800c625056b264d1ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc549cc4452943800c625056b264d1ff">&#9670;&nbsp;</a></span>getTraceRefs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoBase::getTraceRefs </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Return the status of the reference tracing flag.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoBase.html#a4617280cf55689be859f44b1e332a414">setTraceRefs()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a873b521c1386368d4d63ff893856590a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a873b521c1386368d4d63ff893856590a">&#9670;&nbsp;</a></span>getTypeId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoType.html">SoType</a> SoBase::getTypeId </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the type identification of an object derived from a class inheriting <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a>. This is used for runtime type checking and "downward" casting. </p>
+<p>Usage example:</p>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<a class="code" href="classSoNode.html">SoNode</a> * node)</div>
+<div class="line">{</div>
+<div class="line">  <span class="keywordflow">if</span> (node-&gt;<a class="code" href="classSoBase.html#a873b521c1386368d4d63ff893856590a">getTypeId</a>() == <a class="code" href="classSoFile.html#affecb4ab49250c1c95d2b2510791cf6c">SoFile::getClassTypeId</a>()) {</div>
+<div class="line">    <a class="code" href="classSoFile.html">SoFile</a> * filenode = (<a class="code" href="classSoFile.html">SoFile</a> *)node;  <span class="comment">// safe downward cast, knows the type</span></div>
+<div class="line"><span class="comment"></span>  }</div>
+<div class="line">}</div>
+<div class="ttc" id="aclassSoBase_html_a873b521c1386368d4d63ff893856590a"><div class="ttname"><a href="classSoBase.html#a873b521c1386368d4d63ff893856590a">SoBase::getTypeId</a></div><div class="ttdeci">virtual SoType getTypeId(void) const =0</div><div class="ttdoc">Returns the type identification of an object derived from a class inheriting SoBase....</div></div>
+<div class="ttc" id="aclassSoFile_html"><div class="ttname"><a href="classSoFile.html">SoFile</a></div><div class="ttdoc">The SoFile class is node container for another model file.</div><div class="ttdef"><b>Definition:</b> SoFile.h:43</div></div>
+<div class="ttc" id="aclassSoFile_html_affecb4ab49250c1c95d2b2510791cf6c"><div class="ttname"><a href="classSoFile.html#affecb4ab49250c1c95d2b2510791cf6c">SoFile::getClassTypeId</a></div><div class="ttdeci">static SoType getClassTypeId(void)</div><div class="ttdef"><b>Definition:</b> SoFile.cpp:100</div></div>
+<div class="ttc" id="aclassSoNode_html"><div class="ttname"><a href="classSoNode.html">SoNode</a></div><div class="ttdoc">The SoNode class is the base class for nodes used in scene graphs.</div><div class="ttdef"><b>Definition:</b> SoNode.h:56</div></div>
+</div><!-- fragment --><p>For application programmers wanting to extend the library with new nodes, engines, nodekits, draggers or others: this method needs to be overridden in <em>all</em> subclasses. This is typically done as part of setting up the full type system for extension classes, which is usually accomplished by using the predefined macros available through for instance <a class="el" href="SoSubNode_8h_source.html">Inventor/nodes/SoSubNode.h</a> (SO_NODE_INIT_CLASS and SO_NODE_CONSTRUCTOR for node classes), <a class="el" href="SoSubEngine_8h_source.html">Inventor/engines/SoSubEngine.h</a> (for engine classes) and so on.</p>
+<p>For more information on writing Coin extensions, see the class documentation of the top level superclasses for the various class groups. </p>
+
+<p>Implemented in <a class="el" href="classSoVRMLWorldInfo.html#a07aa2d2a6a2c0baf1d3c127a88316c81">SoVRMLWorldInfo</a>, <a class="el" href="classSoVRMLVisibilitySensor.html#a1ebdb139aa4997c05690c7abfe6f26e3">SoVRMLVisibilitySensor</a>, <a class="el" href="classSoVRMLViewpoint.html#afb1aadf31c7c7c950a87e70022f3de06">SoVRMLViewpoint</a>, <a class="el" href="classSoVRMLVertexShape.html#a4a47315ca064f2d27c6f95ba68f43c08">SoVRMLVertexShape</a>, <a class="el" href="classSoVRMLVertexPoint.html#adb2a100c559ef68d1800912da46a014f">SoVRMLVertexPoint</a>, <a class="el" href="classSoVRMLVertexLine.html#a8946732ff8adcf1087c19fb5d5c7a175">SoVRMLVertexLine</a>, <a class="el" href="classSoVRMLTransform.html#a548cd09a0a50c3fecc39815aae640985">SoVRMLTransform</a>, <a class="el" href="classSoVRMLTouchSensor.html#a3a3dd842e1b54ec8e5326aa0ffa9ed82">SoVRMLTouchSensor</a>, <a class="el" href="classSoVRMLTimeSensor.html#ac449ac82d85d15fb697fb5e5c989e82d">SoVRMLTimeSensor</a>, <a class="el" href="classSoVRMLTextureTransform.html#a7d33001b3015044ead1947d6583d1285">SoVRMLTextureTransform</a>, <a class="el" href="classSoVRMLTextureCoordinate.html#a5c86d0f6a9aa33b2b0b0ca0f33714025">SoVRMLTextureCoordinate</a>, <a class="el" href="classSoVRMLTexture.html#af2a69b9d422368890103b5821b06e090">SoVRMLTexture</a>, <a class="el" href="classSoVRMLText.html#aaf5aaa9a3b883064b7f5e0e6a18f75eb">SoVRMLText</a>, <a class="el" href="classSoVRMLSwitch.html#ad4aa7368865dabeb395691b82b870dde">SoVRMLSwitch</a>, <a class="el" href="classSoVRMLSpotLight.html#a81a1cf06894401c6ea89cb8991cb0bc6">SoVRMLSpotLight</a>, <a class="el" href="classSoVRMLSphereSensor.html#ac71f78440ab0dfc2c699028d3331302e">SoVRMLSphereSensor</a>, <a class="el" href="classSoVRMLSphere.html#ae6d1c4b14c99b7b151daae370b90ae56">SoVRMLSphere</a>, <a class="el" href="classSoVRMLSound.html#a0f99310d597740dbfc4205834a2e6923">SoVRMLSound</a>, <a class="el" href="classSoVRMLShape.html#a87fc8322021a76349280149642c0233b">SoVRMLShape</a>, <a class="el" href="classSoVRMLSensor.html#ae774f219e23536993dc6940b3a574954">SoVRMLSensor</a>, <a class="el" href="classSoVRMLScript.html#a2018330be632b98e203f929d41ef1897">SoVRMLScript</a>, <a class="el" href="classSoVRMLScalarInterpolator.html#a2eae543926e2d29895c6ed31589436f4">SoVRMLScalarInterpolator</a>, <a class="el" href="classSoVRMLProximitySensor.html#a5d6a26071f16af327abbf55116908d83">SoVRMLProximitySensor</a>, <a class="el" href="classSoVRMLPositionInterpolator.html#a6208d92c58a4a0878d76c144cde7501a">SoVRMLPositionInterpolator</a>, <a class="el" href="classSoVRMLPointSet.html#a97917ec0977f961050df38b1dcf1a158">SoVRMLPointSet</a>, <a class="el" href="classSoVRMLPointLight.html#a0a23f5524820b680f97a45b2728d5e68">SoVRMLPointLight</a>, <a class="el" href="classSoVRMLPlaneSensor.html#af5ecc719153121fd9506339d0a70d5ed">SoVRMLPlaneSensor</a>, <a class="el" href="classSoVRMLPixelTexture.html#aff389b179701c072d99df879fbd67863">SoVRMLPixelTexture</a>, <a class="el" href="classSoVRMLParent.html#a9fce50518a8f03e692dc8d1b77e3dda8">SoVRMLParent</a>, <a class="el" href="classSoVRMLOrientationInterpolator.html#ae0cc95188e62299c0ff76d51afbd71b6">SoVRMLOrientationInterpolator</a>, <a class="el" href="classSoVRMLNormalInterpolator.html#a3bd7ee577ad3fbaee9e2d3f5bbb39031">SoVRMLNormalInterpolator</a>, <a class="el" href="classSoVRMLNormal.html#ab4974575295fda5a3c79889f0cbfcd3c">SoVRMLNormal</a>, <a class="el" href="classSoVRMLNavigationInfo.html#a30a0069f451d947be8cd02ac42f97886">SoVRMLNavigationInfo</a>, <a class="el" href="classSoVRMLMovieTexture.html#a99cb01c1358eecd67f038f1de1ed4f18">SoVRMLMovieTexture</a>, <a class="el" href="classSoVRMLMaterial.html#ad4c065425d46b370c5d5b09e85f1482d">SoVRMLMaterial</a>, <a class="el" href="classSoVRMLLOD.html#ab7acff8849729dabc940380b34fa79eb">SoVRMLLOD</a>, <a class="el" href="classSoVRMLLight.html#afb5501f41fda62459bfd7eb8da51eedf">SoVRMLLight</a>, <a class="el" href="classSoVRMLInterpolator.html#a6b1a2ed1772564a3e1539bc38c010a91">SoVRMLInterpolator</a>, <a class="el" href="classSoVRMLInline.html#a1746ef6ceb4dc41425b82c2184be587b">SoVRMLInline</a>, <a class="el" href="classSoVRMLIndexedShape.html#a1a96d05ffafe27d6b133aafae6cbbdc1">SoVRMLIndexedShape</a>, <a class="el" href="classSoVRMLIndexedLineSet.html#a11f6ec8c303918883367c47d51685db2">SoVRMLIndexedLineSet</a>, <a class="el" href="classSoVRMLIndexedLine.html#a708ea0daa4bf7d29629ab8dd2e4e8d05">SoVRMLIndexedLine</a>, <a class="el" href="classSoVRMLIndexedFaceSet.html#a0f22522576152d15e1ac7471bcff848f">SoVRMLIndexedFaceSet</a>, <a class="el" href="classSoVRMLImageTexture.html#ac8640a8c184cd6df392a19633fb0fe42">SoVRMLImageTexture</a>, <a class="el" href="classSoVRMLGroup.html#a67d9fe665fe05cc78497f23d7b3e3330">SoVRMLGroup</a>, <a class="el" href="classSoVRMLGeometry.html#aa195ba281b1cc1ee55dad034e2a1e188">SoVRMLGeometry</a>, <a class="el" href="classSoVRMLFontStyle.html#a8331edca752c51dafb8f71dc2a39176e">SoVRMLFontStyle</a>, <a class="el" href="classSoVRMLFog.html#a23d697beb82414bc631fb610aac44b8f">SoVRMLFog</a>, <a class="el" href="classSoVRMLExtrusion.html#a5629979cd4d1c7a3e76eafd60667a2d7">SoVRMLExtrusion</a>, <a class="el" href="classSoVRMLElevationGrid.html#ab54689fe81762f861a7eaff0abf66948">SoVRMLElevationGrid</a>, <a class="el" href="classSoVRMLDragSensor.html#a99237ad3a364d5270e4c89c9735fe5a0">SoVRMLDragSensor</a>, <a class="el" href="classSoVRMLDirectionalLight.html#ad68263ab4349c9ac96e44d1372cb2479">SoVRMLDirectionalLight</a>, <a class="el" href="classSoVRMLCylinderSensor.html#abd7736af49d8d634a0054ba89ccfea09">SoVRMLCylinderSensor</a>, <a class="el" href="classSoVRMLCylinder.html#a932225a2278ec90693e8b7ae8c6cf473">SoVRMLCylinder</a>, <a class="el" href="classSoVRMLCoordinateInterpolator.html#aba3bf1d2eccbeb75b0ae9845c1680cc6">SoVRMLCoordinateInterpolator</a>, <a class="el" href="classSoVRMLCoordinate.html#a79e780844e03ef6762aa8b55c561d4e5">SoVRMLCoordinate</a>, <a class="el" href="classSoVRMLCone.html#a930d49ece7c1d79e3798a8b1e50f6497">SoVRMLCone</a>, <a class="el" href="classSoVRMLColorInterpolator.html#ae0661ef93c3afc74c84596a152f3200a">SoVRMLColorInterpolator</a>, <a class="el" href="classSoVRMLColor.html#a5131d65cc6e60b1a59b12ff1514fdbb3">SoVRMLColor</a>, <a class="el" href="classSoVRMLCollision.html#a235833e579be875457aebecc3a18632c">SoVRMLCollision</a>, <a class="el" href="classSoVRMLBox.html#a20d86f8e6406d1b89edf5ba6ca26df7f">SoVRMLBox</a>, <a class="el" href="classSoVRMLBillboard.html#acac23f4aac80fd3d5eb2377587e90ce4">SoVRMLBillboard</a>, <a class="el" href="classSoVRMLBackground.html#ab08981922cfed04ebbb732ebd36e1690">SoVRMLBackground</a>, <a class="el" href="classSoVRMLAudioClip.html#a22fdc5845da70c4a2fef3d11e447e676">SoVRMLAudioClip</a>, <a class="el" href="classSoVRMLAppearance.html#a883a3db4b287c5927a082384e2abb4f2">SoVRMLAppearance</a>, <a class="el" href="classSoVRMLAnchor.html#ac2ca680534e468bedc111d256e4cc84a">SoVRMLAnchor</a>, <a class="el" href="classSoPath.html#a9a318bcef02b670ba82cb7d4f64f4ff8">SoPath</a>, <a class="el" href="classSoWWWInline.html#ae9e00c43d1e16f8bea88be9834fc4a82">SoWWWInline</a>, <a class="el" href="classSoWWWAnchor.html#ae43d30702b5f1cfdac6bd724dbba9196">SoWWWAnchor</a>, <a class="el" href="classSoVertexShape.html#a221d6b3efc45c6770184a07761c5bf92">SoVertexShape</a>, <a class="el" href="classSoVertexShader.html#a76387252f47aebf1817ffcac14b6c310">SoVertexShader</a>, <a class="el" href="classSoVertexProperty.html#a7627340955eeed45535868a605b3992e">SoVertexProperty</a>, <a class="el" href="classSoVertexAttributeBinding.html#a0e7b4c28d110d24933bf48feebda0c22">SoVertexAttributeBinding</a>, <a class="el" href="classSoVertexAttribute.html#a4c374e3eefa23d43d476486ffb1cdb43">SoVertexAttribute</a>, <a class="el" href="classSoUnits.html#a19c624183b30cb510294fb5c9f183672">SoUnits</a>, <a class="el" href="classSoTriangleStripSet.html#ac9971dbb45f5a647ccb2a68c813e3061">SoTriangleStripSet</a>, <a class="el" href="classSoTransparencyType.html#a71def8420e577668759ff3afa564b72b">SoTransparencyType</a>, <a class="el" href="classSoTranslation.html#a2f1e3a6ee5e3e946518e5cf58d937c7f">SoTranslation</a>, <a class="el" href="classSoTransformSeparator.html#aea9a8f82413a004567b3dfc734d598e0">SoTransformSeparator</a>, <a class="el" href="classSoTransformation.html#a5fb785376a01d7da836b1c0dc4de94e9">SoTransformation</a>, <a class="el" href="classSoTransform.html#a8db5b5b54c3395d7eeb727f6a5253681">SoTransform</a>, <a class="el" href="classSoTextureUnit.html#a3889978b2beb1e02d0f5df0a5422a3ca">SoTextureUnit</a>, <a class="el" href="classSoTextureScalePolicy.html#ae9eecd0a8ef66419096eaf5f5c10a7c1">SoTextureScalePolicy</a>, <a class="el" href="classSoTextureMatrixTransform.html#a33cb633614b20a72ec823146072005c2">SoTextureMatrixTransform</a>, <a class="el" href="classSoTextureCubeMap.html#ae346607be26d467956bbd15bbf61062f">SoTextureCubeMap</a>, <a class="el" href="classSoTextureCoordinateSphere.html#a42cf85404bdb324e6c3a08ae79b8da91">SoTextureCoordinateSphere</a>, <a class="el" href="classSoTextureCoordinateReflectionMap.html#a9306d2255450f1c0346bafa38a439788">SoTextureCoordinateReflectionMap</a>, <a class="el" href="classSoTextureCoordinatePlane.html#a8b0b7cc8aabc840e21a94ce589f4e516">SoTextureCoordinatePlane</a>, <a class="el" href="classSoTextureCoordinateObject.html#a5731e054779917b95e44049b5a69461f">SoTextureCoordinateObject</a>, <a class="el" href="classSoTextureCoordinateNormalMap.html#a0a92a2f4d95e829c27190889d8077fb6">SoTextureCoordinateNormalMap</a>, <a class="el" href="classSoTextureCoordinateFunction.html#ad4d8e531c77099f276da2b0ee7130ab3">SoTextureCoordinateFunction</a>, <a class="el" href="classSoTextureCoordinateEnvironment.html#a7e131df7478c4590d607b8f200252438">SoTextureCoordinateEnvironment</a>, <a class="el" href="classSoTextureCoordinateDefault.html#a0195b6af161c5c3cb2270454b9b3368f">SoTextureCoordinateDefault</a>, <a class="el" href="classSoTextureCoordinateCylinder.html#a565e871db11d4880319b7492c5bf9969">SoTextureCoordinateCylinder</a>, <a class="el" href="classSoTextureCoordinateCube.html#a280e58af9583a2b9bc85627e7126c594">SoTextureCoordinateCube</a>, <a class="el" href="classSoTextureCoordinateBinding.html#a8891256fa6370ff4836c949cce2e691b">SoTextureCoordinateBinding</a>, <a class="el" href="classSoTextureCoordinate3.html#aa034403e0d640fbc9e8f3656f416eaf5">SoTextureCoordinate3</a>, <a class="el" href="classSoTextureCoordinate2.html#a2c8fdd60ea58f534b12111aa4ef99d06">SoTextureCoordinate2</a>, <a class="el" href="classSoTextureCombine.html#acbba67b33f5cd2616bd19ad631a614b3">SoTextureCombine</a>, <a class="el" href="classSoTexture3Transform.html#ab38fede31adc5ca371d73d48c95281a5">SoTexture3Transform</a>, <a class="el" href="classSoTexture3.html#a6ba8cdcf1c818169257bf59ef55bf0ed">SoTexture3</a>, <a class="el" href="classSoTexture2Transform.html#ac24a3c23d59464ba4904cee1aca47bd9">SoTexture2Transform</a>, <a class="el" href="classSoTexture2.html#a4eb36e2f2be170a6ebb9d755b19bd4d7">SoTexture2</a>, <a class="el" href="classSoTexture.html#a9ddee1db1ccaceb6e66b77cdaeab1717">SoTexture</a>, <a class="el" href="classSoText3.html#acf17d96be7da195a9f1da111718c154b">SoText3</a>, <a class="el" href="classSoText2.html#a3a0cf460ffb7eb222e606cc45d5048e0">SoText2</a>, <a class="el" href="classSoSwitch.html#a6baf70429520257786920f090ca64540">SoSwitch</a>, <a class="el" href="classSoSurroundScale.html#a88d058808f1e9bb5326e0b84fb56b28b">SoSurroundScale</a>, <a class="el" href="classSoSpotLight.html#a75f54a3923eb2160e76d8998787bcce7">SoSpotLight</a>, <a class="el" href="classSoSphere.html#ad3db505ce1653254320b2172c8ee7e81">SoSphere</a>, <a class="el" href="classSoShuttle.html#aeb1bb2c2d8ec23c6963377d5d35c2f6a">SoShuttle</a>, <a class="el" href="classSoShapeHints.html#a9a3702f3982f9d46d47785ff27de2410">SoShapeHints</a>, <a class="el" href="classSoShape.html#abd1c4ab209a57b673090cf1c33418fb2">SoShape</a>, <a class="el" href="classSoShaderProgram.html#a2034f3ef803f4c2c57180433d2642932">SoShaderProgram</a>, <a class="el" href="classSoShaderStateMatrixParameter.html#aaea96e1423d451c95f77741317af6ee1">SoShaderStateMatrixParameter</a>, <a class="el" href="classSoShaderParameterMatrixArray.html#a8c2b7e44069e25c56d454460dc7a948e">SoShaderParameterMatrixArray</a>, <a class="el" href="classSoShaderParameterMatrix.html#aaf669f06de0110e44531d17f5dcfc823">SoShaderParameterMatrix</a>, <a class="el" href="classSoShaderParameterArray4i.html#aa7d9f60a275eb94bdad2a58cca59c194">SoShaderParameterArray4i</a>, <a class="el" href="classSoShaderParameterArray4f.html#a6410623da26278a11e40a9d97f1d40f8">SoShaderParameterArray4f</a>, <a class="el" href="classSoShaderParameterArray3i.html#a010858224a04ac26e7e633129f4cd502">SoShaderParameterArray3i</a>, <a class="el" href="classSoShaderParameterArray3f.html#a3dd08e6c82663cafae8144724d0347c1">SoShaderParameterArray3f</a>, <a class="el" href="classSoShaderParameterArray2i.html#a307cd0104adb1c79aaf573d3cc61bcf8">SoShaderParameterArray2i</a>, <a class="el" href="classSoShaderParameterArray2f.html#af25d5f8fc9ac56c4dd06605350aef049">SoShaderParameterArray2f</a>, <a class="el" href="classSoShaderParameterArray1i.html#ae92d38a9bdf62763f59d72bd83b1e06b">SoShaderParameterArray1i</a>, <a class="el" href="classSoShaderParameterArray1f.html#a33fd7da5f9e4dfba714d0479b0c2b3e0">SoShaderParameterArray1f</a>, <a class="el" href="classSoShaderParameter4i.html#a333e0e53bf4be1850a25e5ebc423e587">SoShaderParameter4i</a>, <a class="el" href="classSoShaderParameter4f.html#a6e46956dd9a2e47cc8819fbf1fe1fb05">SoShaderParameter4f</a>, <a class="el" href="classSoShaderParameter3i.html#ace2a3dba712e5314a94e3e1f9e98ca7f">SoShaderParameter3i</a>, <a class="el" href="classSoShaderParameter3f.html#a077477387a73c41fdad3c7b0f222fa08">SoShaderParameter3f</a>, <a class="el" href="classSoShaderParameter2i.html#a18eb60e53e7c16422e20e4a8ab6f1950">SoShaderParameter2i</a>, <a class="el" href="classSoShaderParameter2f.html#a787cb035df9ae2c66cdaaeac230c1113">SoShaderParameter2f</a>, <a class="el" href="classSoShaderParameter1i.html#a72661bd7f262a925358b212379772efc">SoShaderParameter1i</a>, <a class="el" href="classSoShaderParameter1f.html#a8d39d73eae25fb87b7fb4e8b91243e13">SoShaderParameter1f</a>, <a class="el" href="classSoUniformShaderParameter.html#a17eb2f6011617149e44390bc4c6de23b">SoUniformShaderParameter</a>, <a class="el" href="classSoShaderParameter.html#a8df4fcd46e30199f92b2fb96034db4eb">SoShaderParameter</a>, <a class="el" href="classSoShaderObject.html#af22c467d3825891e568a9f35cd34be1c">SoShaderObject</a>, <a class="el" href="classSoSeparator.html#a0b3eb7aadd18b541e46193d797f44887">SoSeparator</a>, <a class="el" href="classSoSelection.html#a7f9ba0e3f34f493a357ac51b18c4b049">SoSelection</a>, <a class="el" href="classSoSceneTextureCubeMap.html#a4e9164364a69c33bfdac0f1a61896bc3">SoSceneTextureCubeMap</a>, <a class="el" href="classSoSceneTexture2.html#af93da7b33ab8d2f9539767d516f40a93">SoSceneTexture2</a>, <a class="el" href="classSoScale.html#a4cadfbef6e57220a33e74d9c81e538fb">SoScale</a>, <a class="el" href="classSoRotor.html#a629b9e3942875044fb5ac13a10e4a7bb">SoRotor</a>, <a class="el" href="classSoRotationXYZ.html#ac1cd186b452379bc3234593c0bda2ad0">SoRotationXYZ</a>, <a class="el" href="classSoRotation.html#a043b14101018604f1c812df6887cdb9b">SoRotation</a>, <a class="el" href="classSoReversePerspectiveCamera.html#a54c088afe192b203874a838afb661701">SoReversePerspectiveCamera</a>, <a class="el" href="classSoResetTransform.html#ae4082801619162bea6db92babdff3a40">SoResetTransform</a>, <a class="el" href="classSoQuadMesh.html#a343891c42c1daf92ebb006676b8e9a99">SoQuadMesh</a>, <a class="el" href="classSoProfileCoordinate3.html#a85d4ba1b1f5f6f185a8ffdc698eb6a23">SoProfileCoordinate3</a>, <a class="el" href="classSoProfileCoordinate2.html#ac19938a30284edea8657d82a4d704993">SoProfileCoordinate2</a>, <a class="el" href="classSoProfile.html#aa5f6c53e677be8c12bc55d86f40fb6ce">SoProfile</a>, <a class="el" href="classSoPolygonOffset.html#a17ae9d3c3f4064668de1b0d350bdb869">SoPolygonOffset</a>, <a class="el" href="classSoPointSet.html#a5e8778cd60a3a5cf2bae5adfb78bf683">SoPointSet</a>, <a class="el" href="classSoPointLight.html#a9f8aa43612057460266fc52b290d7f53">SoPointLight</a>, <a class="el" href="classSoPickStyle.html#a4962dd662d22d85ad6c9fb8dd9ec59fe">SoPickStyle</a>, <a class="el" href="classSoPerspectiveCamera.html#a8f576396a00c6c0067d5b61c017b1df7">SoPerspectiveCamera</a>, <a class="el" href="classSoPendulum.html#acf72b84c684da6ceeaf54473f0ee2a82">SoPendulum</a>, <a class="el" href="classSoPathSwitch.html#ae4f523e39fdfb0dce81bb6e66566c9ea">SoPathSwitch</a>, <a class="el" href="classSoPackedColor.html#abe786febc45a7b96e618b2db68c20982">SoPackedColor</a>, <a class="el" href="classSoOrthographicCamera.html#a0042da48ee36d84edaf3737449cc31ae">SoOrthographicCamera</a>, <a class="el" href="classSoNurbsSurface.html#a1dda92161f18aaae8e2454fa088be49a">SoNurbsSurface</a>, <a class="el" href="classSoNurbsProfile.html#a316cc112237831eb5287ee5ea0b91a18">SoNurbsProfile</a>, <a class="el" href="classSoNurbsCurve.html#afa46eb326af297dd13cbf9ab92856d58">SoNurbsCurve</a>, <a class="el" href="classSoNormalBinding.html#a3c6dce83c50842fe67dad79367eeee3a">SoNormalBinding</a>, <a class="el" href="classSoNormal.html#ae75efa14a87c664059f2fda0e0fed573">SoNormal</a>, <a class="el" href="classSoNonIndexedShape.html#a6005e2a99a5d613caba93ce52c48991d">SoNonIndexedShape</a>, <a class="el" href="classSoMultipleCopy.html#a6c1e6f9d6f25819593beeff377dc09ab">SoMultipleCopy</a>, <a class="el" href="classSoMatrixTransform.html#a022a54c369109abce5d52ecb0bc4a805">SoMatrixTransform</a>, <a class="el" href="classSoMaterialBinding.html#ad381b9a32356585d19f404f23a86b6c0">SoMaterialBinding</a>, <a class="el" href="classSoMaterial.html#a0c0f0641249ef91a5de079eda3e4fe39">SoMaterial</a>, <a class="el" href="classSoMarkerSet.html#ad2a050318dc1689b9a05e095080fa3e7">SoMarkerSet</a>, <a class="el" href="classSoLOD.html#a0ca0ea08007b7ea27c87014c5763c793">SoLOD</a>, <a class="el" href="classSoLocateHighlight.html#ab381cb68f748088c74e0c7d05d59f504">SoLocateHighlight</a>, <a class="el" href="classSoListener.html#a3321c6fcbaa0bcbf4ee71ac3e0af6fd4">SoListener</a>, <a class="el" href="classSoLineSet.html#a1dd906067f990449181b0e8788fcf6c7">SoLineSet</a>, <a class="el" href="classSoLinearProfile.html#aeb33fdac19ff40f24d495a6b319c34a3">SoLinearProfile</a>, <a class="el" href="classSoLightModel.html#a45dca8feb45d82e1c7641a4240e06158">SoLightModel</a>, <a class="el" href="classSoLight.html#a251f97ae2d0c24c3fc6b78145a760584">SoLight</a>, <a class="el" href="classSoLevelOfDetail.html#a5661af08cdf812c33fdd06b48c977099">SoLevelOfDetail</a>, <a class="el" href="classSoLabel.html#ae41f7459dd71ccc0f50836a9e05bf2f4">SoLabel</a>, <a class="el" href="classSoInfo.html#aabf6c2d27242f435ef9b3b362bd21925">SoInfo</a>, <a class="el" href="classSoIndexedTriangleStripSet.html#a3351ddcd82fcf25679e524813a8b6553">SoIndexedTriangleStripSet</a>, <a class="el" href="classSoIndexedShape.html#a5cff96ad00f33714d5eb8d5113d2bdd0">SoIndexedShape</a>, <a class="el" href="classSoIndexedPointSet.html#a9edf984a80374b950c46ac1d95bd92e7">SoIndexedPointSet</a>, <a class="el" href="classSoIndexedNurbsSurface.html#a8ca3a835540ea04680ee4b71ac57fbeb">SoIndexedNurbsSurface</a>, <a class="el" href="classSoIndexedNurbsCurve.html#ada0803ccf9489c02d231ae73c466cc3d">SoIndexedNurbsCurve</a>, <a class="el" href="classSoIndexedMarkerSet.html#a97605a62b2e2b6f43e29d89df35ec3f4">SoIndexedMarkerSet</a>, <a class="el" href="classSoIndexedLineSet.html#af86ed32fea982f3caca532d5ea575efb">SoIndexedLineSet</a>, <a class="el" href="classSoIndexedFaceSet.html#a7d3cfba8a0e591ce7175f584374d18af">SoIndexedFaceSet</a>, <a class="el" href="classSoImage.html#a82b46d61d5a6487b74119cf2becb11f3">SoImage</a>, <a class="el" href="classSoGroup.html#a3f472cb7b24ba66f0b1c9d22844baa32">SoGroup</a>, <a class="el" href="classSoGeoSeparator.html#a524f5b92590ecff42dca077412598b30">SoGeoSeparator</a>, <a class="el" href="classSoGeoOrigin.html#afe8740edfca903107f0cde1afaaf92ca">SoGeoOrigin</a>, <a class="el" href="classSoGeometryShader.html#a458d2ed7313388495dc537e154a7ec40">SoGeometryShader</a>, <a class="el" href="classSoGeoLocation.html#a3f645daa589a9ef8c13cd2f9c2e42ee5">SoGeoLocation</a>, <a class="el" href="classSoGeoCoordinate.html#a0acb474e2c7746b5eb0dcc3451811ec3">SoGeoCoordinate</a>, <a class="el" href="classSoFrustumCamera.html#aa48586bba29eb0654804aeb211ef595d">SoFrustumCamera</a>, <a class="el" href="classSoFragmentShader.html#adfb471dd99e5f23f11dee45935a60682">SoFragmentShader</a>, <a class="el" href="classSoFontStyle.html#ac988cd72944bf2c552c2b7faf774f783">SoFontStyle</a>, <a class="el" href="classSoFont.html#a5eac7310bbb9bad00a51bc6ab93c2ce2">SoFont</a>, <a class="el" href="classSoFile.html#a3ef0cbff34e897179ddf6c77ac830320">SoFile</a>, <a class="el" href="classSoFaceSet.html#a52016575935877de832d2f8295293eb7">SoFaceSet</a>, <a class="el" href="classSoExtSelection.html#aee97aae151f490a7cb8cb2b524a5af57">SoExtSelection</a>, <a class="el" href="classSoEventCallback.html#a694f2a94b26ab61163ce3b195b4c8455">SoEventCallback</a>, <a class="el" href="classSoEnvironment.html#a15dd043102d01d77ca85a24be129422e">SoEnvironment</a>, <a class="el" href="classSoDrawStyle.html#a3ff85a3aa36cfbce731959426788bb54">SoDrawStyle</a>, <a class="el" href="classSoDirectionalLight.html#aec7d1d769ad2d97aaae482b8e3b4e64d">SoDirectionalLight</a>, <a class="el" href="classSoDepthBuffer.html#ab8fd41eb6e6ef09bb38b78bcfaaa39ce">SoDepthBuffer</a>, <a class="el" href="classSoCylinder.html#a7c647562a5db0c4ce39437542f9a1b2a">SoCylinder</a>, <a class="el" href="classSoCube.html#a92d290fd84e7924877f0bd8d905cf876">SoCube</a>, <a class="el" href="classSoCoordinate4.html#ad27c86bab69c68d61e6519d1814268ac">SoCoordinate4</a>, <a class="el" href="classSoCoordinate3.html#acc15ae2f461298321f87c1ee602feee3">SoCoordinate3</a>, <a class="el" href="classSoCone.html#a667d940a57fc53a22abcec3d5241455f">SoCone</a>, <a class="el" href="classSoComplexity.html#a671fde8848afc5c8ec0acabb3bc466e4">SoComplexity</a>, <a class="el" href="classSoColorIndex.html#af2a2705db67b224df970f02e00dcbdc9">SoColorIndex</a>, <a class="el" href="classSoClipPlane.html#a2e04f0abb242ceaa8642a9b4218bd769">SoClipPlane</a>, <a class="el" href="classSoCamera.html#a8c6f19449b75925e21d0618d4d52da10">SoCamera</a>, <a class="el" href="classSoCallback.html#a00cf6db5bc80d63e7007441f4e53e749">SoCallback</a>, <a class="el" href="classSoCacheHint.html#a17966c2775789b7e01f805e165d3d8b7">SoCacheHint</a>, <a class="el" href="classSoBumpMapTransform.html#a14198bcfb0b71d7b2082b887115752f2">SoBumpMapTransform</a>, <a class="el" href="classSoBumpMapCoordinate.html#a64fc7f422152720e9630f1f2b297adc1">SoBumpMapCoordinate</a>, <a class="el" href="classSoBumpMap.html#a4b5b2aa9fefbca527823f8cc5a26e502">SoBumpMap</a>, <a class="el" href="classSoBlinker.html#a4ca0b444cea5e1f20c1ff0363e51ea95">SoBlinker</a>, <a class="el" href="classSoBaseColor.html#a17a2626769a439d8e2eb9a10aaf91b72">SoBaseColor</a>, <a class="el" href="classSoAsciiText.html#a62dd66710048447547a2c754da30fcfc">SoAsciiText</a>, <a class="el" href="classSoArray.html#a3c25e4c37d8901f28575f9979f018d7b">SoArray</a>, <a class="el" href="classSoAntiSquish.html#a51d313d9db9dd0c6f8900ebaecf9db75">SoAntiSquish</a>, <a class="el" href="classSoAnnotation.html#a2072fdfd63f5fd53587bb34bffa49110">SoAnnotation</a>, <a class="el" href="classSoAlphaTest.html#a6945acee260c82e5047bb500a4bb197c">SoAlphaTest</a>, <a class="el" href="classSoWrapperKit.html#a384fbc6cd2524fe7e2a41c33d1fa6399">SoWrapperKit</a>, <a class="el" href="classSoShapeKit.html#a466a13520ad56a27de7a0f2e97df1f28">SoShapeKit</a>, <a class="el" href="classSoSeparatorKit.html#ad8bff515d0bfd09c434c7357e4238bfb">SoSeparatorKit</a>, <a class="el" href="classSoSceneKit.html#a602b3d39e2330d5532a9f92907032766">SoSceneKit</a>, <a class="el" href="classSoNodeKitListPart.html#ac1d4f892c76e7f4979a6832e18dee3fa">SoNodeKitListPart</a>, <a class="el" href="classSoLightKit.html#a2b0b9712a559d4a3afcda761b5db2884">SoLightKit</a>, <a class="el" href="classSoInteractionKit.html#af738962791596a98348787b0fa01e1d1">SoInteractionKit</a>, <a class="el" href="classSoCameraKit.html#a6cee1377cf59aa99d983fb851b531935">SoCameraKit</a>, <a class="el" href="classSoBaseKit.html#ab1fed701f0854d14c0b920f3cf173026">SoBaseKit</a>, <a class="el" href="classSoAppearanceKit.html#a8d12e49ff11f978ac464bef55eb6811b">SoAppearanceKit</a>, <a class="el" href="classSoProtoInstance.html#a34881542bd7ed396f95bf9ab43cfc409">SoProtoInstance</a>, <a class="el" href="classSoProto.html#a4612347bd3a943c30f8e524cc64c5553">SoProto</a>, <a class="el" href="classSoTransformManip.html#aab1c7ad35fe1039e40223f9aa683b0a2">SoTransformManip</a>, <a class="el" href="classSoTransformerManip.html#a664310663db906f8196e0acfccd4190b">SoTransformerManip</a>, <a class="el" href="classSoTransformBoxManip.html#aeeb79814118cdb06d1ecdfd3435aa90c">SoTransformBoxManip</a>, <a class="el" href="classSoTrackballManip.html#a3fe9f75516402e40adb54f341f0ced1a">SoTrackballManip</a>, <a class="el" href="classSoTabBoxManip.html#a9e0240e0e1feb41a373f9f6f13c27837">SoTabBoxManip</a>, <a class="el" href="classSoSpotLightManip.html#affc39ff4aabc6ec0fd6ae5e00a0dd278">SoSpotLightManip</a>, <a class="el" href="classSoPointLightManip.html#ad1da04c129153e7086a9ba3ae0c9984f">SoPointLightManip</a>, <a class="el" href="classSoJackManip.html#a4eb1e2fa31371e5da022cf696a96c71a">SoJackManip</a>, <a class="el" href="classSoHandleBoxManip.html#a6069e305660976d4752c71ec357d1965">SoHandleBoxManip</a>, <a class="el" href="classSoDirectionalLightManip.html#aa9055f2b38fd246771df9b93e68e81bb">SoDirectionalLightManip</a>, <a class="el" href="classSoClipPlaneManip.html#a0df1a5bf62e8ba4a351c8c2e8244f93f">SoClipPlaneManip</a>, <a class="el" href="classSoCenterballManip.html#a66b36a10e82fea2d35f1424384177692">SoCenterballManip</a>, <a class="el" href="classSoTriggerAny.html#aea24f814b2ad9a5483bfff9b5542f03e">SoTriggerAny</a>, <a class="el" href="classSoTransformVec3f.html#af6b8c20264e608e1005e36022bcd905c">SoTransformVec3f</a>, <a class="el" href="classSoTimeCounter.html#ad9e1d20c278f5da241e658f3bf8e75fd">SoTimeCounter</a>, <a class="el" href="classSoTexture2Convert.html#a3829a5dd2b01c9197c67a845713a5da4">SoTexture2Convert</a>, <a class="el" href="classSoSelectOne.html#a8c77501cc3c7ca31e70fd177005776d9">SoSelectOne</a>, <a class="el" href="classSoOnOff.html#a19588b92c167aee42dd848605b034196">SoOnOff</a>, <a class="el" href="classSoOneShot.html#ad52d6fc2ff4a963c4eebbde0feab9523">SoOneShot</a>, <a class="el" href="classSoInterpolateVec4f.html#a31fea9041cb8dccc5d9551e706cc0ea1">SoInterpolateVec4f</a>, <a class="el" href="classSoInterpolateVec3f.html#afa08124be1732cf2d9413aded6ef998f">SoInterpolateVec3f</a>, <a class="el" href="classSoInterpolateVec2f.html#a8bfcc42a89af1ccc13c1ddbc3b7c23bb">SoInterpolateVec2f</a>, <a class="el" href="classSoInterpolateRotation.html#a3919296e1ecd7f4ae48410fd701087e9">SoInterpolateRotation</a>, <a class="el" href="classSoInterpolateFloat.html#aedb46d9bc016225e4376f20cca0cbbac">SoInterpolateFloat</a>, <a class="el" href="classSoInterpolate.html#ac12cee430b119b4a72983df0616fcc18">SoInterpolate</a>, <a class="el" href="classSoHeightMapToNormalMap.html#ad3e151afa29109faf5983c2443496d4b">SoHeightMapToNormalMap</a>, <a class="el" href="classSoGate.html#a8228b5cb97d11502677d0aaf54944ce4">SoGate</a>, <a class="el" href="classSoFieldConverter.html#a8c792cdcdea1641f9c6880bbce3334cd">SoFieldConverter</a>, <a class="el" href="classSoElapsedTime.html#ab18409b54670b5def62b1437ac938a0d">SoElapsedTime</a>, <a class="el" href="classSoDecomposeVec4f.html#a2c607a72dc1bf70b49e707f558a0921b">SoDecomposeVec4f</a>, <a class="el" href="classSoDecomposeVec3f.html#a2dcaa8b3deaca5e7430a0459a05e950d">SoDecomposeVec3f</a>, <a class="el" href="classSoDecomposeVec2f.html#aa734872ec74f3369057d702340ecc691">SoDecomposeVec2f</a>, <a class="el" href="classSoDecomposeRotation.html#a2d62ce5ce33688e1c59a86bed8c1ddef">SoDecomposeRotation</a>, <a class="el" href="classSoDecomposeMatrix.html#a8d637a50986aa2289a0252aae8db93ea">SoDecomposeMatrix</a>, <a class="el" href="classSoCounter.html#a7bb142a15666bd2ed47c3cb490e0605d">SoCounter</a>, <a class="el" href="classSoConcatenate.html#a0084161fb2bf6241105ab94e839ed01b">SoConcatenate</a>, <a class="el" href="classSoComputeBoundingBox.html#ae6f9ab926567d2a4d82982c654e33214">SoComputeBoundingBox</a>, <a class="el" href="classSoComposeVec4f.html#a71532bc95952dca9b366d26b0d06991c">SoComposeVec4f</a>, <a class="el" href="classSoComposeVec3f.html#ac0d75e23e0f7dbc3aaa37b780890729c">SoComposeVec3f</a>, <a class="el" href="classSoComposeVec2f.html#a17423916fb95f1fac85ac6f64b0284fa">SoComposeVec2f</a>, <a class="el" href="classSoComposeRotationFromTo.html#a1ea16072a2127bcb9b79d06a007a0b8f">SoComposeRotationFromTo</a>, <a class="el" href="classSoComposeRotation.html#aa24be5923e969e8e7ce89be598d4b120">SoComposeRotation</a>, <a class="el" href="classSoComposeMatrix.html#ae9c7fdf42ebc76cf786901d0aac11bc2">SoComposeMatrix</a>, <a class="el" href="classSoCalculator.html#a44802ceacdfb5893356f8c0360b2772b">SoCalculator</a>, <a class="el" href="classSoBoolOperation.html#aad872313fac7165daec528b9f344acd3">SoBoolOperation</a>, <a class="el" href="classSoTranslate2Dragger.html#acb1ac6cf8c8e1d02b0e42d1faa93415a">SoTranslate2Dragger</a>, <a class="el" href="classSoTranslate1Dragger.html#ab9f22606b23dc756efb7536db8e20103">SoTranslate1Dragger</a>, <a class="el" href="classSoTransformerDragger.html#abd31252da65050ad805f3d77e6972c63">SoTransformerDragger</a>, <a class="el" href="classSoTransformBoxDragger.html#a3e9ac79e77ea3e16890c3c958c7f0b35">SoTransformBoxDragger</a>, <a class="el" href="classSoTrackballDragger.html#aecfe330e8579f57d12e27e990bd44392">SoTrackballDragger</a>, <a class="el" href="classSoTabPlaneDragger.html#a4091ef96674cef5299bbfab340befc67">SoTabPlaneDragger</a>, <a class="el" href="classSoTabBoxDragger.html#a805dd97036fb774fb957c00e707117d7">SoTabBoxDragger</a>, <a class="el" href="classSoSpotLightDragger.html#adcca470fc4e4a7edb4477a9cc7a5d35c">SoSpotLightDragger</a>, <a class="el" href="classSoScaleUniformDragger.html#a63ff392d3e561214b07de8ed2cc5fcc0">SoScaleUniformDragger</a>, <a class="el" href="classSoScale2UniformDragger.html#a1ba86ea389b20887c0f8241bf629f2f0">SoScale2UniformDragger</a>, <a class="el" href="classSoScale2Dragger.html#a47690eab585f1924f0944b1fc35a116e">SoScale2Dragger</a>, <a class="el" href="classSoScale1Dragger.html#a59837a2fe3f22c063fb4ce54d831b863">SoScale1Dragger</a>, <a class="el" href="classSoRotateSphericalDragger.html#afaa2002a03d9e3908e3baf341143c91f">SoRotateSphericalDragger</a>, <a class="el" href="classSoRotateDiscDragger.html#a742906dc334cab7783ca5fee1c5fc36c">SoRotateDiscDragger</a>, <a class="el" href="classSoRotateCylindricalDragger.html#a1aba83d3c601f54b65374d33a552056c">SoRotateCylindricalDragger</a>, <a class="el" href="classSoPointLightDragger.html#a556e485c9b784c3963eb104ed39044c7">SoPointLightDragger</a>, <a class="el" href="classSoJackDragger.html#a7fae2555c9f37fa00252406737d998df">SoJackDragger</a>, <a class="el" href="classSoHandleBoxDragger.html#aeaf6ca5c98d775eaa2eab5353973e779">SoHandleBoxDragger</a>, <a class="el" href="classSoDragPointDragger.html#a33a22273e8787c969cfb915b4c203359">SoDragPointDragger</a>, <a class="el" href="classSoDragger.html#a2402f6888094693cfe9bf896eec20cd6">SoDragger</a>, <a class="el" href="classSoDirectionalLightDragger.html#a5a2f3ef1c4f3bc5cb6ff19a6c2c3cca9">SoDirectionalLightDragger</a>, <a class="el" href="classSoCenterballDragger.html#ab6a74c0d4db6ace40b19e3a3d6424c6b">SoCenterballDragger</a>, <a class="el" href="classSoProfilerStats.html#a9afd2858c549042c2ebd1c025f7b709a">SoProfilerStats</a>, <a class="el" href="classSoScrollingGraphKit.html#a2f3a3205c7866ee7d428fc5c23a74a17">SoScrollingGraphKit</a>, <a class="el" href="classSoProfilerVisualizeKit.html#af30b3c6ba17576deff793a94b5879cc8">SoProfilerVisualizeKit</a>, <a class="el" href="classSoProfilerTopKit.html#a0e6ff1abd03bdac76e5f8d0aca9f4a69">SoProfilerTopKit</a>, <a class="el" href="classSoProfilerOverlayKit.html#a9e6d740c1e86f669e3327a6507bc3676">SoProfilerOverlayKit</a>, <a class="el" href="classSoNodeVisualize.html#abbd7061973cc7ef510a3fd41145e00f8">SoNodeVisualize</a>, <a class="el" href="classSoProfilerTopEngine.html#a9ed18fbf12a16b47d3538cb03cc45bcc">SoProfilerTopEngine</a>, <a class="el" href="classSoShadowStyle.html#ac36379bf15348167ce201b9b4817615c">SoShadowStyle</a>, <a class="el" href="classSoShadowSpotLight.html#a39c615ade45165504823f807b59b57ff">SoShadowSpotLight</a>, <a class="el" href="classSoShadowGroup.html#a1eb7534eb1bbf9128302dfb6d0141143">SoShadowGroup</a>, <a class="el" href="classSoShadowDirectionalLight.html#a18a4dcc94e01570526ffcc511e0dda7b">SoShadowDirectionalLight</a>, <a class="el" href="classSoShadowCulling.html#a97285fcc35b069dbe53c395ea1f1c0a5">SoShadowCulling</a>, <a class="el" href="classSoSTLFileKit.html#af1d288bd8a116d167add4dfbf78d5dc3">SoSTLFileKit</a>, and <a class="el" href="classSoForeignFileKit.html#a1842281ffbf6e1554c4e7f0507736775">SoForeignFileKit</a>.</p>
+
+</div>
+</div>
+<a id="a217b8814e756eb35b3123c646dbb94bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a217b8814e756eb35b3123c646dbb94bf">&#9670;&nbsp;</a></span>hasMultipleWriteRefs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoBase::hasMultipleWriteRefs </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns <code>TRUE</code> if this object will be written more than once upon export. Note that the result from this method is only valid during the second pass of a write action (and partially during the COUNT_REFS pass). </p>
+
+</div>
+</div>
+<a id="a73037fd0866b2d280e6770c1ff11649b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73037fd0866b2d280e6770c1ff11649b">&#9670;&nbsp;</a></span>incrementCurrentWriteCounter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoBase::incrementCurrentWriteCounter </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+</p>
+
+</div>
+</div>
+<a id="aa2861cbe3c2f43747bc289c7f55bbec3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2861cbe3c2f43747bc289c7f55bbec3">&#9670;&nbsp;</a></span>isOfType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoBase::isOfType </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoType.html">SoType</a>&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns <code>TRUE</code> if the type of this object is either of the same type or inherited from <em>type</em>. </p>
+<p>This is used for runtime type checking and "downward" casting.</p>
+<p>Usage example:</p>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<a class="code" href="classSoNode.html">SoNode</a> * node)</div>
+<div class="line">{</div>
+<div class="line">  <span class="keywordflow">if</span> (node-&gt;<a class="code" href="classSoBase.html#aa2861cbe3c2f43747bc289c7f55bbec3">isOfType</a>(<a class="code" href="classSoGroup.html#a3e3c469d6dfe21b0519b22586aed5380">SoGroup::getClassTypeId</a>())) {</div>
+<div class="line">    <a class="code" href="classSoGroup.html">SoGroup</a> * group = (<a class="code" href="classSoGroup.html">SoGroup</a> *)node;  <span class="comment">// safe downward cast, knows the type</span></div>
+<div class="line"><span class="comment"></span>  }</div>
+<div class="line">}</div>
+<div class="ttc" id="aclassSoBase_html_aa2861cbe3c2f43747bc289c7f55bbec3"><div class="ttname"><a href="classSoBase.html#aa2861cbe3c2f43747bc289c7f55bbec3">SoBase::isOfType</a></div><div class="ttdeci">SbBool isOfType(SoType type) const</div><div class="ttdoc">Returns TRUE if the type of this object is either of the same type or inherited from type.</div><div class="ttdef"><b>Definition:</b> SoBase.cpp:631</div></div>
+<div class="ttc" id="aclassSoGroup_html"><div class="ttname"><a href="classSoGroup.html">SoGroup</a></div><div class="ttdoc">The SoGroup class is a node which managed other node instances.</div><div class="ttdef"><b>Definition:</b> SoGroup.h:40</div></div>
+<div class="ttc" id="aclassSoGroup_html_a3e3c469d6dfe21b0519b22586aed5380"><div class="ttname"><a href="classSoGroup.html#a3e3c469d6dfe21b0519b22586aed5380">SoGroup::getClassTypeId</a></div><div class="ttdeci">static SoType getClassTypeId(void)</div><div class="ttdef"><b>Definition:</b> SoGroup.cpp:244</div></div>
+</div><!-- fragment --> 
+</div>
+</div>
+<a id="a9f7fb26481bfb35d5821acfef0fc10b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f7fb26481bfb35d5821acfef0fc10b5">&#9670;&nbsp;</a></span>notify()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoBase::notify </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoNotList.html">SoNotList</a> *&#160;</td>
+          <td class="paramname"><em>l</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Notifies all auditors for this instance when changes are made. </p>
+
+<p>Reimplemented in <a class="el" href="classSoVertexShape.html#a521c79967921b647a5c2e02bc0d608cc">SoVertexShape</a>, <a class="el" href="classSoSwitch.html#a19b44d7e700ce3cd20e2b34e82b54a39">SoSwitch</a>, <a class="el" href="classSoShape.html#a954e546c49b3078934c159d05836cfa3">SoShape</a>, <a class="el" href="classSoSeparator.html#a0d71862bb6eb5e8416f6ca6df2582d18">SoSeparator</a>, <a class="el" href="classSoLOD.html#ac491d2c0249cd26d60eed7b425d116b7">SoLOD</a>, <a class="el" href="classSoLevelOfDetail.html#aea5651a9e68d3a2c8b55971da82d1d58">SoLevelOfDetail</a>, <a class="el" href="classSoBlinker.html#ab8a4502b4479244ab975cd213017b524">SoBlinker</a>, <a class="el" href="classSoNodeEngine.html#a40413791c6f3f3421183a4e499db195a">SoNodeEngine</a>, <a class="el" href="classSoEngine.html#a109be36b28a7523d5b3942bb6c0f4bf9">SoEngine</a>, <a class="el" href="classSoShadowGroup.html#a398e820ad8e9e3aef5abc1b89135e78b">SoShadowGroup</a>, <a class="el" href="classSoVRMLVertexShape.html#ad2e438368abe6fb40f4c912490e176cb">SoVRMLVertexShape</a>, <a class="el" href="classSoVRMLVertexPoint.html#a1ba3270b1f95847d8c4ccb414fa5985d">SoVRMLVertexPoint</a>, <a class="el" href="classSoVRMLVertexLine.html#a136970b38fc84f03cec183966ace2aae">SoVRMLVertexLine</a>, <a class="el" href="classSoVRMLTransform.html#ac4a4f72d9accd8bf0194126e2a0d12fe">SoVRMLTransform</a>, <a class="el" href="classSoVRMLTouchSensor.html#a36374ddd1ad625f947de592f53a491ef">SoVRMLTouchSensor</a>, <a class="el" href="classSoVRMLTimeSensor.html#a43e28ac567f3dbd52bb0daa9c2404a14">SoVRMLTimeSensor</a>, <a class="el" href="classSoVRMLText.html#a9111dda6cb1b968fefd3991f77f71030">SoVRMLText</a>, <a class="el" href="classSoVRMLSwitch.html#ae0b74a0d6fca26becbf5aceafb5b486f">SoVRMLSwitch</a>, <a class="el" href="classSoVRMLShape.html#ab59872ef4a00f400cb4ba60fe859ec51">SoVRMLShape</a>, <a class="el" href="classSoVRMLScript.html#abe01703f8592ec2901d0f643112251d9">SoVRMLScript</a>, <a class="el" href="classSoVRMLProximitySensor.html#a7a6d8c5980991380dff29f484e642b64">SoVRMLProximitySensor</a>, <a class="el" href="classSoVRMLPixelTexture.html#a943b1499dd38021c117e0ce6c024ed88">SoVRMLPixelTexture</a>, <a class="el" href="classSoVRMLParent.html#af95b404de5f3d2c4ab8d3be675cc3ac2">SoVRMLParent</a>, <a class="el" href="classSoVRMLLOD.html#a5eff7dd8da6d92b36e6dae99b1dd9310">SoVRMLLOD</a>, <a class="el" href="classSoVRMLIndexedShape.html#a5facb4facfa571071a762ad613194b73">SoVRMLIndexedShape</a>, <a class="el" href="classSoVRMLIndexedLineSet.html#ad692f02cd73eb4f1a0c5d70970652a28">SoVRMLIndexedLineSet</a>, <a class="el" href="classSoVRMLIndexedLine.html#a045e5e972d397119999185a0ba9e4620">SoVRMLIndexedLine</a>, <a class="el" href="classSoVRMLGroup.html#afe1f661e8caae17549c7dd0a303229b5">SoVRMLGroup</a>, <a class="el" href="classSoVRMLGeometry.html#a978c768df07910d74e8086a965fa8683">SoVRMLGeometry</a>, <a class="el" href="classSoVRMLExtrusion.html#a1a80d77bd5684698e3efcd682234850e">SoVRMLExtrusion</a>, <a class="el" href="classSoVRMLElevationGrid.html#a0deea7273da00e9147825e68d26d591a">SoVRMLElevationGrid</a>, <a class="el" href="classSoVRMLCollision.html#ae1c548660fea3409c80584f5acba1d58">SoVRMLCollision</a>, <a class="el" href="classSoVRMLBillboard.html#ae6ec8ed8d73ef86d2d6c9e6bd43aaab0">SoVRMLBillboard</a>, <a class="el" href="classSoVRMLAppearance.html#aa6475b23b0b43e12826205e7768c3933">SoVRMLAppearance</a>, <a class="el" href="classSoVertexProperty.html#ad062599d13037ae06bd765b459215287">SoVertexProperty</a>, <a class="el" href="classSoTextureCubeMap.html#a35c6ebc00af7bc0c9a8358d50ce11671">SoTextureCubeMap</a>, <a class="el" href="classSoTexture3.html#a39f899dab0a0219012f52586e97e15ae">SoTexture3</a>, <a class="el" href="classSoTexture2.html#a0da64c1791ed400b72e6529318271b54">SoTexture2</a>, <a class="el" href="classSoText3.html#aa58b90aa633a2caa7c5ebf2a098aceb6">SoText3</a>, <a class="el" href="classSoSceneTextureCubeMap.html#a58a98e497e226431b9c92f4ee0796350">SoSceneTextureCubeMap</a>, <a class="el" href="classSoSceneTexture2.html#ab65e99503744fd8d90eac6fc646d1871">SoSceneTexture2</a>, <a class="el" href="classSoPackedColor.html#a78644a7fbbaaba4f7304842c13c2e961">SoPackedColor</a>, <a class="el" href="classSoMaterial.html#a6e432496706c7733b048c3106a669f52">SoMaterial</a>, <a class="el" href="classSoIndexedPointSet.html#ab68516e3833eae0c09a8e9182080c925">SoIndexedPointSet</a>, <a class="el" href="classSoIndexedLineSet.html#a2cc939cd736e390e7f0571586d5dc592">SoIndexedLineSet</a>, <a class="el" href="classSoImage.html#a818c282ec15d1f6ce2d0847c78977268">SoImage</a>, <a class="el" href="classSoBumpMap.html#afa642140ca8ca825bfa34cea5dd52834">SoBumpMap</a>, <a class="el" href="classSoAsciiText.html#a73635e735ace0c83a8d6cc2322248154">SoAsciiText</a>, <a class="el" href="classSoVertexAttribute.html#a55b513546b43d79c0e087b687c5a78eb">SoVertexAttribute</a>, <a class="el" href="classSoNode.html#a19bd6f80f2151fd082ca774068aef239">SoNode</a>, <a class="el" href="classSoFieldContainer.html#a8d8637bfa120513d81521c9cd8bc1309">SoFieldContainer</a>, and <a class="el" href="classSoProfilerStats.html#a512f26d25b1bd15cc389374145579e7d">SoProfilerStats</a>.</p>
+
+</div>
+</div>
+<a id="a08ab1a0fb1b141d3afc2e745a998fc01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08ab1a0fb1b141d3afc2e745a998fc01">&#9670;&nbsp;</a></span>read()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoBase::read </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoInput.html">SoInput</a> *&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSoBase.html">SoBase</a> *&amp;&#160;</td>
+          <td class="paramname"><em>base</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSoType.html">SoType</a>&#160;</td>
+          <td class="paramname"><em>expectedtype</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Read next <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a> derived instance from the <em>in</em> stream, check that it is derived from <em>expectedtype</em> and place a pointer to the newly allocated instance in <em>base</em>.</p>
+<p><code>FALSE</code> is returned on read errors, mismatch with the <em>expectedtype</em>, or if there are attempts at referencing (through the <code>USE</code> keyword) unknown instances.</p>
+<p>If we return <code>TRUE</code> with <em>base</em> equal to <code>NULL</code>, three things might have happened:</p>
+<ol type="1">
+<li>End-of-file. Use <a class="el" href="classSoInput.html#a27f17706f0f5efa5f7394bb9497a9d9e">SoInput::eof()</a> after calling this method to detect end-of-file conditions.</li>
+<li><em>in</em> didn't have a valid identifier name at the stream for us to read. This happens either in the case of errors, or when all child nodes of a group have been read. Check if the next character in the stream is a '}' to detect the latter case.</li>
+<li>A child was given as the <code>NULL</code> keyword. This can happen when reading the contents of <a class="el" href="classSoSFNode.html" title="The SoSFNode class is a container for a single node.">SoSFNode</a> fields (note that NULL is not allowed for <a class="el" href="classSoMFNode.html" title="The SoMFNode class is a container for nodes.">SoMFNode</a>)</li>
+</ol>
+<p>If <code>TRUE</code> is returned and <em>base</em> is not <code>NULL</code> upon return, the instance was allocated and initialized according to what was read from the <em>in</em> stream. </p>
+
+</div>
+</div>
+<a id="ab4953769f9d9dd210153228a2f096a67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4953769f9d9dd210153228a2f096a67">&#9670;&nbsp;</a></span>readInstance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoBase::readInstance </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoInput.html">SoInput</a> *&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned short&#160;</td>
+          <td class="paramname"><em>flags</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method is mainly intended for internal use during file import operations.</p>
+<p>It reads a definition of an instance from the input stream <em>in</em>. The input stream state points to the start of a serialized / persistent representation of an instance of this class type.</p>
+<p><code>TRUE</code> or <code>FALSE</code> is returned, depending on if the instantiation and configuration of the new object of this class type went OK or not. The import process should be robust and handle corrupted input streams by returning <code>FALSE</code>.</p>
+<p><em>flags</em> is used internally during binary import when reading user extension nodes, group nodes or engines. </p>
+
+<p>Implemented in <a class="el" href="classSoProto.html#a79cc167fabff4ff755d06fb49567640f">SoProto</a>, <a class="el" href="classSoVRMLSwitch.html#a1747c3853571d9539dac98f1e28051f1">SoVRMLSwitch</a>, <a class="el" href="classSoVRMLPixelTexture.html#a6f472aa8548f2d6c8b354811ba78f8ae">SoVRMLPixelTexture</a>, <a class="el" href="classSoVRMLParent.html#aa5245bd14d8b67408253d3b7d8352bdb">SoVRMLParent</a>, <a class="el" href="classSoVRMLLOD.html#a38653993d875e6af822f36ddb3481388">SoVRMLLOD</a>, <a class="el" href="classSoVRMLImageTexture.html#aea38331b932611fc4415a1fa2b77a6d8">SoVRMLImageTexture</a>, <a class="el" href="classSoVRMLBackground.html#a454b103cea31090170da95232f1adc88">SoVRMLBackground</a>, <a class="el" href="classSoWWWInline.html#a5b52aaf9dbabf710e2e6cc6031a28983">SoWWWInline</a>, <a class="el" href="classSoVertexAttribute.html#ae823260d3ce363947664e4e02a41980b">SoVertexAttribute</a>, <a class="el" href="classSoTextureCubeMap.html#ae297bd0b532cfa5456db39689b8f6f1a">SoTextureCubeMap</a>, <a class="el" href="classSoTextureCoordinateBinding.html#a1a89b971af633e8535d237b3c2a9c3c4">SoTextureCoordinateBinding</a>, <a class="el" href="classSoTexture3.html#a998d13b15d66c3fc32e869c5f8008399">SoTexture3</a>, <a class="el" href="classSoTexture2.html#a827c4df5de1bf087ca187d0c09de0590">SoTexture2</a>, <a class="el" href="classSoShaderObject.html#a4ed43b0da6ea5f3cadde0de81f6e7eb7">SoShaderObject</a>, <a class="el" href="classSoSeparator.html#a7dbd724491497fc7ea5c45f380335e73">SoSeparator</a>, <a class="el" href="classSoNormalBinding.html#a32ab1c5b7435fbbfeb7789cd4d020c97">SoNormalBinding</a>, <a class="el" href="classSoNode.html#a9a126748a9bc691bc8cc49b8245e5855">SoNode</a>, <a class="el" href="classSoImage.html#ae08cd0bff6b575f851592c0642f050d2">SoImage</a>, <a class="el" href="classSoGroup.html#a3c6b5609d4c6e5ec4ff5fe5797e15fed">SoGroup</a>, <a class="el" href="classSoFile.html#a0c1f0cac18261c2413c753591884b005">SoFile</a>, <a class="el" href="classSoBumpMap.html#aa67d4cbc2e27109b5fc5bf13fe93f191">SoBumpMap</a>, <a class="el" href="classSoNodeKitListPart.html#aa7272605375093b31d7751b4ca1029d9">SoNodeKitListPart</a>, <a class="el" href="classSoInteractionKit.html#a652933434f6384c41475cc80de6c893f">SoInteractionKit</a>, <a class="el" href="classSoBaseKit.html#ad102080de639b4e27df578660305cf4d">SoBaseKit</a>, <a class="el" href="classSoProtoInstance.html#a5749cfa5b26678c8e0a39c632e456c07">SoProtoInstance</a>, <a class="el" href="classSoFieldContainer.html#aebf8cab6ca3299aa1c05cc9b2dde1e35">SoFieldContainer</a>, <a class="el" href="classSoNodeEngine.html#a95569ab1ef2a6821a2277fb549342305">SoNodeEngine</a>, and <a class="el" href="classSoEngine.html#a946da90b09c1a79aefc9b2ca134fb3f3">SoEngine</a>.</p>
+
+</div>
+</div>
+<a id="ab6687c0316a76792276a0e0e5755f552"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6687c0316a76792276a0e0e5755f552">&#9670;&nbsp;</a></span>readRoute()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoBase::readRoute </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoInput.html">SoInput</a> *&#160;</td>
+          <td class="paramname"><em>in</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+ Reads a (VRML97) ROUTE. We decided to also add support for routes in Coin, as a generic feature, since we think it is nicer than setting up field connections inside the nodes. </p>
+
+</div>
+</div>
+<a id="ac01cf34901b2a2be1bc2671bb2463851"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac01cf34901b2a2be1bc2671bb2463851">&#9670;&nbsp;</a></span>ref()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoBase::ref </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Increase the reference count of the object. This might be necessary to do explicitly from user code for certain situations (mainly to avoid premature deletion), but is usually called from other instances within the Coin library when objects are made dependent on each other.</p>
+<p>See the class documentation of <a class="el" href="classSoNode.html" title="The SoNode class is the base class for nodes used in scene graphs.">SoNode</a> for more extensive information about reference counting.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoBase.html#a254b1ac395fe4d4d10438b994bdb3561">unref()</a>, <a class="el" href="classSoBase.html#a2efdb80168517b9e0a8dd8dc8c655fbb">unrefNoDelete()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a40434ac2a479164cbeee3f6583307b77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40434ac2a479164cbeee3f6583307b77">&#9670;&nbsp;</a></span>removeAuditor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoBase::removeAuditor </td>
+          <td>(</td>
+          <td class="paramtype">void *const&#160;</td>
+          <td class="paramname"><em>auditor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSoNotRec.html#a3dadebf7917d6722df3485e7971ca25c">SoNotRec::Type</a>&#160;</td>
+          <td class="paramname"><em>type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Remove an auditor from the list. <em>auditor</em> will then no longer be notified whenever any updates are made to this object.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoBase.html#ae6df5f7ce9b7426544fa890d7c48b23a">addAuditor()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a427c87fa9d48a2d09da950b7a0895fc7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a427c87fa9d48a2d09da950b7a0895fc7">&#9670;&nbsp;</a></span>removeName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoBase::removeName </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoBase.html">SoBase</a> *const&#160;</td>
+          <td class="paramname"><em>base</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *const&#160;</td>
+          <td class="paramname"><em>name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Removes a name&lt;-&gt;object mapping from the global dictionary. </p>
+
+</div>
+</div>
+<a id="a24fef6a61e75a6bffb4f83d4cf10fca5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24fef6a61e75a6bffb4f83d4cf10fca5">&#9670;&nbsp;</a></span>setInstancePrefix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoBase::setInstancePrefix </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Referenced instances of <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a> are written as "DEF NamePrefixNumber" when exported. "Name" is the name of the base instance from <a class="el" href="classSoBase.html#ab9bb8b4387f5fb39d4aa3fe92ca81261">setName()</a>, "Prefix" is common for all objects and can be set by this method (default is "+"), and "Number" is a unique id which is necessary if multiple objects have the same name.</p>
+<p>If you want the prefix to be something else than "+", use this method. </p>
+
+</div>
+</div>
+<a id="ab9bb8b4387f5fb39d4aa3fe92ca81261"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9bb8b4387f5fb39d4aa3fe92ca81261">&#9670;&nbsp;</a></span>setName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoBase::setName </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbName.html">SbName</a> &amp;&#160;</td>
+          <td class="paramname"><em>newname</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set the name of this object.</p>
+<p>Some characters are invalid to use as parts of names for <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a> derived objects, as object names needs to be consistent with the syntax of Inventor and VRML files upon file export / import operations (so one must for instance avoid using special token characters).</p>
+<p>Invalid characters will be automatically replaced by underscore characters. If the name <em>starts</em> with an invalid character, the new name will be <em>preceded</em> by an underscore character.</p>
+<p>For the exact definitions of what constitutes legal and illegal characters for <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a> names, see the <a class="el" href="classSbName.html" title="The SbName class stores strings by reference.">SbName</a> functions listed below.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoBase.html#a1dbb536d70cf7045a96bc27165d378d0">getName()</a>, <a class="el" href="classSbName.html#ab4e8fb488f254fda26e22055223ecf0e">SbName::isBaseNameStartChar()</a>, <a class="el" href="classSbName.html#ad4c80d5dd355792ef2406f09d47b42de">SbName::isBaseNameChar()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a4617280cf55689be859f44b1e332a414"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4617280cf55689be859f44b1e332a414">&#9670;&nbsp;</a></span>setTraceRefs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoBase::setTraceRefs </td>
+          <td>(</td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>trace</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set to <code>TRUE</code> to activate debugging of reference counting, which could aid in finding hard to track down problems with accesses to freed memory or memory leaks. Note: this will produce lots of debug information in any "normal" running system, so use sensibly.</p>
+<p>The reference tracing functionality will be disabled in "release
+versions" of the Coin library. </p>
+
+</div>
+</div>
+<a id="a6f95394c79b081e482d94a15a823b32f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f95394c79b081e482d94a15a823b32f">&#9670;&nbsp;</a></span>shouldWrite()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoBase::shouldWrite </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns <code>TRUE</code> if this object should be written out during a write action. Will return <code>FALSE</code> if no references to this object have been made in the scene graph.</p>
+<p>Note that connections from the fields of field container objects is not alone a valid reason for writing out the object &ndash; there must also be at least one reference directly from another <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a> (like a parent/child relationship, for instance).</p>
+<p>This method will return a valid result only during the second pass of write actions. </p>
+
+</div>
+</div>
+<a id="ad8b4821e5eb780f9098d4b1a866e6a63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8b4821e5eb780f9098d4b1a866e6a63">&#9670;&nbsp;</a></span>startNotify()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoBase::startNotify </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This is the method which starts the notification sequence after changes.</p>
+<p>At the end of a notification sequence, all "immediate" sensors (i.e. sensors set up with a zero priority) are triggered. </p>
+
+<p>Reimplemented in <a class="el" href="classSoNode.html#ab623a7a6404b31e171869f953113eba7">SoNode</a>.</p>
+
+</div>
+</div>
+<a id="a704e6447bdfacab4171721c803087b54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a704e6447bdfacab4171721c803087b54">&#9670;&nbsp;</a></span>staticDataLock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoBase::staticDataLock </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Lock access to static data. </p>
+
+</div>
+</div>
+<a id="a7610ab9ef6c403635bb913cbf7a24032"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7610ab9ef6c403635bb913cbf7a24032">&#9670;&nbsp;</a></span>staticDataUnlock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoBase::staticDataUnlock </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Unlock access to static data. </p>
+
+</div>
+</div>
+<a id="aba7fd51b022505fa822d295095b7f6a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba7fd51b022505fa822d295095b7f6a7">&#9670;&nbsp;</a></span>touch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoBase::touch </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Force an update, in the sense that all objects connected to this object as an auditor will have to re-check the values of their inter-dependent data.</p>
+<p>This is often used as an effective way of manually triggering a redraw by application programmers. </p>
+
+</div>
+</div>
+<a id="a254b1ac395fe4d4d10438b994bdb3561"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a254b1ac395fe4d4d10438b994bdb3561">&#9670;&nbsp;</a></span>unref()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoBase::unref </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Decrease the reference count of an object. If the reference count reaches zero, the object will delete itself. Be careful when explicitly calling this method, beware that you usually need to match user level calls to <a class="el" href="classSoBase.html#ac01cf34901b2a2be1bc2671bb2463851">ref()</a> with calls to either <a class="el" href="classSoBase.html#a254b1ac395fe4d4d10438b994bdb3561">unref()</a> or <a class="el" href="classSoBase.html#a2efdb80168517b9e0a8dd8dc8c655fbb">unrefNoDelete()</a> to avoid memory leaks.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoBase.html#ac01cf34901b2a2be1bc2671bb2463851">ref()</a>, <a class="el" href="classSoBase.html#a2efdb80168517b9e0a8dd8dc8c655fbb">unrefNoDelete()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a2efdb80168517b9e0a8dd8dc8c655fbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2efdb80168517b9e0a8dd8dc8c655fbb">&#9670;&nbsp;</a></span>unrefNoDelete()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoBase::unrefNoDelete </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Decrease reference count, but do <em>not</em> delete ourself if the count reaches zero.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoBase.html#a254b1ac395fe4d4d10438b994bdb3561">unref()</a> </dd></dl>
+
+</div>
+</div>
+<a id="aa9d26d177755cb43299bb1201c94c989"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9d26d177755cb43299bb1201c94c989">&#9670;&nbsp;</a></span>writeFooter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoBase::writeFooter </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoOutput.html">SoOutput</a> *&#160;</td>
+          <td class="paramname"><em>out</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method will terminate the block representing an <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a> derived object. </p>
+
+</div>
+</div>
+<a id="aa08205585f2aea5d141e105b492df61f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa08205585f2aea5d141e105b492df61f">&#9670;&nbsp;</a></span>writeHeader()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoBase::writeHeader </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoOutput.html">SoOutput</a> *&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>isgroup</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>isengine</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Write out the header of any <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a> derived object. The header consists of the <code>DEF</code> keyword and the object name (if the object has a name, otherwise these will be skipped), the class name and a left bracket.</p>
+<p>Alternatively, the object representation may be made up of just the <code>USE</code> keyword plus the object name, if this is the second or subsequent reference written to the file.</p>
+<p>If the object has been completed just by writing the header (which will be the case if we're writing multiple references of an object), we return <code>TRUE</code>, otherwise <code>FALSE</code>.</p>
+<p>If we return <code>FALSE</code> (i.e. there's more to write), we will increment the indentation level.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoBase.html#aa9d26d177755cb43299bb1201c94c989">writeFooter()</a>, <a class="el" href="classSoOutput.html#a80e9261a4563b7441d2fe7cdca92471c">SoOutput::indent()</a> </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SoBase_8h_source.html">SoBase.h</a></li>
+<li>SoBase.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSoBase.html">SoBase</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,720 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SbProfilingData Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSbProfilingData.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="classSbProfilingData-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SbProfilingData Class Reference<div class="ingroups"><a class="el" href="group__coin__profiler.html">Scene Graph Profiling</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Data structure for gathering scene graph traversal profiling information.  
+ <a href="classSbProfilingData.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SbProfilingData_8h_source.html">Inventor/annex/SbProfilingData.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:aa0463981d906c791a45f2a6df075537b"><td class="memItemLeft" align="right" valign="top"><a id="aa0463981d906c791a45f2a6df075537b"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>FootprintType</b> { <b>MEMORY_SIZE</b>
+, <b>VIDEO_MEMORY_SIZE</b>
+ }</td></tr>
+<tr class="separator:aa0463981d906c791a45f2a6df075537b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3425bd2479da2fc2f69717ab7180613c"><td class="memItemLeft" align="right" valign="top"><a id="a3425bd2479da2fc2f69717ab7180613c"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>NodeDataQueryFlags</b> { <b>INCLUDE_CHILDREN</b> = 0x01
+ }</td></tr>
+<tr class="separator:a3425bd2479da2fc2f69717ab7180613c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5018586f8ded80f0c531ea2c183e9ae0"><td class="memItemLeft" align="right" valign="top"><a id="a5018586f8ded80f0c531ea2c183e9ae0"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>NodeFlag</b> { <b>GL_CACHED_FLAG</b>
+, <b>CULLED_FLAG</b>
+ }</td></tr>
+<tr class="separator:a5018586f8ded80f0c531ea2c183e9ae0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c606cfbb7e557453e60c462f8211fd5"><td class="memItemLeft" align="right" valign="top"><a id="a6c606cfbb7e557453e60c462f8211fd5"></a>
+typedef void&#160;</td><td class="memItemRight" valign="bottom"><b>SbProfilingDataCB</b>(void *userdata, const <a class="el" href="classSbProfilingData.html">SbProfilingData</a> &amp;data, const <a class="el" href="classSbList.html">SbList</a>&lt; <a class="el" href="classSoNode.html">SoNode</a> * &gt; &amp;pointers, <a class="el" href="classSbList.html">SbList</a>&lt; int &gt; &amp;childindices, int idx)</td></tr>
+<tr class="separator:a6c606cfbb7e557453e60c462f8211fd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a846e722d1391ba5c86952478ee04b923"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProfilingData.html#a846e722d1391ba5c86952478ee04b923">SbProfilingData</a> (const <a class="el" href="classSbProfilingData.html">SbProfilingData</a> &amp;rhs)</td></tr>
+<tr class="separator:a846e722d1391ba5c86952478ee04b923"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a488aacafe6ca7807896ac31343667978"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProfilingData.html#a488aacafe6ca7807896ac31343667978">SbProfilingData</a> (void)</td></tr>
+<tr class="separator:a488aacafe6ca7807896ac31343667978"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd2766243e5524aded127cd6d45a0074"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProfilingData.html#abd2766243e5524aded127cd6d45a0074">~SbProfilingData</a> (void)</td></tr>
+<tr class="separator:abd2766243e5524aded127cd6d45a0074"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc0952b982f90964e3328ca87197eac0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbTime.html">SbTime</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProfilingData.html#abc0952b982f90964e3328ca87197eac0">getActionDuration</a> (void) const</td></tr>
+<tr class="separator:abc0952b982f90964e3328ca87197eac0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cdb78a8b77c5ab6b24a1c76ff5c33c7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbTime.html">SbTime</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProfilingData.html#a0cdb78a8b77c5ab6b24a1c76ff5c33c7">getActionStartTime</a> (void) const</td></tr>
+<tr class="separator:a0cdb78a8b77c5ab6b24a1c76ff5c33c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7852de0f544ec1e29d18edb4cd27e707"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbTime.html">SbTime</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProfilingData.html#a7852de0f544ec1e29d18edb4cd27e707">getActionStopTime</a> (void) const</td></tr>
+<tr class="separator:a7852de0f544ec1e29d18edb4cd27e707"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add091fc77694985eb7ff38c2264c48b6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProfilingData.html#add091fc77694985eb7ff38c2264c48b6">getActionType</a> (void) const</td></tr>
+<tr class="separator:add091fc77694985eb7ff38c2264c48b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecb6beb0a686cc503b2dfabf086aa396"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProfilingData.html#aecb6beb0a686cc503b2dfabf086aa396">getIndex</a> (const <a class="el" href="classSoPath.html">SoPath</a> *path, SbBool create=FALSE)</td></tr>
+<tr class="separator:aecb6beb0a686cc503b2dfabf086aa396"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b58029129c1bbd3adc7d4eacdc93622"><td class="memItemLeft" align="right" valign="top"><a id="a4b58029129c1bbd3adc7d4eacdc93622"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getLongestNameLength</b> (void) const</td></tr>
+<tr class="separator:a4b58029129c1bbd3adc7d4eacdc93622"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ab966cd8134b2111a7461dd1627f12d"><td class="memItemLeft" align="right" valign="top"><a id="a1ab966cd8134b2111a7461dd1627f12d"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getLongestTypeNameLength</b> (void) const</td></tr>
+<tr class="separator:a1ab966cd8134b2111a7461dd1627f12d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac734f353fa3485edb24b1e91071daf5d"><td class="memItemLeft" align="right" valign="top"><a id="ac734f353fa3485edb24b1e91071daf5d"></a>
+SbBool&#160;</td><td class="memItemRight" valign="bottom"><b>getNodeFlag</b> (const <a class="el" href="classSoPath.html">SoPath</a> *path, NodeFlag flag) const</td></tr>
+<tr class="separator:ac734f353fa3485edb24b1e91071daf5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3c6d24ad13b57aa016b544a94c88241"><td class="memItemLeft" align="right" valign="top"><a id="ae3c6d24ad13b57aa016b544a94c88241"></a>
+SbBool&#160;</td><td class="memItemRight" valign="bottom"><b>getNodeFlag</b> (int idx, NodeFlag flag) const</td></tr>
+<tr class="separator:ae3c6d24ad13b57aa016b544a94c88241"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2247d6e1ffc147c1b6c4823babf8305a"><td class="memItemLeft" align="right" valign="top"><a id="a2247d6e1ffc147c1b6c4823babf8305a"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getNodeFootprint</b> (const <a class="el" href="classSoPath.html">SoPath</a> *path, FootprintType type, unsigned int queryflags=0) const</td></tr>
+<tr class="separator:a2247d6e1ffc147c1b6c4823babf8305a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a428b842fc0f89c39abedeb83a24400f8"><td class="memItemLeft" align="right" valign="top"><a id="a428b842fc0f89c39abedeb83a24400f8"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getNodeFootprint</b> (int idx, FootprintType type, unsigned int queryflags=0) const</td></tr>
+<tr class="separator:a428b842fc0f89c39abedeb83a24400f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5789e28c130ddf5c122c46cc7b32d87"><td class="memItemLeft" align="right" valign="top"><a id="ab5789e28c130ddf5c122c46cc7b32d87"></a>
+<a class="el" href="classSbName.html">SbName</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getNodeName</b> (int idx) const</td></tr>
+<tr class="separator:ab5789e28c130ddf5c122c46cc7b32d87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd22fe96d7e1a23846ade5554a0a6dba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbTime.html">SbTime</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProfilingData.html#acd22fe96d7e1a23846ade5554a0a6dba">getNodeTiming</a> (const <a class="el" href="classSoPath.html">SoPath</a> *path, unsigned int queryflags=0) const</td></tr>
+<tr class="separator:acd22fe96d7e1a23846ade5554a0a6dba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8d202a6df3d0460fe938a7da15c4f07"><td class="memItemLeft" align="right" valign="top"><a id="ae8d202a6df3d0460fe938a7da15c4f07"></a>
+<a class="el" href="classSbTime.html">SbTime</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getNodeTiming</b> (int idx, unsigned int queryflags=0) const</td></tr>
+<tr class="separator:ae8d202a6df3d0460fe938a7da15c4f07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33c72cf3247c11c22aa71e06ef8b2566"><td class="memItemLeft" align="right" valign="top"><a id="a33c72cf3247c11c22aa71e06ef8b2566"></a>
+<a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getNodeType</b> (int idx) const</td></tr>
+<tr class="separator:a33c72cf3247c11c22aa71e06ef8b2566"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a045efade58188c95939838c45f848af7"><td class="memItemLeft" align="right" valign="top"><a id="a045efade58188c95939838c45f848af7"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getNumNodeEntries</b> (void) const</td></tr>
+<tr class="separator:a045efade58188c95939838c45f848af7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a231a0935ebf1bdfde4479d2b32e18165"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProfilingData.html#a231a0935ebf1bdfde4479d2b32e18165">getParentIndex</a> (int idx) const</td></tr>
+<tr class="separator:a231a0935ebf1bdfde4479d2b32e18165"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adeb67d7832d4316b9cdf113e7f3f24cf"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProfilingData.html#adeb67d7832d4316b9cdf113e7f3f24cf">getProfilingDataSize</a> (void) const</td></tr>
+<tr class="separator:adeb67d7832d4316b9cdf113e7f3f24cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a616227db236efe12a437ea5c1e7d1925"><td class="memItemLeft" align="right" valign="top"><a id="a616227db236efe12a437ea5c1e7d1925"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>getStatsForName</b> (SbProfilingNodeNameKey name, <a class="el" href="classSbTime.html">SbTime</a> &amp;total, <a class="el" href="classSbTime.html">SbTime</a> &amp;max, uint32_t &amp;count) const</td></tr>
+<tr class="separator:a616227db236efe12a437ea5c1e7d1925"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1be5a95fe02aaa779d5ce5b1f074cd1d"><td class="memItemLeft" align="right" valign="top"><a id="a1be5a95fe02aaa779d5ce5b1f074cd1d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>getStatsForNamesKeyList</b> (<a class="el" href="classSbList.html">SbList</a>&lt; SbProfilingNodeNameKey &gt; &amp;keys_out) const</td></tr>
+<tr class="separator:a1be5a95fe02aaa779d5ce5b1f074cd1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7c9d9c6ec33db53b6f36c5082c83d08"><td class="memItemLeft" align="right" valign="top"><a id="af7c9d9c6ec33db53b6f36c5082c83d08"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>getStatsForType</b> (SbProfilingNodeTypeKey type, <a class="el" href="classSbTime.html">SbTime</a> &amp;total, <a class="el" href="classSbTime.html">SbTime</a> &amp;max, uint32_t &amp;count) const</td></tr>
+<tr class="separator:af7c9d9c6ec33db53b6f36c5082c83d08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7032d204fc05ebc2eea8be9d8a7fa20a"><td class="memItemLeft" align="right" valign="top"><a id="a7032d204fc05ebc2eea8be9d8a7fa20a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>getStatsForTypesKeyList</b> (<a class="el" href="classSbList.html">SbList</a>&lt; SbProfilingNodeTypeKey &gt; &amp;keys_out) const</td></tr>
+<tr class="separator:a7032d204fc05ebc2eea8be9d8a7fa20a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1ee873c6d8430fa76f37c97f2be38bb"><td class="memItemLeft" align="right" valign="top"><a id="ab1ee873c6d8430fa76f37c97f2be38bb"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>operator!=</b> (const <a class="el" href="classSbProfilingData.html">SbProfilingData</a> &amp;rhs) const</td></tr>
+<tr class="separator:ab1ee873c6d8430fa76f37c97f2be38bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad569c820296171fe6c2798403c7cb508"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbProfilingData.html">SbProfilingData</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProfilingData.html#ad569c820296171fe6c2798403c7cb508">operator+=</a> (const <a class="el" href="classSbProfilingData.html">SbProfilingData</a> &amp;rhs)</td></tr>
+<tr class="separator:ad569c820296171fe6c2798403c7cb508"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac341fadcf59bdd94cd51c2cd4ef7e41d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbProfilingData.html">SbProfilingData</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProfilingData.html#ac341fadcf59bdd94cd51c2cd4ef7e41d">operator=</a> (const <a class="el" href="classSbProfilingData.html">SbProfilingData</a> &amp;rhs)</td></tr>
+<tr class="separator:ac341fadcf59bdd94cd51c2cd4ef7e41d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ecb85644f499c646a290c538c2f1604"><td class="memItemLeft" align="right" valign="top"><a id="a4ecb85644f499c646a290c538c2f1604"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSbProfilingData.html">SbProfilingData</a> &amp;rhs) const</td></tr>
+<tr class="separator:a4ecb85644f499c646a290c538c2f1604"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af20d7eb46b40fd5e6085479bf8d55181"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProfilingData.html#af20d7eb46b40fd5e6085479bf8d55181">preOffsetNodeTiming</a> (int idx, <a class="el" href="classSbTime.html">SbTime</a> timing)</td></tr>
+<tr class="separator:af20d7eb46b40fd5e6085479bf8d55181"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a418a80de829f1d4055fe571019e3dbe8"><td class="memItemLeft" align="right" valign="top"><a id="a418a80de829f1d4055fe571019e3dbe8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>reportAll</b> (SbProfilingDataCB *callback, void *userdata) const</td></tr>
+<tr class="separator:a418a80de829f1d4055fe571019e3dbe8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40251e3b831483c7a8d591fdc8ef8afe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProfilingData.html#a40251e3b831483c7a8d591fdc8ef8afe">reset</a> (void)</td></tr>
+<tr class="separator:a40251e3b831483c7a8d591fdc8ef8afe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afedc0010bd7aac22f3191acfaafb4d73"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProfilingData.html#afedc0010bd7aac22f3191acfaafb4d73">setActionStartTime</a> (<a class="el" href="classSbTime.html">SbTime</a> starttime)</td></tr>
+<tr class="separator:afedc0010bd7aac22f3191acfaafb4d73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfa2223276b957082882eca43b9464c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProfilingData.html#acfa2223276b957082882eca43b9464c2">setActionStopTime</a> (<a class="el" href="classSbTime.html">SbTime</a> stoptime)</td></tr>
+<tr class="separator:acfa2223276b957082882eca43b9464c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae18037eb4ed6aee87bd05e511ee33f55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProfilingData.html#ae18037eb4ed6aee87bd05e511ee33f55">setActionType</a> (<a class="el" href="classSoType.html">SoType</a> actiontype)</td></tr>
+<tr class="separator:ae18037eb4ed6aee87bd05e511ee33f55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2dd73f063fce54f827559ee6e6638dfa"><td class="memItemLeft" align="right" valign="top"><a id="a2dd73f063fce54f827559ee6e6638dfa"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setNodeFlag</b> (const <a class="el" href="classSoPath.html">SoPath</a> *path, NodeFlag flag, SbBool on)</td></tr>
+<tr class="separator:a2dd73f063fce54f827559ee6e6638dfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b7fb2b455a8429d7d9d9fc471bcf107"><td class="memItemLeft" align="right" valign="top"><a id="a0b7fb2b455a8429d7d9d9fc471bcf107"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setNodeFlag</b> (int idx, NodeFlag flag, SbBool on)</td></tr>
+<tr class="separator:a0b7fb2b455a8429d7d9d9fc471bcf107"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79fa926a23d11e4d4fc6c9b5b758d2f4"><td class="memItemLeft" align="right" valign="top"><a id="a79fa926a23d11e4d4fc6c9b5b758d2f4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setNodeFootprint</b> (const <a class="el" href="classSoPath.html">SoPath</a> *path, FootprintType type, size_t footprint)</td></tr>
+<tr class="separator:a79fa926a23d11e4d4fc6c9b5b758d2f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae97302f0bcb5ee39354e0a4a3e4240c3"><td class="memItemLeft" align="right" valign="top"><a id="ae97302f0bcb5ee39354e0a4a3e4240c3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setNodeFootprint</b> (int idx, FootprintType type, size_t footprint)</td></tr>
+<tr class="separator:ae97302f0bcb5ee39354e0a4a3e4240c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27e4e5f78b5e5c1d0e90f040f3835a6a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProfilingData.html#a27e4e5f78b5e5c1d0e90f040f3835a6a">setNodeTiming</a> (const <a class="el" href="classSoPath.html">SoPath</a> *path, <a class="el" href="classSbTime.html">SbTime</a> timing)</td></tr>
+<tr class="separator:a27e4e5f78b5e5c1d0e90f040f3835a6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05fd61b8921339389b1c5079a82e45fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProfilingData.html#a05fd61b8921339389b1c5079a82e45fa">setNodeTiming</a> (int idx, <a class="el" href="classSbTime.html">SbTime</a> timing)</td></tr>
+<tr class="separator:a05fd61b8921339389b1c5079a82e45fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a26022a773acb680c3c43d252417a7d32"><td class="memItemLeft" align="right" valign="top"><a id="a26022a773acb680c3c43d252417a7d32"></a>
+<a class="el" href="classSbTime.html">SbTime</a>&#160;</td><td class="memItemRight" valign="bottom"><b>actionStartTime</b></td></tr>
+<tr class="separator:a26022a773acb680c3c43d252417a7d32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bcefc2129c4ab9d6f221a8c017edb60"><td class="memItemLeft" align="right" valign="top"><a id="a6bcefc2129c4ab9d6f221a8c017edb60"></a>
+<a class="el" href="classSbTime.html">SbTime</a>&#160;</td><td class="memItemRight" valign="bottom"><b>actionStopTime</b></td></tr>
+<tr class="separator:a6bcefc2129c4ab9d6f221a8c017edb60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a8ab9880233f122861549ac2aa8a831"><td class="memItemLeft" align="right" valign="top"><a id="a4a8ab9880233f122861549ac2aa8a831"></a>
+<a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>actionType</b></td></tr>
+<tr class="separator:a4a8ab9880233f122861549ac2aa8a831"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Data structure for gathering scene graph traversal profiling information. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a488aacafe6ca7807896ac31343667978"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a488aacafe6ca7807896ac31343667978">&#9670;&nbsp;</a></span>SbProfilingData() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbProfilingData::SbProfilingData </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Constructor. </p>
+
+</div>
+</div>
+<a id="a846e722d1391ba5c86952478ee04b923"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a846e722d1391ba5c86952478ee04b923">&#9670;&nbsp;</a></span>SbProfilingData() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbProfilingData::SbProfilingData </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbProfilingData.html">SbProfilingData</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Copy constructor. </p>
+
+</div>
+</div>
+<a id="abd2766243e5524aded127cd6d45a0074"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd2766243e5524aded127cd6d45a0074">&#9670;&nbsp;</a></span>~SbProfilingData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbProfilingData::~SbProfilingData </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Destructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="abc0952b982f90964e3328ca87197eac0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc0952b982f90964e3328ca87197eac0">&#9670;&nbsp;</a></span>getActionDuration()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbTime.html">SbTime</a> SbProfilingData::getActionDuration </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return the time the action has spent on the traversal that was profiled. </p>
+
+</div>
+</div>
+<a id="a0cdb78a8b77c5ab6b24a1c76ff5c33c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0cdb78a8b77c5ab6b24a1c76ff5c33c7">&#9670;&nbsp;</a></span>getActionStartTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbTime.html">SbTime</a> SbProfilingData::getActionStartTime </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return the action start time. </p>
+
+</div>
+</div>
+<a id="a7852de0f544ec1e29d18edb4cd27e707"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7852de0f544ec1e29d18edb4cd27e707">&#9670;&nbsp;</a></span>getActionStopTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbTime.html">SbTime</a> SbProfilingData::getActionStopTime </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return the action stop time. </p>
+
+</div>
+</div>
+<a id="add091fc77694985eb7ff38c2264c48b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add091fc77694985eb7ff38c2264c48b6">&#9670;&nbsp;</a></span>getActionType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoType.html">SoType</a> SbProfilingData::getActionType </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return the action type set for this <a class="el" href="classSbProfilingData.html" title="Data structure for gathering scene graph traversal profiling information.">SbProfilingData</a>. </p>
+
+</div>
+</div>
+<a id="aecb6beb0a686cc503b2dfabf086aa396"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aecb6beb0a686cc503b2dfabf086aa396">&#9670;&nbsp;</a></span>getIndex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SbProfilingData::getIndex </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSoPath.html">SoPath</a> *&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>create</em> = <code>FALSE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return the index of the tail node in the path. If node is not registered, add it and return that index. </p>
+
+</div>
+</div>
+<a id="acd22fe96d7e1a23846ade5554a0a6dba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd22fe96d7e1a23846ade5554a0a6dba">&#9670;&nbsp;</a></span>getNodeTiming()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbTime.html">SbTime</a> SbProfilingData::getNodeTiming </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSoPath.html">SoPath</a> *&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>flags</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the timing for a node. </p>
+
+</div>
+</div>
+<a id="a231a0935ebf1bdfde4479d2b32e18165"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a231a0935ebf1bdfde4479d2b32e18165">&#9670;&nbsp;</a></span>getParentIndex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SbProfilingData::getParentIndex </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>idx</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return the index of the parent of the node entry at index <em>idx</em>. If entry is a root entry, -1 is returned. </p>
+
+</div>
+</div>
+<a id="adeb67d7832d4316b9cdf113e7f3f24cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adeb67d7832d4316b9cdf113e7f3f24cf">&#9670;&nbsp;</a></span>getProfilingDataSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t SbProfilingData::getProfilingDataSize </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the amount of memory allocated for this data structure. </p>
+
+</div>
+</div>
+<a id="ad569c820296171fe6c2798403c7cb508"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad569c820296171fe6c2798403c7cb508">&#9670;&nbsp;</a></span>operator+=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbProfilingData.html">SbProfilingData</a> &amp; SbProfilingData::operator+= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbProfilingData.html">SbProfilingData</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Add profiling data from another data set. </p>
+
+</div>
+</div>
+<a id="ac341fadcf59bdd94cd51c2cd4ef7e41d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac341fadcf59bdd94cd51c2cd4ef7e41d">&#9670;&nbsp;</a></span>operator=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbProfilingData.html">SbProfilingData</a> &amp; SbProfilingData::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbProfilingData.html">SbProfilingData</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Assignment operator. </p>
+
+</div>
+</div>
+<a id="af20d7eb46b40fd5e6085479bf8d55181"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af20d7eb46b40fd5e6085479bf8d55181">&#9670;&nbsp;</a></span>preOffsetNodeTiming()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbProfilingData::preOffsetNodeTiming </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>idx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbTime.html">SbTime</a>&#160;</td>
+          <td class="paramname"><em>timing</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function will adjust node timings without touching traversal counters. </p>
+
+</div>
+</div>
+<a id="a40251e3b831483c7a8d591fdc8ef8afe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40251e3b831483c7a8d591fdc8ef8afe">&#9670;&nbsp;</a></span>reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbProfilingData::reset </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Remove all stored data. </p>
+
+</div>
+</div>
+<a id="afedc0010bd7aac22f3191acfaafb4d73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afedc0010bd7aac22f3191acfaafb4d73">&#9670;&nbsp;</a></span>setActionStartTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbProfilingData::setActionStartTime </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSbTime.html">SbTime</a>&#160;</td>
+          <td class="paramname"><em>starttime</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set traversal start time. </p>
+
+</div>
+</div>
+<a id="acfa2223276b957082882eca43b9464c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acfa2223276b957082882eca43b9464c2">&#9670;&nbsp;</a></span>setActionStopTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbProfilingData::setActionStopTime </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSbTime.html">SbTime</a>&#160;</td>
+          <td class="paramname"><em>stoptime</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set traversal stop time. </p>
+
+</div>
+</div>
+<a id="ae18037eb4ed6aee87bd05e511ee33f55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae18037eb4ed6aee87bd05e511ee33f55">&#9670;&nbsp;</a></span>setActionType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbProfilingData::setActionType </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoType.html">SoType</a>&#160;</td>
+          <td class="paramname"><em>actiontype</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Register which type of action we are recording statistics for. </p>
+
+</div>
+</div>
+<a id="a27e4e5f78b5e5c1d0e90f040f3835a6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27e4e5f78b5e5c1d0e90f040f3835a6a">&#9670;&nbsp;</a></span>setNodeTiming() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbProfilingData::setNodeTiming </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSoPath.html">SoPath</a> *&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbTime.html">SbTime</a>&#160;</td>
+          <td class="paramname"><em>timing</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function calls the index version of setNodeTiming after having fetched the index. </p>
+
+</div>
+</div>
+<a id="a05fd61b8921339389b1c5079a82e45fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05fd61b8921339389b1c5079a82e45fa">&#9670;&nbsp;</a></span>setNodeTiming() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbProfilingData::setNodeTiming </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>idx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbTime.html">SbTime</a>&#160;</td>
+          <td class="paramname"><em>timing</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This method sets the timing for a node, as if it was new data to be registered. This means that counters of various types are implicitly incremented and similar things. To avoid those side effects, use offsetNodeTiming, which leaves all the counters alone.</p>
+<dl class="section see"><dt>See also</dt><dd>offsetNodeTiming </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SbProfilingData_8h_source.html">SbProfilingData.h</a></li>
+<li>SbProfilingData.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSbProfilingData.html">SbProfilingData</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

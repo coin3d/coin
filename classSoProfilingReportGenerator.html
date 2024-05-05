@@ -1,0 +1,538 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SoProfilingReportGenerator Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSoProfilingReportGenerator.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="classSoProfilingReportGenerator-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SoProfilingReportGenerator Class Reference<div class="ingroups"><a class="el" href="group__coin__profiler.html">Scene Graph Profiling</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Convenience report generator functionality.  
+ <a href="classSoProfilingReportGenerator.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SoProfilingReportGenerator_8h_source.html">Profiler/tools/SoProfilingReportGenerator.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:acd778e912a0a4e97e719ad05e145d183"><td class="memItemLeft" align="right" valign="top"><a id="acd778e912a0a4e97e719ad05e145d183"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>CallbackResponse</b> { <b>CONTINUE</b>
+, <b>STOP</b>
+ }</td></tr>
+<tr class="separator:acd778e912a0a4e97e719ad05e145d183"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9ff402e09c8d2e6b80d9b85e3d12329"><td class="memItemLeft" align="right" valign="top"><a id="ad9ff402e09c8d2e6b80d9b85e3d12329"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Column</b> { <br />
+&#160;&#160;<b>NAME</b>
+, <b>TYPE</b>
+, <b>COUNT</b>
+, <b>TIME_SECS</b>
+, <br />
+&#160;&#160;<b>TIME_SECS_MAX</b>
+, <b>TIME_SECS_AVG</b>
+, <b>TIME_MSECS</b>
+, <b>TIME_MSECS_MAX</b>
+, <br />
+&#160;&#160;<b>TIME_MSECS_AVG</b>
+, <b>TIME_PERCENT</b>
+, <b>TIME_PERCENT_MAX</b>
+, <b>TIME_PERCENT_AVG</b>
+, <br />
+&#160;&#160;<b>MEM_BYTES</b>
+, <b>MEM_KILOBYTES</b>
+, <b>GFX_MEM_BYTES</b>
+, <b>GFX_MEM_KILOBYTES</b>
+<br />
+ }</td></tr>
+<tr class="separator:ad9ff402e09c8d2e6b80d9b85e3d12329"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad65a3dc04ed01aa1f5cbdee56b08e702"><td class="memItemLeft" align="right" valign="top"><a id="ad65a3dc04ed01aa1f5cbdee56b08e702"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>DataCategorization</b> { <b>TYPES</b>
+, <b>NAMES</b>
+, <b>NODES</b>
+ }</td></tr>
+<tr class="separator:ad65a3dc04ed01aa1f5cbdee56b08e702"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ba80a7aeb21830fbdca0231f8670e2d"><td class="memItemLeft" align="right" valign="top"><a id="a8ba80a7aeb21830fbdca0231f8670e2d"></a>
+typedef CallbackResponse&#160;</td><td class="memItemRight" valign="bottom"><b>ReportCB</b>(void *userdata, int entrynum, const char *text)</td></tr>
+<tr class="separator:a8ba80a7aeb21830fbdca0231f8670e2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0da76492e12ace1c0753ae0891a66777"><td class="memItemLeft" align="right" valign="top"><a id="a0da76492e12ace1c0753ae0891a66777"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>SortOrder</b> { <br />
+&#160;&#160;<b>TIME_ASC</b>
+, <b>TIME_DES</b>
+, <b>TIME_MAX_ASC</b>
+, <b>TIME_MAX_DES</b>
+, <br />
+&#160;&#160;<b>TIME_AVG_ASC</b>
+, <b>TIME_AVG_DES</b>
+, <b>COUNT_ASC</b>
+, <b>COUNT_DES</b>
+, <br />
+&#160;&#160;<b>ALPHANUMERIC_ASC</b>
+, <b>ALPHANUMERIC_DES</b>
+, <b>MEM_ASC</b>
+, <b>MEM_DES</b>
+, <br />
+&#160;&#160;<b>GFX_MEM_ASC</b>
+, <b>GFX_MEM_DES</b>
+<br />
+ }</td></tr>
+<tr class="separator:a0da76492e12ace1c0753ae0891a66777"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a1398475f99f72ecdddcae7316b0365d6"><td class="memItemLeft" align="right" valign="top"><a id="a1398475f99f72ecdddcae7316b0365d6"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>freeCriteria</b> (SbProfilingReportPrintCriteria *criteria)</td></tr>
+<tr class="separator:a1398475f99f72ecdddcae7316b0365d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17925369269745684eb9f75113b73180"><td class="memItemLeft" align="right" valign="top"><a id="a17925369269745684eb9f75113b73180"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>freeCriteria</b> (SbProfilingReportSortCriteria *criteria)</td></tr>
+<tr class="separator:a17925369269745684eb9f75113b73180"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae893e60273707681569f65e97797baed"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoProfilingReportGenerator.html#ae893e60273707681569f65e97797baed">generate</a> (const <a class="el" href="classSbProfilingData.html">SbProfilingData</a> &amp;data, DataCategorization categorization, SbProfilingReportSortCriteria *sort, SbProfilingReportPrintCriteria *print, int count, SbBool addheader, ReportCB *reportcallback, void *userdata)</td></tr>
+<tr class="separator:ae893e60273707681569f65e97797baed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f6cef986449b810646b99d1a03773a1"><td class="memItemLeft" align="right" valign="top">static SbProfilingReportPrintCriteria *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoProfilingReportGenerator.html#a1f6cef986449b810646b99d1a03773a1">getDefaultReportPrintCriteria</a> (DataCategorization category)</td></tr>
+<tr class="separator:a1f6cef986449b810646b99d1a03773a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a8e6acfcd8ad29c0495c8508f542f7e"><td class="memItemLeft" align="right" valign="top">static SbProfilingReportSortCriteria *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoProfilingReportGenerator.html#a4a8e6acfcd8ad29c0495c8508f542f7e">getDefaultReportSortCriteria</a> (DataCategorization category)</td></tr>
+<tr class="separator:a4a8e6acfcd8ad29c0495c8508f542f7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd98e18e6d207093f30396383d82b513"><td class="memItemLeft" align="right" valign="top">static SbProfilingReportPrintCriteria *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoProfilingReportGenerator.html#abd98e18e6d207093f30396383d82b513">getReportPrintCriteria</a> (const <a class="el" href="classSbList.html">SbList</a>&lt; Column &gt; &amp;order)</td></tr>
+<tr class="separator:abd98e18e6d207093f30396383d82b513"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4eafba359310ac9059ac75bc7631b54"><td class="memItemLeft" align="right" valign="top">static SbProfilingReportSortCriteria *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoProfilingReportGenerator.html#af4eafba359310ac9059ac75bc7631b54">getReportSortCriteria</a> (const <a class="el" href="classSbList.html">SbList</a>&lt; SortOrder &gt; &amp;order)</td></tr>
+<tr class="separator:af4eafba359310ac9059ac75bc7631b54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15c4a831bc56a2097078d2acf0630096"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoProfilingReportGenerator.html#a15c4a831bc56a2097078d2acf0630096">init</a> (void)</td></tr>
+<tr class="separator:a15c4a831bc56a2097078d2acf0630096"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf9cf9cadc77d38225a6bbcd955f2ad1"><td class="memItemLeft" align="right" valign="top">static CallbackResponse&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoProfilingReportGenerator.html#acf9cf9cadc77d38225a6bbcd955f2ad1">stderrCB</a> (void *userdata, int entrynum, const char *text)</td></tr>
+<tr class="separator:acf9cf9cadc77d38225a6bbcd955f2ad1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9616b6991ef3b41a884d2cc4555ddf8"><td class="memItemLeft" align="right" valign="top">static CallbackResponse&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoProfilingReportGenerator.html#ab9616b6991ef3b41a884d2cc4555ddf8">stdoutCB</a> (void *userdata, int entrynum, const char *text)</td></tr>
+<tr class="separator:ab9616b6991ef3b41a884d2cc4555ddf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Convenience report generator functionality. </p>
+<p>With this static class, you can conveniently produce a profiling data report from an <a class="el" href="classSbProfilingData.html" title="Data structure for gathering scene graph traversal profiling information.">SbProfilingData</a> object.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 3.0 </dd></dl>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae893e60273707681569f65e97797baed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae893e60273707681569f65e97797baed">&#9670;&nbsp;</a></span>generate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoProfilingReportGenerator::generate </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbProfilingData.html">SbProfilingData</a> &amp;&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">DataCategorization&#160;</td>
+          <td class="paramname"><em>categorization</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SbProfilingReportSortCriteria *&#160;</td>
+          <td class="paramname"><em>sort</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SbProfilingReportPrintCriteria *&#160;</td>
+          <td class="paramname"><em>print</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>count</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>addheader</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ReportCB *&#160;</td>
+          <td class="paramname"><em>reportcallback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>userdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Generate a sorted, formatted report, by calling a callback until the number of entries are exhausted or the callback returns STOP. </p>
+
+</div>
+</div>
+<a id="a1f6cef986449b810646b99d1a03773a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f6cef986449b810646b99d1a03773a1">&#9670;&nbsp;</a></span>getDefaultReportPrintCriteria()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbProfilingReportPrintCriteria * SoProfilingReportGenerator::getDefaultReportPrintCriteria </td>
+          <td>(</td>
+          <td class="paramtype">DataCategorization&#160;</td>
+          <td class="paramname"><em>category</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns a default printing criteria object that can be used sensibly with the given profiling data categorization. </p>
+
+</div>
+</div>
+<a id="a4a8e6acfcd8ad29c0495c8508f542f7e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a8e6acfcd8ad29c0495c8508f542f7e">&#9670;&nbsp;</a></span>getDefaultReportSortCriteria()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbProfilingReportSortCriteria * SoProfilingReportGenerator::getDefaultReportSortCriteria </td>
+          <td>(</td>
+          <td class="paramtype">DataCategorization&#160;</td>
+          <td class="paramname"><em>category</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns a sensible default that can be used for a given profiling data categorization. </p>
+
+</div>
+</div>
+<a id="abd98e18e6d207093f30396383d82b513"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd98e18e6d207093f30396383d82b513">&#9670;&nbsp;</a></span>getReportPrintCriteria()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbProfilingReportPrintCriteria * SoProfilingReportGenerator::getReportPrintCriteria </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbList.html">SbList</a>&lt; Column &gt; &amp;&#160;</td>
+          <td class="paramname"><em>order</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns a printing criteria setting object that will make <a class="el" href="classSoProfilingReportGenerator.html#ae893e60273707681569f65e97797baed">generate()</a> send a formatted string as the text argument based on the given argument list. If you force TERMINATE_ARGLIST into the first argument, the text string will be empty.</p>
+<p>Always end the argument list with TERMINATE_ARGLIST.</p>
+<dl class="section see"><dt>See also</dt><dd>freeCriteria </dd></dl>
+
+</div>
+</div>
+<a id="af4eafba359310ac9059ac75bc7631b54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4eafba359310ac9059ac75bc7631b54">&#9670;&nbsp;</a></span>getReportSortCriteria()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbProfilingReportSortCriteria * SoProfilingReportGenerator::getReportSortCriteria </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbList.html">SbList</a>&lt; SortOrder &gt; &amp;&#160;</td>
+          <td class="paramname"><em>order</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns a sorting criteria setting object that will make <a class="el" href="classSoProfilingReportGenerator.html#ae893e60273707681569f65e97797baed">generate()</a> sort the results based on the given argument list in that left-to-right priority order.</p>
+<p>Always end the argument list with TERMINATE_ARGLIST.</p>
+<dl class="section see"><dt>See also</dt><dd>freeCriteria </dd></dl>
+
+</div>
+</div>
+<a id="a15c4a831bc56a2097078d2acf0630096"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15c4a831bc56a2097078d2acf0630096">&#9670;&nbsp;</a></span>init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoProfilingReportGenerator::init </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Allocate mutexes and other such infrastructure constructs needed by the report generator. </p>
+
+</div>
+</div>
+<a id="acf9cf9cadc77d38225a6bbcd955f2ad1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf9cf9cadc77d38225a6bbcd955f2ad1">&#9670;&nbsp;</a></span>stderrCB()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoProfilingReportGenerator::CallbackResponse SoProfilingReportGenerator::stderrCB </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>userdata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>entryidx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>text</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Ready-made callback that can be used with <a class="el" href="classSoProfilingReportGenerator.html#ae893e60273707681569f65e97797baed">generate()</a> to print to stderr.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoProfilingReportGenerator.html#ae893e60273707681569f65e97797baed">generate</a> </dd></dl>
+
+</div>
+</div>
+<a id="ab9616b6991ef3b41a884d2cc4555ddf8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9616b6991ef3b41a884d2cc4555ddf8">&#9670;&nbsp;</a></span>stdoutCB()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoProfilingReportGenerator::CallbackResponse SoProfilingReportGenerator::stdoutCB </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>userdata</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>entryidx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>text</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Ready-made callback that can be used with <a class="el" href="classSoProfilingReportGenerator.html#ae893e60273707681569f65e97797baed">generate()</a> to print to stdout.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoProfilingReportGenerator.html#ae893e60273707681569f65e97797baed">generate</a> </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SoProfilingReportGenerator_8h_source.html">SoProfilingReportGenerator.h</a></li>
+<li>SoProfilingReportGenerator.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSoProfilingReportGenerator.html">SoProfilingReportGenerator</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

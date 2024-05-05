@@ -1,0 +1,1124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SbRotation Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSbRotation.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#related">Related Functions</a> &#124;
+<a href="classSbRotation-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SbRotation Class Reference<div class="ingroups"><a class="el" href="group__coin__base.html">Base Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSbRotation.html" title="The SbRotation class represents a rotation in 3D space.">SbRotation</a> class represents a rotation in 3D space.  
+ <a href="classSbRotation.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SbRotation_8h_source.html">Inventor/SbRotation.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ab86e1cbd8aec00ea9006be02649fa93f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#ab86e1cbd8aec00ea9006be02649fa93f">SbRotation</a> (const float q0, const float q1, const float q2, const float q3)</td></tr>
+<tr class="separator:ab86e1cbd8aec00ea9006be02649fa93f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae048a5c82d3f01f275f6223c8e180092"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#ae048a5c82d3f01f275f6223c8e180092">SbRotation</a> (const float q[4])</td></tr>
+<tr class="separator:ae048a5c82d3f01f275f6223c8e180092"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac42b51c454f31c7e4427801097cfda1f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#ac42b51c454f31c7e4427801097cfda1f">SbRotation</a> (const <a class="el" href="classSbMatrix.html">SbMatrix</a> &amp;m)</td></tr>
+<tr class="separator:ac42b51c454f31c7e4427801097cfda1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabdc5a912bc0a6690dd47083a8b3f39f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#aabdc5a912bc0a6690dd47083a8b3f39f">SbRotation</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;axis, const float radians)</td></tr>
+<tr class="separator:aabdc5a912bc0a6690dd47083a8b3f39f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a71d62e68580ed900c071b3cf605b56"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#a5a71d62e68580ed900c071b3cf605b56">SbRotation</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;rotateFrom, const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;rotateTo)</td></tr>
+<tr class="separator:a5a71d62e68580ed900c071b3cf605b56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7b34a3688cd8e1bfc3482bddb997b82"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#af7b34a3688cd8e1bfc3482bddb997b82">SbRotation</a> (void)</td></tr>
+<tr class="separator:af7b34a3688cd8e1bfc3482bddb997b82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9dac5a577c39ba17387af7772ecee1a5"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#a9dac5a577c39ba17387af7772ecee1a5">equals</a> (const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;r, float tolerance) const</td></tr>
+<tr class="separator:a9dac5a577c39ba17387af7772ecee1a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe4d493f5ad74a6c30135f62c0e36df6"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#abe4d493f5ad74a6c30135f62c0e36df6">fromString</a> (const <a class="el" href="classSbString.html">SbString</a> &amp;str)</td></tr>
+<tr class="separator:abe4d493f5ad74a6c30135f62c0e36df6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad50a2d4a984462946b28cb541844c14e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#ad50a2d4a984462946b28cb541844c14e">getValue</a> (float &amp;q0, float &amp;q1, float &amp;q2, float &amp;q3) const</td></tr>
+<tr class="separator:ad50a2d4a984462946b28cb541844c14e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23a6cde9db84da45a588b2b6dcaab74c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#a23a6cde9db84da45a588b2b6dcaab74c">getValue</a> (<a class="el" href="classSbMatrix.html">SbMatrix</a> &amp;matrix) const</td></tr>
+<tr class="separator:a23a6cde9db84da45a588b2b6dcaab74c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a439e2ce16a821e64e0515dfd95e4bff3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#a439e2ce16a821e64e0515dfd95e4bff3">getValue</a> (<a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;axis, float &amp;radians) const</td></tr>
+<tr class="separator:a439e2ce16a821e64e0515dfd95e4bff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af97805cfe5cd1bc177d30aaaaac94cf8"><td class="memItemLeft" align="right" valign="top">const float *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#af97805cfe5cd1bc177d30aaaaac94cf8">getValue</a> (void) const</td></tr>
+<tr class="separator:af97805cfe5cd1bc177d30aaaaac94cf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f8dbc9a5877d0c3a6d9e10bdc621dca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbRotation.html">SbRotation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#a2f8dbc9a5877d0c3a6d9e10bdc621dca">inverse</a> (void) const</td></tr>
+<tr class="separator:a2f8dbc9a5877d0c3a6d9e10bdc621dca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60bf4c2709c944b64bef644375250d88"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbRotation.html">SbRotation</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#a60bf4c2709c944b64bef644375250d88">invert</a> (void)</td></tr>
+<tr class="separator:a60bf4c2709c944b64bef644375250d88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bf38e125fc5356d08a03a6e08df98f4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#a9bf38e125fc5356d08a03a6e08df98f4">multVec</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;src, <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;dst) const</td></tr>
+<tr class="separator:a9bf38e125fc5356d08a03a6e08df98f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36daec8ca173721537b21146d7bb9a64"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbRotation.html">SbRotation</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#a36daec8ca173721537b21146d7bb9a64">operator*=</a> (const float s)</td></tr>
+<tr class="separator:a36daec8ca173721537b21146d7bb9a64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a466a7aae8799516373a99a0e3da290aa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbRotation.html">SbRotation</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#a466a7aae8799516373a99a0e3da290aa">operator*=</a> (const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;q)</td></tr>
+<tr class="separator:a466a7aae8799516373a99a0e3da290aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93e36415ab2e07c126a99c20f937f840"><td class="memItemLeft" align="right" valign="top"><a id="a93e36415ab2e07c126a99c20f937f840"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#a93e36415ab2e07c126a99c20f937f840">operator[]</a> (int n) const</td></tr>
+<tr class="memdesc:a93e36415ab2e07c126a99c20f937f840"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the n'th quaternion of this rotation <br /></td></tr>
+<tr class="separator:a93e36415ab2e07c126a99c20f937f840"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcb4364e56dc2eb2b253aa4a0b5e2ffa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#abcb4364e56dc2eb2b253aa4a0b5e2ffa">print</a> (FILE *fp) const</td></tr>
+<tr class="separator:abcb4364e56dc2eb2b253aa4a0b5e2ffa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecf5befb7013da43f9c459ee86a81e80"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#aecf5befb7013da43f9c459ee86a81e80">scaleAngle</a> (const float scaleFactor)</td></tr>
+<tr class="separator:aecf5befb7013da43f9c459ee86a81e80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a341d6be6f5b7207edb5eb4f118f4e352"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbRotation.html">SbRotation</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#a341d6be6f5b7207edb5eb4f118f4e352">setValue</a> (const float q0, const float q1, const float q2, const float q3)</td></tr>
+<tr class="separator:a341d6be6f5b7207edb5eb4f118f4e352"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f7dfa32c2ab80fc0e6808ca1940512d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbRotation.html">SbRotation</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#a3f7dfa32c2ab80fc0e6808ca1940512d">setValue</a> (const float q[4])</td></tr>
+<tr class="separator:a3f7dfa32c2ab80fc0e6808ca1940512d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39efcb6f3651bea7b194f2e56cfb910f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbRotation.html">SbRotation</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#a39efcb6f3651bea7b194f2e56cfb910f">setValue</a> (const <a class="el" href="classSbMatrix.html">SbMatrix</a> &amp;m)</td></tr>
+<tr class="separator:a39efcb6f3651bea7b194f2e56cfb910f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0346dd919d996967cb7d1b907214f0ab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbRotation.html">SbRotation</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#a0346dd919d996967cb7d1b907214f0ab">setValue</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;axis, const float radians)</td></tr>
+<tr class="separator:a0346dd919d996967cb7d1b907214f0ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e4f23004de7569337960d7e5011e63d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbRotation.html">SbRotation</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#a0e4f23004de7569337960d7e5011e63d">setValue</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;rotateFrom, const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;rotateTo)</td></tr>
+<tr class="separator:a0e4f23004de7569337960d7e5011e63d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77aaa761134c8ca10e4f5326b0be42dc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbString.html">SbString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#a77aaa761134c8ca10e4f5326b0be42dc">toString</a> () const</td></tr>
+<tr class="separator:a77aaa761134c8ca10e4f5326b0be42dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a185e88e106dbba29d4bb8339ff28c4ac"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSbRotation.html">SbRotation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#a185e88e106dbba29d4bb8339ff28c4ac">identity</a> (void)</td></tr>
+<tr class="separator:a185e88e106dbba29d4bb8339ff28c4ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04650493010ed066c2d055596f38c6f4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSbRotation.html">SbRotation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#a04650493010ed066c2d055596f38c6f4">slerp</a> (const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;rot0, const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;rot1, float t)</td></tr>
+<tr class="separator:a04650493010ed066c2d055596f38c6f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
+Related Functions</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
+</td></tr>
+<tr class="memitem:a5fb0f927ad287d0913505d7f7ac04429"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#a5fb0f927ad287d0913505d7f7ac04429">operator!=</a> (const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;q1, const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;q2)</td></tr>
+<tr class="separator:a5fb0f927ad287d0913505d7f7ac04429"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bded4a443b38c90962ada7ce35996a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbRotation.html">SbRotation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#a6bded4a443b38c90962ada7ce35996a7">operator*</a> (const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;q1, const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;q2)</td></tr>
+<tr class="separator:a6bded4a443b38c90962ada7ce35996a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a083b52d28a5b2c848ec051b051383816"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#a083b52d28a5b2c848ec051b051383816">operator==</a> (const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;q1, const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;q2)</td></tr>
+<tr class="separator:a083b52d28a5b2c848ec051b051383816"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04650493010ed066c2d055596f38c6f4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbRotation.html">SbRotation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbRotation.html#a04650493010ed066c2d055596f38c6f4">slerp</a> (const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;rot0, const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;rot1, float t)</td></tr>
+<tr class="separator:a04650493010ed066c2d055596f38c6f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSbRotation.html" title="The SbRotation class represents a rotation in 3D space.">SbRotation</a> class represents a rotation in 3D space. </p>
+<p><a class="el" href="classSbRotation.html" title="The SbRotation class represents a rotation in 3D space.">SbRotation</a> is used extensively throughout the Coin library.</p>
+<p>An <a class="el" href="classSbRotation.html" title="The SbRotation class represents a rotation in 3D space.">SbRotation</a> is stored internally as a quaternion for speed and storage reasons, but inquiries can be done to get and set axis and angle values for convenience.</p>
+<p>Note that there is one <em>very</em> common mistake that is easy to make when setting the value of an <a class="el" href="classSbRotation.html" title="The SbRotation class represents a rotation in 3D space.">SbRotation</a>, and that is to inadvertently use the wrong <a class="el" href="classSbRotation.html" title="The SbRotation class represents a rotation in 3D space.">SbRotation</a> constructor. This example should clarify the problem:</p>
+<div class="fragment"><div class="line"><a class="code" href="classSbRotation.html">SbRotation</a> rotation(0, 0, 1, 1.5707963f);</div>
+<div class="ttc" id="aclassSbRotation_html"><div class="ttname"><a href="classSbRotation.html">SbRotation</a></div><div class="ttdoc">The SbRotation class represents a rotation in 3D space.</div><div class="ttdef"><b>Definition:</b> SbRotation.h:44</div></div>
+</div><!-- fragment --><p>The programmer clearly tries to set a PI/2 rotation around the Z axis, but this will fail, as the <a class="el" href="classSbRotation.html" title="The SbRotation class represents a rotation in 3D space.">SbRotation</a> constructor invoked above is the one that takes as arguments the 4 floats of a <em>quaternion</em>. What the programmer almost certainly wanted to do was to use the <a class="el" href="classSbRotation.html" title="The SbRotation class represents a rotation in 3D space.">SbRotation</a> constructor that takes a rotation vector and a rotation angle, which is invoked like this:</p>
+<div class="fragment"><div class="line"><a class="code" href="classSbRotation.html">SbRotation</a> rotation(<a class="code" href="classSbVec3f.html">SbVec3f</a>(0, 0, 1), 1.5707963f);</div>
+<div class="ttc" id="aclassSbVec3f_html"><div class="ttname"><a href="classSbVec3f.html">SbVec3f</a></div><div class="ttdoc">The SbVec3f class is a 3 dimensional vector with floating point coordinates.</div><div class="ttdef"><b>Definition:</b> SbVec3f.h:51</div></div>
+</div><!-- fragment --><p>Another common problem is to set the rotation value to exactly 0.0, while wanting to store just the information about a rotation <em>angle:</em> rotations are internally handled as quaternions, and when converting from an angle and a rotation value to a quaternion representation, the information about the angle "gets lost" if there is no actual rotation.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbMatrix.html" title="The SbMatrix class is a 4x4 dimensional representation of a matrix.">SbMatrix</a> </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="af7b34a3688cd8e1bfc3482bddb997b82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7b34a3688cd8e1bfc3482bddb997b82">&#9670;&nbsp;</a></span>SbRotation() <span class="overload">[1/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbRotation::SbRotation </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The default constructor just initializes a valid rotation. The actual value is unspecified, and you should not depend on it. </p>
+
+</div>
+</div>
+<a id="aabdc5a912bc0a6690dd47083a8b3f39f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabdc5a912bc0a6690dd47083a8b3f39f">&#9670;&nbsp;</a></span>SbRotation() <span class="overload">[2/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbRotation::SbRotation </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>axis</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>radians</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Construct a new <a class="el" href="classSbRotation.html" title="The SbRotation class represents a rotation in 3D space.">SbRotation</a> object initialized with the given axis-of-rotation and rotation angle. </p>
+
+</div>
+</div>
+<a id="ae048a5c82d3f01f275f6223c8e180092"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae048a5c82d3f01f275f6223c8e180092">&#9670;&nbsp;</a></span>SbRotation() <span class="overload">[3/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbRotation::SbRotation </td>
+          <td>(</td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>q</em>[4]</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Construct a new <a class="el" href="classSbRotation.html" title="The SbRotation class represents a rotation in 3D space.">SbRotation</a> object initialized with the given quaternion components.</p>
+<p>The array must be ordered as follows:</p>
+<p>q[0] = x, q[1] = y, q[2] = z and q[3] = w, where the quaternion is specified by q = w + xi + yj + zk. </p>
+
+</div>
+</div>
+<a id="ab86e1cbd8aec00ea9006be02649fa93f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab86e1cbd8aec00ea9006be02649fa93f">&#9670;&nbsp;</a></span>SbRotation() <span class="overload">[4/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbRotation::SbRotation </td>
+          <td>(</td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>q0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>q1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>q2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>q3</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Construct a new <a class="el" href="classSbRotation.html" title="The SbRotation class represents a rotation in 3D space.">SbRotation</a> object initialized with the given quaternion components. </p>
+
+</div>
+</div>
+<a id="ac42b51c454f31c7e4427801097cfda1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac42b51c454f31c7e4427801097cfda1f">&#9670;&nbsp;</a></span>SbRotation() <span class="overload">[5/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbRotation::SbRotation </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbMatrix.html">SbMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>m</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Construct a new <a class="el" href="classSbRotation.html" title="The SbRotation class represents a rotation in 3D space.">SbRotation</a> object initialized with the given rotation matrix. </p>
+
+</div>
+</div>
+<a id="a5a71d62e68580ed900c071b3cf605b56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a71d62e68580ed900c071b3cf605b56">&#9670;&nbsp;</a></span>SbRotation() <span class="overload">[6/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbRotation::SbRotation </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>rotateFrom</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>rotateTo</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Construct a rotation which is the minimum rotation necessary to make vector <em>rotateFrom</em> point in the direction of vector <em>rotateTo</em>.</p>
+<p>Example:</p>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;Inventor/SbRotation.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/SbVec3f.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;cstdio&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span></div>
+<div class="line">main(<span class="keywordtype">void</span>)</div>
+<div class="line">{</div>
+<div class="line">  <a class="code" href="classSbVec3f.html">SbVec3f</a> from(10, 0, 0);</div>
+<div class="line">  <a class="code" href="classSbVec3f.html">SbVec3f</a> to(0, 10, 0);</div>
+<div class="line"> </div>
+<div class="line">  <a class="code" href="classSbRotation.html">SbRotation</a> rot(from, to);</div>
+<div class="line"> </div>
+<div class="line">  <a class="code" href="classSbVec3f.html">SbVec3f</a> axis;</div>
+<div class="line">  <span class="keywordtype">float</span> angle;</div>
+<div class="line">  rot.<a class="code" href="classSbVec3f.html#a481f9536d1feffa9d9f2a7a6f3c95b41">getValue</a>(axis, angle);</div>
+<div class="line">  axis.<a class="code" href="classSbVec3f.html#a1b0b3eb5025cf40dc06f6e33dc03c7de">print</a>(stdout);</div>
+<div class="line">  printf(<span class="stringliteral">&quot;  angle==%f\n&quot;</span>, angle);</div>
+<div class="line"> </div>
+<div class="line">  <span class="keywordflow">return</span> 0;</div>
+<div class="line">}</div>
+<div class="ttc" id="aclassSbVec3f_html_a1b0b3eb5025cf40dc06f6e33dc03c7de"><div class="ttname"><a href="classSbVec3f.html#a1b0b3eb5025cf40dc06f6e33dc03c7de">SbVec3f::print</a></div><div class="ttdeci">void print(FILE *fp) const</div><div class="ttdef"><b>Definition:</b> SbVec3f.cpp:619</div></div>
+<div class="ttc" id="aclassSbVec3f_html_a481f9536d1feffa9d9f2a7a6f3c95b41"><div class="ttname"><a href="classSbVec3f.html#a481f9536d1feffa9d9f2a7a6f3c95b41">SbVec3f::getValue</a></div><div class="ttdeci">const float * getValue(void) const</div><div class="ttdef"><b>Definition:</b> SbVec3f.h:73</div></div>
+</div><!-- fragment --> 
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a9dac5a577c39ba17387af7772ecee1a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9dac5a577c39ba17387af7772ecee1a5">&#9670;&nbsp;</a></span>equals()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SbRotation::equals </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>tolerance</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Check the internal quaternion representation vectors for equality within the given tolerance. </p>
+
+</div>
+</div>
+<a id="abe4d493f5ad74a6c30135f62c0e36df6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe4d493f5ad74a6c30135f62c0e36df6">&#9670;&nbsp;</a></span>fromString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SbRotation::fromString </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Convert from a string representation, return whether this is a valid conversion </p>
+
+</div>
+</div>
+<a id="ad50a2d4a984462946b28cb541844c14e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad50a2d4a984462946b28cb541844c14e">&#9670;&nbsp;</a></span>getValue() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbRotation::getValue </td>
+          <td>(</td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>q0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>q1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>q2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>q3</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return the four quaternion components representing the rotation.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbRotation.html#a341d6be6f5b7207edb5eb4f118f4e352">setValue()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a23a6cde9db84da45a588b2b6dcaab74c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23a6cde9db84da45a588b2b6dcaab74c">&#9670;&nbsp;</a></span>getValue() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbRotation::getValue </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSbMatrix.html">SbMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>matrix</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return this rotation in the form of a matrix.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbRotation.html#a341d6be6f5b7207edb5eb4f118f4e352">setValue()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a439e2ce16a821e64e0515dfd95e4bff3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a439e2ce16a821e64e0515dfd95e4bff3">&#9670;&nbsp;</a></span>getValue() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbRotation::getValue </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>axis</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>radians</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return the rotation in the form of an axis-of-rotation and a rotation angle.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbRotation.html#a341d6be6f5b7207edb5eb4f118f4e352">setValue()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="af97805cfe5cd1bc177d30aaaaac94cf8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af97805cfe5cd1bc177d30aaaaac94cf8">&#9670;&nbsp;</a></span>getValue() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const float * SbRotation::getValue </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return pointer to an array with the rotation expressed as four quaternion values.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbRotation.html#a341d6be6f5b7207edb5eb4f118f4e352">setValue()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a185e88e106dbba29d4bb8339ff28c4ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a185e88e106dbba29d4bb8339ff28c4ac">&#9670;&nbsp;</a></span>identity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbRotation.html">SbRotation</a> SbRotation::identity </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns an identity rotation. </p>
+
+</div>
+</div>
+<a id="a2f8dbc9a5877d0c3a6d9e10bdc621dca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f8dbc9a5877d0c3a6d9e10bdc621dca">&#9670;&nbsp;</a></span>inverse()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbRotation.html">SbRotation</a> SbRotation::inverse </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Non-destructively inverses the rotation and returns the result.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbRotation.html#a60bf4c2709c944b64bef644375250d88">invert()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a60bf4c2709c944b64bef644375250d88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60bf4c2709c944b64bef644375250d88">&#9670;&nbsp;</a></span>invert()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbRotation.html">SbRotation</a> &amp; SbRotation::invert </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Invert the rotation. Returns reference to self.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbRotation.html#a2f8dbc9a5877d0c3a6d9e10bdc621dca">inverse()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a9bf38e125fc5356d08a03a6e08df98f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9bf38e125fc5356d08a03a6e08df98f4">&#9670;&nbsp;</a></span>multVec()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbRotation::multVec </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Rotate the <em>src</em> vector and put the result in <em>dst</em>.</p>
+<p>It is safe to let src and dst be the same <a class="el" href="classSbVec3f.html" title="The SbVec3f class is a 3 dimensional vector with floating point coordinates.">SbVec3f</a> instance. </p>
+
+</div>
+</div>
+<a id="a36daec8ca173721537b21146d7bb9a64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36daec8ca173721537b21146d7bb9a64">&#9670;&nbsp;</a></span>operator*=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbRotation.html">SbRotation</a> &amp; SbRotation::operator*= </td>
+          <td>(</td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Multiplies components of quaternion with scalar value <em>s</em>. Returns reference to self. </p>
+
+</div>
+</div>
+<a id="a466a7aae8799516373a99a0e3da290aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a466a7aae8799516373a99a0e3da290aa">&#9670;&nbsp;</a></span>operator*=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbRotation.html">SbRotation</a> &amp; SbRotation::operator*= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;&#160;</td>
+          <td class="paramname"><em>q</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Multiplies the quaternions.</p>
+<p>Note that order is important when combining quaternions with the multiplication operator. </p>
+
+</div>
+</div>
+<a id="abcb4364e56dc2eb2b253aa4a0b5e2ffa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcb4364e56dc2eb2b253aa4a0b5e2ffa">&#9670;&nbsp;</a></span>print()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbRotation::print </td>
+          <td>(</td>
+          <td class="paramtype">FILE *&#160;</td>
+          <td class="paramname"><em>fp</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Dump the state of this object to the <em>fp</em> file stream. Only works in debug version of library, method does nothing in an optimized build. </p>
+
+</div>
+</div>
+<a id="aecf5befb7013da43f9c459ee86a81e80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aecf5befb7013da43f9c459ee86a81e80">&#9670;&nbsp;</a></span>scaleAngle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbRotation::scaleAngle </td>
+          <td>(</td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>scaleFactor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Scale the angle of rotation by <em>scaleFactor</em>. </p>
+
+</div>
+</div>
+<a id="a341d6be6f5b7207edb5eb4f118f4e352"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a341d6be6f5b7207edb5eb4f118f4e352">&#9670;&nbsp;</a></span>setValue() <span class="overload">[1/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbRotation.html">SbRotation</a> &amp; SbRotation::setValue </td>
+          <td>(</td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>q0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>q1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>q2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>q3</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the rotation.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbRotation.html#af97805cfe5cd1bc177d30aaaaac94cf8">getValue()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a3f7dfa32c2ab80fc0e6808ca1940512d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f7dfa32c2ab80fc0e6808ca1940512d">&#9670;&nbsp;</a></span>setValue() <span class="overload">[2/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbRotation.html">SbRotation</a> &amp; SbRotation::setValue </td>
+          <td>(</td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>q</em>[4]</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Reset the rotation by the four quaternions in the array.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbRotation.html#af97805cfe5cd1bc177d30aaaaac94cf8">getValue()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a39efcb6f3651bea7b194f2e56cfb910f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39efcb6f3651bea7b194f2e56cfb910f">&#9670;&nbsp;</a></span>setValue() <span class="overload">[3/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbRotation.html">SbRotation</a> &amp; SbRotation::setValue </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbMatrix.html">SbMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>m</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the rotation from the components of the given matrix. Returns reference to self.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbRotation.html#af97805cfe5cd1bc177d30aaaaac94cf8">getValue()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a0346dd919d996967cb7d1b907214f0ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0346dd919d996967cb7d1b907214f0ab">&#9670;&nbsp;</a></span>setValue() <span class="overload">[4/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbRotation.html">SbRotation</a> &amp; SbRotation::setValue </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>axis</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>radians</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Reset rotation with the given axis-of-rotation and rotation angle. Returns reference to self.</p>
+<p>Make sure <em>axis</em> is not the null vector when calling this method.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbRotation.html#af97805cfe5cd1bc177d30aaaaac94cf8">getValue()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a0e4f23004de7569337960d7e5011e63d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e4f23004de7569337960d7e5011e63d">&#9670;&nbsp;</a></span>setValue() <span class="overload">[5/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbRotation.html">SbRotation</a> &amp; SbRotation::setValue </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>rotateFrom</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>rotateTo</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Construct a rotation which is the minimum rotation necessary to make vector <em>rotateFrom</em> point in the direction of vector <em>rotateTo</em>.</p>
+<p>Returns reference to self.</p>
+<p>See <a class="el" href="classSbRotation.html" title="The SbRotation class represents a rotation in 3D space.">SbRotation</a> constructor with corresponding input arguments for a simple code example.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbRotation.html#af97805cfe5cd1bc177d30aaaaac94cf8">getValue()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a04650493010ed066c2d055596f38c6f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04650493010ed066c2d055596f38c6f4">&#9670;&nbsp;</a></span>slerp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbRotation.html">SbRotation</a> slerp </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;&#160;</td>
+          <td class="paramname"><em>rot0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;&#160;</td>
+          <td class="paramname"><em>rot1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>t</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Interpolates along the shortest path between the two rotation positions (from <em>rot0</em> to <em>rot1</em>).</p>
+<p>Returns the <a class="el" href="classSbRotation.html" title="The SbRotation class represents a rotation in 3D space.">SbRotation</a> which will rotate <em>rot0</em> the given part <em>t</em> of the spherical distance towards <em>rot1</em>, where <em>t=0</em> will yield <em>rot0</em> and <em>t=1</em> will yield <em>rot1</em>.</p>
+<p><em>t</em> should be in the interval [0, 1]. </p>
+
+</div>
+</div>
+<a id="a77aaa761134c8ca10e4f5326b0be42dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77aaa761134c8ca10e4f5326b0be42dc">&#9670;&nbsp;</a></span>toString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbString.html">SbString</a> SbRotation::toString </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return a string representation of this object </p>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="a5fb0f927ad287d0913505d7f7ac04429"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fb0f927ad287d0913505d7f7ac04429">&#9670;&nbsp;</a></span>operator!=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;&#160;</td>
+          <td class="paramname"><em>q1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;&#160;</td>
+          <td class="paramname"><em>q2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Check if the two rotations are not equal.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbRotation.html#a9dac5a577c39ba17387af7772ecee1a5">equals()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a6bded4a443b38c90962ada7ce35996a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6bded4a443b38c90962ada7ce35996a7">&#9670;&nbsp;</a></span>operator*()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbRotation.html">SbRotation</a> operator* </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;&#160;</td>
+          <td class="paramname"><em>q1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;&#160;</td>
+          <td class="paramname"><em>q2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Multiplies the two rotations and returns the result.</p>
+<p>Note that order is important when combining quaternions with the multiplication operator. </p>
+
+</div>
+</div>
+<a id="a083b52d28a5b2c848ec051b051383816"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a083b52d28a5b2c848ec051b051383816">&#9670;&nbsp;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;&#160;</td>
+          <td class="paramname"><em>q1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;&#160;</td>
+          <td class="paramname"><em>q2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Check if the two rotations are equal.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbRotation.html#a9dac5a577c39ba17387af7772ecee1a5">equals()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a04650493010ed066c2d055596f38c6f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04650493010ed066c2d055596f38c6f4">&#9670;&nbsp;</a></span>slerp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbRotation.html">SbRotation</a> slerp </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;&#160;</td>
+          <td class="paramname"><em>rot0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;&#160;</td>
+          <td class="paramname"><em>rot1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>t</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Interpolates along the shortest path between the two rotation positions (from <em>rot0</em> to <em>rot1</em>).</p>
+<p>Returns the <a class="el" href="classSbRotation.html" title="The SbRotation class represents a rotation in 3D space.">SbRotation</a> which will rotate <em>rot0</em> the given part <em>t</em> of the spherical distance towards <em>rot1</em>, where <em>t=0</em> will yield <em>rot0</em> and <em>t=1</em> will yield <em>rot1</em>.</p>
+<p><em>t</em> should be in the interval [0, 1]. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SbRotation_8h_source.html">SbRotation.h</a></li>
+<li>SbRotation.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSbRotation.html">SbRotation</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

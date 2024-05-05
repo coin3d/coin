@@ -1,0 +1,359 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SbTesselator Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSbTesselator.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="classSbTesselator-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SbTesselator Class Reference<div class="ingroups"><a class="el" href="group__coin__base.html">Base Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSbTesselator.html" title="The SbTesselator class is used to tessellate polygons into triangles.">SbTesselator</a> class is used to tessellate polygons into triangles.  
+ <a href="classSbTesselator.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SbTesselator_8h_source.html">Inventor/SbTesselator.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:af364565888f0def8e1665f223adb8d61"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbTesselator.html#af364565888f0def8e1665f223adb8d61">SbTesselator</a> (SbTesselatorCB *func=NULL, void *data=NULL)</td></tr>
+<tr class="separator:af364565888f0def8e1665f223adb8d61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a635c1016d1bcde86146bb86b04ccb17e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbTesselator.html#a635c1016d1bcde86146bb86b04ccb17e">~SbTesselator</a> (void)</td></tr>
+<tr class="separator:a635c1016d1bcde86146bb86b04ccb17e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefa3b7a22e769602fae46054725d7a0b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbTesselator.html#aefa3b7a22e769602fae46054725d7a0b">addVertex</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;v, void *data)</td></tr>
+<tr class="separator:aefa3b7a22e769602fae46054725d7a0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8092c3ca8ca4539e18fff6ff7552c828"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbTesselator.html#a8092c3ca8ca4539e18fff6ff7552c828">beginPolygon</a> (SbBool keepVertices=FALSE, const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;normal=<a class="el" href="classSbVec3f.html">SbVec3f</a>(0.0f, 0.0f, 0.0f))</td></tr>
+<tr class="separator:a8092c3ca8ca4539e18fff6ff7552c828"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a904c2f4eb454771851a600fce8957385"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbTesselator.html#a904c2f4eb454771851a600fce8957385">endPolygon</a> (void)</td></tr>
+<tr class="separator:a904c2f4eb454771851a600fce8957385"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6937880e7f06cecadd8efd95a7c469f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbTesselator.html#ab6937880e7f06cecadd8efd95a7c469f">setCallback</a> (SbTesselatorCB *func, void *data)</td></tr>
+<tr class="separator:ab6937880e7f06cecadd8efd95a7c469f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSbTesselator.html" title="The SbTesselator class is used to tessellate polygons into triangles.">SbTesselator</a> class is used to tessellate polygons into triangles. </p>
+<p><a class="el" href="classSbTesselator.html" title="The SbTesselator class is used to tessellate polygons into triangles.">SbTesselator</a> is used within Coin to split polygons into triangles. It handles concave polygons, does Delaunay triangulation and avoids generating self-intersecting triangles.</p>
+<p>Here's a simple example which shows how to tessellate a quad polygon with corners in &lt;0, 0, 0&gt;, &lt;1, 0, 0&gt;, &lt;1, 1, 0&gt; and &lt;0, 1, 0&gt;.</p>
+<div class="fragment"><div class="line"><span class="comment">// Callback function for the tessellator. Called once for each</span></div>
+<div class="line"><span class="comment">// generated triangle with the vertices.</span></div>
+<div class="line"><span class="keyword">static</span> <span class="keywordtype">void</span></div>
+<div class="line">tess_cb(<span class="keywordtype">void</span> * v0, <span class="keywordtype">void</span> * v1, <span class="keywordtype">void</span> * v2, <span class="keywordtype">void</span> * cbdata)</div>
+<div class="line">{</div>
+<div class="line">  <a class="code" href="classSbVec3f.html">SbVec3f</a> * vtx0 = (<a class="code" href="classSbVec3f.html">SbVec3f</a> *)v0;</div>
+<div class="line">  <a class="code" href="classSbVec3f.html">SbVec3f</a> * vtx1 = (<a class="code" href="classSbVec3f.html">SbVec3f</a> *)v1;</div>
+<div class="line">  <a class="code" href="classSbVec3f.html">SbVec3f</a> * vtx2 = (<a class="code" href="classSbVec3f.html">SbVec3f</a> *)v2;</div>
+<div class="line">  (void) fprintf(stdout, <span class="stringliteral">&quot;triangle: &lt;%f, %f, %f&gt; &lt;%f, %f, %f&gt; &lt;%f, %f, %f&gt;\n&quot;</span>,</div>
+<div class="line">    (*vtx0)[0], (*vtx0)[1], (*vtx0)[2],</div>
+<div class="line">    (*vtx1)[0], (*vtx1)[1], (*vtx1)[2],</div>
+<div class="line">    (*vtx2)[0], (*vtx2)[1], (*vtx2)[2]);</div>
+<div class="line"> </div>
+<div class="line">  <span class="comment">// Do stuff with triangle here.</span></div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">static</span> <a class="code" href="classSbVec3f.html">SbVec3f</a> vertices[] = {</div>
+<div class="line">  <a class="code" href="classSbVec3f.html">SbVec3f</a>(1, 0, 0), <a class="code" href="classSbVec3f.html">SbVec3f</a>(1, 1, 0),</div>
+<div class="line">  <a class="code" href="classSbVec3f.html">SbVec3f</a>(0, 1, 0), <a class="code" href="classSbVec3f.html">SbVec3f</a>(0, 0, 0)</div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line"><a class="code" href="classSbTesselator.html">SbTesselator</a> mytessellator(tess_cb, NULL);</div>
+<div class="line">mytessellator.beginPolygon();</div>
+<div class="line"><span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=0; i &lt; 4; i++) {</div>
+<div class="line">  mytessellator.addVertex(vertices[i], &amp;vertices[i]);</div>
+<div class="line">}</div>
+<div class="line">mytessellator.endPolygon();</div>
+<div class="ttc" id="aclassSbTesselator_html"><div class="ttname"><a href="classSbTesselator.html">SbTesselator</a></div><div class="ttdoc">The SbTesselator class is used to tessellate polygons into triangles.</div><div class="ttdef"><b>Definition:</b> SbTesselator.h:43</div></div>
+<div class="ttc" id="aclassSbVec3f_html"><div class="ttname"><a href="classSbVec3f.html">SbVec3f</a></div><div class="ttdoc">The SbVec3f class is a 3 dimensional vector with floating point coordinates.</div><div class="ttdef"><b>Definition:</b> SbVec3f.h:51</div></div>
+</div><!-- fragment --><p>The call to <a class="el" href="classSbTesselator.html#a904c2f4eb454771851a600fce8957385">SbTesselator::endPolygon()</a> triggers the <a class="el" href="classSbTesselator.html" title="The SbTesselator class is used to tessellate polygons into triangles.">SbTesselator</a> to spring into action, calling the tess_cb() function for each triangle it generates.</p>
+<p>The reason we use 2 arguments to <a class="el" href="classSbTesselator.html#aefa3b7a22e769602fae46054725d7a0b">SbTesselator::addVertex()</a> and passes void pointers for the vertices to the callback function is to make it possible to have more complex structures than just the coordinates themselves (as in the example above), like material information, lighting information or whatever other attributes your vertices have.</p>
+<p>This class is not part of the original Open Inventor API.</p>
+<p>Another option for tessellating polygons is the tessellator of the GLU library. It has some features not part of <a class="el" href="classSbTesselator.html" title="The SbTesselator class is used to tessellate polygons into triangles.">SbTesselator</a> (like handling hulls), but the GLU library is known to have bugs in various implementations and doesn't do Delaunay triangulation. If you however still prefer to use the GLU tessellator instead of this one, that can be forced by setting an environment variable:</p>
+<div class="fragment"><div class="line">(void) coin_setenv(<span class="stringliteral">&quot;COIN_PREFER_GLU_TESSELLATOR&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>, 1);</div>
+</div><!-- fragment --> </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="af364565888f0def8e1665f223adb8d61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af364565888f0def8e1665f223adb8d61">&#9670;&nbsp;</a></span>SbTesselator()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbTesselator::SbTesselator </td>
+          <td>(</td>
+          <td class="paramtype">SbTesselatorCB *&#160;</td>
+          <td class="paramname"><em>func</em> = <code>NULL</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>data</em> = <code>NULL</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Initializes a tessellator. The <em>callback</em> argument specifies a function which will be called for each triangle returned by the tessellator. The callback function will get three pointers to each vertex and the <em>userdata</em> pointer. The vertex pointers are specified in the <a class="el" href="classSbTesselator.html#aefa3b7a22e769602fae46054725d7a0b">SbTesselator::addVertex()</a> method. </p>
+
+</div>
+</div>
+<a id="a635c1016d1bcde86146bb86b04ccb17e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a635c1016d1bcde86146bb86b04ccb17e">&#9670;&nbsp;</a></span>~SbTesselator()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbTesselator::~SbTesselator </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Destructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="aefa3b7a22e769602fae46054725d7a0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefa3b7a22e769602fae46054725d7a0b">&#9670;&nbsp;</a></span>addVertex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbTesselator::addVertex </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Adds a new vertex to the polygon. <em>data</em> will be returned as a vertex in the callback-function. </p>
+
+</div>
+</div>
+<a id="a8092c3ca8ca4539e18fff6ff7552c828"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8092c3ca8ca4539e18fff6ff7552c828">&#9670;&nbsp;</a></span>beginPolygon()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbTesselator::beginPolygon </td>
+          <td>(</td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>keepVerts</em> = <code>FALSE</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>normal</em> = <code><a class="el" href="classSbVec3f.html">SbVec3f</a>(0.0f,&#160;0.0f,&#160;0.0f)</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Initializes new polygon.</p>
+<p>You can explicitly set the polygon normal if you know what it is. Otherwise it will be calculated internally.</p>
+<p>If <em>keepVerts</em> is <code>TRUE</code>, all vertices will be included in the returned triangles, even though this might lead to triangles without area. </p>
+
+</div>
+</div>
+<a id="a904c2f4eb454771851a600fce8957385"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a904c2f4eb454771851a600fce8957385">&#9670;&nbsp;</a></span>endPolygon()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbTesselator::endPolygon </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Signals the tessellator to begin tessellating. The callback function specified in the constructor (or set using the <a class="el" href="classSbTesselator.html#ab6937880e7f06cecadd8efd95a7c469f">SbTesselator::setCallback()</a> method) will be called for each triangle before returning. </p>
+
+</div>
+</div>
+<a id="ab6937880e7f06cecadd8efd95a7c469f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6937880e7f06cecadd8efd95a7c469f">&#9670;&nbsp;</a></span>setCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbTesselator::setCallback </td>
+          <td>(</td>
+          <td class="paramtype">SbTesselatorCB *&#160;</td>
+          <td class="paramname"><em>func</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the callback function for this tessellator. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SbTesselator_8h_source.html">SbTesselator.h</a></li>
+<li>SbTesselator.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSbTesselator.html">SbTesselator</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,1751 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SoCamera Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSoCamera.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
+<a href="classSoCamera-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SoCamera Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span><div class="ingroups"><a class="el" href="group__coin__nodes.html">Node Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSoCamera.html" title="The SoCamera class is the abstract base class for camera definition nodes.">SoCamera</a> class is the abstract base class for camera definition nodes.  
+ <a href="classSoCamera.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SoCamera_8h_source.html">Inventor/nodes/SoCamera.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for SoCamera:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classSoCamera.png" usemap="#SoCamera_map" alt=""/>
+  <map id="SoCamera_map" name="SoCamera_map">
+<area href="classSoNode.html" title="The SoNode class is the base class for nodes used in scene graphs." alt="SoNode" shape="rect" coords="195,112,380,136"/>
+<area href="classSoFieldContainer.html" title="The SoFieldContainer class is a base class for all classes that contain fields." alt="SoFieldContainer" shape="rect" coords="195,56,380,80"/>
+<area href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies." alt="SoBase" shape="rect" coords="195,0,380,24"/>
+<area href="classSoFrustumCamera.html" title="The SoFrustumCamera class defines a camera with a generic frustum.." alt="SoFrustumCamera" shape="rect" coords="0,224,185,248"/>
+<area href="classSoOrthographicCamera.html" title="The SoOrthographicCamera class defines a camera node with orthographic rendering." alt="SoOrthographicCamera" shape="rect" coords="195,224,380,248"/>
+<area href="classSoPerspectiveCamera.html" title="The SoPerspectiveCamera class defines a camera node with perspective rendering." alt="SoPerspectiveCamera" shape="rect" coords="390,224,575,248"/>
+<area href="classSoReversePerspectiveCamera.html" title="The SoReversePerspectiveCamera class defines a camera node with reverse perspective rendering." alt="SoReversePerspectiveCamera" shape="rect" coords="390,280,575,304"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:ae1516a54c7328d42694db1c5b62912ec"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#ae1516a54c7328d42694db1c5b62912ec">StereoMode</a> { <a class="el" href="classSoCamera.html#ae1516a54c7328d42694db1c5b62912ecac0ec11eb92040c20ae1b0ade59672849">MONOSCOPIC</a>
+, <a class="el" href="classSoCamera.html#ae1516a54c7328d42694db1c5b62912eca4570af92101f1849e922b8b00a796752">LEFT_VIEW</a>
+, <a class="el" href="classSoCamera.html#ae1516a54c7328d42694db1c5b62912eca1bcb572494c5a757d7978b082357da77">RIGHT_VIEW</a>
+ }</td></tr>
+<tr class="separator:ae1516a54c7328d42694db1c5b62912ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46fd7a2f6e8ca20e44682d005e0bb44c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a46fd7a2f6e8ca20e44682d005e0bb44c">ViewportMapping</a> { <br />
+&#160;&#160;<b>CROP_VIEWPORT_FILL_FRAME</b>
+, <b>CROP_VIEWPORT_LINE_FRAME</b>
+, <b>CROP_VIEWPORT_NO_FRAME</b>
+, <b>ADJUST_CAMERA</b>
+, <br />
+&#160;&#160;<b>LEAVE_ALONE</b>
+<br />
+ }</td></tr>
+<tr class="separator:a46fd7a2f6e8ca20e44682d005e0bb44c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classSoNode"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSoNode')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSoNode.html">SoNode</a></td></tr>
+<tr class="memitem:afaebe871158a88c800ded8c44f583b09 inherit pub_types_classSoNode"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09">NodeType</a> { <br />
+&#160;&#160;<a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09ac0831e453c51372e48be01ebf3f75d5d">INVENTOR</a> = 0x0000
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09af394e16a0b4d94ea3336b93f865b65a2">VRML1</a> = 0x0001
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09a2c12262016b245952c410f20efd7a232">VRML2</a> = 0x0002
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09a3dd4cd24b703ba3d27c03f27278020e7">INVENTOR_1</a> = 0x0004
+, <br />
+&#160;&#160;<a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09a7968ab0659fe9def9c8e5bfbb3af4a09">INVENTOR_2_0</a> = 0x0008
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09aea47620acfc8e1c86c3913fe309b6710">INVENTOR_2_1</a> = 0x0010
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09ab07b87a88930896f6f3903544cd9df09">INVENTOR_2_5</a> = 0x0020
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09adeb3f37f9ac4d872643fab303ceca4bf">INVENTOR_2_6</a> = 0x0040
+, <br />
+&#160;&#160;<a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09ac72b86803610982c730cbba098b3676e">COIN_1_0</a> = 0x0080
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09a37f44b5c6ca9907b4fd06f6fda7bb4bb">COIN_2_0</a> = 0x0100
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09a3d8337c6cd271876193dfaad2578edab">EXTENSION</a> = 0x0200
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09abcc832df31e2e8db006118a4b69ee674">COIN_2_2</a> = 0x0400
+, <br />
+&#160;&#160;<a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09aac5e6240ea734dd599424d402ec56b30">COIN_2_3</a> = 0x0800
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09ace4736da876cb2728d2d86f8881a1896">COIN_2_4</a> = 0x1000
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09ad527ed560f104c0183d0292e29967c35">INVENTOR_5_0</a> = 0x2000
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09a9dec40259c61ecaba8e649ff852d6957">COIN_2_5</a> = 0x4000
+, <br />
+&#160;&#160;<a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09a9add7da281acc2b3945826e259078996">COIN_3_0</a> = 0x8000
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09a03a82fa9ac39e06248df07be24f2cf64">INVENTOR_6_0</a> = 0x10000
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09a9a75bb3bf5185f9630f8bf8a53d62a82">COIN_4_0</a> = 0x20000
+<br />
+ }</td></tr>
+<tr class="separator:afaebe871158a88c800ded8c44f583b09 inherit pub_types_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a826bfd39750a3c7300c9c0162eb04688"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a826bfd39750a3c7300c9c0162eb04688">audioRender</a> (<a class="el" href="classSoAudioRenderAction.html">SoAudioRenderAction</a> *action)</td></tr>
+<tr class="separator:a826bfd39750a3c7300c9c0162eb04688"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a55d20de9f29df22645ea8eab07bd9f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a7a55d20de9f29df22645ea8eab07bd9f">callback</a> (<a class="el" href="classSoCallbackAction.html">SoCallbackAction</a> *action)</td></tr>
+<tr class="separator:a7a55d20de9f29df22645ea8eab07bd9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a413c4165d5065112db4c27687d9a58bf"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a413c4165d5065112db4c27687d9a58bf">doAction</a> (<a class="el" href="classSoAction.html">SoAction</a> *action)</td></tr>
+<tr class="separator:a413c4165d5065112db4c27687d9a58bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a751c4e8f1f192d1cabf45d5716fed5ca"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a751c4e8f1f192d1cabf45d5716fed5ca">getBalanceAdjustment</a> (void) const</td></tr>
+<tr class="separator:a751c4e8f1f192d1cabf45d5716fed5ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4731c977a5d5ef3848071509af281f6b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a4731c977a5d5ef3848071509af281f6b">getBoundingBox</a> (<a class="el" href="classSoGetBoundingBoxAction.html">SoGetBoundingBoxAction</a> *action)</td></tr>
+<tr class="separator:a4731c977a5d5ef3848071509af281f6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adde302570462bfeff2e41ffc1e33b2ba"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#adde302570462bfeff2e41ffc1e33b2ba">getMatrix</a> (<a class="el" href="classSoGetMatrixAction.html">SoGetMatrixAction</a> *action)</td></tr>
+<tr class="separator:adde302570462bfeff2e41ffc1e33b2ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70260457d32bb6d8d0a7734b248f55b4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a70260457d32bb6d8d0a7734b248f55b4">getPrimitiveCount</a> (<a class="el" href="classSoGetPrimitiveCountAction.html">SoGetPrimitiveCountAction</a> *action)</td></tr>
+<tr class="separator:a70260457d32bb6d8d0a7734b248f55b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f446f5b315f861132271170ccefb57b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a3f446f5b315f861132271170ccefb57b">getStereoAdjustment</a> (void) const</td></tr>
+<tr class="separator:a3f446f5b315f861132271170ccefb57b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11e6cccae581b3452c78b067d51f5bf5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoCamera.html#ae1516a54c7328d42694db1c5b62912ec">StereoMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a11e6cccae581b3452c78b067d51f5bf5">getStereoMode</a> (void) const</td></tr>
+<tr class="separator:a11e6cccae581b3452c78b067d51f5bf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c6f19449b75925e21d0618d4d52da10"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a8c6f19449b75925e21d0618d4d52da10">getTypeId</a> (void) const</td></tr>
+<tr class="separator:a8c6f19449b75925e21d0618d4d52da10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d5d764a87ca0e65ccc2d59857de7891"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbViewportRegion.html">SbViewportRegion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a2d5d764a87ca0e65ccc2d59857de7891">getViewportBounds</a> (const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;region) const</td></tr>
+<tr class="separator:a2d5d764a87ca0e65ccc2d59857de7891"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6c73345d688cf6e7d04e1f22401af60"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbViewVolume.html">SbViewVolume</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#ad6c73345d688cf6e7d04e1f22401af60">getViewVolume</a> (const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;vp, <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;resultvp, const <a class="el" href="classSbMatrix.html">SbMatrix</a> &amp;mm=<a class="el" href="classSbMatrix.html#adc24591ea5071d7d8f18eee7066c36e3">SbMatrix::identity</a>()) const</td></tr>
+<tr class="separator:ad6c73345d688cf6e7d04e1f22401af60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9dabd51ab0445cdca516180df63a6fee"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSbViewVolume.html">SbViewVolume</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a9dabd51ab0445cdca516180df63a6fee">getViewVolume</a> (float useaspectratio=0.0f) const =0</td></tr>
+<tr class="separator:a9dabd51ab0445cdca516180df63a6fee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e43b194b29f65bf2ffc97b29de634f2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a0e43b194b29f65bf2ffc97b29de634f2">GLRender</a> (<a class="el" href="classSoGLRenderAction.html">SoGLRenderAction</a> *action)</td></tr>
+<tr class="separator:a0e43b194b29f65bf2ffc97b29de634f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40dec90ae09d74656b04fb5bc170d4f0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a40dec90ae09d74656b04fb5bc170d4f0">handleEvent</a> (<a class="el" href="classSoHandleEventAction.html">SoHandleEventAction</a> *action)</td></tr>
+<tr class="separator:a40dec90ae09d74656b04fb5bc170d4f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0419569e203a18c84870f288d79af31d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a0419569e203a18c84870f288d79af31d">pointAt</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;targetpoint)</td></tr>
+<tr class="separator:a0419569e203a18c84870f288d79af31d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adac554b0c5d8ea465f539d704834f651"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#adac554b0c5d8ea465f539d704834f651">pointAt</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;targetpoint, const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;upvector)</td></tr>
+<tr class="separator:adac554b0c5d8ea465f539d704834f651"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1b340a2532c40eebcb6386ba226d782"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#af1b340a2532c40eebcb6386ba226d782">rayPick</a> (<a class="el" href="classSoRayPickAction.html">SoRayPickAction</a> *action)</td></tr>
+<tr class="separator:af1b340a2532c40eebcb6386ba226d782"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a860095b69cc575ba845d4e228956f3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a2a860095b69cc575ba845d4e228956f3">scaleHeight</a> (float scalefactor)=0</td></tr>
+<tr class="separator:a2a860095b69cc575ba845d4e228956f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d44d94fa463088b2ddfedff2ea72364"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a8d44d94fa463088b2ddfedff2ea72364">setBalanceAdjustment</a> (float adjustment)</td></tr>
+<tr class="separator:a8d44d94fa463088b2ddfedff2ea72364"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ed2d2527604e86cc8be234b1e429991"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a6ed2d2527604e86cc8be234b1e429991">setStereoAdjustment</a> (float adjustment)</td></tr>
+<tr class="separator:a6ed2d2527604e86cc8be234b1e429991"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22e40f356f2ff2055b2a4b0f65c3aea6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a22e40f356f2ff2055b2a4b0f65c3aea6">setStereoMode</a> (<a class="el" href="classSoCamera.html#ae1516a54c7328d42694db1c5b62912ec">StereoMode</a> mode)</td></tr>
+<tr class="separator:a22e40f356f2ff2055b2a4b0f65c3aea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af04cc1f085e997c65832da9ddcd5a6aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#af04cc1f085e997c65832da9ddcd5a6aa">viewAll</a> (<a class="el" href="classSoNode.html">SoNode</a> *const sceneroot, const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;vpregion, const float slack=1.0f)</td></tr>
+<tr class="separator:af04cc1f085e997c65832da9ddcd5a6aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab10a2218561a9c6e82910cb6ded50118"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#ab10a2218561a9c6e82910cb6ded50118">viewAll</a> (<a class="el" href="classSoPath.html">SoPath</a> *const path, const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;vpregion, const float slack=1.0f)</td></tr>
+<tr class="separator:ab10a2218561a9c6e82910cb6ded50118"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab04c2ed686b698bee525eaf29aca0f64"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#ab04c2ed686b698bee525eaf29aca0f64">viewBoundingBox</a> (const <a class="el" href="classSbBox3f.html">SbBox3f</a> &amp;box, float aspect, float slack)=0</td></tr>
+<tr class="separator:ab04c2ed686b698bee525eaf29aca0f64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSoNode"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSoNode')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSoNode.html">SoNode</a></td></tr>
+<tr class="memitem:a9d972d699159edbfe2988475095b9b7d inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a9d972d699159edbfe2988475095b9b7d">addToCopyDict</a> (void) const</td></tr>
+<tr class="separator:a9d972d699159edbfe2988475095b9b7d inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2356d9e65d5ecd3f0f95124ad26ba6e inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#aa2356d9e65d5ecd3f0f95124ad26ba6e">affectsState</a> (void) const</td></tr>
+<tr class="separator:aa2356d9e65d5ecd3f0f95124ad26ba6e inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1435c7f4d354e7598a649ee59a9dd1d0 inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a1435c7f4d354e7598a649ee59a9dd1d0">copy</a> (SbBool copyconnections=FALSE) const</td></tr>
+<tr class="separator:a1435c7f4d354e7598a649ee59a9dd1d0 inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf00f4c8151db47b00d508b2e7c2794a inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#acf00f4c8151db47b00d508b2e7c2794a">copyContents</a> (const <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *from, SbBool copyconnections)</td></tr>
+<tr class="separator:acf00f4c8151db47b00d508b2e7c2794a inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a863c20549d094fc85b8f850e6907430f inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a863c20549d094fc85b8f850e6907430f">copyThroughConnection</a> (void) const</td></tr>
+<tr class="separator:a863c20549d094fc85b8f850e6907430f inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a010f485233cd8865ac14753e0da0728a inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoChildList.html">SoChildList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a010f485233cd8865ac14753e0da0728a">getChildren</a> (void) const</td></tr>
+<tr class="separator:a010f485233cd8865ac14753e0da0728a inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a798b676b0f2d0febed69cf2c96e5a030 inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">SbUniqueId&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a798b676b0f2d0febed69cf2c96e5a030">getNodeId</a> (void) const</td></tr>
+<tr class="separator:a798b676b0f2d0febed69cf2c96e5a030 inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36466d4072ced7c03f19dd03276731d7 inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09">NodeType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a36466d4072ced7c03f19dd03276731d7">getNodeType</a> (void) const</td></tr>
+<tr class="separator:a36466d4072ced7c03f19dd03276731d7 inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa921ef5b5420dfb2ee8a04cc54e4f896 inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#aa921ef5b5420dfb2ee8a04cc54e4f896">GLRenderBelowPath</a> (<a class="el" href="classSoGLRenderAction.html">SoGLRenderAction</a> *action)</td></tr>
+<tr class="separator:aa921ef5b5420dfb2ee8a04cc54e4f896 inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa26545310c0283245e7cab76fc92a5b5 inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#aa26545310c0283245e7cab76fc92a5b5">GLRenderInPath</a> (<a class="el" href="classSoGLRenderAction.html">SoGLRenderAction</a> *action)</td></tr>
+<tr class="separator:aa26545310c0283245e7cab76fc92a5b5 inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cbbfd0f5bcf3e30528ac0bbda826bf6 inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a8cbbfd0f5bcf3e30528ac0bbda826bf6">GLRenderOffPath</a> (<a class="el" href="classSoGLRenderAction.html">SoGLRenderAction</a> *action)</td></tr>
+<tr class="separator:a8cbbfd0f5bcf3e30528ac0bbda826bf6 inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7afcbdc2e142bfa4be450e9124ac93a2 inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a7afcbdc2e142bfa4be450e9124ac93a2">grabEventsCleanup</a> (void)</td></tr>
+<tr class="separator:a7afcbdc2e142bfa4be450e9124ac93a2 inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9f97e3ffaeb4e50e1e1a647a1535e47 inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#af9f97e3ffaeb4e50e1e1a647a1535e47">grabEventsSetup</a> (void)</td></tr>
+<tr class="separator:af9f97e3ffaeb4e50e1e1a647a1535e47 inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74a89506933952030909972c67b85aaf inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a74a89506933952030909972c67b85aaf">isOverride</a> (void) const</td></tr>
+<tr class="separator:a74a89506933952030909972c67b85aaf inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19bd6f80f2151fd082ca774068aef239 inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a19bd6f80f2151fd082ca774068aef239">notify</a> (<a class="el" href="classSoNotList.html">SoNotList</a> *l)</td></tr>
+<tr class="separator:a19bd6f80f2151fd082ca774068aef239 inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1acb723f774cdc90eb69f23ac191967 inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#ad1acb723f774cdc90eb69f23ac191967">pick</a> (<a class="el" href="classSoPickAction.html">SoPickAction</a> *action)</td></tr>
+<tr class="separator:ad1acb723f774cdc90eb69f23ac191967 inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad45bab33f06902f1735fb05a82dec650 inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#ad45bab33f06902f1735fb05a82dec650">search</a> (<a class="el" href="classSoSearchAction.html">SoSearchAction</a> *action)</td></tr>
+<tr class="separator:ad45bab33f06902f1735fb05a82dec650 inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54cb403721ece12f95be66a3baef48a4 inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a54cb403721ece12f95be66a3baef48a4">setNodeType</a> (const <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09">NodeType</a> type)</td></tr>
+<tr class="separator:a54cb403721ece12f95be66a3baef48a4 inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c4f3e94bccef0da0f47bcdf64a3e915 inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a3c4f3e94bccef0da0f47bcdf64a3e915">setOverride</a> (const SbBool state)</td></tr>
+<tr class="separator:a3c4f3e94bccef0da0f47bcdf64a3e915 inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab623a7a6404b31e171869f953113eba7 inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#ab623a7a6404b31e171869f953113eba7">startNotify</a> (void)</td></tr>
+<tr class="separator:ab623a7a6404b31e171869f953113eba7 inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add1c0182576fda3e51ccc9a38dd1b694 inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#add1c0182576fda3e51ccc9a38dd1b694">write</a> (<a class="el" href="classSoWriteAction.html">SoWriteAction</a> *action)</td></tr>
+<tr class="separator:add1c0182576fda3e51ccc9a38dd1b694 inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c1c9901261a3b02fa99e6b1f7223d3f inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a2c1c9901261a3b02fa99e6b1f7223d3f">writeInstance</a> (<a class="el" href="classSoOutput.html">SoOutput</a> *out)</td></tr>
+<tr class="separator:a2c1c9901261a3b02fa99e6b1f7223d3f inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSoFieldContainer"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSoFieldContainer')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a></td></tr>
+<tr class="memitem:a8fe87d323c349aa7123ecbd2096a90dd inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a8fe87d323c349aa7123ecbd2096a90dd">addWriteReference</a> (<a class="el" href="classSoOutput.html">SoOutput</a> *out, SbBool isfromfield=FALSE)</td></tr>
+<tr class="separator:a8fe87d323c349aa7123ecbd2096a90dd inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc620aa3c3c1d797772ecd8b6ba82075 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#abc620aa3c3c1d797772ecd8b6ba82075">copyFieldValues</a> (const <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *container, SbBool copyconnections=FALSE)</td></tr>
+<tr class="separator:abc620aa3c3c1d797772ecd8b6ba82075 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfd479a5769b6f2e5c64e33bc5ecda81 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#acfd479a5769b6f2e5c64e33bc5ecda81">enableNotify</a> (const SbBool flag)</td></tr>
+<tr class="separator:acfd479a5769b6f2e5c64e33bc5ecda81 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d87d1fd2928c320ea11f35a05a0094f inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a1d87d1fd2928c320ea11f35a05a0094f">fieldsAreEqual</a> (const <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *container) const</td></tr>
+<tr class="separator:a1d87d1fd2928c320ea11f35a05a0094f inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab59399cd2889f2504587c59a98bd35a inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#aab59399cd2889f2504587c59a98bd35a">get</a> (<a class="el" href="classSbString.html">SbString</a> &amp;fielddata)</td></tr>
+<tr class="separator:aab59399cd2889f2504587c59a98bd35a inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b1ee6b9b4c4dce34072b2207d86e272 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a1b1ee6b9b4c4dce34072b2207d86e272">get</a> (<a class="el" href="classSbString.html">SbString</a> &amp;fielddata, <a class="el" href="classSoOutput.html">SoOutput</a> *out)</td></tr>
+<tr class="separator:a1b1ee6b9b4c4dce34072b2207d86e272 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7dac6bf3609f1d03949596ff99c80fc6 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a7dac6bf3609f1d03949596ff99c80fc6">getAllFields</a> (<a class="el" href="classSoFieldList.html">SoFieldList</a> &amp;l) const</td></tr>
+<tr class="separator:a7dac6bf3609f1d03949596ff99c80fc6 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6713e64c529d780be82f92d1755c5a84 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoField.html">SoField</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a6713e64c529d780be82f92d1755c5a84">getEventIn</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;name) const</td></tr>
+<tr class="separator:a6713e64c529d780be82f92d1755c5a84 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6ba15e2a94ea3b9c11b109ed2df2fdc inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoField.html">SoField</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#ab6ba15e2a94ea3b9c11b109ed2df2fdc">getEventOut</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;name) const</td></tr>
+<tr class="separator:ab6ba15e2a94ea3b9c11b109ed2df2fdc inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10d1a5d73b22481d64e175e43b1ca4a9 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoField.html">SoField</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a10d1a5d73b22481d64e175e43b1ca4a9">getField</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;name) const</td></tr>
+<tr class="separator:a10d1a5d73b22481d64e175e43b1ca4a9 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae616de36469154bdfda9788ad2c17156 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#ae616de36469154bdfda9788ad2c17156">getFieldName</a> (const <a class="el" href="classSoField.html">SoField</a> *const field, <a class="el" href="classSbName.html">SbName</a> &amp;name) const</td></tr>
+<tr class="separator:ae616de36469154bdfda9788ad2c17156 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af542f3d15c57d14dd60516ffdd586888 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#af542f3d15c57d14dd60516ffdd586888">getFields</a> (<a class="el" href="classSoFieldList.html">SoFieldList</a> &amp;l) const</td></tr>
+<tr class="separator:af542f3d15c57d14dd60516ffdd586888 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf8a1a4389a1b90cb131f26a22e58dba inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#acf8a1a4389a1b90cb131f26a22e58dba">getFieldsMemorySize</a> (size_t &amp;managed, size_t &amp;unmanaged) const</td></tr>
+<tr class="separator:acf8a1a4389a1b90cb131f26a22e58dba inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e7c6ce060519067c75763955391f167 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a1e7c6ce060519067c75763955391f167">getIsBuiltIn</a> (void) const</td></tr>
+<tr class="separator:a1e7c6ce060519067c75763955391f167 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8afa8e6a2f947b2e874b4d63728f6c7f inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a8afa8e6a2f947b2e874b4d63728f6c7f">getUserData</a> (void) const</td></tr>
+<tr class="separator:a8afa8e6a2f947b2e874b4d63728f6c7f inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad135f9119f178c0891f3284e8aebfb54 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#ad135f9119f178c0891f3284e8aebfb54">hasDefaultValues</a> (void) const</td></tr>
+<tr class="separator:ad135f9119f178c0891f3284e8aebfb54 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3886ea42fb933a12b0a456232565a302 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a3886ea42fb933a12b0a456232565a302">isNotifyEnabled</a> (void) const</td></tr>
+<tr class="separator:a3886ea42fb933a12b0a456232565a302 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42458263ddb5dbbdf9473c3dae07a483 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a42458263ddb5dbbdf9473c3dae07a483">set</a> (const char *const fielddata)</td></tr>
+<tr class="separator:a42458263ddb5dbbdf9473c3dae07a483 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecae5577413772a3df69f8a67c9f8861 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#aecae5577413772a3df69f8a67c9f8861">set</a> (const char *fielddata, <a class="el" href="classSoInput.html">SoInput</a> *input)</td></tr>
+<tr class="separator:aecae5577413772a3df69f8a67c9f8861 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96ce6bfbc94538e8d037030f9990ee61 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a96ce6bfbc94538e8d037030f9990ee61">setToDefaults</a> (void)</td></tr>
+<tr class="separator:a96ce6bfbc94538e8d037030f9990ee61 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc5d9c4bc3ff1189df20dccf9ac6cf2c inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#adc5d9c4bc3ff1189df20dccf9ac6cf2c">setUserData</a> (void *userdata) const</td></tr>
+<tr class="separator:adc5d9c4bc3ff1189df20dccf9ac6cf2c inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a242628b2d7e41340398754054ae11ad5 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a242628b2d7e41340398754054ae11ad5">validateNewFieldValue</a> (<a class="el" href="classSoField.html">SoField</a> *field, void *newval)</td></tr>
+<tr class="separator:a242628b2d7e41340398754054ae11ad5 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSoBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSoBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSoBase.html">SoBase</a></td></tr>
+<tr class="memitem:ae6df5f7ce9b7426544fa890d7c48b23a inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#ae6df5f7ce9b7426544fa890d7c48b23a">addAuditor</a> (void *const auditor, const <a class="el" href="classSoNotRec.html#a3dadebf7917d6722df3485e7971ca25c">SoNotRec::Type</a> type)</td></tr>
+<tr class="separator:ae6df5f7ce9b7426544fa890d7c48b23a inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3323fa3136ee0b7b1130683cabd2f45 inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#aa3323fa3136ee0b7b1130683cabd2f45">assertAlive</a> (void) const</td></tr>
+<tr class="separator:aa3323fa3136ee0b7b1130683cabd2f45 inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7129603ba417a658d975be39d07ab8f3 inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSoAuditorList.html">SoAuditorList</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a7129603ba417a658d975be39d07ab8f3">getAuditors</a> (void) const</td></tr>
+<tr class="separator:a7129603ba417a658d975be39d07ab8f3 inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1dbb536d70cf7045a96bc27165d378d0 inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSbName.html">SbName</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a1dbb536d70cf7045a96bc27165d378d0">getName</a> (void) const</td></tr>
+<tr class="separator:a1dbb536d70cf7045a96bc27165d378d0 inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81f6ccf0ce835794d59a492238f082bd inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a81f6ccf0ce835794d59a492238f082bd">getRefCount</a> (void) const</td></tr>
+<tr class="separator:a81f6ccf0ce835794d59a492238f082bd inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2861cbe3c2f43747bc289c7f55bbec3 inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#aa2861cbe3c2f43747bc289c7f55bbec3">isOfType</a> (<a class="el" href="classSoType.html">SoType</a> type) const</td></tr>
+<tr class="memdesc:aa2861cbe3c2f43747bc289c7f55bbec3 inherit pub_methods_classSoBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>TRUE</code> if the type of this object is either of the same type or inherited from <em>type</em>.  <a href="classSoBase.html#aa2861cbe3c2f43747bc289c7f55bbec3">More...</a><br /></td></tr>
+<tr class="separator:aa2861cbe3c2f43747bc289c7f55bbec3 inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac01cf34901b2a2be1bc2671bb2463851 inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#ac01cf34901b2a2be1bc2671bb2463851">ref</a> (void) const</td></tr>
+<tr class="separator:ac01cf34901b2a2be1bc2671bb2463851 inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40434ac2a479164cbeee3f6583307b77 inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a40434ac2a479164cbeee3f6583307b77">removeAuditor</a> (void *const auditor, const <a class="el" href="classSoNotRec.html#a3dadebf7917d6722df3485e7971ca25c">SoNotRec::Type</a> type)</td></tr>
+<tr class="separator:a40434ac2a479164cbeee3f6583307b77 inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9bb8b4387f5fb39d4aa3fe92ca81261 inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#ab9bb8b4387f5fb39d4aa3fe92ca81261">setName</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;newname)</td></tr>
+<tr class="separator:ab9bb8b4387f5fb39d4aa3fe92ca81261 inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f95394c79b081e482d94a15a823b32f inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a6f95394c79b081e482d94a15a823b32f">shouldWrite</a> (void)</td></tr>
+<tr class="separator:a6f95394c79b081e482d94a15a823b32f inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba7fd51b022505fa822d295095b7f6a7 inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#aba7fd51b022505fa822d295095b7f6a7">touch</a> (void)</td></tr>
+<tr class="separator:aba7fd51b022505fa822d295095b7f6a7 inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a254b1ac395fe4d4d10438b994bdb3561 inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a254b1ac395fe4d4d10438b994bdb3561">unref</a> (void) const</td></tr>
+<tr class="separator:a254b1ac395fe4d4d10438b994bdb3561 inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2efdb80168517b9e0a8dd8dc8c655fbb inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a2efdb80168517b9e0a8dd8dc8c655fbb">unrefNoDelete</a> (void) const</td></tr>
+<tr class="separator:a2efdb80168517b9e0a8dd8dc8c655fbb inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a807ae4b7ab4e62851a89f4e6ce2d17c0"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a807ae4b7ab4e62851a89f4e6ce2d17c0">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:a807ae4b7ab4e62851a89f4e6ce2d17c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4262768f5a82ef930e10e027bd091e3a"><td class="memItemLeft" align="right" valign="top"><a id="a4262768f5a82ef930e10e027bd091e3a"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a4262768f5a82ef930e10e027bd091e3a">initClass</a> (void)</td></tr>
+<tr class="memdesc:a4262768f5a82ef930e10e027bd091e3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up initialization for data common to all instances of this class, like submitting necessary information to the Coin type system. <br /></td></tr>
+<tr class="separator:a4262768f5a82ef930e10e027bd091e3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classSoNode"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classSoNode')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classSoNode.html">SoNode</a></td></tr>
+<tr class="memitem:a71c0b51745c06555f8e47ef881f90047 inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a71c0b51745c06555f8e47ef881f90047">audioRenderS</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a71c0b51745c06555f8e47ef881f90047 inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac45acbf1842b7b06465bc656b0c3e76d inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#ac45acbf1842b7b06465bc656b0c3e76d">callbackS</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:ac45acbf1842b7b06465bc656b0c3e76d inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e9bc3dd0763fffc3844ba072d8ac43f inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a9e9bc3dd0763fffc3844ba072d8ac43f">getActionMethodIndex</a> (const <a class="el" href="classSoType.html">SoType</a> type)</td></tr>
+<tr class="separator:a9e9bc3dd0763fffc3844ba072d8ac43f inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91ab391491a486f54f75335f54ad3116 inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a91ab391491a486f54f75335f54ad3116">getBoundingBoxS</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a91ab391491a486f54f75335f54ad3116 inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8312b743a45ae88013c788b7dd94717 inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#ad8312b743a45ae88013c788b7dd94717">getByName</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;name)</td></tr>
+<tr class="separator:ad8312b743a45ae88013c788b7dd94717 inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28ffc12aa508802ca4c22d4aa91a34dd inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a28ffc12aa508802ca4c22d4aa91a34dd">getByName</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;name, <a class="el" href="classSoNodeList.html">SoNodeList</a> &amp;l)</td></tr>
+<tr class="separator:a28ffc12aa508802ca4c22d4aa91a34dd inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2df9281dab7d9f11bfa765c9ee6565f7 inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a2df9281dab7d9f11bfa765c9ee6565f7">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:a2df9281dab7d9f11bfa765c9ee6565f7 inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae749600d30d3f68fab7ec45e43b309f0 inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#ae749600d30d3f68fab7ec45e43b309f0">getCompatibilityTypes</a> (const <a class="el" href="classSoType.html">SoType</a> &amp;nodetype)</td></tr>
+<tr class="separator:ae749600d30d3f68fab7ec45e43b309f0 inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b49397f58a5ed03ff3d963725ee0307 inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a5b49397f58a5ed03ff3d963725ee0307">getMatrixS</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a5b49397f58a5ed03ff3d963725ee0307 inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1ceaf1bd716be75c28edf2e9da64541 inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static SbUniqueId&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#ad1ceaf1bd716be75c28edf2e9da64541">getNextNodeId</a> (void)</td></tr>
+<tr class="separator:ad1ceaf1bd716be75c28edf2e9da64541 inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe0ca21e17894d0b42765c3925d80421 inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#abe0ca21e17894d0b42765c3925d80421">getPrimitiveCountS</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:abe0ca21e17894d0b42765c3925d80421 inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c2f47db02ea2726e34c7edcadf72ca9 inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a2c2f47db02ea2726e34c7edcadf72ca9">GLRenderS</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a2c2f47db02ea2726e34c7edcadf72ca9 inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa08772cfe2d6780d8f35c652ee06bd0b inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#aa08772cfe2d6780d8f35c652ee06bd0b">handleEventS</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:aa08772cfe2d6780d8f35c652ee06bd0b inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0ec1dad7052808e9c495a149a2641bd inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top"><a id="af0ec1dad7052808e9c495a149a2641bd"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#af0ec1dad7052808e9c495a149a2641bd">initClass</a> (void)</td></tr>
+<tr class="memdesc:af0ec1dad7052808e9c495a149a2641bd inherit pub_static_methods_classSoNode"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up initialization for data common to all instances of this class, like submitting necessary information to the Coin type system. <br /></td></tr>
+<tr class="separator:af0ec1dad7052808e9c495a149a2641bd inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a466efa129792e1b14437048a19cb073c inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a466efa129792e1b14437048a19cb073c">initClasses</a> (void)</td></tr>
+<tr class="separator:a466efa129792e1b14437048a19cb073c inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2a0c9f57f0520fcf27144783d06fb9d inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#ad2a0c9f57f0520fcf27144783d06fb9d">pickS</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:ad2a0c9f57f0520fcf27144783d06fb9d inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afafa6668c3cdb488ac4aea1175c995c2 inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#afafa6668c3cdb488ac4aea1175c995c2">rayPickS</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:afafa6668c3cdb488ac4aea1175c995c2 inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ad7a52381f8278fc7d776bc7ce84877 inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a0ad7a52381f8278fc7d776bc7ce84877">searchS</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a0ad7a52381f8278fc7d776bc7ce84877 inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdabeb342b514c04baca61377856c782 inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#afdabeb342b514c04baca61377856c782">writeS</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:afdabeb342b514c04baca61377856c782 inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classSoFieldContainer"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classSoFieldContainer')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a></td></tr>
+<tr class="memitem:aa4bd2cf6fe33bd29bba62d49cc166233 inherit pub_static_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#aa4bd2cf6fe33bd29bba62d49cc166233">addCopy</a> (const <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *orig, const <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *copy)</td></tr>
+<tr class="separator:aa4bd2cf6fe33bd29bba62d49cc166233 inherit pub_static_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa95f3cfa95ecdb443d7d62faa1c2aee0 inherit pub_static_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#aa95f3cfa95ecdb443d7d62faa1c2aee0">checkCopy</a> (const <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *orig)</td></tr>
+<tr class="separator:aa95f3cfa95ecdb443d7d62faa1c2aee0 inherit pub_static_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc2f040051bf8be3acd793238bc4403b inherit pub_static_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#afc2f040051bf8be3acd793238bc4403b">cleanupClass</a> (void)</td></tr>
+<tr class="separator:afc2f040051bf8be3acd793238bc4403b inherit pub_static_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac30353612cc6fc6fa1c0b953e9648fe3 inherit pub_static_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#ac30353612cc6fc6fa1c0b953e9648fe3">copyDone</a> (void)</td></tr>
+<tr class="separator:ac30353612cc6fc6fa1c0b953e9648fe3 inherit pub_static_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5631c8ea1ef70662b136e690cbb8cf8 inherit pub_static_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#aa5631c8ea1ef70662b136e690cbb8cf8">findCopy</a> (const <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *orig, const SbBool copyconnections)</td></tr>
+<tr class="separator:aa5631c8ea1ef70662b136e690cbb8cf8 inherit pub_static_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4702c1c71afff56e7556937e704ee03a inherit pub_static_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top"><a id="a4702c1c71afff56e7556937e704ee03a"></a>
+static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a4702c1c71afff56e7556937e704ee03a">getClassTypeId</a> (void)</td></tr>
+<tr class="memdesc:a4702c1c71afff56e7556937e704ee03a inherit pub_static_methods_classSoFieldContainer"><td class="mdescLeft">&#160;</td><td class="mdescRight">This static method returns the <a class="el" href="classSoType.html" title="The SoType class is the basis for the runtime type system in Coin.">SoType</a> object associated with objects of this class. <br /></td></tr>
+<tr class="separator:a4702c1c71afff56e7556937e704ee03a inherit pub_static_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf897f40f77092485141ac666e37fb0e inherit pub_static_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top"><a id="abf897f40f77092485141ac666e37fb0e"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#abf897f40f77092485141ac666e37fb0e">initClass</a> (void)</td></tr>
+<tr class="memdesc:abf897f40f77092485141ac666e37fb0e inherit pub_static_methods_classSoFieldContainer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up initialization for data common to all instances of this class, like submitting necessary information to the Coin type system. <br /></td></tr>
+<tr class="separator:abf897f40f77092485141ac666e37fb0e inherit pub_static_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd1c5856ee0e9c1e410b44e1d860c2fc inherit pub_static_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#abd1c5856ee0e9c1e410b44e1d860c2fc">initCopyDict</a> (void)</td></tr>
+<tr class="separator:abd1c5856ee0e9c1e410b44e1d860c2fc inherit pub_static_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classSoBase"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classSoBase')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classSoBase.html">SoBase</a></td></tr>
+<tr class="memitem:a74952f1fd17c44eb0fc9c3dc3b69102a inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a74952f1fd17c44eb0fc9c3dc3b69102a">addName</a> (<a class="el" href="classSoBase.html">SoBase</a> *const base, const char *const name)</td></tr>
+<tr class="separator:a74952f1fd17c44eb0fc9c3dc3b69102a inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0a10d7a457ae5403dac0e6a76d00984 inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#ac0a10d7a457ae5403dac0e6a76d00984">connectRoute</a> (<a class="el" href="classSoInput.html">SoInput</a> *input, const <a class="el" href="classSbName.html">SbName</a> &amp;fromnodename, const <a class="el" href="classSbName.html">SbName</a> &amp;fromfieldname, const <a class="el" href="classSbName.html">SbName</a> &amp;tonodename, const <a class="el" href="classSbName.html">SbName</a> &amp;tofieldname)</td></tr>
+<tr class="separator:ac0a10d7a457ae5403dac0e6a76d00984 inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9258013519caafda065433bb168ed126 inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a9258013519caafda065433bb168ed126">decrementCurrentWriteCounter</a> (void)</td></tr>
+<tr class="separator:a9258013519caafda065433bb168ed126 inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73ce238db093db6ba1b4009818cc9f27 inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top"><a id="a73ce238db093db6ba1b4009818cc9f27"></a>
+static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a73ce238db093db6ba1b4009818cc9f27">getClassTypeId</a> (void)</td></tr>
+<tr class="memdesc:a73ce238db093db6ba1b4009818cc9f27 inherit pub_static_methods_classSoBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">This static method returns the <a class="el" href="classSoType.html" title="The SoType class is the basis for the runtime type system in Coin.">SoType</a> object associated with objects of this class. <br /></td></tr>
+<tr class="separator:a73ce238db093db6ba1b4009818cc9f27 inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acda0e2703e0f76ef10f0b14ce19e6e42 inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoBase.html">SoBase</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#acda0e2703e0f76ef10f0b14ce19e6e42">getNamedBase</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;name, <a class="el" href="classSoType.html">SoType</a> type)</td></tr>
+<tr class="separator:acda0e2703e0f76ef10f0b14ce19e6e42 inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64dd273d58c357da1b0df1b4212bfb29 inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a64dd273d58c357da1b0df1b4212bfb29">getNamedBases</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;name, <a class="el" href="classSoBaseList.html">SoBaseList</a> &amp;baselist, <a class="el" href="classSoType.html">SoType</a> type)</td></tr>
+<tr class="separator:a64dd273d58c357da1b0df1b4212bfb29 inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc549cc4452943800c625056b264d1ff inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#adc549cc4452943800c625056b264d1ff">getTraceRefs</a> (void)</td></tr>
+<tr class="separator:adc549cc4452943800c625056b264d1ff inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73037fd0866b2d280e6770c1ff11649b inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a73037fd0866b2d280e6770c1ff11649b">incrementCurrentWriteCounter</a> (void)</td></tr>
+<tr class="separator:a73037fd0866b2d280e6770c1ff11649b inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8419a92b3ac808c6a789673db06776be inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top"><a id="a8419a92b3ac808c6a789673db06776be"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a8419a92b3ac808c6a789673db06776be">initClass</a> (void)</td></tr>
+<tr class="memdesc:a8419a92b3ac808c6a789673db06776be inherit pub_static_methods_classSoBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up initialization for data common to all instances of this class, like submitting necessary information to the Coin type system. <br /></td></tr>
+<tr class="separator:a8419a92b3ac808c6a789673db06776be inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08ab1a0fb1b141d3afc2e745a998fc01 inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a08ab1a0fb1b141d3afc2e745a998fc01">read</a> (<a class="el" href="classSoInput.html">SoInput</a> *input, <a class="el" href="classSoBase.html">SoBase</a> *&amp;base, <a class="el" href="classSoType.html">SoType</a> expectedtype)</td></tr>
+<tr class="separator:a08ab1a0fb1b141d3afc2e745a998fc01 inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6687c0316a76792276a0e0e5755f552 inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#ab6687c0316a76792276a0e0e5755f552">readRoute</a> (<a class="el" href="classSoInput.html">SoInput</a> *input)</td></tr>
+<tr class="separator:ab6687c0316a76792276a0e0e5755f552 inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a427c87fa9d48a2d09da950b7a0895fc7 inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a427c87fa9d48a2d09da950b7a0895fc7">removeName</a> (<a class="el" href="classSoBase.html">SoBase</a> *const base, const char *const name)</td></tr>
+<tr class="separator:a427c87fa9d48a2d09da950b7a0895fc7 inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24fef6a61e75a6bffb4f83d4cf10fca5 inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a24fef6a61e75a6bffb4f83d4cf10fca5">setInstancePrefix</a> (const <a class="el" href="classSbString.html">SbString</a> &amp;c)</td></tr>
+<tr class="separator:a24fef6a61e75a6bffb4f83d4cf10fca5 inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4617280cf55689be859f44b1e332a414 inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a4617280cf55689be859f44b1e332a414">setTraceRefs</a> (SbBool trace)</td></tr>
+<tr class="separator:a4617280cf55689be859f44b1e332a414 inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a377ac1c352e965864712bcc5ad0459df"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoSFFloat.html">SoSFFloat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a377ac1c352e965864712bcc5ad0459df">aspectRatio</a></td></tr>
+<tr class="separator:a377ac1c352e965864712bcc5ad0459df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34890d0e76849f4ce27beefae287f471"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoSFFloat.html">SoSFFloat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a34890d0e76849f4ce27beefae287f471">farDistance</a></td></tr>
+<tr class="separator:a34890d0e76849f4ce27beefae287f471"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59fda50eb01e55536d3a603f6590fd2c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoSFFloat.html">SoSFFloat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a59fda50eb01e55536d3a603f6590fd2c">focalDistance</a></td></tr>
+<tr class="separator:a59fda50eb01e55536d3a603f6590fd2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96b1bd10731d0a5b8addf3368a8ba53a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoSFFloat.html">SoSFFloat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a96b1bd10731d0a5b8addf3368a8ba53a">nearDistance</a></td></tr>
+<tr class="separator:a96b1bd10731d0a5b8addf3368a8ba53a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e0dc74890db39d4c8ec2194ec7ab4a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoSFRotation.html">SoSFRotation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a1e0dc74890db39d4c8ec2194ec7ab4a7">orientation</a></td></tr>
+<tr class="separator:a1e0dc74890db39d4c8ec2194ec7ab4a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1346f4606c4fd282818b4b7701bfeca9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoSFVec3f.html">SoSFVec3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a1346f4606c4fd282818b4b7701bfeca9">position</a></td></tr>
+<tr class="separator:a1346f4606c4fd282818b4b7701bfeca9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc6c62bbca8a24dd686a3fbb19adec2b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoSFEnum.html">SoSFEnum</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#abc6c62bbca8a24dd686a3fbb19adec2b">viewportMapping</a></td></tr>
+<tr class="separator:abc6c62bbca8a24dd686a3fbb19adec2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:afe2aa3972f415c77eb0a61eb8a2ed0ce"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#afe2aa3972f415c77eb0a61eb8a2ed0ce">SoCamera</a> (void)</td></tr>
+<tr class="separator:afe2aa3972f415c77eb0a61eb8a2ed0ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d8a58f827233bab4fe735b786ef986f"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a1d8a58f827233bab4fe735b786ef986f">~SoCamera</a> ()</td></tr>
+<tr class="separator:a1d8a58f827233bab4fe735b786ef986f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23988b3260f784e0ae8f7c0f7a61c85e"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classSoFieldData.html">SoFieldData</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a23988b3260f784e0ae8f7c0f7a61c85e">getFieldData</a> (void) const</td></tr>
+<tr class="separator:a23988b3260f784e0ae8f7c0f7a61c85e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad64b05967590fa03c45284820297f6ab"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#ad64b05967590fa03c45284820297f6ab">jitter</a> (int numpasses, int curpass, const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;vpreg, <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;jitteramount) const</td></tr>
+<tr class="separator:ad64b05967590fa03c45284820297f6ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSoNode"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSoNode')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSoNode.html">SoNode</a></td></tr>
+<tr class="memitem:a11b3f6d76929bcf86e8f8662e2f8249d inherit pro_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a11b3f6d76929bcf86e8f8662e2f8249d">SoNode</a> (void)</td></tr>
+<tr class="separator:a11b3f6d76929bcf86e8f8662e2f8249d inherit pro_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7cef6be5ac6b2b2715666e2ba60128d inherit pro_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#ad7cef6be5ac6b2b2715666e2ba60128d">~SoNode</a> ()</td></tr>
+<tr class="separator:ad7cef6be5ac6b2b2715666e2ba60128d inherit pro_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a126748a9bc691bc8cc49b8245e5855 inherit pro_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a9a126748a9bc691bc8cc49b8245e5855">readInstance</a> (<a class="el" href="classSoInput.html">SoInput</a> *in, unsigned short flags)</td></tr>
+<tr class="separator:a9a126748a9bc691bc8cc49b8245e5855 inherit pro_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSoFieldContainer"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSoFieldContainer')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a></td></tr>
+<tr class="memitem:a3950d8784a244da6e5d81361760f2845 inherit pro_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a3950d8784a244da6e5d81361760f2845">SoFieldContainer</a> (void)</td></tr>
+<tr class="separator:a3950d8784a244da6e5d81361760f2845 inherit pro_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4aa2232495749eb6ac1af54d200f2180 inherit pro_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a4aa2232495749eb6ac1af54d200f2180">~SoFieldContainer</a> ()</td></tr>
+<tr class="separator:a4aa2232495749eb6ac1af54d200f2180 inherit pro_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSoBase"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSoBase')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSoBase.html">SoBase</a></td></tr>
+<tr class="memitem:a30a12f045bf793692612e8420a2d8413 inherit pro_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a30a12f045bf793692612e8420a2d8413">SoBase</a> (void)</td></tr>
+<tr class="separator:a30a12f045bf793692612e8420a2d8413 inherit pro_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e09f562870ef14253a439aa8379c1ea inherit pro_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a4e09f562870ef14253a439aa8379c1ea">~SoBase</a> ()</td></tr>
+<tr class="separator:a4e09f562870ef14253a439aa8379c1ea inherit pro_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa41e45678b8c582b5202143a220ad76c inherit pro_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoNotRec.html">SoNotRec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#aa41e45678b8c582b5202143a220ad76c">createNotRec</a> (void)</td></tr>
+<tr class="separator:aa41e45678b8c582b5202143a220ad76c inherit pro_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab102bb9166fc2453ff67e15337038691 inherit pro_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#ab102bb9166fc2453ff67e15337038691">destroy</a> (void)</td></tr>
+<tr class="separator:ab102bb9166fc2453ff67e15337038691 inherit pro_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ce37d35474a3c6a86c23c28b39d1a40 inherit pro_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a1ce37d35474a3c6a86c23c28b39d1a40">getFileFormatName</a> (void) const</td></tr>
+<tr class="separator:a1ce37d35474a3c6a86c23c28b39d1a40 inherit pro_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a217b8814e756eb35b3123c646dbb94bf inherit pro_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a217b8814e756eb35b3123c646dbb94bf">hasMultipleWriteRefs</a> (void) const</td></tr>
+<tr class="separator:a217b8814e756eb35b3123c646dbb94bf inherit pro_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9d26d177755cb43299bb1201c94c989 inherit pro_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#aa9d26d177755cb43299bb1201c94c989">writeFooter</a> (<a class="el" href="classSoOutput.html">SoOutput</a> *out) const</td></tr>
+<tr class="separator:aa9d26d177755cb43299bb1201c94c989 inherit pro_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa08205585f2aea5d141e105b492df61f inherit pro_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#aa08205585f2aea5d141e105b492df61f">writeHeader</a> (<a class="el" href="classSoOutput.html">SoOutput</a> *out, SbBool isgroup, SbBool isengine) const</td></tr>
+<tr class="separator:aa08205585f2aea5d141e105b492df61f inherit pro_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:a5f14376d53e09edd1eac6ca1641858db"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classSoFieldData.html">SoFieldData</a> **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCamera.html#a5f14376d53e09edd1eac6ca1641858db">getFieldDataPtr</a> (void)</td></tr>
+<tr class="separator:a5f14376d53e09edd1eac6ca1641858db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_methods_classSoNode"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classSoNode')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classSoNode.html">SoNode</a></td></tr>
+<tr class="memitem:a8b4c4bf288ab4e253021238a188ab66f inherit pro_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classSoFieldData.html">SoFieldData</a> **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a8b4c4bf288ab4e253021238a188ab66f">getFieldDataPtr</a> (void)</td></tr>
+<tr class="separator:a8b4c4bf288ab4e253021238a188ab66f inherit pro_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9ec668431c27b092c790a728ab32646 inherit pro_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#aa9ec668431c27b092c790a728ab32646">getNextActionMethodIndex</a> (void)</td></tr>
+<tr class="separator:aa9ec668431c27b092c790a728ab32646 inherit pro_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92fde0337a9037cc06dd084f6c644189 inherit pro_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a92fde0337a9037cc06dd084f6c644189">incNextActionMethodIndex</a> (void)</td></tr>
+<tr class="separator:a92fde0337a9037cc06dd084f6c644189 inherit pro_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52dab3d7a7ae89422c095a9c3a977e30 inherit pro_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a52dab3d7a7ae89422c095a9c3a977e30">setCompatibilityTypes</a> (const <a class="el" href="classSoType.html">SoType</a> &amp;nodetype, const uint32_t bitmask)</td></tr>
+<tr class="separator:a52dab3d7a7ae89422c095a9c3a977e30 inherit pro_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fcaac360719b61121c378ae267ca461 inherit pro_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a6fcaac360719b61121c378ae267ca461">setNextActionMethodIndex</a> (int index)</td></tr>
+<tr class="separator:a6fcaac360719b61121c378ae267ca461 inherit pro_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_methods_classSoBase"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classSoBase')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classSoBase.html">SoBase</a></td></tr>
+<tr class="memitem:a79a1022df39ae04dfefff5449d4ead24 inherit pro_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a79a1022df39ae04dfefff5449d4ead24">getCurrentWriteCounter</a> (void)</td></tr>
+<tr class="separator:a79a1022df39ae04dfefff5449d4ead24 inherit pro_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a704e6447bdfacab4171721c803087b54 inherit pro_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a704e6447bdfacab4171721c803087b54">staticDataLock</a> (void)</td></tr>
+<tr class="separator:a704e6447bdfacab4171721c803087b54 inherit pro_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7610ab9ef6c403635bb913cbf7a24032 inherit pro_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a7610ab9ef6c403635bb913cbf7a24032">staticDataUnlock</a> (void)</td></tr>
+<tr class="separator:a7610ab9ef6c403635bb913cbf7a24032 inherit pro_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_types_classSoBase"><td colspan="2" onclick="javascript:toggleInherit('pro_types_classSoBase')"><img src="closed.png" alt="-"/>&#160;Protected Types inherited from <a class="el" href="classSoBase.html">SoBase</a></td></tr>
+<tr class="memitem:a42fedf98911431b5a47e7734a228746f inherit pro_types_classSoBase"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a42fedf98911431b5a47e7734a228746f">BaseFlags</a> { <b>IS_ENGINE</b> = 0x01
+, <b>IS_GROUP</b> = 0x02
+ }</td></tr>
+<tr class="separator:a42fedf98911431b5a47e7734a228746f inherit pro_types_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classSoNode"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classSoNode')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classSoNode.html">SoNode</a></td></tr>
+<tr class="memitem:aba56f57716173fe122324b08e8721fff inherit pro_attribs_classSoNode"><td class="memItemLeft" align="right" valign="top">SbUniqueId&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#aba56f57716173fe122324b08e8721fff">uniqueId</a></td></tr>
+<tr class="separator:aba56f57716173fe122324b08e8721fff inherit pro_attribs_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classSoFieldContainer"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classSoFieldContainer')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a></td></tr>
+<tr class="memitem:abfdbfe7eae635b3d67893c978297401f inherit pro_attribs_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#abfdbfe7eae635b3d67893c978297401f">isBuiltIn</a></td></tr>
+<tr class="separator:abfdbfe7eae635b3d67893c978297401f inherit pro_attribs_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_attribs_classSoNode"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_classSoNode')"><img src="closed.png" alt="-"/>&#160;Static Protected Attributes inherited from <a class="el" href="classSoNode.html">SoNode</a></td></tr>
+<tr class="memitem:a9c90bc3168a1b09951ec86ffa6658b4c inherit pro_static_attribs_classSoNode"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a9c90bc3168a1b09951ec86ffa6658b4c">nextActionMethodIndex</a> = 0</td></tr>
+<tr class="separator:a9c90bc3168a1b09951ec86ffa6658b4c inherit pro_static_attribs_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ab930a96e1df8a910f54b22f11adfce inherit pro_static_attribs_classSoNode"><td class="memItemLeft" align="right" valign="top">static SbUniqueId&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a7ab930a96e1df8a910f54b22f11adfce">nextUniqueId</a> = 1</td></tr>
+<tr class="separator:a7ab930a96e1df8a910f54b22f11adfce inherit pro_static_attribs_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSoCamera.html" title="The SoCamera class is the abstract base class for camera definition nodes.">SoCamera</a> class is the abstract base class for camera definition nodes. </p>
+<p>To be able to view a scene, one needs to have a camera in the scene graph. A camera node will set up the projection and viewing matrices for rendering of the geometry in the scene.</p>
+<p>This node just defines the abstract interface by collecting common fields that all camera type nodes needs. Use the non-abstract camera node subclasses within a scene graph. The ones that are default part of the Coin library are <a class="el" href="classSoPerspectiveCamera.html" title="The SoPerspectiveCamera class defines a camera node with perspective rendering.">SoPerspectiveCamera</a> and <a class="el" href="classSoOrthographicCamera.html" title="The SoOrthographicCamera class defines a camera node with orthographic rendering.">SoOrthographicCamera</a>, which uses the two different projections given by their name.</p>
+<p>Note that the viewer components of the GUI glue libraries of Coin (SoXt, SoQt, SoWin, etc) will automatically insert a camera into a scene graph if none has been defined.</p>
+<p>It is possible to have more than one camera in a scene graph. One common trick is for instance to use a second camera to display static geometry or overlay geometry (e.g. for head-up displays ("HUD")), as shown by this example code:</p>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;Inventor/Qt/SoQt.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/Qt/viewers/SoQtExaminerViewer.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/nodes/SoNodes.h&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span></div>
+<div class="line">main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> ** argv)</div>
+<div class="line">{</div>
+<div class="line">  QWidget * mainwin = SoQt::init(argv[0]);</div>
+<div class="line"> </div>
+<div class="line">  <a class="code" href="classSoSeparator.html">SoSeparator</a> * root = <span class="keyword">new</span> <a class="code" href="classSoSeparator.html">SoSeparator</a>;</div>
+<div class="line">  root-&gt;<a class="code" href="classSoBase.html#ac01cf34901b2a2be1bc2671bb2463851">ref</a>();</div>
+<div class="line"> </div>
+<div class="line">  <span class="comment">// Adds a camera and a red cone. The first camera found in the</span></div>
+<div class="line">  <span class="comment">// scene graph by the SoQtExaminerViewer will be picked up and</span></div>
+<div class="line">  <span class="comment">// initialized automatically.</span></div>
+<div class="line"> </div>
+<div class="line">  root-&gt;<a class="code" href="classSoGroup.html#a23e0a7aebf3ec75c40638cc360c0e5e6">addChild</a>(<span class="keyword">new</span> <a class="code" href="classSoPerspectiveCamera.html">SoPerspectiveCamera</a>);</div>
+<div class="line">  <a class="code" href="classSoMaterial.html">SoMaterial</a> * material = <span class="keyword">new</span> <a class="code" href="classSoMaterial.html">SoMaterial</a>;</div>
+<div class="line">  material-&gt;<a class="code" href="classSoMaterial.html#aacf72121a57569188bca484289bac69f">diffuseColor</a>.setValue(1.0, 0.0, 0.0);</div>
+<div class="line">  root-&gt;<a class="code" href="classSoGroup.html#a23e0a7aebf3ec75c40638cc360c0e5e6">addChild</a>(material);</div>
+<div class="line">  root-&gt;<a class="code" href="classSoGroup.html#a23e0a7aebf3ec75c40638cc360c0e5e6">addChild</a>(<span class="keyword">new</span> <a class="code" href="classSoCone.html">SoCone</a>);</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line">  <span class="comment">// Set up a second camera for the remaining geometry. This camera</span></div>
+<div class="line">  <span class="comment">// will not be picked up and influenced by the viewer, so the</span></div>
+<div class="line">  <span class="comment">// geometry will be kept static.</span></div>
+<div class="line"> </div>
+<div class="line">  <a class="code" href="classSoPerspectiveCamera.html">SoPerspectiveCamera</a> * pcam = <span class="keyword">new</span> <a class="code" href="classSoPerspectiveCamera.html">SoPerspectiveCamera</a>;</div>
+<div class="line">  pcam-&gt;<a class="code" href="classSoCamera.html#a1346f4606c4fd282818b4b7701bfeca9">position</a> = <a class="code" href="classSbVec3f.html">SbVec3f</a>(0, 0, 5);</div>
+<div class="line">  pcam-&gt;<a class="code" href="classSoCamera.html#a96b1bd10731d0a5b8addf3368a8ba53a">nearDistance</a> = 0.1;</div>
+<div class="line">  pcam-&gt;<a class="code" href="classSoCamera.html#a34890d0e76849f4ce27beefae287f471">farDistance</a> = 10;</div>
+<div class="line">  root-&gt;<a class="code" href="classSoGroup.html#a23e0a7aebf3ec75c40638cc360c0e5e6">addChild</a>(pcam);</div>
+<div class="line"> </div>
+<div class="line">  <span class="comment">// Adds a green cone to demonstrate static geometry.</span></div>
+<div class="line"> </div>
+<div class="line">  <a class="code" href="classSoMaterial.html">SoMaterial</a> * greenmaterial = <span class="keyword">new</span> <a class="code" href="classSoMaterial.html">SoMaterial</a>;</div>
+<div class="line">  greenmaterial-&gt;<a class="code" href="classSoMaterial.html#aacf72121a57569188bca484289bac69f">diffuseColor</a>.setValue(0, 1.0, 0.0);</div>
+<div class="line">  root-&gt;<a class="code" href="classSoGroup.html#a23e0a7aebf3ec75c40638cc360c0e5e6">addChild</a>(greenmaterial);</div>
+<div class="line">  root-&gt;<a class="code" href="classSoGroup.html#a23e0a7aebf3ec75c40638cc360c0e5e6">addChild</a>(<span class="keyword">new</span> <a class="code" href="classSoCone.html">SoCone</a>);</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line">  SoQtExaminerViewer * viewer = <span class="keyword">new</span> SoQtExaminerViewer(mainwin);</div>
+<div class="line">  viewer-&gt;setSceneGraph(root);</div>
+<div class="line">  viewer-&gt;show();</div>
+<div class="line"> </div>
+<div class="line">  SoQt::show(mainwin);</div>
+<div class="line">  SoQt::mainLoop();</div>
+<div class="line"> </div>
+<div class="line">  <span class="keyword">delete</span> viewer;</div>
+<div class="line">  root-&gt;<a class="code" href="classSoBase.html#a254b1ac395fe4d4d10438b994bdb3561">unref</a>();</div>
+<div class="line">  <span class="keywordflow">return</span> 0;</div>
+<div class="line">}</div>
+<div class="ttc" id="aclassSbVec3f_html"><div class="ttname"><a href="classSbVec3f.html">SbVec3f</a></div><div class="ttdoc">The SbVec3f class is a 3 dimensional vector with floating point coordinates.</div><div class="ttdef"><b>Definition:</b> SbVec3f.h:51</div></div>
+<div class="ttc" id="aclassSoBase_html_a254b1ac395fe4d4d10438b994bdb3561"><div class="ttname"><a href="classSoBase.html#a254b1ac395fe4d4d10438b994bdb3561">SoBase::unref</a></div><div class="ttdeci">void unref(void) const</div><div class="ttdef"><b>Definition:</b> SoBase.cpp:530</div></div>
+<div class="ttc" id="aclassSoBase_html_ac01cf34901b2a2be1bc2671bb2463851"><div class="ttname"><a href="classSoBase.html#ac01cf34901b2a2be1bc2671bb2463851">SoBase::ref</a></div><div class="ttdeci">void ref(void) const</div><div class="ttdef"><b>Definition:</b> SoBase.cpp:478</div></div>
+<div class="ttc" id="aclassSoCamera_html_a1346f4606c4fd282818b4b7701bfeca9"><div class="ttname"><a href="classSoCamera.html#a1346f4606c4fd282818b4b7701bfeca9">SoCamera::position</a></div><div class="ttdeci">SoSFVec3f position</div><div class="ttdef"><b>Definition:</b> SoCamera.h:81</div></div>
+<div class="ttc" id="aclassSoCamera_html_a34890d0e76849f4ce27beefae287f471"><div class="ttname"><a href="classSoCamera.html#a34890d0e76849f4ce27beefae287f471">SoCamera::farDistance</a></div><div class="ttdeci">SoSFFloat farDistance</div><div class="ttdef"><b>Definition:</b> SoCamera.h:85</div></div>
+<div class="ttc" id="aclassSoCamera_html_a96b1bd10731d0a5b8addf3368a8ba53a"><div class="ttname"><a href="classSoCamera.html#a96b1bd10731d0a5b8addf3368a8ba53a">SoCamera::nearDistance</a></div><div class="ttdeci">SoSFFloat nearDistance</div><div class="ttdef"><b>Definition:</b> SoCamera.h:84</div></div>
+<div class="ttc" id="aclassSoCone_html"><div class="ttname"><a href="classSoCone.html">SoCone</a></div><div class="ttdoc">The SoCone class is for rendering cone shapes.</div><div class="ttdef"><b>Definition:</b> SoCone.h:41</div></div>
+<div class="ttc" id="aclassSoGroup_html_a23e0a7aebf3ec75c40638cc360c0e5e6"><div class="ttname"><a href="classSoGroup.html#a23e0a7aebf3ec75c40638cc360c0e5e6">SoGroup::addChild</a></div><div class="ttdeci">virtual void addChild(SoNode *node)</div><div class="ttdef"><b>Definition:</b> SoGroup.cpp:453</div></div>
+<div class="ttc" id="aclassSoMaterial_html"><div class="ttname"><a href="classSoMaterial.html">SoMaterial</a></div><div class="ttdoc">The SoMaterial class is a node type for setting up material values for scene geometry.</div><div class="ttdef"><b>Definition:</b> SoMaterial.h:44</div></div>
+<div class="ttc" id="aclassSoMaterial_html_aacf72121a57569188bca484289bac69f"><div class="ttname"><a href="classSoMaterial.html#aacf72121a57569188bca484289bac69f">SoMaterial::diffuseColor</a></div><div class="ttdeci">SoMFColor diffuseColor</div><div class="ttdef"><b>Definition:</b> SoMaterial.h:54</div></div>
+<div class="ttc" id="aclassSoPerspectiveCamera_html"><div class="ttname"><a href="classSoPerspectiveCamera.html">SoPerspectiveCamera</a></div><div class="ttdoc">The SoPerspectiveCamera class defines a camera node with perspective rendering.</div><div class="ttdef"><b>Definition:</b> SoPerspectiveCamera.h:39</div></div>
+<div class="ttc" id="aclassSoSeparator_html"><div class="ttname"><a href="classSoSeparator.html">SoSeparator</a></div><div class="ttdoc">The SoSeparator class is a state-preserving group node.</div><div class="ttdef"><b>Definition:</b> SoSeparator.h:44</div></div>
+</div><!-- fragment --><p>NB: The support for multiple cameras in Coin is limited, and problems with multiple cameras will be considered fixed on a case by case basis. </p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="ae1516a54c7328d42694db1c5b62912ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1516a54c7328d42694db1c5b62912ec">&#9670;&nbsp;</a></span>StereoMode</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classSoCamera.html#ae1516a54c7328d42694db1c5b62912ec">SoCamera::StereoMode</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Enumerates the possible stereo modes. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae1516a54c7328d42694db1c5b62912ecac0ec11eb92040c20ae1b0ade59672849"></a>MONOSCOPIC&#160;</td><td class="fielddoc"><p>No stereo. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ae1516a54c7328d42694db1c5b62912eca4570af92101f1849e922b8b00a796752"></a>LEFT_VIEW&#160;</td><td class="fielddoc"><p>Left view. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ae1516a54c7328d42694db1c5b62912eca1bcb572494c5a757d7978b082357da77"></a>RIGHT_VIEW&#160;</td><td class="fielddoc"><p>Right view. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a46fd7a2f6e8ca20e44682d005e0bb44c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46fd7a2f6e8ca20e44682d005e0bb44c">&#9670;&nbsp;</a></span>ViewportMapping</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classSoCamera.html#a46fd7a2f6e8ca20e44682d005e0bb44c">SoCamera::ViewportMapping</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Enumerates the available possibilities for how the render frame should map the viewport. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="afe2aa3972f415c77eb0a61eb8a2ed0ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe2aa3972f415c77eb0a61eb8a2ed0ce">&#9670;&nbsp;</a></span>SoCamera()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoCamera::SoCamera </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Constructor. </p>
+
+</div>
+</div>
+<a id="a1d8a58f827233bab4fe735b786ef986f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d8a58f827233bab4fe735b786ef986f">&#9670;&nbsp;</a></span>~SoCamera()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoCamera::~SoCamera </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Destructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a826bfd39750a3c7300c9c0162eb04688"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a826bfd39750a3c7300c9c0162eb04688">&#9670;&nbsp;</a></span>audioRender()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoCamera::audioRender </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoAudioRenderAction.html">SoAudioRenderAction</a> *&#160;</td>
+          <td class="paramname"><em>action</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Action method for <a class="el" href="classSoAudioRenderAction.html" title="The SoAudioRenderAction class renders the aural parts of the scene graph.">SoAudioRenderAction</a>.</p>
+<p>Does common processing for <a class="el" href="classSoAudioRenderAction.html" title="The SoAudioRenderAction class renders the aural parts of the scene graph.">SoAudioRenderAction</a> <em>action</em> instances. </p>
+
+<p>Reimplemented from <a class="el" href="classSoNode.html#a7c6cf297f3abf3a171fd7492d0fee0e5">SoNode</a>.</p>
+
+</div>
+</div>
+<a id="a7a55d20de9f29df22645ea8eab07bd9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a55d20de9f29df22645ea8eab07bd9f">&#9670;&nbsp;</a></span>callback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoCamera::callback </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoCallbackAction.html">SoCallbackAction</a> *&#160;</td>
+          <td class="paramname"><em>action</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Action method for <a class="el" href="classSoCallbackAction.html" title="The SoCallbackAction class invokes callbacks at specific nodes.">SoCallbackAction</a>.</p>
+<p>Simply updates the state according to how the node behaves for the render action, so the application programmer can use the <a class="el" href="classSoCallbackAction.html" title="The SoCallbackAction class invokes callbacks at specific nodes.">SoCallbackAction</a> for extracting information about the scene graph. </p>
+
+<p>Reimplemented from <a class="el" href="classSoNode.html#a8a49410ba330a0763397753677a874cb">SoNode</a>.</p>
+
+</div>
+</div>
+<a id="a413c4165d5065112db4c27687d9a58bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a413c4165d5065112db4c27687d9a58bf">&#9670;&nbsp;</a></span>doAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoCamera::doAction </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoAction.html">SoAction</a> *&#160;</td>
+          <td class="paramname"><em>action</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function performs the typical operation of a node for any action. </p>
+
+<p>Reimplemented from <a class="el" href="classSoNode.html#a7f93b0ccc30d3d3283773c1b254b34ca">SoNode</a>.</p>
+
+</div>
+</div>
+<a id="a751c4e8f1f192d1cabf45d5716fed5ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a751c4e8f1f192d1cabf45d5716fed5ca">&#9670;&nbsp;</a></span>getBalanceAdjustment()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SoCamera::getBalanceAdjustment </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the stereo balance adjustment.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoCamera.html#a8d44d94fa463088b2ddfedff2ea72364">setBalanceAdjustment()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a4731c977a5d5ef3848071509af281f6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4731c977a5d5ef3848071509af281f6b">&#9670;&nbsp;</a></span>getBoundingBox()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoCamera::getBoundingBox </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoGetBoundingBoxAction.html">SoGetBoundingBoxAction</a> *&#160;</td>
+          <td class="paramname"><em>action</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Action method for the <a class="el" href="classSoGetBoundingBoxAction.html" title="The SoGetBoundingBoxAction class calculates bounding boxes for nodes and subgraphs.">SoGetBoundingBoxAction</a>.</p>
+<p>Calculates bounding box and center coordinates for node and modifies the values of the <em>action</em> to encompass the bounding box for this node and to shift the center point for the scene more towards the one for this node.</p>
+<p>Nodes influencing how geometry nodes calculate their bounding box also override this method to change the relevant state variables. </p>
+
+<p>Reimplemented from <a class="el" href="classSoNode.html#a4fe80ee53bf8d7821b9b6e91ac20f5c4">SoNode</a>.</p>
+
+</div>
+</div>
+<a id="a807ae4b7ab4e62851a89f4e6ce2d17c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a807ae4b7ab4e62851a89f4e6ce2d17c0">&#9670;&nbsp;</a></span>getClassTypeId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoType.html">SoType</a> SoCamera::getClassTypeId </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This static method returns the <a class="el" href="classSoType.html" title="The SoType class is the basis for the runtime type system in Coin.">SoType</a> object associated with objects of this class. <br  />
+ </p>
+
+</div>
+</div>
+<a id="a23988b3260f784e0ae8f7c0f7a61c85e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23988b3260f784e0ae8f7c0f7a61c85e">&#9670;&nbsp;</a></span>getFieldData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSoFieldData.html">SoFieldData</a> * SoCamera::getFieldData </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns a pointer to the class-wide field data storage object for this instance. If no fields are present, returns <code>NULL</code>. </p>
+
+<p>Reimplemented from <a class="el" href="classSoFieldContainer.html#a0eab0195a65a1fed98f237d5339b36a5">SoFieldContainer</a>.</p>
+
+<p>Reimplemented in <a class="el" href="classSoReversePerspectiveCamera.html#a467bd16aa1a176071d7f6d5e46c7d65d">SoReversePerspectiveCamera</a>, <a class="el" href="classSoPerspectiveCamera.html#a14641b1f8197764389246298cae95182">SoPerspectiveCamera</a>, <a class="el" href="classSoOrthographicCamera.html#a1232811c8b270511beb0b7c1750b12bf">SoOrthographicCamera</a>, and <a class="el" href="classSoFrustumCamera.html#ad64d0988ab8cf0e66682f1d938810e50">SoFrustumCamera</a>.</p>
+
+</div>
+</div>
+<a id="a5f14376d53e09edd1eac6ca1641858db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f14376d53e09edd1eac6ca1641858db">&#9670;&nbsp;</a></span>getFieldDataPtr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSoFieldData.html">SoFieldData</a> ** SoCamera::getFieldDataPtr </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+ Returns the <a class="el" href="classSoFieldData.html" title="The SoFieldData class is a container for a prototype set of fields.">SoFieldData</a> class which holds information about fields in this node. <br  />
+ </p>
+
+</div>
+</div>
+<a id="adde302570462bfeff2e41ffc1e33b2ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adde302570462bfeff2e41ffc1e33b2ba">&#9670;&nbsp;</a></span>getMatrix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoCamera::getMatrix </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoGetMatrixAction.html">SoGetMatrixAction</a> *&#160;</td>
+          <td class="paramname"><em>action</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Action method for <a class="el" href="classSoGetMatrixAction.html" title="The SoGetMatrixAction class is an action for accumulating the transformation matrix of a subgraph.">SoGetMatrixAction</a>.</p>
+<p>Updates <em>action</em> by accumulating with the transformation matrix of this node (if any). </p>
+
+<p>Reimplemented from <a class="el" href="classSoNode.html#a8a590d9596435ff93fe37cea3aae62ca">SoNode</a>.</p>
+
+</div>
+</div>
+<a id="a70260457d32bb6d8d0a7734b248f55b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70260457d32bb6d8d0a7734b248f55b4">&#9670;&nbsp;</a></span>getPrimitiveCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoCamera::getPrimitiveCount </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoGetPrimitiveCountAction.html">SoGetPrimitiveCountAction</a> *&#160;</td>
+          <td class="paramname"><em>action</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Action method for the <a class="el" href="classSoGetPrimitiveCountAction.html" title="The SoGetPrimitiveCountAction class counts the primitives in a scene.">SoGetPrimitiveCountAction</a>.</p>
+<p>Calculates the number of triangle, line segment and point primitives for the node and adds these to the counters of the <em>action</em>.</p>
+<p>Nodes influencing how geometry nodes calculate their primitive count also override this method to change the relevant state variables. </p>
+
+<p>Reimplemented from <a class="el" href="classSoNode.html#a1e33c6b6ea83d1982ecf2febb903d942">SoNode</a>.</p>
+
+</div>
+</div>
+<a id="a3f446f5b315f861132271170ccefb57b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f446f5b315f861132271170ccefb57b">&#9670;&nbsp;</a></span>getStereoAdjustment()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SoCamera::getStereoAdjustment </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the stereo adjustment.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoCamera.html#a6ed2d2527604e86cc8be234b1e429991">setStereoAdjustment()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a11e6cccae581b3452c78b067d51f5bf5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11e6cccae581b3452c78b067d51f5bf5">&#9670;&nbsp;</a></span>getStereoMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoCamera.html#ae1516a54c7328d42694db1c5b62912ec">SoCamera::StereoMode</a> SoCamera::getStereoMode </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the stereo mode. </p>
+
+</div>
+</div>
+<a id="a8c6f19449b75925e21d0618d4d52da10"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c6f19449b75925e21d0618d4d52da10">&#9670;&nbsp;</a></span>getTypeId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoType.html">SoType</a> SoCamera::getTypeId </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the type identification of an object derived from a class inheriting <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a>. This is used for runtime type checking and "downward" casting. <br  />
+ </p>
+
+<p>Implements <a class="el" href="classSoBase.html#a873b521c1386368d4d63ff893856590a">SoBase</a>.</p>
+
+<p>Reimplemented in <a class="el" href="classSoReversePerspectiveCamera.html#a54c088afe192b203874a838afb661701">SoReversePerspectiveCamera</a>, <a class="el" href="classSoPerspectiveCamera.html#a8f576396a00c6c0067d5b61c017b1df7">SoPerspectiveCamera</a>, <a class="el" href="classSoOrthographicCamera.html#a0042da48ee36d84edaf3737449cc31ae">SoOrthographicCamera</a>, and <a class="el" href="classSoFrustumCamera.html#aa48586bba29eb0654804aeb211ef595d">SoFrustumCamera</a>.</p>
+
+</div>
+</div>
+<a id="a2d5d764a87ca0e65ccc2d59857de7891"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d5d764a87ca0e65ccc2d59857de7891">&#9670;&nbsp;</a></span>getViewportBounds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> SoCamera::getViewportBounds </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;&#160;</td>
+          <td class="paramname"><em>region</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Based in the <a class="el" href="classSoCamera.html#abc6c62bbca8a24dd686a3fbb19adec2b">SoCamera::viewportMapping</a> setting, convert the values of <em>region</em> to the viewport region we will actually render into. </p>
+
+</div>
+</div>
+<a id="ad6c73345d688cf6e7d04e1f22401af60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6c73345d688cf6e7d04e1f22401af60">&#9670;&nbsp;</a></span>getViewVolume() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbViewVolume.html">SbViewVolume</a> SoCamera::getViewVolume </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;&#160;</td>
+          <td class="paramname"><em>vp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;&#160;</td>
+          <td class="paramname"><em>resultvp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbMatrix.html">SbMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>mm</em> = <code><a class="el" href="classSbMatrix.html#adc24591ea5071d7d8f18eee7066c36e3">SbMatrix::identity</a>()</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Convenience method which returns the actual view volume used when rendering, adjusted for the current viewport mapping.</p>
+<p>Supply the view's viewport in <em>vp</em>. If the viewport mapping is one of CROP_VIEWPORT_FILL_FRAME, CROP_VIEWPORT_LINE_FRAME or CROP_VIEWPORT_NO_FRAME, <em>resultvp</em> will be modified to contain the resulting viewport.</p>
+<p>If you got any transformations in front of the camera, <em>mm</em> should contain this transformation.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 4.0 </dd></dl>
+
+</div>
+</div>
+<a id="a9dabd51ab0445cdca516180df63a6fee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9dabd51ab0445cdca516180df63a6fee">&#9670;&nbsp;</a></span>getViewVolume() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbViewVolume.html">SbViewVolume</a> SoCamera::getViewVolume </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>useaspectratio</em> = <code>0.0f</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns total view volume covered by the camera under the current settings.</p>
+<p>This view volume is not adjusted to account for viewport mapping. If you want the same view volume as the one used during rendering, you should use getViewVolume(SbViewportRegion &amp; vp, const SbMatrix &amp; mm), or do something like this:</p>
+<pre class="fragment">SbViewVolume vv;
+float aspectratio = myviewport.getViewportAspectRatio();
+
+switch (camera-&gt;viewportMapping.getValue()) {
+case SoCamera::CROP_VIEWPORT_FILL_FRAME:
+case SoCamera::CROP_VIEWPORT_LINE_FRAME:
+case SoCamera::CROP_VIEWPORT_NO_FRAME:
+  vv = camera-&gt;getViewVolume(0.0f);
+  break;
+case SoCamera::ADJUST_CAMERA:
+  vv = camera-&gt;getViewVolume(aspectratio);
+  if (aspectratio &lt; 1.0f) vv.scale(1.0f / aspectratio);
+  break;
+case SoCamera::LEAVE_ALONE:
+  vv = camera-&gt;getViewVolume(0.0f);
+  break;
+default:
+  assert(0 &amp;&amp; "unknown viewport mapping");
+  break;
+}</pre><p>Also, for the CROPPED viewport mappings, the viewport might be changed if the viewport aspect ratio is not equal to the camera aspect ratio. See the SoCamera::getView() source-code (private method) to see how this is done. </p>
+
+<p>Implemented in <a class="el" href="classSoPerspectiveCamera.html#ab36a616551d9b981b8bf144acf5fcecf">SoPerspectiveCamera</a>, <a class="el" href="classSoOrthographicCamera.html#a12ef55c2d3eeee78e8f2a14883981510">SoOrthographicCamera</a>, and <a class="el" href="classSoFrustumCamera.html#a89ce581c9ba9046fdbf7a6cd5ddafb59">SoFrustumCamera</a>.</p>
+
+</div>
+</div>
+<a id="a0e43b194b29f65bf2ffc97b29de634f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e43b194b29f65bf2ffc97b29de634f2">&#9670;&nbsp;</a></span>GLRender()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoCamera::GLRender </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoGLRenderAction.html">SoGLRenderAction</a> *&#160;</td>
+          <td class="paramname"><em>action</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Action method for the <a class="el" href="classSoGLRenderAction.html" title="The SoGLRenderAction class renders the scene graph with OpenGL calls.">SoGLRenderAction</a>.</p>
+<p>This is called during rendering traversals. Nodes influencing the rendering state in any way or want to throw geometry primitives at OpenGL override this method. </p>
+
+<p>Reimplemented from <a class="el" href="classSoNode.html#af6fa1a20527192bc6f9d18062322456c">SoNode</a>.</p>
+
+</div>
+</div>
+<a id="a40dec90ae09d74656b04fb5bc170d4f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40dec90ae09d74656b04fb5bc170d4f0">&#9670;&nbsp;</a></span>handleEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoCamera::handleEvent </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoHandleEventAction.html">SoHandleEventAction</a> *&#160;</td>
+          <td class="paramname"><em>action</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Picking actions can be triggered during handle event action traversal, and to do picking we need to know the camera state.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoCamera.html#af1b340a2532c40eebcb6386ba226d782">SoCamera::rayPick()</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classSoNode.html#a1f198a845c3f8e8eb313762afd9cb7d5">SoNode</a>.</p>
+
+</div>
+</div>
+<a id="ad64b05967590fa03c45284820297f6ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad64b05967590fa03c45284820297f6ab">&#9670;&nbsp;</a></span>jitter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoCamera::jitter </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>numpasses</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>curpass</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;&#160;</td>
+          <td class="paramname"><em>vpreg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>jitteramount</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>"Jitter" the camera according to the current rendering pass (<em>curpass</em>), to get an antialiased rendering of the scene when doing multipass rendering. </p>
+
+</div>
+</div>
+<a id="a0419569e203a18c84870f288d79af31d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0419569e203a18c84870f288d79af31d">&#9670;&nbsp;</a></span>pointAt() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoCamera::pointAt </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>targetpoint</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Reorients the camera so that it points towards <em>targetpoint</em>. The positive Y-axis is used as the up vector of the camera, unless the new camera direction is parallel to this axis, in which case the positive Z-axis will be used instead. </p>
+
+</div>
+</div>
+<a id="adac554b0c5d8ea465f539d704834f651"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adac554b0c5d8ea465f539d704834f651">&#9670;&nbsp;</a></span>pointAt() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoCamera::pointAt </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>targetpoint</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>upvector</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Reorients the camera so that it points towards <em>targetpoint</em>, using <em>upvector</em> as the camera up vector.</p>
+<p>This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+</p>
+
+</div>
+</div>
+<a id="af1b340a2532c40eebcb6386ba226d782"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1b340a2532c40eebcb6386ba226d782">&#9670;&nbsp;</a></span>rayPick()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoCamera::rayPick </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoRayPickAction.html">SoRayPickAction</a> *&#160;</td>
+          <td class="paramname"><em>action</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Action method for <a class="el" href="classSoRayPickAction.html" title="The SoRayPickAction class does ray intersection with scene graphs.">SoRayPickAction</a>.</p>
+<p>Checks the ray specification of the <em>action</em> and tests for intersection with the data of the node.</p>
+<p>Nodes influencing relevant state variables for how picking is done also override this method. </p>
+
+<p>Reimplemented from <a class="el" href="classSoNode.html#acbc15afe5dd825bfaa3c479b51fed98a">SoNode</a>.</p>
+
+</div>
+</div>
+<a id="a2a860095b69cc575ba845d4e228956f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a860095b69cc575ba845d4e228956f3">&#9670;&nbsp;</a></span>scaleHeight()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoCamera::scaleHeight </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>scalefactor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Sets a <em>scalefactor</em> for the height of the camera viewport. What "viewport height" means exactly in this context depends on the camera model. See documentation in subclasses. </p>
+
+<p>Implemented in <a class="el" href="classSoPerspectiveCamera.html#ad8d86d60668c2ac204c2797e9769552e">SoPerspectiveCamera</a>, <a class="el" href="classSoOrthographicCamera.html#acb614f185ad090062266cfbcb9a03267">SoOrthographicCamera</a>, and <a class="el" href="classSoFrustumCamera.html#a664957904b32a096304d8f469d3b2cb6">SoFrustumCamera</a>.</p>
+
+</div>
+</div>
+<a id="a8d44d94fa463088b2ddfedff2ea72364"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d44d94fa463088b2ddfedff2ea72364">&#9670;&nbsp;</a></span>setBalanceAdjustment()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoCamera::setBalanceAdjustment </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>adjustment</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the stereo balance adjustment. This is a factor that enables you to move the zero parallax plane. Geometry in front of the zero parallax plane will appear to be in front of the screen.</p>
+<p>The balance adjustment is multiplied with the focal distance to find the zero parallax plane. The default value is 1.0, and the zero parallax plane is then at the focal point.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoCamera.html#a59fda50eb01e55536d3a603f6590fd2c">SoCamera::focalDistance</a> </dd></dl>
+
+</div>
+</div>
+<a id="a6ed2d2527604e86cc8be234b1e429991"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ed2d2527604e86cc8be234b1e429991">&#9670;&nbsp;</a></span>setStereoAdjustment()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoCamera::setStereoAdjustment </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>adjustment</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the stereo adjustment. This is the distance between the left and right "eye" when doing stereo rendering.</p>
+<p>When doing stereo rendering, Coin will render two views, one for the left eye, and one for the right eye. The stereo adjustment is, a bit simplified, how much the camera is translated along the local X-axis between the left and the right view.</p>
+<p>The default distance is 0.1, which is chosen since it is the approximate distance between the human eyes.</p>
+<p>To create a nice looking and visible stereo effect, the application programmer will often have to adjust this value. If all you want to do is examine simple standalone 3D objects, it is possible to calculate a stereo offset based on the bounding box of the 3D model (or scale the model down to an appropriate size).</p>
+<p>However, if you have a large scene, where you want to fly around in the scene, and see stereo on different objects as you approach them, you can't calculate the stereo offset based on the bounding box of the scene, but rather use a stereo offset based on the scale of the individual objects/details you want to examine.</p>
+<p>Please note that it is important to set a sensible focal distance when doing stereo rendering. See <a class="el" href="classSoCamera.html#a8d44d94fa463088b2ddfedff2ea72364">setBalanceAdjustment()</a> for information about how the focal distance affects the stereo rendering.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoCamera.html#a8d44d94fa463088b2ddfedff2ea72364">setBalanceAdjustment()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a22e40f356f2ff2055b2a4b0f65c3aea6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22e40f356f2ff2055b2a4b0f65c3aea6">&#9670;&nbsp;</a></span>setStereoMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoCamera::setStereoMode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoCamera.html#ae1516a54c7328d42694db1c5b62912ec">StereoMode</a>&#160;</td>
+          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the stereo mode. </p>
+
+</div>
+</div>
+<a id="af04cc1f085e997c65832da9ddcd5a6aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af04cc1f085e997c65832da9ddcd5a6aa">&#9670;&nbsp;</a></span>viewAll() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoCamera::viewAll </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoNode.html">SoNode</a> *const&#160;</td>
+          <td class="paramname"><em>sceneroot</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;&#160;</td>
+          <td class="paramname"><em>vpregion</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>slack</em> = <code>1.0f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Position the camera so that all geometry of the scene from <em>sceneroot</em> is contained in the view volume of the camera, while keeping the camera orientation constant.</p>
+<p>Finds the bounding box of the scene and calls <a class="el" href="classSoCamera.html#ab04c2ed686b698bee525eaf29aca0f64">SoCamera::viewBoundingBox()</a>. A bounding sphere will be calculated from the scene bounding box, so the camera will "view all" even when the scene is rotated, in any way.</p>
+<p>The <em>slack</em> argument gives a multiplication factor to the distance the camera is supposed to move out from the <em>sceneroot</em> mid-point.</p>
+<p>A value less than 1.0 for the <em>slack</em> argument will therefore cause the camera to come closer to the scene, a value of 1.0 will position the camera as exactly outside the scene bounding sphere, and a value larger than 1.0 will give "extra slack" versus the scene bounding sphere. </p>
+
+</div>
+</div>
+<a id="ab10a2218561a9c6e82910cb6ded50118"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab10a2218561a9c6e82910cb6ded50118">&#9670;&nbsp;</a></span>viewAll() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoCamera::viewAll </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoPath.html">SoPath</a> *const&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;&#160;</td>
+          <td class="paramname"><em>vpregion</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>slack</em> = <code>1.0f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Position the camera so all geometry of the scene in <em>path</em> is contained in the view volume of the camera.</p>
+<p>Finds the bounding box of the scene and calls <a class="el" href="classSoCamera.html#ab04c2ed686b698bee525eaf29aca0f64">SoCamera::viewBoundingBox()</a>. </p>
+
+</div>
+</div>
+<a id="ab04c2ed686b698bee525eaf29aca0f64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab04c2ed686b698bee525eaf29aca0f64">&#9670;&nbsp;</a></span>viewBoundingBox()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoCamera::viewBoundingBox </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbBox3f.html">SbBox3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>box</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>aspect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>slack</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Convenience method for setting up the camera definition to cover the given bounding <em>box</em> with the given <em>aspect</em> ratio. Multiplies the exact dimensions with a <em>slack</em> factor to have some space between the rendered model and the borders of the rendering area.</p>
+<p>If you define your own camera node class, be aware that this method should <em>not</em> set the orientation field of the camera, only the position, focal distance and near and far clipping planes. </p>
+
+<p>Implemented in <a class="el" href="classSoPerspectiveCamera.html#abb3b80a6d65257800cd35649aa663f29">SoPerspectiveCamera</a>, <a class="el" href="classSoOrthographicCamera.html#a16be61ad5950ab52c3809854c67efa24">SoOrthographicCamera</a>, and <a class="el" href="classSoFrustumCamera.html#a2da63ba0f195f3fd6b13f9d1f57c5988">SoFrustumCamera</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a377ac1c352e965864712bcc5ad0459df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a377ac1c352e965864712bcc5ad0459df">&#9670;&nbsp;</a></span>aspectRatio</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoSFFloat.html">SoSFFloat</a> SoCamera::aspectRatio</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Aspect ratio for the camera (i.e. width / height). Defaults to 1.0. </p>
+
+</div>
+</div>
+<a id="a34890d0e76849f4ce27beefae287f471"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34890d0e76849f4ce27beefae287f471">&#9670;&nbsp;</a></span>farDistance</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoSFFloat.html">SoSFFloat</a> SoCamera::farDistance</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Distance from camera position to the far clipping plane in the camera's view volume.</p>
+<p>Default value is 10.0. Must be larger than the <a class="el" href="classSoCamera.html#a96b1bd10731d0a5b8addf3368a8ba53a">SoCamera::nearDistance</a> value, or it will not be possible to construct a valid viewing volume.</p>
+<p>Note that the range [nearDistance, farDistance] decides the dynamic range of the z-buffer in the underlying polygon-rendering rasterizer. What this means is that if the near and far clipping planes of the camera are wide apart, the possibility of visual artifacts will increase. The artifacts will manifest themselves in the form of flickering of primitives close in depth.</p>
+<p>It is therefore a good idea to keep the near and far clipping planes of your camera(s) as closely fitted around the geometry of the scene graph as possible.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoCamera.html#a96b1bd10731d0a5b8addf3368a8ba53a">SoCamera::nearDistance</a>, <a class="el" href="classSoPolygonOffset.html" title="The SoPolygonOffset class is a node type for &quot;layering&quot; rendering primitives.">SoPolygonOffset</a> </dd></dl>
+
+</div>
+</div>
+<a id="a59fda50eb01e55536d3a603f6590fd2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59fda50eb01e55536d3a603f6590fd2c">&#9670;&nbsp;</a></span>focalDistance</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoSFFloat.html">SoSFFloat</a> SoCamera::focalDistance</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Distance from camera position to center of scene. </p>
+
+</div>
+</div>
+<a id="a96b1bd10731d0a5b8addf3368a8ba53a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96b1bd10731d0a5b8addf3368a8ba53a">&#9670;&nbsp;</a></span>nearDistance</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoSFFloat.html">SoSFFloat</a> SoCamera::nearDistance</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Distance from camera position to the near clipping plane in the camera's view volume.</p>
+<p>Default value is 1.0. Value must be larger than 0.0, or it will not be possible to construct a valid viewing volume (for perspective rendering, at least).</p>
+<p>If you use one of the viewer components from the So[Xt|Qt|Win|Gtk] GUI libraries provided Kongsberg Oil &amp; Gas Technologies, they will automatically update this value for the scene camera according to the scene bounding box. Ditto for the far clipping plane.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoCamera.html#a34890d0e76849f4ce27beefae287f471">SoCamera::farDistance</a> </dd></dl>
+
+</div>
+</div>
+<a id="a1e0dc74890db39d4c8ec2194ec7ab4a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e0dc74890db39d4c8ec2194ec7ab4a7">&#9670;&nbsp;</a></span>orientation</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoSFRotation.html">SoSFRotation</a> SoCamera::orientation</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Camera orientation specified as a rotation value from the default orientation where the camera is pointing along the negative Z-axis, with "up" along the positive Y-axis.</p>
+<p>E.g., to rotate the camera to point along the X-axis:</p>
+<div class="fragment"><div class="line">mycamera-&gt;orientation.setValue(<a class="code" href="classSbRotation.html">SbRotation</a>(<a class="code" href="classSbVec3f.html">SbVec3f</a>(0, 1, 0), M_PI / 2.0f));</div>
+<div class="ttc" id="aclassSbRotation_html"><div class="ttname"><a href="classSbRotation.html">SbRotation</a></div><div class="ttdoc">The SbRotation class represents a rotation in 3D space.</div><div class="ttdef"><b>Definition:</b> SbRotation.h:44</div></div>
+</div><!-- fragment --><p>For queries, e.g. to get the current "up" and "look at" vectors of the camera:</p>
+<div class="fragment"><div class="line"><a class="code" href="classSbRotation.html">SbRotation</a> camrot = mycamera-&gt;orientation.<a class="code" href="classSbRotation.html#af97805cfe5cd1bc177d30aaaaac94cf8">getValue</a>();</div>
+<div class="line"> </div>
+<div class="line"><a class="code" href="classSbVec3f.html">SbVec3f</a> upvec(0, 1, 0); <span class="comment">// init to default up vector</span></div>
+<div class="line">camrot.<a class="code" href="classSbRotation.html#a9bf38e125fc5356d08a03a6e08df98f4">multVec</a>(upvec, upvec);</div>
+<div class="line"> </div>
+<div class="line"><a class="code" href="classSbVec3f.html">SbVec3f</a> lookat(0, 0, -1); <span class="comment">// init to default view direction vector</span></div>
+<div class="line">camrot.<a class="code" href="classSbRotation.html#a9bf38e125fc5356d08a03a6e08df98f4">multVec</a>(lookat, lookat);</div>
+<div class="ttc" id="aclassSbRotation_html_a9bf38e125fc5356d08a03a6e08df98f4"><div class="ttname"><a href="classSbRotation.html#a9bf38e125fc5356d08a03a6e08df98f4">SbRotation::multVec</a></div><div class="ttdeci">void multVec(const SbVec3f &amp;src, SbVec3f &amp;dst) const</div><div class="ttdef"><b>Definition:</b> SbRotation.cpp:621</div></div>
+<div class="ttc" id="aclassSbRotation_html_af97805cfe5cd1bc177d30aaaaac94cf8"><div class="ttname"><a href="classSbRotation.html#af97805cfe5cd1bc177d30aaaaac94cf8">SbRotation::getValue</a></div><div class="ttdeci">const float * getValue(void) const</div><div class="ttdef"><b>Definition:</b> SbRotation.cpp:197</div></div>
+</div><!-- fragment --> 
+</div>
+</div>
+<a id="a1346f4606c4fd282818b4b7701bfeca9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1346f4606c4fd282818b4b7701bfeca9">&#9670;&nbsp;</a></span>position</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoSFVec3f.html">SoSFVec3f</a> SoCamera::position</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Camera position. Defaults to &lt;0,0,1&gt;. </p>
+
+</div>
+</div>
+<a id="abc6c62bbca8a24dd686a3fbb19adec2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc6c62bbca8a24dd686a3fbb19adec2b">&#9670;&nbsp;</a></span>viewportMapping</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoSFEnum.html">SoSFEnum</a> SoCamera::viewportMapping</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set up how the render frame should map the viewport. The default is SoCamera::ADJUST_CAMERA. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SoCamera_8h_source.html">SoCamera.h</a></li>
+<li>SoCamera.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSoCamera.html">SoCamera</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

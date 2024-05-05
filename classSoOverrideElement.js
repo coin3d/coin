@@ -1,0 +1,36 @@
+var classSoOverrideElement =
+[
+    [ "FlagBits", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5", [
+      [ "AMBIENT_COLOR", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5aa74fc9896e2c84a58659a3b8ca4e38bb", null ],
+      [ "COLOR_INDEX", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5aba16f4e3612442e1d3f6027ad6c6a27e", null ],
+      [ "COMPLEXITY", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5a874799492b9acd1871120881bf881692", null ],
+      [ "COMPLEXITY_TYPE", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5aaf7cfa86f1f2c219e7c48018dd651297", null ],
+      [ "CREASE_ANGLE", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5aa272f495e29bb3299f71c98cb35588f0", null ],
+      [ "DIFFUSE_COLOR", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5a6ec7a1d639841a6cfc4381116566c399", null ],
+      [ "DRAW_STYLE", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5ae73235c698604c84c6a395dc354dd57c", null ],
+      [ "EMISSIVE_COLOR", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5aeaeba3f3ac4eaa918387bd9fe0a13652", null ],
+      [ "FONT_NAME", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5a0c24f9b44e7aa0ec434725debee3cea3", null ],
+      [ "FONT_SIZE", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5a93e9038a960e4ada16e2db8483dfb1b2", null ],
+      [ "LIGHT_MODEL", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5afb7a6a92599d3a0a8dfbd14b1146bb64", null ],
+      [ "LINE_PATTERN", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5a49d0956cecdde6d340b6bffcb4e9ab59", null ],
+      [ "LINE_WIDTH", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5afecd46f9cd8dc56e9cbcc577d066ac08", null ],
+      [ "MATERIAL_BINDING", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5a26e923fad0f8a9ff93233002e7cbfbcf", null ],
+      [ "POINT_SIZE", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5a7e71ed8df528588964d88e18d71832e6", null ],
+      [ "PICK_STYLE", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5abf434362a14f6af643b061dd003b420f", null ],
+      [ "SHAPE_HINTS", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5a63e4ee8b24018bfd5e038420efdecb6b", null ],
+      [ "SHININESS", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5a02988ef6423b3abfd739b03a885037aa", null ],
+      [ "SPECULAR_COLOR", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5ae29d171400215ab7f1f65b86dc64c275", null ],
+      [ "POLYGON_OFFSET", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5a2b401e434d0b30c54bbac6339baf02c4", null ],
+      [ "TRANSPARENCY", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5ab6b043141669ad56483b17f3b3f4d81a", null ],
+      [ "TRANSPARENCY_TYPE", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5a2e461b9159cf6ba190ccddc410b509ae", null ],
+      [ "NORMAL_VECTOR", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5afad966f1b564f7a277bb1b754bb93bf7", null ],
+      [ "NORMAL_BINDING", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5ab509f4f5e7bea95a368dc09c2bc5684b", null ]
+    ] ],
+    [ "SoOverrideElement", "classSoOverrideElement.html#a3f376394101d68c7f27321fdec224668", null ],
+    [ "~SoOverrideElement", "classSoOverrideElement.html#ab723abe1857ad98350f4a0fa70be2a79", null ],
+    [ "copyMatchInfo", "classSoOverrideElement.html#a4256958e3c6d5b17fe90303af023ba50", null ],
+    [ "init", "classSoOverrideElement.html#a3966fba44730dcf3c99ec5e906e1b470", null ],
+    [ "matches", "classSoOverrideElement.html#aeef79b5591c2e47efb28a38831b68180", null ],
+    [ "print", "classSoOverrideElement.html#a8a151be1a4be2092079e91a429d52f9a", null ],
+    [ "push", "classSoOverrideElement.html#acc982f58f20b8fae6917204722646cdc", null ]
+];

@@ -1,0 +1,471 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SbOctTree Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSbOctTree.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="classSbOctTree-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SbOctTree Class Reference<div class="ingroups"><a class="el" href="group__coin__base.html">Base Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSbOctTree.html" title="The SbOctTree class defines a generic octree for fast geometry searches.">SbOctTree</a> class defines a generic octree for fast geometry searches.  
+ <a href="classSbOctTree.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SbOctTree_8h_source.html">Inventor/SbOctTree.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:add70351f00eacc285ac91c8394af6f84"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbOctTree.html#add70351f00eacc285ac91c8394af6f84">SbOctTree</a> (const <a class="el" href="classSbBox3f.html">SbBox3f</a> &amp;bbox, const <a class="el" href="structSbOctTreeFuncs.html">SbOctTreeFuncs</a> &amp;itemfuncs, const int maxitemspernode=64)</td></tr>
+<tr class="separator:add70351f00eacc285ac91c8394af6f84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9a58a484f6eacacce9b5d91943abd7b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbOctTree.html#ab9a58a484f6eacacce9b5d91943abd7b">~SbOctTree</a> ()</td></tr>
+<tr class="separator:ab9a58a484f6eacacce9b5d91943abd7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe0d819501c3e600783942cffb2b157f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbOctTree.html#abe0d819501c3e600783942cffb2b157f">addItem</a> (void *const item)</td></tr>
+<tr class="separator:abe0d819501c3e600783942cffb2b157f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40ce23dda004f6b4a6c97a488286b0c7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbOctTree.html#a40ce23dda004f6b4a6c97a488286b0c7">clear</a> (void)</td></tr>
+<tr class="separator:a40ce23dda004f6b4a6c97a488286b0c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf0505697427f74f018e876f18ccd16f"><td class="memItemLeft" align="right" valign="top"><a id="acf0505697427f74f018e876f18ccd16f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>debugTree</b> (FILE *fp)</td></tr>
+<tr class="separator:acf0505697427f74f018e876f18ccd16f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a478d6cb1237c3243f6ee70a603773cfd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbOctTree.html#a478d6cb1237c3243f6ee70a603773cfd">findItems</a> (const <a class="el" href="classSbBox3f.html">SbBox3f</a> &amp;box, <a class="el" href="classSbList.html">SbList</a>&lt; void * &gt; &amp;destarray, const SbBool removeduplicates=TRUE) const</td></tr>
+<tr class="separator:a478d6cb1237c3243f6ee70a603773cfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a113a7d7b14b2a3a250b8810181b39ba0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbOctTree.html#a113a7d7b14b2a3a250b8810181b39ba0">findItems</a> (const <a class="el" href="classSbPlane.html">SbPlane</a> *const planes, const int numplanes, <a class="el" href="classSbList.html">SbList</a>&lt; void * &gt; &amp;destarray, const SbBool removeduplicates=TRUE) const</td></tr>
+<tr class="separator:a113a7d7b14b2a3a250b8810181b39ba0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16b1bd954d5db4614957c6d246d94a9a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbOctTree.html#a16b1bd954d5db4614957c6d246d94a9a">findItems</a> (const <a class="el" href="classSbSphere.html">SbSphere</a> &amp;sphere, <a class="el" href="classSbList.html">SbList</a>&lt; void * &gt; &amp;destarray, const SbBool removeduplicates=TRUE) const</td></tr>
+<tr class="separator:a16b1bd954d5db4614957c6d246d94a9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc5cc991823078fe0cda606f9d1a22b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbOctTree.html#acc5cc991823078fe0cda606f9d1a22b2">findItems</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;pos, <a class="el" href="classSbList.html">SbList</a>&lt; void * &gt; &amp;destarray, const SbBool removeduplicates=TRUE) const</td></tr>
+<tr class="separator:acc5cc991823078fe0cda606f9d1a22b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7698bf6f6f00b0fe0431f0758dc16225"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbBox3f.html">SbBox3f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbOctTree.html#a7698bf6f6f00b0fe0431f0758dc16225">getBoundingBox</a> (void) const</td></tr>
+<tr class="separator:a7698bf6f6f00b0fe0431f0758dc16225"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0960def43c29ed624d0da49241db7d77"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbOctTree.html#a0960def43c29ed624d0da49241db7d77">removeItem</a> (void *const item)</td></tr>
+<tr class="separator:a0960def43c29ed624d0da49241db7d77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSbOctTree.html" title="The SbOctTree class defines a generic octree for fast geometry searches.">SbOctTree</a> class defines a generic octree for fast geometry searches. </p>
+<p>Be aware that this class is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+</p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="add70351f00eacc285ac91c8394af6f84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add70351f00eacc285ac91c8394af6f84">&#9670;&nbsp;</a></span>SbOctTree()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbOctTree::SbOctTree </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbBox3f.html">SbBox3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>bbox</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structSbOctTreeFuncs.html">SbOctTreeFuncs</a> &amp;&#160;</td>
+          <td class="paramname"><em>itemfuncs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>maxitems</em> = <code>64</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Constructor. </p>
+
+</div>
+</div>
+<a id="ab9a58a484f6eacacce9b5d91943abd7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9a58a484f6eacacce9b5d91943abd7b">&#9670;&nbsp;</a></span>~SbOctTree()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbOctTree::~SbOctTree </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Destructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="abe0d819501c3e600783942cffb2b157f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe0d819501c3e600783942cffb2b157f">&#9670;&nbsp;</a></span>addItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbOctTree::addItem </td>
+          <td>(</td>
+          <td class="paramtype">void *const&#160;</td>
+          <td class="paramname"><em>item</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Adds an item to this octree. </p>
+
+</div>
+</div>
+<a id="a40ce23dda004f6b4a6c97a488286b0c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40ce23dda004f6b4a6c97a488286b0c7">&#9670;&nbsp;</a></span>clear()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbOctTree::clear </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Restores this octree to an empty octree. The bounding box will still be the same though. </p>
+
+</div>
+</div>
+<a id="a478d6cb1237c3243f6ee70a603773cfd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a478d6cb1237c3243f6ee70a603773cfd">&#9670;&nbsp;</a></span>findItems() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbOctTree::findItems </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbBox3f.html">SbBox3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>box</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbList.html">SbList</a>&lt; void * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>destarray</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SbBool&#160;</td>
+          <td class="paramname"><em>removeduplicates</em> = <code>TRUE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Finds all items inside <em>box</em>. Items are returned in <em>destarray</em>.</p>
+<p>If <em>removeduplicates</em> is TRUE (the default), <em>destarray</em> will not contain duplicate items. This is not an optimized process, so if you're looking for speed you should set this to FALSE and do your own post processing of the array of returned items.</p>
+<p><b>Note that if the Coin library has been built as a DLL under Microsoft Windows and you use this method from application code, you <em>must</em> make sure that both the Coin DLL and the application executable are using the same instance of a C Run-Time (CRT) library. Otherwise, you <em>will</em> get memory heap corruption upon deallocating the returned instances, eventually leading to mysterious crashes.</b><br  />
+<br  />
+</p>
+
+</div>
+</div>
+<a id="a113a7d7b14b2a3a250b8810181b39ba0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a113a7d7b14b2a3a250b8810181b39ba0">&#9670;&nbsp;</a></span>findItems() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbOctTree::findItems </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbPlane.html">SbPlane</a> *const&#160;</td>
+          <td class="paramname"><em>planes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>numplanes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbList.html">SbList</a>&lt; void * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>destarray</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SbBool&#160;</td>
+          <td class="paramname"><em>removeduplicates</em> = <code>TRUE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Finds all items inside <em>planes</em>. The method <a class="el" href="classSbPlane.html#af2d80f1912f7461a2df55a307743bbcf">SbPlane::isInHalfSpace()</a> should be used, and only items which are (partially) inside <em>all</em> planes are returned. Items are returned in <em>destarray</em>.</p>
+<p>If <em>removeduplicates</em> is TRUE (the default), <em>destarray</em> will not contain duplicate items. This is not an optimized process, so if you're looking for speed you should set this to FALSE and do your own post processing of the array of returned items.</p>
+<p><b>Note that if the Coin library has been built as a DLL under Microsoft Windows and you use this method from application code, you <em>must</em> make sure that both the Coin DLL and the application executable are using the same instance of a C Run-Time (CRT) library. Otherwise, you <em>will</em> get memory heap corruption upon deallocating the returned instances, eventually leading to mysterious crashes.</b><br  />
+<br  />
+</p>
+
+</div>
+</div>
+<a id="a16b1bd954d5db4614957c6d246d94a9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16b1bd954d5db4614957c6d246d94a9a">&#9670;&nbsp;</a></span>findItems() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbOctTree::findItems </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbSphere.html">SbSphere</a> &amp;&#160;</td>
+          <td class="paramname"><em>sphere</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbList.html">SbList</a>&lt; void * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>destarray</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SbBool&#160;</td>
+          <td class="paramname"><em>removeduplicates</em> = <code>TRUE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Finds all items inside <em>sphere</em>. Items are returned in <em>destarray</em>.</p>
+<p>If <em>removeduplicates</em> is TRUE (the default), <em>destarray</em> will not contain duplicate items. This is not an optimized process, so if you're looking for speed you should set this to FALSE and do your own post processing of the array of returned items.</p>
+<p><b>Note that if the Coin library has been built as a DLL under Microsoft Windows and you use this method from application code, you <em>must</em> make sure that both the Coin DLL and the application executable are using the same instance of a C Run-Time (CRT) library. Otherwise, you <em>will</em> get memory heap corruption upon deallocating the returned instances, eventually leading to mysterious crashes.</b><br  />
+<br  />
+</p>
+
+</div>
+</div>
+<a id="acc5cc991823078fe0cda606f9d1a22b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc5cc991823078fe0cda606f9d1a22b2">&#9670;&nbsp;</a></span>findItems() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbOctTree::findItems </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbList.html">SbList</a>&lt; void * &gt; &amp;&#160;</td>
+          <td class="paramname"><em>destarray</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SbBool&#160;</td>
+          <td class="paramname"><em>removeduplicates</em> = <code>TRUE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Finds all items which contains the point <em>pos</em>. Items are returned in <em>destarray</em>.</p>
+<p>If <em>removeduplicates</em> is TRUE (the default), <em>destarray</em> will not contain duplicate items. This is not an optimized process, so if you're looking for speed you should set this to FALSE and do your own post processing of the array of returned items.</p>
+<p><b>Note that if the Coin library has been built as a DLL under Microsoft Windows and you use this method from application code, you <em>must</em> make sure that both the Coin DLL and the application executable are using the same instance of a C Run-Time (CRT) library. Otherwise, you <em>will</em> get memory heap corruption upon deallocating the returned instances, eventually leading to mysterious crashes.</b><br  />
+<br  />
+</p>
+
+</div>
+</div>
+<a id="a7698bf6f6f00b0fe0431f0758dc16225"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7698bf6f6f00b0fe0431f0758dc16225">&#9670;&nbsp;</a></span>getBoundingBox()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbBox3f.html">SbBox3f</a> &amp; SbOctTree::getBoundingBox </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns a bounding box enclosing all the elements in the tree. This is just the same bounding box which was supplied to the constructor. </p>
+
+</div>
+</div>
+<a id="a0960def43c29ed624d0da49241db7d77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0960def43c29ed624d0da49241db7d77">&#9670;&nbsp;</a></span>removeItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbOctTree::removeItem </td>
+          <td>(</td>
+          <td class="paramtype">void *const&#160;</td>
+          <td class="paramname"><em>item</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Removes the item from the octree. The octree will not be modified/simplified even when all items are removed. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SbOctTree_8h_source.html">SbOctTree.h</a></li>
+<li>SbOctTree.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSbOctTree.html">SbOctTree</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

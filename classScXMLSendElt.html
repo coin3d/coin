@@ -1,0 +1,453 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: ScXMLSendElt Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classScXMLSendElt.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="classScXMLSendElt-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">ScXMLSendElt Class Reference<div class="ingroups"><a class="el" href="group__coin__scxml.html">State Chart XML Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>the <code>&lt;</code> send&gt; SCXML element.  
+ <a href="classScXMLSendElt.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="ScXMLSendElt_8h_source.html">Inventor/scxml/ScXMLSendElt.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for ScXMLSendElt:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classScXMLSendElt.png" usemap="#ScXMLSendElt_map" alt=""/>
+  <map id="ScXMLSendElt_map" name="ScXMLSendElt_map">
+<area href="classScXMLExecutableElt.html" title="base class for all SCXML elements with executable content." alt="ScXMLExecutableElt" shape="rect" coords="0,112,130,136"/>
+<area href="classScXMLElt.html" title="base class for all SCXML elements." alt="ScXMLElt" shape="rect" coords="0,56,130,80"/>
+<area href="classScXMLObject.html" title="Base class for all SCXML objects." alt="ScXMLObject" shape="rect" coords="0,0,130,24"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a59ba2c093ff7e0392a241a666651d65d"><td class="memItemLeft" align="right" valign="top"><a id="a59ba2c093ff7e0392a241a666651d65d"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>copyContents</b> (const <a class="el" href="classScXMLElt.html">ScXMLElt</a> *rhs)</td></tr>
+<tr class="separator:a59ba2c093ff7e0392a241a666651d65d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66d24a97437e5a6e1a78d7d91927cc5a"><td class="memItemLeft" align="right" valign="top"><a id="a66d24a97437e5a6e1a78d7d91927cc5a"></a>
+<a class="el" href="classScXMLEvent.html">ScXMLEvent</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>createEvent</b> (<a class="el" href="classScXMLEventTarget.html">ScXMLEventTarget</a> *host) const</td></tr>
+<tr class="separator:a66d24a97437e5a6e1a78d7d91927cc5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74124d70806386936e14704f4b4bfbaf"><td class="memItemLeft" align="right" valign="top"><a id="a74124d70806386936e14704f4b4bfbaf"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>execute</b> (<a class="el" href="classScXMLStateMachine.html">ScXMLStateMachine</a> *statemachine) const</td></tr>
+<tr class="separator:a74124d70806386936e14704f4b4bfbaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c6f9e14d9f5832263eab95f5bff33fc"><td class="memItemLeft" align="right" valign="top"><a id="a0c6f9e14d9f5832263eab95f5bff33fc"></a>
+virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><b>getDelayAttribute</b> (void) const</td></tr>
+<tr class="separator:a0c6f9e14d9f5832263eab95f5bff33fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7669a188c42d26057159a492011f6277"><td class="memItemLeft" align="right" valign="top"><a id="a7669a188c42d26057159a492011f6277"></a>
+virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><b>getEventAttribute</b> (void) const</td></tr>
+<tr class="separator:a7669a188c42d26057159a492011f6277"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfe9c325f71465be299aa55db803662f"><td class="memItemLeft" align="right" valign="top"><a id="adfe9c325f71465be299aa55db803662f"></a>
+virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><b>getHintsAttribute</b> (void) const</td></tr>
+<tr class="separator:adfe9c325f71465be299aa55db803662f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae24f77e9c3cc8683720baff33f50dcec"><td class="memItemLeft" align="right" valign="top"><a id="ae24f77e9c3cc8683720baff33f50dcec"></a>
+virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><b>getNameListAttribute</b> (void) const</td></tr>
+<tr class="separator:ae24f77e9c3cc8683720baff33f50dcec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad294bde22be618754cbe2b09218e1cc0"><td class="memItemLeft" align="right" valign="top"><a id="ad294bde22be618754cbe2b09218e1cc0"></a>
+virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><b>getSendIDAttribute</b> (void) const</td></tr>
+<tr class="separator:ad294bde22be618754cbe2b09218e1cc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64f8182d015b8aa9f42adf5f4ddcec21"><td class="memItemLeft" align="right" valign="top"><a id="a64f8182d015b8aa9f42adf5f4ddcec21"></a>
+virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><b>getTargetAttribute</b> (void) const</td></tr>
+<tr class="separator:a64f8182d015b8aa9f42adf5f4ddcec21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a1f3fe05f48ab151441bedecf19abed"><td class="memItemLeft" align="right" valign="top"><a id="a0a1f3fe05f48ab151441bedecf19abed"></a>
+virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><b>getTargetTypeAttribute</b> (void) const</td></tr>
+<tr class="separator:a0a1f3fe05f48ab151441bedecf19abed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e1787a6a62d8065f1f5ab284cdb54c1"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLSendElt.html#a9e1787a6a62d8065f1f5ab284cdb54c1">getTypeId</a> (void) const</td></tr>
+<tr class="memdesc:a9e1787a6a62d8065f1f5ab284cdb54c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the type identification of an object derived from a class inheriting <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a>. This is used for runtime type checking and "downward" casting.  <a href="classScXMLSendElt.html#a9e1787a6a62d8065f1f5ab284cdb54c1">More...</a><br /></td></tr>
+<tr class="separator:a9e1787a6a62d8065f1f5ab284cdb54c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a8200bf1060a20e0d91b4491059b574"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLSendElt.html#a2a8200bf1060a20e0d91b4491059b574">handleXMLAttributes</a> (void)</td></tr>
+<tr class="separator:a2a8200bf1060a20e0d91b4491059b574"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41fe5f24dae02c3598a0787708fdc0bf"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classScXMLElt.html">ScXMLElt</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLSendElt.html#a41fe5f24dae02c3598a0787708fdc0bf">search</a> (const char *attrname, const char *attrvalue) const</td></tr>
+<tr class="separator:a41fe5f24dae02c3598a0787708fdc0bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb48377c1ccbc7856c08b69f39524b51"><td class="memItemLeft" align="right" valign="top"><a id="acb48377c1ccbc7856c08b69f39524b51"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setDelayAttribute</b> (const char *event)</td></tr>
+<tr class="separator:acb48377c1ccbc7856c08b69f39524b51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d0f39aee15b5ea76f01bec0da64d67a"><td class="memItemLeft" align="right" valign="top"><a id="a8d0f39aee15b5ea76f01bec0da64d67a"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setEventAttribute</b> (const char *event)</td></tr>
+<tr class="separator:a8d0f39aee15b5ea76f01bec0da64d67a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acdea6e5589b781c44875c46b451a249d"><td class="memItemLeft" align="right" valign="top"><a id="acdea6e5589b781c44875c46b451a249d"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setHintsAttribute</b> (const char *event)</td></tr>
+<tr class="separator:acdea6e5589b781c44875c46b451a249d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada53c5155ea4b6038e05cde110b8ef32"><td class="memItemLeft" align="right" valign="top"><a id="ada53c5155ea4b6038e05cde110b8ef32"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setNameListAttribute</b> (const char *event)</td></tr>
+<tr class="separator:ada53c5155ea4b6038e05cde110b8ef32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fdae85e587567249dcf0e6ae6deaa00"><td class="memItemLeft" align="right" valign="top"><a id="a0fdae85e587567249dcf0e6ae6deaa00"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setSendIDAttribute</b> (const char *event)</td></tr>
+<tr class="separator:a0fdae85e587567249dcf0e6ae6deaa00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a174607609a9e048ff715b199018bf0b7"><td class="memItemLeft" align="right" valign="top"><a id="a174607609a9e048ff715b199018bf0b7"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setTargetAttribute</b> (const char *event)</td></tr>
+<tr class="separator:a174607609a9e048ff715b199018bf0b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a999972bb504e89ce49b75411fbb66204"><td class="memItemLeft" align="right" valign="top"><a id="a999972bb504e89ce49b75411fbb66204"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setTargetTypeAttribute</b> (const char *event)</td></tr>
+<tr class="separator:a999972bb504e89ce49b75411fbb66204"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classScXMLElt"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classScXMLElt')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classScXMLElt.html">ScXMLElt</a></td></tr>
+<tr class="memitem:a0771e7f9b586233f3496500cbb0a01ac inherit pub_methods_classScXMLElt"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classScXMLElt.html">ScXMLElt</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLElt.html#a0771e7f9b586233f3496500cbb0a01ac">clone</a> (void) const</td></tr>
+<tr class="separator:a0771e7f9b586233f3496500cbb0a01ac inherit pub_methods_classScXMLElt"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac192e7a1db96a46a02b568235be7fbcf inherit pub_methods_classScXMLElt"><td class="memItemLeft" align="right" valign="top"><a id="ac192e7a1db96a46a02b568235be7fbcf"></a>
+<a class="el" href="classScXMLElt.html">ScXMLElt</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getContainer</b> (void) const</td></tr>
+<tr class="separator:ac192e7a1db96a46a02b568235be7fbcf inherit pub_methods_classScXMLElt"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4378b50af2d2154767933238a5a1f743 inherit pub_methods_classScXMLElt"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLElt.html#a4378b50af2d2154767933238a5a1f743">getXMLAttribute</a> (const char *attribute) const</td></tr>
+<tr class="separator:a4378b50af2d2154767933238a5a1f743 inherit pub_methods_classScXMLElt"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2f8600c79c1f5ed87d23e1d9c204262 inherit pub_methods_classScXMLElt"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLElt.html#ac2f8600c79c1f5ed87d23e1d9c204262">isContainedIn</a> (const <a class="el" href="classScXMLElt.html">ScXMLElt</a> *object) const</td></tr>
+<tr class="separator:ac2f8600c79c1f5ed87d23e1d9c204262 inherit pub_methods_classScXMLElt"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac663bd4b53820306beef387a6e1a916b inherit pub_methods_classScXMLElt"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLElt.html#ac663bd4b53820306beef387a6e1a916b">setContainer</a> (<a class="el" href="classScXMLElt.html">ScXMLElt</a> *container)</td></tr>
+<tr class="separator:ac663bd4b53820306beef387a6e1a916b inherit pub_methods_classScXMLElt"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb8824092c35f5293d957065a0259396 inherit pub_methods_classScXMLElt"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLElt.html#abb8824092c35f5293d957065a0259396">setXMLAttribute</a> (const char *attribute, const char *value)</td></tr>
+<tr class="separator:abb8824092c35f5293d957065a0259396 inherit pub_methods_classScXMLElt"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classScXMLObject"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classScXMLObject')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classScXMLObject.html">ScXMLObject</a></td></tr>
+<tr class="memitem:aa7076590ebc60151d1c5833e2b800ddc inherit pub_methods_classScXMLObject"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLObject.html#aa7076590ebc60151d1c5833e2b800ddc">isOfType</a> (<a class="el" href="classSoType.html">SoType</a> type) const</td></tr>
+<tr class="memdesc:aa7076590ebc60151d1c5833e2b800ddc inherit pub_methods_classScXMLObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>TRUE</code> if the type of this object is either of the same type or inherited from <em>type</em>.  <a href="classScXMLObject.html#aa7076590ebc60151d1c5833e2b800ddc">More...</a><br /></td></tr>
+<tr class="separator:aa7076590ebc60151d1c5833e2b800ddc inherit pub_methods_classScXMLObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aa7c329d0a05ec57edb4555781daba61c"><td class="memItemLeft" align="right" valign="top"><a id="aa7c329d0a05ec57edb4555781daba61c"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>cleanClass</b> (void)</td></tr>
+<tr class="separator:aa7c329d0a05ec57edb4555781daba61c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a474a305fcd7c0fa42e266fba1ea75efa"><td class="memItemLeft" align="right" valign="top"><a id="a474a305fcd7c0fa42e266fba1ea75efa"></a>
+static void *&#160;</td><td class="memItemRight" valign="bottom"><b>createInstance</b> (void)</td></tr>
+<tr class="separator:a474a305fcd7c0fa42e266fba1ea75efa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a395a3486d88dcaf74c5284da81258175"><td class="memItemLeft" align="right" valign="top"><a id="a395a3486d88dcaf74c5284da81258175"></a>
+static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getClassTypeId</b> (void)</td></tr>
+<tr class="separator:a395a3486d88dcaf74c5284da81258175"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3530373b5584f16453e99536d48d7e71"><td class="memItemLeft" align="right" valign="top"><a id="a3530373b5584f16453e99536d48d7e71"></a>
+static <a class="el" href="classScXMLEltReader.html">ScXMLEltReader</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getElementReader</b> (void)</td></tr>
+<tr class="separator:a3530373b5584f16453e99536d48d7e71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad17108ff37fefeca77e4d9f8771ab80"><td class="memItemLeft" align="right" valign="top"><a id="aad17108ff37fefeca77e4d9f8771ab80"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>initClass</b> (void)</td></tr>
+<tr class="separator:aad17108ff37fefeca77e4d9f8771ab80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classScXMLExecutableElt"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classScXMLExecutableElt')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classScXMLExecutableElt.html">ScXMLExecutableElt</a></td></tr>
+<tr class="memitem:a944bce40e66b8add6365463cf9e64f53 inherit pub_static_methods_classScXMLExecutableElt"><td class="memItemLeft" align="right" valign="top"><a id="a944bce40e66b8add6365463cf9e64f53"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>cleanClass</b> (void)</td></tr>
+<tr class="separator:a944bce40e66b8add6365463cf9e64f53 inherit pub_static_methods_classScXMLExecutableElt"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6a69433115efb26f8373ef22e1f2e8a inherit pub_static_methods_classScXMLExecutableElt"><td class="memItemLeft" align="right" valign="top"><a id="ad6a69433115efb26f8373ef22e1f2e8a"></a>
+static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getClassTypeId</b> (void)</td></tr>
+<tr class="separator:ad6a69433115efb26f8373ef22e1f2e8a inherit pub_static_methods_classScXMLExecutableElt"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a737021e7a8b47fae4381deb7c9bf4a02 inherit pub_static_methods_classScXMLExecutableElt"><td class="memItemLeft" align="right" valign="top"><a id="a737021e7a8b47fae4381deb7c9bf4a02"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>initClass</b> (void)</td></tr>
+<tr class="separator:a737021e7a8b47fae4381deb7c9bf4a02 inherit pub_static_methods_classScXMLExecutableElt"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classScXMLElt"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classScXMLElt')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classScXMLElt.html">ScXMLElt</a></td></tr>
+<tr class="memitem:a68533636153dc00e7b778a765a224761 inherit pub_static_methods_classScXMLElt"><td class="memItemLeft" align="right" valign="top"><a id="a68533636153dc00e7b778a765a224761"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>cleanClass</b> (void)</td></tr>
+<tr class="separator:a68533636153dc00e7b778a765a224761 inherit pub_static_methods_classScXMLElt"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4216a7aa719e7a54a951b88c1d15bd1 inherit pub_static_methods_classScXMLElt"><td class="memItemLeft" align="right" valign="top"><a id="af4216a7aa719e7a54a951b88c1d15bd1"></a>
+static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getClassTypeId</b> (void)</td></tr>
+<tr class="separator:af4216a7aa719e7a54a951b88c1d15bd1 inherit pub_static_methods_classScXMLElt"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f0c39cac8b3d2fe1444e59f154ad8ae inherit pub_static_methods_classScXMLElt"><td class="memItemLeft" align="right" valign="top"><a id="a3f0c39cac8b3d2fe1444e59f154ad8ae"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>initClass</b> (void)</td></tr>
+<tr class="separator:a3f0c39cac8b3d2fe1444e59f154ad8ae inherit pub_static_methods_classScXMLElt"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classScXMLObject"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classScXMLObject')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classScXMLObject.html">ScXMLObject</a></td></tr>
+<tr class="memitem:aae0c5a4a174aca5ba7d7c6f41828b181 inherit pub_static_methods_classScXMLObject"><td class="memItemLeft" align="right" valign="top"><a id="aae0c5a4a174aca5ba7d7c6f41828b181"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLObject.html#aae0c5a4a174aca5ba7d7c6f41828b181">cleanClass</a> (void)</td></tr>
+<tr class="memdesc:aae0c5a4a174aca5ba7d7c6f41828b181 inherit pub_static_methods_classScXMLObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does the opposite of initClass, deallocates any class specific resources and resets the class to an uninitialized state with respect to the Coin type system. <br /></td></tr>
+<tr class="separator:aae0c5a4a174aca5ba7d7c6f41828b181 inherit pub_static_methods_classScXMLObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff4dbd61103a1c659b1126bd1342d9f7 inherit pub_static_methods_classScXMLObject"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLObject.html#aff4dbd61103a1c659b1126bd1342d9f7">getClassTypeId</a> (void)</td></tr>
+<tr class="memdesc:aff4dbd61103a1c659b1126bd1342d9f7 inherit pub_static_methods_classScXMLObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">This static method returns the <a class="el" href="classSoType.html" title="The SoType class is the basis for the runtime type system in Coin.">SoType</a> object associated with objects of this class.  <a href="classScXMLObject.html#aff4dbd61103a1c659b1126bd1342d9f7">More...</a><br /></td></tr>
+<tr class="separator:aff4dbd61103a1c659b1126bd1342d9f7 inherit pub_static_methods_classScXMLObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad52f3e69104a3527433768dc369539ae inherit pub_static_methods_classScXMLObject"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLObject.html#ad52f3e69104a3527433768dc369539ae">initClass</a> (void)</td></tr>
+<tr class="memdesc:ad52f3e69104a3527433768dc369539ae inherit pub_static_methods_classScXMLObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up initialization for data common to all instances of this class, like submitting necessary information to the Coin type system.  <a href="classScXMLObject.html#ad52f3e69104a3527433768dc369539ae">More...</a><br /></td></tr>
+<tr class="separator:ad52f3e69104a3527433768dc369539ae inherit pub_static_methods_classScXMLObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a14040fb65fbd75127a0f1c21c46d6f71"><td class="memItemLeft" align="right" valign="top"><a id="a14040fb65fbd75127a0f1c21c46d6f71"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>delay</b></td></tr>
+<tr class="separator:a14040fb65fbd75127a0f1c21c46d6f71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc267f13a24dac9be0964c1e5a5e9abd"><td class="memItemLeft" align="right" valign="top"><a id="adc267f13a24dac9be0964c1e5a5e9abd"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>event</b></td></tr>
+<tr class="separator:adc267f13a24dac9be0964c1e5a5e9abd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8404b165504e8f11a178d1114dcf7e6"><td class="memItemLeft" align="right" valign="top"><a id="ac8404b165504e8f11a178d1114dcf7e6"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>hints</b></td></tr>
+<tr class="separator:ac8404b165504e8f11a178d1114dcf7e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab94ea95f1c65efe31fc30770212c20bb"><td class="memItemLeft" align="right" valign="top"><a id="ab94ea95f1c65efe31fc30770212c20bb"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>namelist</b></td></tr>
+<tr class="separator:ab94ea95f1c65efe31fc30770212c20bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af14ebbcd55f1924203157a594558fcea"><td class="memItemLeft" align="right" valign="top"><a id="af14ebbcd55f1924203157a594558fcea"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>sendid</b></td></tr>
+<tr class="separator:af14ebbcd55f1924203157a594558fcea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9fdd0d3b7d984e2464f8c2d20ba3923"><td class="memItemLeft" align="right" valign="top"><a id="ae9fdd0d3b7d984e2464f8c2d20ba3923"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>target</b></td></tr>
+<tr class="separator:ae9fdd0d3b7d984e2464f8c2d20ba3923"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81afd0005174b96432161e6c5fd40753"><td class="memItemLeft" align="right" valign="top"><a id="a81afd0005174b96432161e6c5fd40753"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>targettype</b></td></tr>
+<tr class="separator:a81afd0005174b96432161e6c5fd40753"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_static_methods_classScXMLElt"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classScXMLElt')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classScXMLElt.html">ScXMLElt</a></td></tr>
+<tr class="memitem:a33ef7491e814c0a9213f10596cdc386e inherit pro_static_methods_classScXMLElt"><td class="memItemLeft" align="right" valign="top"><a id="a33ef7491e814c0a9213f10596cdc386e"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>registerClassType</b> (const char *xmlns, const char *classname, <a class="el" href="classSoType.html">SoType</a> type)</td></tr>
+<tr class="separator:a33ef7491e814c0a9213f10596cdc386e inherit pro_static_methods_classScXMLElt"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c0178bb8434128d4f9d3a8c0363aadb inherit pro_static_methods_classScXMLElt"><td class="memItemLeft" align="right" valign="top"><a id="a2c0178bb8434128d4f9d3a8c0363aadb"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>registerInvokeClassType</b> (const char *xmlns, const char *targettype, const char *source, <a class="el" href="classSoType.html">SoType</a> type)</td></tr>
+<tr class="separator:a2c0178bb8434128d4f9d3a8c0363aadb inherit pro_static_methods_classScXMLElt"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_methods_classScXMLObject"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classScXMLObject')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classScXMLObject.html">ScXMLObject</a></td></tr>
+<tr class="memitem:a8146bae33082f60297517988ebda4632 inherit pro_static_methods_classScXMLObject"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLObject.html#a8146bae33082f60297517988ebda4632">registerClassType</a> (const char *xmlns, const char *classname, <a class="el" href="classSoType.html">SoType</a> type)</td></tr>
+<tr class="separator:a8146bae33082f60297517988ebda4632 inherit pro_static_methods_classScXMLObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7838602d6dc4f741be2b0984cedf966 inherit pro_static_methods_classScXMLObject"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLObject.html#aa7838602d6dc4f741be2b0984cedf966">registerInvokeClassType</a> (const char *xmlns, const char *targettype, const char *source, <a class="el" href="classSoType.html">SoType</a> type)</td></tr>
+<tr class="separator:aa7838602d6dc4f741be2b0984cedf966 inherit pro_static_methods_classScXMLObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>the <code>&lt;</code> send&gt; SCXML element. </p>
+<p>The <code>&lt;send&gt;</code> element is only useful in profiles that have an implementation of the External Communication Module. Both the <code>"minimum"</code> and the <code>"x-coin"</code> profile have implementations, but the <code>"minimum"</code> profile does not implement The Data Module, so only plain events without associated data can be sent.</p>
+<p>The <code>&lt;send&gt;</code> element can take the following attributes: </p><ul>
+<li><code>event</code> </li>
+<li><code>target</code> </li>
+<li><code>targettype</code> </li>
+<li><code>sendid</code> - not supported </li>
+<li><code>delay</code> </li>
+<li><code>namelist</code> </li>
+<li><code>hints</code> - not supported</li>
+</ul>
+<p>The &lt;send&gt; element sends <b>external</b> events. State machines have typically two event queues - one internal, and one external. The internal event queue has full priority over the external event queue. State machines <em>can</em> send external events to itself, but it is more likely internal events are what you want. To send internal events, see the <code>&lt;event&gt;</code> element implemented in <a class="el" href="classScXMLEventElt.html" title="implements the &lt;event&gt; SCXML element.">ScXMLEventElt</a>. To send an external event to the containing state machine, do not specify the <code>target</code> attribute.</p>
+<p>The <code>event</code> attribute specifies the event name for the event that is being sent. Event names are dot-separated names like <code>"error.InvalidExpr"</code> or <code>"x-coin-navigation.Rotate.BEGIN"</code>, and the event names are treated case-sensitive in the current implementation of Coin SCXML. The <code>event</code> attribute is required.</p>
+<p>The <code>targettype</code> attribute specifies the type of the target system. Other SCXML state machines have the type <code>"scxml"</code>. Services related to Coin navigation systems have the targettype <code>"x-coin-navigation"</code>. When sending external events to yourself, <code>targettype</code> can be omitted.</p>
+<p>The <code>target</code> attribute is the name of the target event system. If it is not specified, it means the event will be sent to the containing state machine. Coin navigation services are typically names <code>"Rotate"</code>, but for other SCXML state machines, the <code>&lt;scxml&gt;</code> <code>name</code> attribute decides this. That name is not unique though if multiple such names have been created, so <code>target</code> can also be the state machine <code>_sessionid</code> identifier. (FIXME: check if this is implemented)</p>
+<p>The <code>sendid</code> attribute is not supported.</p>
+<p>If <code>delay</code> is specified, it must take the form of <code>"{number}s"</code> or <code>"{number}ms"</code> giving you the option of specifying the delay in number of seconds or milliseconds before the event should be sent. For delayed events to be sent, the Coin delay queue processing must be performed. Most Coin users do that whether they know it or not. If <code>delay</code> is not specified, the event is passed to the target immediately. If a state machine is deleted, any events scheduled to be sent out in a delayed manner are going to be missing in action. The delay queue is a feature of the sending state machine, not the receiving one.</p>
+<p>The <code>namelist</code> attribute specifies which data variables to include with the event for the event target. This attribute is only useful in profiles that implement the Data Module. The <code>"minimum"</code> profile does not, but the <code>"x-coin"</code> profile does. For the <code>"x-coin"</code> profile, you can specify <code>&lt;data&gt;</code> variables by addressing them with the <code>_data</code>.{ID} scheme, or you can specify temporary variables, either by using the <code>coin:temp</code>.{ID} scheme or have the prefix implicit by just specifying the {ID}. The latter is the most useful method, since event targets do not want to know where in a data model a variable comes from, nor the name it had where it was contained. With temporary variables, the values can get names that are intended for the event target instead of the name used at the source.</p>
+<p>The <code>hints</code> attribute is not supported.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classScXMLEventTarget.html" title="base class for event targets for inter-system event communication">ScXMLEventTarget</a>, <a class="el" href="classScXMLEventElt.html" title="implements the &lt;event&gt; SCXML element.">ScXMLEventElt</a>, <a class="el" href="classScXMLDataElt.html" title="the &lt;data&gt; SCXML element.">ScXMLDataElt</a>, <a class="el" href="classScXMLAssignElt.html" title="the &lt;assign&gt; SCXML element.">ScXMLAssignElt</a> </dd></dl>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a9e1787a6a62d8065f1f5ab284cdb54c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e1787a6a62d8065f1f5ab284cdb54c1">&#9670;&nbsp;</a></span>getTypeId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoType.html">SoType</a> ScXMLSendElt::getTypeId </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the type identification of an object derived from a class inheriting <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a>. This is used for runtime type checking and "downward" casting. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoBase.html#a873b521c1386368d4d63ff893856590a" title="Returns the type identification of an object derived from a class inheriting SoBase....">SoBase::getTypeId() const</a> </dd></dl>
+
+<p>Implements <a class="el" href="classScXMLExecutableElt.html#ad26b5a870cf887de5d6c9da6421984be">ScXMLExecutableElt</a>.</p>
+
+</div>
+</div>
+<a id="a2a8200bf1060a20e0d91b4491059b574"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a8200bf1060a20e0d91b4491059b574">&#9670;&nbsp;</a></span>handleXMLAttributes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool ScXMLSendElt::handleXMLAttributes </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method is called when the file reader has set all the XML attributes on the object, and wants the object to handle them and report if the values were OK or if a read error should be produced.</p>
+<dl class="section return"><dt>Returns</dt><dd>TRUE if the attributes are OK, and FALSE on error.</dd></dl>
+<p>This base class implementation does nothing and just returns TRUE. </p>
+
+<p>Reimplemented from <a class="el" href="classScXMLElt.html#ac76e77f8ecedd593ec87b0fa1ee5f7df">ScXMLElt</a>.</p>
+
+</div>
+</div>
+<a id="a41fe5f24dae02c3598a0787708fdc0bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41fe5f24dae02c3598a0787708fdc0bf">&#9670;&nbsp;</a></span>search()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classScXMLElt.html">ScXMLElt</a> * ScXMLSendElt::search </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>attrname</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>attrvalue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method searches the SCXML structure for an element with the given attribute value for the given attribute.</p>
+<p>Returns NULL if nothing was found.</p>
+<p>This function needs to be reimplemented to traverse child elements. </p>
+
+<p>Reimplemented from <a class="el" href="classScXMLElt.html#aa38cbdab911d6eb5c003aeb66acc89b2">ScXMLElt</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="ScXMLSendElt_8h_source.html">ScXMLSendElt.h</a></li>
+<li>ScXMLSendElt.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classScXMLSendElt.html">ScXMLSendElt</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

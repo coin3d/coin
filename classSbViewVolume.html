@@ -1,0 +1,1516 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SbViewVolume Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSbViewVolume.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="classSbViewVolume-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SbViewVolume Class Reference<div class="ingroups"><a class="el" href="group__coin__base.html">Base Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSbViewVolume.html" title="The SbViewVolume class is a viewing volume in 3D space.">SbViewVolume</a> class is a viewing volume in 3D space.  
+ <a href="classSbViewVolume.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SbViewVolume_8h_source.html">Inventor/SbViewVolume.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a769616c39bae7ee4e78bac640e0bdaf4"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a769616c39bae7ee4e78bac640e0bdaf4">ProjectionType</a> { <a class="el" href="classSbViewVolume.html#a769616c39bae7ee4e78bac640e0bdaf4a19f676b5e880a7189080151156b64337">ORTHOGRAPHIC</a> = 0
+, <a class="el" href="classSbViewVolume.html#a769616c39bae7ee4e78bac640e0bdaf4a9538d7439b5b05a137f9e33f8bd4e014">PERSPECTIVE</a> = 1
+ }</td></tr>
+<tr class="separator:a769616c39bae7ee4e78bac640e0bdaf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:acbcf2f7f32cf0e74b4655367b4a8fe94"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#acbcf2f7f32cf0e74b4655367b4a8fe94">SbViewVolume</a> (void)</td></tr>
+<tr class="separator:acbcf2f7f32cf0e74b4655367b4a8fe94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc5d921466ff37e56d462f2d126ab87d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#abc5d921466ff37e56d462f2d126ab87d">~SbViewVolume</a> (void)</td></tr>
+<tr class="separator:abc5d921466ff37e56d462f2d126ab87d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bdbe7dc553465904db3b42fa295b48e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a3bdbe7dc553465904db3b42fa295b48e">frustum</a> (float left, float right, float bottom, float top, float nearval, float farval)</td></tr>
+<tr class="separator:a3bdbe7dc553465904db3b42fa295b48e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5b7bc52ee00a8f7acee49ff1336ebfa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbRotation.html">SbRotation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#ab5b7bc52ee00a8f7acee49ff1336ebfa">getAlignRotation</a> (SbBool rightAngleOnly=FALSE) const</td></tr>
+<tr class="separator:ab5b7bc52ee00a8f7acee49ff1336ebfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf2a742bb03cd52dd20a9f86918f7e15"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbMatrix.html">SbMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#adf2a742bb03cd52dd20a9f86918f7e15">getCameraSpaceMatrix</a> (void) const</td></tr>
+<tr class="separator:adf2a742bb03cd52dd20a9f86918f7e15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba39279735846d481bc98dd35f8b56be"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#aba39279735846d481bc98dd35f8b56be">getDepth</a> (void) const</td></tr>
+<tr class="separator:aba39279735846d481bc98dd35f8b56be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50cbdca80d245d8b986192a99fd4cdd6"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbDPViewVolume.html">SbDPViewVolume</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a50cbdca80d245d8b986192a99fd4cdd6">getDPViewVolume</a> (void) const</td></tr>
+<tr class="separator:a50cbdca80d245d8b986192a99fd4cdd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60fe063f25c704c8d61c5f5bb5aab514"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a60fe063f25c704c8d61c5f5bb5aab514">getHeight</a> (void) const</td></tr>
+<tr class="separator:a60fe063f25c704c8d61c5f5bb5aab514"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a361857e419c54359380fd1ad758ad03b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a361857e419c54359380fd1ad758ad03b">getMatrices</a> (<a class="el" href="classSbMatrix.html">SbMatrix</a> &amp;affine, <a class="el" href="classSbMatrix.html">SbMatrix</a> &amp;proj) const</td></tr>
+<tr class="separator:a361857e419c54359380fd1ad758ad03b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4dce507aa618f86c0f23f14d04ccf1e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbMatrix.html">SbMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#ad4dce507aa618f86c0f23f14d04ccf1e">getMatrix</a> (void) const</td></tr>
+<tr class="separator:ad4dce507aa618f86c0f23f14d04ccf1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fe846023809b1e7c8be6fa2c75ca691"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a8fe846023809b1e7c8be6fa2c75ca691">getNearDist</a> (void) const</td></tr>
+<tr class="separator:a8fe846023809b1e7c8be6fa2c75ca691"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c5e90dc4ebdff0cbb12aadad1211296"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbPlane.html">SbPlane</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a5c5e90dc4ebdff0cbb12aadad1211296">getPlane</a> (const float distFromEye) const</td></tr>
+<tr class="separator:a5c5e90dc4ebdff0cbb12aadad1211296"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc4eed5b28544e7c81ad68a5b1bbb5bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec3f.html">SbVec3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#adc4eed5b28544e7c81ad68a5b1bbb5bd">getPlanePoint</a> (const float distFromEye, const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;normPoint) const</td></tr>
+<tr class="separator:adc4eed5b28544e7c81ad68a5b1bbb5bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae683db05d229799fec177f4faa478704"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#ae683db05d229799fec177f4faa478704">getProjectionDirection</a> (void) const</td></tr>
+<tr class="separator:ae683db05d229799fec177f4faa478704"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68f251ada689b325d2258d4a23a0283d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a68f251ada689b325d2258d4a23a0283d">getProjectionPoint</a> (void) const</td></tr>
+<tr class="separator:a68f251ada689b325d2258d4a23a0283d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a169b2cb01d564c396ddff910b993cf17"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbViewVolume.html#a769616c39bae7ee4e78bac640e0bdaf4">ProjectionType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a169b2cb01d564c396ddff910b993cf17">getProjectionType</a> (void) const</td></tr>
+<tr class="separator:a169b2cb01d564c396ddff910b993cf17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8058eda4ea4999ee2072c0bab91defac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec3f.html">SbVec3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a8058eda4ea4999ee2072c0bab91defac">getSightPoint</a> (const float distFromEye) const</td></tr>
+<tr class="separator:a8058eda4ea4999ee2072c0bab91defac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06781a61a59a69b7ab80f2fba949c6ee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec3f.html">SbVec3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a06781a61a59a69b7ab80f2fba949c6ee">getViewUp</a> (void) const</td></tr>
+<tr class="separator:a06781a61a59a69b7ab80f2fba949c6ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3001d19bd399cc7a5970413e868f2cae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a3001d19bd399cc7a5970413e868f2cae">getViewVolumePlanes</a> (<a class="el" href="classSbPlane.html">SbPlane</a> planes[6]) const</td></tr>
+<tr class="separator:a3001d19bd399cc7a5970413e868f2cae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0a61ceb417263974b5b8ec26005f4dc"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#ae0a61ceb417263974b5b8ec26005f4dc">getWidth</a> (void) const</td></tr>
+<tr class="separator:ae0a61ceb417263974b5b8ec26005f4dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a440d458d33da7d0847b4b45bd88eba36"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a440d458d33da7d0847b4b45bd88eba36">getWorldToScreenScale</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;worldCenter, float normRadius) const</td></tr>
+<tr class="separator:a440d458d33da7d0847b4b45bd88eba36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a0748a30844a0a5453b9307e68ac25f"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a0a0748a30844a0a5453b9307e68ac25f">intersect</a> (const <a class="el" href="classSbBox3f.html">SbBox3f</a> &amp;box) const</td></tr>
+<tr class="separator:a0a0748a30844a0a5453b9307e68ac25f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc04ec170f132454b3ebdeaada67586e"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#afc04ec170f132454b3ebdeaada67586e">intersect</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;p) const</td></tr>
+<tr class="separator:afc04ec170f132454b3ebdeaada67586e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94a69acfa321f46f636a1ca2e407d659"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a94a69acfa321f46f636a1ca2e407d659">intersect</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;p0, const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;p1, <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;closestpoint) const</td></tr>
+<tr class="separator:a94a69acfa321f46f636a1ca2e407d659"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11d9ee44fa1d6ba5ae84794855b809cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbBox3f.html">SbBox3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a11d9ee44fa1d6ba5ae84794855b809cb">intersectionBox</a> (const <a class="el" href="classSbBox3f.html">SbBox3f</a> &amp;box) const</td></tr>
+<tr class="separator:a11d9ee44fa1d6ba5ae84794855b809cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a620eb95b0f519ce61fba840a1fec887b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbViewVolume.html">SbViewVolume</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a620eb95b0f519ce61fba840a1fec887b">narrow</a> (const <a class="el" href="classSbBox3f.html">SbBox3f</a> &amp;box) const</td></tr>
+<tr class="separator:a620eb95b0f519ce61fba840a1fec887b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ec02ece7009c5b22a78d2a1b07e665e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbViewVolume.html">SbViewVolume</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a8ec02ece7009c5b22a78d2a1b07e665e">narrow</a> (float left, float bottom, float right, float top) const</td></tr>
+<tr class="separator:a8ec02ece7009c5b22a78d2a1b07e665e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74cccdb71cc35fb5b3b084917031ebe7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a74cccdb71cc35fb5b3b084917031ebe7">ortho</a> (float left, float right, float bottom, float top, float nearval, float farval)</td></tr>
+<tr class="separator:a74cccdb71cc35fb5b3b084917031ebe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ce7d5f0b99ddc02074ea3d6cc9724ef"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a8ce7d5f0b99ddc02074ea3d6cc9724ef">outsideTest</a> (const <a class="el" href="classSbPlane.html">SbPlane</a> &amp;p, const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;bmin, const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;bmax) const</td></tr>
+<tr class="separator:a8ce7d5f0b99ddc02074ea3d6cc9724ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa62d154de3ec060318a8bc49d59c5422"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#aa62d154de3ec060318a8bc49d59c5422">perspective</a> (float fovy, float aspect, float nearval, float farval)</td></tr>
+<tr class="separator:aa62d154de3ec060318a8bc49d59c5422"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e9db79aac2cd78e3d551bf79585e3b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a6e9db79aac2cd78e3d551bf79585e3b1">print</a> (FILE *fp) const</td></tr>
+<tr class="separator:a6e9db79aac2cd78e3d551bf79585e3b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad812156832e0ef72d9390017721ffbfd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec2f.html">SbVec2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#ad812156832e0ef72d9390017721ffbfd">projectBox</a> (const <a class="el" href="classSbBox3f.html">SbBox3f</a> &amp;box) const</td></tr>
+<tr class="separator:ad812156832e0ef72d9390017721ffbfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1abcca6f87d1a784e23d94e6f111ca40"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a1abcca6f87d1a784e23d94e6f111ca40">projectPointToLine</a> (const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;pt, <a class="el" href="classSbLine.html">SbLine</a> &amp;line) const</td></tr>
+<tr class="separator:a1abcca6f87d1a784e23d94e6f111ca40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99d792abb0862e83f6e931241de334f3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a99d792abb0862e83f6e931241de334f3">projectPointToLine</a> (const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;pt, <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;line0, <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;line1) const</td></tr>
+<tr class="separator:a99d792abb0862e83f6e931241de334f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f3c7be330c62cf0d04a3adc3324b3d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a5f3c7be330c62cf0d04a3adc3324b3d7">projectToScreen</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;src, <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;dst) const</td></tr>
+<tr class="separator:a5f3c7be330c62cf0d04a3adc3324b3d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f048618c8b356e7cc5af37d81972a5d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a7f048618c8b356e7cc5af37d81972a5d">rotateCamera</a> (const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;q)</td></tr>
+<tr class="separator:a7f048618c8b356e7cc5af37d81972a5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ba76dfded56d0e9b41a3c4f8adec007"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a8ba76dfded56d0e9b41a3c4f8adec007">scale</a> (float factor)</td></tr>
+<tr class="separator:a8ba76dfded56d0e9b41a3c4f8adec007"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93de473b12e0847fd6aa31a9d143f5c9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a93de473b12e0847fd6aa31a9d143f5c9">scaleHeight</a> (float ratio)</td></tr>
+<tr class="separator:a93de473b12e0847fd6aa31a9d143f5c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d2eb384e69810c23df5748342e081d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a9d2eb384e69810c23df5748342e081d3">scaleWidth</a> (float ratio)</td></tr>
+<tr class="separator:a9d2eb384e69810c23df5748342e081d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f836b45107fedfea1a212aeaed38a3e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a0f836b45107fedfea1a212aeaed38a3e">transform</a> (const <a class="el" href="classSbMatrix.html">SbMatrix</a> &amp;matrix)</td></tr>
+<tr class="separator:a0f836b45107fedfea1a212aeaed38a3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a29ff8f99f24a9d16defe527ff0fc0f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a7a29ff8f99f24a9d16defe527ff0fc0f">translateCamera</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;v)</td></tr>
+<tr class="separator:a7a29ff8f99f24a9d16defe527ff0fc0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4aaaf3397769127fe0ddce905e36549"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbViewVolume.html">SbViewVolume</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#ac4aaaf3397769127fe0ddce905e36549">zNarrow</a> (float nearval, float farval) const</td></tr>
+<tr class="separator:ac4aaaf3397769127fe0ddce905e36549"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01eff5b96bce3baa463f9e8f61c631c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec3f.html">SbVec3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a01eff5b96bce3baa463f9e8f61c631c2">zVector</a> (void) const</td></tr>
+<tr class="separator:a01eff5b96bce3baa463f9e8f61c631c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:adf2952f98c0edf4ae4416858d906f3f3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec3f.html">SbVec3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#adf2952f98c0edf4ae4416858d906f3f3">llf</a></td></tr>
+<tr class="separator:adf2952f98c0edf4ae4416858d906f3f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a152c5ad6f9182d94dbc8e36bf1c994e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec3f.html">SbVec3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a152c5ad6f9182d94dbc8e36bf1c994e2">lrf</a></td></tr>
+<tr class="separator:a152c5ad6f9182d94dbc8e36bf1c994e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a063842c5cf236a3b5351fa4241679730"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a063842c5cf236a3b5351fa4241679730">nearDist</a></td></tr>
+<tr class="separator:a063842c5cf236a3b5351fa4241679730"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c20b2e40244a5c83d52e97c169d7e0e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a6c20b2e40244a5c83d52e97c169d7e0e">nearToFar</a></td></tr>
+<tr class="separator:a6c20b2e40244a5c83d52e97c169d7e0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d66037590e6ad2f2ba8d8e63cb72e02"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec3f.html">SbVec3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a3d66037590e6ad2f2ba8d8e63cb72e02">projDir</a></td></tr>
+<tr class="separator:a3d66037590e6ad2f2ba8d8e63cb72e02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab473472322064d5b790a0361fc31ec00"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec3f.html">SbVec3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#ab473472322064d5b790a0361fc31ec00">projPoint</a></td></tr>
+<tr class="separator:ab473472322064d5b790a0361fc31ec00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8299568cb7ad6fda09eec92adede6877"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbViewVolume.html#a769616c39bae7ee4e78bac640e0bdaf4">ProjectionType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#a8299568cb7ad6fda09eec92adede6877">type</a></td></tr>
+<tr class="separator:a8299568cb7ad6fda09eec92adede6877"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acdeb4aa5b5c465b64a90dddcd8f06ffd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec3f.html">SbVec3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewVolume.html#acdeb4aa5b5c465b64a90dddcd8f06ffd">ulf</a></td></tr>
+<tr class="separator:acdeb4aa5b5c465b64a90dddcd8f06ffd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSbViewVolume.html" title="The SbViewVolume class is a viewing volume in 3D space.">SbViewVolume</a> class is a viewing volume in 3D space. </p>
+<p>This class contains the necessary information for storing a view volume. It has methods for projection of primitives into the 3D volume from 2D points in the projection plane or vice versa, doing camera transforms, view volume transforms, etc.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewportRegion.html" title="The SbViewportRegion class is a viewport within a full window.">SbViewportRegion</a> </dd></dl>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a769616c39bae7ee4e78bac640e0bdaf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a769616c39bae7ee4e78bac640e0bdaf4">&#9670;&nbsp;</a></span>ProjectionType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classSbViewVolume.html#a769616c39bae7ee4e78bac640e0bdaf4">SbViewVolume::ProjectionType</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>An <a class="el" href="classSbViewVolume.html" title="The SbViewVolume class is a viewing volume in 3D space.">SbViewVolume</a> instance can represent either an orthogonal projection volume or a perspective projection volume.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html#a74cccdb71cc35fb5b3b084917031ebe7">ortho()</a>, <a class="el" href="classSbViewVolume.html#aa62d154de3ec060318a8bc49d59c5422">perspective()</a>, <a class="el" href="classSbViewVolume.html#a169b2cb01d564c396ddff910b993cf17">getProjectionType()</a>. </dd></dl>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a769616c39bae7ee4e78bac640e0bdaf4a19f676b5e880a7189080151156b64337"></a>ORTHOGRAPHIC&#160;</td><td class="fielddoc"><p>Orthographic projection. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a769616c39bae7ee4e78bac640e0bdaf4a9538d7439b5b05a137f9e33f8bd4e014"></a>PERSPECTIVE&#160;</td><td class="fielddoc"><p>Perspective projection. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="acbcf2f7f32cf0e74b4655367b4a8fe94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acbcf2f7f32cf0e74b4655367b4a8fe94">&#9670;&nbsp;</a></span>SbViewVolume()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbViewVolume::SbViewVolume </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Constructor. Note that the <a class="el" href="classSbViewVolume.html" title="The SbViewVolume class is a viewing volume in 3D space.">SbViewVolume</a> instance will be uninitialized until you explicitly call <em><a class="el" href="classSbViewVolume.html#a74cccdb71cc35fb5b3b084917031ebe7">ortho()</a></em> or <em><a class="el" href="classSbViewVolume.html#aa62d154de3ec060318a8bc49d59c5422">perspective()</a></em>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html#a74cccdb71cc35fb5b3b084917031ebe7">ortho()</a>, <a class="el" href="classSbViewVolume.html#aa62d154de3ec060318a8bc49d59c5422">perspective()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="abc5d921466ff37e56d462f2d126ab87d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc5d921466ff37e56d462f2d126ab87d">&#9670;&nbsp;</a></span>~SbViewVolume()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbViewVolume::~SbViewVolume </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Destructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a3bdbe7dc553465904db3b42fa295b48e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bdbe7dc553465904db3b42fa295b48e">&#9670;&nbsp;</a></span>frustum()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewVolume::frustum </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>left</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>right</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>bottom</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>top</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>nearval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>farval</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set up the frustum for perspective projection. This is an alternative to <a class="el" href="classSbViewVolume.html#aa62d154de3ec060318a8bc49d59c5422">perspective()</a> that lets you specify any kind of view volumes (e.g. off center volumes). It has the same arguments and functionality as the corresponding OpenGL glFrustum() function.</p>
+<p>This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ </p><dl class="section since"><dt>Since</dt><dd>Coin 2.0</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html#aa62d154de3ec060318a8bc49d59c5422">perspective()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ab5b7bc52ee00a8f7acee49ff1336ebfa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5b7bc52ee00a8f7acee49ff1336ebfa">&#9670;&nbsp;</a></span>getAlignRotation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbRotation.html">SbRotation</a> SbViewVolume::getAlignRotation </td>
+          <td>(</td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>rightangleonly</em> = <code>FALSE</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns a rotation that aligns an object so that its positive x-axis is to the right and its positive y-axis is up in the view volume.</p>
+<p>If rightangleonly is TRUE, it will create a rotation that aligns the x and y-axis with the closest orthogonal axes to right and up. </p>
+
+</div>
+</div>
+<a id="adf2a742bb03cd52dd20a9f86918f7e15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf2a742bb03cd52dd20a9f86918f7e15">&#9670;&nbsp;</a></span>getCameraSpaceMatrix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbMatrix.html">SbMatrix</a> SbViewVolume::getCameraSpaceMatrix </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns a matrix which will translate the view volume camera back to origo, and rotate the camera so it'll point along the negative Z-axis.</p>
+<p>Note that the matrix will <em>not</em> include the rotation necessary to make the camera up vector point along the positive Y-axis (i.e. camera roll is not accounted for).</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html#a361857e419c54359380fd1ad758ad03b">getMatrices()</a>, <a class="el" href="classSbViewVolume.html#ad4dce507aa618f86c0f23f14d04ccf1e">getMatrix()</a> </dd></dl>
+
+</div>
+</div>
+<a id="aba39279735846d481bc98dd35f8b56be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba39279735846d481bc98dd35f8b56be">&#9670;&nbsp;</a></span>getDepth()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SbViewVolume::getDepth </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns depth of viewing frustum, i.e. the distance from the near clipping plane to the far clipping plane.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html#ae0a61ceb417263974b5b8ec26005f4dc">getWidth()</a>, <a class="el" href="classSbViewVolume.html#a60fe063f25c704c8d61c5f5bb5aab514">getHeight()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a50cbdca80d245d8b986192a99fd4cdd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50cbdca80d245d8b986192a99fd4cdd6">&#9670;&nbsp;</a></span>getDPViewVolume()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbDPViewVolume.html">SbDPViewVolume</a> &amp; SbViewVolume::getDPViewVolume </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the double precision version of this view volume. </p>
+
+</div>
+</div>
+<a id="a60fe063f25c704c8d61c5f5bb5aab514"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60fe063f25c704c8d61c5f5bb5aab514">&#9670;&nbsp;</a></span>getHeight()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SbViewVolume::getHeight </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns height of viewing frustum in the projection plane.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html#ae0a61ceb417263974b5b8ec26005f4dc">getWidth()</a>, <a class="el" href="classSbViewVolume.html#aba39279735846d481bc98dd35f8b56be">getDepth()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a361857e419c54359380fd1ad758ad03b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a361857e419c54359380fd1ad758ad03b">&#9670;&nbsp;</a></span>getMatrices()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewVolume::getMatrices </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSbMatrix.html">SbMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>affine</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbMatrix.html">SbMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>proj</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the view volume's affine matrix and projection matrix.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html#ad4dce507aa618f86c0f23f14d04ccf1e">getMatrix()</a>, <a class="el" href="classSbViewVolume.html#adf2a742bb03cd52dd20a9f86918f7e15">getCameraSpaceMatrix()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ad4dce507aa618f86c0f23f14d04ccf1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4dce507aa618f86c0f23f14d04ccf1e">&#9670;&nbsp;</a></span>getMatrix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbMatrix.html">SbMatrix</a> SbViewVolume::getMatrix </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the combined affine and projection matrix.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html#a361857e419c54359380fd1ad758ad03b">getMatrices()</a>, <a class="el" href="classSbViewVolume.html#adf2a742bb03cd52dd20a9f86918f7e15">getCameraSpaceMatrix()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a8fe846023809b1e7c8be6fa2c75ca691"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fe846023809b1e7c8be6fa2c75ca691">&#9670;&nbsp;</a></span>getNearDist()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SbViewVolume::getNearDist </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns distance from projection plane to near clipping plane.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html#ae683db05d229799fec177f4faa478704">getProjectionDirection()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a5c5e90dc4ebdff0cbb12aadad1211296"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c5e90dc4ebdff0cbb12aadad1211296">&#9670;&nbsp;</a></span>getPlane()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbPlane.html">SbPlane</a> SbViewVolume::getPlane </td>
+          <td>(</td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>distFromEye</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns an <a class="el" href="classSbPlane.html" title="The SbPlane class represents a plane in 3D space.">SbPlane</a> instance which has a normal vector in the opposite direction of which the camera is pointing. This means the plane will be parallel to the near and far clipping planes.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html#a8058eda4ea4999ee2072c0bab91defac">getSightPoint()</a> </dd></dl>
+
+</div>
+</div>
+<a id="adc4eed5b28544e7c81ad68a5b1bbb5bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc4eed5b28544e7c81ad68a5b1bbb5bd">&#9670;&nbsp;</a></span>getPlanePoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec3f.html">SbVec3f</a> SbViewVolume::getPlanePoint </td>
+          <td>(</td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>distFromEye</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>normPoint</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return the 3D point which projects to <em>normPoint</em> and lies on the plane perpendicular to the camera direction and <em>distFromEye</em> distance away from the camera position.</p>
+<p><em>normPoint</em> should be given in normalized coordinates, where the visible render canvas is covered by the range [0.0, 1.0]. </p>
+
+</div>
+</div>
+<a id="ae683db05d229799fec177f4faa478704"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae683db05d229799fec177f4faa478704">&#9670;&nbsp;</a></span>getProjectionDirection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp; SbViewVolume::getProjectionDirection </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the direction of projection, i.e. the direction the camera is pointing.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html#a8fe846023809b1e7c8be6fa2c75ca691">getNearDist()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a68f251ada689b325d2258d4a23a0283d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68f251ada689b325d2258d4a23a0283d">&#9670;&nbsp;</a></span>getProjectionPoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp; SbViewVolume::getProjectionPoint </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the projection point, i.e. the camera position. </p>
+
+</div>
+</div>
+<a id="a169b2cb01d564c396ddff910b993cf17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a169b2cb01d564c396ddff910b993cf17">&#9670;&nbsp;</a></span>getProjectionType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbViewVolume.html#a769616c39bae7ee4e78bac640e0bdaf4">SbViewVolume::ProjectionType</a> SbViewVolume::getProjectionType </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return current view volume projection type, which can be either <em>ORTHOGRAPHIC</em> or <em>PERSPECTIVE</em>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html#a769616c39bae7ee4e78bac640e0bdaf4">SbViewVolume::ProjectionType</a> </dd></dl>
+
+</div>
+</div>
+<a id="a8058eda4ea4999ee2072c0bab91defac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8058eda4ea4999ee2072c0bab91defac">&#9670;&nbsp;</a></span>getSightPoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec3f.html">SbVec3f</a> SbViewVolume::getSightPoint </td>
+          <td>(</td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>distFromEye</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the point on the center line-of-sight from the camera position with the given distance.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html#a5c5e90dc4ebdff0cbb12aadad1211296">getPlane()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a06781a61a59a69b7ab80f2fba949c6ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06781a61a59a69b7ab80f2fba949c6ee">&#9670;&nbsp;</a></span>getViewUp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec3f.html">SbVec3f</a> SbViewVolume::getViewUp </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the view up vector for this view volume. It's a vector which is perpendicular to the projection direction, and parallel and oriented in the same direction as the vector from the lower left corner to the upper left corner of the near plane. </p>
+
+</div>
+</div>
+<a id="a3001d19bd399cc7a5970413e868f2cae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3001d19bd399cc7a5970413e868f2cae">&#9670;&nbsp;</a></span>getViewVolumePlanes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewVolume::getViewVolumePlanes </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSbPlane.html">SbPlane</a>&#160;</td>
+          <td class="paramname"><em>planes</em>[6]</td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the six planes defining the view volume in the following order: left, bottom, right, top, near, far. Plane normals are directed into the view volume.</p>
+<p>This method is an extension for Coin, and is not available in the original Open Inventor. </p>
+
+</div>
+</div>
+<a id="ae0a61ceb417263974b5b8ec26005f4dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0a61ceb417263974b5b8ec26005f4dc">&#9670;&nbsp;</a></span>getWidth()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SbViewVolume::getWidth </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns width of viewing frustum in the projection plane.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html#a60fe063f25c704c8d61c5f5bb5aab514">getHeight()</a>, <a class="el" href="classSbViewVolume.html#aba39279735846d481bc98dd35f8b56be">getDepth()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a440d458d33da7d0847b4b45bd88eba36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a440d458d33da7d0847b4b45bd88eba36">&#9670;&nbsp;</a></span>getWorldToScreenScale()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SbViewVolume::getWorldToScreenScale </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>worldCenter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>normRadius</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Given a sphere with center in <em>worldCenter</em> and an initial radius of 1.0, return the scale factor needed to make this sphere have a <em>normRadius</em> radius when projected onto the near clipping plane. </p>
+
+</div>
+</div>
+<a id="a0a0748a30844a0a5453b9307e68ac25f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a0748a30844a0a5453b9307e68ac25f">&#9670;&nbsp;</a></span>intersect() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SbViewVolume::intersect </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbBox3f.html">SbBox3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>box</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns TRUE if <em>box</em> may be inside the view volume.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.3 </dd></dl>
+
+</div>
+</div>
+<a id="afc04ec170f132454b3ebdeaada67586e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc04ec170f132454b3ebdeaada67586e">&#9670;&nbsp;</a></span>intersect() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SbViewVolume::intersect </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns TRUE if <em>p</em> is inside the view volume.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.3 </dd></dl>
+
+</div>
+</div>
+<a id="a94a69acfa321f46f636a1ca2e407d659"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94a69acfa321f46f636a1ca2e407d659">&#9670;&nbsp;</a></span>intersect() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SbViewVolume::intersect </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>p0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>p1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>closestpoint</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns TRUE if the line segment <em>p0</em>, <em>p1</em> may intersect volume. Be aware that it is not 100% certain that the line segment intersects the volume even if this function returns TRUE.</p>
+<p><em>closestpoint</em> is set to the closest point on the line to the center ray of the view volume.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.3 </dd></dl>
+
+</div>
+</div>
+<a id="a11d9ee44fa1d6ba5ae84794855b809cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11d9ee44fa1d6ba5ae84794855b809cb">&#9670;&nbsp;</a></span>intersectionBox()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbBox3f.html">SbBox3f</a> SbViewVolume::intersectionBox </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbBox3f.html">SbBox3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>box</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Calculates the bbox of the intersection between <em>bbox</em> and the view volume.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 4.0 </dd></dl>
+
+</div>
+</div>
+<a id="a620eb95b0f519ce61fba840a1fec887b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a620eb95b0f519ce61fba840a1fec887b">&#9670;&nbsp;</a></span>narrow() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbViewVolume.html">SbViewVolume</a> SbViewVolume::narrow </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbBox3f.html">SbBox3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>box</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns a narrowed version of the view volume which is within the given [0, 1] normalized coordinates. The box x and y coordinates are taken to be corner points of a normalized "view window" on the near clipping plane. The box z coordinates are used to adjust the near and far clipping planes, and should be relative to the current clipping planes. A value of 1.0 is at the current near plane. A value of 0.0 is at the current far plane. </p>
+
+</div>
+</div>
+<a id="a8ec02ece7009c5b22a78d2a1b07e665e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ec02ece7009c5b22a78d2a1b07e665e">&#9670;&nbsp;</a></span>narrow() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbViewVolume.html">SbViewVolume</a> SbViewVolume::narrow </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>left</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>bottom</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>right</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>top</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns a narrowed version of the view volume which is within the given [0, 1] normalized coordinates. The coordinates are taken to be corner points of a normalized "view window" on the near clipping plane. I.e.:</p>
+<div class="fragment"><div class="line"><a class="code" href="classSbViewVolume.html">SbViewVolume</a> view;</div>
+<div class="line">view.<a class="code" href="classSbViewVolume.html#a74cccdb71cc35fb5b3b084917031ebe7">ortho</a>(0, 100, 0, 100, 0.1, 1000);</div>
+<div class="line">view = view.<a class="code" href="classSbViewVolume.html#a8ec02ece7009c5b22a78d2a1b07e665e">narrow</a>(0.25, 0.5, 0.75, 1.0);</div>
+<div class="ttc" id="aclassSbViewVolume_html"><div class="ttname"><a href="classSbViewVolume.html">SbViewVolume</a></div><div class="ttdoc">The SbViewVolume class is a viewing volume in 3D space.</div><div class="ttdef"><b>Definition:</b> SbViewVolume.h:50</div></div>
+<div class="ttc" id="aclassSbViewVolume_html_a74cccdb71cc35fb5b3b084917031ebe7"><div class="ttname"><a href="classSbViewVolume.html#a74cccdb71cc35fb5b3b084917031ebe7">SbViewVolume::ortho</a></div><div class="ttdeci">void ortho(float left, float right, float bottom, float top, float nearval, float farval)</div><div class="ttdef"><b>Definition:</b> SbViewVolume.cpp:443</div></div>
+<div class="ttc" id="aclassSbViewVolume_html_a8ec02ece7009c5b22a78d2a1b07e665e"><div class="ttname"><a href="classSbViewVolume.html#a8ec02ece7009c5b22a78d2a1b07e665e">SbViewVolume::narrow</a></div><div class="ttdeci">SbViewVolume narrow(float left, float bottom, float right, float top) const</div><div class="ttdef"><b>Definition:</b> SbViewVolume.cpp:399</div></div>
+</div><!-- fragment --><p>..will give a view volume with corner points &lt;25, 75&gt; and &lt;50, 100&gt;.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html#a8ba76dfded56d0e9b41a3c4f8adec007">scale()</a>, <a class="el" href="classSbViewVolume.html#a9d2eb384e69810c23df5748342e081d3">scaleWidth()</a>, <a class="el" href="classSbViewVolume.html#a93de473b12e0847fd6aa31a9d143f5c9">scaleHeight()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a74cccdb71cc35fb5b3b084917031ebe7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74cccdb71cc35fb5b3b084917031ebe7">&#9670;&nbsp;</a></span>ortho()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewVolume::ortho </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>left</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>right</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>bottom</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>top</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>nearval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>farval</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set up the view volume as a rectangular box for orthographic parallel projections.</p>
+<p>The line of sight will be along the negative Z-axis, through the center of the plane defined by the point </p><pre class="fragment">[(right+left)/2, (top+bottom)/2, 0]
+</pre> <dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html#aa62d154de3ec060318a8bc49d59c5422">perspective()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a8ce7d5f0b99ddc02074ea3d6cc9724ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ce7d5f0b99ddc02074ea3d6cc9724ef">&#9670;&nbsp;</a></span>outsideTest()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SbViewVolume::outsideTest </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbPlane.html">SbPlane</a> &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>bmin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>bmax</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns TRUE if all eight corner points in <em>bmin</em>, <em>bmax</em> is outside <em>p</em>. </p>
+
+</div>
+</div>
+<a id="aa62d154de3ec060318a8bc49d59c5422"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa62d154de3ec060318a8bc49d59c5422">&#9670;&nbsp;</a></span>perspective()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewVolume::perspective </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>fovy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>aspect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>nearval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>farval</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set up the view volume for perspective projections. The line of sight will be through origo along the negative Z-axis.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html#a74cccdb71cc35fb5b3b084917031ebe7">ortho()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a6e9db79aac2cd78e3d551bf79585e3b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e9db79aac2cd78e3d551bf79585e3b1">&#9670;&nbsp;</a></span>print()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewVolume::print </td>
+          <td>(</td>
+          <td class="paramtype">FILE *&#160;</td>
+          <td class="paramname"><em>fp</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Dump the state of this object to the <em>fp</em> file stream. Only works in debug version of library, method does nothing in an optimized build. </p>
+
+</div>
+</div>
+<a id="ad812156832e0ef72d9390017721ffbfd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad812156832e0ef72d9390017721ffbfd">&#9670;&nbsp;</a></span>projectBox()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec2f.html">SbVec2f</a> SbViewVolume::projectBox </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbBox3f.html">SbBox3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>box</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Projects the given box onto the projection plane and returns the normalized screen space it occupies. </p>
+
+</div>
+</div>
+<a id="a1abcca6f87d1a784e23d94e6f111ca40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1abcca6f87d1a784e23d94e6f111ca40">&#9670;&nbsp;</a></span>projectPointToLine() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewVolume::projectPointToLine </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>pt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbLine.html">SbLine</a> &amp;&#160;</td>
+          <td class="paramname"><em>line</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Project the given 2D point from the projection plane into a 3D line.</p>
+<p><em>pt</em> coordinates should be normalized to be within [0, 1]. </p>
+
+</div>
+</div>
+<a id="a99d792abb0862e83f6e931241de334f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99d792abb0862e83f6e931241de334f3">&#9670;&nbsp;</a></span>projectPointToLine() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewVolume::projectPointToLine </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>pt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>line0</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>line1</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Project the given 2D point from the projection plane into two points defining a 3D line. The first point, <em>line0</em>, will be the corresponding point for the projection on the near plane, while <em>line1</em> will be the line endpoint, lying in the far plane. </p>
+
+</div>
+</div>
+<a id="a5f3c7be330c62cf0d04a3adc3324b3d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f3c7be330c62cf0d04a3adc3324b3d7">&#9670;&nbsp;</a></span>projectToScreen()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewVolume::projectToScreen </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Project the <em>src</em> point to a normalized set of screen coordinates in the projection plane and place the result in <em>dst</em>.</p>
+<p>It is safe to let <em>src</em> and <em>dst</em> be the same <a class="el" href="classSbVec3f.html" title="The SbVec3f class is a 3 dimensional vector with floating point coordinates.">SbVec3f</a> instance.</p>
+<p>The z-coordinate of <em>dst</em> is monotonically increasing for points closer to the far plane. Note however that this is not a linear relationship, the <em>dst</em> z-coordinate is calculated as follows:</p>
+<p>Orthogonal view: DSTz = (-2 * SRCz - far - near) / (far - near), Perspective view: DSTz = (-SRCz * (far - near) - 2*far*near) / (far - near)</p>
+<p>The returned coordinates (<em>dst</em>) are normalized to be in range [0, 1]. </p>
+
+</div>
+</div>
+<a id="a7f048618c8b356e7cc5af37d81972a5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f048618c8b356e7cc5af37d81972a5d">&#9670;&nbsp;</a></span>rotateCamera()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewVolume::rotateCamera </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbRotation.html">SbRotation</a> &amp;&#160;</td>
+          <td class="paramname"><em>q</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Rotate the direction which the camera is pointing in.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html#a7a29ff8f99f24a9d16defe527ff0fc0f">translateCamera()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a8ba76dfded56d0e9b41a3c4f8adec007"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ba76dfded56d0e9b41a3c4f8adec007">&#9670;&nbsp;</a></span>scale()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewVolume::scale </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>factor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Scale width and height of viewing frustum by the given ratio around the projection plane center axis.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html#a9d2eb384e69810c23df5748342e081d3">scaleWidth()</a>, <a class="el" href="classSbViewVolume.html#a93de473b12e0847fd6aa31a9d143f5c9">scaleHeight()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a93de473b12e0847fd6aa31a9d143f5c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93de473b12e0847fd6aa31a9d143f5c9">&#9670;&nbsp;</a></span>scaleHeight()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewVolume::scaleHeight </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ratio</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Scale height of viewing frustum by the given ratio around the horizontal center axis in the projection plane.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html#a8ba76dfded56d0e9b41a3c4f8adec007">scale()</a>, <a class="el" href="classSbViewVolume.html#a9d2eb384e69810c23df5748342e081d3">scaleWidth()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a9d2eb384e69810c23df5748342e081d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d2eb384e69810c23df5748342e081d3">&#9670;&nbsp;</a></span>scaleWidth()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewVolume::scaleWidth </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ratio</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Scale width of viewing frustum by the given ratio around the vertical center axis in the projection plane.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html#a8ba76dfded56d0e9b41a3c4f8adec007">scale()</a>, <a class="el" href="classSbViewVolume.html#a93de473b12e0847fd6aa31a9d143f5c9">scaleHeight()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a0f836b45107fedfea1a212aeaed38a3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f836b45107fedfea1a212aeaed38a3e">&#9670;&nbsp;</a></span>transform()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewVolume::transform </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbMatrix.html">SbMatrix</a> &amp;&#160;</td>
+          <td class="paramname"><em>matrix</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Transform the viewing volume by <em>matrix</em>. </p>
+
+</div>
+</div>
+<a id="a7a29ff8f99f24a9d16defe527ff0fc0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a29ff8f99f24a9d16defe527ff0fc0f">&#9670;&nbsp;</a></span>translateCamera()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewVolume::translateCamera </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Translate the camera position of the view volume.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html#a7f048618c8b356e7cc5af37d81972a5d">rotateCamera()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="ac4aaaf3397769127fe0ddce905e36549"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4aaaf3397769127fe0ddce905e36549">&#9670;&nbsp;</a></span>zNarrow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbViewVolume.html">SbViewVolume</a> SbViewVolume::zNarrow </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>nearval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>farval</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return a copy <a class="el" href="classSbViewVolume.html" title="The SbViewVolume class is a viewing volume in 3D space.">SbViewVolume</a> with narrowed depth by supplying parameters for new near and far clipping planes.</p>
+<p><em>nearval</em> and <em>farval</em> should be relative to the current clipping planes. A value of 1.0 is at the current near plane. A value of 0.0 is at the current far plane.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html#a01eff5b96bce3baa463f9e8f61c631c2">zVector()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a01eff5b96bce3baa463f9e8f61c631c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01eff5b96bce3baa463f9e8f61c631c2">&#9670;&nbsp;</a></span>zVector()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec3f.html">SbVec3f</a> SbViewVolume::zVector </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return the vector pointing from the center of the view volume towards the camera. This is just the vector pointing in the opposite direction of <em><a class="el" href="classSbViewVolume.html#ae683db05d229799fec177f4faa478704">getProjectionDirection()</a></em>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html#ae683db05d229799fec177f4faa478704">getProjectionDirection()</a>. </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="adf2952f98c0edf4ae4416858d906f3f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf2952f98c0edf4ae4416858d906f3f3">&#9670;&nbsp;</a></span>llf</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec3f.html">SbVec3f</a> SbViewVolume::llf</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+</p>
+
+</div>
+</div>
+<a id="a152c5ad6f9182d94dbc8e36bf1c994e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a152c5ad6f9182d94dbc8e36bf1c994e2">&#9670;&nbsp;</a></span>lrf</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec3f.html">SbVec3f</a> SbViewVolume::lrf</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+</p>
+
+</div>
+</div>
+<a id="a063842c5cf236a3b5351fa4241679730"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a063842c5cf236a3b5351fa4241679730">&#9670;&nbsp;</a></span>nearDist</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SbViewVolume::nearDist</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+</p>
+
+</div>
+</div>
+<a id="a6c20b2e40244a5c83d52e97c169d7e0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c20b2e40244a5c83d52e97c169d7e0e">&#9670;&nbsp;</a></span>nearToFar</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SbViewVolume::nearToFar</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+</p>
+
+</div>
+</div>
+<a id="a3d66037590e6ad2f2ba8d8e63cb72e02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d66037590e6ad2f2ba8d8e63cb72e02">&#9670;&nbsp;</a></span>projDir</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec3f.html">SbVec3f</a> SbViewVolume::projDir</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+</p>
+
+</div>
+</div>
+<a id="ab473472322064d5b790a0361fc31ec00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab473472322064d5b790a0361fc31ec00">&#9670;&nbsp;</a></span>projPoint</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec3f.html">SbVec3f</a> SbViewVolume::projPoint</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+</p>
+
+</div>
+</div>
+<a id="a8299568cb7ad6fda09eec92adede6877"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8299568cb7ad6fda09eec92adede6877">&#9670;&nbsp;</a></span>type</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbViewVolume.html#a769616c39bae7ee4e78bac640e0bdaf4">SbViewVolume::ProjectionType</a> SbViewVolume::type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+</p>
+
+</div>
+</div>
+<a id="acdeb4aa5b5c465b64a90dddcd8f06ffd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acdeb4aa5b5c465b64a90dddcd8f06ffd">&#9670;&nbsp;</a></span>ulf</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec3f.html">SbVec3f</a> SbViewVolume::ulf</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SbViewVolume_8h_source.html">SbViewVolume.h</a></li>
+<li>SbViewVolume.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSbViewVolume.html">SbViewVolume</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

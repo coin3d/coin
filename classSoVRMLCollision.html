@@ -1,0 +1,989 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SoVRMLCollision Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSoVRMLCollision.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
+<a href="classSoVRMLCollision-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SoVRMLCollision Class Reference<div class="ingroups"><a class="el" href="group__coin__VRMLnodes.html">VRML97 Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSoVRMLCollision.html" title="The SoVRMLCollision class is used for collision detection with the avatar.">SoVRMLCollision</a> class is used for collision detection with the avatar.  
+ <a href="classSoVRMLCollision.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SoVRMLCollision_8h_source.html">Inventor/VRMLnodes/SoVRMLCollision.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for SoVRMLCollision:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classSoVRMLCollision.png" usemap="#SoVRMLCollision_map" alt=""/>
+  <map id="SoVRMLCollision_map" name="SoVRMLCollision_map">
+<area href="classSoVRMLGroup.html" title="The SoVRMLGroup class is used for grouping VRML nodes." alt="SoVRMLGroup" shape="rect" coords="0,280,110,304"/>
+<area href="classSoVRMLParent.html" title="The SoVRMLParent node is a superclass for all VRML grouping nodes." alt="SoVRMLParent" shape="rect" coords="0,224,110,248"/>
+<area href="classSoGroup.html" title="The SoGroup class is a node which managed other node instances." alt="SoGroup" shape="rect" coords="0,168,110,192"/>
+<area href="classSoNode.html" title="The SoNode class is the base class for nodes used in scene graphs." alt="SoNode" shape="rect" coords="0,112,110,136"/>
+<area href="classSoFieldContainer.html" title="The SoFieldContainer class is a base class for all classes that contain fields." alt="SoFieldContainer" shape="rect" coords="0,56,110,80"/>
+<area href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies." alt="SoBase" shape="rect" coords="0,0,110,24"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a5e842590cdd7c6eaad526e87852596d0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLCollision.html#a5e842590cdd7c6eaad526e87852596d0">SoVRMLCollision</a> (int numchildren)</td></tr>
+<tr class="separator:a5e842590cdd7c6eaad526e87852596d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a343d9ad30b1ee63ccffda3e0e44f527a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLCollision.html#a343d9ad30b1ee63ccffda3e0e44f527a">SoVRMLCollision</a> (void)</td></tr>
+<tr class="separator:a343d9ad30b1ee63ccffda3e0e44f527a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a235833e579be875457aebecc3a18632c"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLCollision.html#a235833e579be875457aebecc3a18632c">getTypeId</a> (void) const</td></tr>
+<tr class="separator:a235833e579be875457aebecc3a18632c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6b0f482087b103163489dd797237381"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLCollision.html#aa6b0f482087b103163489dd797237381">GLRender</a> (<a class="el" href="classSoGLRenderAction.html">SoGLRenderAction</a> *action)</td></tr>
+<tr class="separator:aa6b0f482087b103163489dd797237381"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1c548660fea3409c80584f5acba1d58"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLCollision.html#ae1c548660fea3409c80584f5acba1d58">notify</a> (<a class="el" href="classSoNotList.html">SoNotList</a> *list)</td></tr>
+<tr class="separator:ae1c548660fea3409c80584f5acba1d58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSoVRMLGroup"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSoVRMLGroup')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSoVRMLGroup.html">SoVRMLGroup</a></td></tr>
+<tr class="memitem:a54e9e2a21856da98166e6ce22b0058e3 inherit pub_methods_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLGroup.html#a54e9e2a21856da98166e6ce22b0058e3">SoVRMLGroup</a> (int numChildren)</td></tr>
+<tr class="separator:a54e9e2a21856da98166e6ce22b0058e3 inherit pub_methods_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae981a7a94eae2e1390d2316186196a78 inherit pub_methods_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLGroup.html#ae981a7a94eae2e1390d2316186196a78">SoVRMLGroup</a> (void)</td></tr>
+<tr class="separator:ae981a7a94eae2e1390d2316186196a78 inherit pub_methods_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a125c581459bdbc58572e07a92997b0ab inherit pub_methods_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLGroup.html#a125c581459bdbc58572e07a92997b0ab">audioRender</a> (<a class="el" href="classSoAudioRenderAction.html">SoAudioRenderAction</a> *action)</td></tr>
+<tr class="separator:a125c581459bdbc58572e07a92997b0ab inherit pub_methods_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1c764daa811bb84c33158de30b969f5 inherit pub_methods_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLGroup.html#aa1c764daa811bb84c33158de30b969f5">callback</a> (<a class="el" href="classSoCallbackAction.html">SoCallbackAction</a> *action)</td></tr>
+<tr class="separator:aa1c764daa811bb84c33158de30b969f5 inherit pub_methods_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a382b94e1fc0d2a1067f6a4fd3adcd0dc inherit pub_methods_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLGroup.html#a382b94e1fc0d2a1067f6a4fd3adcd0dc">doAction</a> (<a class="el" href="classSoAction.html">SoAction</a> *action)</td></tr>
+<tr class="separator:a382b94e1fc0d2a1067f6a4fd3adcd0dc inherit pub_methods_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef4b3271396fc741c30fdc72ea11ba00 inherit pub_methods_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLGroup.html#aef4b3271396fc741c30fdc72ea11ba00">getBoundingBox</a> (<a class="el" href="classSoGetBoundingBoxAction.html">SoGetBoundingBoxAction</a> *action)</td></tr>
+<tr class="separator:aef4b3271396fc741c30fdc72ea11ba00 inherit pub_methods_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad37ce35b5669a9d9db2d4c36b76c9cef inherit pub_methods_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLGroup.html#ad37ce35b5669a9d9db2d4c36b76c9cef">getMatrix</a> (<a class="el" href="classSoGetMatrixAction.html">SoGetMatrixAction</a> *action)</td></tr>
+<tr class="separator:ad37ce35b5669a9d9db2d4c36b76c9cef inherit pub_methods_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bfc319730bc1a1fc0c494727dd5b68d inherit pub_methods_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLGroup.html#a4bfc319730bc1a1fc0c494727dd5b68d">getPrimitiveCount</a> (<a class="el" href="classSoGetPrimitiveCountAction.html">SoGetPrimitiveCountAction</a> *action)</td></tr>
+<tr class="separator:a4bfc319730bc1a1fc0c494727dd5b68d inherit pub_methods_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64d868c95ef244957538eb9a32d50eae inherit pub_methods_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLGroup.html#a64d868c95ef244957538eb9a32d50eae">GLRenderBelowPath</a> (<a class="el" href="classSoGLRenderAction.html">SoGLRenderAction</a> *action)</td></tr>
+<tr class="separator:a64d868c95ef244957538eb9a32d50eae inherit pub_methods_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa542400a28cffd35942f0e41c24a46fd inherit pub_methods_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLGroup.html#aa542400a28cffd35942f0e41c24a46fd">GLRenderInPath</a> (<a class="el" href="classSoGLRenderAction.html">SoGLRenderAction</a> *action)</td></tr>
+<tr class="separator:aa542400a28cffd35942f0e41c24a46fd inherit pub_methods_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38a393de67a1c424f6c2ed167eecfd44 inherit pub_methods_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLGroup.html#a38a393de67a1c424f6c2ed167eecfd44">GLRenderOffPath</a> (<a class="el" href="classSoGLRenderAction.html">SoGLRenderAction</a> *action)</td></tr>
+<tr class="separator:a38a393de67a1c424f6c2ed167eecfd44 inherit pub_methods_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4aa4936341cecaa2386d1c2f13b9d840 inherit pub_methods_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLGroup.html#a4aa4936341cecaa2386d1c2f13b9d840">rayPick</a> (<a class="el" href="classSoRayPickAction.html">SoRayPickAction</a> *action)</td></tr>
+<tr class="separator:a4aa4936341cecaa2386d1c2f13b9d840 inherit pub_methods_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac487dbd5feb7871bfde43e4883fda344 inherit pub_methods_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLGroup.html#ac487dbd5feb7871bfde43e4883fda344">search</a> (<a class="el" href="classSoSearchAction.html">SoSearchAction</a> *action)</td></tr>
+<tr class="separator:ac487dbd5feb7871bfde43e4883fda344 inherit pub_methods_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a2c5bd82ca57625c0def475ed4d841c inherit pub_methods_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLGroup.html#a5a2c5bd82ca57625c0def475ed4d841c">write</a> (<a class="el" href="classSoWriteAction.html">SoWriteAction</a> *action)</td></tr>
+<tr class="separator:a5a2c5bd82ca57625c0def475ed4d841c inherit pub_methods_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSoVRMLParent"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSoVRMLParent')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSoVRMLParent.html">SoVRMLParent</a></td></tr>
+<tr class="memitem:acb7adb11e13a8de6c57be39e430c909c inherit pub_methods_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#acb7adb11e13a8de6c57be39e430c909c">addChild</a> (<a class="el" href="classSoNode.html">SoNode</a> *child)</td></tr>
+<tr class="separator:acb7adb11e13a8de6c57be39e430c909c inherit pub_methods_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d767f60ffd034c4908bad4cfb074815 inherit pub_methods_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#a7d767f60ffd034c4908bad4cfb074815">affectsState</a> (void) const</td></tr>
+<tr class="separator:a7d767f60ffd034c4908bad4cfb074815 inherit pub_methods_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2df9706ef7c465c87615a06dde9ed81 inherit pub_methods_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#ad2df9706ef7c465c87615a06dde9ed81">findChild</a> (const <a class="el" href="classSoNode.html">SoNode</a> *child) const</td></tr>
+<tr class="separator:ad2df9706ef7c465c87615a06dde9ed81 inherit pub_methods_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3c77f7dec5145c5e38cdd8f09f0f975 inherit pub_methods_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#af3c77f7dec5145c5e38cdd8f09f0f975">getChild</a> (int idx) const</td></tr>
+<tr class="separator:af3c77f7dec5145c5e38cdd8f09f0f975 inherit pub_methods_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3815b1313220e8304afb63c71bcd1596 inherit pub_methods_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoChildList.html">SoChildList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#a3815b1313220e8304afb63c71bcd1596">getChildren</a> (void) const</td></tr>
+<tr class="separator:a3815b1313220e8304afb63c71bcd1596 inherit pub_methods_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2ea83d77b6855bd28ee00ea3057e8e8 inherit pub_methods_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#af2ea83d77b6855bd28ee00ea3057e8e8">getNumChildren</a> (void) const</td></tr>
+<tr class="separator:af2ea83d77b6855bd28ee00ea3057e8e8 inherit pub_methods_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad918c1c196ee41dfdcddf6bf4312cde9 inherit pub_methods_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#ad918c1c196ee41dfdcddf6bf4312cde9">insertChild</a> (<a class="el" href="classSoNode.html">SoNode</a> *child, int idx)</td></tr>
+<tr class="separator:ad918c1c196ee41dfdcddf6bf4312cde9 inherit pub_methods_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a029e9112733403d0c1342fe997aa1bb7 inherit pub_methods_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#a029e9112733403d0c1342fe997aa1bb7">removeAllChildren</a> (void)</td></tr>
+<tr class="separator:a029e9112733403d0c1342fe997aa1bb7 inherit pub_methods_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89002d27caddd6bca9bf3ff6205326f3 inherit pub_methods_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#a89002d27caddd6bca9bf3ff6205326f3">removeChild</a> (int idx)</td></tr>
+<tr class="separator:a89002d27caddd6bca9bf3ff6205326f3 inherit pub_methods_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ff385d9c93c7df1c3f16544c478cce7 inherit pub_methods_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#a2ff385d9c93c7df1c3f16544c478cce7">removeChild</a> (<a class="el" href="classSoNode.html">SoNode</a> *child)</td></tr>
+<tr class="separator:a2ff385d9c93c7df1c3f16544c478cce7 inherit pub_methods_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e9425d0404c4630341c003ebf136a2d inherit pub_methods_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#a5e9425d0404c4630341c003ebf136a2d">replaceChild</a> (int idx, <a class="el" href="classSoNode.html">SoNode</a> *child)</td></tr>
+<tr class="separator:a5e9425d0404c4630341c003ebf136a2d inherit pub_methods_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79ed1b60a7b753e7f0b4a533aa5c8a22 inherit pub_methods_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#a79ed1b60a7b753e7f0b4a533aa5c8a22">replaceChild</a> (<a class="el" href="classSoNode.html">SoNode</a> *old, <a class="el" href="classSoNode.html">SoNode</a> *child)</td></tr>
+<tr class="separator:a79ed1b60a7b753e7f0b4a533aa5c8a22 inherit pub_methods_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSoGroup"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSoGroup')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSoGroup.html">SoGroup</a></td></tr>
+<tr class="memitem:aa7e15ff5654c7ab4724b397fff8ae889 inherit pub_methods_classSoGroup"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGroup.html#aa7e15ff5654c7ab4724b397fff8ae889">SoGroup</a> (int nchildren)</td></tr>
+<tr class="separator:aa7e15ff5654c7ab4724b397fff8ae889 inherit pub_methods_classSoGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a166a894fe88f6c186efd09ecff7cf8 inherit pub_methods_classSoGroup"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGroup.html#a6a166a894fe88f6c186efd09ecff7cf8">SoGroup</a> (void)</td></tr>
+<tr class="separator:a6a166a894fe88f6c186efd09ecff7cf8 inherit pub_methods_classSoGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a447832a0dfc2c22475a547add04cb52b inherit pub_methods_classSoGroup"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGroup.html#a447832a0dfc2c22475a547add04cb52b">addWriteReference</a> (<a class="el" href="classSoOutput.html">SoOutput</a> *out, SbBool isfromfield=FALSE)</td></tr>
+<tr class="separator:a447832a0dfc2c22475a547add04cb52b inherit pub_methods_classSoGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cedae6a08d579f9fade1b92fe8aaa95 inherit pub_methods_classSoGroup"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGroup.html#a9cedae6a08d579f9fade1b92fe8aaa95">handleEvent</a> (<a class="el" href="classSoHandleEventAction.html">SoHandleEventAction</a> *action)</td></tr>
+<tr class="separator:a9cedae6a08d579f9fade1b92fe8aaa95 inherit pub_methods_classSoGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa17968b17d069e36fc9c5598f9b43c20 inherit pub_methods_classSoGroup"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGroup.html#aa17968b17d069e36fc9c5598f9b43c20">pick</a> (<a class="el" href="classSoPickAction.html">SoPickAction</a> *action)</td></tr>
+<tr class="separator:aa17968b17d069e36fc9c5598f9b43c20 inherit pub_methods_classSoGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSoNode"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSoNode')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSoNode.html">SoNode</a></td></tr>
+<tr class="memitem:a9d972d699159edbfe2988475095b9b7d inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a9d972d699159edbfe2988475095b9b7d">addToCopyDict</a> (void) const</td></tr>
+<tr class="separator:a9d972d699159edbfe2988475095b9b7d inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1435c7f4d354e7598a649ee59a9dd1d0 inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a1435c7f4d354e7598a649ee59a9dd1d0">copy</a> (SbBool copyconnections=FALSE) const</td></tr>
+<tr class="separator:a1435c7f4d354e7598a649ee59a9dd1d0 inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a863c20549d094fc85b8f850e6907430f inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a863c20549d094fc85b8f850e6907430f">copyThroughConnection</a> (void) const</td></tr>
+<tr class="separator:a863c20549d094fc85b8f850e6907430f inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a798b676b0f2d0febed69cf2c96e5a030 inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">SbUniqueId&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a798b676b0f2d0febed69cf2c96e5a030">getNodeId</a> (void) const</td></tr>
+<tr class="separator:a798b676b0f2d0febed69cf2c96e5a030 inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36466d4072ced7c03f19dd03276731d7 inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09">NodeType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a36466d4072ced7c03f19dd03276731d7">getNodeType</a> (void) const</td></tr>
+<tr class="separator:a36466d4072ced7c03f19dd03276731d7 inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7afcbdc2e142bfa4be450e9124ac93a2 inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a7afcbdc2e142bfa4be450e9124ac93a2">grabEventsCleanup</a> (void)</td></tr>
+<tr class="separator:a7afcbdc2e142bfa4be450e9124ac93a2 inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9f97e3ffaeb4e50e1e1a647a1535e47 inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#af9f97e3ffaeb4e50e1e1a647a1535e47">grabEventsSetup</a> (void)</td></tr>
+<tr class="separator:af9f97e3ffaeb4e50e1e1a647a1535e47 inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74a89506933952030909972c67b85aaf inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a74a89506933952030909972c67b85aaf">isOverride</a> (void) const</td></tr>
+<tr class="separator:a74a89506933952030909972c67b85aaf inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54cb403721ece12f95be66a3baef48a4 inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a54cb403721ece12f95be66a3baef48a4">setNodeType</a> (const <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09">NodeType</a> type)</td></tr>
+<tr class="separator:a54cb403721ece12f95be66a3baef48a4 inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c4f3e94bccef0da0f47bcdf64a3e915 inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a3c4f3e94bccef0da0f47bcdf64a3e915">setOverride</a> (const SbBool state)</td></tr>
+<tr class="separator:a3c4f3e94bccef0da0f47bcdf64a3e915 inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab623a7a6404b31e171869f953113eba7 inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#ab623a7a6404b31e171869f953113eba7">startNotify</a> (void)</td></tr>
+<tr class="separator:ab623a7a6404b31e171869f953113eba7 inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c1c9901261a3b02fa99e6b1f7223d3f inherit pub_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a2c1c9901261a3b02fa99e6b1f7223d3f">writeInstance</a> (<a class="el" href="classSoOutput.html">SoOutput</a> *out)</td></tr>
+<tr class="separator:a2c1c9901261a3b02fa99e6b1f7223d3f inherit pub_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSoFieldContainer"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSoFieldContainer')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a></td></tr>
+<tr class="memitem:abc620aa3c3c1d797772ecd8b6ba82075 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#abc620aa3c3c1d797772ecd8b6ba82075">copyFieldValues</a> (const <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *container, SbBool copyconnections=FALSE)</td></tr>
+<tr class="separator:abc620aa3c3c1d797772ecd8b6ba82075 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfd479a5769b6f2e5c64e33bc5ecda81 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#acfd479a5769b6f2e5c64e33bc5ecda81">enableNotify</a> (const SbBool flag)</td></tr>
+<tr class="separator:acfd479a5769b6f2e5c64e33bc5ecda81 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d87d1fd2928c320ea11f35a05a0094f inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a1d87d1fd2928c320ea11f35a05a0094f">fieldsAreEqual</a> (const <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *container) const</td></tr>
+<tr class="separator:a1d87d1fd2928c320ea11f35a05a0094f inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab59399cd2889f2504587c59a98bd35a inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#aab59399cd2889f2504587c59a98bd35a">get</a> (<a class="el" href="classSbString.html">SbString</a> &amp;fielddata)</td></tr>
+<tr class="separator:aab59399cd2889f2504587c59a98bd35a inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b1ee6b9b4c4dce34072b2207d86e272 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a1b1ee6b9b4c4dce34072b2207d86e272">get</a> (<a class="el" href="classSbString.html">SbString</a> &amp;fielddata, <a class="el" href="classSoOutput.html">SoOutput</a> *out)</td></tr>
+<tr class="separator:a1b1ee6b9b4c4dce34072b2207d86e272 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7dac6bf3609f1d03949596ff99c80fc6 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a7dac6bf3609f1d03949596ff99c80fc6">getAllFields</a> (<a class="el" href="classSoFieldList.html">SoFieldList</a> &amp;l) const</td></tr>
+<tr class="separator:a7dac6bf3609f1d03949596ff99c80fc6 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6713e64c529d780be82f92d1755c5a84 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoField.html">SoField</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a6713e64c529d780be82f92d1755c5a84">getEventIn</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;name) const</td></tr>
+<tr class="separator:a6713e64c529d780be82f92d1755c5a84 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6ba15e2a94ea3b9c11b109ed2df2fdc inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoField.html">SoField</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#ab6ba15e2a94ea3b9c11b109ed2df2fdc">getEventOut</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;name) const</td></tr>
+<tr class="separator:ab6ba15e2a94ea3b9c11b109ed2df2fdc inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10d1a5d73b22481d64e175e43b1ca4a9 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoField.html">SoField</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a10d1a5d73b22481d64e175e43b1ca4a9">getField</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;name) const</td></tr>
+<tr class="separator:a10d1a5d73b22481d64e175e43b1ca4a9 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae616de36469154bdfda9788ad2c17156 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#ae616de36469154bdfda9788ad2c17156">getFieldName</a> (const <a class="el" href="classSoField.html">SoField</a> *const field, <a class="el" href="classSbName.html">SbName</a> &amp;name) const</td></tr>
+<tr class="separator:ae616de36469154bdfda9788ad2c17156 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af542f3d15c57d14dd60516ffdd586888 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#af542f3d15c57d14dd60516ffdd586888">getFields</a> (<a class="el" href="classSoFieldList.html">SoFieldList</a> &amp;l) const</td></tr>
+<tr class="separator:af542f3d15c57d14dd60516ffdd586888 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf8a1a4389a1b90cb131f26a22e58dba inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#acf8a1a4389a1b90cb131f26a22e58dba">getFieldsMemorySize</a> (size_t &amp;managed, size_t &amp;unmanaged) const</td></tr>
+<tr class="separator:acf8a1a4389a1b90cb131f26a22e58dba inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e7c6ce060519067c75763955391f167 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a1e7c6ce060519067c75763955391f167">getIsBuiltIn</a> (void) const</td></tr>
+<tr class="separator:a1e7c6ce060519067c75763955391f167 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8afa8e6a2f947b2e874b4d63728f6c7f inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a8afa8e6a2f947b2e874b4d63728f6c7f">getUserData</a> (void) const</td></tr>
+<tr class="separator:a8afa8e6a2f947b2e874b4d63728f6c7f inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad135f9119f178c0891f3284e8aebfb54 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#ad135f9119f178c0891f3284e8aebfb54">hasDefaultValues</a> (void) const</td></tr>
+<tr class="separator:ad135f9119f178c0891f3284e8aebfb54 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3886ea42fb933a12b0a456232565a302 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a3886ea42fb933a12b0a456232565a302">isNotifyEnabled</a> (void) const</td></tr>
+<tr class="separator:a3886ea42fb933a12b0a456232565a302 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42458263ddb5dbbdf9473c3dae07a483 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a42458263ddb5dbbdf9473c3dae07a483">set</a> (const char *const fielddata)</td></tr>
+<tr class="separator:a42458263ddb5dbbdf9473c3dae07a483 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecae5577413772a3df69f8a67c9f8861 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#aecae5577413772a3df69f8a67c9f8861">set</a> (const char *fielddata, <a class="el" href="classSoInput.html">SoInput</a> *input)</td></tr>
+<tr class="separator:aecae5577413772a3df69f8a67c9f8861 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96ce6bfbc94538e8d037030f9990ee61 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a96ce6bfbc94538e8d037030f9990ee61">setToDefaults</a> (void)</td></tr>
+<tr class="separator:a96ce6bfbc94538e8d037030f9990ee61 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc5d9c4bc3ff1189df20dccf9ac6cf2c inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#adc5d9c4bc3ff1189df20dccf9ac6cf2c">setUserData</a> (void *userdata) const</td></tr>
+<tr class="separator:adc5d9c4bc3ff1189df20dccf9ac6cf2c inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a242628b2d7e41340398754054ae11ad5 inherit pub_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a242628b2d7e41340398754054ae11ad5">validateNewFieldValue</a> (<a class="el" href="classSoField.html">SoField</a> *field, void *newval)</td></tr>
+<tr class="separator:a242628b2d7e41340398754054ae11ad5 inherit pub_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSoBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSoBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSoBase.html">SoBase</a></td></tr>
+<tr class="memitem:ae6df5f7ce9b7426544fa890d7c48b23a inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#ae6df5f7ce9b7426544fa890d7c48b23a">addAuditor</a> (void *const auditor, const <a class="el" href="classSoNotRec.html#a3dadebf7917d6722df3485e7971ca25c">SoNotRec::Type</a> type)</td></tr>
+<tr class="separator:ae6df5f7ce9b7426544fa890d7c48b23a inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3323fa3136ee0b7b1130683cabd2f45 inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#aa3323fa3136ee0b7b1130683cabd2f45">assertAlive</a> (void) const</td></tr>
+<tr class="separator:aa3323fa3136ee0b7b1130683cabd2f45 inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7129603ba417a658d975be39d07ab8f3 inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSoAuditorList.html">SoAuditorList</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a7129603ba417a658d975be39d07ab8f3">getAuditors</a> (void) const</td></tr>
+<tr class="separator:a7129603ba417a658d975be39d07ab8f3 inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1dbb536d70cf7045a96bc27165d378d0 inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSbName.html">SbName</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a1dbb536d70cf7045a96bc27165d378d0">getName</a> (void) const</td></tr>
+<tr class="separator:a1dbb536d70cf7045a96bc27165d378d0 inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81f6ccf0ce835794d59a492238f082bd inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a81f6ccf0ce835794d59a492238f082bd">getRefCount</a> (void) const</td></tr>
+<tr class="separator:a81f6ccf0ce835794d59a492238f082bd inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2861cbe3c2f43747bc289c7f55bbec3 inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#aa2861cbe3c2f43747bc289c7f55bbec3">isOfType</a> (<a class="el" href="classSoType.html">SoType</a> type) const</td></tr>
+<tr class="memdesc:aa2861cbe3c2f43747bc289c7f55bbec3 inherit pub_methods_classSoBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>TRUE</code> if the type of this object is either of the same type or inherited from <em>type</em>.  <a href="classSoBase.html#aa2861cbe3c2f43747bc289c7f55bbec3">More...</a><br /></td></tr>
+<tr class="separator:aa2861cbe3c2f43747bc289c7f55bbec3 inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac01cf34901b2a2be1bc2671bb2463851 inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#ac01cf34901b2a2be1bc2671bb2463851">ref</a> (void) const</td></tr>
+<tr class="separator:ac01cf34901b2a2be1bc2671bb2463851 inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40434ac2a479164cbeee3f6583307b77 inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a40434ac2a479164cbeee3f6583307b77">removeAuditor</a> (void *const auditor, const <a class="el" href="classSoNotRec.html#a3dadebf7917d6722df3485e7971ca25c">SoNotRec::Type</a> type)</td></tr>
+<tr class="separator:a40434ac2a479164cbeee3f6583307b77 inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9bb8b4387f5fb39d4aa3fe92ca81261 inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#ab9bb8b4387f5fb39d4aa3fe92ca81261">setName</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;newname)</td></tr>
+<tr class="separator:ab9bb8b4387f5fb39d4aa3fe92ca81261 inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f95394c79b081e482d94a15a823b32f inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a6f95394c79b081e482d94a15a823b32f">shouldWrite</a> (void)</td></tr>
+<tr class="separator:a6f95394c79b081e482d94a15a823b32f inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba7fd51b022505fa822d295095b7f6a7 inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#aba7fd51b022505fa822d295095b7f6a7">touch</a> (void)</td></tr>
+<tr class="separator:aba7fd51b022505fa822d295095b7f6a7 inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a254b1ac395fe4d4d10438b994bdb3561 inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a254b1ac395fe4d4d10438b994bdb3561">unref</a> (void) const</td></tr>
+<tr class="separator:a254b1ac395fe4d4d10438b994bdb3561 inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2efdb80168517b9e0a8dd8dc8c655fbb inherit pub_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a2efdb80168517b9e0a8dd8dc8c655fbb">unrefNoDelete</a> (void) const</td></tr>
+<tr class="separator:a2efdb80168517b9e0a8dd8dc8c655fbb inherit pub_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ab37ad409fc3bbd8a2ead62b8fde3c597"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLCollision.html#ab37ad409fc3bbd8a2ead62b8fde3c597">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:ab37ad409fc3bbd8a2ead62b8fde3c597"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7ea75988949b4d5ca384ca5cab6dc97"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLCollision.html#ad7ea75988949b4d5ca384ca5cab6dc97">initClass</a> (void)</td></tr>
+<tr class="separator:ad7ea75988949b4d5ca384ca5cab6dc97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classSoVRMLGroup"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classSoVRMLGroup')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classSoVRMLGroup.html">SoVRMLGroup</a></td></tr>
+<tr class="memitem:a49a3235ab7357005942d3943a57bdc47 inherit pub_static_methods_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLGroup.html#a49a3235ab7357005942d3943a57bdc47">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:a49a3235ab7357005942d3943a57bdc47 inherit pub_static_methods_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a691ab624b5fa31a320be9bfd0fa242ce inherit pub_static_methods_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLGroup.html#a691ab624b5fa31a320be9bfd0fa242ce">getNumRenderCaches</a> (void)</td></tr>
+<tr class="separator:a691ab624b5fa31a320be9bfd0fa242ce inherit pub_static_methods_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2fa9d0f47bad53f0b1dde26609670ea inherit pub_static_methods_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLGroup.html#ae2fa9d0f47bad53f0b1dde26609670ea">initClass</a> (void)</td></tr>
+<tr class="separator:ae2fa9d0f47bad53f0b1dde26609670ea inherit pub_static_methods_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a359c5178bc0c2879b9163bfdcc867487 inherit pub_static_methods_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLGroup.html#a359c5178bc0c2879b9163bfdcc867487">setNumRenderCaches</a> (int num)</td></tr>
+<tr class="separator:a359c5178bc0c2879b9163bfdcc867487 inherit pub_static_methods_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classSoVRMLParent"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classSoVRMLParent')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classSoVRMLParent.html">SoVRMLParent</a></td></tr>
+<tr class="memitem:afc4ded3ac98475c1195c2e5790130e34 inherit pub_static_methods_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#afc4ded3ac98475c1195c2e5790130e34">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:afc4ded3ac98475c1195c2e5790130e34 inherit pub_static_methods_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f0b27464d05b385fb0386c8a66785e6 inherit pub_static_methods_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#a2f0b27464d05b385fb0386c8a66785e6">initClass</a> (void)</td></tr>
+<tr class="separator:a2f0b27464d05b385fb0386c8a66785e6 inherit pub_static_methods_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a0aca7e6f330a7dbb31ee34131862d2 inherit pub_static_methods_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#a2a0aca7e6f330a7dbb31ee34131862d2">updateChildList</a> (const <a class="el" href="classSoNode.html">SoNode</a> *const *nodes, const int numnodes, <a class="el" href="classSoChildList.html">SoChildList</a> &amp;cl)</td></tr>
+<tr class="separator:a2a0aca7e6f330a7dbb31ee34131862d2 inherit pub_static_methods_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9616e88edc302ca6e85fae3c1bb5971 inherit pub_static_methods_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#ac9616e88edc302ca6e85fae3c1bb5971">updateChildList</a> (<a class="el" href="classSoNode.html">SoNode</a> *nodewithsfnode, <a class="el" href="classSoChildList.html">SoChildList</a> &amp;cl)</td></tr>
+<tr class="separator:ac9616e88edc302ca6e85fae3c1bb5971 inherit pub_static_methods_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classSoGroup"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classSoGroup')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classSoGroup.html">SoGroup</a></td></tr>
+<tr class="memitem:a3e3c469d6dfe21b0519b22586aed5380 inherit pub_static_methods_classSoGroup"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGroup.html#a3e3c469d6dfe21b0519b22586aed5380">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:a3e3c469d6dfe21b0519b22586aed5380 inherit pub_static_methods_classSoGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2e59ccc8875fc551e00facc427a229f inherit pub_static_methods_classSoGroup"><td class="memItemLeft" align="right" valign="top"><a id="aa2e59ccc8875fc551e00facc427a229f"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGroup.html#aa2e59ccc8875fc551e00facc427a229f">initClass</a> (void)</td></tr>
+<tr class="memdesc:aa2e59ccc8875fc551e00facc427a229f inherit pub_static_methods_classSoGroup"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up initialization for data common to all instances of this class, like submitting necessary information to the Coin type system. <br /></td></tr>
+<tr class="separator:aa2e59ccc8875fc551e00facc427a229f inherit pub_static_methods_classSoGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classSoNode"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classSoNode')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classSoNode.html">SoNode</a></td></tr>
+<tr class="memitem:a71c0b51745c06555f8e47ef881f90047 inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a71c0b51745c06555f8e47ef881f90047">audioRenderS</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a71c0b51745c06555f8e47ef881f90047 inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac45acbf1842b7b06465bc656b0c3e76d inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#ac45acbf1842b7b06465bc656b0c3e76d">callbackS</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:ac45acbf1842b7b06465bc656b0c3e76d inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e9bc3dd0763fffc3844ba072d8ac43f inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a9e9bc3dd0763fffc3844ba072d8ac43f">getActionMethodIndex</a> (const <a class="el" href="classSoType.html">SoType</a> type)</td></tr>
+<tr class="separator:a9e9bc3dd0763fffc3844ba072d8ac43f inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91ab391491a486f54f75335f54ad3116 inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a91ab391491a486f54f75335f54ad3116">getBoundingBoxS</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a91ab391491a486f54f75335f54ad3116 inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8312b743a45ae88013c788b7dd94717 inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#ad8312b743a45ae88013c788b7dd94717">getByName</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;name)</td></tr>
+<tr class="separator:ad8312b743a45ae88013c788b7dd94717 inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28ffc12aa508802ca4c22d4aa91a34dd inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a28ffc12aa508802ca4c22d4aa91a34dd">getByName</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;name, <a class="el" href="classSoNodeList.html">SoNodeList</a> &amp;l)</td></tr>
+<tr class="separator:a28ffc12aa508802ca4c22d4aa91a34dd inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2df9281dab7d9f11bfa765c9ee6565f7 inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a2df9281dab7d9f11bfa765c9ee6565f7">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:a2df9281dab7d9f11bfa765c9ee6565f7 inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae749600d30d3f68fab7ec45e43b309f0 inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#ae749600d30d3f68fab7ec45e43b309f0">getCompatibilityTypes</a> (const <a class="el" href="classSoType.html">SoType</a> &amp;nodetype)</td></tr>
+<tr class="separator:ae749600d30d3f68fab7ec45e43b309f0 inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b49397f58a5ed03ff3d963725ee0307 inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a5b49397f58a5ed03ff3d963725ee0307">getMatrixS</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a5b49397f58a5ed03ff3d963725ee0307 inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1ceaf1bd716be75c28edf2e9da64541 inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static SbUniqueId&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#ad1ceaf1bd716be75c28edf2e9da64541">getNextNodeId</a> (void)</td></tr>
+<tr class="separator:ad1ceaf1bd716be75c28edf2e9da64541 inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe0ca21e17894d0b42765c3925d80421 inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#abe0ca21e17894d0b42765c3925d80421">getPrimitiveCountS</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:abe0ca21e17894d0b42765c3925d80421 inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c2f47db02ea2726e34c7edcadf72ca9 inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a2c2f47db02ea2726e34c7edcadf72ca9">GLRenderS</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a2c2f47db02ea2726e34c7edcadf72ca9 inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa08772cfe2d6780d8f35c652ee06bd0b inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#aa08772cfe2d6780d8f35c652ee06bd0b">handleEventS</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:aa08772cfe2d6780d8f35c652ee06bd0b inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0ec1dad7052808e9c495a149a2641bd inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top"><a id="af0ec1dad7052808e9c495a149a2641bd"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#af0ec1dad7052808e9c495a149a2641bd">initClass</a> (void)</td></tr>
+<tr class="memdesc:af0ec1dad7052808e9c495a149a2641bd inherit pub_static_methods_classSoNode"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up initialization for data common to all instances of this class, like submitting necessary information to the Coin type system. <br /></td></tr>
+<tr class="separator:af0ec1dad7052808e9c495a149a2641bd inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a466efa129792e1b14437048a19cb073c inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a466efa129792e1b14437048a19cb073c">initClasses</a> (void)</td></tr>
+<tr class="separator:a466efa129792e1b14437048a19cb073c inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2a0c9f57f0520fcf27144783d06fb9d inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#ad2a0c9f57f0520fcf27144783d06fb9d">pickS</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:ad2a0c9f57f0520fcf27144783d06fb9d inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afafa6668c3cdb488ac4aea1175c995c2 inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#afafa6668c3cdb488ac4aea1175c995c2">rayPickS</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:afafa6668c3cdb488ac4aea1175c995c2 inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ad7a52381f8278fc7d776bc7ce84877 inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a0ad7a52381f8278fc7d776bc7ce84877">searchS</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a0ad7a52381f8278fc7d776bc7ce84877 inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdabeb342b514c04baca61377856c782 inherit pub_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#afdabeb342b514c04baca61377856c782">writeS</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:afdabeb342b514c04baca61377856c782 inherit pub_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classSoFieldContainer"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classSoFieldContainer')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a></td></tr>
+<tr class="memitem:aa4bd2cf6fe33bd29bba62d49cc166233 inherit pub_static_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#aa4bd2cf6fe33bd29bba62d49cc166233">addCopy</a> (const <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *orig, const <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *copy)</td></tr>
+<tr class="separator:aa4bd2cf6fe33bd29bba62d49cc166233 inherit pub_static_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa95f3cfa95ecdb443d7d62faa1c2aee0 inherit pub_static_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#aa95f3cfa95ecdb443d7d62faa1c2aee0">checkCopy</a> (const <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *orig)</td></tr>
+<tr class="separator:aa95f3cfa95ecdb443d7d62faa1c2aee0 inherit pub_static_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc2f040051bf8be3acd793238bc4403b inherit pub_static_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#afc2f040051bf8be3acd793238bc4403b">cleanupClass</a> (void)</td></tr>
+<tr class="separator:afc2f040051bf8be3acd793238bc4403b inherit pub_static_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac30353612cc6fc6fa1c0b953e9648fe3 inherit pub_static_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#ac30353612cc6fc6fa1c0b953e9648fe3">copyDone</a> (void)</td></tr>
+<tr class="separator:ac30353612cc6fc6fa1c0b953e9648fe3 inherit pub_static_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5631c8ea1ef70662b136e690cbb8cf8 inherit pub_static_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#aa5631c8ea1ef70662b136e690cbb8cf8">findCopy</a> (const <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *orig, const SbBool copyconnections)</td></tr>
+<tr class="separator:aa5631c8ea1ef70662b136e690cbb8cf8 inherit pub_static_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4702c1c71afff56e7556937e704ee03a inherit pub_static_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top"><a id="a4702c1c71afff56e7556937e704ee03a"></a>
+static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a4702c1c71afff56e7556937e704ee03a">getClassTypeId</a> (void)</td></tr>
+<tr class="memdesc:a4702c1c71afff56e7556937e704ee03a inherit pub_static_methods_classSoFieldContainer"><td class="mdescLeft">&#160;</td><td class="mdescRight">This static method returns the <a class="el" href="classSoType.html" title="The SoType class is the basis for the runtime type system in Coin.">SoType</a> object associated with objects of this class. <br /></td></tr>
+<tr class="separator:a4702c1c71afff56e7556937e704ee03a inherit pub_static_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf897f40f77092485141ac666e37fb0e inherit pub_static_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top"><a id="abf897f40f77092485141ac666e37fb0e"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#abf897f40f77092485141ac666e37fb0e">initClass</a> (void)</td></tr>
+<tr class="memdesc:abf897f40f77092485141ac666e37fb0e inherit pub_static_methods_classSoFieldContainer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up initialization for data common to all instances of this class, like submitting necessary information to the Coin type system. <br /></td></tr>
+<tr class="separator:abf897f40f77092485141ac666e37fb0e inherit pub_static_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd1c5856ee0e9c1e410b44e1d860c2fc inherit pub_static_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#abd1c5856ee0e9c1e410b44e1d860c2fc">initCopyDict</a> (void)</td></tr>
+<tr class="separator:abd1c5856ee0e9c1e410b44e1d860c2fc inherit pub_static_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classSoBase"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classSoBase')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classSoBase.html">SoBase</a></td></tr>
+<tr class="memitem:a74952f1fd17c44eb0fc9c3dc3b69102a inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a74952f1fd17c44eb0fc9c3dc3b69102a">addName</a> (<a class="el" href="classSoBase.html">SoBase</a> *const base, const char *const name)</td></tr>
+<tr class="separator:a74952f1fd17c44eb0fc9c3dc3b69102a inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0a10d7a457ae5403dac0e6a76d00984 inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#ac0a10d7a457ae5403dac0e6a76d00984">connectRoute</a> (<a class="el" href="classSoInput.html">SoInput</a> *input, const <a class="el" href="classSbName.html">SbName</a> &amp;fromnodename, const <a class="el" href="classSbName.html">SbName</a> &amp;fromfieldname, const <a class="el" href="classSbName.html">SbName</a> &amp;tonodename, const <a class="el" href="classSbName.html">SbName</a> &amp;tofieldname)</td></tr>
+<tr class="separator:ac0a10d7a457ae5403dac0e6a76d00984 inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9258013519caafda065433bb168ed126 inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a9258013519caafda065433bb168ed126">decrementCurrentWriteCounter</a> (void)</td></tr>
+<tr class="separator:a9258013519caafda065433bb168ed126 inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73ce238db093db6ba1b4009818cc9f27 inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top"><a id="a73ce238db093db6ba1b4009818cc9f27"></a>
+static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a73ce238db093db6ba1b4009818cc9f27">getClassTypeId</a> (void)</td></tr>
+<tr class="memdesc:a73ce238db093db6ba1b4009818cc9f27 inherit pub_static_methods_classSoBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">This static method returns the <a class="el" href="classSoType.html" title="The SoType class is the basis for the runtime type system in Coin.">SoType</a> object associated with objects of this class. <br /></td></tr>
+<tr class="separator:a73ce238db093db6ba1b4009818cc9f27 inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acda0e2703e0f76ef10f0b14ce19e6e42 inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoBase.html">SoBase</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#acda0e2703e0f76ef10f0b14ce19e6e42">getNamedBase</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;name, <a class="el" href="classSoType.html">SoType</a> type)</td></tr>
+<tr class="separator:acda0e2703e0f76ef10f0b14ce19e6e42 inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64dd273d58c357da1b0df1b4212bfb29 inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a64dd273d58c357da1b0df1b4212bfb29">getNamedBases</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;name, <a class="el" href="classSoBaseList.html">SoBaseList</a> &amp;baselist, <a class="el" href="classSoType.html">SoType</a> type)</td></tr>
+<tr class="separator:a64dd273d58c357da1b0df1b4212bfb29 inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc549cc4452943800c625056b264d1ff inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#adc549cc4452943800c625056b264d1ff">getTraceRefs</a> (void)</td></tr>
+<tr class="separator:adc549cc4452943800c625056b264d1ff inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73037fd0866b2d280e6770c1ff11649b inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a73037fd0866b2d280e6770c1ff11649b">incrementCurrentWriteCounter</a> (void)</td></tr>
+<tr class="separator:a73037fd0866b2d280e6770c1ff11649b inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8419a92b3ac808c6a789673db06776be inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top"><a id="a8419a92b3ac808c6a789673db06776be"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a8419a92b3ac808c6a789673db06776be">initClass</a> (void)</td></tr>
+<tr class="memdesc:a8419a92b3ac808c6a789673db06776be inherit pub_static_methods_classSoBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up initialization for data common to all instances of this class, like submitting necessary information to the Coin type system. <br /></td></tr>
+<tr class="separator:a8419a92b3ac808c6a789673db06776be inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08ab1a0fb1b141d3afc2e745a998fc01 inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a08ab1a0fb1b141d3afc2e745a998fc01">read</a> (<a class="el" href="classSoInput.html">SoInput</a> *input, <a class="el" href="classSoBase.html">SoBase</a> *&amp;base, <a class="el" href="classSoType.html">SoType</a> expectedtype)</td></tr>
+<tr class="separator:a08ab1a0fb1b141d3afc2e745a998fc01 inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6687c0316a76792276a0e0e5755f552 inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#ab6687c0316a76792276a0e0e5755f552">readRoute</a> (<a class="el" href="classSoInput.html">SoInput</a> *input)</td></tr>
+<tr class="separator:ab6687c0316a76792276a0e0e5755f552 inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a427c87fa9d48a2d09da950b7a0895fc7 inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a427c87fa9d48a2d09da950b7a0895fc7">removeName</a> (<a class="el" href="classSoBase.html">SoBase</a> *const base, const char *const name)</td></tr>
+<tr class="separator:a427c87fa9d48a2d09da950b7a0895fc7 inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24fef6a61e75a6bffb4f83d4cf10fca5 inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a24fef6a61e75a6bffb4f83d4cf10fca5">setInstancePrefix</a> (const <a class="el" href="classSbString.html">SbString</a> &amp;c)</td></tr>
+<tr class="separator:a24fef6a61e75a6bffb4f83d4cf10fca5 inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4617280cf55689be859f44b1e332a414 inherit pub_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a4617280cf55689be859f44b1e332a414">setTraceRefs</a> (SbBool trace)</td></tr>
+<tr class="separator:a4617280cf55689be859f44b1e332a414 inherit pub_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a6e77e76247390a34a71060d22c66674c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoSFBool.html">SoSFBool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLCollision.html#a6e77e76247390a34a71060d22c66674c">collide</a></td></tr>
+<tr class="separator:a6e77e76247390a34a71060d22c66674c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a384725f991882f6c089c5d65dd4410b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoSFTime.html">SoSFTime</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLCollision.html#a384725f991882f6c089c5d65dd4410b3">collideTime</a></td></tr>
+<tr class="separator:a384725f991882f6c089c5d65dd4410b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b1a5b50585a58d512fa8b83dd36091e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoSFNode.html">SoSFNode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLCollision.html#a6b1a5b50585a58d512fa8b83dd36091e">proxy</a></td></tr>
+<tr class="separator:a6b1a5b50585a58d512fa8b83dd36091e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_attribs_classSoVRMLGroup"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classSoVRMLGroup')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classSoVRMLGroup.html">SoVRMLGroup</a></td></tr>
+<tr class="memitem:afe7c850a2cc633e20ccb929b6f0756fe inherit pub_attribs_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top"><a id="afe7c850a2cc633e20ccb929b6f0756fe"></a>
+<a class="el" href="classSoSFVec3f.html">SoSFVec3f</a>&#160;</td><td class="memItemRight" valign="bottom"><b>bboxCenter</b></td></tr>
+<tr class="separator:afe7c850a2cc633e20ccb929b6f0756fe inherit pub_attribs_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7eaa898f776a826ef0c237964a378db0 inherit pub_attribs_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top"><a id="a7eaa898f776a826ef0c237964a378db0"></a>
+<a class="el" href="classSoSFVec3f.html">SoSFVec3f</a>&#160;</td><td class="memItemRight" valign="bottom"><b>bboxSize</b></td></tr>
+<tr class="separator:a7eaa898f776a826ef0c237964a378db0 inherit pub_attribs_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5b52c42e661e05aae3dd4228225de7d inherit pub_attribs_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top"><a id="aa5b52c42e661e05aae3dd4228225de7d"></a>
+<a class="el" href="classSoSFEnum.html">SoSFEnum</a>&#160;</td><td class="memItemRight" valign="bottom"><b>boundingBoxCaching</b></td></tr>
+<tr class="separator:aa5b52c42e661e05aae3dd4228225de7d inherit pub_attribs_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77b4ac473a3ab1bcbfb1e4a09cbd6187 inherit pub_attribs_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top"><a id="a77b4ac473a3ab1bcbfb1e4a09cbd6187"></a>
+<a class="el" href="classSoSFEnum.html">SoSFEnum</a>&#160;</td><td class="memItemRight" valign="bottom"><b>pickCulling</b></td></tr>
+<tr class="separator:a77b4ac473a3ab1bcbfb1e4a09cbd6187 inherit pub_attribs_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a071498e508620b3377ecd0a0a8ff7244 inherit pub_attribs_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top"><a id="a071498e508620b3377ecd0a0a8ff7244"></a>
+<a class="el" href="classSoSFEnum.html">SoSFEnum</a>&#160;</td><td class="memItemRight" valign="bottom"><b>renderCaching</b></td></tr>
+<tr class="separator:a071498e508620b3377ecd0a0a8ff7244 inherit pub_attribs_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a169edad2eee311f8bd1d976bb0d2b8a2 inherit pub_attribs_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top"><a id="a169edad2eee311f8bd1d976bb0d2b8a2"></a>
+<a class="el" href="classSoSFEnum.html">SoSFEnum</a>&#160;</td><td class="memItemRight" valign="bottom"><b>renderCulling</b></td></tr>
+<tr class="separator:a169edad2eee311f8bd1d976bb0d2b8a2 inherit pub_attribs_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_attribs_classSoVRMLParent"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classSoVRMLParent')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classSoVRMLParent.html">SoVRMLParent</a></td></tr>
+<tr class="memitem:ae3944cbc5c196fbe4c4a17c11a7aae9e inherit pub_attribs_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoMFNode.html">SoMFNode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#ae3944cbc5c196fbe4c4a17c11a7aae9e">children</a></td></tr>
+<tr class="separator:ae3944cbc5c196fbe4c4a17c11a7aae9e inherit pub_attribs_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:ae8ccc84633f6aaa63b2d4c02cd5df018"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLCollision.html#ae8ccc84633f6aaa63b2d4c02cd5df018">~SoVRMLCollision</a> ()</td></tr>
+<tr class="separator:ae8ccc84633f6aaa63b2d4c02cd5df018"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c76eb67de8b07608c48164726fbab00"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classSoFieldData.html">SoFieldData</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLCollision.html#a9c76eb67de8b07608c48164726fbab00">getFieldData</a> (void) const</td></tr>
+<tr class="separator:a9c76eb67de8b07608c48164726fbab00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSoVRMLGroup"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSoVRMLGroup')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSoVRMLGroup.html">SoVRMLGroup</a></td></tr>
+<tr class="memitem:a176c761bf3360780ca214cd3a1d7c019 inherit pro_methods_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLGroup.html#a176c761bf3360780ca214cd3a1d7c019">~SoVRMLGroup</a> ()</td></tr>
+<tr class="separator:a176c761bf3360780ca214cd3a1d7c019 inherit pro_methods_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a051cd9adf1479c2c214aa3597a6e2160 inherit pro_methods_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLGroup.html#a051cd9adf1479c2c214aa3597a6e2160">cullTest</a> (<a class="el" href="classSoState.html">SoState</a> *state)</td></tr>
+<tr class="separator:a051cd9adf1479c2c214aa3597a6e2160 inherit pro_methods_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSoVRMLParent"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSoVRMLParent')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSoVRMLParent.html">SoVRMLParent</a></td></tr>
+<tr class="memitem:ae7c5181165358da54af87e33d472dfb8 inherit pro_methods_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#ae7c5181165358da54af87e33d472dfb8">SoVRMLParent</a> (int approxchildren)</td></tr>
+<tr class="separator:ae7c5181165358da54af87e33d472dfb8 inherit pro_methods_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89cf05cdf1ba310539cf1edb3088e4df inherit pro_methods_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#a89cf05cdf1ba310539cf1edb3088e4df">SoVRMLParent</a> (void)</td></tr>
+<tr class="separator:a89cf05cdf1ba310539cf1edb3088e4df inherit pro_methods_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1483b74f02317680fc8f4b16cee77f4f inherit pro_methods_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#a1483b74f02317680fc8f4b16cee77f4f">~SoVRMLParent</a> ()</td></tr>
+<tr class="separator:a1483b74f02317680fc8f4b16cee77f4f inherit pro_methods_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee731ea5d71c7f3c24b4e4cb4577dfae inherit pro_methods_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#aee731ea5d71c7f3c24b4e4cb4577dfae">copyContents</a> (const <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *from, SbBool copyConn)</td></tr>
+<tr class="separator:aee731ea5d71c7f3c24b4e4cb4577dfae inherit pro_methods_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5245bd14d8b67408253d3b7d8352bdb inherit pro_methods_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#aa5245bd14d8b67408253d3b7d8352bdb">readInstance</a> (<a class="el" href="classSoInput.html">SoInput</a> *in, unsigned short flags)</td></tr>
+<tr class="separator:aa5245bd14d8b67408253d3b7d8352bdb inherit pro_methods_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSoGroup"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSoGroup')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSoGroup.html">SoGroup</a></td></tr>
+<tr class="memitem:a45d9cfe36bf555a90b2e253a2e5a9d9b inherit pro_methods_classSoGroup"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGroup.html#a45d9cfe36bf555a90b2e253a2e5a9d9b">~SoGroup</a> ()</td></tr>
+<tr class="separator:a45d9cfe36bf555a90b2e253a2e5a9d9b inherit pro_methods_classSoGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8cac54a0a595403f5475cc502bebdd7 inherit pro_methods_classSoGroup"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoNotRec.html">SoNotRec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGroup.html#aa8cac54a0a595403f5475cc502bebdd7">createNotRec</a> (void)</td></tr>
+<tr class="separator:aa8cac54a0a595403f5475cc502bebdd7 inherit pro_methods_classSoGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2d8b2d407cfdf87edf06fb986d53d02 inherit pro_methods_classSoGroup"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGroup.html#ac2d8b2d407cfdf87edf06fb986d53d02">readChildren</a> (<a class="el" href="classSoInput.html">SoInput</a> *in)</td></tr>
+<tr class="separator:ac2d8b2d407cfdf87edf06fb986d53d02 inherit pro_methods_classSoGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ced0d3a09ac439ea20cc78ea755f9f9 inherit pro_methods_classSoGroup"><td class="memItemLeft" align="right" valign="top"><a id="a0ced0d3a09ac439ea20cc78ea755f9f9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setOperation</b> (const <a class="el" href="classSoNotRec.html#a881de32e1ff224860ce27dd27b638e9f">SoNotRec::OperationType</a> opType=SoNotRec::UNSPECIFIED, const <a class="el" href="classSoNode.html">SoNode</a> *cc=NULL, const <a class="el" href="classSoNode.html">SoNode</a> *pc=NULL, const int ci=-1)</td></tr>
+<tr class="separator:a0ced0d3a09ac439ea20cc78ea755f9f9 inherit pro_methods_classSoGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSoNode"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSoNode')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSoNode.html">SoNode</a></td></tr>
+<tr class="memitem:a11b3f6d76929bcf86e8f8662e2f8249d inherit pro_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a11b3f6d76929bcf86e8f8662e2f8249d">SoNode</a> (void)</td></tr>
+<tr class="separator:a11b3f6d76929bcf86e8f8662e2f8249d inherit pro_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7cef6be5ac6b2b2715666e2ba60128d inherit pro_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#ad7cef6be5ac6b2b2715666e2ba60128d">~SoNode</a> ()</td></tr>
+<tr class="separator:ad7cef6be5ac6b2b2715666e2ba60128d inherit pro_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSoFieldContainer"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSoFieldContainer')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a></td></tr>
+<tr class="memitem:a3950d8784a244da6e5d81361760f2845 inherit pro_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a3950d8784a244da6e5d81361760f2845">SoFieldContainer</a> (void)</td></tr>
+<tr class="separator:a3950d8784a244da6e5d81361760f2845 inherit pro_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4aa2232495749eb6ac1af54d200f2180 inherit pro_methods_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#a4aa2232495749eb6ac1af54d200f2180">~SoFieldContainer</a> ()</td></tr>
+<tr class="separator:a4aa2232495749eb6ac1af54d200f2180 inherit pro_methods_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSoBase"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSoBase')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSoBase.html">SoBase</a></td></tr>
+<tr class="memitem:a30a12f045bf793692612e8420a2d8413 inherit pro_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a30a12f045bf793692612e8420a2d8413">SoBase</a> (void)</td></tr>
+<tr class="separator:a30a12f045bf793692612e8420a2d8413 inherit pro_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e09f562870ef14253a439aa8379c1ea inherit pro_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a4e09f562870ef14253a439aa8379c1ea">~SoBase</a> ()</td></tr>
+<tr class="separator:a4e09f562870ef14253a439aa8379c1ea inherit pro_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab102bb9166fc2453ff67e15337038691 inherit pro_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#ab102bb9166fc2453ff67e15337038691">destroy</a> (void)</td></tr>
+<tr class="separator:ab102bb9166fc2453ff67e15337038691 inherit pro_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ce37d35474a3c6a86c23c28b39d1a40 inherit pro_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a1ce37d35474a3c6a86c23c28b39d1a40">getFileFormatName</a> (void) const</td></tr>
+<tr class="separator:a1ce37d35474a3c6a86c23c28b39d1a40 inherit pro_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a217b8814e756eb35b3123c646dbb94bf inherit pro_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a217b8814e756eb35b3123c646dbb94bf">hasMultipleWriteRefs</a> (void) const</td></tr>
+<tr class="separator:a217b8814e756eb35b3123c646dbb94bf inherit pro_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9d26d177755cb43299bb1201c94c989 inherit pro_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#aa9d26d177755cb43299bb1201c94c989">writeFooter</a> (<a class="el" href="classSoOutput.html">SoOutput</a> *out) const</td></tr>
+<tr class="separator:aa9d26d177755cb43299bb1201c94c989 inherit pro_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa08205585f2aea5d141e105b492df61f inherit pro_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#aa08205585f2aea5d141e105b492df61f">writeHeader</a> (<a class="el" href="classSoOutput.html">SoOutput</a> *out, SbBool isgroup, SbBool isengine) const</td></tr>
+<tr class="separator:aa08205585f2aea5d141e105b492df61f inherit pro_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:aec0e8c750b59b72ed7bbdbe909573ed5"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classSoFieldData.html">SoFieldData</a> **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLCollision.html#aec0e8c750b59b72ed7bbdbe909573ed5">getFieldDataPtr</a> (void)</td></tr>
+<tr class="separator:aec0e8c750b59b72ed7bbdbe909573ed5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_methods_classSoVRMLGroup"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classSoVRMLGroup')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classSoVRMLGroup.html">SoVRMLGroup</a></td></tr>
+<tr class="memitem:a82965e9593fdd911dccef64249503b59 inherit pro_static_methods_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classSoFieldData.html">SoFieldData</a> **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLGroup.html#a82965e9593fdd911dccef64249503b59">getFieldDataPtr</a> (void)</td></tr>
+<tr class="separator:a82965e9593fdd911dccef64249503b59 inherit pro_static_methods_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_methods_classSoVRMLParent"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classSoVRMLParent')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classSoVRMLParent.html">SoVRMLParent</a></td></tr>
+<tr class="memitem:af8c692671a489a1a129bd717d86ba164 inherit pro_static_methods_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classSoFieldData.html">SoFieldData</a> **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#af8c692671a489a1a129bd717d86ba164">getFieldDataPtr</a> (void)</td></tr>
+<tr class="separator:af8c692671a489a1a129bd717d86ba164 inherit pro_static_methods_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_methods_classSoGroup"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classSoGroup')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classSoGroup.html">SoGroup</a></td></tr>
+<tr class="memitem:a933eed1dd19c5266f4f5afe69e281361 inherit pro_static_methods_classSoGroup"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classSoFieldData.html">SoFieldData</a> **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGroup.html#a933eed1dd19c5266f4f5afe69e281361">getFieldDataPtr</a> (void)</td></tr>
+<tr class="separator:a933eed1dd19c5266f4f5afe69e281361 inherit pro_static_methods_classSoGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_methods_classSoNode"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classSoNode')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classSoNode.html">SoNode</a></td></tr>
+<tr class="memitem:a8b4c4bf288ab4e253021238a188ab66f inherit pro_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classSoFieldData.html">SoFieldData</a> **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a8b4c4bf288ab4e253021238a188ab66f">getFieldDataPtr</a> (void)</td></tr>
+<tr class="separator:a8b4c4bf288ab4e253021238a188ab66f inherit pro_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9ec668431c27b092c790a728ab32646 inherit pro_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#aa9ec668431c27b092c790a728ab32646">getNextActionMethodIndex</a> (void)</td></tr>
+<tr class="separator:aa9ec668431c27b092c790a728ab32646 inherit pro_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92fde0337a9037cc06dd084f6c644189 inherit pro_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a92fde0337a9037cc06dd084f6c644189">incNextActionMethodIndex</a> (void)</td></tr>
+<tr class="separator:a92fde0337a9037cc06dd084f6c644189 inherit pro_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52dab3d7a7ae89422c095a9c3a977e30 inherit pro_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a52dab3d7a7ae89422c095a9c3a977e30">setCompatibilityTypes</a> (const <a class="el" href="classSoType.html">SoType</a> &amp;nodetype, const uint32_t bitmask)</td></tr>
+<tr class="separator:a52dab3d7a7ae89422c095a9c3a977e30 inherit pro_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fcaac360719b61121c378ae267ca461 inherit pro_static_methods_classSoNode"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a6fcaac360719b61121c378ae267ca461">setNextActionMethodIndex</a> (int index)</td></tr>
+<tr class="separator:a6fcaac360719b61121c378ae267ca461 inherit pro_static_methods_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_methods_classSoBase"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classSoBase')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classSoBase.html">SoBase</a></td></tr>
+<tr class="memitem:a79a1022df39ae04dfefff5449d4ead24 inherit pro_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a79a1022df39ae04dfefff5449d4ead24">getCurrentWriteCounter</a> (void)</td></tr>
+<tr class="separator:a79a1022df39ae04dfefff5449d4ead24 inherit pro_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a704e6447bdfacab4171721c803087b54 inherit pro_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a704e6447bdfacab4171721c803087b54">staticDataLock</a> (void)</td></tr>
+<tr class="separator:a704e6447bdfacab4171721c803087b54 inherit pro_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7610ab9ef6c403635bb913cbf7a24032 inherit pro_static_methods_classSoBase"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a7610ab9ef6c403635bb913cbf7a24032">staticDataUnlock</a> (void)</td></tr>
+<tr class="separator:a7610ab9ef6c403635bb913cbf7a24032 inherit pro_static_methods_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_types_classSoVRMLGroup"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSoVRMLGroup')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSoVRMLGroup.html">SoVRMLGroup</a></td></tr>
+<tr class="memitem:abbd8e17198457d639e248c49c0043a9e inherit pub_types_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top"><a id="abbd8e17198457d639e248c49c0043a9e"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>CacheEnabled</b> { <b>OFF</b>
+, <b>ON</b>
+, <b>AUTO</b>
+ }</td></tr>
+<tr class="separator:abbd8e17198457d639e248c49c0043a9e inherit pub_types_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classSoNode"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSoNode')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSoNode.html">SoNode</a></td></tr>
+<tr class="memitem:afaebe871158a88c800ded8c44f583b09 inherit pub_types_classSoNode"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09">NodeType</a> { <br />
+&#160;&#160;<a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09ac0831e453c51372e48be01ebf3f75d5d">INVENTOR</a> = 0x0000
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09af394e16a0b4d94ea3336b93f865b65a2">VRML1</a> = 0x0001
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09a2c12262016b245952c410f20efd7a232">VRML2</a> = 0x0002
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09a3dd4cd24b703ba3d27c03f27278020e7">INVENTOR_1</a> = 0x0004
+, <br />
+&#160;&#160;<a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09a7968ab0659fe9def9c8e5bfbb3af4a09">INVENTOR_2_0</a> = 0x0008
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09aea47620acfc8e1c86c3913fe309b6710">INVENTOR_2_1</a> = 0x0010
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09ab07b87a88930896f6f3903544cd9df09">INVENTOR_2_5</a> = 0x0020
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09adeb3f37f9ac4d872643fab303ceca4bf">INVENTOR_2_6</a> = 0x0040
+, <br />
+&#160;&#160;<a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09ac72b86803610982c730cbba098b3676e">COIN_1_0</a> = 0x0080
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09a37f44b5c6ca9907b4fd06f6fda7bb4bb">COIN_2_0</a> = 0x0100
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09a3d8337c6cd271876193dfaad2578edab">EXTENSION</a> = 0x0200
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09abcc832df31e2e8db006118a4b69ee674">COIN_2_2</a> = 0x0400
+, <br />
+&#160;&#160;<a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09aac5e6240ea734dd599424d402ec56b30">COIN_2_3</a> = 0x0800
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09ace4736da876cb2728d2d86f8881a1896">COIN_2_4</a> = 0x1000
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09ad527ed560f104c0183d0292e29967c35">INVENTOR_5_0</a> = 0x2000
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09a9dec40259c61ecaba8e649ff852d6957">COIN_2_5</a> = 0x4000
+, <br />
+&#160;&#160;<a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09a9add7da281acc2b3945826e259078996">COIN_3_0</a> = 0x8000
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09a03a82fa9ac39e06248df07be24f2cf64">INVENTOR_6_0</a> = 0x10000
+, <a class="el" href="classSoNode.html#afaebe871158a88c800ded8c44f583b09a9a75bb3bf5185f9630f8bf8a53d62a82">COIN_4_0</a> = 0x20000
+<br />
+ }</td></tr>
+<tr class="separator:afaebe871158a88c800ded8c44f583b09 inherit pub_types_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_types_classSoBase"><td colspan="2" onclick="javascript:toggleInherit('pro_types_classSoBase')"><img src="closed.png" alt="-"/>&#160;Protected Types inherited from <a class="el" href="classSoBase.html">SoBase</a></td></tr>
+<tr class="memitem:a42fedf98911431b5a47e7734a228746f inherit pro_types_classSoBase"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoBase.html#a42fedf98911431b5a47e7734a228746f">BaseFlags</a> { <b>IS_ENGINE</b> = 0x01
+, <b>IS_GROUP</b> = 0x02
+ }</td></tr>
+<tr class="separator:a42fedf98911431b5a47e7734a228746f inherit pro_types_classSoBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classSoVRMLParent"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classSoVRMLParent')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classSoVRMLParent.html">SoVRMLParent</a></td></tr>
+<tr class="memitem:af4f153e36f9cd06bee689ced37b0f5d6 inherit pro_attribs_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoMFNode.html">SoMFNode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#af4f153e36f9cd06bee689ced37b0f5d6">addChildren</a></td></tr>
+<tr class="separator:af4f153e36f9cd06bee689ced37b0f5d6 inherit pro_attribs_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f0aaa164b318387a7f91f093a2529a5 inherit pro_attribs_classSoVRMLParent"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoMFNode.html">SoMFNode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVRMLParent.html#a5f0aaa164b318387a7f91f093a2529a5">removeChildren</a></td></tr>
+<tr class="separator:a5f0aaa164b318387a7f91f093a2529a5 inherit pro_attribs_classSoVRMLParent"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classSoGroup"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classSoGroup')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classSoGroup.html">SoGroup</a></td></tr>
+<tr class="memitem:a858f7cf002e23637542fcd92d098be70 inherit pro_attribs_classSoGroup"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoChildList.html">SoChildList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGroup.html#a858f7cf002e23637542fcd92d098be70">children</a></td></tr>
+<tr class="separator:a858f7cf002e23637542fcd92d098be70 inherit pro_attribs_classSoGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classSoNode"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classSoNode')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classSoNode.html">SoNode</a></td></tr>
+<tr class="memitem:aba56f57716173fe122324b08e8721fff inherit pro_attribs_classSoNode"><td class="memItemLeft" align="right" valign="top">SbUniqueId&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#aba56f57716173fe122324b08e8721fff">uniqueId</a></td></tr>
+<tr class="separator:aba56f57716173fe122324b08e8721fff inherit pro_attribs_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classSoFieldContainer"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classSoFieldContainer')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a></td></tr>
+<tr class="memitem:abfdbfe7eae635b3d67893c978297401f inherit pro_attribs_classSoFieldContainer"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldContainer.html#abfdbfe7eae635b3d67893c978297401f">isBuiltIn</a></td></tr>
+<tr class="separator:abfdbfe7eae635b3d67893c978297401f inherit pro_attribs_classSoFieldContainer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_attribs_classSoVRMLGroup"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_classSoVRMLGroup')"><img src="closed.png" alt="-"/>&#160;Static Protected Attributes inherited from <a class="el" href="classSoVRMLGroup.html">SoVRMLGroup</a></td></tr>
+<tr class="memitem:ad16e6a5df90e6731ab5f9033ee8c4e05 inherit pro_static_attribs_classSoVRMLGroup"><td class="memItemLeft" align="right" valign="top"><a id="ad16e6a5df90e6731ab5f9033ee8c4e05"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>numRenderCaches</b> = 2</td></tr>
+<tr class="separator:ad16e6a5df90e6731ab5f9033ee8c4e05 inherit pro_static_attribs_classSoVRMLGroup"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_attribs_classSoNode"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_classSoNode')"><img src="closed.png" alt="-"/>&#160;Static Protected Attributes inherited from <a class="el" href="classSoNode.html">SoNode</a></td></tr>
+<tr class="memitem:a9c90bc3168a1b09951ec86ffa6658b4c inherit pro_static_attribs_classSoNode"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a9c90bc3168a1b09951ec86ffa6658b4c">nextActionMethodIndex</a> = 0</td></tr>
+<tr class="separator:a9c90bc3168a1b09951ec86ffa6658b4c inherit pro_static_attribs_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ab930a96e1df8a910f54b22f11adfce inherit pro_static_attribs_classSoNode"><td class="memItemLeft" align="right" valign="top">static SbUniqueId&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNode.html#a7ab930a96e1df8a910f54b22f11adfce">nextUniqueId</a> = 1</td></tr>
+<tr class="separator:a7ab930a96e1df8a910f54b22f11adfce inherit pro_static_attribs_classSoNode"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSoVRMLCollision.html" title="The SoVRMLCollision class is used for collision detection with the avatar.">SoVRMLCollision</a> class is used for collision detection with the avatar. </p>
+<p><b>The detailed class documentation is taken verbatim from the VRML97 standard (ISO/IEC 14772-1:1997). It is copyright The Web3D Consortium, and is used by permission of the Consortium:</b><br  />
+<br  />
+ </p><pre class="fragment">Collision {
+  eventIn      MFNode   addChildren
+  eventIn      MFNode   removeChildren
+  exposedField MFNode   children        []
+  exposedField SFBool   collide         TRUE
+  field        SFVec3f  bboxCenter      0 0 0      # (-,)
+  field        SFVec3f  bboxSize        -1 -1 -1   # (0,) or -1,-1,-1
+  field        SFNode   proxy           NULL
+  eventOut     SFTime   collideTime
+}
+</pre><p>The Collision node is a grouping node that specifies the collision detection properties for its children (and their descendants), specifies surrogate objects that replace its children during collision detection, and sends events signalling that a collision has occurred between the avatar and the Collision node's geometry or surrogate. By default, all geometric nodes in the scene are collidable with the viewer except IndexedLineSet, PointSet, and Text. Browsers shall detect geometric collisions between the avatar (see <a class="el" href="classSoVRMLNavigationInfo.html" title="The SoVRMLNavigationInfo class is used to specify avatar and viewer settings.">SoVRMLNavigationInfo</a>) and the scene's geometry and prevent the avatar from 'entering' the geometry. See 4.13.4, Collision detection and terrain following (<a href="http://www.web3d.org/documents/specifications/14772/V2.0/part1/concepts.html#4.13.4">http://www.web3d.org/documents/specifications/14772/V2.0/part1/concepts.html#4.13.4</a>), for general information on collision detection.</p>
+<p>If there are no Collision nodes specified in a VRML file, browsers shall detect collisions between the avatar and all objects during navigation.</p>
+<p>Subclause 4.6.5, Grouping and children nodes (<a href="http://www.web3d.org/documents/specifications/14772/V2.0/part1/concepts.html#4.6.5">http://www.web3d.org/documents/specifications/14772/V2.0/part1/concepts.html#4.6.5</a>), contains a description of the children, addChildren, and removeChildren fields and eventIns.</p>
+<p>The Collision node's collide field enables and disables collision detection. If collide is set to FALSE, the children and all descendants of the Collision node shall not be checked for collision, even though they are drawn. This includes any descendent Collision nodes that have collide set to TRUE (i.e., setting collide to FALSE turns collision off for every node below it).</p>
+<p>Collision nodes with the collide field set to TRUE detect the nearest collision with their descendent geometry (or proxies). When the nearest collision is detected, the collided Collision node sends the time of the collision through its collideTime eventOut. If a Collision node contains a child, descendant, or proxy (see below) that is a Collision node, and both Collision nodes detect that a collision has occurred, both send a collideTime event at the same time. A collideTime event shall be generated if the avatar is colliding with collidable geometry when the Collision node is read from a VRML file or inserted into the transformation hierarchy.</p>
+<p>The bboxCenter and bboxSize fields specify a bounding box that encloses the Collision node's children. This is a hint that may be used for optimization purposes. The results are undefined if the specified bounding box is smaller than the actual bounding box of the children at any time. A default bboxSize value, (-1, -1, -1), implies that the bounding box is not specified and if needed shall be calculated by the browser. More details on the bboxCenter and bboxSize fields can be found in 4.6.4, Bounding boxes. (<a href="http://www.web3d.org/documents/specifications/14772/V2.0/part1/concepts.html#4.6.4">http://www.web3d.org/documents/specifications/14772/V2.0/part1/concepts.html#4.6.4</a>),</p>
+<p>The collision proxy, defined in the proxy field, is any legal children node as described in 4.6.5, Grouping and children nodes, (<a href="http://www.web3d.org/documents/specifications/14772/V2.0/part1/concepts.html#4.6.5">http://www.web3d.org/documents/specifications/14772/V2.0/part1/concepts.html#4.6.5</a>), that is used as a substitute for the Collision node's children during collision detection. The proxy is used strictly for collision detection; it is not drawn. If the value of the collide field is TRUE and the proxy field is non-NULL, the proxy field defines the scene on which collision detection is performed. If the proxy value is NULL, collision detection is performed against the children of the Collision node. If proxy is specified, any descendent children of the Collision node are ignored during collision detection. If children is empty, collide is TRUE, and proxy is specified, collision detection is performed against the proxy but nothing is displayed. In this manner, invisible collision objects may be supported.</p>
+<p>The collideTime eventOut generates an event specifying the time when the avatar (see <a class="el" href="classSoVRMLNavigationInfo.html" title="The SoVRMLNavigationInfo class is used to specify avatar and viewer settings.">SoVRMLNavigationInfo</a>) makes contact with the collidable children or proxy of the Collision node. An ideal implementation computes the exact time of collision. Implementations may approximate the ideal by sampling the positions of collidable objects and the user. The <a class="el" href="classSoVRMLNavigationInfo.html" title="The SoVRMLNavigationInfo class is used to specify avatar and viewer settings.">SoVRMLNavigationInfo</a> node contains additional information for parameters that control the avatar size. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a343d9ad30b1ee63ccffda3e0e44f527a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a343d9ad30b1ee63ccffda3e0e44f527a">&#9670;&nbsp;</a></span>SoVRMLCollision() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoVRMLCollision::SoVRMLCollision </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Constructor. </p>
+
+</div>
+</div>
+<a id="a5e842590cdd7c6eaad526e87852596d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e842590cdd7c6eaad526e87852596d0">&#9670;&nbsp;</a></span>SoVRMLCollision() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoVRMLCollision::SoVRMLCollision </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>numchildren</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Constructor. <em>numchildren</em> is the expected number of children. </p>
+
+</div>
+</div>
+<a id="ae8ccc84633f6aaa63b2d4c02cd5df018"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8ccc84633f6aaa63b2d4c02cd5df018">&#9670;&nbsp;</a></span>~SoVRMLCollision()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoVRMLCollision::~SoVRMLCollision </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Destructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ab37ad409fc3bbd8a2ead62b8fde3c597"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab37ad409fc3bbd8a2ead62b8fde3c597">&#9670;&nbsp;</a></span>getClassTypeId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoType.html">SoType</a> SoVRMLCollision::getClassTypeId </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This static method returns the <a class="el" href="classSoType.html" title="The SoType class is the basis for the runtime type system in Coin.">SoType</a> object associated with objects of this class. <br  />
+ </p>
+
+</div>
+</div>
+<a id="a9c76eb67de8b07608c48164726fbab00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c76eb67de8b07608c48164726fbab00">&#9670;&nbsp;</a></span>getFieldData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSoFieldData.html">SoFieldData</a> * SoVRMLCollision::getFieldData </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns a pointer to the class-wide field data storage object for this instance. If no fields are present, returns <code>NULL</code>. </p>
+
+<p>Reimplemented from <a class="el" href="classSoVRMLGroup.html#af4678ac1829cf9628c31d6e9dc70689e">SoVRMLGroup</a>.</p>
+
+</div>
+</div>
+<a id="aec0e8c750b59b72ed7bbdbe909573ed5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec0e8c750b59b72ed7bbdbe909573ed5">&#9670;&nbsp;</a></span>getFieldDataPtr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSoFieldData.html">SoFieldData</a> ** SoVRMLCollision::getFieldDataPtr </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+ Returns the <a class="el" href="classSoFieldData.html" title="The SoFieldData class is a container for a prototype set of fields.">SoFieldData</a> class which holds information about fields in this node. <br  />
+ </p>
+
+</div>
+</div>
+<a id="a235833e579be875457aebecc3a18632c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a235833e579be875457aebecc3a18632c">&#9670;&nbsp;</a></span>getTypeId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoType.html">SoType</a> SoVRMLCollision::getTypeId </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the type identification of an object derived from a class inheriting <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a>. This is used for runtime type checking and "downward" casting. <br  />
+ </p>
+
+<p>Reimplemented from <a class="el" href="classSoVRMLGroup.html#a67d9fe665fe05cc78497f23d7b3e3330">SoVRMLGroup</a>.</p>
+
+</div>
+</div>
+<a id="aa6b0f482087b103163489dd797237381"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6b0f482087b103163489dd797237381">&#9670;&nbsp;</a></span>GLRender()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVRMLCollision::GLRender </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoGLRenderAction.html">SoGLRenderAction</a> *&#160;</td>
+          <td class="paramname"><em>action</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Action method for the <a class="el" href="classSoGLRenderAction.html" title="The SoGLRenderAction class renders the scene graph with OpenGL calls.">SoGLRenderAction</a>.</p>
+<p>This is called during rendering traversals. Nodes influencing the rendering state in any way or want to throw geometry primitives at OpenGL override this method. </p>
+
+<p>Reimplemented from <a class="el" href="classSoVRMLGroup.html#a10f7262f363a3407372948637732749b">SoVRMLGroup</a>.</p>
+
+</div>
+</div>
+<a id="ad7ea75988949b4d5ca384ca5cab6dc97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7ea75988949b4d5ca384ca5cab6dc97">&#9670;&nbsp;</a></span>initClass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVRMLCollision::initClass </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae1c548660fea3409c80584f5acba1d58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1c548660fea3409c80584f5acba1d58">&#9670;&nbsp;</a></span>notify()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVRMLCollision::notify </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoNotList.html">SoNotList</a> *&#160;</td>
+          <td class="paramname"><em>l</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Notifies all auditors for this instance when changes are made. </p>
+
+<p>Reimplemented from <a class="el" href="classSoVRMLGroup.html#afe1f661e8caae17549c7dd0a303229b5">SoVRMLGroup</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a6e77e76247390a34a71060d22c66674c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e77e76247390a34a71060d22c66674c">&#9670;&nbsp;</a></span>collide</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoSFBool.html">SoSFBool</a> SoVRMLCollision::collide</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Enable/disable collision. </p>
+
+</div>
+</div>
+<a id="a384725f991882f6c089c5d65dd4410b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a384725f991882f6c089c5d65dd4410b3">&#9670;&nbsp;</a></span>collideTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoSFTime.html">SoSFTime</a> SoVRMLCollision::collideTime</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>An eventOut sent for each collision that occurs. </p>
+
+</div>
+</div>
+<a id="a6b1a5b50585a58d512fa8b83dd36091e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b1a5b50585a58d512fa8b83dd36091e">&#9670;&nbsp;</a></span>proxy</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoSFNode.html">SoSFNode</a> SoVRMLCollision::proxy</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Proxy node(s) used for collision testing. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SoVRMLCollision_8h_source.html">SoVRMLCollision.h</a></li>
+<li>Collision.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSoVRMLCollision.html">SoVRMLCollision</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

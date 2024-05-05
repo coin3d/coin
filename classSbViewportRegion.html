@@ -1,0 +1,897 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SbViewportRegion Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSbViewportRegion.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#related">Related Functions</a> &#124;
+<a href="classSbViewportRegion-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SbViewportRegion Class Reference<div class="ingroups"><a class="el" href="group__coin__base.html">Base Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSbViewportRegion.html" title="The SbViewportRegion class is a viewport within a full window.">SbViewportRegion</a> class is a viewport within a full window.  
+ <a href="classSbViewportRegion.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SbViewportRegion_8h_source.html">Inventor/SbViewportRegion.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a8b9832f4a55148a0553529c1c6cc0966"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewportRegion.html#a8b9832f4a55148a0553529c1c6cc0966">SbViewportRegion</a> (const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;vpReg)</td></tr>
+<tr class="separator:a8b9832f4a55148a0553529c1c6cc0966"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9573bcfcce0b7e9ffa774d82f0fc09ad"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewportRegion.html#a9573bcfcce0b7e9ffa774d82f0fc09ad">SbViewportRegion</a> (<a class="el" href="classSbVec2s.html">SbVec2s</a> winSize)</td></tr>
+<tr class="separator:a9573bcfcce0b7e9ffa774d82f0fc09ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af415380060c898ed123ba1b3cf120802"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewportRegion.html#af415380060c898ed123ba1b3cf120802">SbViewportRegion</a> (short width, short height)</td></tr>
+<tr class="separator:af415380060c898ed123ba1b3cf120802"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af522056ea9d27359b03cb2b88536f0e2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewportRegion.html#af522056ea9d27359b03cb2b88536f0e2">SbViewportRegion</a> (void)</td></tr>
+<tr class="separator:af522056ea9d27359b03cb2b88536f0e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3707ffb4733c62969c7d2dabb48b4315"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewportRegion.html#a3707ffb4733c62969c7d2dabb48b4315">getPixelsPerInch</a> (void) const</td></tr>
+<tr class="separator:a3707ffb4733c62969c7d2dabb48b4315"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab21864aeedaadd249ad0b044e08fcdc2"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewportRegion.html#ab21864aeedaadd249ad0b044e08fcdc2">getPixelsPerPoint</a> (void) const</td></tr>
+<tr class="separator:ab21864aeedaadd249ad0b044e08fcdc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2a189d0f49034a9c011940b6de6287c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewportRegion.html#ab2a189d0f49034a9c011940b6de6287c">getViewportAspectRatio</a> (void) const</td></tr>
+<tr class="separator:ab2a189d0f49034a9c011940b6de6287c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28055ad0bd9d1d55cdc25e6d2dd71eb5"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewportRegion.html#a28055ad0bd9d1d55cdc25e6d2dd71eb5">getViewportOrigin</a> (void) const</td></tr>
+<tr class="separator:a28055ad0bd9d1d55cdc25e6d2dd71eb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bb4240ca032f59004c6169d2eaeec21"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec2s.html">SbVec2s</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewportRegion.html#a4bb4240ca032f59004c6169d2eaeec21">getViewportOriginPixels</a> (void) const</td></tr>
+<tr class="separator:a4bb4240ca032f59004c6169d2eaeec21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02a6c39bb08a460cbfd2ce0bdfe1a6c9"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewportRegion.html#a02a6c39bb08a460cbfd2ce0bdfe1a6c9">getViewportSize</a> (void) const</td></tr>
+<tr class="separator:a02a6c39bb08a460cbfd2ce0bdfe1a6c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa535cf3a9b7a91c08abad5e6026908c0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec2s.html">SbVec2s</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewportRegion.html#aa535cf3a9b7a91c08abad5e6026908c0">getViewportSizePixels</a> (void) const</td></tr>
+<tr class="separator:aa535cf3a9b7a91c08abad5e6026908c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae63f4e7cae3adb1b27f6b78fd37f6d8b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec2s.html">SbVec2s</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewportRegion.html#ae63f4e7cae3adb1b27f6b78fd37f6d8b">getWindowSize</a> (void) const</td></tr>
+<tr class="separator:ae63f4e7cae3adb1b27f6b78fd37f6d8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24a129704980d044e361f65171300e5b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewportRegion.html#a24a129704980d044e361f65171300e5b">print</a> (FILE *file) const</td></tr>
+<tr class="separator:a24a129704980d044e361f65171300e5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3249cb0a55be9ced4681951283a176e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewportRegion.html#ab3249cb0a55be9ced4681951283a176e">scaleHeight</a> (float ratio)</td></tr>
+<tr class="separator:ab3249cb0a55be9ced4681951283a176e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11855a05e9ed450a22cddffdcb373e58"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewportRegion.html#a11855a05e9ed450a22cddffdcb373e58">scaleWidth</a> (float ratio)</td></tr>
+<tr class="separator:a11855a05e9ed450a22cddffdcb373e58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13bf92c587ea65ea35bafbd342b11d44"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewportRegion.html#a13bf92c587ea65ea35bafbd342b11d44">setPixelsPerInch</a> (float ppi)</td></tr>
+<tr class="separator:a13bf92c587ea65ea35bafbd342b11d44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee9986763e2234c411c8822206db539d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewportRegion.html#aee9986763e2234c411c8822206db539d">setViewport</a> (float left, float bottom, float width, float height)</td></tr>
+<tr class="separator:aee9986763e2234c411c8822206db539d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5f9e32fb1fde9ea5825572c76d06e57"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewportRegion.html#ad5f9e32fb1fde9ea5825572c76d06e57">setViewport</a> (<a class="el" href="classSbVec2f.html">SbVec2f</a> origin, <a class="el" href="classSbVec2f.html">SbVec2f</a> size)</td></tr>
+<tr class="separator:ad5f9e32fb1fde9ea5825572c76d06e57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98cd719e0afc2b942f0cd99110b8aff0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewportRegion.html#a98cd719e0afc2b942f0cd99110b8aff0">setViewportPixels</a> (<a class="el" href="classSbVec2s.html">SbVec2s</a> origin, <a class="el" href="classSbVec2s.html">SbVec2s</a> size)</td></tr>
+<tr class="separator:a98cd719e0afc2b942f0cd99110b8aff0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2977b42c205177a6e89b3860fd823951"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewportRegion.html#a2977b42c205177a6e89b3860fd823951">setViewportPixels</a> (short left, short bottom, short width, short height)</td></tr>
+<tr class="separator:a2977b42c205177a6e89b3860fd823951"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8772016f85c60dd7737eabca3483f0da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewportRegion.html#a8772016f85c60dd7737eabca3483f0da">setWindowSize</a> (<a class="el" href="classSbVec2s.html">SbVec2s</a> winSize)</td></tr>
+<tr class="separator:a8772016f85c60dd7737eabca3483f0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ae54dc0d8416d2cccdb0b3d6d3ae640"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewportRegion.html#a0ae54dc0d8416d2cccdb0b3d6d3ae640">setWindowSize</a> (short width, short height)</td></tr>
+<tr class="separator:a0ae54dc0d8416d2cccdb0b3d6d3ae640"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
+Related Functions</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
+</td></tr>
+<tr class="memitem:aa4ea8adbc5071d1d32e113fbeaeb1597"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewportRegion.html#aa4ea8adbc5071d1d32e113fbeaeb1597">operator!=</a> (const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;reg1, const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;reg2)</td></tr>
+<tr class="separator:aa4ea8adbc5071d1d32e113fbeaeb1597"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a759c633952740a45c23994bec51fb830"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbViewportRegion.html#a759c633952740a45c23994bec51fb830">operator==</a> (const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;reg1, const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;reg2)</td></tr>
+<tr class="separator:a759c633952740a45c23994bec51fb830"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSbViewportRegion.html" title="The SbViewportRegion class is a viewport within a full window.">SbViewportRegion</a> class is a viewport within a full window. </p>
+<p>The <a class="el" href="classSbViewportRegion.html" title="The SbViewportRegion class is a viewport within a full window.">SbViewportRegion</a> class contains information to represent a subview within a window. It stores information about the origin and size of the subview, as well as the size of the underlying "full" window.</p>
+<p>Available methods include inquiries and manipulation in both normalized coordinates and pixel coordinates.</p>
+<p>Below is a small example showing how the viewport of a viewer class can be modified, within a "proper" Coin and window system context. Hit 'D' or 'U' to move the viewport region 40 pixels down or up, respectively. Click 'Esc' and zoom with left + middle mouse buttons, to see how the region is defined, where no 3D geometry will be visible outside it. Click 'Esc' again to use 'U' and 'D'.</p>
+<div class="fragment"><div class="line"><span class="comment">// Copyright (C) by Kongsberg Oil &amp; Gas Technologies. All rights reserved.</span></div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/Qt/SoQt.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/Qt/viewers/SoQtExaminerViewer.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/nodes/SoEventCallback.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/nodes/SoSeparator.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/nodes/SoCone.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;Inventor/events/SoKeyboardEvent.h&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// ************************************************************</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">static</span> <span class="keywordtype">void</span></div>
+<div class="line">keypresscbfunc(<span class="keywordtype">void</span> * userdata, <a class="code" href="classSoEventCallback.html">SoEventCallback</a> * keyboardcb)</div>
+<div class="line">{</div>
+<div class="line">  SoQtExaminerViewer * viewer = (SoQtExaminerViewer *)userdata;</div>
+<div class="line"> </div>
+<div class="line">  <span class="keyword">const</span> <a class="code" href="classSoEvent.html">SoEvent</a> * <span class="keyword">event</span> = keyboardcb-&gt;<a class="code" href="classSoEventCallback.html#a20fe0e1292bb58a26bb37946cc173d9d">getEvent</a>();</div>
+<div class="line"> </div>
+<div class="line">  <span class="keywordtype">int</span> shift = 0;</div>
+<div class="line"> </div>
+<div class="line">  <span class="keywordflow">if</span> (SO_KEY_PRESS_EVENT(event, U)) {</div>
+<div class="line">    shift = 40;</div>
+<div class="line">    keyboardcb-&gt;<a class="code" href="classSoEventCallback.html#a3667ebe00e7f5753d6fe47e385a9f2f4">setHandled</a>();</div>
+<div class="line">  }</div>
+<div class="line">  <span class="keywordflow">else</span> <span class="keywordflow">if</span> (SO_KEY_PRESS_EVENT(event, D)) {</div>
+<div class="line">    shift = -40;</div>
+<div class="line">    keyboardcb-&gt;<a class="code" href="classSoEventCallback.html#a3667ebe00e7f5753d6fe47e385a9f2f4">setHandled</a>();</div>
+<div class="line">  }</div>
+<div class="line"> </div>
+<div class="line">  <span class="keywordflow">if</span> (keyboardcb-&gt;<a class="code" href="classSoEventCallback.html#a23eac72f15fc1947afbb0170b6fa5b05">isHandled</a>()) {</div>
+<div class="line">    <a class="code" href="classSbViewportRegion.html">SbViewportRegion</a> vpr = viewer-&gt;getViewportRegion();</div>
+<div class="line">    <a class="code" href="classSbVec2s.html">SbVec2s</a> size = vpr.<a class="code" href="classSbViewportRegion.html#aa535cf3a9b7a91c08abad5e6026908c0">getViewportSizePixels</a>();</div>
+<div class="line">    <a class="code" href="classSbVec2s.html">SbVec2s</a> origin = vpr.<a class="code" href="classSbViewportRegion.html#a4bb4240ca032f59004c6169d2eaeec21">getViewportOriginPixels</a>();</div>
+<div class="line">    origin[1] -= shift;</div>
+<div class="line">    vpr.<a class="code" href="classSbViewportRegion.html#a2977b42c205177a6e89b3860fd823951">setViewportPixels</a>(origin, size);</div>
+<div class="line">    viewer-&gt;setViewportRegion(vpr);</div>
+<div class="line">  }</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// ************************************************************</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span></div>
+<div class="line">main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> ** argv)</div>
+<div class="line">{</div>
+<div class="line">  QWidget * window = SoQt::init(argv[0]);</div>
+<div class="line"> </div>
+<div class="line">  <a class="code" href="classSoSeparator.html">SoSeparator</a> * root = <span class="keyword">new</span> <a class="code" href="classSoSeparator.html">SoSeparator</a>;</div>
+<div class="line">  root-&gt;<a class="code" href="classSoBase.html#ac01cf34901b2a2be1bc2671bb2463851">ref</a>();</div>
+<div class="line"> </div>
+<div class="line">  root-&gt;<a class="code" href="classSoGroup.html#a23e0a7aebf3ec75c40638cc360c0e5e6">addChild</a>(<span class="keyword">new</span> <a class="code" href="classSoCone.html">SoCone</a>);</div>
+<div class="line"> </div>
+<div class="line">  SoQtExaminerViewer * viewer = <span class="keyword">new</span> SoQtExaminerViewer(window);</div>
+<div class="line"> </div>
+<div class="line">  <a class="code" href="classSoEventCallback.html">SoEventCallback</a> * eventcb = <span class="keyword">new</span> <a class="code" href="classSoEventCallback.html">SoEventCallback</a>;</div>
+<div class="line">  eventcb-&gt;<a class="code" href="classSoEventCallback.html#a45302c5c2492bf1654fd89a707eac766">addEventCallback</a>(<a class="code" href="classSoKeyboardEvent.html#a345b6d775f976f8415d00b42efc853ed">SoKeyboardEvent::getClassTypeId</a>(),</div>
+<div class="line">                            keypresscbfunc, viewer);</div>
+<div class="line">  root-&gt;<a class="code" href="classSoGroup.html#a0a87322279423aab116fe442626158b7">insertChild</a>(eventcb, 0);</div>
+<div class="line"> </div>
+<div class="line">  viewer-&gt;setViewing(FALSE);</div>
+<div class="line">  viewer-&gt;setDecoration(FALSE);</div>
+<div class="line">  viewer-&gt;setSceneGraph(root);</div>
+<div class="line">  viewer-&gt;show();</div>
+<div class="line">  SoQt::show(window);</div>
+<div class="line"> </div>
+<div class="line">  SoQt::mainLoop();</div>
+<div class="line"> </div>
+<div class="line">  <span class="keyword">delete</span> viewer;</div>
+<div class="line">  root-&gt;<a class="code" href="classSoBase.html#a254b1ac395fe4d4d10438b994bdb3561">unref</a>();</div>
+<div class="line">  <span class="keywordflow">return</span> 0;</div>
+<div class="line">}</div>
+<div class="ttc" id="aclassSbVec2s_html"><div class="ttname"><a href="classSbVec2s.html">SbVec2s</a></div><div class="ttdoc">The SbVec2s class is a 2 dimensional vector with short integer coordinates.</div><div class="ttdef"><b>Definition:</b> SbVec2s.h:51</div></div>
+<div class="ttc" id="aclassSbViewportRegion_html"><div class="ttname"><a href="classSbViewportRegion.html">SbViewportRegion</a></div><div class="ttdoc">The SbViewportRegion class is a viewport within a full window.</div><div class="ttdef"><b>Definition:</b> SbViewportRegion.h:40</div></div>
+<div class="ttc" id="aclassSbViewportRegion_html_a2977b42c205177a6e89b3860fd823951"><div class="ttname"><a href="classSbViewportRegion.html#a2977b42c205177a6e89b3860fd823951">SbViewportRegion::setViewportPixels</a></div><div class="ttdeci">void setViewportPixels(short left, short bottom, short width, short height)</div><div class="ttdef"><b>Definition:</b> SbViewportRegion.cpp:323</div></div>
+<div class="ttc" id="aclassSbViewportRegion_html_a4bb4240ca032f59004c6169d2eaeec21"><div class="ttname"><a href="classSbViewportRegion.html#a4bb4240ca032f59004c6169d2eaeec21">SbViewportRegion::getViewportOriginPixels</a></div><div class="ttdeci">const SbVec2s &amp; getViewportOriginPixels(void) const</div><div class="ttdef"><b>Definition:</b> SbViewportRegion.cpp:408</div></div>
+<div class="ttc" id="aclassSbViewportRegion_html_aa535cf3a9b7a91c08abad5e6026908c0"><div class="ttname"><a href="classSbViewportRegion.html#aa535cf3a9b7a91c08abad5e6026908c0">SbViewportRegion::getViewportSizePixels</a></div><div class="ttdeci">const SbVec2s &amp; getViewportSizePixels(void) const</div><div class="ttdef"><b>Definition:</b> SbViewportRegion.cpp:435</div></div>
+<div class="ttc" id="aclassSoBase_html_a254b1ac395fe4d4d10438b994bdb3561"><div class="ttname"><a href="classSoBase.html#a254b1ac395fe4d4d10438b994bdb3561">SoBase::unref</a></div><div class="ttdeci">void unref(void) const</div><div class="ttdef"><b>Definition:</b> SoBase.cpp:530</div></div>
+<div class="ttc" id="aclassSoBase_html_ac01cf34901b2a2be1bc2671bb2463851"><div class="ttname"><a href="classSoBase.html#ac01cf34901b2a2be1bc2671bb2463851">SoBase::ref</a></div><div class="ttdeci">void ref(void) const</div><div class="ttdef"><b>Definition:</b> SoBase.cpp:478</div></div>
+<div class="ttc" id="aclassSoCone_html"><div class="ttname"><a href="classSoCone.html">SoCone</a></div><div class="ttdoc">The SoCone class is for rendering cone shapes.</div><div class="ttdef"><b>Definition:</b> SoCone.h:41</div></div>
+<div class="ttc" id="aclassSoEventCallback_html"><div class="ttname"><a href="classSoEventCallback.html">SoEventCallback</a></div><div class="ttdoc">The SoEventCallback class provides functionality for catching events.</div><div class="ttdef"><b>Definition:</b> SoEventCallback.h:52</div></div>
+<div class="ttc" id="aclassSoEventCallback_html_a20fe0e1292bb58a26bb37946cc173d9d"><div class="ttname"><a href="classSoEventCallback.html#a20fe0e1292bb58a26bb37946cc173d9d">SoEventCallback::getEvent</a></div><div class="ttdeci">const SoEvent * getEvent(void) const</div><div class="ttdef"><b>Definition:</b> SoEventCallback.cpp:230</div></div>
+<div class="ttc" id="aclassSoEventCallback_html_a23eac72f15fc1947afbb0170b6fa5b05"><div class="ttname"><a href="classSoEventCallback.html#a23eac72f15fc1947afbb0170b6fa5b05">SoEventCallback::isHandled</a></div><div class="ttdeci">SbBool isHandled(void) const</div><div class="ttdef"><b>Definition:</b> SoEventCallback.cpp:282</div></div>
+<div class="ttc" id="aclassSoEventCallback_html_a3667ebe00e7f5753d6fe47e385a9f2f4"><div class="ttname"><a href="classSoEventCallback.html#a3667ebe00e7f5753d6fe47e385a9f2f4">SoEventCallback::setHandled</a></div><div class="ttdeci">void setHandled(void)</div><div class="ttdef"><b>Definition:</b> SoEventCallback.cpp:264</div></div>
+<div class="ttc" id="aclassSoEventCallback_html_a45302c5c2492bf1654fd89a707eac766"><div class="ttname"><a href="classSoEventCallback.html#a45302c5c2492bf1654fd89a707eac766">SoEventCallback::addEventCallback</a></div><div class="ttdeci">void addEventCallback(SoType eventtype, SoEventCallbackCB *f, void *userdata=NULL)</div><div class="ttdef"><b>Definition:</b> SoEventCallback.cpp:177</div></div>
+<div class="ttc" id="aclassSoEvent_html"><div class="ttname"><a href="classSoEvent.html">SoEvent</a></div><div class="ttdoc">The SoEvent class is the base class for all Coin events.</div><div class="ttdef"><b>Definition:</b> SoEvent.h:45</div></div>
+<div class="ttc" id="aclassSoGroup_html_a0a87322279423aab116fe442626158b7"><div class="ttname"><a href="classSoGroup.html#a0a87322279423aab116fe442626158b7">SoGroup::insertChild</a></div><div class="ttdeci">virtual void insertChild(SoNode *child, int newchildindex)</div><div class="ttdef"><b>Definition:</b> SoGroup.cpp:470</div></div>
+<div class="ttc" id="aclassSoGroup_html_a23e0a7aebf3ec75c40638cc360c0e5e6"><div class="ttname"><a href="classSoGroup.html#a23e0a7aebf3ec75c40638cc360c0e5e6">SoGroup::addChild</a></div><div class="ttdeci">virtual void addChild(SoNode *node)</div><div class="ttdef"><b>Definition:</b> SoGroup.cpp:453</div></div>
+<div class="ttc" id="aclassSoKeyboardEvent_html_a345b6d775f976f8415d00b42efc853ed"><div class="ttname"><a href="classSoKeyboardEvent.html#a345b6d775f976f8415d00b42efc853ed">SoKeyboardEvent::getClassTypeId</a></div><div class="ttdeci">static SoType getClassTypeId(void)</div><div class="ttdef"><b>Definition:</b> SoKeyboardEvent.cpp:225</div></div>
+<div class="ttc" id="aclassSoSeparator_html"><div class="ttname"><a href="classSoSeparator.html">SoSeparator</a></div><div class="ttdoc">The SoSeparator class is a state-preserving group node.</div><div class="ttdef"><b>Definition:</b> SoSeparator.h:44</div></div>
+</div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewVolume.html" title="The SbViewVolume class is a viewing volume in 3D space.">SbViewVolume</a> </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="af522056ea9d27359b03cb2b88536f0e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af522056ea9d27359b03cb2b88536f0e2">&#9670;&nbsp;</a></span>SbViewportRegion() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbViewportRegion::SbViewportRegion </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The default <a class="el" href="classSbViewportRegion.html" title="The SbViewportRegion class is a viewport within a full window.">SbViewportRegion</a> constructor initializes the viewport to fully cover a [100, 100] size window with 72 pixels per inch resolution. </p>
+
+</div>
+</div>
+<a id="af415380060c898ed123ba1b3cf120802"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af415380060c898ed123ba1b3cf120802">&#9670;&nbsp;</a></span>SbViewportRegion() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbViewportRegion::SbViewportRegion </td>
+          <td>(</td>
+          <td class="paramtype">short&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">short&#160;</td>
+          <td class="paramname"><em>height</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Construct and initialize an <a class="el" href="classSbViewportRegion.html" title="The SbViewportRegion class is a viewport within a full window.">SbViewportRegion</a> instance with the given pixel value window dimensions. The viewport within this window will be set to cover the window completely. </p>
+
+</div>
+</div>
+<a id="a9573bcfcce0b7e9ffa774d82f0fc09ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9573bcfcce0b7e9ffa774d82f0fc09ad">&#9670;&nbsp;</a></span>SbViewportRegion() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbViewportRegion::SbViewportRegion </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSbVec2s.html">SbVec2s</a>&#160;</td>
+          <td class="paramname"><em>winsizearg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Construct and initialize an <a class="el" href="classSbViewportRegion.html" title="The SbViewportRegion class is a viewport within a full window.">SbViewportRegion</a> instance with the given pixel value window dimensions. The viewport within this window will be set to cover the window completely. </p>
+
+</div>
+</div>
+<a id="a8b9832f4a55148a0553529c1c6cc0966"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b9832f4a55148a0553529c1c6cc0966">&#9670;&nbsp;</a></span>SbViewportRegion() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbViewportRegion::SbViewportRegion </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;&#160;</td>
+          <td class="paramname"><em>vpReg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Copy constructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a3707ffb4733c62969c7d2dabb48b4315"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3707ffb4733c62969c7d2dabb48b4315">&#9670;&nbsp;</a></span>getPixelsPerInch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SbViewportRegion::getPixelsPerInch </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get pixels per inch.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewportRegion.html#a13bf92c587ea65ea35bafbd342b11d44">setPixelsPerInch()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="ab21864aeedaadd249ad0b044e08fcdc2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab21864aeedaadd249ad0b044e08fcdc2">&#9670;&nbsp;</a></span>getPixelsPerPoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SbViewportRegion::getPixelsPerPoint </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get pixels per point. A <em>point</em> is defined as something you can put 72 of per inch...</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewportRegion.html#a13bf92c587ea65ea35bafbd342b11d44">setPixelsPerInch()</a>, <a class="el" href="classSbViewportRegion.html#a3707ffb4733c62969c7d2dabb48b4315">getPixelsPerInch()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="ab2a189d0f49034a9c011940b6de6287c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2a189d0f49034a9c011940b6de6287c">&#9670;&nbsp;</a></span>getViewportAspectRatio()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SbViewportRegion::getViewportAspectRatio </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the aspect ratio of the viewport region. The aspect ratio is calculated as pixelwidth divided on pixelheight. </p>
+
+</div>
+</div>
+<a id="a28055ad0bd9d1d55cdc25e6d2dd71eb5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28055ad0bd9d1d55cdc25e6d2dd71eb5">&#9670;&nbsp;</a></span>getViewportOrigin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp; SbViewportRegion::getViewportOrigin </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return normalized viewport origin coordinates.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewportRegion.html#aee9986763e2234c411c8822206db539d">setViewport()</a>, <a class="el" href="classSbViewportRegion.html#a4bb4240ca032f59004c6169d2eaeec21">getViewportOriginPixels()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a4bb4240ca032f59004c6169d2eaeec21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4bb4240ca032f59004c6169d2eaeec21">&#9670;&nbsp;</a></span>getViewportOriginPixels()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbVec2s.html">SbVec2s</a> &amp; SbViewportRegion::getViewportOriginPixels </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return viewport origin coordinates in pixel values.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewportRegion.html#a2977b42c205177a6e89b3860fd823951">setViewportPixels()</a>, <a class="el" href="classSbViewportRegion.html#a28055ad0bd9d1d55cdc25e6d2dd71eb5">getViewportOrigin()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a02a6c39bb08a460cbfd2ce0bdfe1a6c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02a6c39bb08a460cbfd2ce0bdfe1a6c9">&#9670;&nbsp;</a></span>getViewportSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp; SbViewportRegion::getViewportSize </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the normalized viewport size.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewportRegion.html#aee9986763e2234c411c8822206db539d">setViewport()</a>, <a class="el" href="classSbViewportRegion.html#aa535cf3a9b7a91c08abad5e6026908c0">getViewportSizePixels()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="aa535cf3a9b7a91c08abad5e6026908c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa535cf3a9b7a91c08abad5e6026908c0">&#9670;&nbsp;</a></span>getViewportSizePixels()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbVec2s.html">SbVec2s</a> &amp; SbViewportRegion::getViewportSizePixels </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns viewport size in pixel coordinates.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewportRegion.html#a2977b42c205177a6e89b3860fd823951">setViewportPixels()</a>, <a class="el" href="classSbViewportRegion.html#a02a6c39bb08a460cbfd2ce0bdfe1a6c9">getViewportSize()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="ae63f4e7cae3adb1b27f6b78fd37f6d8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae63f4e7cae3adb1b27f6b78fd37f6d8b">&#9670;&nbsp;</a></span>getWindowSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbVec2s.html">SbVec2s</a> &amp; SbViewportRegion::getWindowSize </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns window dimensions (which are in absolute (i.e. pixel) coordinates).</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewportRegion.html#a0ae54dc0d8416d2cccdb0b3d6d3ae640">setWindowSize()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a24a129704980d044e361f65171300e5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24a129704980d044e361f65171300e5b">&#9670;&nbsp;</a></span>print()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewportRegion::print </td>
+          <td>(</td>
+          <td class="paramtype">FILE *&#160;</td>
+          <td class="paramname"><em>fp</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Dump the state of this object to the <em>fp</em> file stream. Only works in debug version of library, method does nothing in an optimized build. </p>
+
+</div>
+</div>
+<a id="ab3249cb0a55be9ced4681951283a176e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3249cb0a55be9ced4681951283a176e">&#9670;&nbsp;</a></span>scaleHeight()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewportRegion::scaleHeight </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ratio</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Scale the height of the viewport region.</p>
+<p>The scale factor should not make the viewport larger than the window. If this happens, the viewport will be clamped.</p>
+<p>The scaling will be done around the viewport region center point, but if this causes the viewport origin to be moved below (0,0), the origin coordinates will be clamped.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewportRegion.html#a11855a05e9ed450a22cddffdcb373e58">scaleWidth()</a>. <br  />
+ </dd></dl>
+
+</div>
+</div>
+<a id="a11855a05e9ed450a22cddffdcb373e58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11855a05e9ed450a22cddffdcb373e58">&#9670;&nbsp;</a></span>scaleWidth()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewportRegion::scaleWidth </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ratio</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Scale the width of the viewport region.</p>
+<p>The scale factor should not make the viewport larger than the window. If this happens, the viewport will be clamped.</p>
+<p>The scaling will be done around the viewport region center point, but if this causes the viewport origin to be moved below (0,0), the origin coordinates will be clamped.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewportRegion.html#ab3249cb0a55be9ced4681951283a176e">scaleHeight()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a13bf92c587ea65ea35bafbd342b11d44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13bf92c587ea65ea35bafbd342b11d44">&#9670;&nbsp;</a></span>setPixelsPerInch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewportRegion::setPixelsPerInch </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ppi</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set pixels per inch. Default value is 72.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewportRegion.html#a3707ffb4733c62969c7d2dabb48b4315">getPixelsPerInch()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="aee9986763e2234c411c8822206db539d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee9986763e2234c411c8822206db539d">&#9670;&nbsp;</a></span>setViewport() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewportRegion::setViewport </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>left</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>bottom</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>height</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set up the origin and size of the viewport region in normalized coordinates.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewportRegion.html#a28055ad0bd9d1d55cdc25e6d2dd71eb5">getViewportOrigin()</a>, <a class="el" href="classSbViewportRegion.html#a02a6c39bb08a460cbfd2ce0bdfe1a6c9">getViewportSize()</a>, <a class="el" href="classSbViewportRegion.html#a2977b42c205177a6e89b3860fd823951">setViewportPixels()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="ad5f9e32fb1fde9ea5825572c76d06e57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5f9e32fb1fde9ea5825572c76d06e57">&#9670;&nbsp;</a></span>setViewport() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewportRegion::setViewport </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSbVec2f.html">SbVec2f</a>&#160;</td>
+          <td class="paramname"><em>origin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbVec2f.html">SbVec2f</a>&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. </p>
+
+</div>
+</div>
+<a id="a98cd719e0afc2b942f0cd99110b8aff0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98cd719e0afc2b942f0cd99110b8aff0">&#9670;&nbsp;</a></span>setViewportPixels() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewportRegion::setViewportPixels </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSbVec2s.html">SbVec2s</a>&#160;</td>
+          <td class="paramname"><em>origin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbVec2s.html">SbVec2s</a>&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. </p>
+
+</div>
+</div>
+<a id="a2977b42c205177a6e89b3860fd823951"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2977b42c205177a6e89b3860fd823951">&#9670;&nbsp;</a></span>setViewportPixels() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewportRegion::setViewportPixels </td>
+          <td>(</td>
+          <td class="paramtype">short&#160;</td>
+          <td class="paramname"><em>left</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">short&#160;</td>
+          <td class="paramname"><em>bottom</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">short&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">short&#160;</td>
+          <td class="paramname"><em>height</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set up the origin and size of the viewport region in pixel coordinates.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewportRegion.html#a4bb4240ca032f59004c6169d2eaeec21">getViewportOriginPixels()</a>, <a class="el" href="classSbViewportRegion.html#aa535cf3a9b7a91c08abad5e6026908c0">getViewportSizePixels()</a>, <a class="el" href="classSbViewportRegion.html#aee9986763e2234c411c8822206db539d">setViewport()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a8772016f85c60dd7737eabca3483f0da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8772016f85c60dd7737eabca3483f0da">&#9670;&nbsp;</a></span>setWindowSize() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewportRegion::setWindowSize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSbVec2s.html">SbVec2s</a>&#160;</td>
+          <td class="paramname"><em>winsizearg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. </p>
+
+</div>
+</div>
+<a id="a0ae54dc0d8416d2cccdb0b3d6d3ae640"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ae54dc0d8416d2cccdb0b3d6d3ae640">&#9670;&nbsp;</a></span>setWindowSize() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbViewportRegion::setWindowSize </td>
+          <td>(</td>
+          <td class="paramtype">short&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">short&#160;</td>
+          <td class="paramname"><em>height</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the window size in pixels. The viewport rectangle dimensions will stay intact.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbViewportRegion.html#ae63f4e7cae3adb1b27f6b78fd37f6d8b">getWindowSize()</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="aa4ea8adbc5071d1d32e113fbeaeb1597"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4ea8adbc5071d1d32e113fbeaeb1597">&#9670;&nbsp;</a></span>operator!=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;&#160;</td>
+          <td class="paramname"><em>reg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;&#160;</td>
+          <td class="paramname"><em>reg2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Compares two <a class="el" href="classSbViewportRegion.html" title="The SbViewportRegion class is a viewport within a full window.">SbViewportRegion</a> instances for inequality.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.4 </dd></dl>
+
+</div>
+</div>
+<a id="a759c633952740a45c23994bec51fb830"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a759c633952740a45c23994bec51fb830">&#9670;&nbsp;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;&#160;</td>
+          <td class="paramname"><em>reg1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;&#160;</td>
+          <td class="paramname"><em>reg2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Compares two <a class="el" href="classSbViewportRegion.html" title="The SbViewportRegion class is a viewport within a full window.">SbViewportRegion</a> instances for equality. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SbViewportRegion_8h_source.html">SbViewportRegion.h</a></li>
+<li>SbViewportRegion.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSbViewportRegion.html">SbViewportRegion</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

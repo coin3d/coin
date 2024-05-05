@@ -1,0 +1,2596 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SoVectorizeAction Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSoVectorizeAction.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
+<a href="classSoVectorizeAction-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SoVectorizeAction Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span><div class="ingroups"><a class="el" href="group__coin__hardcopy.html">Vectorized Printing Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSoVectorizeAction.html" title="The SoVectorizeAction class is the base class for vectorizing Coin scene graphs.">SoVectorizeAction</a> class is the base class for vectorizing Coin scene graphs.  
+ <a href="classSoVectorizeAction.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SoVectorizeAction_8h_source.html">Inventor/annex/HardCopy/SoVectorizeAction.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for SoVectorizeAction:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classSoVectorizeAction.png" usemap="#SoVectorizeAction_map" alt=""/>
+  <map id="SoVectorizeAction_map" name="SoVectorizeAction_map">
+<area href="classSoCallbackAction.html" title="The SoCallbackAction class invokes callbacks at specific nodes." alt="SoCallbackAction" shape="rect" coords="0,56,133,80"/>
+<area href="classSoAction.html" title="The SoAction class is the base class for all traversal actions." alt="SoAction" shape="rect" coords="0,0,133,24"/>
+<area href="classSoVectorizePSAction.html" title="The SoVectorizePSAction class is used for rendering to a PostScript file." alt="SoVectorizePSAction" shape="rect" coords="0,168,133,192"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:accd0df1a48ffe5e7b751d8b28cfd9bec"><td class="memItemLeft" align="right" valign="top"><a id="accd0df1a48ffe5e7b751d8b28cfd9bec"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>ColorTranslationMethod</b> { <b>REVERSE_ONLY_BLACK_AND_WHITE</b>
+, <b>AS_IS</b>
+, <b>REVERSE</b>
+ }</td></tr>
+<tr class="separator:accd0df1a48ffe5e7b751d8b28cfd9bec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac07b28146ca5ccb7afa3a560e2d4c822"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a> { <b>INCH</b>
+, <b>MM</b>
+, <b>METER</b>
+ }</td></tr>
+<tr class="separator:ac07b28146ca5ccb7afa3a560e2d4c822"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cc0da997b954bb64538d4f5ce4814be"><td class="memItemLeft" align="right" valign="top"><a id="a8cc0da997b954bb64538d4f5ce4814be"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>EndLineStyle</b> { <b>BUTT_END</b>
+, <b>SQUARE_END</b>
+, <b>TRIANGULAR_END</b>
+, <b>ROUND_END</b>
+ }</td></tr>
+<tr class="separator:a8cc0da997b954bb64538d4f5ce4814be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5dff5b1736012835cb75dce73211f6b8"><td class="memItemLeft" align="right" valign="top"><a id="a5dff5b1736012835cb75dce73211f6b8"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>HLHSRMode</b> { <br />
+&#160;&#160;<b>NO_HLHSR</b>
+, <b>HLHSR_SIMPLE_PAINTER</b>
+, <b>HLHSR_PAINTER</b>
+, <b>HLHSR_PAINTER_SURFACE_REMOVAL</b>
+, <br />
+&#160;&#160;<b>HIDDEN_LINES_REMOVAL</b>
+<br />
+ }</td></tr>
+<tr class="separator:a5dff5b1736012835cb75dce73211f6b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5d46d21d504dca213c0e70eda58a60c"><td class="memItemLeft" align="right" valign="top"><a id="ab5d46d21d504dca213c0e70eda58a60c"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>JoinLineStyle</b> { <br />
+&#160;&#160;<b>NO_JOIN</b>
+, <b>MITERED_JOIN</b>
+, <b>MITERED_BEVELED_JOIN</b>
+, <b>BEVELED_JOIN</b>
+, <br />
+&#160;&#160;<b>TRIANGULAR_JOIN</b>
+, <b>ROUNDED_JOIN</b>
+<br />
+ }</td></tr>
+<tr class="separator:ab5d46d21d504dca213c0e70eda58a60c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5b4dae5c682ec7a8d4ec1246ec2e2f8"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#af5b4dae5c682ec7a8d4ec1246ec2e2f8">Orientation</a> { <b>PORTRAIT</b>
+, <b>LANDSCAPE</b>
+ }</td></tr>
+<tr class="separator:af5b4dae5c682ec7a8d4ec1246ec2e2f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fc8ac7c81ca974b55807f39f715f83a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a7fc8ac7c81ca974b55807f39f715f83a">PageSize</a> { <br />
+&#160;&#160;<a class="el" href="classSoVectorizeAction.html#a7fc8ac7c81ca974b55807f39f715f83aae5796440e222f2864e7abdc656979277">A0</a> = 0
+, <a class="el" href="classSoVectorizeAction.html#a7fc8ac7c81ca974b55807f39f715f83aabf76f945847e5190a1837670381b8ba1">A1</a>
+, <a class="el" href="classSoVectorizeAction.html#a7fc8ac7c81ca974b55807f39f715f83aaa7dfa7c834023e6dac083d4d6b100652">A2</a>
+, <a class="el" href="classSoVectorizeAction.html#a7fc8ac7c81ca974b55807f39f715f83aaca6f13741e987b4c4b94cb6e980593e4">A3</a>
+, <br />
+&#160;&#160;<a class="el" href="classSoVectorizeAction.html#a7fc8ac7c81ca974b55807f39f715f83aa3a0760c9451c3e62d56668452ed7fc04">A4</a>
+, <a class="el" href="classSoVectorizeAction.html#a7fc8ac7c81ca974b55807f39f715f83aa73fc34f6ac8929bec158a8522d15a862">A5</a>
+, <a class="el" href="classSoVectorizeAction.html#a7fc8ac7c81ca974b55807f39f715f83aabc2575f581a7fc88fc726f6860aa196f">A6</a>
+, <a class="el" href="classSoVectorizeAction.html#a7fc8ac7c81ca974b55807f39f715f83aa726975b0d145a3b1cf9a00e62a50c66a">A7</a>
+, <br />
+&#160;&#160;<a class="el" href="classSoVectorizeAction.html#a7fc8ac7c81ca974b55807f39f715f83aa0623b6aedb6f8330d5b6c3bfb253d65e">A8</a>
+, <a class="el" href="classSoVectorizeAction.html#a7fc8ac7c81ca974b55807f39f715f83aa46d4049d062aa87dd3e7b849c7941c9a">A9</a>
+, <a class="el" href="classSoVectorizeAction.html#a7fc8ac7c81ca974b55807f39f715f83aa1359610ce17c214cfd15f9573dc1a771">A10</a>
+<br />
+ }</td></tr>
+<tr class="separator:a7fc8ac7c81ca974b55807f39f715f83a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1945e3dc46d9004454f6be5e90947f8f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a1945e3dc46d9004454f6be5e90947f8f">PointStyle</a> { <a class="el" href="classSoVectorizeAction.html#a1945e3dc46d9004454f6be5e90947f8faaf2712ae869d411e9bb5abc19613f0df">CIRCLE</a>
+, <a class="el" href="classSoVectorizeAction.html#a1945e3dc46d9004454f6be5e90947f8fa5fad4d4fe72d7cb27bcc861f697b1b53">SQUARE</a>
+ }</td></tr>
+<tr class="separator:a1945e3dc46d9004454f6be5e90947f8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classSoCallbackAction"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSoCallbackAction')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSoCallbackAction.html">SoCallbackAction</a></td></tr>
+<tr class="memitem:a0aebf2c58836079af765be8e2ba4973d inherit pub_types_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a0aebf2c58836079af765be8e2ba4973d">Response</a> { <a class="el" href="classSoCallbackAction.html#a0aebf2c58836079af765be8e2ba4973da0d938b2f29d1633097595c14d4cd87cc">CONTINUE</a>
+, <a class="el" href="classSoCallbackAction.html#a0aebf2c58836079af765be8e2ba4973daf47cac7f924fcfd67b6ce7b710caf8b4">ABORT</a>
+, <a class="el" href="classSoCallbackAction.html#a0aebf2c58836079af765be8e2ba4973da8848d4ddd907d87c7336c119cf8d5cee">PRUNE</a>
+ }</td></tr>
+<tr class="separator:a0aebf2c58836079af765be8e2ba4973d inherit pub_types_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6fdf843f4157cbc3ff98c5d711e9de7 inherit pub_types_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classSoCallbackAction.html#a0aebf2c58836079af765be8e2ba4973d">Response</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#ae6fdf843f4157cbc3ff98c5d711e9de7">SoCallbackActionCB</a>(void *userdata, <a class="el" href="classSoCallbackAction.html">SoCallbackAction</a> *action, const <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:ae6fdf843f4157cbc3ff98c5d711e9de7 inherit pub_types_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSoAction')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a1c1dcf644f0e8bc1acd92f9cd8c917d3 inherit pub_types_classSoAction"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a1c1dcf644f0e8bc1acd92f9cd8c917d3">AppliedCode</a> { <b>NODE</b> = 0
+, <b>PATH</b> = 1
+, <b>PATH_LIST</b> = 2
+ }</td></tr>
+<tr class="separator:a1c1dcf644f0e8bc1acd92f9cd8c917d3 inherit pub_types_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0942e2ce7d88ebc8e7cd10cf26310c67 inherit pub_types_classSoAction"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a0942e2ce7d88ebc8e7cd10cf26310c67">PathCode</a> { <b>NO_PATH</b> = 0
+, <b>IN_PATH</b> = 1
+, <b>BELOW_PATH</b> = 2
+, <b>OFF_PATH</b> = 3
+ }</td></tr>
+<tr class="separator:a0942e2ce7d88ebc8e7cd10cf26310c67 inherit pub_types_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a36a60fe56b8e533bf44cba92a0400b19"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a36a60fe56b8e533bf44cba92a0400b19">SoVectorizeAction</a> (void)</td></tr>
+<tr class="separator:a36a60fe56b8e533bf44cba92a0400b19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4c61beb77a645cd9b4f36be04d41a36"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#aa4c61beb77a645cd9b4f36be04d41a36">~SoVectorizeAction</a> ()</td></tr>
+<tr class="separator:aa4c61beb77a645cd9b4f36be04d41a36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a234f6b57215673eb7199765c0cc6d994"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a234f6b57215673eb7199765c0cc6d994">apply</a> (const <a class="el" href="classSoPathList.html">SoPathList</a> &amp;pathlist, SbBool obeysrules=FALSE)</td></tr>
+<tr class="separator:a234f6b57215673eb7199765c0cc6d994"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2334e87ea188bdff9d427ac193cdbabf"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a2334e87ea188bdff9d427ac193cdbabf">apply</a> (<a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a2334e87ea188bdff9d427ac193cdbabf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05f24215a4bc5181420ba6ad84e95d38"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a05f24215a4bc5181420ba6ad84e95d38">apply</a> (<a class="el" href="classSoPath.html">SoPath</a> *path)</td></tr>
+<tr class="separator:a05f24215a4bc5181420ba6ad84e95d38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b6f705de8320c9667329a54cf40c1dd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a7b6f705de8320c9667329a54cf40c1dd">beginPage</a> (const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;startpagepos, const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;pagesize, <a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a> u=MM)</td></tr>
+<tr class="separator:a7b6f705de8320c9667329a54cf40c1dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf0599525a69b8974e24e49a02c8c539"><td class="memItemLeft" align="right" valign="top"><a id="adf0599525a69b8974e24e49a02c8c539"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>beginStandardPage</b> (const <a class="el" href="classSoVectorizeAction.html#a7fc8ac7c81ca974b55807f39f715f83a">PageSize</a> &amp;pagesize, const float border=10.0f)</td></tr>
+<tr class="separator:adf0599525a69b8974e24e49a02c8c539"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7186d03667123c066b59756bf22e3e4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#ac7186d03667123c066b59756bf22e3e4">beginViewport</a> (const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;startpos=<a class="el" href="classSbVec2f.html">SbVec2f</a>(-1.0f, 1.0f), const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;size=<a class="el" href="classSbVec2f.html">SbVec2f</a>(-1.0f, -1.0f), <a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a> u=MM)</td></tr>
+<tr class="separator:ac7186d03667123c066b59756bf22e3e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa485eedafc71a9d1c45ab66b28519073"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#aa485eedafc71a9d1c45ab66b28519073">calibrate</a> (const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;vp)</td></tr>
+<tr class="separator:aa485eedafc71a9d1c45ab66b28519073"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68835613d8b5e490b67c19c9f2fedff3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a68835613d8b5e490b67c19c9f2fedff3">enableLighting</a> (SbBool flag)</td></tr>
+<tr class="separator:a68835613d8b5e490b67c19c9f2fedff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e399efdcc1a05b5dbe0346e7d5220d3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a9e399efdcc1a05b5dbe0346e7d5220d3">endPage</a> (void)</td></tr>
+<tr class="separator:a9e399efdcc1a05b5dbe0346e7d5220d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ba2d871f0a4b735a082bdc8833bf300"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a5ba2d871f0a4b735a082bdc8833bf300">endViewport</a> (void)</td></tr>
+<tr class="separator:a5ba2d871f0a4b735a082bdc8833bf300"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8abaab434bd99cabf63cdac18228b7bc"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a8abaab434bd99cabf63cdac18228b7bc">getBackgroundColor</a> (<a class="el" href="classSbColor.html">SbColor</a> &amp;col) const</td></tr>
+<tr class="separator:a8abaab434bd99cabf63cdac18228b7bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab226d081b2e8e1b0473d01467ae42b64"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#ab226d081b2e8e1b0473d01467ae42b64">getColorPriority</a> (void) const</td></tr>
+<tr class="separator:ab226d081b2e8e1b0473d01467ae42b64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9000538a83678ffa92efc0947f9410e9"><td class="memItemLeft" align="right" valign="top">virtual ColorTranslationMethod&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a9000538a83678ffa92efc0947f9410e9">getColorTranslationMethod</a> (void) const</td></tr>
+<tr class="separator:a9000538a83678ffa92efc0947f9410e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8732d2a1be8f60f96dfb32a90e6a185e"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSbVec2f.html">SbVec2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a8732d2a1be8f60f96dfb32a90e6a185e">getDrawingDimensions</a> (<a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a> u=MM) const</td></tr>
+<tr class="separator:a8732d2a1be8f60f96dfb32a90e6a185e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a955c2bed636b7c21ef34e8ae166dd03f"><td class="memItemLeft" align="right" valign="top">HLHSRMode&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a955c2bed636b7c21ef34e8ae166dd03f">getHLHSRMode</a> (void) const</td></tr>
+<tr class="separator:a955c2bed636b7c21ef34e8ae166dd03f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5242f28a7644c114b9eadcb701f98e05"><td class="memItemLeft" align="right" valign="top">virtual EndLineStyle&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a5242f28a7644c114b9eadcb701f98e05">getLineEndStyle</a> (void) const</td></tr>
+<tr class="separator:a5242f28a7644c114b9eadcb701f98e05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a650d772cbf683e83d93036f3e51e3ebe"><td class="memItemLeft" align="right" valign="top">virtual JoinLineStyle&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a650d772cbf683e83d93036f3e51e3ebe">getLineJoinsStyle</a> (void) const</td></tr>
+<tr class="separator:a650d772cbf683e83d93036f3e51e3ebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4f77bd3735144907eb46833c5df0ea5"><td class="memItemLeft" align="right" valign="top"><a id="aa4f77bd3735144907eb46833c5df0ea5"></a>
+virtual float&#160;</td><td class="memItemRight" valign="bottom"><b>getMiterLimit</b> (void) const</td></tr>
+<tr class="separator:aa4f77bd3735144907eb46833c5df0ea5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af89f13a7c5d523b452dfac7cdcc44101"><td class="memItemLeft" align="right" valign="top"><a id="af89f13a7c5d523b452dfac7cdcc44101"></a>
+virtual float&#160;</td><td class="memItemRight" valign="bottom"><b>getNominalWidth</b> (<a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a> u=MM) const</td></tr>
+<tr class="separator:af89f13a7c5d523b452dfac7cdcc44101"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09ca0d7be9c3f9e2962e6447aab5a81f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoVectorizeAction.html#af5b4dae5c682ec7a8d4ec1246ec2e2f8">Orientation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a09ca0d7be9c3f9e2962e6447aab5a81f">getOrientation</a> (void) const</td></tr>
+<tr class="separator:a09ca0d7be9c3f9e2962e6447aab5a81f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ca5e665f44ecc2c9b9090c596227530"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoVectorOutput.html">SoVectorOutput</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a7ca5e665f44ecc2c9b9090c596227530">getOutput</a> (void) const</td></tr>
+<tr class="separator:a7ca5e665f44ecc2c9b9090c596227530"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad0a2676e4156be153d06b81f5eadda8"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#aad0a2676e4156be153d06b81f5eadda8">getPageSize</a> (void) const</td></tr>
+<tr class="separator:aad0a2676e4156be153d06b81f5eadda8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeeb0e66358e0042d2814d7ace503e2b7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#aeeb0e66358e0042d2814d7ace503e2b7">getPageStartpos</a> (void) const</td></tr>
+<tr class="separator:aeeb0e66358e0042d2814d7ace503e2b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff3c021688c3efc1be58ba5471cf931b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#aff3c021688c3efc1be58ba5471cf931b">getPenDescription</a> (<a class="el" href="classSbColor.html">SbColor</a> *colors, float *widths, <a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a> u=MM) const</td></tr>
+<tr class="separator:aff3c021688c3efc1be58ba5471cf931b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a547cf41ac42b68b83fa1a6edcaea8b16"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a547cf41ac42b68b83fa1a6edcaea8b16">getPenNum</a> (void) const</td></tr>
+<tr class="separator:a547cf41ac42b68b83fa1a6edcaea8b16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b025cf7cb9244a7d98af6d41616260f"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a6b025cf7cb9244a7d98af6d41616260f">getPixelImageSize</a> (<a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a> u=MM) const</td></tr>
+<tr class="separator:a6b025cf7cb9244a7d98af6d41616260f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87f352cd834742e4c262fb078eb19617"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoVectorizeAction.html#a1945e3dc46d9004454f6be5e90947f8f">PointStyle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a87f352cd834742e4c262fb078eb19617">getPointStyle</a> (void) const</td></tr>
+<tr class="separator:a87f352cd834742e4c262fb078eb19617"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28d25536c8490c25ac210df6e2317205"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSbVec2f.html">SbVec2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a28d25536c8490c25ac210df6e2317205">getStartPosition</a> (<a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a> u=MM) const</td></tr>
+<tr class="separator:a28d25536c8490c25ac210df6e2317205"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b9004f877e601dc066799dcb13cf0df"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a2b9004f877e601dc066799dcb13cf0df">getTypeId</a> (void) const</td></tr>
+<tr class="separator:a2b9004f877e601dc066799dcb13cf0df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a845d34c61a454190367effca5423d35a"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a845d34c61a454190367effca5423d35a">isLightingEnabled</a> (void) const</td></tr>
+<tr class="separator:a845d34c61a454190367effca5423d35a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7916e8d0cc643bac003b1738bb0e2248"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a7916e8d0cc643bac003b1738bb0e2248">setBackgroundColor</a> (SbBool bg, const <a class="el" href="classSbColor.html">SbColor</a> &amp;col=<a class="el" href="classSbColor.html">SbColor</a>(0.0f, 0.0f, 0.0f))</td></tr>
+<tr class="separator:a7916e8d0cc643bac003b1738bb0e2248"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45f08a44b28830dbd90ea216191e5c2c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a45f08a44b28830dbd90ea216191e5c2c">setBorder</a> (float width)</td></tr>
+<tr class="separator:a45f08a44b28830dbd90ea216191e5c2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24a3685b8f73309b72e86157667d5888"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a24a3685b8f73309b72e86157667d5888">setBorder</a> (float width, <a class="el" href="classSbColor.html">SbColor</a> color)</td></tr>
+<tr class="separator:a24a3685b8f73309b72e86157667d5888"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ec820270d7b03c165b04602efb50bcb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a1ec820270d7b03c165b04602efb50bcb">setColorPriority</a> (SbBool priority)</td></tr>
+<tr class="separator:a1ec820270d7b03c165b04602efb50bcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2c6fccd7627e5df4accb9acd2b31b6a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#ab2c6fccd7627e5df4accb9acd2b31b6a">setColorTranslationMethod</a> (ColorTranslationMethod method)</td></tr>
+<tr class="separator:ab2c6fccd7627e5df4accb9acd2b31b6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9387c841cd2c018a8e4e580437667d8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#aa9387c841cd2c018a8e4e580437667d8">setDrawingDimensions</a> (const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;d, <a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a> u=MM)</td></tr>
+<tr class="separator:aa9387c841cd2c018a8e4e580437667d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4aa9f3548ad6ed2a2345a80a89b74840"><td class="memItemLeft" align="right" valign="top"><a id="a4aa9f3548ad6ed2a2345a80a89b74840"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setDrawingDimensions</b> (float w, float h, <a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a> u=MM)</td></tr>
+<tr class="separator:a4aa9f3548ad6ed2a2345a80a89b74840"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90193bc873d92108373eb781b692da3c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a90193bc873d92108373eb781b692da3c">setHLHSRMode</a> (HLHSRMode mode)</td></tr>
+<tr class="separator:a90193bc873d92108373eb781b692da3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74a770a39bb94ef3e0c4c1a1146ed595"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a74a770a39bb94ef3e0c4c1a1146ed595">setLineEndStyle</a> (EndLineStyle style)</td></tr>
+<tr class="separator:a74a770a39bb94ef3e0c4c1a1146ed595"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac60b8ce09de15238a6fc4db84e7fe307"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#ac60b8ce09de15238a6fc4db84e7fe307">setLineJoinsStyle</a> (JoinLineStyle style)</td></tr>
+<tr class="separator:ac60b8ce09de15238a6fc4db84e7fe307"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57e2e496b704825f785e162ebb3f3063"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a57e2e496b704825f785e162ebb3f3063">setMiterLimit</a> (float limit)</td></tr>
+<tr class="separator:a57e2e496b704825f785e162ebb3f3063"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc6caea4d2d8fda0583ddddf46acb52a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#afc6caea4d2d8fda0583ddddf46acb52a">setNominalWidth</a> (float w, <a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a> u=MM)</td></tr>
+<tr class="separator:afc6caea4d2d8fda0583ddddf46acb52a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa080256adbcf2311a6e73846eb062d7c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#aa080256adbcf2311a6e73846eb062d7c">setOrientation</a> (<a class="el" href="classSoVectorizeAction.html#af5b4dae5c682ec7a8d4ec1246ec2e2f8">Orientation</a> o)</td></tr>
+<tr class="separator:aa080256adbcf2311a6e73846eb062d7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5871a5a14f2660203494874dbb70870"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#ad5871a5a14f2660203494874dbb70870">setPenDescription</a> (int num_pens, const <a class="el" href="classSbColor.html">SbColor</a> *colors=0, const float *widths=0, <a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a> u=MM)</td></tr>
+<tr class="separator:ad5871a5a14f2660203494874dbb70870"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acee61960e4525f49a016343433b100db"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#acee61960e4525f49a016343433b100db">setPixelImageSize</a> (float w, <a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a> u=MM)</td></tr>
+<tr class="separator:acee61960e4525f49a016343433b100db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a899ba21b934ac060481b89df170c06a3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a899ba21b934ac060481b89df170c06a3">setPointStyle</a> (const <a class="el" href="classSoVectorizeAction.html#a1945e3dc46d9004454f6be5e90947f8f">PointStyle</a> &amp;style)</td></tr>
+<tr class="separator:a899ba21b934ac060481b89df170c06a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cadf6163a009475a5b95756213848a4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a9cadf6163a009475a5b95756213848a4">setStartPosition</a> (const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;p, <a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a> u=MM)</td></tr>
+<tr class="separator:a9cadf6163a009475a5b95756213848a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d8b59c78d66f45f8a3c7297a0b0edc9"><td class="memItemLeft" align="right" valign="top"><a id="a1d8b59c78d66f45f8a3c7297a0b0edc9"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setStartPosition</b> (float x, float y, <a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a> u=MM)</td></tr>
+<tr class="separator:a1d8b59c78d66f45f8a3c7297a0b0edc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSoCallbackAction"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSoCallbackAction')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSoCallbackAction.html">SoCallbackAction</a></td></tr>
+<tr class="memitem:a2b50588d8902f28efa53ca0b5b8e0191 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a2b50588d8902f28efa53ca0b5b8e0191">SoCallbackAction</a> (const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;vp)</td></tr>
+<tr class="separator:a2b50588d8902f28efa53ca0b5b8e0191 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7da5f0d08e5c9b37df8ffdaf87631fe inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#ad7da5f0d08e5c9b37df8ffdaf87631fe">SoCallbackAction</a> (void)</td></tr>
+<tr class="separator:ad7da5f0d08e5c9b37df8ffdaf87631fe inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c4030b6813d7ed75647656eabda5607 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a0c4030b6813d7ed75647656eabda5607">~SoCallbackAction</a> (void)</td></tr>
+<tr class="separator:a0c4030b6813d7ed75647656eabda5607 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae12e0c958fa491e15fed955af19788b8 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#ae12e0c958fa491e15fed955af19788b8">addLineSegmentCallback</a> (const <a class="el" href="classSoType.html">SoType</a> type, SoLineSegmentCB *cb, void *userdata)</td></tr>
+<tr class="separator:ae12e0c958fa491e15fed955af19788b8 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8ac10a541dbe2e65e6a0dd64a1aec6b inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#ab8ac10a541dbe2e65e6a0dd64a1aec6b">addPointCallback</a> (const <a class="el" href="classSoType.html">SoType</a> type, SoPointCB *cb, void *userdata)</td></tr>
+<tr class="separator:ab8ac10a541dbe2e65e6a0dd64a1aec6b inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad98c249636448c4947947e2faf7de570 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#ad98c249636448c4947947e2faf7de570">addPostCallback</a> (const <a class="el" href="classSoType.html">SoType</a> type, <a class="el" href="classSoCallbackAction.html#ae6fdf843f4157cbc3ff98c5d711e9de7">SoCallbackActionCB</a> *cb, void *userdata)</td></tr>
+<tr class="separator:ad98c249636448c4947947e2faf7de570 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae85004e2f61a0f75465fc19001bb38bb inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#ae85004e2f61a0f75465fc19001bb38bb">addPostTailCallback</a> (<a class="el" href="classSoCallbackAction.html#ae6fdf843f4157cbc3ff98c5d711e9de7">SoCallbackActionCB</a> *cb, void *userdata)</td></tr>
+<tr class="separator:ae85004e2f61a0f75465fc19001bb38bb inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb911a2b72f56a19d0dd40819e7d351f inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#abb911a2b72f56a19d0dd40819e7d351f">addPreCallback</a> (const <a class="el" href="classSoType.html">SoType</a> type, <a class="el" href="classSoCallbackAction.html#ae6fdf843f4157cbc3ff98c5d711e9de7">SoCallbackActionCB</a> *cb, void *userdata)</td></tr>
+<tr class="separator:abb911a2b72f56a19d0dd40819e7d351f inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4eaa1f93b4ea5514b4253ff738a3c90 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#aa4eaa1f93b4ea5514b4253ff738a3c90">addPreTailCallback</a> (<a class="el" href="classSoCallbackAction.html#ae6fdf843f4157cbc3ff98c5d711e9de7">SoCallbackActionCB</a> *cb, void *userdata)</td></tr>
+<tr class="separator:aa4eaa1f93b4ea5514b4253ff738a3c90 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a71315cb4b24a5cd83dbbdbfc0d2a3e inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a7a71315cb4b24a5cd83dbbdbfc0d2a3e">addTriangleCallback</a> (const <a class="el" href="classSoType.html">SoType</a> type, SoTriangleCB *cb, void *userdata)</td></tr>
+<tr class="separator:a7a71315cb4b24a5cd83dbbdbfc0d2a3e inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed83686e017d985a6547b2ad71e4404f inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#aed83686e017d985a6547b2ad71e4404f">getComplexity</a> (void) const</td></tr>
+<tr class="separator:aed83686e017d985a6547b2ad71e4404f inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3aafe4f4c65d13514832d70a6ca6dfb6 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoComplexity.html#a2ff546b75ae833a1ec12a95324868a58">SoComplexity::Type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a3aafe4f4c65d13514832d70a6ca6dfb6">getComplexityType</a> (void) const</td></tr>
+<tr class="separator:a3aafe4f4c65d13514832d70a6ca6dfb6 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdc1e04c16bb5b56520b9402bc043e34 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#afdc1e04c16bb5b56520b9402bc043e34">getCoordinate3</a> (const int index) const</td></tr>
+<tr class="separator:afdc1e04c16bb5b56520b9402bc043e34 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a812b17148fc069f0958b2420f58bd17e inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a812b17148fc069f0958b2420f58bd17e">getCoordinate4</a> (const int index) const</td></tr>
+<tr class="separator:a812b17148fc069f0958b2420f58bd17e inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ac124e7176ad469dd800e3f15d357b9 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a5ac124e7176ad469dd800e3f15d357b9">getCreaseAngle</a> (void) const</td></tr>
+<tr class="separator:a5ac124e7176ad469dd800e3f15d357b9 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a638952a8cd942fde3065ce043fef50c2 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a638952a8cd942fde3065ce043fef50c2">getCurPathTail</a> (void)</td></tr>
+<tr class="separator:a638952a8cd942fde3065ce043fef50c2 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc458bf779456ae2846f20e607655462 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoCallbackAction.html#a0aebf2c58836079af765be8e2ba4973d">Response</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#abc458bf779456ae2846f20e607655462">getCurrentResponse</a> (void) const</td></tr>
+<tr class="separator:abc458bf779456ae2846f20e607655462 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc455ac0ec52c95e7e9066748082eb9d inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#abc455ac0ec52c95e7e9066748082eb9d">getDecimationPercentage</a> (void) const</td></tr>
+<tr class="separator:abc455ac0ec52c95e7e9066748082eb9d inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9461b9c84fc74556f9f9a0790f0fae3 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoDecimationTypeElement.html#ab77cb535bf5eca102428ce829a5db59f">SoDecimationTypeElement::Type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#ad9461b9c84fc74556f9f9a0790f0fae3">getDecimationType</a> (void) const</td></tr>
+<tr class="separator:ad9461b9c84fc74556f9f9a0790f0fae3 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1ca9a33fa960abd179051b587c9f154 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoDrawStyle.html#ae0b3acb00d63b3a3969ea9f6e6b94e7e">SoDrawStyle::Style</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#aa1ca9a33fa960abd179051b587c9f154">getDrawStyle</a> (void) const</td></tr>
+<tr class="separator:aa1ca9a33fa960abd179051b587c9f154 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a766868ab0f9a2b31d3a0db1df6c52a01 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoShapeHints.html#a19a3acc8d0e36b7fa2b43339e1a4b964">SoShapeHints::FaceType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a766868ab0f9a2b31d3a0db1df6c52a01">getFaceType</a> (void) const</td></tr>
+<tr class="separator:a766868ab0f9a2b31d3a0db1df6c52a01 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a532862d825e92a7d534714d3db8533fe inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a532862d825e92a7d534714d3db8533fe">getFocalDistance</a> (void) const</td></tr>
+<tr class="separator:a532862d825e92a7d534714d3db8533fe inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97aeef9bdb48a31e56aa099908ef7cdc inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbName.html">SbName</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a97aeef9bdb48a31e56aa099908ef7cdc">getFontName</a> (void) const</td></tr>
+<tr class="separator:a97aeef9bdb48a31e56aa099908ef7cdc inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2be1c2af8dcb37cbbff232acd2b67f9c inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a2be1c2af8dcb37cbbff232acd2b67f9c">getFontSize</a> (void) const</td></tr>
+<tr class="separator:a2be1c2af8dcb37cbbff232acd2b67f9c inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af151d7c56158bd06cf7f80401a04f318 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#af151d7c56158bd06cf7f80401a04f318">getLightAttenuation</a> (void) const</td></tr>
+<tr class="separator:af151d7c56158bd06cf7f80401a04f318 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf682bfce5d17fde8020bf932095e331 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoLightModel.html#a50177588212c998d7a37deed8d1321ce">SoLightModel::Model</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#abf682bfce5d17fde8020bf932095e331">getLightModel</a> (void) const</td></tr>
+<tr class="separator:abf682bfce5d17fde8020bf932095e331 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9450e1dd1c980a34c30ce35fe8cf629b inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">unsigned short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a9450e1dd1c980a34c30ce35fe8cf629b">getLinePattern</a> (void) const</td></tr>
+<tr class="separator:a9450e1dd1c980a34c30ce35fe8cf629b inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b228216c52faba845245b3c0ee8e782 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a9b228216c52faba845245b3c0ee8e782">getLineWidth</a> (void) const</td></tr>
+<tr class="separator:a9b228216c52faba845245b3c0ee8e782 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec2e984e93adc5eb018c520e4a68d7d2 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#aec2e984e93adc5eb018c520e4a68d7d2">getMaterial</a> (<a class="el" href="classSbColor.html">SbColor</a> &amp;ambient, <a class="el" href="classSbColor.html">SbColor</a> &amp;diffuse, <a class="el" href="classSbColor.html">SbColor</a> &amp;specular, <a class="el" href="classSbColor.html">SbColor</a> &amp;emission, float &amp;shininess, float &amp;transparency, const int index=0) const</td></tr>
+<tr class="separator:aec2e984e93adc5eb018c520e4a68d7d2 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa078dae11f271fe47853d48b23df9405 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoMaterialBinding.html#a4baca14ebba9410624ee304b633375cb">SoMaterialBinding::Binding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#aa078dae11f271fe47853d48b23df9405">getMaterialBinding</a> (void) const</td></tr>
+<tr class="separator:aa078dae11f271fe47853d48b23df9405 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5e338430be8aedba6e864e89ebeee38 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbMatrix.html">SbMatrix</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#ad5e338430be8aedba6e864e89ebeee38">getModelMatrix</a> (void) const</td></tr>
+<tr class="separator:ad5e338430be8aedba6e864e89ebeee38 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d720227be7b2869823dca2b099fd995 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a8d720227be7b2869823dca2b099fd995">getNormal</a> (const int index) const</td></tr>
+<tr class="separator:a8d720227be7b2869823dca2b099fd995 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3094c8ba91ffd538e3461e7b4acddc05 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoNormalBinding.html#abac17246b7bc2d3be7f03d80556cba91">SoNormalBinding::Binding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a3094c8ba91ffd538e3461e7b4acddc05">getNormalBinding</a> (void) const</td></tr>
+<tr class="separator:a3094c8ba91ffd538e3461e7b4acddc05 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e2572602cfb29a2b6465494a2bafb92 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a7e2572602cfb29a2b6465494a2bafb92">getNumCoordinates</a> (void) const</td></tr>
+<tr class="separator:a7e2572602cfb29a2b6465494a2bafb92 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecfcd0f3b983a4996ff4f737f0d5aab2 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#aecfcd0f3b983a4996ff4f737f0d5aab2">getNumNormals</a> (void) const</td></tr>
+<tr class="separator:aecfcd0f3b983a4996ff4f737f0d5aab2 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a799242a77801b3170c49c04671886c8a inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a799242a77801b3170c49c04671886c8a">getNumProfileCoordinates</a> (void) const</td></tr>
+<tr class="separator:a799242a77801b3170c49c04671886c8a inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1464c3014b457b0e4d86efaab868d877 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a1464c3014b457b0e4d86efaab868d877">getNumTextureCoordinates</a> (void) const</td></tr>
+<tr class="separator:a1464c3014b457b0e4d86efaab868d877 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82083ba3cd8b3588f97d72f1ea43e774 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoPickStyle.html#a8c23088ad3a4eb7bdeaa93ae5a29b910">SoPickStyle::Style</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a82083ba3cd8b3588f97d72f1ea43e774">getPickStyle</a> (void) const</td></tr>
+<tr class="separator:a82083ba3cd8b3588f97d72f1ea43e774 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a434d589c4f865e016495afaad8132189 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a434d589c4f865e016495afaad8132189">getPointSize</a> (void) const</td></tr>
+<tr class="separator:a434d589c4f865e016495afaad8132189 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac13733e72948eca6c4426dc7fa617880 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSoNodeList.html">SoNodeList</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#ac13733e72948eca6c4426dc7fa617880">getProfile</a> (void) const</td></tr>
+<tr class="separator:ac13733e72948eca6c4426dc7fa617880 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7523e3e40761ddfc524f05c8d1ec711b inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a7523e3e40761ddfc524f05c8d1ec711b">getProfileCoordinate2</a> (const int index) const</td></tr>
+<tr class="separator:a7523e3e40761ddfc524f05c8d1ec711b inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ac5314c5edc8f3f8817769750b1f307 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a2ac5314c5edc8f3f8817769750b1f307">getProfileCoordinate3</a> (const int index) const</td></tr>
+<tr class="separator:a2ac5314c5edc8f3f8817769750b1f307 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96a3f892c978a01df47bb25fb5b02fc1 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbMatrix.html">SbMatrix</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a96a3f892c978a01df47bb25fb5b02fc1">getProjectionMatrix</a> (void) const</td></tr>
+<tr class="separator:a96a3f892c978a01df47bb25fb5b02fc1 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab026ffe6add3d652fd372628daf143af inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoShapeHints.html#adefced009b47d7b5debc6b2d3ce19cfb">SoShapeHints::ShapeType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#ab026ffe6add3d652fd372628daf143af">getShapeType</a> (void) const</td></tr>
+<tr class="separator:ab026ffe6add3d652fd372628daf143af inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba58a86f06159f69634d2d201f3fb587 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#aba58a86f06159f69634d2d201f3fb587">getSwitch</a> (void) const</td></tr>
+<tr class="separator:aba58a86f06159f69634d2d201f3fb587 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a514eab61809730c3fd07259554649787 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbColor.html">SbColor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a514eab61809730c3fd07259554649787">getTextureBlendColor</a> (void) const</td></tr>
+<tr class="separator:a514eab61809730c3fd07259554649787 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad81d691025309562e7b06f735b9cfa7 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#aad81d691025309562e7b06f735b9cfa7">getTextureCoordinate2</a> (const int index) const</td></tr>
+<tr class="separator:aad81d691025309562e7b06f735b9cfa7 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02df5781581618eafa029aa3192754b7 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a02df5781581618eafa029aa3192754b7">getTextureCoordinate3</a> (const int index) const</td></tr>
+<tr class="separator:a02df5781581618eafa029aa3192754b7 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57d8a617d9e09da16a65f05279c9d5ae inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a57d8a617d9e09da16a65f05279c9d5ae">getTextureCoordinate4</a> (const int index) const</td></tr>
+<tr class="separator:a57d8a617d9e09da16a65f05279c9d5ae inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9011e7286bcbb3f77435f2fbfe8166e9 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoTextureCoordinateBinding.html#a38ef4fbbfae61ed60b8af0dc94601aa3">SoTextureCoordinateBinding::Binding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a9011e7286bcbb3f77435f2fbfe8166e9">getTextureCoordinateBinding</a> (void) const</td></tr>
+<tr class="separator:a9011e7286bcbb3f77435f2fbfe8166e9 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3da96357b1d2211a95a9897136bccb4 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">const unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#af3da96357b1d2211a95a9897136bccb4">getTextureImage</a> (<a class="el" href="classSbVec2s.html">SbVec2s</a> &amp;size, int &amp;numcomps) const</td></tr>
+<tr class="separator:af3da96357b1d2211a95a9897136bccb4 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cb0ecb434ad195427c90252927b065e inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">const unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a4cb0ecb434ad195427c90252927b065e">getTextureImage</a> (<a class="el" href="classSbVec3s.html">SbVec3s</a> &amp;size, int &amp;numcomps) const</td></tr>
+<tr class="separator:a4cb0ecb434ad195427c90252927b065e inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d1e897116bb950e8a747f33f186db86 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbMatrix.html">SbMatrix</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a2d1e897116bb950e8a747f33f186db86">getTextureMatrix</a> (void) const</td></tr>
+<tr class="separator:a2d1e897116bb950e8a747f33f186db86 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab199b8dede6b0b08731ae7755a0170cf inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoTexture2.html#aacc5a62d12cbcfd22f198c8a4c5fdeb8">SoTexture2::Model</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#ab199b8dede6b0b08731ae7755a0170cf">getTextureModel</a> (void) const</td></tr>
+<tr class="separator:ab199b8dede6b0b08731ae7755a0170cf inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2a8a94162f486241d2b446810224253 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoTexture2.html#a262a667689ef20bb704803f78ca2a0b1">SoTexture2::Wrap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#aa2a8a94162f486241d2b446810224253">getTextureWrapR</a> (void) const</td></tr>
+<tr class="separator:aa2a8a94162f486241d2b446810224253 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaaa6a2871d747f92405c64ba1c223b6d inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoTexture2.html#a262a667689ef20bb704803f78ca2a0b1">SoTexture2::Wrap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#aaaa6a2871d747f92405c64ba1c223b6d">getTextureWrapS</a> (void) const</td></tr>
+<tr class="separator:aaaa6a2871d747f92405c64ba1c223b6d inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a9efb4095a962d9f2709a43bc09c934 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoTexture2.html#a262a667689ef20bb704803f78ca2a0b1">SoTexture2::Wrap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a0a9efb4095a962d9f2709a43bc09c934">getTextureWrapT</a> (void) const</td></tr>
+<tr class="separator:a0a9efb4095a962d9f2709a43bc09c934 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b3c1911ad1ceb2ebd6ccf990e17b661 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoUnits.html#a73e9abb855f619e3fe22894fad707edb">SoUnits::Units</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a8b3c1911ad1ceb2ebd6ccf990e17b661">getUnits</a> (void) const</td></tr>
+<tr class="separator:a8b3c1911ad1ceb2ebd6ccf990e17b661 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d2324d0513cc7acf4733894869edcb6 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoShapeHints.html#a8b5f51cadba677ab1fb3abb6b5bb589f">SoShapeHints::VertexOrdering</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a0d2324d0513cc7acf4733894869edcb6">getVertexOrdering</a> (void) const</td></tr>
+<tr class="separator:a0d2324d0513cc7acf4733894869edcb6 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24ce34c15c367838317976b4a62ae460 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbMatrix.html">SbMatrix</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a24ce34c15c367838317976b4a62ae460">getViewingMatrix</a> (void) const</td></tr>
+<tr class="separator:a24ce34c15c367838317976b4a62ae460 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab69d243f6c6a1040944ddd51f45f6818 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#ab69d243f6c6a1040944ddd51f45f6818">getViewportRegion</a> (void) const</td></tr>
+<tr class="separator:ab69d243f6c6a1040944ddd51f45f6818 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7847065f718ef094c9ed74b85923be9 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbViewVolume.html">SbViewVolume</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#ad7847065f718ef094c9ed74b85923be9">getViewVolume</a> (void) const</td></tr>
+<tr class="separator:ad7847065f718ef094c9ed74b85923be9 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8793751f83619ca3318c8dd48e9de5f inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#ac8793751f83619ca3318c8dd48e9de5f">invokeLineSegmentCallbacks</a> (const <a class="el" href="classSoShape.html">SoShape</a> *const shape, const <a class="el" href="classSoPrimitiveVertex.html">SoPrimitiveVertex</a> *const v1, const <a class="el" href="classSoPrimitiveVertex.html">SoPrimitiveVertex</a> *const v2)</td></tr>
+<tr class="separator:ac8793751f83619ca3318c8dd48e9de5f inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe7c4ff2165b9475bd28f7ac654d47e9 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#afe7c4ff2165b9475bd28f7ac654d47e9">invokePointCallbacks</a> (const <a class="el" href="classSoShape.html">SoShape</a> *const shape, const <a class="el" href="classSoPrimitiveVertex.html">SoPrimitiveVertex</a> *const v)</td></tr>
+<tr class="separator:afe7c4ff2165b9475bd28f7ac654d47e9 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55e55017fe21f07be7191054850e4214 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a55e55017fe21f07be7191054850e4214">invokePostCallbacks</a> (const <a class="el" href="classSoNode.html">SoNode</a> *const node)</td></tr>
+<tr class="separator:a55e55017fe21f07be7191054850e4214 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade92a80d2c2ebc22f0ca871f2296fc35 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#ade92a80d2c2ebc22f0ca871f2296fc35">invokePreCallbacks</a> (const <a class="el" href="classSoNode.html">SoNode</a> *const node)</td></tr>
+<tr class="separator:ade92a80d2c2ebc22f0ca871f2296fc35 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad162287962a03211d167f248166878d2 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#ad162287962a03211d167f248166878d2">invokeTriangleCallbacks</a> (const <a class="el" href="classSoShape.html">SoShape</a> *const shape, const <a class="el" href="classSoPrimitiveVertex.html">SoPrimitiveVertex</a> *const v1, const <a class="el" href="classSoPrimitiveVertex.html">SoPrimitiveVertex</a> *const v2, const <a class="el" href="classSoPrimitiveVertex.html">SoPrimitiveVertex</a> *const v3)</td></tr>
+<tr class="separator:ad162287962a03211d167f248166878d2 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ec0b31d450d20695a24aac96e85c83f inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top"><a id="a0ec0b31d450d20695a24aac96e85c83f"></a>
+SbBool&#160;</td><td class="memItemRight" valign="bottom"><b>isCallbackAll</b> (void) const</td></tr>
+<tr class="separator:a0ec0b31d450d20695a24aac96e85c83f inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d04d7d9e64b9c6e0912d5e19e775e12 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top"><a id="a7d04d7d9e64b9c6e0912d5e19e775e12"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setCallbackAll</b> (SbBool callbackall)</td></tr>
+<tr class="separator:a7d04d7d9e64b9c6e0912d5e19e775e12 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaea936b682da09a8df2ae87a5edba03f inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#aaea936b682da09a8df2ae87a5edba03f">setCurrentNode</a> (<a class="el" href="classSoNode.html">SoNode</a> *const node)</td></tr>
+<tr class="separator:aaea936b682da09a8df2ae87a5edba03f inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13fd51ff971b2c2ddddd49537202e8a1 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a13fd51ff971b2c2ddddd49537202e8a1">setViewportRegion</a> (const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;vp)</td></tr>
+<tr class="separator:a13fd51ff971b2c2ddddd49537202e8a1 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9bf21f821cd1b4dc0ae482cee3234c7 inherit pub_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#ab9bf21f821cd1b4dc0ae482cee3234c7">shouldGeneratePrimitives</a> (const <a class="el" href="classSoShape.html">SoShape</a> *shape) const</td></tr>
+<tr class="separator:ab9bf21f821cd1b4dc0ae482cee3234c7 inherit pub_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSoAction')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:ad2839c2461c998920de832d8bdaa34c1 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#ad2839c2461c998920de832d8bdaa34c1">~SoAction</a> (void)</td></tr>
+<tr class="separator:ad2839c2461c998920de832d8bdaa34c1 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a984b580685859d42c4505980249fd409 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a984b580685859d42c4505980249fd409">apply</a> (<a class="el" href="classSoAction.html">SoAction</a> *beingApplied)</td></tr>
+<tr class="separator:a984b580685859d42c4505980249fd409 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5920f3da63a6ba8577dc56621815341 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSoPath.html">SoPath</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#af5920f3da63a6ba8577dc56621815341">getCurPath</a> (void)</td></tr>
+<tr class="separator:af5920f3da63a6ba8577dc56621815341 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2b14e6d8f2d1a290c7d8bc90bc9f410 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoAction.html#a0942e2ce7d88ebc8e7cd10cf26310c67">PathCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#ac2b14e6d8f2d1a290c7d8bc90bc9f410">getCurPathCode</a> (void) const</td></tr>
+<tr class="separator:ac2b14e6d8f2d1a290c7d8bc90bc9f410 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79ea01b9e731224d00fc792ea19a9802 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a79ea01b9e731224d00fc792ea19a9802">getNodeAppliedTo</a> (void) const</td></tr>
+<tr class="separator:a79ea01b9e731224d00fc792ea19a9802 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5062d853f79a06b4031622e9b59b8d18 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSoPathList.html">SoPathList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a5062d853f79a06b4031622e9b59b8d18">getOriginalPathListAppliedTo</a> (void) const</td></tr>
+<tr class="separator:a5062d853f79a06b4031622e9b59b8d18 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedea6d5b8b79997c9085937f5dcf517d inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoPath.html">SoPath</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#aedea6d5b8b79997c9085937f5dcf517d">getPathAppliedTo</a> (void) const</td></tr>
+<tr class="separator:aedea6d5b8b79997c9085937f5dcf517d inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42b2f4960252071194099b4a965eefa2 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoAction.html#a0942e2ce7d88ebc8e7cd10cf26310c67">PathCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a42b2f4960252071194099b4a965eefa2">getPathCode</a> (int &amp;numindices, const int *&amp;indices)</td></tr>
+<tr class="separator:a42b2f4960252071194099b4a965eefa2 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a791ea2da77f97bb290520f9d92fe4f3b inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSoPathList.html">SoPathList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a791ea2da77f97bb290520f9d92fe4f3b">getPathListAppliedTo</a> (void) const</td></tr>
+<tr class="separator:a791ea2da77f97bb290520f9d92fe4f3b inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a477a09961787e99a9621bb07e79c922c inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoState.html">SoState</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a477a09961787e99a9621bb07e79c922c">getState</a> (void) const</td></tr>
+<tr class="separator:a477a09961787e99a9621bb07e79c922c inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cf5dc15e2ea395a8bf9e05827e7c9f3 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoAction.html#a1c1dcf644f0e8bc1acd92f9cd8c917d3">AppliedCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a7cf5dc15e2ea395a8bf9e05827e7c9f3">getWhatAppliedTo</a> (void) const</td></tr>
+<tr class="separator:a7cf5dc15e2ea395a8bf9e05827e7c9f3 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af20b8fd5a41faad4f5f21bb7769a5f33 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#af20b8fd5a41faad4f5f21bb7769a5f33">hasTerminated</a> (void) const</td></tr>
+<tr class="separator:af20b8fd5a41faad4f5f21bb7769a5f33 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fbc8efc139853a56e707baecf02b357 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a3fbc8efc139853a56e707baecf02b357">invalidateState</a> (void)</td></tr>
+<tr class="separator:a3fbc8efc139853a56e707baecf02b357 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad953f48ef9f01d8b2c4596157a6e5cdc inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#ad953f48ef9f01d8b2c4596157a6e5cdc">isLastPathListAppliedTo</a> (void) const</td></tr>
+<tr class="separator:ad953f48ef9f01d8b2c4596157a6e5cdc inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5478020eea5f2b7d4e183e16d29d6611 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a5478020eea5f2b7d4e183e16d29d6611">isOfType</a> (<a class="el" href="classSoType.html">SoType</a> type) const</td></tr>
+<tr class="separator:a5478020eea5f2b7d4e183e16d29d6611 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88ceb9648c0f51d7ba87475ca8555f28 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a88ceb9648c0f51d7ba87475ca8555f28">popCurPath</a> (const <a class="el" href="classSoAction.html#a0942e2ce7d88ebc8e7cd10cf26310c67">PathCode</a> prevpathcode)</td></tr>
+<tr class="separator:a88ceb9648c0f51d7ba87475ca8555f28 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a989bcb87598bf55b31bf0704189abb11 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a989bcb87598bf55b31bf0704189abb11">popCurPath</a> (void)</td></tr>
+<tr class="separator:a989bcb87598bf55b31bf0704189abb11 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf8242136a44ff3af40ea102b372e4e1 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#adf8242136a44ff3af40ea102b372e4e1">popPushCurPath</a> (const int childindex, <a class="el" href="classSoNode.html">SoNode</a> *node=NULL)</td></tr>
+<tr class="separator:adf8242136a44ff3af40ea102b372e4e1 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a148ece4bf4cda79914ee3a2116c05d09 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a148ece4bf4cda79914ee3a2116c05d09">pushCurPath</a> (const int childindex, <a class="el" href="classSoNode.html">SoNode</a> *node=NULL)</td></tr>
+<tr class="separator:a148ece4bf4cda79914ee3a2116c05d09 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abebcc05d2d935803a3c95310c9447614 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#abebcc05d2d935803a3c95310c9447614">pushCurPath</a> (void)</td></tr>
+<tr class="separator:abebcc05d2d935803a3c95310c9447614 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accfc280f70bc8f888f61890f07a4aac2 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#accfc280f70bc8f888f61890f07a4aac2">switchToNodeTraversal</a> (<a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:accfc280f70bc8f888f61890f07a4aac2 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4285818426cf039bd556b537398d9ece inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a4285818426cf039bd556b537398d9ece">switchToPathTraversal</a> (<a class="el" href="classSoPath.html">SoPath</a> *path)</td></tr>
+<tr class="separator:a4285818426cf039bd556b537398d9ece inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a805627d07445a9c3a7e6324748aac2a9 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a805627d07445a9c3a7e6324748aac2a9">traverse</a> (<a class="el" href="classSoNode.html">SoNode</a> *const node)</td></tr>
+<tr class="separator:a805627d07445a9c3a7e6324748aac2a9 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea5650e3b7ae6207c4c3d675e83073b5 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#aea5650e3b7ae6207c4c3d675e83073b5">usePathCode</a> (int &amp;numindices, const int *&amp;indices)</td></tr>
+<tr class="separator:aea5650e3b7ae6207c4c3d675e83073b5 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ad781513f48ddcc954e98b79a84fcaf15"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#ad781513f48ddcc954e98b79a84fcaf15">addMethod</a> (const <a class="el" href="classSoType.html">SoType</a> type, SoActionMethod method)</td></tr>
+<tr class="separator:ad781513f48ddcc954e98b79a84fcaf15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f7a063737e4e95288bbcfea19b7227e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a5f7a063737e4e95288bbcfea19b7227e">enableElement</a> (const <a class="el" href="classSoType.html">SoType</a> type, const int stackindex)</td></tr>
+<tr class="separator:a5f7a063737e4e95288bbcfea19b7227e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a780550d162482dd5808bc0c9db40c992"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a780550d162482dd5808bc0c9db40c992">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:a780550d162482dd5808bc0c9db40c992"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe60e4a699f83a6de20d907a88101116"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#afe60e4a699f83a6de20d907a88101116">initClass</a> (void)</td></tr>
+<tr class="separator:afe60e4a699f83a6de20d907a88101116"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classSoCallbackAction"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classSoCallbackAction')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classSoCallbackAction.html">SoCallbackAction</a></td></tr>
+<tr class="memitem:a918fb4200f40611c516ab03a7fd2b4ba inherit pub_static_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a918fb4200f40611c516ab03a7fd2b4ba">addMethod</a> (const <a class="el" href="classSoType.html">SoType</a> type, SoActionMethod method)</td></tr>
+<tr class="separator:a918fb4200f40611c516ab03a7fd2b4ba inherit pub_static_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa5867c40c10cfe78a38267ee8aae254 inherit pub_static_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#afa5867c40c10cfe78a38267ee8aae254">enableElement</a> (const <a class="el" href="classSoType.html">SoType</a> type, const int stackindex)</td></tr>
+<tr class="separator:afa5867c40c10cfe78a38267ee8aae254 inherit pub_static_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf29ce89a31300148ddd50b569ba0979 inherit pub_static_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#acf29ce89a31300148ddd50b569ba0979">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:acf29ce89a31300148ddd50b569ba0979 inherit pub_static_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc078820d69216ff3ec06fd3ad2caf9f inherit pub_static_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#acc078820d69216ff3ec06fd3ad2caf9f">initClass</a> (void)</td></tr>
+<tr class="separator:acc078820d69216ff3ec06fd3ad2caf9f inherit pub_static_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classSoAction')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a3a714aae7f852be330d276041f7bc26e inherit pub_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a3a714aae7f852be330d276041f7bc26e">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:a3a714aae7f852be330d276041f7bc26e inherit pub_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fca4d3db681ecea3bd1d5c24d1f160d inherit pub_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a6fca4d3db681ecea3bd1d5c24d1f160d">initClass</a> (void)</td></tr>
+<tr class="separator:a6fca4d3db681ecea3bd1d5c24d1f160d inherit pub_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c1f8064ac89d9e36d36a8d05365e26a inherit pub_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a9c1f8064ac89d9e36d36a8d05365e26a">initClasses</a> (void)</td></tr>
+<tr class="separator:a9c1f8064ac89d9e36d36a8d05365e26a inherit pub_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6dd54a728307c37d3cd87b2891b9359e inherit pub_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a6dd54a728307c37d3cd87b2891b9359e">nullAction</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a6dd54a728307c37d3cd87b2891b9359e inherit pub_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:ad450ecbd0fddd412aa9c440a5f9b6d80"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbBSPTree.html">SbBSPTree</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#ad450ecbd0fddd412aa9c440a5f9b6d80">getBSPTree</a> (void) const</td></tr>
+<tr class="separator:ad450ecbd0fddd412aa9c440a5f9b6d80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e6ca7bd4c1f4148e22190627a805536"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a2e6ca7bd4c1f4148e22190627a805536">getEnabledElements</a> (void) const</td></tr>
+<tr class="separator:a2e6ca7bd4c1f4148e22190627a805536"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a599f9ad1c41c8f35760f2c44bb42946f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec2f.html">SbVec2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a599f9ad1c41c8f35760f2c44bb42946f">getRotatedViewportSize</a> (void) const</td></tr>
+<tr class="separator:a599f9ad1c41c8f35760f2c44bb42946f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add2d5cab039226b6ffb10db04be9575e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec2f.html">SbVec2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#add2d5cab039226b6ffb10db04be9575e">getRotatedViewportStartpos</a> (void) const</td></tr>
+<tr class="separator:add2d5cab039226b6ffb10db04be9575e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5035e536bdbf4366cf9ac6367d70c70b"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a5035e536bdbf4366cf9ac6367d70c70b">pixelsToUnits</a> (const int pixels)</td></tr>
+<tr class="separator:a5035e536bdbf4366cf9ac6367d70c70b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52793852bf1fa1bfcea0661a92d44c2a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a52793852bf1fa1bfcea0661a92d44c2a">printBackground</a> (void) const</td></tr>
+<tr class="separator:a52793852bf1fa1bfcea0661a92d44c2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af139ae0dded014e5d49705deace28af9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#af139ae0dded014e5d49705deace28af9">printFooter</a> (void) const</td></tr>
+<tr class="separator:af139ae0dded014e5d49705deace28af9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf1106083ea7ea62afd61b3365adf8ed"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#abf1106083ea7ea62afd61b3365adf8ed">printHeader</a> (void) const =0</td></tr>
+<tr class="separator:abf1106083ea7ea62afd61b3365adf8ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d713882c3a01e57593e192c000131c8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a0d713882c3a01e57593e192c000131c8">printItem</a> (const SoVectorizeItem *item) const =0</td></tr>
+<tr class="separator:a0d713882c3a01e57593e192c000131c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefb3c723dbb1a767ac4b8bf6bfd42090"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#aefb3c723dbb1a767ac4b8bf6bfd42090">printViewport</a> (void) const</td></tr>
+<tr class="separator:aefb3c723dbb1a767ac4b8bf6bfd42090"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a772d9f7757a94df924b41a902f0efa7f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a772d9f7757a94df924b41a902f0efa7f">setOutput</a> (<a class="el" href="classSoVectorOutput.html">SoVectorOutput</a> *output)</td></tr>
+<tr class="separator:a772d9f7757a94df924b41a902f0efa7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSoCallbackAction"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSoCallbackAction')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSoCallbackAction.html">SoCallbackAction</a></td></tr>
+<tr class="memitem:a20de90ba2439c6f83e350d2bab64e4d4 inherit pro_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a20de90ba2439c6f83e350d2bab64e4d4">beginTraversal</a> (<a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a20de90ba2439c6f83e350d2bab64e4d4 inherit pro_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSoAction')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a7f6ac9fad4b83a66a321adfa48ebacd1 inherit pro_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a7f6ac9fad4b83a66a321adfa48ebacd1">SoAction</a> (void)</td></tr>
+<tr class="separator:a7f6ac9fad4b83a66a321adfa48ebacd1 inherit pro_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9af52ee33d0effeba2f23d9c3d4d6ad0 inherit pro_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a9af52ee33d0effeba2f23d9c3d4d6ad0">endTraversal</a> (<a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a9af52ee33d0effeba2f23d9c3d4d6ad0 inherit pro_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa968d7390c6d9ec862e0c9c1c7e48de5 inherit pro_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#aa968d7390c6d9ec862e0c9c1c7e48de5">setTerminated</a> (const SbBool flag)</td></tr>
+<tr class="separator:aa968d7390c6d9ec862e0c9c1c7e48de5 inherit pro_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59700c3dd417a802e9531b6544ff6b81 inherit pro_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a59700c3dd417a802e9531b6544ff6b81">shouldCompactPathList</a> (void) const</td></tr>
+<tr class="separator:a59700c3dd417a802e9531b6544ff6b81 inherit pro_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:a50cf20e7a0e1a68ac4643d9e21c59d15"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoActionMethodList.html">SoActionMethodList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a50cf20e7a0e1a68ac4643d9e21c59d15">getClassActionMethods</a> (void)</td></tr>
+<tr class="separator:a50cf20e7a0e1a68ac4643d9e21c59d15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73a083a47ea8ff1ba460621e12d4aeb1"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoVectorizeAction.html#a73a083a47ea8ff1ba460621e12d4aeb1">getClassEnabledElements</a> (void)</td></tr>
+<tr class="separator:a73a083a47ea8ff1ba460621e12d4aeb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_methods_classSoCallbackAction"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classSoCallbackAction')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classSoCallbackAction.html">SoCallbackAction</a></td></tr>
+<tr class="memitem:aceadba72c58e44d505660342e9edfcfe inherit pro_static_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoActionMethodList.html">SoActionMethodList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#aceadba72c58e44d505660342e9edfcfe">getClassActionMethods</a> (void)</td></tr>
+<tr class="separator:aceadba72c58e44d505660342e9edfcfe inherit pro_static_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70fe18a0cabcff2ff90e3d89030e4f53 inherit pro_static_methods_classSoCallbackAction"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoCallbackAction.html#a70fe18a0cabcff2ff90e3d89030e4f53">getClassEnabledElements</a> (void)</td></tr>
+<tr class="separator:a70fe18a0cabcff2ff90e3d89030e4f53 inherit pro_static_methods_classSoCallbackAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_methods_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classSoAction')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a655c3dbf9f093cdfaa7cc896ca54c0f3 inherit pro_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoActionMethodList.html">SoActionMethodList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a655c3dbf9f093cdfaa7cc896ca54c0f3">getClassActionMethods</a> (void)</td></tr>
+<tr class="separator:a655c3dbf9f093cdfaa7cc896ca54c0f3 inherit pro_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3a072966a0f9fa9f96fa1affc44fe9b inherit pro_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#ac3a072966a0f9fa9f96fa1affc44fe9b">getClassEnabledElements</a> (void)</td></tr>
+<tr class="separator:ac3a072966a0f9fa9f96fa1affc44fe9b inherit pro_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_attribs_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classSoAction')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a5b4ccb851346b95c3c3562b1824d258b inherit pro_attribs_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoState.html">SoState</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a5b4ccb851346b95c3c3562b1824d258b">state</a></td></tr>
+<tr class="separator:a5b4ccb851346b95c3c3562b1824d258b inherit pro_attribs_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00703b6a5c0bac45ac95756f7eb054af inherit pro_attribs_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoActionMethodList.html">SoActionMethodList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a00703b6a5c0bac45ac95756f7eb054af">traversalMethods</a></td></tr>
+<tr class="separator:a00703b6a5c0bac45ac95756f7eb054af inherit pro_attribs_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSoVectorizeAction.html" title="The SoVectorizeAction class is the base class for vectorizing Coin scene graphs.">SoVectorizeAction</a> class is the base class for vectorizing Coin scene graphs. </p>
+<p><a class="el" href="classSoVectorizeAction.html" title="The SoVectorizeAction class is the base class for vectorizing Coin scene graphs.">SoVectorizeAction</a> will traverse the scene graph and convert all supported geometry into vectorized data. Subclasses can then use this data to produce vector files of different formats.</p>
+<p>Currently supported geometry:</p>
+<ul>
+<li>Triangles (polygons will be tessellated) </li>
+<li>Line segments </li>
+<li>Points (can be drawn as circles or squares) </li>
+<li>2D text </li>
+<li>3D text (will be converted to triangles) </li>
+<li>Images (from the <a class="el" href="classSoImage.html" title="The SoImage class draws a 2D image on the viewport.">SoImage</a> node)</li>
+</ul>
+<p>The geometry will be shaded based on the OpenGL shading model, so lights and material will affect the geometry in the same way as in a standard Coin viewer. Please note that neither transparency nor texture mapping is supported yet.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.1 </dd>
+<dd>
+TGS provides HardCopy support as a separate extension for TGS Inventor. </dd></dl>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="ac07b28146ca5ccb7afa3a560e2d4c822"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac07b28146ca5ccb7afa3a560e2d4c822">&#9670;&nbsp;</a></span>DimensionUnit</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">SoVectorizeAction::DimensionUnit</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The unit used by the scene graph. </p>
+
+</div>
+</div>
+<a id="af5b4dae5c682ec7a8d4ec1246ec2e2f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5b4dae5c682ec7a8d4ec1246ec2e2f8">&#9670;&nbsp;</a></span>Orientation</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classSoVectorizeAction.html#af5b4dae5c682ec7a8d4ec1246ec2e2f8">SoVectorizeAction::Orientation</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The drawing orientation. </p>
+
+</div>
+</div>
+<a id="a7fc8ac7c81ca974b55807f39f715f83a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fc8ac7c81ca974b55807f39f715f83a">&#9670;&nbsp;</a></span>PageSize</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classSoVectorizeAction.html#a7fc8ac7c81ca974b55807f39f715f83a">SoVectorizeAction::PageSize</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The size of the destination page. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a7fc8ac7c81ca974b55807f39f715f83aae5796440e222f2864e7abdc656979277"></a>A0&#160;</td><td class="fielddoc"><p>841 x 1189 mm. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a7fc8ac7c81ca974b55807f39f715f83aabf76f945847e5190a1837670381b8ba1"></a>A1&#160;</td><td class="fielddoc"><p>594 x 841 mm. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a7fc8ac7c81ca974b55807f39f715f83aaa7dfa7c834023e6dac083d4d6b100652"></a>A2&#160;</td><td class="fielddoc"><p>420 x 594 mm. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a7fc8ac7c81ca974b55807f39f715f83aaca6f13741e987b4c4b94cb6e980593e4"></a>A3&#160;</td><td class="fielddoc"><p>297 x 420 mm. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a7fc8ac7c81ca974b55807f39f715f83aa3a0760c9451c3e62d56668452ed7fc04"></a>A4&#160;</td><td class="fielddoc"><p>210 x 297 mm. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a7fc8ac7c81ca974b55807f39f715f83aa73fc34f6ac8929bec158a8522d15a862"></a>A5&#160;</td><td class="fielddoc"><p>148 x 210 mm. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a7fc8ac7c81ca974b55807f39f715f83aabc2575f581a7fc88fc726f6860aa196f"></a>A6&#160;</td><td class="fielddoc"><p>105 x 148 mm. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a7fc8ac7c81ca974b55807f39f715f83aa726975b0d145a3b1cf9a00e62a50c66a"></a>A7&#160;</td><td class="fielddoc"><p>74 x 105 mm. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a7fc8ac7c81ca974b55807f39f715f83aa0623b6aedb6f8330d5b6c3bfb253d65e"></a>A8&#160;</td><td class="fielddoc"><p>52 x 74 mm. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a7fc8ac7c81ca974b55807f39f715f83aa46d4049d062aa87dd3e7b849c7941c9a"></a>A9&#160;</td><td class="fielddoc"><p>37 x 52 mm. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a7fc8ac7c81ca974b55807f39f715f83aa1359610ce17c214cfd15f9573dc1a771"></a>A10&#160;</td><td class="fielddoc"><p>26 x 37 mm. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="a1945e3dc46d9004454f6be5e90947f8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1945e3dc46d9004454f6be5e90947f8f">&#9670;&nbsp;</a></span>PointStyle</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classSoVectorizeAction.html#a1945e3dc46d9004454f6be5e90947f8f">SoVectorizeAction::PointStyle</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Enumerates point rendering styles. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a1945e3dc46d9004454f6be5e90947f8faaf2712ae869d411e9bb5abc19613f0df"></a>CIRCLE&#160;</td><td class="fielddoc"><p>Render points as circles. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a1945e3dc46d9004454f6be5e90947f8fa5fad4d4fe72d7cb27bcc861f697b1b53"></a>SQUARE&#160;</td><td class="fielddoc"><p>Render points as squares. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a36a60fe56b8e533bf44cba92a0400b19"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36a60fe56b8e533bf44cba92a0400b19">&#9670;&nbsp;</a></span>SoVectorizeAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoVectorizeAction::SoVectorizeAction </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Default constructor. </p>
+
+</div>
+</div>
+<a id="aa4c61beb77a645cd9b4f36be04d41a36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4c61beb77a645cd9b4f36be04d41a36">&#9670;&nbsp;</a></span>~SoVectorizeAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoVectorizeAction::~SoVectorizeAction </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Destructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ad781513f48ddcc954e98b79a84fcaf15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad781513f48ddcc954e98b79a84fcaf15">&#9670;&nbsp;</a></span>addMethod()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::addMethod </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSoType.html">SoType</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SoActionMethod&#160;</td>
+          <td class="paramname"><em>method</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+ </p>
+
+</div>
+</div>
+<a id="a234f6b57215673eb7199765c0cc6d994"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a234f6b57215673eb7199765c0cc6d994">&#9670;&nbsp;</a></span>apply() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::apply </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSoPathList.html">SoPathList</a> &amp;&#160;</td>
+          <td class="paramname"><em>pathlist</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>obeysrules</em> = <code>FALSE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Applies action to the graphs defined by <em>pathlist</em>. If <em>obeysrules</em> is set to <code>TRUE</code>, <em>pathlist</em> must obey the following four conditions (which is the case for path lists returned from search actions for non-group nodes and path lists returned from picking actions):</p>
+<p>All paths must start at the same head node. All paths must be sorted in traversal order. The paths must be unique. No path can continue through the end point of another path.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoAction.html#a8f922db782cb971042da8adc64f61d47">SoAction::apply(SoPath * path)</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classSoAction.html#a311e03e553957474b6920afe03fb94fc">SoAction</a>.</p>
+
+</div>
+</div>
+<a id="a2334e87ea188bdff9d427ac193cdbabf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2334e87ea188bdff9d427ac193cdbabf">&#9670;&nbsp;</a></span>apply() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::apply </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoNode.html">SoNode</a> *&#160;</td>
+          <td class="paramname"><em>root</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Applies the action to the scene graph rooted at <em>root</em>.</p>
+<p>Note that you should <em>not</em> apply an action to a node with a zero reference count. The behavior in that case is undefined. </p>
+
+<p>Reimplemented from <a class="el" href="classSoAction.html#ad2d6ddb297b3a1f5b80026db5fd5e616">SoAction</a>.</p>
+
+</div>
+</div>
+<a id="a05f24215a4bc5181420ba6ad84e95d38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05f24215a4bc5181420ba6ad84e95d38">&#9670;&nbsp;</a></span>apply() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::apply </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoPath.html">SoPath</a> *&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Applies the action to the parts of the graph defined by <em>path</em>.</p>
+<p>Note that an <a class="el" href="classSoPath.html" title="The SoPath class is a container class for traversal path descriptions.">SoPath</a> will also contain all nodes that may influence e.g. geometry nodes in the path. So for instance applying an <a class="el" href="classSoGLRenderAction.html" title="The SoGLRenderAction class renders the scene graph with OpenGL calls.">SoGLRenderAction</a> on an <a class="el" href="classSoPath.html" title="The SoPath class is a container class for traversal path descriptions.">SoPath</a> will render that path as expected in the view, where geometry will get its materials, textures, and other appearance settings correctly.</p>
+<p>If the <em>path</em> ends in an <a class="el" href="classSoGroup.html" title="The SoGroup class is a node which managed other node instances.">SoGroup</a> node, the action will also traverse the tail node's children. </p>
+
+<p>Reimplemented from <a class="el" href="classSoAction.html#a8f922db782cb971042da8adc64f61d47">SoAction</a>.</p>
+
+</div>
+</div>
+<a id="a7b6f705de8320c9667329a54cf40c1dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b6f705de8320c9667329a54cf40c1dd">&#9670;&nbsp;</a></span>beginPage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::beginPage </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>startpagepos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>pagesize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a>&#160;</td>
+          <td class="paramname"><em>u</em> = <code>MM</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Begin writing a page. This will write file header information and print background (if enabled) and border. </p>
+
+</div>
+</div>
+<a id="ac7186d03667123c066b59756bf22e3e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7186d03667123c066b59756bf22e3e4">&#9670;&nbsp;</a></span>beginViewport()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::beginViewport </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>start</em> = <code><a class="el" href="classSbVec2f.html">SbVec2f</a>(-1.0f,&#160;1.0f)</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>size</em> = <code><a class="el" href="classSbVec2f.html">SbVec2f</a>(-1.0f,&#160;-1.0f)</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a>&#160;</td>
+          <td class="paramname"><em>u</em> = <code>MM</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Begin writing a viewport inside the current page.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoVectorizeAction.html#a7b6f705de8320c9667329a54cf40c1dd">beginPage()</a>, <a class="el" href="classSoVectorizeAction.html#a5ba2d871f0a4b735a082bdc8833bf300">endViewport()</a> </dd></dl>
+
+</div>
+</div>
+<a id="aa485eedafc71a9d1c45ab66b28519073"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa485eedafc71a9d1c45ab66b28519073">&#9670;&nbsp;</a></span>calibrate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::calibrate </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;&#160;</td>
+          <td class="paramname"><em>vp</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Will calibrate pixel based attributes (font size, line width, points size, etc) so that it will match OpenGL rendering done in <em>vp</em>.</p>
+<dl class="section see"><dt>See also</dt><dd>setPixelSize() </dd>
+<dd>
+<a class="el" href="classSoVectorizeAction.html#afc6caea4d2d8fda0583ddddf46acb52a">setNominalWidth()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a5f7a063737e4e95288bbcfea19b7227e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f7a063737e4e95288bbcfea19b7227e">&#9670;&nbsp;</a></span>enableElement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::enableElement </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSoType.html">SoType</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>stackindex</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+ </p>
+
+</div>
+</div>
+<a id="a68835613d8b5e490b67c19c9f2fedff3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68835613d8b5e490b67c19c9f2fedff3">&#9670;&nbsp;</a></span>enableLighting()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::enableLighting </td>
+          <td>(</td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>flag</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Not implemented yet. Provided for TGS OIV compatibility. </p>
+
+</div>
+</div>
+<a id="a9e399efdcc1a05b5dbe0346e7d5220d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e399efdcc1a05b5dbe0346e7d5220d3">&#9670;&nbsp;</a></span>endPage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::endPage </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>End page. This will write all remaining geometry, and write the file footer. </p>
+
+</div>
+</div>
+<a id="a5ba2d871f0a4b735a082bdc8833bf300"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ba2d871f0a4b735a082bdc8833bf300">&#9670;&nbsp;</a></span>endViewport()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::endViewport </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>End writing a viewport. This will flush all vector items. </p>
+
+</div>
+</div>
+<a id="a8abaab434bd99cabf63cdac18228b7bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8abaab434bd99cabf63cdac18228b7bc">&#9670;&nbsp;</a></span>getBackgroundColor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoVectorizeAction::getBackgroundColor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSbColor.html">SbColor</a> &amp;&#160;</td>
+          <td class="paramname"><em>col</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns if the background will be cleared or not. When this function returns <em>TRUE</em>, <em>col</em> will be set to the background color. </p>
+
+</div>
+</div>
+<a id="ad450ecbd0fddd412aa9c440a5f9b6d80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad450ecbd0fddd412aa9c440a5f9b6d80">&#9670;&nbsp;</a></span>getBSPTree()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbBSPTree.html">SbBSPTree</a> &amp; SoVectorizeAction::getBSPTree </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the bps tree used to store triangle and line vertices. </p>
+
+</div>
+</div>
+<a id="a50cf20e7a0e1a68ac4643d9e21c59d15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50cf20e7a0e1a68ac4643d9e21c59d15">&#9670;&nbsp;</a></span>getClassActionMethods()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoActionMethodList.html">SoActionMethodList</a> * SoVectorizeAction::getClassActionMethods </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns list of action methods for this class. The enabledElements and methods variables are protected in the original OIV API. This is not such a good idea, since exposed static class member variables is a major grievance with regard to Win32 DLLs. This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ <br  />
+ </p>
+
+</div>
+</div>
+<a id="a73a083a47ea8ff1ba460621e12d4aeb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73a083a47ea8ff1ba460621e12d4aeb1">&#9670;&nbsp;</a></span>getClassEnabledElements()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> * SoVectorizeAction::getClassEnabledElements </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns list of enabled elements for this class. The enabledElements and methods variables are protected in the original OIV API. This is not such a good idea, since exposed static class member variables is a major grievance with regard to Win32 DLLs. This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ <br  />
+ </p>
+
+</div>
+</div>
+<a id="a780550d162482dd5808bc0c9db40c992"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a780550d162482dd5808bc0c9db40c992">&#9670;&nbsp;</a></span>getClassTypeId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoType.html">SoType</a> SoVectorizeAction::getClassTypeId </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This static method returns the <a class="el" href="classSoType.html" title="The SoType class is the basis for the runtime type system in Coin.">SoType</a> object associated with objects of this class. <br  />
+ </p>
+
+</div>
+</div>
+<a id="ab226d081b2e8e1b0473d01467ae42b64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab226d081b2e8e1b0473d01467ae42b64">&#9670;&nbsp;</a></span>getColorPriority()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoVectorizeAction::getColorPriority </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Not implemented yet. Provided for TGS OIV compatibility. </p>
+
+</div>
+</div>
+<a id="a9000538a83678ffa92efc0947f9410e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9000538a83678ffa92efc0947f9410e9">&#9670;&nbsp;</a></span>getColorTranslationMethod()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoVectorizeAction::ColorTranslationMethod SoVectorizeAction::getColorTranslationMethod </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Not implemented yet. Provided for TGS OIV compatibility. </p>
+
+</div>
+</div>
+<a id="a8732d2a1be8f60f96dfb32a90e6a185e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8732d2a1be8f60f96dfb32a90e6a185e">&#9670;&nbsp;</a></span>getDrawingDimensions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec2f.html">SbVec2f</a> SoVectorizeAction::getDrawingDimensions </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a>&#160;</td>
+          <td class="paramname"><em>u</em> = <code>MM</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the current drawing dimensions. </p>
+
+</div>
+</div>
+<a id="a2e6ca7bd4c1f4148e22190627a805536"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e6ca7bd4c1f4148e22190627a805536">&#9670;&nbsp;</a></span>getEnabledElements()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> &amp; SoVectorizeAction::getEnabledElements </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns list of enabled elements. <br  />
+ </p>
+
+<p>Reimplemented from <a class="el" href="classSoCallbackAction.html#a9b4eb8a9014cbd430f4f71759cf35d18">SoCallbackAction</a>.</p>
+
+<p>Reimplemented in <a class="el" href="classSoVectorizePSAction.html#ad03a4d7fadb550066778dad40a9612cb">SoVectorizePSAction</a>.</p>
+
+</div>
+</div>
+<a id="a955c2bed636b7c21ef34e8ae166dd03f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a955c2bed636b7c21ef34e8ae166dd03f">&#9670;&nbsp;</a></span>getHLHSRMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoVectorizeAction::HLHSRMode SoVectorizeAction::getHLHSRMode </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Not implemented yet. Provided for TGS OIV compatibility. </p>
+
+</div>
+</div>
+<a id="a5242f28a7644c114b9eadcb701f98e05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5242f28a7644c114b9eadcb701f98e05">&#9670;&nbsp;</a></span>getLineEndStyle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoVectorizeAction::EndLineStyle SoVectorizeAction::getLineEndStyle </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Not implemented yet. Provided for TGS OIV compatibility. </p>
+
+</div>
+</div>
+<a id="a650d772cbf683e83d93036f3e51e3ebe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a650d772cbf683e83d93036f3e51e3ebe">&#9670;&nbsp;</a></span>getLineJoinsStyle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoVectorizeAction::JoinLineStyle SoVectorizeAction::getLineJoinsStyle </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Not implemented yet. Provided for TGS OIV compatibility. </p>
+
+</div>
+</div>
+<a id="a09ca0d7be9c3f9e2962e6447aab5a81f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09ca0d7be9c3f9e2962e6447aab5a81f">&#9670;&nbsp;</a></span>getOrientation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoVectorizeAction.html#af5b4dae5c682ec7a8d4ec1246ec2e2f8">SoVectorizeAction::Orientation</a> SoVectorizeAction::getOrientation </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the current orientation.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoVectorizeAction.html#aa080256adbcf2311a6e73846eb062d7c">setOrientation()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a7ca5e665f44ecc2c9b9090c596227530"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ca5e665f44ecc2c9b9090c596227530">&#9670;&nbsp;</a></span>getOutput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoVectorOutput.html">SoVectorOutput</a> * SoVectorizeAction::getOutput </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the <a class="el" href="classSoVectorOutput.html" title="The SoVectorOutput class is used for setting vector output file.">SoVectorOutput</a> class used by this action. The output is written to stdout by default, but you can change this by using <a class="el" href="classSoVectorOutput.html#a549c1a37d36a38f188b767cab728b4af">SoVectorOutput::openFile()</a>. </p>
+
+</div>
+</div>
+<a id="aad0a2676e4156be153d06b81f5eadda8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad0a2676e4156be153d06b81f5eadda8">&#9670;&nbsp;</a></span>getPageSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp; SoVectorizeAction::getPageSize </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the current page size. </p>
+
+</div>
+</div>
+<a id="aeeb0e66358e0042d2814d7ace503e2b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeeb0e66358e0042d2814d7ace503e2b7">&#9670;&nbsp;</a></span>getPageStartpos()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp; SoVectorizeAction::getPageStartpos </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the current page startpos. </p>
+
+</div>
+</div>
+<a id="aff3c021688c3efc1be58ba5471cf931b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff3c021688c3efc1be58ba5471cf931b">&#9670;&nbsp;</a></span>getPenDescription()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::getPenDescription </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSbColor.html">SbColor</a> *&#160;</td>
+          <td class="paramname"><em>colors</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>widths</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a>&#160;</td>
+          <td class="paramname"><em>u</em> = <code>MM</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Not implemented yet. Provided for TGS OIV compatibility. </p>
+
+</div>
+</div>
+<a id="a547cf41ac42b68b83fa1a6edcaea8b16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a547cf41ac42b68b83fa1a6edcaea8b16">&#9670;&nbsp;</a></span>getPenNum()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SoVectorizeAction::getPenNum </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Not implemented yet. Provided for TGS OIV compatibility. </p>
+
+</div>
+</div>
+<a id="a6b025cf7cb9244a7d98af6d41616260f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b025cf7cb9244a7d98af6d41616260f">&#9670;&nbsp;</a></span>getPixelImageSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SoVectorizeAction::getPixelImageSize </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a>&#160;</td>
+          <td class="paramname"><em>u</em> = <code>MM</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the pixel image size.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoVectorizeAction.html#acee61960e4525f49a016343433b100db">setPixelImageSize()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a87f352cd834742e4c262fb078eb19617"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87f352cd834742e4c262fb078eb19617">&#9670;&nbsp;</a></span>getPointStyle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoVectorizeAction.html#a1945e3dc46d9004454f6be5e90947f8f">SoVectorizeAction::PointStyle</a> SoVectorizeAction::getPointStyle </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the points rendering style. </p>
+
+</div>
+</div>
+<a id="a599f9ad1c41c8f35760f2c44bb42946f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a599f9ad1c41c8f35760f2c44bb42946f">&#9670;&nbsp;</a></span>getRotatedViewportSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec2f.html">SbVec2f</a> SoVectorizeAction::getRotatedViewportSize </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Convenience method for subclasses. Will return the viewport size, taking the orientation into account </p>
+
+</div>
+</div>
+<a id="add2d5cab039226b6ffb10db04be9575e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add2d5cab039226b6ffb10db04be9575e">&#9670;&nbsp;</a></span>getRotatedViewportStartpos()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec2f.html">SbVec2f</a> SoVectorizeAction::getRotatedViewportStartpos </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Convenience method for subclasses. Will return the viewport startpos, taking the orientation into account </p>
+
+</div>
+</div>
+<a id="a28d25536c8490c25ac210df6e2317205"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28d25536c8490c25ac210df6e2317205">&#9670;&nbsp;</a></span>getStartPosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec2f.html">SbVec2f</a> SoVectorizeAction::getStartPosition </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a>&#160;</td>
+          <td class="paramname"><em>u</em> = <code>MM</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the current drawing starting position. </p>
+
+</div>
+</div>
+<a id="a2b9004f877e601dc066799dcb13cf0df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b9004f877e601dc066799dcb13cf0df">&#9670;&nbsp;</a></span>getTypeId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoType.html">SoType</a> SoVectorizeAction::getTypeId </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the type identification of an object derived from a class inheriting <a class="el" href="classSoAction.html" title="The SoAction class is the base class for all traversal actions.">SoAction</a>. This is used for runtime type checking and "downward" casting. <br  />
+ </p>
+
+<p>Reimplemented from <a class="el" href="classSoCallbackAction.html#af18bd0e05408840cb634d1d84c29fcb1">SoCallbackAction</a>.</p>
+
+<p>Reimplemented in <a class="el" href="classSoVectorizePSAction.html#a17f68bc63acda3e9a7beedfd2d65bbcb">SoVectorizePSAction</a>.</p>
+
+</div>
+</div>
+<a id="afe60e4a699f83a6de20d907a88101116"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe60e4a699f83a6de20d907a88101116">&#9670;&nbsp;</a></span>initClass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::initClass </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Initializes the runtime type system for this class, and sets up the enabled elements and action method list. </p>
+
+</div>
+</div>
+<a id="a845d34c61a454190367effca5423d35a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a845d34c61a454190367effca5423d35a">&#9670;&nbsp;</a></span>isLightingEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoVectorizeAction::isLightingEnabled </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Not implemented yet. Provided for TGS OIV compatibility. </p>
+
+</div>
+</div>
+<a id="a5035e536bdbf4366cf9ac6367d70c70b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5035e536bdbf4366cf9ac6367d70c70b">&#9670;&nbsp;</a></span>pixelsToUnits()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SoVectorizeAction::pixelsToUnits </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>pixels</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Converts pixels to normalized units. </p>
+
+</div>
+</div>
+<a id="a52793852bf1fa1bfcea0661a92d44c2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52793852bf1fa1bfcea0661a92d44c2a">&#9670;&nbsp;</a></span>printBackground()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::printBackground </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+ Should be overridden by subclasses to print background data. </p>
+
+<p>Reimplemented in <a class="el" href="classSoVectorizePSAction.html#a2259f5f2048e3a7a0ba6b862452c143e">SoVectorizePSAction</a>.</p>
+
+</div>
+</div>
+<a id="af139ae0dded014e5d49705deace28af9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af139ae0dded014e5d49705deace28af9">&#9670;&nbsp;</a></span>printFooter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::printFooter </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+ Should be overridden by subclasses to print file footer data. </p>
+
+<p>Reimplemented in <a class="el" href="classSoVectorizePSAction.html#a4c6251268ab41fed020b696c022af36f">SoVectorizePSAction</a>.</p>
+
+</div>
+</div>
+<a id="abf1106083ea7ea62afd61b3365adf8ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf1106083ea7ea62afd61b3365adf8ed">&#9670;&nbsp;</a></span>printHeader()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::printHeader </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+</p>
+
+<p>Implemented in <a class="el" href="classSoVectorizePSAction.html#a3afb8cf9e64bb2e4408e962d33d7092e">SoVectorizePSAction</a>.</p>
+
+</div>
+</div>
+<a id="a0d713882c3a01e57593e192c000131c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d713882c3a01e57593e192c000131c8">&#9670;&nbsp;</a></span>printItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::printItem </td>
+          <td>(</td>
+          <td class="paramtype">const SoVectorizeItem *&#160;</td>
+          <td class="paramname"><em>item</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+ Should be overridden by subclasses to print an item. </p>
+
+<p>Implemented in <a class="el" href="classSoVectorizePSAction.html#a4c1352d56e9c667979c291970a0b1bb9">SoVectorizePSAction</a>.</p>
+
+</div>
+</div>
+<a id="aefb3c723dbb1a767ac4b8bf6bfd42090"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefb3c723dbb1a767ac4b8bf6bfd42090">&#9670;&nbsp;</a></span>printViewport()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::printViewport </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+ Should be overridden by subclasses to set up the current page viewport. </p>
+
+<p>Reimplemented in <a class="el" href="classSoVectorizePSAction.html#af9d9e0e5f970c42a20ef48e7af317632">SoVectorizePSAction</a>.</p>
+
+</div>
+</div>
+<a id="a7916e8d0cc643bac003b1738bb0e2248"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7916e8d0cc643bac003b1738bb0e2248">&#9670;&nbsp;</a></span>setBackgroundColor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::setBackgroundColor </td>
+          <td>(</td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>bg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbColor.html">SbColor</a> &amp;&#160;</td>
+          <td class="paramname"><em>col</em> = <code><a class="el" href="classSbColor.html">SbColor</a>(0.0f,&#160;0.0f,&#160;0.0f)</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Sets the background color. If <em>bg</em> is <em>FALSE</em>, the background will not be cleared before rendering. If <em>bg</em> is <em>TRUE</em>, the background will be cleared to <em>col</em> before in <a class="el" href="classSoVectorizeAction.html#a7b6f705de8320c9667329a54cf40c1dd">beginPage()</a>. </p>
+
+</div>
+</div>
+<a id="a45f08a44b28830dbd90ea216191e5c2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45f08a44b28830dbd90ea216191e5c2c">&#9670;&nbsp;</a></span>setBorder() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::setBorder </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>width</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Not implemented yet. Provided for TGS OIV compatibility. </p>
+
+</div>
+</div>
+<a id="a24a3685b8f73309b72e86157667d5888"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24a3685b8f73309b72e86157667d5888">&#9670;&nbsp;</a></span>setBorder() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::setBorder </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbColor.html">SbColor</a>&#160;</td>
+          <td class="paramname"><em>color</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Not implemented yet. Provided for TGS OIV compatibility. </p>
+
+</div>
+</div>
+<a id="a1ec820270d7b03c165b04602efb50bcb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ec820270d7b03c165b04602efb50bcb">&#9670;&nbsp;</a></span>setColorPriority()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::setColorPriority </td>
+          <td>(</td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>priority</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Not implemented yet. Provided for TGS OIV compatibility. </p>
+
+</div>
+</div>
+<a id="ab2c6fccd7627e5df4accb9acd2b31b6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2c6fccd7627e5df4accb9acd2b31b6a">&#9670;&nbsp;</a></span>setColorTranslationMethod()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::setColorTranslationMethod </td>
+          <td>(</td>
+          <td class="paramtype">ColorTranslationMethod&#160;</td>
+          <td class="paramname"><em>method</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Not implemented yet. Provided for TGS OIV compatibility. </p>
+
+</div>
+</div>
+<a id="aa9387c841cd2c018a8e4e580437667d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9387c841cd2c018a8e4e580437667d8">&#9670;&nbsp;</a></span>setDrawingDimensions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::setDrawingDimensions </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>d</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a>&#160;</td>
+          <td class="paramname"><em>u</em> = <code>MM</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Sets the drawing dimensions. You can use this and <a class="el" href="classSoVectorizeAction.html#a9cadf6163a009475a5b95756213848a4">setStartPosition()</a> instead of using <a class="el" href="classSoVectorizeAction.html#ac7186d03667123c066b59756bf22e3e4">beginViewport()</a>. Provided for TGS OIV compatibility.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoVectorizeAction.html#ac7186d03667123c066b59756bf22e3e4">beginViewport()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a90193bc873d92108373eb781b692da3c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90193bc873d92108373eb781b692da3c">&#9670;&nbsp;</a></span>setHLHSRMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::setHLHSRMode </td>
+          <td>(</td>
+          <td class="paramtype">HLHSRMode&#160;</td>
+          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Not implemented yet. Provided for TGS OIV compatibility. </p>
+
+</div>
+</div>
+<a id="a74a770a39bb94ef3e0c4c1a1146ed595"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74a770a39bb94ef3e0c4c1a1146ed595">&#9670;&nbsp;</a></span>setLineEndStyle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::setLineEndStyle </td>
+          <td>(</td>
+          <td class="paramtype">EndLineStyle&#160;</td>
+          <td class="paramname"><em>style</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Not implemented yet. Provided for TGS OIV compatibility. </p>
+
+</div>
+</div>
+<a id="ac60b8ce09de15238a6fc4db84e7fe307"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac60b8ce09de15238a6fc4db84e7fe307">&#9670;&nbsp;</a></span>setLineJoinsStyle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::setLineJoinsStyle </td>
+          <td>(</td>
+          <td class="paramtype">JoinLineStyle&#160;</td>
+          <td class="paramname"><em>style</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Not implemented yet. Provided for TGS OIV compatibility. </p>
+
+</div>
+</div>
+<a id="a57e2e496b704825f785e162ebb3f3063"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57e2e496b704825f785e162ebb3f3063">&#9670;&nbsp;</a></span>setMiterLimit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::setMiterLimit </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>limit</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Not implemented yet. Provided for TGS OIV compatibility. </p>
+
+</div>
+</div>
+<a id="afc6caea4d2d8fda0583ddddf46acb52a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc6caea4d2d8fda0583ddddf46acb52a">&#9670;&nbsp;</a></span>setNominalWidth()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::setNominalWidth </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a>&#160;</td>
+          <td class="paramname"><em>u</em> = <code>MM</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Sets how to convert pixel based attributes (line width and point size) to vector sizes. By default 1 pixel equals 0.35 mm.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoVectorizeAction.html#aa485eedafc71a9d1c45ab66b28519073">calibrate()</a> </dd></dl>
+
+</div>
+</div>
+<a id="aa080256adbcf2311a6e73846eb062d7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa080256adbcf2311a6e73846eb062d7c">&#9670;&nbsp;</a></span>setOrientation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::setOrientation </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoVectorizeAction.html#af5b4dae5c682ec7a8d4ec1246ec2e2f8">Orientation</a>&#160;</td>
+          <td class="paramname"><em>o</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Sets the orientation to <em>o</em>. </p>
+
+</div>
+</div>
+<a id="a772d9f7757a94df924b41a902f0efa7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a772d9f7757a94df924b41a902f0efa7f">&#9670;&nbsp;</a></span>setOutput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::setOutput </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoVectorOutput.html">SoVectorOutput</a> *&#160;</td>
+          <td class="paramname"><em>output</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Should be used by subclasses to set the <a class="el" href="classSoVectorOutput.html" title="The SoVectorOutput class is used for setting vector output file.">SoVectorOutput</a> instance that should be used. </p>
+
+</div>
+</div>
+<a id="ad5871a5a14f2660203494874dbb70870"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5871a5a14f2660203494874dbb70870">&#9670;&nbsp;</a></span>setPenDescription()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::setPenDescription </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>num_pens</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbColor.html">SbColor</a> *&#160;</td>
+          <td class="paramname"><em>colors</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float *&#160;</td>
+          <td class="paramname"><em>widths</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a>&#160;</td>
+          <td class="paramname"><em>u</em> = <code>MM</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Not implemented yet. Provided for TGS OIV compatibility. </p>
+
+</div>
+</div>
+<a id="acee61960e4525f49a016343433b100db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acee61960e4525f49a016343433b100db">&#9670;&nbsp;</a></span>setPixelImageSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::setPixelImageSize </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a>&#160;</td>
+          <td class="paramname"><em>u</em> = <code>MM</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Sets how the images and 2D fonts are converted. By default 1 pixel equals 0.35 mm.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoVectorizeAction.html#aa485eedafc71a9d1c45ab66b28519073">calibrate()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a899ba21b934ac060481b89df170c06a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a899ba21b934ac060481b89df170c06a3">&#9670;&nbsp;</a></span>setPointStyle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::setPointStyle </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSoVectorizeAction.html#a1945e3dc46d9004454f6be5e90947f8f">PointStyle</a> &amp;&#160;</td>
+          <td class="paramname"><em>style</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Sets the points rendering style. Default style is CIRCLE. </p>
+
+</div>
+</div>
+<a id="a9cadf6163a009475a5b95756213848a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9cadf6163a009475a5b95756213848a4">&#9670;&nbsp;</a></span>setStartPosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoVectorizeAction::setStartPosition </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSoVectorizeAction.html#ac07b28146ca5ccb7afa3a560e2d4c822">DimensionUnit</a>&#160;</td>
+          <td class="paramname"><em>u</em> = <code>MM</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Sets the drawing staring position. You can use this and <a class="el" href="classSoVectorizeAction.html#aa9387c841cd2c018a8e4e580437667d8">setDrawingDimensions()</a> instead of using <a class="el" href="classSoVectorizeAction.html#ac7186d03667123c066b59756bf22e3e4">beginViewport()</a>. Provided for TGS OIV compatibility. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SoVectorizeAction_8h_source.html">SoVectorizeAction.h</a></li>
+<li>VectorizeAction.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSoVectorizeAction.html">SoVectorizeAction</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

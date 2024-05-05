@@ -1,0 +1,25 @@
+var structSoGLLazyElement_1_1GLState =
+[
+    [ "alpha_blend_dfactor", "structSoGLLazyElement_1_1GLState.html#a2a1bb54d7b7123835fa801bc421173de", null ],
+    [ "alpha_blend_sfactor", "structSoGLLazyElement_1_1GLState.html#a27e47bd1d372459c6964cff0ee107263", null ],
+    [ "alphatestfunc", "structSoGLLazyElement_1_1GLState.html#a937b653728371d908e59a6da7d8b8ec4", null ],
+    [ "alphatestvalue", "structSoGLLazyElement_1_1GLState.html#a3cabe1cd32556fb8a7b4635e5b6cbfed", null ],
+    [ "ambient", "structSoGLLazyElement_1_1GLState.html#a82b44086d45646019921ab47000dbdce", null ],
+    [ "blend_dfactor", "structSoGLLazyElement_1_1GLState.html#ac0eb7c16f2106762648b25abb65820b1", null ],
+    [ "blend_sfactor", "structSoGLLazyElement_1_1GLState.html#afeaa2b7bca7019c9707ce46940536ae8", null ],
+    [ "blending", "structSoGLLazyElement_1_1GLState.html#a734cf87485c210a011a6b41bcbe32bf4", null ],
+    [ "cachebitmask", "structSoGLLazyElement_1_1GLState.html#aab75bb16cf1f838457689332357e0aed", null ],
+    [ "culling", "structSoGLLazyElement_1_1GLState.html#a2c795d252bdf699a3aa94c426dabec37", null ],
+    [ "diffuse", "structSoGLLazyElement_1_1GLState.html#aaf6fed91fdde734829d8939bade7b3bc", null ],
+    [ "diffusenodeid", "structSoGLLazyElement_1_1GLState.html#a83994bf1e47715176885c21c7c5902bc", null ],
+    [ "emissive", "structSoGLLazyElement_1_1GLState.html#a991132f90fc41e9157e13437ebdf9b0c", null ],
+    [ "flatshading", "structSoGLLazyElement_1_1GLState.html#adb86ef9902b213f47dbf14954aeb67f1", null ],
+    [ "lightmodel", "structSoGLLazyElement_1_1GLState.html#a0688478848d70615fda2e556dafd0bec", null ],
+    [ "reserved", "structSoGLLazyElement_1_1GLState.html#afc34a9e8ad7ca9755fc224999311195a", null ],
+    [ "shininess", "structSoGLLazyElement_1_1GLState.html#a880cd74894b3123e16a8bdec63483ec3", null ],
+    [ "specular", "structSoGLLazyElement_1_1GLState.html#ac4b1c98188e75002cf615228a4666800", null ],
+    [ "stipplenum", "structSoGLLazyElement_1_1GLState.html#a07fc32afde7e98fcc261bef0d5015809", null ],
+    [ "transpnodeid", "structSoGLLazyElement_1_1GLState.html#ab1b2acdd6fb0e0a2b921b3079691d868", null ],
+    [ "twoside", "structSoGLLazyElement_1_1GLState.html#a7b0efe5bd78cbb93b2924d3cfa45e00b", null ],
+    [ "vertexordering", "structSoGLLazyElement_1_1GLState.html#ac43068776dc52ddb6acf3d08a2614905", null ]
+];

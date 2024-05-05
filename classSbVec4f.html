@@ -1,0 +1,1340 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SbVec4f Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSbVec4f.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#related">Related Functions</a> &#124;
+<a href="classSbVec4f-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SbVec4f Class Reference<div class="ingroups"><a class="el" href="group__coin__base.html">Base Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSbVec4f.html" title="The SbVec4f class is a 4 dimensional vector with floating point coordinates.">SbVec4f</a> class is a 4 dimensional vector with floating point coordinates.  
+ <a href="classSbVec4f.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SbVec4f_8h_source.html">Inventor/SbVec4f.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for SbVec4f:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classSbVec4f.png" usemap="#SbVec4f_map" alt=""/>
+  <map id="SbVec4f_map" name="SbVec4f_map">
+<area href="classSbColor4f.html" title="The SbColor4f class contains the red, green, blue and alpha components which make up a color value." alt="SbColor4f" shape="rect" coords="0,56,69,80"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ad731535c83725d6bdc900b9a30ab4c92"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#ad731535c83725d6bdc900b9a30ab4c92">SbVec4f</a> (const float v[4])</td></tr>
+<tr class="separator:ad731535c83725d6bdc900b9a30ab4c92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98e08f627dac939645bb52580db3c4aa"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#a98e08f627dac939645bb52580db3c4aa">SbVec4f</a> (const <a class="el" href="classSbVec4b.html">SbVec4b</a> &amp;v)</td></tr>
+<tr class="separator:a98e08f627dac939645bb52580db3c4aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8545647ed869389186e93b47b7e2d52e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#a8545647ed869389186e93b47b7e2d52e">SbVec4f</a> (const <a class="el" href="classSbVec4d.html">SbVec4d</a> &amp;v)</td></tr>
+<tr class="separator:a8545647ed869389186e93b47b7e2d52e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac83cc2c568738c8781fcee9b2fde8cf8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#ac83cc2c568738c8781fcee9b2fde8cf8">SbVec4f</a> (const <a class="el" href="classSbVec4i32.html">SbVec4i32</a> &amp;v)</td></tr>
+<tr class="separator:ac83cc2c568738c8781fcee9b2fde8cf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a254dd416048917eee27af0b8463fbd48"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#a254dd416048917eee27af0b8463fbd48">SbVec4f</a> (const <a class="el" href="classSbVec4s.html">SbVec4s</a> &amp;v)</td></tr>
+<tr class="separator:a254dd416048917eee27af0b8463fbd48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf498d940df41d8a89e34bffcb3cf2b8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#adf498d940df41d8a89e34bffcb3cf2b8">SbVec4f</a> (float x, float y, float z, float w)</td></tr>
+<tr class="separator:adf498d940df41d8a89e34bffcb3cf2b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8906e1c6054ce209d1f6d77a21515e44"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#a8906e1c6054ce209d1f6d77a21515e44">SbVec4f</a> (void)</td></tr>
+<tr class="separator:a8906e1c6054ce209d1f6d77a21515e44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae711b047c9a255b89b2134b28f882fe7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#ae711b047c9a255b89b2134b28f882fe7">dot</a> (const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;v) const</td></tr>
+<tr class="separator:ae711b047c9a255b89b2134b28f882fe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90d86b1e759ad899d951cc820c29a5bc"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#a90d86b1e759ad899d951cc820c29a5bc">equals</a> (const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;v, float tolerance) const</td></tr>
+<tr class="separator:a90d86b1e759ad899d951cc820c29a5bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cc22dfb8e4e4499bc31fc4d77a47a02"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#a7cc22dfb8e4e4499bc31fc4d77a47a02">getReal</a> (<a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;v) const</td></tr>
+<tr class="separator:a7cc22dfb8e4e4499bc31fc4d77a47a02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab972b9946330047984521bd05b601b9b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#ab972b9946330047984521bd05b601b9b">getValue</a> (float &amp;x, float &amp;y, float &amp;z, float &amp;w) const</td></tr>
+<tr class="separator:ab972b9946330047984521bd05b601b9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abac4ee260db49f80da545978de2a9858"><td class="memItemLeft" align="right" valign="top">const float *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#abac4ee260db49f80da545978de2a9858">getValue</a> (void) const</td></tr>
+<tr class="separator:abac4ee260db49f80da545978de2a9858"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5c90616554e3a871b3d9aea1f38afec"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#af5c90616554e3a871b3d9aea1f38afec">length</a> (void) const</td></tr>
+<tr class="separator:af5c90616554e3a871b3d9aea1f38afec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac87c676afcddcdd4c4a8e4dfacaaf81e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#ac87c676afcddcdd4c4a8e4dfacaaf81e">negate</a> (void)</td></tr>
+<tr class="separator:ac87c676afcddcdd4c4a8e4dfacaaf81e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee89703dbbd922b7c3df9084787af3bd"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#aee89703dbbd922b7c3df9084787af3bd">normalize</a> (void)</td></tr>
+<tr class="separator:aee89703dbbd922b7c3df9084787af3bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6edff39216ff55da920bb1a10363e7a0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#a6edff39216ff55da920bb1a10363e7a0">operator*=</a> (float d)</td></tr>
+<tr class="separator:a6edff39216ff55da920bb1a10363e7a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe309edc1357ce93eb1f218c6eb1e1ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#abe309edc1357ce93eb1f218c6eb1e1ba">operator+=</a> (const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;v)</td></tr>
+<tr class="separator:abe309edc1357ce93eb1f218c6eb1e1ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad719ec67bcfae71ea263fe50b822ac7f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec4f.html">SbVec4f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#ad719ec67bcfae71ea263fe50b822ac7f">operator-</a> (void) const</td></tr>
+<tr class="separator:ad719ec67bcfae71ea263fe50b822ac7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fa3416e87b398acfb9fdf0fc26b3a61"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#a0fa3416e87b398acfb9fdf0fc26b3a61">operator-=</a> (const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;v)</td></tr>
+<tr class="separator:a0fa3416e87b398acfb9fdf0fc26b3a61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a386fce6ce83b627ec4fe352241301ad0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#a386fce6ce83b627ec4fe352241301ad0">operator/=</a> (float d)</td></tr>
+<tr class="separator:a386fce6ce83b627ec4fe352241301ad0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec83ad2e3162654f8d072404f8a10fd3"><td class="memItemLeft" align="right" valign="top">float &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#aec83ad2e3162654f8d072404f8a10fd3">operator[]</a> (int i)</td></tr>
+<tr class="separator:aec83ad2e3162654f8d072404f8a10fd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a357bbb547a793aa4abb4829c54f89e09"><td class="memItemLeft" align="right" valign="top">const float &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#a357bbb547a793aa4abb4829c54f89e09">operator[]</a> (int i) const</td></tr>
+<tr class="separator:a357bbb547a793aa4abb4829c54f89e09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5294aebcd7af71ffb897447aee7bf6f9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#a5294aebcd7af71ffb897447aee7bf6f9">print</a> (FILE *fp) const</td></tr>
+<tr class="separator:a5294aebcd7af71ffb897447aee7bf6f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a641bc3d9805f860ed2c5d2b635389e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#a5a641bc3d9805f860ed2c5d2b635389e">setValue</a> (const float v[4])</td></tr>
+<tr class="separator:a5a641bc3d9805f860ed2c5d2b635389e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee85f8205cddc571831987e400c4775e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#aee85f8205cddc571831987e400c4775e">setValue</a> (const <a class="el" href="classSbVec4b.html">SbVec4b</a> &amp;v)</td></tr>
+<tr class="separator:aee85f8205cddc571831987e400c4775e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c1937f4c3d7b1148957a0ac6d67b72f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#a9c1937f4c3d7b1148957a0ac6d67b72f">setValue</a> (const <a class="el" href="classSbVec4d.html">SbVec4d</a> &amp;v)</td></tr>
+<tr class="separator:a9c1937f4c3d7b1148957a0ac6d67b72f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6122ce3070d5e7ee16db5cb9ef89b173"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#a6122ce3070d5e7ee16db5cb9ef89b173">setValue</a> (const <a class="el" href="classSbVec4i32.html">SbVec4i32</a> &amp;v)</td></tr>
+<tr class="separator:a6122ce3070d5e7ee16db5cb9ef89b173"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cb09fafbc258b541f6cd85c7e0a6b04"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#a2cb09fafbc258b541f6cd85c7e0a6b04">setValue</a> (const <a class="el" href="classSbVec4s.html">SbVec4s</a> &amp;v)</td></tr>
+<tr class="separator:a2cb09fafbc258b541f6cd85c7e0a6b04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa064707268b43ad1df00633375e7e092"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#aa064707268b43ad1df00633375e7e092">setValue</a> (float x, float y, float z, float w)</td></tr>
+<tr class="separator:aa064707268b43ad1df00633375e7e092"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77a3b372c37bfb7be3f2201f48d2dd05"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#a77a3b372c37bfb7be3f2201f48d2dd05">sqrLength</a> (void) const</td></tr>
+<tr class="separator:a77a3b372c37bfb7be3f2201f48d2dd05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:ae894728e753ba46d5408e901805914c5"><td class="memItemLeft" align="right" valign="top"><a id="ae894728e753ba46d5408e901805914c5"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>vec</b> [4]</td></tr>
+<tr class="separator:ae894728e753ba46d5408e901805914c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
+Related Functions</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
+</td></tr>
+<tr class="memitem:a63873557b254683d8b5313b0615dc061"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#a63873557b254683d8b5313b0615dc061">operator!=</a> (const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;v1, const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;v2)</td></tr>
+<tr class="separator:a63873557b254683d8b5313b0615dc061"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92a3a4750b0fa4407f48db6adc22a9ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec4f.html">SbVec4f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#a92a3a4750b0fa4407f48db6adc22a9ca">operator*</a> (const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;v, float d)</td></tr>
+<tr class="separator:a92a3a4750b0fa4407f48db6adc22a9ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd05dad2218ea2be75c970bb965f0fed"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec4f.html">SbVec4f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#abd05dad2218ea2be75c970bb965f0fed">operator*</a> (float d, const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;v)</td></tr>
+<tr class="separator:abd05dad2218ea2be75c970bb965f0fed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc1db057a8df5be3eb7f5d19f90b0e58"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec4f.html">SbVec4f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#abc1db057a8df5be3eb7f5d19f90b0e58">operator+</a> (const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;v1, const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;v2)</td></tr>
+<tr class="separator:abc1db057a8df5be3eb7f5d19f90b0e58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb503e55d6b40b30f6306f6689fb37b8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec4f.html">SbVec4f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#aeb503e55d6b40b30f6306f6689fb37b8">operator-</a> (const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;v1, const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;v2)</td></tr>
+<tr class="separator:aeb503e55d6b40b30f6306f6689fb37b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0c94dc96d51452294649791712c142a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec4f.html">SbVec4f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#af0c94dc96d51452294649791712c142a">operator/</a> (const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;v, float d)</td></tr>
+<tr class="separator:af0c94dc96d51452294649791712c142a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaaeee53660c883978e3ab2b0cfc27a77"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbVec4f.html#aaaeee53660c883978e3ab2b0cfc27a77">operator==</a> (const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;v1, const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;v2)</td></tr>
+<tr class="separator:aaaeee53660c883978e3ab2b0cfc27a77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSbVec4f.html" title="The SbVec4f class is a 4 dimensional vector with floating point coordinates.">SbVec4f</a> class is a 4 dimensional vector with floating point coordinates. </p>
+<p>This vector class is used by many other classes in Coin. It provides storage for a 3 dimensional homogeneous vector (with the 4 components usually referred to as &lt;x, y, z, w&gt;) as well as simple floating point arithmetic operations.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbVec2s.html" title="The SbVec2s class is a 2 dimensional vector with short integer coordinates.">SbVec2s</a>, <a class="el" href="classSbVec2f.html" title="The SbVec2f class is a 2 dimensional vector with floating point coordinates.">SbVec2f</a>, <a class="el" href="classSbVec2d.html" title="The SbVec2d class is a 2 dimensional vector with double precision floating point coordinates.">SbVec2d</a>, <a class="el" href="classSbVec3s.html" title="The SbVec3s class is a 3 dimensional vector with short integer coordinates.">SbVec3s</a>, <a class="el" href="classSbVec3f.html" title="The SbVec3f class is a 3 dimensional vector with floating point coordinates.">SbVec3f</a>, <a class="el" href="classSbVec3d.html" title="The SbVec3d class is a 3 dimensional vector with double precision floating point coordinates.">SbVec3d</a>, <a class="el" href="classSbVec4d.html" title="The SbVec4d class is a 4 dimensional vector with double precision floating point coordinates.">SbVec4d</a>. </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a8906e1c6054ce209d1f6d77a21515e44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8906e1c6054ce209d1f6d77a21515e44">&#9670;&nbsp;</a></span>SbVec4f() <span class="overload">[1/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbVec4f::SbVec4f </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The default constructor does nothing. The vector coordinates will be uninitialized until a call the <a class="el" href="classSbVec4f.html#a5a641bc3d9805f860ed2c5d2b635389e">setValue()</a>. </p>
+
+</div>
+</div>
+<a id="ad731535c83725d6bdc900b9a30ab4c92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad731535c83725d6bdc900b9a30ab4c92">&#9670;&nbsp;</a></span>SbVec4f() <span class="overload">[2/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbVec4f::SbVec4f </td>
+          <td>(</td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>v</em>[4]</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Constructs an <a class="el" href="classSbVec4f.html" title="The SbVec4f class is a 4 dimensional vector with floating point coordinates.">SbVec4f</a> instance with initial values from <em>v</em>. </p>
+
+</div>
+</div>
+<a id="adf498d940df41d8a89e34bffcb3cf2b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf498d940df41d8a89e34bffcb3cf2b8">&#9670;&nbsp;</a></span>SbVec4f() <span class="overload">[3/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbVec4f::SbVec4f </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>w</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Constructs an <a class="el" href="classSbVec4f.html" title="The SbVec4f class is a 4 dimensional vector with floating point coordinates.">SbVec4f</a> instance with the initial homogeneous vector set to <em>&lt;x</em>,y,z,w&gt;. </p>
+
+</div>
+</div>
+<a id="a8545647ed869389186e93b47b7e2d52e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8545647ed869389186e93b47b7e2d52e">&#9670;&nbsp;</a></span>SbVec4f() <span class="overload">[4/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbVec4f::SbVec4f </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec4d.html">SbVec4d</a> &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Constructs an <a class="el" href="classSbVec4f.html" title="The SbVec4f class is a 4 dimensional vector with floating point coordinates.">SbVec4f</a> instance from an <a class="el" href="classSbVec4d.html" title="The SbVec4d class is a 4 dimensional vector with double precision floating point coordinates.">SbVec4d</a> instance. </p>
+
+</div>
+</div>
+<a id="a98e08f627dac939645bb52580db3c4aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98e08f627dac939645bb52580db3c4aa">&#9670;&nbsp;</a></span>SbVec4f() <span class="overload">[5/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbVec4f::SbVec4f </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec4b.html">SbVec4b</a> &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Constructs an <a class="el" href="classSbVec4f.html" title="The SbVec4f class is a 4 dimensional vector with floating point coordinates.">SbVec4f</a> instance from an <a class="el" href="classSbVec4b.html">SbVec4b</a> instance.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.5 </dd></dl>
+
+</div>
+</div>
+<a id="a254dd416048917eee27af0b8463fbd48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a254dd416048917eee27af0b8463fbd48">&#9670;&nbsp;</a></span>SbVec4f() <span class="overload">[6/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbVec4f::SbVec4f </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec4s.html">SbVec4s</a> &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Constructs an <a class="el" href="classSbVec4f.html" title="The SbVec4f class is a 4 dimensional vector with floating point coordinates.">SbVec4f</a> instance from an <a class="el" href="classSbVec4s.html">SbVec4s</a> instance.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.5 </dd></dl>
+
+</div>
+</div>
+<a id="ac83cc2c568738c8781fcee9b2fde8cf8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac83cc2c568738c8781fcee9b2fde8cf8">&#9670;&nbsp;</a></span>SbVec4f() <span class="overload">[7/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbVec4f::SbVec4f </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec4i32.html">SbVec4i32</a> &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Constructs an <a class="el" href="classSbVec4f.html" title="The SbVec4f class is a 4 dimensional vector with floating point coordinates.">SbVec4f</a> instance from an <a class="el" href="classSbVec4i32.html">SbVec4i32</a> instance.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.5 </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae711b047c9a255b89b2134b28f882fe7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae711b047c9a255b89b2134b28f882fe7">&#9670;&nbsp;</a></span>dot()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SbVec4f::dot </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Calculates and returns the result of taking the dot product of this vector and <em>v</em>. </p>
+
+</div>
+</div>
+<a id="a90d86b1e759ad899d951cc820c29a5bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90d86b1e759ad899d951cc820c29a5bc">&#9670;&nbsp;</a></span>equals()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SbVec4f::equals </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>tolerance</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Compares the vector with <em>v</em> and returns <code>TRUE</code> if the distance between the vectors is smaller or equal to the square root of <em>tolerance</em>.</p>
+<p>The comparison is done in 4D-space, i.e. the <em>w</em> component of the vector is <em>not</em> used to make x, y and z into Cartesian coordinates first. </p>
+
+</div>
+</div>
+<a id="a7cc22dfb8e4e4499bc31fc4d77a47a02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7cc22dfb8e4e4499bc31fc4d77a47a02">&#9670;&nbsp;</a></span>getReal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbVec4f::getReal </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the vector as a Cartesian 3D vector in <em>v</em>. This means that the 3 first components x, y and z will be divided by the fourth, w. </p>
+
+</div>
+</div>
+<a id="ab972b9946330047984521bd05b601b9b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab972b9946330047984521bd05b601b9b">&#9670;&nbsp;</a></span>getValue() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbVec4f::getValue </td>
+          <td>(</td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>w</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the x, y, z and w coordinates of the vector.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbVec4f.html#a5a641bc3d9805f860ed2c5d2b635389e">setValue()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="abac4ee260db49f80da545978de2a9858"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abac4ee260db49f80da545978de2a9858">&#9670;&nbsp;</a></span>getValue() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const float * SbVec4f::getValue </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns a pointer to an array of four floats containing the x, y, z and w coordinates of the vector.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbVec4f.html#a5a641bc3d9805f860ed2c5d2b635389e">setValue()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="af5c90616554e3a871b3d9aea1f38afec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5c90616554e3a871b3d9aea1f38afec">&#9670;&nbsp;</a></span>length()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SbVec4f::length </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return the length of the vector in 4D space. </p>
+
+</div>
+</div>
+<a id="ac87c676afcddcdd4c4a8e4dfacaaf81e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac87c676afcddcdd4c4a8e4dfacaaf81e">&#9670;&nbsp;</a></span>negate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbVec4f::negate </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Negate the vector. </p>
+
+</div>
+</div>
+<a id="aee89703dbbd922b7c3df9084787af3bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee89703dbbd922b7c3df9084787af3bd">&#9670;&nbsp;</a></span>normalize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SbVec4f::normalize </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Normalize the vector to unit length. Return value is the original length of the vector before normalization. </p>
+
+</div>
+</div>
+<a id="a6edff39216ff55da920bb1a10363e7a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6edff39216ff55da920bb1a10363e7a0">&#9670;&nbsp;</a></span>operator*=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec4f.html">SbVec4f</a> &amp; SbVec4f::operator*= </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>d</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Multiply components of vector with value <em>d</em>. Returns reference to self. </p>
+
+</div>
+</div>
+<a id="abe309edc1357ce93eb1f218c6eb1e1ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe309edc1357ce93eb1f218c6eb1e1ba">&#9670;&nbsp;</a></span>operator+=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec4f.html">SbVec4f</a> &amp; SbVec4f::operator+= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Adds this vector and vector <em>v</em>. Returns reference to self. </p>
+
+</div>
+</div>
+<a id="ad719ec67bcfae71ea263fe50b822ac7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad719ec67bcfae71ea263fe50b822ac7f">&#9670;&nbsp;</a></span>operator-()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec4f.html">SbVec4f</a> SbVec4f::operator- </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Non-destructive negation operator. Returns a new <a class="el" href="classSbVec4f.html" title="The SbVec4f class is a 4 dimensional vector with floating point coordinates.">SbVec4f</a> instance which has all components negated.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbVec4f.html#ac87c676afcddcdd4c4a8e4dfacaaf81e">negate()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a0fa3416e87b398acfb9fdf0fc26b3a61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fa3416e87b398acfb9fdf0fc26b3a61">&#9670;&nbsp;</a></span>operator-=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec4f.html">SbVec4f</a> &amp; SbVec4f::operator-= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Subtracts vector <em>v</em> from this vector. Returns reference to self. </p>
+
+</div>
+</div>
+<a id="a386fce6ce83b627ec4fe352241301ad0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a386fce6ce83b627ec4fe352241301ad0">&#9670;&nbsp;</a></span>operator/=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec4f.html">SbVec4f</a> &amp; SbVec4f::operator/= </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>d</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Divides components of vector with value <em>d</em>. Returns reference to self. </p>
+
+</div>
+</div>
+<a id="aec83ad2e3162654f8d072404f8a10fd3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec83ad2e3162654f8d072404f8a10fd3">&#9670;&nbsp;</a></span>operator[]() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float &amp; SbVec4f::operator[] </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Index operator. Returns modifiable x, y, z or w component of vector.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbVec4f.html#abac4ee260db49f80da545978de2a9858">getValue()</a> and <a class="el" href="classSbVec4f.html#a5a641bc3d9805f860ed2c5d2b635389e">setValue()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a357bbb547a793aa4abb4829c54f89e09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a357bbb547a793aa4abb4829c54f89e09">&#9670;&nbsp;</a></span>operator[]() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const float &amp; SbVec4f::operator[] </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Index operator. Returns x, y, z or w component of vector.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbVec4f.html#abac4ee260db49f80da545978de2a9858">getValue()</a> and <a class="el" href="classSbVec4f.html#a5a641bc3d9805f860ed2c5d2b635389e">setValue()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a5294aebcd7af71ffb897447aee7bf6f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5294aebcd7af71ffb897447aee7bf6f9">&#9670;&nbsp;</a></span>print()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbVec4f::print </td>
+          <td>(</td>
+          <td class="paramtype">FILE *&#160;</td>
+          <td class="paramname"><em>fp</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Dump the state of this object to the <em>fp</em> file stream. Only works in debug version of library, method does nothing in an optimized build. </p>
+
+</div>
+</div>
+<a id="a5a641bc3d9805f860ed2c5d2b635389e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a641bc3d9805f860ed2c5d2b635389e">&#9670;&nbsp;</a></span>setValue() <span class="overload">[1/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec4f.html">SbVec4f</a> &amp; SbVec4f::setValue </td>
+          <td>(</td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>v</em>[4]</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set new coordinates for the vector from <em>v</em>. Returns reference to self.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbVec4f.html#abac4ee260db49f80da545978de2a9858">getValue()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="aee85f8205cddc571831987e400c4775e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee85f8205cddc571831987e400c4775e">&#9670;&nbsp;</a></span>setValue() <span class="overload">[2/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec4f.html">SbVec4f</a> &amp; SbVec4f::setValue </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec4b.html">SbVec4b</a> &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>Coin 2.5 </dd></dl>
+
+</div>
+</div>
+<a id="a9c1937f4c3d7b1148957a0ac6d67b72f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c1937f4c3d7b1148957a0ac6d67b72f">&#9670;&nbsp;</a></span>setValue() <span class="overload">[3/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec4f.html">SbVec4f</a> &amp; SbVec4f::setValue </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec4d.html">SbVec4d</a> &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the value from an <a class="el" href="classSbVec4d.html" title="The SbVec4d class is a 4 dimensional vector with double precision floating point coordinates.">SbVec4d</a> instance. </p>
+
+</div>
+</div>
+<a id="a6122ce3070d5e7ee16db5cb9ef89b173"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6122ce3070d5e7ee16db5cb9ef89b173">&#9670;&nbsp;</a></span>setValue() <span class="overload">[4/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec4f.html">SbVec4f</a> &amp; SbVec4f::setValue </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec4i32.html">SbVec4i32</a> &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>Coin 2.5 </dd></dl>
+
+</div>
+</div>
+<a id="a2cb09fafbc258b541f6cd85c7e0a6b04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cb09fafbc258b541f6cd85c7e0a6b04">&#9670;&nbsp;</a></span>setValue() <span class="overload">[5/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec4f.html">SbVec4f</a> &amp; SbVec4f::setValue </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec4s.html">SbVec4s</a> &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>Coin 2.5 </dd></dl>
+
+</div>
+</div>
+<a id="aa064707268b43ad1df00633375e7e092"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa064707268b43ad1df00633375e7e092">&#9670;&nbsp;</a></span>setValue() <span class="overload">[6/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec4f.html">SbVec4f</a> &amp; SbVec4f::setValue </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>w</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Set new coordinates for the vector. Returns reference to self.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbVec4f.html#abac4ee260db49f80da545978de2a9858">getValue()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a77a3b372c37bfb7be3f2201f48d2dd05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77a3b372c37bfb7be3f2201f48d2dd05">&#9670;&nbsp;</a></span>sqrLength()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SbVec4f::sqrLength </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Return the square of the length of the vector in 4D space. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="a63873557b254683d8b5313b0615dc061"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63873557b254683d8b5313b0615dc061">&#9670;&nbsp;</a></span>operator!=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td>
+          <td class="paramname"><em>v1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td>
+          <td class="paramname"><em>v2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns <em>1</em> if <em>v1</em> and <em>v2</em> are not equal, <em>0</em> if they are equal.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbVec4f.html#a90d86b1e759ad899d951cc820c29a5bc">equals()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a92a3a4750b0fa4407f48db6adc22a9ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92a3a4750b0fa4407f48db6adc22a9ca">&#9670;&nbsp;</a></span>operator*() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec4f.html">SbVec4f</a> operator* </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>d</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns an <a class="el" href="classSbVec4f.html" title="The SbVec4f class is a 4 dimensional vector with floating point coordinates.">SbVec4f</a> instance which is the components of vector <em>v</em> multiplied with <em>d</em>. </p>
+
+</div>
+</div>
+<a id="abd05dad2218ea2be75c970bb965f0fed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd05dad2218ea2be75c970bb965f0fed">&#9670;&nbsp;</a></span>operator*() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec4f.html">SbVec4f</a> operator* </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>d</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td>
+          <td class="paramname"><em>v</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns an <a class="el" href="classSbVec4f.html" title="The SbVec4f class is a 4 dimensional vector with floating point coordinates.">SbVec4f</a> instance which is the components of vector <em>v</em> multiplied with <em>d</em>. </p>
+
+</div>
+</div>
+<a id="abc1db057a8df5be3eb7f5d19f90b0e58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc1db057a8df5be3eb7f5d19f90b0e58">&#9670;&nbsp;</a></span>operator+()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec4f.html">SbVec4f</a> operator+ </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td>
+          <td class="paramname"><em>v1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td>
+          <td class="paramname"><em>v2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns an <a class="el" href="classSbVec4f.html" title="The SbVec4f class is a 4 dimensional vector with floating point coordinates.">SbVec4f</a> instance which is the sum of vectors <em>v1</em> and <em>v2</em>. </p>
+
+</div>
+</div>
+<a id="aeb503e55d6b40b30f6306f6689fb37b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb503e55d6b40b30f6306f6689fb37b8">&#9670;&nbsp;</a></span>operator-()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec4f.html">SbVec4f</a> operator- </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td>
+          <td class="paramname"><em>v1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td>
+          <td class="paramname"><em>v2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns an <a class="el" href="classSbVec4f.html" title="The SbVec4f class is a 4 dimensional vector with floating point coordinates.">SbVec4f</a> instance which is vector <em>v2</em> subtracted from vector <em>v1</em>. </p>
+
+</div>
+</div>
+<a id="af0c94dc96d51452294649791712c142a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0c94dc96d51452294649791712c142a">&#9670;&nbsp;</a></span>operator/()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec4f.html">SbVec4f</a> operator/ </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td>
+          <td class="paramname"><em>v</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>d</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns an <a class="el" href="classSbVec4f.html" title="The SbVec4f class is a 4 dimensional vector with floating point coordinates.">SbVec4f</a> instance which is the components of vector <em>v</em> divided on the scalar factor <em>d</em>. </p>
+
+</div>
+</div>
+<a id="aaaeee53660c883978e3ab2b0cfc27a77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaaeee53660c883978e3ab2b0cfc27a77">&#9670;&nbsp;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td>
+          <td class="paramname"><em>v1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td>
+          <td class="paramname"><em>v2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns <em>1</em> if <em>v1</em> and <em>v2</em> are equal, <em>0</em> otherwise.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbVec4f.html#a90d86b1e759ad899d951cc820c29a5bc">equals()</a>. </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SbVec4f_8h_source.html">SbVec4f.h</a></li>
+<li>SbVec4f.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSbVec4f.html">SbVec4f</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

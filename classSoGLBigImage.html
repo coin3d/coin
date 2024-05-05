@@ -1,0 +1,695 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SoGLBigImage Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSoGLBigImage.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="classSoGLBigImage-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SoGLBigImage Class Reference</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSoGLBigImage.html" title="The SoGLBigImage class is used to handle 2D OpenGL textures of any size.">SoGLBigImage</a> class is used to handle 2D OpenGL textures of any size.  
+ <a href="classSoGLBigImage.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SoGLBigImage_8h_source.html">include/Inventor/misc/SoGLBigImage.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for SoGLBigImage:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classSoGLBigImage.png" usemap="#SoGLBigImage_map" alt=""/>
+  <map id="SoGLBigImage_map" name="SoGLBigImage_map">
+<area href="classSoGLImage.html" title="The SoGLImage class is used to handle OpenGL 2D/3D textures." alt="SoGLImage" shape="rect" coords="0,0,94,24"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a63bf724f345c2a17403aec857b3fca90"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLBigImage.html#a63bf724f345c2a17403aec857b3fca90">SoGLBigImage</a> ()</td></tr>
+<tr class="separator:a63bf724f345c2a17403aec857b3fca90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8a534e7263cdb88be71c0994a4fd887"><td class="memItemLeft" align="right" valign="top"><a id="af8a534e7263cdb88be71c0994a4fd887"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>applySubImage</b> (<a class="el" href="classSoState.html">SoState</a> *state, const int idx, const float quality, const <a class="el" href="classSbVec2s.html">SbVec2s</a> &amp;projsize)</td></tr>
+<tr class="separator:af8a534e7263cdb88be71c0994a4fd887"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a108c4d2aaaf0291552db029dd53f76b9"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLBigImage.html#a108c4d2aaaf0291552db029dd53f76b9">exceededChangeLimit</a> (void)</td></tr>
+<tr class="separator:a108c4d2aaaf0291552db029dd53f76b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34c957db1299d20e1e2d339dce664552"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoGLDisplayList.html">SoGLDisplayList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLBigImage.html#a34c957db1299d20e1e2d339dce664552">getGLDisplayList</a> (<a class="el" href="classSoState.html">SoState</a> *state)</td></tr>
+<tr class="separator:a34c957db1299d20e1e2d339dce664552"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa727323a821c784a6fedd469105e90b8"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLBigImage.html#aa727323a821c784a6fedd469105e90b8">getTypeId</a> (void) const</td></tr>
+<tr class="separator:aa727323a821c784a6fedd469105e90b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a959bca3abbb856714b7d4d2b0fe84398"><td class="memItemLeft" align="right" valign="top"><a id="a959bca3abbb856714b7d4d2b0fe84398"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>handleSubImage</b> (const int idx, <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;start, <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;end, <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;tcmul)</td></tr>
+<tr class="separator:a959bca3abbb856714b7d4d2b0fe84398"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c826a092671dc1660c81afcd4127434"><td class="memItemLeft" align="right" valign="top"><a id="a4c826a092671dc1660c81afcd4127434"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>initSubImages</b> (const <a class="el" href="classSbVec2s.html">SbVec2s</a> &amp;subimagesize) const</td></tr>
+<tr class="separator:a4c826a092671dc1660c81afcd4127434"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25f7c25cbc4e13dfa1c63be7927df04f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLBigImage.html#a25f7c25cbc4e13dfa1c63be7927df04f">setData</a> (const <a class="el" href="classSbImage.html">SbImage</a> *image, const <a class="el" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a> wraps, const <a class="el" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a> wrapt, const <a class="el" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a> wrapr, const float quality=0.5f, const int border=0, <a class="el" href="classSoState.html">SoState</a> *createinstate=NULL)</td></tr>
+<tr class="separator:a25f7c25cbc4e13dfa1c63be7927df04f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03d83d40ee2851ecf90d90abfae412cf"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLBigImage.html#a03d83d40ee2851ecf90d90abfae412cf">setData</a> (const <a class="el" href="classSbImage.html">SbImage</a> *image, const <a class="el" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a> wraps=REPEAT, const <a class="el" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a> wrapt=REPEAT, const float quality=0.5f, const int border=0, <a class="el" href="classSoState.html">SoState</a> *createinstate=NULL)</td></tr>
+<tr class="separator:a03d83d40ee2851ecf90d90abfae412cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66f4ebbb9a4d6a914f46faa82212f7f3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLBigImage.html#a66f4ebbb9a4d6a914f46faa82212f7f3">unref</a> (<a class="el" href="classSoState.html">SoState</a> *state=NULL)</td></tr>
+<tr class="separator:a66f4ebbb9a4d6a914f46faa82212f7f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSoGLImage"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSoGLImage')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSoGLImage.html">SoGLImage</a></td></tr>
+<tr class="memitem:aeb677834d518a3fa5074e94b52915133 inherit pub_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#aeb677834d518a3fa5074e94b52915133">SoGLImage</a> ()</td></tr>
+<tr class="separator:aeb677834d518a3fa5074e94b52915133 inherit pub_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8851dcb23432e4a1d195c72341d60d02 inherit pub_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#a8851dcb23432e4a1d195c72341d60d02">getFlags</a> (void) const</td></tr>
+<tr class="separator:a8851dcb23432e4a1d195c72341d60d02 inherit pub_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a608ef7123d29f7a909f5ed6b8079f0ac inherit pub_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#a608ef7123d29f7a909f5ed6b8079f0ac">getGLImageId</a> (void) const</td></tr>
+<tr class="separator:a608ef7123d29f7a909f5ed6b8079f0ac inherit pub_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06f9e6a075b9780be6345bc62f751b28 inherit pub_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbImage.html">SbImage</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#a06f9e6a075b9780be6345bc62f751b28">getImage</a> (void) const</td></tr>
+<tr class="separator:a06f9e6a075b9780be6345bc62f751b28 inherit pub_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40d43ce03d6a1b8afb2ad7e816093872 inherit pub_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top"><a id="a40d43ce03d6a1b8afb2ad7e816093872"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getNumFramesSinceUsed</b> (void) const</td></tr>
+<tr class="separator:a40d43ce03d6a1b8afb2ad7e816093872 inherit pub_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadfa794bbb23742bf7dedd4ee2e6b9b1 inherit pub_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#aadfa794bbb23742bf7dedd4ee2e6b9b1">getQuality</a> (void) const</td></tr>
+<tr class="separator:aadfa794bbb23742bf7dedd4ee2e6b9b1 inherit pub_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52ced56ef76b727691fd71c02e6d040d inherit pub_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#a52ced56ef76b727691fd71c02e6d040d">getWrapR</a> (void) const</td></tr>
+<tr class="separator:a52ced56ef76b727691fd71c02e6d040d inherit pub_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab795d0cd41bd28b5c2f927a38f2eb666 inherit pub_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#ab795d0cd41bd28b5c2f927a38f2eb666">getWrapS</a> (void) const</td></tr>
+<tr class="separator:ab795d0cd41bd28b5c2f927a38f2eb666 inherit pub_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cda1d99f00987b2e5a80911f3e1569f inherit pub_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#a7cda1d99f00987b2e5a80911f3e1569f">getWrapT</a> (void) const</td></tr>
+<tr class="separator:a7cda1d99f00987b2e5a80911f3e1569f inherit pub_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39efb9d9356260895b3c763f65ed3905 inherit pub_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#a39efb9d9356260895b3c763f65ed3905">hasTransparency</a> (void) const</td></tr>
+<tr class="separator:a39efb9d9356260895b3c763f65ed3905 inherit pub_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cf4c88b18a38a2620a0f767348beea9 inherit pub_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#a1cf4c88b18a38a2620a0f767348beea9">isOfType</a> (<a class="el" href="classSoType.html">SoType</a> type) const</td></tr>
+<tr class="separator:a1cf4c88b18a38a2620a0f767348beea9 inherit pub_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9224330dccd39954755029af4bb4a24c inherit pub_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#a9224330dccd39954755029af4bb4a24c">setData</a> (const unsigned char *bytes, const <a class="el" href="classSbVec2s.html">SbVec2s</a> &amp;size, const int numcomponents, const <a class="el" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a> wraps=REPEAT, const <a class="el" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a> wrapt=REPEAT, const float quality=0.5f, const int border=0, <a class="el" href="classSoState.html">SoState</a> *createinstate=NULL)</td></tr>
+<tr class="separator:a9224330dccd39954755029af4bb4a24c inherit pub_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0dbf63f849f504e5de843b8768c2200e inherit pub_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#a0dbf63f849f504e5de843b8768c2200e">setData</a> (const unsigned char *bytes, const <a class="el" href="classSbVec3s.html">SbVec3s</a> &amp;size, const int numcomponents, const <a class="el" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a> wraps=REPEAT, const <a class="el" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a> wrapt=REPEAT, const <a class="el" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a> wrapr=REPEAT, const float quality=0.5f, const int border=0, <a class="el" href="classSoState.html">SoState</a> *createinstate=NULL)</td></tr>
+<tr class="separator:a0dbf63f849f504e5de843b8768c2200e inherit pub_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a593d9e65dbe8281c87e2d9dc94f8c25d inherit pub_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top"><a id="a593d9e65dbe8281c87e2d9dc94f8c25d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setEndFrameCallback</b> (void(*cb)(void *), void *closure)</td></tr>
+<tr class="separator:a593d9e65dbe8281c87e2d9dc94f8c25d inherit pub_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6950dd6e70a3c23fe1d548b945ceb9f8 inherit pub_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#a6950dd6e70a3c23fe1d548b945ceb9f8">setFlags</a> (const uint32_t flags)</td></tr>
+<tr class="separator:a6950dd6e70a3c23fe1d548b945ceb9f8 inherit pub_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af27b448da7b46aaa3b4fb16d5c0d8091 inherit pub_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#af27b448da7b46aaa3b4fb16d5c0d8091">setGLDisplayList</a> (<a class="el" href="classSoGLDisplayList.html">SoGLDisplayList</a> *dl, <a class="el" href="classSoState.html">SoState</a> *state, const <a class="el" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a> wraps=REPEAT, const <a class="el" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a> wrapt=REPEAT, const float quality=0.5f)</td></tr>
+<tr class="separator:af27b448da7b46aaa3b4fb16d5c0d8091 inherit pub_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07ba3870534f4f5907886d3006359d73 inherit pub_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#a07ba3870534f4f5907886d3006359d73">setPBuffer</a> (<a class="el" href="classSoState.html">SoState</a> *state, void *context, const <a class="el" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a> wraps=REPEAT, const <a class="el" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a> wrapt=REPEAT, const float quality=0.5f)</td></tr>
+<tr class="separator:a07ba3870534f4f5907886d3006359d73 inherit pub_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a391358a03745329412aac35dff0e3f4d inherit pub_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#a391358a03745329412aac35dff0e3f4d">useAlphaTest</a> (void) const</td></tr>
+<tr class="separator:a391358a03745329412aac35dff0e3f4d inherit pub_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:af19a1818a5b13b9c04392d44279facbd"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLBigImage.html#af19a1818a5b13b9c04392d44279facbd">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:af19a1818a5b13b9c04392d44279facbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a84e68ec4e187b499556ca06126b009"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLBigImage.html#a5a84e68ec4e187b499556ca06126b009">initClass</a> (void)</td></tr>
+<tr class="separator:a5a84e68ec4e187b499556ca06126b009"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac05f8834536618e37cfa5bcb7de5fc9d"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLBigImage.html#ac05f8834536618e37cfa5bcb7de5fc9d">setChangeLimit</a> (const int limit)</td></tr>
+<tr class="separator:ac05f8834536618e37cfa5bcb7de5fc9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classSoGLImage"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classSoGLImage')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classSoGLImage.html">SoGLImage</a></td></tr>
+<tr class="memitem:a93c6f30b09ad71b1ca8d633492bafd72 inherit pub_static_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#a93c6f30b09ad71b1ca8d633492bafd72">beginFrame</a> (<a class="el" href="classSoState.html">SoState</a> *state)</td></tr>
+<tr class="separator:a93c6f30b09ad71b1ca8d633492bafd72 inherit pub_static_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e0fa5f6229521c519b314a6bed1d699 inherit pub_static_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#a1e0fa5f6229521c519b314a6bed1d699">endFrame</a> (<a class="el" href="classSoState.html">SoState</a> *state)</td></tr>
+<tr class="separator:a1e0fa5f6229521c519b314a6bed1d699 inherit pub_static_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2416ed37d727effcfb7579a4725f3334 inherit pub_static_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#a2416ed37d727effcfb7579a4725f3334">freeAllImages</a> (<a class="el" href="classSoState.html">SoState</a> *state=NULL)</td></tr>
+<tr class="separator:a2416ed37d727effcfb7579a4725f3334 inherit pub_static_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa444512d6d479270446be7daa59f984a inherit pub_static_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#aa444512d6d479270446be7daa59f984a">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:aa444512d6d479270446be7daa59f984a inherit pub_static_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a949c4afb8ebf6bea1543f16f93b8fbea inherit pub_static_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#a949c4afb8ebf6bea1543f16f93b8fbea">initClass</a> (void)</td></tr>
+<tr class="separator:a949c4afb8ebf6bea1543f16f93b8fbea inherit pub_static_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa85f7da15bbb06227f9da3a91dfe6da5 inherit pub_static_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#aa85f7da15bbb06227f9da3a91dfe6da5">setDisplayListMaxAge</a> (const uint32_t maxage)</td></tr>
+<tr class="separator:aa85f7da15bbb06227f9da3a91dfe6da5 inherit pub_static_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a8860699c12cee3abad5a1d0cb0048e inherit pub_static_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#a8a8860699c12cee3abad5a1d0cb0048e">setResizeCallback</a> (<a class="el" href="classSoGLImage.html#a51b734acc32c6a4d1cf24285bdb9961d">SoGLImageResizeCB</a> *f, void *closure)</td></tr>
+<tr class="separator:a8a8860699c12cee3abad5a1d0cb0048e inherit pub_static_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8dc4d2c29ecda4a07c7b4e927f63ffa inherit pub_static_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#ad8dc4d2c29ecda4a07c7b4e927f63ffa">tagImage</a> (<a class="el" href="classSoState.html">SoState</a> *state, <a class="el" href="classSoGLImage.html">SoGLImage</a> *image)</td></tr>
+<tr class="separator:ad8dc4d2c29ecda4a07c7b4e927f63ffa inherit pub_static_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:aeab189f04a025e0a49954c8374621d5c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLBigImage.html#aeab189f04a025e0a49954c8374621d5c">unrefOldDL</a> (<a class="el" href="classSoState.html">SoState</a> *state, const uint32_t maxage)</td></tr>
+<tr class="separator:aeab189f04a025e0a49954c8374621d5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSoGLImage"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSoGLImage')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSoGLImage.html">SoGLImage</a></td></tr>
+<tr class="memitem:a64ceff3a8d7d595f0f6bf5e7abd2146e inherit pro_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#a64ceff3a8d7d595f0f6bf5e7abd2146e">~SoGLImage</a> ()</td></tr>
+<tr class="separator:a64ceff3a8d7d595f0f6bf5e7abd2146e inherit pro_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6291911039912d8d19b41bb9a5a6b7d4 inherit pro_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top"><a id="a6291911039912d8d19b41bb9a5a6b7d4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>incAge</b> (void) const</td></tr>
+<tr class="separator:a6291911039912d8d19b41bb9a5a6b7d4 inherit pro_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a3898eeb594dc67b980642bd34bf142 inherit pro_methods_classSoGLImage"><td class="memItemLeft" align="right" valign="top"><a id="a5a3898eeb594dc67b980642bd34bf142"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>resetAge</b> (void) const</td></tr>
+<tr class="separator:a5a3898eeb594dc67b980642bd34bf142 inherit pro_methods_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_types_classSoGLImage"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSoGLImage')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSoGLImage.html">SoGLImage</a></td></tr>
+<tr class="memitem:a3a13ffb56506b763c64831a6f037d4a2 inherit pub_types_classSoGLImage"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#a3a13ffb56506b763c64831a6f037d4a2">Flags</a> { <br />
+&#160;&#160;<b>SCALE_DOWN</b> = 0x0001
+, <b>NO_MIPMAP</b> = 0x0002
+, <b>LINEAR_MAG_FILTER</b> = 0x0004
+, <b>LINEAR_MIN_FILTER</b> = 0x0008
+, <br />
+&#160;&#160;<b>LINEAR_MIPMAP_FILTER</b> = 0x0010
+, <b>FORCE_TRANSPARENCY_TRUE</b> = 0x0020
+, <b>FORCE_TRANSPARENCY_FALSE</b> = 0x0040
+, <b>FORCE_ALPHA_TEST_TRUE</b> = 0x0080
+, <br />
+&#160;&#160;<b>FORCE_ALPHA_TEST_FALSE</b> = 0x0100
+, <b>INVINCIBLE</b> = 0x0200
+, <b>RECTANGLE</b> = 0x0400
+, <b>COMPRESSED</b> = 0x0800
+, <br />
+&#160;&#160;<b>USE_QUALITY_VALUE</b> = 0X8000
+<br />
+ }</td></tr>
+<tr class="separator:a3a13ffb56506b763c64831a6f037d4a2 inherit pub_types_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39a7a3a25f3b2af662b33844d9d0281a inherit pub_types_classSoGLImage"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#a39a7a3a25f3b2af662b33844d9d0281a">ResizeReason</a> { <b>IMAGE</b> = 0
+, <b>SUBIMAGE</b>
+, <b>MIPMAP</b>
+ }</td></tr>
+<tr class="separator:a39a7a3a25f3b2af662b33844d9d0281a inherit pub_types_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51b734acc32c6a4d1cf24285bdb9961d inherit pub_types_classSoGLImage"><td class="memItemLeft" align="right" valign="top">typedef SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#a51b734acc32c6a4d1cf24285bdb9961d">SoGLImageResizeCB</a>(<a class="el" href="classSoState.html">SoState</a> *state, const <a class="el" href="classSbVec3s.html">SbVec3s</a> &amp;newsize, unsigned char *destbuffer, <a class="el" href="classSoGLImage.html#a39a7a3a25f3b2af662b33844d9d0281a">ResizeReason</a> reason, void *closure, class <a class="el" href="classSoGLImage.html">SoGLImage</a> *image)</td></tr>
+<tr class="separator:a51b734acc32c6a4d1cf24285bdb9961d inherit pub_types_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7a651ee3183f5497290ce3d92141524 inherit pub_types_classSoGLImage"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a> { <b>REPEAT</b> = 0
+, <b>CLAMP</b>
+, <b>CLAMP_TO_EDGE</b>
+, <b>CLAMP_TO_BORDER</b>
+ }</td></tr>
+<tr class="separator:aa7a651ee3183f5497290ce3d92141524 inherit pub_types_classSoGLImage"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSoGLBigImage.html" title="The SoGLBigImage class is used to handle 2D OpenGL textures of any size.">SoGLBigImage</a> class is used to handle 2D OpenGL textures of any size. </p>
+<p>This class is internal. To enable/disable big-image texture handling you should use the <a class="el" href="classSoTextureScalePolicy.html" title="The SoTextureScalePolicy class is a node for controlling the texture scale policy.">SoTextureScalePolicy</a> node.</p>
+<p>The technique used is the following: split the texture into x*y equal size blocks. All these subtextures are of size 2^n, and are typically quite small (256x256 or smaller). Each triangle is clipped, based on the texture coordinates, into several smaller triangles. The triangles will then be guaranteed to use only one subtexture. Then the triangles are projected onto the screen, and the maximum projected size for each subtexture is calculated. Subtextures outside the viewport will be culled. Each subtexture is then sampled down to a 2^n value close to the projected size, and a GL texture is created with this size. This GL texture is used when rendering triangles that are clipped into that subtexture.</p>
+<p>Mipmapping is disabled for <a class="el" href="classSoGLBigImage.html" title="The SoGLBigImage class is used to handle 2D OpenGL textures of any size.">SoGLBigImage</a>. Aliasing problems shouldn't occur because the projected size of the texture is calculated on the fly. When mipmapping is enabled, the amount of texture memory used is doubled, and creating the texture object is much slower, so we avoid this for <a class="el" href="classSoGLBigImage.html" title="The SoGLBigImage class is used to handle 2D OpenGL textures of any size.">SoGLBigImage</a>.</p>
+<p>Be aware that this class is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ </p><dl class="section since"><dt>Since</dt><dd>Coin 2.0 </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a63bf724f345c2a17403aec857b3fca90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63bf724f345c2a17403aec857b3fca90">&#9670;&nbsp;</a></span>SoGLBigImage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoGLBigImage::SoGLBigImage </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Constructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a108c4d2aaaf0291552db029dd53f76b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a108c4d2aaaf0291552db029dd53f76b9">&#9670;&nbsp;</a></span>exceededChangeLimit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoGLBigImage::exceededChangeLimit </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>To avoid doing too much work in one frame, there is a limit on the number of subtextures that can be changed each frame. If this limit is exceeded, this function will return TRUE, otherwise FALSE.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoGLBigImage.html#ac05f8834536618e37cfa5bcb7de5fc9d">setChangeLimit()</a> </dd></dl>
+
+</div>
+</div>
+<a id="af19a1818a5b13b9c04392d44279facbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af19a1818a5b13b9c04392d44279facbd">&#9670;&nbsp;</a></span>getClassTypeId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoType.html">SoType</a> SoGLBigImage::getClassTypeId </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This static method returns the <a class="el" href="classSoType.html" title="The SoType class is the basis for the runtime type system in Coin.">SoType</a> object associated with objects of this class. </p>
+
+</div>
+</div>
+<a id="a34c957db1299d20e1e2d339dce664552"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34c957db1299d20e1e2d339dce664552">&#9670;&nbsp;</a></span>getGLDisplayList()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoGLDisplayList.html">SoGLDisplayList</a> * SoGLBigImage::getGLDisplayList </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoState.html">SoState</a> *&#160;</td>
+          <td class="paramname"><em>state</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns or creates a <a class="el" href="classSoGLDisplayList.html" title="The SoGLDisplayList class stores and manages OpenGL display lists.">SoGLDisplayList</a> to be used for rendering. Returns NULL if no <a class="el" href="classSoGLDisplayList.html" title="The SoGLDisplayList class stores and manages OpenGL display lists.">SoGLDisplayList</a> could be created. </p>
+
+<p>Reimplemented from <a class="el" href="classSoGLImage.html#aff3d3890ee87cd6c742e8da9890d8b48">SoGLImage</a>.</p>
+
+</div>
+</div>
+<a id="aa727323a821c784a6fedd469105e90b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa727323a821c784a6fedd469105e90b8">&#9670;&nbsp;</a></span>getTypeId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoType.html">SoType</a> SoGLBigImage::getTypeId </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the type identification of an object derived from a class inheriting <a class="el" href="classSoGLImage.html" title="The SoGLImage class is used to handle OpenGL 2D/3D textures.">SoGLImage</a>. This is used for runtime type checking and "downward" casting. </p>
+
+<p>Reimplemented from <a class="el" href="classSoGLImage.html#a12bbdc6f341cb3dd41e4e0b1cb720706">SoGLImage</a>.</p>
+
+</div>
+</div>
+<a id="a5a84e68ec4e187b499556ca06126b009"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a84e68ec4e187b499556ca06126b009">&#9670;&nbsp;</a></span>initClass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLBigImage::initClass </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This static method initializes static data for the <a class="el" href="classSoGLBigImage.html" title="The SoGLBigImage class is used to handle 2D OpenGL textures of any size.">SoGLBigImage</a> class. </p>
+
+</div>
+</div>
+<a id="ac05f8834536618e37cfa5bcb7de5fc9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac05f8834536618e37cfa5bcb7de5fc9d">&#9670;&nbsp;</a></span>setChangeLimit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SoGLBigImage::setChangeLimit </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>limit</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Sets the change limit. Returns the old limit.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoGLBigImage.html#a108c4d2aaaf0291552db029dd53f76b9">exceededChangeLimit()</a> </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.3 </dd></dl>
+
+</div>
+</div>
+<a id="a25f7c25cbc4e13dfa1c63be7927df04f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25f7c25cbc4e13dfa1c63be7927df04f">&#9670;&nbsp;</a></span>setData() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLBigImage::setData </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbImage.html">SbImage</a> *&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a>&#160;</td>
+          <td class="paramname"><em>wraps</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a>&#160;</td>
+          <td class="paramname"><em>wrapt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a>&#160;</td>
+          <td class="paramname"><em>wrapr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>quality</em> = <code>0.5f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>border</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSoState.html">SoState</a> *&#160;</td>
+          <td class="paramname"><em>createinstate</em> = <code>NULL</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Sets the data for this GL image. Should only be called when one of the parameters have changed, since this will cause the GL texture object to be recreated. Caller is responsible for sending legal wrap values. CLAMP_TO_EDGE is only supported on OpenGL v1.2 implementations, and as an extension on some earlier SGI implementations (GL_SGIS_texture_edge_clamp).</p>
+<p>For now, if quality &gt; 0.5 when created, we create mipmaps, otherwise a regular texture is created. Be aware, if you for instance create a texture with texture quality 0.4, and then later try to apply the texture with a texture quality greater than 0.5, the texture object will be recreated as a mipmap texture object. This will happen only once though, of course.</p>
+<p>If <em>border</em> != 0, the OpenGL texture will be created with this border size. Be aware that this might be extremely slow on most PC hardware.</p>
+<p>Normally, the OpenGL texture object isn't created until the first time it is needed, but if <em>createinstate</em> is != NULL, the texture object is created immediately. This is useful if you use a temporary buffer to hold the texture data. Be careful when using this feature, since the texture data might be needed at a later stage (for instance to create a texture object for another context). It will not be possible to create texture objects for other cache contexts when <em>createinstate</em> is != NULL.</p>
+<p>Also if <em>createinstate</em> is supplied, and all the attributes are the same as the current data in the image, glTexSubImage() will be used to insert the image data instead of creating a new texture object. This is much faster on most OpenGL drivers, and is very useful, for instance when doing animated textures.</p>
+<p>If you supply NULL for <em>image</em>, the instance will be reset, causing all display lists and memory to be freed. </p>
+
+<p>Reimplemented from <a class="el" href="classSoGLImage.html#a0cf5094330fe62ebe537e11cecdb371a">SoGLImage</a>.</p>
+
+</div>
+</div>
+<a id="a03d83d40ee2851ecf90d90abfae412cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03d83d40ee2851ecf90d90abfae412cf">&#9670;&nbsp;</a></span>setData() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLBigImage::setData </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbImage.html">SbImage</a> *&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a>&#160;</td>
+          <td class="paramname"><em>wraps</em> = <code>REPEAT</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a>&#160;</td>
+          <td class="paramname"><em>wrapt</em> = <code>REPEAT</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>quality</em> = <code>0.5f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>border</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSoState.html">SoState</a> *&#160;</td>
+          <td class="paramname"><em>createinstate</em> = <code>NULL</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Convenience 2D wrapper function around the 3D <a class="el" href="classSoGLBigImage.html#a03d83d40ee2851ecf90d90abfae412cf">setData()</a>. </p>
+
+<p>Reimplemented from <a class="el" href="classSoGLImage.html#ac8f8dda12d9a438e044b70d54747188b">SoGLImage</a>.</p>
+
+</div>
+</div>
+<a id="a66f4ebbb9a4d6a914f46faa82212f7f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66f4ebbb9a4d6a914f46faa82212f7f3">&#9670;&nbsp;</a></span>unref()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLBigImage::unref </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoState.html">SoState</a> *&#160;</td>
+          <td class="paramname"><em>state</em> = <code>NULL</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This class has a private destructor since we want users to supply the current GL state when deleting the image. This is to make sure GL texture objects are freed as soon as possible. If you supply NULL to this method, the GL texture objects won't be deleted until the next time an GLRenderAction is applied in the image's cache context(s). </p>
+
+<p>Reimplemented from <a class="el" href="classSoGLImage.html#ad7e79b5ba71f8d59a70bf98a6fa43b45">SoGLImage</a>.</p>
+
+</div>
+</div>
+<a id="aeab189f04a025e0a49954c8374621d5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeab189f04a025e0a49954c8374621d5c">&#9670;&nbsp;</a></span>unrefOldDL()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLBigImage::unrefOldDL </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoState.html">SoState</a> *&#160;</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint32_t&#160;</td>
+          <td class="paramname"><em>maxage</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Virtual method that will be called once each frame. The method should unref display lists that have an age bigger or equal to <em>maxage</em>, and increment the age for other display lists. </p>
+
+<p>Reimplemented from <a class="el" href="classSoGLImage.html#a99e6a675f9c00509bbeda7602d559c02">SoGLImage</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SoGLBigImage_8h_source.html">SoGLBigImage.h</a></li>
+<li>SoGLBigImage.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSoGLBigImage.html">SoGLBigImage</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

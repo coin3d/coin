@@ -1,0 +1,604 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SoEngineOutput Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSoEngineOutput.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="classSoEngineOutput-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SoEngineOutput Class Reference<div class="ingroups"><a class="el" href="group__coin__engines.html">Engine Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSoEngineOutput.html" title="The SoEngineOutput class is the output slots in SoEngine instances.">SoEngineOutput</a> class is the output slots in <a class="el" href="classSoEngine.html" title="SoEngine is the base class for Coin engines.">SoEngine</a> instances.  
+ <a href="classSoEngineOutput.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SoEngine_8h_source.html">Inventor/engines/SoEngine.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ae41c850127b685421bbb9a03e2f5eea6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoEngineOutput.html#ae41c850127b685421bbb9a03e2f5eea6">SoEngineOutput</a> (void)</td></tr>
+<tr class="separator:ae41c850127b685421bbb9a03e2f5eea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeafdf834d9a2a3e529077d1363d464c6"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoEngineOutput.html#aeafdf834d9a2a3e529077d1363d464c6">~SoEngineOutput</a> (void)</td></tr>
+<tr class="separator:aeafdf834d9a2a3e529077d1363d464c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c787d1a762adc2fc51303628560daf9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoEngineOutput.html#a7c787d1a762adc2fc51303628560daf9">addConnection</a> (<a class="el" href="classSoField.html">SoField</a> *f)</td></tr>
+<tr class="separator:a7c787d1a762adc2fc51303628560daf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6de2545a8ef30b5a9d086b699e31c1d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoEngineOutput.html#a6de2545a8ef30b5a9d086b699e31c1d7">doneWriting</a> (void) const</td></tr>
+<tr class="separator:a6de2545a8ef30b5a9d086b699e31c1d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac27253922a0b673a2b01342fce84a369"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoEngineOutput.html#ac27253922a0b673a2b01342fce84a369">enable</a> (const SbBool flag)</td></tr>
+<tr class="separator:ac27253922a0b673a2b01342fce84a369"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add077486605870c78818315163aa253d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoEngineOutput.html#add077486605870c78818315163aa253d">getConnectionType</a> (void) const</td></tr>
+<tr class="separator:add077486605870c78818315163aa253d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc58815cefb4211ee28f3abac2950bdb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoEngine.html">SoEngine</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoEngineOutput.html#acc58815cefb4211ee28f3abac2950bdb">getContainer</a> (void) const</td></tr>
+<tr class="separator:acc58815cefb4211ee28f3abac2950bdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e53a42f36c3c52f906524cd6e477fb2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoEngineOutput.html#a7e53a42f36c3c52f906524cd6e477fb2">getFieldContainer</a> (void)</td></tr>
+<tr class="separator:a7e53a42f36c3c52f906524cd6e477fb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0de8b7d93e18996c39561404782e4b7f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoEngineOutput.html#a0de8b7d93e18996c39561404782e4b7f">getForwardConnections</a> (<a class="el" href="classSoFieldList.html">SoFieldList</a> &amp;fl) const</td></tr>
+<tr class="separator:a0de8b7d93e18996c39561404782e4b7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc55c631d45a8ec24fdeb71f7ca37121"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoNodeEngine.html">SoNodeEngine</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoEngineOutput.html#acc55c631d45a8ec24fdeb71f7ca37121">getNodeContainer</a> (void) const</td></tr>
+<tr class="separator:acc55c631d45a8ec24fdeb71f7ca37121"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57a051b3f558490297eb4d97ac69ce65"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoEngineOutput.html#a57a051b3f558490297eb4d97ac69ce65">getNumConnections</a> (void) const</td></tr>
+<tr class="separator:a57a051b3f558490297eb4d97ac69ce65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0967cfaadc4e4da0f9a211927e4323b3"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoEngineOutput.html#a0967cfaadc4e4da0f9a211927e4323b3">isEnabled</a> (void) const</td></tr>
+<tr class="separator:a0967cfaadc4e4da0f9a211927e4323b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a217474f3f1a5ec98affb6de6b293d799"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoEngineOutput.html#a217474f3f1a5ec98affb6de6b293d799">isNodeEngineOutput</a> (void) const</td></tr>
+<tr class="separator:a217474f3f1a5ec98affb6de6b293d799"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad771b191df9076eebf641efb31c4d503"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoField.html">SoField</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoEngineOutput.html#ad771b191df9076eebf641efb31c4d503">operator[]</a> (int i) const</td></tr>
+<tr class="separator:ad771b191df9076eebf641efb31c4d503"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a467922532944bdcc9b2538a8fc5396dd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoEngineOutput.html#a467922532944bdcc9b2538a8fc5396dd">prepareToWrite</a> (void) const</td></tr>
+<tr class="separator:a467922532944bdcc9b2538a8fc5396dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acca4980207d0e822086974358e4d5232"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoEngineOutput.html#acca4980207d0e822086974358e4d5232">removeConnection</a> (<a class="el" href="classSoField.html">SoField</a> *f)</td></tr>
+<tr class="separator:acca4980207d0e822086974358e4d5232"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d0ec6018e20dc2935886b5cc540fdb8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoEngineOutput.html#a0d0ec6018e20dc2935886b5cc540fdb8">setContainer</a> (<a class="el" href="classSoEngine.html">SoEngine</a> *engine)</td></tr>
+<tr class="separator:a0d0ec6018e20dc2935886b5cc540fdb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a526375b051e5187b7a7662e6aea0348b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoEngineOutput.html#a526375b051e5187b7a7662e6aea0348b">setNodeContainer</a> (<a class="el" href="classSoNodeEngine.html">SoNodeEngine</a> *nodeengine)</td></tr>
+<tr class="separator:a526375b051e5187b7a7662e6aea0348b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8967836b98bbb979590179557601cf39"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoEngineOutput.html#a8967836b98bbb979590179557601cf39">touchSlaves</a> (<a class="el" href="classSoNotList.html">SoNotList</a> *nl, SbBool donotify)</td></tr>
+<tr class="separator:a8967836b98bbb979590179557601cf39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSoEngineOutput.html" title="The SoEngineOutput class is the output slots in SoEngine instances.">SoEngineOutput</a> class is the output slots in <a class="el" href="classSoEngine.html" title="SoEngine is the base class for Coin engines.">SoEngine</a> instances. </p>
+<p><a class="el" href="classSoEngineOutput.html" title="The SoEngineOutput class is the output slots in SoEngine instances.">SoEngineOutput</a> has methods for convenient handling of the connections made from <a class="el" href="classSoEngine.html" title="SoEngine is the base class for Coin engines.">SoEngine</a> objects to <a class="el" href="classSoField.html" title="The SoField class is the top-level abstract base class for fields.">SoField</a> objects.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoEngine.html" title="SoEngine is the base class for Coin engines.">SoEngine</a>, <a class="el" href="classSoField.html" title="The SoField class is the top-level abstract base class for fields.">SoField</a> </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ae41c850127b685421bbb9a03e2f5eea6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae41c850127b685421bbb9a03e2f5eea6">&#9670;&nbsp;</a></span>SoEngineOutput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoEngineOutput::SoEngineOutput </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Constructor. The <a class="el" href="classSoEngineOutput.html" title="The SoEngineOutput class is the output slots in SoEngine instances.">SoEngineOutput</a> will initially not be contained within an <a class="el" href="classSoEngine.html" title="SoEngine is the base class for Coin engines.">SoEngine</a> nor will it have any slave fields attached.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoEngineOutput.html#a0d0ec6018e20dc2935886b5cc540fdb8">setContainer()</a> </dd></dl>
+
+</div>
+</div>
+<a id="aeafdf834d9a2a3e529077d1363d464c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeafdf834d9a2a3e529077d1363d464c6">&#9670;&nbsp;</a></span>~SoEngineOutput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoEngineOutput::~SoEngineOutput </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Destructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7c787d1a762adc2fc51303628560daf9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c787d1a762adc2fc51303628560daf9">&#9670;&nbsp;</a></span>addConnection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoEngineOutput::addConnection </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoField.html">SoField</a> *&#160;</td>
+          <td class="paramname"><em>f</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Adds <em>f</em> to the list of connections from this output.</p>
+<p>Adds 1 to the reference count of the container engine.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoEngineOutput.html#acca4980207d0e822086974358e4d5232">removeConnection()</a>, <a class="el" href="classSoEngineOutput.html#a0de8b7d93e18996c39561404782e4b7f">getForwardConnections()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a6de2545a8ef30b5a9d086b699e31c1d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6de2545a8ef30b5a9d086b699e31c1d7">&#9670;&nbsp;</a></span>doneWriting()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoEngineOutput::doneWriting </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Restores the notification flags on fields connected to this output after evaluating.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoEngineOutput.html#a467922532944bdcc9b2538a8fc5396dd">prepareToWrite()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ac27253922a0b673a2b01342fce84a369"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac27253922a0b673a2b01342fce84a369">&#9670;&nbsp;</a></span>enable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoEngineOutput::enable </td>
+          <td>(</td>
+          <td class="paramtype">const SbBool&#160;</td>
+          <td class="paramname"><em>flag</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the enabled flag. If output is disabled, the fields connected to this output will not be changed when the engine is evaluated.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoEngineOutput.html#a0967cfaadc4e4da0f9a211927e4323b3">isEnabled()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="add077486605870c78818315163aa253d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add077486605870c78818315163aa253d">&#9670;&nbsp;</a></span>getConnectionType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoType.html">SoType</a> SoEngineOutput::getConnectionType </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the type of the engine output. </p>
+
+</div>
+</div>
+<a id="acc58815cefb4211ee28f3abac2950bdb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc58815cefb4211ee28f3abac2950bdb">&#9670;&nbsp;</a></span>getContainer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoEngine.html">SoEngine</a> * SoEngineOutput::getContainer </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the engine containing this output. If the engine containing this output is a NodeEngine, this method returns NULL.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoEngineOutput.html#a0d0ec6018e20dc2935886b5cc540fdb8">setContainer()</a>, <a class="el" href="classSoEngineOutput.html#acc55c631d45a8ec24fdeb71f7ca37121">getNodeContainer()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a7e53a42f36c3c52f906524cd6e477fb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e53a42f36c3c52f906524cd6e477fb2">&#9670;&nbsp;</a></span>getFieldContainer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> * SoEngineOutput::getFieldContainer </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Convenience method that returns a field container. This method can be used both for NodeEngine and Engine outputs.</p>
+<p>This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ </p><dl class="section since"><dt>Since</dt><dd>Coin 2.0 </dd></dl>
+
+</div>
+</div>
+<a id="a0de8b7d93e18996c39561404782e4b7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0de8b7d93e18996c39561404782e4b7f">&#9670;&nbsp;</a></span>getForwardConnections()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SoEngineOutput::getForwardConnections </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoFieldList.html">SoFieldList</a> &amp;&#160;</td>
+          <td class="paramname"><em>fl</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Adds all slave fields connected to this output to <em>fl</em>. Returns the number of slaves.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoEngineOutput.html#a7c787d1a762adc2fc51303628560daf9">addConnection()</a> </dd>
+<dd>
+<a class="el" href="classSoEngineOutput.html#acca4980207d0e822086974358e4d5232">removeConnection()</a> </dd></dl>
+
+</div>
+</div>
+<a id="acc55c631d45a8ec24fdeb71f7ca37121"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc55c631d45a8ec24fdeb71f7ca37121">&#9670;&nbsp;</a></span>getNodeContainer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoNodeEngine.html">SoNodeEngine</a> * SoEngineOutput::getNodeContainer </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the node engine containing this output. If the engine containing this output is not a NodeEgine, this method returns NULL.</p>
+<p>This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoEngineOutput.html#a526375b051e5187b7a7662e6aea0348b">setNodeContainer()</a>, <a class="el" href="classSoEngineOutput.html#acc58815cefb4211ee28f3abac2950bdb">getContainer()</a> </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.0 </dd></dl>
+
+</div>
+</div>
+<a id="a57a051b3f558490297eb4d97ac69ce65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57a051b3f558490297eb4d97ac69ce65">&#9670;&nbsp;</a></span>getNumConnections()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SoEngineOutput::getNumConnections </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the number of fields in the list of connections.</p>
+<dl class="section see"><dt>See also</dt><dd>operator[], <a class="el" href="classSoEngineOutput.html#a7c787d1a762adc2fc51303628560daf9">addConnection()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a0967cfaadc4e4da0f9a211927e4323b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0967cfaadc4e4da0f9a211927e4323b3">&#9670;&nbsp;</a></span>isEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoEngineOutput::isEnabled </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns status of the enabled flag.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoEngineOutput.html#ac27253922a0b673a2b01342fce84a369">enable()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a217474f3f1a5ec98affb6de6b293d799"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a217474f3f1a5ec98affb6de6b293d799">&#9670;&nbsp;</a></span>isNodeEngineOutput()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoEngineOutput::isNodeEngineOutput </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns <em>TRUE</em> if the container is a NodeEngine.</p>
+<p>This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoEngineOutput.html#acc55c631d45a8ec24fdeb71f7ca37121">getNodeContainer()</a>, <a class="el" href="classSoEngineOutput.html#acc58815cefb4211ee28f3abac2950bdb">getContainer()</a> </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.0 </dd></dl>
+
+</div>
+</div>
+<a id="ad771b191df9076eebf641efb31c4d503"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad771b191df9076eebf641efb31c4d503">&#9670;&nbsp;</a></span>operator[]()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoField.html">SoField</a> * SoEngineOutput::operator[] </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the field at index <em>i</em> in the list of connections.</p>
+<p>Please note that this might not be the same field as the one the output was originally connected to, since a field converted might have been inserted to converted the output to match the field type.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoEngineOutput.html#a57a051b3f558490297eb4d97ac69ce65">getNumConnections()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a467922532944bdcc9b2538a8fc5396dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a467922532944bdcc9b2538a8fc5396dd">&#9670;&nbsp;</a></span>prepareToWrite()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoEngineOutput::prepareToWrite </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Disables notifications on fields connected to this output. This is done before the engine is evaluated, since the fields we are going to write into have already been notified.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoEngineOutput.html#a6de2545a8ef30b5a9d086b699e31c1d7">doneWriting()</a> </dd></dl>
+
+</div>
+</div>
+<a id="acca4980207d0e822086974358e4d5232"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acca4980207d0e822086974358e4d5232">&#9670;&nbsp;</a></span>removeConnection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoEngineOutput::removeConnection </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoField.html">SoField</a> *&#160;</td>
+          <td class="paramname"><em>f</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Removes <em>f</em> from the list of connections from this output.</p>
+<p>Subtracts 1 from the reference count of the container engine. If the reference count reaches zero (which will happen if this was the last connection and the application programmer did not explicitly <em>ref</em> the engine), the container engine will be deallocated.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoEngineOutput.html#a7c787d1a762adc2fc51303628560daf9">addConnection()</a>, <a class="el" href="classSoEngineOutput.html#a0de8b7d93e18996c39561404782e4b7f">getForwardConnections()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a0d0ec6018e20dc2935886b5cc540fdb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d0ec6018e20dc2935886b5cc540fdb8">&#9670;&nbsp;</a></span>setContainer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoEngineOutput::setContainer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoEngine.html">SoEngine</a> *&#160;</td>
+          <td class="paramname"><em>engine</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the engine containing this output.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoEngineOutput.html#acc58815cefb4211ee28f3abac2950bdb">getContainer()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a526375b051e5187b7a7662e6aea0348b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a526375b051e5187b7a7662e6aea0348b">&#9670;&nbsp;</a></span>setNodeContainer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoEngineOutput::setNodeContainer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoNodeEngine.html">SoNodeEngine</a> *&#160;</td>
+          <td class="paramname"><em>nodeengine</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the NodeEngine containing this output.</p>
+<p>This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoEngineOutput.html#acc55c631d45a8ec24fdeb71f7ca37121">getNodeContainer()</a> </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.0 </dd></dl>
+
+</div>
+</div>
+<a id="a8967836b98bbb979590179557601cf39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8967836b98bbb979590179557601cf39">&#9670;&nbsp;</a></span>touchSlaves()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoEngineOutput::touchSlaves </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoNotList.html">SoNotList</a> *&#160;</td>
+          <td class="paramname"><em>nl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>donotify</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Notify the fields attached to this engine output that the output value has changed.</p>
+<p>If <em>donotify</em> is <code>TRUE</code>, propagate the notification to the fields. Otherwise just mark the fields "dirty" for re-evaluation.</p>
+<p>Note that this method is not part of the original Open Inventor API. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SoEngineOutput_8h_source.html">SoEngineOutput.h</a></li>
+<li>SoEngineOutput.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSoEngineOutput.html">SoEngineOutput</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,563 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SoListenerGainElement Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSoListenerGainElement.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="classSoListenerGainElement-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SoListenerGainElement Class Reference<div class="ingroups"><a class="el" href="group__coin__elements.html">Element Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSoListenerGainElement.html" title="The SoListenerGainElement class stores the SoListener gain during a scene graph traversal.">SoListenerGainElement</a> class stores the <a class="el" href="classSoListener.html" title="The SoListener class defines listener attributes used when rendering sound.">SoListener</a> gain during a scene graph traversal.  
+ <a href="classSoListenerGainElement.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SoListenerGainElement_8h_source.html">Inventor/elements/SoListenerGainElement.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for SoListenerGainElement:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classSoListenerGainElement.png" usemap="#SoListenerGainElement_map" alt=""/>
+  <map id="SoListenerGainElement_map" name="SoListenerGainElement_map">
+<area href="classSoFloatElement.html" title="SoFloatElement is an abstract base class for elements that consists of a single float value." alt="SoFloatElement" shape="rect" coords="0,56,142,80"/>
+<area href="classSoElement.html" title="SoElement is the abstract base class for all elements." alt="SoElement" shape="rect" coords="0,0,142,24"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ac5225f138f579ee5dd6be3ed0de15ab5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoListenerGainElement.html#ac5225f138f579ee5dd6be3ed0de15ab5">init</a> (<a class="el" href="classSoState.html">SoState</a> *state)</td></tr>
+<tr class="separator:ac5225f138f579ee5dd6be3ed0de15ab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSoFloatElement"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSoFloatElement')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSoFloatElement.html">SoFloatElement</a></td></tr>
+<tr class="memitem:aaa454380dcd1332b4fa3b604f4700cc6 inherit pub_methods_classSoFloatElement"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoElement.html">SoElement</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFloatElement.html#aaa454380dcd1332b4fa3b604f4700cc6">copyMatchInfo</a> (void) const</td></tr>
+<tr class="separator:aaa454380dcd1332b4fa3b604f4700cc6 inherit pub_methods_classSoFloatElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c24f29a4ad81503114948124fc24e65 inherit pub_methods_classSoFloatElement"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFloatElement.html#a4c24f29a4ad81503114948124fc24e65">matches</a> (const <a class="el" href="classSoElement.html">SoElement</a> *element) const</td></tr>
+<tr class="separator:a4c24f29a4ad81503114948124fc24e65 inherit pub_methods_classSoFloatElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03e30dc92ef112e91bd5fbbf700a51c1 inherit pub_methods_classSoFloatElement"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFloatElement.html#a03e30dc92ef112e91bd5fbbf700a51c1">print</a> (FILE *file) const</td></tr>
+<tr class="separator:a03e30dc92ef112e91bd5fbbf700a51c1 inherit pub_methods_classSoFloatElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16b947ef6a885245ef4d44ca46a017be inherit pub_methods_classSoFloatElement"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFloatElement.html#a16b947ef6a885245ef4d44ca46a017be">setElt</a> (float value)</td></tr>
+<tr class="separator:a16b947ef6a885245ef4d44ca46a017be inherit pub_methods_classSoFloatElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSoElement"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSoElement')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSoElement.html">SoElement</a></td></tr>
+<tr class="memitem:a9ce2a1034d3bb27910ce9a3eea6e64e5 inherit pub_methods_classSoElement"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#a9ce2a1034d3bb27910ce9a3eea6e64e5">~SoElement</a> ()</td></tr>
+<tr class="separator:a9ce2a1034d3bb27910ce9a3eea6e64e5 inherit pub_methods_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2605d7b8bb04419d287df1202e6dd858 inherit pub_methods_classSoElement"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#a2605d7b8bb04419d287df1202e6dd858">getDepth</a> (void) const</td></tr>
+<tr class="separator:a2605d7b8bb04419d287df1202e6dd858 inherit pub_methods_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9dad36865b17b7eca80694c81c2c2498 inherit pub_methods_classSoElement"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#a9dad36865b17b7eca80694c81c2c2498">getStackIndex</a> (void) const</td></tr>
+<tr class="separator:a9dad36865b17b7eca80694c81c2c2498 inherit pub_methods_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa13a3cd44030e3fe914e7bfeea5058e4 inherit pub_methods_classSoElement"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#aa13a3cd44030e3fe914e7bfeea5058e4">getTypeId</a> (void) const</td></tr>
+<tr class="separator:aa13a3cd44030e3fe914e7bfeea5058e4 inherit pub_methods_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47fb7cba01227fed02b5d48d7797dddb inherit pub_methods_classSoElement"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#a47fb7cba01227fed02b5d48d7797dddb">pop</a> (<a class="el" href="classSoState.html">SoState</a> *state, const <a class="el" href="classSoElement.html">SoElement</a> *prevTopElement)</td></tr>
+<tr class="separator:a47fb7cba01227fed02b5d48d7797dddb inherit pub_methods_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69fc44b31adb066ba40bbc555298b107 inherit pub_methods_classSoElement"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#a69fc44b31adb066ba40bbc555298b107">push</a> (<a class="el" href="classSoState.html">SoState</a> *state)</td></tr>
+<tr class="separator:a69fc44b31adb066ba40bbc555298b107 inherit pub_methods_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8508119bc6d937ab882f45f86745d2e1 inherit pub_methods_classSoElement"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#a8508119bc6d937ab882f45f86745d2e1">setDepth</a> (const int <a class="el" href="classSoElement.html#a60e3b7f1344de81f7d6a198e7655235f">depth</a>)</td></tr>
+<tr class="separator:a8508119bc6d937ab882f45f86745d2e1 inherit pub_methods_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a69751696b65ad2bbca4c1df2a4b89560"><td class="memItemLeft" align="right" valign="top">static void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoListenerGainElement.html#a69751696b65ad2bbca4c1df2a4b89560">createInstance</a> (void)</td></tr>
+<tr class="separator:a69751696b65ad2bbca4c1df2a4b89560"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a519b99e89c5249911988b3e563bd61c8"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoListenerGainElement.html#a519b99e89c5249911988b3e563bd61c8">get</a> (<a class="el" href="classSoState.html">SoState</a> *const state)</td></tr>
+<tr class="separator:a519b99e89c5249911988b3e563bd61c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad19cf24d111afd40d6e954882a1a1eee"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoListenerGainElement.html#ad19cf24d111afd40d6e954882a1a1eee">getClassStackIndex</a> (void)</td></tr>
+<tr class="separator:ad19cf24d111afd40d6e954882a1a1eee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83ce264f368a53aa8df157181825188f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoListenerGainElement.html#a83ce264f368a53aa8df157181825188f">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:a83ce264f368a53aa8df157181825188f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f44882b21136a856b59e6006a4c0930"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoListenerGainElement.html#a1f44882b21136a856b59e6006a4c0930">initClass</a> (void)</td></tr>
+<tr class="separator:a1f44882b21136a856b59e6006a4c0930"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad75d153a15e42a5c64f3137cc1f6876f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoListenerGainElement.html#ad75d153a15e42a5c64f3137cc1f6876f">set</a> (<a class="el" href="classSoState.html">SoState</a> *const state, const float gain)</td></tr>
+<tr class="separator:ad75d153a15e42a5c64f3137cc1f6876f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91871618fb96734edbc6a8fe89c212a2"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoListenerGainElement.html#a91871618fb96734edbc6a8fe89c212a2">set</a> (<a class="el" href="classSoState.html">SoState</a> *const state, <a class="el" href="classSoNode.html">SoNode</a> *const node, const float gain)</td></tr>
+<tr class="separator:a91871618fb96734edbc6a8fe89c212a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classSoFloatElement"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classSoFloatElement')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classSoFloatElement.html">SoFloatElement</a></td></tr>
+<tr class="memitem:aba199d41bb48de8528aeb9fa9b413d57 inherit pub_static_methods_classSoFloatElement"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFloatElement.html#aba199d41bb48de8528aeb9fa9b413d57">get</a> (const int <a class="el" href="classSoElement.html#a3babbcafa83800192cee2acb1a8edd6f">stackIndex</a>, <a class="el" href="classSoState.html">SoState</a> *const state)</td></tr>
+<tr class="separator:aba199d41bb48de8528aeb9fa9b413d57 inherit pub_static_methods_classSoFloatElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84c7da3bc53ee5071b1d00d8bc9e0b74 inherit pub_static_methods_classSoFloatElement"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFloatElement.html#a84c7da3bc53ee5071b1d00d8bc9e0b74">getClassStackIndex</a> (void)</td></tr>
+<tr class="separator:a84c7da3bc53ee5071b1d00d8bc9e0b74 inherit pub_static_methods_classSoFloatElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ea1839670ae1793f3a25c3eddd312d6 inherit pub_static_methods_classSoFloatElement"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFloatElement.html#a7ea1839670ae1793f3a25c3eddd312d6">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:a7ea1839670ae1793f3a25c3eddd312d6 inherit pub_static_methods_classSoFloatElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9005807a0c208cc2da7a9bb186ad736b inherit pub_static_methods_classSoFloatElement"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFloatElement.html#a9005807a0c208cc2da7a9bb186ad736b">initClass</a> (void)</td></tr>
+<tr class="separator:a9005807a0c208cc2da7a9bb186ad736b inherit pub_static_methods_classSoFloatElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc4ccd99031a44ad46ad293e1731d691 inherit pub_static_methods_classSoFloatElement"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFloatElement.html#abc4ccd99031a44ad46ad293e1731d691">set</a> (const int <a class="el" href="classSoElement.html#a3babbcafa83800192cee2acb1a8edd6f">stackIndex</a>, <a class="el" href="classSoState.html">SoState</a> *const state, const float value)</td></tr>
+<tr class="separator:abc4ccd99031a44ad46ad293e1731d691 inherit pub_static_methods_classSoFloatElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affbf73ad04a368a6e171241d70cb66fd inherit pub_static_methods_classSoFloatElement"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFloatElement.html#affbf73ad04a368a6e171241d70cb66fd">set</a> (const int <a class="el" href="classSoElement.html#a3babbcafa83800192cee2acb1a8edd6f">stackIndex</a>, <a class="el" href="classSoState.html">SoState</a> *const state, <a class="el" href="classSoNode.html">SoNode</a> *const node, const float value)</td></tr>
+<tr class="separator:affbf73ad04a368a6e171241d70cb66fd inherit pub_static_methods_classSoFloatElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classSoElement"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classSoElement')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classSoElement.html">SoElement</a></td></tr>
+<tr class="memitem:ad2a2e4a49f1cccadc601e75a51048391 inherit pub_static_methods_classSoElement"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#ad2a2e4a49f1cccadc601e75a51048391">getClassStackIndex</a> (void)</td></tr>
+<tr class="separator:ad2a2e4a49f1cccadc601e75a51048391 inherit pub_static_methods_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c70e4edee66676d8f682b7a4afda037 inherit pub_static_methods_classSoElement"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#a2c70e4edee66676d8f682b7a4afda037">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:a2c70e4edee66676d8f682b7a4afda037 inherit pub_static_methods_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ac8400720c4ab228dec79bf301d7647 inherit pub_static_methods_classSoElement"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#a5ac8400720c4ab228dec79bf301d7647">getIdFromStackIndex</a> (const int <a class="el" href="classSoElement.html#a3babbcafa83800192cee2acb1a8edd6f">stackIndex</a>)</td></tr>
+<tr class="separator:a5ac8400720c4ab228dec79bf301d7647 inherit pub_static_methods_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff64aac9bd872ce52ac5dfbfa36c36dc inherit pub_static_methods_classSoElement"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#aff64aac9bd872ce52ac5dfbfa36c36dc">getNumStackIndices</a> (void)</td></tr>
+<tr class="separator:aff64aac9bd872ce52ac5dfbfa36c36dc inherit pub_static_methods_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53244db0aff108029f890d602b904890 inherit pub_static_methods_classSoElement"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#a53244db0aff108029f890d602b904890">initClass</a> (void)</td></tr>
+<tr class="separator:a53244db0aff108029f890d602b904890 inherit pub_static_methods_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af00f2621eec54163e7d1eb5ae7e81ad5 inherit pub_static_methods_classSoElement"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#af00f2621eec54163e7d1eb5ae7e81ad5">initElements</a> (void)</td></tr>
+<tr class="separator:af00f2621eec54163e7d1eb5ae7e81ad5 inherit pub_static_methods_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a1e185b2a866be7ad07defe4225f426cd"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoListenerGainElement.html#a1e185b2a866be7ad07defe4225f426cd">~SoListenerGainElement</a> ()</td></tr>
+<tr class="separator:a1e185b2a866be7ad07defe4225f426cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSoFloatElement"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSoFloatElement')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSoFloatElement.html">SoFloatElement</a></td></tr>
+<tr class="memitem:a34b62e52236b3b2201039af2b1e7fbc2 inherit pro_methods_classSoFloatElement"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFloatElement.html#a34b62e52236b3b2201039af2b1e7fbc2">~SoFloatElement</a> ()</td></tr>
+<tr class="separator:a34b62e52236b3b2201039af2b1e7fbc2 inherit pro_methods_classSoFloatElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSoElement"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSoElement')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSoElement.html">SoElement</a></td></tr>
+<tr class="memitem:a34312a1075fc6b90b3e5ccf5875c8c79 inherit pro_methods_classSoElement"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#a34312a1075fc6b90b3e5ccf5875c8c79">SoElement</a> (void)</td></tr>
+<tr class="separator:a34312a1075fc6b90b3e5ccf5875c8c79 inherit pro_methods_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e8be07975fe3b35ada441ba224d3925 inherit pro_methods_classSoElement"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#a0e8be07975fe3b35ada441ba224d3925">capture</a> (<a class="el" href="classSoState.html">SoState</a> *const state) const</td></tr>
+<tr class="separator:a0e8be07975fe3b35ada441ba224d3925 inherit pro_methods_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2cb75d0745c3d87f85283f3615fd59c inherit pro_methods_classSoElement"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#af2cb75d0745c3d87f85283f3615fd59c">captureThis</a> (<a class="el" href="classSoState.html">SoState</a> *state) const</td></tr>
+<tr class="separator:af2cb75d0745c3d87f85283f3615fd59c inherit pro_methods_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed4f064b7a75a0b53ad1c1120dbbb2b4 inherit pro_methods_classSoElement"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoElement.html">SoElement</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#aed4f064b7a75a0b53ad1c1120dbbb2b4">getNextFree</a> (void) const</td></tr>
+<tr class="separator:aed4f064b7a75a0b53ad1c1120dbbb2b4 inherit pro_methods_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56f12d96fc005383d218c2f5a8732ab2 inherit pro_methods_classSoElement"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoElement.html">SoElement</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#a56f12d96fc005383d218c2f5a8732ab2">getNextInStack</a> (void) const</td></tr>
+<tr class="separator:a56f12d96fc005383d218c2f5a8732ab2 inherit pro_methods_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84b9e1b74e61a4c8383650a33dc7a9c8 inherit pro_methods_classSoElement"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#a84b9e1b74e61a4c8383650a33dc7a9c8">setStackIndex</a> (const int index)</td></tr>
+<tr class="separator:a84b9e1b74e61a4c8383650a33dc7a9c8 inherit pro_methods_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48d6dbea777d2eee021a788cf896ecaa inherit pro_methods_classSoElement"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#a48d6dbea777d2eee021a788cf896ecaa">setTypeId</a> (const <a class="el" href="classSoType.html">SoType</a> <a class="el" href="classSoElement.html#a3acf0e425bc7ef0a812df905a39fb269">typeId</a>)</td></tr>
+<tr class="separator:a48d6dbea777d2eee021a788cf896ecaa inherit pro_methods_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_static_methods_classSoElement"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classSoElement')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classSoElement.html">SoElement</a></td></tr>
+<tr class="memitem:a6e4a8ae82aae7ac4d2516929a2e62d1d inherit pro_static_methods_classSoElement"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#a6e4a8ae82aae7ac4d2516929a2e62d1d">createStackIndex</a> (const <a class="el" href="classSoType.html">SoType</a> id)</td></tr>
+<tr class="separator:a6e4a8ae82aae7ac4d2516929a2e62d1d inherit pro_static_methods_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8cb20060c9b527c8b2e343b1cf4032a inherit pro_static_methods_classSoElement"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classSoElement.html">SoElement</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#ab8cb20060c9b527c8b2e343b1cf4032a">getConstElement</a> (<a class="el" href="classSoState.html">SoState</a> *const state, const int <a class="el" href="classSoElement.html#a3babbcafa83800192cee2acb1a8edd6f">stackIndex</a>)</td></tr>
+<tr class="separator:ab8cb20060c9b527c8b2e343b1cf4032a inherit pro_static_methods_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30c40ecaa79d6b140278fe906273e714 inherit pro_static_methods_classSoElement"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoElement.html">SoElement</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#a30c40ecaa79d6b140278fe906273e714">getElement</a> (<a class="el" href="classSoState.html">SoState</a> *const state, const int <a class="el" href="classSoElement.html#a3babbcafa83800192cee2acb1a8edd6f">stackIndex</a>)</td></tr>
+<tr class="separator:a30c40ecaa79d6b140278fe906273e714 inherit pro_static_methods_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classSoFloatElement"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classSoFloatElement')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classSoFloatElement.html">SoFloatElement</a></td></tr>
+<tr class="memitem:a99e4dbb7cb48a8eab24eeaabc44f47f5 inherit pro_attribs_classSoFloatElement"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFloatElement.html#a99e4dbb7cb48a8eab24eeaabc44f47f5">data</a></td></tr>
+<tr class="separator:a99e4dbb7cb48a8eab24eeaabc44f47f5 inherit pro_attribs_classSoFloatElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classSoElement"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classSoElement')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classSoElement.html">SoElement</a></td></tr>
+<tr class="memitem:a60e3b7f1344de81f7d6a198e7655235f inherit pro_attribs_classSoElement"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#a60e3b7f1344de81f7d6a198e7655235f">depth</a></td></tr>
+<tr class="separator:a60e3b7f1344de81f7d6a198e7655235f inherit pro_attribs_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3babbcafa83800192cee2acb1a8edd6f inherit pro_attribs_classSoElement"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#a3babbcafa83800192cee2acb1a8edd6f">stackIndex</a></td></tr>
+<tr class="separator:a3babbcafa83800192cee2acb1a8edd6f inherit pro_attribs_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3acf0e425bc7ef0a812df905a39fb269 inherit pro_attribs_classSoElement"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#a3acf0e425bc7ef0a812df905a39fb269">typeId</a></td></tr>
+<tr class="separator:a3acf0e425bc7ef0a812df905a39fb269 inherit pro_attribs_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_attribs_classSoElement"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_classSoElement')"><img src="closed.png" alt="-"/>&#160;Static Protected Attributes inherited from <a class="el" href="classSoElement.html">SoElement</a></td></tr>
+<tr class="memitem:a3ab188deb13cb1a8c1b40ee365fce944 inherit pro_static_attribs_classSoElement"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#a3ab188deb13cb1a8c1b40ee365fce944">classStackIndex</a></td></tr>
+<tr class="separator:a3ab188deb13cb1a8c1b40ee365fce944 inherit pro_static_attribs_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e7258ccd9bda58158a370fc16455bbc inherit pro_static_attribs_classSoElement"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoTypeList.html">SoTypeList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoElement.html#a8e7258ccd9bda58158a370fc16455bbc">stackToType</a></td></tr>
+<tr class="separator:a8e7258ccd9bda58158a370fc16455bbc inherit pro_static_attribs_classSoElement"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSoListenerGainElement.html" title="The SoListenerGainElement class stores the SoListener gain during a scene graph traversal.">SoListenerGainElement</a> class stores the <a class="el" href="classSoListener.html" title="The SoListener class defines listener attributes used when rendering sound.">SoListener</a> gain during a scene graph traversal. </p>
+<p>This gain is set by <a class="el" href="classSoListener.html" title="The SoListener class defines listener attributes used when rendering sound.">SoListener</a> nodes during audio rendering. The <a class="el" href="classSoListenerGainElement.html" title="The SoListenerGainElement class stores the SoListener gain during a scene graph traversal.">SoListenerGainElement</a> is used when the <a class="el" href="classSoVRMLSound.html" title="The SoVRMLSound class is used to represent a sound source.">SoVRMLSound</a> nodes render themselves.</p>
+<p>Be aware that this class is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ </p><dl class="section since"><dt>Since</dt><dd>Coin 2.0 </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a1e185b2a866be7ad07defe4225f426cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e185b2a866be7ad07defe4225f426cd">&#9670;&nbsp;</a></span>~SoListenerGainElement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoListenerGainElement::~SoListenerGainElement </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Destructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a69751696b65ad2bbca4c1df2a4b89560"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69751696b65ad2bbca4c1df2a4b89560">&#9670;&nbsp;</a></span>createInstance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void * SoListenerGainElement::createInstance </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+ Creates a new instance of the class type corresponding to the <a class="el" href="classSoType.html" title="The SoType class is the basis for the runtime type system in Coin.">SoType</a> object. <br  />
+ </p>
+
+</div>
+</div>
+<a id="a519b99e89c5249911988b3e563bd61c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a519b99e89c5249911988b3e563bd61c8">&#9670;&nbsp;</a></span>get()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SoListenerGainElement::get </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoState.html">SoState</a> *const&#160;</td>
+          <td class="paramname"><em>state</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the element value. </p>
+
+</div>
+</div>
+<a id="ad19cf24d111afd40d6e954882a1a1eee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad19cf24d111afd40d6e954882a1a1eee">&#9670;&nbsp;</a></span>getClassStackIndex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SoListenerGainElement::getClassStackIndex </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This static method returns the state stack index for the class. <br  />
+ </p>
+
+</div>
+</div>
+<a id="a83ce264f368a53aa8df157181825188f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83ce264f368a53aa8df157181825188f">&#9670;&nbsp;</a></span>getClassTypeId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoType.html">SoType</a> SoListenerGainElement::getClassTypeId </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This static method returns the <a class="el" href="classSoType.html" title="The SoType class is the basis for the runtime type system in Coin.">SoType</a> object associated with objects of this class. <br  />
+ </p>
+
+</div>
+</div>
+<a id="ac5225f138f579ee5dd6be3ed0de15ab5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5225f138f579ee5dd6be3ed0de15ab5">&#9670;&nbsp;</a></span>init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoListenerGainElement::init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoState.html">SoState</a> *&#160;</td>
+          <td class="paramname"><em>state</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Initializes the element to its default value. The default value is 1.0. </p>
+
+<p>Reimplemented from <a class="el" href="classSoFloatElement.html#a73858638ae99e6a928a1af53331694a6">SoFloatElement</a>.</p>
+
+</div>
+</div>
+<a id="a1f44882b21136a856b59e6006a4c0930"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f44882b21136a856b59e6006a4c0930">&#9670;&nbsp;</a></span>initClass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoListenerGainElement::initClass </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Initialize relevant common data for all instances, like the type system. </p>
+
+</div>
+</div>
+<a id="ad75d153a15e42a5c64f3137cc1f6876f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad75d153a15e42a5c64f3137cc1f6876f">&#9670;&nbsp;</a></span>set() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoListenerGainElement::set </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoState.html">SoState</a> *const&#160;</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>gain</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. </p>
+
+</div>
+</div>
+<a id="a91871618fb96734edbc6a8fe89c212a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91871618fb96734edbc6a8fe89c212a2">&#9670;&nbsp;</a></span>set() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoListenerGainElement::set </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoState.html">SoState</a> *const&#160;</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSoNode.html">SoNode</a> *const&#160;</td>
+          <td class="paramname"><em>node</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>gain</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Sets the value of this element. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SoListenerGainElement_8h_source.html">SoListenerGainElement.h</a></li>
+<li>SoListenerGainElement.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSoListenerGainElement.html">SoListenerGainElement</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

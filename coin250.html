@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: New Features in Coin v2.5.0</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('coin250.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="PageDoc"><div class="header">
+  <div class="headertitle">
+<div class="title">New Features in Coin v2.5.0 </div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><p>This is a brief summary of the new features in Coin v2.5.0, grouped by feature category.</p>
+<h1><a class="anchor" id="geonodes"></a>
+Geographical Data Support</h1>
+<p>The Geographic Data Support nodes are partly based on GeoVRML (<a href="http://www.geovrml.org/">http://www.geovrml.org/</a>), and partly based on our own UTM-nodes which can be found in the SmallChange library.</p>
+<p>The Geographic Data Support nodes makes it possible to create e.g. globe-spanning models that you can navigate around in without getting into float precision problems ("the shakes"). Some assistance from the application code is needed for this though; it is not a fully automatic solution.</p>
+<p>New nodes:</p><ul>
+<li><a class="el" href="classSoGeoOrigin.html" title="The SoGeoOrigin class is used to specify an absolute geographic location against which geometry is re...">SoGeoOrigin</a></li>
+<li><a class="el" href="classSoGeoLocation.html" title="The SoGeoLocation class is used to georeference the following nodes.">SoGeoLocation</a></li>
+<li><a class="el" href="classSoGeoSeparator.html" title="The SoGeoSeparator class is used to georeference a scene graph.">SoGeoSeparator</a></li>
+<li><a class="el" href="classSoGeoCoordinate.html" title="The SoGeoCoordinate class is used to specify a list of geographical coordinates.">SoGeoCoordinate</a></li>
+</ul>
+<p>In addition to new nodes, <a class="el" href="classSoCamera.html" title="The SoCamera class is the abstract base class for camera definition nodes.">SoCamera</a> and its derived nodes have been updated to support the <a class="el" href="classSoGeoOrigin.html" title="The SoGeoOrigin class is used to specify an absolute geographic location against which geometry is re...">SoGeoOrigin</a> node.</p>
+<p>The coordinate system support in the above nodes are currently a bit lacking (only a few systems/zones are supported), but this will improve over time. API-changes should not be needed to extend this, so patchlevel releases would be enough to add more coordinate systems.</p>
+<p>The VRML2 counterparts of the above nodes, which would be a subpart of implementing the GeoVRML extension, are not yet in development, but they might show up for the next major release since a big part of the implementation will be shared.</p>
+<p>Note: These above SoGeo*-nodes make the UTM*-nodes in the SmallChange library obsolete (for anyone who uses those), so the support for those nodes will eventually be deprecated and removed. They won't be removed over night though, but for new users: avoid starting to use the UTM*-nodes at all cost to avoid having to waste time on a port down the line.</p>
+<h1><a class="anchor" id="shadernodes"></a>
+Generic GLSL Shader Support</h1>
+<p>Shader support is implemented through a set of new shader nodes, more or less compatible with the corresponding TGS extensions. Beyond GLSL, Coin also supports ARB shaders and Cg shaders (if the Cg library is installed). However, we will only recommend the use of the shader language GLSL and put our focus on that one.</p>
+<p>New nodes:</p><ul>
+<li><a class="el" href="classSoShaderProgram.html" title="The SoShaderProgram class is used to specify a set of vertex/geometry/fragment objects.">SoShaderProgram</a></li>
+<li><a class="el" href="classSoVertexShader.html" title="The SoVertexShader class is used for setting up vertex shader programs.">SoVertexShader</a></li>
+<li><a class="el" href="classSoFragmentShader.html" title="The SoFragmentShader class is used for setting up fragment shader programs.">SoFragmentShader</a></li>
+<li><a class="el" href="classSoGeometryShader.html" title="The SoGeometryShader class is used for loading geometry shader programs.">SoGeometryShader</a></li>
+</ul>
+<p>See also the <a class="el" href="coin_shaders_page.html">Shaders in Coin</a> page for more information.</p>
+<h1><a class="anchor" id="shadownodes"></a>
+Generic Shadow Rendering Functionality</h1>
+<p>Support for rendering shadows has been added to Coin through a set of shader-based nodes. The technique used is the Variance Shadow Maps technique (<a href="http://www.punkuser.net/vsm/">http://www.punkuser.net/vsm/</a>).</p>
+<p>New nodes:</p><ul>
+<li><a class="el" href="classSoShadowGroup.html" title="The SoShadowGroup node is a group node used for shadow rendering.">SoShadowGroup</a></li>
+<li><a class="el" href="classSoShadowCulling.html" title="The SoShadowCulling class is a node for setting the shadow style on nodes.">SoShadowCulling</a></li>
+<li><a class="el" href="classSoShadowStyle.html" title="The SoShadowStyle class is a node for setting the shadow style on nodes.">SoShadowStyle</a></li>
+</ul>
+<h1><a class="anchor" id="vborendering"></a>
+Vertex Buffer Object (VBO) Usage</h1>
+<p>A lot of nodes have had their rendering code optimized for VBO usage, giving great performance increases. However, this is not universally enabled - it is necessary to organize the scene graphs in specific ways for VBOs to be used.</p>
+<p>See the <a class="el" href="coin_vbo_rendering.html">VBO Rendering in Coin</a> page for a detailed description.</p>
+<p>Relevant classes:</p><ul>
+<li><a class="el" href="classSoVertexProperty.html" title="The SoVertexProperty class collects the functionality of various appearance nodes.">SoVertexProperty</a></li>
+<li><a class="el" href="classSoReorganizeAction.html" title="The SoReorganizeAction class reorganizes your scene graph to optimize traversal/rendering.">SoReorganizeAction</a></li>
+</ul>
+<h1><a class="anchor" id="sbclasses"></a>
+Expanded Sb* Class Collection</h1>
+<p>The set of Sb* classes in Coin has been expanded greatly, with most notable a whole skew of SbVec and SbBox classes. The reasoning behind this move was that historically these classes were just added as needed, one by one, causing the stable branch of Coin and the development branch of Coin to diverge and become more and more incompatible as time went by. Also, extension nodes were created in peripheral libraries that used these new classes from the Coin development branch, and consequently couldn't be built against the stable branch of Coin. With this preemptive class set expansion, we hope to cause that the Coin stable branch and the Coin development branch stay closer in sync over a longer period, and that the incompatibility divergence will happen around major new feature sets instead of around minor details.</p>
+<p>New Sb*-classes: <br  />
+<a class="el" href="classSbBox2i32.html" title="The SbBox2i32 class is a 2 dimensional box with 32-bit integer coordinates.">SbBox2i32</a>, <a class="el" href="classSbBox3i32.html" title="The SbBox3i32 class is a 3 dimensional box with 32-bit integer coordinates.">SbBox3i32</a>, <a class="el" href="classSbBox3d.html" title="The SbBox3d class is an abstraction for an axis aligned 3 dimensional box.">SbBox3d</a>, <a class="el" href="classSbVec2b.html" title="a vector class for containing two byte integers.">SbVec2b</a>, <a class="el" href="classSbVec2ub.html">SbVec2ub</a>, <a class="el" href="classSbVec2us.html">SbVec2us</a>, <a class="el" href="classSbVec2i32.html" title="The SbVec2i32 class is a 2 dimensional vector with 32-bit signed integer coordinates.">SbVec2i32</a>, <a class="el" href="classSbVec2ui32.html">SbVec2ui32</a>, <a class="el" href="classSbVec3b.html">SbVec3b</a>, <a class="el" href="classSbVec3ub.html">SbVec3ub</a>, <a class="el" href="classSbVec3us.html">SbVec3us</a>, <a class="el" href="classSbVec3i32.html">SbVec3i32</a>, <a class="el" href="classSbVec3ui32.html">SbVec3ui32</a>, <a class="el" href="classSbVec4b.html">SbVec4b</a>, <a class="el" href="classSbVec4ub.html">SbVec4ub</a>, <a class="el" href="classSbVec4s.html">SbVec4s</a>, <a class="el" href="classSbVec4us.html">SbVec4us</a>, <a class="el" href="classSbVec4i32.html">SbVec4i32</a>, <a class="el" href="classSbVec4ui32.html">SbVec4ui32</a>, <a class="el" href="classSbXfBox3d.html" title="The SbXfBox3d class is a 3 dimensional box with double precision coordinates and an attached transfor...">SbXfBox3d</a></p>
+<p>Note: You can also find a good deal of these classes in TGS Inventor, so this was also a TGS compatibility move.</p>
+<h1><a class="anchor" id="fieldclasses"></a>
+Expanded Field Class Collection</h1>
+<p>The exact same reasoning as for the Sb*-classes goes for the field classes.</p>
+<p>New field classes: <br  />
+<a class="el" href="classSoSFBox2s.html" title="The SoSFBox2s class is a container for an SbBox2s vector.">SoSFBox2s</a>, <a class="el" href="classSoSFBox2i32.html" title="The SoSFBox2i32 class is a container for an SbBox2i32 vector.">SoSFBox2i32</a>, <a class="el" href="classSoSFBox2d.html" title="The SoSFBox2d class is a container for an SbBox2d vector.">SoSFBox2d</a>, <a class="el" href="classSoSFBox2d.html" title="The SoSFBox2d class is a container for an SbBox2d vector.">SoSFBox2d</a>, <a class="el" href="classSoSFBox3i32.html" title="The SoSFBox3i32 class is a container for an SbBox3i32 vector.">SoSFBox3i32</a>, <a class="el" href="classSoSFBox3d.html" title="The SoSFBox3d class is a container for an SbBox3d vector.">SoSFBox3d</a>, <a class="el" href="classSoSFColorRGBA.html" title="The SoSFColorRGBA class is a container for an SbColor4f value.">SoSFColorRGBA</a>, <a class="el" href="classSoSFDouble.html" title="The SoSFDouble class is a container for a double precision floating point value.">SoSFDouble</a>, <a class="el" href="classSoSFVec2b.html" title="The SoSFVec2b class is a container for an SbVec2b vector.">SoSFVec2b</a>, <a class="el" href="classSoSFVec2i32.html" title="The SoSFVec2i32 class is a container for an SbVec2i32 vector.">SoSFVec2i32</a>, <a class="el" href="classSoSFVec2d.html" title="The SoSFVec2d class is a container for an SbVec2d vector.">SoSFVec2d</a>, <a class="el" href="classSoSFVec3b.html" title="The SoSFVec3b class is a container for an SbVec3b vector.">SoSFVec3b</a>, <a class="el" href="classSoSFVec3i32.html" title="The SoSFVec3i32 class is a container for an SbVec3i32 vector.">SoSFVec3i32</a>, <a class="el" href="classSoSFVec4b.html" title="The SoSFVec4b class is a container for an SbVec4b vector.">SoSFVec4b</a>, <a class="el" href="classSoSFVec4ub.html" title="The SoSFVec4ub class is a container for an SbVec4ub vector.">SoSFVec4ub</a>, <a class="el" href="classSoSFVec4s.html" title="The SoSFVec4s class is a container for an SbVec4s vector.">SoSFVec4s</a>, <a class="el" href="classSoSFVec4us.html" title="The SoSFVec4us class is a container for an SbVec4us vector.">SoSFVec4us</a>, <a class="el" href="classSoSFVec4i32.html" title="The SoSFVec4i32 class is a container for an SbVec4i32 vector.">SoSFVec4i32</a>, <a class="el" href="classSoSFVec4ui32.html" title="The SoSFVec4ui32 class is a container for an SbVec4ui32 vector.">SoSFVec4ui32</a>, <a class="el" href="classSoSFVec4d.html" title="The SoSFVec4d class is a container for an SbVec4d vector.">SoSFVec4d</a>, <a class="el" href="classSoMFColorRGBA.html" title="The SoMFColorRGBA class is a container for SbColor4f values.">SoMFColorRGBA</a>, <a class="el" href="classSoMFDouble.html" title="The SoMFDouble class is a container for double float precision point values.">SoMFDouble</a>, <a class="el" href="classSoMFVec2b.html" title="The SoMFVec2b class is a container for SbVec2b vectors.">SoMFVec2b</a>, <a class="el" href="classSoMFVec2s.html" title="The SoMFVec2s class is a container for SbVec2s vectors.">SoMFVec2s</a>, <a class="el" href="classSoMFVec2i32.html" title="The SoMFVec2i32 class is a container for SbVec2i32 vectors.">SoMFVec2i32</a>, <a class="el" href="classSoMFVec2d.html" title="The SoMFVec2d class is a container for SbVec2d vectors.">SoMFVec2d</a>, <a class="el" href="classSoMFVec3b.html" title="The SoMFVec3b class is a container for SbVec3b vectors.">SoMFVec3b</a>, <a class="el" href="classSoMFVec3s.html" title="The SoMFVec3s class is a container for SbVec3s vectors.">SoMFVec3s</a>, <a class="el" href="classSoMFVec3i32.html" title="The SoMFVec3i32 class is a container for SbVec3i32 vectors.">SoMFVec3i32</a>, <a class="el" href="classSoMFVec4b.html" title="The SoMFVec4b class is a container for SbVec4b vectors.">SoMFVec4b</a>, <a class="el" href="classSoMFVec4ub.html" title="The SoMFVec4ub class is a container for SbVec4ub vectors.">SoMFVec4ub</a>, <a class="el" href="classSoMFVec4s.html" title="The SoMFVec4s class is a container for SbVec4s vectors.">SoMFVec4s</a>, <a class="el" href="classSoMFVec4us.html" title="The SoMFVec4us class is a container for SbVec4us vectors.">SoMFVec4us</a>, <a class="el" href="classSoMFVec4i32.html" title="The SoMFVec4i32 class is a container for SbVec4i32 vectors.">SoMFVec4i32</a>, <a class="el" href="classSoMFVec4ui32.html" title="The SoMFVec4ui32 class is a container for SbVec4ui32 vectors.">SoMFVec4ui32</a>, <a class="el" href="classSoMFVec4d.html" title="The SoMFVec4d class is a container for SbVec4d vectors.">SoMFVec4d</a></p>
+<h1><a class="anchor" id="frustumcamera"></a>
+SoFrustumCamera node</h1>
+<p>This node is added to make it possible to set up a custom camera with full control over the view volume. <a class="el" href="classSoFrustumCamera.html" title="The SoFrustumCamera class defines a camera with a generic frustum..">SoFrustumCamera</a> is basically a mapping of the OpenGL glFrustum() method.</p>
+<p>The typical use of <a class="el" href="classSoFrustumCamera.html" title="The SoFrustumCamera class defines a camera with a generic frustum..">SoFrustumCamera</a> is in a CAVE or MultiPipe environment where it's often necessary to set up cameras based on the configuration of the different displays.</p>
+<h1><a class="anchor" id="misc250"></a>
+Miscellaneous</h1>
+<p>Below follows a non-exhaustive list of other, more minor, tweaks and tidbits.</p>
+<h2><a class="anchor" id="sofile"></a>
+SoSearchAction on SoFile nodes</h2>
+<p>To facilitate control over whether an <a class="el" href="classSoFile.html" title="The SoFile class is node container for another model file.">SoFile</a> node should traverse its children during an <a class="el" href="classSoSearchAction.html" title="The SoSearchAction class provides methods for searching through scene graphs.">SoSearchAction</a> traversal, two static methods have been added to <a class="el" href="classSoFile.html" title="The SoFile class is node container for another model file.">SoFile</a>.</p>
+<p>New functions:</p><ul>
+<li><a class="el" href="classSoFile.html#a9153ea4c49aae62e1a38cc4818b7d849">SoFile::setSearchOK()</a> [static]</li>
+<li><a class="el" href="classSoFile.html#a0aab35409730223e6af1b7d7b3b5741f">SoFile::getSearchOK()</a> [static]</li>
+</ul>
+<h2><a class="anchor" id="sbtypeinfo"></a>
+SbTypeInfo&lt;T&gt; template type information library</h2>
+<p>For those who write generic code using C++ templates, a template type information library has been added for the primitive Coin-types, so you can use type relations for populating a template instead of needing template parameters for all changing types of the template, or you can write generic code on type attributes like the number of dimensions of an SbVec class. SbTypeInfo&lt;T&gt; can be found in <a class="el" href="SbTypeInfo_8h_source.html">Inventor/SbTypeInfo.h</a>.</p>
+<h2><a class="anchor" id="vcprojects"></a>
+Visual Studio Projects</h2>
+<p>The Visual Studio projects have been split into projects for separately building, installing, uninstalling the Coin SDK, and document generation. This was done primarily to be able to build without automatically performing the installation procedure at the same time, but also to offer other supplementary targets later like the doc-generation project... </p>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="coin_new_features.html">New Features in Coin</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

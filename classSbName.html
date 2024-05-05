@@ -1,0 +1,510 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SbName Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSbName.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="classSbName-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SbName Class Reference<div class="ingroups"><a class="el" href="group__coin__base.html">Base Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSbName.html" title="The SbName class stores strings by reference.">SbName</a> class stores strings by reference.  
+ <a href="classSbName.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SbName_8h_source.html">Inventor/SbName.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ab724be41e08ba30cbe70bca6bb0f6920"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbName.html#ab724be41e08ba30cbe70bca6bb0f6920">SbName</a> (const char *namestring)</td></tr>
+<tr class="separator:ab724be41e08ba30cbe70bca6bb0f6920"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29e5b8239dd822004d5a332bfecec96e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbName.html#a29e5b8239dd822004d5a332bfecec96e">SbName</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;name)</td></tr>
+<tr class="separator:a29e5b8239dd822004d5a332bfecec96e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab523d9d8a9ebe1a7e7d7206579cba24f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbName.html#ab523d9d8a9ebe1a7e7d7206579cba24f">SbName</a> (const <a class="el" href="classSbString.html">SbString</a> &amp;str)</td></tr>
+<tr class="separator:ab523d9d8a9ebe1a7e7d7206579cba24f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6a4c7d4f516d74b22a0f054065c4d1b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbName.html#ad6a4c7d4f516d74b22a0f054065c4d1b">SbName</a> (void)</td></tr>
+<tr class="separator:ad6a4c7d4f516d74b22a0f054065c4d1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a727ed1c947b2f9a7f00216489af3fa5d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbName.html#a727ed1c947b2f9a7f00216489af3fa5d">~SbName</a> ()</td></tr>
+<tr class="separator:a727ed1c947b2f9a7f00216489af3fa5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a891658302e137d5bebf78c98a54a8fb9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbName.html#a891658302e137d5bebf78c98a54a8fb9">getLength</a> (void) const</td></tr>
+<tr class="separator:a891658302e137d5bebf78c98a54a8fb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4025fc41df3195e640c748da108033e"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbName.html#af4025fc41df3195e640c748da108033e">getString</a> (void) const</td></tr>
+<tr class="separator:af4025fc41df3195e640c748da108033e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2b38a6bf78b52a4239b9b27360dd5f6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbName.html#ae2b38a6bf78b52a4239b9b27360dd5f6">operator const char *</a> (void) const</td></tr>
+<tr class="separator:ae2b38a6bf78b52a4239b9b27360dd5f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7b1caa800e980943296136f6d58243b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbName.html#ab7b1caa800e980943296136f6d58243b">operator!</a> (void) const</td></tr>
+<tr class="separator:ab7b1caa800e980943296136f6d58243b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a20587288b45a68e953a08428640afcc9"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classSbName.html">SbName</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbName.html#a20587288b45a68e953a08428640afcc9">empty</a> (void)</td></tr>
+<tr class="separator:a20587288b45a68e953a08428640afcc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4c80d5dd355792ef2406f09d47b42de"><td class="memItemLeft" align="right" valign="top">static SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbName.html#ad4c80d5dd355792ef2406f09d47b42de">isBaseNameChar</a> (const char c)</td></tr>
+<tr class="separator:ad4c80d5dd355792ef2406f09d47b42de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4e8fb488f254fda26e22055223ecf0e"><td class="memItemLeft" align="right" valign="top">static SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbName.html#ab4e8fb488f254fda26e22055223ecf0e">isBaseNameStartChar</a> (const char c)</td></tr>
+<tr class="separator:ab4e8fb488f254fda26e22055223ecf0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f201ffe519350d5ae06f31fc30ed9c9"><td class="memItemLeft" align="right" valign="top">static SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbName.html#a3f201ffe519350d5ae06f31fc30ed9c9">isIdentChar</a> (const char c)</td></tr>
+<tr class="separator:a3f201ffe519350d5ae06f31fc30ed9c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8542c60491baad59191fa04c8f05c7ff"><td class="memItemLeft" align="right" valign="top">static SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbName.html#a8542c60491baad59191fa04c8f05c7ff">isIdentStartChar</a> (const char c)</td></tr>
+<tr class="separator:a8542c60491baad59191fa04c8f05c7ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSbName.html" title="The SbName class stores strings by reference.">SbName</a> class stores strings by reference. </p>
+<p>The class is used by Coin for storing keywords, names and other strings. They are stored in a manner where identical strings are guaranteed to map to the same memory address (as returned by the <a class="el" href="classSbName.html#af4025fc41df3195e640c748da108033e">SbName::getString()</a> method).</p>
+<p>The main advantage of storing identical strings to the same memory address is that it simplifies comparison operations, and particularly when working with string data as keys in other data structures, like e.g. in hash (dictionary) tables.</p>
+<p>Apart from that, mapping identical strings to the same memory address can also save on memory resources, and provide runtime optimizations. String comparisons for <a class="el" href="classSbName.html" title="The SbName class stores strings by reference.">SbName</a> objects are very efficient, for instance.</p>
+<p>There is an aspect of using <a class="el" href="classSbName.html" title="The SbName class stores strings by reference.">SbName</a> instances that it is important to be aware of: since strings are stored <em>permanently</em>, using <a class="el" href="classSbName.html" title="The SbName class stores strings by reference.">SbName</a> instances in code where there is continually changing strings or the continual addition of new unique strings will in the end swamp memory resources. So where possible, use <a class="el" href="classSbString.html" title="The SbString class is a string class with convenience functions for string operations.">SbString</a> instances instead.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbString.html" title="The SbString class is a string class with convenience functions for string operations.">SbString</a> </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ad6a4c7d4f516d74b22a0f054065c4d1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6a4c7d4f516d74b22a0f054065c4d1b">&#9670;&nbsp;</a></span>SbName() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbName::SbName </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is the default constructor. </p>
+
+</div>
+</div>
+<a id="ab724be41e08ba30cbe70bca6bb0f6920"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab724be41e08ba30cbe70bca6bb0f6920">&#9670;&nbsp;</a></span>SbName() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbName::SbName </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>namestring</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Constructor. Adds the <em>namestring</em> string to the name table. </p>
+
+</div>
+</div>
+<a id="ab523d9d8a9ebe1a7e7d7206579cba24f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab523d9d8a9ebe1a7e7d7206579cba24f">&#9670;&nbsp;</a></span>SbName() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbName::SbName </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Constructor. Adds <em>str</em> to the name table. </p>
+
+</div>
+</div>
+<a id="a29e5b8239dd822004d5a332bfecec96e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29e5b8239dd822004d5a332bfecec96e">&#9670;&nbsp;</a></span>SbName() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbName::SbName </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbName.html">SbName</a> &amp;&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Copy constructor. </p>
+
+</div>
+</div>
+<a id="a727ed1c947b2f9a7f00216489af3fa5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a727ed1c947b2f9a7f00216489af3fa5d">&#9670;&nbsp;</a></span>~SbName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbName::~SbName </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The destructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a20587288b45a68e953a08428640afcc9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20587288b45a68e953a08428640afcc9">&#9670;&nbsp;</a></span>empty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbName.html">SbName</a> &amp; SbName::empty </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns an empty-string <a class="el" href="classSbName.html" title="The SbName class stores strings by reference.">SbName</a> instance.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 3.0 </dd></dl>
+
+</div>
+</div>
+<a id="a891658302e137d5bebf78c98a54a8fb9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a891658302e137d5bebf78c98a54a8fb9">&#9670;&nbsp;</a></span>getLength()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SbName::getLength </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This method returns the number of characters in the name. </p>
+
+</div>
+</div>
+<a id="af4025fc41df3195e640c748da108033e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4025fc41df3195e640c748da108033e">&#9670;&nbsp;</a></span>getString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char * SbName::getString </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This method returns pointer to character array for the name.</p>
+<p>The returned memory pointer for the character string is guaranteed to be valid for the remaining life time of the process, even after all <a class="el" href="classSbName.html" title="The SbName class stores strings by reference.">SbName</a> instances referencing the string have been destructed. </p>
+
+</div>
+</div>
+<a id="ad4c80d5dd355792ef2406f09d47b42de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4c80d5dd355792ef2406f09d47b42de">&#9670;&nbsp;</a></span>isBaseNameChar()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SbName::isBaseNameChar </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns <code>TRUE</code> if the given character is valid for use in naming object instances of classes derived from <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a>.</p>
+<p><a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a> derived objects needs to be named in a manner which will not clash with the special characters reserved as tokens in the syntax rules of Open Inventor and VRML files.</p>
+<p>Legal characters to use for an <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a> object name is any character from the ASCII character set from and including character 33 (hex 0x21) to and including 126 (hex 0x7e), <em>except</em> single and double apostrophes, the plus sign and punctuation, backslash and the curly braces.</p>
+<p>This method is not part of the original Open Inventor API.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbName.html#ab4e8fb488f254fda26e22055223ecf0e">isBaseNameStartChar()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ab4e8fb488f254fda26e22055223ecf0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4e8fb488f254fda26e22055223ecf0e">&#9670;&nbsp;</a></span>isBaseNameStartChar()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SbName::isBaseNameStartChar </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns <code>TRUE</code> if the given character is valid for use as the first character of a name for an object derived from a class inheriting <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a>.</p>
+<p><a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a> derived objects needs to be named in a manner which will not clash with the special characters reserved as tokens in the syntax rules of Open Inventor and VRML files.</p>
+<p>Legal characters for the first character of an <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a> object name is underscore ("_") and any uppercase and lowercase alphabetic character from the ASCII character set (i.e. A-Z and a-z).</p>
+<p>This method is not part of the original Open Inventor API.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbName.html#ad4c80d5dd355792ef2406f09d47b42de">isBaseNameChar()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a3f201ffe519350d5ae06f31fc30ed9c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f201ffe519350d5ae06f31fc30ed9c9">&#9670;&nbsp;</a></span>isIdentChar()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SbName::isIdentChar </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method checks if the <em>c</em> character is a valid character for a name.</p>
+<dl class="section see"><dt>See also</dt><dd>SbBool <a class="el" href="classSbName.html#a8542c60491baad59191fa04c8f05c7ff">SbName::isIdentStartChar(const char c)</a> </dd></dl>
+
+</div>
+</div>
+<a id="a8542c60491baad59191fa04c8f05c7ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8542c60491baad59191fa04c8f05c7ff">&#9670;&nbsp;</a></span>isIdentStartChar()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SbName::isIdentStartChar </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This method checks if the <em>c</em> character is a valid identifier start character for a name.</p>
+<dl class="section see"><dt>See also</dt><dd>SbBool <a class="el" href="classSbName.html#a3f201ffe519350d5ae06f31fc30ed9c9">SbName::isIdentChar(const char c)</a> </dd></dl>
+
+</div>
+</div>
+<a id="ae2b38a6bf78b52a4239b9b27360dd5f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2b38a6bf78b52a4239b9b27360dd5f6">&#9670;&nbsp;</a></span>operator const char *()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbName::operator const char * </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This operator returns a pointer to the character array for the name string. It is intended for implicit use. Use <a class="el" href="classSbName.html#af4025fc41df3195e640c748da108033e">SbName::getString()</a> explicitly instead of this operator - it might be removed later.</p>
+<dl class="section see"><dt>See also</dt><dd>const char * SbName::getString(void) </dd></dl>
+
+</div>
+</div>
+<a id="ab7b1caa800e980943296136f6d58243b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7b1caa800e980943296136f6d58243b">&#9670;&nbsp;</a></span>operator!()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SbName::operator! </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This unary operator results in <code>FALSE</code> if the <a class="el" href="classSbName.html" title="The SbName class stores strings by reference.">SbName</a> object is non-empty and <code>TRUE</code> if the <a class="el" href="classSbName.html" title="The SbName class stores strings by reference.">SbName</a> object is empty. An empty name contains a null-length string. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SbName_8h_source.html">SbName.h</a></li>
+<li>SbName.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSbName.html">SbName</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

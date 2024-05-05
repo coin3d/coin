@@ -1,0 +1,410 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SoNodeSensor Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSoNodeSensor.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="classSoNodeSensor-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SoNodeSensor Class Reference<div class="ingroups"><a class="el" href="group__coin__sensors.html">Sensor Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSoNodeSensor.html" title="The SoNodeSensor class detects changes to nodes.">SoNodeSensor</a> class detects changes to nodes.  
+ <a href="classSoNodeSensor.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SoNodeSensor_8h_source.html">Inventor/sensors/SoNodeSensor.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for SoNodeSensor:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classSoNodeSensor.png" usemap="#SoNodeSensor_map" alt=""/>
+  <map id="SoNodeSensor_map" name="SoNodeSensor_map">
+<area href="classSoDataSensor.html" title="The SoDataSensor class is the abstract base class for sensors monitoring changes in a scene graph." alt="SoDataSensor" shape="rect" coords="0,112,138,136"/>
+<area href="classSoDelayQueueSensor.html" title="The SoDelayQueueSensor class is the abstract base class for priority scheduled sensors." alt="SoDelayQueueSensor" shape="rect" coords="0,56,138,80"/>
+<area href="classSoSensor.html" title="The SoSensor class is the abstract base class for all sensors." alt="SoSensor" shape="rect" coords="0,0,138,24"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ae6c56d5dff51e67fcabfa81f4abbf79a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNodeSensor.html#ae6c56d5dff51e67fcabfa81f4abbf79a">SoNodeSensor</a> (SoSensorCB *<a class="el" href="classSoSensor.html#ac21ccac7235fb0f895fff539c13a0ed9">func</a>, void *data)</td></tr>
+<tr class="separator:ae6c56d5dff51e67fcabfa81f4abbf79a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d61b97e7ff67f105b99ddffe15ef6ff"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNodeSensor.html#a9d61b97e7ff67f105b99ddffe15ef6ff">SoNodeSensor</a> (void)</td></tr>
+<tr class="separator:a9d61b97e7ff67f105b99ddffe15ef6ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9caae5b30dc282640355b8abf38fe4f7"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNodeSensor.html#a9caae5b30dc282640355b8abf38fe4f7">~SoNodeSensor</a> (void)</td></tr>
+<tr class="separator:a9caae5b30dc282640355b8abf38fe4f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb9a4d413e1e2aa081ffaf3988e3f6bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNodeSensor.html#acb9a4d413e1e2aa081ffaf3988e3f6bd">attach</a> (<a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:acb9a4d413e1e2aa081ffaf3988e3f6bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb62ded137dcd724e2dec2364f65d7ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNodeSensor.html#abb62ded137dcd724e2dec2364f65d7ce">detach</a> (void)</td></tr>
+<tr class="separator:abb62ded137dcd724e2dec2364f65d7ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a742a3fabf8bcb850b172b5c9271241d5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoNodeSensor.html#a742a3fabf8bcb850b172b5c9271241d5">getAttachedNode</a> (void) const</td></tr>
+<tr class="separator:a742a3fabf8bcb850b172b5c9271241d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSoDataSensor"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSoDataSensor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSoDataSensor.html">SoDataSensor</a></td></tr>
+<tr class="memitem:a262cff7df7beb658b4d17f22e0ef7326 inherit pub_methods_classSoDataSensor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDataSensor.html#a262cff7df7beb658b4d17f22e0ef7326">SoDataSensor</a> (SoSensorCB *<a class="el" href="classSoSensor.html#ac21ccac7235fb0f895fff539c13a0ed9">func</a>, void *data)</td></tr>
+<tr class="separator:a262cff7df7beb658b4d17f22e0ef7326 inherit pub_methods_classSoDataSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac25bca01660dcf4cb240444b33fbd42c inherit pub_methods_classSoDataSensor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDataSensor.html#ac25bca01660dcf4cb240444b33fbd42c">SoDataSensor</a> (void)</td></tr>
+<tr class="separator:ac25bca01660dcf4cb240444b33fbd42c inherit pub_methods_classSoDataSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a343ae89aa0b891e054bba7354d50a69b inherit pub_methods_classSoDataSensor"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDataSensor.html#a343ae89aa0b891e054bba7354d50a69b">~SoDataSensor</a> (void)</td></tr>
+<tr class="separator:a343ae89aa0b891e054bba7354d50a69b inherit pub_methods_classSoDataSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0425ce110b8a140e8a88860a32e6130 inherit pub_methods_classSoDataSensor"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoField.html">SoField</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDataSensor.html#af0425ce110b8a140e8a88860a32e6130">getTriggerField</a> (void) const</td></tr>
+<tr class="separator:af0425ce110b8a140e8a88860a32e6130 inherit pub_methods_classSoDataSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5ddf7d8c01b4c41bbbb6f64ae78fa2c inherit pub_methods_classSoDataSensor"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDataSensor.html#ae5ddf7d8c01b4c41bbbb6f64ae78fa2c">getTriggerFieldNumIndices</a> (void) const</td></tr>
+<tr class="separator:ae5ddf7d8c01b4c41bbbb6f64ae78fa2c inherit pub_methods_classSoDataSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad02693a46d06aa1eeb24fb2c3f28080 inherit pub_methods_classSoDataSensor"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDataSensor.html#aad02693a46d06aa1eeb24fb2c3f28080">getTriggerGroupChild</a> (void) const</td></tr>
+<tr class="separator:aad02693a46d06aa1eeb24fb2c3f28080 inherit pub_methods_classSoDataSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec75dc5344473be5e855b7a065e06c17 inherit pub_methods_classSoDataSensor"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDataSensor.html#aec75dc5344473be5e855b7a065e06c17">getTriggerIndex</a> (void) const</td></tr>
+<tr class="separator:aec75dc5344473be5e855b7a065e06c17 inherit pub_methods_classSoDataSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71b4d85b7bb2e76ae1744aa00a04d8e8 inherit pub_methods_classSoDataSensor"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDataSensor.html#a71b4d85b7bb2e76ae1744aa00a04d8e8">getTriggerNode</a> (void) const</td></tr>
+<tr class="separator:a71b4d85b7bb2e76ae1744aa00a04d8e8 inherit pub_methods_classSoDataSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaeb7a617508c1a018f8876e5089e2331 inherit pub_methods_classSoDataSensor"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoNotRec.html#a881de32e1ff224860ce27dd27b638e9f">SoNotRec::OperationType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDataSensor.html#aaeb7a617508c1a018f8876e5089e2331">getTriggerOperationType</a> (void) const</td></tr>
+<tr class="separator:aaeb7a617508c1a018f8876e5089e2331 inherit pub_methods_classSoDataSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a204de8b45eafc468909912b8f5da60af inherit pub_methods_classSoDataSensor"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoPath.html">SoPath</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDataSensor.html#a204de8b45eafc468909912b8f5da60af">getTriggerPath</a> (void) const</td></tr>
+<tr class="separator:a204de8b45eafc468909912b8f5da60af inherit pub_methods_classSoDataSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf415a058b5182175587aeb9f2f28da1 inherit pub_methods_classSoDataSensor"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDataSensor.html#aaf415a058b5182175587aeb9f2f28da1">getTriggerPathFlag</a> (void) const</td></tr>
+<tr class="separator:aaf415a058b5182175587aeb9f2f28da1 inherit pub_methods_classSoDataSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48bb8d511a31db09eab7b9d85f3bf283 inherit pub_methods_classSoDataSensor"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDataSensor.html#a48bb8d511a31db09eab7b9d85f3bf283">getTriggerReplacedGroupChild</a> (void) const</td></tr>
+<tr class="separator:a48bb8d511a31db09eab7b9d85f3bf283 inherit pub_methods_classSoDataSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af19eeacd02a6b3e210a07f1bef483428 inherit pub_methods_classSoDataSensor"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDataSensor.html#af19eeacd02a6b3e210a07f1bef483428">notify</a> (<a class="el" href="classSoNotList.html">SoNotList</a> *l)</td></tr>
+<tr class="separator:af19eeacd02a6b3e210a07f1bef483428 inherit pub_methods_classSoDataSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a150448b51a530012ae970553e0cd59d0 inherit pub_methods_classSoDataSensor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDataSensor.html#a150448b51a530012ae970553e0cd59d0">setDeleteCallback</a> (SoSensorCB *function, void *data=NULL)</td></tr>
+<tr class="separator:a150448b51a530012ae970553e0cd59d0 inherit pub_methods_classSoDataSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84765fde3a1daf9447f7a3883fb1657a inherit pub_methods_classSoDataSensor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDataSensor.html#a84765fde3a1daf9447f7a3883fb1657a">setTriggerPathFlag</a> (SbBool flag)</td></tr>
+<tr class="separator:a84765fde3a1daf9447f7a3883fb1657a inherit pub_methods_classSoDataSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4200be321b36a977e358322b229329d6 inherit pub_methods_classSoDataSensor"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDataSensor.html#a4200be321b36a977e358322b229329d6">trigger</a> (void)</td></tr>
+<tr class="separator:a4200be321b36a977e358322b229329d6 inherit pub_methods_classSoDataSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSoDelayQueueSensor"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSoDelayQueueSensor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSoDelayQueueSensor.html">SoDelayQueueSensor</a></td></tr>
+<tr class="memitem:aeba2e89bb52edfb6d47851e0ae2f03e2 inherit pub_methods_classSoDelayQueueSensor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDelayQueueSensor.html#aeba2e89bb52edfb6d47851e0ae2f03e2">SoDelayQueueSensor</a> (SoSensorCB *<a class="el" href="classSoSensor.html#ac21ccac7235fb0f895fff539c13a0ed9">func</a>, void *data)</td></tr>
+<tr class="separator:aeba2e89bb52edfb6d47851e0ae2f03e2 inherit pub_methods_classSoDelayQueueSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad13897ccad36d059d146f1956b83e08c inherit pub_methods_classSoDelayQueueSensor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDelayQueueSensor.html#ad13897ccad36d059d146f1956b83e08c">SoDelayQueueSensor</a> (void)</td></tr>
+<tr class="separator:ad13897ccad36d059d146f1956b83e08c inherit pub_methods_classSoDelayQueueSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89ca819b836f56b8699e5f8a62f0e0b3 inherit pub_methods_classSoDelayQueueSensor"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDelayQueueSensor.html#a89ca819b836f56b8699e5f8a62f0e0b3">~SoDelayQueueSensor</a> (void)</td></tr>
+<tr class="separator:a89ca819b836f56b8699e5f8a62f0e0b3 inherit pub_methods_classSoDelayQueueSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8773ffbf35032af50cb58c5033c41a17 inherit pub_methods_classSoDelayQueueSensor"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDelayQueueSensor.html#a8773ffbf35032af50cb58c5033c41a17">getPriority</a> (void) const</td></tr>
+<tr class="separator:a8773ffbf35032af50cb58c5033c41a17 inherit pub_methods_classSoDelayQueueSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83f9af4c34f79ae426b3a8e3fa779e48 inherit pub_methods_classSoDelayQueueSensor"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDelayQueueSensor.html#a83f9af4c34f79ae426b3a8e3fa779e48">isIdleOnly</a> (void) const</td></tr>
+<tr class="separator:a83f9af4c34f79ae426b3a8e3fa779e48 inherit pub_methods_classSoDelayQueueSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2267844f63b8bec0bb134aefbaceec4 inherit pub_methods_classSoDelayQueueSensor"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDelayQueueSensor.html#ae2267844f63b8bec0bb134aefbaceec4">isScheduled</a> (void) const</td></tr>
+<tr class="separator:ae2267844f63b8bec0bb134aefbaceec4 inherit pub_methods_classSoDelayQueueSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d3e044f4a81d2e43a51113757d3f86e inherit pub_methods_classSoDelayQueueSensor"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDelayQueueSensor.html#a6d3e044f4a81d2e43a51113757d3f86e">schedule</a> (void)</td></tr>
+<tr class="separator:a6d3e044f4a81d2e43a51113757d3f86e inherit pub_methods_classSoDelayQueueSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdf3c976cf2f6ca0a1cd67118b326de4 inherit pub_methods_classSoDelayQueueSensor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDelayQueueSensor.html#abdf3c976cf2f6ca0a1cd67118b326de4">setPriority</a> (uint32_t pri)</td></tr>
+<tr class="separator:abdf3c976cf2f6ca0a1cd67118b326de4 inherit pub_methods_classSoDelayQueueSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e3737bdbcb78844beae7c759a9e7af4 inherit pub_methods_classSoDelayQueueSensor"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDelayQueueSensor.html#a0e3737bdbcb78844beae7c759a9e7af4">unschedule</a> (void)</td></tr>
+<tr class="separator:a0e3737bdbcb78844beae7c759a9e7af4 inherit pub_methods_classSoDelayQueueSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSoSensor"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSoSensor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSoSensor.html">SoSensor</a></td></tr>
+<tr class="memitem:ac7b074e66870f8b291eba260b6469c2c inherit pub_methods_classSoSensor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensor.html#ac7b074e66870f8b291eba260b6469c2c">SoSensor</a> (SoSensorCB *<a class="el" href="classSoSensor.html#ac21ccac7235fb0f895fff539c13a0ed9">func</a>, void *data)</td></tr>
+<tr class="separator:ac7b074e66870f8b291eba260b6469c2c inherit pub_methods_classSoSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef8e234f18554cf8d895e49d2ad87fe3 inherit pub_methods_classSoSensor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensor.html#aef8e234f18554cf8d895e49d2ad87fe3">SoSensor</a> (void)</td></tr>
+<tr class="separator:aef8e234f18554cf8d895e49d2ad87fe3 inherit pub_methods_classSoSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12f75e795419d1ec79ba4c3e2c5a31cd inherit pub_methods_classSoSensor"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensor.html#a12f75e795419d1ec79ba4c3e2c5a31cd">~SoSensor</a> (void)</td></tr>
+<tr class="separator:a12f75e795419d1ec79ba4c3e2c5a31cd inherit pub_methods_classSoSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af90a3ec8060ab83190cd33d23ea394f5 inherit pub_methods_classSoSensor"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensor.html#af90a3ec8060ab83190cd33d23ea394f5">getData</a> (void) const</td></tr>
+<tr class="separator:af90a3ec8060ab83190cd33d23ea394f5 inherit pub_methods_classSoSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f7017666a802524db14b9a5ad299add inherit pub_methods_classSoSensor"><td class="memItemLeft" align="right" valign="top">SoSensorCBPtr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensor.html#a1f7017666a802524db14b9a5ad299add">getFunction</a> (void) const</td></tr>
+<tr class="separator:a1f7017666a802524db14b9a5ad299add inherit pub_methods_classSoSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acadd2ac6b2be9490c2749560c85430ad inherit pub_methods_classSoSensor"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoSensor.html">SoSensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensor.html#acadd2ac6b2be9490c2749560c85430ad">getNextInQueue</a> (void) const</td></tr>
+<tr class="separator:acadd2ac6b2be9490c2749560c85430ad inherit pub_methods_classSoSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc7ffab34126318972fdc0830de49150 inherit pub_methods_classSoSensor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensor.html#acc7ffab34126318972fdc0830de49150">setData</a> (void *callbackdata)</td></tr>
+<tr class="separator:acc7ffab34126318972fdc0830de49150 inherit pub_methods_classSoSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0a0152828590c9b23da259a9c60a629 inherit pub_methods_classSoSensor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensor.html#ac0a0152828590c9b23da259a9c60a629">setFunction</a> (SoSensorCB *callbackfunction)</td></tr>
+<tr class="separator:ac0a0152828590c9b23da259a9c60a629 inherit pub_methods_classSoSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a011855ebf2d30b097370ebca6eee98c9 inherit pub_methods_classSoSensor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensor.html#a011855ebf2d30b097370ebca6eee98c9">setNextInQueue</a> (<a class="el" href="classSoSensor.html">SoSensor</a> *next)</td></tr>
+<tr class="separator:a011855ebf2d30b097370ebca6eee98c9 inherit pub_methods_classSoSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_static_methods_classSoDelayQueueSensor"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classSoDelayQueueSensor')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classSoDelayQueueSensor.html">SoDelayQueueSensor</a></td></tr>
+<tr class="memitem:a20afebece0d66b67cddcf59a3445bf3b inherit pub_static_methods_classSoDelayQueueSensor"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDelayQueueSensor.html#a20afebece0d66b67cddcf59a3445bf3b">getDefaultPriority</a> (void)</td></tr>
+<tr class="separator:a20afebece0d66b67cddcf59a3445bf3b inherit pub_static_methods_classSoDelayQueueSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classSoSensor"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classSoSensor')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classSoSensor.html">SoSensor</a></td></tr>
+<tr class="memitem:a267d8529b420c15f969e124cc809e987 inherit pub_static_methods_classSoSensor"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensor.html#a267d8529b420c15f969e124cc809e987">initClass</a> (void)</td></tr>
+<tr class="separator:a267d8529b420c15f969e124cc809e987 inherit pub_static_methods_classSoSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSoDataSensor"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSoDataSensor')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSoDataSensor.html">SoDataSensor</a></td></tr>
+<tr class="memitem:ab9e51845993dd93017c50cc23a49ec8a inherit pro_methods_classSoDataSensor"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDataSensor.html#ab9e51845993dd93017c50cc23a49ec8a">invokeDeleteCallback</a> (void)</td></tr>
+<tr class="separator:ab9e51845993dd93017c50cc23a49ec8a inherit pro_methods_classSoDataSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classSoDelayQueueSensor"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classSoDelayQueueSensor')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classSoDelayQueueSensor.html">SoDelayQueueSensor</a></td></tr>
+<tr class="memitem:a5b81587b893c71b31856ee3a8085b9d5 inherit pro_attribs_classSoDelayQueueSensor"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoDelayQueueSensor.html#a5b81587b893c71b31856ee3a8085b9d5">scheduled</a></td></tr>
+<tr class="separator:a5b81587b893c71b31856ee3a8085b9d5 inherit pro_attribs_classSoDelayQueueSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classSoSensor"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classSoSensor')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classSoSensor.html">SoSensor</a></td></tr>
+<tr class="memitem:ac21ccac7235fb0f895fff539c13a0ed9 inherit pro_attribs_classSoSensor"><td class="memItemLeft" align="right" valign="top">SoSensorCB *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensor.html#ac21ccac7235fb0f895fff539c13a0ed9">func</a></td></tr>
+<tr class="separator:ac21ccac7235fb0f895fff539c13a0ed9 inherit pro_attribs_classSoSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00da05a8947650ec2555977ed526cb6c inherit pro_attribs_classSoSensor"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSensor.html#a00da05a8947650ec2555977ed526cb6c">funcData</a></td></tr>
+<tr class="separator:a00da05a8947650ec2555977ed526cb6c inherit pro_attribs_classSoSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSoNodeSensor.html" title="The SoNodeSensor class detects changes to nodes.">SoNodeSensor</a> class detects changes to nodes. </p>
+<p>Attach a node to a sensor of this type to put it under surveillance, so you can act upon changes to the node.</p>
+<p>Any modification to the node's fields will trigger the sensor, as will changes to node's children (if any), including if nodes are added or removed as children below the node in the subgraph.</p>
+<p>An <a class="el" href="classSoNodeSensor.html" title="The SoNodeSensor class detects changes to nodes.">SoNodeSensor</a> can also act for delete-callback purposes alone and does not need a regular notification-based callback. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a9d61b97e7ff67f105b99ddffe15ef6ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d61b97e7ff67f105b99ddffe15ef6ff">&#9670;&nbsp;</a></span>SoNodeSensor() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoNodeSensor::SoNodeSensor </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Default constructor. </p>
+
+</div>
+</div>
+<a id="ae6c56d5dff51e67fcabfa81f4abbf79a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6c56d5dff51e67fcabfa81f4abbf79a">&#9670;&nbsp;</a></span>SoNodeSensor() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoNodeSensor::SoNodeSensor </td>
+          <td>(</td>
+          <td class="paramtype">SoSensorCB *&#160;</td>
+          <td class="paramname"><em>func</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Constructor taking as parameters the sensor callback function and the userdata which will be passed to the callback.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoSensor.html#ac0a0152828590c9b23da259a9c60a629">setFunction()</a>, <a class="el" href="classSoSensor.html#acc7ffab34126318972fdc0830de49150">setData()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a9caae5b30dc282640355b8abf38fe4f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9caae5b30dc282640355b8abf38fe4f7">&#9670;&nbsp;</a></span>~SoNodeSensor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoNodeSensor::~SoNodeSensor </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Destructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="acb9a4d413e1e2aa081ffaf3988e3f6bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb9a4d413e1e2aa081ffaf3988e3f6bd">&#9670;&nbsp;</a></span>attach()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoNodeSensor::attach </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoNode.html">SoNode</a> *&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Attach sensor to a node. Whenever any data in the node (or its children, if it is an <a class="el" href="classSoGroup.html" title="The SoGroup class is a node which managed other node instances.">SoGroup</a> or <a class="el" href="classSoGroup.html" title="The SoGroup class is a node which managed other node instances.">SoGroup</a> derived node) changes, the sensor will be triggered and call the callback function.</p>
+<p>Attaching a node sensor to a node will <em>not</em> increase the node's reference count (and conversely, <a class="el" href="classSoNodeSensor.html#abb62ded137dcd724e2dec2364f65d7ce">detach()</a>'ing the node sensor will not decrease the reference count, either).</p>
+<p>When the attached node is deleted, the sensor will be automatically detached().</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoNodeSensor.html#abb62ded137dcd724e2dec2364f65d7ce">detach()</a> </dd></dl>
+
+</div>
+</div>
+<a id="abb62ded137dcd724e2dec2364f65d7ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb62ded137dcd724e2dec2364f65d7ce">&#9670;&nbsp;</a></span>detach()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoNodeSensor::detach </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Detach sensor from node. As long as an <a class="el" href="classSoNodeSensor.html" title="The SoNodeSensor class detects changes to nodes.">SoNodeSensor</a> is detached, it will never call its callback function.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoNodeSensor.html#acb9a4d413e1e2aa081ffaf3988e3f6bd">attach()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a742a3fabf8bcb850b172b5c9271241d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a742a3fabf8bcb850b172b5c9271241d5">&#9670;&nbsp;</a></span>getAttachedNode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoNode.html">SoNode</a> * SoNodeSensor::getAttachedNode </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns a pointer to the node connected to the sensor.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoNodeSensor.html#acb9a4d413e1e2aa081ffaf3988e3f6bd">attach()</a>, <a class="el" href="classSoNodeSensor.html#abb62ded137dcd724e2dec2364f65d7ce">detach()</a> </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SoNodeSensor_8h_source.html">SoNodeSensor.h</a></li>
+<li>SoNodeSensor.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSoNodeSensor.html">SoNodeSensor</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,1813 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SoGLRenderAction Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSoGLRenderAction.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
+<a href="classSoGLRenderAction-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SoGLRenderAction Class Reference<div class="ingroups"><a class="el" href="group__coin__actions.html">Action Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSoGLRenderAction.html" title="The SoGLRenderAction class renders the scene graph with OpenGL calls.">SoGLRenderAction</a> class renders the scene graph with OpenGL calls.  
+ <a href="classSoGLRenderAction.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SoGLRenderAction_8h_source.html">Inventor/actions/SoGLRenderAction.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for SoGLRenderAction:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classSoGLRenderAction.png" usemap="#SoGLRenderAction_map" alt=""/>
+  <map id="SoGLRenderAction_map" name="SoGLRenderAction_map">
+<area href="classSoAction.html" title="The SoAction class is the base class for all traversal actions." alt="SoAction" shape="rect" coords="93,0,270,24"/>
+<area href="classSoBoxHighlightRenderAction.html" title="The SoBoxHighlightRenderAction class renders the scene with highlighted boxes around selections." alt="SoBoxHighlightRenderAction" shape="rect" coords="0,112,177,136"/>
+<area href="classSoLineHighlightRenderAction.html" title="The SoLineHighlightRenderAction class renders selections with line highlighting." alt="SoLineHighlightRenderAction" shape="rect" coords="187,112,364,136"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a016763ba5e313424f2450aa41693e8f6"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a016763ba5e313424f2450aa41693e8f6">AbortCode</a> { <a class="el" href="classSoGLRenderAction.html#a016763ba5e313424f2450aa41693e8f6ac45fb1cc909525052e4b7b5e4e534e2b">CONTINUE</a>
+, <a class="el" href="classSoGLRenderAction.html#a016763ba5e313424f2450aa41693e8f6afc27fe42f07f195a259be7c8e4613b6e">ABORT</a>
+, <a class="el" href="classSoGLRenderAction.html#a016763ba5e313424f2450aa41693e8f6a4817d1d831b24cf068da57e4c9214917">PRUNE</a>
+, <a class="el" href="classSoGLRenderAction.html#a016763ba5e313424f2450aa41693e8f6abbd4e7ce1b7626971c354527309f9f29">DELAY</a>
+ }</td></tr>
+<tr class="separator:a016763ba5e313424f2450aa41693e8f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae38cb7794e7fe3de95ebe385a1e00f04"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classSoGLRenderAction.html#a016763ba5e313424f2450aa41693e8f6">AbortCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#ae38cb7794e7fe3de95ebe385a1e00f04">SoGLRenderAbortCB</a>(void *userdata)</td></tr>
+<tr class="separator:ae38cb7794e7fe3de95ebe385a1e00f04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af673acee2953f6f6701e38c21e2f9ee0"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#af673acee2953f6f6701e38c21e2f9ee0">SortedObjectOrderStrategy</a> { <a class="el" href="classSoGLRenderAction.html#af673acee2953f6f6701e38c21e2f9ee0afde6c04bf7846497133f1a26fa4e4d43">BBOX_CENTER</a>
+, <a class="el" href="classSoGLRenderAction.html#af673acee2953f6f6701e38c21e2f9ee0a21a0ba46b74cac56cfae3ccabc0c0c96">BBOX_CLOSEST_CORNER</a>
+, <a class="el" href="classSoGLRenderAction.html#af673acee2953f6f6701e38c21e2f9ee0a72d3e8ea4615b927a3391b4b8d339d67">BBOX_FARTHEST_CORNER</a>
+, <a class="el" href="classSoGLRenderAction.html#af673acee2953f6f6701e38c21e2f9ee0a9ab2d71ae6738a554f1f16d48125cc44">CUSTOM_CALLBACK</a>
+ }</td></tr>
+<tr class="separator:af673acee2953f6f6701e38c21e2f9ee0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab318debd5fb749f9fcc16487522b860c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860c">TransparencyType</a> { <br />
+&#160;&#160;<a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca85b730dde06333632ba11faaa4ea6065">SCREEN_DOOR</a>
+, <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860caef8642833b3f74d1891f981d299fe402">ADD</a>
+, <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca50db8d25f88f0e2b9a5cbcb3bfac652b">DELAYED_ADD</a>
+, <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca72a317c8d7011d1685533cbf92ad097f">SORTED_OBJECT_ADD</a>
+, <br />
+&#160;&#160;<a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca097026a11757fcb96ddb52e51850f244">BLEND</a>
+, <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860cadbc8dd4b5600709df598ab300699bc26">DELAYED_BLEND</a>
+, <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca46d3d452475893e784b18b21a2f587f2">SORTED_OBJECT_BLEND</a>
+, <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860cac636aa256a6893c78796376f482210a4">SORTED_OBJECT_SORTED_TRIANGLE_ADD</a>
+, <br />
+&#160;&#160;<a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca85eeb15a9ae8ff2e08e19004f54103db">SORTED_OBJECT_SORTED_TRIANGLE_BLEND</a>
+, <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca99990d4157e3622b968773e9892b87c2">NONE</a>
+, <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca10f40549a0473dbc8692c998b41feef5">SORTED_LAYERS_BLEND</a>
+<br />
+ }</td></tr>
+<tr class="separator:ab318debd5fb749f9fcc16487522b860c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca1a078631b10e969ddcb4a156b93863"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#aca1a078631b10e969ddcb4a156b93863">TransparentDelayedObjectRenderType</a> { <a class="el" href="classSoGLRenderAction.html#aca1a078631b10e969ddcb4a156b93863a9c36bc5510e0673aac2d2cd8105b824b">ONE_PASS</a>
+, <a class="el" href="classSoGLRenderAction.html#aca1a078631b10e969ddcb4a156b93863aee00f0cc1104f13934bc9fc793ea63cd">NONSOLID_SEPARATE_BACKFACE_PASS</a>
+ }</td></tr>
+<tr class="separator:aca1a078631b10e969ddcb4a156b93863"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSoAction')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a1c1dcf644f0e8bc1acd92f9cd8c917d3 inherit pub_types_classSoAction"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a1c1dcf644f0e8bc1acd92f9cd8c917d3">AppliedCode</a> { <b>NODE</b> = 0
+, <b>PATH</b> = 1
+, <b>PATH_LIST</b> = 2
+ }</td></tr>
+<tr class="separator:a1c1dcf644f0e8bc1acd92f9cd8c917d3 inherit pub_types_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0942e2ce7d88ebc8e7cd10cf26310c67 inherit pub_types_classSoAction"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a0942e2ce7d88ebc8e7cd10cf26310c67">PathCode</a> { <b>NO_PATH</b> = 0
+, <b>IN_PATH</b> = 1
+, <b>BELOW_PATH</b> = 2
+, <b>OFF_PATH</b> = 3
+ }</td></tr>
+<tr class="separator:a0942e2ce7d88ebc8e7cd10cf26310c67 inherit pub_types_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a172532085adc5c2d5bc5dcc11b51577b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a172532085adc5c2d5bc5dcc11b51577b">SoGLRenderAction</a> (const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;viewportregion)</td></tr>
+<tr class="separator:a172532085adc5c2d5bc5dcc11b51577b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc88a624ab38cd5e0e2d37f462906e0e"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#afc88a624ab38cd5e0e2d37f462906e0e">~SoGLRenderAction</a> (void)</td></tr>
+<tr class="separator:afc88a624ab38cd5e0e2d37f462906e0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47e743b1b44badaa40f163e8bcbccd35"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a47e743b1b44badaa40f163e8bcbccd35">abortNow</a> (void)</td></tr>
+<tr class="separator:a47e743b1b44badaa40f163e8bcbccd35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0088b567ca6ec701ecab30a116426e68"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a0088b567ca6ec701ecab30a116426e68">addDelayedPath</a> (<a class="el" href="classSoPath.html">SoPath</a> *path)</td></tr>
+<tr class="separator:a0088b567ca6ec701ecab30a116426e68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52ceaef1d177334d3ba0302d491e9e7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a52ceaef1d177334d3ba0302d491e9e7d">addPreRenderCallback</a> (SoGLPreRenderCB *func, void *userdata)</td></tr>
+<tr class="separator:a52ceaef1d177334d3ba0302d491e9e7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affde78162384417ff948d5525091624a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#affde78162384417ff948d5525091624a">getAbortCallback</a> (<a class="el" href="classSoGLRenderAction.html#ae38cb7794e7fe3de95ebe385a1e00f04">SoGLRenderAbortCB</a> *&amp;func_out, void *&amp;userdata_out) const</td></tr>
+<tr class="separator:affde78162384417ff948d5525091624a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6782eb4a49a166d7798f3c51256a4edc"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a6782eb4a49a166d7798f3c51256a4edc">getCacheContext</a> (void) const</td></tr>
+<tr class="separator:a6782eb4a49a166d7798f3c51256a4edc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca7886460d0c3cd5cf090f54c800f713"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#aca7886460d0c3cd5cf090f54c800f713">getCurPass</a> (void) const</td></tr>
+<tr class="separator:aca7886460d0c3cd5cf090f54c800f713"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a426776b3ce5e2aa8aa6a09707b1c502d"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a426776b3ce5e2aa8aa6a09707b1c502d">getDelayedObjDepthWrite</a> (void) const</td></tr>
+<tr class="separator:a426776b3ce5e2aa8aa6a09707b1c502d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73574d414aea85bfbd45305c73556968"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a73574d414aea85bfbd45305c73556968">getNumPasses</a> (void) const</td></tr>
+<tr class="separator:a73574d414aea85bfbd45305c73556968"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84c9c45e0650fc0dfa69366b10f04bf4"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a84c9c45e0650fc0dfa69366b10f04bf4">getRenderingIsRemote</a> (void) const</td></tr>
+<tr class="separator:a84c9c45e0650fc0dfa69366b10f04bf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58a79196ea3b3bb0d1bf418a80644a08"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a58a79196ea3b3bb0d1bf418a80644a08">getSortedLayersNumPasses</a> (void) const</td></tr>
+<tr class="separator:a58a79196ea3b3bb0d1bf418a80644a08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69fa10388abe4a67f666b552c991e121"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860c">TransparencyType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a69fa10388abe4a67f666b552c991e121">getTransparencyType</a> (void) const</td></tr>
+<tr class="separator:a69fa10388abe4a67f666b552c991e121"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d5a368dd4a40873f8d7fba9226892c4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoGLRenderAction.html#aca1a078631b10e969ddcb4a156b93863">TransparentDelayedObjectRenderType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a9d5a368dd4a40873f8d7fba9226892c4">getTransparentDelayedObjectRenderType</a> (void) const</td></tr>
+<tr class="separator:a9d5a368dd4a40873f8d7fba9226892c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0bdef12c4c2bab9fdafab8c28383177"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#ae0bdef12c4c2bab9fdafab8c28383177">getTypeId</a> (void) const</td></tr>
+<tr class="separator:ae0bdef12c4c2bab9fdafab8c28383177"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae49cc7cfc39157841903d089a9e9d9ee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#ae49cc7cfc39157841903d089a9e9d9ee">getUpdateArea</a> (<a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;origin, <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;size) const</td></tr>
+<tr class="separator:ae49cc7cfc39157841903d089a9e9d9ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e6aee6ce82e402a3e4d2ef49a083300"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a4e6aee6ce82e402a3e4d2ef49a083300">getViewportRegion</a> (void) const</td></tr>
+<tr class="separator:a4e6aee6ce82e402a3e4d2ef49a083300"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0b9db9eacd7c8bea499c3ebe68a27ca"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#ad0b9db9eacd7c8bea499c3ebe68a27ca">handleTransparency</a> (SbBool istransparent=FALSE)</td></tr>
+<tr class="separator:ad0b9db9eacd7c8bea499c3ebe68a27ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58a967ade8581eaf4f4b1a82c7565e47"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a58a967ade8581eaf4f4b1a82c7565e47">invalidateState</a> (void)</td></tr>
+<tr class="separator:a58a967ade8581eaf4f4b1a82c7565e47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d4ce00bfa8e4e8ad76d26ce3f870a74"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a4d4ce00bfa8e4e8ad76d26ce3f870a74">isPassUpdate</a> (void) const</td></tr>
+<tr class="separator:a4d4ce00bfa8e4e8ad76d26ce3f870a74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b6a2025ff2cb3500533193f4b30c5ae"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a5b6a2025ff2cb3500533193f4b30c5ae">isRenderingDelayedPaths</a> (void) const</td></tr>
+<tr class="separator:a5b6a2025ff2cb3500533193f4b30c5ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88727158af505da33011e162fa18166d"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a88727158af505da33011e162fa18166d">isRenderingTranspBackfaces</a> (void) const</td></tr>
+<tr class="separator:a88727158af505da33011e162fa18166d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7006a2c08edbc4445cb9bb93fa32864"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#aa7006a2c08edbc4445cb9bb93fa32864">isRenderingTranspPaths</a> (void) const</td></tr>
+<tr class="separator:aa7006a2c08edbc4445cb9bb93fa32864"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a616061ff4a563e6c63356ef56cefcead"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a616061ff4a563e6c63356ef56cefcead">isSmoothing</a> (void) const</td></tr>
+<tr class="separator:a616061ff4a563e6c63356ef56cefcead"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68c075ecbf3dc42e3bb4333f54d57a26"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a68c075ecbf3dc42e3bb4333f54d57a26">removePreRenderCallback</a> (SoGLPreRenderCB *func, void *userdata)</td></tr>
+<tr class="separator:a68c075ecbf3dc42e3bb4333f54d57a26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abaa6b6775b84984ca68a35484d072525"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#abaa6b6775b84984ca68a35484d072525">setAbortCallback</a> (<a class="el" href="classSoGLRenderAction.html#ae38cb7794e7fe3de95ebe385a1e00f04">SoGLRenderAbortCB</a> *const func, void *const userdata)</td></tr>
+<tr class="separator:abaa6b6775b84984ca68a35484d072525"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6f24d1fc081580be4c02ad375635f99"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#af6f24d1fc081580be4c02ad375635f99">setCacheContext</a> (const uint32_t context)</td></tr>
+<tr class="separator:af6f24d1fc081580be4c02ad375635f99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b07a3b0378f502ec2da28460ad5cf00"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a0b07a3b0378f502ec2da28460ad5cf00">setCurPass</a> (const int passnum, const int numpasses)</td></tr>
+<tr class="separator:a0b07a3b0378f502ec2da28460ad5cf00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedc982d84f8bb5cd6cca4705ab53c6cb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#aedc982d84f8bb5cd6cca4705ab53c6cb">setDelayedObjDepthWrite</a> (SbBool write)</td></tr>
+<tr class="separator:aedc982d84f8bb5cd6cca4705ab53c6cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abaef725b835c9d34db262f85ce92c860"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#abaef725b835c9d34db262f85ce92c860">setNumPasses</a> (const int num)</td></tr>
+<tr class="separator:abaef725b835c9d34db262f85ce92c860"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a041614dfb0ee1edcb1f8af1a584eb1de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a041614dfb0ee1edcb1f8af1a584eb1de">setPassCallback</a> (SoGLRenderPassCB *const func, void *const userdata)</td></tr>
+<tr class="separator:a041614dfb0ee1edcb1f8af1a584eb1de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a082c3841d340835436198e494b46f102"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a082c3841d340835436198e494b46f102">setPassUpdate</a> (const SbBool flag)</td></tr>
+<tr class="separator:a082c3841d340835436198e494b46f102"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2965b6bf4205683149f972bc8091537"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#ad2965b6bf4205683149f972bc8091537">setRenderingIsRemote</a> (SbBool isremote)</td></tr>
+<tr class="separator:ad2965b6bf4205683149f972bc8091537"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4da74726ed6caf63cc94aec9a5dd70eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a4da74726ed6caf63cc94aec9a5dd70eb">setSmoothing</a> (const SbBool smooth)</td></tr>
+<tr class="separator:a4da74726ed6caf63cc94aec9a5dd70eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6114e3e6126cb0ed9eb66b43526960b7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a6114e3e6126cb0ed9eb66b43526960b7">setSortedLayersNumPasses</a> (int num)</td></tr>
+<tr class="separator:a6114e3e6126cb0ed9eb66b43526960b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab12ce52b2037e12dc42ca3cab295af4a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#ab12ce52b2037e12dc42ca3cab295af4a">setSortedObjectOrderStrategy</a> (const <a class="el" href="classSoGLRenderAction.html#af673acee2953f6f6701e38c21e2f9ee0">SortedObjectOrderStrategy</a> strategy, SoGLSortedObjectOrderCB *cb=NULL, void *closure=NULL)</td></tr>
+<tr class="separator:ab12ce52b2037e12dc42ca3cab295af4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a566bc8a65b02c8220f7e2472c25bc233"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a566bc8a65b02c8220f7e2472c25bc233">setTransparencyType</a> (const <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860c">TransparencyType</a> type)</td></tr>
+<tr class="separator:a566bc8a65b02c8220f7e2472c25bc233"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50c4aeaf0d9a74f6759dfaa788f302da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a50c4aeaf0d9a74f6759dfaa788f302da">setTransparentDelayedObjectRenderType</a> (<a class="el" href="classSoGLRenderAction.html#aca1a078631b10e969ddcb4a156b93863">TransparentDelayedObjectRenderType</a> type)</td></tr>
+<tr class="separator:a50c4aeaf0d9a74f6759dfaa788f302da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afacefd8a75c0e97bcfb5e0ad0b86e800"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#afacefd8a75c0e97bcfb5e0ad0b86e800">setUpdateArea</a> (const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;origin, const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;size)</td></tr>
+<tr class="separator:afacefd8a75c0e97bcfb5e0ad0b86e800"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc75a9c2226604ef9cb8deaadcdafe81"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#adc75a9c2226604ef9cb8deaadcdafe81">setViewportRegion</a> (const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;newregion)</td></tr>
+<tr class="separator:adc75a9c2226604ef9cb8deaadcdafe81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSoAction')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:ad2839c2461c998920de832d8bdaa34c1 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#ad2839c2461c998920de832d8bdaa34c1">~SoAction</a> (void)</td></tr>
+<tr class="separator:ad2839c2461c998920de832d8bdaa34c1 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a311e03e553957474b6920afe03fb94fc inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a311e03e553957474b6920afe03fb94fc">apply</a> (const <a class="el" href="classSoPathList.html">SoPathList</a> &amp;pathlist, SbBool obeysrules=FALSE)</td></tr>
+<tr class="separator:a311e03e553957474b6920afe03fb94fc inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a984b580685859d42c4505980249fd409 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a984b580685859d42c4505980249fd409">apply</a> (<a class="el" href="classSoAction.html">SoAction</a> *beingApplied)</td></tr>
+<tr class="separator:a984b580685859d42c4505980249fd409 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2d6ddb297b3a1f5b80026db5fd5e616 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#ad2d6ddb297b3a1f5b80026db5fd5e616">apply</a> (<a class="el" href="classSoNode.html">SoNode</a> *root)</td></tr>
+<tr class="separator:ad2d6ddb297b3a1f5b80026db5fd5e616 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f922db782cb971042da8adc64f61d47 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a8f922db782cb971042da8adc64f61d47">apply</a> (<a class="el" href="classSoPath.html">SoPath</a> *path)</td></tr>
+<tr class="separator:a8f922db782cb971042da8adc64f61d47 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5920f3da63a6ba8577dc56621815341 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSoPath.html">SoPath</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#af5920f3da63a6ba8577dc56621815341">getCurPath</a> (void)</td></tr>
+<tr class="separator:af5920f3da63a6ba8577dc56621815341 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2b14e6d8f2d1a290c7d8bc90bc9f410 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoAction.html#a0942e2ce7d88ebc8e7cd10cf26310c67">PathCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#ac2b14e6d8f2d1a290c7d8bc90bc9f410">getCurPathCode</a> (void) const</td></tr>
+<tr class="separator:ac2b14e6d8f2d1a290c7d8bc90bc9f410 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e9810cb526353255fedf04792151c2d inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a4e9810cb526353255fedf04792151c2d">getCurPathTail</a> (void)</td></tr>
+<tr class="separator:a4e9810cb526353255fedf04792151c2d inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79ea01b9e731224d00fc792ea19a9802 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a79ea01b9e731224d00fc792ea19a9802">getNodeAppliedTo</a> (void) const</td></tr>
+<tr class="separator:a79ea01b9e731224d00fc792ea19a9802 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5062d853f79a06b4031622e9b59b8d18 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSoPathList.html">SoPathList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a5062d853f79a06b4031622e9b59b8d18">getOriginalPathListAppliedTo</a> (void) const</td></tr>
+<tr class="separator:a5062d853f79a06b4031622e9b59b8d18 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedea6d5b8b79997c9085937f5dcf517d inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoPath.html">SoPath</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#aedea6d5b8b79997c9085937f5dcf517d">getPathAppliedTo</a> (void) const</td></tr>
+<tr class="separator:aedea6d5b8b79997c9085937f5dcf517d inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42b2f4960252071194099b4a965eefa2 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoAction.html#a0942e2ce7d88ebc8e7cd10cf26310c67">PathCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a42b2f4960252071194099b4a965eefa2">getPathCode</a> (int &amp;numindices, const int *&amp;indices)</td></tr>
+<tr class="separator:a42b2f4960252071194099b4a965eefa2 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a791ea2da77f97bb290520f9d92fe4f3b inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSoPathList.html">SoPathList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a791ea2da77f97bb290520f9d92fe4f3b">getPathListAppliedTo</a> (void) const</td></tr>
+<tr class="separator:a791ea2da77f97bb290520f9d92fe4f3b inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a477a09961787e99a9621bb07e79c922c inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoState.html">SoState</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a477a09961787e99a9621bb07e79c922c">getState</a> (void) const</td></tr>
+<tr class="separator:a477a09961787e99a9621bb07e79c922c inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cf5dc15e2ea395a8bf9e05827e7c9f3 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoAction.html#a1c1dcf644f0e8bc1acd92f9cd8c917d3">AppliedCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a7cf5dc15e2ea395a8bf9e05827e7c9f3">getWhatAppliedTo</a> (void) const</td></tr>
+<tr class="separator:a7cf5dc15e2ea395a8bf9e05827e7c9f3 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af20b8fd5a41faad4f5f21bb7769a5f33 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#af20b8fd5a41faad4f5f21bb7769a5f33">hasTerminated</a> (void) const</td></tr>
+<tr class="separator:af20b8fd5a41faad4f5f21bb7769a5f33 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad953f48ef9f01d8b2c4596157a6e5cdc inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#ad953f48ef9f01d8b2c4596157a6e5cdc">isLastPathListAppliedTo</a> (void) const</td></tr>
+<tr class="separator:ad953f48ef9f01d8b2c4596157a6e5cdc inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5478020eea5f2b7d4e183e16d29d6611 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a5478020eea5f2b7d4e183e16d29d6611">isOfType</a> (<a class="el" href="classSoType.html">SoType</a> type) const</td></tr>
+<tr class="separator:a5478020eea5f2b7d4e183e16d29d6611 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88ceb9648c0f51d7ba87475ca8555f28 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a88ceb9648c0f51d7ba87475ca8555f28">popCurPath</a> (const <a class="el" href="classSoAction.html#a0942e2ce7d88ebc8e7cd10cf26310c67">PathCode</a> prevpathcode)</td></tr>
+<tr class="separator:a88ceb9648c0f51d7ba87475ca8555f28 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a989bcb87598bf55b31bf0704189abb11 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a989bcb87598bf55b31bf0704189abb11">popCurPath</a> (void)</td></tr>
+<tr class="separator:a989bcb87598bf55b31bf0704189abb11 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf8242136a44ff3af40ea102b372e4e1 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#adf8242136a44ff3af40ea102b372e4e1">popPushCurPath</a> (const int childindex, <a class="el" href="classSoNode.html">SoNode</a> *node=NULL)</td></tr>
+<tr class="separator:adf8242136a44ff3af40ea102b372e4e1 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a148ece4bf4cda79914ee3a2116c05d09 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a148ece4bf4cda79914ee3a2116c05d09">pushCurPath</a> (const int childindex, <a class="el" href="classSoNode.html">SoNode</a> *node=NULL)</td></tr>
+<tr class="separator:a148ece4bf4cda79914ee3a2116c05d09 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abebcc05d2d935803a3c95310c9447614 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#abebcc05d2d935803a3c95310c9447614">pushCurPath</a> (void)</td></tr>
+<tr class="separator:abebcc05d2d935803a3c95310c9447614 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accfc280f70bc8f888f61890f07a4aac2 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#accfc280f70bc8f888f61890f07a4aac2">switchToNodeTraversal</a> (<a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:accfc280f70bc8f888f61890f07a4aac2 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4285818426cf039bd556b537398d9ece inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a4285818426cf039bd556b537398d9ece">switchToPathTraversal</a> (<a class="el" href="classSoPath.html">SoPath</a> *path)</td></tr>
+<tr class="separator:a4285818426cf039bd556b537398d9ece inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a805627d07445a9c3a7e6324748aac2a9 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a805627d07445a9c3a7e6324748aac2a9">traverse</a> (<a class="el" href="classSoNode.html">SoNode</a> *const node)</td></tr>
+<tr class="separator:a805627d07445a9c3a7e6324748aac2a9 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea5650e3b7ae6207c4c3d675e83073b5 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#aea5650e3b7ae6207c4c3d675e83073b5">usePathCode</a> (int &amp;numindices, const int *&amp;indices)</td></tr>
+<tr class="separator:aea5650e3b7ae6207c4c3d675e83073b5 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a9dafa39fdca32aa9c93f115fa470c6c8"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a9dafa39fdca32aa9c93f115fa470c6c8">addMethod</a> (const <a class="el" href="classSoType.html">SoType</a> type, SoActionMethod method)</td></tr>
+<tr class="separator:a9dafa39fdca32aa9c93f115fa470c6c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1849c3c06b55087e5eab6be6db5c10a"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#ac1849c3c06b55087e5eab6be6db5c10a">enableElement</a> (const <a class="el" href="classSoType.html">SoType</a> type, const int stackindex)</td></tr>
+<tr class="separator:ac1849c3c06b55087e5eab6be6db5c10a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11dd3e4dd03768f4379df273eec26be4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a11dd3e4dd03768f4379df273eec26be4">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:a11dd3e4dd03768f4379df273eec26be4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6edc84c92e9bbd3311776c108f173c30"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a6edc84c92e9bbd3311776c108f173c30">initClass</a> (void)</td></tr>
+<tr class="separator:a6edc84c92e9bbd3311776c108f173c30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classSoAction')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a3a714aae7f852be330d276041f7bc26e inherit pub_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a3a714aae7f852be330d276041f7bc26e">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:a3a714aae7f852be330d276041f7bc26e inherit pub_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fca4d3db681ecea3bd1d5c24d1f160d inherit pub_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a6fca4d3db681ecea3bd1d5c24d1f160d">initClass</a> (void)</td></tr>
+<tr class="separator:a6fca4d3db681ecea3bd1d5c24d1f160d inherit pub_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c1f8064ac89d9e36d36a8d05365e26a inherit pub_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a9c1f8064ac89d9e36d36a8d05365e26a">initClasses</a> (void)</td></tr>
+<tr class="separator:a9c1f8064ac89d9e36d36a8d05365e26a inherit pub_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6dd54a728307c37d3cd87b2891b9359e inherit pub_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a6dd54a728307c37d3cd87b2891b9359e">nullAction</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a6dd54a728307c37d3cd87b2891b9359e inherit pub_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a5abd36c42d1bc03f99410bc7e75b463f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a5abd36c42d1bc03f99410bc7e75b463f">beginTraversal</a> (<a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a5abd36c42d1bc03f99410bc7e75b463f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f60e31488b81431d9909d390b18b649"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a8f60e31488b81431d9909d390b18b649">endTraversal</a> (<a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a8f60e31488b81431d9909d390b18b649"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d8a3d517afdf9d3f38ca5eae777f45c"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a8d8a3d517afdf9d3f38ca5eae777f45c">getEnabledElements</a> (void) const</td></tr>
+<tr class="separator:a8d8a3d517afdf9d3f38ca5eae777f45c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSoAction')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a7f6ac9fad4b83a66a321adfa48ebacd1 inherit pro_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a7f6ac9fad4b83a66a321adfa48ebacd1">SoAction</a> (void)</td></tr>
+<tr class="separator:a7f6ac9fad4b83a66a321adfa48ebacd1 inherit pro_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa968d7390c6d9ec862e0c9c1c7e48de5 inherit pro_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#aa968d7390c6d9ec862e0c9c1c7e48de5">setTerminated</a> (const SbBool flag)</td></tr>
+<tr class="separator:aa968d7390c6d9ec862e0c9c1c7e48de5 inherit pro_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59700c3dd417a802e9531b6544ff6b81 inherit pro_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a59700c3dd417a802e9531b6544ff6b81">shouldCompactPathList</a> (void) const</td></tr>
+<tr class="separator:a59700c3dd417a802e9531b6544ff6b81 inherit pro_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:adc48d893b717590769ace24351860b37"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoActionMethodList.html">SoActionMethodList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#adc48d893b717590769ace24351860b37">getClassActionMethods</a> (void)</td></tr>
+<tr class="separator:adc48d893b717590769ace24351860b37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a148851a9797f99b7c0e0d84b7f37e695"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGLRenderAction.html#a148851a9797f99b7c0e0d84b7f37e695">getClassEnabledElements</a> (void)</td></tr>
+<tr class="separator:a148851a9797f99b7c0e0d84b7f37e695"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_methods_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classSoAction')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a655c3dbf9f093cdfaa7cc896ca54c0f3 inherit pro_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoActionMethodList.html">SoActionMethodList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a655c3dbf9f093cdfaa7cc896ca54c0f3">getClassActionMethods</a> (void)</td></tr>
+<tr class="separator:a655c3dbf9f093cdfaa7cc896ca54c0f3 inherit pro_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3a072966a0f9fa9f96fa1affc44fe9b inherit pro_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#ac3a072966a0f9fa9f96fa1affc44fe9b">getClassEnabledElements</a> (void)</td></tr>
+<tr class="separator:ac3a072966a0f9fa9f96fa1affc44fe9b inherit pro_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_attribs_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classSoAction')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a5b4ccb851346b95c3c3562b1824d258b inherit pro_attribs_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoState.html">SoState</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a5b4ccb851346b95c3c3562b1824d258b">state</a></td></tr>
+<tr class="separator:a5b4ccb851346b95c3c3562b1824d258b inherit pro_attribs_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00703b6a5c0bac45ac95756f7eb054af inherit pro_attribs_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoActionMethodList.html">SoActionMethodList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a00703b6a5c0bac45ac95756f7eb054af">traversalMethods</a></td></tr>
+<tr class="separator:a00703b6a5c0bac45ac95756f7eb054af inherit pro_attribs_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSoGLRenderAction.html" title="The SoGLRenderAction class renders the scene graph with OpenGL calls.">SoGLRenderAction</a> class renders the scene graph with OpenGL calls. </p>
+<p>Applying this method at a root node for a scene graph, path or path list will render all geometry contained within that instance to the current OpenGL context. </p>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="ae38cb7794e7fe3de95ebe385a1e00f04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae38cb7794e7fe3de95ebe385a1e00f04">&#9670;&nbsp;</a></span>SoGLRenderAbortCB</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef SoGLRenderAction::SoGLRenderAbortCB</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Abort callbacks should be of this type. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoGLRenderAction.html#abaa6b6775b84984ca68a35484d072525">setAbortCallback()</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a016763ba5e313424f2450aa41693e8f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a016763ba5e313424f2450aa41693e8f6">&#9670;&nbsp;</a></span>AbortCode</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classSoGLRenderAction.html#a016763ba5e313424f2450aa41693e8f6">SoGLRenderAction::AbortCode</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The return codes which an SoGLRenderAbortCB callback function should use.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoGLRenderAction.html#abaa6b6775b84984ca68a35484d072525">setAbortCallback()</a> </dd></dl>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a016763ba5e313424f2450aa41693e8f6ac45fb1cc909525052e4b7b5e4e534e2b"></a>CONTINUE&#160;</td><td class="fielddoc"><p>Continue rendering as usual. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a016763ba5e313424f2450aa41693e8f6afc27fe42f07f195a259be7c8e4613b6e"></a>ABORT&#160;</td><td class="fielddoc"><p>Abort the rendering action immediately. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a016763ba5e313424f2450aa41693e8f6a4817d1d831b24cf068da57e4c9214917"></a>PRUNE&#160;</td><td class="fielddoc"><p>Do not render the current node or any of its children, but continue the rendering traversal. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a016763ba5e313424f2450aa41693e8f6abbd4e7ce1b7626971c354527309f9f29"></a>DELAY&#160;</td><td class="fielddoc"><p>Delay rendering of the current node (and its children) until the next rendering pass. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="af673acee2953f6f6701e38c21e2f9ee0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af673acee2953f6f6701e38c21e2f9ee0">&#9670;&nbsp;</a></span>SortedObjectOrderStrategy</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classSoGLRenderAction.html#af673acee2953f6f6701e38c21e2f9ee0">SoGLRenderAction::SortedObjectOrderStrategy</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Used for enumerating the different transparency sorting strategies.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoGLRenderAction.html#ab12ce52b2037e12dc42ca3cab295af4a">setSortedObjectOrderStrategy()</a>. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.5 </dd></dl>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af673acee2953f6f6701e38c21e2f9ee0afde6c04bf7846497133f1a26fa4e4d43"></a>BBOX_CENTER&#160;</td><td class="fielddoc"><p>Do the sorting based on the center of the object bounding box.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoGLRenderAction.html#ab12ce52b2037e12dc42ca3cab295af4a">setSortedObjectOrderStrategy()</a>. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.5 </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="af673acee2953f6f6701e38c21e2f9ee0a21a0ba46b74cac56cfae3ccabc0c0c96"></a>BBOX_CLOSEST_CORNER&#160;</td><td class="fielddoc"><p>Do the sorting based on the bounding box corner closest to the camera.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoGLRenderAction.html#ab12ce52b2037e12dc42ca3cab295af4a">setSortedObjectOrderStrategy()</a>. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.5 </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="af673acee2953f6f6701e38c21e2f9ee0a72d3e8ea4615b927a3391b4b8d339d67"></a>BBOX_FARTHEST_CORNER&#160;</td><td class="fielddoc"><p>Do the sorting based on the bounding box corner farthest from the camera.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoGLRenderAction.html#ab12ce52b2037e12dc42ca3cab295af4a">setSortedObjectOrderStrategy()</a>. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.5 </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="af673acee2953f6f6701e38c21e2f9ee0a9ab2d71ae6738a554f1f16d48125cc44"></a>CUSTOM_CALLBACK&#160;</td><td class="fielddoc"><p>Use a custom callback to determine the sorting order.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoGLRenderAction.html#ab12ce52b2037e12dc42ca3cab295af4a">setSortedObjectOrderStrategy()</a>. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.5 </dd></dl>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="ab318debd5fb749f9fcc16487522b860c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab318debd5fb749f9fcc16487522b860c">&#9670;&nbsp;</a></span>TransparencyType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860c">SoGLRenderAction::TransparencyType</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Various settings for how to do rendering of transparent objects in the scene. Some of the settings will provide faster rendering, while others give you better quality rendering.</p>
+<p>Note that doing correct rendering of <em>multiple</em> transparent objects often fails, because to be 100% correct, all polygons needs to be rendered in sorted order, and polygons can't intersect each other. In a dynamic scene graph it is often impossible to guarantee that no polygons intersect, and finding an algorithm that does correct sorting of polygons for all possible cases is very hard and time-consuming.</p>
+<p>The highest quality transparency mode in the original SGI / TGS Open Inventor is <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca46d3d452475893e784b18b21a2f587f2">SoGLRenderAction::SORTED_OBJECT_BLEND</a>, where all transparent objects are rendered in sorted order in a rendering pass after all opaque objects. However, this mode does not sort the polygons, and if you have an object where some polygon A is behind some other polygon B, the transparency will only be correct if A happens to be rendered before B. For other camera angles, where B is behind A, the transparency will not be correct.</p>
+<p>In Coin we have a new transparency mode that solves some of these problems: <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca85eeb15a9ae8ff2e08e19004f54103db">SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND</a>. In addition to sorting the objects, all polygons inside each object is also sorted back-to-front when rendering. But, if you have intersecting objects and/or intersecting polygons, even this transparency mode will fail. Also, because of the polygon sorting, this transparency mode is quite slow. It is possible to speed things up using the <a class="el" href="classSoTransparencyType.html" title="The SoTransparencyType class is a node for setting the transparency type for shapes.">SoTransparencyType</a> node, though, which enables you to set different transparency modes for different parts of the scene graph. If you have only have a few objects where you need to sort the polygons, you can use <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca85eeb15a9ae8ff2e08e19004f54103db">SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND</a> for those, and for instance <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca46d3d452475893e784b18b21a2f587f2">SoGLRenderAction::SORTED_OBJECT_BLEND</a> for all other transparent objects.</p>
+<p>The highest quality transparency mode in Coin is <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca10f40549a0473dbc8692c998b41feef5">SoGLRenderAction::SORTED_LAYERS_BLEND</a>. It is also the only mode that overrides all other modes in the scene graph.</p>
+<p>(One important note about this mode: we've had reports from users that some OpenGL drivers &ndash; possibly particular for some Mac OS X systems &ndash; significantly degrades rendering performance. So be careful and test your application on a wide variety of runtime systems when using <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca10f40549a0473dbc8692c998b41feef5">SoGLRenderAction::SORTED_LAYERS_BLEND</a>.)</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoTransparencyType.html" title="The SoTransparencyType class is a node for setting the transparency type for shapes.">SoTransparencyType</a> </dd></dl>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab318debd5fb749f9fcc16487522b860ca85b730dde06333632ba11faaa4ea6065"></a>SCREEN_DOOR&#160;</td><td class="fielddoc"><p>Transparent triangles are rendered with a dither pattern. This is a fast (on most GFX cards) but not-so-high-quality transparency mode.</p>
+<p>One particular feature of this mode is that you are guaranteed that it always renders the transparent parts of the scene correct with regard to internal depth ordering of objects / polygons, something which is not the case for any other transparency mode.</p>
+<p>Polygons rendered with only transparent textures are not shown as being transparent when using this mode. The reason being that the <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca85b730dde06333632ba11faaa4ea6065">SoGLRenderAction::SCREEN_DOOR</a> mode is working on polygons, not pixels. To render polygons with dither pattern, a material node has to be inserted into the scene graph with its transparency field set. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab318debd5fb749f9fcc16487522b860caef8642833b3f74d1891f981d299fe402"></a>ADD&#160;</td><td class="fielddoc"><p>Transparent objects are rendered using additive alpha blending. Additive blending is probably mostly used to create special transparency effects. The new pixel color is calculated as the current pixel color plus the source pixel color multiplied with the source pixel alpha value. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab318debd5fb749f9fcc16487522b860ca50db8d25f88f0e2b9a5cbcb3bfac652b"></a>DELAYED_ADD&#160;</td><td class="fielddoc"><p>Transparent objects are rendered using additive alpha blending, in a second rendering pass with depth buffer updates disabled. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab318debd5fb749f9fcc16487522b860ca72a317c8d7011d1685533cbf92ad097f"></a>SORTED_OBJECT_ADD&#160;</td><td class="fielddoc"><p>Transparent objects are rendered using additive alpha blending. Opaque objects are rendered first, and transparent objects are rendered back to front with z-buffer updates disabled. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab318debd5fb749f9fcc16487522b860ca097026a11757fcb96ddb52e51850f244"></a>BLEND&#160;</td><td class="fielddoc"><p>Transparent objects are rendered using multiplicative alpha blending.</p>
+<p>Multiplicative alpha blending is the blending type that is most often used to render transparent objects. The new pixel value is calculated as the old pixel color multiplied with one minus the source alpha value, plus the source pixel color multiplied with the source alpha value.</p>
+<p>We recommend that you use this transparency mode if you have only one transparent object in your scene, and you know that it will be rendered after the opaque objects. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab318debd5fb749f9fcc16487522b860cadbc8dd4b5600709df598ab300699bc26"></a>DELAYED_BLEND&#160;</td><td class="fielddoc"><p>Transparent objects are rendered using multiplicative alpha blending, in a second rendering pass with depth buffer updates disabled.</p>
+<p>Use this transparency type when you have one transparent object, or several transparent object that you know will never overlap (when projected to screen). Since the transparent objects are rendered after opaque ones, you'll not have to worry about putting the transparent objects at the end of your scene graph. It will not be as fast as the <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca097026a11757fcb96ddb52e51850f244">SoGLRenderAction::BLEND</a> transparency type, of course, since the scene graph is traversed twice. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab318debd5fb749f9fcc16487522b860ca46d3d452475893e784b18b21a2f587f2"></a>SORTED_OBJECT_BLEND&#160;</td><td class="fielddoc"><p>Transparent objects are rendered using multiplicative alpha blending, Opaque objects are rendered first, and transparent objects are rendered back to front with z-buffer updates disabled.</p>
+<p>Use this transparency mode when you have several transparent object that you know might overlap (when projected to screen). This method will require 1 + num_transparent_objects rendering passes. Path traversal is used when rendering transparent objects, of course, but it might still be slow if you have lots of state changes before your transparent object. When using this mode, we recommend placing the transparent objects as early as possible in the scene graph to minimize traversal overhead. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab318debd5fb749f9fcc16487522b860cac636aa256a6893c78796376f482210a4"></a>SORTED_OBJECT_SORTED_TRIANGLE_ADD&#160;</td><td class="fielddoc"><p>This transparency type is a Coin extension versus the original SGI Open Inventor API.</p>
+<p>Transparent objects are rendered back to front, and triangles in each object are sorted back to front before rendering.</p>
+<p>See description for <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca85eeb15a9ae8ff2e08e19004f54103db">SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND</a> for more information about this transparency type. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab318debd5fb749f9fcc16487522b860ca85eeb15a9ae8ff2e08e19004f54103db"></a>SORTED_OBJECT_SORTED_TRIANGLE_BLEND&#160;</td><td class="fielddoc"><p>This transparency type is a Coin extension versus the original SGI Open Inventor API.</p>
+<p>Transparent objects are rendered back to front, and triangles in each object are sorted back to front before rendering.</p>
+<p>Use this transparency type when you have one (or more) transparent object(s) where you know triangles might overlap inside the object. This transparency type might be very slow if you have an object with lots of triangles, since all triangles have to be sorted before rendering, and an unoptimized rendering loop is used when rendering. Lines and points are not sorted before rendering. They are rendered as in the normal <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca46d3d452475893e784b18b21a2f587f2">SoGLRenderAction::SORTED_OBJECT_BLEND</a> transparency type.</p>
+<p>Please note that this transparency mode does not guarantee "correct" transparency rendering. It is almost impossible to find an algorithm that will sort triangles correctly in all cases, and intersecting triangles are not handled. Also, since each object is handled separately, two intersecting object will lead to incorrect transparency. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ab318debd5fb749f9fcc16487522b860ca99990d4157e3622b968773e9892b87c2"></a>NONE&#160;</td><td class="fielddoc"><p>This transparency type is a Coin extension versus the Open Inventor API.</p>
+<p>Turns off transparency for objects, even if transparency is set using an <a class="el" href="classSoMaterial.html" title="The SoMaterial class is a node type for setting up material values for scene geometry.">SoMaterial</a> node.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 1.0 </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="ab318debd5fb749f9fcc16487522b860ca10f40549a0473dbc8692c998b41feef5"></a>SORTED_LAYERS_BLEND&#160;</td><td class="fielddoc"><p>This transparency type is a Coin extension versus the original SGI Open Inventor API.</p>
+<p>By using this transparency type, the <a class="el" href="classSoGLRenderAction.html" title="The SoGLRenderAction class renders the scene graph with OpenGL calls.">SoGLRenderAction</a> will render normal and intersecting transparent objects correctly independent of rendering order. It is the only transparency type rendering mode which is guaranteed to do so.</p>
+<p>This mode is different from all other modes in that it overrides the <a class="el" href="classSoTransparencyType.html" title="The SoTransparencyType class is a node for setting the transparency type for shapes.">SoTransparencyType</a> nodes in the scene graph; all objects are drawn using <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca10f40549a0473dbc8692c998b41feef5">SoGLRenderAction::SORTED_LAYERS_BLEND</a>.</p>
+<p>There are currently two separate code paths for this mode. Both paths are heavily based on OpenGL extensions. The first method is based on extensions which are only available on NVIDIA chipsets (GeForce3 and above, except GeForce4 MX). These extensions are <code>GL_NV_texture_shader</code>, <code>GL_NV_texture_rectangle</code> or <code>GL_EXT_texture_rectangle</code>, <code>GL_NV_register_combiners</code>, <code>GL_ARB_shadow</code> and <code>GL_ARB_depth_texture</code>. Please note that this transparency type occupy all four texture units on the NVIDIA card for all the rendering passes, except the first. Textured surfaces will therefore only be textured if they are not occluded by another transparent surface.</p>
+<p>The second method utilizes the <code>GL_ARB_fragment_program</code> extension. This extension is currently supported by the GeForceFX family and the Radeon 9500 and above. This technique is faster than the pure NVIDIA method. The fragment program method will automatically be chosen if possible. Please note that one should beware not to place the near-plane too close to the camera due to the lack of floating point precision control in fragment programs. Doing so may lead to loss of precision around the edges and 'jaggedness' of the transparent geometry.</p>
+<p>Setting the environment variable COIN_SORTED_LAYERS_USE_NVIDIA_RC to '1' will force the use of former code path instead of the latter, even if it is available.</p>
+<p>A rendering context with &gt;= 24 bits depth buffer and 8 bits alpha channel must be the current rendering context for this blending mode to actually become activated. If the current rendering canvas does not have these properties, Coin will fall back on a simpler transparency handling mode. If you are using one of the window-system binding libraries provided by Kongsberg Oil &amp; Gas Technologies, e.g. SoXt, SoQt or SoWin, you will need to explicitly enable this in your viewer. See the API documentation of the <code>setAlphaChannel()</code> method of either SoXtGLWidget, SoQtGLWidget or SoWinGLWidget.</p>
+<p>The detection of whether or not the <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca10f40549a0473dbc8692c998b41feef5">SoGLRenderAction::SORTED_LAYERS_BLEND</a> mode can be used will be done automatically by the Coin internals. If one or more of the necessary conditions listed above are unavailable, <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca46d3d452475893e784b18b21a2f587f2">SoGLRenderAction::SORTED_OBJECT_BLEND</a> will be used as the transparency type instead.</p>
+<p>To be able to render correct transparency independent of object order, one have to render in multiple passes. This technique is based on depth-peeling which strips away depth layers with each successive pass. The number of passes is therefore an indication of how deep into the scene transparent surfaces will be rendered with transparency. A higher number will lead to a lower frame rate but higher quality for scenes with a lot of transparent surfaces. The default number of passes is '4'. This number can be specified using the <a class="el" href="classSoGLRenderAction.html#a6114e3e6126cb0ed9eb66b43526960b7">SoGLRenderAction::setSortedLayersNumPasses()</a> or by letting the environment variable <code>COIN_NUM_SORTED_LAYERS_PASSES</code> or <code>OIV_NUM_SORTED_LAYERS_PASSES</code> specify the number of passes.</p>
+<p>A more detailed presentation of the algorithm is written by Cass Everitt at NVIDIA;</p>
+<p>"Interactive Order-Independent Transparency" <a href="https://www.nvidia.com/en-us/drivers/Interactive-Order-Transparency/">https://www.nvidia.com/en-us/drivers/Interactive-Order-Transparency/</a></p>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.2 </dd>
+<dd>
+TGS Inventor 4.0 </dd></dl>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a id="aca1a078631b10e969ddcb4a156b93863"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca1a078631b10e969ddcb4a156b93863">&#9670;&nbsp;</a></span>TransparentDelayedObjectRenderType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classSoGLRenderAction.html#aca1a078631b10e969ddcb4a156b93863">SoGLRenderAction::TransparentDelayedObjectRenderType</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Enumerates the render types of transparent objects. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aca1a078631b10e969ddcb4a156b93863a9c36bc5510e0673aac2d2cd8105b824b"></a>ONE_PASS&#160;</td><td class="fielddoc"><p>Normal one pass rendering. This might cause artifacts for non-solid objects. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aca1a078631b10e969ddcb4a156b93863aee00f0cc1104f13934bc9fc793ea63cd"></a>NONSOLID_SEPARATE_BACKFACE_PASS&#160;</td><td class="fielddoc"><p>Non-solid objects are handled in an extra rendering pass. Back facing polygons are rendered in the first pass, and the front facing in the second pass. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a172532085adc5c2d5bc5dcc11b51577b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a172532085adc5c2d5bc5dcc11b51577b">&#9670;&nbsp;</a></span>SoGLRenderAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoGLRenderAction::SoGLRenderAction </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;&#160;</td>
+          <td class="paramname"><em>viewportregion</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Constructor. Sets up the render action for rendering within the given <em>viewportregion</em>. </p>
+
+</div>
+</div>
+<a id="afc88a624ab38cd5e0e2d37f462906e0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc88a624ab38cd5e0e2d37f462906e0e">&#9670;&nbsp;</a></span>~SoGLRenderAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoGLRenderAction::~SoGLRenderAction </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Destructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a47e743b1b44badaa40f163e8bcbccd35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47e743b1b44badaa40f163e8bcbccd35">&#9670;&nbsp;</a></span>abortNow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoGLRenderAction::abortNow </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns <code>TRUE</code> if the render action should abort now based on user callback.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoGLRenderAction.html#abaa6b6775b84984ca68a35484d072525">setAbortCallback()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a0088b567ca6ec701ecab30a116426e68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0088b567ca6ec701ecab30a116426e68">&#9670;&nbsp;</a></span>addDelayedPath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::addDelayedPath </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoPath.html">SoPath</a> *&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Adds a path to the list of paths to render after the current pass. </p>
+
+</div>
+</div>
+<a id="a9dafa39fdca32aa9c93f115fa470c6c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9dafa39fdca32aa9c93f115fa470c6c8">&#9670;&nbsp;</a></span>addMethod()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::addMethod </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSoType.html">SoType</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SoActionMethod&#160;</td>
+          <td class="paramname"><em>method</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+ </p>
+
+</div>
+</div>
+<a id="a52ceaef1d177334d3ba0302d491e9e7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52ceaef1d177334d3ba0302d491e9e7d">&#9670;&nbsp;</a></span>addPreRenderCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::addPreRenderCallback </td>
+          <td>(</td>
+          <td class="paramtype">SoGLPreRenderCB *&#160;</td>
+          <td class="paramname"><em>func</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>userdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Adds a callback which is invoked right before the scene graph traversal starts. All necessary GL initialization is then done (e.g. the viewport is correctly set), and this callback can be useful to, for instance, clear the viewport before rendering, or draw a bitmap in the background before rendering etc.</p>
+<p>The callback is only invoked once (before the first rendering pass) when multi pass rendering is enabled.</p>
+<p>Please note that <a class="el" href="classSoSceneManager.html" title="The SoSceneManager class provides the main interface between the scene graph and the GUI toolkit.">SoSceneManager</a> usually adds a callback to clear the GL buffers in <a class="el" href="classSoSceneManager.html#a0cfa158a909124e3e720f9db8114c489">SoSceneManager::render()</a>. So, if you plan to for instance draw an image in the color buffer using this callback, you should make sure that the scene manager doesn't clear the buffer. This can be done either by calling <a class="el" href="classSoSceneManager.html#a0cfa158a909124e3e720f9db8114c489">SoSceneManager::render()</a> with both arguments FALSE, or, if you're using one of our GUI toolkits (SoXt/SoQt/SoGtk/SoWin), call setClearBeforeRender() on the viewer.</p>
+<p>This method is an extension versus the Open Inventor API.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoGLRenderAction.html#a68c075ecbf3dc42e3bb4333f54d57a26">removePreRenderCallback()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a5abd36c42d1bc03f99410bc7e75b463f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5abd36c42d1bc03f99410bc7e75b463f">&#9670;&nbsp;</a></span>beginTraversal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::beginTraversal </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoNode.html">SoNode</a> *&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This virtual method is called from <a class="el" href="classSoAction.html#ad2d6ddb297b3a1f5b80026db5fd5e616">SoAction::apply()</a>, and is the entry point for the actual scene graph traversal.</p>
+<p>It can be overridden to initialize the action at traversal start, for specific initializations in the action subclasses inheriting <a class="el" href="classSoAction.html" title="The SoAction class is the base class for all traversal actions.">SoAction</a>.</p>
+<p>Default method just calls <a class="el" href="classSoAction.html#a805627d07445a9c3a7e6324748aac2a9">traverse()</a>, which any overridden implementation of the method must do too (or call <a class="el" href="classSoAction.html#a893a67a9bf2e7b5b5ef0f1f36f1b8097">SoAction::beginTraversal()</a>) to trigger the scene graph traversal. </p>
+
+<p>Reimplemented from <a class="el" href="classSoAction.html#a893a67a9bf2e7b5b5ef0f1f36f1b8097">SoAction</a>.</p>
+
+</div>
+</div>
+<a id="ac1849c3c06b55087e5eab6be6db5c10a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1849c3c06b55087e5eab6be6db5c10a">&#9670;&nbsp;</a></span>enableElement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::enableElement </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSoType.html">SoType</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>stackindex</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+ </p>
+
+</div>
+</div>
+<a id="a8f60e31488b81431d9909d390b18b649"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f60e31488b81431d9909d390b18b649">&#9670;&nbsp;</a></span>endTraversal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::endTraversal </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoNode.html">SoNode</a> *&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This virtual method can be overridden to execute code after the scene graph traversal. Default method does nothing. </p>
+
+<p>Reimplemented from <a class="el" href="classSoAction.html#a9af52ee33d0effeba2f23d9c3d4d6ad0">SoAction</a>.</p>
+
+</div>
+</div>
+<a id="affde78162384417ff948d5525091624a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affde78162384417ff948d5525091624a">&#9670;&nbsp;</a></span>getAbortCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::getAbortCallback </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoGLRenderAction.html#ae38cb7794e7fe3de95ebe385a1e00f04">SoGLRenderAbortCB</a> *&amp;&#160;</td>
+          <td class="paramname"><em>func_out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&amp;&#160;</td>
+          <td class="paramname"><em>userdata_out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the abort callback settings.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoGLRenderAction.html#abaa6b6775b84984ca68a35484d072525">setAbortCallback</a> </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>Coin 3.0 </dd></dl>
+
+</div>
+</div>
+<a id="a6782eb4a49a166d7798f3c51256a4edc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6782eb4a49a166d7798f3c51256a4edc">&#9670;&nbsp;</a></span>getCacheContext()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t SoGLRenderAction::getCacheContext </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the cache context key for this rendering action instance. </p>
+
+</div>
+</div>
+<a id="adc48d893b717590769ace24351860b37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc48d893b717590769ace24351860b37">&#9670;&nbsp;</a></span>getClassActionMethods()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoActionMethodList.html">SoActionMethodList</a> * SoGLRenderAction::getClassActionMethods </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns list of action methods for this class. The enabledElements and methods variables are protected in the original OIV API. This is not such a good idea, since exposed static class member variables is a major grievance with regard to Win32 DLLs. This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ <br  />
+ </p>
+
+</div>
+</div>
+<a id="a148851a9797f99b7c0e0d84b7f37e695"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a148851a9797f99b7c0e0d84b7f37e695">&#9670;&nbsp;</a></span>getClassEnabledElements()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> * SoGLRenderAction::getClassEnabledElements </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns list of enabled elements for this class. The enabledElements and methods variables are protected in the original OIV API. This is not such a good idea, since exposed static class member variables is a major grievance with regard to Win32 DLLs. This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ <br  />
+ </p>
+
+</div>
+</div>
+<a id="a11dd3e4dd03768f4379df273eec26be4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11dd3e4dd03768f4379df273eec26be4">&#9670;&nbsp;</a></span>getClassTypeId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoType.html">SoType</a> SoGLRenderAction::getClassTypeId </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This static method returns the <a class="el" href="classSoType.html" title="The SoType class is the basis for the runtime type system in Coin.">SoType</a> object associated with objects of this class. <br  />
+ </p>
+
+</div>
+</div>
+<a id="aca7886460d0c3cd5cf090f54c800f713"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca7886460d0c3cd5cf090f54c800f713">&#9670;&nbsp;</a></span>getCurPass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SoGLRenderAction::getCurPass </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the number of the current rendering pass. </p>
+
+</div>
+</div>
+<a id="a426776b3ce5e2aa8aa6a09707b1c502d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a426776b3ce5e2aa8aa6a09707b1c502d">&#9670;&nbsp;</a></span>getDelayedObjDepthWrite()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoGLRenderAction::getDelayedObjDepthWrite </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return whether depth buffer updates should be done when rendering delayed or sorted transparent objects. Default is FALSE.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 3.0 </dd></dl>
+
+</div>
+</div>
+<a id="a8d8a3d517afdf9d3f38ca5eae777f45c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d8a3d517afdf9d3f38ca5eae777f45c">&#9670;&nbsp;</a></span>getEnabledElements()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> &amp; SoGLRenderAction::getEnabledElements </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns list of enabled elements. <br  />
+ </p>
+
+<p>Reimplemented from <a class="el" href="classSoAction.html#ae4668ce77fd8b3fc5cbf496ca1721d62">SoAction</a>.</p>
+
+<p>Reimplemented in <a class="el" href="classSoLineHighlightRenderAction.html#abcd6c39aef57b83bd3e5c24a5b3f6ca7">SoLineHighlightRenderAction</a>, and <a class="el" href="classSoBoxHighlightRenderAction.html#a69fe6decdc7f34991819981f075abeec">SoBoxHighlightRenderAction</a>.</p>
+
+</div>
+</div>
+<a id="a73574d414aea85bfbd45305c73556968"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73574d414aea85bfbd45305c73556968">&#9670;&nbsp;</a></span>getNumPasses()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SoGLRenderAction::getNumPasses </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the number of rendering passes done on updates. </p>
+
+</div>
+</div>
+<a id="a84c9c45e0650fc0dfa69366b10f04bf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84c9c45e0650fc0dfa69366b10f04bf4">&#9670;&nbsp;</a></span>getRenderingIsRemote()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoGLRenderAction::getRenderingIsRemote </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns whether or not the application is running remotely.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoGLRenderAction.html#ad2965b6bf4205683149f972bc8091537">setRenderingIsRemote()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a58a79196ea3b3bb0d1bf418a80644a08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58a79196ea3b3bb0d1bf418a80644a08">&#9670;&nbsp;</a></span>getSortedLayersNumPasses()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SoGLRenderAction::getSortedLayersNumPasses </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the number of passes to render when in <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca10f40549a0473dbc8692c998b41feef5">SoGLRenderAction::SORTED_LAYERS_BLEND</a> mode. </p>
+
+</div>
+</div>
+<a id="a69fa10388abe4a67f666b552c991e121"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69fa10388abe4a67f666b552c991e121">&#9670;&nbsp;</a></span>getTransparencyType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860c">SoGLRenderAction::TransparencyType</a> SoGLRenderAction::getTransparencyType </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the transparency rendering type. </p>
+
+</div>
+</div>
+<a id="a9d5a368dd4a40873f8d7fba9226892c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d5a368dd4a40873f8d7fba9226892c4">&#9670;&nbsp;</a></span>getTransparentDelayedObjectRenderType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoGLRenderAction.html#aca1a078631b10e969ddcb4a156b93863">SoGLRenderAction::TransparentDelayedObjectRenderType</a> SoGLRenderAction::getTransparentDelayedObjectRenderType </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the render type of delayed or sorted transparent objects.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 3.0 </dd></dl>
+
+</div>
+</div>
+<a id="ae0bdef12c4c2bab9fdafab8c28383177"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0bdef12c4c2bab9fdafab8c28383177">&#9670;&nbsp;</a></span>getTypeId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoType.html">SoType</a> SoGLRenderAction::getTypeId </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the type identification of an object derived from a class inheriting <a class="el" href="classSoAction.html" title="The SoAction class is the base class for all traversal actions.">SoAction</a>. This is used for runtime type checking and "downward" casting. <br  />
+ </p>
+
+<p>Implements <a class="el" href="classSoAction.html#a364ad60918a4d20ebdc9635457fe331c">SoAction</a>.</p>
+
+<p>Reimplemented in <a class="el" href="classSoLineHighlightRenderAction.html#a4bf75e2103d8365854d36922d22372f3">SoLineHighlightRenderAction</a>, and <a class="el" href="classSoBoxHighlightRenderAction.html#acbb2781a9a2448ac37e8cdb25b0908c5">SoBoxHighlightRenderAction</a>.</p>
+
+</div>
+</div>
+<a id="ae49cc7cfc39157841903d089a9e9d9ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae49cc7cfc39157841903d089a9e9d9ee">&#9670;&nbsp;</a></span>getUpdateArea()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::getUpdateArea </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>origin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns information about the area of the rendering context window to be updated. </p>
+
+</div>
+</div>
+<a id="a4e6aee6ce82e402a3e4d2ef49a083300"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e6aee6ce82e402a3e4d2ef49a083300">&#9670;&nbsp;</a></span>getViewportRegion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp; SoGLRenderAction::getViewportRegion </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the viewport region for the rendering action. </p>
+
+</div>
+</div>
+<a id="ad0b9db9eacd7c8bea499c3ebe68a27ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0b9db9eacd7c8bea499c3ebe68a27ca">&#9670;&nbsp;</a></span>handleTransparency()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoGLRenderAction::handleTransparency </td>
+          <td>(</td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>istransparent</em> = <code>FALSE</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Used by shape nodes or others which need to know whether or not they should immediately render themselves or if they should wait until the next pass. It also enables/disabled blending based on the <em>istransparent</em> parameter.</p>
+<p>If you're using an <a class="el" href="classSoCallback.html" title="The SoCallback class is a node type which provides a means of setting callback hooks in the scene gra...">SoCallback</a> or a non-shape node to render your geometry, you can use this function to make sure your node is only rendered once. This function consider the <em>istransparent</em> parameter, and when TRUE it will return TRUE on the first pass, and FALSE on the second pass. For non-transparent objects it returns FALSE on the first pass, TRUE on the second.</p>
+<p>Please note that this function considers the current transparency type when deciding what to do. It will delay rendering only when the transparency type is DELAYED_* or SORTED_OBJECT_*. For other transparency types, transparent objects are rendered in the same pass as opaque objects. </p>
+
+</div>
+</div>
+<a id="a6edc84c92e9bbd3311776c108f173c30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6edc84c92e9bbd3311776c108f173c30">&#9670;&nbsp;</a></span>initClass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::initClass </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Initializes the runtime type system for this class, and sets up the enabled elements and action method list. </p>
+
+</div>
+</div>
+<a id="a58a967ade8581eaf4f4b1a82c7565e47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58a967ade8581eaf4f4b1a82c7565e47">&#9670;&nbsp;</a></span>invalidateState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::invalidateState </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Invalidates the state, forcing it to be recreated at the next <a class="el" href="classSoAction.html#ad2d6ddb297b3a1f5b80026db5fd5e616">apply()</a> invocation. </p>
+
+<p>Reimplemented from <a class="el" href="classSoAction.html#a3fbc8efc139853a56e707baecf02b357">SoAction</a>.</p>
+
+</div>
+</div>
+<a id="a4d4ce00bfa8e4e8ad76d26ce3f870a74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d4ce00bfa8e4e8ad76d26ce3f870a74">&#9670;&nbsp;</a></span>isPassUpdate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoGLRenderAction::isPassUpdate </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the value of the "show intermediate updates" flag.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoGLRenderAction.html#a082c3841d340835436198e494b46f102">setPassUpdate()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a5b6a2025ff2cb3500533193f4b30c5ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b6a2025ff2cb3500533193f4b30c5ae">&#9670;&nbsp;</a></span>isRenderingDelayedPaths()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoGLRenderAction::isRenderingDelayedPaths </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns a flag indicating whether or not we are currently rendering from the list of delayed paths of the scene graph. </p>
+
+</div>
+</div>
+<a id="a88727158af505da33011e162fa18166d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88727158af505da33011e162fa18166d">&#9670;&nbsp;</a></span>isRenderingTranspBackfaces()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoGLRenderAction::isRenderingTranspBackfaces </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns TRUE if the action is currently rendering back facing polygons in NONSOLID_SEPARATE_BACKFACE_PASS mode.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 3.0 </dd></dl>
+
+</div>
+</div>
+<a id="aa7006a2c08edbc4445cb9bb93fa32864"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7006a2c08edbc4445cb9bb93fa32864">&#9670;&nbsp;</a></span>isRenderingTranspPaths()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoGLRenderAction::isRenderingTranspPaths </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns TRUE if the action is currently rendering delayed or sorted transparent objects.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 3.0 </dd></dl>
+
+</div>
+</div>
+<a id="a616061ff4a563e6c63356ef56cefcead"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a616061ff4a563e6c63356ef56cefcead">&#9670;&nbsp;</a></span>isSmoothing()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoGLRenderAction::isSmoothing </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns whether smoothing is set or not. </p>
+
+</div>
+</div>
+<a id="a68c075ecbf3dc42e3bb4333f54d57a26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68c075ecbf3dc42e3bb4333f54d57a26">&#9670;&nbsp;</a></span>removePreRenderCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::removePreRenderCallback </td>
+          <td>(</td>
+          <td class="paramtype">SoGLPreRenderCB *&#160;</td>
+          <td class="paramname"><em>func</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>userdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Removed a callback added with the <a class="el" href="classSoGLRenderAction.html#a52ceaef1d177334d3ba0302d491e9e7d">addPreRenderCallback()</a> method.</p>
+<p>This method is an extension versus the Open Inventor API.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoGLRenderAction.html#a52ceaef1d177334d3ba0302d491e9e7d">addPreRenderCallback()</a> </dd></dl>
+
+</div>
+</div>
+<a id="abaa6b6775b84984ca68a35484d072525"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abaa6b6775b84984ca68a35484d072525">&#9670;&nbsp;</a></span>setAbortCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::setAbortCallback </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoGLRenderAction.html#ae38cb7794e7fe3de95ebe385a1e00f04">SoGLRenderAbortCB</a> *const&#160;</td>
+          <td class="paramname"><em>func</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *const&#160;</td>
+          <td class="paramname"><em>userdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the abort callback. The abort callback is called by the action for each node during traversal to check for abort conditions.</p>
+<p>The callback method should return one of the <a class="el" href="classSoGLRenderAction.html#a016763ba5e313424f2450aa41693e8f6">SoGLRenderAction::AbortCode</a> enum values to indicate how the action should proceed further.</p>
+<p>Since the client SoGLRenderAbortCB callback function only has a single void* argument for the userdata, one has to do some additional work to find out which node the callback was made for. One can do this by for instance passing along the action pointer as userdata, and then call the <a class="el" href="classSoAction.html#af5920f3da63a6ba8577dc56621815341">SoGLRenderAction::getCurPath()</a> method. The tail of the path will then be the last traversed node. Like this:</p>
+<div class="fragment"><div class="line"><span class="comment">// set up so we can abort or otherwise intervene with the render</span></div>
+<div class="line"><span class="comment">// traversal:</span></div>
+<div class="line">myRenderAction-&gt;setAbortCallback(MyRenderCallback, myRenderAction);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// [...]</span></div>
+<div class="line"> </div>
+<div class="line"><a class="code" href="classSoGLRenderAction.html#a016763ba5e313424f2450aa41693e8f6">SoGLRenderAction::AbortCode</a></div>
+<div class="line">MyRenderCallback(<span class="keywordtype">void</span> * userdata)</div>
+<div class="line">{</div>
+<div class="line">  <a class="code" href="classSoGLRenderAction.html">SoGLRenderAction</a> * action = (<a class="code" href="classSoGLRenderAction.html">SoGLRenderAction</a> *)userdata;</div>
+<div class="line">  <a class="code" href="classSoNode.html">SoNode</a> * lastnode = action-&gt;<a class="code" href="classSoAction.html#af5920f3da63a6ba8577dc56621815341">getCurPath</a>()-&gt;<a class="code" href="classSoPath.html#a60c8ed4e98df2bea9efddc8057376055">getTail</a>();</div>
+<div class="line"> </div>
+<div class="line">  <span class="comment">// [...]</span></div>
+<div class="line">  <span class="keywordflow">return</span> <a class="code" href="classSoGLRenderAction.html#a016763ba5e313424f2450aa41693e8f6ac45fb1cc909525052e4b7b5e4e534e2b">SoGLRenderAction::CONTINUE</a>;</div>
+<div class="line">}</div>
+<div class="ttc" id="aclassSoAction_html_af5920f3da63a6ba8577dc56621815341"><div class="ttname"><a href="classSoAction.html#af5920f3da63a6ba8577dc56621815341">SoAction::getCurPath</a></div><div class="ttdeci">const SoPath * getCurPath(void)</div><div class="ttdef"><b>Definition:</b> SoAction.cpp:1108</div></div>
+<div class="ttc" id="aclassSoGLRenderAction_html"><div class="ttname"><a href="classSoGLRenderAction.html">SoGLRenderAction</a></div><div class="ttdoc">The SoGLRenderAction class renders the scene graph with OpenGL calls.</div><div class="ttdef"><b>Definition:</b> SoGLRenderAction.h:50</div></div>
+<div class="ttc" id="aclassSoGLRenderAction_html_a016763ba5e313424f2450aa41693e8f6"><div class="ttname"><a href="classSoGLRenderAction.html#a016763ba5e313424f2450aa41693e8f6">SoGLRenderAction::AbortCode</a></div><div class="ttdeci">AbortCode</div><div class="ttdef"><b>Definition:</b> SoGLRenderAction.h:76</div></div>
+<div class="ttc" id="aclassSoGLRenderAction_html_a016763ba5e313424f2450aa41693e8f6ac45fb1cc909525052e4b7b5e4e534e2b"><div class="ttname"><a href="classSoGLRenderAction.html#a016763ba5e313424f2450aa41693e8f6ac45fb1cc909525052e4b7b5e4e534e2b">SoGLRenderAction::CONTINUE</a></div><div class="ttdeci">@ CONTINUE</div><div class="ttdef"><b>Definition:</b> SoGLRenderAction.h:77</div></div>
+<div class="ttc" id="aclassSoNode_html"><div class="ttname"><a href="classSoNode.html">SoNode</a></div><div class="ttdoc">The SoNode class is the base class for nodes used in scene graphs.</div><div class="ttdef"><b>Definition:</b> SoNode.h:56</div></div>
+<div class="ttc" id="aclassSoPath_html_a60c8ed4e98df2bea9efddc8057376055"><div class="ttname"><a href="classSoPath.html#a60c8ed4e98df2bea9efddc8057376055">SoPath::getTail</a></div><div class="ttdeci">SoNode * getTail(void) const</div><div class="ttdef"><b>Definition:</b> SoPath.cpp:405</div></div>
+</div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoGLRenderAction.html#a016763ba5e313424f2450aa41693e8f6">SoGLRenderAction::AbortCode</a> </dd></dl>
+
+</div>
+</div>
+<a id="af6f24d1fc081580be4c02ad375635f99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6f24d1fc081580be4c02ad375635f99">&#9670;&nbsp;</a></span>setCacheContext()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::setCacheContext </td>
+          <td>(</td>
+          <td class="paramtype">const uint32_t&#160;</td>
+          <td class="paramname"><em>context</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the OpenGL cache context key, which is used for deciding when to share OpenGL display lists.</p>
+<p>Each <a class="el" href="classSoGLRenderAction.html" title="The SoGLRenderAction class renders the scene graph with OpenGL calls.">SoGLRenderAction</a> has a cache context id. This can be set using <a class="el" href="classSoGLRenderAction.html#af6f24d1fc081580be4c02ad375635f99">SoGLRenderAction::setCacheContext()</a>. The cache context id must be unique, so that different texture objects and display lists are created for incompatible GL contexts. For instance, when <a class="el" href="classSoGLRenderAction.html" title="The SoGLRenderAction class renders the scene graph with OpenGL calls.">SoGLRenderAction</a> traverses an <a class="el" href="classSoTexture2.html" title="The SoTexture2 class is used to map a 2D texture onto subsequent geometry in the scene graph.">SoTexture2</a> node, the node checks if it has a texture object created for the cache context. If not, a new texture object will be created and used when rendering.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoGLCacheContextElement.html#ace6d79525d7124a447c033d1e71a2384">SoGLCacheContextElement::getUniqueCacheContext()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a0b07a3b0378f502ec2da28460ad5cf00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b07a3b0378f502ec2da28460ad5cf00">&#9670;&nbsp;</a></span>setCurPass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::setCurPass </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>passnum</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>numpasses</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the current rendering pass to <em>passnum</em>. This can be used when antialiasing is controlled from outside the <a class="el" href="classSoGLRenderAction.html" title="The SoGLRenderAction class renders the scene graph with OpenGL calls.">SoGLRenderAction</a> instance. <em>numpasses</em> is the total number of rendering passes to be used.</p>
+<p>Please note that this will disable any antialiasing set using the <a class="el" href="classSoGLRenderAction.html#abaef725b835c9d34db262f85ce92c860">setNumPasses()</a> method. You can re-enable the internal antialiasing again by calling <a class="el" href="classSoGLRenderAction.html#abaef725b835c9d34db262f85ce92c860">setNumPasses()</a></p>
+<dl class="section since"><dt>Since</dt><dd>Coin 3.1 </dd></dl>
+
+</div>
+</div>
+<a id="aedc982d84f8bb5cd6cca4705ab53c6cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aedc982d84f8bb5cd6cca4705ab53c6cb">&#9670;&nbsp;</a></span>setDelayedObjDepthWrite()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::setDelayedObjDepthWrite </td>
+          <td>(</td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>write</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set whether depth buffer updates should be done when rendering delayed or sorted transparent objects.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 3.0 </dd></dl>
+
+</div>
+</div>
+<a id="abaef725b835c9d34db262f85ce92c860"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abaef725b835c9d34db262f85ce92c860">&#9670;&nbsp;</a></span>setNumPasses()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::setNumPasses </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>num</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the number of rendering passes. Default is 1, anything greater will enable antialiasing through the use of an OpenGL accumulation buffer. </p>
+
+</div>
+</div>
+<a id="a041614dfb0ee1edcb1f8af1a584eb1de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a041614dfb0ee1edcb1f8af1a584eb1de">&#9670;&nbsp;</a></span>setPassCallback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::setPassCallback </td>
+          <td>(</td>
+          <td class="paramtype">SoGLRenderPassCB *const&#160;</td>
+          <td class="paramname"><em>func</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *const&#160;</td>
+          <td class="paramname"><em>userdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the pass callback. The callback is called between each rendering pass. </p>
+
+</div>
+</div>
+<a id="a082c3841d340835436198e494b46f102"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a082c3841d340835436198e494b46f102">&#9670;&nbsp;</a></span>setPassUpdate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::setPassUpdate </td>
+          <td>(</td>
+          <td class="paramtype">const SbBool&#160;</td>
+          <td class="paramname"><em>flag</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets whether each pass should render to screen or not. </p>
+
+</div>
+</div>
+<a id="ad2965b6bf4205683149f972bc8091537"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2965b6bf4205683149f972bc8091537">&#9670;&nbsp;</a></span>setRenderingIsRemote()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::setRenderingIsRemote </td>
+          <td>(</td>
+          <td class="paramtype">SbBool&#160;</td>
+          <td class="paramname"><em>isremote</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Let <a class="el" href="classSoGLRenderAction.html" title="The SoGLRenderAction class renders the scene graph with OpenGL calls.">SoGLRenderAction</a> instance know if application is running on the local machine or if the rendering instructions are sent over the network.</p>
+<p>The flag is used to optimize rendering. For instance should the display list caching strategy be influenced by this flag to be more aggressive with the caching when rendering instructions are passed over the network.</p>
+<p>Default value is <code>FALSE</code>. The value of the flag will not be changed internally from the Coin library code, as it is meant to be controlled from client code &ndash; typically from the SoQt / SoXt / SoWin / SoGtk libraries.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoGLRenderAction.html#a84c9c45e0650fc0dfa69366b10f04bf4">getRenderingIsRemote()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a4da74726ed6caf63cc94aec9a5dd70eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4da74726ed6caf63cc94aec9a5dd70eb">&#9670;&nbsp;</a></span>setSmoothing()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::setSmoothing </td>
+          <td>(</td>
+          <td class="paramtype">const SbBool&#160;</td>
+          <td class="paramname"><em>smooth</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets (or unsets) smoothing. If the smoothing flag is <code>on</code>, Coin will try to use built-in features from the OpenGL implementation to smooth the appearance of otherwise jagged line and point primitives, calling</p>
+<pre class="fragment">    glEnable(GL_POINT_SMOOTH);
+    glEnable(GL_LINE_SMOOTH);
+</pre><p>...before rendering the scene.</p>
+<p>This is a simple (and computationally non-intensive) way of doing anti-aliasing.</p>
+<p>Default value for this flag is to be <code>off</code>. </p>
+
+</div>
+</div>
+<a id="a6114e3e6126cb0ed9eb66b43526960b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6114e3e6126cb0ed9eb66b43526960b7">&#9670;&nbsp;</a></span>setSortedLayersNumPasses()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::setSortedLayersNumPasses </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>num</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the number of passes to render in <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca10f40549a0473dbc8692c998b41feef5">SoGLRenderAction::SORTED_LAYERS_BLEND</a> mode. Default number of passes is 4. This number can also be adjusted by setting the <code>COIN_NUM_SORTED_LAYERS_PASSES</code> or <code>OIV_NUM_SORTED_LAYERS_PASSES</code> environment variable. </p>
+
+</div>
+</div>
+<a id="ab12ce52b2037e12dc42ca3cab295af4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab12ce52b2037e12dc42ca3cab295af4a">&#9670;&nbsp;</a></span>setSortedObjectOrderStrategy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::setSortedObjectOrderStrategy </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSoGLRenderAction.html#af673acee2953f6f6701e38c21e2f9ee0">SortedObjectOrderStrategy</a>&#160;</td>
+          <td class="paramname"><em>strategy</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SoGLSortedObjectOrderCB *&#160;</td>
+          <td class="paramname"><em>cb</em> = <code>NULL</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>closure</em> = <code>NULL</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the strategy used for sorting transparent objects.</p>
+<p>The <em>CUSTOM_CALLBACK</em> strategy enables the user to supply a callback which is called for each transparent shape. This strategy can be used if the built in sorting strategies aren't sufficient.</p>
+<p>The callback should return a floating point value to be used when sorting the objects in Coin. This floating point value is interpreted as a distance to the camera, and objects with higher values will be sorted behind objects with lower values.</p>
+<p>The callback will supply the <a class="el" href="classSoGLRenderAction.html" title="The SoGLRenderAction class renders the scene graph with OpenGL calls.">SoGLRenderAction</a> instance, and the path to the current object can be found using <a class="el" href="classSoAction.html#af5920f3da63a6ba8577dc56621815341">SoAction::getCurPath()</a>.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.5 </dd></dl>
+
+</div>
+</div>
+<a id="a566bc8a65b02c8220f7e2472c25bc233"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a566bc8a65b02c8220f7e2472c25bc233">&#9670;&nbsp;</a></span>setTransparencyType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::setTransparencyType </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860c">TransparencyType</a>&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the transparency rendering method for transparent objects in the scene graph.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860c">SoGLRenderAction::TransparencyType</a> </dd></dl>
+
+</div>
+</div>
+<a id="a50c4aeaf0d9a74f6759dfaa788f302da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50c4aeaf0d9a74f6759dfaa788f302da">&#9670;&nbsp;</a></span>setTransparentDelayedObjectRenderType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::setTransparentDelayedObjectRenderType </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoGLRenderAction.html#aca1a078631b10e969ddcb4a156b93863">TransparentDelayedObjectRenderType</a>&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the render type of delayed or sorted transparent objects. Default is ONE_PASS.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 3.0 </dd></dl>
+
+</div>
+</div>
+<a id="afacefd8a75c0e97bcfb5e0ad0b86e800"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afacefd8a75c0e97bcfb5e0ad0b86e800">&#9670;&nbsp;</a></span>setUpdateArea()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::setUpdateArea </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>origin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the area of the OpenGL context canvas we should render into.</p>
+<p>The coordinates for <em>origin</em> and <em>size</em> should be normalized to be within [0.0, 1.0]. The default settings are &lt;0.0, 0.0&gt; for the <em>origin</em> and &lt;1.0, 1.0&gt; for the <em>size</em>, using the full size of the rendering canvas. </p>
+
+</div>
+</div>
+<a id="adc75a9c2226604ef9cb8deaadcdafe81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc75a9c2226604ef9cb8deaadcdafe81">&#9670;&nbsp;</a></span>setViewportRegion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGLRenderAction::setViewportRegion </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;&#160;</td>
+          <td class="paramname"><em>newregion</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the viewport region for rendering. This will then override the region passed in with the constructor. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SoGLRenderAction_8h_source.html">SoGLRenderAction.h</a></li>
+<li>SoGLRenderAction.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSoGLRenderAction.html">SoGLRenderAction</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: Field Classes</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('group__coin__fields.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a>  </div>
+  <div class="headertitle">
+<div class="title">Field Classes</div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The fields are the data containers in the scene graph. Nodes and engines all use fields to store their public data.  
+<a href="#details">More...</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html">SoField</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoField.html" title="The SoField class is the top-level abstract base class for fields.">SoField</a> class is the top-level abstract base class for fields.  <a href="classSoField.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldData.html">SoFieldData</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoFieldData.html" title="The SoFieldData class is a container for a prototype set of fields.">SoFieldData</a> class is a container for a prototype set of fields.  <a href="classSoFieldData.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoFieldList.html">SoFieldList</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoFieldList.html" title="The SoFieldList class is a container for pointers to SoField objects.">SoFieldList</a> class is a container for pointers to <a class="el" href="classSoField.html" title="The SoField class is the top-level abstract base class for fields.">SoField</a> objects.  <a href="classSoFieldList.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFBitMask.html">SoMFBitMask</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFBitMask.html" title="The SoMFBitMask class is a container for a set of bitmasks.">SoMFBitMask</a> class is a container for a set of bitmasks.  <a href="classSoMFBitMask.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFBool.html">SoMFBool</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFBool.html" title="The SoMFBool class is a container for SbBool values.">SoMFBool</a> class is a container for SbBool values.  <a href="classSoMFBool.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFColor.html">SoMFColor</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFColor.html" title="The SoMFColor class is a container for SbColor values.">SoMFColor</a> class is a container for <a class="el" href="classSbColor.html" title="The SbColor class contains the red, green and blue components which make up a color value.">SbColor</a> values.  <a href="classSoMFColor.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFColorRGBA.html">SoMFColorRGBA</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFColorRGBA.html" title="The SoMFColorRGBA class is a container for SbColor4f values.">SoMFColorRGBA</a> class is a container for <a class="el" href="classSbColor4f.html" title="The SbColor4f class contains the red, green, blue and alpha components which make up a color value.">SbColor4f</a> values.  <a href="classSoMFColorRGBA.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFDouble.html">SoMFDouble</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFDouble.html" title="The SoMFDouble class is a container for double float precision point values.">SoMFDouble</a> class is a container for double float precision point values.  <a href="classSoMFDouble.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFEngine.html">SoMFEngine</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFEngine.html" title="The SoMFEngine class is a container for engines.">SoMFEngine</a> class is a container for engines.  <a href="classSoMFEngine.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFEnum.html">SoMFEnum</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFEnum.html" title="The SoMFEnum class is a container for a set of enumerated values.">SoMFEnum</a> class is a container for a set of enumerated values.  <a href="classSoMFEnum.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFFloat.html">SoMFFloat</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFFloat.html" title="The SoMFFloat class is a container for floating point values.">SoMFFloat</a> class is a container for floating point values.  <a href="classSoMFFloat.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMField.html">SoMField</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMField.html" title="The SoMField class is the base class for fields which can contain multiple values.">SoMField</a> class is the base class for fields which can contain multiple values.  <a href="classSoMField.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFInt32.html">SoMFInt32</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFInt32.html" title="The SoMFInt32 class is a container for 32-bit integer values.">SoMFInt32</a> class is a container for 32-bit integer values.  <a href="classSoMFInt32.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFMatrix.html">SoMFMatrix</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFMatrix.html" title="The SoMFMatrix class is a container for SbMatrix values.">SoMFMatrix</a> class is a container for <a class="el" href="classSbMatrix.html" title="The SbMatrix class is a 4x4 dimensional representation of a matrix.">SbMatrix</a> values.  <a href="classSoMFMatrix.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFName.html">SoMFName</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFName.html" title="The SoMFName class is a container for SbName values.">SoMFName</a> class is a container for <a class="el" href="classSbName.html" title="The SbName class stores strings by reference.">SbName</a> values.  <a href="classSoMFName.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFNode.html">SoMFNode</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFNode.html" title="The SoMFNode class is a container for nodes.">SoMFNode</a> class is a container for nodes.  <a href="classSoMFNode.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFPath.html">SoMFPath</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFPath.html" title="The SoMFPath class is a container for paths.">SoMFPath</a> class is a container for paths.  <a href="classSoMFPath.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFPlane.html">SoMFPlane</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFPlane.html" title="The SoMFPlane class is a container for SbPlane values.">SoMFPlane</a> class is a container for <a class="el" href="classSbPlane.html" title="The SbPlane class represents a plane in 3D space.">SbPlane</a> values.  <a href="classSoMFPlane.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFRotation.html">SoMFRotation</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFRotation.html" title="The SoMFRotation class is a container for SbRotation values.">SoMFRotation</a> class is a container for <a class="el" href="classSbRotation.html" title="The SbRotation class represents a rotation in 3D space.">SbRotation</a> values.  <a href="classSoMFRotation.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFShort.html">SoMFShort</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFShort.html" title="The SoMFShort class is a container for short integer values.">SoMFShort</a> class is a container for short integer values.  <a href="classSoMFShort.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFString.html">SoMFString</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFString.html" title="The SoMFString class is a container for SbString values.">SoMFString</a> class is a container for <a class="el" href="classSbString.html" title="The SbString class is a string class with convenience functions for string operations.">SbString</a> values.  <a href="classSoMFString.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFTime.html">SoMFTime</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFTime.html" title="The SoMFTime class is a container for SbTime values.">SoMFTime</a> class is a container for <a class="el" href="classSbTime.html" title="The SbTime class instances represents time values.">SbTime</a> values.  <a href="classSoMFTime.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFUInt32.html">SoMFUInt32</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFUInt32.html" title="The SoMFUInt32 class is a container for 32-bit unsigned integer values.">SoMFUInt32</a> class is a container for 32-bit unsigned integer values.  <a href="classSoMFUInt32.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFUShort.html">SoMFUShort</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFUShort.html" title="The SoMFUShort class is a container for unsigned short integer values.">SoMFUShort</a> class is a container for unsigned short integer values.  <a href="classSoMFUShort.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFVec2b.html">SoMFVec2b</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFVec2b.html" title="The SoMFVec2b class is a container for SbVec2b vectors.">SoMFVec2b</a> class is a container for <a class="el" href="classSbVec2b.html" title="a vector class for containing two byte integers.">SbVec2b</a> vectors.  <a href="classSoMFVec2b.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFVec2d.html">SoMFVec2d</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFVec2d.html" title="The SoMFVec2d class is a container for SbVec2d vectors.">SoMFVec2d</a> class is a container for <a class="el" href="classSbVec2d.html" title="The SbVec2d class is a 2 dimensional vector with double precision floating point coordinates.">SbVec2d</a> vectors.  <a href="classSoMFVec2d.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFVec2f.html">SoMFVec2f</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFVec2f.html" title="The SoMFVec2f class is a container for SbVec2f vectors.">SoMFVec2f</a> class is a container for <a class="el" href="classSbVec2f.html" title="The SbVec2f class is a 2 dimensional vector with floating point coordinates.">SbVec2f</a> vectors.  <a href="classSoMFVec2f.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFVec2i32.html">SoMFVec2i32</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFVec2i32.html" title="The SoMFVec2i32 class is a container for SbVec2i32 vectors.">SoMFVec2i32</a> class is a container for <a class="el" href="classSbVec2i32.html" title="The SbVec2i32 class is a 2 dimensional vector with 32-bit signed integer coordinates.">SbVec2i32</a> vectors.  <a href="classSoMFVec2i32.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFVec2s.html">SoMFVec2s</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFVec2s.html" title="The SoMFVec2s class is a container for SbVec2s vectors.">SoMFVec2s</a> class is a container for <a class="el" href="classSbVec2s.html" title="The SbVec2s class is a 2 dimensional vector with short integer coordinates.">SbVec2s</a> vectors.  <a href="classSoMFVec2s.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFVec3b.html">SoMFVec3b</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFVec3b.html" title="The SoMFVec3b class is a container for SbVec3b vectors.">SoMFVec3b</a> class is a container for <a class="el" href="classSbVec3b.html">SbVec3b</a> vectors.  <a href="classSoMFVec3b.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFVec3d.html">SoMFVec3d</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFVec3d.html" title="The SoMFVec3d class is a container for SbVec3d vectors.">SoMFVec3d</a> class is a container for <a class="el" href="classSbVec3d.html" title="The SbVec3d class is a 3 dimensional vector with double precision floating point coordinates.">SbVec3d</a> vectors.  <a href="classSoMFVec3d.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFVec3f.html">SoMFVec3f</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFVec3f.html" title="The SoMFVec3f class is a container for SbVec3f vectors.">SoMFVec3f</a> class is a container for <a class="el" href="classSbVec3f.html" title="The SbVec3f class is a 3 dimensional vector with floating point coordinates.">SbVec3f</a> vectors.  <a href="classSoMFVec3f.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFVec3i32.html">SoMFVec3i32</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFVec3i32.html" title="The SoMFVec3i32 class is a container for SbVec3i32 vectors.">SoMFVec3i32</a> class is a container for <a class="el" href="classSbVec3i32.html">SbVec3i32</a> vectors.  <a href="classSoMFVec3i32.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFVec3s.html">SoMFVec3s</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFVec3s.html" title="The SoMFVec3s class is a container for SbVec3s vectors.">SoMFVec3s</a> class is a container for <a class="el" href="classSbVec3s.html" title="The SbVec3s class is a 3 dimensional vector with short integer coordinates.">SbVec3s</a> vectors.  <a href="classSoMFVec3s.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFVec4b.html">SoMFVec4b</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFVec4b.html" title="The SoMFVec4b class is a container for SbVec4b vectors.">SoMFVec4b</a> class is a container for <a class="el" href="classSbVec4b.html">SbVec4b</a> vectors.  <a href="classSoMFVec4b.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFVec4d.html">SoMFVec4d</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFVec4d.html" title="The SoMFVec4d class is a container for SbVec4d vectors.">SoMFVec4d</a> class is a container for <a class="el" href="classSbVec4d.html" title="The SbVec4d class is a 4 dimensional vector with double precision floating point coordinates.">SbVec4d</a> vectors.  <a href="classSoMFVec4d.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFVec4f.html">SoMFVec4f</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFVec4f.html" title="The SoMFVec4f class is a container for SbVec4f vectors.">SoMFVec4f</a> class is a container for <a class="el" href="classSbVec4f.html" title="The SbVec4f class is a 4 dimensional vector with floating point coordinates.">SbVec4f</a> vectors.  <a href="classSoMFVec4f.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFVec4i32.html">SoMFVec4i32</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFVec4i32.html" title="The SoMFVec4i32 class is a container for SbVec4i32 vectors.">SoMFVec4i32</a> class is a container for <a class="el" href="classSbVec4i32.html">SbVec4i32</a> vectors.  <a href="classSoMFVec4i32.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFVec4s.html">SoMFVec4s</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFVec4s.html" title="The SoMFVec4s class is a container for SbVec4s vectors.">SoMFVec4s</a> class is a container for <a class="el" href="classSbVec4s.html">SbVec4s</a> vectors.  <a href="classSoMFVec4s.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFVec4ub.html">SoMFVec4ub</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFVec4ub.html" title="The SoMFVec4ub class is a container for SbVec4ub vectors.">SoMFVec4ub</a> class is a container for <a class="el" href="classSbVec4ub.html">SbVec4ub</a> vectors.  <a href="classSoMFVec4ub.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFVec4ui32.html">SoMFVec4ui32</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFVec4ui32.html" title="The SoMFVec4ui32 class is a container for SbVec4ui32 vectors.">SoMFVec4ui32</a> class is a container for <a class="el" href="classSbVec4ui32.html">SbVec4ui32</a> vectors.  <a href="classSoMFVec4ui32.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMFVec4us.html">SoMFVec4us</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoMFVec4us.html" title="The SoMFVec4us class is a container for SbVec4us vectors.">SoMFVec4us</a> class is a container for <a class="el" href="classSbVec4us.html">SbVec4us</a> vectors.  <a href="classSoMFVec4us.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFBitMask.html">SoSFBitMask</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFBitMask.html" title="The SoSFBitMask class is a container for a set of bit flags.">SoSFBitMask</a> class is a container for a set of bit flags.  <a href="classSoSFBitMask.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFBool.html">SoSFBool</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFBool.html" title="The SoSFBool class is a container for an SbBool value.">SoSFBool</a> class is a container for an SbBool value.  <a href="classSoSFBool.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFBox2d.html">SoSFBox2d</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFBox2d.html" title="The SoSFBox2d class is a container for an SbBox2d vector.">SoSFBox2d</a> class is a container for an <a class="el" href="classSbBox2d.html" title="The SbBox2d class is a 2 dimensional box with double precision corner coordinates.">SbBox2d</a> vector.  <a href="classSoSFBox2d.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFBox2f.html">SoSFBox2f</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFBox2f.html" title="The SoSFBox2f class is a container for an SbBox2f vector.">SoSFBox2f</a> class is a container for an <a class="el" href="classSbBox2f.html" title="The SbBox2f class is a 2 dimensional box with floating point corner coordinates.">SbBox2f</a> vector.  <a href="classSoSFBox2f.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFBox2i32.html">SoSFBox2i32</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFBox2i32.html" title="The SoSFBox2i32 class is a container for an SbBox2i32 vector.">SoSFBox2i32</a> class is a container for an <a class="el" href="classSbBox2i32.html" title="The SbBox2i32 class is a 2 dimensional box with 32-bit integer coordinates.">SbBox2i32</a> vector.  <a href="classSoSFBox2i32.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFBox2s.html">SoSFBox2s</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFBox2s.html" title="The SoSFBox2s class is a container for an SbBox2s vector.">SoSFBox2s</a> class is a container for an <a class="el" href="classSbBox2s.html" title="The SbBox2s class is a 2 dimensional box with short integer coordinates.">SbBox2s</a> vector.  <a href="classSoSFBox2s.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFBox3d.html">SoSFBox3d</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFBox3d.html" title="The SoSFBox3d class is a container for an SbBox3d vector.">SoSFBox3d</a> class is a container for an <a class="el" href="classSbBox3d.html" title="The SbBox3d class is an abstraction for an axis aligned 3 dimensional box.">SbBox3d</a> vector.  <a href="classSoSFBox3d.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFBox3f.html">SoSFBox3f</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFBox3f.html" title="The SoSFBox3f class is a container for an SbBox3f vector.">SoSFBox3f</a> class is a container for an <a class="el" href="classSbBox3f.html" title="The SbBox3f class is an abstraction for an axis aligned 3 dimensional box.">SbBox3f</a> vector.  <a href="classSoSFBox3f.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFBox3i32.html">SoSFBox3i32</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFBox3i32.html" title="The SoSFBox3i32 class is a container for an SbBox3i32 vector.">SoSFBox3i32</a> class is a container for an <a class="el" href="classSbBox3i32.html" title="The SbBox3i32 class is a 3 dimensional box with 32-bit integer coordinates.">SbBox3i32</a> vector.  <a href="classSoSFBox3i32.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFBox3s.html">SoSFBox3s</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFBox3s.html" title="The SoSFBox3s class is a container for an SbBox3s vector.">SoSFBox3s</a> class is a container for an <a class="el" href="classSbBox3s.html" title="The SbBox3s class is a 3 dimensional box with short integer coordinates.">SbBox3s</a> vector.  <a href="classSoSFBox3s.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFColor.html">SoSFColor</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFColor.html" title="The SoSFColor class is a container for an SbColor value.">SoSFColor</a> class is a container for an <a class="el" href="classSbColor.html" title="The SbColor class contains the red, green and blue components which make up a color value.">SbColor</a> value.  <a href="classSoSFColor.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFColorRGBA.html">SoSFColorRGBA</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFColorRGBA.html" title="The SoSFColorRGBA class is a container for an SbColor4f value.">SoSFColorRGBA</a> class is a container for an <a class="el" href="classSbColor4f.html" title="The SbColor4f class contains the red, green, blue and alpha components which make up a color value.">SbColor4f</a> value.  <a href="classSoSFColorRGBA.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFDouble.html">SoSFDouble</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFDouble.html" title="The SoSFDouble class is a container for a double precision floating point value.">SoSFDouble</a> class is a container for a double precision floating point value.  <a href="classSoSFDouble.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFEngine.html">SoSFEngine</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFEngine.html" title="The SoSFEngine class is a container for a single engine.">SoSFEngine</a> class is a container for a single engine.  <a href="classSoSFEngine.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFEnum.html">SoSFEnum</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFEnum.html" title="The SoSFEnum class is a container for an enum value.">SoSFEnum</a> class is a container for an enum value.  <a href="classSoSFEnum.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFFloat.html">SoSFFloat</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFFloat.html" title="The SoSFFloat class is a container for a floating point value.">SoSFFloat</a> class is a container for a floating point value.  <a href="classSoSFFloat.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSField.html">SoSField</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSField.html" title="The SoSField class is the base class for fields which contains only a single value.">SoSField</a> class is the base class for fields which contains only a single value.  <a href="classSoSField.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFImage.html">SoSFImage</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFImage.html" title="The SoSFImage class is used to store pixel images.">SoSFImage</a> class is used to store pixel images.  <a href="classSoSFImage.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFImage3.html">SoSFImage3</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFImage3.html" title="The SoSFImage3 class is used to store 3D (volume) images.">SoSFImage3</a> class is used to store 3D (volume) images.  <a href="classSoSFImage3.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFInt32.html">SoSFInt32</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFInt32.html" title="The SoSFInt32 class is a container for a 32-bit integer value.">SoSFInt32</a> class is a container for a 32-bit integer value.  <a href="classSoSFInt32.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFMatrix.html">SoSFMatrix</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFMatrix.html" title="The SoSFMatrix class is a container for an SbMatrix.">SoSFMatrix</a> class is a container for an <a class="el" href="classSbMatrix.html" title="The SbMatrix class is a 4x4 dimensional representation of a matrix.">SbMatrix</a>.  <a href="classSoSFMatrix.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFName.html">SoSFName</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFName.html" title="The SoSFName class is a container for an SbName.">SoSFName</a> class is a container for an <a class="el" href="classSbName.html" title="The SbName class stores strings by reference.">SbName</a>.  <a href="classSoSFName.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFNode.html">SoSFNode</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFNode.html" title="The SoSFNode class is a container for a single node.">SoSFNode</a> class is a container for a single node.  <a href="classSoSFNode.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFPath.html">SoSFPath</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFPath.html" title="The SoSFPath class is a container for a single path.">SoSFPath</a> class is a container for a single path.  <a href="classSoSFPath.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFPlane.html">SoSFPlane</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFPlane.html" title="The SoSFPlane class is a container for an SbPlane value.">SoSFPlane</a> class is a container for an <a class="el" href="classSbPlane.html" title="The SbPlane class represents a plane in 3D space.">SbPlane</a> value.  <a href="classSoSFPlane.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFRotation.html">SoSFRotation</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFRotation.html" title="The SoSFRotation class is a container for an SbRotation.">SoSFRotation</a> class is a container for an <a class="el" href="classSbRotation.html" title="The SbRotation class represents a rotation in 3D space.">SbRotation</a>.  <a href="classSoSFRotation.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFShort.html">SoSFShort</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFShort.html" title="The SoSFShort class is a container for a short integer value.">SoSFShort</a> class is a container for a short integer value.  <a href="classSoSFShort.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFString.html">SoSFString</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFString.html" title="The SoSFString class is a container for an SbString.">SoSFString</a> class is a container for an <a class="el" href="classSbString.html" title="The SbString class is a string class with convenience functions for string operations.">SbString</a>.  <a href="classSoSFString.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFTime.html">SoSFTime</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFTime.html" title="The SoSFTime class is a container for an SbTime value.">SoSFTime</a> class is a container for an <a class="el" href="classSbTime.html" title="The SbTime class instances represents time values.">SbTime</a> value.  <a href="classSoSFTime.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFTrigger.html">SoSFTrigger</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFTrigger.html" title="The SoSFTrigger class is the &quot;void&quot; class used for detecting field changes.">SoSFTrigger</a> class is the "void" class used for detecting field changes.  <a href="classSoSFTrigger.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFUInt32.html">SoSFUInt32</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFUInt32.html" title="The SoSFUInt32 class is a container for a 32-bit unsigned integer value.">SoSFUInt32</a> class is a container for a 32-bit unsigned integer value.  <a href="classSoSFUInt32.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFUShort.html">SoSFUShort</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFUShort.html" title="The SoSFUShort class is a container for a unsigned short integer value.">SoSFUShort</a> class is a container for a unsigned short integer value.  <a href="classSoSFUShort.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFVec2b.html">SoSFVec2b</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFVec2b.html" title="The SoSFVec2b class is a container for an SbVec2b vector.">SoSFVec2b</a> class is a container for an <a class="el" href="classSbVec2b.html" title="a vector class for containing two byte integers.">SbVec2b</a> vector.  <a href="classSoSFVec2b.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFVec2d.html">SoSFVec2d</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFVec2d.html" title="The SoSFVec2d class is a container for an SbVec2d vector.">SoSFVec2d</a> class is a container for an <a class="el" href="classSbVec2d.html" title="The SbVec2d class is a 2 dimensional vector with double precision floating point coordinates.">SbVec2d</a> vector.  <a href="classSoSFVec2d.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFVec2f.html">SoSFVec2f</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFVec2f.html" title="The SoSFVec2f class is a container for an SbVec2f vector.">SoSFVec2f</a> class is a container for an <a class="el" href="classSbVec2f.html" title="The SbVec2f class is a 2 dimensional vector with floating point coordinates.">SbVec2f</a> vector.  <a href="classSoSFVec2f.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFVec2i32.html">SoSFVec2i32</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFVec2i32.html" title="The SoSFVec2i32 class is a container for an SbVec2i32 vector.">SoSFVec2i32</a> class is a container for an <a class="el" href="classSbVec2i32.html" title="The SbVec2i32 class is a 2 dimensional vector with 32-bit signed integer coordinates.">SbVec2i32</a> vector.  <a href="classSoSFVec2i32.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFVec2s.html">SoSFVec2s</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFVec2s.html" title="The SoSFVec2s class is a container for an SbVec2s vector.">SoSFVec2s</a> class is a container for an <a class="el" href="classSbVec2s.html" title="The SbVec2s class is a 2 dimensional vector with short integer coordinates.">SbVec2s</a> vector.  <a href="classSoSFVec2s.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFVec3b.html">SoSFVec3b</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFVec3b.html" title="The SoSFVec3b class is a container for an SbVec3b vector.">SoSFVec3b</a> class is a container for an <a class="el" href="classSbVec3b.html">SbVec3b</a> vector.  <a href="classSoSFVec3b.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFVec3d.html">SoSFVec3d</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFVec3d.html" title="The SoSFVec3d class is a container for an SbVec3d vector.">SoSFVec3d</a> class is a container for an <a class="el" href="classSbVec3d.html" title="The SbVec3d class is a 3 dimensional vector with double precision floating point coordinates.">SbVec3d</a> vector.  <a href="classSoSFVec3d.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFVec3f.html">SoSFVec3f</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFVec3f.html" title="The SoSFVec3f class is a container for an SbVec3f vector.">SoSFVec3f</a> class is a container for an <a class="el" href="classSbVec3f.html" title="The SbVec3f class is a 3 dimensional vector with floating point coordinates.">SbVec3f</a> vector.  <a href="classSoSFVec3f.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFVec3i32.html">SoSFVec3i32</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFVec3i32.html" title="The SoSFVec3i32 class is a container for an SbVec3i32 vector.">SoSFVec3i32</a> class is a container for an <a class="el" href="classSbVec3i32.html">SbVec3i32</a> vector.  <a href="classSoSFVec3i32.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFVec3s.html">SoSFVec3s</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFVec3s.html" title="The SoSFVec3s class is a container for an SbVec3s vector.">SoSFVec3s</a> class is a container for an <a class="el" href="classSbVec3s.html" title="The SbVec3s class is a 3 dimensional vector with short integer coordinates.">SbVec3s</a> vector.  <a href="classSoSFVec3s.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFVec4b.html">SoSFVec4b</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFVec4b.html" title="The SoSFVec4b class is a container for an SbVec4b vector.">SoSFVec4b</a> class is a container for an <a class="el" href="classSbVec4b.html">SbVec4b</a> vector.  <a href="classSoSFVec4b.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFVec4d.html">SoSFVec4d</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFVec4d.html" title="The SoSFVec4d class is a container for an SbVec4d vector.">SoSFVec4d</a> class is a container for an <a class="el" href="classSbVec4d.html" title="The SbVec4d class is a 4 dimensional vector with double precision floating point coordinates.">SbVec4d</a> vector.  <a href="classSoSFVec4d.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFVec4f.html">SoSFVec4f</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFVec4f.html" title="The SoSFVec4f class is a container for an SbVec4f vector.">SoSFVec4f</a> class is a container for an <a class="el" href="classSbVec4f.html" title="The SbVec4f class is a 4 dimensional vector with floating point coordinates.">SbVec4f</a> vector.  <a href="classSoSFVec4f.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFVec4i32.html">SoSFVec4i32</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFVec4i32.html" title="The SoSFVec4i32 class is a container for an SbVec4i32 vector.">SoSFVec4i32</a> class is a container for an <a class="el" href="classSbVec4i32.html">SbVec4i32</a> vector.  <a href="classSoSFVec4i32.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFVec4s.html">SoSFVec4s</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFVec4s.html" title="The SoSFVec4s class is a container for an SbVec4s vector.">SoSFVec4s</a> class is a container for an <a class="el" href="classSbVec4s.html">SbVec4s</a> vector.  <a href="classSoSFVec4s.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFVec4ub.html">SoSFVec4ub</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFVec4ub.html" title="The SoSFVec4ub class is a container for an SbVec4ub vector.">SoSFVec4ub</a> class is a container for an <a class="el" href="classSbVec4ub.html">SbVec4ub</a> vector.  <a href="classSoSFVec4ub.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFVec4ui32.html">SoSFVec4ui32</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFVec4ui32.html" title="The SoSFVec4ui32 class is a container for an SbVec4ui32 vector.">SoSFVec4ui32</a> class is a container for an <a class="el" href="classSbVec4ui32.html">SbVec4ui32</a> vector.  <a href="classSoSFVec4ui32.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoSFVec4us.html">SoSFVec4us</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classSoSFVec4us.html" title="The SoSFVec4us class is a container for an SbVec4us vector.">SoSFVec4us</a> class is a container for an <a class="el" href="classSbVec4us.html">SbVec4us</a> vector.  <a href="classSoSFVec4us.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<p>The fields are the data containers in the scene graph. Nodes and engines all use fields to store their public data. </p>
+<p>Fields can be inter-connected, causing changes at one location in a scene graph to cause other parts of the scene graph to automatically also get updated. Direct field-to-field connections will cause values to get duplicated, while field connections together with engines can create complex networks for such updating that include mathematical computations and logical operations. Field connections are uni-directional, but setting up a connection in both directions will cause a bi-directional connection.</p>
+<p>Fields are first divided into two groups; "single fields" and "multi
+fields". Single-fields contain just one value, while multi-fields can contain many values or even none at all.</p>
+<p>Besides fields that are part of nodes, you also have "global fields". The "realtime" field is one such field.</p>
+<p>The fields in VRML97 nodes have additional semantics. Some are "event_in" and some are "event_out", listening for events or triggering events. "event_in" events should not be read from, and "event_out" fields should not be written to. </p>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

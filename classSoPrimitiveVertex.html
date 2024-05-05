@@ -1,0 +1,883 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SoPrimitiveVertex Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSoPrimitiveVertex.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="classSoPrimitiveVertex-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SoPrimitiveVertex Class Reference<div class="ingroups"><a class="el" href="group__coin__general.html">Miscellaneous Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSoPrimitiveVertex.html" title="The SoPrimitiveVertex class represents a single vertex of a generated primitive.">SoPrimitiveVertex</a> class represents a single vertex of a generated primitive.  
+ <a href="classSoPrimitiveVertex.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SoPrimitiveVertex_8h_source.html">Inventor/SoPrimitiveVertex.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a334877f887ff97983e0e51da3de7cc5f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPrimitiveVertex.html#a334877f887ff97983e0e51da3de7cc5f">SoPrimitiveVertex</a> (const <a class="el" href="classSoPrimitiveVertex.html">SoPrimitiveVertex</a> &amp;pv)</td></tr>
+<tr class="separator:a334877f887ff97983e0e51da3de7cc5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e79937870f2277e08353c938348bf4e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPrimitiveVertex.html#a7e79937870f2277e08353c938348bf4e">SoPrimitiveVertex</a> (void)</td></tr>
+<tr class="separator:a7e79937870f2277e08353c938348bf4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40c5330df46357e89b910bac75667192"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPrimitiveVertex.html#a40c5330df46357e89b910bac75667192">~SoPrimitiveVertex</a> (void)</td></tr>
+<tr class="separator:a40c5330df46357e89b910bac75667192"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a75a84309985ec68e5b3865d98cdd28"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSoDetail.html">SoDetail</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPrimitiveVertex.html#a2a75a84309985ec68e5b3865d98cdd28">getDetail</a> (void) const</td></tr>
+<tr class="separator:a2a75a84309985ec68e5b3865d98cdd28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ecca82f32cdda68d216f9fe5fef3b98"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPrimitiveVertex.html#a3ecca82f32cdda68d216f9fe5fef3b98">getMaterialIndex</a> (void) const</td></tr>
+<tr class="separator:a3ecca82f32cdda68d216f9fe5fef3b98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40d460c91b80537f1ec5a8b2d46d5a91"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPrimitiveVertex.html#a40d460c91b80537f1ec5a8b2d46d5a91">getNormal</a> (void) const</td></tr>
+<tr class="separator:a40d460c91b80537f1ec5a8b2d46d5a91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae960653801021ac56db7e4dd6af32aef"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPrimitiveVertex.html#ae960653801021ac56db7e4dd6af32aef">getPackedColor</a> (void) const</td></tr>
+<tr class="separator:ae960653801021ac56db7e4dd6af32aef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cf6c0630f3355391048f18cad572166"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPrimitiveVertex.html#a5cf6c0630f3355391048f18cad572166">getPoint</a> (void) const</td></tr>
+<tr class="separator:a5cf6c0630f3355391048f18cad572166"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae69bbd59f4dc544d2fa5b7808b61a788"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPrimitiveVertex.html#ae69bbd59f4dc544d2fa5b7808b61a788">getTextureCoords</a> (void) const</td></tr>
+<tr class="separator:ae69bbd59f4dc544d2fa5b7808b61a788"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97844d1534385b06edc42e1506eb28bc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoPrimitiveVertex.html">SoPrimitiveVertex</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPrimitiveVertex.html#a97844d1534385b06edc42e1506eb28bc">operator=</a> (const <a class="el" href="classSoPrimitiveVertex.html">SoPrimitiveVertex</a> &amp;pv)</td></tr>
+<tr class="separator:a97844d1534385b06edc42e1506eb28bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b13da6106766fef7579b3d40ed94a35"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPrimitiveVertex.html#a8b13da6106766fef7579b3d40ed94a35">setDetail</a> (<a class="el" href="classSoDetail.html">SoDetail</a> *d)</td></tr>
+<tr class="separator:a8b13da6106766fef7579b3d40ed94a35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91267d261b5a425032701058ce8df733"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPrimitiveVertex.html#a91267d261b5a425032701058ce8df733">setMaterialIndex</a> (int index)</td></tr>
+<tr class="separator:a91267d261b5a425032701058ce8df733"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95518bf3e7bc4141a3d6a38841a869df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPrimitiveVertex.html#a95518bf3e7bc4141a3d6a38841a869df">setNormal</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;n)</td></tr>
+<tr class="separator:a95518bf3e7bc4141a3d6a38841a869df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53296f548ea1342053078d38643e6535"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPrimitiveVertex.html#a53296f548ea1342053078d38643e6535">setNormal</a> (float nx, float ny, float nz)</td></tr>
+<tr class="separator:a53296f548ea1342053078d38643e6535"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6520a723b75e5b1b40728ee06b6cfaf2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPrimitiveVertex.html#a6520a723b75e5b1b40728ee06b6cfaf2">setPackedColor</a> (uint32_t rgba)</td></tr>
+<tr class="separator:a6520a723b75e5b1b40728ee06b6cfaf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a579d0dc78e73ac036a03e657203454f7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPrimitiveVertex.html#a579d0dc78e73ac036a03e657203454f7">setPoint</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;pt)</td></tr>
+<tr class="separator:a579d0dc78e73ac036a03e657203454f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac84c87633c0c51c48fe7e3da1f95b0f4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPrimitiveVertex.html#ac84c87633c0c51c48fe7e3da1f95b0f4">setPoint</a> (float x, float y, float z)</td></tr>
+<tr class="separator:ac84c87633c0c51c48fe7e3da1f95b0f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2e53ba32a5d66ceca0c0395e5185b5d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPrimitiveVertex.html#ac2e53ba32a5d66ceca0c0395e5185b5d">setTextureCoords</a> (const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;tex)</td></tr>
+<tr class="separator:ac2e53ba32a5d66ceca0c0395e5185b5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61285c4c3a1ea641dafd21801a1e5ac4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPrimitiveVertex.html#a61285c4c3a1ea641dafd21801a1e5ac4">setTextureCoords</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;tex)</td></tr>
+<tr class="separator:a61285c4c3a1ea641dafd21801a1e5ac4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8aeec73929df581a885f1e93f9ccdb1b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPrimitiveVertex.html#a8aeec73929df581a885f1e93f9ccdb1b">setTextureCoords</a> (const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;tex)</td></tr>
+<tr class="separator:a8aeec73929df581a885f1e93f9ccdb1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac04a23e09567206b6fbc317b736dd5b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPrimitiveVertex.html#ac04a23e09567206b6fbc317b736dd5b0">setTextureCoords</a> (float tx, float ty)</td></tr>
+<tr class="separator:ac04a23e09567206b6fbc317b736dd5b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a651a05ef3d7da4b77e1a3f634df69ed5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPrimitiveVertex.html#a651a05ef3d7da4b77e1a3f634df69ed5">setTextureCoords</a> (float tx, float ty, float tz)</td></tr>
+<tr class="separator:a651a05ef3d7da4b77e1a3f634df69ed5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53b5ca1fa9e692a106dc7f9c928a615e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPrimitiveVertex.html#a53b5ca1fa9e692a106dc7f9c928a615e">setTextureCoords</a> (float tx, float ty, float tz, float tw)</td></tr>
+<tr class="separator:a53b5ca1fa9e692a106dc7f9c928a615e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSoPrimitiveVertex.html" title="The SoPrimitiveVertex class represents a single vertex of a generated primitive.">SoPrimitiveVertex</a> class represents a single vertex of a generated primitive. </p>
+<p>Instances of <a class="el" href="classSoPrimitiveVertex.html" title="The SoPrimitiveVertex class represents a single vertex of a generated primitive.">SoPrimitiveVertex</a> are constructed when generating primitive data, primarily during an <a class="el" href="classSoCallbackAction.html" title="The SoCallbackAction class invokes callbacks at specific nodes.">SoCallbackAction</a> traversal. Depending on the context the vertex could represent a single 3D point, one of the two vertices in a line or one of the three vertices in a triangle. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a7e79937870f2277e08353c938348bf4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e79937870f2277e08353c938348bf4e">&#9670;&nbsp;</a></span>SoPrimitiveVertex() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoPrimitiveVertex::SoPrimitiveVertex </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Default constructor, sets up a "void" instance. </p>
+
+</div>
+</div>
+<a id="a334877f887ff97983e0e51da3de7cc5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a334877f887ff97983e0e51da3de7cc5f">&#9670;&nbsp;</a></span>SoPrimitiveVertex() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoPrimitiveVertex::SoPrimitiveVertex </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSoPrimitiveVertex.html">SoPrimitiveVertex</a> &amp;&#160;</td>
+          <td class="paramname"><em>pv</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Copy constructor. Does a shallow copy.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoPrimitiveVertex.html#a97844d1534385b06edc42e1506eb28bc">SoPrimitiveVertex::operator=()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a40c5330df46357e89b910bac75667192"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40c5330df46357e89b910bac75667192">&#9670;&nbsp;</a></span>~SoPrimitiveVertex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoPrimitiveVertex::~SoPrimitiveVertex </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Destructor. The detail instance is owned by client code and will not be destructed here. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a2a75a84309985ec68e5b3865d98cdd28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a75a84309985ec68e5b3865d98cdd28">&#9670;&nbsp;</a></span>getDetail()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSoDetail.html">SoDetail</a> * SoPrimitiveVertex::getDetail </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns pointer to detail instance with more information about the vertex. A detail instance may not be available, and if so <code>NULL</code> is returned. </p>
+
+</div>
+</div>
+<a id="a3ecca82f32cdda68d216f9fe5fef3b98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ecca82f32cdda68d216f9fe5fef3b98">&#9670;&nbsp;</a></span>getMaterialIndex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SoPrimitiveVertex::getMaterialIndex </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns index of the vertex into the currently active material, if any. </p>
+
+</div>
+</div>
+<a id="a40d460c91b80537f1ec5a8b2d46d5a91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40d460c91b80537f1ec5a8b2d46d5a91">&#9670;&nbsp;</a></span>getNormal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp; SoPrimitiveVertex::getNormal </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns normal vector, oriented in object space. </p>
+
+</div>
+</div>
+<a id="ae960653801021ac56db7e4dd6af32aef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae960653801021ac56db7e4dd6af32aef">&#9670;&nbsp;</a></span>getPackedColor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t SoPrimitiveVertex::getPackedColor </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the RGBA packed color for the given vertex.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 3.0 </dd></dl>
+
+</div>
+</div>
+<a id="a5cf6c0630f3355391048f18cad572166"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5cf6c0630f3355391048f18cad572166">&#9670;&nbsp;</a></span>getPoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp; SoPrimitiveVertex::getPoint </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns vertex coordinates, positioned in object space. </p>
+
+</div>
+</div>
+<a id="ae69bbd59f4dc544d2fa5b7808b61a788"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae69bbd59f4dc544d2fa5b7808b61a788">&#9670;&nbsp;</a></span>getTextureCoords()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp; SoPrimitiveVertex::getTextureCoords </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns texture coordinates for vertex, specified in object space. </p>
+
+</div>
+</div>
+<a id="a97844d1534385b06edc42e1506eb28bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97844d1534385b06edc42e1506eb28bc">&#9670;&nbsp;</a></span>operator=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoPrimitiveVertex.html">SoPrimitiveVertex</a> &amp; SoPrimitiveVertex::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSoPrimitiveVertex.html">SoPrimitiveVertex</a> &amp;&#160;</td>
+          <td class="paramname"><em>pv</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Copy operator.</p>
+<p>When <em>pv</em> is copied into this instance, a <em>shallow</em> copy is made. I.e., only the reference to the detail instance is copied (if any), not the detail itself. </p>
+
+</div>
+</div>
+<a id="a8b13da6106766fef7579b3d40ed94a35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b13da6106766fef7579b3d40ed94a35">&#9670;&nbsp;</a></span>setDetail()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoPrimitiveVertex::setDetail </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoDetail.html">SoDetail</a> *&#160;</td>
+          <td class="paramname"><em>detail</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Used internally from library client code setting up an <a class="el" href="classSoPrimitiveVertex.html" title="The SoPrimitiveVertex class represents a single vertex of a generated primitive.">SoPrimitiveVertex</a> instance.</p>
+<p>Note that it is the client's responsibility to do the deallocation of the detail instance after the <a class="el" href="classSoPrimitiveVertex.html" title="The SoPrimitiveVertex class represents a single vertex of a generated primitive.">SoPrimitiveVertex</a> instance has gone out of scope. </p>
+
+</div>
+</div>
+<a id="a91267d261b5a425032701058ce8df733"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91267d261b5a425032701058ce8df733">&#9670;&nbsp;</a></span>setMaterialIndex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoPrimitiveVertex::setMaterialIndex </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Used internally from library client code setting up an <a class="el" href="classSoPrimitiveVertex.html" title="The SoPrimitiveVertex class represents a single vertex of a generated primitive.">SoPrimitiveVertex</a> instance. </p>
+
+</div>
+</div>
+<a id="a95518bf3e7bc4141a3d6a38841a869df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95518bf3e7bc4141a3d6a38841a869df">&#9670;&nbsp;</a></span>setNormal() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoPrimitiveVertex::setNormal </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Used internally from library client code setting up an <a class="el" href="classSoPrimitiveVertex.html" title="The SoPrimitiveVertex class represents a single vertex of a generated primitive.">SoPrimitiveVertex</a> instance. </p>
+
+</div>
+</div>
+<a id="a53296f548ea1342053078d38643e6535"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53296f548ea1342053078d38643e6535">&#9670;&nbsp;</a></span>setNormal() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoPrimitiveVertex::setNormal </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>nx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ny</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>nz</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Used internally from library client code setting up an <a class="el" href="classSoPrimitiveVertex.html" title="The SoPrimitiveVertex class represents a single vertex of a generated primitive.">SoPrimitiveVertex</a> instance. </p>
+
+</div>
+</div>
+<a id="a6520a723b75e5b1b40728ee06b6cfaf2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6520a723b75e5b1b40728ee06b6cfaf2">&#9670;&nbsp;</a></span>setPackedColor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoPrimitiveVertex::setPackedColor </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>rgba</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Used internally from library client code setting up an <a class="el" href="classSoPrimitiveVertex.html" title="The SoPrimitiveVertex class represents a single vertex of a generated primitive.">SoPrimitiveVertex</a> instance. </p>
+
+</div>
+</div>
+<a id="a579d0dc78e73ac036a03e657203454f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a579d0dc78e73ac036a03e657203454f7">&#9670;&nbsp;</a></span>setPoint() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoPrimitiveVertex::setPoint </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>pt</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Used internally from library client code setting up an <a class="el" href="classSoPrimitiveVertex.html" title="The SoPrimitiveVertex class represents a single vertex of a generated primitive.">SoPrimitiveVertex</a> instance. </p>
+
+</div>
+</div>
+<a id="ac84c87633c0c51c48fe7e3da1f95b0f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac84c87633c0c51c48fe7e3da1f95b0f4">&#9670;&nbsp;</a></span>setPoint() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoPrimitiveVertex::setPoint </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>z</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Used internally from library client code setting up an <a class="el" href="classSoPrimitiveVertex.html" title="The SoPrimitiveVertex class represents a single vertex of a generated primitive.">SoPrimitiveVertex</a> instance. </p>
+
+</div>
+</div>
+<a id="ac2e53ba32a5d66ceca0c0395e5185b5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2e53ba32a5d66ceca0c0395e5185b5d">&#9670;&nbsp;</a></span>setTextureCoords() <span class="overload">[1/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoPrimitiveVertex::setTextureCoords </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>texcoords</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Used internally from library client code setting up an <a class="el" href="classSoPrimitiveVertex.html" title="The SoPrimitiveVertex class represents a single vertex of a generated primitive.">SoPrimitiveVertex</a> instance.</p>
+<p>Convenience function. Will fill in 0 and 1 in the last two texture coordinates in the internal <a class="el" href="classSbVec4f.html" title="The SbVec4f class is a 4 dimensional vector with floating point coordinates.">SbVec4f</a> texture coordinate instance. </p>
+
+</div>
+</div>
+<a id="a61285c4c3a1ea641dafd21801a1e5ac4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61285c4c3a1ea641dafd21801a1e5ac4">&#9670;&nbsp;</a></span>setTextureCoords() <span class="overload">[2/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoPrimitiveVertex::setTextureCoords </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>texcoords</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Convenience function. Will fill in 1 in the last coordinate.</p>
+<p>This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ </p><dl class="section since"><dt>Since</dt><dd>Coin 2.0 </dd></dl>
+
+</div>
+</div>
+<a id="a8aeec73929df581a885f1e93f9ccdb1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8aeec73929df581a885f1e93f9ccdb1b">&#9670;&nbsp;</a></span>setTextureCoords() <span class="overload">[3/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoPrimitiveVertex::setTextureCoords </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec4f.html">SbVec4f</a> &amp;&#160;</td>
+          <td class="paramname"><em>texcoords</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Used internally from library client code setting up an <a class="el" href="classSoPrimitiveVertex.html" title="The SoPrimitiveVertex class represents a single vertex of a generated primitive.">SoPrimitiveVertex</a> instance. </p>
+
+</div>
+</div>
+<a id="ac04a23e09567206b6fbc317b736dd5b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac04a23e09567206b6fbc317b736dd5b0">&#9670;&nbsp;</a></span>setTextureCoords() <span class="overload">[4/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoPrimitiveVertex::setTextureCoords </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>tx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ty</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Used internally from library client code setting up an <a class="el" href="classSoPrimitiveVertex.html" title="The SoPrimitiveVertex class represents a single vertex of a generated primitive.">SoPrimitiveVertex</a> instance.</p>
+<p>Convenience function. Will fill in 0 and 1 in the last two texture coordinates in the internal <a class="el" href="classSbVec4f.html" title="The SbVec4f class is a 4 dimensional vector with floating point coordinates.">SbVec4f</a> texture coordinate instance. </p>
+
+</div>
+</div>
+<a id="a651a05ef3d7da4b77e1a3f634df69ed5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a651a05ef3d7da4b77e1a3f634df69ed5">&#9670;&nbsp;</a></span>setTextureCoords() <span class="overload">[5/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoPrimitiveVertex::setTextureCoords </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>tx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ty</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>tz</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Convenience function. Will fill in 1 in the last coordinate.</p>
+<p>This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+</p><dl class="section since"><dt>Since</dt><dd>Coin 2.5 </dd></dl>
+
+</div>
+</div>
+<a id="a53b5ca1fa9e692a106dc7f9c928a615e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53b5ca1fa9e692a106dc7f9c928a615e">&#9670;&nbsp;</a></span>setTextureCoords() <span class="overload">[6/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoPrimitiveVertex::setTextureCoords </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>tx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ty</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>tz</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>tw</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Used internally from library client code setting up an <a class="el" href="classSoPrimitiveVertex.html" title="The SoPrimitiveVertex class represents a single vertex of a generated primitive.">SoPrimitiveVertex</a> instance.</p>
+<p>This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+</p><dl class="section since"><dt>Since</dt><dd>Coin 2.5 </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SoPrimitiveVertex_8h_source.html">SoPrimitiveVertex.h</a></li>
+<li>SoPrimitiveVertex.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSoPrimitiveVertex.html">SoPrimitiveVertex</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

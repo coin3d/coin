@@ -1,0 +1,1111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SoGetBoundingBoxAction Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSoGetBoundingBoxAction.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
+<a href="classSoGetBoundingBoxAction-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SoGetBoundingBoxAction Class Reference<div class="ingroups"><a class="el" href="group__coin__actions.html">Action Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSoGetBoundingBoxAction.html" title="The SoGetBoundingBoxAction class calculates bounding boxes for nodes and subgraphs.">SoGetBoundingBoxAction</a> class calculates bounding boxes for nodes and subgraphs.  
+ <a href="classSoGetBoundingBoxAction.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SoGetBoundingBoxAction_8h_source.html">Inventor/actions/SoGetBoundingBoxAction.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for SoGetBoundingBoxAction:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classSoGetBoundingBoxAction.png" usemap="#SoGetBoundingBoxAction_map" alt=""/>
+  <map id="SoGetBoundingBoxAction_map" name="SoGetBoundingBoxAction_map">
+<area href="classSoAction.html" title="The SoAction class is the base class for all traversal actions." alt="SoAction" shape="rect" coords="0,0,156,24"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:ac64919a694de0f25a48d1072c5c92f33"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#ac64919a694de0f25a48d1072c5c92f33">ResetType</a> { <b>TRANSFORM</b> = 0x1
+, <b>BBOX</b> = 0x2
+, <b>ALL</b> = TRANSFORM | BBOX
+ }</td></tr>
+<tr class="separator:ac64919a694de0f25a48d1072c5c92f33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_types_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSoAction')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a1c1dcf644f0e8bc1acd92f9cd8c917d3 inherit pub_types_classSoAction"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a1c1dcf644f0e8bc1acd92f9cd8c917d3">AppliedCode</a> { <b>NODE</b> = 0
+, <b>PATH</b> = 1
+, <b>PATH_LIST</b> = 2
+ }</td></tr>
+<tr class="separator:a1c1dcf644f0e8bc1acd92f9cd8c917d3 inherit pub_types_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0942e2ce7d88ebc8e7cd10cf26310c67 inherit pub_types_classSoAction"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a0942e2ce7d88ebc8e7cd10cf26310c67">PathCode</a> { <b>NO_PATH</b> = 0
+, <b>IN_PATH</b> = 1
+, <b>BELOW_PATH</b> = 2
+, <b>OFF_PATH</b> = 3
+ }</td></tr>
+<tr class="separator:a0942e2ce7d88ebc8e7cd10cf26310c67 inherit pub_types_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ab575afde0c66bdfa47b4e9ccf5183f1b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#ab575afde0c66bdfa47b4e9ccf5183f1b">SoGetBoundingBoxAction</a> (const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;vp)</td></tr>
+<tr class="separator:ab575afde0c66bdfa47b4e9ccf5183f1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1160d8e012127f73334d6394cc65a962"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#a1160d8e012127f73334d6394cc65a962">~SoGetBoundingBoxAction</a> (void)</td></tr>
+<tr class="separator:a1160d8e012127f73334d6394cc65a962"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0229310254d52ed12d27e0f1812e900d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#a0229310254d52ed12d27e0f1812e900d">checkResetAfter</a> (void)</td></tr>
+<tr class="separator:a0229310254d52ed12d27e0f1812e900d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03b81040285674e1f3f33615b927026a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#a03b81040285674e1f3f33615b927026a">checkResetBefore</a> (void)</td></tr>
+<tr class="separator:a03b81040285674e1f3f33615b927026a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a4d10e40fc73fa438007d76df6cbbfc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#a5a4d10e40fc73fa438007d76df6cbbfc">extendBy</a> (const <a class="el" href="classSbBox3f.html">SbBox3f</a> &amp;box)</td></tr>
+<tr class="separator:a5a4d10e40fc73fa438007d76df6cbbfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c2429efc99bf73ad48b20788da397fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#a8c2429efc99bf73ad48b20788da397fe">extendBy</a> (const <a class="el" href="classSbXfBox3f.html">SbXfBox3f</a> &amp;box)</td></tr>
+<tr class="separator:a8c2429efc99bf73ad48b20788da397fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bad00fe00537cbe4ff9d3f3e6ae4177"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbBox3f.html">SbBox3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#a3bad00fe00537cbe4ff9d3f3e6ae4177">getBoundingBox</a> (void) const</td></tr>
+<tr class="separator:a3bad00fe00537cbe4ff9d3f3e6ae4177"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaed2251ec6983849bdad7e313263d114"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#aaed2251ec6983849bdad7e313263d114">getCenter</a> (void) const</td></tr>
+<tr class="separator:aaed2251ec6983849bdad7e313263d114"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf78ee305738b4cfdffb6e96195f2453"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSoPath.html">SoPath</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#abf78ee305738b4cfdffb6e96195f2453">getResetPath</a> (void) const</td></tr>
+<tr class="separator:abf78ee305738b4cfdffb6e96195f2453"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a2152d2a2996d43fc03d7059a6c17ba"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#a3a2152d2a2996d43fc03d7059a6c17ba">getTypeId</a> (void) const</td></tr>
+<tr class="separator:a3a2152d2a2996d43fc03d7059a6c17ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a620efa506f003a359714632cf14e1ab5"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#a620efa506f003a359714632cf14e1ab5">getViewportRegion</a> (void) const</td></tr>
+<tr class="separator:a620efa506f003a359714632cf14e1ab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11e375ad77f904e4f26c487bd6a5e215"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoGetBoundingBoxAction.html#ac64919a694de0f25a48d1072c5c92f33">SoGetBoundingBoxAction::ResetType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#a11e375ad77f904e4f26c487bd6a5e215">getWhatReset</a> (void) const</td></tr>
+<tr class="separator:a11e375ad77f904e4f26c487bd6a5e215"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab452c2ec28417fc7b589f9382358d8b8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbXfBox3f.html">SbXfBox3f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#ab452c2ec28417fc7b589f9382358d8b8">getXfBoundingBox</a> (void)</td></tr>
+<tr class="separator:ab452c2ec28417fc7b589f9382358d8b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedb769ccaadbda3316e20be7df2ca89e"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#aedb769ccaadbda3316e20be7df2ca89e">isCenterSet</a> (void) const</td></tr>
+<tr class="separator:aedb769ccaadbda3316e20be7df2ca89e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad13a8dc1cfbb073b8ded7702fe107104"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#ad13a8dc1cfbb073b8ded7702fe107104">isInCameraSpace</a> (void) const</td></tr>
+<tr class="separator:ad13a8dc1cfbb073b8ded7702fe107104"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34a71b47db88c25b3dd89dce5130c7e7"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#a34a71b47db88c25b3dd89dce5130c7e7">isResetBefore</a> (void) const</td></tr>
+<tr class="separator:a34a71b47db88c25b3dd89dce5130c7e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9c0ad3f180de6ff3de1b9caa01888b8"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#ac9c0ad3f180de6ff3de1b9caa01888b8">isResetPath</a> (void) const</td></tr>
+<tr class="separator:ac9c0ad3f180de6ff3de1b9caa01888b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad132b7df48f254c4500fd8b2de4ac3cb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#ad132b7df48f254c4500fd8b2de4ac3cb">resetCenter</a> (void)</td></tr>
+<tr class="separator:ad132b7df48f254c4500fd8b2de4ac3cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adeac8e44eb54353bca044cd540d35b77"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#adeac8e44eb54353bca044cd540d35b77">setCenter</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;center, const SbBool transformcenter)</td></tr>
+<tr class="separator:adeac8e44eb54353bca044cd540d35b77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a332ce4920d34d06a4b27ea67cc1ce99f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#a332ce4920d34d06a4b27ea67cc1ce99f">setInCameraSpace</a> (const SbBool flag)</td></tr>
+<tr class="separator:a332ce4920d34d06a4b27ea67cc1ce99f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd3c7d93d5394b2d977fb4b2069e3b8d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#afd3c7d93d5394b2d977fb4b2069e3b8d">setResetPath</a> (const <a class="el" href="classSoPath.html">SoPath</a> *path, const SbBool resetbefore=TRUE, const <a class="el" href="classSoGetBoundingBoxAction.html#ac64919a694de0f25a48d1072c5c92f33">ResetType</a> what=ALL)</td></tr>
+<tr class="separator:afd3c7d93d5394b2d977fb4b2069e3b8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8729d4cebd51dff3e91a592f1c1f97a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#a8729d4cebd51dff3e91a592f1c1f97a6">setViewportRegion</a> (const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;newregion)</td></tr>
+<tr class="separator:a8729d4cebd51dff3e91a592f1c1f97a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSoAction')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:ad2839c2461c998920de832d8bdaa34c1 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#ad2839c2461c998920de832d8bdaa34c1">~SoAction</a> (void)</td></tr>
+<tr class="separator:ad2839c2461c998920de832d8bdaa34c1 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a311e03e553957474b6920afe03fb94fc inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a311e03e553957474b6920afe03fb94fc">apply</a> (const <a class="el" href="classSoPathList.html">SoPathList</a> &amp;pathlist, SbBool obeysrules=FALSE)</td></tr>
+<tr class="separator:a311e03e553957474b6920afe03fb94fc inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a984b580685859d42c4505980249fd409 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a984b580685859d42c4505980249fd409">apply</a> (<a class="el" href="classSoAction.html">SoAction</a> *beingApplied)</td></tr>
+<tr class="separator:a984b580685859d42c4505980249fd409 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2d6ddb297b3a1f5b80026db5fd5e616 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#ad2d6ddb297b3a1f5b80026db5fd5e616">apply</a> (<a class="el" href="classSoNode.html">SoNode</a> *root)</td></tr>
+<tr class="separator:ad2d6ddb297b3a1f5b80026db5fd5e616 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f922db782cb971042da8adc64f61d47 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a8f922db782cb971042da8adc64f61d47">apply</a> (<a class="el" href="classSoPath.html">SoPath</a> *path)</td></tr>
+<tr class="separator:a8f922db782cb971042da8adc64f61d47 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5920f3da63a6ba8577dc56621815341 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSoPath.html">SoPath</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#af5920f3da63a6ba8577dc56621815341">getCurPath</a> (void)</td></tr>
+<tr class="separator:af5920f3da63a6ba8577dc56621815341 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2b14e6d8f2d1a290c7d8bc90bc9f410 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoAction.html#a0942e2ce7d88ebc8e7cd10cf26310c67">PathCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#ac2b14e6d8f2d1a290c7d8bc90bc9f410">getCurPathCode</a> (void) const</td></tr>
+<tr class="separator:ac2b14e6d8f2d1a290c7d8bc90bc9f410 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e9810cb526353255fedf04792151c2d inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a4e9810cb526353255fedf04792151c2d">getCurPathTail</a> (void)</td></tr>
+<tr class="separator:a4e9810cb526353255fedf04792151c2d inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79ea01b9e731224d00fc792ea19a9802 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a79ea01b9e731224d00fc792ea19a9802">getNodeAppliedTo</a> (void) const</td></tr>
+<tr class="separator:a79ea01b9e731224d00fc792ea19a9802 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5062d853f79a06b4031622e9b59b8d18 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSoPathList.html">SoPathList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a5062d853f79a06b4031622e9b59b8d18">getOriginalPathListAppliedTo</a> (void) const</td></tr>
+<tr class="separator:a5062d853f79a06b4031622e9b59b8d18 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedea6d5b8b79997c9085937f5dcf517d inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoPath.html">SoPath</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#aedea6d5b8b79997c9085937f5dcf517d">getPathAppliedTo</a> (void) const</td></tr>
+<tr class="separator:aedea6d5b8b79997c9085937f5dcf517d inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42b2f4960252071194099b4a965eefa2 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoAction.html#a0942e2ce7d88ebc8e7cd10cf26310c67">PathCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a42b2f4960252071194099b4a965eefa2">getPathCode</a> (int &amp;numindices, const int *&amp;indices)</td></tr>
+<tr class="separator:a42b2f4960252071194099b4a965eefa2 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a791ea2da77f97bb290520f9d92fe4f3b inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSoPathList.html">SoPathList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a791ea2da77f97bb290520f9d92fe4f3b">getPathListAppliedTo</a> (void) const</td></tr>
+<tr class="separator:a791ea2da77f97bb290520f9d92fe4f3b inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a477a09961787e99a9621bb07e79c922c inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoState.html">SoState</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a477a09961787e99a9621bb07e79c922c">getState</a> (void) const</td></tr>
+<tr class="separator:a477a09961787e99a9621bb07e79c922c inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cf5dc15e2ea395a8bf9e05827e7c9f3 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoAction.html#a1c1dcf644f0e8bc1acd92f9cd8c917d3">AppliedCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a7cf5dc15e2ea395a8bf9e05827e7c9f3">getWhatAppliedTo</a> (void) const</td></tr>
+<tr class="separator:a7cf5dc15e2ea395a8bf9e05827e7c9f3 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af20b8fd5a41faad4f5f21bb7769a5f33 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#af20b8fd5a41faad4f5f21bb7769a5f33">hasTerminated</a> (void) const</td></tr>
+<tr class="separator:af20b8fd5a41faad4f5f21bb7769a5f33 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fbc8efc139853a56e707baecf02b357 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a3fbc8efc139853a56e707baecf02b357">invalidateState</a> (void)</td></tr>
+<tr class="separator:a3fbc8efc139853a56e707baecf02b357 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad953f48ef9f01d8b2c4596157a6e5cdc inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#ad953f48ef9f01d8b2c4596157a6e5cdc">isLastPathListAppliedTo</a> (void) const</td></tr>
+<tr class="separator:ad953f48ef9f01d8b2c4596157a6e5cdc inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5478020eea5f2b7d4e183e16d29d6611 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a5478020eea5f2b7d4e183e16d29d6611">isOfType</a> (<a class="el" href="classSoType.html">SoType</a> type) const</td></tr>
+<tr class="separator:a5478020eea5f2b7d4e183e16d29d6611 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88ceb9648c0f51d7ba87475ca8555f28 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a88ceb9648c0f51d7ba87475ca8555f28">popCurPath</a> (const <a class="el" href="classSoAction.html#a0942e2ce7d88ebc8e7cd10cf26310c67">PathCode</a> prevpathcode)</td></tr>
+<tr class="separator:a88ceb9648c0f51d7ba87475ca8555f28 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a989bcb87598bf55b31bf0704189abb11 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a989bcb87598bf55b31bf0704189abb11">popCurPath</a> (void)</td></tr>
+<tr class="separator:a989bcb87598bf55b31bf0704189abb11 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf8242136a44ff3af40ea102b372e4e1 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#adf8242136a44ff3af40ea102b372e4e1">popPushCurPath</a> (const int childindex, <a class="el" href="classSoNode.html">SoNode</a> *node=NULL)</td></tr>
+<tr class="separator:adf8242136a44ff3af40ea102b372e4e1 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a148ece4bf4cda79914ee3a2116c05d09 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a148ece4bf4cda79914ee3a2116c05d09">pushCurPath</a> (const int childindex, <a class="el" href="classSoNode.html">SoNode</a> *node=NULL)</td></tr>
+<tr class="separator:a148ece4bf4cda79914ee3a2116c05d09 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abebcc05d2d935803a3c95310c9447614 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#abebcc05d2d935803a3c95310c9447614">pushCurPath</a> (void)</td></tr>
+<tr class="separator:abebcc05d2d935803a3c95310c9447614 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accfc280f70bc8f888f61890f07a4aac2 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#accfc280f70bc8f888f61890f07a4aac2">switchToNodeTraversal</a> (<a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:accfc280f70bc8f888f61890f07a4aac2 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4285818426cf039bd556b537398d9ece inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a4285818426cf039bd556b537398d9ece">switchToPathTraversal</a> (<a class="el" href="classSoPath.html">SoPath</a> *path)</td></tr>
+<tr class="separator:a4285818426cf039bd556b537398d9ece inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a805627d07445a9c3a7e6324748aac2a9 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a805627d07445a9c3a7e6324748aac2a9">traverse</a> (<a class="el" href="classSoNode.html">SoNode</a> *const node)</td></tr>
+<tr class="separator:a805627d07445a9c3a7e6324748aac2a9 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea5650e3b7ae6207c4c3d675e83073b5 inherit pub_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#aea5650e3b7ae6207c4c3d675e83073b5">usePathCode</a> (int &amp;numindices, const int *&amp;indices)</td></tr>
+<tr class="separator:aea5650e3b7ae6207c4c3d675e83073b5 inherit pub_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a693f3ae41369317133b9e4496ccae103"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#a693f3ae41369317133b9e4496ccae103">addMethod</a> (const <a class="el" href="classSoType.html">SoType</a> type, SoActionMethod method)</td></tr>
+<tr class="separator:a693f3ae41369317133b9e4496ccae103"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a379d1e7ade13fe6bf7c29673cbecf2c4"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#a379d1e7ade13fe6bf7c29673cbecf2c4">enableElement</a> (const <a class="el" href="classSoType.html">SoType</a> type, const int stackindex)</td></tr>
+<tr class="separator:a379d1e7ade13fe6bf7c29673cbecf2c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada2cb6379cdafdb5c3394af378d90844"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#ada2cb6379cdafdb5c3394af378d90844">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:ada2cb6379cdafdb5c3394af378d90844"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae48de20e2d756e61eb918d31dff41be9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#ae48de20e2d756e61eb918d31dff41be9">initClass</a> (void)</td></tr>
+<tr class="separator:ae48de20e2d756e61eb918d31dff41be9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classSoAction')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a3a714aae7f852be330d276041f7bc26e inherit pub_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a3a714aae7f852be330d276041f7bc26e">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:a3a714aae7f852be330d276041f7bc26e inherit pub_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fca4d3db681ecea3bd1d5c24d1f160d inherit pub_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a6fca4d3db681ecea3bd1d5c24d1f160d">initClass</a> (void)</td></tr>
+<tr class="separator:a6fca4d3db681ecea3bd1d5c24d1f160d inherit pub_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c1f8064ac89d9e36d36a8d05365e26a inherit pub_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a9c1f8064ac89d9e36d36a8d05365e26a">initClasses</a> (void)</td></tr>
+<tr class="separator:a9c1f8064ac89d9e36d36a8d05365e26a inherit pub_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6dd54a728307c37d3cd87b2891b9359e inherit pub_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a6dd54a728307c37d3cd87b2891b9359e">nullAction</a> (<a class="el" href="classSoAction.html">SoAction</a> *action, <a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a6dd54a728307c37d3cd87b2891b9359e inherit pub_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a014ad0b1616c5c24d039a773d073d476"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#a014ad0b1616c5c24d039a773d073d476">beginTraversal</a> (<a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a014ad0b1616c5c24d039a773d073d476"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbad2823985101492ae9d8a177bbd937"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#adbad2823985101492ae9d8a177bbd937">getEnabledElements</a> (void) const</td></tr>
+<tr class="separator:adbad2823985101492ae9d8a177bbd937"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSoAction')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a7f6ac9fad4b83a66a321adfa48ebacd1 inherit pro_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a7f6ac9fad4b83a66a321adfa48ebacd1">SoAction</a> (void)</td></tr>
+<tr class="separator:a7f6ac9fad4b83a66a321adfa48ebacd1 inherit pro_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9af52ee33d0effeba2f23d9c3d4d6ad0 inherit pro_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a9af52ee33d0effeba2f23d9c3d4d6ad0">endTraversal</a> (<a class="el" href="classSoNode.html">SoNode</a> *node)</td></tr>
+<tr class="separator:a9af52ee33d0effeba2f23d9c3d4d6ad0 inherit pro_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa968d7390c6d9ec862e0c9c1c7e48de5 inherit pro_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#aa968d7390c6d9ec862e0c9c1c7e48de5">setTerminated</a> (const SbBool flag)</td></tr>
+<tr class="separator:aa968d7390c6d9ec862e0c9c1c7e48de5 inherit pro_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59700c3dd417a802e9531b6544ff6b81 inherit pro_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a59700c3dd417a802e9531b6544ff6b81">shouldCompactPathList</a> (void) const</td></tr>
+<tr class="separator:a59700c3dd417a802e9531b6544ff6b81 inherit pro_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:a5a132316a6f570d89bfb03ff2052965b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoActionMethodList.html">SoActionMethodList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#a5a132316a6f570d89bfb03ff2052965b">getClassActionMethods</a> (void)</td></tr>
+<tr class="separator:a5a132316a6f570d89bfb03ff2052965b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b0c3a33a2e8ae09a10af7a3bd6d64b5"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoGetBoundingBoxAction.html#a8b0c3a33a2e8ae09a10af7a3bd6d64b5">getClassEnabledElements</a> (void)</td></tr>
+<tr class="separator:a8b0c3a33a2e8ae09a10af7a3bd6d64b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_methods_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classSoAction')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a655c3dbf9f093cdfaa7cc896ca54c0f3 inherit pro_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoActionMethodList.html">SoActionMethodList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a655c3dbf9f093cdfaa7cc896ca54c0f3">getClassActionMethods</a> (void)</td></tr>
+<tr class="separator:a655c3dbf9f093cdfaa7cc896ca54c0f3 inherit pro_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3a072966a0f9fa9f96fa1affc44fe9b inherit pro_static_methods_classSoAction"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#ac3a072966a0f9fa9f96fa1affc44fe9b">getClassEnabledElements</a> (void)</td></tr>
+<tr class="separator:ac3a072966a0f9fa9f96fa1affc44fe9b inherit pro_static_methods_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_attribs_classSoAction"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classSoAction')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classSoAction.html">SoAction</a></td></tr>
+<tr class="memitem:a5b4ccb851346b95c3c3562b1824d258b inherit pro_attribs_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoState.html">SoState</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a5b4ccb851346b95c3c3562b1824d258b">state</a></td></tr>
+<tr class="separator:a5b4ccb851346b95c3c3562b1824d258b inherit pro_attribs_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00703b6a5c0bac45ac95756f7eb054af inherit pro_attribs_classSoAction"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoActionMethodList.html">SoActionMethodList</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoAction.html#a00703b6a5c0bac45ac95756f7eb054af">traversalMethods</a></td></tr>
+<tr class="separator:a00703b6a5c0bac45ac95756f7eb054af inherit pro_attribs_classSoAction"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSoGetBoundingBoxAction.html" title="The SoGetBoundingBoxAction class calculates bounding boxes for nodes and subgraphs.">SoGetBoundingBoxAction</a> class calculates bounding boxes for nodes and subgraphs. </p>
+<p>If this action is applied to a path or scene graph root, it will calculate the bounding box and the center point of the geometry contained within the scene.</p>
+<p>You don't have to apply an <a class="el" href="classSoGetBoundingBoxAction.html" title="The SoGetBoundingBoxAction class calculates bounding boxes for nodes and subgraphs.">SoGetBoundingBoxAction</a> to the <em>root</em> of a scene. When using the action, you will get the bounding box of the node you are applying it to and that node's subtree in the scene graph (if any).</p>
+<p>The calculated bounding box will be in the local coordinates of that subtree. If applying it to a scene graph root node, the calculated bounding box will be in global coordinates.</p>
+<p>The use of bounding boxes is ubiquitous within the Coin library. It is needed for the correct execution of and for performance enhancements during rendering, picking, caching, culling, etc.</p>
+<p><a class="el" href="classSoSeparator.html" title="The SoSeparator class is a state-preserving group node.">SoSeparator</a> nodes are aggressively caching the results of bounding box calculations, so that they are really only recalculated whenever the scene graph rooted below any <a class="el" href="classSoSeparator.html" title="The SoSeparator class is a state-preserving group node.">SoSeparator</a> node has been modified. This means that applying this action to scene graphs, or parts of scene graphs, should be very quick on successive runs for "static" parts of the scene.</p>
+<p>Note that the algorithm used is not guaranteed to always give an exact bounding box: it combines bounding boxes in pairs and extends one of them to contain the other. Since the boxes need not be parallel to the principal axes the new box might not be a perfect fit for the box not extended (its coordinate system has been changed).</p>
+<p>Note also that what is returned from <a class="el" href="classSoGetBoundingBoxAction.html#a3bad00fe00537cbe4ff9d3f3e6ae4177">getBoundingBox()</a> will be projected so as to be oriented along the principal axes, which can often cause it to become quite a lot larger than what it was before projection. For client code to obtain the best bounding box that Coin can calculate (and which will usually be exact), you need to use the <a class="el" href="classSoGetBoundingBoxAction.html#ab452c2ec28417fc7b589f9382358d8b8">getXfBoundingBox()</a> method after having applied the <a class="el" href="classSoGetBoundingBoxAction.html" title="The SoGetBoundingBoxAction class calculates bounding boxes for nodes and subgraphs.">SoGetBoundingBoxAction</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoSeparator.html#a060012a219ed95d686d6f1d7406d5d93">SoSeparator::boundingBoxCaching</a> </dd></dl>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="ac64919a694de0f25a48d1072c5c92f33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac64919a694de0f25a48d1072c5c92f33">&#9670;&nbsp;</a></span>ResetType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classSoGetBoundingBoxAction.html#ac64919a694de0f25a48d1072c5c92f33">SoGetBoundingBoxAction::ResetType</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+</p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ab575afde0c66bdfa47b4e9ccf5183f1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab575afde0c66bdfa47b4e9ccf5183f1b">&#9670;&nbsp;</a></span>SoGetBoundingBoxAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoGetBoundingBoxAction::SoGetBoundingBoxAction </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;&#160;</td>
+          <td class="paramname"><em>vp</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Constructor.</p>
+<p>It might seem unnecessary to have to pass in a viewport region argument to calculate bounding boxes, but there is a good reason for this: a few shape nodes needs to know the viewport region to calculate their bounding box &ndash; these include <a class="el" href="classSoText2.html" title="The SoText2 class is a node type for visualizing 2D text aligned with the camera plane.">SoText2</a> and <a class="el" href="classSoImage.html" title="The SoImage class draws a 2D image on the viewport.">SoImage</a>, among others.</p>
+<p>What is particular about these shapes is that they are fundamentally 2D shapes, but they are being rendered on the screen "surface" as if they were in a 3D scene. (This is possible because we can match each pixel's depth value against the 3D shapes in the scene.)</p>
+<p>To compute an accurate 3D bounding box of a shape rendered in 2D on the screen "surface", you need to "de-project" the screen space area it occupies to a 2D rectangle placed at some depth in the scene. This "de-projecting" operation needs to know about the dimensions of the viewport.</p>
+<p>Also, some 3D shapes like for instance <a class="el" href="classSoNurbsSurface.html" title="The SoNurbsSurface class is used to render smooth surfaces.">SoNurbsSurface</a>, get slightly distorted if there's an <a class="el" href="classSoComplexity.html" title="The SoComplexity class is a node type which is used to set the trade-off between quality and performa...">SoComplexity</a> node in the scene graph with the <a class="el" href="classSoComplexity.html#a0679d84b90988ecd1f0c8874d1368b6e">SoComplexity::value</a> field set to SCREEN_SPACE. Then it is also necessary to know the viewport region to find out how to accurately calculate the bounding box of those shapes.</p>
+<p>You would usually want to pass in a viewport region equal to the layout of the current render area canvas. If you have a viewer or So@Gui@RenderArea available, you can get hold of the viewport region data simply by doing</p>
+<div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code" href="classSbViewportRegion.html">SbViewportRegion</a> &amp; vpreg = viewer-&gt;getViewportRegion();</div>
+<div class="ttc" id="aclassSbViewportRegion_html"><div class="ttname"><a href="classSbViewportRegion.html">SbViewportRegion</a></div><div class="ttdoc">The SbViewportRegion class is a viewport within a full window.</div><div class="ttdef"><b>Definition:</b> SbViewportRegion.h:40</div></div>
+</div><!-- fragment --><p>(If you don't have a viewer or render area available in your application at the point where you want to get the bounding box, it probably doesn't matter much what you set it to. The accuracy of the bounding box calculation might be slightly wrong versus the actual rendered appearance of the scene, but this is usually not noticeable.) </p>
+
+</div>
+</div>
+<a id="a1160d8e012127f73334d6394cc65a962"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1160d8e012127f73334d6394cc65a962">&#9670;&nbsp;</a></span>~SoGetBoundingBoxAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoGetBoundingBoxAction::~SoGetBoundingBoxAction </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Destructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a693f3ae41369317133b9e4496ccae103"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a693f3ae41369317133b9e4496ccae103">&#9670;&nbsp;</a></span>addMethod()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGetBoundingBoxAction::addMethod </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSoType.html">SoType</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SoActionMethod&#160;</td>
+          <td class="paramname"><em>method</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+ </p>
+
+</div>
+</div>
+<a id="a014ad0b1616c5c24d039a773d073d476"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a014ad0b1616c5c24d039a773d073d476">&#9670;&nbsp;</a></span>beginTraversal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGetBoundingBoxAction::beginTraversal </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSoNode.html">SoNode</a> *&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This virtual method is called from <a class="el" href="classSoAction.html#ad2d6ddb297b3a1f5b80026db5fd5e616">SoAction::apply()</a>, and is the entry point for the actual scene graph traversal.</p>
+<p>It can be overridden to initialize the action at traversal start, for specific initializations in the action subclasses inheriting <a class="el" href="classSoAction.html" title="The SoAction class is the base class for all traversal actions.">SoAction</a>.</p>
+<p>Default method just calls <a class="el" href="classSoAction.html#a805627d07445a9c3a7e6324748aac2a9">traverse()</a>, which any overridden implementation of the method must do too (or call <a class="el" href="classSoAction.html#a893a67a9bf2e7b5b5ef0f1f36f1b8097">SoAction::beginTraversal()</a>) to trigger the scene graph traversal. </p>
+
+<p>Reimplemented from <a class="el" href="classSoAction.html#a893a67a9bf2e7b5b5ef0f1f36f1b8097">SoAction</a>.</p>
+
+</div>
+</div>
+<a id="a0229310254d52ed12d27e0f1812e900d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0229310254d52ed12d27e0f1812e900d">&#9670;&nbsp;</a></span>checkResetAfter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGetBoundingBoxAction::checkResetAfter </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+Called after node traversal of each node (from <a class="el" href="classSoNode.html" title="The SoNode class is the base class for nodes used in scene graphs.">SoNode</a> action method). </p>
+
+</div>
+</div>
+<a id="a03b81040285674e1f3f33615b927026a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03b81040285674e1f3f33615b927026a">&#9670;&nbsp;</a></span>checkResetBefore()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGetBoundingBoxAction::checkResetBefore </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+Called before node traversal of each node (from <a class="el" href="classSoNode.html" title="The SoNode class is the base class for nodes used in scene graphs.">SoNode</a> action method). </p>
+
+</div>
+</div>
+<a id="a379d1e7ade13fe6bf7c29673cbecf2c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a379d1e7ade13fe6bf7c29673cbecf2c4">&#9670;&nbsp;</a></span>enableElement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGetBoundingBoxAction::enableElement </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSoType.html">SoType</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>stackindex</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+ </p>
+
+</div>
+</div>
+<a id="a5a4d10e40fc73fa438007d76df6cbbfc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a4d10e40fc73fa438007d76df6cbbfc">&#9670;&nbsp;</a></span>extendBy() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGetBoundingBoxAction::extendBy </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbBox3f.html">SbBox3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>box</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Extend bounding box by the given <em>box</em>. Called from nodes during traversal.</p>
+<p>Should usually not be of interest to application programmers, unless you're extending Coin with your own shapenode extension classes. </p>
+
+</div>
+</div>
+<a id="a8c2429efc99bf73ad48b20788da397fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c2429efc99bf73ad48b20788da397fe">&#9670;&nbsp;</a></span>extendBy() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGetBoundingBoxAction::extendBy </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbXfBox3f.html">SbXfBox3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>box</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is an overloaded member function, provided for convenience. It differs from the above function only in what argument(s) it accepts. </p>
+
+</div>
+</div>
+<a id="a3bad00fe00537cbe4ff9d3f3e6ae4177"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bad00fe00537cbe4ff9d3f3e6ae4177">&#9670;&nbsp;</a></span>getBoundingBox()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbBox3f.html">SbBox3f</a> SoGetBoundingBoxAction::getBoundingBox </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the projected bounding box after (or during) traversal. </p>
+
+</div>
+</div>
+<a id="aaed2251ec6983849bdad7e313263d114"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaed2251ec6983849bdad7e313263d114">&#9670;&nbsp;</a></span>getCenter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp; SoGetBoundingBoxAction::getCenter </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns center point of scene after the action has been applied.</p>
+<p>This might differ from the geometric center of the bounding box, as shape nodes may "weight" the center point according to various criteria (i.e. a faceset could for instance weight the center point according to the area within its bounding box where there are more polygons). </p>
+
+</div>
+</div>
+<a id="a5a132316a6f570d89bfb03ff2052965b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a132316a6f570d89bfb03ff2052965b">&#9670;&nbsp;</a></span>getClassActionMethods()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoActionMethodList.html">SoActionMethodList</a> * SoGetBoundingBoxAction::getClassActionMethods </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns list of action methods for this class. The enabledElements and methods variables are protected in the original OIV API. This is not such a good idea, since exposed static class member variables is a major grievance with regard to Win32 DLLs. This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ <br  />
+ </p>
+
+</div>
+</div>
+<a id="a8b0c3a33a2e8ae09a10af7a3bd6d64b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b0c3a33a2e8ae09a10af7a3bd6d64b5">&#9670;&nbsp;</a></span>getClassEnabledElements()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> * SoGetBoundingBoxAction::getClassEnabledElements </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns list of enabled elements for this class. The enabledElements and methods variables are protected in the original OIV API. This is not such a good idea, since exposed static class member variables is a major grievance with regard to Win32 DLLs. This function is an extension for Coin, and it is not available in the original SGI Open Inventor v2.1 API.<br  />
+ <br  />
+ </p>
+
+</div>
+</div>
+<a id="ada2cb6379cdafdb5c3394af378d90844"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada2cb6379cdafdb5c3394af378d90844">&#9670;&nbsp;</a></span>getClassTypeId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoType.html">SoType</a> SoGetBoundingBoxAction::getClassTypeId </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This static method returns the <a class="el" href="classSoType.html" title="The SoType class is the basis for the runtime type system in Coin.">SoType</a> object associated with objects of this class. <br  />
+ </p>
+
+</div>
+</div>
+<a id="adbad2823985101492ae9d8a177bbd937"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbad2823985101492ae9d8a177bbd937">&#9670;&nbsp;</a></span>getEnabledElements()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSoEnabledElementsList.html">SoEnabledElementsList</a> &amp; SoGetBoundingBoxAction::getEnabledElements </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns list of enabled elements. <br  />
+ </p>
+
+<p>Reimplemented from <a class="el" href="classSoAction.html#ae4668ce77fd8b3fc5cbf496ca1721d62">SoAction</a>.</p>
+
+</div>
+</div>
+<a id="abf78ee305738b4cfdffb6e96195f2453"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf78ee305738b4cfdffb6e96195f2453">&#9670;&nbsp;</a></span>getResetPath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSoPath.html">SoPath</a> * SoGetBoundingBoxAction::getResetPath </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the reset path (or <code>NULL</code>).</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoGetBoundingBoxAction.html#afd3c7d93d5394b2d977fb4b2069e3b8d">setResetPath()</a>, <a class="el" href="classSoGetBoundingBoxAction.html#ac9c0ad3f180de6ff3de1b9caa01888b8">isResetPath()</a>, <a class="el" href="classSoGetBoundingBoxAction.html#a34a71b47db88c25b3dd89dce5130c7e7">isResetBefore()</a>, <a class="el" href="classSoGetBoundingBoxAction.html#a11e375ad77f904e4f26c487bd6a5e215">getWhatReset()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a3a2152d2a2996d43fc03d7059a6c17ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a2152d2a2996d43fc03d7059a6c17ba">&#9670;&nbsp;</a></span>getTypeId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoType.html">SoType</a> SoGetBoundingBoxAction::getTypeId </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the type identification of an object derived from a class inheriting <a class="el" href="classSoAction.html" title="The SoAction class is the base class for all traversal actions.">SoAction</a>. This is used for runtime type checking and "downward" casting. <br  />
+ </p>
+
+<p>Implements <a class="el" href="classSoAction.html#a364ad60918a4d20ebdc9635457fe331c">SoAction</a>.</p>
+
+</div>
+</div>
+<a id="a620efa506f003a359714632cf14e1ab5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a620efa506f003a359714632cf14e1ab5">&#9670;&nbsp;</a></span>getViewportRegion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp; SoGetBoundingBoxAction::getViewportRegion </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the viewport region used by the action instance. </p>
+
+</div>
+</div>
+<a id="a11e375ad77f904e4f26c487bd6a5e215"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11e375ad77f904e4f26c487bd6a5e215">&#9670;&nbsp;</a></span>getWhatReset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoGetBoundingBoxAction.html#ac64919a694de0f25a48d1072c5c92f33">SoGetBoundingBoxAction::ResetType</a> SoGetBoundingBoxAction::getWhatReset </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns what type of reset has been specified for the reset path.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoGetBoundingBoxAction.html#afd3c7d93d5394b2d977fb4b2069e3b8d">setResetPath()</a>, <a class="el" href="classSoGetBoundingBoxAction.html#abf78ee305738b4cfdffb6e96195f2453">getResetPath()</a>, <a class="el" href="classSoGetBoundingBoxAction.html#ac9c0ad3f180de6ff3de1b9caa01888b8">isResetPath()</a>, <a class="el" href="classSoGetBoundingBoxAction.html#a34a71b47db88c25b3dd89dce5130c7e7">isResetBefore()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ab452c2ec28417fc7b589f9382358d8b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab452c2ec28417fc7b589f9382358d8b8">&#9670;&nbsp;</a></span>getXfBoundingBox()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbXfBox3f.html">SbXfBox3f</a> &amp; SoGetBoundingBoxAction::getXfBoundingBox </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the bounding box and transformation matrix to global coordinates. Use after (or during) traversal. </p>
+
+</div>
+</div>
+<a id="ae48de20e2d756e61eb918d31dff41be9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae48de20e2d756e61eb918d31dff41be9">&#9670;&nbsp;</a></span>initClass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGetBoundingBoxAction::initClass </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Initializes the runtime type system for this class, and sets up the enabled elements and action method list. </p>
+
+</div>
+</div>
+<a id="aedb769ccaadbda3316e20be7df2ca89e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aedb769ccaadbda3316e20be7df2ca89e">&#9670;&nbsp;</a></span>isCenterSet()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoGetBoundingBoxAction::isCenterSet </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+Query about the center point during traversal. </p>
+
+</div>
+</div>
+<a id="ad13a8dc1cfbb073b8ded7702fe107104"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad13a8dc1cfbb073b8ded7702fe107104">&#9670;&nbsp;</a></span>isInCameraSpace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoGetBoundingBoxAction::isInCameraSpace </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns whether the bounding box returned is to be in camera space. </p>
+
+</div>
+</div>
+<a id="a34a71b47db88c25b3dd89dce5130c7e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34a71b47db88c25b3dd89dce5130c7e7">&#9670;&nbsp;</a></span>isResetBefore()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoGetBoundingBoxAction::isResetBefore </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns whether the bounding box and transformation is reset before or after the tail node of the reset path.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoGetBoundingBoxAction.html#afd3c7d93d5394b2d977fb4b2069e3b8d">setResetPath()</a>, <a class="el" href="classSoGetBoundingBoxAction.html#abf78ee305738b4cfdffb6e96195f2453">getResetPath()</a>, <a class="el" href="classSoGetBoundingBoxAction.html#ac9c0ad3f180de6ff3de1b9caa01888b8">isResetPath()</a>, <a class="el" href="classSoGetBoundingBoxAction.html#a11e375ad77f904e4f26c487bd6a5e215">getWhatReset()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ac9c0ad3f180de6ff3de1b9caa01888b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9c0ad3f180de6ff3de1b9caa01888b8">&#9670;&nbsp;</a></span>isResetPath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoGetBoundingBoxAction::isResetPath </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns whether a reset path is set or not.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoGetBoundingBoxAction.html#afd3c7d93d5394b2d977fb4b2069e3b8d">setResetPath()</a>, <a class="el" href="classSoGetBoundingBoxAction.html#abf78ee305738b4cfdffb6e96195f2453">getResetPath()</a>, <a class="el" href="classSoGetBoundingBoxAction.html#a34a71b47db88c25b3dd89dce5130c7e7">isResetBefore()</a>, <a class="el" href="classSoGetBoundingBoxAction.html#a11e375ad77f904e4f26c487bd6a5e215">getWhatReset()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ad132b7df48f254c4500fd8b2de4ac3cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad132b7df48f254c4500fd8b2de4ac3cb">&#9670;&nbsp;</a></span>resetCenter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGetBoundingBoxAction::resetCenter </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+Reset the scene center point during traversal. </p>
+
+</div>
+</div>
+<a id="adeac8e44eb54353bca044cd540d35b77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adeac8e44eb54353bca044cd540d35b77">&#9670;&nbsp;</a></span>setCenter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGetBoundingBoxAction::setCenter </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>centerarg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SbBool&#160;</td>
+          <td class="paramname"><em>transformcenter</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><em>This API member is considered internal to the library, as it is not likely to be of interest to the application programmer.</em><br  />
+<br  />
+Set a new center point during traversal. </p>
+
+</div>
+</div>
+<a id="a332ce4920d34d06a4b27ea67cc1ce99f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a332ce4920d34d06a4b27ea67cc1ce99f">&#9670;&nbsp;</a></span>setInCameraSpace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGetBoundingBoxAction::setInCameraSpace </td>
+          <td>(</td>
+          <td class="paramtype">const SbBool&#160;</td>
+          <td class="paramname"><em>on</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets whether the returned bounding box should be calculated in the coordinate system of the camera space or not. </p>
+
+</div>
+</div>
+<a id="afd3c7d93d5394b2d977fb4b2069e3b8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd3c7d93d5394b2d977fb4b2069e3b8d">&#9670;&nbsp;</a></span>setResetPath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGetBoundingBoxAction::setResetPath </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSoPath.html">SoPath</a> *&#160;</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SbBool&#160;</td>
+          <td class="paramname"><em>resetbefore</em> = <code>TRUE</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSoGetBoundingBoxAction.html#ac64919a694de0f25a48d1072c5c92f33">ResetType</a>&#160;</td>
+          <td class="paramname"><em>what</em> = <code>ALL</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Forces the computed bounding box to be reset and the transformation to be identity before or after the tail node of <em>path</em>, depending on the <em>resetbefore</em> argument. <code>NULL</code> can be specified for the <em>path</em> argument to disable this behavior.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoGetBoundingBoxAction.html#abf78ee305738b4cfdffb6e96195f2453">getResetPath()</a>, <a class="el" href="classSoGetBoundingBoxAction.html#ac9c0ad3f180de6ff3de1b9caa01888b8">isResetPath()</a>, <a class="el" href="classSoGetBoundingBoxAction.html#a34a71b47db88c25b3dd89dce5130c7e7">isResetBefore()</a>, <a class="el" href="classSoGetBoundingBoxAction.html#a11e375ad77f904e4f26c487bd6a5e215">getWhatReset()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a8729d4cebd51dff3e91a592f1c1f97a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8729d4cebd51dff3e91a592f1c1f97a6">&#9670;&nbsp;</a></span>setViewportRegion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoGetBoundingBoxAction::setViewportRegion </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;&#160;</td>
+          <td class="paramname"><em>newregion</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set a new viewport region with this method, if it has changed from the one passed in with the constructor. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SoGetBoundingBoxAction_8h_source.html">SoGetBoundingBoxAction.h</a></li>
+<li>SoGetBoundingBoxAction.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSoGetBoundingBoxAction.html">SoGetBoundingBoxAction</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

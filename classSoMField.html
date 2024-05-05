@@ -1,0 +1,968 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SoMField Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSoMField.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="classSoMField-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SoMField Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span><div class="ingroups"><a class="el" href="group__coin__fields.html">Field Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSoMField.html" title="The SoMField class is the base class for fields which can contain multiple values.">SoMField</a> class is the base class for fields which can contain multiple values.  
+ <a href="classSoMField.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SoMField_8h_source.html">Inventor/fields/SoMField.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for SoMField:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classSoMField.png" usemap="#SoMField_map" alt=""/>
+  <map id="SoMField_map" name="SoMField_map">
+<area href="classSoField.html" title="The SoField class is the top-level abstract base class for fields." alt="SoField" shape="rect" coords="0,0,111,24"/>
+<area href="classSoMFBool.html" title="The SoMFBool class is a container for SbBool values." alt="SoMFBool" shape="rect" coords="121,112,232,136"/>
+<area href="classSoMFColor.html" title="The SoMFColor class is a container for SbColor values." alt="SoMFColor" shape="rect" coords="121,168,232,192"/>
+<area href="classSoMFColorRGBA.html" title="The SoMFColorRGBA class is a container for SbColor4f values." alt="SoMFColorRGBA" shape="rect" coords="121,224,232,248"/>
+<area href="classSoMFDouble.html" title="The SoMFDouble class is a container for double float precision point values." alt="SoMFDouble" shape="rect" coords="121,280,232,304"/>
+<area href="classSoMFEngine.html" title="The SoMFEngine class is a container for engines." alt="SoMFEngine" shape="rect" coords="121,336,232,360"/>
+<area href="classSoMFEnum.html" title="The SoMFEnum class is a container for a set of enumerated values." alt="SoMFEnum" shape="rect" coords="121,392,232,416"/>
+<area href="classSoMFFloat.html" title="The SoMFFloat class is a container for floating point values." alt="SoMFFloat" shape="rect" coords="121,448,232,472"/>
+<area href="classSoMFInt32.html" title="The SoMFInt32 class is a container for 32-bit integer values." alt="SoMFInt32" shape="rect" coords="121,504,232,528"/>
+<area href="classSoMFMatrix.html" title="The SoMFMatrix class is a container for SbMatrix values." alt="SoMFMatrix" shape="rect" coords="121,560,232,584"/>
+<area href="classSoMFName.html" title="The SoMFName class is a container for SbName values." alt="SoMFName" shape="rect" coords="121,616,232,640"/>
+<area href="classSoMFNode.html" title="The SoMFNode class is a container for nodes." alt="SoMFNode" shape="rect" coords="121,672,232,696"/>
+<area href="classSoMFPath.html" title="The SoMFPath class is a container for paths." alt="SoMFPath" shape="rect" coords="121,728,232,752"/>
+<area href="classSoMFPlane.html" title="The SoMFPlane class is a container for SbPlane values." alt="SoMFPlane" shape="rect" coords="121,784,232,808"/>
+<area href="classSoMFRotation.html" title="The SoMFRotation class is a container for SbRotation values." alt="SoMFRotation" shape="rect" coords="121,840,232,864"/>
+<area href="classSoMFShort.html" title="The SoMFShort class is a container for short integer values." alt="SoMFShort" shape="rect" coords="121,896,232,920"/>
+<area href="classSoMFString.html" title="The SoMFString class is a container for SbString values." alt="SoMFString" shape="rect" coords="121,952,232,976"/>
+<area href="classSoMFTime.html" title="The SoMFTime class is a container for SbTime values." alt="SoMFTime" shape="rect" coords="121,1008,232,1032"/>
+<area href="classSoMFUInt32.html" title="The SoMFUInt32 class is a container for 32-bit unsigned integer values." alt="SoMFUInt32" shape="rect" coords="121,1064,232,1088"/>
+<area href="classSoMFUShort.html" title="The SoMFUShort class is a container for unsigned short integer values." alt="SoMFUShort" shape="rect" coords="121,1120,232,1144"/>
+<area href="classSoMFVec2b.html" title="The SoMFVec2b class is a container for SbVec2b vectors." alt="SoMFVec2b" shape="rect" coords="121,1176,232,1200"/>
+<area href="classSoMFVec2d.html" title="The SoMFVec2d class is a container for SbVec2d vectors." alt="SoMFVec2d" shape="rect" coords="121,1232,232,1256"/>
+<area href="classSoMFVec2f.html" title="The SoMFVec2f class is a container for SbVec2f vectors." alt="SoMFVec2f" shape="rect" coords="121,1288,232,1312"/>
+<area href="classSoMFVec2i32.html" title="The SoMFVec2i32 class is a container for SbVec2i32 vectors." alt="SoMFVec2i32" shape="rect" coords="121,1344,232,1368"/>
+<area href="classSoMFVec2s.html" title="The SoMFVec2s class is a container for SbVec2s vectors." alt="SoMFVec2s" shape="rect" coords="121,1400,232,1424"/>
+<area href="classSoMFVec3b.html" title="The SoMFVec3b class is a container for SbVec3b vectors." alt="SoMFVec3b" shape="rect" coords="121,1456,232,1480"/>
+<area href="classSoMFVec3d.html" title="The SoMFVec3d class is a container for SbVec3d vectors." alt="SoMFVec3d" shape="rect" coords="121,1512,232,1536"/>
+<area href="classSoMFVec3f.html" title="The SoMFVec3f class is a container for SbVec3f vectors." alt="SoMFVec3f" shape="rect" coords="121,1568,232,1592"/>
+<area href="classSoMFVec3i32.html" title="The SoMFVec3i32 class is a container for SbVec3i32 vectors." alt="SoMFVec3i32" shape="rect" coords="121,1624,232,1648"/>
+<area href="classSoMFVec3s.html" title="The SoMFVec3s class is a container for SbVec3s vectors." alt="SoMFVec3s" shape="rect" coords="121,1680,232,1704"/>
+<area href="classSoMFVec4b.html" title="The SoMFVec4b class is a container for SbVec4b vectors." alt="SoMFVec4b" shape="rect" coords="121,1736,232,1760"/>
+<area href="classSoMFVec4d.html" title="The SoMFVec4d class is a container for SbVec4d vectors." alt="SoMFVec4d" shape="rect" coords="121,1792,232,1816"/>
+<area href="classSoMFVec4f.html" title="The SoMFVec4f class is a container for SbVec4f vectors." alt="SoMFVec4f" shape="rect" coords="121,1848,232,1872"/>
+<area href="classSoMFVec4i32.html" title="The SoMFVec4i32 class is a container for SbVec4i32 vectors." alt="SoMFVec4i32" shape="rect" coords="121,1904,232,1928"/>
+<area href="classSoMFVec4s.html" title="The SoMFVec4s class is a container for SbVec4s vectors." alt="SoMFVec4s" shape="rect" coords="121,1960,232,1984"/>
+<area href="classSoMFVec4ub.html" title="The SoMFVec4ub class is a container for SbVec4ub vectors." alt="SoMFVec4ub" shape="rect" coords="121,2016,232,2040"/>
+<area href="classSoMFVec4ui32.html" title="The SoMFVec4ui32 class is a container for SbVec4ui32 vectors." alt="SoMFVec4ui32" shape="rect" coords="121,2072,232,2096"/>
+<area href="classSoMFVec4us.html" title="The SoMFVec4us class is a container for SbVec4us vectors." alt="SoMFVec4us" shape="rect" coords="121,2128,232,2152"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:af07d4320c3c4be08678e3b56a57f4c50"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMField.html#af07d4320c3c4be08678e3b56a57f4c50">~SoMField</a> ()</td></tr>
+<tr class="separator:af07d4320c3c4be08678e3b56a57f4c50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00b7c3f249ed2333901bb73accc38ad8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMField.html#a00b7c3f249ed2333901bb73accc38ad8">deleteValues</a> (int start, int <a class="el" href="classSoMField.html#ae7b3a61bcc18b20c5bdf971db5942fad">num</a>=-1)</td></tr>
+<tr class="separator:a00b7c3f249ed2333901bb73accc38ad8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62ce03063996d39fdee9ef36658db21b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMField.html#a62ce03063996d39fdee9ef36658db21b">enableDeleteValues</a> (void)</td></tr>
+<tr class="separator:a62ce03063996d39fdee9ef36658db21b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0734eb8ec34ecbb633ccffce0f3fb83"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMField.html#ad0734eb8ec34ecbb633ccffce0f3fb83">get1</a> (const int index, <a class="el" href="classSbString.html">SbString</a> &amp;valuestring)</td></tr>
+<tr class="separator:ad0734eb8ec34ecbb633ccffce0f3fb83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5308d1fd30bc255a16cac527d5e93123"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMField.html#a5308d1fd30bc255a16cac527d5e93123">getNum</a> (void) const</td></tr>
+<tr class="separator:a5308d1fd30bc255a16cac527d5e93123"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5ef85c5febe2f5faff55f0a29f96d6b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMField.html#ab5ef85c5febe2f5faff55f0a29f96d6b">insertSpace</a> (int start, int <a class="el" href="classSoMField.html#ae7b3a61bcc18b20c5bdf971db5942fad">num</a>)</td></tr>
+<tr class="separator:ab5ef85c5febe2f5faff55f0a29f96d6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f038a6506cfd3bd1cc11e4f5a873642"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMField.html#a6f038a6506cfd3bd1cc11e4f5a873642">isDeleteValuesEnabled</a> (void) const</td></tr>
+<tr class="separator:a6f038a6506cfd3bd1cc11e4f5a873642"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19232a6e205fd3d9088f0c30363cc830"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMField.html#a19232a6e205fd3d9088f0c30363cc830">set1</a> (const int index, const char *const valuestring)</td></tr>
+<tr class="separator:a19232a6e205fd3d9088f0c30363cc830"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad41785f63d6cf99f4a8bc6fedd55d398"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMField.html#ad41785f63d6cf99f4a8bc6fedd55d398">setNum</a> (const int <a class="el" href="classSoMField.html#ae7b3a61bcc18b20c5bdf971db5942fad">num</a>)</td></tr>
+<tr class="separator:ad41785f63d6cf99f4a8bc6fedd55d398"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSoField"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSoField')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSoField.html">SoField</a></td></tr>
+<tr class="memitem:a5ad15124fa9c372632cdcff9aae9ce0d inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a5ad15124fa9c372632cdcff9aae9ce0d">~SoField</a> ()</td></tr>
+<tr class="separator:a5ad15124fa9c372632cdcff9aae9ce0d inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af950e95a5e11aadb110f68e67d58ac42 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#af950e95a5e11aadb110f68e67d58ac42">addAuditor</a> (void *f, <a class="el" href="classSoNotRec.html#a3dadebf7917d6722df3485e7971ca25c">SoNotRec::Type</a> type)</td></tr>
+<tr class="separator:af950e95a5e11aadb110f68e67d58ac42 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa230785bbfae2c83812eded4252f06d1 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#aa230785bbfae2c83812eded4252f06d1">appendConnection</a> (<a class="el" href="classSoEngineOutput.html">SoEngineOutput</a> *master, SbBool notnotify=FALSE)</td></tr>
+<tr class="separator:aa230785bbfae2c83812eded4252f06d1 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e4651ab7eda489c57ee200e4703d62e inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a8e4651ab7eda489c57ee200e4703d62e">appendConnection</a> (<a class="el" href="classSoField.html">SoField</a> *master, SbBool notnotify=FALSE)</td></tr>
+<tr class="separator:a8e4651ab7eda489c57ee200e4703d62e inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fcfab4c669504fff42c63c99e05b82e inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a6fcfab4c669504fff42c63c99e05b82e">connectFrom</a> (<a class="el" href="classSoEngineOutput.html">SoEngineOutput</a> *master, SbBool notnotify=FALSE, SbBool append=FALSE)</td></tr>
+<tr class="separator:a6fcfab4c669504fff42c63c99e05b82e inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf2ad27ee6f706651454b9e07e4c9a6a inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#abf2ad27ee6f706651454b9e07e4c9a6a">connectFrom</a> (<a class="el" href="classSoField.html">SoField</a> *master, SbBool notnotify=FALSE, SbBool append=FALSE)</td></tr>
+<tr class="separator:abf2ad27ee6f706651454b9e07e4c9a6a inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a586b64475f4068518f0da4615b37b4cf inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a586b64475f4068518f0da4615b37b4cf">connectionStatusChanged</a> (int numconnections)</td></tr>
+<tr class="separator:a586b64475f4068518f0da4615b37b4cf inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c822e41b385ca49e0f16f3aab8f78e6 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a2c822e41b385ca49e0f16f3aab8f78e6">copyConnection</a> (const <a class="el" href="classSoField.html">SoField</a> *fromfield)</td></tr>
+<tr class="separator:a2c822e41b385ca49e0f16f3aab8f78e6 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a538c1dc5592da995e9760e5ccacadf21 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a538c1dc5592da995e9760e5ccacadf21">copyFrom</a> (const <a class="el" href="classSoField.html">SoField</a> &amp;f)=0</td></tr>
+<tr class="separator:a538c1dc5592da995e9760e5ccacadf21 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa11d8d54a8238021cf4034d288408e30 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#aa11d8d54a8238021cf4034d288408e30">countWriteRefs</a> (<a class="el" href="classSoOutput.html">SoOutput</a> *out) const</td></tr>
+<tr class="separator:aa11d8d54a8238021cf4034d288408e30 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1159b19752c3a62aebfe11719d83d700 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a1159b19752c3a62aebfe11719d83d700">disconnect</a> (<a class="el" href="classSoEngineOutput.html">SoEngineOutput</a> *engineoutput)</td></tr>
+<tr class="separator:a1159b19752c3a62aebfe11719d83d700 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59cefe0b5aed4354d0ef652810178f78 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a59cefe0b5aed4354d0ef652810178f78">disconnect</a> (<a class="el" href="classSoField.html">SoField</a> *field)</td></tr>
+<tr class="separator:a59cefe0b5aed4354d0ef652810178f78 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8e8c5c46e9cd112f8dd4664fff77117 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#af8e8c5c46e9cd112f8dd4664fff77117">disconnect</a> (void)</td></tr>
+<tr class="separator:af8e8c5c46e9cd112f8dd4664fff77117 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab3795218549a2d22b723e9c7f2846eb inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#aab3795218549a2d22b723e9c7f2846eb">enableConnection</a> (SbBool flag)</td></tr>
+<tr class="separator:aab3795218549a2d22b723e9c7f2846eb inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cf2036ff086d620ff77bef57ac36069 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a4cf2036ff086d620ff77bef57ac36069">enableNotify</a> (SbBool on)</td></tr>
+<tr class="separator:a4cf2036ff086d620ff77bef57ac36069 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21784d01c09ed374513bfa4ce3296d92 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a21784d01c09ed374513bfa4ce3296d92">evaluate</a> (void) const</td></tr>
+<tr class="separator:a21784d01c09ed374513bfa4ce3296d92 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d7a05ee937f6790f38fe727415e5d84 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a7d7a05ee937f6790f38fe727415e5d84">fixCopy</a> (SbBool copyconnections)</td></tr>
+<tr class="separator:a7d7a05ee937f6790f38fe727415e5d84 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad30227a5c8485e5bdaa52b86a21f9591 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#ad30227a5c8485e5bdaa52b86a21f9591">get</a> (<a class="el" href="classSbString.html">SbString</a> &amp;valuestring)</td></tr>
+<tr class="separator:ad30227a5c8485e5bdaa52b86a21f9591 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a383de04be5ccb6a95352d17d74b99d36 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a383de04be5ccb6a95352d17d74b99d36">getConnectedEngine</a> (<a class="el" href="classSoEngineOutput.html">SoEngineOutput</a> *&amp;master) const</td></tr>
+<tr class="separator:a383de04be5ccb6a95352d17d74b99d36 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6aeca3d2467124c5c3ed0fe36239e393 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a6aeca3d2467124c5c3ed0fe36239e393">getConnectedField</a> (<a class="el" href="classSoField.html">SoField</a> *&amp;master) const</td></tr>
+<tr class="separator:a6aeca3d2467124c5c3ed0fe36239e393 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d93ec760b81985a21554cb3aeab03eb inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a8d93ec760b81985a21554cb3aeab03eb">getConnections</a> (<a class="el" href="classSoFieldList.html">SoFieldList</a> &amp;masterlist) const</td></tr>
+<tr class="separator:a8d93ec760b81985a21554cb3aeab03eb inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a935cdb9d04e7b6093ab197a65f5109e4 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a935cdb9d04e7b6093ab197a65f5109e4">getContainer</a> (void) const</td></tr>
+<tr class="separator:a935cdb9d04e7b6093ab197a65f5109e4 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5f94e8349fcb0af5d558cdaad52ec7d inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#ab5f94e8349fcb0af5d558cdaad52ec7d">getDirty</a> (void) const</td></tr>
+<tr class="separator:ab5f94e8349fcb0af5d558cdaad52ec7d inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cd1f0f5e96993cb13a950e50c414ec2 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a1cd1f0f5e96993cb13a950e50c414ec2">getFieldType</a> (void) const</td></tr>
+<tr class="separator:a1cd1f0f5e96993cb13a950e50c414ec2 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a413d72b4501e14c1daab252c8c4019b0 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a413d72b4501e14c1daab252c8c4019b0">getForwardConnections</a> (<a class="el" href="classSoFieldList.html">SoFieldList</a> &amp;slavelist) const</td></tr>
+<tr class="separator:a413d72b4501e14c1daab252c8c4019b0 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae77c56bc803b68e4d089640827e291a1 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#ae77c56bc803b68e4d089640827e291a1">getNumConnections</a> (void) const</td></tr>
+<tr class="separator:ae77c56bc803b68e4d089640827e291a1 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34ac9c7e16370f08a911e8ef74c8f784 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a34ac9c7e16370f08a911e8ef74c8f784">getTypeId</a> (void) const =0</td></tr>
+<tr class="separator:a34ac9c7e16370f08a911e8ef74c8f784 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a327a1aeebb4d496b16e5b44616548dcb inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a327a1aeebb4d496b16e5b44616548dcb">isConnected</a> (void) const</td></tr>
+<tr class="separator:a327a1aeebb4d496b16e5b44616548dcb inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c99ef19d11f0a8452f31fcd92351767 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a8c99ef19d11f0a8452f31fcd92351767">isConnectedFromEngine</a> (void) const</td></tr>
+<tr class="separator:a8c99ef19d11f0a8452f31fcd92351767 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa74a1fd930a48ce202b51c5d36eb66bf inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#aa74a1fd930a48ce202b51c5d36eb66bf">isConnectedFromField</a> (void) const</td></tr>
+<tr class="separator:aa74a1fd930a48ce202b51c5d36eb66bf inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63e03610a71975fdd504c8d92d8775c4 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a63e03610a71975fdd504c8d92d8775c4">isConnectionEnabled</a> (void) const</td></tr>
+<tr class="separator:a63e03610a71975fdd504c8d92d8775c4 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad00e07e900d5761eb55b7cafd244eb8a inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#ad00e07e900d5761eb55b7cafd244eb8a">isDefault</a> (void) const</td></tr>
+<tr class="separator:ad00e07e900d5761eb55b7cafd244eb8a inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affc02a90df9dcaaae89013dd3b6807d2 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#affc02a90df9dcaaae89013dd3b6807d2">isIgnored</a> (void) const</td></tr>
+<tr class="separator:affc02a90df9dcaaae89013dd3b6807d2 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15bf4079a03b95caca1d9dde7eacab8e inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a15bf4079a03b95caca1d9dde7eacab8e">isNotifyEnabled</a> (void) const</td></tr>
+<tr class="separator:a15bf4079a03b95caca1d9dde7eacab8e inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5dd7c132b7d3c7f9e1c2e8a2d342b4b2 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a5dd7c132b7d3c7f9e1c2e8a2d342b4b2">isOfType</a> (const <a class="el" href="classSoType.html">SoType</a> type) const</td></tr>
+<tr class="separator:a5dd7c132b7d3c7f9e1c2e8a2d342b4b2 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab736b0c1e54b0a41cad63594d7bfc376 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#ab736b0c1e54b0a41cad63594d7bfc376">isReadOnly</a> (void) const</td></tr>
+<tr class="separator:ab736b0c1e54b0a41cad63594d7bfc376 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fcd0bf81f6a9ca80450148c7084b49b inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a0fcd0bf81f6a9ca80450148c7084b49b">isSame</a> (const <a class="el" href="classSoField.html">SoField</a> &amp;f) const =0</td></tr>
+<tr class="separator:a0fcd0bf81f6a9ca80450148c7084b49b inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a917c364cae1a18863084cdf8ad6f8e7e inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a917c364cae1a18863084cdf8ad6f8e7e">notify</a> (<a class="el" href="classSoNotList.html">SoNotList</a> *nlist)</td></tr>
+<tr class="separator:a917c364cae1a18863084cdf8ad6f8e7e inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8b224345de91753ae5afde49905a330 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#ad8b224345de91753ae5afde49905a330">operator!=</a> (const <a class="el" href="classSoField.html">SoField</a> &amp;f) const</td></tr>
+<tr class="separator:ad8b224345de91753ae5afde49905a330 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2664c81c196a20f23637f9e5616fd870 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a2664c81c196a20f23637f9e5616fd870">operator==</a> (const <a class="el" href="classSoField.html">SoField</a> &amp;f) const</td></tr>
+<tr class="separator:a2664c81c196a20f23637f9e5616fd870 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2c7bc1a3a068385d318b56912c796a2 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#ab2c7bc1a3a068385d318b56912c796a2">read</a> (<a class="el" href="classSoInput.html">SoInput</a> *input, const <a class="el" href="classSbName.html">SbName</a> &amp;name)</td></tr>
+<tr class="separator:ab2c7bc1a3a068385d318b56912c796a2 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b165d938e0f830b806ab634ca09dc74 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a5b165d938e0f830b806ab634ca09dc74">referencesCopy</a> (void) const</td></tr>
+<tr class="separator:a5b165d938e0f830b806ab634ca09dc74 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab990bb100c12bc1637d35318b94f2e47 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#ab990bb100c12bc1637d35318b94f2e47">removeAuditor</a> (void *f, <a class="el" href="classSoNotRec.html#a3dadebf7917d6722df3485e7971ca25c">SoNotRec::Type</a> type)</td></tr>
+<tr class="separator:ab990bb100c12bc1637d35318b94f2e47 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ced83f62b6776e9e805aeb5427108e4 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a1ced83f62b6776e9e805aeb5427108e4">set</a> (const char *valuestring)</td></tr>
+<tr class="separator:a1ced83f62b6776e9e805aeb5427108e4 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9fbdf1e1b8fa0b4c610af0448041d0b1 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a9fbdf1e1b8fa0b4c610af0448041d0b1">setContainer</a> (<a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *cont)</td></tr>
+<tr class="separator:a9fbdf1e1b8fa0b4c610af0448041d0b1 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4a5898e9a83082717849530757262a3 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#ad4a5898e9a83082717849530757262a3">setDefault</a> (SbBool defaultVal)</td></tr>
+<tr class="separator:ad4a5898e9a83082717849530757262a3 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6aa9994c273b961f0d14b9ff55ca876 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#aa6aa9994c273b961f0d14b9ff55ca876">setDirty</a> (SbBool dirty)</td></tr>
+<tr class="separator:aa6aa9994c273b961f0d14b9ff55ca876 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7aadd2ebddc316ae81a65db58fd4f73f inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a7aadd2ebddc316ae81a65db58fd4f73f">setFieldType</a> (int type)</td></tr>
+<tr class="separator:a7aadd2ebddc316ae81a65db58fd4f73f inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bc88e54b4476a54db9e065672ad6359 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a1bc88e54b4476a54db9e065672ad6359">setIgnored</a> (SbBool ignore)</td></tr>
+<tr class="separator:a1bc88e54b4476a54db9e065672ad6359 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee0c6793584994f4330b036833c2012e inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#aee0c6793584994f4330b036833c2012e">shouldWrite</a> (void) const</td></tr>
+<tr class="separator:aee0c6793584994f4330b036833c2012e inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cc06510e3bbe043bbeded48ec721f48 inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a2cc06510e3bbe043bbeded48ec721f48">startNotify</a> (void)</td></tr>
+<tr class="separator:a2cc06510e3bbe043bbeded48ec721f48 inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64ebcf224b92166b743903c9bf8d748f inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a64ebcf224b92166b743903c9bf8d748f">touch</a> (void)</td></tr>
+<tr class="separator:a64ebcf224b92166b743903c9bf8d748f inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a899b22c536d39d1d1208851695bf7dcb inherit pub_methods_classSoField"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a899b22c536d39d1d1208851695bf7dcb">write</a> (<a class="el" href="classSoOutput.html">SoOutput</a> *out, const <a class="el" href="classSbName.html">SbName</a> &amp;name) const</td></tr>
+<tr class="separator:a899b22c536d39d1d1208851695bf7dcb inherit pub_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a83d5b0a8600775fd891afaefcf9388dc"><td class="memItemLeft" align="right" valign="top"><a id="a83d5b0a8600775fd891afaefcf9388dc"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>atexit_cleanup</b> (void)</td></tr>
+<tr class="separator:a83d5b0a8600775fd891afaefcf9388dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae61508a50fe707cde44b812f5ab26bdb"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMField.html#ae61508a50fe707cde44b812f5ab26bdb">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:ae61508a50fe707cde44b812f5ab26bdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0498ba26e061d8d6006a5684b430c88"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMField.html#ad0498ba26e061d8d6006a5684b430c88">initClass</a> (void)</td></tr>
+<tr class="separator:ad0498ba26e061d8d6006a5684b430c88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classSoField"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classSoField')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classSoField.html">SoField</a></td></tr>
+<tr class="memitem:a0ed78e91644bb95edef23ce019ba35d6 inherit pub_static_methods_classSoField"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a0ed78e91644bb95edef23ce019ba35d6">cleanupClass</a> (void)</td></tr>
+<tr class="separator:a0ed78e91644bb95edef23ce019ba35d6 inherit pub_static_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36849953c91f385ab581071d5335338e inherit pub_static_methods_classSoField"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a36849953c91f385ab581071d5335338e">getClassTypeId</a> (void)</td></tr>
+<tr class="separator:a36849953c91f385ab581071d5335338e inherit pub_static_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae6bb64a7e35d85a2b01395da645120f inherit pub_static_methods_classSoField"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#aae6bb64a7e35d85a2b01395da645120f">initClass</a> (void)</td></tr>
+<tr class="separator:aae6bb64a7e35d85a2b01395da645120f inherit pub_static_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6112c598f125a25fd4db2959c0d9880 inherit pub_static_methods_classSoField"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#ad6112c598f125a25fd4db2959c0d9880">initClasses</a> (void)</td></tr>
+<tr class="separator:ad6112c598f125a25fd4db2959c0d9880 inherit pub_static_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a687eeb3ee47c6caa258694bb659678f9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMField.html#a687eeb3ee47c6caa258694bb659678f9">SoMField</a> (void)</td></tr>
+<tr class="separator:a687eeb3ee47c6caa258694bb659678f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66c71f07e8204ba2ee7d7aa8e9cb739b"><td class="memItemLeft" align="right" valign="top"><a id="a66c71f07e8204ba2ee7d7aa8e9cb739b"></a>
+virtual <a class="el" href="classSoNotRec.html">SoNotRec</a>&#160;</td><td class="memItemRight" valign="bottom"><b>createNotRec</b> (<a class="el" href="classSoBase.html">SoBase</a> *container)</td></tr>
+<tr class="separator:a66c71f07e8204ba2ee7d7aa8e9cb739b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac07f6388c27eba3c4be8437e035adc4a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMField.html#ac07f6388c27eba3c4be8437e035adc4a">makeRoom</a> (int newnum)</td></tr>
+<tr class="separator:ac07f6388c27eba3c4be8437e035adc4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8bd73aeda259e3679bbfc827df3705d"><td class="memItemLeft" align="right" valign="top"><a id="aa8bd73aeda259e3679bbfc827df3705d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setChangedIndex</b> (const int chgidx)</td></tr>
+<tr class="separator:aa8bd73aeda259e3679bbfc827df3705d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c4036d925136850252c12904cc2948f"><td class="memItemLeft" align="right" valign="top"><a id="a8c4036d925136850252c12904cc2948f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setChangedIndices</b> (const int chgidx=-1, const int numchgind=0)</td></tr>
+<tr class="separator:a8c4036d925136850252c12904cc2948f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSoField"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSoField')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSoField.html">SoField</a></td></tr>
+<tr class="memitem:ac98e5cd5d81b1a0b817d310bf85a35e6 inherit pro_methods_classSoField"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#ac98e5cd5d81b1a0b817d310bf85a35e6">SoField</a> (void)</td></tr>
+<tr class="separator:ac98e5cd5d81b1a0b817d310bf85a35e6 inherit pro_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadf076af5eff33adfc346bf6c60de9af inherit pro_methods_classSoField"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#aadf076af5eff33adfc346bf6c60de9af">evaluateConnection</a> (void) const</td></tr>
+<tr class="separator:aadf076af5eff33adfc346bf6c60de9af inherit pro_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c7357963696c5f45071c508a158d54d inherit pro_methods_classSoField"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a1c7357963696c5f45071c508a158d54d">isDestructing</a> (void) const</td></tr>
+<tr class="separator:a1c7357963696c5f45071c508a158d54d inherit pro_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac25af1612a2270a45bb9a469f6d34802 inherit pro_methods_classSoField"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#ac25af1612a2270a45bb9a469f6d34802">readConnection</a> (<a class="el" href="classSoInput.html">SoInput</a> *in)</td></tr>
+<tr class="separator:ac25af1612a2270a45bb9a469f6d34802 inherit pro_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33cb8b1bc3ac383ec3088f3952bb12b4 inherit pro_methods_classSoField"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#a33cb8b1bc3ac383ec3088f3952bb12b4">valueChanged</a> (SbBool resetdefault=TRUE)</td></tr>
+<tr class="separator:a33cb8b1bc3ac383ec3088f3952bb12b4 inherit pro_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc9f87f653f9401e1662488fadbca4a0 inherit pro_methods_classSoField"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoField.html#afc9f87f653f9401e1662488fadbca4a0">writeConnection</a> (<a class="el" href="classSoOutput.html">SoOutput</a> *out) const</td></tr>
+<tr class="separator:afc9f87f653f9401e1662488fadbca4a0 inherit pro_methods_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:ab9c4ae077d62a4e8a51dc5113d96a869"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMField.html#ab9c4ae077d62a4e8a51dc5113d96a869">maxNum</a></td></tr>
+<tr class="separator:ab9c4ae077d62a4e8a51dc5113d96a869"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7b3a61bcc18b20c5bdf971db5942fad"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMField.html#ae7b3a61bcc18b20c5bdf971db5942fad">num</a></td></tr>
+<tr class="separator:ae7b3a61bcc18b20c5bdf971db5942fad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8301aed1f6d683c54e74237b08855e63"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoMField.html#a8301aed1f6d683c54e74237b08855e63">userDataIsUsed</a></td></tr>
+<tr class="separator:a8301aed1f6d683c54e74237b08855e63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_types_classSoField"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classSoField')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSoField.html">SoField</a></td></tr>
+<tr class="memitem:acb5793e7f86918cec63bd5505773b1ea inherit pub_types_classSoField"><td class="memItemLeft" align="right" valign="top"><a id="acb5793e7f86918cec63bd5505773b1ea"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>FieldType</b> { <b>NORMAL_FIELD</b> = 0
+, <b>EVENTIN_FIELD</b>
+, <b>EVENTOUT_FIELD</b>
+, <b>EXPOSED_FIELD</b>
+ }</td></tr>
+<tr class="separator:acb5793e7f86918cec63bd5505773b1ea inherit pub_types_classSoField"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSoMField.html" title="The SoMField class is the base class for fields which can contain multiple values.">SoMField</a> class is the base class for fields which can contain multiple values. </p>
+<p>All field types which may contain more than one member value inherits this class. <a class="el" href="classSoMField.html" title="The SoMField class is the base class for fields which can contain multiple values.">SoMField</a> is an abstract class.</p>
+<p>Use setValue(), setValues() or set1Value() to set the values of fields inheriting <a class="el" href="classSoMField.html" title="The SoMField class is the base class for fields which can contain multiple values.">SoMField</a>, and use getValues() or the index operator [] to read values. Example code:</p>
+<div class="fragment"><div class="line"><a class="code" href="classSoText2.html">SoText2</a> * textnode = <span class="keyword">new</span> <a class="code" href="classSoText2.html">SoText2</a>;</div>
+<div class="line">textnode-&gt;<a class="code" href="classSoBase.html#ac01cf34901b2a2be1bc2671bb2463851">ref</a>();</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Setting multi-field values. /////////////////////////////</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Set the first value of the SoMFString field of the SoText2 node.</span></div>
+<div class="line"><span class="comment">// The field array will be truncated to only contain this single value.</span></div>
+<div class="line">textnode-&gt;<a class="code" href="classSoText2.html#a4942971760f490c3e62d809ceaaa97c8">string</a>.setValue(<span class="stringliteral">&quot;Morten&quot;</span>);</div>
+<div class="line"><span class="comment">// Full contents of the SoMFString is: [ &quot;Morten&quot; ]</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// The setValue() method and the = operator is interchangeable,</span></div>
+<div class="line"><span class="comment">// so this code line does the same as the previous line.</span></div>
+<div class="line">textnode-&gt;<a class="code" href="classSoText2.html#a4942971760f490c3e62d809ceaaa97c8">string</a> = <span class="stringliteral">&quot;Peder&quot;</span>;</div>
+<div class="line"><span class="comment">// Full contents of the SoMFString is now: [ &quot;Peder&quot; ]</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Set the value at index 2. If the field value array contained</span></div>
+<div class="line"><span class="comment">// less than 3 elements before this call, first expand it to contain</span></div>
+<div class="line"><span class="comment">// 3 elements.</span></div>
+<div class="line">textnode-&gt;<a class="code" href="classSoText2.html#a4942971760f490c3e62d809ceaaa97c8">string</a>.set1Value(2, <span class="stringliteral">&quot;Lars&quot;</span>);</div>
+<div class="line"><span class="comment">// Full contents of the SoMFString is: [ &quot;Peder&quot;, &lt;undefined&gt;, &quot;Lars&quot; ]</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// This sets 3 values of the array, starting at index 5. If the</span></div>
+<div class="line"><span class="comment">// array container had less than 8 elements before the setValues()</span></div>
+<div class="line"><span class="comment">// call, the array will first be expanded.</span></div>
+<div class="line"><a class="code" href="classSbString.html">SbString</a> s[3] = { <span class="stringliteral">&quot;Eriksen&quot;</span>, <span class="stringliteral">&quot;Blekken&quot;</span>, <span class="stringliteral">&quot;Aas&quot;</span> };</div>
+<div class="line">textnode-&gt;<a class="code" href="classSoText2.html#a4942971760f490c3e62d809ceaaa97c8">string</a>.setValues(5, <span class="keyword">sizeof</span>(s) / <span class="keyword">sizeof</span>(s[0]), s);</div>
+<div class="line"><span class="comment">// Full contents of the SoMFString is now:</span></div>
+<div class="line"><span class="comment">//     [ &quot;Peder&quot;, &lt;undefined&gt;, &quot;Lars&quot;, &lt;undefined&gt;, &lt;undefined&gt;,</span></div>
+<div class="line"><span class="comment">//       &quot;Eriksen&quot;, &quot;Blekken&quot;, &quot;Aas&quot; ]</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Note also that the setValues() call will *not* truncate a field</span></div>
+<div class="line"><span class="comment">// container if you use it to change a subset at the start:</span></div>
+<div class="line"><a class="code" href="classSbString.html">SbString</a> n[4] = { <span class="stringliteral">&quot;Dixon&quot;</span>, <span class="stringliteral">&quot;Adams&quot;</span>, <span class="stringliteral">&quot;Bould&quot;</span>, <span class="stringliteral">&quot;Winterburn&quot;</span> };</div>
+<div class="line">textnode-&gt;<a class="code" href="classSoText2.html#a4942971760f490c3e62d809ceaaa97c8">string</a>.setValues(0, <span class="keyword">sizeof</span>(n) / <span class="keyword">sizeof</span>(n[0]), n);</div>
+<div class="line"><span class="comment">// Full contents of the SoMFString is now:</span></div>
+<div class="line"><span class="comment">//     [ &quot;Dixon&quot;, &quot;Adams&quot;, &quot;Bould&quot;, &quot;Winterburn&quot;, &lt;undefined&gt;,</span></div>
+<div class="line"><span class="comment">//       &quot;Eriksen&quot;, &quot;Blekken&quot;, &quot;Aas&quot; ]</span></div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Inspecting multi-field values. //////////////////////////</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// This will read the second element (counting from zero) if the</span></div>
+<div class="line"><span class="comment">// multivalue field and place it in &quot;val&quot;.</span></div>
+<div class="line"><a class="code" href="classSbString.html">SbString</a> val = textnode-&gt;<a class="code" href="classSoText2.html#a4942971760f490c3e62d809ceaaa97c8">string</a>[2];</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Gives us a pointer to the array which the multiple-value field</span></div>
+<div class="line"><span class="comment">// is using to store the values. Note that the return value is</span></div>
+<div class="line"><span class="comment">// &quot;const&quot;, so you can only read from the array, not write to</span></div>
+<div class="line"><span class="comment">// it.</span></div>
+<div class="line"><span class="keyword">const</span> <a class="code" href="classSbString.html">SbString</a> * vals = textnode-&gt;<a class="code" href="classSoText2.html#a4942971760f490c3e62d809ceaaa97c8">string</a>.<a class="code" href="classSoMFString.html#ab2aa86813094a2733007de4fb670fd6a">getValues</a>(0);</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Modifying multi-field values. ///////////////////////////</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// You can of course modify multifield-values by using the set-</span></div>
+<div class="line"><span class="comment">// and get-methods shown above, but when you&#39;re working with</span></div>
+<div class="line"><span class="comment">// big sets of data, this will be ineffective. Then use this</span></div>
+<div class="line"><span class="comment">// technique instead:</span></div>
+<div class="line"><a class="code" href="classSbString.html">SbString</a> * modvals = textnode-&gt;<a class="code" href="classSoText2.html#a4942971760f490c3e62d809ceaaa97c8">string</a>.startEditing();</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// ... lots of modifications to the &quot;modvals&quot; array here ...</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Calling the finishEditing() method is necessary for the</span></div>
+<div class="line"><span class="comment">// scene graph to be updated (and re-rendered).</span></div>
+<div class="line">textnode-&gt;<a class="code" href="classSoText2.html#a4942971760f490c3e62d809ceaaa97c8">string</a>.finishEditing();</div>
+<div class="ttc" id="aclassSbString_html"><div class="ttname"><a href="classSbString.html">SbString</a></div><div class="ttdoc">The SbString class is a string class with convenience functions for string operations.</div><div class="ttdef"><b>Definition:</b> SbString.h:52</div></div>
+<div class="ttc" id="aclassSoBase_html_ac01cf34901b2a2be1bc2671bb2463851"><div class="ttname"><a href="classSoBase.html#ac01cf34901b2a2be1bc2671bb2463851">SoBase::ref</a></div><div class="ttdeci">void ref(void) const</div><div class="ttdef"><b>Definition:</b> SoBase.cpp:478</div></div>
+<div class="ttc" id="aclassSoMFString_html_ab2aa86813094a2733007de4fb670fd6a"><div class="ttname"><a href="classSoMFString.html#ab2aa86813094a2733007de4fb670fd6a">SoMFString::getValues</a></div><div class="ttdeci">const SbString * getValues(const int start) const</div><div class="ttdef"><b>Definition:</b> SoMFString.h:43</div></div>
+<div class="ttc" id="aclassSoText2_html"><div class="ttname"><a href="classSoText2.html">SoText2</a></div><div class="ttdoc">The SoText2 class is a node type for visualizing 2D text aligned with the camera plane.</div><div class="ttdef"><b>Definition:</b> SoText2.h:42</div></div>
+<div class="ttc" id="aclassSoText2_html_a4942971760f490c3e62d809ceaaa97c8"><div class="ttname"><a href="classSoText2.html#a4942971760f490c3e62d809ceaaa97c8">SoText2::string</a></div><div class="ttdeci">SoMFString string</div><div class="ttdef"><b>Definition:</b> SoText2.h:57</div></div>
+</div><!-- fragment --><p>The reason it is more effective to wrap many modifications within startEditing() / finishEditing() is because we avoid the stream of notification messages which would otherwise be sent for each and every modification done. Instead there will just be a single notification about the changes, triggered by the finishEditing() call.</p>
+<p>The correct manner in which to pre-allocate a specific number of field values in one chunk is to use the <a class="el" href="classSoMField.html#ad41785f63d6cf99f4a8bc6fedd55d398">SoMField::setNum()</a> method, for instance in advance of using the startEditing() and finishEditing() methods. The field values will be uninitialized after expanding the field with the <a class="el" href="classSoMField.html#ad41785f63d6cf99f4a8bc6fedd55d398">setNum()</a> call.</p>
+<p>Be aware that your application code must be careful to not do silly things during a setValues()-triggered notification. If you have code that looks for instance like this:</p>
+<div class="fragment"><div class="line"><span class="comment">// update set of coordinate indices at the start of e.g.</span></div>
+<div class="line"><span class="comment">// an SoIndexedFaceSet&#39;s coordIndex field..</span></div>
+<div class="line">ifs-&gt;coordIndex.setValues(0, runner-&gt;numIndices, runner-&gt;indices);</div>
+<div class="line"><span class="comment">// ..then truncate to make sure it&#39;s the correct size.</span></div>
+<div class="line">ifs-&gt;coordIndex.setNum(runner-&gt;numIndices);</div>
+</div><!-- fragment --><p>As setValues() might leave some elements at the end of the array that typically can be invalid indices after the first statement is executed, something can go wrong during notification if you have application code monitoring changes, and the application code then for instance triggers an action or something that tries to use the coordIndex field before it is updated to its correct size with the <a class="el" href="classSoMField.html#ad41785f63d6cf99f4a8bc6fedd55d398">setNum()</a> call.</p>
+<p>(Notification can in this case, as always, be temporarily disabled to be on the safe side:</p>
+<div class="fragment"><div class="line">somefield.enableNotify(FALSE);</div>
+<div class="line">somefield.setValues(...);</div>
+<div class="line">somefield.setNum(...);</div>
+<div class="line">somefield.enableNotify(TRUE);</div>
+<div class="line">somefield.touch();</div>
+</div><!-- fragment --><p>This will guarantee that the setValues() and <a class="el" href="classSoMField.html#ad41785f63d6cf99f4a8bc6fedd55d398">setNum()</a> pair will be executed as an atomic operation.)</p>
+<p>When nodes, engines or other types of field containers are written to file, their multiple-value fields are written to file in this format:</p>
+<div class="fragment"><div class="line">containerclass {</div>
+<div class="line">  fieldname [ value0, value1, value2, ...]</div>
+<div class="line">  ...</div>
+<div class="line">}</div>
+</div><!-- fragment --><p>..like this, for instance, a Coordinate3 node providing 6 vertex coordinates in the form of <a class="el" href="classSbVec3f.html" title="The SbVec3f class is a 3 dimensional vector with floating point coordinates.">SbVec3f</a> values in its "point" field for e.g. a faceset, lineset or pointset:</p>
+<div class="fragment"><div class="line">Coordinate3 {</div>
+<div class="line">   point [</div>
+<div class="line">      -1 1 0, -1 -1 0, 1 -1 0,</div>
+<div class="line">      0 2 -1, -2 0 -1, 0 -2 -1,</div>
+<div class="line">   ]</div>
+<div class="line">}</div>
+</div><!-- fragment --><p>Some fields support application data sharing through a setValuesPointer() method. setValuesPointer() makes it possible to set the data pointer directly in the field. Normally (when using setValues()), Coin makes a copy of your data, so this method can be very useful if your application needs the data internally and you're just using Coin for the visualization. Example code:</p>
+<div class="fragment"><div class="line">myapp-&gt;calculateCoordinates(SOME_LARGE_VALUE);</div>
+<div class="line"><a class="code" href="classSbVec3f.html">SbVec3f</a> * mycoords = myapp-&gt;getCoordinates();</div>
+<div class="line"> </div>
+<div class="line"><a class="code" href="classSoCoordinate3.html">SoCoordinate3</a> * mynode = myapp-&gt;getCoordinateNode();</div>
+<div class="line">mynode-&gt;<a class="code" href="classSoCoordinate3.html#a51a6e25b7a4d81bc2c573514e8555744">point</a>.setValuesPointer(SOME_LARGE_VALUE, mycoords);</div>
+<div class="ttc" id="aclassSbVec3f_html"><div class="ttname"><a href="classSbVec3f.html">SbVec3f</a></div><div class="ttdoc">The SbVec3f class is a 3 dimensional vector with floating point coordinates.</div><div class="ttdef"><b>Definition:</b> SbVec3f.h:51</div></div>
+<div class="ttc" id="aclassSoCoordinate3_html"><div class="ttname"><a href="classSoCoordinate3.html">SoCoordinate3</a></div><div class="ttdoc">The SoCoordinate3 class is a node for providing coordinates to shape nodes.</div><div class="ttdef"><b>Definition:</b> SoCoordinate3.h:41</div></div>
+<div class="ttc" id="aclassSoCoordinate3_html_a51a6e25b7a4d81bc2c573514e8555744"><div class="ttname"><a href="classSoCoordinate3.html#a51a6e25b7a4d81bc2c573514e8555744">SoCoordinate3::point</a></div><div class="ttdeci">SoMFVec3f point</div><div class="ttdef"><b>Definition:</b> SoCoordinate3.h:50</div></div>
+</div><!-- fragment --><p>Be aware that your field should be a read-only field when you set the data like this. If you write to the field, the values in your application array will be overwritten. If you append values to the field, a new array will be allocated, and the data will be copied into it before appending the new values. The array pointer will then be discarded.</p>
+<p>Also note that whenever you change some value(s) in the array, you must manually notify Coin about this by calling <a class="el" href="classSoField.html#a64ebcf224b92166b743903c9bf8d748f">SoField::touch()</a>. For our example:</p>
+<div class="fragment"><div class="line"><a class="code" href="classSbVec3f.html">SbVec3f</a> * mycoords = myapp-&gt;getCoordinate();</div>
+<div class="line">myapp-&gt;updateCoordinate(mycoords);</div>
+<div class="line"><a class="code" href="classSoCoordinate3.html">SoCoordinate3</a> * mynode = myapp-&gt;getCoordinateNode();</div>
+<div class="line">mynode-&gt;<a class="code" href="classSoCoordinate3.html#a51a6e25b7a4d81bc2c573514e8555744">point</a>.<a class="code" href="classSoField.html#a64ebcf224b92166b743903c9bf8d748f">touch</a>(); <span class="comment">// this will notify Coin that field has changed</span></div>
+<div class="ttc" id="aclassSoField_html_a64ebcf224b92166b743903c9bf8d748f"><div class="ttname"><a href="classSoField.html#a64ebcf224b92166b743903c9bf8d748f">SoField::touch</a></div><div class="ttdeci">virtual void touch(void)</div><div class="ttdef"><b>Definition:</b> SoField.cpp:1427</div></div>
+</div><!-- fragment --><p>You can use <a class="el" href="classSoMField.html#a62ce03063996d39fdee9ef36658db21b">SoMField::enableDeleteValues()</a> to make Coin delete the array for you when the field is destructed or the array pointer is discarded because it isn't needed anymore (e.g. when the array size is changed). The array will be deleted using the C++ <em>delete</em>[] operator, so if you use it, your array must be allocated using the C++ <em>new</em>[] operator.</p>
+<p><a class="el" href="classSoMField.html#a62ce03063996d39fdee9ef36658db21b">SoMField::enableDeleteValues()</a> is supported only to be compatible with later versions of TGS Inventor and we don't recommend using it. It can have undefined results on the Microsoft Windows platform. Allocating memory in the application and destructing it in a DLL can be a bad thing, causing mysterious crashes, if you're not very careful about how your application and DLLs are linked to the underlying C library.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoSField.html" title="The SoSField class is the base class for fields which contains only a single value.">SoSField</a> </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="af07d4320c3c4be08678e3b56a57f4c50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af07d4320c3c4be08678e3b56a57f4c50">&#9670;&nbsp;</a></span>~SoMField()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoMField::~SoMField </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Destructor in <a class="el" href="classSoMField.html" title="The SoMField class is the base class for fields which can contain multiple values.">SoMField</a> does nothing. Resource deallocation needs to be done from subclasses. </p>
+
+</div>
+</div>
+<a id="a687eeb3ee47c6caa258694bb659678f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a687eeb3ee47c6caa258694bb659678f9">&#9670;&nbsp;</a></span>SoMField()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SoMField::SoMField </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Constructor. Initializes number of values in field to zero. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a00b7c3f249ed2333901bb73accc38ad8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00b7c3f249ed2333901bb73accc38ad8">&#9670;&nbsp;</a></span>deleteValues()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoMField::deleteValues </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>numarg</em> = <code>-1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Remove value elements from index <em>start</em> up to and including index <em>start</em> + <em>num</em> - 1.</p>
+<p>Elements with indices larger than the last deleted element will be moved downwards in the value array.</p>
+<p>If <em>num</em> equals -1, delete from index <em>start</em> and to the end of the array. </p>
+
+<p>Reimplemented in <a class="el" href="classSoMFPath.html#a116b84beb9f733a318a47f627e642393">SoMFPath</a>, <a class="el" href="classSoMFNode.html#ae84bef6b8dfaf807ba08710ad3329842">SoMFNode</a>, and <a class="el" href="classSoMFEngine.html#a75e6b106ba70f4408d595cfc7dfcb878">SoMFEngine</a>.</p>
+
+</div>
+</div>
+<a id="a62ce03063996d39fdee9ef36658db21b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62ce03063996d39fdee9ef36658db21b">&#9670;&nbsp;</a></span>enableDeleteValues()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoMField::enableDeleteValues </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Can be used to make Coin delete the array pointer set through a setValuesPointer() call. See <a class="el" href="classSoMField.html" title="The SoMField class is the base class for fields which can contain multiple values.">SoMField</a> documentation for information about the setValuesPointer() function.</p>
+<p>This method is a TGS extension (introduced in TGS OIV v3.0) and is supported only for compatibility. We suggest that you don't use it since it can lead to hard-to-find bugs.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.0 </dd>
+<dd>
+TGS Inventor 3.0 </dd></dl>
+
+</div>
+</div>
+<a id="ad0734eb8ec34ecbb633ccffce0f3fb83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0734eb8ec34ecbb633ccffce0f3fb83">&#9670;&nbsp;</a></span>get1()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoMField::get1 </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbString.html">SbString</a> &amp;&#160;</td>
+          <td class="paramname"><em>valuestring</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return the value at <em>index</em> in the <em>valuestring</em> string. </p>
+
+</div>
+</div>
+<a id="ae61508a50fe707cde44b812f5ab26bdb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae61508a50fe707cde44b812f5ab26bdb">&#9670;&nbsp;</a></span>getClassTypeId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoType.html">SoType</a> SoMField::getClassTypeId </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns a unique type identifier for this field class.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoField.html#a34ac9c7e16370f08a911e8ef74c8f784">getTypeId()</a>, <a class="el" href="classSoType.html" title="The SoType class is the basis for the runtime type system in Coin.">SoType</a> </dd></dl>
+
+</div>
+</div>
+<a id="a5308d1fd30bc255a16cac527d5e93123"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5308d1fd30bc255a16cac527d5e93123">&#9670;&nbsp;</a></span>getNum()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SoMField::getNum </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns number of values in this field. </p>
+
+</div>
+</div>
+<a id="ad0498ba26e061d8d6006a5684b430c88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0498ba26e061d8d6006a5684b430c88">&#9670;&nbsp;</a></span>initClass()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoMField::initClass </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Internal method called upon initialization of the library (from <a class="el" href="classSoDB.html#a970f42dfd362c33c69fa1869bfae72b5">SoDB::init()</a>) to set up the type system. </p>
+
+</div>
+</div>
+<a id="ab5ef85c5febe2f5faff55f0a29f96d6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5ef85c5febe2f5faff55f0a29f96d6b">&#9670;&nbsp;</a></span>insertSpace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoMField::insertSpace </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>numarg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Insert <em>num</em> "slots" for new value elements from <em>start</em>. The elements already present from <em>start</em> will be moved "upward" in the extended array. </p>
+
+<p>Reimplemented in <a class="el" href="classSoMFPath.html#aefe9513cb523b93c3f41b9a371ca0ab3">SoMFPath</a>, <a class="el" href="classSoMFNode.html#adac23e1714ca11172daaecc55214a31d">SoMFNode</a>, and <a class="el" href="classSoMFEngine.html#a08f8d1ee8b4e04c6fdb242c433470bfd">SoMFEngine</a>.</p>
+
+</div>
+</div>
+<a id="a6f038a6506cfd3bd1cc11e4f5a873642"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f038a6506cfd3bd1cc11e4f5a873642">&#9670;&nbsp;</a></span>isDeleteValuesEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoMField::isDeleteValuesEnabled </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns whether <a class="el" href="classSoMField.html#a62ce03063996d39fdee9ef36658db21b">SoMField::enableDeleteValues()</a> has been called on a field. The result is only valid if setValuesPointer() has been called on the field first.</p>
+<p>This method is a TGS extension (introduced in TGS OIV v3.0) and is supported only for compatibility. We suggest that you don't use it since it can lead to hard-to-find bugs.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.0 </dd>
+<dd>
+TGS Inventor 3.0 </dd></dl>
+
+</div>
+</div>
+<a id="ac07f6388c27eba3c4be8437e035adc4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac07f6388c27eba3c4be8437e035adc4a">&#9670;&nbsp;</a></span>makeRoom()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoMField::makeRoom </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>newnum</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Make room in the field to store <em>newnum</em> values. </p>
+
+</div>
+</div>
+<a id="a19232a6e205fd3d9088f0c30363cc830"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19232a6e205fd3d9088f0c30363cc830">&#9670;&nbsp;</a></span>set1()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoMField::set1 </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *const&#160;</td>
+          <td class="paramname"><em>valuestring</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set the value at <em>index</em> to the value contained in <em>valuestring</em>. Returns <code>TRUE</code> if a valid value for this field can be extracted from <em>valuestring</em>, otherwise <code>FALSE</code>.</p>
+<p>If <em>index</em> is larger than the current number of elements in the field, this method will automatically expand the field to accommodate the new value. </p>
+
+</div>
+</div>
+<a id="ad41785f63d6cf99f4a8bc6fedd55d398"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad41785f63d6cf99f4a8bc6fedd55d398">&#9670;&nbsp;</a></span>setNum()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SoMField::setNum </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>numarg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Set number of values to <em>num</em>.</p>
+<p>If the current number of values is larger than <em>num</em>, the array of values will be truncated from the end. But if <em>num</em> is larger, the array will automatically be expanded (and random values will be set for the new array items). </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="ab9c4ae077d62a4e8a51dc5113d96a869"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9c4ae077d62a4e8a51dc5113d96a869">&#9670;&nbsp;</a></span>maxNum</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SoMField::maxNum</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Number of array "slots" allocated for this field. </p>
+
+</div>
+</div>
+<a id="ae7b3a61bcc18b20c5bdf971db5942fad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7b3a61bcc18b20c5bdf971db5942fad">&#9670;&nbsp;</a></span>num</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SoMField::num</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Number of available values. </p>
+
+</div>
+</div>
+<a id="a8301aed1f6d683c54e74237b08855e63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8301aed1f6d683c54e74237b08855e63">&#9670;&nbsp;</a></span>userDataIsUsed</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoMField::userDataIsUsed</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Is <code>TRUE</code> if data have been set through a setValuesPointer() call and set to <code>FALSE</code> through a <a class="el" href="classSoMField.html#a62ce03063996d39fdee9ef36658db21b">enableDeleteValues()</a> call. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SoMField_8h_source.html">SoMField.h</a></li>
+<li>SoMField.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSoMField.html">SoMField</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

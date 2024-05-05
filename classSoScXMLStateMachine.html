@@ -1,0 +1,484 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SoScXMLStateMachine Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSoScXMLStateMachine.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="classSoScXMLStateMachine-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SoScXMLStateMachine Class Reference<div class="ingroups"><a class="el" href="group__coin__soscxml.html">Coin specific State Chart XML Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>Integration level for using Coin events with SCXML-based state machines.  
+ <a href="classSoScXMLStateMachine.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SoScXMLStateMachine_8h_source.html">Inventor/scxml/SoScXMLStateMachine.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for SoScXMLStateMachine:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classSoScXMLStateMachine.png" usemap="#SoScXMLStateMachine_map" alt=""/>
+  <map id="SoScXMLStateMachine_map" name="SoScXMLStateMachine_map">
+<area href="classScXMLStateMachine.html" title="Manager for processing events and setting states in SCXML structures." alt="ScXMLStateMachine" shape="rect" coords="0,112,146,136"/>
+<area href="classScXMLEventTarget.html" title="base class for event targets for inter-system event communication" alt="ScXMLEventTarget" shape="rect" coords="0,56,146,80"/>
+<area href="classScXMLObject.html" title="Base class for all SCXML objects." alt="ScXMLObject" shape="rect" coords="0,0,146,24"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a385b35d7a7bacffc3418ee090c54adc6"><td class="memItemLeft" align="right" valign="top"><a id="a385b35d7a7bacffc3418ee090c54adc6"></a>
+virtual <a class="el" href="classSoCamera.html">SoCamera</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getActiveCamera</b> (void) const</td></tr>
+<tr class="separator:a385b35d7a7bacffc3418ee090c54adc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad13d1928ccdf7b5f6440cf8c51e044f2"><td class="memItemLeft" align="right" valign="top"><a id="ad13d1928ccdf7b5f6440cf8c51e044f2"></a>
+virtual <a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getSceneGraphRoot</b> (void) const</td></tr>
+<tr class="separator:ad13d1928ccdf7b5f6440cf8c51e044f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa55d5011cfc4f78337f04b58e9a41c65"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoScXMLStateMachine.html#aa55d5011cfc4f78337f04b58e9a41c65">getTypeId</a> (void) const</td></tr>
+<tr class="memdesc:aa55d5011cfc4f78337f04b58e9a41c65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the type identification of an object derived from a class inheriting <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a>. This is used for runtime type checking and "downward" casting.  <a href="classSoScXMLStateMachine.html#aa55d5011cfc4f78337f04b58e9a41c65">More...</a><br /></td></tr>
+<tr class="separator:aa55d5011cfc4f78337f04b58e9a41c65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca0ad22e7f3b26b064d8f0fb1a9cabf1"><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoScXMLStateMachine.html#aca0ad22e7f3b26b064d8f0fb1a9cabf1">getVariable</a> (const char *key) const</td></tr>
+<tr class="separator:aca0ad22e7f3b26b064d8f0fb1a9cabf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0b41af2d804fb3b7e177ed802a1cb02"><td class="memItemLeft" align="right" valign="top"><a id="ad0b41af2d804fb3b7e177ed802a1cb02"></a>
+virtual const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getViewportRegion</b> (void) const</td></tr>
+<tr class="separator:ad0b41af2d804fb3b7e177ed802a1cb02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9233220855212e427e266e2ab7f0eb05"><td class="memItemLeft" align="right" valign="top"><a id="a9233220855212e427e266e2ab7f0eb05"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>postGLRender</b> (void)</td></tr>
+<tr class="separator:a9233220855212e427e266e2ab7f0eb05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44f0932fa9964afbcc38818405eb1d61"><td class="memItemLeft" align="right" valign="top"><a id="a44f0932fa9964afbcc38818405eb1d61"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>preGLRender</b> (void)</td></tr>
+<tr class="separator:a44f0932fa9964afbcc38818405eb1d61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee8fb31d0e01eac95c8161f57da2c2c7"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoScXMLStateMachine.html#aee8fb31d0e01eac95c8161f57da2c2c7">processSoEvent</a> (const <a class="el" href="classSoEvent.html">SoEvent</a> *event)</td></tr>
+<tr class="separator:aee8fb31d0e01eac95c8161f57da2c2c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34bbbafc41e10d7faf93dc7d6e3722a0"><td class="memItemLeft" align="right" valign="top"><a id="a34bbbafc41e10d7faf93dc7d6e3722a0"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setActiveCamera</b> (<a class="el" href="classSoCamera.html">SoCamera</a> *camera)</td></tr>
+<tr class="separator:a34bbbafc41e10d7faf93dc7d6e3722a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae51f5a42a79ba5a96a0394d3f8a1fd9f"><td class="memItemLeft" align="right" valign="top"><a id="ae51f5a42a79ba5a96a0394d3f8a1fd9f"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setSceneGraphRoot</b> (<a class="el" href="classSoNode.html">SoNode</a> *root)</td></tr>
+<tr class="separator:ae51f5a42a79ba5a96a0394d3f8a1fd9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e07f63844fb1e0646592b2e94576db8"><td class="memItemLeft" align="right" valign="top"><a id="a7e07f63844fb1e0646592b2e94576db8"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setViewportRegion</b> (const <a class="el" href="classSbViewportRegion.html">SbViewportRegion</a> &amp;vp)</td></tr>
+<tr class="separator:a7e07f63844fb1e0646592b2e94576db8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classScXMLStateMachine"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classScXMLStateMachine')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classScXMLStateMachine.html">ScXMLStateMachine</a></td></tr>
+<tr class="memitem:af8bf1428945535c5479a7cc79e9acb00 inherit pub_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLStateMachine.html#af8bf1428945535c5479a7cc79e9acb00">addDeleteCallback</a> (ScXMLStateMachineDeleteCB *callback, void *userdata)</td></tr>
+<tr class="separator:af8bf1428945535c5479a7cc79e9acb00 inherit pub_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad84c8d6eccdb3a9f77938855bef43068 inherit pub_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLStateMachine.html#ad84c8d6eccdb3a9f77938855bef43068">addStateChangeCallback</a> (ScXMLStateChangeCB *callback, void *userdata)</td></tr>
+<tr class="separator:ad84c8d6eccdb3a9f77938855bef43068 inherit pub_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e72584d1db339e8f00fbbb881ed5e3e inherit pub_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classScXMLElt.html">ScXMLElt</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLStateMachine.html#a9e72584d1db339e8f00fbbb881ed5e3e">getActiveState</a> (int idx) const</td></tr>
+<tr class="separator:a9e72584d1db339e8f00fbbb881ed5e3e inherit pub_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f0301401ca7daae2fa307d5e3e98fda inherit pub_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top"><a id="a9f0301401ca7daae2fa307d5e3e98fda"></a>
+const <a class="el" href="classScXMLDocument.html">ScXMLDocument</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getDescription</b> (void) const</td></tr>
+<tr class="separator:a9f0301401ca7daae2fa307d5e3e98fda inherit pub_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed70671b6ff1ec7483bccd410ace64b8 inherit pub_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top"><a id="aed70671b6ff1ec7483bccd410ace64b8"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><b>getEnabledModuleName</b> (int idx) const</td></tr>
+<tr class="separator:aed70671b6ff1ec7483bccd410ace64b8 inherit pub_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4df970b5ee66d0834a2eea83f928ca60 inherit pub_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top"><a id="a4df970b5ee66d0834a2eea83f928ca60"></a>
+<a class="el" href="classScXMLEvaluator.html">ScXMLEvaluator</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getEvaluator</b> (void) const</td></tr>
+<tr class="separator:a4df970b5ee66d0834a2eea83f928ca60 inherit pub_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaae740b92055896d78e5ee2c98b28461 inherit pub_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top"><a id="aaae740b92055896d78e5ee2c98b28461"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getLogLevel</b> (void) const</td></tr>
+<tr class="separator:aaae740b92055896d78e5ee2c98b28461 inherit pub_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16cf6790a4c10709e67a61e208b0a218 inherit pub_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top"><a id="a16cf6790a4c10709e67a61e208b0a218"></a>
+const <a class="el" href="classSbName.html">SbName</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getName</b> (void) const</td></tr>
+<tr class="separator:a16cf6790a4c10709e67a61e208b0a218 inherit pub_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf21332fe140349b60d29d58bb4d3334 inherit pub_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLStateMachine.html#abf21332fe140349b60d29d58bb4d3334">getNumActiveStates</a> (void) const</td></tr>
+<tr class="separator:abf21332fe140349b60d29d58bb4d3334 inherit pub_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7963e6a98d9802f914c72aa166a9113 inherit pub_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top"><a id="ab7963e6a98d9802f914c72aa166a9113"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>getNumEnabledModules</b> (void) const</td></tr>
+<tr class="separator:ab7963e6a98d9802f914c72aa166a9113 inherit pub_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76545648a64b195a07939e25d6b9d773 inherit pub_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbName.html">SbName</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLStateMachine.html#a76545648a64b195a07939e25d6b9d773">getSessionId</a> (void) const</td></tr>
+<tr class="separator:a76545648a64b195a07939e25d6b9d773 inherit pub_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba14c712ade5e2ca27c73102cef20b62 inherit pub_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLStateMachine.html#aba14c712ade5e2ca27c73102cef20b62">initialize</a> (void)</td></tr>
+<tr class="separator:aba14c712ade5e2ca27c73102cef20b62 inherit pub_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa6981d016ce855e660d3d4effb5fa11 inherit pub_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLStateMachine.html#aaa6981d016ce855e660d3d4effb5fa11">isActive</a> (void) const</td></tr>
+<tr class="separator:aaa6981d016ce855e660d3d4effb5fa11 inherit pub_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf6c683d8c3885e19fecd0e50cdfaaf5 inherit pub_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLStateMachine.html#abf6c683d8c3885e19fecd0e50cdfaaf5">isFinished</a> (void) const</td></tr>
+<tr class="separator:abf6c683d8c3885e19fecd0e50cdfaaf5 inherit pub_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e9dfd6ad96bb2fdc1cf1f8436bc27d5 inherit pub_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top"><a id="a7e9dfd6ad96bb2fdc1cf1f8436bc27d5"></a>
+SbBool&#160;</td><td class="memItemRight" valign="bottom"><b>isModuleEnabled</b> (const char *modulename) const</td></tr>
+<tr class="separator:a7e9dfd6ad96bb2fdc1cf1f8436bc27d5 inherit pub_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6b467bfeefaef24bf8a03884e3013e5 inherit pub_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLStateMachine.html#ae6b467bfeefaef24bf8a03884e3013e5">removeDeleteCallback</a> (ScXMLStateMachineDeleteCB *callback, void *userdata)</td></tr>
+<tr class="separator:ae6b467bfeefaef24bf8a03884e3013e5 inherit pub_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab498767b29892f25403678a8e6ee8a53 inherit pub_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLStateMachine.html#ab498767b29892f25403678a8e6ee8a53">removeStateChangeCallback</a> (ScXMLStateChangeCB *callback, void *userdata)</td></tr>
+<tr class="separator:ab498767b29892f25403678a8e6ee8a53 inherit pub_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5724285f8825b4573a7a0f4588cc2f73 inherit pub_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top"><a id="a5724285f8825b4573a7a0f4588cc2f73"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setDescription</b> (<a class="el" href="classScXMLDocument.html">ScXMLDocument</a> *document)</td></tr>
+<tr class="separator:a5724285f8825b4573a7a0f4588cc2f73 inherit pub_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9203eebfee8904400068add83481f27b inherit pub_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top"><a id="a9203eebfee8904400068add83481f27b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setEnabledModulesList</b> (const <a class="el" href="classSbList.html">SbList</a>&lt; const char * &gt; &amp;modulenames)</td></tr>
+<tr class="separator:a9203eebfee8904400068add83481f27b inherit pub_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace5d9434a327cefa0cc0bcff1a8e56a8 inherit pub_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top"><a id="ace5d9434a327cefa0cc0bcff1a8e56a8"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setEvaluator</b> (<a class="el" href="classScXMLEvaluator.html">ScXMLEvaluator</a> *evaluator)</td></tr>
+<tr class="separator:ace5d9434a327cefa0cc0bcff1a8e56a8 inherit pub_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cf7e1fde15a8c8cd9f0cf774b77b315 inherit pub_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top"><a id="a9cf7e1fde15a8c8cd9f0cf774b77b315"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setLogLevel</b> (int loglevel)</td></tr>
+<tr class="separator:a9cf7e1fde15a8c8cd9f0cf774b77b315 inherit pub_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a563bf63d8a5b130ed0df2e05a6eb04a3 inherit pub_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top"><a id="a563bf63d8a5b130ed0df2e05a6eb04a3"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setName</b> (const <a class="el" href="classSbName.html">SbName</a> &amp;name)</td></tr>
+<tr class="separator:a563bf63d8a5b130ed0df2e05a6eb04a3 inherit pub_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a675d32dd576b9cbe81b89481935c31ed inherit pub_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLStateMachine.html#a675d32dd576b9cbe81b89481935c31ed">setSessionId</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;sessionid)</td></tr>
+<tr class="separator:a675d32dd576b9cbe81b89481935c31ed inherit pub_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a990db9259bbdb45d776727d4f1bc8ac9 inherit pub_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top"><a id="a990db9259bbdb45d776727d4f1bc8ac9"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setVariable</b> (const char *name, const char *value)</td></tr>
+<tr class="separator:a990db9259bbdb45d776727d4f1bc8ac9 inherit pub_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classScXMLEventTarget"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classScXMLEventTarget')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classScXMLEventTarget.html">ScXMLEventTarget</a></td></tr>
+<tr class="memitem:a2cde2c49534e0d7e430c41908e949f85 inherit pub_methods_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classScXMLEvent.html">ScXMLEvent</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLEventTarget.html#a2cde2c49534e0d7e430c41908e949f85">getCurrentEvent</a> (void) const</td></tr>
+<tr class="separator:a2cde2c49534e0d7e430c41908e949f85 inherit pub_methods_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93acd9af9eb5e9c8dddc3b8d7f95342d inherit pub_methods_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top"><a id="a93acd9af9eb5e9c8dddc3b8d7f95342d"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><b>getEventTargetName</b> (void) const</td></tr>
+<tr class="separator:a93acd9af9eb5e9c8dddc3b8d7f95342d inherit pub_methods_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5213759cf99a59285d7094d666710859 inherit pub_methods_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top"><a id="a5213759cf99a59285d7094d666710859"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><b>getEventTargetType</b> (void) const</td></tr>
+<tr class="separator:a5213759cf99a59285d7094d666710859 inherit pub_methods_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3d16a8a6bf692e27c582265718f4870 inherit pub_methods_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top"><a id="aa3d16a8a6bf692e27c582265718f4870"></a>
+virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><b>processEventQueue</b> (void)</td></tr>
+<tr class="separator:aa3d16a8a6bf692e27c582265718f4870 inherit pub_methods_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a148b192e2023df0791fb6a31e20ae780 inherit pub_methods_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLEventTarget.html#a148b192e2023df0791fb6a31e20ae780">queueEvent</a> (const <a class="el" href="classSbName.html">SbName</a> &amp;eventid)</td></tr>
+<tr class="separator:a148b192e2023df0791fb6a31e20ae780 inherit pub_methods_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a023f131293775c89553361dace4be77b inherit pub_methods_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLEventTarget.html#a023f131293775c89553361dace4be77b">queueEvent</a> (const <a class="el" href="classScXMLEvent.html">ScXMLEvent</a> *event)</td></tr>
+<tr class="separator:a023f131293775c89553361dace4be77b inherit pub_methods_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1099010bf8b651dd898bd03bb529e31b inherit pub_methods_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top"><a id="a1099010bf8b651dd898bd03bb529e31b"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>queueInternalEvent</b> (const <a class="el" href="classSbName.html">SbName</a> &amp;eventid)</td></tr>
+<tr class="separator:a1099010bf8b651dd898bd03bb529e31b inherit pub_methods_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b89a0434ab290c60e38a7d1eb33baf0 inherit pub_methods_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top"><a id="a8b89a0434ab290c60e38a7d1eb33baf0"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>queueInternalEvent</b> (const <a class="el" href="classScXMLEvent.html">ScXMLEvent</a> *event)</td></tr>
+<tr class="separator:a8b89a0434ab290c60e38a7d1eb33baf0 inherit pub_methods_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab8e655ff48e2ebdfc5fb0c86d6c0ed98 inherit pub_methods_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top"><a id="ab8e655ff48e2ebdfc5fb0c86d6c0ed98"></a>
+virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><b>sendExternalEvent</b> (const <a class="el" href="classScXMLSendElt.html">ScXMLSendElt</a> *sendelt)</td></tr>
+<tr class="separator:ab8e655ff48e2ebdfc5fb0c86d6c0ed98 inherit pub_methods_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac73c18b66a68eb85e9278dc8221228d6 inherit pub_methods_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top"><a id="ac73c18b66a68eb85e9278dc8221228d6"></a>
+virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><b>sendInternalEvent</b> (const <a class="el" href="classScXMLEventElt.html">ScXMLEventElt</a> *sendelt)</td></tr>
+<tr class="separator:ac73c18b66a68eb85e9278dc8221228d6 inherit pub_methods_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01f9001ba754d17f13caa7bf4c616441 inherit pub_methods_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top"><a id="a01f9001ba754d17f13caa7bf4c616441"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setEventTargetName</b> (const char *targetname)</td></tr>
+<tr class="separator:a01f9001ba754d17f13caa7bf4c616441 inherit pub_methods_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a694726f866c9375e59a23fa452448a59 inherit pub_methods_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top"><a id="a694726f866c9375e59a23fa452448a59"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setEventTargetType</b> (const char *targettype)</td></tr>
+<tr class="separator:a694726f866c9375e59a23fa452448a59 inherit pub_methods_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classScXMLObject"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classScXMLObject')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classScXMLObject.html">ScXMLObject</a></td></tr>
+<tr class="memitem:aa7076590ebc60151d1c5833e2b800ddc inherit pub_methods_classScXMLObject"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLObject.html#aa7076590ebc60151d1c5833e2b800ddc">isOfType</a> (<a class="el" href="classSoType.html">SoType</a> type) const</td></tr>
+<tr class="memdesc:aa7076590ebc60151d1c5833e2b800ddc inherit pub_methods_classScXMLObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>TRUE</code> if the type of this object is either of the same type or inherited from <em>type</em>.  <a href="classScXMLObject.html#aa7076590ebc60151d1c5833e2b800ddc">More...</a><br /></td></tr>
+<tr class="separator:aa7076590ebc60151d1c5833e2b800ddc inherit pub_methods_classScXMLObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ae098975a9dd64cdbdf4c215f1ade28d1"><td class="memItemLeft" align="right" valign="top"><a id="ae098975a9dd64cdbdf4c215f1ade28d1"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>cleanClass</b> (void)</td></tr>
+<tr class="separator:ae098975a9dd64cdbdf4c215f1ade28d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a572796c24c388130b8adcb094941228d"><td class="memItemLeft" align="right" valign="top"><a id="a572796c24c388130b8adcb094941228d"></a>
+static void *&#160;</td><td class="memItemRight" valign="bottom"><b>createInstance</b> (void)</td></tr>
+<tr class="separator:a572796c24c388130b8adcb094941228d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa80e0829fb83d842493d427aedb32447"><td class="memItemLeft" align="right" valign="top"><a id="aa80e0829fb83d842493d427aedb32447"></a>
+static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getClassTypeId</b> (void)</td></tr>
+<tr class="separator:aa80e0829fb83d842493d427aedb32447"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8593e6e39777f865d9f8c1a0c025b4ad"><td class="memItemLeft" align="right" valign="top"><a id="a8593e6e39777f865d9f8c1a0c025b4ad"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>initClass</b> (void)</td></tr>
+<tr class="separator:a8593e6e39777f865d9f8c1a0c025b4ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classScXMLStateMachine"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classScXMLStateMachine')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classScXMLStateMachine.html">ScXMLStateMachine</a></td></tr>
+<tr class="memitem:a98ae3d5cefabff0d605a17a28c25cc77 inherit pub_static_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top"><a id="a98ae3d5cefabff0d605a17a28c25cc77"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>cleanClass</b> (void)</td></tr>
+<tr class="separator:a98ae3d5cefabff0d605a17a28c25cc77 inherit pub_static_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa83472ba2c0747e62e32d5aaf2b18efd inherit pub_static_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top"><a id="aa83472ba2c0747e62e32d5aaf2b18efd"></a>
+static void *&#160;</td><td class="memItemRight" valign="bottom"><b>createInstance</b> (void)</td></tr>
+<tr class="separator:aa83472ba2c0747e62e32d5aaf2b18efd inherit pub_static_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a069c73bce5bb3cacae42db18e2d31768 inherit pub_static_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top"><a id="a069c73bce5bb3cacae42db18e2d31768"></a>
+static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getClassTypeId</b> (void)</td></tr>
+<tr class="separator:a069c73bce5bb3cacae42db18e2d31768 inherit pub_static_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2b72cd746d5a42b229be61c1c451c45 inherit pub_static_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top"><a id="ad2b72cd746d5a42b229be61c1c451c45"></a>
+static <a class="el" href="classScXMLStateMachine.html">ScXMLStateMachine</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getStateMachineForSessionId</b> (const <a class="el" href="classSbName.html">SbName</a> &amp;sessionid)</td></tr>
+<tr class="separator:ad2b72cd746d5a42b229be61c1c451c45 inherit pub_static_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25daafba3daaa4087ee9189971015eff inherit pub_static_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top"><a id="a25daafba3daaa4087ee9189971015eff"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>initClass</b> (void)</td></tr>
+<tr class="separator:a25daafba3daaa4087ee9189971015eff inherit pub_static_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classScXMLEventTarget"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classScXMLEventTarget')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classScXMLEventTarget.html">ScXMLEventTarget</a></td></tr>
+<tr class="memitem:ad93fb3a4f2828b304f2489ca74f0fe8a inherit pub_static_methods_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top"><a id="ad93fb3a4f2828b304f2489ca74f0fe8a"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>cleanClass</b> (void)</td></tr>
+<tr class="separator:ad93fb3a4f2828b304f2489ca74f0fe8a inherit pub_static_methods_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7e66685e34fb9d28f881f49b50cf2ba inherit pub_static_methods_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top"><a id="ad7e66685e34fb9d28f881f49b50cf2ba"></a>
+static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getClassTypeId</b> (void)</td></tr>
+<tr class="separator:ad7e66685e34fb9d28f881f49b50cf2ba inherit pub_static_methods_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acee1cae1563b7a77ce4297ab4cf49a8f inherit pub_static_methods_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top"><a id="acee1cae1563b7a77ce4297ab4cf49a8f"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>initClass</b> (void)</td></tr>
+<tr class="separator:acee1cae1563b7a77ce4297ab4cf49a8f inherit pub_static_methods_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_classScXMLObject"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classScXMLObject')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classScXMLObject.html">ScXMLObject</a></td></tr>
+<tr class="memitem:aae0c5a4a174aca5ba7d7c6f41828b181 inherit pub_static_methods_classScXMLObject"><td class="memItemLeft" align="right" valign="top"><a id="aae0c5a4a174aca5ba7d7c6f41828b181"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLObject.html#aae0c5a4a174aca5ba7d7c6f41828b181">cleanClass</a> (void)</td></tr>
+<tr class="memdesc:aae0c5a4a174aca5ba7d7c6f41828b181 inherit pub_static_methods_classScXMLObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does the opposite of initClass, deallocates any class specific resources and resets the class to an uninitialized state with respect to the Coin type system. <br /></td></tr>
+<tr class="separator:aae0c5a4a174aca5ba7d7c6f41828b181 inherit pub_static_methods_classScXMLObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff4dbd61103a1c659b1126bd1342d9f7 inherit pub_static_methods_classScXMLObject"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLObject.html#aff4dbd61103a1c659b1126bd1342d9f7">getClassTypeId</a> (void)</td></tr>
+<tr class="memdesc:aff4dbd61103a1c659b1126bd1342d9f7 inherit pub_static_methods_classScXMLObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">This static method returns the <a class="el" href="classSoType.html" title="The SoType class is the basis for the runtime type system in Coin.">SoType</a> object associated with objects of this class.  <a href="classScXMLObject.html#aff4dbd61103a1c659b1126bd1342d9f7">More...</a><br /></td></tr>
+<tr class="separator:aff4dbd61103a1c659b1126bd1342d9f7 inherit pub_static_methods_classScXMLObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad52f3e69104a3527433768dc369539ae inherit pub_static_methods_classScXMLObject"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLObject.html#ad52f3e69104a3527433768dc369539ae">initClass</a> (void)</td></tr>
+<tr class="memdesc:ad52f3e69104a3527433768dc369539ae inherit pub_static_methods_classScXMLObject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up initialization for data common to all instances of this class, like submitting necessary information to the Coin type system.  <a href="classScXMLObject.html#ad52f3e69104a3527433768dc369539ae">More...</a><br /></td></tr>
+<tr class="separator:ad52f3e69104a3527433768dc369539ae inherit pub_static_methods_classScXMLObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_methods_classScXMLStateMachine"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classScXMLStateMachine')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classScXMLStateMachine.html">ScXMLStateMachine</a></td></tr>
+<tr class="memitem:a9dbeab737cb398f1a50cb523fd417e64 inherit pro_methods_classScXMLStateMachine"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLStateMachine.html#a9dbeab737cb398f1a50cb523fd417e64">processOneEvent</a> (const <a class="el" href="classScXMLEvent.html">ScXMLEvent</a> *event)</td></tr>
+<tr class="separator:a9dbeab737cb398f1a50cb523fd417e64 inherit pro_methods_classScXMLStateMachine"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classScXMLEventTarget"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classScXMLEventTarget')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classScXMLEventTarget.html">ScXMLEventTarget</a></td></tr>
+<tr class="memitem:ad5850f0aa6dbeba031b6bd11290e17a9 inherit pro_methods_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top"><a id="ad5850f0aa6dbeba031b6bd11290e17a9"></a>
+virtual const <a class="el" href="classScXMLEvent.html">ScXMLEvent</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getNextEvent</b> (void)</td></tr>
+<tr class="separator:ad5850f0aa6dbeba031b6bd11290e17a9 inherit pro_methods_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad3ad8d1f16b6bee38011f3262d030b0 inherit pro_methods_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top"><a id="aad3ad8d1f16b6bee38011f3262d030b0"></a>
+virtual const <a class="el" href="classScXMLEvent.html">ScXMLEvent</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getNextExternalEvent</b> (void)</td></tr>
+<tr class="separator:aad3ad8d1f16b6bee38011f3262d030b0 inherit pro_methods_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45236316c39e87ff37b70bb6c9487069 inherit pro_methods_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top"><a id="a45236316c39e87ff37b70bb6c9487069"></a>
+virtual const <a class="el" href="classScXMLEvent.html">ScXMLEvent</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getNextInternalEvent</b> (void)</td></tr>
+<tr class="separator:a45236316c39e87ff37b70bb6c9487069 inherit pro_methods_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef63077fd0be0d7d5517782eba5041a1 inherit pro_methods_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLEventTarget.html#aef63077fd0be0d7d5517782eba5041a1">setCurrentEvent</a> (const <a class="el" href="classScXMLEvent.html">ScXMLEvent</a> *event)</td></tr>
+<tr class="separator:aef63077fd0be0d7d5517782eba5041a1 inherit pro_methods_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_methods_classScXMLEventTarget"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classScXMLEventTarget')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classScXMLEventTarget.html">ScXMLEventTarget</a></td></tr>
+<tr class="memitem:ab839c7b7288105c37d84374ee2d1ee15 inherit pro_static_methods_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top"><a id="ab839c7b7288105c37d84374ee2d1ee15"></a>
+static <a class="el" href="classScXMLEventTarget.html">ScXMLEventTarget</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getEventTarget</b> (const char *targettype, const char *targetname, const char *sessionid=NULL)</td></tr>
+<tr class="separator:ab839c7b7288105c37d84374ee2d1ee15 inherit pro_static_methods_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4bbc4eb147297e6446df86d371b4322 inherit pro_static_methods_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top"><a id="ae4bbc4eb147297e6446df86d371b4322"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>registerEventTarget</b> (<a class="el" href="classScXMLEventTarget.html">ScXMLEventTarget</a> *target, const char *sessionid=NULL)</td></tr>
+<tr class="separator:ae4bbc4eb147297e6446df86d371b4322 inherit pro_static_methods_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d62897337afbd7fbb1b213b77d6e5f7 inherit pro_static_methods_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top"><a id="a3d62897337afbd7fbb1b213b77d6e5f7"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>unregisterEventTarget</b> (<a class="el" href="classScXMLEventTarget.html">ScXMLEventTarget</a> *target, const char *sessionid=NULL)</td></tr>
+<tr class="separator:a3d62897337afbd7fbb1b213b77d6e5f7 inherit pro_static_methods_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_methods_classScXMLObject"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classScXMLObject')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classScXMLObject.html">ScXMLObject</a></td></tr>
+<tr class="memitem:a8146bae33082f60297517988ebda4632 inherit pro_static_methods_classScXMLObject"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLObject.html#a8146bae33082f60297517988ebda4632">registerClassType</a> (const char *xmlns, const char *classname, <a class="el" href="classSoType.html">SoType</a> type)</td></tr>
+<tr class="separator:a8146bae33082f60297517988ebda4632 inherit pro_static_methods_classScXMLObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7838602d6dc4f741be2b0984cedf966 inherit pro_static_methods_classScXMLObject"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classScXMLObject.html#aa7838602d6dc4f741be2b0984cedf966">registerInvokeClassType</a> (const char *xmlns, const char *targettype, const char *source, <a class="el" href="classSoType.html">SoType</a> type)</td></tr>
+<tr class="separator:aa7838602d6dc4f741be2b0984cedf966 inherit pro_static_methods_classScXMLObject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classScXMLEventTarget"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classScXMLEventTarget')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classScXMLEventTarget.html">ScXMLEventTarget</a></td></tr>
+<tr class="memitem:ac3959beed1e56d087b78a2a6d9cd5c5e inherit pro_attribs_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top"><a id="ac3959beed1e56d087b78a2a6d9cd5c5e"></a>
+const <a class="el" href="classScXMLEvent.html">ScXMLEvent</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>currentevent</b></td></tr>
+<tr class="separator:ac3959beed1e56d087b78a2a6d9cd5c5e inherit pro_attribs_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40c550d17535333b311a76485b01d1e0 inherit pro_attribs_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top"><a id="a40c550d17535333b311a76485b01d1e0"></a>
+SbBool&#160;</td><td class="memItemRight" valign="bottom"><b>isprocessingqueue</b></td></tr>
+<tr class="separator:a40c550d17535333b311a76485b01d1e0 inherit pro_attribs_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07dafadcc2e55245a8ac52b1ec70cd34 inherit pro_attribs_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top"><a id="a07dafadcc2e55245a8ac52b1ec70cd34"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>targetname</b></td></tr>
+<tr class="separator:a07dafadcc2e55245a8ac52b1ec70cd34 inherit pro_attribs_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e71077215b077f05b68bb4bce41185c inherit pro_attribs_classScXMLEventTarget"><td class="memItemLeft" align="right" valign="top"><a id="a1e71077215b077f05b68bb4bce41185c"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>targettype</b></td></tr>
+<tr class="separator:a1e71077215b077f05b68bb4bce41185c inherit pro_attribs_classScXMLEventTarget"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Integration level for using Coin events with SCXML-based state machines. </p>
+<p>This class is part of integrating the Coin types with the SCXML subsystem. SoScXMLStateMachines adds convenience for using SCXML state machines together with Coin events.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 3.0 </dd></dl>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="aa55d5011cfc4f78337f04b58e9a41c65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa55d5011cfc4f78337f04b58e9a41c65">&#9670;&nbsp;</a></span>getTypeId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoType.html">SoType</a> SoScXMLStateMachine::getTypeId </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the type identification of an object derived from a class inheriting <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a>. This is used for runtime type checking and "downward" casting. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoBase.html#a873b521c1386368d4d63ff893856590a" title="Returns the type identification of an object derived from a class inheriting SoBase....">SoBase::getTypeId() const</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classScXMLStateMachine.html#ac598573a1f6498a705251cf5f2b30d75">ScXMLStateMachine</a>.</p>
+
+</div>
+</div>
+<a id="aca0ad22e7f3b26b064d8f0fb1a9cabf1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca0ad22e7f3b26b064d8f0fb1a9cabf1">&#9670;&nbsp;</a></span>getVariable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char * SoScXMLStateMachine::getVariable </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The string returned from this function is only valid until the next variable is requested. </p>
+
+<p>Reimplemented from <a class="el" href="classScXMLStateMachine.html">ScXMLStateMachine</a>.</p>
+
+</div>
+</div>
+<a id="aee8fb31d0e01eac95c8161f57da2c2c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee8fb31d0e01eac95c8161f57da2c2c7">&#9670;&nbsp;</a></span>processSoEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SoScXMLStateMachine::processSoEvent </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSoEvent.html">SoEvent</a> *&#160;</td>
+          <td class="paramname"><em>event</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This function makes the state machine process an <a class="el" href="classSoEvent.html" title="The SoEvent class is the base class for all Coin events.">SoEvent</a>. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SoScXMLStateMachine_8h_source.html">SoScXMLStateMachine.h</a></li>
+<li>SoScXMLStateMachine.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSoScXMLStateMachine.html">SoScXMLStateMachine</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

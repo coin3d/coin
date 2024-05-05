@@ -1,0 +1,1193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SbBox2f Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSbBox2f.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#related">Related Functions</a> &#124;
+<a href="classSbBox2f-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SbBox2f Class Reference<div class="ingroups"><a class="el" href="group__coin__base.html">Base Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSbBox2f.html" title="The SbBox2f class is a 2 dimensional box with floating point corner coordinates.">SbBox2f</a> class is a 2 dimensional box with floating point corner coordinates.  
+ <a href="classSbBox2f.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SbBox2f_8h_source.html">Inventor/SbBox2f.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a6cd919dbdfaca223104dd6aa6915615a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#a6cd919dbdfaca223104dd6aa6915615a">SbBox2f</a> (const <a class="el" href="classSbBox2d.html">SbBox2d</a> &amp;box)</td></tr>
+<tr class="separator:a6cd919dbdfaca223104dd6aa6915615a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f35b4005347452d2db1a06fcb565eb2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#a0f35b4005347452d2db1a06fcb565eb2">SbBox2f</a> (const <a class="el" href="classSbBox2i32.html">SbBox2i32</a> &amp;box)</td></tr>
+<tr class="separator:a0f35b4005347452d2db1a06fcb565eb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a623c02f3e00b94bf28e6d9413d17422e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#a623c02f3e00b94bf28e6d9413d17422e">SbBox2f</a> (const <a class="el" href="classSbBox2s.html">SbBox2s</a> &amp;box)</td></tr>
+<tr class="separator:a623c02f3e00b94bf28e6d9413d17422e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ec2e3cb95df5dbcf3f331aed736f1b7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#a9ec2e3cb95df5dbcf3f331aed736f1b7">SbBox2f</a> (const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;minpoint, const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;maxpoint)</td></tr>
+<tr class="separator:a9ec2e3cb95df5dbcf3f331aed736f1b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a488cf3016af1093b2189a19cc9087fc6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#a488cf3016af1093b2189a19cc9087fc6">SbBox2f</a> (float xmin, float ymin, float xmax, float ymax)</td></tr>
+<tr class="separator:a488cf3016af1093b2189a19cc9087fc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af60e9222058dbdcd867cbb048c721b03"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#af60e9222058dbdcd867cbb048c721b03">SbBox2f</a> (void)</td></tr>
+<tr class="separator:af60e9222058dbdcd867cbb048c721b03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d6c817d8fde53380e5bd1fa68b22f08"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#a2d6c817d8fde53380e5bd1fa68b22f08">extendBy</a> (const <a class="el" href="classSbBox2f.html">SbBox2f</a> &amp;box)</td></tr>
+<tr class="separator:a2d6c817d8fde53380e5bd1fa68b22f08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2e64a1f974668066070f8b85256cc1e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#ae2e64a1f974668066070f8b85256cc1e">extendBy</a> (const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;point)</td></tr>
+<tr class="separator:ae2e64a1f974668066070f8b85256cc1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a232499c07c51b64a1a0fbbee00e01c4c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#a232499c07c51b64a1a0fbbee00e01c4c">getAspectRatio</a> (void) const</td></tr>
+<tr class="separator:a232499c07c51b64a1a0fbbee00e01c4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcb117bc390a89fbc5ca1a683275dc15"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#abcb117bc390a89fbc5ca1a683275dc15">getBounds</a> (float &amp;xmin, float &amp;ymin, float &amp;xmax, float &amp;ymax) const</td></tr>
+<tr class="separator:abcb117bc390a89fbc5ca1a683275dc15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cd15fa629ff67122462dcaf9c93d8f3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#a5cd15fa629ff67122462dcaf9c93d8f3">getBounds</a> (<a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;minpoint, <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;maxpoint) const</td></tr>
+<tr class="separator:a5cd15fa629ff67122462dcaf9c93d8f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af398f5fe73d502479f88afb145c76a8a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec2f.html">SbVec2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#af398f5fe73d502479f88afb145c76a8a">getCenter</a> (void) const</td></tr>
+<tr class="separator:af398f5fe73d502479f88afb145c76a8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e7b45e800b49b309a5bcd8fc2d76a2d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec2f.html">SbVec2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#a6e7b45e800b49b309a5bcd8fc2d76a2d">getClosestPoint</a> (const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;point) const</td></tr>
+<tr class="separator:a6e7b45e800b49b309a5bcd8fc2d76a2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0852cf263a148e47bb8154f29c01a0ed"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#a0852cf263a148e47bb8154f29c01a0ed">getMax</a> (void)</td></tr>
+<tr class="separator:a0852cf263a148e47bb8154f29c01a0ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4458392eb8d8fed8629d56e7e55247db"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#a4458392eb8d8fed8629d56e7e55247db">getMax</a> (void) const</td></tr>
+<tr class="separator:a4458392eb8d8fed8629d56e7e55247db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87381f189b356411c3bb009334f14eeb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#a87381f189b356411c3bb009334f14eeb">getMin</a> (void)</td></tr>
+<tr class="separator:a87381f189b356411c3bb009334f14eeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2c43a14d9842d0c1339b422f86c9dd9"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#ae2c43a14d9842d0c1339b422f86c9dd9">getMin</a> (void) const</td></tr>
+<tr class="separator:ae2c43a14d9842d0c1339b422f86c9dd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf081459344718f07ccdd3071d9e25aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#aaf081459344718f07ccdd3071d9e25aa">getOrigin</a> (float &amp;originX, float &amp;originY) const</td></tr>
+<tr class="separator:aaf081459344718f07ccdd3071d9e25aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22aff168fa0eead13d8062d5fb90b418"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#a22aff168fa0eead13d8062d5fb90b418">getSize</a> (float &amp;sizeX, float &amp;sizeY) const</td></tr>
+<tr class="separator:a22aff168fa0eead13d8062d5fb90b418"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81307c8d8c368264cfac34575c8dca9f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec2f.html">SbVec2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#a81307c8d8c368264cfac34575c8dca9f">getSize</a> (void) const</td></tr>
+<tr class="separator:a81307c8d8c368264cfac34575c8dca9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb4476925b33e23e31d76b0ccefd509f"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#afb4476925b33e23e31d76b0ccefd509f">hasArea</a> (void) const</td></tr>
+<tr class="separator:afb4476925b33e23e31d76b0ccefd509f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28f8f0fcb41c129aaedf71701153c062"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#a28f8f0fcb41c129aaedf71701153c062">intersect</a> (const <a class="el" href="classSbBox2f.html">SbBox2f</a> &amp;box) const</td></tr>
+<tr class="separator:a28f8f0fcb41c129aaedf71701153c062"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacf1013f7815e28bdaee38a57df4e66b"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#aacf1013f7815e28bdaee38a57df4e66b">intersect</a> (const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;point) const</td></tr>
+<tr class="separator:aacf1013f7815e28bdaee38a57df4e66b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb775b01a784d95d695dfd82a6b17a54"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#abb775b01a784d95d695dfd82a6b17a54">isEmpty</a> (void) const</td></tr>
+<tr class="separator:abb775b01a784d95d695dfd82a6b17a54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a53357d402331b2433a190182c055dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#a8a53357d402331b2433a190182c055dc">makeEmpty</a> (void)</td></tr>
+<tr class="separator:a8a53357d402331b2433a190182c055dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4abc503bb458358536c5b4e5454bd85"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbBox2f.html">SbBox2f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#af4abc503bb458358536c5b4e5454bd85">setBounds</a> (const <a class="el" href="classSbBox2d.html">SbBox2d</a> &amp;box)</td></tr>
+<tr class="separator:af4abc503bb458358536c5b4e5454bd85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad97a22a8df3411c4bdbb267aaa41da78"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbBox2f.html">SbBox2f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#ad97a22a8df3411c4bdbb267aaa41da78">setBounds</a> (const <a class="el" href="classSbBox2i32.html">SbBox2i32</a> &amp;box)</td></tr>
+<tr class="separator:ad97a22a8df3411c4bdbb267aaa41da78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95232a587c8a3c42c4d0c128f7582a01"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbBox2f.html">SbBox2f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#a95232a587c8a3c42c4d0c128f7582a01">setBounds</a> (const <a class="el" href="classSbBox2s.html">SbBox2s</a> &amp;box)</td></tr>
+<tr class="separator:a95232a587c8a3c42c4d0c128f7582a01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3a9b1d9fd5ff0af88a6a77f44e00878"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbBox2f.html">SbBox2f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#af3a9b1d9fd5ff0af88a6a77f44e00878">setBounds</a> (const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;minpoint, const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;maxpoint)</td></tr>
+<tr class="separator:af3a9b1d9fd5ff0af88a6a77f44e00878"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36c09cc65b4a63013bc31dea68a7b6e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbBox2f.html">SbBox2f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#a36c09cc65b4a63013bc31dea68a7b6e1">setBounds</a> (float xmin, float ymin, float xmax, float ymax)</td></tr>
+<tr class="separator:a36c09cc65b4a63013bc31dea68a7b6e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a2a12033ed77f65f9431725d98dd444b4"><td class="memItemLeft" align="right" valign="top"><a id="a2a12033ed77f65f9431725d98dd444b4"></a>
+<a class="el" href="classSbVec2f.html">SbVec2f</a>&#160;</td><td class="memItemRight" valign="bottom"><b>maxpt</b></td></tr>
+<tr class="separator:a2a12033ed77f65f9431725d98dd444b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac25f5b02fe239eebf6f40a74d08bdacd"><td class="memItemLeft" align="right" valign="top"><a id="ac25f5b02fe239eebf6f40a74d08bdacd"></a>
+<a class="el" href="classSbVec2f.html">SbVec2f</a>&#160;</td><td class="memItemRight" valign="bottom"><b>minpt</b></td></tr>
+<tr class="separator:ac25f5b02fe239eebf6f40a74d08bdacd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="related"></a>
+Related Functions</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p>(Note that these are not member functions.) </p>
+</td></tr>
+<tr class="memitem:aca1673211be6ce175bc5ac0c795feaa3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#aca1673211be6ce175bc5ac0c795feaa3">operator!=</a> (const <a class="el" href="classSbBox2f.html">SbBox2f</a> &amp;b1, const <a class="el" href="classSbBox2f.html">SbBox2f</a> &amp;b2)</td></tr>
+<tr class="separator:aca1673211be6ce175bc5ac0c795feaa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44f45d9426e170bec8f85b0fd82033d8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbBox2f.html#a44f45d9426e170bec8f85b0fd82033d8">operator==</a> (const <a class="el" href="classSbBox2f.html">SbBox2f</a> &amp;b1, const <a class="el" href="classSbBox2f.html">SbBox2f</a> &amp;b2)</td></tr>
+<tr class="separator:a44f45d9426e170bec8f85b0fd82033d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSbBox2f.html" title="The SbBox2f class is a 2 dimensional box with floating point corner coordinates.">SbBox2f</a> class is a 2 dimensional box with floating point corner coordinates. </p>
+<p>This box class is used by many other classes in Coin for data exchange and storage. It provides two box corners with floating point coordinates, which is among other things useful for representing screen or canvas dimensions in normalized coordinates.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbBox2s.html" title="The SbBox2s class is a 2 dimensional box with short integer coordinates.">SbBox2s</a>, <a class="el" href="classSbBox2d.html" title="The SbBox2d class is a 2 dimensional box with double precision corner coordinates.">SbBox2d</a>, <a class="el" href="classSbBox3s.html" title="The SbBox3s class is a 3 dimensional box with short integer coordinates.">SbBox3s</a>, <a class="el" href="classSbBox3f.html" title="The SbBox3f class is an abstraction for an axis aligned 3 dimensional box.">SbBox3f</a>, <a class="el" href="classSbBox3d.html" title="The SbBox3d class is an abstraction for an axis aligned 3 dimensional box.">SbBox3d</a>, <a class="el" href="classSbXfBox3f.html" title="The SbXfBox3f class is a 3 dimensional box with floating point coordinates and an attached transforma...">SbXfBox3f</a>. </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="af60e9222058dbdcd867cbb048c721b03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af60e9222058dbdcd867cbb048c721b03">&#9670;&nbsp;</a></span>SbBox2f() <span class="overload">[1/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBox2f::SbBox2f </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The default constructor makes an empty box. </p>
+
+</div>
+</div>
+<a id="a488cf3016af1093b2189a19cc9087fc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a488cf3016af1093b2189a19cc9087fc6">&#9670;&nbsp;</a></span>SbBox2f() <span class="overload">[2/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBox2f::SbBox2f </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>xmin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ymin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>xmax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ymax</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Constructs a box with the given corners.</p>
+<p><em>xmin</em> should be less than <em>xmax</em> and <em>ymin</em> should be less than <em>ymax</em> if you want to make a valid box. </p>
+
+</div>
+</div>
+<a id="a9ec2e3cb95df5dbcf3f331aed736f1b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ec2e3cb95df5dbcf3f331aed736f1b7">&#9670;&nbsp;</a></span>SbBox2f() <span class="overload">[3/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBox2f::SbBox2f </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>min</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>max</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Constructs a box with the given lower left and upper right corners.</p>
+<p>The coordinates of <em>min</em> should be less than the coordinates of <em>max</em> if you want to make a valid box. </p>
+
+</div>
+</div>
+<a id="a6cd919dbdfaca223104dd6aa6915615a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6cd919dbdfaca223104dd6aa6915615a">&#9670;&nbsp;</a></span>SbBox2f() <span class="overload">[4/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBox2f::SbBox2f </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbBox2d.html">SbBox2d</a> &amp;&#160;</td>
+          <td class="paramname"><em>box</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Constructs an <a class="el" href="classSbBox2f.html" title="The SbBox2f class is a 2 dimensional box with floating point corner coordinates.">SbBox2f</a> instance from the value in an <a class="el" href="classSbBox2d.html" title="The SbBox2d class is a 2 dimensional box with double precision corner coordinates.">SbBox2d</a> instance.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.5 </dd></dl>
+
+</div>
+</div>
+<a id="a623c02f3e00b94bf28e6d9413d17422e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a623c02f3e00b94bf28e6d9413d17422e">&#9670;&nbsp;</a></span>SbBox2f() <span class="overload">[5/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBox2f::SbBox2f </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbBox2s.html">SbBox2s</a> &amp;&#160;</td>
+          <td class="paramname"><em>box</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Constructs an <a class="el" href="classSbBox2f.html" title="The SbBox2f class is a 2 dimensional box with floating point corner coordinates.">SbBox2f</a> instance from the value in an <a class="el" href="classSbBox2s.html" title="The SbBox2s class is a 2 dimensional box with short integer coordinates.">SbBox2s</a> instance.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.5 </dd></dl>
+
+</div>
+</div>
+<a id="a0f35b4005347452d2db1a06fcb565eb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f35b4005347452d2db1a06fcb565eb2">&#9670;&nbsp;</a></span>SbBox2f() <span class="overload">[6/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBox2f::SbBox2f </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbBox2i32.html">SbBox2i32</a> &amp;&#160;</td>
+          <td class="paramname"><em>box</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Constructs an <a class="el" href="classSbBox2f.html" title="The SbBox2f class is a 2 dimensional box with floating point corner coordinates.">SbBox2f</a> instance from the value in an <a class="el" href="classSbBox2i32.html" title="The SbBox2i32 class is a 2 dimensional box with 32-bit integer coordinates.">SbBox2i32</a> instance.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 2.5 </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a2d6c817d8fde53380e5bd1fa68b22f08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d6c817d8fde53380e5bd1fa68b22f08">&#9670;&nbsp;</a></span>extendBy() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbBox2f::extendBy </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbBox2f.html">SbBox2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>box</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Extend the boundaries of the box by the given <em>box</em> parameter. This is equal to calling the above method twice with the corner points. </p>
+
+</div>
+</div>
+<a id="ae2e64a1f974668066070f8b85256cc1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2e64a1f974668066070f8b85256cc1e">&#9670;&nbsp;</a></span>extendBy() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbBox2f::extendBy </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>point</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Extend the boundaries of the box by the given point, i.e. make the box fit around the <em>point</em> if it isn't already situated within it. </p>
+
+</div>
+</div>
+<a id="a232499c07c51b64a1a0fbbee00e01c4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a232499c07c51b64a1a0fbbee00e01c4c">&#9670;&nbsp;</a></span>getAspectRatio()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SbBox2f::getAspectRatio </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns aspect ratio of box, which is defined as box width divided on box height. </p>
+
+</div>
+</div>
+<a id="abcb117bc390a89fbc5ca1a683275dc15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcb117bc390a89fbc5ca1a683275dc15">&#9670;&nbsp;</a></span>getBounds() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbBox2f::getBounds </td>
+          <td>(</td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>xmin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>ymin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>xmax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>ymax</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the box boundaries.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbBox2f.html#a36c09cc65b4a63013bc31dea68a7b6e1">setBounds()</a>, <a class="el" href="classSbBox2f.html#a87381f189b356411c3bb009334f14eeb">getMin()</a>, <a class="el" href="classSbBox2f.html#a0852cf263a148e47bb8154f29c01a0ed">getMax()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a5cd15fa629ff67122462dcaf9c93d8f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5cd15fa629ff67122462dcaf9c93d8f3">&#9670;&nbsp;</a></span>getBounds() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbBox2f::getBounds </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>min</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>max</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the box corner points.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbBox2f.html#a36c09cc65b4a63013bc31dea68a7b6e1">setBounds()</a>, <a class="el" href="classSbBox2f.html#a87381f189b356411c3bb009334f14eeb">getMin()</a>, <a class="el" href="classSbBox2f.html#a0852cf263a148e47bb8154f29c01a0ed">getMax()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="af398f5fe73d502479f88afb145c76a8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af398f5fe73d502479f88afb145c76a8a">&#9670;&nbsp;</a></span>getCenter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec2f.html">SbVec2f</a> SbBox2f::getCenter </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the center point of the box. </p>
+
+</div>
+</div>
+<a id="a6e7b45e800b49b309a5bcd8fc2d76a2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e7b45e800b49b309a5bcd8fc2d76a2d">&#9670;&nbsp;</a></span>getClosestPoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec2f.html">SbVec2f</a> SbBox2f::getClosestPoint </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>point</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return the point on the box closest to the given point <em>p</em>. If the given point equals the center, the center point on the positive X-side is returned. </p>
+
+</div>
+</div>
+<a id="a0852cf263a148e47bb8154f29c01a0ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0852cf263a148e47bb8154f29c01a0ed">&#9670;&nbsp;</a></span>getMax() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec2f.html">SbVec2f</a> &amp; SbBox2f::getMax </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the upper right corner of the box.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbBox2f.html#a87381f189b356411c3bb009334f14eeb">getMin()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a4458392eb8d8fed8629d56e7e55247db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4458392eb8d8fed8629d56e7e55247db">&#9670;&nbsp;</a></span>getMax() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp; SbBox2f::getMax </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the upper right corner of the box.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbBox2f.html#a87381f189b356411c3bb009334f14eeb">getMin()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a87381f189b356411c3bb009334f14eeb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87381f189b356411c3bb009334f14eeb">&#9670;&nbsp;</a></span>getMin() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec2f.html">SbVec2f</a> &amp; SbBox2f::getMin </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns a modifiable reference to the lower left corner of the box.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbBox2f.html#aaf081459344718f07ccdd3071d9e25aa">getOrigin()</a>, <a class="el" href="classSbBox2f.html#a0852cf263a148e47bb8154f29c01a0ed">getMax()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="ae2c43a14d9842d0c1339b422f86c9dd9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2c43a14d9842d0c1339b422f86c9dd9">&#9670;&nbsp;</a></span>getMin() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp; SbBox2f::getMin </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the lower left corner of the box.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbBox2f.html#aaf081459344718f07ccdd3071d9e25aa">getOrigin()</a>, <a class="el" href="classSbBox2f.html#a0852cf263a148e47bb8154f29c01a0ed">getMax()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="aaf081459344718f07ccdd3071d9e25aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf081459344718f07ccdd3071d9e25aa">&#9670;&nbsp;</a></span>getOrigin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbBox2f::getOrigin </td>
+          <td>(</td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>originX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>originY</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the coordinates of the box origin (i.e. the lower left corner).</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbBox2f.html#a87381f189b356411c3bb009334f14eeb">getMin()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a22aff168fa0eead13d8062d5fb90b418"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22aff168fa0eead13d8062d5fb90b418">&#9670;&nbsp;</a></span>getSize() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbBox2f::getSize </td>
+          <td>(</td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>sizeX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>sizeY</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns width and height of box. </p>
+
+</div>
+</div>
+<a id="a81307c8d8c368264cfac34575c8dca9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81307c8d8c368264cfac34575c8dca9f">&#9670;&nbsp;</a></span>getSize() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec2f.html">SbVec2f</a> SbBox2f::getSize </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns width and height of box as a 2D vector.</p>
+<dl class="section since"><dt>Since</dt><dd>Coin 3.0 </dd></dl>
+
+</div>
+</div>
+<a id="afb4476925b33e23e31d76b0ccefd509f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb4476925b33e23e31d76b0ccefd509f">&#9670;&nbsp;</a></span>hasArea()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SbBox2f::hasArea </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Check if the box has been correctly specified and by that virtue has "positive" area, i.e. all coordinates of its upper right corner (the maximum point) are greater than the corresponding coordinates of its lower left corner (the minimum point). </p>
+
+</div>
+</div>
+<a id="a28f8f0fcb41c129aaedf71701153c062"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28f8f0fcb41c129aaedf71701153c062">&#9670;&nbsp;</a></span>intersect() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SbBox2f::intersect </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbBox2f.html">SbBox2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>box</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Check if <em>box</em> lies entirely or partially within the boundaries of this box. </p>
+
+</div>
+</div>
+<a id="aacf1013f7815e28bdaee38a57df4e66b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aacf1013f7815e28bdaee38a57df4e66b">&#9670;&nbsp;</a></span>intersect() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SbBox2f::intersect </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>point</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Check if <em>point</em> lies within the boundaries of this box. </p>
+
+</div>
+</div>
+<a id="abb775b01a784d95d695dfd82a6b17a54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb775b01a784d95d695dfd82a6b17a54">&#9670;&nbsp;</a></span>isEmpty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbBool SbBox2f::isEmpty </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Check if this has been marked as an empty box.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbBox2f.html#a8a53357d402331b2433a190182c055dc">makeEmpty()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a8a53357d402331b2433a190182c055dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a53357d402331b2433a190182c055dc">&#9670;&nbsp;</a></span>makeEmpty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SbBox2f::makeEmpty </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Marks this as an empty box.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbBox2f.html#abb775b01a784d95d695dfd82a6b17a54">isEmpty()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="af4abc503bb458358536c5b4e5454bd85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4abc503bb458358536c5b4e5454bd85">&#9670;&nbsp;</a></span>setBounds() <span class="overload">[1/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbBox2f.html">SbBox2f</a> &amp; SbBox2f::setBounds </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbBox2d.html">SbBox2d</a> &amp;&#160;</td>
+          <td class="paramname"><em>box</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Reset the boundaries of the box to the boundaries of the given <em>box</em>.</p>
+<p>Returns reference to self.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbBox2f.html#abcb117bc390a89fbc5ca1a683275dc15">getBounds()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ad97a22a8df3411c4bdbb267aaa41da78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad97a22a8df3411c4bdbb267aaa41da78">&#9670;&nbsp;</a></span>setBounds() <span class="overload">[2/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbBox2f.html">SbBox2f</a> &amp; SbBox2f::setBounds </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbBox2i32.html">SbBox2i32</a> &amp;&#160;</td>
+          <td class="paramname"><em>box</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Reset the boundaries of the box to the boundaries of the given <em>box</em>.</p>
+<p>Returns reference to self.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbBox2f.html#abcb117bc390a89fbc5ca1a683275dc15">getBounds()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a95232a587c8a3c42c4d0c128f7582a01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95232a587c8a3c42c4d0c128f7582a01">&#9670;&nbsp;</a></span>setBounds() <span class="overload">[3/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbBox2f.html">SbBox2f</a> &amp; SbBox2f::setBounds </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbBox2s.html">SbBox2s</a> &amp;&#160;</td>
+          <td class="paramname"><em>box</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Reset the boundaries of the box to the boundaries of the given <em>box</em>.</p>
+<p>Returns reference to self.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbBox2f.html#abcb117bc390a89fbc5ca1a683275dc15">getBounds()</a> </dd></dl>
+
+</div>
+</div>
+<a id="af3a9b1d9fd5ff0af88a6a77f44e00878"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3a9b1d9fd5ff0af88a6a77f44e00878">&#9670;&nbsp;</a></span>setBounds() <span class="overload">[4/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbBox2f.html">SbBox2f</a> &amp; SbBox2f::setBounds </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>min</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>max</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Reset the boundaries of the box with the given corners.</p>
+<p>The coordinates of <em>min</em> should be less than the coordinates of <em>max</em> if you want to make a valid box.</p>
+<p>Returns reference to self.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbBox2f.html#abcb117bc390a89fbc5ca1a683275dc15">getBounds()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="a36c09cc65b4a63013bc31dea68a7b6e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36c09cc65b4a63013bc31dea68a7b6e1">&#9670;&nbsp;</a></span>setBounds() <span class="overload">[5/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbBox2f.html">SbBox2f</a> &amp; SbBox2f::setBounds </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>xmin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ymin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>xmax</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ymax</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Reset the boundaries of the box.</p>
+<p><em>xmin</em> should be less than <em>xmax</em> and <em>ymin</em> should be less than <em>ymax</em> if you want to make a valid box.</p>
+<p>Returns reference to self.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbBox2f.html#abcb117bc390a89fbc5ca1a683275dc15">getBounds()</a>. </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="aca1673211be6ce175bc5ac0c795feaa3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca1673211be6ce175bc5ac0c795feaa3">&#9670;&nbsp;</a></span>operator!=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbBox2f.html">SbBox2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>b1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbBox2f.html">SbBox2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>b2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Check <em>b1</em> and <em>b2</em> for inequality. </p>
+
+</div>
+</div>
+<a id="a44f45d9426e170bec8f85b0fd82033d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44f45d9426e170bec8f85b0fd82033d8">&#9670;&nbsp;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbBox2f.html">SbBox2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>b1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbBox2f.html">SbBox2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>b2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">related</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Check <em>b1</em> and <em>b2</em> for equality. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SbBox2f_8h_source.html">SbBox2f.h</a></li>
+<li>SbBox2f.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSbBox2f.html">SbBox2f</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>

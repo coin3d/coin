@@ -1,0 +1,491 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Doxygen Awesome" />
+<meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta property="og:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<meta property="og:url" content="https://jothepro.github.io/doxygen-awesome-css/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" />
+<meta name="twitter:title" content="Doxygen Awesome" />
+<meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
+<!-- END twitter metadata -->
+<title>Coin: SbCylinderPlaneProjector Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/coin3d/coin" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="Coin_logo.png"/></td>
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Coin
+   &#160;<span id="projectnumber">4.0.2</span>
+   </div>
+   <div id="projectbrief">Coin3D core library</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.1 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'Search','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('classSbCylinderPlaneProjector.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="classSbCylinderPlaneProjector-members.html">List of all members</a>  </div>
+  <div class="headertitle">
+<div class="title">SbCylinderPlaneProjector Class Reference<div class="ingroups"><a class="el" href="group__coin__projectors.html">Projector Classes</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p>The <a class="el" href="classSbCylinderPlaneProjector.html" title="The SbCylinderPlaneProjector class projects 2D points to a half-cylinder and a plane.">SbCylinderPlaneProjector</a> class projects 2D points to a half-cylinder and a plane.  
+ <a href="classSbCylinderPlaneProjector.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SbCylinderPlaneProjector_8h_source.html">Inventor/projectors/SbCylinderPlaneProjector.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for SbCylinderPlaneProjector:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classSbCylinderPlaneProjector.png" usemap="#SbCylinderPlaneProjector_map" alt=""/>
+  <map id="SbCylinderPlaneProjector_map" name="SbCylinderPlaneProjector_map">
+<area href="classSbCylinderSectionProjector.html" title="The SbCylinderSectionProjector projects 2D points to a sliced cylinder." alt="SbCylinderSectionProjector" shape="rect" coords="0,112,169,136"/>
+<area href="classSbCylinderProjector.html" title="The SbCylinderProjector class is the abstract base class for mapping to cylindrical surfaces." alt="SbCylinderProjector" shape="rect" coords="0,56,169,80"/>
+<area href="classSbProjector.html" title="The SbProjector class is the abstract base projector class." alt="SbProjector" shape="rect" coords="0,0,169,24"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a08fd132904bbd02f023a9828343042cc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderPlaneProjector.html#a08fd132904bbd02f023a9828343042cc">SbCylinderPlaneProjector</a> (const float edgetol=0.9f, const SbBool orienttoeye=TRUE)</td></tr>
+<tr class="separator:a08fd132904bbd02f023a9828343042cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdc129cdfa4dd62899ee4aee8b6db575"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderPlaneProjector.html#abdc129cdfa4dd62899ee4aee8b6db575">SbCylinderPlaneProjector</a> (const <a class="el" href="classSbCylinder.html">SbCylinder</a> &amp;cyl, const float edgetol=0.9f, const SbBool orienttoeye=TRUE)</td></tr>
+<tr class="separator:abdc129cdfa4dd62899ee4aee8b6db575"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e1b4c25dd1713a1261f16ae595ce6ec"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSbProjector.html">SbProjector</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderPlaneProjector.html#a7e1b4c25dd1713a1261f16ae595ce6ec">copy</a> (void) const</td></tr>
+<tr class="separator:a7e1b4c25dd1713a1261f16ae595ce6ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca777eb280e6dec53fdfe4df92248799"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSbRotation.html">SbRotation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderPlaneProjector.html#aca777eb280e6dec53fdfe4df92248799">getRotation</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;point1, const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;point2)</td></tr>
+<tr class="separator:aca777eb280e6dec53fdfe4df92248799"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb1bc7a499cfab6096c991dfb14ee569"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classSbVec3f.html">SbVec3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderPlaneProjector.html#afb1bc7a499cfab6096c991dfb14ee569">project</a> (const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;point)</td></tr>
+<tr class="separator:afb1bc7a499cfab6096c991dfb14ee569"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSbCylinderSectionProjector"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSbCylinderSectionProjector')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSbCylinderSectionProjector.html">SbCylinderSectionProjector</a></td></tr>
+<tr class="memitem:a372620eae35a518562eaa71ec623ca88 inherit pub_methods_classSbCylinderSectionProjector"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderSectionProjector.html#a372620eae35a518562eaa71ec623ca88">SbCylinderSectionProjector</a> (const float edgetol=0.9f, const SbBool orienttoeye=TRUE)</td></tr>
+<tr class="separator:a372620eae35a518562eaa71ec623ca88 inherit pub_methods_classSbCylinderSectionProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad55f8fc72cd86d3153ed5a929277622d inherit pub_methods_classSbCylinderSectionProjector"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderSectionProjector.html#ad55f8fc72cd86d3153ed5a929277622d">SbCylinderSectionProjector</a> (const <a class="el" href="classSbCylinder.html">SbCylinder</a> &amp;cyl, const float edgetol=0.9f, const SbBool orienttoeye=TRUE)</td></tr>
+<tr class="separator:ad55f8fc72cd86d3153ed5a929277622d inherit pub_methods_classSbCylinderSectionProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92e7b94c54420895485964b929652d38 inherit pub_methods_classSbCylinderSectionProjector"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderSectionProjector.html#a92e7b94c54420895485964b929652d38">getTolerance</a> (void) const</td></tr>
+<tr class="separator:a92e7b94c54420895485964b929652d38 inherit pub_methods_classSbCylinderSectionProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a901871f080a352cdaec49f13a0ccce13 inherit pub_methods_classSbCylinderSectionProjector"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderSectionProjector.html#a901871f080a352cdaec49f13a0ccce13">isWithinTolerance</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;point)</td></tr>
+<tr class="separator:a901871f080a352cdaec49f13a0ccce13 inherit pub_methods_classSbCylinderSectionProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d62015051b829b7af812d98fd0303be inherit pub_methods_classSbCylinderSectionProjector"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderSectionProjector.html#a5d62015051b829b7af812d98fd0303be">setTolerance</a> (const float edgetol)</td></tr>
+<tr class="separator:a5d62015051b829b7af812d98fd0303be inherit pub_methods_classSbCylinderSectionProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSbCylinderProjector"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSbCylinderProjector')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSbCylinderProjector.html">SbCylinderProjector</a></td></tr>
+<tr class="memitem:a9845182c192fe25f1232797b6676d02b inherit pub_methods_classSbCylinderProjector"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbCylinder.html">SbCylinder</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderProjector.html#a9845182c192fe25f1232797b6676d02b">getCylinder</a> (void) const</td></tr>
+<tr class="separator:a9845182c192fe25f1232797b6676d02b inherit pub_methods_classSbCylinderProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb2c8b094a831defa48d0c92890d1417 inherit pub_methods_classSbCylinderProjector"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderProjector.html#aeb2c8b094a831defa48d0c92890d1417">isFront</a> (void) const</td></tr>
+<tr class="separator:aeb2c8b094a831defa48d0c92890d1417 inherit pub_methods_classSbCylinderProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9a036d36ca1ad3ea6a7cf5dc7078525 inherit pub_methods_classSbCylinderProjector"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderProjector.html#ab9a036d36ca1ad3ea6a7cf5dc7078525">isOrientToEye</a> (void) const</td></tr>
+<tr class="separator:ab9a036d36ca1ad3ea6a7cf5dc7078525 inherit pub_methods_classSbCylinderProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e08f31c1bc2350bddb9e5c3bd3dd470 inherit pub_methods_classSbCylinderProjector"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderProjector.html#a6e08f31c1bc2350bddb9e5c3bd3dd470">isPointInFront</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;point) const</td></tr>
+<tr class="separator:a6e08f31c1bc2350bddb9e5c3bd3dd470 inherit pub_methods_classSbCylinderProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c299f86e571141f3cdaa07c222b7b07 inherit pub_methods_classSbCylinderProjector"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec3f.html">SbVec3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderProjector.html#a8c299f86e571141f3cdaa07c222b7b07">projectAndGetRotation</a> (const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;point, <a class="el" href="classSbRotation.html">SbRotation</a> &amp;rot)</td></tr>
+<tr class="separator:a8c299f86e571141f3cdaa07c222b7b07 inherit pub_methods_classSbCylinderProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4c6c87f8bc0656f781b9281d9c37294 inherit pub_methods_classSbCylinderProjector"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderProjector.html#ac4c6c87f8bc0656f781b9281d9c37294">setCylinder</a> (const <a class="el" href="classSbCylinder.html">SbCylinder</a> &amp;cyl)</td></tr>
+<tr class="separator:ac4c6c87f8bc0656f781b9281d9c37294 inherit pub_methods_classSbCylinderProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a66f1c989709170b78c07cf172293ae inherit pub_methods_classSbCylinderProjector"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderProjector.html#a3a66f1c989709170b78c07cf172293ae">setFront</a> (const SbBool infront)</td></tr>
+<tr class="separator:a3a66f1c989709170b78c07cf172293ae inherit pub_methods_classSbCylinderProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a366afa63e637a639ed16ee34374d7073 inherit pub_methods_classSbCylinderProjector"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderProjector.html#a366afa63e637a639ed16ee34374d7073">setOrientToEye</a> (const SbBool orienttoeye)</td></tr>
+<tr class="separator:a366afa63e637a639ed16ee34374d7073 inherit pub_methods_classSbCylinderProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67017820b22d21be5008a09517cad5d9 inherit pub_methods_classSbCylinderProjector"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderProjector.html#a67017820b22d21be5008a09517cad5d9">setWorkingSpace</a> (const <a class="el" href="classSbMatrix.html">SbMatrix</a> &amp;space)</td></tr>
+<tr class="separator:a67017820b22d21be5008a09517cad5d9 inherit pub_methods_classSbCylinderProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSbProjector"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classSbProjector')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSbProjector.html">SbProjector</a></td></tr>
+<tr class="memitem:a98404f6b17ae586060e5b97e5e3434b8 inherit pub_methods_classSbProjector"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbViewVolume.html">SbViewVolume</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProjector.html#a98404f6b17ae586060e5b97e5e3434b8">getViewVolume</a> (void) const</td></tr>
+<tr class="separator:a98404f6b17ae586060e5b97e5e3434b8 inherit pub_methods_classSbProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58e37c326b0ee0ea4f8a779a6f7c0b53 inherit pub_methods_classSbProjector"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classSbMatrix.html">SbMatrix</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProjector.html#a58e37c326b0ee0ea4f8a779a6f7c0b53">getWorkingSpace</a> (void) const</td></tr>
+<tr class="separator:a58e37c326b0ee0ea4f8a779a6f7c0b53 inherit pub_methods_classSbProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31e07b5d3f93e5be01f1945536e74a18 inherit pub_methods_classSbProjector"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProjector.html#a31e07b5d3f93e5be01f1945536e74a18">setViewVolume</a> (const <a class="el" href="classSbViewVolume.html">SbViewVolume</a> &amp;vol)</td></tr>
+<tr class="separator:a31e07b5d3f93e5be01f1945536e74a18 inherit pub_methods_classSbProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1912d859fd6a18d253706c9fdd40b5e0 inherit pub_methods_classSbProjector"><td class="memItemLeft" align="right" valign="top">virtual SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProjector.html#a1912d859fd6a18d253706c9fdd40b5e0">tryProject</a> (const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;point, const float epsilon, <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;result)</td></tr>
+<tr class="separator:a1912d859fd6a18d253706c9fdd40b5e0 inherit pub_methods_classSbProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a4aba339a4a76f500347952d5c901fbc7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbRotation.html">SbRotation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderPlaneProjector.html#a4aba339a4a76f500347952d5c901fbc7">getRotation</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;point1, const SbBool tol1, const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;point2, const SbBool tol2)</td></tr>
+<tr class="separator:a4aba339a4a76f500347952d5c901fbc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSbCylinderSectionProjector"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSbCylinderSectionProjector')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSbCylinderSectionProjector.html">SbCylinderSectionProjector</a></td></tr>
+<tr class="memitem:abbed8e29371e9d9b76e5341883bfdd7c inherit pro_methods_classSbCylinderSectionProjector"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderSectionProjector.html#abbed8e29371e9d9b76e5341883bfdd7c">setupTolerance</a> (void)</td></tr>
+<tr class="separator:abbed8e29371e9d9b76e5341883bfdd7c inherit pro_methods_classSbCylinderSectionProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSbCylinderProjector"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSbCylinderProjector')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSbCylinderProjector.html">SbCylinderProjector</a></td></tr>
+<tr class="memitem:a6dd2e2729ca64533ad3f6e46c5a04226 inherit pro_methods_classSbCylinderProjector"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderProjector.html#a6dd2e2729ca64533ad3f6e46c5a04226">SbCylinderProjector</a> (const SbBool orienttoeye)</td></tr>
+<tr class="separator:a6dd2e2729ca64533ad3f6e46c5a04226 inherit pro_methods_classSbCylinderProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c3291f74209ce8faed25c9074ec10f9 inherit pro_methods_classSbCylinderProjector"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderProjector.html#a0c3291f74209ce8faed25c9074ec10f9">SbCylinderProjector</a> (const <a class="el" href="classSbCylinder.html">SbCylinder</a> &amp;<a class="el" href="classSbCylinderProjector.html#aa3debf12deff6aa74807637383eacd77">cylinder</a>, const SbBool orienttoeye)</td></tr>
+<tr class="separator:a0c3291f74209ce8faed25c9074ec10f9 inherit pro_methods_classSbCylinderProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11b8f0cd7a7d1f7946e10283aa0fb394 inherit pro_methods_classSbCylinderProjector"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderProjector.html#a11b8f0cd7a7d1f7946e10283aa0fb394">intersectCylinderFront</a> (const <a class="el" href="classSbLine.html">SbLine</a> &amp;line, <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;result)</td></tr>
+<tr class="separator:a11b8f0cd7a7d1f7946e10283aa0fb394 inherit pro_methods_classSbCylinderProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classSbProjector"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classSbProjector')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classSbProjector.html">SbProjector</a></td></tr>
+<tr class="memitem:af5e966f3ff29a796d35c7a1e0c6284e5 inherit pro_methods_classSbProjector"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProjector.html#af5e966f3ff29a796d35c7a1e0c6284e5">SbProjector</a> (void)</td></tr>
+<tr class="separator:af5e966f3ff29a796d35c7a1e0c6284e5 inherit pro_methods_classSbProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6414ffa4d6d0635f1261b71a5df81ea9 inherit pro_methods_classSbProjector"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProjector.html#a6414ffa4d6d0635f1261b71a5df81ea9">~SbProjector</a> ()</td></tr>
+<tr class="separator:a6414ffa4d6d0635f1261b71a5df81ea9 inherit pro_methods_classSbProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d3db00e8ae894e10aad75d11dc1f4e1 inherit pro_methods_classSbProjector"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProjector.html#a5d3db00e8ae894e10aad75d11dc1f4e1">findVanishingDistance</a> (void) const</td></tr>
+<tr class="separator:a5d3db00e8ae894e10aad75d11dc1f4e1 inherit pro_methods_classSbProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8821291cc1b392a2a29ba00cb3d9a917 inherit pro_methods_classSbProjector"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbLine.html">SbLine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProjector.html#a8821291cc1b392a2a29ba00cb3d9a917">getWorkingLine</a> (const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;point) const</td></tr>
+<tr class="separator:a8821291cc1b392a2a29ba00cb3d9a917 inherit pro_methods_classSbProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa219e6c43451c00713db6db3e4361d9e inherit pro_methods_classSbProjector"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProjector.html#aa219e6c43451c00713db6db3e4361d9e">verifyProjection</a> (const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;projpt) const</td></tr>
+<tr class="separator:aa219e6c43451c00713db6db3e4361d9e inherit pro_methods_classSbProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_attribs_classSbCylinderSectionProjector"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classSbCylinderSectionProjector')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classSbCylinderSectionProjector.html">SbCylinderSectionProjector</a></td></tr>
+<tr class="memitem:a6c1a2f3bba580766b888672dfdfd6834 inherit pro_attribs_classSbCylinderSectionProjector"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec3f.html">SbVec3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderSectionProjector.html#a6c1a2f3bba580766b888672dfdfd6834">planeDir</a></td></tr>
+<tr class="separator:a6c1a2f3bba580766b888672dfdfd6834 inherit pro_attribs_classSbCylinderSectionProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1a721305a73dc62e97aff7be3b3e5a6 inherit pro_attribs_classSbCylinderSectionProjector"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderSectionProjector.html#aa1a721305a73dc62e97aff7be3b3e5a6">planeDist</a></td></tr>
+<tr class="separator:aa1a721305a73dc62e97aff7be3b3e5a6 inherit pro_attribs_classSbCylinderSectionProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a989430109a1f431e9a6a60a75e47cef9 inherit pro_attribs_classSbCylinderSectionProjector"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbLine.html">SbLine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderSectionProjector.html#a989430109a1f431e9a6a60a75e47cef9">planeLine</a></td></tr>
+<tr class="separator:a989430109a1f431e9a6a60a75e47cef9 inherit pro_attribs_classSbCylinderSectionProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a798cc0c751300b98aa20d6381994a802 inherit pro_attribs_classSbCylinderSectionProjector"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderSectionProjector.html#a798cc0c751300b98aa20d6381994a802">tolDist</a></td></tr>
+<tr class="separator:a798cc0c751300b98aa20d6381994a802 inherit pro_attribs_classSbCylinderSectionProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefc718ff69cf2e490fd9de532a9b43ac inherit pro_attribs_classSbCylinderSectionProjector"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderSectionProjector.html#aefc718ff69cf2e490fd9de532a9b43ac">tolerance</a></td></tr>
+<tr class="separator:aefc718ff69cf2e490fd9de532a9b43ac inherit pro_attribs_classSbCylinderSectionProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d8b4276b37a9b596458366615506ecb inherit pro_attribs_classSbCylinderSectionProjector"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbPlane.html">SbPlane</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderSectionProjector.html#a5d8b4276b37a9b596458366615506ecb">tolPlane</a></td></tr>
+<tr class="separator:a5d8b4276b37a9b596458366615506ecb inherit pro_attribs_classSbCylinderSectionProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classSbCylinderProjector"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classSbCylinderProjector')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classSbCylinderProjector.html">SbCylinderProjector</a></td></tr>
+<tr class="memitem:aa3debf12deff6aa74807637383eacd77 inherit pro_attribs_classSbCylinderProjector"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbCylinder.html">SbCylinder</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderProjector.html#aa3debf12deff6aa74807637383eacd77">cylinder</a></td></tr>
+<tr class="separator:aa3debf12deff6aa74807637383eacd77 inherit pro_attribs_classSbCylinderProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6040babe44b89117f1cb3bc0cdffc377 inherit pro_attribs_classSbCylinderProjector"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderProjector.html#a6040babe44b89117f1cb3bc0cdffc377">intersectFront</a></td></tr>
+<tr class="separator:a6040babe44b89117f1cb3bc0cdffc377 inherit pro_attribs_classSbCylinderProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2e2f91ad80b06fa7072bad5bdd78647 inherit pro_attribs_classSbCylinderProjector"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbVec3f.html">SbVec3f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderProjector.html#af2e2f91ad80b06fa7072bad5bdd78647">lastPoint</a></td></tr>
+<tr class="separator:af2e2f91ad80b06fa7072bad5bdd78647 inherit pro_attribs_classSbCylinderProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4238e26836efac6c8d10a8579a7ec70 inherit pro_attribs_classSbCylinderProjector"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderProjector.html#af4238e26836efac6c8d10a8579a7ec70">needSetup</a></td></tr>
+<tr class="separator:af4238e26836efac6c8d10a8579a7ec70 inherit pro_attribs_classSbCylinderProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afed152233dd402a2376f300c34adfa84 inherit pro_attribs_classSbCylinderProjector"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbCylinderProjector.html#afed152233dd402a2376f300c34adfa84">orientToEye</a></td></tr>
+<tr class="separator:afed152233dd402a2376f300c34adfa84 inherit pro_attribs_classSbCylinderProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classSbProjector"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classSbProjector')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classSbProjector.html">SbProjector</a></td></tr>
+<tr class="memitem:af87ecfa2c2a1f99472327b7721eca310 inherit pro_attribs_classSbProjector"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbViewVolume.html">SbViewVolume</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProjector.html#af87ecfa2c2a1f99472327b7721eca310">viewVol</a></td></tr>
+<tr class="separator:af87ecfa2c2a1f99472327b7721eca310 inherit pro_attribs_classSbProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cb662f372bcc9d01a7b392cde75e8e1 inherit pro_attribs_classSbProjector"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbMatrix.html">SbMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProjector.html#a9cb662f372bcc9d01a7b392cde75e8e1">workingToWorld</a></td></tr>
+<tr class="separator:a9cb662f372bcc9d01a7b392cde75e8e1 inherit pro_attribs_classSbProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9320194b4e872c21a2f6b04a2ff9d815 inherit pro_attribs_classSbProjector"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbMatrix.html">SbMatrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSbProjector.html#a9320194b4e872c21a2f6b04a2ff9d815">worldToWorking</a></td></tr>
+<tr class="separator:a9320194b4e872c21a2f6b04a2ff9d815 inherit pro_attribs_classSbProjector"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="classSbCylinderPlaneProjector.html" title="The SbCylinderPlaneProjector class projects 2D points to a half-cylinder and a plane.">SbCylinderPlaneProjector</a> class projects 2D points to a half-cylinder and a plane. </p>
+<p>This projector uses a plane along with the half-cylinder of <a class="el" href="classSbCylinderSectionProjector.html" title="The SbCylinderSectionProjector projects 2D points to a sliced cylinder.">SbCylinderSectionProjector</a> for projections. If the 2D point mapping "misses" the cylinder section, the 3D point will be projected onto the plane.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbSpherePlaneProjector.html" title="The SbSpherePlaneProjector class projects 2D points to a half-sphere and a plane.">SbSpherePlaneProjector</a> </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a08fd132904bbd02f023a9828343042cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08fd132904bbd02f023a9828343042cc">&#9670;&nbsp;</a></span>SbCylinderPlaneProjector() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbCylinderPlaneProjector::SbCylinderPlaneProjector </td>
+          <td>(</td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>edgetol</em> = <code>0.9f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SbBool&#160;</td>
+          <td class="paramname"><em>orienttoeye</em> = <code>TRUE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Default constructor. See <a class="el" href="classSbCylinderSectionProjector.html#a372620eae35a518562eaa71ec623ca88">SbCylinderSectionProjector::SbCylinderSectionProjector()</a>. </p>
+
+</div>
+</div>
+<a id="abdc129cdfa4dd62899ee4aee8b6db575"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdc129cdfa4dd62899ee4aee8b6db575">&#9670;&nbsp;</a></span>SbCylinderPlaneProjector() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SbCylinderPlaneProjector::SbCylinderPlaneProjector </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbCylinder.html">SbCylinder</a> &amp;&#160;</td>
+          <td class="paramname"><em>cyl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>edgetol</em> = <code>0.9f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SbBool&#160;</td>
+          <td class="paramname"><em>orienttoeye</em> = <code>TRUE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Constructor with explicit specification of projection cylinder. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7e1b4c25dd1713a1261f16ae595ce6ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e1b4c25dd1713a1261f16ae595ce6ec">&#9670;&nbsp;</a></span>copy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbProjector.html">SbProjector</a> * SbCylinderPlaneProjector::copy </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Construct and return a copy of this projector. The caller is responsible for destructing the new instance.</p>
+<p><b>Note that if the Coin library has been built as a DLL under Microsoft Windows and you use this method from application code, you <em>must</em> make sure that both the Coin DLL and the application executable are using the same instance of a C Run-Time (CRT) library. Otherwise, you <em>will</em> get memory heap corruption upon deallocating the returned instances, eventually leading to mysterious crashes.</b><br  />
+<br  />
+</p>
+
+<p>Reimplemented from <a class="el" href="classSbCylinderSectionProjector.html#a3ae3c84a67868012d180e64a3f6c300e">SbCylinderSectionProjector</a>.</p>
+
+</div>
+</div>
+<a id="a4aba339a4a76f500347952d5c901fbc7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4aba339a4a76f500347952d5c901fbc7">&#9670;&nbsp;</a></span>getRotation() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbRotation.html">SbRotation</a> SbCylinderPlaneProjector::getRotation </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>point1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SbBool&#160;</td>
+          <td class="paramname"><em>tol1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>point2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const SbBool&#160;</td>
+          <td class="paramname"><em>tol2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Calculates rotation from <em>point1</em> to <em>point2</em>, with <em>tol1</em> and <em>tol2</em> deciding whether or not to use the tolerance setting. </p>
+
+</div>
+</div>
+<a id="aca777eb280e6dec53fdfe4df92248799"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca777eb280e6dec53fdfe4df92248799">&#9670;&nbsp;</a></span>getRotation() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbRotation.html">SbRotation</a> SbCylinderPlaneProjector::getRotation </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>point1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classSbVec3f.html">SbVec3f</a> &amp;&#160;</td>
+          <td class="paramname"><em>point2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns rotation on the projection surface which reorients <em>point1</em> to <em>point2</em>. </p>
+
+<p>Reimplemented from <a class="el" href="classSbCylinderSectionProjector.html#a520520c707d304d80d4e6a8dd7f0374f">SbCylinderSectionProjector</a>.</p>
+
+</div>
+</div>
+<a id="afb1bc7a499cfab6096c991dfb14ee569"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb1bc7a499cfab6096c991dfb14ee569">&#9670;&nbsp;</a></span>project()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSbVec3f.html">SbVec3f</a> SbCylinderPlaneProjector::project </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classSbVec2f.html">SbVec2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>point</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Project the 2D <em>point</em> from normalized viewport coordinates to a 3D point. The mapping will be done in accordance with the type of the projector. </p>
+
+<p>Reimplemented from <a class="el" href="classSbCylinderSectionProjector.html#a1559a388a0fdcd3de1ef8a2fe1066388">SbCylinderSectionProjector</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li><a class="el" href="SbCylinderPlaneProjector_8h_source.html">SbCylinderPlaneProjector.h</a></li>
+<li>SbCylinderPlaneProjector.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classSbCylinderPlaneProjector.html">SbCylinderPlaneProjector</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+  </ul>
+</div>
+</body>
+</html>
