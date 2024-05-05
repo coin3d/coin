@@ -144,23 +144,23 @@ if(COIN_BUILD_AWESOME_DOCUMENTATION)
 # ############################################################################
 # Setup documentation options
 # ############################################################################
-set(DOXYGEN_GENERATE_TODOLIST NO)
-set(DOXYGEN_GENERATE_DEPRECATEDLIST NO)
-set(GENERATE_HTMLHELP NO)
-set(DOXYGEN_GENERATE_MAN NO)
-set(GENERATE_QHP NO)
-set(GENERATE_TREEVIEW YES)
+  set(DOXYGEN_GENERATE_TODOLIST NO)
+  set(DOXYGEN_GENERATE_DEPRECATEDLIST NO)
+  set(GENERATE_HTMLHELP NO)
+  set(DOXYGEN_GENERATE_MAN NO)
+  set(GENERATE_QHP NO)
+  set(GENERATE_TREEVIEW YES)
 
-# Add default files
-file(GLOB_RECURSE DOX *.dox*)
-set(COIN_DOCUMENTATION_FILES
-  ${COIN_DOCUMENTATION_FILES}
-  "${CMAKE_SOURCE_DIR}/docs/releases.dox"
-  ${DOX}
-  CACHE INTERNAL "COIN_DOCUMENTATION_FILES"
-)
+  # Add default files
+  file(GLOB_RECURSE DOX *.dox*)
+  set(COIN_DOCUMENTATION_FILES
+    ${COIN_DOCUMENTATION_FILES}
+    "${CMAKE_SOURCE_DIR}/docs/releases.dox"
+    ${DOX}
+    CACHE INTERNAL "COIN_DOCUMENTATION_FILES"
+  )
 
-set(DOXYGEN_INTERNAL_DOCS NO)
+  set(DOXYGEN_INTERNAL_DOCS NO)
   set(DOXYGEN_EXTRACT_PRIVATE NO)
   set(DOXYGEN_WARN_IF_UNDOCUMENTED YES)
   set(DOXYGEN_EXCLUDE)
@@ -214,6 +214,6 @@ set(DOXYGEN_INTERNAL_DOCS NO)
 # Install built documentation files
 # ############################################################################
   if(NOT COIN_BUILD_MAC_FRAMEWORK)
-    install(DIRECTORY "${CMAKE_BINARY_DIR}/html" DESTINATION ${CMAKE_INSTALL_DOCDIR} COMPONENT documentation REGEX ".*\\.(chm|qch)" EXCLUDE)
+    install(DIRECTORY "${CMAKE_BINARY_DIR}/html_awesome" DESTINATION ${CMAKE_INSTALL_DOCDIR} COMPONENT documentation REGEX ".*\\.(chm|qch)" EXCLUDE)
   endif()
 endif()
