@@ -4,8 +4,8 @@ on:
   workflow_dispatch:  # Allow manual triggers
   pull_request:
     branches: [ master ]
-  #push:
-  #  branches: [ master ]
+  push:
+    branches: [ master ]
 
 jobs:
   ubuntu-build:
@@ -37,6 +37,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: cmake_build_dir/html_awesome
+        if: github.event_name != 'pull_request'
 
   windows-build:
     name: Windows Build
