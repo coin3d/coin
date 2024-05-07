@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['environment_20variables_9617',['Environment variables',['../coin_environment_variables.html',1,'coin_related_pages']]]
+  ['4_200_0',['New Features in Coin v2.4.0',['../coin240.html',1,'coin_new_features']]]
 ];

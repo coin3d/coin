@@ -28,10 +28,7 @@ var group__coin__events =
       [ "setTime", "classSoEvent.html#a995b16f7948b24bcfac15ca1d50cd2a3", null ],
       [ "wasAltDown", "classSoEvent.html#aa72b5b6502699b62566475a62b2d5d12", null ],
       [ "wasCtrlDown", "classSoEvent.html#a9f6fab9da7e70c0d510c8a00bb793656", null ],
-      [ "wasShiftDown", "classSoEvent.html#a2ca46d050a624a6ac3c4857172b39844", null ],
-      [ "altdown", "classSoEvent.html#a73ecc85da04ac6a401bbc3a036f088dc", null ],
-      [ "ctrldown", "classSoEvent.html#affe907d621584cb21438999915cebda0", null ],
-      [ "shiftdown", "classSoEvent.html#a51212af904d99403d57d494f4c80b82a", null ]
+      [ "wasShiftDown", "classSoEvent.html#a2ca46d050a624a6ac3c4857172b39844", null ]
     ] ],
     [ "SoKeyboardEvent", "classSoKeyboardEvent.html", [
       [ "Key", "classSoKeyboardEvent.html#acfea547b82afb8a5963f599d002fd004", [

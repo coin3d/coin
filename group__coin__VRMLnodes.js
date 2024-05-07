@@ -29,23 +29,16 @@ var group__coin__VRMLnodes =
       [ "textureTransform", "classSoVRMLAppearance.html#ae7a7cffab0d28d8e18dbfa20ae55703d", null ]
     ] ],
     [ "SoVRMLAudioClip", "classSoVRMLAudioClip.html", [
-      [ "close_func", "classSoVRMLAudioClip.html#af04cf2a7a09db57b7caceab9984bcb59", null ],
-      [ "open_func", "classSoVRMLAudioClip.html#a46b5fcd08459dfec28f0fa8d7d3ba5fc", null ],
-      [ "read_func", "classSoVRMLAudioClip.html#acf0472638c268fcf3da13aea2225c63b", null ],
-      [ "seek_func", "classSoVRMLAudioClip.html#a138067dd74f05a6d4bd20a29f9cb7674", null ],
-      [ "tell_func", "classSoVRMLAudioClip.html#a969c45bea6d98654bb4edd169deda9a8", null ],
       [ "SoVRMLAudioClip", "classSoVRMLAudioClip.html#a681f6b1fb4d52e10e4f4b8b6e5af1f64", null ],
       [ "~SoVRMLAudioClip", "classSoVRMLAudioClip.html#a0065953b2802454f61f1de545ff6e06e", null ],
       [ "close", "classSoVRMLAudioClip.html#af403effbd3eabf1067d0f6fb8e8d6866", null ],
       [ "getFieldData", "classSoVRMLAudioClip.html#a71d9c46da3f28a2bc44df1280f437fe7", null ],
-      [ "getSampleRate", "classSoVRMLAudioClip.html#a0a3ade86862e47367375cfb9046de1ca", null ],
       [ "getTypeId", "classSoVRMLAudioClip.html#a22fdc5845da70c4a2fef3d11e447e676", null ],
       [ "open", "classSoVRMLAudioClip.html#afe6198dde9f8ddee42487853dd3f7eb3", null ],
       [ "read", "classSoVRMLAudioClip.html#a606542ecf4f1e95969391017ba60b5a6", null ],
       [ "seek", "classSoVRMLAudioClip.html#aee030b650cda87dd96cece13b07f85d9", null ],
       [ "setCallbacks", "classSoVRMLAudioClip.html#a01a0a94edea3e02e7daf44a7491f367c", null ],
       [ "tell", "classSoVRMLAudioClip.html#a0073833e784578df1c14724124c45ba1", null ],
-      [ "SoVRMLAudioClipP", "classSoVRMLAudioClip.html#a73e5a95830e5465e7366d296c94974fd", null ],
       [ "description", "classSoVRMLAudioClip.html#ae388c19b9324349d0498bb4ae10ac5ac", null ],
       [ "duration_changed", "classSoVRMLAudioClip.html#a6fcc85520ddc4a6f399e829e71f6a5f5", null ],
       [ "isActive", "classSoVRMLAudioClip.html#aaa6bb5c5a2eb2441de6a9a7cb9de2746", null ],
@@ -61,19 +54,7 @@ var group__coin__VRMLnodes =
       [ "getFieldData", "classSoVRMLBackground.html#a941449a476c8541f4b63917abae6ff4d", null ],
       [ "getTypeId", "classSoVRMLBackground.html#ab08981922cfed04ebbb732ebd36e1690", null ],
       [ "GLRender", "classSoVRMLBackground.html#a6cde19c7dc1529a4500d4ddbdadea88e", null ],
-      [ "readInstance", "classSoVRMLBackground.html#a454b103cea31090170da95232f1adc88", null ],
-      [ "backUrl", "classSoVRMLBackground.html#a9b5a8083cf4b271e886f3fd62515e841", null ],
-      [ "bottomUrl", "classSoVRMLBackground.html#a96353ec2a58e7c0425148dfef45b5f4b", null ],
-      [ "frontUrl", "classSoVRMLBackground.html#aad70af310551a87eccd45c94c24e430b", null ],
-      [ "groundAngle", "classSoVRMLBackground.html#a2c892bca6a935e10b57b27cd64e9a649", null ],
-      [ "groundColor", "classSoVRMLBackground.html#a081530972c4f1849255c3771f4624e46", null ],
-      [ "isBound", "classSoVRMLBackground.html#a5c1ea79c96a382e7076ecaea995204a8", null ],
-      [ "leftUrl", "classSoVRMLBackground.html#acc2960d649865e8b232c992430b3b06f", null ],
-      [ "rightUrl", "classSoVRMLBackground.html#a2c478a632395a5d06758196300154172", null ],
-      [ "set_bind", "classSoVRMLBackground.html#ab9ec04f5ceca9a19ed43ee683a248324", null ],
-      [ "skyAngle", "classSoVRMLBackground.html#aa31b8a83c7c7212c44393fd075861c94", null ],
-      [ "skyColor", "classSoVRMLBackground.html#ab135162f1ec7af8aceafc05941913b9b", null ],
-      [ "topUrl", "classSoVRMLBackground.html#adfdf6e05a746c4b8157b5d6c6e587860", null ]
+      [ "readInstance", "classSoVRMLBackground.html#a454b103cea31090170da95232f1adc88", null ]
     ] ],
     [ "SoVRMLBillboard", "classSoVRMLBillboard.html", [
       [ "SoVRMLBillboard", "classSoVRMLBillboard.html#a08dab472f7bdae384281d2ee7ce2e1ce", null ],
@@ -167,13 +148,9 @@ var group__coin__VRMLnodes =
       [ "point", "classSoVRMLCoordinate.html#af54c9a9bd64b67d2bd75a26c96c762e4", null ]
     ] ],
     [ "SoVRMLCoordinateInterpolator", "classSoVRMLCoordinateInterpolator.html", [
-      [ "SoVRMLCoordinateInterpolator", "classSoVRMLCoordinateInterpolator.html#a21b211a83cbd1037a143a00e65f3d44b", null ],
-      [ "~SoVRMLCoordinateInterpolator", "classSoVRMLCoordinateInterpolator.html#afd2464ed7795b72526f6ad8baec94617", null ],
       [ "getFieldData", "classSoVRMLCoordinateInterpolator.html#aca1ea35207244d3eeafc44b73b3fb3c1", null ],
       [ "getOutputData", "classSoVRMLCoordinateInterpolator.html#ab6a8cbed2989ef00f7142be37af8101d", null ],
-      [ "getTypeId", "classSoVRMLCoordinateInterpolator.html#aba3bf1d2eccbeb75b0ae9845c1680cc6", null ],
-      [ "keyValue", "classSoVRMLCoordinateInterpolator.html#a2bc49d844ec54924d9f85baf020f12c3", null ],
-      [ "value_changed", "classSoVRMLCoordinateInterpolator.html#aa52fbf1bec210270824db492b6080dd0", null ]
+      [ "getTypeId", "classSoVRMLCoordinateInterpolator.html#aba3bf1d2eccbeb75b0ae9845c1680cc6", null ]
     ] ],
     [ "SoVRMLCylinder", "classSoVRMLCylinder.html", [
       [ "SoVRMLCylinder", "classSoVRMLCylinder.html#a7a4a4c9f5354e94bf4c4ec523c524f39", null ],
@@ -224,7 +201,6 @@ var group__coin__VRMLnodes =
       [ "GLRender", "classSoVRMLElevationGrid.html#ac1fda8e60c09a40b2058cbd7d531caa2", null ],
       [ "notify", "classSoVRMLElevationGrid.html#a0deea7273da00e9147825e68d26d591a", null ],
       [ "rayPick", "classSoVRMLElevationGrid.html#a001c2a58df4e9555288966cdf102c43a", null ],
-      [ "SoVRMLElevationGridP", "classSoVRMLElevationGrid.html#a5c34deb1505b02a91c0526500d35a9dd", null ],
       [ "ccw", "classSoVRMLElevationGrid.html#aac1bc6b7a8b354e2f6605dcad32e78e9", null ],
       [ "color", "classSoVRMLElevationGrid.html#a146f9217088458eb8541073aba23fde3", null ],
       [ "colorPerVertex", "classSoVRMLElevationGrid.html#ad9007f182baab51119638e48e208dc05", null ],
@@ -249,17 +225,7 @@ var group__coin__VRMLnodes =
       [ "getPrimitiveCount", "classSoVRMLExtrusion.html#aa9de24299445cd44e5cb1a630b905f10", null ],
       [ "getTypeId", "classSoVRMLExtrusion.html#a5629979cd4d1c7a3e76eafd60667a2d7", null ],
       [ "GLRender", "classSoVRMLExtrusion.html#aed99e266538f5713c292366a289b0c86", null ],
-      [ "notify", "classSoVRMLExtrusion.html#a1a80d77bd5684698e3efcd682234850e", null ],
-      [ "beginCap", "classSoVRMLExtrusion.html#a017ff1edabe41ed8da91cdce2b679d48", null ],
-      [ "ccw", "classSoVRMLExtrusion.html#a2e8c4c06b34c0e51a0fa862e61313a8a", null ],
-      [ "convex", "classSoVRMLExtrusion.html#a2133ae23698617edbe13bc516c2c3810", null ],
-      [ "creaseAngle", "classSoVRMLExtrusion.html#a4165db547204653fa55236b988ee6f89", null ],
-      [ "crossSection", "classSoVRMLExtrusion.html#a7221575ba59c467d6a1a9c4c923f904a", null ],
-      [ "endCap", "classSoVRMLExtrusion.html#aba057a3e088414a06c19a11780aee387", null ],
-      [ "orientation", "classSoVRMLExtrusion.html#a620663b4dd5a384975d535eb03fc163d", null ],
-      [ "scale", "classSoVRMLExtrusion.html#a9526e6b55d8e91e7dd222b87ca38bec5", null ],
-      [ "solid", "classSoVRMLExtrusion.html#ad874a757b87fac1239ad1cd4b1a31db7", null ],
-      [ "spine", "classSoVRMLExtrusion.html#a5500f1c21b4b635ec97b882a8afb4c43", null ]
+      [ "notify", "classSoVRMLExtrusion.html#a1a80d77bd5684698e3efcd682234850e", null ]
     ] ],
     [ "SoVRMLFog", "classSoVRMLFog.html", [
       [ "SoVRMLFog", "classSoVRMLFog.html#aed43851b1836bacd8e18a82375604205", null ],
@@ -274,44 +240,18 @@ var group__coin__VRMLnodes =
       [ "visibilityRange", "classSoVRMLFog.html#a78dc52c559aa4ce9abdf182d3d7d2e49", null ]
     ] ],
     [ "SoVRMLFontStyle", "classSoVRMLFontStyle.html", [
-      [ "Family", "classSoVRMLFontStyle.html#a2efaca176038a0d6f288e321aae4c714", [
-        [ "SERIF", "classSoVRMLFontStyle.html#a2efaca176038a0d6f288e321aae4c714a7cd5a198c73198a7ce5cb130e370617c", null ],
-        [ "SANS", "classSoVRMLFontStyle.html#a2efaca176038a0d6f288e321aae4c714aa1a86e2df0631cd9a68e1322e92fbe92", null ],
-        [ "TYPEWRITER", "classSoVRMLFontStyle.html#a2efaca176038a0d6f288e321aae4c714ad9e5f2bb60f6ebc20fb0f5a19bad3ba6", null ]
-      ] ],
-      [ "Style", "classSoVRMLFontStyle.html#af05c898f3b9b7a5f18e81bfb8ec7b4d3", [
-        [ "PLAIN", "classSoVRMLFontStyle.html#af05c898f3b9b7a5f18e81bfb8ec7b4d3a20df1518ab76a654cb9b10994cfb3330", null ],
-        [ "BOLD", "classSoVRMLFontStyle.html#af05c898f3b9b7a5f18e81bfb8ec7b4d3a82ccc2d0eba0208dfa4379734c0a4fc5", null ],
-        [ "ITALIC", "classSoVRMLFontStyle.html#af05c898f3b9b7a5f18e81bfb8ec7b4d3aed80be895edf3deffadb95ce45e8f95c", null ],
-        [ "BOLDITALIC", "classSoVRMLFontStyle.html#af05c898f3b9b7a5f18e81bfb8ec7b4d3ab5a1cf89ba71332c16a760b7e1b8b021", null ]
-      ] ],
       [ "SoVRMLFontStyle", "classSoVRMLFontStyle.html#a6c6d3389450f8a865abd321f0dec32ad", null ],
       [ "~SoVRMLFontStyle", "classSoVRMLFontStyle.html#a65395159d168be8c0a14822436c555c2", null ],
       [ "callback", "classSoVRMLFontStyle.html#a089bfac3bacdbbf20783b3d6092ef52a", null ],
       [ "doAction", "classSoVRMLFontStyle.html#af7dfa1578a47427da42f8d12982987ae", null ],
       [ "getBoundingBox", "classSoVRMLFontStyle.html#a9e65bc769324815287f5cf01fb93ccd4", null ],
       [ "getFieldData", "classSoVRMLFontStyle.html#a7444a449b73c5931cf0dfe3cb3268065", null ],
-      [ "getFontName", "classSoVRMLFontStyle.html#a2a3580053f449d3871e70e18f4513fb5", null ],
       [ "getPrimitiveCount", "classSoVRMLFontStyle.html#a9de203b2c267f719475eaee9c852bb48", null ],
       [ "getTypeId", "classSoVRMLFontStyle.html#a8331edca752c51dafb8f71dc2a39176e", null ],
       [ "GLRender", "classSoVRMLFontStyle.html#acf3ef515553b0f7b165dddb29126fda8", null ],
-      [ "pick", "classSoVRMLFontStyle.html#a60de83c55666d64959c07c25970fb9eb", null ],
-      [ "family", "classSoVRMLFontStyle.html#a8cc0555f1d44714244a6e1b64966d9c4", null ],
-      [ "horizontal", "classSoVRMLFontStyle.html#aed9a17930b4e77b02f212000c9fd48db", null ],
-      [ "justify", "classSoVRMLFontStyle.html#a6726021ff0dcea7ac8cf3dd50e587d60", null ],
-      [ "language", "classSoVRMLFontStyle.html#aa6914c0c779cd07a89203c06522ee426", null ],
-      [ "leftToRight", "classSoVRMLFontStyle.html#add1818e567af1e7d5c8de3be327c8cca", null ],
-      [ "size", "classSoVRMLFontStyle.html#ad4cd395ee297ecfe2e2df3f73f8bb9f8", null ],
-      [ "spacing", "classSoVRMLFontStyle.html#ad8bf2744affa7e33fa890a85a80b816f", null ],
-      [ "style", "classSoVRMLFontStyle.html#a7b3379a7bbadd2980ce8263bfeaa684b", null ],
-      [ "topToBottom", "classSoVRMLFontStyle.html#aa950db2900e6a33e218aab5fbfcc1fda", null ]
+      [ "pick", "classSoVRMLFontStyle.html#a60de83c55666d64959c07c25970fb9eb", null ]
     ] ],
     [ "SoVRMLGroup", "classSoVRMLGroup.html", [
-      [ "CacheEnabled", "classSoVRMLGroup.html#abbd8e17198457d639e248c49c0043a9e", [
-        [ "OFF", "classSoVRMLGroup.html#abbd8e17198457d639e248c49c0043a9ea1babc49ec7b20c725dfdd475c78d5e56", null ],
-        [ "ON", "classSoVRMLGroup.html#abbd8e17198457d639e248c49c0043a9ea634dbe81314e92bf293a39720283d9ee", null ],
-        [ "AUTO", "classSoVRMLGroup.html#abbd8e17198457d639e248c49c0043a9ea1cdff3a6f44cc38608c9ac032c6e442b", null ]
-      ] ],
       [ "SoVRMLGroup", "classSoVRMLGroup.html#ae981a7a94eae2e1390d2316186196a78", null ],
       [ "SoVRMLGroup", "classSoVRMLGroup.html#a54e9e2a21856da98166e6ce22b0058e3", null ],
       [ "~SoVRMLGroup", "classSoVRMLGroup.html#a176c761bf3360780ca214cd3a1d7c019", null ],
@@ -331,13 +271,7 @@ var group__coin__VRMLnodes =
       [ "notify", "classSoVRMLGroup.html#afe1f661e8caae17549c7dd0a303229b5", null ],
       [ "rayPick", "classSoVRMLGroup.html#a4aa4936341cecaa2386d1c2f13b9d840", null ],
       [ "search", "classSoVRMLGroup.html#ac487dbd5feb7871bfde43e4883fda344", null ],
-      [ "write", "classSoVRMLGroup.html#a5a2c5bd82ca57625c0def475ed4d841c", null ],
-      [ "bboxCenter", "classSoVRMLGroup.html#afe7c850a2cc633e20ccb929b6f0756fe", null ],
-      [ "bboxSize", "classSoVRMLGroup.html#a7eaa898f776a826ef0c237964a378db0", null ],
-      [ "boundingBoxCaching", "classSoVRMLGroup.html#aa5b52c42e661e05aae3dd4228225de7d", null ],
-      [ "pickCulling", "classSoVRMLGroup.html#a77b4ac473a3ab1bcbfb1e4a09cbd6187", null ],
-      [ "renderCaching", "classSoVRMLGroup.html#a071498e508620b3377ecd0a0a8ff7244", null ],
-      [ "renderCulling", "classSoVRMLGroup.html#a169edad2eee311f8bd1d976bb0d2b8a2", null ]
+      [ "write", "classSoVRMLGroup.html#a5a2c5bd82ca57625c0def475ed4d841c", null ]
     ] ],
     [ "SoVRMLImageTexture", "classSoVRMLImageTexture.html", [
       [ "SoVRMLImageTexture", "classSoVRMLImageTexture.html#a24d473e359ef43b05e49ecbdf7eaee7f", null ],
@@ -353,8 +287,7 @@ var group__coin__VRMLnodes =
       [ "rayPick", "classSoVRMLImageTexture.html#ab8454ef54593b8f012faa255430724fc", null ],
       [ "readInstance", "classSoVRMLImageTexture.html#aea38331b932611fc4415a1fa2b77a6d8", null ],
       [ "setImage", "classSoVRMLImageTexture.html#a6d2e5655db315bc237f30a1ee21a628b", null ],
-      [ "setReadStatus", "classSoVRMLImageTexture.html#a339eb286f857ee408e233bbc0f584647", null ],
-      [ "url", "classSoVRMLImageTexture.html#ad48bdebbde97eca2b69e142adacdaa08", null ]
+      [ "setReadStatus", "classSoVRMLImageTexture.html#a339eb286f857ee408e233bbc0f584647", null ]
     ] ],
     [ "SoVRMLIndexedFaceSet", "classSoVRMLIndexedFaceSet.html", [
       [ "SoVRMLIndexedFaceSet", "classSoVRMLIndexedFaceSet.html#a8b3e04e48e99eae472f8a805cac1cddf", null ],
@@ -372,21 +305,12 @@ var group__coin__VRMLnodes =
       [ "solid", "classSoVRMLIndexedFaceSet.html#a1aba1f317454f8bf1e4441ca9ce579ac", null ]
     ] ],
     [ "SoVRMLIndexedLine", "classSoVRMLIndexedLine.html", [
-      [ "SoVRMLIndexedLine", "classSoVRMLIndexedLine.html#a987d20f4bada07b69e888167c717ce2a", null ],
-      [ "~SoVRMLIndexedLine", "classSoVRMLIndexedLine.html#ac5881736f7454cf4e11b76882126f9f0", null ],
       [ "computeBBox", "classSoVRMLIndexedLine.html#afa4f265c876116d86a593657d5b565e3", null ],
-      [ "getColorIndices", "classSoVRMLIndexedLine.html#a7c66b2f941dbffac8c5069ceb458af21", null ],
       [ "getFieldData", "classSoVRMLIndexedLine.html#aa8006bdc9e047517fb3cd2757cea76bb", null ],
-      [ "getNumVerts", "classSoVRMLIndexedLine.html#a21c8671eda283a50e4ea1f4eff96fd8c", null ],
       [ "getTypeId", "classSoVRMLIndexedLine.html#a708ea0daa4bf7d29629ab8dd2e4e8d05", null ],
-      [ "notify", "classSoVRMLIndexedLine.html#a045e5e972d397119999185a0ba9e4620", null ],
-      [ "setupIndices", "classSoVRMLIndexedLine.html#a9d5d09d9edf50a7bd355911def002539", null ],
-      [ "colorIndex", "classSoVRMLIndexedLine.html#ad1ad7842df0415bafc4317cf14df11f3", null ],
-      [ "coordIndex", "classSoVRMLIndexedLine.html#ad827f056df8c4d7995b4930949fe1ae6", null ]
+      [ "notify", "classSoVRMLIndexedLine.html#a045e5e972d397119999185a0ba9e4620", null ]
     ] ],
     [ "SoVRMLIndexedLineSet", "classSoVRMLIndexedLineSet.html", [
-      [ "SoVRMLIndexedLineSet", "classSoVRMLIndexedLineSet.html#afedc91ba1f6c683dff1012f81fc2af07", null ],
-      [ "~SoVRMLIndexedLineSet", "classSoVRMLIndexedLineSet.html#a8c8bbd4f8b778761cb60345f7e0f1639", null ],
       [ "generatePrimitives", "classSoVRMLIndexedLineSet.html#a82ede737040aac2471ab0a9452e1a8db", null ],
       [ "getBoundingBox", "classSoVRMLIndexedLineSet.html#ad83df5b9824bd8c03254df7a734b0f19", null ],
       [ "getFieldData", "classSoVRMLIndexedLineSet.html#a38334cb63ba8cf3257e2aa6536e6da1b", null ],
@@ -423,10 +347,7 @@ var group__coin__VRMLnodes =
       [ "requestURLData", "classSoVRMLInline.html#adde69cd6dbf423b1ff9400e3f2931cd8", null ],
       [ "search", "classSoVRMLInline.html#a72fe69226a4df3007e622df8b1cce209", null ],
       [ "setChildData", "classSoVRMLInline.html#a9e216e6d52b239d4b247b92ec86c4175", null ],
-      [ "setFullURLName", "classSoVRMLInline.html#a346ede7a3b6c43c0fe87dcfe0e6eddb7", null ],
-      [ "bboxCenter", "classSoVRMLInline.html#ad4e644c34d14a409fd79a311166d54cd", null ],
-      [ "bboxSize", "classSoVRMLInline.html#ad4701f992d5f25003284339f171b3e01", null ],
-      [ "url", "classSoVRMLInline.html#a709fcb9467bc9dfeb2954927d5e85a53", null ]
+      [ "setFullURLName", "classSoVRMLInline.html#a346ede7a3b6c43c0fe87dcfe0e6eddb7", null ]
     ] ],
     [ "SoVRMLLOD", "classSoVRMLLOD.html", [
       [ "SoVRMLLOD", "classSoVRMLLOD.html#a3c8c29830493cc1f5c8f175166b19584", null ],
@@ -472,7 +393,6 @@ var group__coin__VRMLnodes =
       [ "search", "classSoVRMLLOD.html#aaa0babfa215a59c0211d0d79e8cf8615", null ],
       [ "whichToTraverse", "classSoVRMLLOD.html#aacc0c4d2769f6c6e470f70991e45e6e3", null ],
       [ "write", "classSoVRMLLOD.html#a61269891f5cc848e4a9db02f6f71552c", null ],
-      [ "SoVRMLLODP", "classSoVRMLLOD.html#a9beb1a76ee77259646675936a280dd8b", null ],
       [ "center", "classSoVRMLLOD.html#a3e42863eeff9bc9c697d8b91894bb355", null ],
       [ "level", "classSoVRMLLOD.html#a9ff23ff7db8b5f2e15811df617ebe704", null ],
       [ "range", "classSoVRMLLOD.html#a14c8ec09e99f52bb9efba69da0dd5513", null ]
@@ -498,15 +418,9 @@ var group__coin__VRMLnodes =
       [ "getFieldData", "classSoVRMLMovieTexture.html#a1d5fa35278740aedb29c10faa259d9a3", null ],
       [ "getTypeId", "classSoVRMLMovieTexture.html#a99cb01c1358eecd67f038f1de1ed4f18", null ],
       [ "GLRender", "classSoVRMLMovieTexture.html#aeb3a0a568bcf64cb58f5743c47c497ce", null ],
-      [ "alpha", "classSoVRMLMovieTexture.html#a900f9f68ac6422cd9c45236ab9f15359", null ],
-      [ "blendColor", "classSoVRMLMovieTexture.html#a23e87d1c216e15b8cdff86427199272f", null ],
       [ "duration_changed", "classSoVRMLMovieTexture.html#ace8ff2579ece5418f955fb597ea5f585", null ],
       [ "isActive", "classSoVRMLMovieTexture.html#a878815f9863da1ad61e9d5b98913209e", null ],
       [ "loop", "classSoVRMLMovieTexture.html#a6b9b4189ebde712676db7b78bc90c058", null ],
-      [ "model", "classSoVRMLMovieTexture.html#a165673c536fd9163c153e840c4b1184a", null ],
-      [ "pauseTime", "classSoVRMLMovieTexture.html#ab1231834ec7028f208cb861d0563a305", null ],
-      [ "resumeTime", "classSoVRMLMovieTexture.html#ae8a4c4d7faa7351778ab53cc696b1b8a", null ],
-      [ "scaleTexCoord", "classSoVRMLMovieTexture.html#a982abc5d2e6136216acc24f04f1fb5c2", null ],
       [ "speed", "classSoVRMLMovieTexture.html#acfa02921ab72dc8c32a0e4d2e7a78889", null ],
       [ "startTime", "classSoVRMLMovieTexture.html#a1e189e2cb8cae81fd9b6d2ac7507cc32", null ],
       [ "stopTime", "classSoVRMLMovieTexture.html#a0899b031f73caf2b3994b09edae449a5", null ],
@@ -520,8 +434,6 @@ var group__coin__VRMLnodes =
       [ "GLRender", "classSoVRMLNavigationInfo.html#a201b32996ec596e737fec44d0e67aca3", null ],
       [ "avatarSize", "classSoVRMLNavigationInfo.html#aade12b9eb610fc44e14bff252e8acad8", null ],
       [ "headlight", "classSoVRMLNavigationInfo.html#affb7e09e8acfdeccbbc1d26b145ce2d3", null ],
-      [ "isBound", "classSoVRMLNavigationInfo.html#a7aff1d976700226c3f1d3cee0c240ea7", null ],
-      [ "set_bind", "classSoVRMLNavigationInfo.html#a75cd78e114af44fb566365f2ae9ecb93", null ],
       [ "speed", "classSoVRMLNavigationInfo.html#a9469e04cba0ceb693faa020e3c2678ad", null ],
       [ "type", "classSoVRMLNavigationInfo.html#aab4250ecb36c2acf735563b9d91f3d1b", null ],
       [ "visibilityLimit", "classSoVRMLNavigationInfo.html#a1ca37a8c22092dbb0706f644d0c0cb2e", null ]
@@ -566,8 +478,7 @@ var group__coin__VRMLnodes =
       [ "GLRender", "classSoVRMLPixelTexture.html#a6684d4fc1e01b14ce0e9538fbb0b2b5f", null ],
       [ "notify", "classSoVRMLPixelTexture.html#a943b1499dd38021c117e0ce6c024ed88", null ],
       [ "rayPick", "classSoVRMLPixelTexture.html#adbe21c02648bbf7345b53033d8b71777", null ],
-      [ "readInstance", "classSoVRMLPixelTexture.html#a6f472aa8548f2d6c8b354811ba78f8ae", null ],
-      [ "image", "classSoVRMLPixelTexture.html#a96bd637f0c95d61c552293755fe58dc9", null ]
+      [ "readInstance", "classSoVRMLPixelTexture.html#a6f472aa8548f2d6c8b354811ba78f8ae", null ]
     ] ],
     [ "SoVRMLPlaneSensor", "classSoVRMLPlaneSensor.html", [
       [ "SoVRMLPlaneSensor", "classSoVRMLPlaneSensor.html#ac13050161d79c74ddd20309ed9b43cfb", null ],
@@ -652,11 +563,7 @@ var group__coin__VRMLnodes =
       [ "handleEvent", "classSoVRMLScript.html#a9b212245ad702d44723855266c8aa434", null ],
       [ "notify", "classSoVRMLScript.html#abe01703f8592ec2901d0f643112251d9", null ],
       [ "pick", "classSoVRMLScript.html#a8d0e9936ac612db73baddfee316b6688", null ],
-      [ "write", "classSoVRMLScript.html#a26dd9d8b67363953a5d210ca53eebe33", null ],
-      [ "SoVRMLScriptP", "classSoVRMLScript.html#a0915945d679c534e663a2192799a49f3", null ],
-      [ "directOutput", "classSoVRMLScript.html#aedbd03e7766078ab394ef4a37883d401", null ],
-      [ "mustEvaluate", "classSoVRMLScript.html#a06ced3fde9a209ebebd8b36704c94533", null ],
-      [ "url", "classSoVRMLScript.html#a621179d48c70e5de754f42800a612c17", null ]
+      [ "write", "classSoVRMLScript.html#a26dd9d8b67363953a5d210ca53eebe33", null ]
     ] ],
     [ "SoVRMLShape", "classSoVRMLShape.html", [
       [ "CacheEnabled", "classSoVRMLShape.html#aa100ca2f9e5442727d71113adbad85c6", [
@@ -664,8 +571,6 @@ var group__coin__VRMLnodes =
         [ "ON", "classSoVRMLShape.html#aa100ca2f9e5442727d71113adbad85c6ab10a303d47ab6cf319e43c06719c398a", null ],
         [ "AUTO", "classSoVRMLShape.html#aa100ca2f9e5442727d71113adbad85c6a6f6bba0db240fb8850965caa5bd95936", null ]
       ] ],
-      [ "SoVRMLShape", "classSoVRMLShape.html#a6667968e1d272725bdfca00b70f19cca", null ],
-      [ "~SoVRMLShape", "classSoVRMLShape.html#a1738f4ca7d1b56a5c052f1ae02595dab", null ],
       [ "affectsState", "classSoVRMLShape.html#a058412342e2c0a38692956fd45eeaf00", null ],
       [ "callback", "classSoVRMLShape.html#a31c99006ac4ba31af3a2b86924492f6f", null ],
       [ "copyContents", "classSoVRMLShape.html#a2c6ec7451a852dc0d0e5828190cbab17", null ],
@@ -689,20 +594,15 @@ var group__coin__VRMLnodes =
       [ "SoVRMLSound", "classSoVRMLSound.html#a4a9ae59b226f467fa7c87c166e9118da", null ],
       [ "~SoVRMLSound", "classSoVRMLSound.html#a1626276a9d3a94e7c1628eadfde7455c", null ],
       [ "audioRender", "classSoVRMLSound.html#a335b11c2838a94b5f5ab13f1aeae9a06", null ],
-      [ "getBufferingProperties", "classSoVRMLSound.html#a4fc2a0fb3c0f9b560207362dafc5fd55", null ],
       [ "getDopplerFactor", "classSoVRMLSound.html#a171134f535491f0c2bf29f7b37897b48", null ],
       [ "getDopplerVelocity", "classSoVRMLSound.html#a6565b6cb3e2759c7f622bb9fa60e9800", null ],
       [ "getFieldData", "classSoVRMLSound.html#ae84ec4beb04a113f279dc81634187b2e", null ],
       [ "getTypeId", "classSoVRMLSound.html#a0f99310d597740dbfc4205834a2e6923", null ],
-      [ "setBufferingProperties", "classSoVRMLSound.html#ac8e1e583174f035e5574315d72048669", null ],
       [ "setDopplerFactor", "classSoVRMLSound.html#a2dc21963e4ff38e8a14cd1fdf810cf23", null ],
       [ "setDopplerVelocity", "classSoVRMLSound.html#aac5a9efd4b80a91c0864daa717689b73", null ],
       [ "startPlaying", "classSoVRMLSound.html#a9f078df5cfede11fbdd68236a10e7b08", null ],
       [ "stopPlaying", "classSoVRMLSound.html#a4dbbd83f86206eaf3c8eb28efda9a9fa", null ],
-      [ "SoVRMLSoundP", "classSoVRMLSound.html#af8c545aaa6fb0c5131b5ffff1a179653", null ],
       [ "direction", "classSoVRMLSound.html#a515ec6e04a23f5f7e27768f17fcfa8bb", null ],
-      [ "dopplerFactor", "classSoVRMLSound.html#a80a60a6127be251a5a1d0912384d2a05", null ],
-      [ "dopplerVelocity", "classSoVRMLSound.html#a51acbb122d0706f0edb7a2ef9d9aa9bc", null ],
       [ "intensity", "classSoVRMLSound.html#a5b223d9f5c81c650d837ed3ee3560e25", null ],
       [ "location", "classSoVRMLSound.html#a9209c110ffd5cf1226fd59b9a8cbba7a", null ],
       [ "maxBack", "classSoVRMLSound.html#a443d32437969a1d6cdc9221ca2f78adf", null ],
@@ -790,16 +690,10 @@ var group__coin__VRMLnodes =
       [ "replaceChoice", "classSoVRMLSwitch.html#aaaff685a4bf5360439e9fbff6b066163", null ],
       [ "search", "classSoVRMLSwitch.html#a967b2c76de7638a257741823574c9cf2", null ],
       [ "write", "classSoVRMLSwitch.html#af7dc296d70c5cfe4fab3344f8d2d3554", null ],
-      [ "SoVRMLSwitchP", "classSoVRMLSwitch.html#a4aeff7adbd5700f84dc4c3b004ce2eb8", null ],
       [ "choice", "classSoVRMLSwitch.html#ae2326c51230aa566dd08d9c8de5aa890", null ],
       [ "whichChoice", "classSoVRMLSwitch.html#a4fb7e1426017494a24668de069cf2901", null ]
     ] ],
     [ "SoVRMLText", "classSoVRMLText.html", [
-      [ "Justification", "classSoVRMLText.html#ac6c70758613b5724f355ba8718938602", [
-        [ "BEGIN", "classSoVRMLText.html#ac6c70758613b5724f355ba8718938602a1a6d880c16e363d5292e283adb863b78", null ],
-        [ "END", "classSoVRMLText.html#ac6c70758613b5724f355ba8718938602aabaf6edc0bb47d752c00e581d43400e6", null ],
-        [ "MIDDLE", "classSoVRMLText.html#ac6c70758613b5724f355ba8718938602ad5b960f2c20e6be495d251d322798039", null ]
-      ] ],
       [ "SoVRMLText", "classSoVRMLText.html#a77979d2767cb56a70cb7c994b1431bc6", null ],
       [ "~SoVRMLText", "classSoVRMLText.html#afa16d614feb3d6f2ed3205e1b9f86f82", null ],
       [ "computeBBox", "classSoVRMLText.html#aff8cfcc781d1aeca2618e523b1ac2953", null ],
@@ -810,8 +704,6 @@ var group__coin__VRMLnodes =
       [ "getTypeId", "classSoVRMLText.html#aaf5aaa9a3b883064b7f5e0e6a18f75eb", null ],
       [ "GLRender", "classSoVRMLText.html#aabb3f2afe8e59566357880218900650e", null ],
       [ "notify", "classSoVRMLText.html#a9111dda6cb1b968fefd3991f77f71030", null ],
-      [ "SoVRMLTextP", "classSoVRMLText.html#aefb6d314c0c5100edad03c3ef7298862", null ],
-      [ "children", "classSoVRMLText.html#aaab208995fa215e391588a6007a7db3c", null ],
       [ "fontStyle", "classSoVRMLText.html#a7ee0fbdb88554b32a90333b3d59d2834", null ],
       [ "length", "classSoVRMLText.html#aa6efa406dfdac2583b6ea1498f9b2cba", null ],
       [ "maxExtent", "classSoVRMLText.html#a32da788e819e214fca0a7072f1c799df", null ],

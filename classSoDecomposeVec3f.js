@@ -1,7 +1,5 @@
 var classSoDecomposeVec3f =
 [
-    [ "~ SoDecomposeVec3f", "classSoDecomposeVec3f.html#a21f87716d47e67b3be70799095c6758c", null ],
-    [ "SoDecomposeVec3f", "classSoDecomposeVec3f.html#a06abf0da130cea672d49938b3509c0dd", null ],
     [ "getFieldData", "classSoDecomposeVec3f.html#a6fd75de81ae007ca1f2271b64d861116", null ],
     [ "getOutputData", "classSoDecomposeVec3f.html#aa6aeee7cdad940f4bf8e5a78b8f1df5d", null ],
     [ "getTypeId", "classSoDecomposeVec3f.html#a2dcaa8b3deaca5e7430a0459a05e950d", null ],

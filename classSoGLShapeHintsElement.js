@@ -1,6 +1,5 @@
 var classSoGLShapeHintsElement =
 [
-    [ "SoGLShapeHintsElement", "classSoGLShapeHintsElement.html#ac28e063c336ed4b21fa83866a52c8580", null ],
     [ "~SoGLShapeHintsElement", "classSoGLShapeHintsElement.html#a2caf7ef48a4e2a55424123a7f29a42b0", null ],
     [ "init", "classSoGLShapeHintsElement.html#a1494ce527fc8a6e2ed525f52a194ec76", null ],
     [ "pop", "classSoGLShapeHintsElement.html#a4314486c1e19e5f24648751d704eb0d1", null ],

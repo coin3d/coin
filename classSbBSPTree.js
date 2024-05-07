@@ -18,6 +18,5 @@ var classSbBSPTree =
     [ "numPoints", "classSbBSPTree.html#a30be9f13dd903a1d481139f2a76edc0f", null ],
     [ "removePoint", "classSbBSPTree.html#a7c352323ca873a56b2dafc4e1022ec07", null ],
     [ "removePoint", "classSbBSPTree.html#abe40262d6438a4228b4acc9ff944b9b3", null ],
-    [ "setUserData", "classSbBSPTree.html#a3e0dc00d4b8a12821f8cf6995fd9620e", null ],
-    [ "coin_bspnode", "classSbBSPTree.html#a69cce8d61dede89abae09ba25d574b3e", null ]
+    [ "setUserData", "classSbBSPTree.html#a3e0dc00d4b8a12821f8cf6995fd9620e", null ]
 ];

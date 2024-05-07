@@ -39,8 +39,6 @@ var classSoSceneTexture2 =
       [ "CLAMP", "classSoSceneTexture2.html#ab76f95aa60de5b5753520b9462b644c2a7ad4a917801632a9fc7130f1019c489b", null ],
       [ "CLAMP_TO_BORDER", "classSoSceneTexture2.html#ab76f95aa60de5b5753520b9462b644c2a26ae2dd4abe4441543030d84109ff02c", null ]
     ] ],
-    [ "SoSceneTexture2", "classSoSceneTexture2.html#a33a5dbea2d73823fa9b88d302b4e3903", null ],
-    [ "~SoSceneTexture2", "classSoSceneTexture2.html#a8213ab26ce31ebbd111d6832602717c0", null ],
     [ "callback", "classSoSceneTexture2.html#a665ce568af35750391b1d6365d86769f", null ],
     [ "doAction", "classSoSceneTexture2.html#aebc74a708a70231210c7c63e26fb4565", null ],
     [ "getFieldData", "classSoSceneTexture2.html#a7117498799c2cc17b50cadd760c69dee", null ],

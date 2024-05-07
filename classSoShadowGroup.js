@@ -1,10 +1,5 @@
 var classSoShadowGroup =
 [
-    [ "VisibilityFlag", "classSoShadowGroup.html#abf7eb9b132971ecc65d7e3e2f1e6e25c", [
-      [ "ABSOLUTE_RADIUS", "classSoShadowGroup.html#abf7eb9b132971ecc65d7e3e2f1e6e25ca4ef1a402edfc89fbd90c7ce809deb950", null ],
-      [ "LONGEST_BBOX_EDGE_FACTOR", "classSoShadowGroup.html#abf7eb9b132971ecc65d7e3e2f1e6e25ca62cec0f5cdbdd9082f33eb9a8e8faf88", null ],
-      [ "PROJECTED_BBOX_DEPTH_FACTOR", "classSoShadowGroup.html#abf7eb9b132971ecc65d7e3e2f1e6e25ca28f5524f0ed7f702aaa250414ebefb41", null ]
-    ] ],
     [ "SoShadowGroup", "classSoShadowGroup.html#af2bc6876aa1d37a844f84187db5e83bf", null ],
     [ "~SoShadowGroup", "classSoShadowGroup.html#abed38bb31e3f53cf9cbc66719357e965", null ],
     [ "enableSubgraphSearchOnNotify", "classSoShadowGroup.html#aed06c73226c44e9089a8eb6614b47a41", null ],

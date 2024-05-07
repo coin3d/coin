@@ -32,9 +32,5 @@ var classSoPath =
     [ "truncate", "classSoPath.html#ad6078a33f2838005f98cf488d18930e8", null ],
     [ "write", "classSoPath.html#a3b45195e0e17b98f437de45223c97a20", null ],
     [ "operator!=", "classSoPath.html#afb925263baf09f7c209443e06bf9e528", null ],
-    [ "operator==", "classSoPath.html#ab4848beb2243ec5b8166c38835a1583a", null ],
-    [ "SoAction", "classSoPath.html#a5d7c7e1f89fb05dde739c50211b70788", null ],
-    [ "SoFullPath", "classSoPath.html#aca994c680b72a0c55bff0c85c2ea77d3", null ],
-    [ "SoNodeKitPath", "classSoPath.html#ae325411ea95965d472b1ca45f5a774a5", null ],
-    [ "SoTempPath", "classSoPath.html#a3db738d22a6a471b912582e2d878cc2c", null ]
+    [ "operator==", "classSoPath.html#ab4848beb2243ec5b8166c38835a1583a", null ]
 ];

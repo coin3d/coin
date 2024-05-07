@@ -1,29 +1,9 @@
 var classSoMFUShort =
 [
-    [ "SoMFUShort", "classSoMFUShort.html#a9b2f0de1df1b797f09e97b070284d16e", null ],
-    [ "~ SoMFUShort", "classSoMFUShort.html#a7be5be0351b821e1e79a0f18de7a32d4", null ],
-    [ "allocValues", "classSoMFUShort.html#a62167ec3c0348c0249ade002fb61ba07", null ],
     [ "copyFrom", "classSoMFUShort.html#a119da38268c8ec333cc386f42e74e164", null ],
     [ "copyValue", "classSoMFUShort.html#a7358eb7f0e8e8bb6fb86c9708030b646", null ],
     [ "deleteAllValues", "classSoMFUShort.html#a82eecb94fef514748449288b82db5a97", null ],
-    [ "fieldSizeof", "classSoMFUShort.html#afe56e52df847f7ef1d5169eb978fa74f", null ],
-    [ "find", "classSoMFUShort.html#abf7c6c4cd3f5f614ecb0010b6f2301b8", null ],
-    [ "finishEditing", "classSoMFUShort.html#a3444460968da75bc3bd6c65d460758f6", null ],
     [ "getTypeId", "classSoMFUShort.html#a8e763bf1c55c044b86a1f1b027148536", null ],
-    [ "getValues", "classSoMFUShort.html#a314500e806c611e3908c445385a61ebf", null ],
-    [ "isSame", "classSoMFUShort.html#a46ac89735791fc302cd4880d3e70a6ea", null ],
-    [ "operator!=", "classSoMFUShort.html#a32b0613360c39ba1398261cb10e8812c", null ],
-    [ "operator=", "classSoMFUShort.html#accb86fd6d38465dc51ca016899a291a9", null ],
-    [ "operator=", "classSoMFUShort.html#a16d6214579339bf34064b1316b58f05f", null ],
-    [ "operator==", "classSoMFUShort.html#ae4e93a76239b1865d44542e0a77aaac3", null ],
-    [ "operator[]", "classSoMFUShort.html#a2bbdcf9a6f0ce753c46a73553d16b3ba", null ],
-    [ "set1Value", "classSoMFUShort.html#a5b958c1fde57ffa5658266d79f28cde9", null ],
-    [ "setValue", "classSoMFUShort.html#ae9a93aa824767dfccf3b32c96c4ad713", null ],
-    [ "setValues", "classSoMFUShort.html#a471607130e962eff839407e03d2cd232", null ],
-    [ "setValuesPointer", "classSoMFUShort.html#a8a94bacdca5b8d62a1d823b68fdcf7d9", null ],
-    [ "setValuesPointer", "classSoMFUShort.html#ae82b4a9442f0e52a8660c3110b2b26fd", null ],
-    [ "setValuesPtr", "classSoMFUShort.html#a698350b57957b9b6bd5f62176479f1bb", null ],
-    [ "startEditing", "classSoMFUShort.html#a09b6c9c8ff6c57342c9de87d46e35c6c", null ],
-    [ "valuesPtr", "classSoMFUShort.html#aba07b3f303e34a28502b165e3791dd06", null ],
-    [ "values", "classSoMFUShort.html#a139df70816362fa5d4a7ff587c65a43e", null ]
+    [ "getValues", "classSoMFUShort.html#a583d138fad8cec6007e2dd204f0af242", null ],
+    [ "isSame", "classSoMFUShort.html#a46ac89735791fc302cd4880d3e70a6ea", null ]
 ];

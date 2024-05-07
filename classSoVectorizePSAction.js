@@ -13,6 +13,5 @@ var classSoVectorizePSAction =
     [ "printItem", "classSoVectorizePSAction.html#a4c1352d56e9c667979c291970a0b1bb9", null ],
     [ "printViewport", "classSoVectorizePSAction.html#af9d9e0e5f970c42a20ef48e7af317632", null ],
     [ "setDefault2DFont", "classSoVectorizePSAction.html#aa6c5daa662b5c82cfba94c9f5648444d", null ],
-    [ "setGouraudThreshold", "classSoVectorizePSAction.html#acd4450ea6b1803cb530afcde1fb4ffd7", null ],
-    [ "SoVectorizePSActionP", "classSoVectorizePSAction.html#af0c98cff3fb31758d762f5fa309ff0fb", null ]
+    [ "setGouraudThreshold", "classSoVectorizePSAction.html#acd4450ea6b1803cb530afcde1fb4ffd7", null ]
 ];

@@ -1,6 +1,5 @@
 var classSoGLMultiTextureMatrixElement =
 [
-    [ "SoGLMultiTextureMatrixElement", "classSoGLMultiTextureMatrixElement.html#a007975601b79f20f48847810dae19efb", null ],
     [ "~SoGLMultiTextureMatrixElement", "classSoGLMultiTextureMatrixElement.html#aef80704592cad705272cfbd59bbba4e8", null ],
     [ "init", "classSoGLMultiTextureMatrixElement.html#a57a1cadc4a17ff180615ad587c635b4e", null ],
     [ "multElt", "classSoGLMultiTextureMatrixElement.html#a2b37753e9fde42822d64b09fa1531313", null ],

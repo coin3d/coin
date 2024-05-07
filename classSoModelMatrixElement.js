@@ -1,6 +1,5 @@
 var classSoModelMatrixElement =
 [
-    [ "SoModelMatrixElement", "classSoModelMatrixElement.html#a5600022b0f3fa666815717bcc71cd008", null ],
     [ "~SoModelMatrixElement", "classSoModelMatrixElement.html#ad47f555d0e5c27ae3a3c3d17f34105cb", null ],
     [ "getModelMatrix", "classSoModelMatrixElement.html#a667f1aea673002ca524dd0cac21b5584", null ],
     [ "init", "classSoModelMatrixElement.html#a5795900e2ab4d90c163c17349c3a5d93", null ],

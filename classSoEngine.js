@@ -16,6 +16,5 @@ var classSoEngine =
     [ "readInstance", "classSoEngine.html#a946da90b09c1a79aefc9b2ca134fb3f3", null ],
     [ "shouldCopy", "classSoEngine.html#a932f32257e02cd2ecc2c8bf5be917991", null ],
     [ "writeInstance", "classSoEngine.html#a1bbe7bf1a626ca76a3f7b09c6a0e4df8", null ],
-    [ "writeOutputTypes", "classSoEngine.html#a5e9b96d9a944eb8f819dbe3331274c86", null ],
-    [ "SoEngineOutput", "classSoEngine.html#ab13611fb9286f4e4b6ac710a9cb7a52f", null ]
+    [ "writeOutputTypes", "classSoEngine.html#a5e9b96d9a944eb8f819dbe3331274c86", null ]
 ];

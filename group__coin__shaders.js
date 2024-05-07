@@ -57,144 +57,107 @@ var group__coin__shaders =
       [ "name", "classSoShaderParameter.html#a817810200322e39e2953e3dc24fbf51d", null ]
     ] ],
     [ "SoShaderParameter1f", "classSoShaderParameter1f.html", [
-      [ "SoShaderParameter1f", "classSoShaderParameter1f.html#a24975513ae9e75b6e1700588cc6e7e7a", null ],
-      [ "~SoShaderParameter1f", "classSoShaderParameter1f.html#a94629a516669dd7c1603f1782b120286", null ],
       [ "getFieldData", "classSoShaderParameter1f.html#a5b9dc7ffc9d6932f87d82373b455e73a", null ],
       [ "getTypeId", "classSoShaderParameter1f.html#a8d39d73eae25fb87b7fb4e8b91243e13", null ],
       [ "updateParameter", "classSoShaderParameter1f.html#a35b096e18dca0c0369eeafcfd28b6c8a", null ],
       [ "value", "classSoShaderParameter1f.html#a11504729bd99635fa2298f5f11969120", null ]
     ] ],
     [ "SoShaderParameter1i", "classSoShaderParameter1i.html", [
-      [ "SoShaderParameter1i", "classSoShaderParameter1i.html#a6df0811b4d74ef8c332cf8e3a9661539", null ],
-      [ "~SoShaderParameter1i", "classSoShaderParameter1i.html#a59e66f5f96456fee93adc181bee278d8", null ],
       [ "getFieldData", "classSoShaderParameter1i.html#a5240ae890f142749ebc27a94099555a2", null ],
       [ "getTypeId", "classSoShaderParameter1i.html#a72661bd7f262a925358b212379772efc", null ],
       [ "updateParameter", "classSoShaderParameter1i.html#a34c19444530f8639ceeef01d0bd2ec19", null ],
       [ "value", "classSoShaderParameter1i.html#a3ce74d18450651af506b50bdf97ca66d", null ]
     ] ],
     [ "SoShaderParameter2f", "classSoShaderParameter2f.html", [
-      [ "SoShaderParameter2f", "classSoShaderParameter2f.html#a841b0128ac11269a676c91d6b3b21d4a", null ],
-      [ "~SoShaderParameter2f", "classSoShaderParameter2f.html#a93a71d670b0abf89bf1ea8678c7b243b", null ],
       [ "getFieldData", "classSoShaderParameter2f.html#a72843552ee41f09f54b2dacc6acb830e", null ],
       [ "getTypeId", "classSoShaderParameter2f.html#a787cb035df9ae2c66cdaaeac230c1113", null ],
       [ "updateParameter", "classSoShaderParameter2f.html#a55373f3b65a63efdab09ba8757db4d3d", null ],
       [ "value", "classSoShaderParameter2f.html#ad70d49a2052563005fedc5527e72b530", null ]
     ] ],
     [ "SoShaderParameter2i", "classSoShaderParameter2i.html", [
-      [ "SoShaderParameter2i", "classSoShaderParameter2i.html#a0133e61e39d14053299c73d3d07f964c", null ],
-      [ "~SoShaderParameter2i", "classSoShaderParameter2i.html#ad4c81a7c074789522a36388e35821fa7", null ],
       [ "getFieldData", "classSoShaderParameter2i.html#aa743b8a601a4ef1910a65164f27f6e74", null ],
       [ "getTypeId", "classSoShaderParameter2i.html#a18eb60e53e7c16422e20e4a8ab6f1950", null ],
       [ "updateParameter", "classSoShaderParameter2i.html#a96cda2783aaaffb1e141346e63289131", null ],
       [ "value", "classSoShaderParameter2i.html#aaa3d630c052e014a3644a4ff4a4a3108", null ]
     ] ],
     [ "SoShaderParameter3f", "classSoShaderParameter3f.html", [
-      [ "SoShaderParameter3f", "classSoShaderParameter3f.html#aa8fa0448d7f63e1c722988768559caf4", null ],
-      [ "~SoShaderParameter3f", "classSoShaderParameter3f.html#a14439a25cb904b277a8c112d6748d1f9", null ],
       [ "getFieldData", "classSoShaderParameter3f.html#ab9248442ef20c0022c8965af41d91ef4", null ],
       [ "getTypeId", "classSoShaderParameter3f.html#a077477387a73c41fdad3c7b0f222fa08", null ],
       [ "updateParameter", "classSoShaderParameter3f.html#a6ef7a5757ad3881da6604fa8c59dccff", null ],
       [ "value", "classSoShaderParameter3f.html#a5ab5150fe240318c2db62dca9b81f5f2", null ]
     ] ],
     [ "SoShaderParameter3i", "classSoShaderParameter3i.html", [
-      [ "SoShaderParameter3i", "classSoShaderParameter3i.html#a8d6910c8bdbf89d2036ba9e05ddbe987", null ],
-      [ "~SoShaderParameter3i", "classSoShaderParameter3i.html#a0da1d54bccbdc3353a7946ee8b7c558a", null ],
       [ "getFieldData", "classSoShaderParameter3i.html#aa00f29a3b6c25328b13e69c5ef865dc4", null ],
       [ "getTypeId", "classSoShaderParameter3i.html#ace2a3dba712e5314a94e3e1f9e98ca7f", null ],
       [ "updateParameter", "classSoShaderParameter3i.html#a91fbaf46e16d3db077c72f3e35d5eaff", null ],
       [ "value", "classSoShaderParameter3i.html#a6eca82b75400193cbf9e61deacba58df", null ]
     ] ],
     [ "SoShaderParameter4f", "classSoShaderParameter4f.html", [
-      [ "SoShaderParameter4f", "classSoShaderParameter4f.html#a64a46db298d5a519e4df16eeff9ee760", null ],
-      [ "~SoShaderParameter4f", "classSoShaderParameter4f.html#a832456b8787e0980806bc3000403cb4b", null ],
       [ "getFieldData", "classSoShaderParameter4f.html#a5b075aee1692e121e2a3460751af0ae7", null ],
       [ "getTypeId", "classSoShaderParameter4f.html#a6e46956dd9a2e47cc8819fbf1fe1fb05", null ],
       [ "updateParameter", "classSoShaderParameter4f.html#ab6132c42d8c81871e570b742814fa7f7", null ],
       [ "value", "classSoShaderParameter4f.html#af3c7467a9e96df1da51290dc285588f0", null ]
     ] ],
     [ "SoShaderParameter4i", "classSoShaderParameter4i.html", [
-      [ "SoShaderParameter4i", "classSoShaderParameter4i.html#ab96f7cc794267f075d03bfa807535b6e", null ],
-      [ "~SoShaderParameter4i", "classSoShaderParameter4i.html#aef2b19d342aecf7aa34b8dd7f7e2bbd2", null ],
       [ "getFieldData", "classSoShaderParameter4i.html#aaec9afa0431335ba274f985f1c808e81", null ],
       [ "getTypeId", "classSoShaderParameter4i.html#a333e0e53bf4be1850a25e5ebc423e587", null ],
       [ "updateParameter", "classSoShaderParameter4i.html#ad1a3ac60180255ca186dc4fa857431ce", null ],
       [ "value", "classSoShaderParameter4i.html#ac454e601774153387e47ef827c98d98c", null ]
     ] ],
     [ "SoShaderParameterArray1f", "classSoShaderParameterArray1f.html", [
-      [ "SoShaderParameterArray1f", "classSoShaderParameterArray1f.html#ac69a4756c4811320689482fb75b78af3", null ],
-      [ "~SoShaderParameterArray1f", "classSoShaderParameterArray1f.html#af23d43dbf2de9d8eb8a6ffb2b38b925d", null ],
       [ "getFieldData", "classSoShaderParameterArray1f.html#aedf80db41c1871e34c06583c063542e5", null ],
       [ "getTypeId", "classSoShaderParameterArray1f.html#a33fd7da5f9e4dfba714d0479b0c2b3e0", null ],
       [ "updateParameter", "classSoShaderParameterArray1f.html#a8538edb885cae4c15db836a20e4e2088", null ],
       [ "value", "classSoShaderParameterArray1f.html#a3ffc290b94f40237300ef38c86d6d43d", null ]
     ] ],
     [ "SoShaderParameterArray1i", "classSoShaderParameterArray1i.html", [
-      [ "SoShaderParameterArray1i", "classSoShaderParameterArray1i.html#a6dc500e01f2825995ef32295107bfa62", null ],
-      [ "~SoShaderParameterArray1i", "classSoShaderParameterArray1i.html#a78691cdea590c04083eefe380dfa256a", null ],
       [ "getFieldData", "classSoShaderParameterArray1i.html#a98bbb0c5a649dfbb4c9a6f4deed0ed30", null ],
       [ "getTypeId", "classSoShaderParameterArray1i.html#ae92d38a9bdf62763f59d72bd83b1e06b", null ],
       [ "updateParameter", "classSoShaderParameterArray1i.html#a967c6041cb06e7b11d46c7e44c913346", null ],
       [ "value", "classSoShaderParameterArray1i.html#ab8c7ab00d44338386bdb235fb8eebec2", null ]
     ] ],
     [ "SoShaderParameterArray2f", "classSoShaderParameterArray2f.html", [
-      [ "SoShaderParameterArray2f", "classSoShaderParameterArray2f.html#a9ee3f12223a3e2eef8f0bafac67702b2", null ],
-      [ "~SoShaderParameterArray2f", "classSoShaderParameterArray2f.html#a5f9e323135e8953e3136585b51fe8f16", null ],
       [ "getFieldData", "classSoShaderParameterArray2f.html#a0613e9e9e87ab728d5e7bc761f1193e0", null ],
       [ "getTypeId", "classSoShaderParameterArray2f.html#af25d5f8fc9ac56c4dd06605350aef049", null ],
       [ "updateParameter", "classSoShaderParameterArray2f.html#a5ee773231ce1baf2c60792cdf567a13b", null ],
       [ "value", "classSoShaderParameterArray2f.html#a41c5bfa5c456e71d72171de2f77c4d25", null ]
     ] ],
     [ "SoShaderParameterArray2i", "classSoShaderParameterArray2i.html", [
-      [ "SoShaderParameterArray2i", "classSoShaderParameterArray2i.html#a2e80a9d6a8c99d52490f1a0ee0fd3d33", null ],
-      [ "~SoShaderParameterArray2i", "classSoShaderParameterArray2i.html#a24043685a121f67656c9992c634f857b", null ],
       [ "getFieldData", "classSoShaderParameterArray2i.html#ae6ab8cb7db1e3b46f01a61ec60a91bf4", null ],
       [ "getTypeId", "classSoShaderParameterArray2i.html#a307cd0104adb1c79aaf573d3cc61bcf8", null ],
       [ "updateParameter", "classSoShaderParameterArray2i.html#a435789f9ef6ac078c226f6eb9de57259", null ],
       [ "value", "classSoShaderParameterArray2i.html#ae02a29ffd0a1b819418cb3cb5a90336c", null ]
     ] ],
     [ "SoShaderParameterArray3f", "classSoShaderParameterArray3f.html", [
-      [ "SoShaderParameterArray3f", "classSoShaderParameterArray3f.html#a696fb1705853f458f29f5c4b68cb7aa4", null ],
-      [ "~SoShaderParameterArray3f", "classSoShaderParameterArray3f.html#a74f1694d02440f98d869d151d6e1d61f", null ],
       [ "getFieldData", "classSoShaderParameterArray3f.html#a3795091f746079fb6b48f6b01f306b3e", null ],
       [ "getTypeId", "classSoShaderParameterArray3f.html#a3dd08e6c82663cafae8144724d0347c1", null ],
       [ "updateParameter", "classSoShaderParameterArray3f.html#aaca30cf2846a0594d67b34db3c6c1d5d", null ],
       [ "value", "classSoShaderParameterArray3f.html#a89d74e60650c03c294e3eba4db311591", null ]
     ] ],
     [ "SoShaderParameterArray3i", "classSoShaderParameterArray3i.html", [
-      [ "SoShaderParameterArray3i", "classSoShaderParameterArray3i.html#ada89dd147a67b616d20ddd00705e492d", null ],
-      [ "~SoShaderParameterArray3i", "classSoShaderParameterArray3i.html#a52cffc61fc0a9c29c004eaaab833b98e", null ],
       [ "getFieldData", "classSoShaderParameterArray3i.html#ab73252a81a8324b3649291cc6538467d", null ],
       [ "getTypeId", "classSoShaderParameterArray3i.html#a010858224a04ac26e7e633129f4cd502", null ],
       [ "updateParameter", "classSoShaderParameterArray3i.html#a76583d1bb75793c38e2747afa0e51fb3", null ],
       [ "value", "classSoShaderParameterArray3i.html#a75e3242dfb875999855baef0115ae6c9", null ]
     ] ],
     [ "SoShaderParameterArray4f", "classSoShaderParameterArray4f.html", [
-      [ "SoShaderParameterArray4f", "classSoShaderParameterArray4f.html#af494e5543d9ea18a40f81f3ab7d65d5a", null ],
-      [ "~SoShaderParameterArray4f", "classSoShaderParameterArray4f.html#a04aa5e4116ddc60ecfde2e995dfefce2", null ],
       [ "getFieldData", "classSoShaderParameterArray4f.html#a657144fa4a18d56e5f1caa3c0f400209", null ],
       [ "getTypeId", "classSoShaderParameterArray4f.html#a6410623da26278a11e40a9d97f1d40f8", null ],
       [ "updateParameter", "classSoShaderParameterArray4f.html#a757befa18bc4cde43ebce3d602155884", null ],
       [ "value", "classSoShaderParameterArray4f.html#a976c50fb41e0f6346e5c1946b79ef0fa", null ]
     ] ],
     [ "SoShaderParameterArray4i", "classSoShaderParameterArray4i.html", [
-      [ "SoShaderParameterArray4i", "classSoShaderParameterArray4i.html#a431be4435d1f95674960fc5e8df298a2", null ],
-      [ "~SoShaderParameterArray4i", "classSoShaderParameterArray4i.html#a390f6abae10363de0a6e992b08a6b20e", null ],
       [ "getFieldData", "classSoShaderParameterArray4i.html#a7d5debf0e8198515530086857b65e776", null ],
       [ "getTypeId", "classSoShaderParameterArray4i.html#aa7d9f60a275eb94bdad2a58cca59c194", null ],
-      [ "updateParameter", "classSoShaderParameterArray4i.html#aa3333cf374f433933d557a66ecd2ca30", null ],
-      [ "value", "classSoShaderParameterArray4i.html#a8810bfff3527231717d9615e3ee00447", null ]
+      [ "updateParameter", "classSoShaderParameterArray4i.html#aa3333cf374f433933d557a66ecd2ca30", null ]
     ] ],
     [ "SoShaderParameterMatrix", "classSoShaderParameterMatrix.html", [
-      [ "SoShaderParameterMatrix", "classSoShaderParameterMatrix.html#adfc553a94ffdd9d1321f5549bf76f306", null ],
-      [ "~SoShaderParameterMatrix", "classSoShaderParameterMatrix.html#a8ca6349f06f2c36a2b81f1f7d5ca9730", null ],
       [ "getFieldData", "classSoShaderParameterMatrix.html#ab812eb033b48c9a87a8d265ec31e34e7", null ],
       [ "getTypeId", "classSoShaderParameterMatrix.html#aaf669f06de0110e44531d17f5dcfc823", null ],
       [ "updateParameter", "classSoShaderParameterMatrix.html#ad2f9d019e9b98c43c095c8e8d5c4cde7", null ],
       [ "value", "classSoShaderParameterMatrix.html#a9989c7296d21a13d725b5015f809d5ed", null ]
     ] ],
     [ "SoShaderParameterMatrixArray", "classSoShaderParameterMatrixArray.html", [
-      [ "SoShaderParameterMatrixArray", "classSoShaderParameterMatrixArray.html#a654659164d9b783ae3b6d3239c49f6b1", null ],
-      [ "~SoShaderParameterMatrixArray", "classSoShaderParameterMatrixArray.html#a37f612a87a583900c1965212caedc894", null ],
       [ "getFieldData", "classSoShaderParameterMatrixArray.html#a421e514f6cbfcbcb95ab777533601804", null ],
       [ "getTypeId", "classSoShaderParameterMatrixArray.html#a8c2b7e44069e25c56d454460dc7a948e", null ],
       [ "updateParameter", "classSoShaderParameterMatrixArray.html#a918a210e439d9072ee0c581d4e08bbcb", null ],
@@ -223,22 +186,15 @@ var group__coin__shaders =
         [ "TEXTURE", "classSoShaderStateMatrixParameter.html#adcfbec351486ee7ce52f1df2e21e9a46a53fa301614f01b66730bfe3e31a51c1c", null ],
         [ "MODELVIEW_PROJECTION", "classSoShaderStateMatrixParameter.html#adcfbec351486ee7ce52f1df2e21e9a46a297fb74fe3ddec77404c0120d8e5127a", null ]
       ] ],
-      [ "SoShaderStateMatrixParameter", "classSoShaderStateMatrixParameter.html#a9d71ff0ac1fb1050cd046b0e4af9b5f9", null ],
-      [ "~SoShaderStateMatrixParameter", "classSoShaderStateMatrixParameter.html#ae9b04ebfdc830ea03d1d6168b0e49377", null ],
       [ "getFieldData", "classSoShaderStateMatrixParameter.html#ad46eed5328d6ff1e524f01a71f813cac", null ],
       [ "getTypeId", "classSoShaderStateMatrixParameter.html#aaea96e1423d451c95f77741317af6ee1", null ],
       [ "updateParameter", "classSoShaderStateMatrixParameter.html#ad613e2016f19d27b0eb77727ba4fdbfd", null ],
       [ "updateValue", "classSoShaderStateMatrixParameter.html#aa949c4886485aecf30f32ba8bc286ceb", null ],
       [ "matrixTransform", "classSoShaderStateMatrixParameter.html#afd73931f65d3e166fa7804ee1d368205", null ],
-      [ "matrixType", "classSoShaderStateMatrixParameter.html#aa570b3dcb134952f1637cd0492ecfb0f", null ],
-      [ "value", "classSoShaderStateMatrixParameter.html#a12a5757f45da2cc89d01d716b23c33a2", null ]
+      [ "matrixType", "classSoShaderStateMatrixParameter.html#aa570b3dcb134952f1637cd0492ecfb0f", null ]
     ] ],
     [ "SoUniformShaderParameter", "classSoUniformShaderParameter.html", [
-      [ "SoUniformShaderParameter", "classSoUniformShaderParameter.html#a9ba0513cee4b50487a2874ad09480186", null ],
-      [ "~SoUniformShaderParameter", "classSoUniformShaderParameter.html#a9a3b96791297df2c9f7de1b26f39d160", null ],
-      [ "ensureParameter", "classSoUniformShaderParameter.html#a4e7dd55d1aa0c8582b0803d149bd5ee9", null ],
       [ "getFieldData", "classSoUniformShaderParameter.html#aca777a1f28f9ceafc036d1d158e93670", null ],
-      [ "getGLShaderParameter", "classSoUniformShaderParameter.html#ace9ed46ad73ca6ae66465124e8d108bf", null ],
       [ "getTypeId", "classSoUniformShaderParameter.html#a17eb2f6011617149e44390bc4c6de23b", null ],
       [ "updateParameter", "classSoUniformShaderParameter.html#a557a03c6ba49249444a303f1402949ce", null ]
     ] ],
@@ -248,13 +204,10 @@ var group__coin__shaders =
       [ "copyContents", "classSoVertexAttribute.html#a811dfa6a553237732ce7233bd216f345", null ],
       [ "doAction", "classSoVertexAttribute.html#a8dae15bcc05e1d6ee3b7073a5f778ccb", null ],
       [ "getTypeId", "classSoVertexAttribute.html#a4c374e3eefa23d43d476486ffb1cdb43", null ],
-      [ "getValuesField", "classSoVertexAttribute.html#a38fe25482a3116067e94c69f0883348d", null ],
       [ "GLRender", "classSoVertexAttribute.html#a16b929a7369249c75e1e4a120a52c0a3", null ],
       [ "notify", "classSoVertexAttribute.html#a55b513546b43d79c0e087b687c5a78eb", null ],
       [ "readInstance", "classSoVertexAttribute.html#ae823260d3ce363947664e4e02a41980b", null ],
-      [ "write", "classSoVertexAttribute.html#ad173231e5f4b2fd959de8a2a64fab904", null ],
-      [ "name", "classSoVertexAttribute.html#a2162527394b8b7c7f867bc1560a1823a", null ],
-      [ "typeName", "classSoVertexAttribute.html#a531bfc6e0fc8d692984e47efedf307bd", null ]
+      [ "write", "classSoVertexAttribute.html#ad173231e5f4b2fd959de8a2a64fab904", null ]
     ] ],
     [ "SoVertexAttributeBinding", "classSoVertexAttributeBinding.html", [
       [ "Binding", "classSoVertexAttributeBinding.html#a487b2a913378a6db93102eeb0ca67561", [

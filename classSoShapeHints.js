@@ -28,7 +28,6 @@ var classSoShapeHints =
     [ "creaseAngle", "classSoShapeHints.html#ac801b32b6b907de13c07862fbbeb38c8", null ],
     [ "faceType", "classSoShapeHints.html#a8472cabcb2457e13d74034a3b6b8810a", null ],
     [ "shapeType", "classSoShapeHints.html#a259749fdc51667b6a424862f43165790", null ],
-    [ "useVBO", "classSoShapeHints.html#a71dc04b553d4a7720b46d15086ee0ba9", null ],
     [ "vertexOrdering", "classSoShapeHints.html#a1ad504e82e6f9478b1ffe3f8730107d0", null ],
     [ "windingType", "classSoShapeHints.html#a3a1eb7ff2cb06be24b2f8e74162c04e7", null ]
 ];

@@ -18,7 +18,6 @@ var classSoElement =
     [ "setDepth", "classSoElement.html#a8508119bc6d937ab882f45f86745d2e1", null ],
     [ "setStackIndex", "classSoElement.html#a84b9e1b74e61a4c8383650a33dc7a9c8", null ],
     [ "setTypeId", "classSoElement.html#a48d6dbea777d2eee021a788cf896ecaa", null ],
-    [ "SoState", "classSoElement.html#a088ada748118a1856c312842d245c05d", null ],
     [ "depth", "classSoElement.html#a60e3b7f1344de81f7d6a198e7655235f", null ],
     [ "stackIndex", "classSoElement.html#a3babbcafa83800192cee2acb1a8edd6f", null ],
     [ "typeId", "classSoElement.html#a3acf0e425bc7ef0a812df905a39fb269", null ]

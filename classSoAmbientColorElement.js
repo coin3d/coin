@@ -1,6 +1,5 @@
 var classSoAmbientColorElement =
 [
-    [ "SoAmbientColorElement", "classSoAmbientColorElement.html#ae4c03d789ec8dd37d77391d11cf8436a", null ],
     [ "~SoAmbientColorElement", "classSoAmbientColorElement.html#af82269472b965fda951e8d9b28f13099", null ],
     [ "get", "classSoAmbientColorElement.html#a65940471017dfbc8c700ccc2ed828765", null ],
     [ "getArrayPtr", "classSoAmbientColorElement.html#a6d3ce1d97faebe2a11b03823f179b895", null ],

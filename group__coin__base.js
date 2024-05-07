@@ -1,37 +1,6 @@
 var group__coin__base =
 [
-    [ "cc_string", "structcc__string.html", [
-      [ "cc_string_append_char", "structcc__string.html#a7beaf272f352a1f775fe7cd7d7b4588b", null ],
-      [ "cc_string_append_integer", "structcc__string.html#a1223ea6c03750959c4c3398ec7ee2f3e", null ],
-      [ "cc_string_append_string", "structcc__string.html#a6566d80819f17310efc2d0195f1bfe29", null ],
-      [ "cc_string_append_text", "structcc__string.html#adfc8cc44c87865a2a34cf724de2895de", null ],
-      [ "cc_string_apply", "structcc__string.html#aa269855cf73fc7b4a792b1a9eeb68fea", null ],
-      [ "cc_string_clean", "structcc__string.html#a5c72283a03c3db0296cc9595e95b2111", null ],
-      [ "cc_string_clear", "structcc__string.html#add0ffe8f2d76ae5004b098039b8ef1a3", null ],
-      [ "cc_string_clear_no_free", "structcc__string.html#aa6793eca8c8772ac8b25973fe3f9f2e8", null ],
-      [ "cc_string_clone", "structcc__string.html#afc6ce98fe1a7c4c709eeaef47a789af6", null ],
-      [ "cc_string_compare", "structcc__string.html#ad7e9e8b7b44af7d141fd5b024d1105cb", null ],
-      [ "cc_string_compare_subtext", "structcc__string.html#af60250303c5fdf087c519f23a4cc8673", null ],
-      [ "cc_string_compare_text", "structcc__string.html#ab6e19474ca8b6e4fb351a740b979d2f8", null ],
-      [ "cc_string_construct", "structcc__string.html#a1e3483e4670274d3d595e7f6d705e6d9", null ],
-      [ "cc_string_construct_new", "structcc__string.html#a21bcd83e0d2393347e6e191b5b98b221", null ],
-      [ "cc_string_destruct", "structcc__string.html#aaf4584141fe8e79455ae8ec2a14290f4", null ],
-      [ "cc_string_get_text", "structcc__string.html#a35d4421e1c79dfa06d2ebefbbe199c88", null ],
-      [ "cc_string_hash", "structcc__string.html#a40f630455c99d8cdc461338de871064d", null ],
-      [ "cc_string_hash_text", "structcc__string.html#a145deaab499ba17f752ee9faa71f0887", null ],
-      [ "cc_string_is", "structcc__string.html#aab2df1186538c937d0c1e8dd70f94739", null ],
-      [ "cc_string_length", "structcc__string.html#a3c784a27e9fc7b105f2678477379c530", null ],
-      [ "cc_string_remove_substring", "structcc__string.html#a726d298c64bf1cd55616cd4c0d84ccb1", null ],
-      [ "cc_string_set_integer", "structcc__string.html#a042c454b66d1bf8747ca707355035ae3", null ],
-      [ "cc_string_set_string", "structcc__string.html#a7192f00a992c14cac454ae9a699e6154", null ],
-      [ "cc_string_set_subtext", "structcc__string.html#a83fa6d8b7cad278c89d9361dc9b57938", null ],
-      [ "cc_string_set_text", "structcc__string.html#a9ae21a07394ae5af86df94ee5fcba970", null ],
-      [ "cc_string_sprintf", "structcc__string.html#adb593c7e585440ac03ea46ae947db0d2", null ],
-      [ "cc_string_vsprintf", "structcc__string.html#a50682548b92b8267ba5ccde5e61a3d39", null ],
-      [ "buffer", "structcc__string.html#aa7be34787394e155f0a78008f744e639", null ],
-      [ "bufsize", "structcc__string.html#a0a47f92b47e8d5162895485b1e4c5f1b", null ],
-      [ "pointer", "structcc__string.html#aebbd242368e34708a49d5535ead2f1b4", null ]
-    ] ],
+    [ "cc_string", "structcc__string.html", null ],
     [ "SbBox2d", "classSbBox2d.html", [
       [ "SbBox2d", "classSbBox2d.html#ab5d433a13b536b2935830e6e0e81bbcf", null ],
       [ "SbBox2d", "classSbBox2d.html#ab35a9df21fe541e6d26f1d9bdb18001b", null ],
@@ -99,9 +68,7 @@ var group__coin__base =
       [ "setBounds", "classSbBox2f.html#af3a9b1d9fd5ff0af88a6a77f44e00878", null ],
       [ "setBounds", "classSbBox2f.html#a36c09cc65b4a63013bc31dea68a7b6e1", null ],
       [ "operator!=", "classSbBox2f.html#aca1673211be6ce175bc5ac0c795feaa3", null ],
-      [ "operator==", "classSbBox2f.html#a44f45d9426e170bec8f85b0fd82033d8", null ],
-      [ "maxpt", "classSbBox2f.html#a2a12033ed77f65f9431725d98dd444b4", null ],
-      [ "minpt", "classSbBox2f.html#ac25f5b02fe239eebf6f40a74d08bdacd", null ]
+      [ "operator==", "classSbBox2f.html#a44f45d9426e170bec8f85b0fd82033d8", null ]
     ] ],
     [ "SbBox2i32", "classSbBox2i32.html", [
       [ "SbBox2i32", "classSbBox2i32.html#a00a108df9578449c28a71e82df2e3425", null ],
@@ -205,9 +172,7 @@ var group__coin__base =
       [ "setBounds", "classSbBox3d.html#a43a4b2b558e8a21d33648b1bda85f789", null ],
       [ "transform", "classSbBox3d.html#a962b54989a51435308b1ea93e523b319", null ],
       [ "operator!=", "classSbBox3d.html#ac649125547a086c55bbf67ee25a9222c", null ],
-      [ "operator==", "classSbBox3d.html#ab4a51a09147360c5bc153f0db3a7ee92", null ],
-      [ "maxpt", "classSbBox3d.html#aa3f7a4f68e92e7f178e46240b5005c2c", null ],
-      [ "minpt", "classSbBox3d.html#a336a2d5fe168c0059d8c72c8eab22be5", null ]
+      [ "operator==", "classSbBox3d.html#ab4a51a09147360c5bc153f0db3a7ee92", null ]
     ] ],
     [ "SbBox3f", "classSbBox3f.html", [
       [ "SbBox3f", "classSbBox3f.html#acda68a85f93e1c8756d2f1804e1fab4e", null ],
@@ -284,9 +249,7 @@ var group__coin__base =
       [ "setBounds", "classSbBox3i32.html#a05fb9d19dd9602572f4ed19eb0dd9026", null ],
       [ "transform", "classSbBox3i32.html#abad43e1482084889f131f3becafd25c3", null ],
       [ "operator!=", "classSbBox3i32.html#aa4868315e255b12cb7f1e177db8c0681", null ],
-      [ "operator==", "classSbBox3i32.html#a6237f2130f9b322f575da31305e2fb66", null ],
-      [ "maxpt", "classSbBox3i32.html#a2ac90c27bde04808f36f8756b5684c33", null ],
-      [ "minpt", "classSbBox3i32.html#acfdf3c4b6b0c791fd41ce3c38173098a", null ]
+      [ "operator==", "classSbBox3i32.html#a6237f2130f9b322f575da31305e2fb66", null ]
     ] ],
     [ "SbBox3s", "classSbBox3s.html", [
       [ "SbBox3s", "classSbBox3s.html#af34ced593533a18d9744eda71fe932f7", null ],
@@ -320,9 +283,7 @@ var group__coin__base =
       [ "setBounds", "classSbBox3s.html#a3c9080831e46e5719873beddab6e9f82", null ],
       [ "setBounds", "classSbBox3s.html#a2c477237d4a0e162a8118092a58c51ee", null ],
       [ "operator!=", "classSbBox3s.html#a9a916e95490b2e6483d1b5d29502df96", null ],
-      [ "operator==", "classSbBox3s.html#a8947d1fa6e0badfc158e309139b23d90", null ],
-      [ "maxpt", "classSbBox3s.html#a02e31b1e8323082790648e1dbcd6f6ed", null ],
-      [ "minpt", "classSbBox3s.html#a92d9b444135c3fce704986ba13ad98d5", null ]
+      [ "operator==", "classSbBox3s.html#a8947d1fa6e0badfc158e309139b23d90", null ]
     ] ],
     [ "SbBSPTree", "classSbBSPTree.html", [
       [ "SbBSPTree", "classSbBSPTree.html#a81cd11e722bd4d8782c9b2617e0e3907", null ],
@@ -343,8 +304,7 @@ var group__coin__base =
       [ "numPoints", "classSbBSPTree.html#a30be9f13dd903a1d481139f2a76edc0f", null ],
       [ "removePoint", "classSbBSPTree.html#a7c352323ca873a56b2dafc4e1022ec07", null ],
       [ "removePoint", "classSbBSPTree.html#abe40262d6438a4228b4acc9ff944b9b3", null ],
-      [ "setUserData", "classSbBSPTree.html#a3e0dc00d4b8a12821f8cf6995fd9620e", null ],
-      [ "coin_bspnode", "classSbBSPTree.html#a69cce8d61dede89abae09ba25d574b3e", null ]
+      [ "setUserData", "classSbBSPTree.html#a3e0dc00d4b8a12821f8cf6995fd9620e", null ]
     ] ],
     [ "SbClip", "classSbClip.html", [
       [ "SbClip", "classSbClip.html#ad84357d002b55482d098de8d44ff7d3e", null ],
@@ -412,7 +372,6 @@ var group__coin__base =
       [ "setValue", "classSbCylinder.html#af90337238a8ab3a5db63e0a69c5e9d71", null ]
     ] ],
     [ "SbDict", "classSbDict.html", [
-      [ "Key", "classSbDict.html#a11fc04f6d17924886d4d4fa43066e19a", null ],
       [ "SbDict", "classSbDict.html#a92792a27e53f730d81c3f545ea1aeb66", null ],
       [ "SbDict", "classSbDict.html#adc2e06721f4e751e6c4b128eaed92b1c", null ],
       [ "~SbDict", "classSbDict.html#abc0830ad6fc3f118ef9364193b488bd9", null ],
@@ -642,7 +601,7 @@ var group__coin__base =
       [ "setPosDir", "classSbLine.html#ab4910d8a37e4e80c80eabc4caee321e6", null ],
       [ "setValue", "classSbLine.html#a6beb09e9ca8cf702ddcf0b2a56793a1d", null ]
     ] ],
-    [ "SbList", "classSbList.html", [
+    [ "SbList< Type >", "classSbList.html", [
       [ "SbList", "classSbList.html#ab18cad4eb2d06030cd564917a8c331f4", null ],
       [ "SbList", "classSbList.html#a189665fb116eed3812bad8a2da247d3d", null ],
       [ "~SbList", "classSbList.html#ae7c20239e83b64aec15b53273622618d", null ],
@@ -744,7 +703,6 @@ var group__coin__base =
       [ "~SbOctTree", "classSbOctTree.html#ab9a58a484f6eacacce9b5d91943abd7b", null ],
       [ "addItem", "classSbOctTree.html#abe0d819501c3e600783942cffb2b157f", null ],
       [ "clear", "classSbOctTree.html#a40ce23dda004f6b4a6c97a488286b0c7", null ],
-      [ "debugTree", "classSbOctTree.html#acf0505697427f74f018e876f18ccd16f", null ],
       [ "findItems", "classSbOctTree.html#a478d6cb1237c3243f6ee70a603773cfd", null ],
       [ "findItems", "classSbOctTree.html#a113a7d7b14b2a3a250b8810181b39ba0", null ],
       [ "findItems", "classSbOctTree.html#a16b1bd954d5db4614957c6d246d94a9a", null ],
@@ -1004,8 +962,7 @@ var group__coin__base =
       [ "operator+", "classSbVec2d.html#aca58910afc203e37d3130116b194c4f6", null ],
       [ "operator-", "classSbVec2d.html#a5fca9f72a94995260ff026f8f96031fa", null ],
       [ "operator/", "classSbVec2d.html#a1bf50012c612e4cba25faf4c43b35fdd", null ],
-      [ "operator==", "classSbVec2d.html#ac385222f5fba67dd4681703b68203fb5", null ],
-      [ "vec", "classSbVec2d.html#a302565eb73a61bc7b4450480a7f91703", null ]
+      [ "operator==", "classSbVec2d.html#ac385222f5fba67dd4681703b68203fb5", null ]
     ] ],
     [ "SbVec2f", "classSbVec2f.html", [
       [ "SbVec2f", "classSbVec2f.html#a1346ce09a8a9385f9c006cc5d63fcbf6", null ],
@@ -1045,8 +1002,7 @@ var group__coin__base =
       [ "operator+", "classSbVec2f.html#a833644ab1c9540c85936d53902343dbc", null ],
       [ "operator-", "classSbVec2f.html#ad7705425b46b63001e60b15ac5a7e609", null ],
       [ "operator/", "classSbVec2f.html#ae241274f86f09257c43312082f79c11e", null ],
-      [ "operator==", "classSbVec2f.html#afc60d5b71be030e65e2b48b777fe2f04", null ],
-      [ "vec", "classSbVec2f.html#ab701c9e04b37334580873e9ad9120e6f", null ]
+      [ "operator==", "classSbVec2f.html#afc60d5b71be030e65e2b48b777fe2f04", null ]
     ] ],
     [ "SbVec2i32", "classSbVec2i32.html", [
       [ "SbVec2i32", "classSbVec2i32.html#a61e4389eec4df5c60d8a2541a53dad61", null ],
@@ -1087,8 +1043,7 @@ var group__coin__base =
       [ "operator-", "classSbVec2i32.html#a31768d5c34d39849be6586176dae6f85", null ],
       [ "operator/", "classSbVec2i32.html#a17b0be4cc751a41ff8423359ed754c03", null ],
       [ "operator/", "classSbVec2i32.html#ac56ca284a16ec1723a03ce26c4c5f682", null ],
-      [ "operator==", "classSbVec2i32.html#ab90407c32069ca2fed431d5db3633771", null ],
-      [ "vec", "classSbVec2i32.html#a08e134148cea8a3bf59dfa2603e26078", null ]
+      [ "operator==", "classSbVec2i32.html#ab90407c32069ca2fed431d5db3633771", null ]
     ] ],
     [ "SbVec2s", "classSbVec2s.html", [
       [ "SbVec2s", "classSbVec2s.html#a949d11f0e5baf23139d37077d86c8668", null ],
@@ -1131,8 +1086,7 @@ var group__coin__base =
       [ "operator-", "classSbVec2s.html#a0d9471171e0850999d1ea739c791db64", null ],
       [ "operator/", "classSbVec2s.html#a4997afc77f28a86590c3b56851ac7653", null ],
       [ "operator/", "classSbVec2s.html#a0da97de4ad79429159ef2a7e9d9b9c75", null ],
-      [ "operator==", "classSbVec2s.html#a5e0d9c3c70b584ef527896aab18d0c8c", null ],
-      [ "vec", "classSbVec2s.html#a61940a436c730168e2d0f829a1a5a024", null ]
+      [ "operator==", "classSbVec2s.html#a5e0d9c3c70b584ef527896aab18d0c8c", null ]
     ] ],
     [ "SbVec3d", "classSbVec3d.html", [
       [ "SbVec3d", "classSbVec3d.html#a8eadb0adc327684c460881ae81253e12", null ],
@@ -1271,8 +1225,7 @@ var group__coin__base =
       [ "operator-", "classSbVec3s.html#aa2c20aecadbd48a78c765d80f779f7bf", null ],
       [ "operator/", "classSbVec3s.html#a4ab17190eb376a2158952bff4561839a", null ],
       [ "operator/", "classSbVec3s.html#a03691fd07c4ea890fbd6e64a218b3003", null ],
-      [ "operator==", "classSbVec3s.html#a17f16774265457801b432b293eaed06a", null ],
-      [ "vec", "classSbVec3s.html#a8ebe62a464d76ebd41f4df1962f500d7", null ]
+      [ "operator==", "classSbVec3s.html#a17f16774265457801b432b293eaed06a", null ]
     ] ],
     [ "SbVec4d", "classSbVec4d.html", [
       [ "SbVec4d", "classSbVec4d.html#ac7b884bfbc3a4b9ce649cdb59de77c79", null ],
@@ -1311,8 +1264,7 @@ var group__coin__base =
       [ "operator+", "classSbVec4d.html#a7e01a6afd5a4380ae240805cd96744c2", null ],
       [ "operator-", "classSbVec4d.html#a07e36b6b71e7d092c5dc047f02f21572", null ],
       [ "operator/", "classSbVec4d.html#ae02649fb85b10ede354e713efb7c55fb", null ],
-      [ "operator==", "classSbVec4d.html#a38923a1aab2ce280682f0c33f7229789", null ],
-      [ "vec", "classSbVec4d.html#aa0dbbc195538262a73f2680a6440795f", null ]
+      [ "operator==", "classSbVec4d.html#a38923a1aab2ce280682f0c33f7229789", null ]
     ] ],
     [ "SbVec4f", "classSbVec4f.html", [
       [ "SbVec4f", "classSbVec4f.html#a8906e1c6054ce209d1f6d77a21515e44", null ],
@@ -1351,8 +1303,7 @@ var group__coin__base =
       [ "operator+", "classSbVec4f.html#abc1db057a8df5be3eb7f5d19f90b0e58", null ],
       [ "operator-", "classSbVec4f.html#aeb503e55d6b40b30f6306f6689fb37b8", null ],
       [ "operator/", "classSbVec4f.html#af0c94dc96d51452294649791712c142a", null ],
-      [ "operator==", "classSbVec4f.html#aaaeee53660c883978e3ab2b0cfc27a77", null ],
-      [ "vec", "classSbVec4f.html#ae894728e753ba46d5408e901805914c5", null ]
+      [ "operator==", "classSbVec4f.html#aaaeee53660c883978e3ab2b0cfc27a77", null ]
     ] ],
     [ "SbViewportRegion", "classSbViewportRegion.html", [
       [ "SbViewportRegion", "classSbViewportRegion.html#af522056ea9d27359b03cb2b88536f0e2", null ],

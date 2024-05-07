@@ -5,14 +5,7 @@ var group__coin__nodekits =
       [ "~SoAppearanceKit", "classSoAppearanceKit.html#aa60b9412c5e5fb507bc4dd614125dda9", null ],
       [ "getFieldData", "classSoAppearanceKit.html#ae2893613dbe4b4f8ddb7cc990f0bfc3a", null ],
       [ "getNodekitCatalog", "classSoAppearanceKit.html#a7275777817195f2034ac8cbbf0c7e3e5", null ],
-      [ "getTypeId", "classSoAppearanceKit.html#a8d12e49ff11f978ac464bef55eb6811b", null ],
-      [ "complexity", "classSoAppearanceKit.html#ab5a0141875eb87adb52bbbdf5852dfec", null ],
-      [ "drawStyle", "classSoAppearanceKit.html#ad10767ca607d555f9c16d69dec2d0737", null ],
-      [ "environment", "classSoAppearanceKit.html#afe8c238d478c6d1490487b93cd08bef9", null ],
-      [ "font", "classSoAppearanceKit.html#aaa03fc8b0eb249108081070309b5e0ca", null ],
-      [ "lightModel", "classSoAppearanceKit.html#a5df4a43944ae0f820a5df6fd8a3919d4", null ],
-      [ "material", "classSoAppearanceKit.html#a81d13b909db3e6b4023634e9ddcd7275", null ],
-      [ "texture2", "classSoAppearanceKit.html#abdd678269f8e607c54327d08ea2abcc9", null ]
+      [ "getTypeId", "classSoAppearanceKit.html#a8d12e49ff11f978ac464bef55eb6811b", null ]
     ] ],
     [ "SoBaseKit", "classSoBaseKit.html", [
       [ "SoBaseKit", "classSoBaseKit.html#a4dec0b9a34a39eaf52a295e2f1ec54ad", null ],
@@ -59,9 +52,6 @@ var group__coin__nodekits =
       [ "setPart", "classSoBaseKit.html#ab3f42ab04032e4f420625d314b606ae6", null ],
       [ "setUpConnections", "classSoBaseKit.html#ad0dfa76f0a788985303733bbcc40f41b", null ],
       [ "write", "classSoBaseKit.html#a0a2780f431dcdebfbe1c7e8caca412fd", null ],
-      [ "SoBaseKitP", "classSoBaseKit.html#a3fa22e60221aed62662777058a5341b5", null ],
-      [ "SoInteractionKit", "classSoBaseKit.html#ab34e8dd3a91591d672ff206b7ce651fc", null ],
-      [ "callbackList", "classSoBaseKit.html#ab421f79a18cfb84a8ed65df36443b4b8", null ],
       [ "children", "classSoBaseKit.html#ae4ab33e30abfa604966d85aa9be58fcd", null ],
       [ "connectionsSetUp", "classSoBaseKit.html#a318dfc1790c5762ea18979af0ea43e8e", null ]
     ] ],
@@ -70,10 +60,7 @@ var group__coin__nodekits =
       [ "~SoCameraKit", "classSoCameraKit.html#a6a4a768d36e3c28a0502b8cbb3738d33", null ],
       [ "getFieldData", "classSoCameraKit.html#a0bf56caa09a895635d9199fcfb00ead3", null ],
       [ "getNodekitCatalog", "classSoCameraKit.html#ad6d0010ba226dae399b70060502457e7", null ],
-      [ "getTypeId", "classSoCameraKit.html#a6cee1377cf59aa99d983fb851b531935", null ],
-      [ "camera", "classSoCameraKit.html#afb8054475c74cccbb90678ea46848c52", null ],
-      [ "transform", "classSoCameraKit.html#afcdda73b7194c283e902c1ee5226251f", null ],
-      [ "transformGroup", "classSoCameraKit.html#afd5e5b23f43454cfeeee8854277f51cb", null ]
+      [ "getTypeId", "classSoCameraKit.html#a6cee1377cf59aa99d983fb851b531935", null ]
     ] ],
     [ "SoInteractionKit", "classSoInteractionKit.html", [
       [ "CacheEnabled", "classSoInteractionKit.html#a6e3b312f001982687c6ead6f70e505b4", [
@@ -101,27 +88,19 @@ var group__coin__nodekits =
       [ "setPartAsDefault", "classSoInteractionKit.html#a1aae5cdef63005f5c7251d3991119b60", null ],
       [ "setPartAsPath", "classSoInteractionKit.html#af86aa8628f3966b61997c5a404d1efa2", null ],
       [ "setUpConnections", "classSoInteractionKit.html#ad44786431f5b073879b4c74d1e97d47a", null ],
-      [ "SoInteractionKitP", "classSoInteractionKit.html#a06a47937feecc837dcc4f6be0307daf4", null ],
       [ "boundingBoxCaching", "classSoInteractionKit.html#a8003282ce3a8bd37a1642472fcc81135", null ],
       [ "fieldSensor", "classSoInteractionKit.html#a0b07989dbb5ee24fef77500fb1248dab", null ],
-      [ "geomSeparator", "classSoInteractionKit.html#ad389a2a3c85e38fe10d5208609341509", null ],
       [ "oldTopSep", "classSoInteractionKit.html#a27b4f1a6b40cdfd9c5ea94a7d59f8fc8", null ],
       [ "pickCulling", "classSoInteractionKit.html#aa630983b94260156b2e8e3d7be5f633a", null ],
       [ "renderCaching", "classSoInteractionKit.html#a0721d44115e135e704899180f9dd1ea3", null ],
-      [ "renderCulling", "classSoInteractionKit.html#a88e5e2140949e46cc6a82aad104a779d", null ],
-      [ "topSeparator", "classSoInteractionKit.html#a86771e7adf58574393af13e285af79df", null ]
+      [ "renderCulling", "classSoInteractionKit.html#a88e5e2140949e46cc6a82aad104a779d", null ]
     ] ],
     [ "SoLightKit", "classSoLightKit.html", [
       [ "SoLightKit", "classSoLightKit.html#a63016b6c7080090276b8acb46380d552", null ],
       [ "~SoLightKit", "classSoLightKit.html#a0cdc221baeb4f8b66be4ac241cad0a27", null ],
       [ "getFieldData", "classSoLightKit.html#a48f3e052dce8040b49124f95046f72dc", null ],
       [ "getNodekitCatalog", "classSoLightKit.html#af75d840e4d2cd6f4d5c44b6bbef446e1", null ],
-      [ "getTypeId", "classSoLightKit.html#a2b0b9712a559d4a3afcda761b5db2884", null ],
-      [ "icon", "classSoLightKit.html#ab3f618bcee09155ffba149dc53bfc0d1", null ],
-      [ "iconSeparator", "classSoLightKit.html#ac70d43cbbf57fe7ac5aa9430af636594", null ],
-      [ "light", "classSoLightKit.html#a54aa8de8f74430c273b878c32baac668", null ],
-      [ "transform", "classSoLightKit.html#abf4d73ced9c382720f516c81710af3de", null ],
-      [ "transformGroup", "classSoLightKit.html#a029ceb7f4cc270c6f1113297290d9b83", null ]
+      [ "getTypeId", "classSoLightKit.html#a2b0b9712a559d4a3afcda761b5db2884", null ]
     ] ],
     [ "SoNodeKit", "classSoNodeKit.html", null ],
     [ "SoNodekitCatalog", "classSoNodekitCatalog.html", [
@@ -200,7 +179,6 @@ var group__coin__nodekits =
       [ "replaceChild", "classSoNodeKitListPart.html#ae4dba51f7db4d829bc6be7dfce106d75", null ],
       [ "search", "classSoNodeKitListPart.html#a326afbd057ac629955e73cbe0a4296cc", null ],
       [ "setContainerType", "classSoNodeKitListPart.html#a8de46164a424a023bbfb9d0a90bd92c2", null ],
-      [ "SoBaseKit", "classSoNodeKitListPart.html#a4a039ab151ab163a4cf64407685bb652", null ],
       [ "children", "classSoNodeKitListPart.html#ae8e7deb66408ebf7bf2c0169c709090d", null ]
     ] ],
     [ "SoNodeKitPath", "classSoNodeKitPath.html", [
@@ -226,11 +204,7 @@ var group__coin__nodekits =
       [ "getFieldData", "classSoSceneKit.html#a1378065dd200d5a80bf69b8f0c732bdc", null ],
       [ "getNodekitCatalog", "classSoSceneKit.html#a4d42b041edc8eb4a02eb45a71b8e9527", null ],
       [ "getTypeId", "classSoSceneKit.html#a602b3d39e2330d5532a9f92907032766", null ],
-      [ "setCameraNumber", "classSoSceneKit.html#a9b0cbe5e738ff48e9fcd643a1d680b30", null ],
-      [ "cameraList", "classSoSceneKit.html#aa1080159f4ceaf1f9f3fe1f3c45813e1", null ],
-      [ "childList", "classSoSceneKit.html#a36185694f6613627db26eb70a9c92acc", null ],
-      [ "lightList", "classSoSceneKit.html#adc3add4eef6d9c2892f03045884f8d78", null ],
-      [ "topSeparator", "classSoSceneKit.html#aa050d797520b4899c9e4c35c7ddd85df", null ]
+      [ "setCameraNumber", "classSoSceneKit.html#a9b0cbe5e738ff48e9fcd643a1d680b30", null ]
     ] ],
     [ "SoSeparatorKit", "classSoSeparatorKit.html", [
       [ "CacheEnabled", "classSoSeparatorKit.html#a9ca337b88c73bf3f95ad7392b51c7b30", [
@@ -245,18 +219,10 @@ var group__coin__nodekits =
       [ "getTypeId", "classSoSeparatorKit.html#ad8bff515d0bfd09c434c7357e4238bfb", null ],
       [ "setDefaultOnNonWritingFields", "classSoSeparatorKit.html#a55d5caf5ef9514566542781affe6b142", null ],
       [ "setUpConnections", "classSoSeparatorKit.html#a25ea8d7e7a737be12ae8d67767f3e6a8", null ],
-      [ "SoSeparatorKitP", "classSoSeparatorKit.html#a1b6eeaa33e7dc2a26707a78958fa789b", null ],
-      [ "appearance", "classSoSeparatorKit.html#a8c555c6752275a1cb01ffb1504593e61", null ],
       [ "boundingBoxCaching", "classSoSeparatorKit.html#ac2fc2e42f3069a7e66b600af9e39999d", null ],
-      [ "childList", "classSoSeparatorKit.html#af10493565d1fd9e7b24cd97076918563", null ],
       [ "pickCulling", "classSoSeparatorKit.html#af7c5f3107bb073bb0ee7924d820c81e5", null ],
-      [ "pickStyle", "classSoSeparatorKit.html#a5cef0393c6f9d77b58110b1098469e03", null ],
       [ "renderCaching", "classSoSeparatorKit.html#a9a5381e3d24ca6f17892dce93792e83a", null ],
-      [ "renderCulling", "classSoSeparatorKit.html#a5237653e0daab24d986acf2301059f78", null ],
-      [ "texture2Transform", "classSoSeparatorKit.html#af457d3cc21c6f165fce3b4ab8f0111e4", null ],
-      [ "topSeparator", "classSoSeparatorKit.html#a9b6ef1b09bfea935fc131d9f1213ced0", null ],
-      [ "transform", "classSoSeparatorKit.html#a35e12963baf711e8ce195ed74e3aa1fd", null ],
-      [ "units", "classSoSeparatorKit.html#a73bda7f9b4c880576fefdd72e6316b8e", null ]
+      [ "renderCulling", "classSoSeparatorKit.html#a5237653e0daab24d986acf2301059f78", null ]
     ] ],
     [ "SoShapeKit", "classSoShapeKit.html", [
       [ "SoShapeKit", "classSoShapeKit.html#a6d241c016b38ca4d5e0d823df77a72bc", null ],
@@ -264,30 +230,13 @@ var group__coin__nodekits =
       [ "getFieldData", "classSoShapeKit.html#aac718a8e9d8e56b7bdeb797b14c42293", null ],
       [ "getNodekitCatalog", "classSoShapeKit.html#a42d803eba43a4f8ee78ca2c0f3cb7ecd", null ],
       [ "getTypeId", "classSoShapeKit.html#a466a13520ad56a27de7a0f2e97df1f28", null ],
-      [ "setDefaultOnNonWritingFields", "classSoShapeKit.html#a996543f508a0e8aeebda0d3467b1d030", null ],
-      [ "coordinate3", "classSoShapeKit.html#a979ccb005d280452d6180cceb9a7eb2a", null ],
-      [ "coordinate4", "classSoShapeKit.html#a29952111cc6d30ff5b4e8acc5eff0b0b", null ],
-      [ "localTransform", "classSoShapeKit.html#a53bf09da213f5bbfebd569c86160bff1", null ],
-      [ "materialBinding", "classSoShapeKit.html#a5389a162e24727f9f97215cbb46af4f8", null ],
-      [ "normal", "classSoShapeKit.html#a3a96d4a450b13c597e0cad37bc3fe62a", null ],
-      [ "normalBinding", "classSoShapeKit.html#a03cec058ed4d706ea1265a9e4d95b6b8", null ],
-      [ "profileCoordinate2", "classSoShapeKit.html#a2d27e4e8aea92475017236d262769e47", null ],
-      [ "profileCoordinate3", "classSoShapeKit.html#ad44233e01581f19e5d4902759b350033", null ],
-      [ "profileList", "classSoShapeKit.html#a98b05b2d2609e7b229ad4bf6aa1adcc2", null ],
-      [ "shape", "classSoShapeKit.html#ae8fb2326b31b942d1534d0b7fbc408d8", null ],
-      [ "shapeHints", "classSoShapeKit.html#aed2a0fb8af910e7996fec72e9dc15866", null ],
-      [ "shapeSeparator", "classSoShapeKit.html#a69a0cc28ee4b3b0d5df2a7303d464447", null ],
-      [ "textureCoordinate2", "classSoShapeKit.html#a04cb3b7653f9390d49cfc2afb7921b87", null ],
-      [ "textureCoordinateBinding", "classSoShapeKit.html#a741cb4d907cd45622d85fe346f8489b4", null ],
-      [ "textureCoordinateFunction", "classSoShapeKit.html#aae01c4598d4b70fbf6b7135a52b1a906", null ]
+      [ "setDefaultOnNonWritingFields", "classSoShapeKit.html#a996543f508a0e8aeebda0d3467b1d030", null ]
     ] ],
     [ "SoWrapperKit", "classSoWrapperKit.html", [
       [ "SoWrapperKit", "classSoWrapperKit.html#ada263e36e88802b46b5e85f5e07c8e35", null ],
       [ "~SoWrapperKit", "classSoWrapperKit.html#ac4cecf97816e2c93e04422ba0a7e2e96", null ],
       [ "getFieldData", "classSoWrapperKit.html#a3999c778bd98c72e105c3db42f0a006c", null ],
       [ "getNodekitCatalog", "classSoWrapperKit.html#ae9482b0ff9b405b205ec6832e0f92752", null ],
-      [ "getTypeId", "classSoWrapperKit.html#a384fbc6cd2524fe7e2a41c33d1fa6399", null ],
-      [ "contents", "classSoWrapperKit.html#a8a511724bb7265474dea3f2a2e830e27", null ],
-      [ "localTransform", "classSoWrapperKit.html#ac67dbf3a9b4844dd733e37c15e3bf60c", null ]
+      [ "getTypeId", "classSoWrapperKit.html#a384fbc6cd2524fe7e2a41c33d1fa6399", null ]
     ] ]
 ];

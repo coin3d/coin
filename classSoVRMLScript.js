@@ -11,9 +11,5 @@ var classSoVRMLScript =
     [ "handleEvent", "classSoVRMLScript.html#a9b212245ad702d44723855266c8aa434", null ],
     [ "notify", "classSoVRMLScript.html#abe01703f8592ec2901d0f643112251d9", null ],
     [ "pick", "classSoVRMLScript.html#a8d0e9936ac612db73baddfee316b6688", null ],
-    [ "write", "classSoVRMLScript.html#a26dd9d8b67363953a5d210ca53eebe33", null ],
-    [ "SoVRMLScriptP", "classSoVRMLScript.html#a0915945d679c534e663a2192799a49f3", null ],
-    [ "directOutput", "classSoVRMLScript.html#aedbd03e7766078ab394ef4a37883d401", null ],
-    [ "mustEvaluate", "classSoVRMLScript.html#a06ced3fde9a209ebebd8b36704c94533", null ],
-    [ "url", "classSoVRMLScript.html#a621179d48c70e5de754f42800a612c17", null ]
+    [ "write", "classSoVRMLScript.html#a26dd9d8b67363953a5d210ca53eebe33", null ]
 ];

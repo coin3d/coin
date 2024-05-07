@@ -1,6 +1,5 @@
 var classSoFloatElement =
 [
-    [ "SoFloatElement", "classSoFloatElement.html#a29d096095febf24754259158d076f4a9", null ],
     [ "~SoFloatElement", "classSoFloatElement.html#a34b62e52236b3b2201039af2b1e7fbc2", null ],
     [ "copyMatchInfo", "classSoFloatElement.html#aaa454380dcd1332b4fa3b604f4700cc6", null ],
     [ "init", "classSoFloatElement.html#a73858638ae99e6a928a1af53331694a6", null ],

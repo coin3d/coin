@@ -4,8 +4,7 @@ var group__coin__manips =
       [ "SoCenterballManip", "classSoCenterballManip.html#a93c60e150d3ece7ce0a7c2c579aaace9", null ],
       [ "~SoCenterballManip", "classSoCenterballManip.html#abcad2cae7c6edd2e9e9dba7b9f238747", null ],
       [ "getFieldData", "classSoCenterballManip.html#a830e3db2a61e368a6001a208a4d9ee87", null ],
-      [ "getTypeId", "classSoCenterballManip.html#a66b36a10e82fea2d35f1424384177692", null ],
-      [ "setDragger", "classSoCenterballManip.html#aeff210585d2a6608ae111501b57779cb", null ]
+      [ "getTypeId", "classSoCenterballManip.html#a66b36a10e82fea2d35f1424384177692", null ]
     ] ],
     [ "SoClipPlaneManip", "classSoClipPlaneManip.html", [
       [ "SoClipPlaneManip", "classSoClipPlaneManip.html#a454888f25c6085fde413315ad3d928c7", null ],

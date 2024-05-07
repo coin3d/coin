@@ -1,6 +1,5 @@
 var classSoCacheElement =
 [
-    [ "SoCacheElement", "classSoCacheElement.html#a780e0ec71e59614b7c7e784245847b7c", null ],
     [ "~SoCacheElement", "classSoCacheElement.html#ab44e537adf722def23c94a9767029776", null ],
     [ "copyMatchInfo", "classSoCacheElement.html#ad71c747a01815d07e2e9af9b2e04dfbe", null ],
     [ "getCache", "classSoCacheElement.html#a28396f2d203c66c59812ef8150602e84", null ],

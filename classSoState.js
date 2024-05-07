@@ -6,7 +6,6 @@ var classSoState =
     [ "getConstElement", "classSoState.html#ada45932ebf907cb2d91fa6f6949eff20", null ],
     [ "getDepth", "classSoState.html#a9dfceed3d0b7c26affe4bbb7a0c80c2d", null ],
     [ "getElement", "classSoState.html#aff4a1d584519c8b108ec273298a09860", null ],
-    [ "getElementNoPush", "classSoState.html#a6f6bcdbdd7ac3a6af2c170382f98eb5b", null ],
     [ "isCacheOpen", "classSoState.html#ac0b22b8d46d220a4e624a350fd02b778", null ],
     [ "isElementEnabled", "classSoState.html#aada4108571863a04e3676c11f90d1590", null ],
     [ "pop", "classSoState.html#a9bd01b48366dfda61f0b0b4f2a4fdac7", null ],

@@ -13,6 +13,5 @@ var classSoProto =
     [ "getTypeId", "classSoProto.html#a4612347bd3a943c30f8e524cc64c5553", null ],
     [ "readInstance", "classSoProto.html#a79cc167fabff4ff755d06fb49567640f", null ],
     [ "removeReference", "classSoProto.html#a53f0e0fdf345a03c2f70c67fe8120b43", null ],
-    [ "write", "classSoProto.html#ae832cd06b9cea87764f0daf5e50987fc", null ],
-    [ "SoProtoP", "classSoProto.html#a7e49fec8d7c9545ce45296b276da4f1d", null ]
+    [ "write", "classSoProto.html#ae832cd06b9cea87764f0daf5e50987fc", null ]
 ];

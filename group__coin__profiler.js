@@ -1,18 +1,6 @@
 var group__coin__profiler =
 [
     [ "SbProfilingData", "classSbProfilingData.html", [
-      [ "SbProfilingDataCB", "classSbProfilingData.html#a6c606cfbb7e557453e60c462f8211fd5", null ],
-      [ "FootprintType", "classSbProfilingData.html#aa0463981d906c791a45f2a6df075537b", [
-        [ "MEMORY_SIZE", "classSbProfilingData.html#aa0463981d906c791a45f2a6df075537bae0cfe80d3925e18f14364b24a9cf34e3", null ],
-        [ "VIDEO_MEMORY_SIZE", "classSbProfilingData.html#aa0463981d906c791a45f2a6df075537bac6a698aac82eb0aa2ec30655964096d4", null ]
-      ] ],
-      [ "NodeDataQueryFlags", "classSbProfilingData.html#a3425bd2479da2fc2f69717ab7180613c", [
-        [ "INCLUDE_CHILDREN", "classSbProfilingData.html#a3425bd2479da2fc2f69717ab7180613caf3b403b686d443da647223e11901b2bd", null ]
-      ] ],
-      [ "NodeFlag", "classSbProfilingData.html#a5018586f8ded80f0c531ea2c183e9ae0", [
-        [ "GL_CACHED_FLAG", "classSbProfilingData.html#a5018586f8ded80f0c531ea2c183e9ae0a28ff8fe35c0061d74ecb3381e72c4c3f", null ],
-        [ "CULLED_FLAG", "classSbProfilingData.html#a5018586f8ded80f0c531ea2c183e9ae0a33f9b974802230aa8c1033d6456ec80f", null ]
-      ] ],
       [ "SbProfilingData", "classSbProfilingData.html#a488aacafe6ca7807896ac31343667978", null ],
       [ "SbProfilingData", "classSbProfilingData.html#a846e722d1391ba5c86952478ee04b923", null ],
       [ "~SbProfilingData", "classSbProfilingData.html#abd2766243e5524aded127cd6d45a0074", null ],
@@ -21,52 +9,23 @@ var group__coin__profiler =
       [ "getActionStopTime", "classSbProfilingData.html#a7852de0f544ec1e29d18edb4cd27e707", null ],
       [ "getActionType", "classSbProfilingData.html#add091fc77694985eb7ff38c2264c48b6", null ],
       [ "getIndex", "classSbProfilingData.html#aecb6beb0a686cc503b2dfabf086aa396", null ],
-      [ "getLongestNameLength", "classSbProfilingData.html#a4b58029129c1bbd3adc7d4eacdc93622", null ],
-      [ "getLongestTypeNameLength", "classSbProfilingData.html#a1ab966cd8134b2111a7461dd1627f12d", null ],
-      [ "getNodeFlag", "classSbProfilingData.html#ac734f353fa3485edb24b1e91071daf5d", null ],
-      [ "getNodeFlag", "classSbProfilingData.html#ae3c6d24ad13b57aa016b544a94c88241", null ],
-      [ "getNodeFootprint", "classSbProfilingData.html#a2247d6e1ffc147c1b6c4823babf8305a", null ],
-      [ "getNodeFootprint", "classSbProfilingData.html#a428b842fc0f89c39abedeb83a24400f8", null ],
-      [ "getNodeName", "classSbProfilingData.html#ab5789e28c130ddf5c122c46cc7b32d87", null ],
       [ "getNodeTiming", "classSbProfilingData.html#acd22fe96d7e1a23846ade5554a0a6dba", null ],
-      [ "getNodeTiming", "classSbProfilingData.html#ae8d202a6df3d0460fe938a7da15c4f07", null ],
-      [ "getNodeType", "classSbProfilingData.html#a33c72cf3247c11c22aa71e06ef8b2566", null ],
-      [ "getNumNodeEntries", "classSbProfilingData.html#a045efade58188c95939838c45f848af7", null ],
       [ "getParentIndex", "classSbProfilingData.html#a231a0935ebf1bdfde4479d2b32e18165", null ],
       [ "getProfilingDataSize", "classSbProfilingData.html#adeb67d7832d4316b9cdf113e7f3f24cf", null ],
-      [ "getStatsForName", "classSbProfilingData.html#a616227db236efe12a437ea5c1e7d1925", null ],
-      [ "getStatsForNamesKeyList", "classSbProfilingData.html#a1be5a95fe02aaa779d5ce5b1f074cd1d", null ],
-      [ "getStatsForType", "classSbProfilingData.html#af7c9d9c6ec33db53b6f36c5082c83d08", null ],
-      [ "getStatsForTypesKeyList", "classSbProfilingData.html#a7032d204fc05ebc2eea8be9d8a7fa20a", null ],
-      [ "operator!=", "classSbProfilingData.html#ab1ee873c6d8430fa76f37c97f2be38bb", null ],
       [ "operator+=", "classSbProfilingData.html#ad569c820296171fe6c2798403c7cb508", null ],
       [ "operator=", "classSbProfilingData.html#ac341fadcf59bdd94cd51c2cd4ef7e41d", null ],
-      [ "operator==", "classSbProfilingData.html#a4ecb85644f499c646a290c538c2f1604", null ],
       [ "preOffsetNodeTiming", "classSbProfilingData.html#af20d7eb46b40fd5e6085479bf8d55181", null ],
-      [ "reportAll", "classSbProfilingData.html#a418a80de829f1d4055fe571019e3dbe8", null ],
       [ "reset", "classSbProfilingData.html#a40251e3b831483c7a8d591fdc8ef8afe", null ],
       [ "setActionStartTime", "classSbProfilingData.html#afedc0010bd7aac22f3191acfaafb4d73", null ],
       [ "setActionStopTime", "classSbProfilingData.html#acfa2223276b957082882eca43b9464c2", null ],
       [ "setActionType", "classSbProfilingData.html#ae18037eb4ed6aee87bd05e511ee33f55", null ],
-      [ "setNodeFlag", "classSbProfilingData.html#a2dd73f063fce54f827559ee6e6638dfa", null ],
-      [ "setNodeFlag", "classSbProfilingData.html#a0b7fb2b455a8429d7d9d9fc471bcf107", null ],
-      [ "setNodeFootprint", "classSbProfilingData.html#a79fa926a23d11e4d4fc6c9b5b758d2f4", null ],
-      [ "setNodeFootprint", "classSbProfilingData.html#ae97302f0bcb5ee39354e0a4a3e4240c3", null ],
       [ "setNodeTiming", "classSbProfilingData.html#a27e4e5f78b5e5c1d0e90f040f3835a6a", null ],
-      [ "setNodeTiming", "classSbProfilingData.html#a05fd61b8921339389b1c5079a82e45fa", null ],
-      [ "actionStartTime", "classSbProfilingData.html#a26022a773acb680c3c43d252417a7d32", null ],
-      [ "actionStopTime", "classSbProfilingData.html#a6bcefc2129c4ab9d6f221a8c017edb60", null ],
-      [ "actionType", "classSbProfilingData.html#a4a8ab9880233f122861549ac2aa8a831", null ]
+      [ "setNodeTiming", "classSbProfilingData.html#a05fd61b8921339389b1c5079a82e45fa", null ]
     ] ],
     [ "SoProfiler", "classSoProfiler.html", null ],
     [ "SoProfilerElement", "classSoProfilerElement.html", [
-      [ "SoProfilerElement", "classSoProfilerElement.html#a70cf7fa1b4504376f3c8f5760a9c45d2", null ],
-      [ "~SoProfilerElement", "classSoProfilerElement.html#a2c71ee2835056415d94d135c55da7b0d", null ],
       [ "copyMatchInfo", "classSoProfilerElement.html#a0d2df64ac0a014e567db7a1eeac627ad", null ],
-      [ "getProfilingData", "classSoProfilerElement.html#a09a82cb373da85ecd8cd4ac10a413ceb", null ],
-      [ "getProfilingData", "classSoProfilerElement.html#a63bfd1eecebe85cd0b51b03a87a4c48a", null ],
-      [ "matches", "classSoProfilerElement.html#a18744a8ae163910434ef7383e670c301", null ],
-      [ "data", "classSoProfilerElement.html#abfa0a23859d9c473380cb2db77d4b245", null ]
+      [ "matches", "classSoProfilerElement.html#a18744a8ae163910434ef7383e670c301", null ]
     ] ],
     [ "SoProfilerOverlayKit", "classSoProfilerOverlayKit.html", [
       [ "SoProfilerOverlayKit", "classSoProfilerOverlayKit.html#a1b0103dcebdbc874c45b6b9583a136c0", null ],
@@ -74,15 +33,7 @@ var group__coin__profiler =
       [ "addOverlayGeometry", "classSoProfilerOverlayKit.html#a4215573ce556b7a0e7b163885df0098c", null ],
       [ "getFieldData", "classSoProfilerOverlayKit.html#a5f76669e27a0c2efaaf8b4e8f3c45a54", null ],
       [ "getNodekitCatalog", "classSoProfilerOverlayKit.html#a8243b4115e76832c8c6fc91867b1417b", null ],
-      [ "getTypeId", "classSoProfilerOverlayKit.html#a9e6d740c1e86f669e3327a6507bc3676", null ],
-      [ "depthTestOff", "classSoProfilerOverlayKit.html#a6c436faf3af939fb5894a50fafbe46dd", null ],
-      [ "depthTestOn", "classSoProfilerOverlayKit.html#a1df65a33ced173ec45b6b962560fb318", null ],
-      [ "overlayCamera", "classSoProfilerOverlayKit.html#ab6ec02408f7fd0fc7bd2e1fefa33ef3b", null ],
-      [ "overlaySep", "classSoProfilerOverlayKit.html#ad3ba07aad2743023f914f1f11623fd08", null ],
-      [ "profilingStats", "classSoProfilerOverlayKit.html#aa142f90708e1c5ac4d8a24bedb585f99", null ],
-      [ "topSeparator", "classSoProfilerOverlayKit.html#a9eef1be950804b88f479a7b404e4754f", null ],
-      [ "viewportInfo", "classSoProfilerOverlayKit.html#aacbe2a84316b53d0207e6ba3a152bf9c", null ],
-      [ "viewportSize", "classSoProfilerOverlayKit.html#aa72ca4c01ebbb673dd8cf5431f4aacb5", null ]
+      [ "getTypeId", "classSoProfilerOverlayKit.html#a9e6d740c1e86f669e3327a6507bc3676", null ]
     ] ],
     [ "SoProfilerStats", "classSoProfilerStats.html", [
       [ "SoProfilerStats", "classSoProfilerStats.html#a1ba56b69fe878bb11140c63a1aadbd8e", null ],
@@ -93,7 +44,6 @@ var group__coin__profiler =
       [ "getFieldData", "classSoProfilerStats.html#ab8555414b4b0fbfabc00987536aa123f", null ],
       [ "getMatrix", "classSoProfilerStats.html#aa439458670b855842c7f9f64bf2610b7", null ],
       [ "getPrimitiveCount", "classSoProfilerStats.html#adaa326f20feb8c71a822c0624298c046", null ],
-      [ "getProfilingData", "classSoProfilerStats.html#a5b1188387506cf51431598f8713bb615", null ],
       [ "getTypeId", "classSoProfilerStats.html#a9afd2858c549042c2ebd1c025f7b709a", null ],
       [ "GLRender", "classSoProfilerStats.html#adc652f0ce0e3299046ff3848d4fc25a6", null ],
       [ "handleEvent", "classSoProfilerStats.html#a3b79a561786d92913da8d53cb8acfaef", null ],
@@ -102,116 +52,25 @@ var group__coin__profiler =
       [ "rayPick", "classSoProfilerStats.html#a0af42fb5b8eaca4d7a6d9b2b1b06b3cd", null ],
       [ "search", "classSoProfilerStats.html#ad0ae17901b51ab3e65b733b04dbfb281", null ],
       [ "write", "classSoProfilerStats.html#aca6676e5bf6e40dbe2b431037e2132bc", null ],
-      [ "profiledAction", "classSoProfilerStats.html#a7faf6cd65b79125c81c3570a0fb9d956", null ],
-      [ "profiledActionTime", "classSoProfilerStats.html#a55764dd57fa612a85f598b43b1d36050", null ],
-      [ "profilingUpdate", "classSoProfilerStats.html#a51706b17c78c6baa460be0af9395141f", null ],
       [ "renderedNodeType", "classSoProfilerStats.html#ab8f938eac96792ecd1614fdb0b615e28", null ],
-      [ "renderedNodeTypeCount", "classSoProfilerStats.html#ac08896d3b3f4470a5f554cab30745160", null ],
-      [ "renderingTimeMaxPerNodeType", "classSoProfilerStats.html#ab64f2fed9c508c19d0aa07039ec1a425", null ],
-      [ "renderingTimePerNodeType", "classSoProfilerStats.html#ab09e6e0c199ef6d4ee738b4bd3740d6e", null ],
-      [ "separatorsCullRoots", "classSoProfilerStats.html#a0f14f3cd41b824281f420cfbf489f90e", null ]
+      [ "renderingTimePerNodeType", "classSoProfilerStats.html#ab09e6e0c199ef6d4ee738b4bd3740d6e", null ]
     ] ],
     [ "SoProfilerTopKit", "classSoProfilerTopKit.html", [
-      [ "SoProfilerTopKit", "classSoProfilerTopKit.html#ab02346ca3bb4929a0e4e9836bd53769b", null ],
-      [ "~SoProfilerTopKit", "classSoProfilerTopKit.html#a1ce29fd0ea10f8c1b789086b8c09af77", null ],
       [ "getFieldData", "classSoProfilerTopKit.html#abad7b86d6d00b01b87d825d5906c5dfb", null ],
       [ "getNodekitCatalog", "classSoProfilerTopKit.html#ae4a9890ea84c8e76381d82a7520c1c9a", null ],
-      [ "getTypeId", "classSoProfilerTopKit.html#a0e6ff1abd03bdac76e5f8d0aca9f4a69", null ],
-      [ "SoProfilerTopKitP", "classSoProfilerTopKit.html#a3650519a07a559f5268577e840499b16", null ],
-      [ "color", "classSoProfilerTopKit.html#a8e9be96c1ab4bfe188b35025265fc933", null ],
-      [ "graph", "classSoProfilerTopKit.html#a1751a7beb78dccae130e965b7dc0fa8f", null ],
-      [ "lines", "classSoProfilerTopKit.html#a8f9941fa9f1a2169e374d082d8f0e45a", null ],
-      [ "position", "classSoProfilerTopKit.html#a527d57570c5a85ed24f6da9c939f645f", null ],
-      [ "text", "classSoProfilerTopKit.html#ad6dbcde59659d9c7aa7d72800991aeb7", null ],
-      [ "textSep", "classSoProfilerTopKit.html#a2635f33d7477495ac05c9aeea48a284d", null ],
-      [ "topKitSize", "classSoProfilerTopKit.html#a0d536032df323d17f450bedbb3d912ca", null ],
-      [ "translation", "classSoProfilerTopKit.html#a9e74fa926ef3eba7a6613ccbf00f1610", null ],
-      [ "txtColor", "classSoProfilerTopKit.html#a87b15a624565b732cd2ff8e6bebac433", null ]
+      [ "getTypeId", "classSoProfilerTopKit.html#a0e6ff1abd03bdac76e5f8d0aca9f4a69", null ]
     ] ],
     [ "SoProfilerVisualizeKit", "classSoProfilerVisualizeKit.html", [
-      [ "SoProfilerVisualizeKit", "classSoProfilerVisualizeKit.html#a8521f469e2a0b1c42fa7d272ba4240b7", null ],
-      [ "~SoProfilerVisualizeKit", "classSoProfilerVisualizeKit.html#aaf53ac5f1ca652731c724786f61625a3", null ],
       [ "getFieldData", "classSoProfilerVisualizeKit.html#adbd9f8ae74a6eba9c2ea41bc584435fb", null ],
       [ "getNodekitCatalog", "classSoProfilerVisualizeKit.html#af530f68a867b66fd5aa0563bbaae9369", null ],
       [ "getTypeId", "classSoProfilerVisualizeKit.html#af30b3c6ba17576deff793a94b5879cc8", null ],
-      [ "pretree", "classSoProfilerVisualizeKit.html#aa5bebcafd0803ded673ea5c3d10608aa", null ],
       [ "root", "classSoProfilerVisualizeKit.html#a1998e21b9839fb402fe1ce1fe44c1b54", null ],
-      [ "separatorsWithGLCaches", "classSoProfilerVisualizeKit.html#af60fb38637290b47d2c10f8cfe1f0903", null ],
-      [ "stats", "classSoProfilerVisualizeKit.html#ab80de3e297836a2bcecdc399b33fa241", null ],
-      [ "statsTrigger", "classSoProfilerVisualizeKit.html#af48a9ea384680f935e5532120b766934", null ],
-      [ "top", "classSoProfilerVisualizeKit.html#ae480aa1bf810e1ac3341828aa143cfb9", null ],
-      [ "visualtree", "classSoProfilerVisualizeKit.html#a968380f6db2675af5b17716628bc9572", null ]
+      [ "statsTrigger", "classSoProfilerVisualizeKit.html#af48a9ea384680f935e5532120b766934", null ]
     ] ],
-    [ "SoProfilingReportGenerator", "classSoProfilingReportGenerator.html", [
-      [ "ReportCB", "classSoProfilingReportGenerator.html#a8ba80a7aeb21830fbdca0231f8670e2d", null ],
-      [ "CallbackResponse", "classSoProfilingReportGenerator.html#acd778e912a0a4e97e719ad05e145d183", [
-        [ "CONTINUE", "classSoProfilingReportGenerator.html#acd778e912a0a4e97e719ad05e145d183a9d34b09bdebf02d1e134d463457ef791", null ],
-        [ "STOP", "classSoProfilingReportGenerator.html#acd778e912a0a4e97e719ad05e145d183a481b143a8a7dc4d23e8a84ae82aaa529", null ]
-      ] ],
-      [ "Column", "classSoProfilingReportGenerator.html#ad9ff402e09c8d2e6b80d9b85e3d12329", [
-        [ "NAME", "classSoProfilingReportGenerator.html#ad9ff402e09c8d2e6b80d9b85e3d12329acb6ea0ef6de83f206adc6748b59b3d15", null ],
-        [ "TYPE", "classSoProfilingReportGenerator.html#ad9ff402e09c8d2e6b80d9b85e3d12329a125f387bb32da5e4127fb51179b3374b", null ],
-        [ "COUNT", "classSoProfilingReportGenerator.html#ad9ff402e09c8d2e6b80d9b85e3d12329aa7f015ffcf02901dd3f3ff4afbd300aa", null ],
-        [ "TIME_SECS", "classSoProfilingReportGenerator.html#ad9ff402e09c8d2e6b80d9b85e3d12329a6818f197d67113473c7d29a3d348c63a", null ],
-        [ "TIME_SECS_MAX", "classSoProfilingReportGenerator.html#ad9ff402e09c8d2e6b80d9b85e3d12329a219af72fcc3074ac67de538f9869f647", null ],
-        [ "TIME_SECS_AVG", "classSoProfilingReportGenerator.html#ad9ff402e09c8d2e6b80d9b85e3d12329a95b5bc44072a8389a8d9f722beca5372", null ],
-        [ "TIME_MSECS", "classSoProfilingReportGenerator.html#ad9ff402e09c8d2e6b80d9b85e3d12329a1ed97a14f80ec2a4775a6e3c62a3cc13", null ],
-        [ "TIME_MSECS_MAX", "classSoProfilingReportGenerator.html#ad9ff402e09c8d2e6b80d9b85e3d12329a7e06f4a7b2b03a4566883bf4a6c7baf6", null ],
-        [ "TIME_MSECS_AVG", "classSoProfilingReportGenerator.html#ad9ff402e09c8d2e6b80d9b85e3d12329a43fa631f78d803498564083ca1b88957", null ],
-        [ "TIME_PERCENT", "classSoProfilingReportGenerator.html#ad9ff402e09c8d2e6b80d9b85e3d12329a7d67667914519fd1f8cafb535dbdb160", null ],
-        [ "TIME_PERCENT_MAX", "classSoProfilingReportGenerator.html#ad9ff402e09c8d2e6b80d9b85e3d12329a20c46e48ebd707cddaa30c32967aa6ad", null ],
-        [ "TIME_PERCENT_AVG", "classSoProfilingReportGenerator.html#ad9ff402e09c8d2e6b80d9b85e3d12329a784d22767ec574c22b4ab04d5320d928", null ],
-        [ "MEM_BYTES", "classSoProfilingReportGenerator.html#ad9ff402e09c8d2e6b80d9b85e3d12329aca482fce109899c7a520eff24af08abc", null ],
-        [ "MEM_KILOBYTES", "classSoProfilingReportGenerator.html#ad9ff402e09c8d2e6b80d9b85e3d12329a18f1c43256ef3755431afea88c17e93d", null ],
-        [ "GFX_MEM_BYTES", "classSoProfilingReportGenerator.html#ad9ff402e09c8d2e6b80d9b85e3d12329afc755e131145e21c45005f0204c727a2", null ],
-        [ "GFX_MEM_KILOBYTES", "classSoProfilingReportGenerator.html#ad9ff402e09c8d2e6b80d9b85e3d12329a941dbeca991c9d14a644831bf8f6f7e7", null ]
-      ] ],
-      [ "DataCategorization", "classSoProfilingReportGenerator.html#ad65a3dc04ed01aa1f5cbdee56b08e702", [
-        [ "TYPES", "classSoProfilingReportGenerator.html#ad65a3dc04ed01aa1f5cbdee56b08e702a167653e146594ac64186b4274b334b01", null ],
-        [ "NAMES", "classSoProfilingReportGenerator.html#ad65a3dc04ed01aa1f5cbdee56b08e702a1d1166329ff1cff511a7faa56d1d7f71", null ],
-        [ "NODES", "classSoProfilingReportGenerator.html#ad65a3dc04ed01aa1f5cbdee56b08e702ac64b1755964d0ffee0de78afe39d6b63", null ]
-      ] ],
-      [ "SortOrder", "classSoProfilingReportGenerator.html#a0da76492e12ace1c0753ae0891a66777", [
-        [ "TIME_ASC", "classSoProfilingReportGenerator.html#a0da76492e12ace1c0753ae0891a66777a1ddd45cd18f3518868bf41f5376676b7", null ],
-        [ "TIME_DES", "classSoProfilingReportGenerator.html#a0da76492e12ace1c0753ae0891a66777ac9040c500de7a5dbeccb87ae515d5f38", null ],
-        [ "TIME_MAX_ASC", "classSoProfilingReportGenerator.html#a0da76492e12ace1c0753ae0891a66777a1d1bb4e2f77a41764082a86fc3ad0642", null ],
-        [ "TIME_MAX_DES", "classSoProfilingReportGenerator.html#a0da76492e12ace1c0753ae0891a66777a7c980d81994bd37eb9b8d2357ace44cc", null ],
-        [ "TIME_AVG_ASC", "classSoProfilingReportGenerator.html#a0da76492e12ace1c0753ae0891a66777a85894a0ef543bff806721069cfbd1a09", null ],
-        [ "TIME_AVG_DES", "classSoProfilingReportGenerator.html#a0da76492e12ace1c0753ae0891a66777a85adcb55a381cb738bfdaa1e0a387f02", null ],
-        [ "COUNT_ASC", "classSoProfilingReportGenerator.html#a0da76492e12ace1c0753ae0891a66777af2b73b2aadcd4111ad2148e19e79c00c", null ],
-        [ "COUNT_DES", "classSoProfilingReportGenerator.html#a0da76492e12ace1c0753ae0891a66777a16529725e8a979b5295d178d5bfd2190", null ],
-        [ "ALPHANUMERIC_ASC", "classSoProfilingReportGenerator.html#a0da76492e12ace1c0753ae0891a66777aa6332a192908e1db0905fec8231514df", null ],
-        [ "ALPHANUMERIC_DES", "classSoProfilingReportGenerator.html#a0da76492e12ace1c0753ae0891a66777ac89afd05011515b798a1030ae41c21ae", null ],
-        [ "MEM_ASC", "classSoProfilingReportGenerator.html#a0da76492e12ace1c0753ae0891a66777a669b5d75ade8cdd6b96c651391946041", null ],
-        [ "MEM_DES", "classSoProfilingReportGenerator.html#a0da76492e12ace1c0753ae0891a66777a71bd8686b580a0b746e71a71d7ede1cb", null ],
-        [ "GFX_MEM_ASC", "classSoProfilingReportGenerator.html#a0da76492e12ace1c0753ae0891a66777a8ec67c0bf2d3340666a4261b8318073b", null ],
-        [ "GFX_MEM_DES", "classSoProfilingReportGenerator.html#a0da76492e12ace1c0753ae0891a66777ac216667fbb0b03e9ebc4f8d5c7f04dec", null ]
-      ] ]
-    ] ],
+    [ "SoProfilingReportGenerator", "classSoProfilingReportGenerator.html", null ],
     [ "SoScrollingGraphKit", "classSoScrollingGraphKit.html", [
-      [ "GraphicsType", "classSoScrollingGraphKit.html#aa774adf338a35220a8f7968281784e6b", [
-        [ "LINES", "classSoScrollingGraphKit.html#aa774adf338a35220a8f7968281784e6ba9a7d3800ee3c8bd817f1400a8343881c", null ],
-        [ "STACKED_BARS", "classSoScrollingGraphKit.html#aa774adf338a35220a8f7968281784e6ba17aeec56e135e1befd46310cce3cbd1b", null ],
-        [ "DEFAULT_GRAPHICS", "classSoScrollingGraphKit.html#aa774adf338a35220a8f7968281784e6baa08ad7f79defd93a5d1c22c63119e9aa", null ]
-      ] ],
-      [ "RangeType", "classSoScrollingGraphKit.html#a2e92e448d23ff783c74cb1811779a457", [
-        [ "ABSOLUTE_ACCUMULATIVE", "classSoScrollingGraphKit.html#a2e92e448d23ff783c74cb1811779a457aa6ab2e68c991595b0b666711f020ea45", null ],
-        [ "DEFAULT_RANGETYPE", "classSoScrollingGraphKit.html#a2e92e448d23ff783c74cb1811779a457a2754602bdcf684098f468ac08dc5cff4", null ]
-      ] ],
-      [ "SoScrollingGraphKit", "classSoScrollingGraphKit.html#a18f42fe6c28866879bab5bd0c8d01b64", null ],
-      [ "~SoScrollingGraphKit", "classSoScrollingGraphKit.html#a13c55ae5174a19e8e5a9237edc62568d", null ],
       [ "getFieldData", "classSoScrollingGraphKit.html#a9d99907622ab6d953b186adef904997e", null ],
       [ "getNodekitCatalog", "classSoScrollingGraphKit.html#a8f29dcf6c184f1ca4f4372b0588d3735", null ],
-      [ "getTypeId", "classSoScrollingGraphKit.html#a2f3a3205c7866ee7d428fc5c23a74a17", null ],
-      [ "addKeys", "classSoScrollingGraphKit.html#a32c7b5ef0c9a8d6878c30b172361f526", null ],
-      [ "addValues", "classSoScrollingGraphKit.html#a9a713009b783c69e1105986dfb012158", null ],
-      [ "colors", "classSoScrollingGraphKit.html#ab43e86f430a2f27631eabd626b816955", null ],
-      [ "graphicsType", "classSoScrollingGraphKit.html#a7db98b979ccb652beed99e5d14216abf", null ],
-      [ "position", "classSoScrollingGraphKit.html#aa5aa1dd65a927f0eee023f26d16c0e89", null ],
-      [ "rangeType", "classSoScrollingGraphKit.html#a15b0d7d2f8accada960379bc1cfb4c57", null ],
-      [ "scene", "classSoScrollingGraphKit.html#a6c42638f15c467821ffe0e4a1bd4adc9", null ],
-      [ "seconds", "classSoScrollingGraphKit.html#aa84f11d354e6b606a240bef5e715d54f", null ],
-      [ "size", "classSoScrollingGraphKit.html#a7e6c9d35d68a9412bba0f1c9c31d39f7", null ],
-      [ "viewportSize", "classSoScrollingGraphKit.html#a49cc3f1fffd396fad8719052302630cb", null ]
+      [ "getTypeId", "classSoScrollingGraphKit.html#a2f3a3205c7866ee7d428fc5c23a74a17", null ]
     ] ]
 ];

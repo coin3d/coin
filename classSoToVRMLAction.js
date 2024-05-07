@@ -24,6 +24,5 @@ var classSoToVRMLAction =
     [ "keepUnknownNodes", "classSoToVRMLAction.html#a1601843f353bd0c6e551f2643236e864", null ],
     [ "setUrlName", "classSoToVRMLAction.html#a27ed38cc6371e7e4ba90843394003f0b", null ],
     [ "setVerbosity", "classSoToVRMLAction.html#aecdaacc31757258a25af6cb4e26a1f96", null ],
-    [ "writeTexCoords", "classSoToVRMLAction.html#a0804ab84099ba9aa4f767252be3c64cf", null ],
-    [ "SoToVRMLActionP", "classSoToVRMLAction.html#ac3eb8dca9811b344ac99f4307e55dfcf", null ]
+    [ "writeTexCoords", "classSoToVRMLAction.html#a0804ab84099ba9aa4f767252be3c64cf", null ]
 ];

@@ -6,6 +6,5 @@ var classSoCacheHintElement =
     [ "init", "classSoCacheHintElement.html#a495cdef05881f4bc1a1051f241919bf7", null ],
     [ "matches", "classSoCacheHintElement.html#a78c154144f78bb17f0d2eeebaee16a90", null ],
     [ "pop", "classSoCacheHintElement.html#a908619dc4b0141bc0680fbd5173e3704", null ],
-    [ "push", "classSoCacheHintElement.html#aca89369d1b24433e556450d4bc2e7b50", null ],
-    [ "pimpl", "classSoCacheHintElement.html#a4f5d1e076a73629b26deb01664cde4e8", null ]
+    [ "push", "classSoCacheHintElement.html#aca89369d1b24433e556450d4bc2e7b50", null ]
 ];

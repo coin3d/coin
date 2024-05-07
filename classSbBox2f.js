@@ -31,7 +31,5 @@ var classSbBox2f =
     [ "setBounds", "classSbBox2f.html#af3a9b1d9fd5ff0af88a6a77f44e00878", null ],
     [ "setBounds", "classSbBox2f.html#a36c09cc65b4a63013bc31dea68a7b6e1", null ],
     [ "operator!=", "classSbBox2f.html#aca1673211be6ce175bc5ac0c795feaa3", null ],
-    [ "operator==", "classSbBox2f.html#a44f45d9426e170bec8f85b0fd82033d8", null ],
-    [ "maxpt", "classSbBox2f.html#a2a12033ed77f65f9431725d98dd444b4", null ],
-    [ "minpt", "classSbBox2f.html#ac25f5b02fe239eebf6f40a74d08bdacd", null ]
+    [ "operator==", "classSbBox2f.html#a44f45d9426e170bec8f85b0fd82033d8", null ]
 ];

@@ -13,6 +13,5 @@ var classSoVRMLImageTexture =
     [ "rayPick", "classSoVRMLImageTexture.html#ab8454ef54593b8f012faa255430724fc", null ],
     [ "readInstance", "classSoVRMLImageTexture.html#aea38331b932611fc4415a1fa2b77a6d8", null ],
     [ "setImage", "classSoVRMLImageTexture.html#a6d2e5655db315bc237f30a1ee21a628b", null ],
-    [ "setReadStatus", "classSoVRMLImageTexture.html#a339eb286f857ee408e233bbc0f584647", null ],
-    [ "url", "classSoVRMLImageTexture.html#ad48bdebbde97eca2b69e142adacdaa08", null ]
+    [ "setReadStatus", "classSoVRMLImageTexture.html#a339eb286f857ee408e233bbc0f584647", null ]
 ];

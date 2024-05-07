@@ -26,7 +26,6 @@ var classSoOverrideElement =
       [ "NORMAL_VECTOR", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5afad966f1b564f7a277bb1b754bb93bf7", null ],
       [ "NORMAL_BINDING", "classSoOverrideElement.html#a86547021386028749c51e7cd3cad38c5ab509f4f5e7bea95a368dc09c2bc5684b", null ]
     ] ],
-    [ "SoOverrideElement", "classSoOverrideElement.html#a3f376394101d68c7f27321fdec224668", null ],
     [ "~SoOverrideElement", "classSoOverrideElement.html#ab723abe1857ad98350f4a0fa70be2a79", null ],
     [ "copyMatchInfo", "classSoOverrideElement.html#a4256958e3c6d5b17fe90303af023ba50", null ],
     [ "init", "classSoOverrideElement.html#a3966fba44730dcf3c99ec5e906e1b470", null ],

@@ -1,11 +1,5 @@
 var classSoField =
 [
-    [ "FieldType", "classSoField.html#acb5793e7f86918cec63bd5505773b1ea", [
-      [ "NORMAL_FIELD", "classSoField.html#acb5793e7f86918cec63bd5505773b1eaa47853016e901a83a3896c96ac2bb3849", null ],
-      [ "EVENTIN_FIELD", "classSoField.html#acb5793e7f86918cec63bd5505773b1eaa92433c19d6048016fb4a11b288a5f1ac", null ],
-      [ "EVENTOUT_FIELD", "classSoField.html#acb5793e7f86918cec63bd5505773b1eaa50d2af54e81d122fc3229ebdca74cf28", null ],
-      [ "EXPOSED_FIELD", "classSoField.html#acb5793e7f86918cec63bd5505773b1eaa54e1714dab538eb35be23977a1fd5858", null ]
-    ] ],
     [ "~SoField", "classSoField.html#a5ad15124fa9c372632cdcff9aae9ce0d", null ],
     [ "SoField", "classSoField.html#ac98e5cd5d81b1a0b817d310bf85a35e6", null ],
     [ "addAuditor", "classSoField.html#af950e95a5e11aadb110f68e67d58ac42", null ],
@@ -17,7 +11,6 @@ var classSoField =
     [ "copyConnection", "classSoField.html#a2c822e41b385ca49e0f16f3aab8f78e6", null ],
     [ "copyFrom", "classSoField.html#a538c1dc5592da995e9760e5ccacadf21", null ],
     [ "countWriteRefs", "classSoField.html#aa11d8d54a8238021cf4034d288408e30", null ],
-    [ "createNotRec", "classSoField.html#a92711cc6e90809df3b1a092005cd9bb3", null ],
     [ "disconnect", "classSoField.html#a1159b19752c3a62aebfe11719d83d700", null ],
     [ "disconnect", "classSoField.html#a59cefe0b5aed4354d0ef652810178f78", null ],
     [ "disconnect", "classSoField.html#af8e8c5c46e9cd112f8dd4664fff77117", null ],
@@ -67,7 +60,5 @@ var classSoField =
     [ "valueChanged", "classSoField.html#a33cb8b1bc3ac383ec3088f3952bb12b4", null ],
     [ "write", "classSoField.html#a899b22c536d39d1d1208851695bf7dcb", null ],
     [ "writeConnection", "classSoField.html#afc9f87f653f9401e1662488fadbca4a0", null ],
-    [ "writeValue", "classSoField.html#a3501176cbe0bc9a208ce5b4e9344c577", null ],
-    [ "container", "classSoField.html#a8e6410eb6468896ee3d2dc6a228b2ac4", null ],
-    [ "storage", "classSoField.html#ac5d94dff2341c67e955ad5b24e74620d", null ]
+    [ "writeValue", "classSoField.html#a3501176cbe0bc9a208ce5b4e9344c577", null ]
 ];

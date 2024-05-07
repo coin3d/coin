@@ -1,6 +1,5 @@
 var classSoCoordinateElement =
 [
-    [ "SoCoordinateElement", "classSoCoordinateElement.html#ab4cefa2737e4b21952214ba1e7537176", null ],
     [ "~SoCoordinateElement", "classSoCoordinateElement.html#a7ae862e4deeb1cc57a6d4389627ddd53", null ],
     [ "get3", "classSoCoordinateElement.html#a00dd86c03467dc20baa8e4cee5ac050f", null ],
     [ "get4", "classSoCoordinateElement.html#ab24e4626bbdd71ca971c3f8e83410f3a", null ],

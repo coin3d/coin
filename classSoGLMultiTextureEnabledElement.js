@@ -1,6 +1,5 @@
 var classSoGLMultiTextureEnabledElement =
 [
-    [ "SoGLMultiTextureEnabledElement", "classSoGLMultiTextureEnabledElement.html#aa957b1f8128911ab9eef1effe7bd6d1a", null ],
     [ "~SoGLMultiTextureEnabledElement", "classSoGLMultiTextureEnabledElement.html#a84e75b738348b60f634b467628f08e35", null ],
     [ "init", "classSoGLMultiTextureEnabledElement.html#a0571eb9c85b273f583d2060f16656cba", null ],
     [ "pop", "classSoGLMultiTextureEnabledElement.html#a664de9f9adea1dfd9b0c307af3308870", null ],

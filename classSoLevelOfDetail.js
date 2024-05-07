@@ -12,6 +12,5 @@ var classSoLevelOfDetail =
     [ "GLRender", "classSoLevelOfDetail.html#a76c83c04f62677b682d5016f2196bc9f", null ],
     [ "notify", "classSoLevelOfDetail.html#aea5651a9e68d3a2c8b55971da82d1d58", null ],
     [ "rayPick", "classSoLevelOfDetail.html#a9528c37da71e3e4d43a46ca40906076a", null ],
-    [ "SoLevelOfDetailP", "classSoLevelOfDetail.html#ae7db1d73ac9767a74082742b77cbf400", null ],
     [ "screenArea", "classSoLevelOfDetail.html#ae7a8efe0f06472d5ebcfb307475fa836", null ]
 ];

@@ -71,7 +71,5 @@ var classSoOutput =
     [ "writeBinaryArray", "classSoOutput.html#a93c825150ca0a1b3bef4d41c38bda5ef", null ],
     [ "writeBinaryArray", "classSoOutput.html#a7d676b7c5e16473572bf1c7925615600", null ],
     [ "writeBinaryArray", "classSoOutput.html#a1d1cce06bcb3e36cefb419da32cf70e9", null ],
-    [ "SoBase", "classSoOutput.html#ac4f08cbb885125ab9afff986a01fc57d", null ],
-    [ "SoWriterefCounter", "classSoOutput.html#a3987d06181ed6901e199b7814abf6131", null ],
     [ "wroteHeader", "classSoOutput.html#a115045b8a4e57f8936223a75c991e8e8", null ]
 ];

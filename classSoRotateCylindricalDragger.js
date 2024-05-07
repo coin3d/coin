@@ -13,13 +13,7 @@ var classSoRotateCylindricalDragger =
     [ "setProjector", "classSoRotateCylindricalDragger.html#a61e172fd0a872b4605fb7c5902e7870d", null ],
     [ "setUpConnections", "classSoRotateCylindricalDragger.html#ae99ffb45d421fedf6cfd3c27282318a1", null ],
     [ "cylinderProj", "classSoRotateCylindricalDragger.html#a71b51e39aef999f7cd1e8362b3963d91", null ],
-    [ "feedback", "classSoRotateCylindricalDragger.html#ae582ae185c6a336b33d1b970f06d4c15", null ],
-    [ "feedbackActive", "classSoRotateCylindricalDragger.html#adbc2c867ae1d52c8227a20b6016238a4", null ],
-    [ "feedbackSwitch", "classSoRotateCylindricalDragger.html#a4f21b114b7805ffc603a5398c3bd7d83", null ],
     [ "fieldSensor", "classSoRotateCylindricalDragger.html#a8060a49fa34c4f86a473d718428cc9d0", null ],
     [ "rotation", "classSoRotateCylindricalDragger.html#a89906f8dd833222624b9cde2d239bfe6", null ],
-    [ "rotator", "classSoRotateCylindricalDragger.html#adebbf179113bb0f8d560d8f6731f0eaf", null ],
-    [ "rotatorActive", "classSoRotateCylindricalDragger.html#aaa29b6fb7c043e2016f4657bfcbe81bb", null ],
-    [ "rotatorSwitch", "classSoRotateCylindricalDragger.html#a0b3f029986b279a61713fb1460155a76", null ],
     [ "userProj", "classSoRotateCylindricalDragger.html#afe3103c732a13e57cc7d52a3d7b6a007", null ]
 ];

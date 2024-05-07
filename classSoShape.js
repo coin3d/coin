@@ -46,7 +46,5 @@ var classSoShape =
     [ "shouldGLRender", "classSoShape.html#a965388c62914e3dbc62122a2b897bd2c", null ],
     [ "shouldPrimitiveCount", "classSoShape.html#aadb029a1f8ba021db9438db79ace8b62", null ],
     [ "shouldRayPick", "classSoShape.html#ac0d7e0481558d69bbbf104a9df55b8a6", null ],
-    [ "startVertexArray", "classSoShape.html#ae6960f1e9dfc812eb88d5109ea55b935", null ],
-    [ "so_generate_prim_private", "classSoShape.html#aff7907dbd10585ddd7028df13e425390", null ],
-    [ "soshape_primdata", "classSoShape.html#a98aa0dc61ac111dcda3abccad24cb2a4", null ]
+    [ "startVertexArray", "classSoShape.html#ae6960f1e9dfc812eb88d5109ea55b935", null ]
 ];

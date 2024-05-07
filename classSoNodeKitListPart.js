@@ -36,6 +36,5 @@ var classSoNodeKitListPart =
     [ "replaceChild", "classSoNodeKitListPart.html#ae4dba51f7db4d829bc6be7dfce106d75", null ],
     [ "search", "classSoNodeKitListPart.html#a326afbd057ac629955e73cbe0a4296cc", null ],
     [ "setContainerType", "classSoNodeKitListPart.html#a8de46164a424a023bbfb9d0a90bd92c2", null ],
-    [ "SoBaseKit", "classSoNodeKitListPart.html#a4a039ab151ab163a4cf64407685bb652", null ],
     [ "children", "classSoNodeKitListPart.html#ae8e7deb66408ebf7bf2c0169c709090d", null ]
 ];

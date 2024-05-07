@@ -72,6 +72,5 @@ var classSoGLRenderAction =
     [ "setTransparencyType", "classSoGLRenderAction.html#a566bc8a65b02c8220f7e2472c25bc233", null ],
     [ "setTransparentDelayedObjectRenderType", "classSoGLRenderAction.html#a50c4aeaf0d9a74f6759dfaa788f302da", null ],
     [ "setUpdateArea", "classSoGLRenderAction.html#afacefd8a75c0e97bcfb5e0ad0b86e800", null ],
-    [ "setViewportRegion", "classSoGLRenderAction.html#adc75a9c2226604ef9cb8deaadcdafe81", null ],
-    [ "SoGLRenderActionP", "classSoGLRenderAction.html#a1ad337efc85d4bc52ee07748964232d8", null ]
+    [ "setViewportRegion", "classSoGLRenderAction.html#adc75a9c2226604ef9cb8deaadcdafe81", null ]
 ];

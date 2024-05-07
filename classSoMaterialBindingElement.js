@@ -11,7 +11,6 @@ var classSoMaterialBindingElement =
       [ "DEFAULT", "classSoMaterialBindingElement.html#a5656483f86cb0b6b64bdb482bbf84e18a2bc6bbf193404a4dd3aed58eb13a0dc5", null ],
       [ "NONE", "classSoMaterialBindingElement.html#a5656483f86cb0b6b64bdb482bbf84e18a370c8d1afb936b077aa80dcfac6d04db", null ]
     ] ],
-    [ "SoMaterialBindingElement", "classSoMaterialBindingElement.html#a683d2cd73f964d53ee629d6ffdd24f06", null ],
     [ "~SoMaterialBindingElement", "classSoMaterialBindingElement.html#a29721e0893cd0d000ef4026384d35653", null ],
     [ "init", "classSoMaterialBindingElement.html#a0279c5eaf27c33dae03415d1af6940d0", null ]
 ];

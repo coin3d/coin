@@ -12,16 +12,10 @@ var classSoRotateSphericalDragger =
     [ "getTypeId", "classSoRotateSphericalDragger.html#afaa2002a03d9e3908e3baf341143c91f", null ],
     [ "setProjector", "classSoRotateSphericalDragger.html#ae3825a3b498f47dfcf9c7fb58055f094", null ],
     [ "setUpConnections", "classSoRotateSphericalDragger.html#a8aa0388c6731115f6e8e825257f1349d", null ],
-    [ "feedback", "classSoRotateSphericalDragger.html#aa39129e1a5e8aa0604569f35ad2310cd", null ],
-    [ "feedbackActive", "classSoRotateSphericalDragger.html#ab440ae6211b189a7b3a08e925e62c5ab", null ],
-    [ "feedbackSwitch", "classSoRotateSphericalDragger.html#a8f17eb5e2e47f834dbf9c3e859fc852c", null ],
     [ "fieldSensor", "classSoRotateSphericalDragger.html#a673df6cdec09a303f4dab90ed82fd7b5", null ],
     [ "prevMotionMatrix", "classSoRotateSphericalDragger.html#aaca0e39d554e98d2227101c98fc749a2", null ],
     [ "prevWorldHitPt", "classSoRotateSphericalDragger.html#a5e75bf09769317d1bc22c3c748c0bd73", null ],
     [ "rotation", "classSoRotateSphericalDragger.html#a94ddf31783821b046146f0a3800bb010", null ],
-    [ "rotator", "classSoRotateSphericalDragger.html#ae84da27e55de37949c8882602a14b734", null ],
-    [ "rotatorActive", "classSoRotateSphericalDragger.html#afaf71204215c4c681b2af0f6dadd5cb0", null ],
-    [ "rotatorSwitch", "classSoRotateSphericalDragger.html#a46fb8cbabdbd1462288dc74ed71b7da7", null ],
     [ "sphereProj", "classSoRotateSphericalDragger.html#ab0229ed1c29e2d55a254a23dff0ff001", null ],
     [ "userProj", "classSoRotateSphericalDragger.html#a38954f54b35212da972d69f2126805ae", null ]
 ];

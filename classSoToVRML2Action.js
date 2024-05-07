@@ -14,6 +14,5 @@ var classSoToVRML2Action =
     [ "getVRML2SceneGraph", "classSoToVRML2Action.html#ab8f239937c49ce619fa837c3d47ae955", null ],
     [ "reuseAppearanceNodes", "classSoToVRML2Action.html#ab575be05157126fe8c66b443bc9d0d89", null ],
     [ "reuseGeometryNodes", "classSoToVRML2Action.html#ae6adaa8a8190c272b5c46ce29efed2fa", null ],
-    [ "reusePropertyNodes", "classSoToVRML2Action.html#a0e6471e6a88fd8720e67fd34c89d7963", null ],
-    [ "SoToVRML2ActionP", "classSoToVRML2Action.html#ada250044234bf17eaf2096ffb19ad79b", null ]
+    [ "reusePropertyNodes", "classSoToVRML2Action.html#a0e6471e6a88fd8720e67fd34c89d7963", null ]
 ];

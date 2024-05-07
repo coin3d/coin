@@ -13,6 +13,5 @@ var classSoNormalBundle =
     [ "send", "classSoNormalBundle.html#a907b0c27813831d9f8e1bb5648d170de", null ],
     [ "set", "classSoNormalBundle.html#a0eab7ee8f75ae530085c43a7080a7030", null ],
     [ "shouldGenerate", "classSoNormalBundle.html#afdb769b4e28cd20b37182d4e29b1a52d", null ],
-    [ "triangle", "classSoNormalBundle.html#a9c7ab71ed84cda1ff7e10dd138a185d6", null ],
-    [ "generator", "classSoNormalBundle.html#aab06f0296157d950fb46b48ecafaf899", null ]
+    [ "triangle", "classSoNormalBundle.html#a9c7ab71ed84cda1ff7e10dd138a185d6", null ]
 ];

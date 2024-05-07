@@ -1,6 +1,5 @@
 var classSoFontNameElement =
 [
-    [ "SoFontNameElement", "classSoFontNameElement.html#a2fa28e064c958c9338869fe86c224e0c", null ],
     [ "~SoFontNameElement", "classSoFontNameElement.html#aa26d3f5974440a265bcc69bb74a93490", null ],
     [ "copyMatchInfo", "classSoFontNameElement.html#a020172cd377be432ad26674684769d14", null ],
     [ "init", "classSoFontNameElement.html#a6a1689def4a4d5862859a9f3e74eef29", null ],

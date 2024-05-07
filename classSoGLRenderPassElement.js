@@ -1,6 +1,5 @@
 var classSoGLRenderPassElement =
 [
-    [ "SoGLRenderPassElement", "classSoGLRenderPassElement.html#abb9eb7514639a49f7786be078081a4be", null ],
     [ "~SoGLRenderPassElement", "classSoGLRenderPassElement.html#a5faa7871e2ab86c20276ec8b668e0bab", null ],
     [ "copyMatchInfo", "classSoGLRenderPassElement.html#a66fa2d3479aa18056729364b2f4c109c", null ],
     [ "init", "classSoGLRenderPassElement.html#a7c4f2c78911bf8982c0546d63d2a56ae", null ],

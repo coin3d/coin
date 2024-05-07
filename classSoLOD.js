@@ -17,7 +17,6 @@ var classSoLOD =
     [ "notify", "classSoLOD.html#ac491d2c0249cd26d60eed7b425d116b7", null ],
     [ "rayPick", "classSoLOD.html#a5a73fedec6154c5005c81f4205933e85", null ],
     [ "whichToTraverse", "classSoLOD.html#a73207dffcfd21f9c8985f83916950009", null ],
-    [ "SoLODP", "classSoLOD.html#a530ae15e843c7860383592a1d2f5eb5e", null ],
     [ "center", "classSoLOD.html#a8008ee2c4b4bc78499c72df39e711012", null ],
     [ "range", "classSoLOD.html#aa3764dcfeb89e251d1e1b3dde7744253", null ]
 ];

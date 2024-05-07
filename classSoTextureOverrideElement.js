@@ -1,6 +1,5 @@
 var classSoTextureOverrideElement =
 [
-    [ "SoTextureOverrideElement", "classSoTextureOverrideElement.html#a3997b6ce982e31463bcd0972cf617c3c", null ],
     [ "~SoTextureOverrideElement", "classSoTextureOverrideElement.html#acc8f0725f0a87056c0b6db15d4b207fc", null ],
     [ "copyMatchInfo", "classSoTextureOverrideElement.html#a6712eb79dd6739bf4e4fd13dfc170d1a", null ],
     [ "init", "classSoTextureOverrideElement.html#a4f9bfafcbb40bd9512268df96d30c02f", null ],

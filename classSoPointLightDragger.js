@@ -7,8 +7,5 @@ var classSoPointLightDragger =
     [ "getTypeId", "classSoPointLightDragger.html#a556e485c9b784c3963eb104ed39044c7", null ],
     [ "setDefaultOnNonWritingFields", "classSoPointLightDragger.html#ad769c527f6a93665f68eac68805019ff", null ],
     [ "setUpConnections", "classSoPointLightDragger.html#ac0308fc6fd0758360d04543e275c3295", null ],
-    [ "fieldSensor", "classSoPointLightDragger.html#a879ab351ff47d73023b51519f4f6485b", null ],
-    [ "material", "classSoPointLightDragger.html#a5692340ee2c39df1ebfebd84f5164c41", null ],
-    [ "translation", "classSoPointLightDragger.html#a85712188ff90a6653b253a3b053913a9", null ],
-    [ "translator", "classSoPointLightDragger.html#aa0485d51ef2f7b429f9e092135db5e9e", null ]
+    [ "translation", "classSoPointLightDragger.html#a85712188ff90a6653b253a3b053913a9", null ]
 ];

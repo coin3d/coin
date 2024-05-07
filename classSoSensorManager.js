@@ -16,6 +16,5 @@ var classSoSensorManager =
     [ "removeTimerSensor", "classSoSensorManager.html#ac2874c96dce48be7dc531fa0b3e005f8", null ],
     [ "rescheduleTimer", "classSoSensorManager.html#a6b09f419c039fa5917c2725eab33b82f", null ],
     [ "setChangedCallback", "classSoSensorManager.html#a5039008fb24defa335d63723528bc915", null ],
-    [ "setDelaySensorTimeout", "classSoSensorManager.html#a017db6daa54156ec1a2f8198fb30d531", null ],
-    [ "SoSensorManagerP", "classSoSensorManager.html#a7311786482db3431ff5af094e97d1e0c", null ]
+    [ "setDelaySensorTimeout", "classSoSensorManager.html#a017db6daa54156ec1a2f8198fb30d531", null ]
 ];

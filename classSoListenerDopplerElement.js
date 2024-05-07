@@ -1,6 +1,5 @@
 var classSoListenerDopplerElement =
 [
-    [ "SoListenerDopplerElement", "classSoListenerDopplerElement.html#a8910ae2be23990a678ab8471ec8a9a52", null ],
     [ "~SoListenerDopplerElement", "classSoListenerDopplerElement.html#ae3a8d75b74ab1afaf219247ff8839023", null ],
     [ "init", "classSoListenerDopplerElement.html#aa2c6c3ddb84770b4fb0eb329b1e66b3a", null ],
     [ "print", "classSoListenerDopplerElement.html#a41dd0f44ca0f4004e469f956dd83c93f", null ],

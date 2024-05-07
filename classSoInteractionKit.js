@@ -25,13 +25,10 @@ var classSoInteractionKit =
     [ "setPartAsDefault", "classSoInteractionKit.html#a1aae5cdef63005f5c7251d3991119b60", null ],
     [ "setPartAsPath", "classSoInteractionKit.html#af86aa8628f3966b61997c5a404d1efa2", null ],
     [ "setUpConnections", "classSoInteractionKit.html#ad44786431f5b073879b4c74d1e97d47a", null ],
-    [ "SoInteractionKitP", "classSoInteractionKit.html#a06a47937feecc837dcc4f6be0307daf4", null ],
     [ "boundingBoxCaching", "classSoInteractionKit.html#a8003282ce3a8bd37a1642472fcc81135", null ],
     [ "fieldSensor", "classSoInteractionKit.html#a0b07989dbb5ee24fef77500fb1248dab", null ],
-    [ "geomSeparator", "classSoInteractionKit.html#ad389a2a3c85e38fe10d5208609341509", null ],
     [ "oldTopSep", "classSoInteractionKit.html#a27b4f1a6b40cdfd9c5ea94a7d59f8fc8", null ],
     [ "pickCulling", "classSoInteractionKit.html#aa630983b94260156b2e8e3d7be5f633a", null ],
     [ "renderCaching", "classSoInteractionKit.html#a0721d44115e135e704899180f9dd1ea3", null ],
-    [ "renderCulling", "classSoInteractionKit.html#a88e5e2140949e46cc6a82aad104a779d", null ],
-    [ "topSeparator", "classSoInteractionKit.html#a86771e7adf58574393af13e285af79df", null ]
+    [ "renderCulling", "classSoInteractionKit.html#a88e5e2140949e46cc6a82aad104a779d", null ]
 ];

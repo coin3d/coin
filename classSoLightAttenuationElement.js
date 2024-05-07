@@ -1,6 +1,5 @@
 var classSoLightAttenuationElement =
 [
-    [ "SoLightAttenuationElement", "classSoLightAttenuationElement.html#adc1e7ea69990cd93921d5ac439e4e1bf", null ],
     [ "~SoLightAttenuationElement", "classSoLightAttenuationElement.html#ab4d3345537746013a6ca6392bccc8e10", null ],
     [ "copyMatchInfo", "classSoLightAttenuationElement.html#a748598da2a3490c82abfc52548f1582a", null ],
     [ "init", "classSoLightAttenuationElement.html#a92b7f8c09cf030a37ad853144ca50ded", null ],

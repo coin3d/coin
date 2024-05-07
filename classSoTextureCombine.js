@@ -29,14 +29,5 @@ var classSoTextureCombine =
     [ "getFieldData", "classSoTextureCombine.html#ab30071ba48a906c86378370b73c55bc4", null ],
     [ "getTypeId", "classSoTextureCombine.html#acbba67b33f5cd2616bd19ad631a614b3", null ],
     [ "GLRender", "classSoTextureCombine.html#a7e3b1dc2e88c1535b669405ff339fbd6", null ],
-    [ "pick", "classSoTextureCombine.html#ad450f8c67472961ede29a92cf2a2ec60", null ],
-    [ "alphaOperand", "classSoTextureCombine.html#a0e980a5180596b3d26cadf06b961f1c5", null ],
-    [ "alphaOperation", "classSoTextureCombine.html#aaf0fce29e44e241079d9882be9fd631b", null ],
-    [ "alphaScale", "classSoTextureCombine.html#a11c8e517a47ecddb91ed1631cb45c3f0", null ],
-    [ "alphaSource", "classSoTextureCombine.html#a74bf26e3b2ab7bd08366f3b6f2d6446e", null ],
-    [ "constantColor", "classSoTextureCombine.html#a05798ae940038a26ae8dee9e530db49b", null ],
-    [ "rgbOperand", "classSoTextureCombine.html#a897cb6dc6a7c1f5c5204a8c067d19c01", null ],
-    [ "rgbOperation", "classSoTextureCombine.html#ab8b030ca3e0946b030a07908f882d039", null ],
-    [ "rgbScale", "classSoTextureCombine.html#a9540f92e9ae434ac0488c4d86d5476d4", null ],
-    [ "rgbSource", "classSoTextureCombine.html#ad88621312aa25a02273e0b3479a10b15", null ]
+    [ "pick", "classSoTextureCombine.html#ad450f8c67472961ede29a92cf2a2ec60", null ]
 ];

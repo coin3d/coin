@@ -29,8 +29,5 @@ var classSoBase =
     [ "unref", "classSoBase.html#a254b1ac395fe4d4d10438b994bdb3561", null ],
     [ "unrefNoDelete", "classSoBase.html#a2efdb80168517b9e0a8dd8dc8c655fbb", null ],
     [ "writeFooter", "classSoBase.html#aa9d26d177755cb43299bb1201c94c989", null ],
-    [ "writeHeader", "classSoBase.html#aa08205585f2aea5d141e105b492df61f", null ],
-    [ "PImpl", "classSoBase.html#abde54206b8f19d7e20fb1e9c7c1e2965", null ],
-    [ "alive", "classSoBase.html#a7f29419919ef8edbbb73bf2ab37ccc90", null ],
-    [ "referencecount", "classSoBase.html#a103e7682b55e3d88af5f2d5eef8263b5", null ]
+    [ "writeHeader", "classSoBase.html#aa08205585f2aea5d141e105b492df61f", null ]
 ];

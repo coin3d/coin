@@ -12,13 +12,10 @@ var classSoShaderStateMatrixParameter =
       [ "TEXTURE", "classSoShaderStateMatrixParameter.html#adcfbec351486ee7ce52f1df2e21e9a46a53fa301614f01b66730bfe3e31a51c1c", null ],
       [ "MODELVIEW_PROJECTION", "classSoShaderStateMatrixParameter.html#adcfbec351486ee7ce52f1df2e21e9a46a297fb74fe3ddec77404c0120d8e5127a", null ]
     ] ],
-    [ "SoShaderStateMatrixParameter", "classSoShaderStateMatrixParameter.html#a9d71ff0ac1fb1050cd046b0e4af9b5f9", null ],
-    [ "~SoShaderStateMatrixParameter", "classSoShaderStateMatrixParameter.html#ae9b04ebfdc830ea03d1d6168b0e49377", null ],
     [ "getFieldData", "classSoShaderStateMatrixParameter.html#ad46eed5328d6ff1e524f01a71f813cac", null ],
     [ "getTypeId", "classSoShaderStateMatrixParameter.html#aaea96e1423d451c95f77741317af6ee1", null ],
     [ "updateParameter", "classSoShaderStateMatrixParameter.html#ad613e2016f19d27b0eb77727ba4fdbfd", null ],
     [ "updateValue", "classSoShaderStateMatrixParameter.html#aa949c4886485aecf30f32ba8bc286ceb", null ],
     [ "matrixTransform", "classSoShaderStateMatrixParameter.html#afd73931f65d3e166fa7804ee1d368205", null ],
-    [ "matrixType", "classSoShaderStateMatrixParameter.html#aa570b3dcb134952f1637cd0492ecfb0f", null ],
-    [ "value", "classSoShaderStateMatrixParameter.html#a12a5757f45da2cc89d01d716b23c33a2", null ]
+    [ "matrixType", "classSoShaderStateMatrixParameter.html#aa570b3dcb134952f1637cd0492ecfb0f", null ]
 ];

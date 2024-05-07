@@ -15,7 +15,6 @@ var classSoAsciiText =
     [ "getTypeId", "classSoAsciiText.html#a62dd66710048447547a2c754da30fcfc", null ],
     [ "GLRender", "classSoAsciiText.html#a77e0052bfb8b272e18544f3049ec5d3d", null ],
     [ "notify", "classSoAsciiText.html#a73635e735ace0c83a8d6cc2322248154", null ],
-    [ "SoAsciiTextP", "classSoAsciiText.html#a8a58876dc3613b678ec061e198d4d8b1", null ],
     [ "justification", "classSoAsciiText.html#a65d9c0914d0e6873df20e305daf2791a", null ],
     [ "spacing", "classSoAsciiText.html#a75f0c5fb74d94a478e2862c1a9ca5a2f", null ],
     [ "string", "classSoAsciiText.html#a39b13f6d7cf678cb2b362c0150ea1161", null ],

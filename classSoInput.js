@@ -80,7 +80,5 @@ var classSoInput =
     [ "setIVVersion", "classSoInput.html#a8dd2208b78264e118d0e8050eec0f261", null ],
     [ "setStringArray", "classSoInput.html#af28592d7aa017765fdaad6fbc6b3d99f", null ],
     [ "skipWhiteSpace", "classSoInput.html#a311a3e2c6e50fceadf569f4be8a5409b", null ],
-    [ "URLToFile", "classSoInput.html#ad0133eb4aa2ea9620989607d949de3e7", null ],
-    [ "SoDB", "classSoInput.html#a94f1f515af26a8066f4f771aebd76175", null ],
-    [ "SoInputP", "classSoInput.html#aaa27b0390dc11914d30ac3c270c502a9", null ]
+    [ "URLToFile", "classSoInput.html#ad0133eb4aa2ea9620989607d949de3e7", null ]
 ];

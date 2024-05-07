@@ -1,7 +1,5 @@
 var classSoDecomposeMatrix =
 [
-    [ "~ SoDecomposeMatrix", "classSoDecomposeMatrix.html#a28672781b9f4fc4ea4e236f9ec14772d", null ],
-    [ "SoDecomposeMatrix", "classSoDecomposeMatrix.html#af326c381e6b0618cb916392f571fe1b3", null ],
     [ "getFieldData", "classSoDecomposeMatrix.html#a2ce672c879ac926e26148e56d373ea6a", null ],
     [ "getOutputData", "classSoDecomposeMatrix.html#a52236a9363acf8f347ff5e82b88a34cb", null ],
     [ "getTypeId", "classSoDecomposeMatrix.html#a8d637a50986aa2289a0252aae8db93ea", null ],

@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['scene_20graph_20profiling_9606',['Scene Graph Profiling',['../group__coin__profiler.html',1,'']]],
-  ['sensor_20classes_9607',['Sensor Classes',['../group__coin__sensors.html',1,'']]],
-  ['shader_20classes_9608',['Shader Classes',['../group__coin__shaders.html',1,'']]],
-  ['state_20chart_20xml_20classes_9609',['State Chart XML Classes',['../group__coin__scxml.html',1,'']]]
+  ['navigation_20classes_0',['Navigation Classes',['../group__coin__navigation.html',1,'']]],
+  ['node_20classes_1',['Node Classes',['../group__coin__nodes.html',1,'']]],
+  ['nodekit_20classes_2',['NodeKit Classes',['../group__coin__nodekits.html',1,'']]]
 ];

@@ -33,7 +33,6 @@ var classSoDragger =
     [ "getPickedPointForStart", "classSoDragger.html#a2d78d16c32618b065ff6b8c457fd8590", null ],
     [ "getPickPath", "classSoDragger.html#a705b4e961662f069ad9bc3449b946787", null ],
     [ "getPrimitiveCount", "classSoDragger.html#a223837de2231bbd3df15fecd1ce5900a", null ],
-    [ "getProjectorEpsilon", "classSoDragger.html#abedb5255d61065716185eaaa783562b5", null ],
     [ "getStartLocaterPosition", "classSoDragger.html#a95cabd863d19f051e78987a38b68ee47", null ],
     [ "getStartMotionMatrix", "classSoDragger.html#ab24a03b1a24ae24aa65ee40f1bb1b170", null ],
     [ "getSurrogatePartPickedName", "classSoDragger.html#a64766d68893a7494bc0487c763b27116", null ],
@@ -86,6 +85,5 @@ var classSoDragger =
     [ "valueChanged", "classSoDragger.html#a6117eca20390155a450d62d99b41c6f8", null ],
     [ "workFieldsIntoTransform", "classSoDragger.html#a848dfd24b9f14d6250f631556defe841", null ],
     [ "write", "classSoDragger.html#ae165ab1af26004fb2c44d0928fa1be25", null ],
-    [ "isActive", "classSoDragger.html#a3104dec7dff57c310ea42207fd50a76c", null ],
-    [ "motionMatrix", "classSoDragger.html#a833199717ea3058c2cdff0ed7a4dea8e", null ]
+    [ "isActive", "classSoDragger.html#a3104dec7dff57c310ea42207fd50a76c", null ]
 ];

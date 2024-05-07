@@ -1,6 +1,5 @@
 var classSoGLDepthBufferElement =
 [
-    [ "SoGLDepthBufferElement", "classSoGLDepthBufferElement.html#a805a6f36e8071408b26c59021098dcbe", null ],
     [ "~SoGLDepthBufferElement", "classSoGLDepthBufferElement.html#afe6cf5c76c66d13b48874025d9725a78", null ],
     [ "init", "classSoGLDepthBufferElement.html#a9f08d9e229bf59df4a061dedff41c8a4", null ],
     [ "pop", "classSoGLDepthBufferElement.html#a1772bc47aac09221b56ade8c1374616c", null ],

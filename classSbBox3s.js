@@ -31,7 +31,5 @@ var classSbBox3s =
     [ "setBounds", "classSbBox3s.html#a3c9080831e46e5719873beddab6e9f82", null ],
     [ "setBounds", "classSbBox3s.html#a2c477237d4a0e162a8118092a58c51ee", null ],
     [ "operator!=", "classSbBox3s.html#a9a916e95490b2e6483d1b5d29502df96", null ],
-    [ "operator==", "classSbBox3s.html#a8947d1fa6e0badfc158e309139b23d90", null ],
-    [ "maxpt", "classSbBox3s.html#a02e31b1e8323082790648e1dbcd6f6ed", null ],
-    [ "minpt", "classSbBox3s.html#a92d9b444135c3fce704986ba13ad98d5", null ]
+    [ "operator==", "classSbBox3s.html#a8947d1fa6e0badfc158e309139b23d90", null ]
 ];

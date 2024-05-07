@@ -7,7 +7,5 @@ var classSoTextureCoordinateCylinder =
     [ "getFieldData", "classSoTextureCoordinateCylinder.html#aa0208263bd19c53976a89deddeddf7aa", null ],
     [ "getTypeId", "classSoTextureCoordinateCylinder.html#a565e871db11d4880319b7492c5bf9969", null ],
     [ "GLRender", "classSoTextureCoordinateCylinder.html#ad141efeaa1bd8aba748047d2bbf0a795", null ],
-    [ "pick", "classSoTextureCoordinateCylinder.html#a658ea763cf760f33e55353c71ee39fe2", null ],
-    [ "SoTextureCoordinateCylinderP", "classSoTextureCoordinateCylinder.html#a18d855ee1734a530afd406b0780aacb3", null ],
-    [ "pimpl", "classSoTextureCoordinateCylinder.html#acb104fffef1b9481df28fd879f47f869", null ]
+    [ "pick", "classSoTextureCoordinateCylinder.html#a658ea763cf760f33e55353c71ee39fe2", null ]
 ];

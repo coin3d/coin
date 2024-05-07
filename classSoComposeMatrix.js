@@ -1,7 +1,5 @@
 var classSoComposeMatrix =
 [
-    [ "~ SoComposeMatrix", "classSoComposeMatrix.html#af1c3e930d0e488093c5f1f742ff9b297", null ],
-    [ "SoComposeMatrix", "classSoComposeMatrix.html#a6d9dca0b28beb059b94f411e2d3f6e28", null ],
     [ "getFieldData", "classSoComposeMatrix.html#af7679738de6e1c1f12f856f9740f97a6", null ],
     [ "getOutputData", "classSoComposeMatrix.html#abcec9d77449d9e5208e5ef7d3c9475d5", null ],
     [ "getTypeId", "classSoComposeMatrix.html#ae9c7fdf42ebc76cf786901d0aac11bc2", null ],

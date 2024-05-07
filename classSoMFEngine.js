@@ -1,31 +1,11 @@
 var classSoMFEngine =
 [
-    [ "SoMFEngine", "classSoMFEngine.html#ac2bf842066ebb2e691bc856cc50c58b4", null ],
-    [ "~ SoMFEngine", "classSoMFEngine.html#a81339db1b128c94cfbcf80e3ecec9a54", null ],
-    [ "allocValues", "classSoMFEngine.html#a6f4e20e3da62b0b26e7ab038b5ef73d2", null ],
     [ "copyFrom", "classSoMFEngine.html#ad948d34dbe790b3fe88addde938c217b", null ],
-    [ "copyValue", "classSoMFEngine.html#a7ffe138df8d3d1a73a93e285b780a918", null ],
-    [ "deleteAllValues", "classSoMFEngine.html#aa02cea7754caf1c467d4f591a6f272d1", null ],
     [ "deleteValues", "classSoMFEngine.html#a75e6b106ba70f4408d595cfc7dfcb878", null ],
-    [ "fieldSizeof", "classSoMFEngine.html#a9997c85318da9578bf22e31f65bb972c", null ],
-    [ "find", "classSoMFEngine.html#aaecb88669e33f12709b469d49a795d0a", null ],
-    [ "finishEditing", "classSoMFEngine.html#ad07c2c242cfd4c53aaca5b3763363a8e", null ],
     [ "fixCopy", "classSoMFEngine.html#a87f8286c967043661a9fa14301d15bb4", null ],
     [ "getTypeId", "classSoMFEngine.html#a18ae43c4586dacde7c86d8cd480a3a57", null ],
-    [ "getValues", "classSoMFEngine.html#a3761bff7b30c4b152a3acbc924067483", null ],
+    [ "getValues", "classSoMFEngine.html#acec50325e6c47afe87df0d76d0b58143", null ],
     [ "insertSpace", "classSoMFEngine.html#a08f8d1ee8b4e04c6fdb242c433470bfd", null ],
     [ "isSame", "classSoMFEngine.html#a4cbbc3942b5bfd91f28978512c8cb3af", null ],
-    [ "operator!=", "classSoMFEngine.html#a09b1779f4338ba241aacce9a9fceadae", null ],
-    [ "operator=", "classSoMFEngine.html#abc3b2b9750188102860216c89d919d22", null ],
-    [ "operator=", "classSoMFEngine.html#ac583796b14311fccca672661a4015568", null ],
-    [ "operator==", "classSoMFEngine.html#a67643645ba3941e92c9c14c259d30e14", null ],
-    [ "operator[]", "classSoMFEngine.html#a15b4fb7f282b366b7e411e2ac59d394a", null ],
-    [ "referencesCopy", "classSoMFEngine.html#aef9a93773371f9d7d0d8c2f871c628c4", null ],
-    [ "set1Value", "classSoMFEngine.html#a7d172c184d667a2af128b136470d67db", null ],
-    [ "setValue", "classSoMFEngine.html#a587dad33f958912592be0035750db893", null ],
-    [ "setValues", "classSoMFEngine.html#a0f2dd3ea215306dbd4085af5eadfae8b", null ],
-    [ "setValuesPtr", "classSoMFEngine.html#a8348a81d0a303868d45ab804fea8bffa", null ],
-    [ "startEditing", "classSoMFEngine.html#ac6f9570ff51eb776af4e99c95c6626d9", null ],
-    [ "valuesPtr", "classSoMFEngine.html#a67bb028c81eca312c74147bc05b24b32", null ],
-    [ "values", "classSoMFEngine.html#a27d37d102aaff5a9aa23a2360d95e4be", null ]
+    [ "referencesCopy", "classSoMFEngine.html#aef9a93773371f9d7d0d8c2f871c628c4", null ]
 ];

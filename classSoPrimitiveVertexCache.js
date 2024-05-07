@@ -1,36 +1,7 @@
 var classSoPrimitiveVertexCache =
 [
-    [ "Arrays", "classSoPrimitiveVertexCache.html#a04b1fafbeed9c6d9fcac7858cd098458", [
-      [ "NORMAL", "classSoPrimitiveVertexCache.html#a04b1fafbeed9c6d9fcac7858cd098458a1e24ae8333c5bfc159c6893ea992b069", null ],
-      [ "TEXCOORD", "classSoPrimitiveVertexCache.html#a04b1fafbeed9c6d9fcac7858cd098458ac288031abb5e66a34e87b678ba4ebd8f", null ],
-      [ "COLOR", "classSoPrimitiveVertexCache.html#a04b1fafbeed9c6d9fcac7858cd098458ac7c09df9385f4b1082c5a73462b0c47b", null ],
-      [ "ALL", "classSoPrimitiveVertexCache.html#a04b1fafbeed9c6d9fcac7858cd098458a47b26c5795573f761707437bf5d95f2e", null ]
-    ] ],
     [ "SoPrimitiveVertexCache", "classSoPrimitiveVertexCache.html#a3a3aa7bd1159b04af70e5034ae924067", null ],
     [ "~SoPrimitiveVertexCache", "classSoPrimitiveVertexCache.html#a07945544b5c694532e604423d97ea05d", null ],
-    [ "addLine", "classSoPrimitiveVertexCache.html#afdf3daed562e5dc766f9d93096e8fc07", null ],
-    [ "addPoint", "classSoPrimitiveVertexCache.html#a586cf8b810f120b4e0670fcf58b1e6d2", null ],
-    [ "addTriangle", "classSoPrimitiveVertexCache.html#ac40aa3f28242e57c5f7d8520127c203b", null ],
     [ "close", "classSoPrimitiveVertexCache.html#aedcdb42a3fd8bfbbb03ab44765ebf58a", null ],
-    [ "colorPerVertex", "classSoPrimitiveVertexCache.html#abe60539c9704897c3d20430a4f923275", null ],
-    [ "depthSortTriangles", "classSoPrimitiveVertexCache.html#ab0197c77435fcd7ad3c8685883ecb1e0", null ],
-    [ "fit", "classSoPrimitiveVertexCache.html#a7d505dcb2ca9342628ee63a0906a5561", null ],
-    [ "getBumpCoordArray", "classSoPrimitiveVertexCache.html#a5f210b6028645918a61aa125e129414a", null ],
-    [ "getColorArray", "classSoPrimitiveVertexCache.html#a08c6426772b6819ca3736138c353cc8d", null ],
-    [ "getLineIndices", "classSoPrimitiveVertexCache.html#ac7442ac4ab671c0b302278309312ad2f", null ],
-    [ "getMultiTextureCoordinateArray", "classSoPrimitiveVertexCache.html#addf9900ce8d0acf42d26c30a7651b4b9", null ],
-    [ "getNormalArray", "classSoPrimitiveVertexCache.html#a4229ece98cd177214d0d7f48410e05a8", null ],
-    [ "getNumLineIndices", "classSoPrimitiveVertexCache.html#afb054e10d0d4ebad88e907f53fd3f87a", null ],
-    [ "getNumPointIndices", "classSoPrimitiveVertexCache.html#aa64a805ca742635f4bcab7d6e2d91ddc", null ],
-    [ "getNumTriangleIndices", "classSoPrimitiveVertexCache.html#aff34937f941653c8381939c516849c37", null ],
-    [ "getNumVertices", "classSoPrimitiveVertexCache.html#a74144552d06c11a4749197ef99b2d6d5", null ],
-    [ "getPointIndices", "classSoPrimitiveVertexCache.html#ab206fdf7d7b49dd58503992f17794e24", null ],
-    [ "getTexCoordArray", "classSoPrimitiveVertexCache.html#a245ee05592c46ee029601106d845e5d7", null ],
-    [ "getTriangleIndex", "classSoPrimitiveVertexCache.html#a0f95f4fb673274e0ee1c2a493430f681", null ],
-    [ "getTriangleIndices", "classSoPrimitiveVertexCache.html#ab26b4c9251d0635fe814145489b88ba9", null ],
-    [ "getVertexArray", "classSoPrimitiveVertexCache.html#aa2b05683cc23faf9495a1e89a1743697", null ],
-    [ "isValid", "classSoPrimitiveVertexCache.html#ab78cda5fcc6f3250a7b612b39c55fcf3", null ],
-    [ "renderLines", "classSoPrimitiveVertexCache.html#af7af8f0be7cc5d549b168abea4319c1d", null ],
-    [ "renderPoints", "classSoPrimitiveVertexCache.html#ab1e57b97fe0ec6540192fe621e957eec", null ],
-    [ "renderTriangles", "classSoPrimitiveVertexCache.html#aab0ab2c7b17f506aa120e087d800df04", null ]
+    [ "isValid", "classSoPrimitiveVertexCache.html#ab78cda5fcc6f3250a7b612b39c55fcf3", null ]
 ];

@@ -7,7 +7,5 @@ var classSoTextureCoordinateSphere =
     [ "getFieldData", "classSoTextureCoordinateSphere.html#aae42c007d28d0bc44033019aef85a8c1", null ],
     [ "getTypeId", "classSoTextureCoordinateSphere.html#a42cf85404bdb324e6c3a08ae79b8da91", null ],
     [ "GLRender", "classSoTextureCoordinateSphere.html#a7ad5c3793df5922038d256aacf0115e5", null ],
-    [ "pick", "classSoTextureCoordinateSphere.html#a18835c241c7bbb1b0c799f6e71e27f42", null ],
-    [ "SoTextureCoordinateSphereP", "classSoTextureCoordinateSphere.html#ad7d2ede77687f669b5242cd747bba31f", null ],
-    [ "pimpl", "classSoTextureCoordinateSphere.html#a36c10c5446373107cf70c07ab48343bc", null ]
+    [ "pick", "classSoTextureCoordinateSphere.html#a18835c241c7bbb1b0c799f6e71e27f42", null ]
 ];

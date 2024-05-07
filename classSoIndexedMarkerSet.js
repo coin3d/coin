@@ -4,6 +4,5 @@ var classSoIndexedMarkerSet =
     [ "~SoIndexedMarkerSet", "classSoIndexedMarkerSet.html#a3139cb85aafd645cb2011b0ab98b90cd", null ],
     [ "getFieldData", "classSoIndexedMarkerSet.html#ac18bba103bf40b855e2814c3af91ed4f", null ],
     [ "getTypeId", "classSoIndexedMarkerSet.html#a97605a62b2e2b6f43e29d89df35ec3f4", null ],
-    [ "GLRender", "classSoIndexedMarkerSet.html#a6fc71f377232c3c3d36745bb66ef4e12", null ],
-    [ "markerIndex", "classSoIndexedMarkerSet.html#ae9bef2be1899e8b8214eb826ae5c16cc", null ]
+    [ "GLRender", "classSoIndexedMarkerSet.html#a6fc71f377232c3c3d36745bb66ef4e12", null ]
 ];

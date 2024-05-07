@@ -1,6 +1,5 @@
 var classSoGLPolygonOffsetElement =
 [
-    [ "SoGLPolygonOffsetElement", "classSoGLPolygonOffsetElement.html#a8fe376e8ea4f2d8191be5ff0b300b01a", null ],
     [ "~SoGLPolygonOffsetElement", "classSoGLPolygonOffsetElement.html#ac11c7b2b8e83a3902e19faabe97b9799", null ],
     [ "init", "classSoGLPolygonOffsetElement.html#ad4a0b3eb3f3f09d6a37de2c3bafaedb5", null ],
     [ "pop", "classSoGLPolygonOffsetElement.html#a1ce1f60ae50dd7b3e54c2627b0943500", null ],

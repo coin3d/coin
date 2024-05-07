@@ -16,6 +16,5 @@ var classSoLineHighlightRenderAction =
     [ "setLinePattern", "classSoLineHighlightRenderAction.html#a25d5652991ad66b6376e4f57ea3e418e", null ],
     [ "setLineWidth", "classSoLineHighlightRenderAction.html#a002740ae0aa5062e5982825d241121ec", null ],
     [ "setVisible", "classSoLineHighlightRenderAction.html#a68c59c32b168c54d054a884db1ee7c86", null ],
-    [ "SoLineHighlightRenderActionP", "classSoLineHighlightRenderAction.html#a4c5e2f22da171f62bb039ecd277f0b70", null ],
     [ "hlVisible", "classSoLineHighlightRenderAction.html#a8a54d4a40f5f2b8c5f9fdf30900d0610", null ]
 ];

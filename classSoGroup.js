@@ -31,8 +31,6 @@ var classSoGroup =
     [ "replaceChild", "classSoGroup.html#ad8ad1c3ce980cd622a9e6481dc567d0c", null ],
     [ "replaceChild", "classSoGroup.html#ae006a114fac6746a3514eebd0a8f3dc5", null ],
     [ "search", "classSoGroup.html#a63a504e1809c7413318396010d002335", null ],
-    [ "setOperation", "classSoGroup.html#a0ced0d3a09ac439ea20cc78ea755f9f9", null ],
     [ "write", "classSoGroup.html#a12aef60c111941b6663a7a77bc83b75c", null ],
-    [ "SoUnknownNode", "classSoGroup.html#a5da88bb294a3599412d7ba0ea3d2bc3b", null ],
     [ "children", "classSoGroup.html#a858f7cf002e23637542fcd92d098be70", null ]
 ];

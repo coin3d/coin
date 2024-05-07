@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['dynamic_20loading_20of_20extension_20nodes_9616',['Dynamic Loading of Extension Nodes',['../coin_dynload_overview.html',1,'coin_related_pages']]]
+  ['3_0',['New Features in Coin v3.1.3',['../coin313.html',1,'coin_new_features']]],
+  ['3_200_1',['New Features in Coin v2.3.0',['../coin230.html',1,'coin_new_features']]],
+  ['3rd_20party_20libraries_2',['Coin use of 3rd party libraries.',['../coin_libraries.html',1,'coin_related_pages']]]
 ];

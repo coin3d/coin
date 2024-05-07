@@ -40,6 +40,5 @@ var classSbVec2s =
     [ "operator-", "classSbVec2s.html#a0d9471171e0850999d1ea739c791db64", null ],
     [ "operator/", "classSbVec2s.html#a4997afc77f28a86590c3b56851ac7653", null ],
     [ "operator/", "classSbVec2s.html#a0da97de4ad79429159ef2a7e9d9b9c75", null ],
-    [ "operator==", "classSbVec2s.html#a5e0d9c3c70b584ef527896aab18d0c8c", null ],
-    [ "vec", "classSbVec2s.html#a61940a436c730168e2d0f829a1a5a024", null ]
+    [ "operator==", "classSbVec2s.html#a5e0d9c3c70b584ef527896aab18d0c8c", null ]
 ];

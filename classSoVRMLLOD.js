@@ -43,7 +43,6 @@ var classSoVRMLLOD =
     [ "search", "classSoVRMLLOD.html#aaa0babfa215a59c0211d0d79e8cf8615", null ],
     [ "whichToTraverse", "classSoVRMLLOD.html#aacc0c4d2769f6c6e470f70991e45e6e3", null ],
     [ "write", "classSoVRMLLOD.html#a61269891f5cc848e4a9db02f6f71552c", null ],
-    [ "SoVRMLLODP", "classSoVRMLLOD.html#a9beb1a76ee77259646675936a280dd8b", null ],
     [ "center", "classSoVRMLLOD.html#a3e42863eeff9bc9c697d8b91894bb355", null ],
     [ "level", "classSoVRMLLOD.html#a9ff23ff7db8b5f2e15811df617ebe704", null ],
     [ "range", "classSoVRMLLOD.html#a14c8ec09e99f52bb9efba69da0dd5513", null ]

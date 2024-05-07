@@ -58,8 +58,6 @@ var group__coin__actions =
       [ "setUp", "classSoActionMethodList.html#a85d2c887bf7ccc5d8fbc3cb9e7df0050", null ]
     ] ],
     [ "SoAudioRenderAction", "classSoAudioRenderAction.html", [
-      [ "SoAudioRenderAction", "classSoAudioRenderAction.html#a5ffb6af38a185583edc235386002bcaf", null ],
-      [ "~SoAudioRenderAction", "classSoAudioRenderAction.html#a40de13b2de59b89e5517e364d437151d", null ],
       [ "beginTraversal", "classSoAudioRenderAction.html#a5e71df0b308b84614713774a261aafd1", null ],
       [ "getEnabledElements", "classSoAudioRenderAction.html#aa21220d566581b6eb9dbcebf4fb61e88", null ],
       [ "getTypeId", "classSoAudioRenderAction.html#a661c1d4cfd9153927c4df5937da37ed5", null ]
@@ -160,12 +158,9 @@ var group__coin__actions =
       [ "invokePostCallbacks", "classSoCallbackAction.html#a55e55017fe21f07be7191054850e4214", null ],
       [ "invokePreCallbacks", "classSoCallbackAction.html#ade92a80d2c2ebc22f0ca871f2296fc35", null ],
       [ "invokeTriangleCallbacks", "classSoCallbackAction.html#ad162287962a03211d167f248166878d2", null ],
-      [ "isCallbackAll", "classSoCallbackAction.html#a0ec0b31d450d20695a24aac96e85c83f", null ],
-      [ "setCallbackAll", "classSoCallbackAction.html#a7d04d7d9e64b9c6e0912d5e19e775e12", null ],
       [ "setCurrentNode", "classSoCallbackAction.html#aaea936b682da09a8df2ae87a5edba03f", null ],
       [ "setViewportRegion", "classSoCallbackAction.html#a13fd51ff971b2c2ddddd49537202e8a1", null ],
-      [ "shouldGeneratePrimitives", "classSoCallbackAction.html#ab9bf21f821cd1b4dc0ae482cee3234c7", null ],
-      [ "SoCallbackActionP", "classSoCallbackAction.html#a6f1d12893cfae7d1c39d73f62f2bb711", null ]
+      [ "shouldGeneratePrimitives", "classSoCallbackAction.html#ab9bf21f821cd1b4dc0ae482cee3234c7", null ]
     ] ],
     [ "SoEnabledElementsList", "classSoEnabledElementsList.html", [
       [ "SoEnabledElementsList", "classSoEnabledElementsList.html#a1332d7f7efc996c8be475c9380fb9254", null ],
@@ -323,8 +318,7 @@ var group__coin__actions =
       [ "setTransparencyType", "classSoGLRenderAction.html#a566bc8a65b02c8220f7e2472c25bc233", null ],
       [ "setTransparentDelayedObjectRenderType", "classSoGLRenderAction.html#a50c4aeaf0d9a74f6759dfaa788f302da", null ],
       [ "setUpdateArea", "classSoGLRenderAction.html#afacefd8a75c0e97bcfb5e0ad0b86e800", null ],
-      [ "setViewportRegion", "classSoGLRenderAction.html#adc75a9c2226604ef9cb8deaadcdafe81", null ],
-      [ "SoGLRenderActionP", "classSoGLRenderAction.html#a1ad337efc85d4bc52ee07748964232d8", null ]
+      [ "setViewportRegion", "classSoGLRenderAction.html#adc75a9c2226604ef9cb8deaadcdafe81", null ]
     ] ],
     [ "SoHandleEventAction", "classSoHandleEventAction.html", [
       [ "SoHandleEventAction", "classSoHandleEventAction.html#a5064ba50229cbe988529fe684f9cd031", null ],
@@ -349,16 +343,6 @@ var group__coin__actions =
       [ "setViewportRegion", "classSoHandleEventAction.html#a3789af4dd51672e02587816661a08fd2", null ]
     ] ],
     [ "SoIntersectionDetectionAction", "classSoIntersectionDetectionAction.html", [
-      [ "SoIntersectionCB", "classSoIntersectionDetectionAction.html#aca768354eb5c93a4f672303761fcf27e", null ],
-      [ "SoIntersectionFilterCB", "classSoIntersectionDetectionAction.html#a60251dc5fc72922cb8f1f277003ed006", null ],
-      [ "SoIntersectionVisitationCB", "classSoIntersectionDetectionAction.html#a1504121602e5d2c28e14a26ac827cdab", null ],
-      [ "Resp", "classSoIntersectionDetectionAction.html#a7cabec8b4ca7a656fe5a9b75e93ff26d", [
-        [ "NEXT_PRIMITIVE", "classSoIntersectionDetectionAction.html#a7cabec8b4ca7a656fe5a9b75e93ff26da6c66b4805353679b67777eae5bc76c4b", null ],
-        [ "NEXT_SHAPE", "classSoIntersectionDetectionAction.html#a7cabec8b4ca7a656fe5a9b75e93ff26dae5faf392464581bd0509c4faa1253a5b", null ],
-        [ "ABORT", "classSoIntersectionDetectionAction.html#a7cabec8b4ca7a656fe5a9b75e93ff26da963eac5b8b64f16621267a0d50724052", null ]
-      ] ],
-      [ "SoIntersectionDetectionAction", "classSoIntersectionDetectionAction.html#a3381ed60f34809d6933bd450b3659750", null ],
-      [ "~SoIntersectionDetectionAction", "classSoIntersectionDetectionAction.html#a66b1d5915d1cdda02b2d68786b99546d", null ],
       [ "addIntersectionCallback", "classSoIntersectionDetectionAction.html#aef6643fd98e970744e6b7d19ede887d6", null ],
       [ "addVisitationCallback", "classSoIntersectionDetectionAction.html#a4a4f8140fb45f7a3fea7c8f105afce21", null ],
       [ "apply", "classSoIntersectionDetectionAction.html#a8a4595877a40aca2ab90306c7536ef0e", null ],
@@ -397,7 +381,6 @@ var group__coin__actions =
       [ "setLinePattern", "classSoLineHighlightRenderAction.html#a25d5652991ad66b6376e4f57ea3e418e", null ],
       [ "setLineWidth", "classSoLineHighlightRenderAction.html#a002740ae0aa5062e5982825d241121ec", null ],
       [ "setVisible", "classSoLineHighlightRenderAction.html#a68c59c32b168c54d054a884db1ee7c86", null ],
-      [ "SoLineHighlightRenderActionP", "classSoLineHighlightRenderAction.html#a4c5e2f22da171f62bb039ecd277f0b70", null ],
       [ "hlVisible", "classSoLineHighlightRenderAction.html#a8a54d4a40f5f2b8c5f9fdf30900d0610", null ]
     ] ],
     [ "SoPickAction", "classSoPickAction.html", [
@@ -448,21 +431,9 @@ var group__coin__actions =
       [ "apply", "classSoReorganizeAction.html#a056620e91eb6f55bb51af9dc0efed5ae", null ],
       [ "apply", "classSoReorganizeAction.html#aec487b8e9a8cb6501ec7901018e954d8", null ],
       [ "apply", "classSoReorganizeAction.html#a6eb785a31b9cffbc0dbbc74d587b64c9", null ],
-      [ "areIndexArraysMatched", "classSoReorganizeAction.html#a7de6ebb4015502b5698cf2f908780f55", null ],
-      [ "areNormalGenerated", "classSoReorganizeAction.html#aebb87ac759121797d0b198860d9b013f", null ],
-      [ "areTexCoordsGenerated", "classSoReorganizeAction.html#a1c0f6de0c6d3a45086279508e06a8da6", null ],
-      [ "areTriangleStripGenerated", "classSoReorganizeAction.html#aa5423b151af0608e313768a92a800ecf", null ],
-      [ "areVPNodesGenerated", "classSoReorganizeAction.html#a2ed4d8cff53e1a52f3dc80a1a872ea86", null ],
       [ "beginTraversal", "classSoReorganizeAction.html#a9bfa197339cfb4c8b730c4b3385777ff", null ],
-      [ "generateNormals", "classSoReorganizeAction.html#aa03d1ae194ec82ea0326a6a0f12ece60", null ],
-      [ "generateTexCoords", "classSoReorganizeAction.html#aa5e157a44a5404bfde7dfa73a5754111", null ],
-      [ "generateTriangleStrips", "classSoReorganizeAction.html#aeaa8c493bd029c3221dab657c279d78b", null ],
-      [ "generateVPNodes", "classSoReorganizeAction.html#a367303d13579a1533b70c2f428805981", null ],
       [ "getEnabledElements", "classSoReorganizeAction.html#aacbd82e1438df961d721630fc483ffcb", null ],
-      [ "getSimplifiedSceneGraph", "classSoReorganizeAction.html#a0c937c22fb4ef37f30dc0c13c577f794", null ],
-      [ "getSimplifier", "classSoReorganizeAction.html#a98f1293102d9acd586b34f5a3ce4ae95", null ],
-      [ "getTypeId", "classSoReorganizeAction.html#adad6d39f7075ea669f74bc707b954c51", null ],
-      [ "matchIndexArrays", "classSoReorganizeAction.html#a4250a0bd35d6b048ac624cc69c579f9d", null ]
+      [ "getTypeId", "classSoReorganizeAction.html#adad6d39f7075ea669f74bc707b954c51", null ]
     ] ],
     [ "SoSearchAction", "classSoSearchAction.html", [
       [ "Interest", "classSoSearchAction.html#a822473f6d7fe12d1ba4c9e46f76fa3fc", [
@@ -514,8 +485,7 @@ var group__coin__actions =
       [ "getVRML2SceneGraph", "classSoToVRML2Action.html#ab8f239937c49ce619fa837c3d47ae955", null ],
       [ "reuseAppearanceNodes", "classSoToVRML2Action.html#ab575be05157126fe8c66b443bc9d0d89", null ],
       [ "reuseGeometryNodes", "classSoToVRML2Action.html#ae6adaa8a8190c272b5c46ce29efed2fa", null ],
-      [ "reusePropertyNodes", "classSoToVRML2Action.html#a0e6471e6a88fd8720e67fd34c89d7963", null ],
-      [ "SoToVRML2ActionP", "classSoToVRML2Action.html#ada250044234bf17eaf2096ffb19ad79b", null ]
+      [ "reusePropertyNodes", "classSoToVRML2Action.html#a0e6471e6a88fd8720e67fd34c89d7963", null ]
     ] ],
     [ "SoToVRMLAction", "classSoToVRMLAction.html", [
       [ "SoToVRMLAction", "classSoToVRMLAction.html#acc08b167cffde33b4c6d52544a470793", null ],
@@ -542,8 +512,7 @@ var group__coin__actions =
       [ "keepUnknownNodes", "classSoToVRMLAction.html#a1601843f353bd0c6e551f2643236e864", null ],
       [ "setUrlName", "classSoToVRMLAction.html#a27ed38cc6371e7e4ba90843394003f0b", null ],
       [ "setVerbosity", "classSoToVRMLAction.html#aecdaacc31757258a25af6cb4e26a1f96", null ],
-      [ "writeTexCoords", "classSoToVRMLAction.html#a0804ab84099ba9aa4f767252be3c64cf", null ],
-      [ "SoToVRMLActionP", "classSoToVRMLAction.html#ac3eb8dca9811b344ac99f4307e55dfcf", null ]
+      [ "writeTexCoords", "classSoToVRMLAction.html#a0804ab84099ba9aa4f767252be3c64cf", null ]
     ] ],
     [ "SoWriteAction", "classSoWriteAction.html", [
       [ "SoWriteAction", "classSoWriteAction.html#ae3870bc0cc5a2850cde8b2f37db28577", null ],

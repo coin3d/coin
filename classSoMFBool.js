@@ -1,29 +1,9 @@
 var classSoMFBool =
 [
-    [ "SoMFBool", "classSoMFBool.html#a5184fe94534250080284092664e2aa78", null ],
-    [ "~ SoMFBool", "classSoMFBool.html#aea6e1a956c52be6d32ceae8f3a7fd5f0", null ],
-    [ "allocValues", "classSoMFBool.html#a3807f62a06db8bf727dbbf3b1c0dac3c", null ],
     [ "copyFrom", "classSoMFBool.html#a873c4e1e1a2003f90a84881b3dc9edbe", null ],
     [ "copyValue", "classSoMFBool.html#ac60a1672458d8c5383d66b6d0c91f617", null ],
     [ "deleteAllValues", "classSoMFBool.html#a2bd724dd79d75399bf5fd28e27524782", null ],
-    [ "fieldSizeof", "classSoMFBool.html#a26663a1e789275b0b277b047da49c05f", null ],
-    [ "find", "classSoMFBool.html#a1d45995f458a664410ab5c810eff219c", null ],
-    [ "finishEditing", "classSoMFBool.html#ad18bdefab438f7424b43c46195c497a5", null ],
     [ "getTypeId", "classSoMFBool.html#a2e0f48bbda7911c70b2642e4bc5dff2f", null ],
-    [ "getValues", "classSoMFBool.html#a8ec3eafd9e3f5e482a878a85fa1cf914", null ],
-    [ "isSame", "classSoMFBool.html#ae881af19f2f22acf6d1e4972a0a5a72e", null ],
-    [ "operator!=", "classSoMFBool.html#a715071edcff538835bf1a66712e6c0ff", null ],
-    [ "operator=", "classSoMFBool.html#a80e8345313625a0ff3980c633feecfd5", null ],
-    [ "operator=", "classSoMFBool.html#aaab8c613ce16efaa5cf0f3a1bd04bae5", null ],
-    [ "operator==", "classSoMFBool.html#a9989754b42ba387f710ba440d8fce65b", null ],
-    [ "operator[]", "classSoMFBool.html#a9071cae14c9f76b56d62544ec11f0f7e", null ],
-    [ "set1Value", "classSoMFBool.html#a0d17990807cf3d06bf2a63315f7adc0f", null ],
-    [ "setValue", "classSoMFBool.html#a7a26e58503256eaa0eb8e715345fbc07", null ],
-    [ "setValues", "classSoMFBool.html#ac1d8a6fdac09afdabcda825ed3273a2a", null ],
-    [ "setValuesPointer", "classSoMFBool.html#a42629cd7cf00f020f5b0af3a6d89b50b", null ],
-    [ "setValuesPointer", "classSoMFBool.html#a103826e0ed93f14ab76c0fd2ee73d050", null ],
-    [ "setValuesPtr", "classSoMFBool.html#aaf0a3b22cb9efb506dc8c8865c01ff56", null ],
-    [ "startEditing", "classSoMFBool.html#a254d3ec5df7309f9a4d124e051196316", null ],
-    [ "valuesPtr", "classSoMFBool.html#afab6fc93310ca0e370d894fea26feac8", null ],
-    [ "values", "classSoMFBool.html#ac41d09102750bfeaefe49e5aaeb2d44e", null ]
+    [ "getValues", "classSoMFBool.html#a7cf29638d7686309c3193aa3dbedd2db", null ],
+    [ "isSame", "classSoMFBool.html#ae881af19f2f22acf6d1e4972a0a5a72e", null ]
 ];

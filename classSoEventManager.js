@@ -5,7 +5,6 @@ var classSoEventManager =
       [ "JUST_NAVIGATION", "classSoEventManager.html#a501e0b834b64f588e247036ec05af20ca8f80d3353a0be34579b88dc5d9b8e2ac", null ],
       [ "MIXED_NAVIGATION", "classSoEventManager.html#a501e0b834b64f588e247036ec05af20caacb5238d0e45632cda2adcaaf89b1f36", null ]
     ] ],
-    [ "SoEventManager", "classSoEventManager.html#a21a7234a1f4b75f7d769324c911969f3", null ],
     [ "~SoEventManager", "classSoEventManager.html#adf1e2d0f2a83f5434bfe83af636221d1", null ],
     [ "actuallyProcessEvent", "classSoEventManager.html#ae4571b17440ffccdebfaed8ade9be293", null ],
     [ "addSoScXMLStateMachine", "classSoEventManager.html#a07d8a953f4b2d82cb1d298595bfe4692", null ],

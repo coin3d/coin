@@ -1,6 +1,5 @@
 var classSoTransparencyElement =
 [
-    [ "SoTransparencyElement", "classSoTransparencyElement.html#aab0c3f766fb14870ae9e1b007bcb12a6", null ],
     [ "~SoTransparencyElement", "classSoTransparencyElement.html#a0661ad74537a987c5bf5bea2952c04b2", null ],
     [ "get", "classSoTransparencyElement.html#a53372cd106f5811a088015bcdcdc6105", null ],
     [ "getArrayPtr", "classSoTransparencyElement.html#a66b6943817a383e31e5215837099f3ec", null ],

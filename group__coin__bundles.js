@@ -28,8 +28,7 @@ var group__coin__bundles =
       [ "send", "classSoNormalBundle.html#a907b0c27813831d9f8e1bb5648d170de", null ],
       [ "set", "classSoNormalBundle.html#a0eab7ee8f75ae530085c43a7080a7030", null ],
       [ "shouldGenerate", "classSoNormalBundle.html#afdb769b4e28cd20b37182d4e29b1a52d", null ],
-      [ "triangle", "classSoNormalBundle.html#a9c7ab71ed84cda1ff7e10dd138a185d6", null ],
-      [ "generator", "classSoNormalBundle.html#aab06f0296157d950fb46b48ecafaf899", null ]
+      [ "triangle", "classSoNormalBundle.html#a9c7ab71ed84cda1ff7e10dd138a185d6", null ]
     ] ],
     [ "SoTextureCoordinateBundle", "classSoTextureCoordinateBundle.html", [
       [ "SoTextureCoordinateBundle", "classSoTextureCoordinateBundle.html#a9d456842edf6e5ac864d57266bdf3994", null ],
@@ -45,7 +44,6 @@ var group__coin__bundles =
     [ "SoVertexAttributeBundle", "classSoVertexAttributeBundle.html", [
       [ "SoVertexAttributeBundle", "classSoVertexAttributeBundle.html#a1a4b220a133626a5ad3cfee0b36bdd3f", null ],
       [ "~SoVertexAttributeBundle", "classSoVertexAttributeBundle.html#a00dd7916a4979024791e0f153130846d", null ],
-      [ "doAttributes", "classSoVertexAttributeBundle.html#ad757d24192c0ff5b1ad891fecc83a571", null ],
       [ "send", "classSoVertexAttributeBundle.html#a1a40d11c0079c5a658e5ed6313512010", null ]
     ] ],
     [ "The Bundle Classes", "group__coin__bundles.html#bundles", null ]

@@ -1,7 +1,5 @@
 var classSoDecomposeVec4f =
 [
-    [ "~ SoDecomposeVec4f", "classSoDecomposeVec4f.html#a9b91b23bc3d528da5c5c0690002ba12d", null ],
-    [ "SoDecomposeVec4f", "classSoDecomposeVec4f.html#a6a3673bcc860f22135fe475c98fc35e0", null ],
     [ "getFieldData", "classSoDecomposeVec4f.html#aec6ac5554b9d06a0fb60d9c60df2b816", null ],
     [ "getOutputData", "classSoDecomposeVec4f.html#a986388ae31df234ac452701a5eb7d5ea", null ],
     [ "getTypeId", "classSoDecomposeVec4f.html#a2c607a72dc1bf70b49e707f558a0921b", null ],

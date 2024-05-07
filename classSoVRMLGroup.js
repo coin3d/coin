@@ -1,10 +1,5 @@
 var classSoVRMLGroup =
 [
-    [ "CacheEnabled", "classSoVRMLGroup.html#abbd8e17198457d639e248c49c0043a9e", [
-      [ "OFF", "classSoVRMLGroup.html#abbd8e17198457d639e248c49c0043a9ea1babc49ec7b20c725dfdd475c78d5e56", null ],
-      [ "ON", "classSoVRMLGroup.html#abbd8e17198457d639e248c49c0043a9ea634dbe81314e92bf293a39720283d9ee", null ],
-      [ "AUTO", "classSoVRMLGroup.html#abbd8e17198457d639e248c49c0043a9ea1cdff3a6f44cc38608c9ac032c6e442b", null ]
-    ] ],
     [ "SoVRMLGroup", "classSoVRMLGroup.html#ae981a7a94eae2e1390d2316186196a78", null ],
     [ "SoVRMLGroup", "classSoVRMLGroup.html#a54e9e2a21856da98166e6ce22b0058e3", null ],
     [ "~SoVRMLGroup", "classSoVRMLGroup.html#a176c761bf3360780ca214cd3a1d7c019", null ],
@@ -24,11 +19,5 @@ var classSoVRMLGroup =
     [ "notify", "classSoVRMLGroup.html#afe1f661e8caae17549c7dd0a303229b5", null ],
     [ "rayPick", "classSoVRMLGroup.html#a4aa4936341cecaa2386d1c2f13b9d840", null ],
     [ "search", "classSoVRMLGroup.html#ac487dbd5feb7871bfde43e4883fda344", null ],
-    [ "write", "classSoVRMLGroup.html#a5a2c5bd82ca57625c0def475ed4d841c", null ],
-    [ "bboxCenter", "classSoVRMLGroup.html#afe7c850a2cc633e20ccb929b6f0756fe", null ],
-    [ "bboxSize", "classSoVRMLGroup.html#a7eaa898f776a826ef0c237964a378db0", null ],
-    [ "boundingBoxCaching", "classSoVRMLGroup.html#aa5b52c42e661e05aae3dd4228225de7d", null ],
-    [ "pickCulling", "classSoVRMLGroup.html#a77b4ac473a3ab1bcbfb1e4a09cbd6187", null ],
-    [ "renderCaching", "classSoVRMLGroup.html#a071498e508620b3377ecd0a0a8ff7244", null ],
-    [ "renderCulling", "classSoVRMLGroup.html#a169edad2eee311f8bd1d976bb0d2b8a2", null ]
+    [ "write", "classSoVRMLGroup.html#a5a2c5bd82ca57625c0def475ed4d841c", null ]
 ];

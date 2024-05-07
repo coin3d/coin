@@ -10,19 +10,8 @@ var classSoTranslate2Dragger =
     [ "getTypeId", "classSoTranslate2Dragger.html#acb1ac6cf8c8e1d02b0e42d1faa93415a", null ],
     [ "setMotionMatrix", "classSoTranslate2Dragger.html#a2ceb370e94ea153a9f74a62c64bd6770", null ],
     [ "setUpConnections", "classSoTranslate2Dragger.html#a6b7a26db1e4cf86537d55c3576170394", null ],
-    [ "axisFeedbackSwitch", "classSoTranslate2Dragger.html#a629c2f45720c10085a02b44ca4b88a33", null ],
-    [ "feedback", "classSoTranslate2Dragger.html#ae70317a71a77e8ac3c03dbad0b966dbd", null ],
-    [ "feedbackActive", "classSoTranslate2Dragger.html#a3e4bb2bb59f7ce32c2a3828ac886fc08", null ],
-    [ "feedbackSwitch", "classSoTranslate2Dragger.html#ac07614ef667f3eab6c98dc56e787c234", null ],
     [ "fieldSensor", "classSoTranslate2Dragger.html#a5c65bbc7e3841d567fda6731a85e1d2b", null ],
-    [ "maxTranslation", "classSoTranslate2Dragger.html#a4737b02bd75c14107acc0f4bb96c1a4d", null ],
-    [ "minTranslation", "classSoTranslate2Dragger.html#a364ae2ad8b8b672a1c59329c50788fec", null ],
     [ "planeProj", "classSoTranslate2Dragger.html#ad70fca7b6325f044675dd754d8029ce1", null ],
     [ "translation", "classSoTranslate2Dragger.html#a520d3bb910fd1965f00d08b1239d0983", null ],
-    [ "translator", "classSoTranslate2Dragger.html#aa4eb8c24c19bc800a0ac4bfbfb641549", null ],
-    [ "translatorActive", "classSoTranslate2Dragger.html#a916334fd72f1aa9c85ed28fc7c73b85b", null ],
-    [ "translatorSwitch", "classSoTranslate2Dragger.html#addf805486f0f6d2d1f116874d55af7e2", null ],
-    [ "worldRestartPt", "classSoTranslate2Dragger.html#ad2b69b0d2b084fb6fcd0671b54553b86", null ],
-    [ "xAxisFeedback", "classSoTranslate2Dragger.html#a05133b63423f998eb5d215d505321018", null ],
-    [ "yAxisFeedback", "classSoTranslate2Dragger.html#af2d580f529faf357c33deabb8cdc110b", null ]
+    [ "worldRestartPt", "classSoTranslate2Dragger.html#ad2b69b0d2b084fb6fcd0671b54553b86", null ]
 ];

@@ -11,7 +11,6 @@ var classSoNormalBindingElement =
       [ "DEFAULT", "classSoNormalBindingElement.html#aac0e8417b30d1e5910a9bf5e2cd6c009a2fac878fd050385c90977d3c5dc6ef3d", null ],
       [ "NONE", "classSoNormalBindingElement.html#aac0e8417b30d1e5910a9bf5e2cd6c009a3facd1ae90d0b9ca387e41724705f6b3", null ]
     ] ],
-    [ "SoNormalBindingElement", "classSoNormalBindingElement.html#a701bf42fba66048a88f0f293670313ed", null ],
     [ "~SoNormalBindingElement", "classSoNormalBindingElement.html#a5f1152a5d4bcab862acc9798e74f4a28", null ],
     [ "init", "classSoNormalBindingElement.html#a630c146cf89169c29d938f5470f3f531", null ]
 ];

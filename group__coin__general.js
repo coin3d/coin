@@ -5,10 +5,7 @@ var group__coin__general =
       [ "enable", "classSoAudioDevice.html#a0309d5f5df046decf3f5d4d6f340225a", null ],
       [ "haveSound", "classSoAudioDevice.html#a57c79f296ba85c130375e05720833dfb", null ],
       [ "init", "classSoAudioDevice.html#a45a8be37994dda2c4229d2b1a5cd7ac6", null ],
-      [ "isEnabled", "classSoAudioDevice.html#a41606af51e505f617a07b7dcf2f357a2", null ],
-      [ "mute", "classSoAudioDevice.html#ae43f5baa534450b5ebfe9b7671ef5b7c", null ],
-      [ "setGain", "classSoAudioDevice.html#a00144b61bfdd10e07bdbb12349bb8879", null ],
-      [ "SoAudioDeviceP", "classSoAudioDevice.html#ad85c6e5e07706bcc8e32887431bb9039", null ]
+      [ "isEnabled", "classSoAudioDevice.html#a41606af51e505f617a07b7dcf2f357a2", null ]
     ] ],
     [ "SoAuditorList", "classSoAuditorList.html", [
       [ "SoAuditorList", "classSoAuditorList.html#a6f992c93f093705896839da9dcec97f1", null ],
@@ -53,10 +50,7 @@ var group__coin__general =
       [ "unref", "classSoBase.html#a254b1ac395fe4d4d10438b994bdb3561", null ],
       [ "unrefNoDelete", "classSoBase.html#a2efdb80168517b9e0a8dd8dc8c655fbb", null ],
       [ "writeFooter", "classSoBase.html#aa9d26d177755cb43299bb1201c94c989", null ],
-      [ "writeHeader", "classSoBase.html#aa08205585f2aea5d141e105b492df61f", null ],
-      [ "PImpl", "classSoBase.html#abde54206b8f19d7e20fb1e9c7c1e2965", null ],
-      [ "alive", "classSoBase.html#a7f29419919ef8edbbb73bf2ab37ccc90", null ],
-      [ "referencecount", "classSoBase.html#a103e7682b55e3d88af5f2d5eef8263b5", null ]
+      [ "writeHeader", "classSoBase.html#aa08205585f2aea5d141e105b492df61f", null ]
     ] ],
     [ "SoBaseList", "classSoBaseList.html", [
       [ "SoBaseList", "classSoBaseList.html#a3486d0f2af4a5d21b14cad5979ebd4dd", null ],
@@ -103,9 +97,7 @@ var group__coin__general =
       [ "traverseInPath", "classSoChildList.html#a6925cc43313d082b086c99df35692a04", null ],
       [ "truncate", "classSoChildList.html#a4dc4cb84b7f2624c53de457f60444e9d", null ]
     ] ],
-    [ "SoContextHandler", "classSoContextHandler.html", [
-      [ "ContextDestructionCB", "classSoContextHandler.html#a3dcbf3f4d63f7485048cd4616f2a3306", null ]
-    ] ],
+    [ "SoContextHandler", "classSoContextHandler.html", null ],
     [ "SoDB", "classSoDB.html", [
       [ "ProgressCallbackType", "classSoDB.html#a888354ed1231a38f3b035ff1bc757de0", null ]
     ] ],
@@ -147,8 +139,7 @@ var group__coin__general =
       [ "getLength", "classSoFullPath.html#a9105009b476fea9b0fe7e163f20343ae", null ],
       [ "getNodeFromTail", "classSoFullPath.html#ac6f2a1d6b9ac930051a66ae78d7af5d1", null ],
       [ "getTail", "classSoFullPath.html#a6f10361f7f8af28a937a2ad52efeb7b9", null ],
-      [ "pop", "classSoFullPath.html#ac910125223965d59eb473cadc636f8c6", null ],
-      [ "SoTempPath", "classSoFullPath.html#a3db738d22a6a471b912582e2d878cc2c", null ]
+      [ "pop", "classSoFullPath.html#ac910125223965d59eb473cadc636f8c6", null ]
     ] ],
     [ "SoInput", "classSoInput.html", [
       [ "SoInput", "classSoInput.html#aad6a27869faabd1cfc94d537881af73e", null ],
@@ -231,32 +222,10 @@ var group__coin__general =
       [ "setIVVersion", "classSoInput.html#a8dd2208b78264e118d0e8050eec0f261", null ],
       [ "setStringArray", "classSoInput.html#af28592d7aa017765fdaad6fbc6b3d99f", null ],
       [ "skipWhiteSpace", "classSoInput.html#a311a3e2c6e50fceadf569f4be8a5409b", null ],
-      [ "URLToFile", "classSoInput.html#ad0133eb4aa2ea9620989607d949de3e7", null ],
-      [ "SoDB", "classSoInput.html#a94f1f515af26a8066f4f771aebd76175", null ],
-      [ "SoInputP", "classSoInput.html#aaa27b0390dc11914d30ac3c270c502a9", null ]
+      [ "URLToFile", "classSoInput.html#ad0133eb4aa2ea9620989607d949de3e7", null ]
     ] ],
     [ "SoInteraction", "classSoInteraction.html", null ],
-    [ "SoJavaScriptEngine", "classSoJavaScriptEngine.html", [
-      [ "SoJavaScriptEngine", "classSoJavaScriptEngine.html#a3ba9d0a5a76fb8791f4336089994e99b", null ],
-      [ "~SoJavaScriptEngine", "classSoJavaScriptEngine.html#a7688198247ad31420a4260ea01c68f0f", null ],
-      [ "addHandler", "classSoJavaScriptEngine.html#a9e45a57fea9a14e4bdf2e7f2a51ff1f5", null ],
-      [ "enableAutoNodeUnref", "classSoJavaScriptEngine.html#a0c95bcd20125d40f629b14d89111865f", null ],
-      [ "executeFile", "classSoJavaScriptEngine.html#ae5c831039330af2bd5e54ee408b97e52", null ],
-      [ "executeFunction", "classSoJavaScriptEngine.html#a638a8f43f1e1fdb92b01f2d5b88100db", null ],
-      [ "executeScript", "classSoJavaScriptEngine.html#ac63c7400da98c516e85312d61dad1e9b", null ],
-      [ "field2jsval", "classSoJavaScriptEngine.html#abcd053fb44efa9cc2aa0fc16239f51a8", null ],
-      [ "getAutoNodeUnrefState", "classSoJavaScriptEngine.html#a1b12574b6c2d224f6769442d403bd3c4", null ],
-      [ "getContext", "classSoJavaScriptEngine.html#a9e745e3393817384d06aff41250d79ef", null ],
-      [ "getGlobal", "classSoJavaScriptEngine.html#aaa35999f07b07a5601b01cea2a35db1e", null ],
-      [ "getScriptField", "classSoJavaScriptEngine.html#ae2500d8d2d2ebcb4c130b92df2ae85fb", null ],
-      [ "hasScriptField", "classSoJavaScriptEngine.html#a92e1b86195a8aa8afd47a63cb9d49031", null ],
-      [ "jsval2field", "classSoJavaScriptEngine.html#ad725d38bbf2c569376cf97e333ad7328", null ],
-      [ "setContext", "classSoJavaScriptEngine.html#a921fbddf5aa381d56856e5ee15775b57", null ],
-      [ "setGlobal", "classSoJavaScriptEngine.html#a498a9bb23a215fed0ba879b4d9163147", null ],
-      [ "setScriptField", "classSoJavaScriptEngine.html#a7de3d096eaa79263029ffd84a75d102b", null ],
-      [ "unsetScriptField", "classSoJavaScriptEngine.html#a85597669d79770f7f4a928d7a74acd0c", null ],
-      [ "SoJavaScriptEngineP", "classSoJavaScriptEngine.html#ab1017d66ea8454665b72e07c4e2fecc3", null ]
-    ] ],
+    [ "SoJavaScriptEngine", "classSoJavaScriptEngine.html", null ],
     [ "SoLightPath", "classSoLightPath.html", [
       [ "SoLightPath", "classSoLightPath.html#aa6417d3e79b7897e27bfb831c39305b4", null ],
       [ "SoLightPath", "classSoLightPath.html#a7d4c7bf8dca8ec316755459ac3e7e2eb", null ],
@@ -328,19 +297,9 @@ var group__coin__general =
       ] ],
       [ "SoNotRec", "classSoNotRec.html#abaaeeb7bd0ae0083307e5c81e7dfeef0", null ],
       [ "getBase", "classSoNotRec.html#a32a1e21eadb5a4f78f23c7175fd9d3b4", null ],
-      [ "getFieldNumIndices", "classSoNotRec.html#a7631ffba84978e4569d9f4bea9aa6969", null ],
-      [ "getGroupChild", "classSoNotRec.html#a4a7bd11de9c3518e5bfe11e291ba2229", null ],
-      [ "getGroupPrevChild", "classSoNotRec.html#a0d47f8eb596c7b3c8f75a32c1235a042", null ],
-      [ "getIndex", "classSoNotRec.html#a4c02ff97ff9a9463ee2d5ad3b4730bb1", null ],
-      [ "getOperationType", "classSoNotRec.html#a1fe7d099c1efea85c18047e4c60e264c", null ],
       [ "getPrevious", "classSoNotRec.html#a78f74add56facdc2f31d6cd91362a04a", null ],
       [ "getType", "classSoNotRec.html#a3d198cae53e357829638121158d7516d", null ],
       [ "print", "classSoNotRec.html#aaee47aebc11a1d09f0cfc414e7957fa5", null ],
-      [ "setFieldNumIndices", "classSoNotRec.html#a4b0562d3b0d7f5ce3b854951b0867913", null ],
-      [ "setGroupChild", "classSoNotRec.html#aad1cd5009160a0c338c2f2d2d6b648a4", null ],
-      [ "setGroupPrevChild", "classSoNotRec.html#a456ed0706392682253ece86a947f1375", null ],
-      [ "setIndex", "classSoNotRec.html#a489189fccbb5821eaffc9b27f3344d05", null ],
-      [ "setOperationType", "classSoNotRec.html#ab02f5c7255e4e574927c540b03c4fefd", null ],
       [ "setPrevious", "classSoNotRec.html#aaf269e73def30a2ee874d442f4510006", null ],
       [ "setType", "classSoNotRec.html#aeeb4a71b12daa304cf54adf2f140ab97", null ]
     ] ],
@@ -377,8 +336,7 @@ var group__coin__general =
       [ "writeToPostScript", "classSoOffscreenRenderer.html#afefa4dbe02271b4106bb540a3822d6e4", null ],
       [ "writeToPostScript", "classSoOffscreenRenderer.html#a3d111ee3193d7dcbe9ec24176d8e3606", null ],
       [ "writeToRGB", "classSoOffscreenRenderer.html#a0ea11d989352f6ddfa3ef50e9721913d", null ],
-      [ "writeToRGB", "classSoOffscreenRenderer.html#a6d9981f8b802d3c2be55d48c91fa6db3", null ],
-      [ "SoOffscreenRendererP", "classSoOffscreenRenderer.html#ab64d890a75132e13c070a4436ca1e0f4", null ]
+      [ "writeToRGB", "classSoOffscreenRenderer.html#a6d9981f8b802d3c2be55d48c91fa6db3", null ]
     ] ],
     [ "SoOutput", "classSoOutput.html", [
       [ "Annotations", "classSoOutput.html#a6557a37a92efd9a0dc80f717f832f65c", [
@@ -452,8 +410,6 @@ var group__coin__general =
       [ "writeBinaryArray", "classSoOutput.html#a93c825150ca0a1b3bef4d41c38bda5ef", null ],
       [ "writeBinaryArray", "classSoOutput.html#a7d676b7c5e16473572bf1c7925615600", null ],
       [ "writeBinaryArray", "classSoOutput.html#a1d1cce06bcb3e36cefb419da32cf70e9", null ],
-      [ "SoBase", "classSoOutput.html#ac4f08cbb885125ab9afff986a01fc57d", null ],
-      [ "SoWriterefCounter", "classSoOutput.html#a3987d06181ed6901e199b7814abf6131", null ],
       [ "wroteHeader", "classSoOutput.html#a115045b8a4e57f8936223a75c991e8e8", null ]
     ] ],
     [ "SoPath", "classSoPath.html", [
@@ -489,11 +445,7 @@ var group__coin__general =
       [ "truncate", "classSoPath.html#ad6078a33f2838005f98cf488d18930e8", null ],
       [ "write", "classSoPath.html#a3b45195e0e17b98f437de45223c97a20", null ],
       [ "operator!=", "classSoPath.html#afb925263baf09f7c209443e06bf9e528", null ],
-      [ "operator==", "classSoPath.html#ab4848beb2243ec5b8166c38835a1583a", null ],
-      [ "SoAction", "classSoPath.html#a5d7c7e1f89fb05dde739c50211b70788", null ],
-      [ "SoFullPath", "classSoPath.html#aca994c680b72a0c55bff0c85c2ea77d3", null ],
-      [ "SoNodeKitPath", "classSoPath.html#ae325411ea95965d472b1ca45f5a774a5", null ],
-      [ "SoTempPath", "classSoPath.html#a3db738d22a6a471b912582e2d878cc2c", null ]
+      [ "operator==", "classSoPath.html#ab4848beb2243ec5b8166c38835a1583a", null ]
     ] ],
     [ "SoPathList", "classSoPathList.html", [
       [ "SoPathList", "classSoPathList.html#a5ce3a1a16f9d446fde9adbc709343c80", null ],
@@ -535,7 +487,6 @@ var group__coin__general =
       [ "SoPickedPointList", "classSoPickedPointList.html#a8e05dc5fa3140dbce320d5bb1eb63feb", null ],
       [ "SoPickedPointList", "classSoPickedPointList.html#a63a03530b4d49f0c12c0ebe462bc44fd", null ],
       [ "SoPickedPointList", "classSoPickedPointList.html#a2a4d6d5e94746d453b63dfb3e4f62e68", null ],
-      [ "~SoPickedPointList", "classSoPickedPointList.html#a708cc692ed3644af82c5288b5d2dbd02", null ],
       [ "append", "classSoPickedPointList.html#a795307b4f47bfc6035a7f94732f5e632", null ],
       [ "insert", "classSoPickedPointList.html#a98d037a305db2136d23bdda06a522775", null ],
       [ "operator[]", "classSoPickedPointList.html#aaae564fbe0397ffa9873bec91e02ceb8", null ],
@@ -608,8 +559,7 @@ var group__coin__general =
       [ "setSceneGraph", "classSoSceneManager.html#a1f41bd4e9b94ecd066a649f6c9b44b30", null ],
       [ "setSize", "classSoSceneManager.html#a4cffa44277eeddbb65a94e0b4e76ba9c", null ],
       [ "setViewportRegion", "classSoSceneManager.html#ac5299ca92d36220e4c273435135eb118", null ],
-      [ "setWindowSize", "classSoSceneManager.html#afc73c9086f66e7474e11c25557a425a1", null ],
-      [ "SoSceneManagerP", "classSoSceneManager.html#a0ee863e87116eacb4b5f117aec774239", null ]
+      [ "setWindowSize", "classSoSceneManager.html#afc73c9086f66e7474e11c25557a425a1", null ]
     ] ],
     [ "SoState", "classSoState.html", [
       [ "SoState", "classSoState.html#a94916d151a7e7c45aca1e5f684975a48", null ],
@@ -618,7 +568,6 @@ var group__coin__general =
       [ "getConstElement", "classSoState.html#ada45932ebf907cb2d91fa6f6949eff20", null ],
       [ "getDepth", "classSoState.html#a9dfceed3d0b7c26affe4bbb7a0c80c2d", null ],
       [ "getElement", "classSoState.html#aff4a1d584519c8b108ec273298a09860", null ],
-      [ "getElementNoPush", "classSoState.html#a6f6bcdbdd7ac3a6af2c170382f98eb5b", null ],
       [ "isCacheOpen", "classSoState.html#ac0b22b8d46d220a4e624a350fd02b778", null ],
       [ "isElementEnabled", "classSoState.html#aada4108571863a04e3676c11f90d1590", null ],
       [ "pop", "classSoState.html#a9bd01b48366dfda61f0b0b4f2a4fdac7", null ],

@@ -35,6 +35,5 @@ var classSbVec2d =
     [ "operator+", "classSbVec2d.html#aca58910afc203e37d3130116b194c4f6", null ],
     [ "operator-", "classSbVec2d.html#a5fca9f72a94995260ff026f8f96031fa", null ],
     [ "operator/", "classSbVec2d.html#a1bf50012c612e4cba25faf4c43b35fdd", null ],
-    [ "operator==", "classSbVec2d.html#ac385222f5fba67dd4681703b68203fb5", null ],
-    [ "vec", "classSbVec2d.html#a302565eb73a61bc7b4450480a7f91703", null ]
+    [ "operator==", "classSbVec2d.html#ac385222f5fba67dd4681703b68203fb5", null ]
 ];

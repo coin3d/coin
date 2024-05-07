@@ -6,7 +6,6 @@ var classSoEnvironmentElement =
       [ "FOG", "classSoEnvironmentElement.html#aead6e3a5bd204de5af14453747d6536faa36370827e51cc10654c22131b89d09f", null ],
       [ "SMOKE", "classSoEnvironmentElement.html#aead6e3a5bd204de5af14453747d6536faec6197a570762b2d293bc1265ea720b4", null ]
     ] ],
-    [ "SoEnvironmentElement", "classSoEnvironmentElement.html#a330bcce449896a2dfc8a4d7ffa7ba1ee", null ],
     [ "~SoEnvironmentElement", "classSoEnvironmentElement.html#adcd265530d7e656d66291c77e519f46f", null ],
     [ "init", "classSoEnvironmentElement.html#a0499c032d6f680eb3df9226817cddb03", null ],
     [ "print", "classSoEnvironmentElement.html#a57d510b447d239c04554b8f4c5aee79d", null ],

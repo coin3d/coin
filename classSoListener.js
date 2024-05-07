@@ -5,8 +5,6 @@ var classSoListener =
     [ "audioRender", "classSoListener.html#a9e633d78de2a744fb83893b31723d22b", null ],
     [ "getFieldData", "classSoListener.html#a8614e621a150d289157e9b9dd8010866", null ],
     [ "getTypeId", "classSoListener.html#a3321c6fcbaa0bcbf4ee71ac3e0af6fd4", null ],
-    [ "SoAudioRenderAction", "classSoListener.html#a9c4b20586e0209b10b5873853085d751", null ],
-    [ "SoListenerP", "classSoListener.html#ae28742cc08b3cfde4b4693e24632070d", null ],
     [ "dopplerFactor", "classSoListener.html#a77676bd080ed6eb7a999e1fae2c5ae03", null ],
     [ "dopplerVelocity", "classSoListener.html#acfd3d11207598713cb1a74395256aa17", null ],
     [ "gain", "classSoListener.html#a5d306e0699c5517b11d9ec7867b26aef", null ],

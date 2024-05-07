@@ -76,10 +76,7 @@ var classSoCallbackAction =
     [ "invokePostCallbacks", "classSoCallbackAction.html#a55e55017fe21f07be7191054850e4214", null ],
     [ "invokePreCallbacks", "classSoCallbackAction.html#ade92a80d2c2ebc22f0ca871f2296fc35", null ],
     [ "invokeTriangleCallbacks", "classSoCallbackAction.html#ad162287962a03211d167f248166878d2", null ],
-    [ "isCallbackAll", "classSoCallbackAction.html#a0ec0b31d450d20695a24aac96e85c83f", null ],
-    [ "setCallbackAll", "classSoCallbackAction.html#a7d04d7d9e64b9c6e0912d5e19e775e12", null ],
     [ "setCurrentNode", "classSoCallbackAction.html#aaea936b682da09a8df2ae87a5edba03f", null ],
     [ "setViewportRegion", "classSoCallbackAction.html#a13fd51ff971b2c2ddddd49537202e8a1", null ],
-    [ "shouldGeneratePrimitives", "classSoCallbackAction.html#ab9bf21f821cd1b4dc0ae482cee3234c7", null ],
-    [ "SoCallbackActionP", "classSoCallbackAction.html#a6f1d12893cfae7d1c39d73f62f2bb711", null ]
+    [ "shouldGeneratePrimitives", "classSoCallbackAction.html#ab9bf21f821cd1b4dc0ae482cee3234c7", null ]
 ];

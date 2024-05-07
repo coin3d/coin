@@ -14,7 +14,6 @@ var classSoText2 =
     [ "getTypeId", "classSoText2.html#a3a0cf460ffb7eb222e606cc45d5048e0", null ],
     [ "GLRender", "classSoText2.html#ab827c34aa2b59c5698377cad267c0cb8", null ],
     [ "rayPick", "classSoText2.html#ae6126a3954c8350cdb92fa6108149f12", null ],
-    [ "SoText2P", "classSoText2.html#aaa5327a4d1d1f53acdf358766189fa62", null ],
     [ "justification", "classSoText2.html#adaf2d2005e6420461e9d57c31f97f4a6", null ],
     [ "spacing", "classSoText2.html#abe85c0b6f6daed388cfbf38adbf36c76", null ],
     [ "string", "classSoText2.html#a4942971760f490c3e62d809ceaaa97c8", null ]

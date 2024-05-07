@@ -100,7 +100,6 @@ var group__coin__nodes =
       [ "getTypeId", "classSoAsciiText.html#a62dd66710048447547a2c754da30fcfc", null ],
       [ "GLRender", "classSoAsciiText.html#a77e0052bfb8b272e18544f3049ec5d3d", null ],
       [ "notify", "classSoAsciiText.html#a73635e735ace0c83a8d6cc2322248154", null ],
-      [ "SoAsciiTextP", "classSoAsciiText.html#a8a58876dc3613b678ec061e198d4d8b1", null ],
       [ "justification", "classSoAsciiText.html#a65d9c0914d0e6873df20e305daf2791a", null ],
       [ "spacing", "classSoAsciiText.html#a75f0c5fb74d94a478e2862c1a9ca5a2f", null ],
       [ "string", "classSoAsciiText.html#a39b13f6d7cf678cb2b362c0150ea1161", null ],
@@ -246,7 +245,6 @@ var group__coin__nodes =
       [ "viewAll", "classSoCamera.html#af04cc1f085e997c65832da9ddcd5a6aa", null ],
       [ "viewAll", "classSoCamera.html#ab10a2218561a9c6e82910cb6ded50118", null ],
       [ "viewBoundingBox", "classSoCamera.html#ab04c2ed686b698bee525eaf29aca0f64", null ],
-      [ "SoCameraP", "classSoCamera.html#a3586d3f8a508c27f063b3ae220aa0cf2", null ],
       [ "aspectRatio", "classSoCamera.html#a377ac1c352e965864712bcc5ad0459df", null ],
       [ "farDistance", "classSoCamera.html#a34890d0e76849f4ce27beefae287f471", null ],
       [ "focalDistance", "classSoCamera.html#a59fda50eb01e55536d3a603f6590fd2c", null ],
@@ -512,7 +510,6 @@ var group__coin__nodes =
       [ "setTriangleFilterCallback", "classSoExtSelection.html#aa8150f3696bc79c38074e00ee62d4b5d", null ],
       [ "useOverlay", "classSoExtSelection.html#afb79e93a8a70cc2163a4f2c5ccbb7dd0", null ],
       [ "wasShiftDown", "classSoExtSelection.html#af6fefbd65cc3cab3e5f0e36934f135e4", null ],
-      [ "SoExtSelectionP", "classSoExtSelection.html#a53b324881c4631c25cf0ef002481277a", null ],
       [ "lassoMode", "classSoExtSelection.html#a3f1be9f9f9e2500f16ba9526682af7a8", null ],
       [ "lassoPolicy", "classSoExtSelection.html#a05bb125c7b408ef062e9b3a5500025ba", null ],
       [ "lassoType", "classSoExtSelection.html#ae971b69bf710bc866c29432050f96650", null ]
@@ -696,9 +693,7 @@ var group__coin__nodes =
       [ "replaceChild", "classSoGroup.html#ad8ad1c3ce980cd622a9e6481dc567d0c", null ],
       [ "replaceChild", "classSoGroup.html#ae006a114fac6746a3514eebd0a8f3dc5", null ],
       [ "search", "classSoGroup.html#a63a504e1809c7413318396010d002335", null ],
-      [ "setOperation", "classSoGroup.html#a0ced0d3a09ac439ea20cc78ea755f9f9", null ],
       [ "write", "classSoGroup.html#a12aef60c111941b6663a7a77bc83b75c", null ],
-      [ "SoUnknownNode", "classSoGroup.html#a5da88bb294a3599412d7ba0ea3d2bc3b", null ],
       [ "children", "classSoGroup.html#a858f7cf002e23637542fcd92d098be70", null ]
     ] ],
     [ "SoImage", "classSoImage.html", [
@@ -758,8 +753,7 @@ var group__coin__nodes =
       [ "~SoIndexedMarkerSet", "classSoIndexedMarkerSet.html#a3139cb85aafd645cb2011b0ab98b90cd", null ],
       [ "getFieldData", "classSoIndexedMarkerSet.html#ac18bba103bf40b855e2814c3af91ed4f", null ],
       [ "getTypeId", "classSoIndexedMarkerSet.html#a97605a62b2e2b6f43e29d89df35ec3f4", null ],
-      [ "GLRender", "classSoIndexedMarkerSet.html#a6fc71f377232c3c3d36745bb66ef4e12", null ],
-      [ "markerIndex", "classSoIndexedMarkerSet.html#ae9bef2be1899e8b8214eb826ae5c16cc", null ]
+      [ "GLRender", "classSoIndexedMarkerSet.html#a6fc71f377232c3c3d36745bb66ef4e12", null ]
     ] ],
     [ "SoIndexedNurbsCurve", "classSoIndexedNurbsCurve.html", [
       [ "SoIndexedNurbsCurve", "classSoIndexedNurbsCurve.html#ac9453356a004334e954727eab8d9cd75", null ],
@@ -774,8 +768,6 @@ var group__coin__nodes =
       [ "GLRender", "classSoIndexedNurbsCurve.html#a112208ab3c11a2f0f7467fa9b451ef49", null ],
       [ "rayPick", "classSoIndexedNurbsCurve.html#a948e23ad741e2fee1d9bb41afda74d12", null ],
       [ "sendPrimitive", "classSoIndexedNurbsCurve.html#a09036952f59087c9bfab06ce5483a214", null ],
-      [ "SoIndexedNurbsCurveP", "classSoIndexedNurbsCurve.html#a9e85ca10f81eb9a3d40c7d05b4b531f8", null ],
-      [ "SoNurbsP< SoIndexedNurbsCurve >", "classSoIndexedNurbsCurve.html#aabbaff08d384fc21aec81dc814bd6718", null ],
       [ "coordIndex", "classSoIndexedNurbsCurve.html#ae32ff72af45be515ed77ff47c5ddd760", null ],
       [ "knotVector", "classSoIndexedNurbsCurve.html#af717f3c48d603b9a1765e02c67130e38", null ],
       [ "numControlPoints", "classSoIndexedNurbsCurve.html#a8b566eb9b4ad3ea7b50311aefb72aa6f", null ]
@@ -792,8 +784,6 @@ var group__coin__nodes =
       [ "GLRender", "classSoIndexedNurbsSurface.html#a1f0eed88d71aad1f27e9166a08dbaa23", null ],
       [ "rayPick", "classSoIndexedNurbsSurface.html#a0e148385b214ae60275b30beb2f9e67a", null ],
       [ "sendPrimitive", "classSoIndexedNurbsSurface.html#acb5acde3a4bc96216e22d18a70f1721e", null ],
-      [ "SoIndexedNurbsSurfaceP", "classSoIndexedNurbsSurface.html#af5f1b1853c7d3c7dfc78c0b832d9c35e", null ],
-      [ "SoNurbsP< SoIndexedNurbsSurface >", "classSoIndexedNurbsSurface.html#a468710ae26bb33bbe509d887ed40ac56", null ],
       [ "coordIndex", "classSoIndexedNurbsSurface.html#ad10043fccc50ff35413d1f4b29e51235", null ],
       [ "numSControlPoints", "classSoIndexedNurbsSurface.html#af78fa7edc64d3c9a5c9b40e2730fbf17", null ],
       [ "numTControlPoints", "classSoIndexedNurbsSurface.html#a52bb3b078112279c88e6770e185fe794", null ],
@@ -806,16 +796,8 @@ var group__coin__nodes =
       [ "vKnotVector", "classSoIndexedNurbsSurface.html#a974a53bc0d52fd9ea3b0d26435999d91", null ]
     ] ],
     [ "SoIndexedPointSet", "classSoIndexedPointSet.html", [
-      [ "Binding", "classSoIndexedPointSet.html#ac5b9ade6f7451f381642afe751bbc0af", [
-        [ "OVERALL", "classSoIndexedPointSet.html#ac5b9ade6f7451f381642afe751bbc0afab393534a5533092a30825688dca3c2f0", null ],
-        [ "PER_VERTEX", "classSoIndexedPointSet.html#ac5b9ade6f7451f381642afe751bbc0afa0a84b363af891030bc02dee379980506", null ],
-        [ "PER_VERTEX_INDEXED", "classSoIndexedPointSet.html#ac5b9ade6f7451f381642afe751bbc0afaa120603d3143ec638e1f62041d0d1b20", null ]
-      ] ],
       [ "SoIndexedPointSet", "classSoIndexedPointSet.html#aaeab770b6c657a193095059b27821258", null ],
       [ "~SoIndexedPointSet", "classSoIndexedPointSet.html#a722fa07654e0c6d30405f861c5ef4742", null ],
-      [ "findMaterialBinding", "classSoIndexedPointSet.html#ab24e4e378f4cc51d9e31d3f41c8cbd89", null ],
-      [ "findNormalBinding", "classSoIndexedPointSet.html#a15b0e37d2cc2894d4039fb8feccfdc6c", null ],
-      [ "findTextureBinding", "classSoIndexedPointSet.html#a40571bcc8737470adfdde2427d07cb75", null ],
       [ "generateDefaultNormals", "classSoIndexedPointSet.html#acdc0f9c0e2af3c22b7e12762b8cce5ab", null ],
       [ "generateDefaultNormals", "classSoIndexedPointSet.html#afefa28b95a25ff059e36ea42e4e535f4", null ],
       [ "generatePrimitives", "classSoIndexedPointSet.html#ada14455293dbf27880dd550fc77586ee", null ],
@@ -824,8 +806,7 @@ var group__coin__nodes =
       [ "getPrimitiveCount", "classSoIndexedPointSet.html#a48f35bfb9de66d722df73ea777b8fdbc", null ],
       [ "getTypeId", "classSoIndexedPointSet.html#a9edf984a80374b950c46ac1d95bd92e7", null ],
       [ "GLRender", "classSoIndexedPointSet.html#a3d36d664f92b72d1e18eb825e28ade8c", null ],
-      [ "notify", "classSoIndexedPointSet.html#ab68516e3833eae0c09a8e9182080c925", null ],
-      [ "vaindexer", "classSoIndexedPointSet.html#a8ecf66c9168366b1c5f52e431732d0fa", null ]
+      [ "notify", "classSoIndexedPointSet.html#ab68516e3833eae0c09a8e9182080c925", null ]
     ] ],
     [ "SoIndexedShape", "classSoIndexedShape.html", [
       [ "SoIndexedShape", "classSoIndexedShape.html#a95d013121106581f13dffe229b4637cf", null ],
@@ -882,7 +863,6 @@ var group__coin__nodes =
       [ "GLRender", "classSoLevelOfDetail.html#a76c83c04f62677b682d5016f2196bc9f", null ],
       [ "notify", "classSoLevelOfDetail.html#aea5651a9e68d3a2c8b55971da82d1d58", null ],
       [ "rayPick", "classSoLevelOfDetail.html#a9528c37da71e3e4d43a46ca40906076a", null ],
-      [ "SoLevelOfDetailP", "classSoLevelOfDetail.html#ae7db1d73ac9767a74082742b77cbf400", null ],
       [ "screenArea", "classSoLevelOfDetail.html#ae7a8efe0f06472d5ebcfb307475fa836", null ]
     ] ],
     [ "SoLight", "classSoLight.html", [
@@ -935,8 +915,6 @@ var group__coin__nodes =
       [ "audioRender", "classSoListener.html#a9e633d78de2a744fb83893b31723d22b", null ],
       [ "getFieldData", "classSoListener.html#a8614e621a150d289157e9b9dd8010866", null ],
       [ "getTypeId", "classSoListener.html#a3321c6fcbaa0bcbf4ee71ac3e0af6fd4", null ],
-      [ "SoAudioRenderAction", "classSoListener.html#a9c4b20586e0209b10b5873853085d751", null ],
-      [ "SoListenerP", "classSoListener.html#ae28742cc08b3cfde4b4693e24632070d", null ],
       [ "dopplerFactor", "classSoListener.html#a77676bd080ed6eb7a999e1fae2c5ae03", null ],
       [ "dopplerVelocity", "classSoListener.html#acfd3d11207598713cb1a74395256aa17", null ],
       [ "gain", "classSoListener.html#a5d306e0699c5517b11d9ec7867b26aef", null ],
@@ -983,7 +961,6 @@ var group__coin__nodes =
       [ "notify", "classSoLOD.html#ac491d2c0249cd26d60eed7b425d116b7", null ],
       [ "rayPick", "classSoLOD.html#a5a73fedec6154c5005c81f4205933e85", null ],
       [ "whichToTraverse", "classSoLOD.html#a73207dffcfd21f9c8985f83916950009", null ],
-      [ "SoLODP", "classSoLOD.html#a530ae15e843c7860383592a1d2f5eb5e", null ],
       [ "center", "classSoLOD.html#a8008ee2c4b4bc78499c72df39e711012", null ],
       [ "range", "classSoLOD.html#aa3764dcfeb89e251d1e1b3dde7744253", null ]
     ] ],
@@ -1277,8 +1254,6 @@ var group__coin__nodes =
       [ "GLRender", "classSoNurbsCurve.html#a773d2d1e2bdd31cc85c8517712f55484", null ],
       [ "rayPick", "classSoNurbsCurve.html#a6658f84a649650ae5e0cc09f04b719d8", null ],
       [ "sendPrimitive", "classSoNurbsCurve.html#a39b034fa1f0868a1a861c58f7d55b1a8", null ],
-      [ "SoNurbsCurveP", "classSoNurbsCurve.html#abd6a2d0b7a8916f0945489fcbde511d8", null ],
-      [ "SoNurbsP< SoNurbsCurve >", "classSoNurbsCurve.html#abf69f0c646b65a57f6d418826ca0bdb6", null ],
       [ "knotVector", "classSoNurbsCurve.html#aba42bb016762b862804d5ba3df5eb7c4", null ],
       [ "numControlPoints", "classSoNurbsCurve.html#a91469a8ac2ae7fab28ad6669e92b0dcb", null ]
     ] ],
@@ -1303,8 +1278,6 @@ var group__coin__nodes =
       [ "GLRender", "classSoNurbsSurface.html#ab3a2c4796906a1b55047c1885888aa87", null ],
       [ "rayPick", "classSoNurbsSurface.html#a15e692f7a59fa12e89e4dca22ea0a4c7", null ],
       [ "sendPrimitive", "classSoNurbsSurface.html#a3b81b3723118cca4b254d6a4cc2d66f5", null ],
-      [ "SoNurbsP< SoNurbsSurface >", "classSoNurbsSurface.html#a0d62ac18b75a9dc10ffa6dc6c6a1c6c1", null ],
-      [ "SoNurbsSurfaceP", "classSoNurbsSurface.html#a8b2fa7b1ac5104eca576e736d2e1b351", null ],
       [ "numSControlPoints", "classSoNurbsSurface.html#a9cfd3e94de4ecc0b8766effca8577a06", null ],
       [ "numTControlPoints", "classSoNurbsSurface.html#a83e266e1b116e8f6fb4a0b8fb364f18e", null ],
       [ "numUControlPoints", "classSoNurbsSurface.html#afa7908b93542130032620e3c29d78370", null ],
@@ -1558,7 +1531,6 @@ var group__coin__nodes =
       [ "~SoRotor", "classSoRotor.html#a976dd20ce4f6c5a9dd8185f2268b8a5c", null ],
       [ "getFieldData", "classSoRotor.html#a3a731ba9c8309f7c690abe2210097341", null ],
       [ "getTypeId", "classSoRotor.html#a629b9e3942875044fb5ac13a10e4a7bb", null ],
-      [ "SoRotorP", "classSoRotor.html#adf5dd44a12bb1d9364d442f1bd84b453", null ],
       [ "on", "classSoRotor.html#a2d244bc7275f8e18e89c9dbeb9ae93ce", null ],
       [ "speed", "classSoRotor.html#a4ff0665a5105f700ea616b734e2e0762", null ]
     ] ],
@@ -1616,8 +1588,6 @@ var group__coin__nodes =
         [ "CLAMP", "classSoSceneTexture2.html#ab76f95aa60de5b5753520b9462b644c2a7ad4a917801632a9fc7130f1019c489b", null ],
         [ "CLAMP_TO_BORDER", "classSoSceneTexture2.html#ab76f95aa60de5b5753520b9462b644c2a26ae2dd4abe4441543030d84109ff02c", null ]
       ] ],
-      [ "SoSceneTexture2", "classSoSceneTexture2.html#a33a5dbea2d73823fa9b88d302b4e3903", null ],
-      [ "~SoSceneTexture2", "classSoSceneTexture2.html#a8213ab26ce31ebbd111d6832602717c0", null ],
       [ "callback", "classSoSceneTexture2.html#a665ce568af35750391b1d6365d86769f", null ],
       [ "doAction", "classSoSceneTexture2.html#aebc74a708a70231210c7c63e26fb4565", null ],
       [ "getFieldData", "classSoSceneTexture2.html#a7117498799c2cc17b50cadd760c69dee", null ],
@@ -1638,21 +1608,6 @@ var group__coin__nodes =
       [ "wrapT", "classSoSceneTexture2.html#aaf8cb1279f6e34d53fc5dfb03c823f69", null ]
     ] ],
     [ "SoSceneTextureCubeMap", "classSoSceneTextureCubeMap.html", [
-      [ "Model", "classSoSceneTextureCubeMap.html#a28f578498ecab4c5a2d4cf458069d6fe", [
-        [ "MODULATE", "classSoSceneTextureCubeMap.html#a28f578498ecab4c5a2d4cf458069d6feabe6321681a2d7dbd975b822d28f64e2c", null ],
-        [ "DECAL", "classSoSceneTextureCubeMap.html#a28f578498ecab4c5a2d4cf458069d6feac1c1c03514d16b937220655bb14869da", null ],
-        [ "BLEND", "classSoSceneTextureCubeMap.html#a28f578498ecab4c5a2d4cf458069d6feac626dc6b55a57751527f69f32bb04509", null ],
-        [ "REPLACE", "classSoSceneTextureCubeMap.html#a28f578498ecab4c5a2d4cf458069d6fea79d4cff74b95bc407097e2cae9140f9a", null ]
-      ] ],
-      [ "TransparencyFunction", "classSoSceneTextureCubeMap.html#afc462edf3e20e8476e81727376183ccf", [
-        [ "NONE", "classSoSceneTextureCubeMap.html#afc462edf3e20e8476e81727376183ccfa77806d89deaa7ce786072a3c114746ea", null ],
-        [ "ALPHA_BLEND", "classSoSceneTextureCubeMap.html#afc462edf3e20e8476e81727376183ccfa2ece94b23ab2c78c76b86032b9e8031d", null ],
-        [ "ALPHA_TEST", "classSoSceneTextureCubeMap.html#afc462edf3e20e8476e81727376183ccfa443035ac7aabfbbee06636e2864211ea", null ]
-      ] ],
-      [ "Wrap", "classSoSceneTextureCubeMap.html#a6ef91d43863b1a9c7b8411e84bfb0a84", [
-        [ "REPEAT", "classSoSceneTextureCubeMap.html#a6ef91d43863b1a9c7b8411e84bfb0a84a95913e07deedccba741855be8095e899", null ],
-        [ "CLAMP", "classSoSceneTextureCubeMap.html#a6ef91d43863b1a9c7b8411e84bfb0a84a62f7e5794a72f4b52e0cdab5cdafbca2", null ]
-      ] ],
       [ "SoSceneTextureCubeMap", "classSoSceneTextureCubeMap.html#ada91921ec94a28ba02eab9fa3735b8ea", null ],
       [ "~SoSceneTextureCubeMap", "classSoSceneTextureCubeMap.html#abccfead98eb6832923bc926553f411b6", null ],
       [ "callback", "classSoSceneTextureCubeMap.html#ab5ed3b2c1f789d7d7710f95cbaea6acf", null ],
@@ -1661,16 +1616,7 @@ var group__coin__nodes =
       [ "getTypeId", "classSoSceneTextureCubeMap.html#a4e9164364a69c33bfdac0f1a61896bc3", null ],
       [ "GLRender", "classSoSceneTextureCubeMap.html#a7d566bb461e6749ec14de6b99b7756cc", null ],
       [ "notify", "classSoSceneTextureCubeMap.html#a58a98e497e226431b9c92f4ee0796350", null ],
-      [ "rayPick", "classSoSceneTextureCubeMap.html#a29fb4867b5a3af00a675385762e4218e", null ],
-      [ "backgroundColor", "classSoSceneTextureCubeMap.html#a1709a003f3b723a734aed95fb61933c6", null ],
-      [ "blendColor", "classSoSceneTextureCubeMap.html#ad6059ccba229e7017f858d5e891ef6c9", null ],
-      [ "model", "classSoSceneTextureCubeMap.html#a3e269eaca68d789a6bacd61c41240d84", null ],
-      [ "scene", "classSoSceneTextureCubeMap.html#a51f102e614eb5c0a0bdf9980e06c6b0c", null ],
-      [ "size", "classSoSceneTextureCubeMap.html#a5f2eaca160d50149dba711d79cd2439d", null ],
-      [ "transparencyFunction", "classSoSceneTextureCubeMap.html#a9e88ac9f36fdd6c0cd92ab64a530420c", null ],
-      [ "wrapR", "classSoSceneTextureCubeMap.html#aa736a21e5e6093f660bf1740dd97f06c", null ],
-      [ "wrapS", "classSoSceneTextureCubeMap.html#a5dc7a9663e68bc38bfde31cd3b5d82c8", null ],
-      [ "wrapT", "classSoSceneTextureCubeMap.html#a7e766ff7f11258e7573d012a6b33b1e1", null ]
+      [ "rayPick", "classSoSceneTextureCubeMap.html#a29fb4867b5a3af00a675385762e4218e", null ]
     ] ],
     [ "SoSelection", "classSoSelection.html", [
       [ "Policy", "classSoSelection.html#ac1d0134b67e4730b0ba0bcb61ece80c0", [
@@ -1850,9 +1796,7 @@ var group__coin__nodes =
       [ "shouldGLRender", "classSoShape.html#a965388c62914e3dbc62122a2b897bd2c", null ],
       [ "shouldPrimitiveCount", "classSoShape.html#aadb029a1f8ba021db9438db79ace8b62", null ],
       [ "shouldRayPick", "classSoShape.html#ac0d7e0481558d69bbbf104a9df55b8a6", null ],
-      [ "startVertexArray", "classSoShape.html#ae6960f1e9dfc812eb88d5109ea55b935", null ],
-      [ "so_generate_prim_private", "classSoShape.html#aff7907dbd10585ddd7028df13e425390", null ],
-      [ "soshape_primdata", "classSoShape.html#a98aa0dc61ac111dcda3abccad24cb2a4", null ]
+      [ "startVertexArray", "classSoShape.html#ae6960f1e9dfc812eb88d5109ea55b935", null ]
     ] ],
     [ "SoShapeHints", "classSoShapeHints.html", [
       [ "FaceType", "classSoShapeHints.html#a19a3acc8d0e36b7fa2b43339e1a4b964", [
@@ -1883,7 +1827,6 @@ var group__coin__nodes =
       [ "creaseAngle", "classSoShapeHints.html#ac801b32b6b907de13c07862fbbeb38c8", null ],
       [ "faceType", "classSoShapeHints.html#a8472cabcb2457e13d74034a3b6b8810a", null ],
       [ "shapeType", "classSoShapeHints.html#a259749fdc51667b6a424862f43165790", null ],
-      [ "useVBO", "classSoShapeHints.html#a71dc04b553d4a7720b46d15086ee0ba9", null ],
       [ "vertexOrdering", "classSoShapeHints.html#a1ad504e82e6f9478b1ffe3f8730107d0", null ],
       [ "windingType", "classSoShapeHints.html#a3a1eb7ff2cb06be24b2f8e74162c04e7", null ]
     ] ],
@@ -1966,7 +1909,6 @@ var group__coin__nodes =
       [ "search", "classSoSwitch.html#a1f54d63b548492bea3e8354aeec6f8d8", null ],
       [ "traverseChildren", "classSoSwitch.html#a950b9981ab3509619bc69f1415323d99", null ],
       [ "write", "classSoSwitch.html#a5025781a90ff400f64fa14e66fbbc9a1", null ],
-      [ "SoSwitchP", "classSoSwitch.html#a6f9fb05de06fca32502b22bbeb17663e", null ],
       [ "whichChild", "classSoSwitch.html#a28c5635defb50ef668d9b9a806ec1a26", null ]
     ] ],
     [ "SoText2", "classSoText2.html", [
@@ -1984,7 +1926,6 @@ var group__coin__nodes =
       [ "getTypeId", "classSoText2.html#a3a0cf460ffb7eb222e606cc45d5048e0", null ],
       [ "GLRender", "classSoText2.html#ab827c34aa2b59c5698377cad267c0cb8", null ],
       [ "rayPick", "classSoText2.html#ae6126a3954c8350cdb92fa6108149f12", null ],
-      [ "SoText2P", "classSoText2.html#aaa5327a4d1d1f53acdf358766189fa62", null ],
       [ "justification", "classSoText2.html#adaf2d2005e6420461e9d57c31f97f4a6", null ],
       [ "spacing", "classSoText2.html#abe85c0b6f6daed388cfbf38adbf36c76", null ],
       [ "string", "classSoText2.html#a4942971760f490c3e62d809ceaaa97c8", null ]
@@ -2001,8 +1942,6 @@ var group__coin__nodes =
         [ "BACK", "classSoText3.html#a7a795bea518688db02b74ec9b99edd59ad9f89a1e9bd16f6d57fdebcc211d08ac", null ],
         [ "ALL", "classSoText3.html#a7a795bea518688db02b74ec9b99edd59a3a0fa1954a85f021098fc524bb398e9d", null ]
       ] ],
-      [ "SoText3", "classSoText3.html#ae0af8cdc2a2886188b644939b3a629f9", null ],
-      [ "~SoText3", "classSoText3.html#a948d8762f8f484a305e4185bc2cf0a9e", null ],
       [ "computeBBox", "classSoText3.html#a598d3d340df34aeb70eb0d997027ae75", null ],
       [ "createTriangleDetail", "classSoText3.html#a4fd8c9254697231dfe2e25e5e3e3cd27", null ],
       [ "generatePrimitives", "classSoText3.html#ae9dd5d05599692b2e5d6e1e81eae7d46", null ],
@@ -2012,15 +1951,12 @@ var group__coin__nodes =
       [ "getTypeId", "classSoText3.html#acf17d96be7da195a9f1da111718c154b", null ],
       [ "GLRender", "classSoText3.html#a73d25411ae2a8486bf85662a30d87598", null ],
       [ "notify", "classSoText3.html#aa58b90aa633a2caa7c5ebf2a098aceb6", null ],
-      [ "SoText3P", "classSoText3.html#ab91042185efd7bf8cf9741d8e28ddd1d", null ],
       [ "justification", "classSoText3.html#a3ca5396211268bccace35366372cfac4", null ],
       [ "parts", "classSoText3.html#aded5e059ecdc86184fbcfe02f6d302ae", null ],
       [ "spacing", "classSoText3.html#a0292971c2f1bda6e4e4dac28f13dac57", null ],
       [ "string", "classSoText3.html#ae119c4be503e0357d61dedb6f8218332", null ]
     ] ],
     [ "SoTexture", "classSoTexture.html", [
-      [ "SoTexture", "classSoTexture.html#a306862dfb2df4f257a0d68a8dc5567b7", null ],
-      [ "~SoTexture", "classSoTexture.html#afe0f6eaa23c9eb1f514391b24a61f0cc", null ],
       [ "callback", "classSoTexture.html#a81f4e052e9e96ec9b5690e720a552a9c", null ],
       [ "doAction", "classSoTexture.html#a555ff358bd4148f438e140e838eddf92", null ],
       [ "getFieldData", "classSoTexture.html#a04adc38f05440d7ae8d39a045f08130c", null ],
@@ -2149,16 +2085,7 @@ var group__coin__nodes =
       [ "getFieldData", "classSoTextureCombine.html#ab30071ba48a906c86378370b73c55bc4", null ],
       [ "getTypeId", "classSoTextureCombine.html#acbba67b33f5cd2616bd19ad631a614b3", null ],
       [ "GLRender", "classSoTextureCombine.html#a7e3b1dc2e88c1535b669405ff339fbd6", null ],
-      [ "pick", "classSoTextureCombine.html#ad450f8c67472961ede29a92cf2a2ec60", null ],
-      [ "alphaOperand", "classSoTextureCombine.html#a0e980a5180596b3d26cadf06b961f1c5", null ],
-      [ "alphaOperation", "classSoTextureCombine.html#aaf0fce29e44e241079d9882be9fd631b", null ],
-      [ "alphaScale", "classSoTextureCombine.html#a11c8e517a47ecddb91ed1631cb45c3f0", null ],
-      [ "alphaSource", "classSoTextureCombine.html#a74bf26e3b2ab7bd08366f3b6f2d6446e", null ],
-      [ "constantColor", "classSoTextureCombine.html#a05798ae940038a26ae8dee9e530db49b", null ],
-      [ "rgbOperand", "classSoTextureCombine.html#a897cb6dc6a7c1f5c5204a8c067d19c01", null ],
-      [ "rgbOperation", "classSoTextureCombine.html#ab8b030ca3e0946b030a07908f882d039", null ],
-      [ "rgbScale", "classSoTextureCombine.html#a9540f92e9ae434ac0488c4d86d5476d4", null ],
-      [ "rgbSource", "classSoTextureCombine.html#ad88621312aa25a02273e0b3479a10b15", null ]
+      [ "pick", "classSoTextureCombine.html#ad450f8c67472961ede29a92cf2a2ec60", null ]
     ] ],
     [ "SoTextureCoordinate2", "classSoTextureCoordinate2.html", [
       [ "SoTextureCoordinate2", "classSoTextureCoordinate2.html#a04034bad8ef00f546aab002baa6c2d4c", null ],
@@ -2207,9 +2134,7 @@ var group__coin__nodes =
       [ "getFieldData", "classSoTextureCoordinateCube.html#ac89a2f32d843fa833467533ca3010f9d", null ],
       [ "getTypeId", "classSoTextureCoordinateCube.html#a280e58af9583a2b9bc85627e7126c594", null ],
       [ "GLRender", "classSoTextureCoordinateCube.html#a62a0508779da275059b1c3eb5293e6bb", null ],
-      [ "pick", "classSoTextureCoordinateCube.html#a846116e32071428ec5d33b6fae9d030d", null ],
-      [ "SoTextureCoordinateCubeP", "classSoTextureCoordinateCube.html#ad7e01516825c11c3e5f6a8148eec3c12", null ],
-      [ "pimpl", "classSoTextureCoordinateCube.html#a791656b2bb5f832fecd061dab8be3c1c", null ]
+      [ "pick", "classSoTextureCoordinateCube.html#a846116e32071428ec5d33b6fae9d030d", null ]
     ] ],
     [ "SoTextureCoordinateCylinder", "classSoTextureCoordinateCylinder.html", [
       [ "SoTextureCoordinateCylinder", "classSoTextureCoordinateCylinder.html#af9b7cd73513d14e01c453c5801a8a96a", null ],
@@ -2219,9 +2144,7 @@ var group__coin__nodes =
       [ "getFieldData", "classSoTextureCoordinateCylinder.html#aa0208263bd19c53976a89deddeddf7aa", null ],
       [ "getTypeId", "classSoTextureCoordinateCylinder.html#a565e871db11d4880319b7492c5bf9969", null ],
       [ "GLRender", "classSoTextureCoordinateCylinder.html#ad141efeaa1bd8aba748047d2bbf0a795", null ],
-      [ "pick", "classSoTextureCoordinateCylinder.html#a658ea763cf760f33e55353c71ee39fe2", null ],
-      [ "SoTextureCoordinateCylinderP", "classSoTextureCoordinateCylinder.html#a18d855ee1734a530afd406b0780aacb3", null ],
-      [ "pimpl", "classSoTextureCoordinateCylinder.html#acb104fffef1b9481df28fd879f47f869", null ]
+      [ "pick", "classSoTextureCoordinateCylinder.html#a658ea763cf760f33e55353c71ee39fe2", null ]
     ] ],
     [ "SoTextureCoordinateDefault", "classSoTextureCoordinateDefault.html", [
       [ "SoTextureCoordinateDefault", "classSoTextureCoordinateDefault.html#a7f05c965a6067b7c9628ed070593da04", null ],
@@ -2304,9 +2227,7 @@ var group__coin__nodes =
       [ "getFieldData", "classSoTextureCoordinateSphere.html#aae42c007d28d0bc44033019aef85a8c1", null ],
       [ "getTypeId", "classSoTextureCoordinateSphere.html#a42cf85404bdb324e6c3a08ae79b8da91", null ],
       [ "GLRender", "classSoTextureCoordinateSphere.html#a7ad5c3793df5922038d256aacf0115e5", null ],
-      [ "pick", "classSoTextureCoordinateSphere.html#a18835c241c7bbb1b0c799f6e71e27f42", null ],
-      [ "SoTextureCoordinateSphereP", "classSoTextureCoordinateSphere.html#ad7d2ede77687f669b5242cd747bba31f", null ],
-      [ "pimpl", "classSoTextureCoordinateSphere.html#a36c10c5446373107cf70c07ab48343bc", null ]
+      [ "pick", "classSoTextureCoordinateSphere.html#a18835c241c7bbb1b0c799f6e71e27f42", null ]
     ] ],
     [ "SoTextureCubeMap", "classSoTextureCubeMap.html", [
       [ "Model", "classSoTextureCubeMap.html#a14e9ad92c018f2723aaa980f438c6d4e", [
@@ -2615,7 +2536,6 @@ var group__coin__nodes =
       [ "search", "classSoWWWInline.html#a1a607488cf5b7c82abe319d825345496", null ],
       [ "setChildData", "classSoWWWInline.html#a08c1205a27bca45ad6ebba9645bc49a1", null ],
       [ "setFullURLName", "classSoWWWInline.html#ae60cc8607f031bbfad4d54bec9520fbd", null ],
-      [ "SoWWWInlineP", "classSoWWWInline.html#a6b8ddd069361e8113ffffc5c02669c3c", null ],
       [ "alternateRep", "classSoWWWInline.html#a5337971a1acc874c2dcc556a628ee256", null ],
       [ "bboxCenter", "classSoWWWInline.html#ad31888d169955f6c49a5b4636ec22b70", null ],
       [ "bboxSize", "classSoWWWInline.html#af6ab3633187f00e2f1357d837323aca3", null ],

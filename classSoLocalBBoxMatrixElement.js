@@ -1,6 +1,5 @@
 var classSoLocalBBoxMatrixElement =
 [
-    [ "SoLocalBBoxMatrixElement", "classSoLocalBBoxMatrixElement.html#a2be94d75caae9d9721372b9afda2c0e8", null ],
     [ "~SoLocalBBoxMatrixElement", "classSoLocalBBoxMatrixElement.html#aa949530314f1791911d4d8f89b600af4", null ],
     [ "copyMatchInfo", "classSoLocalBBoxMatrixElement.html#aa57853c83f690438f9e2ecb6b8f78543", null ],
     [ "init", "classSoLocalBBoxMatrixElement.html#a767fd4429224b768726659bcc3be7517", null ],

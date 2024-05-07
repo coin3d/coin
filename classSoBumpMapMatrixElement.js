@@ -1,6 +1,5 @@
 var classSoBumpMapMatrixElement =
 [
-    [ "SoBumpMapMatrixElement", "classSoBumpMapMatrixElement.html#a256569e8e37cf53063e35473750f9801", null ],
     [ "~SoBumpMapMatrixElement", "classSoBumpMapMatrixElement.html#ab638b2fda49cc1c6eae1cfab8573709c", null ],
     [ "getElt", "classSoBumpMapMatrixElement.html#a1760e9541be690e8ff899fb7995e1c07", null ],
     [ "init", "classSoBumpMapMatrixElement.html#aa293b1111c3a3e5d1692fa0051a15e3c", null ],

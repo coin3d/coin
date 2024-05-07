@@ -1,6 +1,5 @@
 var classSoError =
 [
-    [ "SoError", "classSoError.html#a679cb59011d2b97e15a8c7211f6dd751", null ],
     [ "~SoError", "classSoError.html#aedcf39df541330db83bb8264c81b7033", null ],
     [ "appendToDebugString", "classSoError.html#aef396299b8419b1b09ba4bcc838289b6", null ],
     [ "getDebugString", "classSoError.html#a9e6710c0690d14372b6bb7359e0a4853", null ],

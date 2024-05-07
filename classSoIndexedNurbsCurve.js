@@ -12,8 +12,6 @@ var classSoIndexedNurbsCurve =
     [ "GLRender", "classSoIndexedNurbsCurve.html#a112208ab3c11a2f0f7467fa9b451ef49", null ],
     [ "rayPick", "classSoIndexedNurbsCurve.html#a948e23ad741e2fee1d9bb41afda74d12", null ],
     [ "sendPrimitive", "classSoIndexedNurbsCurve.html#a09036952f59087c9bfab06ce5483a214", null ],
-    [ "SoIndexedNurbsCurveP", "classSoIndexedNurbsCurve.html#a9e85ca10f81eb9a3d40c7d05b4b531f8", null ],
-    [ "SoNurbsP< SoIndexedNurbsCurve >", "classSoIndexedNurbsCurve.html#aabbaff08d384fc21aec81dc814bd6718", null ],
     [ "coordIndex", "classSoIndexedNurbsCurve.html#ae32ff72af45be515ed77ff47c5ddd760", null ],
     [ "knotVector", "classSoIndexedNurbsCurve.html#af717f3c48d603b9a1765e02c67130e38", null ],
     [ "numControlPoints", "classSoIndexedNurbsCurve.html#a8b566eb9b4ad3ea7b50311aefb72aa6f", null ]

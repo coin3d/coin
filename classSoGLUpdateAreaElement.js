@@ -1,6 +1,5 @@
 var classSoGLUpdateAreaElement =
 [
-    [ "SoGLUpdateAreaElement", "classSoGLUpdateAreaElement.html#a50782d1d085fff8116f4feab8e1aae6b", null ],
     [ "~SoGLUpdateAreaElement", "classSoGLUpdateAreaElement.html#af66de8b900a3c73467b2ed25c48c1c5a", null ],
     [ "copyMatchInfo", "classSoGLUpdateAreaElement.html#abb94cc2d1adc887e47ee1b1924f5a4d5", null ],
     [ "init", "classSoGLUpdateAreaElement.html#af77d4096dbb155c3a3b6d02ac3bcc90b", null ],

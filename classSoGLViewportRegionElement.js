@@ -1,6 +1,5 @@
 var classSoGLViewportRegionElement =
 [
-    [ "SoGLViewportRegionElement", "classSoGLViewportRegionElement.html#a5edcfa04933129875135518096394c6a", null ],
     [ "~SoGLViewportRegionElement", "classSoGLViewportRegionElement.html#a24d24c06d59b53c3f29175e2194b66a6", null ],
     [ "init", "classSoGLViewportRegionElement.html#a732393f3b3103aa12c31c56ff8e1a7b6", null ],
     [ "pop", "classSoGLViewportRegionElement.html#ac90b5de385bc19f620d10a66933d92c5", null ],

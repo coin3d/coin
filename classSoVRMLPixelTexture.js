@@ -9,6 +9,5 @@ var classSoVRMLPixelTexture =
     [ "GLRender", "classSoVRMLPixelTexture.html#a6684d4fc1e01b14ce0e9538fbb0b2b5f", null ],
     [ "notify", "classSoVRMLPixelTexture.html#a943b1499dd38021c117e0ce6c024ed88", null ],
     [ "rayPick", "classSoVRMLPixelTexture.html#adbe21c02648bbf7345b53033d8b71777", null ],
-    [ "readInstance", "classSoVRMLPixelTexture.html#a6f472aa8548f2d6c8b354811ba78f8ae", null ],
-    [ "image", "classSoVRMLPixelTexture.html#a96bd637f0c95d61c552293755fe58dc9", null ]
+    [ "readInstance", "classSoVRMLPixelTexture.html#a6f472aa8548f2d6c8b354811ba78f8ae", null ]
 ];

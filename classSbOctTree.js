@@ -4,7 +4,6 @@ var classSbOctTree =
     [ "~SbOctTree", "classSbOctTree.html#ab9a58a484f6eacacce9b5d91943abd7b", null ],
     [ "addItem", "classSbOctTree.html#abe0d819501c3e600783942cffb2b157f", null ],
     [ "clear", "classSbOctTree.html#a40ce23dda004f6b4a6c97a488286b0c7", null ],
-    [ "debugTree", "classSbOctTree.html#acf0505697427f74f018e876f18ccd16f", null ],
     [ "findItems", "classSbOctTree.html#a478d6cb1237c3243f6ee70a603773cfd", null ],
     [ "findItems", "classSbOctTree.html#a113a7d7b14b2a3a250b8810181b39ba0", null ],
     [ "findItems", "classSbOctTree.html#a16b1bd954d5db4614957c6d246d94a9a", null ],

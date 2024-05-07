@@ -13,6 +13,5 @@ var classSoEngineOutputData =
     [ "getOutput", "classSoEngineOutputData.html#a90205fb72165c8ea404d644ec50c81b0", null ],
     [ "getOutputName", "classSoEngineOutputData.html#ad92ee5c422f228043b6951dd49370584", null ],
     [ "getType", "classSoEngineOutputData.html#af150da391a6efd5d8426f6d63333de23", null ],
-    [ "readDescriptions", "classSoEngineOutputData.html#a17e578e35ddc73c240f9462d21a1193d", null ],
-    [ "writeDescriptions", "classSoEngineOutputData.html#a1d60acec7b65b6e4dd5b7bd90a0c3a9e", null ]
+    [ "readDescriptions", "classSoEngineOutputData.html#a17e578e35ddc73c240f9462d21a1193d", null ]
 ];

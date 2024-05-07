@@ -1,6 +1,6 @@
 var classSoRenderManager =
 [
-    [ "Superimposition", "classSoRenderManager_1_1Superimposition.html", "classSoRenderManager_1_1Superimposition" ],
+    [ "Superimposition", "classSoRenderManager_1_1Superimposition.html", null ],
     [ "AutoClippingStrategy", "classSoRenderManager.html#aa73c943c31d9d7950858fc2ef24ea45f", [
       [ "NO_AUTO_CLIPPING", "classSoRenderManager.html#aa73c943c31d9d7950858fc2ef24ea45fa6f64e23ca388796119edc531f4f881cb", null ],
       [ "FIXED_NEAR_PLANE", "classSoRenderManager.html#aa73c943c31d9d7950858fc2ef24ea45fa68306b5c74257c54663ba03cd4d863de", null ],
@@ -91,8 +91,5 @@ var classSoRenderManager =
     [ "setStereoOffset", "classSoRenderManager.html#af6bf09e76a510918e6d18b9a63c96a41", null ],
     [ "setTexturesEnabled", "classSoRenderManager.html#a30e8314c16428850d7ebe2d55613e40c", null ],
     [ "setViewportRegion", "classSoRenderManager.html#aefae350517dde035dbad1409a0d75dcc", null ],
-    [ "setWindowSize", "classSoRenderManager.html#a2bfcd506a76be364a7826f4dd78a83f9", null ],
-    [ "SoRenderManagerP", "classSoRenderManager.html#a08bcaaed4de310d633159167ce6c8bfc", null ],
-    [ "SoSceneManager", "classSoRenderManager.html#a8aebfe3178a634a7cf012f9488d6e4b6", null ],
-    [ "Superimposition", "classSoRenderManager.html#a2877286305cb665f5a3a0bf8ec662a35", null ]
+    [ "setWindowSize", "classSoRenderManager.html#a2bfcd506a76be364a7826f4dd78a83f9", null ]
 ];

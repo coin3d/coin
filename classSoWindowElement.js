@@ -1,6 +1,5 @@
 var classSoWindowElement =
 [
-    [ "SoWindowElement", "classSoWindowElement.html#a2f57abc21b9febe125b4a65d2d413814", null ],
     [ "~SoWindowElement", "classSoWindowElement.html#a4234d13baaaae326df32d8a39e3903a2", null ],
     [ "copyMatchInfo", "classSoWindowElement.html#a1c5bb8413437b0c19d838bf0262c4e4c", null ],
     [ "init", "classSoWindowElement.html#a64447fb7ff7ff57cc76a0173cf9e2bbf", null ],

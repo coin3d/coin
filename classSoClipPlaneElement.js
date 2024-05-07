@@ -1,6 +1,5 @@
 var classSoClipPlaneElement =
 [
-    [ "SoClipPlaneElement", "classSoClipPlaneElement.html#a21b11ec980de4001c6c388b482fcc1e0", null ],
     [ "~SoClipPlaneElement", "classSoClipPlaneElement.html#ad91474f7ef24ab0075949573a0212fab", null ],
     [ "addToElt", "classSoClipPlaneElement.html#a5ff2052d792ededdfd9e83382dc0999b", null ],
     [ "get", "classSoClipPlaneElement.html#aa84b28d0c5e6cebfc59e7cd0da0f0fd1", null ],

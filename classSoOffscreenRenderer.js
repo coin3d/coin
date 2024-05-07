@@ -32,6 +32,5 @@ var classSoOffscreenRenderer =
     [ "writeToPostScript", "classSoOffscreenRenderer.html#afefa4dbe02271b4106bb540a3822d6e4", null ],
     [ "writeToPostScript", "classSoOffscreenRenderer.html#a3d111ee3193d7dcbe9ec24176d8e3606", null ],
     [ "writeToRGB", "classSoOffscreenRenderer.html#a0ea11d989352f6ddfa3ef50e9721913d", null ],
-    [ "writeToRGB", "classSoOffscreenRenderer.html#a6d9981f8b802d3c2be55d48c91fa6db3", null ],
-    [ "SoOffscreenRendererP", "classSoOffscreenRenderer.html#ab64d890a75132e13c070a4436ca1e0f4", null ]
+    [ "writeToRGB", "classSoOffscreenRenderer.html#a6d9981f8b802d3c2be55d48c91fa6db3", null ]
 ];

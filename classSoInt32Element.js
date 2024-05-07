@@ -1,6 +1,5 @@
 var classSoInt32Element =
 [
-    [ "SoInt32Element", "classSoInt32Element.html#a91eafd315d14767dc35d34dd3b95e304", null ],
     [ "~SoInt32Element", "classSoInt32Element.html#a7d3e5aeee2ade6eaf9547993e4f6d44c", null ],
     [ "copyMatchInfo", "classSoInt32Element.html#adf154ad630a2a221e8a329c056958851", null ],
     [ "init", "classSoInt32Element.html#a595990f7cc4e2281e0192863abf2c915", null ],

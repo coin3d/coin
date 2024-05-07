@@ -41,7 +41,6 @@ var classSoCamera =
     [ "viewAll", "classSoCamera.html#af04cc1f085e997c65832da9ddcd5a6aa", null ],
     [ "viewAll", "classSoCamera.html#ab10a2218561a9c6e82910cb6ded50118", null ],
     [ "viewBoundingBox", "classSoCamera.html#ab04c2ed686b698bee525eaf29aca0f64", null ],
-    [ "SoCameraP", "classSoCamera.html#a3586d3f8a508c27f063b3ae220aa0cf2", null ],
     [ "aspectRatio", "classSoCamera.html#a377ac1c352e965864712bcc5ad0459df", null ],
     [ "farDistance", "classSoCamera.html#a34890d0e76849f4ce27beefae287f471", null ],
     [ "focalDistance", "classSoCamera.html#a59fda50eb01e55536d3a603f6590fd2c", null ],

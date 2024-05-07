@@ -40,7 +40,6 @@ var classSoVRMLSwitch =
     [ "replaceChoice", "classSoVRMLSwitch.html#aaaff685a4bf5360439e9fbff6b066163", null ],
     [ "search", "classSoVRMLSwitch.html#a967b2c76de7638a257741823574c9cf2", null ],
     [ "write", "classSoVRMLSwitch.html#af7dc296d70c5cfe4fab3344f8d2d3554", null ],
-    [ "SoVRMLSwitchP", "classSoVRMLSwitch.html#a4aeff7adbd5700f84dc4c3b004ce2eb8", null ],
     [ "choice", "classSoVRMLSwitch.html#ae2326c51230aa566dd08d9c8de5aa890", null ],
     [ "whichChoice", "classSoVRMLSwitch.html#a4fb7e1426017494a24668de069cf2901", null ]
 ];

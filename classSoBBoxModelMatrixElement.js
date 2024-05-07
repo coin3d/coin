@@ -1,6 +1,5 @@
 var classSoBBoxModelMatrixElement =
 [
-    [ "SoBBoxModelMatrixElement", "classSoBBoxModelMatrixElement.html#a5f92266b54334fe5d0b6d3e62c42f99e", null ],
     [ "~SoBBoxModelMatrixElement", "classSoBBoxModelMatrixElement.html#a6886a6a2bdc272510da372209d75893f", null ],
     [ "init", "classSoBBoxModelMatrixElement.html#a15eaea67077eed69f48ed81720588a52", null ],
     [ "makeEltIdentity", "classSoBBoxModelMatrixElement.html#a5a3b2a767924bcf2554f36f36d4dde76", null ],

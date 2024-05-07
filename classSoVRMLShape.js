@@ -5,8 +5,6 @@ var classSoVRMLShape =
       [ "ON", "classSoVRMLShape.html#aa100ca2f9e5442727d71113adbad85c6ab10a303d47ab6cf319e43c06719c398a", null ],
       [ "AUTO", "classSoVRMLShape.html#aa100ca2f9e5442727d71113adbad85c6a6f6bba0db240fb8850965caa5bd95936", null ]
     ] ],
-    [ "SoVRMLShape", "classSoVRMLShape.html#a6667968e1d272725bdfca00b70f19cca", null ],
-    [ "~SoVRMLShape", "classSoVRMLShape.html#a1738f4ca7d1b56a5c052f1ae02595dab", null ],
     [ "affectsState", "classSoVRMLShape.html#a058412342e2c0a38692956fd45eeaf00", null ],
     [ "callback", "classSoVRMLShape.html#a31c99006ac4ba31af3a2b86924492f6f", null ],
     [ "copyContents", "classSoVRMLShape.html#a2c6ec7451a852dc0d0e5828190cbab17", null ],

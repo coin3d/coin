@@ -33,7 +33,6 @@ var classSoWWWInline =
     [ "search", "classSoWWWInline.html#a1a607488cf5b7c82abe319d825345496", null ],
     [ "setChildData", "classSoWWWInline.html#a08c1205a27bca45ad6ebba9645bc49a1", null ],
     [ "setFullURLName", "classSoWWWInline.html#ae60cc8607f031bbfad4d54bec9520fbd", null ],
-    [ "SoWWWInlineP", "classSoWWWInline.html#a6b8ddd069361e8113ffffc5c02669c3c", null ],
     [ "alternateRep", "classSoWWWInline.html#a5337971a1acc874c2dcc556a628ee256", null ],
     [ "bboxCenter", "classSoWWWInline.html#ad31888d169955f6c49a5b4636ec22b70", null ],
     [ "bboxSize", "classSoWWWInline.html#af6ab3633187f00e2f1357d837323aca3", null ],

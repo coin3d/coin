@@ -10,7 +10,6 @@ var classSoVRMLElevationGrid =
     [ "GLRender", "classSoVRMLElevationGrid.html#ac1fda8e60c09a40b2058cbd7d531caa2", null ],
     [ "notify", "classSoVRMLElevationGrid.html#a0deea7273da00e9147825e68d26d591a", null ],
     [ "rayPick", "classSoVRMLElevationGrid.html#a001c2a58df4e9555288966cdf102c43a", null ],
-    [ "SoVRMLElevationGridP", "classSoVRMLElevationGrid.html#a5c34deb1505b02a91c0526500d35a9dd", null ],
     [ "ccw", "classSoVRMLElevationGrid.html#aac1bc6b7a8b354e2f6605dcad32e78e9", null ],
     [ "color", "classSoVRMLElevationGrid.html#a146f9217088458eb8541073aba23fde3", null ],
     [ "colorPerVertex", "classSoVRMLElevationGrid.html#ad9007f182baab51119638e48e208dc05", null ],

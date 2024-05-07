@@ -1,7 +1,5 @@
 var classSoComposeVec4f =
 [
-    [ "~ SoComposeVec4f", "classSoComposeVec4f.html#a0fc513bbb2d41a033de1dc574a1a0ec5", null ],
-    [ "SoComposeVec4f", "classSoComposeVec4f.html#ae28cb5b0502f6f67d693c14121759750", null ],
     [ "getFieldData", "classSoComposeVec4f.html#a96c7d1a1cc8ac75d965bdeb651c239c5", null ],
     [ "getOutputData", "classSoComposeVec4f.html#af8435653e884804806a5e11ac3d1c38f", null ],
     [ "getTypeId", "classSoComposeVec4f.html#a71532bc95952dca9b366d26b0d06991c", null ],

@@ -27,8 +27,5 @@ var classSoVRMLInline =
     [ "requestURLData", "classSoVRMLInline.html#adde69cd6dbf423b1ff9400e3f2931cd8", null ],
     [ "search", "classSoVRMLInline.html#a72fe69226a4df3007e622df8b1cce209", null ],
     [ "setChildData", "classSoVRMLInline.html#a9e216e6d52b239d4b247b92ec86c4175", null ],
-    [ "setFullURLName", "classSoVRMLInline.html#a346ede7a3b6c43c0fe87dcfe0e6eddb7", null ],
-    [ "bboxCenter", "classSoVRMLInline.html#ad4e644c34d14a409fd79a311166d54cd", null ],
-    [ "bboxSize", "classSoVRMLInline.html#ad4701f992d5f25003284339f171b3e01", null ],
-    [ "url", "classSoVRMLInline.html#a709fcb9467bc9dfeb2954927d5e85a53", null ]
+    [ "setFullURLName", "classSoVRMLInline.html#a346ede7a3b6c43c0fe87dcfe0e6eddb7", null ]
 ];

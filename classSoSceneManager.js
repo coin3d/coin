@@ -40,6 +40,5 @@ var classSoSceneManager =
     [ "setSceneGraph", "classSoSceneManager.html#a1f41bd4e9b94ecd066a649f6c9b44b30", null ],
     [ "setSize", "classSoSceneManager.html#a4cffa44277eeddbb65a94e0b4e76ba9c", null ],
     [ "setViewportRegion", "classSoSceneManager.html#ac5299ca92d36220e4c273435135eb118", null ],
-    [ "setWindowSize", "classSoSceneManager.html#afc73c9086f66e7474e11c25557a425a1", null ],
-    [ "SoSceneManagerP", "classSoSceneManager.html#a0ee863e87116eacb4b5f117aec774239", null ]
+    [ "setWindowSize", "classSoSceneManager.html#afc73c9086f66e7474e11c25557a425a1", null ]
 ];

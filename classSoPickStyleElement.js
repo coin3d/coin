@@ -8,7 +8,6 @@ var classSoPickStyleElement =
       [ "BOUNDING_BOX_ON_TOP", "classSoPickStyleElement.html#aa8be905ec6ff573cf54db40b70a0eda5aedec958068450191b08ddde86698ad06", null ],
       [ "SHAPE_FRONTFACES", "classSoPickStyleElement.html#aa8be905ec6ff573cf54db40b70a0eda5a5b23d76e0c7fc0797b1a3285ca13aefe", null ]
     ] ],
-    [ "SoPickStyleElement", "classSoPickStyleElement.html#aff9c85aab5e45a1f4a987407e7c65537", null ],
     [ "~SoPickStyleElement", "classSoPickStyleElement.html#a5278b06605224592373df162fdda485a", null ],
     [ "init", "classSoPickStyleElement.html#aeb584dec0f6a37a1b5792e63034c4654", null ]
 ];

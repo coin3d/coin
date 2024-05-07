@@ -1,6 +1,5 @@
 var classSoGLModelMatrixElement =
 [
-    [ "SoGLModelMatrixElement", "classSoGLModelMatrixElement.html#ad40b11a9cb4f212409b855ed5cc7cb3d", null ],
     [ "~SoGLModelMatrixElement", "classSoGLModelMatrixElement.html#a1b08083b4ebfdbabe429c1c40c97d76f", null ],
     [ "init", "classSoGLModelMatrixElement.html#a9d1ae12553624f815bab9f562f61c1fc", null ],
     [ "makeEltIdentity", "classSoGLModelMatrixElement.html#af72727bbb7de7e5c783489823fb12f06", null ],

@@ -1124,5 +1124,14 @@ var hierarchy =
     [ "SoMultiTextureCoordinateElement::UnitData", "classSoMultiTextureCoordinateElement_1_1UnitData.html", null ],
     [ "SoMultiTextureImageElement::UnitData", "classSoMultiTextureImageElement_1_1UnitData.html", null ],
     [ "SoMultiTextureMatrixElement::UnitData", "classSoMultiTextureMatrixElement_1_1UnitData.html", null ],
-    [ "SoTextureCombineElement::UnitData", "classSoTextureCombineElement_1_1UnitData.html", null ]
+    [ "SoTextureCombineElement::UnitData", "classSoTextureCombineElement_1_1UnitData.html", null ],
+    [ "SoActionP *", "classSoActionP_01_5.html", null ],
+    [ "SoBoxHighlightRenderActionP *", "classSoBoxHighlightRenderActionP_01_5.html", null ],
+    [ "SoCallbackActionP *", "classSoCallbackActionP_01_5.html", null ],
+    [ "SoGlobalSimplifyActionP *", "classSoGlobalSimplifyActionP_01_5.html", null ],
+    [ "SoMaterialP *", "classSoMaterialP_01_5.html", null ],
+    [ "SoShapeSimplifyActionP *", "classSoShapeSimplifyActionP_01_5.html", null ],
+    [ "SoTrackballDraggerP *", "classSoTrackballDraggerP_01_5.html", null ],
+    [ "SoTransformerDraggerP *", "classSoTransformerDraggerP_01_5.html", null ],
+    [ "SoTranslate2DraggerP *", "classSoTranslate2DraggerP_01_5.html", null ]
 ];

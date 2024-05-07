@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['xml_20related_20functions_20and_20objects_9612',['XML related functions and objects',['../group__coin__XML.html',1,'']]]
+  ['portable_20threads_20abstraction_20classes_0',['Portable Threads Abstraction Classes',['../group__coin__threads.html',1,'']]],
+  ['printing_20classes_1',['Vectorized Printing Classes',['../group__coin__hardcopy.html',1,'']]],
+  ['profiling_2',['Scene Graph Profiling',['../group__coin__profiler.html',1,'']]],
+  ['projector_20classes_3',['Projector Classes',['../group__coin__projectors.html',1,'']]]
 ];

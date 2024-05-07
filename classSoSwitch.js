@@ -19,6 +19,5 @@ var classSoSwitch =
     [ "search", "classSoSwitch.html#a1f54d63b548492bea3e8354aeec6f8d8", null ],
     [ "traverseChildren", "classSoSwitch.html#a950b9981ab3509619bc69f1415323d99", null ],
     [ "write", "classSoSwitch.html#a5025781a90ff400f64fa14e66fbbc9a1", null ],
-    [ "SoSwitchP", "classSoSwitch.html#a6f9fb05de06fca32502b22bbeb17663e", null ],
     [ "whichChild", "classSoSwitch.html#a28c5635defb50ef668d9b9a806ec1a26", null ]
 ];

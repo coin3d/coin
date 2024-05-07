@@ -44,7 +44,6 @@ var classSoExtSelection =
     [ "setTriangleFilterCallback", "classSoExtSelection.html#aa8150f3696bc79c38074e00ee62d4b5d", null ],
     [ "useOverlay", "classSoExtSelection.html#afb79e93a8a70cc2163a4f2c5ccbb7dd0", null ],
     [ "wasShiftDown", "classSoExtSelection.html#af6fefbd65cc3cab3e5f0e36934f135e4", null ],
-    [ "SoExtSelectionP", "classSoExtSelection.html#a53b324881c4631c25cf0ef002481277a", null ],
     [ "lassoMode", "classSoExtSelection.html#a3f1be9f9f9e2500f16ba9526682af7a8", null ],
     [ "lassoPolicy", "classSoExtSelection.html#a05bb125c7b408ef062e9b3a5500025ba", null ],
     [ "lassoType", "classSoExtSelection.html#ae971b69bf710bc866c29432050f96650", null ]

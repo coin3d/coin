@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['coinresources_5581',['CoinResources',['../namespaceCoinResources.html',1,'']]]
+  ['coinresources_0',['CoinResources',['../namespaceCoinResources.html',1,'']]]
 ];

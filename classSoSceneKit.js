@@ -7,9 +7,5 @@ var classSoSceneKit =
     [ "getFieldData", "classSoSceneKit.html#a1378065dd200d5a80bf69b8f0c732bdc", null ],
     [ "getNodekitCatalog", "classSoSceneKit.html#a4d42b041edc8eb4a02eb45a71b8e9527", null ],
     [ "getTypeId", "classSoSceneKit.html#a602b3d39e2330d5532a9f92907032766", null ],
-    [ "setCameraNumber", "classSoSceneKit.html#a9b0cbe5e738ff48e9fcd643a1d680b30", null ],
-    [ "cameraList", "classSoSceneKit.html#aa1080159f4ceaf1f9f3fe1f3c45813e1", null ],
-    [ "childList", "classSoSceneKit.html#a36185694f6613627db26eb70a9c92acc", null ],
-    [ "lightList", "classSoSceneKit.html#adc3add4eef6d9c2892f03045884f8d78", null ],
-    [ "topSeparator", "classSoSceneKit.html#aa050d797520b4899c9e4c35c7ddd85df", null ]
+    [ "setCameraNumber", "classSoSceneKit.html#a9b0cbe5e738ff48e9fcd643a1d680b30", null ]
 ];

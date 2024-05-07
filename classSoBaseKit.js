@@ -44,9 +44,6 @@ var classSoBaseKit =
     [ "setPart", "classSoBaseKit.html#ab3f42ab04032e4f420625d314b606ae6", null ],
     [ "setUpConnections", "classSoBaseKit.html#ad0dfa76f0a788985303733bbcc40f41b", null ],
     [ "write", "classSoBaseKit.html#a0a2780f431dcdebfbe1c7e8caca412fd", null ],
-    [ "SoBaseKitP", "classSoBaseKit.html#a3fa22e60221aed62662777058a5341b5", null ],
-    [ "SoInteractionKit", "classSoBaseKit.html#ab34e8dd3a91591d672ff206b7ce651fc", null ],
-    [ "callbackList", "classSoBaseKit.html#ab421f79a18cfb84a8ed65df36443b4b8", null ],
     [ "children", "classSoBaseKit.html#ae4ab33e30abfa604966d85aa9be58fcd", null ],
     [ "connectionsSetUp", "classSoBaseKit.html#a318dfc1790c5762ea18979af0ea43e8e", null ]
 ];

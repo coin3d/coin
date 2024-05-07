@@ -16,7 +16,6 @@ var classSoUnitsElement =
       [ "MILES", "classSoUnitsElement.html#a7b6aeddcdbd72e05970985c8ada0b842a279d189891076198f94bf7002b2518ee", null ],
       [ "NAUTICAL_MILES", "classSoUnitsElement.html#a7b6aeddcdbd72e05970985c8ada0b842a03c2f0b8a5b5072afe9ab3d165b78ccf", null ]
     ] ],
-    [ "SoUnitsElement", "classSoUnitsElement.html#ab0b357bfd1ae39f906c7c7c47107b361", null ],
     [ "~SoUnitsElement", "classSoUnitsElement.html#af5d9b3b175742ad8f3bd5d60bee1ecce", null ],
     [ "init", "classSoUnitsElement.html#a50e027b5104ec4768930e46a126b0d0e", null ]
 ];

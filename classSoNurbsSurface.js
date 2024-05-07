@@ -11,8 +11,6 @@ var classSoNurbsSurface =
     [ "GLRender", "classSoNurbsSurface.html#ab3a2c4796906a1b55047c1885888aa87", null ],
     [ "rayPick", "classSoNurbsSurface.html#a15e692f7a59fa12e89e4dca22ea0a4c7", null ],
     [ "sendPrimitive", "classSoNurbsSurface.html#a3b81b3723118cca4b254d6a4cc2d66f5", null ],
-    [ "SoNurbsP< SoNurbsSurface >", "classSoNurbsSurface.html#a0d62ac18b75a9dc10ffa6dc6c6a1c6c1", null ],
-    [ "SoNurbsSurfaceP", "classSoNurbsSurface.html#a8b2fa7b1ac5104eca576e736d2e1b351", null ],
     [ "numSControlPoints", "classSoNurbsSurface.html#a9cfd3e94de4ecc0b8766effca8577a06", null ],
     [ "numTControlPoints", "classSoNurbsSurface.html#a83e266e1b116e8f6fb4a0b8fb364f18e", null ],
     [ "numUControlPoints", "classSoNurbsSurface.html#afa7908b93542130032620e3c29d78370", null ],
