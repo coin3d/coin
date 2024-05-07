@@ -17,7 +17,7 @@ jobs:
       - name: Create build directory and run CMake
         run: |
           sudo apt-get -y update
-          sudo apt-get -y install flex bison doxygen freeglut3-dev libboost-dev
+          sudo apt-get -y install flex bison doxygen graphviz freeglut3-dev libboost-dev
           git clone https://github.com/doxygen/doxygen.git doxygen_source
           cd doxygen_source
           git fetch --all --tags --prune
