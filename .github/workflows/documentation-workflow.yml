@@ -24,6 +24,7 @@ jobs:
           cmake -S . -B cmake_build_dir -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=cmake_install_dir -DCOIN_BUILD_AWESOME_DOCUMENTATION=ON
       - name: Build project
         run: |
+          export PATH=${{ github.workspace }}/doxygen-1.10.0/bin:$PATH
           doxygen --version
           cmake --build cmake_build_dir --target documentation_awesome --config Release -- -j4
       - name: Deploy Awesome Dcoumentation to Github Pages
