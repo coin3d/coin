@@ -27,7 +27,7 @@ jobs:
           export PATH=${{ github.workspace }}/doxygen-1.10.0/bin:$PATH
           doxygen --version
           cmake --build cmake_build_dir --target documentation_awesome --config Release -- -j4
-      - name: Deploy Awesome Dcoumentation to Github Pages
+      - name: Deploy Awesome Documentation to Github Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
