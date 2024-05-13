@@ -44,7 +44,7 @@
   If you are looking for information about using Coin in proprietary
   applications for commercial distribution, read about the Coin
   Professional Edition License on the Coin web-pages <a
-  href="http://coin3d.github.io">here</a>.
+  href="https://coin3d.github.io">here</a>.
 */
 
 
