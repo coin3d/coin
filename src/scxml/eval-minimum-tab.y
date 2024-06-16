@@ -34,7 +34,7 @@
 /*
  * Generate the compilable source files this way:
  *
- * bison eval-minimum-tab.y
+ * bison -Dapi.prefix=scxml_minimum_ -o eval-minimum-tab.cpp eval-minimum-tab.y
  */
 
 #ifdef HAVE_CONFIG_H
@@ -49,10 +49,9 @@
 namespace {
 static ScXMLDataObj * root = NULL;
 }
+#define yyalloc scxml_minimum_alloc
 %}
 
-%name-prefix="scxml_minimum_"
-%output="eval-minimum-tab.cpp"
 
 %union {
   char * stringptr;

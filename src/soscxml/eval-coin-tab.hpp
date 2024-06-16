@@ -33,19 +33,27 @@
 #ifndef YY_SCXML_COIN_EVAL_COIN_TAB_HPP_INCLUDED
 # define YY_SCXML_COIN_EVAL_COIN_TAB_HPP_INCLUDED
 /* Enabling traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
-#if YYDEBUG
+#ifndef SCXML_COIN_DEBUG
+# if defined YYDEBUG
+#  if YYDEBUG
+#   define SCXML_COIN_DEBUG 1
+#  else
+#   define SCXML_COIN_DEBUG 0
+#  endif
+# else /* ! defined YYDEBUG */
+#  define SCXML_COIN_DEBUG 0
+# endif /* ! defined YYDEBUG */
+#endif  /* ! defined SCXML_COIN_DEBUG */
+#if SCXML_COIN_DEBUG
 extern int scxml_coin_debug;
 #endif
 
 /* Tokens.  */
-#ifndef YYTOKENTYPE
-# define YYTOKENTYPE
+#ifndef SCXML_COIN_TOKENTYPE
+# define SCXML_COIN_TOKENTYPE
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
-   enum yytokentype {
+   enum scxml_coin_tokentype {
      SCXML_COIN_PAREN_OPEN = 258,
      SCXML_COIN_PAREN_CLOSE = 259,
      SCXML_COIN_EVENT_SCOPE = 260,
@@ -73,11 +81,11 @@ extern int scxml_coin_debug;
 #endif
 
 
-#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE
+#if ! defined SCXML_COIN_STYPE && ! defined SCXML_COIN_STYPE_IS_DECLARED
+typedef union SCXML_COIN_STYPE
 {
 /* Line 2058 of yacc.c  */
-#line 59 "eval-coin-tab.y"
+#line 56 "eval-coin-tab.y"
 
   double real;
   char * stringptr;
@@ -85,14 +93,14 @@ typedef union YYSTYPE
 
 
 /* Line 2058 of yacc.c  */
-#line 89 "eval-coin-tab.hpp"
-} YYSTYPE;
-# define YYSTYPE_IS_TRIVIAL 1
-# define yystype YYSTYPE /* obsolescent; will be withdrawn */
-# define YYSTYPE_IS_DECLARED 1
+#line 97 "eval-coin-tab.hpp"
+} SCXML_COIN_STYPE;
+# define SCXML_COIN_STYPE_IS_TRIVIAL 1
+# define scxml_coin_stype SCXML_COIN_STYPE /* obsolescent; will be withdrawn */
+# define SCXML_COIN_STYPE_IS_DECLARED 1
 #endif
 
-extern YYSTYPE scxml_coin_lval;
+extern SCXML_COIN_STYPE scxml_coin_lval;
 
 #ifdef YYPARSE_PARAM
 #if defined __STDC__ || defined __cplusplus

@@ -58,7 +58,8 @@
 /* Pull parsers.  */
 #define YYPULL 1
 
-
+/* Substitute the type names.  */
+#define YYSTYPE         SO_EVALSTYPE
 /* Substitute the variable and function names.  */
 #define yyparse         so_evalparse
 #define yylex           so_evallex
@@ -130,6 +131,7 @@
 #endif /* HAVE_IO_H */
 #include <Inventor/C/basic.h>
 #include "engines/evaluator.h"
+#define yyalloc so_evalalloc
 
 
 
@@ -151,19 +153,27 @@
 
 
 /* Enabling traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
-#if YYDEBUG
+#ifndef SO_EVALDEBUG
+# if defined YYDEBUG
+#  if YYDEBUG
+#   define SO_EVALDEBUG 1
+#  else
+#   define SO_EVALDEBUG 0
+#  endif
+# else /* ! defined YYDEBUG */
+#  define SO_EVALDEBUG 0
+# endif /* ! defined YYDEBUG */
+#endif  /* ! defined SO_EVALDEBUG */
+#if SO_EVALDEBUG
 extern int so_evaldebug;
 #endif
 
 /* Tokens.  */
-#ifndef YYTOKENTYPE
-# define YYTOKENTYPE
+#ifndef SO_EVALTOKENTYPE
+# define SO_EVALTOKENTYPE
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
-   enum yytokentype {
+   enum so_evaltokentype {
      LEX_VALUE = 258,
      LEX_TMP_FLT_REG = 259,
      LEX_IN_FLT_REG = 260,
@@ -191,8 +201,8 @@ extern int so_evaldebug;
 #endif
 
 
-#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE
+#if ! defined SO_EVALSTYPE && ! defined SO_EVALSTYPE_IS_DECLARED
+typedef union SO_EVALSTYPE
 {
 
 
@@ -203,13 +213,13 @@ typedef union YYSTYPE
 
 
 
-} YYSTYPE;
-# define YYSTYPE_IS_TRIVIAL 1
-# define yystype YYSTYPE /* obsolescent; will be withdrawn */
-# define YYSTYPE_IS_DECLARED 1
+} SO_EVALSTYPE;
+# define SO_EVALSTYPE_IS_TRIVIAL 1
+# define so_evalstype SO_EVALSTYPE /* obsolescent; will be withdrawn */
+# define SO_EVALSTYPE_IS_DECLARED 1
 #endif
 
-extern YYSTYPE so_evallval;
+extern SO_EVALSTYPE so_evallval;
 
 #ifdef YYPARSE_PARAM
 #if defined __STDC__ || defined __cplusplus
@@ -395,7 +405,7 @@ void free (void *); /* INFRINGES ON USER NAME SPACE */
 
 #if (! defined yyoverflow \
      && (! defined __cplusplus \
-	 || (defined YYSTYPE_IS_TRIVIAL && YYSTYPE_IS_TRIVIAL)))
+	 || (defined SO_EVALSTYPE_IS_TRIVIAL && SO_EVALSTYPE_IS_TRIVIAL)))
 
 /* A type that is properly aligned for any stack member.  */
 union yyalloc
@@ -508,7 +518,7 @@ static const yytype_uint8 yytranslate[] =
       40
 };
 
-#if YYDEBUG
+#if SO_EVALDEBUG
 /* YYPRHS[YYN] -- Index of the first RHS symbol of rule number YYN in
    YYRHS.  */
 static const yytype_uint8 yyprhs[] =
@@ -555,17 +565,17 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,   114,   114,   116,   119,   120,   121,   124,   125,   126,
-     128,   132,   133,   136,   138,   140,   143,   144,   145,   146,
-     147,   148,   150,   152,   155,   156,   157,   158,   159,   161,
-     162,   163,   164,   166,   168,   170,   174,   176,   178,   181,
-     182,   183,   184,   185,   186,   189,   190,   191,   194,   195,
-     196,   197,   201,   202,   203,   204,   205,   206,   207,   208,
-     209
+       0,   115,   115,   117,   120,   121,   122,   125,   126,   127,
+     129,   133,   134,   137,   139,   141,   144,   145,   146,   147,
+     148,   149,   151,   153,   156,   157,   158,   159,   160,   162,
+     163,   164,   165,   167,   169,   171,   175,   177,   179,   182,
+     183,   184,   185,   186,   187,   190,   191,   192,   195,   196,
+     197,   198,   202,   203,   204,   205,   206,   207,   208,   209,
+     210
 };
 #endif
 
-#if YYDEBUG || YYERROR_VERBOSE || 0
+#if SO_EVALDEBUG || YYERROR_VERBOSE || 0
 /* YYTNAME[SYMBOL-NUM] -- String name of the symbol SYMBOL-NUM.
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
@@ -882,7 +892,7 @@ while (YYID (0))
 #endif
 
 /* Enable debugging if requested.  */
-#if YYDEBUG
+#if SO_EVALDEBUG
 
 # ifndef YYFPRINTF
 #  include <stdio.h> /* INFRINGES ON USER NAME SPACE */
@@ -1039,12 +1049,12 @@ do {					\
 /* Nonzero means print parse trace.  It is left uninitialized so that
    multiple parsers can coexist.  */
 int yydebug;
-#else /* !YYDEBUG */
+#else /* !SO_EVALDEBUG */
 # define YYDPRINTF(Args)
 # define YY_SYMBOL_PRINT(Title, Type, Value, Location)
 # define YY_STACK_PRINT(Bottom, Top)
 # define YY_REDUCE_PRINT(Rule)
-#endif /* !YYDEBUG */
+#endif /* !SO_EVALDEBUG */
 
 
 /* YYINITDEPTH -- initial size of the parser's stacks.  */

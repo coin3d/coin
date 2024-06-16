@@ -58,7 +58,8 @@
 /* Pull parsers.  */
 #define YYPULL 1
 
-
+/* Substitute the type names.  */
+#define YYSTYPE         SCXML_COIN_STYPE
 /* Substitute the variable and function names.  */
 #define yyparse         scxml_coin_parse
 #define yylex           scxml_coin_lex
@@ -123,10 +124,10 @@
 namespace {
 static ScXMLDataObj * root = NULL;
 }
-
+#define yyalloc scxml_coin_alloc
 
 /* Line 371 of yacc.c  */
-#line 130 "eval-coin-tab.cpp"
+#line 131 "eval-coin-tab.cpp"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -149,19 +150,27 @@ static ScXMLDataObj * root = NULL;
 #ifndef YY_SCXML_COIN_EVAL_COIN_TAB_HPP_INCLUDED
 # define YY_SCXML_COIN_EVAL_COIN_TAB_HPP_INCLUDED
 /* Enabling traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
-#if YYDEBUG
+#ifndef SCXML_COIN_DEBUG
+# if defined YYDEBUG
+#  if YYDEBUG
+#   define SCXML_COIN_DEBUG 1
+#  else
+#   define SCXML_COIN_DEBUG 0
+#  endif
+# else /* ! defined YYDEBUG */
+#  define SCXML_COIN_DEBUG 0
+# endif /* ! defined YYDEBUG */
+#endif  /* ! defined SCXML_COIN_DEBUG */
+#if SCXML_COIN_DEBUG
 extern int scxml_coin_debug;
 #endif
 
 /* Tokens.  */
-#ifndef YYTOKENTYPE
-# define YYTOKENTYPE
+#ifndef SCXML_COIN_TOKENTYPE
+# define SCXML_COIN_TOKENTYPE
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
-   enum yytokentype {
+   enum scxml_coin_tokentype {
      SCXML_COIN_PAREN_OPEN = 258,
      SCXML_COIN_PAREN_CLOSE = 259,
      SCXML_COIN_EVENT_SCOPE = 260,
@@ -189,11 +198,11 @@ extern int scxml_coin_debug;
 #endif
 
 
-#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE
+#if ! defined SCXML_COIN_STYPE && ! defined SCXML_COIN_STYPE_IS_DECLARED
+typedef union SCXML_COIN_STYPE
 {
 /* Line 387 of yacc.c  */
-#line 59 "eval-coin-tab.y"
+#line 56 "eval-coin-tab.y"
 
   double real;
   char * stringptr;
@@ -201,14 +210,14 @@ typedef union YYSTYPE
 
 
 /* Line 387 of yacc.c  */
-#line 205 "eval-coin-tab.cpp"
-} YYSTYPE;
-# define YYSTYPE_IS_TRIVIAL 1
-# define yystype YYSTYPE /* obsolescent; will be withdrawn */
-# define YYSTYPE_IS_DECLARED 1
+#line 214 "eval-coin-tab.cpp"
+} SCXML_COIN_STYPE;
+# define SCXML_COIN_STYPE_IS_TRIVIAL 1
+# define scxml_coin_stype SCXML_COIN_STYPE /* obsolescent; will be withdrawn */
+# define SCXML_COIN_STYPE_IS_DECLARED 1
 #endif
 
-extern YYSTYPE scxml_coin_lval;
+extern SCXML_COIN_STYPE scxml_coin_lval;
 
 #ifdef YYPARSE_PARAM
 #if defined __STDC__ || defined __cplusplus
@@ -229,7 +238,7 @@ int scxml_coin_parse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 233 "eval-coin-tab.cpp"
+#line 242 "eval-coin-tab.cpp"
 
 #ifdef short
 # undef short
@@ -388,7 +397,7 @@ void free (void *); /* INFRINGES ON USER NAME SPACE */
 
 #if (! defined yyoverflow \
      && (! defined __cplusplus \
-	 || (defined YYSTYPE_IS_TRIVIAL && YYSTYPE_IS_TRIVIAL)))
+	 || (defined SCXML_COIN_STYPE_IS_TRIVIAL && SCXML_COIN_STYPE_IS_TRIVIAL)))
 
 /* A type that is properly aligned for any stack member.  */
 union yyalloc
@@ -501,7 +510,7 @@ static const yytype_uint8 yytranslate[] =
       25
 };
 
-#if YYDEBUG
+#if SCXML_COIN_DEBUG
 /* YYPRHS[YYN] -- Index of the first RHS symbol of rule number YYN in
    YYRHS.  */
 static const yytype_uint8 yyprhs[] =
@@ -534,15 +543,15 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,   112,   112,   115,   116,   117,   118,   119,   120,   123,
-     124,   125,   126,   129,   131,   135,   139,   143,   147,   151,
-     154,   157,   161,   163,   165,   167,   169,   171,   173,   175,
-     177,   180,   183,   186,   189,   191,   195,   197,   199,   201,
-     203,   205,   207,   209,   211
+       0,   109,   109,   112,   113,   114,   115,   116,   117,   120,
+     121,   122,   123,   126,   128,   132,   136,   140,   144,   148,
+     151,   154,   158,   160,   162,   164,   166,   168,   170,   172,
+     174,   177,   180,   183,   186,   188,   192,   194,   196,   198,
+     200,   202,   204,   206,   208
 };
 #endif
 
-#if YYDEBUG || YYERROR_VERBOSE || 0
+#if SCXML_COIN_DEBUG || YYERROR_VERBOSE || 0
 /* YYTNAME[SYMBOL-NUM] -- String name of the symbol SYMBOL-NUM.
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
@@ -757,7 +766,7 @@ while (YYID (0))
 #endif
 
 /* Enable debugging if requested.  */
-#if YYDEBUG
+#if SCXML_COIN_DEBUG
 
 # ifndef YYFPRINTF
 #  include <cstdio> /* INFRINGES ON USER NAME SPACE */
@@ -914,12 +923,12 @@ do {					\
 /* Nonzero means print parse trace.  It is left uninitialized so that
    multiple parsers can coexist.  */
 int yydebug;
-#else /* !YYDEBUG */
+#else /* !SCXML_COIN_DEBUG */
 # define YYDPRINTF(Args)
 # define YY_SYMBOL_PRINT(Title, Type, Value, Location)
 # define YY_STACK_PRINT(Bottom, Top)
 # define YY_REDUCE_PRINT(Rule)
-#endif /* !YYDEBUG */
+#endif /* !SCXML_COIN_DEBUG */
 
 
 /* YYINITDEPTH -- initial size of the parser's stacks.  */
@@ -1493,269 +1502,269 @@ yyreduce:
     {
         case 2:
 /* Line 1792 of yacc.c  */
-#line 112 "eval-coin-tab.y"
+#line 109 "eval-coin-tab.y"
     { (yyval.scxmlobj) = (yyvsp[(1) - (1)].scxmlobj); root = (yyval.scxmlobj); }
     break;
 
   case 3:
 /* Line 1792 of yacc.c  */
-#line 115 "eval-coin-tab.y"
+#line 112 "eval-coin-tab.y"
     { (yyval.scxmlobj) = (yyvsp[(2) - (3)].scxmlobj); }
     break;
 
   case 4:
 /* Line 1792 of yacc.c  */
-#line 116 "eval-coin-tab.y"
+#line 113 "eval-coin-tab.y"
     { (yyval.scxmlobj) = (yyvsp[(1) - (1)].scxmlobj); }
     break;
 
   case 5:
 /* Line 1792 of yacc.c  */
-#line 117 "eval-coin-tab.y"
+#line 114 "eval-coin-tab.y"
     { (yyval.scxmlobj) = (yyvsp[(1) - (1)].scxmlobj); }
     break;
 
   case 6:
 /* Line 1792 of yacc.c  */
-#line 118 "eval-coin-tab.y"
+#line 115 "eval-coin-tab.y"
     { (yyval.scxmlobj) = (yyvsp[(1) - (1)].scxmlobj); }
     break;
 
   case 7:
 /* Line 1792 of yacc.c  */
-#line 119 "eval-coin-tab.y"
+#line 116 "eval-coin-tab.y"
     { (yyval.scxmlobj) = (yyvsp[(1) - (1)].scxmlobj); }
     break;
 
   case 8:
 /* Line 1792 of yacc.c  */
-#line 120 "eval-coin-tab.y"
+#line 117 "eval-coin-tab.y"
     { (yyval.scxmlobj) = (yyvsp[(1) - (1)].scxmlobj); }
     break;
 
   case 9:
 /* Line 1792 of yacc.c  */
-#line 123 "eval-coin-tab.y"
+#line 120 "eval-coin-tab.y"
     { (yyval.scxmlobj) = (yyvsp[(1) - (1)].scxmlobj); }
     break;
 
   case 10:
 /* Line 1792 of yacc.c  */
-#line 124 "eval-coin-tab.y"
+#line 121 "eval-coin-tab.y"
     { (yyval.scxmlobj) = (yyvsp[(1) - (1)].scxmlobj); }
     break;
 
   case 11:
 /* Line 1792 of yacc.c  */
-#line 125 "eval-coin-tab.y"
+#line 122 "eval-coin-tab.y"
     { (yyval.scxmlobj) = (yyvsp[(1) - (1)].scxmlobj); }
     break;
 
   case 12:
 /* Line 1792 of yacc.c  */
-#line 126 "eval-coin-tab.y"
+#line 123 "eval-coin-tab.y"
     { (yyval.scxmlobj) = (yyvsp[(1) - (1)].scxmlobj); }
     break;
 
   case 13:
 /* Line 1792 of yacc.c  */
-#line 130 "eval-coin-tab.y"
+#line 127 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLBoolDataObj::createFor(TRUE); }
     break;
 
   case 14:
 /* Line 1792 of yacc.c  */
-#line 132 "eval-coin-tab.y"
+#line 129 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLBoolDataObj::createFor(FALSE); }
     break;
 
   case 15:
 /* Line 1792 of yacc.c  */
-#line 136 "eval-coin-tab.y"
+#line 133 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLSbDataObj::createFor((yyvsp[(1) - (1)].stringptr)); }
     break;
 
   case 16:
 /* Line 1792 of yacc.c  */
-#line 140 "eval-coin-tab.y"
+#line 137 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLRealDataObj::createFor((yyvsp[(1) - (1)].real)); }
     break;
 
   case 17:
 /* Line 1792 of yacc.c  */
-#line 144 "eval-coin-tab.y"
+#line 141 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLStringDataObj::createFor((yyvsp[(1) - (1)].stringptr)); }
     break;
 
   case 18:
 /* Line 1792 of yacc.c  */
-#line 148 "eval-coin-tab.y"
+#line 145 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLReferenceDataObj::createFor((yyvsp[(1) - (1)].stringptr)); }
     break;
 
   case 19:
 /* Line 1792 of yacc.c  */
-#line 151 "eval-coin-tab.y"
+#line 148 "eval-coin-tab.y"
     { (yyval.scxmlobj) = (yyvsp[(1) - (1)].scxmlobj); }
     break;
 
   case 20:
 /* Line 1792 of yacc.c  */
-#line 155 "eval-coin-tab.y"
+#line 152 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLInExprDataObj::createFor((yyvsp[(3) - (4)].stringptr)); }
     break;
 
   case 21:
 /* Line 1792 of yacc.c  */
-#line 158 "eval-coin-tab.y"
+#line 155 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLCoinLengthFuncExprDataObj::createFor((yyvsp[(3) - (4)].scxmlobj)); }
     break;
 
   case 22:
 /* Line 1792 of yacc.c  */
-#line 162 "eval-coin-tab.y"
+#line 159 "eval-coin-tab.y"
     { (yyval.scxmlobj) = (yyvsp[(2) - (3)].scxmlobj); }
     break;
 
   case 23:
 /* Line 1792 of yacc.c  */
-#line 164 "eval-coin-tab.y"
+#line 161 "eval-coin-tab.y"
     { (yyval.scxmlobj) = (yyvsp[(1) - (1)].scxmlobj); }
     break;
 
   case 24:
 /* Line 1792 of yacc.c  */
-#line 166 "eval-coin-tab.y"
+#line 163 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLOrOpExprDataObj::createFor((yyvsp[(1) - (3)].scxmlobj), (yyvsp[(3) - (3)].scxmlobj)); }
     break;
 
   case 25:
 /* Line 1792 of yacc.c  */
-#line 168 "eval-coin-tab.y"
+#line 165 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLAndOpExprDataObj::createFor((yyvsp[(1) - (3)].scxmlobj), (yyvsp[(3) - (3)].scxmlobj)); }
     break;
 
   case 26:
 /* Line 1792 of yacc.c  */
-#line 170 "eval-coin-tab.y"
+#line 167 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLCoinEqualsOpExprDataObj::createFor((yyvsp[(1) - (3)].scxmlobj), (yyvsp[(3) - (3)].scxmlobj)); }
     break;
 
   case 27:
 /* Line 1792 of yacc.c  */
-#line 172 "eval-coin-tab.y"
+#line 169 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLCoinEqualsOpExprDataObj::createFor((yyvsp[(1) - (3)].scxmlobj), (yyvsp[(3) - (3)].scxmlobj)); }
     break;
 
   case 28:
 /* Line 1792 of yacc.c  */
-#line 174 "eval-coin-tab.y"
+#line 171 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLCoinEqualsOpExprDataObj::createFor((yyvsp[(1) - (3)].scxmlobj), (yyvsp[(3) - (3)].scxmlobj)); }
     break;
 
   case 29:
 /* Line 1792 of yacc.c  */
-#line 176 "eval-coin-tab.y"
+#line 173 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLCoinEqualsOpExprDataObj::createFor((yyvsp[(1) - (3)].scxmlobj), (yyvsp[(3) - (3)].scxmlobj)); }
     break;
 
   case 30:
 /* Line 1792 of yacc.c  */
-#line 178 "eval-coin-tab.y"
+#line 175 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLNotOpExprDataObj::createFor(
                                ScXMLEqualsOpExprDataObj::createFor((yyvsp[(1) - (3)].scxmlobj), (yyvsp[(3) - (3)].scxmlobj))); }
     break;
 
   case 31:
 /* Line 1792 of yacc.c  */
-#line 181 "eval-coin-tab.y"
+#line 178 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLNotOpExprDataObj::createFor(
                                ScXMLEqualsOpExprDataObj::createFor((yyvsp[(1) - (3)].scxmlobj), (yyvsp[(3) - (3)].scxmlobj))); }
     break;
 
   case 32:
 /* Line 1792 of yacc.c  */
-#line 184 "eval-coin-tab.y"
+#line 181 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLNotOpExprDataObj::createFor(
                                ScXMLEqualsOpExprDataObj::createFor((yyvsp[(1) - (3)].scxmlobj), (yyvsp[(3) - (3)].scxmlobj))); }
     break;
 
   case 33:
 /* Line 1792 of yacc.c  */
-#line 187 "eval-coin-tab.y"
+#line 184 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLNotOpExprDataObj::createFor(
                                ScXMLEqualsOpExprDataObj::createFor((yyvsp[(1) - (3)].scxmlobj), (yyvsp[(3) - (3)].scxmlobj))); }
     break;
 
   case 34:
 /* Line 1792 of yacc.c  */
-#line 190 "eval-coin-tab.y"
+#line 187 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLNotOpExprDataObj::createFor((yyvsp[(2) - (2)].scxmlobj)); }
     break;
 
   case 35:
 /* Line 1792 of yacc.c  */
-#line 192 "eval-coin-tab.y"
+#line 189 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLNotOpExprDataObj::createFor((yyvsp[(2) - (2)].scxmlobj)); }
     break;
 
   case 36:
 /* Line 1792 of yacc.c  */
-#line 196 "eval-coin-tab.y"
+#line 193 "eval-coin-tab.y"
     { (yyval.scxmlobj) = (yyvsp[(1) - (1)].scxmlobj); }
     break;
 
   case 37:
 /* Line 1792 of yacc.c  */
-#line 198 "eval-coin-tab.y"
+#line 195 "eval-coin-tab.y"
     { (yyval.scxmlobj) = (yyvsp[(1) - (1)].scxmlobj); }
     break;
 
   case 38:
 /* Line 1792 of yacc.c  */
-#line 200 "eval-coin-tab.y"
+#line 197 "eval-coin-tab.y"
     { (yyval.scxmlobj) = (yyvsp[(1) - (1)].scxmlobj); }
     break;
 
   case 39:
 /* Line 1792 of yacc.c  */
-#line 202 "eval-coin-tab.y"
+#line 199 "eval-coin-tab.y"
     { (yyval.scxmlobj) = (yyvsp[(1) - (1)].scxmlobj); }
     break;
 
   case 40:
 /* Line 1792 of yacc.c  */
-#line 204 "eval-coin-tab.y"
+#line 201 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLAddOpExprDataObj::createFor((yyvsp[(1) - (3)].scxmlobj), (yyvsp[(3) - (3)].scxmlobj)); }
     break;
 
   case 41:
 /* Line 1792 of yacc.c  */
-#line 206 "eval-coin-tab.y"
+#line 203 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLSubtractOpExprDataObj::createFor((yyvsp[(1) - (3)].scxmlobj), (yyvsp[(3) - (3)].scxmlobj)); }
     break;
 
   case 42:
 /* Line 1792 of yacc.c  */
-#line 208 "eval-coin-tab.y"
+#line 205 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLMultiplyOpExprDataObj::createFor((yyvsp[(1) - (3)].scxmlobj), (yyvsp[(3) - (3)].scxmlobj)); }
     break;
 
   case 43:
 /* Line 1792 of yacc.c  */
-#line 210 "eval-coin-tab.y"
+#line 207 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLDivideOpExprDataObj::createFor((yyvsp[(1) - (3)].scxmlobj), (yyvsp[(3) - (3)].scxmlobj)); }
     break;
 
   case 44:
 /* Line 1792 of yacc.c  */
-#line 212 "eval-coin-tab.y"
+#line 209 "eval-coin-tab.y"
     { (yyval.scxmlobj) = ScXMLNegateOpExprDataObj::createFor((yyvsp[(2) - (2)].scxmlobj)); }
     break;
 
 
 /* Line 1792 of yacc.c  */
-#line 1759 "eval-coin-tab.cpp"
+#line 1768 "eval-coin-tab.cpp"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1987,7 +1996,7 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 215 "eval-coin-tab.y"
+#line 212 "eval-coin-tab.y"
 
 
 ScXMLDataObj *

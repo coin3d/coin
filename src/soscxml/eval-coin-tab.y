@@ -34,7 +34,7 @@
 /*
  * Generate the compilable source files this way:
  *
- * bison eval-coin-tab.y
+ * bison -Dapi.prefix=scxml_coin_ -o eval-coin-tab.cpp eval-coin-tab.y
  */
 
 #ifdef HAVE_CONFIG_H
@@ -50,11 +50,8 @@
 namespace {
 static ScXMLDataObj * root = NULL;
 }
-
+#define yyalloc scxml_coin_alloc
 %}
-
-%name-prefix="scxml_coin_"
-%output="eval-coin-tab.cpp"
 
 %union {
   double real;

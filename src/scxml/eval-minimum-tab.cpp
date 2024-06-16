@@ -58,7 +58,8 @@
 /* Pull parsers.  */
 #define YYPULL 1
 
-
+/* Substitute the type names.  */
+#define YYSTYPE         SCXML_MINIMUM_STYPE
 /* Substitute the variable and function names.  */
 #define yyparse         scxml_minimum_parse
 #define yylex           scxml_minimum_lex
@@ -122,9 +123,10 @@
 namespace {
 static ScXMLDataObj * root = NULL;
 }
+#define yyalloc scxml_minimum_alloc
 
 /* Line 371 of yacc.c  */
-#line 128 "eval-minimum-tab.cpp"
+#line 130 "eval-minimum-tab.cpp"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -147,19 +149,27 @@ static ScXMLDataObj * root = NULL;
 #ifndef YY_SCXML_MINIMUM_EVAL_MINIMUM_TAB_HPP_INCLUDED
 # define YY_SCXML_MINIMUM_EVAL_MINIMUM_TAB_HPP_INCLUDED
 /* Enabling traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
-#if YYDEBUG
+#ifndef SCXML_MINIMUM_DEBUG
+# if defined YYDEBUG
+#  if YYDEBUG
+#   define SCXML_MINIMUM_DEBUG 1
+#  else
+#   define SCXML_MINIMUM_DEBUG 0
+#  endif
+# else /* ! defined YYDEBUG */
+#  define SCXML_MINIMUM_DEBUG 0
+# endif /* ! defined YYDEBUG */
+#endif  /* ! defined SCXML_MINIMUM_DEBUG */
+#if SCXML_MINIMUM_DEBUG
 extern int scxml_minimum_debug;
 #endif
 
 /* Tokens.  */
-#ifndef YYTOKENTYPE
-# define YYTOKENTYPE
+#ifndef SCXML_MINIMUM_TOKENTYPE
+# define SCXML_MINIMUM_TOKENTYPE
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
-   enum yytokentype {
+   enum scxml_minimum_tokentype {
      SCXML_MINIMUM_PAREN_OPEN = 258,
      SCXML_MINIMUM_PAREN_CLOSE = 259,
      SCXML_MINIMUM_IDENTIFIER = 260,
@@ -168,25 +178,25 @@ extern int scxml_minimum_debug;
 #endif
 
 
-#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE
+#if ! defined SCXML_MINIMUM_STYPE && ! defined SCXML_MINIMUM_STYPE_IS_DECLARED
+typedef union SCXML_MINIMUM_STYPE
 {
 /* Line 387 of yacc.c  */
-#line 57 "eval-minimum-tab.y"
+#line 56 "eval-minimum-tab.y"
 
   char * stringptr;
   ScXMLDataObj * scxmlobj;
 
 
 /* Line 387 of yacc.c  */
-#line 183 "eval-minimum-tab.cpp"
-} YYSTYPE;
-# define YYSTYPE_IS_TRIVIAL 1
-# define yystype YYSTYPE /* obsolescent; will be withdrawn */
-# define YYSTYPE_IS_DECLARED 1
+#line 193 "eval-minimum-tab.cpp"
+} SCXML_MINIMUM_STYPE;
+# define SCXML_MINIMUM_STYPE_IS_TRIVIAL 1
+# define scxml_minimum_stype SCXML_MINIMUM_STYPE /* obsolescent; will be withdrawn */
+# define SCXML_MINIMUM_STYPE_IS_DECLARED 1
 #endif
 
-extern YYSTYPE scxml_minimum_lval;
+extern SCXML_MINIMUM_STYPE scxml_minimum_lval;
 
 #ifdef YYPARSE_PARAM
 #if defined __STDC__ || defined __cplusplus
@@ -207,7 +217,7 @@ int scxml_minimum_parse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 211 "eval-minimum-tab.cpp"
+#line 221 "eval-minimum-tab.cpp"
 
 #ifdef short
 # undef short
@@ -366,7 +376,7 @@ void free (void *); /* INFRINGES ON USER NAME SPACE */
 
 #if (! defined yyoverflow \
      && (! defined __cplusplus \
-	 || (defined YYSTYPE_IS_TRIVIAL && YYSTYPE_IS_TRIVIAL)))
+	 || (defined SCXML_MINIMUM_STYPE_IS_TRIVIAL && SCXML_MINIMUM_STYPE_IS_TRIVIAL)))
 
 /* A type that is properly aligned for any stack member.  */
 union yyalloc
@@ -477,7 +487,7 @@ static const yytype_uint8 yytranslate[] =
        5,     6
 };
 
-#if YYDEBUG
+#if SCXML_MINIMUM_DEBUG
 /* YYPRHS[YYN] -- Index of the first RHS symbol of rule number YYN in
    YYRHS.  */
 static const yytype_uint8 yyprhs[] =
@@ -495,11 +505,11 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    78,    78,    81,    84,    87
+       0,    77,    77,    80,    83,    86
 };
 #endif
 
-#if YYDEBUG || YYERROR_VERBOSE || 0
+#if SCXML_MINIMUM_DEBUG || YYERROR_VERBOSE || 0
 /* YYTNAME[SYMBOL-NUM] -- String name of the symbol SYMBOL-NUM.
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
@@ -650,7 +660,7 @@ while (YYID (0))
 #endif
 
 /* Enable debugging if requested.  */
-#if YYDEBUG
+#if SCXML_MINIMUM_DEBUG
 
 # ifndef YYFPRINTF
 #  include <cstdio> /* INFRINGES ON USER NAME SPACE */
@@ -807,12 +817,12 @@ do {					\
 /* Nonzero means print parse trace.  It is left uninitialized so that
    multiple parsers can coexist.  */
 int yydebug;
-#else /* !YYDEBUG */
+#else /* !SCXML_MINIMUM_DEBUG */
 # define YYDPRINTF(Args)
 # define YY_SYMBOL_PRINT(Title, Type, Value, Location)
 # define YY_STACK_PRINT(Bottom, Top)
 # define YY_REDUCE_PRINT(Rule)
-#endif /* !YYDEBUG */
+#endif /* !SCXML_MINIMUM_DEBUG */
 
 
 /* YYINITDEPTH -- initial size of the parser's stacks.  */
@@ -1386,31 +1396,31 @@ yyreduce:
     {
         case 2:
 /* Line 1792 of yacc.c  */
-#line 78 "eval-minimum-tab.y"
+#line 77 "eval-minimum-tab.y"
     { (yyval.scxmlobj) = (yyvsp[(1) - (1)].scxmlobj); root = (yyval.scxmlobj); }
     break;
 
   case 3:
 /* Line 1792 of yacc.c  */
-#line 81 "eval-minimum-tab.y"
+#line 80 "eval-minimum-tab.y"
     { (yyval.scxmlobj) = (yyvsp[(1) - (1)].scxmlobj); }
     break;
 
   case 4:
 /* Line 1792 of yacc.c  */
-#line 84 "eval-minimum-tab.y"
+#line 83 "eval-minimum-tab.y"
     { (yyval.scxmlobj) = (yyvsp[(1) - (1)].scxmlobj); }
     break;
 
   case 5:
 /* Line 1792 of yacc.c  */
-#line 88 "eval-minimum-tab.y"
+#line 87 "eval-minimum-tab.y"
     { (yyval.scxmlobj) = ScXMLInExprDataObj::createFor((yyvsp[(3) - (4)].stringptr)); }
     break;
 
 
 /* Line 1792 of yacc.c  */
-#line 1414 "eval-minimum-tab.cpp"
+#line 1424 "eval-minimum-tab.cpp"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1642,7 +1652,7 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 91 "eval-minimum-tab.y"
+#line 90 "eval-minimum-tab.y"
 
 
 ScXMLDataObj *
