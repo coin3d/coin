@@ -90538,6 +90538,7 @@
     <name>coin_new_features</name>
     <title>New Features in Coin</title>
     <filename>coin_new_features.html</filename>
+    <subpage>coin403.html</subpage>
     <subpage>coin402.html</subpage>
     <subpage>coin401.html</subpage>
     <subpage>coin400.html</subpage>
@@ -90552,6 +90553,11 @@
     <subpage>coin220.html</subpage>
     <subpage>coin210.html</subpage>
     <subpage>coin200.html</subpage>
+  </compound>
+  <compound kind="page">
+    <name>coin403</name>
+    <title>New Features in Coin v4.0.3</title>
+    <filename>coin403.html</filename>
   </compound>
   <compound kind="page">
     <name>coin402</name>
