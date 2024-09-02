@@ -1,3 +1,15 @@
+New in Coin v4.0.3 (2024-09-02):
+* new:
+  - set minimum standard needed to compile Coin to C++11
+  - added support for building modern styled documentation
+* bugfixes:
+  - fixed LTOcompilation ODR error
+  - fixed suspicious increment in SbProfilingData.cpp
+  - fixed SbTri3f intersect calculation
+  - improved auto clipping
+  - fixed orthographic autoclipping by allowing negative farDistance
+  - fixed rotating a VRMLBackground node with its ancestors' rotations
+
 New in Coin v4.0.2 (2023-12-03):
 * bugfixes:
   - ABI compatibility to version 4.0.0 was inadvertently changed and restored

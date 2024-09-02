@@ -8,6 +8,27 @@ The changes described here are issues that might have an effect on the
 compatibility of your source code when upgrading the library.
 
 
+Coin 4.0.3
+==========
+
+This is a bugfix release.
+
+Added support for building modern styled documentation.
+
+Set minimum C++ standard needed to compile Coin to C++11.
+
+Fixed LTOcompilation ODR error.
+
+Fixed suspicious increment in SbProfilingData.cpp.
+
+Fixed SbTri3f intersect calculation.
+
+Improved auto clipping.
+
+Fixed orthographic autoclipping by allowing negative farDistance.
+
+Fixed rotating a VRMLBackground node with its ancestors' rotations.
+
 Coin 4.0.2
 ==========
 
