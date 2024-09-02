@@ -15,7 +15,7 @@
 # release version number info
 m4_define([COIN_MAJOR], [4])
 m4_define([COIN_MINOR], [0])
-m4_define([COIN_MICRO], [2])
+m4_define([COIN_MICRO], [3])
 m4_define([COIN_BETA], [])
 
 # This is probably a more correct setup, but will be harder to keep if
