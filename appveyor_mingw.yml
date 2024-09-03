@@ -1,4 +1,4 @@
-version: 4.0.2-{branch}-ci-{build}
+version: 4.0.3-{branch}-ci-{build}
 
 branches:
   only:
@@ -15,7 +15,7 @@ matrix:
   fast_finish: true # set this flag to immediately finish build once one of the jobs fails.
 
 environment:
-  SUPERGLU_VERSION: 1.3.1
+  SUPERGLU_VERSION: 1.3.2
   GH_AUTH_TOKEN:
     secure: 850frgRGZcc4Cljd2P7Ej68no4/kkl4EMB+DjnX725wcKBRJuFk/kGRdJGyKXd2u
   matrix:
