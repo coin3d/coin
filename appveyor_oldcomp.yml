@@ -119,7 +119,7 @@ install:
   - cmd: |
       choco install jq
       rem Work around for outdated curl version giving problems with GitHub Authentication when redirected.
-      set PATH=%APPVEYOR_BUILD_FOLDER%\downloads\doxygen-1.8.14;C:\msys64\%COMPILER_ID%\bin;C:\msys64\usr\bin;%PATH%
+      set PATH=C:\msys64\%COMPILER_ID%\bin;C:\msys64\usr\bin;%PATH%
       curl --version
       cd %APPVEYOR_BUILD_FOLDER%
   - git submodule update --init --recursive
@@ -133,10 +133,6 @@ before_build:
       C:\msys64\usr\bin\md5sum.exe -b %BUILD_SOURCE_ARCHIVE% > %BUILD_SOURCE_ARCHIVE%.md5
       C:\msys64\usr\bin\sha256sum.exe -b %BUILD_SOURCE_ARCHIVE% > %BUILD_SOURCE_ARCHIVE%.sha256
       mkdir %APPVEYOR_BUILD_FOLDER%\downloads
-      rem set DOWNLOAD_FILE_DOXYGEN=doxygen-1.8.14.windows.x64.bin.zip
-      rem appveyor DownloadFile https://sourceforge.net/projects/doxygen/files/rel-1.8.14/%DOWNLOAD_FILE_DOXYGEN% -FileName %DOWNLOAD_FILE_DOXYGEN%
-      rem 7z x %DOWNLOAD_FILE_DOXYGEN% -o%APPVEYOR_BUILD_FOLDER%\downloads\doxygen-1.8.14
-      rem doxygen --version
       rem ##############
       if defined APPVEYOR_REPO_TAG_NAME (set SUPERGLU_REPO_VERSION=%SUPERGLU_VERSION%) else (set SUPERGLU_REPO_VERSION=latest)
       if defined APPVEYOR_REPO_TAG_NAME (set SUPERGLU_REPO_TAG_NAME=v%SUPERGLU_VERSION%) else (set SUPERGLU_REPO_TAG_NAME=CI-builds)
