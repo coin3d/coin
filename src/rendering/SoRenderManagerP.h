@@ -66,6 +66,7 @@ public:
   ~SoRenderManagerP();
 
   void setClippingPlanes(void);
+  static void updateClippingPlanesCB(void * closure, SoSensor * sensor);
   void getCameraCoordinateSystem(SbMatrix & matrix,
                                  SbMatrix & inverse);
   static void redrawshotTriggeredCB(void * data, SoSensor * sensor);
@@ -100,6 +101,7 @@ public:
   SbBool texturesenabled;
   SbBool isrgbmode;
   uint32_t redrawpri;
+  SoNodeSensor * clipsensor;
 
   SoGetBoundingBoxAction * getbboxaction;
   SoAudioRenderAction * audiorenderaction;
