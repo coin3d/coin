@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['c_0',['C',['../classSoCalculator.html#a389621e579a69e8333b42542b14c6ce7',1,'SoCalculator']]],
-  ['c_1',['c',['../classSoCalculator.html#a5320d1f469afc91138d57bd08aa8498c',1,'SoCalculator']]],
+  ['c_0',['c',['../classSoCalculator.html#a5320d1f469afc91138d57bd08aa8498c',1,'SoCalculator']]],
+  ['c_1',['C',['../classSoCalculator.html#a389621e579a69e8333b42542b14c6ce7',1,'SoCalculator']]],
   ['c_20reference_20manual_2',['The Open Inventor C++ Reference Manual',['../coin_books.html#oirefbook',1,'']]],
   ['cache_20classes_3',['Cache Classes',['../group__coin__caches.html',1,'Cache Classes'],['../group__coin__caches.html',1,'The Cache Classes']]],
   ['cachedinvscale_4',['cachedInvScale',['../classSoSurroundScale.html#a3c9d171bf7fda76ab3113582100a943a',1,'SoSurroundScale']]],
