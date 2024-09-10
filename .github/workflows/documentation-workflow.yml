@@ -16,8 +16,9 @@ jobs:
           submodules: recursive
       - name: Create build directory and run CMake
         run: |
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
           sudo apt-get -y update
-          sudo apt-get -y install doxygen graphviz freeglut3-dev libboost-dev
+          sudo apt-get -y install gcc-13 doxygen graphviz freeglut3-dev libboost-dev
           curl -L -o doxygen-1.10.0.linux.bin.tar.gz https://github.com/doxygen/doxygen/releases/download/Release_1_10_0/doxygen-1.10.0.linux.bin.tar.gz
           tar xzf doxygen-1.10.0.linux.bin.tar.gz
           export PATH=${{ github.workspace }}/doxygen-1.10.0/bin:$PATH
