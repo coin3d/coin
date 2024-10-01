@@ -11494,6 +11494,34 @@ else
 fi
 ]) # SIM_AC_HAVE_CGL_IFELSE()
 
+# **************************************************************************
+# SIM_AC_HAVE_EGL_IFELSE( IF-FOUND, IF-NOT-FOUND )
+#
+# Check whether EGL is on the system.
+
+AC_DEFUN([SIM_AC_HAVE_EGL_IFELSE], [
+sim_ac_save_libs=$LIBS
+sim_ac_egl_libs="-lEGL"
+LIBS="$LIBS $sim_ac_egl_libs"
+
+AC_CACHE_CHECK(
+  [whether EGL is on the system],
+  sim_cv_have_egl,
+  AC_TRY_LINK(
+    [#include <EGL/egl.h>
+     #include <EGL/eglext.h>],
+    [eglGetError();],
+    [sim_cv_have_egl=true],
+    [sim_cv_have_egl=false]))
+
+LIBS="$LIBS $sim_ac_egl_libs"
+if ${sim_cv_have_egl=false}; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+]) # SIM_AC_HAVE_EGL_IFELSE()
+
 # Usage:
 #  SIM_AC_PACKAGEMAKER_APP([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #

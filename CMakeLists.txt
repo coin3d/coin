@@ -109,6 +109,8 @@ cmake_dependent_option(COIN_BUILD_MAC_FRAMEWORK "Build framework instead of dyli
 cmake_dependent_option(COIN_BUILD_MAC_X11 "Build for X11 on Mac OS X when ON. Default is OFF." OFF "APPLE" OFF)
 cmake_dependent_option(COIN_BUILD_MAC_AGL "Build for AGL on Mac OS X when ON. Default is OFF." OFF "APPLE" OFF)
 
+option(COIN_BUILD_EGL "Build for EGL on Linux when ON. Default is OFF." OFF)
+
 check_include_file_cxx(thread HAVE_STD_THREAD)
 cmake_dependent_option(COIN_DEBUG_CHECK_THREAD "Enable thread check in several central Coin functions." OFF "HAVE_STD_THREAD" OFF)
 
@@ -120,6 +122,7 @@ report_prepare(
   COIN_BUILD_DOCUMENTATION_MAN
   COIN_BUILD_DOCUMENTATION_QTHELP
   COIN_BUILD_DOCUMENTATION_CHM
+  COIN_BUILD_EGL
   COIN_BUILD_AWESOME_DOCUMENTATION
   COIN_THREADSAFE
   HAVE_VRML97
@@ -207,7 +210,7 @@ if(COIN_BUILD_MAC_X11)
     list(APPEND COIN_TARGET_LINK_LIBRARIES ${X11_LIBRARIES} ${X11_GL_LIB} ${X11_GLU_LIB})
   endif()
 else()
-  if(UNIX AND NOT APPLE)
+  if(UNIX AND NOT APPLE AND NOT COIN_BUILD_EGL)
     find_package(X11 REQUIRED)
     list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${X11_INCLUDE_DIR})
     list(APPEND COIN_TARGET_LINK_LIBRARIES ${X11_LIBRARIES})
@@ -218,6 +221,15 @@ else()
     set(OPENGL_SYSTEM_LIBRARY_NAME "${OPENGL_gl_LIBRARY}${CMAKE_SHARED_LIBRARY_SUFFIX}")
     if(OpenGL_GLU_FOUND)
       set(HAVE_GLU 1)
+    endif()
+    if(COIN_BUILD_EGL AND OpenGL_EGL_FOUND)
+      set(HAVE_EGL 1)
+      if (NOT TARGET OpenGL::EGL)
+        list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${OPENGL_EGL_INCLUDE_DIR})
+        list(APPEND COIN_TARGET_LINK_LIBRARIES ${OPENGL_egl_LIBRARY})
+      else()
+        list(APPEND COIN_TARGET_LINK_LIBRARIES OpenGL::EGL)
+      endif()
     endif()
     if(APPLE)
       set(GLU_IS_PART_OF_GL 1)
@@ -679,7 +691,7 @@ elseif(APPLE)
   endif()
 endif()
 
-if(NOT (HAVE_WGL OR HAVE_AGL OR HAVE_CGL OR HAVE_GLX))
+if(NOT (HAVE_WGL OR HAVE_AGL OR HAVE_CGL OR HAVE_GLX OR HAVE_EGL))
   if (NOT TARGET OpenGL::GLX)
     if (OPENGL_glx_LIBRARY)
       list(APPEND COIN_TARGET_LINK_LIBRARIES ${OPENGL_glx_LIBRARY})
@@ -709,6 +721,9 @@ else()
   check_include_files("GL/gl.h" HAVE_GL_GL_H)
   check_include_files("GL/glu.h" HAVE_GL_GLU_H)
   check_include_files("GL/gl.h;GL/glext.h" HAVE_GL_GLEXT_H)
+  if(HAVE_EGL)
+    check_include_files("EGL/egl.h;EGL/eglext.h" HAVE_EGL_EGLEXT_H)
+  endif()
 endif()
 
 set(CMAKE_REQUIRED_INCLUDES)
