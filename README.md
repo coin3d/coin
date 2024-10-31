@@ -1,6 +1,6 @@
 # Coin. Open Inventor API implementation
 
-[![Packaging status](https://repology.org/badge/tiny-repos/coin3d.svg?header=Coin3d%20in%20repositories)](https://repology.org/project/coin3d/versions)[![Packaging status](https://repology.org/badge/tiny-repos/coin4.svg?header=Coin4%20in%20repositories)](https://repology.org/project/coin4/versions)
+[![Packaging status](https://repology.org/badge/tiny-repos/coin3d.svg)](https://repology.org/project/coin3d/versions)
 
 ## Introduction
 
