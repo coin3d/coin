@@ -118,9 +118,9 @@ SoTexture3Transform::SoTexture3Transform(void)
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTexture3Transform);
 
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
-  SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
+  SO_NODE_ADD_FIELD(rotation, (SbRotation::identity()));
   SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
-  SO_NODE_ADD_FIELD(scaleOrientation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
+  SO_NODE_ADD_FIELD(scaleOrientation, (SbRotation::identity()));
   SO_NODE_ADD_FIELD(center, (0.0f, 0.0f, 0.0f));
 }
 

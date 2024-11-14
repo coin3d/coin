@@ -269,7 +269,7 @@ SoTransformBoxDragger::SoTransformBoxDragger(void)
                                        static_cast<int>(strlen(TRANSFORMBOXDRAGGER_draggergeometry)));
   }
 
-  SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
+  SO_KIT_ADD_FIELD(rotation, (SbRotation::identity()));
   SO_KIT_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
   SO_KIT_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
 
@@ -294,7 +294,7 @@ SoTransformBoxDragger::SoTransformBoxDragger(void)
   rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), static_cast<float>(M_PI)/2.0f);
   this->rotator2Rot.setDefault(TRUE);
   rot = SO_GET_ANY_PART(this, "rotator3Rot", SoRotation);
-  rot->rotation = SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f);
+  rot->rotation = SbRotation::identity();
   this->rotator3Rot.setDefault(TRUE);
 
   rot = SO_GET_ANY_PART(this, "translator1Rot", SoRotation);

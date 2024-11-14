@@ -345,7 +345,7 @@ SoCamera::SoCamera()
 
   SO_NODE_ADD_FIELD(viewportMapping, (ADJUST_CAMERA));
   SO_NODE_ADD_FIELD(position, (0.0f, 0.0f, 1.0f));
-  SO_NODE_ADD_FIELD(orientation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
+  SO_NODE_ADD_FIELD(orientation, (SbRotation::identity()));
   SO_NODE_ADD_FIELD(nearDistance, (1.0f));
   SO_NODE_ADD_FIELD(farDistance, (10.0f));
   SO_NODE_ADD_FIELD(aspectRatio, (1.0f));

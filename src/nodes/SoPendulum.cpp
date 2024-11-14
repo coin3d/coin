@@ -96,8 +96,8 @@ SoPendulum::SoPendulum(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoPendulum);
 
-  SO_NODE_ADD_FIELD(rotation0, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
-  SO_NODE_ADD_FIELD(rotation1, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
+  SO_NODE_ADD_FIELD(rotation0, (SbRotation::identity()));
+  SO_NODE_ADD_FIELD(rotation1, (SbRotation::identity()));
   SO_NODE_ADD_FIELD(speed, (1.0f));
   SO_NODE_ADD_FIELD(on, (TRUE));
 

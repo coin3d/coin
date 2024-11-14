@@ -126,9 +126,9 @@ SoTransform::SoTransform(void)
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTransform);
 
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
-  SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
+  SO_NODE_ADD_FIELD(rotation, (SbRotation::identity()));
   SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
-  SO_NODE_ADD_FIELD(scaleOrientation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
+  SO_NODE_ADD_FIELD(scaleOrientation, (SbRotation::identity()));
   SO_NODE_ADD_FIELD(center, (0.0f, 0.0f, 0.0f));
 }
 
@@ -158,7 +158,7 @@ SoTransform::pointAt(const SbVec3f & frompoint, const SbVec3f & topoint)
 {
   this->scaleFactor = SbVec3f(1.0f, 1.0f, 1.0f);
   this->center = SbVec3f(0.0f, 0.0f, 0.0f);
-  this->scaleOrientation = SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f);
+  this->scaleOrientation = SbRotation::identity();
   
   this->translation = frompoint;  
   SbVec3f dir = topoint - frompoint;

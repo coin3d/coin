@@ -729,7 +729,7 @@ SoTransformerDragger::SoTransformerDragger(void)
                                        static_cast<int>(strlen(TRANSFORMERDRAGGER_draggergeometry)));
   }
 
-  SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
+  SO_KIT_ADD_FIELD(rotation, (SbRotation::identity()));
   SO_KIT_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
   SO_KIT_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
   // FIXME: it doesn't look like this field is actually used or set

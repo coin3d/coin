@@ -149,7 +149,7 @@ SbCylinderPlaneProjector::getRotation(const SbVec3f & point1, const SbBool tol1,
     SbLine myLine(point1, ptOnLine);
     if (!this->cylinder.intersect(myLine, pt1_tol)) {
       // shouldn't happen, but be robust if it does
-      return SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f);
+      return SbRotation::identity();
     }
     pt1_tol = horizline.getClosestPoint(pt1_tol);
   }
@@ -161,7 +161,7 @@ SbCylinderPlaneProjector::getRotation(const SbVec3f & point1, const SbBool tol1,
     SbLine myLine(pt2, ptOnLine);
     if (!this->cylinder.intersect(myLine, pt2_tol)) {
       // shouldn't happen, but be robust if it does
-      return SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f);
+      return SbRotation::identity();
     }
     pt2_tol = horizline.getClosestPoint(pt2_tol);
   }

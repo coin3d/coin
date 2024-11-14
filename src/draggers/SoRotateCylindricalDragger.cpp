@@ -174,7 +174,7 @@ SoRotateCylindricalDragger::SoRotateCylindricalDragger(void)
                                        static_cast<int>(strlen(ROTATECYLINDRICALDRAGGER_draggergeometry)));
   }
 
-  SO_KIT_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
+  SO_KIT_ADD_FIELD(rotation, (SbRotation::identity()));
   SO_KIT_INIT_INSTANCE();
 
   // initialize default parts

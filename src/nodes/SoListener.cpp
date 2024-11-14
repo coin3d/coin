@@ -154,8 +154,7 @@ SoListener::SoListener()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoListener);
   SO_NODE_ADD_FIELD(position, (0.0f, 0.0f, 0.0f));
-  SO_NODE_ADD_FIELD(orientation, 
-                    (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
+  SO_NODE_ADD_FIELD(orientation, (SbRotation::identity()));
   SO_NODE_ADD_FIELD(dopplerVelocity, (0.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(dopplerFactor, (0.0f));
   SO_NODE_ADD_FIELD(gain, (1.0f));

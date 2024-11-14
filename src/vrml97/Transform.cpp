@@ -253,7 +253,7 @@ SoVRMLTransform::pointAt(const SbVec3f & from,
 {
   this->scale = SbVec3f(1.0f, 1.0f, 1.0f);
   this->center = SbVec3f(0.0f, 0.0f, 0.0f);
-  this->scaleOrientation = SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f);
+  this->scaleOrientation = SbRotation::identity();
 
   this->translation = from;
   SbVec3f dir = to - from;
