@@ -324,7 +324,6 @@ SoTransform::recenter(const SbVec3f & newcenter)
   this->center = newcenter;
 }
 
-
 // Doc from superclass.
 void
 SoTransform::doAction(SoAction * action)
@@ -335,8 +334,10 @@ SoTransform::doAction(SoAction * action)
                       this->scaleFactor.getValue(),
                       this->scaleOrientation.getValue(),
                       this->center.getValue());
-  
-  SoModelMatrixElement::mult(action->getState(), this, matrix);
+
+  if (matrix != SbMatrix::identity()) {
+      SoModelMatrixElement::mult(action->getState(), this, matrix);
+  }
 }
 
 // Doc from superclass.
