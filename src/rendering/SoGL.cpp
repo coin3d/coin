@@ -102,7 +102,7 @@ sogl_glue_instance(const SoState * state)
   if (!didwarn) {
     didwarn = 1;
     SoDebugError::postWarning("sogl_glue_instance",
-                              "Wrong action type detected. Please report this to <coin-support@sim.no>, "
+                              "Wrong action type detected. Please report this to <coin-support@coin3d.org>, "
                               "and include information about your system (compiler, Linux version, etc.");
   }
   // just return some cc_glglue instance. It usually doesn't matter

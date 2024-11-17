@@ -663,7 +663,7 @@ SoVRMLInline::readLocalFile(SoInput * in)
 
     // Note that we handle this differently than Inventor, which lets
     // the whole import fail.
-    SoReadError::post(in, "Unable to read Inline file: ``%s''",
+    SoReadError::post(in, "Unable to read Inline file: \"%s\"",
                       filename.getString());
   }
 

@@ -2371,7 +2371,7 @@ SoField::readConnection(SoInput * in)
   }
 
   if (!masterfield && !masteroutput) {
-    SoReadError::post(in, "no field or output ``%s'' in ``%s''",
+    SoReadError::post(in, "no field or output \"%s\" in \"%s\"",
                       mastername.getString(),
                       fc->getTypeId().getName().getString());
     return FALSE;
@@ -2386,7 +2386,7 @@ SoField::readConnection(SoInput * in)
   else if (masteroutput) { ok = this->connectFrom(masteroutput, TRUE); }
 
   if (!ok) {
-    SoReadError::post(in, "couldn't connect ``%s'' field to ``%s'', "
+    SoReadError::post(in, "couldn't connect \"%s\" field to \"%s\", "
                       "connection will be ignored",
                       this->getTypeId().getName().getString(),
                       mastername.getString());

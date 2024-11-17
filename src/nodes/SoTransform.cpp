@@ -169,7 +169,7 @@ SoTransform::pointAt(const SbVec3f & frompoint, const SbVec3f & topoint)
 #if COIN_DEBUG
   else {
     SoDebugError::postWarning("SoTransform::pointAt",
-                              "frompt == topoint");
+                              "frompoint == topoint");
 
   }
 #endif // COIN_DEBUG

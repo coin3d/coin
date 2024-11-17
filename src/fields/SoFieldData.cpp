@@ -465,7 +465,7 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
     if (fieldflags & ~(SoFieldData::NOTBUILTIN)) {
       SoReadError::post(in,
                         "Unknown flags in control word: 0x%02x, "
-                        "please report to coin-support@sim.no",
+                        "please report to coin-support@coin3d.org",
                         fieldflags);
     }
 
@@ -845,7 +845,7 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
 
 #if COIN_DEBUG && 0 // debug
     SoDebugError::postInfo("SoFieldData::readFieldDescriptions",
-                           "type: ``%s'', name: ``%s''",
+                           "type: \"%s\", name: \"%s\"",
                            fieldtypename.getString(), fieldname.getString());
 #endif // debug
 

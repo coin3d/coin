@@ -875,7 +875,7 @@ SoBaseKit::set(const char * namevaluepairliststring)
     if (!SoBaseKit::findPart(partname, kit, partNum, isList, listIdx, TRUE, NULL, TRUE)) {
 #if COIN_DEBUG
       SoDebugError::postWarning("SoBaseKit::set",
-                                "part ``%s'' not found",
+                                "part \"%s\" not found",
                                 partname.getString());
 #endif // COIN_DEBUG
       return FALSE;
@@ -889,7 +889,7 @@ SoBaseKit::set(const char * namevaluepairliststring)
       if (listIdx < 0 || listIdx > list->getNumChildren()) {
 #if COIN_DEBUG
         SoDebugError::postWarning("SoBaseKit::set",
-                                  "index %d out of bounds for part ``%s''",
+                                  "index %d out of bounds for part \"%s\"",
                                   listIdx, partname.getString());
 #endif // COIN_DEBUG
         return FALSE;
@@ -898,7 +898,7 @@ SoBaseKit::set(const char * namevaluepairliststring)
         if (!list->canCreateDefaultChild()) {
 #if COIN_DEBUG
           SoDebugError::postWarning("SoBaseKit::set",
-                                    "Unable to create default child for list-part ``%s''",
+                                    "Unable to create default child for list-part \"%s\"",
                                     partname.getString());
 #endif // COIN_DEBUG
           return FALSE;
@@ -914,7 +914,7 @@ SoBaseKit::set(const char * namevaluepairliststring)
     if (!node->getFieldData()->read(&memInput, node, TRUE, dummy)) {
 #if COIN_DEBUG
       SoDebugError::postWarning("SoBaseKit::set",
-                                "error while parsing data for part ``%s''",
+                                "error while parsing data for part \"%s\"",
                                 partname.getString());
 #endif // COIN_DEBUG
       return FALSE;
@@ -951,7 +951,7 @@ SoBaseKit::set(const char * partnamestring, const char * parameterstring)
       if (listIdx < 0 || listIdx > list->getNumChildren()) {
 #if COIN_DEBUG
         SoDebugError::postWarning("SoBaseKit::set",
-                                  "index %d out of bounds for part ``%s''",
+                                  "index %d out of bounds for part \"%s\"",
                                   listIdx, partnamestring);
 #endif // COIN_DEBUG
         return FALSE;
@@ -960,7 +960,7 @@ SoBaseKit::set(const char * partnamestring, const char * parameterstring)
         if (!list->canCreateDefaultChild()) {
 #if COIN_DEBUG
           SoDebugError::postWarning("SoBaseKit::set",
-                                    "Unable to create default child for list-part ``%s''",
+                                    "Unable to create default child for list-part \"%s\"",
                                     partname.getString());
 #endif // COIN_DEBUG
           return FALSE;
@@ -1709,7 +1709,7 @@ SoBaseKit::getAnyPart(const SbName & partname, SbBool makeifneeded,
 
     if (publiccheck && !kit->getNodekitCatalog()->isPublic(partNum)) {
       SoDebugError::postWarning("SoBaseKit::getAnyPart",
-                                "Part ``%s'' found in %s, but access is private.",
+                                "Part \"%s\" found in %s, but access is private.",
                                 partname.getString(),
                                 this->getTypeId().getName().getString());
       return NULL;
@@ -1728,7 +1728,7 @@ SoBaseKit::getAnyPart(const SbName & partname, SbBool makeifneeded,
           if (!list->canCreateDefaultChild()) {
 #if COIN_DEBUG
             SoDebugError::postWarning("SoBaseKit::getAnyPart",
-                                      "Unable to create default child for list-part ``%s''",
+                                      "Unable to create default child for list-part \"%s\"",
                                       partname.getString());
 #endif // COIN_DEBUG
           }
@@ -1737,7 +1737,7 @@ SoBaseKit::getAnyPart(const SbName & partname, SbBool makeifneeded,
         else {
 #if COIN_DEBUG
           SoDebugError::postWarning("SoBaseKit::getAnyPart",
-                                    "index %d out of bounds for part ``%s''",
+                                    "index %d out of bounds for part \"%s\"",
                                     listIdx, partname.getString());
 #endif // COIN_DEBUG
         }
@@ -1755,7 +1755,7 @@ SoBaseKit::getAnyPart(const SbName & partname, SbBool makeifneeded,
 #if COIN_DEBUG
   if (makeifneeded) { // user probably expected part to be found, post a warning
     SoDebugError::postWarning("SoBaseKit::getAnyPart",
-                              "part ``%s'' not found in %s",
+                              "part \"%s\" not found in %s",
                               partname.getString(),
                               this->getTypeId().getName().getString());
   }
@@ -1836,7 +1836,7 @@ SoBaseKit::createPathToAnyPart(const SbName & partname, SbBool makeifneeded,
         if (listIdx < 0 || listIdx > numlistchildren || (!makeifneeded && listIdx == numlistchildren)) {
 #if COIN_DEBUG
           SoDebugError::postWarning("SoBaseKit::createPathToAnyPart",
-                                    "index %d out of bounds for part ``%s''",
+                                    "index %d out of bounds for part \"%s\"",
                                     listIdx, partname.getString());
 #endif // COIN_DEBUG
           path->unref();
@@ -1846,7 +1846,7 @@ SoBaseKit::createPathToAnyPart(const SbName & partname, SbBool makeifneeded,
           if (!list->canCreateDefaultChild()) {
 #if COIN_DEBUG
             SoDebugError::postWarning("SoBaseKit::createPathToAnyPart",
-                                      "Unable to create default child for list-part ``%s''",
+                                      "Unable to create default child for list-part \"%s\"",
                                       partname.getString());
 #endif //COIN_DEBUG
 
@@ -1904,7 +1904,7 @@ SoBaseKit::setAnyPart(const SbName & partname, SoNode * from, SbBool anypart)
           else {
 #if COIN_DEBUG
             SoDebugError::postWarning("SoBaseKit::setAnyPart",
-                                      "index %d out of bounds for part ``%s''",
+                                      "index %d out of bounds for part \"%s\"",
                                       listIdx, partname.getString());
 #endif // COIN_DEBUG
           }
@@ -1917,7 +1917,7 @@ SoBaseKit::setAnyPart(const SbName & partname, SoNode * from, SbBool anypart)
     else {
 #if COIN_DEBUG
       SoDebugError::postWarning("SoBaseKit::setAnyPart",
-                                "attempted to set non-public part ``%s''",
+                                "attempted to set non-public part \"%s\"",
                                 partname.getString());
 #endif // COIN_DEBUG
     }
@@ -2280,7 +2280,7 @@ SoBaseKit::findPart(const SbString & partname, SoBaseKit *& kit, int & partnum,
       if (listidx < 0 || listidx > numlistchildren || (!makeifneeded && listidx == numlistchildren)) {
 #if COIN_DEBUG
         SoDebugError::postWarning("SoBaseKit::findPart",
-                                  "index %d out of bounds for part ``%s''",
+                                  "index %d out of bounds for part \"%s\"",
                                   listidx,
                                   firstpartname.getString());
 #endif // COIN_DEBUG
@@ -2351,8 +2351,8 @@ SoBaseKit::setPart(const int partnum, SoNode * node)
   if (node && !node->getTypeId().isDerivedFrom(catalog->getType(partnum))) {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoBaseKit::setPart",
-                              "Attempted to set part ``%s'' "
-                              "to wrong type. Expected ``%s'', got ``%s''",
+                              "Attempted to set part \"%s\" "
+                              "to wrong type. Expected \"%s\", got \"%s\"",
                               catalog->getName(partnum).getString(),
                               catalog->getType(partnum).getName().getString(),
                               node->getTypeId().getName().getString());

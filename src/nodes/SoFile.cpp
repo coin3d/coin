@@ -309,7 +309,7 @@ SoFile::readNamedFile(SoInput * in)
       
     // Note that we handle this differently than Inventor, which lets
     // the whole import fail.
-    SoReadError::post(in, "Unable to read subfile: ``%s''",
+    SoReadError::post(in, "Unable to read subfile: \"%s\"",
                       this->name.getValue().getString());
   }
 

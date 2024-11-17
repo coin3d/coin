@@ -146,7 +146,7 @@ soproto_fetchextern_default_cb(SoInput * in,
   }
 
   if (!in->pushFile(filename.getString())) {
-    SoReadError::post(in, "Unable to find EXTERNPROTO file: ``%s''",
+    SoReadError::post(in, "Unable to find EXTERNPROTO file: \"%s\"",
                       filename.getString());
     return NULL;
   }
@@ -169,7 +169,7 @@ soproto_fetchextern_default_cb(SoInput * in,
       if (gotchar) in->putBack(dummy);
     }
 
-    SoReadError::post(in, "Unable to read EXTERNPROTO file: ``%s''",
+    SoReadError::post(in, "Unable to read EXTERNPROTO file: \"%s\"",
                       filename.getString());
     return NULL;
   }
