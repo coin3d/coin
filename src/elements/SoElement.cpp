@@ -251,7 +251,7 @@
 
     SoInput input;
     if (!input.openFile(argv[1])) {
-      (void)fprintf(stderr, "ERROR: couldn't open file ``%s''.\n", argv[1]);
+      (void)fprintf(stderr, "ERROR: couldn't open file \"%s\".\n", argv[1]);
       exit(1);
     }
 

@@ -897,7 +897,7 @@ SoDB::createGlobalField(const SbName & name, SoType type)
 #if COIN_DEBUG
   if (!type.canCreateInstance()) {
     SoDebugError::postWarning("SoDB::createGlobalField",
-                              "Can't create instance of field type ``%s''.",
+                              "Can't create instance of field type \"%s\".",
                               type.getName().getString());
     return NULL;
   }
@@ -1094,8 +1094,8 @@ SoDB::addConverter(SoType from, SoType to, SoType converter)
   if (!nonexist) {
 #if COIN_DEBUG
     SoDebugError::postWarning("SoDB::addConverter",
-                              "Conversion from ``%s'' to ``%s'' is already "
-                              "handled by instances of ``%s''",
+                              "Conversion from \"%s\" to \"%s\" is already "
+                              "handled by instances of \"%s\"",
                               from.getName().getString(),
                               to.getName().getString(),
                               converter.getName().getString());

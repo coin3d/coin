@@ -286,7 +286,7 @@ SoType::createType(const SoType parent, const SbName name,
   int16_t discard;
   if (type_dict->get(name.getString(), discard)) {
     SoDebugError::post("SoType::createType",
-                       "a type with name ``%s'' already created",
+                       "a type with name \"%s\" already created",
                        name.getString());
     return SoType::fromName(name.getString());
   }
@@ -319,7 +319,7 @@ SoType::removeType(const SbName & name)
   int16_t index = 0;
   if (!type_dict->get(name.getString(), index)) {
     SoDebugError::post("SoType::removeType",
-                       "type with name ``%s'' not found",
+                       "type with name \"%s\" not found",
                        name.getString());
     return FALSE;
   }

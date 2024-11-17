@@ -512,7 +512,7 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
 
 #if COIN_DEBUG && 0
   SoDebugError::postInfo("SoNodekitCatalog::addEntry",
-                         "new entry: ``%s''", name.getString());
+                         "new entry: \"%s\"", name.getString());
 #endif
 
   CC_GLOBAL_LOCK;
