@@ -1,3 +1,6 @@
+#ifndef COIN_GLUE_INTERNAL_EGL_H
+#define COIN_GLUE_INTERNAL_EGL_H
+
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
@@ -30,26 +33,32 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include "gl.cpp"
-#include "gl_wgl.cpp"
-#include "gl_glx.cpp"
-#include "gl_agl.cpp"
-#include "gl_cgl.cpp"
-#include "gl_egl.cpp"
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif
 
-#include "cg.cpp"
-#include "spidermonkey.cpp"
+#include <Inventor/C/glue/gl.h>
 
-#include "dl.cpp"
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
-#include "win32api.cpp"
+void eglglue_init(cc_glglue * w);
 
-#include "GLUWrapper.cpp"
-#include "simage_wrapper.cpp"
-#include "openal_wrapper.cpp"
+void * eglglue_getprocaddress(const cc_glglue * w, const char * fname);
+void * eglglue_context_create_offscreen(unsigned int width,
+                                        unsigned int height);
+SbBool eglglue_context_make_current(void * ctx);
+void eglglue_context_reinstate_previous(void * ctx);
+void eglglue_context_destruct(void * ctx);
+void eglglue_context_bind_pbuffer(void * ctx);
+void eglglue_context_release_pbuffer(void * ctx);
+SbBool eglglue_context_pbuffer_is_bound(void * ctx);
+SbBool eglglue_context_can_render_to_texture(void * ctx);
+SbBool eglglue_context_pbuffer_max(void * ctx, unsigned int * lims);
+void eglglue_cleanup(void);
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
-#include "bzip2.cpp"
-#include "freetype.cpp"
-#include "zlib.cpp"
-
-#include "normalization_cubemap.cpp"
+#endif /* !COIN_GLUE_INTERNAL_EGL_H */
