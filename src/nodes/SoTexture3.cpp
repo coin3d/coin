@@ -498,9 +498,9 @@ SoTexture3::loadFilenames(SoInput * in)
                            volumeSize[0],volumeSize[1],volumeSize[2],
                            volumenc,
                            size[0],size[1],size[2],nc);
-            if (in) SoReadError::post(in, errstr.getString());
+            if (in) SoReadError::post(in, "%s", errstr.getString());
             else SoDebugError::postWarning("SoTexture3::loadFilenames()",
-                                           errstr.getString());
+                                           "%s", errstr.getString());
           }
         }
         if (!sizeError) {
@@ -521,9 +521,9 @@ SoTexture3::loadFilenames(SoInput * in)
         SbString errstr;
         errstr.sprintf("Could not read texture file #%d: %s",
                        n, filename.getString());
-        if (in) SoReadError::post(in, errstr.getString());
+        if (in) SoReadError::post(in, "%s", errstr.getString());
         else SoDebugError::postWarning("SoTexture3::loadFilenames()",
-                                       errstr.getString());
+                                       "%s", errstr.getString());
         retval = FALSE;
       }
     }
