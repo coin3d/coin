@@ -199,7 +199,7 @@ static JSBool JavascriptPrint(JSContext * cx, JSObject * COIN_UNUSED_ARG(obj),
     out += spidermonkey()->JS_GetStringBytes(spidermonkey()->JS_ValueToString(cx, argv[i]));
   }
   
-  SoDebugError::postInfo("JavascriptPrint", out.getString());
+  SoDebugError::postInfo("JavascriptPrint", "%s", out.getString());
   return JS_TRUE;
 }
 

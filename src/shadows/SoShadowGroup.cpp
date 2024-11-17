@@ -2146,7 +2146,7 @@ SoShadowGroupP::GLRender(SoGLRenderAction * action, const SbBool inpath)
     static bool first = true;
     if (first) {
       first = false;
-      SoDebugError::postWarning("SoShadowGroupP::GLRender", reason.getString());
+      SoDebugError::postWarning("SoShadowGroupP::GLRender", "%s", reason.getString());
     }
   }
 
