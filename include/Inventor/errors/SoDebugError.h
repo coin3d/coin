@@ -39,8 +39,12 @@
 // Avoid problem with Microsoft Win32 API headers (yes, they actually
 // #define ERROR -- in wingdi.h).
 #if defined(ERROR)
-#define SODEBUGERROR_STORE_ERROR_DEF ERROR
+enum {
+  SODEBUGERROR_ERROR_VALUE = ERROR,
 #undef ERROR
+  ERROR = SODEBUGERROR_ERROR_VALUE,
+};
+#define ERROR ERROR
 #endif /* ERROR */
 
 
@@ -79,11 +83,5 @@ private:
   static void * callbackData;
   Severity severity;
 };
-
-// Avoid problem with Microsoft Win32 API headers (see above).
-#if defined(SODEBUGERROR_STORE_ERROR_DEF)
-#define ERROR SODEBUGERROR_STORE_ERROR_DEF
-#undef SODEBUGERROR_STORE_ERROR_DEF
-#endif /* SODEBUGERROR_STORE_ERROR_DEF */
 
 #endif // !COIN_SODEBUGERROR_H
