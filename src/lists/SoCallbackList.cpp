@@ -95,7 +95,11 @@ SoCallbackList::removeCallback(SoCallbackListCB * f, void * userdata)
   // of course whether it should be allowed to have the same callback
   // entry in the list twice...) 20050723 kyrah.
   while (idx != -1) {
-    if ((this->funclist[idx] == (void*)f) && (this->datalist[idx] == userdata)) break;
+    if ((this->funclist[idx] == (void*)f) && (this->datalist[idx] == userdata)) {
+      this->funclist.remove(idx);
+      this->datalist.remove(idx);
+      break;
+    }
     idx--;
   }
 
@@ -109,9 +113,6 @@ SoCallbackList::removeCallback(SoCallbackListCB * f, void * userdata)
     return;
   }
 #endif // COIN_DEBUG
-
-  this->funclist.remove(idx);
-  this->datalist.remove(idx);
 }
 
 /*!
