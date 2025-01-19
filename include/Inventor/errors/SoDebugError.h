@@ -39,7 +39,8 @@
 // Avoid problem with Microsoft Win32 API headers (yes, they actually
 // #define ERROR -- in wingdi.h).
 #if defined(ERROR)
-#define SODEBUGERROR_STORE_ERROR_DEF ERROR
+#define SODEBUGERROR_STORE_ERROR_DEF
+#pragma push_macro("ERROR")
 #undef ERROR
 #endif /* ERROR */
 
@@ -82,7 +83,7 @@ private:
 
 // Avoid problem with Microsoft Win32 API headers (see above).
 #if defined(SODEBUGERROR_STORE_ERROR_DEF)
-#define ERROR SODEBUGERROR_STORE_ERROR_DEF
+#pragma pop_macro("ERROR")
 #undef SODEBUGERROR_STORE_ERROR_DEF
 #endif /* SODEBUGERROR_STORE_ERROR_DEF */
 
