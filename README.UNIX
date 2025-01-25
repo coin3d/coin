@@ -72,8 +72,8 @@ further input provided from people using Coin on AIX.
    become way too large under many IRIX platforms.
 
    (For more information, see the documentation of the "ncargs" kernel
-   variable in "Appendix A: Kernel tunable parameters" in «IRIX 6.5
-   Admin: System Configuration and Operation», available online at
+   variable in "Appendix A: Kernel tunable parameters" in Â«IRIX 6.5
+   Admin: System Configuration and OperationÂ», available online at
    <URL:http://techpubs.sgi.com>.)
 
    You can fix this problem once and for all by doing this as root

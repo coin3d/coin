@@ -87,9 +87,9 @@
   placed at:
 
   \verbatim
-    P[i,j].x = xSpacing × i
-    P[i,j].y = height[ i + j × xDimension]
-    P[i,j].z = zSpacing × j     
+    P[i,j].x = xSpacing Ã— i
+    P[i,j].y = height[ i + j Ã— xDimension]
+    P[i,j].z = zSpacing Ã— j     
 
     where 0 <= i < xDimension and 0 <= j < zDimension, and 
     P[0,0] is height[0] units above/below the origin of the local
@@ -110,29 +110,29 @@
   to each vertex or each quadrilateral of the ElevationGrid node. If
   colorPerVertex is FALSE and the color field is not NULL, the color
   field shall specify a Color node containing at least
-  (xDimension-1)×(zDimension-1) colours; one for each quadrilateral,
+  (xDimension-1)Ã—(zDimension-1) colours; one for each quadrilateral,
   ordered as follows: 
 
   \verbatim
-    QuadColor[i,j] = Color[ i + j × (xDimension-1)]
+    QuadColor[i,j] = Color[ i + j Ã— (xDimension-1)]
 
     where 0 <= i < xDimension-1 and 0 <= j < zDimension-1, and
     QuadColor[i,j] is the colour for the quadrilateral defined by
-    height[i+j×xDimension], height[(i+1)+j×xDimension],
-    height[(i+1)+(j+1)×xDimension] and height[i+(j+1)×xDimension] 
+    height[i+jÃ—xDimension], height[(i+1)+jÃ—xDimension],
+    height[(i+1)+(j+1)Ã—xDimension] and height[i+(j+1)Ã—xDimension] 
   \endverbatim
   
   If
   colorPerVertex is TRUE and the color field is not NULL, the color
-  field shall specify a Color node containing at least xDimension ×
+  field shall specify a Color node containing at least xDimension Ã—
   zDimension colours, one for each vertex, ordered as follows:
 
   \verbatim
-    VertexColor[i,j] = Color[ i + j × xDimension] 
+    VertexColor[i,j] = Color[ i + j Ã— xDimension] 
 
     where 0 <= i < xDimension and 0 <= j < zDimension, and 
     VertexColor[i,j] is the colour for the vertex defined by 
-    height[i+j×xDimension] 
+    height[i+jÃ—xDimension] 
   \endverbatim
 
   The normal field specifies per-vertex or per-quadrilateral normals
@@ -146,29 +146,29 @@
   depending on the value of normalPerVertex. If normalPerVertex is
   FALSE and the normal node is not NULL, the normal field shall
   specify a Normal node containing at least
-  (xDimension-1)×(zDimension-1) normals; one for each quadrilateral,
+  (xDimension-1)Ã—(zDimension-1) normals; one for each quadrilateral,
   ordered as follows: 
 
   \verbatim
-    QuadNormal[i,j] = Normal[ i + j × (xDimension-1)] 
+    QuadNormal[i,j] = Normal[ i + j Ã— (xDimension-1)] 
 
     where 0 <= i < xDimension-1 and 0 <= j < zDimension-1, and 
     QuadNormal[i,j] is the normal for the quadrilateral 
-    defined by height[i+j×xDimension], height[(i+1)+j×xDimension], 
-    height[(i+1)+(j+1)×xDimension] and height[i+(j+1)×xDimension] 
+    defined by height[i+jÃ—xDimension], height[(i+1)+jÃ—xDimension], 
+    height[(i+1)+(j+1)Ã—xDimension] and height[i+(j+1)Ã—xDimension] 
   \endverbatim
 
   If normalPerVertex is TRUE and the normal field is not NULL, the
   normal field shall specify a Normal node containing at least
-  xDimension × zDimension normals; one for each vertex, ordered as
+  xDimension Ã— zDimension normals; one for each vertex, ordered as
   follows:
 
   \verbatim
-    VertexNormal[i,j] = Normal[ i + j × xDimension] 
+    VertexNormal[i,j] = Normal[ i + j Ã— xDimension] 
     
     where 0 <= i < xDimension and 0 <= j < zDimension, and
     VertexNormal[i,j] is the normal for the vertex defined by
-    height[i+j×xDimension] 
+    height[i+jÃ—xDimension] 
   \endverbatim
 
   The texCoord field specifies per-vertex texture coordinates for the
@@ -178,15 +178,15 @@
   texture coordinate is aligned with the positive X-axis, and the T
   texture coordinate with positive Z-axis. If texCoord is not NULL, it
   shall specify a TextureCoordinate node containing at least
-  (xDimension)×(zDimension) texture coordinates; one for each vertex,
+  (xDimension)Ã—(zDimension) texture coordinates; one for each vertex,
   ordered as follows:
 
   \verbatim
-    VertexTexCoord[i,j] = TextureCoordinate[ i + j × xDimension] 
+    VertexTexCoord[i,j] = TextureCoordinate[ i + j Ã— xDimension] 
 
     where 0 <= i < xDimension and 0 <= j < zDimension, and 
     VertexTexCoord[i,j] is the texture coordinate for the vertex 
-    defined by height[i+j×xDimension] 
+    defined by height[i+jÃ—xDimension] 
   \endverbatim
 
   The ccw, solid, and creaseAngle fields are described in 4.6.3,

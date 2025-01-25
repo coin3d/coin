@@ -68,7 +68,7 @@
     light sources this surface shall reflect. Ambient light is
     omnidirectional and depends only on the number of light sources, not
     their positions with respect to the surface. Ambient colour is
-    calculated as ambientIntensity × diffuseColor.
+    calculated as ambientIntensity Ã— diffuseColor.
  
   - The diffuseColor field reflects all VRML light sources depending
     on the angle of the surface with respect to the light source. The more

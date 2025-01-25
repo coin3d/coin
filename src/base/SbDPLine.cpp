@@ -150,17 +150,17 @@ SbDPLine::getClosestPoints(const SbDPLine& line2,
   // the solution line q2 - q1 is orthogonal to d1 and d2 
   // (or a null vector if the lines intersect), which yields:
   //
-  // (u + t2*d2 - t1*d1) · d1 = 0                    (2)
-  // (u + t2*d2 - t1*d1) · d2 = 0
+  // (u + t2*d2 - t1*d1) Â· d1 = 0                    (2)
+  // (u + t2*d2 - t1*d1) Â· d2 = 0
   //
-  // we know |d1| and |d2| == 1, and set d1 · d2 = t
+  // we know |d1| and |d2| == 1, and set d1 Â· d2 = t
   //
-  // t1 - t*t2 = u · d1
-  // t*t1 - t2 = u · d2
+  // t1 - t*t2 = u Â· d1
+  // t*t1 - t2 = u Â· d2
   //
   // Solve for t1, and find q1 using (0):
   //
-  // t1 = (u·d1 - t * (u·d2))/ (1 - t^2)
+  // t1 = (uÂ·d1 - t * (uÂ·d2))/ (1 - t^2)
   //
   // just find q2 by using line2.getClosestPoint(q1)
 
@@ -203,7 +203,7 @@ SbDPLine::getClosestPoints(const SbDPLine& line2,
   // From the discussion on getClosestPoint(), we know that the point
   // we wish to find on a line can be expressed as:
   //
-  //                  (Q1-P0)·D0
+  //                  (Q1-P0)Â·D0
   //   Q0 = P0 + D0 * ----------
   //                     |D0|
   //
@@ -212,8 +212,8 @@ SbDPLine::getClosestPoints(const SbDPLine& line2,
   // we get two equations with two unknowns. By substituting for
   // Q1 we get a new equation with a single unknown, Q0:
   //
-  //                   (         (Q0 - P1)·D1    )
-  //                   (P1 + D1 * ------------ - P0) · D0
+  //                   (         (Q0 - P1)Â·D1    )
+  //                   (P1 + D1 * ------------ - P0) Â· D0
   //                   (             |D1|        )
   //   Q0 = P0 + D0 * ------------------------------------
   //                                |D0|
@@ -228,14 +228,14 @@ SbDPLine::getClosestPoints(const SbDPLine& line2,
   //
   //   f(t0, t1) = |Q1 - Q0| = |P1+D1*t1 - (P0+D0*t0)|
   //
-  //                         (t1*D1 - P0)·D0
+  //                         (t1*D1 - P0)Â·D0
   // t0 can be expressed as  ---------------  which gives us
   //                               |D0|
   //
-  //   f(t) = |P1 + D1*t - P0 - D0N * ((t*D1 - P0)·D0)|, t = t1
+  //   f(t) = |P1 + D1*t - P0 - D0N * ((t*D1 - P0)Â·D0)|, t = t1
   //                                                     D0N = D0 normalized
   //                               _____________
-  // ..which is eual to   f(t) = \/Þ² + ß² + ð²  , where Þ, ß, and ð
+  // ..which is eual to   f(t) = \/ÃžÂ² + ÃŸÂ² + Ã°Â²  , where Ãž, ÃŸ, and Ã°
   // is the full expression above with the x, y, and z components
   // of the vectors.
   //
@@ -243,19 +243,19 @@ SbDPLine::getClosestPoints(const SbDPLine& line2,
   // ignore the square root. We'll do the next parts of the math on a
   // general components case, since it's the same for the x, y and z parts.
   //
-  // Expanding any of the Þ, ß, or ð expressions, we get this:
+  // Expanding any of the Ãž, ÃŸ, or Ã° expressions, we get this:
   //   (P1[i] - D1[i]*t - P0[i] - D0N[i]*D0[x]*D1[x]*t + D0N[i]*D0[x]*P0[x]
   //      - D0N[i]*D0[y]*D1[y]*t + D0N[i]*D0[y]*P0[y] - D0N[i]*D0[z]*D1[z]*t
-  //      + D0N[i]*D0[z]*P0[z])² ,
+  //      + D0N[i]*D0[z]*P0[z])Â² ,
   // where i=[x|y|z].
   //
-  // Deriving this by using the chain rule (i.e. g(t)² = 2*g(t)*g'(t)), we'll
+  // Deriving this by using the chain rule (i.e. g(t)Â² = 2*g(t)*g'(t)), we'll
   // get this equation for finding the t yielding the minimum distance
   // between two points Q0 and Q1 on the lines:
   //
   //      -(cx*dx+cy*dy+cz*dz)
   //  t = --------------------
-  //        dx² + dy² + dz²
+  //        dxÂ² + dyÂ² + dzÂ²
   //
   //  di = D1[i] - D0N[i] * (D0[x]*D1[x] + D0[y]*D1[y] + D0[z]*D1[z])
   // and
@@ -316,7 +316,7 @@ SbDPLine::getClosestPoint(const SbVec3d& point) const
   // Q = point to find.
   //
   // Solved by:
-  //                         a·b
+  //                         aÂ·b
   //             comp_b(a) = ---   , a = P-SP, b = D, comp_b(a) = |Q-SP|
   //                         |b|
   //

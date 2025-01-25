@@ -193,7 +193,7 @@ public:
     // ANSI C isspace() takes the current locale into account. Under
     // Microsoft Windows, this can lead to "interesting" artifacts, like a
     // case with RR tracked down and fixed by <thammer@sim.no> where a
-    // character (was it ü?) with ASCII value > 127 made isspace()
+    // character (was it Ã¼?) with ASCII value > 127 made isspace()
     // return non-nil on a German system. So we're using our own
     // locale-independent isspace() implementation instead.
     return coin_isspace(c) || (this->vrml2file && c == ',');
