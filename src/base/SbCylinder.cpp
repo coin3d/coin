@@ -180,7 +180,7 @@ SbCylinder::intersect(const SbLine& l, SbVec3f& enter, SbVec3f& exit) const
   // be written as
   //                     Qc = Pc + x*U0 + y*U1 + z*U2
   //
-  // The points on the cylinder is then those matching x²+y²=r².
+  // The points on the cylinder is then those matching xÂ²+yÂ²=rÂ².
   //
   // For the ray, we project it into the coordinate system by
   // rewriting the line equation   Qr = Pr + t*Dr  as
@@ -189,13 +189,13 @@ SbCylinder::intersect(const SbLine& l, SbVec3f& enter, SbVec3f& exit) const
   //
   // The intersection is then determined by
   //
-  //    (x0 + t*x1)² + (y0 + t*y1)² = r²
+  //    (x0 + t*x1)Â² + (y0 + t*y1)Â² = rÂ²
   //
-  // => (x1²+y1²)*t² + 2*(x0*x1+y0*y1)*t + (x1²+y1²-r²) = 0
+  // => (x1Â²+y1Â²)*tÂ² + 2*(x0*x1+y0*y1)*t + (x1Â²+y1Â²-rÂ²) = 0
   //
   // Which can be solved by:
-  // t = (-b ± sqrt(b² - 4ac))/2a, a = x1² + y1², b = 2*(x0*x1+y0*y1),
-  //                               c = (x1²+y1²-r²),
+  // t = (-b Â± sqrt(bÂ² - 4ac))/2a, a = x1Â² + y1Â², b = 2*(x0*x1+y0*y1),
+  //                               c = (x1Â²+y1Â²-rÂ²),
   //
   // ...
   //                                                        19980824 mortene.

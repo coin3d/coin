@@ -106,7 +106,7 @@
 
   The angle in radians from the direction vector where there will be
   no light outside (i.e. the angle of the "lampshade"). Default value
-  is PI/4.0 (i.e. 45°). The value of this field will be clamped to
+  is PI/4.0 (i.e. 45Â°). The value of this field will be clamped to
   [0.0, PI/2] before it is used.
 */
 

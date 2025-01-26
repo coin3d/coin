@@ -34,7 +34,7 @@
 	Adds dummy include files SoWinEnterScope.h and SoWinLeaveScope.h to
 	be sourcecode compatible with TGS' Inventor on MSWindows.
 	
-	Problem reported by Jens Jacob Støren.
+	Problem reported by Jens Jacob StÃ¸ren.
 
 2000-12-14 13:16  mortene
 
@@ -79,7 +79,7 @@
 	src/draggers/SoTranslate2Dragger.cpp,
 	src/nodekits/SoInteractionKit.cpp, src/nodekits/SoSeparatorKit.cpp:
 	
-	Adds missing SoSubKit.h macros. Problem reported by Jacob Støren.
+	Adds missing SoSubKit.h macros. Problem reported by Jacob StÃ¸ren.
 	
 	Converts use of SO_NODE_* macros to SO_KIT_* macros where
 	appropriate.
@@ -8144,7 +8144,7 @@
 	* include/Inventor/nodes/SoSwitch.h, src/nodes/SoSwitch.cpp:
 	
 	Implemented the missing constructor (which takes a hint about the
-	number of children). Thanks to Jacob Støren for pointing this out.
+	number of children). Thanks to Jacob StÃ¸ren for pointing this out.
 
 2000-05-11 14:38  mortene
 

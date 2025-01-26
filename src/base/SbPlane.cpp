@@ -109,9 +109,9 @@ SbPlane::SbPlane(const SbVec3f& p0, const SbVec3f& p1, const SbVec3f& p2)
 
   // we test and warn about a null vector above
   (void) this->normal.normalize();
-  //     N·point
+  //     NÂ·point
   // d = -------, |N| == 1
-  //       |N|²
+  //       |N|Â²
 
   this->distance = this->normal.dot(p0);
 }
@@ -134,9 +134,9 @@ SbPlane::SbPlane(const SbVec3f& normalref, const SbVec3f& point)
   // we test and warn about a null vector above
   (void) this->normal.normalize();
 
-  //     N·point
+  //     NÂ·point
   // d = -------, |N| == 1
-  //       |N|²
+  //       |N|Â²
 
   this->distance = this->normal.dot(point);
 }
@@ -183,15 +183,15 @@ SbPlane::intersect(const SbLine& l, SbVec3f& intersection) const
   //
   // We can also easily see that a point must satisfy this equation to lie
   // in the plane:
-  //                    N·(Q - d*N) = 0, where N is the normal vector,
+  //                    NÂ·(Q - d*N) = 0, where N is the normal vector,
   //                                     Q is the point and d the offset
   //                                     from the origin.
   //
   // Combining these two equations and simplifying we get:
   //
-  //                          d*|N|² - N·P
+  //                          d*|N|Â² - NÂ·P
   //                    t = ----------------, |N| == 1
-  //                               N·D
+  //                               NÂ·D
   //
   // Substituting t back in (1), we've solved the problem.
   //                                                         19980816 mortene.

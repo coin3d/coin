@@ -1313,7 +1313,7 @@
 
 	* AUTHORS:
 	
-	added Øystein Handegard
+	added Ã˜ystein Handegard
 
 2002-11-05 10:23  larsa
 
@@ -2911,7 +2911,7 @@
 	* src/nodes/SoIndexedFaceSet.cpp:
 	
 	Bugfix. Need to call inherited::notify(), not SoNode::notify(). Bug
-	reported by Jacob Støren.
+	reported by Jacob StÃ¸ren.
 
 2002-09-27 08:53  mortene
 
@@ -6980,7 +6980,7 @@
 
 	* THANKS:
 	
-	Added François Painchaud.
+	Added FranÃ§ois Painchaud.
 
 2002-07-15 13:30  larsa
 
@@ -10061,7 +10061,7 @@
 
 	* THANKS:
 	
-	Adds Per Øyvind Hvidsten for SoQt-build related bugfix.
+	Adds Per Ã˜yvind Hvidsten for SoQt-build related bugfix.
 
 2002-05-09 11:08  mortene
 

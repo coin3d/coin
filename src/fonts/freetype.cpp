@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/* FIXME: problem reported by Jan Peèiva on coin-dicuss: if there's a
+/* FIXME: problem reported by Jan PeÃ¨iva on coin-dicuss: if there's a
    freetype.dll installed as part of Cygwin, and Coin has been built
    with MSVC (and not Cygwin GCC), trying to use the Cygwin FreeType
    DLL leads to a crash. Should detect this problem and avoid a

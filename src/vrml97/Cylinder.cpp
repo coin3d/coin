@@ -81,7 +81,7 @@
   cylinder. The texture has a vertical seam at the back, intersecting
   the X=0 plane. For the top and bottom caps, a circle is cut out of
   the unit texture squares centred at (0, +/- height/2, 0) with
-  dimensions 2 × radius by 2 × radius.  The top texture appears right
+  dimensions 2 Ã— radius by 2 Ã— radius.  The top texture appears right
   side up when the top of the cylinder is tilted toward the +Z-axis,
   and the bottom texture appears right side up when the top of the
   cylinder is tilted toward the -Z-axis. SoVRMLTextureTransform

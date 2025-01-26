@@ -140,14 +140,14 @@
   cross-product:
 
   \verbatim
-  Z = (spine[i+1] - spine[i]) × (spine[i-1] - spine[i])
+  Z = (spine[i+1] - spine[i]) Ã— (spine[i-1] - spine[i])
   \endverbatim
 
   \li If the spine curve is closed: The SCP for the first and last
   points is the same and is found by taking the following cross- product:
 
   \verbatim
-  Z = (spine[1] - spine[0]) × (spine[n-2] - spine[0])
+  Z = (spine[1] - spine[0]) Ã— (spine[n-2] - spine[0])
   \endverbatim
 
   \li If the spine curve is not closed: The Z-axis used for the first

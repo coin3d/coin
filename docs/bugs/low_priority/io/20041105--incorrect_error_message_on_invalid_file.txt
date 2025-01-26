@@ -16,7 +16,7 @@ end
     Surprisingly, when swapping "RotateDiscDragger" with "Sphere", the
     error is correctly identified, and we get an
 
-         Expected '}'; got ' ' for Sphere
+         Expected '}'; got 'Â ' for Sphere
 
     (This could however also be improved upon; we shouldn't just use
     %c to print the faulty character, but print a hex code if outside

@@ -74,7 +74,7 @@
   The \e radius field shall be greater than or equal to zero.
   PointLight node's illumination falls off with distance as specified
   by three attenuation coefficients. The attenuation factor is 1/
-  max(attenuation[0] + attenuation[1]×r + attenuation[2]×r2, 1), where
+  max(attenuation[0] + attenuation[1]Ã—r + attenuation[2]Ã—r2, 1), where
   r is the distance from the light to the surface being illuminated.
   The default is no attenuation. An attenuation value of (0, 0, 0) is
   identical to (1, 0, 0). Attenuation values shall be greater than or
