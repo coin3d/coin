@@ -519,11 +519,11 @@ Additional Inherited Members</h2></td></tr>
 }
 </pre><p>The TextureCoordinate node specifies a set of 2D texture coordinates used by vertex-based geometry nodes (e.g., <a class="el" href="classSoVRMLIndexedFaceSet.html" title="The SoVRMLIndexedFaceSet class is used for representing a generic 3D shape.">SoVRMLIndexedFaceSet</a> and <a class="el" href="classSoVRMLElevationGrid.html" title="The SoVRMLElevationGrid class is used to represent elevation grids.">SoVRMLElevationGrid</a>) to map textures to vertices. Textures are two dimensional colour functions that, given an (s, t) coordinate, return a colour value colour(s, t). Texture map values (<a class="el" href="classSoVRMLImageTexture.html" title="The SoVRMLImageTexture class is used for mapping a texture file onto geometry.">SoVRMLImageTexture</a>, <a class="el" href="classSoVRMLMovieTexture.html" title="The SoVRMLMovieTexture class is used the map movies onto geometry.">SoVRMLMovieTexture</a>, and <a class="el" href="classSoVRMLPixelTexture.html" title="The SoVRMLPixelTexture class is used for mapping a texture image onto geometry..">SoVRMLPixelTexture</a>) range from [<a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">0.0</a>, <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">1.0</a>] along the S-axis and T-axis. However, TextureCoordinate values, specified by the point field, may be in the range (-inf,inf). Texture coordinates identify a location (and thus a colour value) in the texture map. The horizontal coordinate s is specified first, followed by the vertical coordinate t.</p>
 <p>If the texture map is repeated in a given direction (S-axis or T-axis), a texture coordinate C (s or t) is mapped into a texture map that has N pixels in the given direction as follows:</p>
-<pre class="fragment">Texture map location = (C - floor(C)) × N 
+<pre class="fragment">Texture map location = (C - floor(C)) Ã— N 
 </pre><p>If the texture map is not repeated, the texture coordinates are clamped to the <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">0.0</a> to <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">1.0</a> range as follows:</p>
 <pre class="fragment">Texture map location = N, if C &gt; 1.0, 
                      = 0.0, if C &lt; 0.0, 
-                     = C × N, if 0.0 &lt;= C &lt;= 1.0.
+                     = C Ã— N, if 0.0 &lt;= C &lt;= 1.0.
 </pre><p>Details on repeating textures are specific to texture map node types described in <a class="el" href="classSoVRMLImageTexture.html" title="The SoVRMLImageTexture class is used for mapping a texture file onto geometry.">SoVRMLImageTexture</a>, <a class="el" href="classSoVRMLMovieTexture.html" title="The SoVRMLMovieTexture class is used the map movies onto geometry.">SoVRMLMovieTexture</a>, and <a class="el" href="classSoVRMLPixelTexture.html" title="The SoVRMLPixelTexture class is used for mapping a texture image onto geometry..">SoVRMLPixelTexture</a>. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a6837eb3bfdbd2299c33755a5cc0d1097" name="a6837eb3bfdbd2299c33755a5cc0d1097"></a>
@@ -880,7 +880,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoVRMLTextureCoordinate.html">SoVRMLTextureCoordinate</a></li>
-    <li class="footer">Generated on Sun Jan 19 2025 18:01:26 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sun Jan 26 2025 10:26:57 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

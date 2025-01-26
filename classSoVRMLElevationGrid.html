@@ -667,9 +667,9 @@ Additional Inherited Members</h2></td></tr>
 <li>The xSpacing and zSpacing fields indicate the distance between vertices in the X and Z directions respectively, and shall be greater than zero.</li>
 </ul>
 <p>Thus, the vertex corresponding to the point P[i, j] on the grid is placed at:</p>
-<pre class="fragment">  P[i,j].x = xSpacing × i
-  P[i,j].y = height[ i + j × xDimension]
-  P[i,j].z = zSpacing × j     
+<pre class="fragment">  P[i,j].x = xSpacing Ã— i
+  P[i,j].y = height[ i + j Ã— xDimension]
+  P[i,j].z = zSpacing Ã— j     
 
   where 0 &lt;= i &lt; xDimension and 0 &lt;= j &lt; zDimension, and 
   P[0,0] is height[0] units above/below the origin of the local
@@ -678,39 +678,39 @@ Additional Inherited Members</h2></td></tr>
 </p>
 <p>The color field specifies per-vertex or per-quadrilateral colours for the ElevationGrid node depending on the value of colorPerVertex. If the color field is NULL, the ElevationGrid node is rendered with the overall attributes of the Shape node enclosing the ElevationGrid node (see <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">4.14</a>, Lighting model). <br  />
 </p>
-<p>The colorPerVertex field determines whether colours specified in the color field are applied to each vertex or each quadrilateral of the ElevationGrid node. If colorPerVertex is FALSE and the color field is not NULL, the color field shall specify a Color node containing at least (xDimension-1)×(zDimension-1) colours; one for each quadrilateral, ordered as follows:</p>
-<pre class="fragment">  QuadColor[i,j] = Color[ i + j × (xDimension-1)]
+<p>The colorPerVertex field determines whether colours specified in the color field are applied to each vertex or each quadrilateral of the ElevationGrid node. If colorPerVertex is FALSE and the color field is not NULL, the color field shall specify a Color node containing at least (xDimension-1)Ã—(zDimension-1) colours; one for each quadrilateral, ordered as follows:</p>
+<pre class="fragment">  QuadColor[i,j] = Color[ i + j Ã— (xDimension-1)]
 
   where 0 &lt;= i &lt; xDimension-1 and 0 &lt;= j &lt; zDimension-1, and
   QuadColor[i,j] is the colour for the quadrilateral defined by
-  height[i+j×xDimension], height[(i+1)+j×xDimension],
-  height[(i+1)+(j+1)×xDimension] and height[i+(j+1)×xDimension] 
-</pre><p>If colorPerVertex is TRUE and the color field is not NULL, the color field shall specify a Color node containing at least xDimension × zDimension colours, one for each vertex, ordered as follows:</p>
-<pre class="fragment">  VertexColor[i,j] = Color[ i + j × xDimension] 
+  height[i+jÃ—xDimension], height[(i+1)+jÃ—xDimension],
+  height[(i+1)+(j+1)Ã—xDimension] and height[i+(j+1)Ã—xDimension] 
+</pre><p>If colorPerVertex is TRUE and the color field is not NULL, the color field shall specify a Color node containing at least xDimension Ã— zDimension colours, one for each vertex, ordered as follows:</p>
+<pre class="fragment">  VertexColor[i,j] = Color[ i + j Ã— xDimension] 
 
   where 0 &lt;= i &lt; xDimension and 0 &lt;= j &lt; zDimension, and 
   VertexColor[i,j] is the colour for the vertex defined by 
-  height[i+j×xDimension] 
+  height[i+jÃ—xDimension] 
 </pre><p>The normal field specifies per-vertex or per-quadrilateral normals for the ElevationGrid node. If the normal field is NULL, the browser shall automatically generate normals, using the creaseAngle field to determine if and how normals are smoothed across the surface (see 4.6.3.5, Crease angle field).</p>
-<p>The normalPerVertex field determines whether normals are applied to each vertex or each quadrilateral of the ElevationGrid node depending on the value of normalPerVertex. If normalPerVertex is FALSE and the normal node is not NULL, the normal field shall specify a Normal node containing at least (xDimension-1)×(zDimension-1) normals; one for each quadrilateral, ordered as follows:</p>
-<pre class="fragment">  QuadNormal[i,j] = Normal[ i + j × (xDimension-1)] 
+<p>The normalPerVertex field determines whether normals are applied to each vertex or each quadrilateral of the ElevationGrid node depending on the value of normalPerVertex. If normalPerVertex is FALSE and the normal node is not NULL, the normal field shall specify a Normal node containing at least (xDimension-1)Ã—(zDimension-1) normals; one for each quadrilateral, ordered as follows:</p>
+<pre class="fragment">  QuadNormal[i,j] = Normal[ i + j Ã— (xDimension-1)] 
 
   where 0 &lt;= i &lt; xDimension-1 and 0 &lt;= j &lt; zDimension-1, and 
   QuadNormal[i,j] is the normal for the quadrilateral 
-  defined by height[i+j×xDimension], height[(i+1)+j×xDimension], 
-  height[(i+1)+(j+1)×xDimension] and height[i+(j+1)×xDimension] 
-</pre><p>If normalPerVertex is TRUE and the normal field is not NULL, the normal field shall specify a Normal node containing at least xDimension × zDimension normals; one for each vertex, ordered as follows:</p>
-<pre class="fragment">  VertexNormal[i,j] = Normal[ i + j × xDimension] 
+  defined by height[i+jÃ—xDimension], height[(i+1)+jÃ—xDimension], 
+  height[(i+1)+(j+1)Ã—xDimension] and height[i+(j+1)Ã—xDimension] 
+</pre><p>If normalPerVertex is TRUE and the normal field is not NULL, the normal field shall specify a Normal node containing at least xDimension Ã— zDimension normals; one for each vertex, ordered as follows:</p>
+<pre class="fragment">  VertexNormal[i,j] = Normal[ i + j Ã— xDimension] 
   
   where 0 &lt;= i &lt; xDimension and 0 &lt;= j &lt; zDimension, and
   VertexNormal[i,j] is the normal for the vertex defined by
-  height[i+j×xDimension] 
-</pre><p>The texCoord field specifies per-vertex texture coordinates for the ElevationGrid node. If texCoord is NULL, default texture coordinates are applied to the geometry. The default texture coordinates range from (0,0) at the first vertex to (1,1) at the last vertex. The S texture coordinate is aligned with the positive X-axis, and the T texture coordinate with positive Z-axis. If texCoord is not NULL, it shall specify a TextureCoordinate node containing at least (xDimension)×(zDimension) texture coordinates; one for each vertex, ordered as follows:</p>
-<pre class="fragment">  VertexTexCoord[i,j] = TextureCoordinate[ i + j × xDimension] 
+  height[i+jÃ—xDimension] 
+</pre><p>The texCoord field specifies per-vertex texture coordinates for the ElevationGrid node. If texCoord is NULL, default texture coordinates are applied to the geometry. The default texture coordinates range from (0,0) at the first vertex to (1,1) at the last vertex. The S texture coordinate is aligned with the positive X-axis, and the T texture coordinate with positive Z-axis. If texCoord is not NULL, it shall specify a TextureCoordinate node containing at least (xDimension)Ã—(zDimension) texture coordinates; one for each vertex, ordered as follows:</p>
+<pre class="fragment">  VertexTexCoord[i,j] = TextureCoordinate[ i + j Ã— xDimension] 
 
   where 0 &lt;= i &lt; xDimension and 0 &lt;= j &lt; zDimension, and 
   VertexTexCoord[i,j] is the texture coordinate for the vertex 
-  defined by height[i+j×xDimension] 
+  defined by height[i+jÃ—xDimension] 
 </pre><p>The ccw, solid, and creaseAngle fields are described in 4.6.3, Shapes and geometry. By default, the quadrilaterals are defined with a counterclockwise ordering. Hence, the Y-component of the normal is positive. Setting the ccw field to FALSE reverses the normal direction. Backface culling is enabled when the solid field is TRUE. See Figure <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">6.5</a> for a depiction of the ElevationGrid node.</p>
 <center> <img src="http://www.web3d.org/documents/specifications/14772/V2.0/Images/ElevationGrid.gif" alt="" class="inline"/> Figure <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">6.5</a> </center> </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a298f77a2a4ea876ff060fc040dee8508" name="a298f77a2a4ea876ff060fc040dee8508"></a>
@@ -1286,7 +1286,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoVRMLElevationGrid.html">SoVRMLElevationGrid</a></li>
-    <li class="footer">Generated on Sun Jan 19 2025 18:01:25 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sun Jan 26 2025 10:26:56 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

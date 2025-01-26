@@ -579,11 +579,11 @@ else if (angle &lt;= beamWidth):
 else:
   multiplier = (angle - cutOffAngle) / (beamWidth - cutOffAngle)
 
-intensity(angle) = SpotLight.intensity × multiplier
+intensity(angle) = SpotLight.intensity Ã— multiplier
 </pre><p>If the beamWidth is greater than the cutOffAngle, beamWidth is defined to be equal to the cutOffAngle and the light source emits full intensity within the entire solid angle defined by cutOffAngle. Both beamWidth and cutOffAngle shall be greater than <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">0.0</a> and less than or equal to pi/2.</p>
 <p>Figure <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">6.16</a> depicts the beamWidth, cutOffAngle, direction, location, and radius fields of the SpotLight node.</p>
 <center> <img src="http://www.web3d.org/documents/specifications/14772/V2.0/Images/spotlight.gif" alt="" class="inline"/> Figure <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">6.16</a> &ndash; SpotLight node </center><p>SpotLight illumination falls off with distance as specified by three attenuation coefficients. The attenuation factor is</p>
-<pre class="fragment">1/max(attenuation[0] + attenuation[1]×r + attenuation[2]×r^2 , 1),
+<pre class="fragment">1/max(attenuation[0] + attenuation[1]Ã—r + attenuation[2]Ã—r^2 , 1),
 </pre><p>where r is the distance from the light to the surface being illuminated. The default is no attenuation. An attenuation value of (0, 0, 0) is identical to (1, 0, 0). Attenuation values shall be greater than or equal to zero. A detailed description of VRML's lighting equations is contained in <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">4.14</a>, Lighting model (<a href="http://www.web3d.org/documents/specifications/14772/V2.0/part1/concepts.html#4.14">http://www.web3d.org/documents/specifications/14772/V2.0/part1/concepts.html#4.14</a>). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5a1ab4cd021acd363e98e6a62332bc1f" name="a5a1ab4cd021acd363e98e6a62332bc1f"></a>
@@ -899,7 +899,7 @@ intensity(angle) = SpotLight.intensity × multiplier
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoVRMLSpotLight.html">SoVRMLSpotLight</a></li>
-    <li class="footer">Generated on Sun Jan 19 2025 18:01:26 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sun Jan 26 2025 10:26:57 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

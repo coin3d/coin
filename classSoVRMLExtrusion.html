@@ -697,11 +697,11 @@ Additional Inherited Members</h2></td></tr>
 <ul>
 <li>For all points other than the first or last: Take the following cross-product:</li>
 </ul>
-<pre class="fragment">Z = (spine[i+1] - spine[i]) × (spine[i-1] - spine[i])
+<pre class="fragment">Z = (spine[i+1] - spine[i]) Ã— (spine[i-1] - spine[i])
 </pre><ul>
 <li>If the spine curve is closed: The SCP for the first and last points is the same and is found by taking the following cross- product:</li>
 </ul>
-<pre class="fragment">Z = (spine[1] - spine[0]) × (spine[n-2] - spine[0])
+<pre class="fragment">Z = (spine[1] - spine[0]) Ã— (spine[n-2] - spine[0])
 </pre><ul>
 <li>If the spine curve is not closed: The Z-axis used for the first spine point is the same as the Z-axis for spine[1]. The Z- axis used for the last spine point is the same as the Z-axis for spine[n-2].</li>
 </ul>
@@ -1135,7 +1135,7 @@ spine[1](crossSection[1], crossSection[0])
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoVRMLExtrusion.html">SoVRMLExtrusion</a></li>
-    <li class="footer">Generated on Sun Jan 19 2025 18:01:25 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sun Jan 26 2025 10:26:56 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

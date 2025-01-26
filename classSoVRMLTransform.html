@@ -695,7 +695,7 @@ Additional Inherited Members</h2></td></tr>
 </ul>
 <p>The <em>center</em> field specifies a translation offset from the origin of the local coordinate system (0,0,0). The <em>rotation</em> field specifies a rotation of the coordinate system. The <em>scale</em> field specifies a non-uniform scale of the coordinate system. scale values shall be greater than zero. The <em>scaleOrientation</em> specifies a rotation of the coordinate system before the scale (to specify scales in arbitrary orientations). The scaleOrientation applies only to the scale operation. The <em>translation</em> field specifies a translation to the coordinate system.</p>
 <p>Given a 3-dimensional point P and Transform node, P is transformed into point P' in its parent's coordinate system by a series of intermediate transformations. In matrix transformation notation, where C (center), SR (scaleOrientation), T (translation), R (rotation), and S (scale) are the equivalent transformation matrices,</p>
-<pre class="fragment">P' = T × C × R × SR × S × -SR × -C × P
+<pre class="fragment">P' = T Ã— C Ã— R Ã— SR Ã— S Ã— -SR Ã— -C Ã— P
 </pre><p>The following Transform node:</p>
 <pre class="fragment">Transform {
   center           C
@@ -1501,7 +1501,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoVRMLTransform.html">SoVRMLTransform</a></li>
-    <li class="footer">Generated on Sun Jan 19 2025 18:01:26 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sun Jan 26 2025 10:26:57 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
