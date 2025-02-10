@@ -67,12 +67,12 @@ void * eglglue_getprocaddress(const cc_glglue * glue_in, const char * fname)
 
 void * eglglue_context_create_offscreen(unsigned int COIN_UNUSED_ARG(width),
                                         unsigned int COIN_UNUSED_ARG(height)) {
-  assert(FALSE); return NULL;
+  return NULL;
 }
 
 SbBool eglglue_context_make_current(void * COIN_UNUSED_ARG(ctx))
 {
-  assert(FALSE); return FALSE;
+  return FALSE;
 }
 
 void eglglue_context_reinstate_previous(void * COIN_UNUSED_ARG(ctx))
@@ -164,6 +164,10 @@ eglglue_get_display(void)
 {
   if (eglglue_display == EGL_NO_DISPLAY) {
       eglglue_display = eglGetPlatformDisplay(EGL_PLATFORM_WAYLAND_KHR, EGL_DEFAULT_DISPLAY, NULL);
+      if (eglglue_display == EGL_NO_DISPLAY) {
+        eglglue_display = eglGetPlatformDisplay(EGL_PLATFORM_X11_EXT, EGL_DEFAULT_DISPLAY, NULL);
+      }
+
       if (eglglue_display == EGL_NO_DISPLAY) {
         cc_debugerror_post("eglglue_get_display",
                            "Display not found.");
@@ -321,6 +325,7 @@ eglglue_context_create_offscreen(unsigned int width, unsigned int height)
   } else {
     ctx->surface = eglCreatePlatformPixmapSurface(eglglue_get_display(), config, 0, surface_attrib);
   }
+
   if (ctx->surface == EGL_NO_SURFACE) {
     cc_debugerror_post("eglglue_context_create_offscreen",
                        "Couldn't create EGL surface. %s",

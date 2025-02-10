@@ -200,10 +200,6 @@
 #error More than one of HAVE_WGL, HAVE_GLX , HAVE_EGL, and HAVE_AGL|HAVE_CGL set simultaneously!
 #endif
 
-#if defined(HAVE_EGL) && (defined(HAVE_GLX) || defined(HAVE_AGL) || defined(HAVE_CGL))
-#error More than one of HAVE_WGL, HAVE_GLX, HAVE_EGL and HAVE_AGL|HAVE_CGL set simultaneously!
-#endif
-
 #if defined(HAVE_GLX) && (defined(HAVE_AGL) || defined(HAVE_CGL))
 #error More than one of HAVE_WGL, HAVE_GLX and HAVE_AGL|HAVE_CGL set simultaneously!
 #endif
@@ -276,6 +272,7 @@ static int COIN_MAXIMUM_TEXTURE2_SIZE = -1;
 static int COIN_MAXIMUM_TEXTURE3_SIZE = -1;
 static cc_glglue_offscreen_cb_functions* offscreen_cb = NULL;
 static int COIN_USE_AGL = -1;
+static int COIN_USE_EGL = -1;
 
 /* ********************************************************************** */
 
@@ -2193,6 +2190,20 @@ static void check_force_agl()
 #endif
 }
 
+static void check_egl()
+{
+#if defined(HAVE_EGL) && !defined(HAVE_GLX)
+  COIN_USE_EGL = 1;
+#else
+  if (COIN_USE_EGL == -1) {
+    const char * env = coin_getenv("COIN_EGL");
+    if (env) {
+      COIN_USE_EGL = atoi(env);
+    }
+  }
+#endif
+}
+
 /* We're basically using the Singleton pattern to instantiate and
    return OpenGL-glue "object structs". We're constructing one
    instance for each OpenGL context, though.  */
@@ -2219,6 +2230,7 @@ cc_glglue_instance(int contextid)
     else COIN_MAXIMUM_TEXTURE3_SIZE = -1;
   }
   check_force_agl();
+  check_egl();
 
   if (!gldict) {  /* First invocation, do initializations. */
     gldict = cc_dict_construct(16, 0.75f);
@@ -2295,10 +2307,19 @@ cc_glglue_instance(int contextid)
     assert(glGetError() == GL_NO_ERROR && "GL error when calling glGetString() -- no current GL context?");
 
     glglue_set_glVersion(gi);
+
+#if defined(HAVE_EGL)
+    if (COIN_USE_EGL > 0) {
+      eglglue_init(gi);
+    } else {
+#endif
+
 #ifdef HAVE_GLX
     glxglue_init(gi);
-#elif defined(HAVE_EGL)
-    eglglue_init(gi);
+#endif
+
+#if defined(HAVE_EGL)
+    }
 #endif
 
     gi->vendorstr = (const char *)glGetString(GL_VENDOR);
@@ -5140,12 +5161,21 @@ coin_gl_current_context(void)
 {
   void * ctx = NULL;
 
+#ifdef HAVE_EGL
+  if (COIN_USE_EGL > 0) {
+    ctx = eglGetCurrentContext();
+    if (ctx) {
+      return ctx;
+    }
+  } else {
+#endif /* HAVE_EGL */
+
 #ifdef HAVE_GLX
   ctx = glXGetCurrentContext();
 #endif /* HAVE_GLX */
 
 #ifdef HAVE_EGL
-  ctx = eglGetCurrentContext();
+  }
 #endif /* HAVE_EGL */
 
 #ifdef HAVE_WGL
