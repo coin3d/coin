@@ -1,1 +1,2 @@
 add_subdirectory(dynloadextensions)
+add_subdirectory(glfw)
