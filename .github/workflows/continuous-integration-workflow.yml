@@ -27,7 +27,7 @@ jobs:
         run:  ctest -C Release -VV
         working-directory: cmake_build_dir
       - name: Create Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Ubuntu-Artifacts
           path: cmake_install_dir/
@@ -57,7 +57,7 @@ jobs:
         run:  ctest -C Release -VV
         working-directory: cmake_build_dir
       - name: Create Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Windows-Artifacts
           path: cmake_install_dir/
@@ -81,7 +81,7 @@ jobs:
         run:  ctest -C Release -VV
         working-directory: cmake_build_dir
       - name: Create Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: MacOS-Artifacts
           path: cmake_install_dir/
