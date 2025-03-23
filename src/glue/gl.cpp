@@ -2314,9 +2314,10 @@ cc_glglue_instance(int contextid)
     } else {
 #endif
 
-#ifdef HAVE_GLX
+    // Although the name is somewhat misleading this function does initialization
+    // for both GLX and non GLX.  See file gl_glx.cpp.
+    // wgl code depends on this initialization!
     glxglue_init(gi);
-#endif
 
 #if defined(HAVE_EGL)
     }
