@@ -30,7 +30,7 @@ jobs:
         submodules: recursive
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+      uses: github/codeql-action/init@v3
       with:
         languages: c-cpp
         config: |
@@ -62,6 +62,6 @@ jobs:
       run: cmake --build cmake_build_dir --target all --config Release -- -j4
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      uses: github/codeql-action/analyze@v3
       with:
         category: "/language:c-cpp"
