@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.0)
 
 # Have a look at VTKConfig.cmake.in, especially regarding UseVTK.cmake
 # https://github.com/Kitware/VTK/blob/master/CMake/VTKConfig.cmake.in
