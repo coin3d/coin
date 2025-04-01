@@ -552,21 +552,23 @@ SoVRMLBackground::GLRender(SoGLRenderAction * action)
         break;
     }
     SoPath * path = PRIVATE(this)->searchaction->getPath();
-    // get the transformation matrix of this path
-    const SbViewportRegion vpr = action->getViewportRegion();
-    PRIVATE(this)->getmatrixaction->setViewportRegion(vpr);
-    PRIVATE(this)->getmatrixaction->apply(path);
-    SbMatrix transformation = PRIVATE(this)->getmatrixaction->getMatrix();
-    // get the rotation part of the matrix
-    // (note that a SoVRMLBackground node ignores any transformation of ancestors' except rotation)
-    SbVec3f translation;
-    SbRotation rotation;
-    SbVec3f scalevector;
-    SbRotation scaleorientation;
-    transformation.getTransform(translation, rotation, scalevector, scaleorientation);
-    // set camera orientation
-    rotation *= rot;
-    PRIVATE(this)->camera->orientation = rotation.inverse();
+    if (path != NULL) {
+      // get the transformation matrix of this path
+      const SbViewportRegion vpr = action->getViewportRegion();
+      PRIVATE(this)->getmatrixaction->setViewportRegion(vpr);
+      PRIVATE(this)->getmatrixaction->apply(path);
+      SbMatrix transformation = PRIVATE(this)->getmatrixaction->getMatrix();
+      // get the rotation part of the matrix
+      // (note that a SoVRMLBackground node ignores any transformation of ancestors' except rotation)
+      SbVec3f translation;
+      SbRotation rotation;
+      SbVec3f scalevector;
+      SbRotation scaleorientation;
+      transformation.getTransform(translation, rotation, scalevector, scaleorientation);
+      // set camera orientation
+      rot = rotation * rot;
+    }
+    PRIVATE(this)->camera->orientation = rot.inverse();
   }
 
   // rotate background camera so that it matches the current camera
