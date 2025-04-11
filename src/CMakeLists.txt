@@ -19,12 +19,12 @@ configure_file(setup.h.cmake.in setup.h)
 add_compile_options(-DHAVE_CONFIG_H -DCOIN_INTERNAL -DCOIN_DEBUG=$<CONFIG:Debug>)
 
 include_directories(BEFORE
-  "${CMAKE_BINARY_DIR}/include"
-  "${CMAKE_SOURCE_DIR}/include"
+  "${PROJECT_BINARY_DIR}/include"
+  "${PROJECT_SOURCE_DIR}/include"
   "${CMAKE_CURRENT_BINARY_DIR}"
   "${CMAKE_CURRENT_SOURCE_DIR}"
-  "${CMAKE_SOURCE_DIR}/include/Inventor/annex"
-  "${CMAKE_BINARY_DIR}/data"
+  "${PROJECT_SOURCE_DIR}/include/Inventor/annex"
+  "${PROJECT_BINARY_DIR}/data"
 )
 
 # add include dirs for non targets
@@ -151,7 +151,7 @@ else()
   set(COIN_LIBRARY_TYPE STATIC)
 endif()
 
-set(ADDITIONAL_HDRS ${CMAKE_SOURCE_DIR}/include/SoWinEnterScope.h ${CMAKE_SOURCE_DIR}/include/SoWinLeaveScope.h ${CMAKE_SOURCE_DIR}/include/SoDebug.h ${CMAKE_BINARY_DIR}/src/config.h)
+set(ADDITIONAL_HDRS ${PROJECT_SOURCE_DIR}/include/SoWinEnterScope.h ${PROJECT_SOURCE_DIR}/include/SoWinLeaveScope.h ${PROJECT_SOURCE_DIR}/include/SoDebug.h ${PROJECT_BINARY_DIR}/src/config.h)
 
 # Create the library target
 if(COIN_BUILD_SINGLE_LIB)
@@ -281,12 +281,12 @@ if(COIN_BUILD_MAC_FRAMEWORK)
 # ############################################################################
 # Add framework headers
 # ############################################################################
-  coin_set_macosx_properties("${CMAKE_SOURCE_DIR}/include/Inventor;${CMAKE_BINARY_DIR}/include/Inventor" "Headers" "${COMMON_HDRS}")
+  coin_set_macosx_properties("${PROJECT_SOURCE_DIR}/include/Inventor;${CMAKE_BINARY_DIR}/include/Inventor" "Headers" "${COMMON_HDRS}")
 
 # ############################################################################
 # Add framework data files
 # ############################################################################
-  coin_set_macosx_properties("${CMAKE_SOURCE_DIR}/data;${CMAKE_BINARY_DIR}/data" "Resources" "${COMMON_RESOURCES}")
+  coin_set_macosx_properties("${PROJECT_SOURCE_DIR}/data;${CMAKE_BINARY_DIR}/data" "Resources" "${COMMON_RESOURCES}")
 
 # ############################################################################
 # Add framework documentation files
@@ -339,15 +339,15 @@ else()
 # Install headers
 # ############################################################################
 
-  install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/Inventor/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Inventor COMPONENT development FILES_MATCHING PATTERN "*.h")
+  install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/Inventor/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Inventor COMPONENT development FILES_MATCHING PATTERN "*.h")
   install(DIRECTORY ${CMAKE_BINARY_DIR}/include/Inventor/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Inventor COMPONENT development FILES_MATCHING PATTERN "*.h")
-  install(FILES ${CMAKE_SOURCE_DIR}/include/SoWinEnterScope.h ${CMAKE_SOURCE_DIR}/include/SoWinLeaveScope.h ${CMAKE_SOURCE_DIR}/include/SoDebug.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT development)
+  install(FILES ${PROJECT_SOURCE_DIR}/include/SoWinEnterScope.h ${PROJECT_SOURCE_DIR}/include/SoWinLeaveScope.h ${PROJECT_SOURCE_DIR}/include/SoDebug.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT development)
 
 # ############################################################################
 # Install data files
 # ############################################################################
 
-  install(DIRECTORY ${CMAKE_SOURCE_DIR}/data/ DESTINATION ${CMAKE_INSTALL_DATADIR} COMPONENT development FILES_MATCHING PATTERN [cep]*.xml PATTERN *.iv PATTERN *.glsl)
+  install(DIRECTORY ${PROJECT_SOURCE_DIR}/data/ DESTINATION ${CMAKE_INSTALL_DATADIR} COMPONENT development FILES_MATCHING PATTERN [cep]*.xml PATTERN *.iv PATTERN *.glsl)
   
 # ############################################################################
 # Install target
@@ -392,10 +392,10 @@ else()
   set(COIN_CONFIG_PACKAGE_LOCATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION})
   string(TOLOWER ${PROJECT_NAME} COIN_CONFIG_PACKAGE_BASENAME)
   if(UNIX OR MINGW)
-    configure_file("${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.pc.cmake.in" "${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc" @ONLY)
+    configure_file("${PROJECT_SOURCE_DIR}/${PROJECT_NAME}.pc.cmake.in" "${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc" @ONLY)
     install(FILES "${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc" DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
-    install(PROGRAMS "${CMAKE_SOURCE_DIR}/bin/coin-config" DESTINATION ${CMAKE_INSTALL_BINDIR})
-    configure_file("${CMAKE_SOURCE_DIR}/coin.cfg.cmake.in" "${CMAKE_BINARY_DIR}/${PROJECT_NAME_LOWER}-default.cfg" @ONLY)
+    install(PROGRAMS "${PROJECT_SOURCE_DIR}/bin/coin-config" DESTINATION ${CMAKE_INSTALL_BINDIR})
+    configure_file("${PROJECT_SOURCE_DIR}/coin.cfg.cmake.in" "${CMAKE_BINARY_DIR}/${PROJECT_NAME_LOWER}-default.cfg" @ONLY)
     install(FILES "${CMAKE_BINARY_DIR}/${PROJECT_NAME_LOWER}-default.cfg" DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/Coin/conf)
   endif()
 endif()

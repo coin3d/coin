@@ -10,9 +10,9 @@ add_library(Switchboard SHARED Switchboard.cpp)
 target_compile_definitions(Switchboard PRIVATE "-DSWITCHBOARD_INTERNAL")
 target_include_directories(Switchboard PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}
-	${CMAKE_SOURCE_DIR}/include
-	${CMAKE_SOURCE_DIR}/include/Inventor/annex
-	${CMAKE_BINARY_DIR}/include
+	${PROJECT_SOURCE_DIR}/include
+	${PROJECT_SOURCE_DIR}/include/Inventor/annex
+	${PROJECT_BINARY_DIR}/include
 	${COIN_TARGET_INCLUDE_DIRECTORIES}
 )
 
@@ -20,9 +20,9 @@ add_library(SwitchboardOperator SHARED SwitchboardOperator.cpp)
 target_compile_definitions(SwitchboardOperator PRIVATE "-DSWITCHBOARDOPERATOR_INTERNAL")
 target_include_directories(SwitchboardOperator PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}
-	${CMAKE_SOURCE_DIR}/include
-	${CMAKE_SOURCE_DIR}/include/Inventor/annex
-	${CMAKE_BINARY_DIR}/include
+	${PROJECT_SOURCE_DIR}/include
+	${PROJECT_SOURCE_DIR}/include/Inventor/annex
+	${PROJECT_BINARY_DIR}/include
 	${COIN_TARGET_INCLUDE_DIRECTORIES}
 )
 target_link_libraries(SwitchboardOperator Switchboard)
