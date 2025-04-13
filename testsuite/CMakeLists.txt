@@ -3,9 +3,9 @@ macro(create_testsuite input)
 	get_filename_component(FLPATH "${input}" PATH)
 	string(REGEX REPLACE ".*[/\\]" "" FLSUBFLD "${FLPATH}")
 	set(COIN_STR_TEST_CLASS "${FLNAME}")
-	file(READ ${CMAKE_SOURCE_DIR}/${input} f0)
+	file(READ ${PROJECT_SOURCE_DIR}/${input} f0)
 	if(f0 MATCHES "#ifdef[ \t]+COIN_TEST_SUITE")
-		# message(STATUS "Parse: ${CMAKE_SOURCE_DIR}/${input} - ${FLPATHSUB}${FLNAME}Test.cpp")
+		# message(STATUS "Parse: ${PROJECT_SOURCE_DIR}/${input} - ${FLPATHSUB}${FLNAME}Test.cpp")
 		# get first include from file, which we assume is include to tested class
 		string(REGEX MATCH "[\n\r]+#include[ \t]<[^\n]+" iclass "${f0}")
 		# get block between '#ifdef COIN_TEST_SUITE' and '#endif'
@@ -23,7 +23,7 @@ macro(create_testsuite input)
 endmacro()
 
 macro(create_file_test input testfunc filter)
-	file(GLOB_RECURSE COIN_IV_FILES RELATIVE ${CMAKE_SOURCE_DIR} ../${input}/*.wrl ../${input}/*.vrml ../${input}/*.gz ../${input}/*.iv)
+	file(GLOB_RECURSE COIN_IV_FILES RELATIVE ${PROJECT_SOURCE_DIR} ../${input}/*.wrl ../${input}/*.vrml ../${input}/*.gz ../${input}/*.iv)
 	string(REGEX REPLACE "[\\./\\-]+" "" TESTSUITENAME "${input}")
 	set(COIN_STR_TEST_INCL "")
 	set(COIN_STR_TEST_CODE "const char *readError[] = { \"Coin read error:\", 0 };\n")
@@ -34,9 +34,9 @@ macro(create_file_test input testfunc filter)
 		if(${num_extra_args} EQUAL 0 OR NOT ("${INPUTFILE}" MATCHES "${extra_macro_args}"))
 			string(REGEX REPLACE "[\\./\\-]+" "_" TESTNAME "${INPUTFILE}")
 			if (${filter})
-				set(COIN_STR_TEST_CODE "${COIN_STR_TEST_CODE}\nBOOST_AUTO_TEST_CASE(${TESTNAME}) { PushMessageSuppressFilters(readError); ResetReadErrorCount(); test_file(\"${CMAKE_SOURCE_DIR}/${INPUTFILE}\", &${testfunc}); PopMessageSuppressFilters(); }")
+				set(COIN_STR_TEST_CODE "${COIN_STR_TEST_CODE}\nBOOST_AUTO_TEST_CASE(${TESTNAME}) { PushMessageSuppressFilters(readError); ResetReadErrorCount(); test_file(\"${PROJECT_SOURCE_DIR}/${INPUTFILE}\", &${testfunc}); PopMessageSuppressFilters(); }")
 			else()
-				set(COIN_STR_TEST_CODE "${COIN_STR_TEST_CODE}\nBOOST_AUTO_TEST_CASE(${TESTNAME}) { ResetReadErrorCount(); test_file(\"${CMAKE_SOURCE_DIR}/${INPUTFILE}\", &${testfunc}); }")
+				set(COIN_STR_TEST_CODE "${COIN_STR_TEST_CODE}\nBOOST_AUTO_TEST_CASE(${TESTNAME}) { ResetReadErrorCount(); test_file(\"${PROJECT_SOURCE_DIR}/${INPUTFILE}\", &${testfunc}); }")
 			endif()
 		endif()
 	endforeach()
@@ -45,7 +45,7 @@ endmacro()
 
 # Parse all source files for embedded '#ifdef COIN_TEST_SUITE' and extract those blocks
 # to separate test source files.
-file(GLOB_RECURSE COIN_SRC_FILES RELATIVE ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/src/*.cpp)
+file(GLOB_RECURSE COIN_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/src/*.cpp)
 foreach(INPUTFILE ${COIN_SRC_FILES})
 	create_testsuite(${INPUTFILE})
 endforeach()
@@ -67,9 +67,9 @@ set_target_properties(CoinTests PROPERTIES DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}
 target_link_libraries(CoinTests Coin ${COIN_TARGET_LINK_LIBRARIES})
 target_include_directories(CoinTests PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}
-	${CMAKE_SOURCE_DIR}/include
-	${CMAKE_SOURCE_DIR}/include/Inventor/annex
-	${CMAKE_BINARY_DIR}/include
+	${PROJECT_SOURCE_DIR}/include
+	${PROJECT_SOURCE_DIR}/include/Inventor/annex
+	${PROJECT_BINARY_DIR}/include
 	${COIN_TARGET_INCLUDE_DIRECTORIES}
 )
 if (USE_PTHREAD)

@@ -7,7 +7,7 @@ DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = @PROJECT_NAME@
 PROJECT_NUMBER         = @PROJECT_VERSION@
 PROJECT_BRIEF          =
-PROJECT_LOGO           = @CMAKE_SOURCE_DIR@/docs/doxygen/Coin_logo.png
+PROJECT_LOGO           = @PROJECT_SOURCE_DIR@/docs/doxygen/Coin_logo.png
 OUTPUT_DIRECTORY       =
 CREATE_SUBDIRS         = NO
 ALLOW_UNICODE_NAMES    = NO
@@ -136,7 +136,7 @@ EXCLUDE_SYMBOLS        = @DOXYGEN_EXCLUDE_SYMBOLS@
 EXAMPLE_PATH           =
 EXAMPLE_PATTERNS       = *
 EXAMPLE_RECURSIVE      = NO
-IMAGE_PATH             = @CMAKE_SOURCE_DIR@/docs/doxygen/images
+IMAGE_PATH             = @PROJECT_SOURCE_DIR@/docs/doxygen/images
 INPUT_FILTER           =
 FILTER_PATTERNS        =
 FILTER_SOURCE_FILES    = NO
@@ -171,11 +171,11 @@ IGNORE_PREFIX          = So \
 GENERATE_HTML          = YES
 HTML_OUTPUT            = html
 HTML_FILE_EXTENSION    = .html
-HTML_HEADER            = @CMAKE_SOURCE_DIR@/docs/doxygen/header.html
-HTML_FOOTER            = @CMAKE_SOURCE_DIR@/docs/doxygen/footer.html
+HTML_HEADER            = @PROJECT_SOURCE_DIR@/docs/doxygen/header.html
+HTML_FOOTER            = @PROJECT_SOURCE_DIR@/docs/doxygen/footer.html
 HTML_STYLESHEET        =
-HTML_EXTRA_STYLESHEET  = @CMAKE_SOURCE_DIR@/docs/doxygen/stylesheet.css
-HTML_EXTRA_FILES       = @CMAKE_SOURCE_DIR@/docs/doxygen/Coin_logo.png
+HTML_EXTRA_STYLESHEET  = @PROJECT_SOURCE_DIR@/docs/doxygen/stylesheet.css
+HTML_EXTRA_FILES       = @PROJECT_SOURCE_DIR@/docs/doxygen/Coin_logo.png
 HTML_COLORSTYLE_HUE    = 220
 HTML_COLORSTYLE_SAT    = 100
 HTML_COLORSTYLE_GAMMA  = 80
@@ -295,8 +295,8 @@ EXPAND_ONLY_PREDEF     = NO
 SEARCH_INCLUDES        = YES
 INCLUDE_PATH           = @CMAKE_BINARY_DIR@/include \
                          @CMAKE_BINARY_DIR@ \
-                         @CMAKE_SOURCE_DIR@/include \
-                         @CMAKE_SOURCE_DIR@/include/Inventor/annex
+                         @PROJECT_SOURCE_DIR@/include \
+                         @PROJECT_SOURCE_DIR@/include/Inventor/annex
 INCLUDE_FILE_PATTERNS  = .h \
                          .h.in
 PREDEFINED             = DOXYGEN_SKIP_THIS=1 \

@@ -10,9 +10,9 @@ add_executable(Glfw glfw.cpp)
 
 target_include_directories(Glfw PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}
-	${CMAKE_SOURCE_DIR}/include
-	${CMAKE_SOURCE_DIR}/include/Inventor/annex
-	${CMAKE_BINARY_DIR}/include
+	${PROJECT_SOURCE_DIR}/include
+	${PROJECT_SOURCE_DIR}/include/Inventor/annex
+	${PROJECT_BINARY_DIR}/include
 	${COIN_TARGET_INCLUDE_DIRECTORIES}
 )
 

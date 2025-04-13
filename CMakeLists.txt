@@ -36,7 +36,7 @@ endif()
 # Prevent in-source builds, as they often cause severe build problems
 # ############################################################################
 
-if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
+if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
   message(FATAL_ERROR "${CMAKE_PROJECT_NAME} requires an out of source build. Please create a separate build directory and run 'cmake <path_to_${CMAKE_PROJECT_NAME}> [options]' from there.")
 endif()
 
@@ -51,7 +51,7 @@ message( STATUS "Setting C++ standard: '${CMAKE_CXX_STANDARD}', which is the min
 # ############################################################################
 
 # Add path for Coin specific utility scripts
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" "${CMAKE_MODULE_PATH}")
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" "${CMAKE_MODULE_PATH}")
 
 include(CheckCSourceRuns)
 include(CheckCXXSourceCompiles)

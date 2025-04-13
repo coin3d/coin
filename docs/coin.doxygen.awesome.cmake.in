@@ -7,7 +7,7 @@ DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = @PROJECT_NAME@
 PROJECT_NUMBER         = @PROJECT_VERSION@
 PROJECT_BRIEF          = "Coin3D core library"
-PROJECT_LOGO           = @CMAKE_SOURCE_DIR@/docs/doxygen/Coin_logo.png
+PROJECT_LOGO           = @PROJECT_SOURCE_DIR@/docs/doxygen/Coin_logo.png
 PROJECT_ICON           =
 OUTPUT_DIRECTORY       =
 CREATE_SUBDIRS         = NO
@@ -150,7 +150,7 @@ EXCLUDE_SYMBOLS        = @DOXYGEN_EXCLUDE_SYMBOLS@
 EXAMPLE_PATH           =
 EXAMPLE_PATTERNS       = *
 EXAMPLE_RECURSIVE      = NO
-IMAGE_PATH             = @CMAKE_SOURCE_DIR@/docs/doxygen/images
+IMAGE_PATH             = @PROJECT_SOURCE_DIR@/docs/doxygen/images
 INPUT_FILTER           =
 FILTER_PATTERNS        =
 FILTER_SOURCE_FILES    = NO
@@ -189,17 +189,17 @@ HTML_FILE_EXTENSION    = .html
 HTML_HEADER            = @CMAKE_BINARY_DIR@/src/doc/header_awesome.html
 HTML_FOOTER            =
 HTML_STYLESHEET        =
-HTML_EXTRA_STYLESHEET  = @CMAKE_SOURCE_DIR@/docs/doxygen-awesome/doxygen-awesome.css \
-                         @CMAKE_SOURCE_DIR@/docs/doxygen-awesome/doxygen-custom/custom.css \
-                         @CMAKE_SOURCE_DIR@/docs/doxygen-awesome/doxygen-awesome-sidebar-only.css \
-                         @CMAKE_SOURCE_DIR@/docs/doxygen-awesome/doxygen-awesome-sidebar-only-darkmode-toggle.css \
-                         @CMAKE_SOURCE_DIR@/docs/doxygen-awesome/doxygen-custom/custom-alternative.css
-HTML_EXTRA_FILES       = @CMAKE_SOURCE_DIR@/docs/doxygen-awesome/doxygen-awesome-darkmode-toggle.js \
-                         @CMAKE_SOURCE_DIR@/docs/doxygen-awesome/doxygen-awesome-fragment-copy-button.js \
-                         @CMAKE_SOURCE_DIR@/docs/doxygen-awesome/doxygen-awesome-paragraph-link.js \
-                         @CMAKE_SOURCE_DIR@/docs/doxygen-awesome/doxygen-custom/toggle-alternative-theme.js \
-                         @CMAKE_SOURCE_DIR@/docs/doxygen-awesome/doxygen-awesome-interactive-toc.js \
-                         @CMAKE_SOURCE_DIR@/docs/doxygen-awesome/doxygen-awesome-tabs.js
+HTML_EXTRA_STYLESHEET  = @PROJECT_SOURCE_DIR@/docs/doxygen-awesome/doxygen-awesome.css \
+                         @PROJECT_SOURCE_DIR@/docs/doxygen-awesome/doxygen-custom/custom.css \
+                         @PROJECT_SOURCE_DIR@/docs/doxygen-awesome/doxygen-awesome-sidebar-only.css \
+                         @PROJECT_SOURCE_DIR@/docs/doxygen-awesome/doxygen-awesome-sidebar-only-darkmode-toggle.css \
+                         @PROJECT_SOURCE_DIR@/docs/doxygen-awesome/doxygen-custom/custom-alternative.css
+HTML_EXTRA_FILES       = @PROJECT_SOURCE_DIR@/docs/doxygen-awesome/doxygen-awesome-darkmode-toggle.js \
+                         @PROJECT_SOURCE_DIR@/docs/doxygen-awesome/doxygen-awesome-fragment-copy-button.js \
+                         @PROJECT_SOURCE_DIR@/docs/doxygen-awesome/doxygen-awesome-paragraph-link.js \
+                         @PROJECT_SOURCE_DIR@/docs/doxygen-awesome/doxygen-custom/toggle-alternative-theme.js \
+                         @PROJECT_SOURCE_DIR@/docs/doxygen-awesome/doxygen-awesome-interactive-toc.js \
+                         @PROJECT_SOURCE_DIR@/docs/doxygen-awesome/doxygen-awesome-tabs.js
 HTML_COLORSTYLE        = LIGHT
 HTML_COLORSTYLE_HUE    = 220
 HTML_COLORSTYLE_SAT    = 100
@@ -333,8 +333,8 @@ EXPAND_ONLY_PREDEF     = NO
 SEARCH_INCLUDES        = YES
 INCLUDE_PATH           = @CMAKE_BINARY_DIR@/include \
                          @CMAKE_BINARY_DIR@ \
-                         @CMAKE_SOURCE_DIR@/include \
-                         @CMAKE_SOURCE_DIR@/include/Inventor/annex
+                         @PROJECT_SOURCE_DIR@/include \
+                         @PROJECT_SOURCE_DIR@/include/Inventor/annex
 INCLUDE_FILE_PATTERNS  = .h \
                          .h.in
 PREDEFINED             = DOXYGEN_SKIP_THIS=1 \

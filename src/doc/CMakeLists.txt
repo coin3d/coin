@@ -45,7 +45,7 @@ if(COIN_BUILD_DOCUMENTATION)
   file(GLOB_RECURSE DOX *.dox*)
   set(COIN_DOCUMENTATION_FILES
     ${COIN_DOCUMENTATION_FILES}
-    "${CMAKE_SOURCE_DIR}/docs/releases.dox"
+    "${PROJECT_SOURCE_DIR}/docs/releases.dox"
     ${DOX}
     CACHE INTERNAL "COIN_DOCUMENTATION_FILES"
   )
@@ -74,7 +74,7 @@ if(COIN_BUILD_DOCUMENTATION)
   foreach(XF ${COIN_DOCUMENTATION_FILES})
     set(DOXYGEN_INPUT "${DOXYGEN_INPUT}                         ${XF} \\\n")
   endforeach()
-  set(DOXYGEN_INPUT "${DOXYGEN_INPUT}                         ${CMAKE_SOURCE_DIR}/src/tidbits.cpp")
+  set(DOXYGEN_INPUT "${DOXYGEN_INPUT}                         ${PROJECT_SOURCE_DIR}/src/tidbits.cpp")
   set(DOXYGEN_EXCLUDE_SYMBOLS)
   foreach(XF ${COIN_DOCUMENTATION_EXCLUDE_SYMBOLS})
     set(DOXYGEN_EXCLUDE_SYMBOLS "${DOXYGEN_EXCLUDE_SYMBOLS}                         ${XF} \\\n")
@@ -82,7 +82,7 @@ if(COIN_BUILD_DOCUMENTATION)
 
   set(DOXYFILE "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile")
   set(DOXYGEN_OUTPUT "${CMAKE_BINARY_DIR}/html/index.html")
-  configure_file("${CMAKE_SOURCE_DIR}/docs/coin.doxygen.cmake.in" ${DOXYFILE} @ONLY)
+  configure_file("${PROJECT_SOURCE_DIR}/docs/coin.doxygen.cmake.in" ${DOXYFILE} @ONLY)
 
 # ############################################################################
 # Setup documentation targets
@@ -155,7 +155,7 @@ if(COIN_BUILD_AWESOME_DOCUMENTATION)
   file(GLOB_RECURSE DOX *.dox*)
   set(COIN_DOCUMENTATION_FILES
     ${COIN_DOCUMENTATION_FILES}
-    "${CMAKE_SOURCE_DIR}/docs/releases.dox"
+    "${PROJECT_SOURCE_DIR}/docs/releases.dox"
     ${DOX}
     CACHE INTERNAL "COIN_DOCUMENTATION_FILES"
   )
@@ -184,7 +184,7 @@ if(COIN_BUILD_AWESOME_DOCUMENTATION)
   foreach(XF ${COIN_DOCUMENTATION_FILES})
     set(DOXYGEN_INPUT "${DOXYGEN_INPUT}                         ${XF} \\\n")
   endforeach()
-  set(DOXYGEN_INPUT "${DOXYGEN_INPUT}                         ${CMAKE_SOURCE_DIR}/src/tidbits.cpp")
+  set(DOXYGEN_INPUT "${DOXYGEN_INPUT}                         ${PROJECT_SOURCE_DIR}/src/tidbits.cpp")
   set(DOXYGEN_EXCLUDE_SYMBOLS)
   foreach(XF ${COIN_DOCUMENTATION_EXCLUDE_SYMBOLS})
     set(DOXYGEN_EXCLUDE_SYMBOLS "${DOXYGEN_EXCLUDE_SYMBOLS}                         ${XF} \\\n")
@@ -194,8 +194,8 @@ if(COIN_BUILD_AWESOME_DOCUMENTATION)
   set(DOXYFILE_AWESOME "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile_awesome")
   set(HTML_HEADER_AWESOME "${CMAKE_CURRENT_BINARY_DIR}/header_awesome.html")
   set(DOXYGEN_OUTPUT_AWESOME "${CMAKE_BINARY_DIR}/html_awesome/index.html")
-  configure_file("${CMAKE_SOURCE_DIR}/docs/coin.doxygen.awesome.cmake.in" ${DOXYFILE_AWESOME} @ONLY)
-  configure_file("${CMAKE_SOURCE_DIR}/docs/doxygen-awesome/doxygen-custom/header.html.cmake.in" ${HTML_HEADER_AWESOME} @ONLY)
+  configure_file("${PROJECT_SOURCE_DIR}/docs/coin.doxygen.awesome.cmake.in" ${DOXYFILE_AWESOME} @ONLY)
+  configure_file("${PROJECT_SOURCE_DIR}/docs/doxygen-awesome/doxygen-custom/header.html.cmake.in" ${HTML_HEADER_AWESOME} @ONLY)
 
 # ############################################################################
 # Setup documentation targets
