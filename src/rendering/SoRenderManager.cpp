@@ -48,6 +48,17 @@
 */
 
 #include <Inventor/SoRenderManager.h>
+#include <Inventor/elements/SoLinePatternElement.h>
+#include <Inventor/elements/SoLineWidthElement.h>
+#include <Inventor/elements/SoDrawStyleElement.h>
+#include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoPolygonOffsetElement.h>
+#include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoTextureQualityElement.h>
+#include <Inventor/elements/SoTextureOverrideElement.h>
+#include <Inventor/elements/SoComplexityTypeElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 
 #include <algorithm>
 //FIXME:Need this include early, since including it via SoRenderManagerP.h will cause problems for cygwin. Don't understand the root cause BFG 20090629
@@ -126,6 +137,12 @@
   \var SoRenderManager::RenderMode SoRenderManager::BOUNDING_BOX
 
   Only show the bounding box of each object.
+*/
+
+/*!
+  \var SoRenderManager::RenderMode SoRenderManager::SHADED_HIDDEN_LINES
+
+  Render dashed hidden lines with solid visible lines using three-pass rendering approach.
 */
 
 /*!
@@ -849,6 +866,56 @@ SoRenderManager::renderSingle(SoGLRenderAction * action,
       SoOverrideElement::setDrawStyleOverride(state, node, TRUE);
       SoOverrideElement::setMaterialBindingOverride(state, node, FALSE);
       this->actuallyRender(action, initmatrices, FALSE, FALSE);
+    }
+    break;
+  case SoRenderManager::SHADED_HIDDEN_LINES:
+    {
+      // three-pass approach, faces first, visible edges as solid lines
+      // and then hidden lines as dashed lines
+
+      // pass 1
+      SoDrawStyleElement::set(state, node, SoDrawStyleElement::FILLED);
+      SoLightModelElement::set(state, node, SoLightModelElement::PHONG);
+      SoPolygonOffsetElement::set(state, node, 1.0f, 1.0f,
+                                  SoPolygonOffsetElement::FILLED, TRUE);
+      SoOverrideElement::setDrawStyleOverride(state, node, TRUE);
+      SoOverrideElement::setLightModelOverride(state, node, TRUE);
+      SoOverrideElement::setPolygonOffsetOverride(state, node, TRUE);
+      
+      // render all faces
+      this->actuallyRender(action, initmatrices, clearwindow, clearzbuffer);
+
+      // pass 2
+      SoDrawStyleElement::set(state, node, SoDrawStyleElement::LINES);
+      SoPolygonOffsetElement::set(state, node, 0.0f, 0.0f,
+                                  SoPolygonOffsetElement::FILLED, FALSE);
+      SoOverrideElement::setDrawStyleOverride(state, node, TRUE);
+      SoOverrideElement::setPolygonOffsetOverride(state, node, TRUE);
+      
+      // sanity checks
+      glDisable(GL_LINE_STIPPLE);
+      glDepthMask(GL_FALSE);
+      glDepthFunc(GL_LEQUAL);
+
+      // render visible edges as solid ones
+      this->actuallyRender(action, initmatrices, FALSE, FALSE);
+      
+      // pass 3
+      glDepthFunc(GL_GREATER);
+      SoLineWidthElement::set(state, node, 1.0f);
+      SoOverrideElement::setLineWidthOverride(state, node, TRUE);
+      glLineWidth(1.0f);
+      glEnable(GL_LINE_STIPPLE);
+      glLineStipple(2, 0xF0F0); // dashed line
+      
+      // render hidden edges as dashed lines
+      this->actuallyRender(action, initmatrices, FALSE, FALSE);
+
+      // Restore OpenGL state
+      glDisable(GL_LINE_STIPPLE);
+      glDepthMask(GL_TRUE);
+      glDepthFunc(GL_LEQUAL);
+      glLineWidth(1.0f);
     }
     break;
   case SoRenderManager::WIREFRAME_OVERLAY:

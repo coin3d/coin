@@ -84,7 +84,8 @@ public:
     POINTS,
     WIREFRAME_OVERLAY,
     HIDDEN_LINE,
-    BOUNDING_BOX
+    BOUNDING_BOX,
+    SHADED_HIDDEN_LINES
   };
 
   enum StereoMode {
