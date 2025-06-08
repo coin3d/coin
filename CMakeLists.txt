@@ -111,7 +111,7 @@ cmake_dependent_option(COIN_BUILD_MAC_X11 "Build for X11 on Mac OS X when ON. De
 cmake_dependent_option(COIN_BUILD_MAC_AGL "Build for AGL on Mac OS X when ON. Default is OFF." OFF "APPLE" OFF)
 
 option(COIN_BUILD_GLX "Build for GLX on Linux when ON. Default is ON." ON)
-option(COIN_BUILD_EGL "Build for EGL on Linux when ON. Default is OFF." OFF)
+option(COIN_BUILD_EGL "Build for EGL on Linux when ON. Default is ON." ON)
 
 check_include_file_cxx(thread HAVE_STD_THREAD)
 cmake_dependent_option(COIN_DEBUG_CHECK_THREAD "Enable thread check in several central Coin functions." OFF "HAVE_STD_THREAD" OFF)
