@@ -191,23 +191,23 @@
 // *************************************************************************
 
 /* The configure script should protect against more than one of
-   HAVE_WGL, HAVE_GLX, HAVE_AGL|HAVE_CGL being defined at the same time, but
+   HAVE_WGL, HAVE_EGL|HAVE_GLX and HAVE_AGL|HAVE_CGL being defined at the same time, but
    we set up this little trip-wire in addition, just in case someone
    is either fiddling manually with config.h, or in case a change is
    made which breaks this protection in the configure script. */
 
-#if defined(HAVE_WGL) && (defined(HAVE_EGL) || defined(HAVE_GLX) || defined(HAVE_AGL) || defined(HAVE_CGL))
-#error More than one of HAVE_WGL, HAVE_GLX , HAVE_EGL, and HAVE_AGL|HAVE_CGL set simultaneously!
-#endif
+#define GRAPHICS_API_COUNT (((defined(HAVE_WGL) ? 1 : 0) + \
+                            ((defined(HAVE_EGL) || defined(HAVE_GLX)) ? 1 : 0) + \
+                            ((defined(HAVE_AGL) || defined(HAVE_CGL)) ? 1 : 0)))
 
-#if defined(HAVE_GLX) && (defined(HAVE_AGL) || defined(HAVE_CGL))
-#error More than one of HAVE_WGL, HAVE_GLX and HAVE_AGL|HAVE_CGL set simultaneously!
-#endif
-
+#if GRAPHICS_API_COUNT == 0
 // Define HAVE_NOGL if no platform GL binding exists
-#if !defined(HAVE_WGL) && !defined(HAVE_GLX) && !defined(HAVE_EGL) && !(defined(HAVE_AGL) || defined(HAVE_CGL))
 #define HAVE_NOGL 1
+#elif GRAPHICS_API_COUNT > 1
+#error More than one of HAVE_WGL, HAVE_EGL|HAVE_GLX, and HAVE_AGL|HAVE_CGL set simultaneously!
 #endif
+
+#undef GRAPHICS_API_COUNT
 
 // *************************************************************************
 
