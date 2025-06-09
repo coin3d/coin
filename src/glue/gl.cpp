@@ -191,7 +191,7 @@
 // *************************************************************************
 
 /* The configure script should protect against more than one of
-   HAVE_WGL, HAVE_EGL|HAVE_GLX and HAVE_AGL|HAVE_CGL being defined at the same time, but
+   (HAVE_WGL), (HAVE_EGL or HAVE_GLX) and (HAVE_AGL or HAVE_CGL) being defined at the same time, but
    we set up this little trip-wire in addition, just in case someone
    is either fiddling manually with config.h, or in case a change is
    made which breaks this protection in the configure script. */
