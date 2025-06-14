@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['e_0',['E',['../classSoCalculator.html#a28491e70e17ab85cd83c672b09c72896',1,'SoCalculator']]],
-  ['e_1',['e',['../classSoCalculator.html#afdc2df292e3699506ac21beb4d34a8d8',1,'SoCalculator']]],
+  ['e_0',['e',['../classSoCalculator.html#afdc2df292e3699506ac21beb4d34a8d8',1,'SoCalculator']]],
+  ['e_1',['E',['../classSoCalculator.html#a28491e70e17ab85cd83c672b09c72896',1,'SoCalculator']]],
   ['emissivecolor_2',['emissiveColor',['../classSoVRMLMaterial.html#a163db289a2fb0035cba31b71040a1dfa',1,'SoVRMLMaterial::emissiveColor'],['../classSoMaterial.html#ad6bfbb0005031395237fb06e805d3be6',1,'SoMaterial::emissiveColor']]],
   ['enable_3',['enable',['../classSoGate.html#a58ba8cba7b7a0485378bca24de4ddca0',1,'SoGate']]],
   ['enablecompressedtexture_4',['enableCompressedTexture',['../classSoTexture2.html#a417c61d6519dd1f0a6b1f270e96e96d8',1,'SoTexture2::enableCompressedTexture'],['../classSoTexture3.html#acf81f40aceaa33ba10ce4bd60fe61d2d',1,'SoTexture3::enableCompressedTexture']]],

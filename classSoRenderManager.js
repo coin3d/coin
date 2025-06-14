@@ -16,7 +16,8 @@ var classSoRenderManager =
       [ "POINTS", "classSoRenderManager.html#a4b8d99cff0fd91e31bc2c5d33610f6eba6dd6bd4a34ee379d4f174da7eaa94102", null ],
       [ "WIREFRAME_OVERLAY", "classSoRenderManager.html#a4b8d99cff0fd91e31bc2c5d33610f6eba529a9e9ee81756194229418bff577e7a", null ],
       [ "HIDDEN_LINE", "classSoRenderManager.html#a4b8d99cff0fd91e31bc2c5d33610f6eba0bdce559dba0d05efbd360e6aaccdb4b", null ],
-      [ "BOUNDING_BOX", "classSoRenderManager.html#a4b8d99cff0fd91e31bc2c5d33610f6eba9c2898a8743afd5e55fbdd06ca8e7ccf", null ]
+      [ "BOUNDING_BOX", "classSoRenderManager.html#a4b8d99cff0fd91e31bc2c5d33610f6eba9c2898a8743afd5e55fbdd06ca8e7ccf", null ],
+      [ "SHADED_HIDDEN_LINES", "classSoRenderManager.html#a4b8d99cff0fd91e31bc2c5d33610f6ebad833697828daab79d7fff84ed6530189", null ]
     ] ],
     [ "StereoMode", "classSoRenderManager.html#a34169ef6635a94765aa0d4f25537a26e", [
       [ "MONO", "classSoRenderManager.html#a34169ef6635a94765aa0d4f25537a26eaf233746e8954c7e4f9d201311aab2e79", null ],

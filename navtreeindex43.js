@@ -1,5 +1,6 @@
 var NAVTREEINDEX43 =
 {
+"classSoVRMLSphereSensor.html#a950813e99e9be0ab8d651a540084f2d5":[3,23,43,7],
 "classSoVRMLSphereSensor.html#a9cb07744f654fb21dd5fda1a6026384b":[3,23,43,0],
 "classSoVRMLSphereSensor.html#ab8929f2a862dea0698e4323040589e58":[3,23,43,4],
 "classSoVRMLSphereSensor.html#abbf9c6ff2fce9731ccb05ff1d4f7badf":[3,23,43,8],
@@ -248,6 +249,5 @@ var NAVTREEINDEX43 =
 "classSoVRMLVisibilitySensor.html#a0df795fca86af3c9a72fd0efd9dddcef":[3,23,53,9],
 "classSoVRMLVisibilitySensor.html#a1ebdb139aa4997c05690c7abfe6f26e3":[3,23,53,3],
 "classSoVRMLVisibilitySensor.html#a21557cd67fe0c42afd497b7a6ca910ed":[3,23,53,0],
-"classSoVRMLVisibilitySensor.html#a2b2841814fd43c1a7f7516ce0b67e152":[3,23,53,4],
-"classSoVRMLVisibilitySensor.html#a3297b60923a0d02171985844b310a7fc":[3,23,53,6]
+"classSoVRMLVisibilitySensor.html#a2b2841814fd43c1a7f7516ce0b67e152":[3,23,53,4]
 };

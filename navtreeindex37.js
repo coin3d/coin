@@ -1,5 +1,6 @@
 var NAVTREEINDEX37 =
 {
+"classSoTexture2.html#a2d48f53a7d91ba143b69b503d83df500":[3,15,104,2],
 "classSoTexture2.html#a417c61d6519dd1f0a6b1f270e96e96d8":[3,15,104,15],
 "classSoTexture2.html#a4eb36e2f2be170a6ebb9d755b19bd4d7":[3,15,104,8],
 "classSoTexture2.html#a5fef399fd7f6d483c30f4c07da27e968":[3,15,104,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX37 =
 "classSoTextureCoordinatePlane.html#ad886e290722a0e533d54198b3e306229":[3,15,119,2],
 "classSoTextureCoordinatePlane.html#ae4e7128204f9fb2c0e4dd21edb5a1bc4":[3,15,119,7],
 "classSoTextureCoordinateReflectionMap.html":[3,15,120],
-"classSoTextureCoordinateReflectionMap.html#a05aca7e1a12598b53371c6da2a1e7a71":[3,15,120,2],
-"classSoTextureCoordinateReflectionMap.html#a0c1c5f796bfbfbcf3381f5841a61fe37":[3,15,120,7]
+"classSoTextureCoordinateReflectionMap.html#a05aca7e1a12598b53371c6da2a1e7a71":[3,15,120,2]
 };

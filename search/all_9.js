@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['d_0',['D',['../classSoCalculator.html#aa4835d39b560519b4411dc82e04dd108',1,'SoCalculator']]],
-  ['d_1',['d',['../classSoCalculator.html#ad06a1196f4dcb1031691439cd222edc2',1,'SoCalculator']]],
+  ['d_0',['d',['../classSoCalculator.html#ad06a1196f4dcb1031691439cd222edc2',1,'SoCalculator']]],
+  ['d_1',['D',['../classSoCalculator.html#aa4835d39b560519b4411dc82e04dd108',1,'SoCalculator']]],
   ['data_2',['Data',['../classSoScXMLNavigationTarget_1_1Data.html',1,'SoScXMLNavigationTarget']]],
   ['data_3',['data',['../classSoFloatElement.html#a99e4dbb7cb48a8eab24eeaabc44f47f5',1,'SoFloatElement::data'],['../classSoInt32Element.html#a2b7a0019f5fbdc039be45a986fcda7a7',1,'SoInt32Element::data']]],
   ['data_20support_4',['Geographical Data Support',['../coin250.html#geonodes',1,'']]],

@@ -1,5 +1,6 @@
 var NAVTREEINDEX39 =
 {
+"classSoTransformBoxManip.html":[3,12,9],
 "classSoTransformBoxManip.html#a0fd107292871def40115342f806ef476":[3,12,9,0],
 "classSoTransformBoxManip.html#a98ee5552e5695eafdb2f3f3e8571568f":[3,12,9,1],
 "classSoTransformBoxManip.html#ab518283ba760b5cd09521f3dc78ff039":[3,12,9,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX39 =
 "classSoUnits.html#a27a9614b150474bbe4356268cc754ff2":[3,15,132,7],
 "classSoUnits.html#a2e3f830f5e74631050a8903eaf1a1366":[3,15,132,4],
 "classSoUnits.html#a3cbd1f8310f96411faf8f2f8ca1c2e16":[3,15,132,2],
-"classSoUnits.html#a4228c9591d7ed73023c6e06b0e2ebc71":[3,15,132,1],
-"classSoUnits.html#a562cea31cad758ff555da60244952faf":[3,15,132,3]
+"classSoUnits.html#a4228c9591d7ed73023c6e06b0e2ebc71":[3,15,132,1]
 };

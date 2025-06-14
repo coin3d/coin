@@ -57404,9 +57404,21 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
+      <name>SHADED_HIDDEN_LINES</name>
+      <anchorfile>classSoRenderManager.html</anchorfile>
+      <anchor>a4b8d99cff0fd91e31bc2c5d33610f6ebad833697828daab79d7fff84ed6530189</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
       <name>SEPARATE_OUTPUT</name>
       <anchorfile>classSoRenderManager.html</anchorfile>
       <anchor>a34169ef6635a94765aa0d4f25537a26ea7534ce29815527d9f009b0df2e90000d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>SHADED_HIDDEN_LINES</name>
+      <anchorfile>classSoRenderManager.html</anchorfile>
+      <anchor>a4b8d99cff0fd91e31bc2c5d33610f6ebad833697828daab79d7fff84ed6530189</anchor>
       <arglist></arglist>
     </member>
     <member kind="enumeration">

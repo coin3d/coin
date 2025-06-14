@@ -1,5 +1,6 @@
 var NAVTREEINDEX38 =
 {
+"classSoTextureCoordinateReflectionMap.html#a0c1c5f796bfbfbcf3381f5841a61fe37":[3,15,120,7],
 "classSoTextureCoordinateReflectionMap.html#a254e9a41d2d88f33d26741e8e149f06a":[3,15,120,4],
 "classSoTextureCoordinateReflectionMap.html#a279084a72ead2656555423c534f07be9":[3,15,120,3],
 "classSoTextureCoordinateReflectionMap.html#a9306d2255450f1c0346bafa38a439788":[3,15,120,5],
@@ -248,6 +249,5 @@ var NAVTREEINDEX38 =
 "classSoTransformBoxDragger.html#aa6057570edb16712b345e9ac0255a15d":[3,5,18,10],
 "classSoTransformBoxDragger.html#ab13644d4005af49dc79dbe24935ff205":[3,5,18,7],
 "classSoTransformBoxDragger.html#ab23a5523cf09a0a71e87c7d77c4fa541":[3,5,18,12],
-"classSoTransformBoxDragger.html#af660e2e6fe14f992f053d5f1d3d87661":[3,5,18,3],
-"classSoTransformBoxManip.html":[3,12,9]
+"classSoTransformBoxDragger.html#af660e2e6fe14f992f053d5f1d3d87661":[3,5,18,3]
 };

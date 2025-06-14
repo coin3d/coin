@@ -1,5 +1,6 @@
 var NAVTREEINDEX45 =
 {
+"classSoWWWInline.html#a61b124c1fe0defebffb46c17a20193f7":[3,15,136,7],
 "classSoWWWInline.html#a629f858440109635143b966fd1d4cd51":[3,15,136,6],
 "classSoWWWInline.html#a68c18674bd02430b5ed369d84e9cee61":[3,15,136,1],
 "classSoWWWInline.html#a6d12064311798072b0c5e4580f21172d":[3,15,136,16],
@@ -248,6 +249,5 @@ var NAVTREEINDEX45 =
 "functions_vars_e.html":[5,3,2,4],
 "functions_vars_f.html":[5,3,2,5],
 "functions_vars_g.html":[5,3,2,6],
-"functions_vars_h.html":[5,3,2,7],
-"functions_vars_i.html":[5,3,2,8]
+"functions_vars_h.html":[5,3,2,7]
 };

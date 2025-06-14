@@ -1,5 +1,6 @@
 var NAVTREEINDEX35 =
 {
+"classSoShaderParameterArray4i.html":[3,18,19],
 "classSoShaderParameterArray4i.html#a7d5debf0e8198515530086857b65e776":[3,18,19,0],
 "classSoShaderParameterArray4i.html#aa3333cf374f433933d557a66ecd2ca30":[3,18,19,2],
 "classSoShaderParameterArray4i.html#aa7d9f60a275eb94bdad2a58cca59c194":[3,18,19,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX35 =
 "classSoSpaceballButtonEvent.html#ac1a78099c48e9ca031d4abdbcb77a2be":[3,9,6,0],
 "classSoSpaceballButtonEvent.html#ac1a78099c48e9ca031d4abdbcb77a2bea165b7fd41586e7e5df5212a73e7761f8":[3,9,6,0,9],
 "classSoSpaceballButtonEvent.html#ac1a78099c48e9ca031d4abdbcb77a2bea59923e9db840c08b72a2a7aea8f791fe":[3,9,6,0,8],
-"classSoSpaceballButtonEvent.html#ac1a78099c48e9ca031d4abdbcb77a2bea614535fb1e8b40e345585042ffbbdd79":[3,9,6,0,3],
-"classSoSpaceballButtonEvent.html#ac1a78099c48e9ca031d4abdbcb77a2bea624c42a9cc1795768fba3e3c1712c6a3":[3,9,6,0,6]
+"classSoSpaceballButtonEvent.html#ac1a78099c48e9ca031d4abdbcb77a2bea614535fb1e8b40e345585042ffbbdd79":[3,9,6,0,3]
 };

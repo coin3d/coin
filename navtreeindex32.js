@@ -1,5 +1,6 @@
 var NAVTREEINDEX32 =
 {
+"classSoSFEnum.html#a9da6555d0c2d479dea050d296428174c":[3,10,56,10],
 "classSoSFEnum.html#aa76bca11a9c1d27b7cdc8366e616e8ae":[3,10,56,6],
 "classSoSFEnum.html#ab716f5dad68b35454bf7d0b21095e17a":[3,10,56,8],
 "classSoSFEnum.html#acf6d727c78cada401dad1db90f93b398":[3,10,56,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX32 =
 "classSoScXMLEvent.html#ab03b08047d7fe69324297f98fef83c79":[3,19,1,1],
 "classSoScXMLFlightControlTarget.html":[3,13,1],
 "classSoScXMLFlightControlTarget.html#a41e426aa1e15ee506d1dfff2951c7138":[3,13,1,1],
-"classSoScXMLFlightControlTarget.html#a5c1b59c4515d92d4aeec8fd9b9c9646b":[3,13,1,0],
-"classSoScXMLMiscTarget.html":[3,13,2]
+"classSoScXMLFlightControlTarget.html#a5c1b59c4515d92d4aeec8fd9b9c9646b":[3,13,1,0]
 };
