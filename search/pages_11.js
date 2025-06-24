@@ -16,6 +16,7 @@ var searchData=
   ['new_20features_20in_20coin_20v4_200_201_13',['New Features in Coin v4.0.1',['../coin401.html',1,'coin_new_features']]],
   ['new_20features_20in_20coin_20v4_200_202_14',['New Features in Coin v4.0.2',['../coin402.html',1,'coin_new_features']]],
   ['new_20features_20in_20coin_20v4_200_203_15',['New Features in Coin v4.0.3',['../coin403.html',1,'coin_new_features']]],
-  ['node_20macros_16',['Node Macros',['../group__coin__macros.html',1,'']]],
-  ['nodes_17',['Dynamic Loading of Extension Nodes',['../coin_dynload_overview.html',1,'coin_related_pages']]]
+  ['new_20features_20in_20coin_20v4_200_204_16',['New Features in Coin v4.0.4',['../coin404.html',1,'coin_new_features']]],
+  ['node_20macros_17',['Node Macros',['../group__coin__macros.html',1,'']]],
+  ['nodes_18',['Dynamic Loading of Extension Nodes',['../coin_dynload_overview.html',1,'coin_related_pages']]]
 ];

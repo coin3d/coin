@@ -20,5 +20,6 @@ var searchData=
   ['coin_20v4_200_201_17',['New Features in Coin v4.0.1',['../coin401.html',1,'coin_new_features']]],
   ['coin_20v4_200_202_18',['New Features in Coin v4.0.2',['../coin402.html',1,'coin_new_features']]],
   ['coin_20v4_200_203_19',['New Features in Coin v4.0.3',['../coin403.html',1,'coin_new_features']]],
-  ['compression_20',['File compression',['../coin_compression_overview.html',1,'coin_related_pages']]]
+  ['coin_20v4_200_204_20',['New Features in Coin v4.0.4',['../coin404.html',1,'coin_new_features']]],
+  ['compression_21',['File compression',['../coin_compression_overview.html',1,'coin_related_pages']]]
 ];
