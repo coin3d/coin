@@ -1,5 +1,6 @@
 /*!
 \page coin_new_features New Features in Coin
+- \subpage coin404 "New Features in Coin v4.0.4"
 - \subpage coin403 "New Features in Coin v4.0.3"
 - \subpage coin402 "New Features in Coin v4.0.2"
 - \subpage coin401 "New Features in Coin v4.0.1"
@@ -17,6 +18,31 @@
 - \subpage coin200 "New Features in Coin v2.0.0"
 
 */ 
+
+/**
+\page coin404 New Features in Coin v4.0.4
+
+This is a bugfix release.
+
+This is a brief summary of the new features in Coin v4.0.4:
+- Added EGL support.
+- Added support for building Coin as subdirectory.
+- Added shaded hidden lines visual style.
+
+Bug fixes:
+- Fixed calling deleteAll on invalid pointers in SoCallbackAction.
+- Updated cmake_minimum_required command to support CMake >= 3.30.
+- Fixed crash in SoVRMLBackground::GLRender due to unchecked pointer.
+- Fixed regression due to removed cc_glglue initialization.
+- Transferred ANSI encoded files to UTF-8.
+- Fixed invalid access when removing callback.
+- Fixed macro handling to avoid conflicts with Microsoft Win32 API headers.
+- Fixed typos and weird string outputs.
+- Fixed format string vulnerabilities.
+- Minor optimization to avoid repeated calculation of identity rotation.
+- Minor optimization to avoid needless matrix multiplications.
+
+*/
 
 /**
 \page coin403 New Features in Coin v4.0.3

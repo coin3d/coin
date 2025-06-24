@@ -8,6 +8,37 @@ The changes described here are issues that might have an effect on the
 compatibility of your source code when upgrading the library.
 
 
+Coin 4.0.4
+==========
+
+Added EGL support.
+
+Added support for building Coin as subdirectory.
+
+Added shaded hidden lines visual style.
+
+Fixed calling deleteAll on invalid pointers in SoCallbackAction.
+
+Updated cmake_minimum_required command to support CMake >= 3.30.
+
+Fixed crash in SoVRMLBackground::GLRender due to unchecked pointer.
+
+Fixed regression due to removed cc_glglue initialization.
+
+Transferred ANSI encoded files to UTF-8.
+
+Fixed invalid access when removing callback.
+
+Fixed macro handling to avoid conflicts with Microsoft Win32 API headers.
+
+Fixed typos and weird string outputs.
+
+Fixed format string vulnerabilities.
+
+Minor optimization to avoid repeated calculation of identity rotation.
+
+Minor optimization to avoid needless matrix multiplications.
+
 Coin 4.0.3
 ==========
 
