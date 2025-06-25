@@ -61,7 +61,6 @@ void exposeCallback(void)
   glEnable(GL_LIGHTING);
 
   sceneManager->render();
-
   glfwSwapBuffers(window);
 }
 
@@ -69,8 +68,6 @@ void exposeCallback(void)
 void framebufferSizeCallback(GLFWwindow* window,int w, int h)
 {
   sceneManager->setWindowSize(SbVec2s(w, h));
-  //sceneManager->setSize(SbVec2s(w, h));
-  //sceneManager->setViewportRegion(SbViewportRegion(w, h));
   sceneManager->scheduleRedraw();
 }
 
@@ -100,7 +97,6 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
         break;
     }
   }
-  camera->position.touch();
 }
 
 // ----------------------------------------------------------------------
@@ -158,7 +154,6 @@ int main(void)
         glfwPollEvents();
 
         idleCallback();
-        exposeCallback();
     };
 
     while (!glfwWindowShouldClose(window))
@@ -193,7 +188,6 @@ SoSeparator* createScene()
     root->addChild(col);
 
     root->addChild(new SoCone);
-    //root->addChild(new SoCube);
 
     sceneManager = new SoSceneManager;
     sceneManager->setRenderCallback(redrawCallback, (void *)1);
