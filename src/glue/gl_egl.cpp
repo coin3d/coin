@@ -162,23 +162,42 @@ eglglue_contextdata_init(unsigned int width, unsigned int height)
 static EGLDisplay
 eglglue_get_display(void)
 {
-  if (eglglue_display == EGL_NO_DISPLAY) {
-      eglglue_display = eglGetPlatformDisplay(EGL_PLATFORM_WAYLAND_KHR, EGL_DEFAULT_DISPLAY, NULL);
-      if (eglglue_display == EGL_NO_DISPLAY) {
-        eglglue_display = eglGetPlatformDisplay(EGL_PLATFORM_X11_EXT, EGL_DEFAULT_DISPLAY, NULL);
-      }
+  PFNEGLGETPLATFORMDISPLAYEXTPROC eglGetPlatformDisplayEXT;
 
-      if (eglglue_display == EGL_NO_DISPLAY) {
-        cc_debugerror_post("eglglue_get_display",
-                           "Display not found.");
-        return EGL_NO_DISPLAY;
-      }
-    if (coin_glglue_debug()) {
-      cc_debugerror_postinfo("eglglue_get_display",
-                             "got EGLDisplay==%p",
-                             eglglue_display);
-    }
+  if (eglglue_display != EGL_NO_DISPLAY) {
+      return eglglue_display;
   }
+
+  eglglue_display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+  if (eglglue_display != EGL_NO_DISPLAY) {
+    goto found;
+  }
+
+  eglGetPlatformDisplayEXT =
+      (PFNEGLGETPLATFORMDISPLAYEXTPROC)eglGetProcAddress("eglGetPlatformDisplayEXT");
+  if (!eglGetPlatformDisplayEXT) {
+    return EGL_NO_DISPLAY;
+  }
+
+  eglglue_display = eglGetPlatformDisplay(EGL_PLATFORM_WAYLAND_KHR, EGL_DEFAULT_DISPLAY, NULL);
+  if (eglglue_display != EGL_NO_DISPLAY) {
+    goto found;
+  }
+
+  eglglue_display = eglGetPlatformDisplay(EGL_PLATFORM_X11_EXT, EGL_DEFAULT_DISPLAY, NULL);
+
+  if (eglglue_display == EGL_NO_DISPLAY) {
+    cc_debugerror_post("eglglue_get_display", "Display not found.");
+    return EGL_NO_DISPLAY;
+  }
+
+found:
+  if (coin_glglue_debug()) {
+    cc_debugerror_postinfo("eglglue_get_display",
+                            "got EGLDisplay==%p",
+                            eglglue_display);
+  }
+
   return eglglue_display;
 }
 
