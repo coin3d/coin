@@ -130,6 +130,9 @@ install:
 # Assumes that we use the vx.y.z tagging scheme (e.g. v1.3.0)
 before_build:
   - cmd: |
+      rem the first line is for msys2 core update, the second for other packages
+      rem we need this update, as we need to ensure every dependent package uses the same compiler and environment
+      C:\msys64\usr\bin\bash -lc "pacman --needed --noconfirm -Syu"
       C:\msys64\usr\bin\bash -lc "pacman --needed --noconfirm -Syu"
       C:\msys64\usr\bin\bash -lc "pacman --needed --noconfirm -Sy mingw-w64-%CMAKE_PLATFORM%-boost"
       if "%CMAKE_GENERATOR%" == "MSYS Makefiles" for /f %%i in ('gcc -dumpversion') do set GCC_VERSION=%%i
