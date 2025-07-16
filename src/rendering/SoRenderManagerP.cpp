@@ -131,8 +131,9 @@ SoRenderManagerP::setClippingPlanes(void)
   xbox.transform(mat);
   SbBox3f box = xbox.project();
 
-  float nearval = -box.getMax()[2];
-  float farval = -box.getMin()[2];
+  constexpr float clippingOffset = 0.1;
+  float nearval = -box.getMax()[2] - clippingOffset;
+  float farval = -box.getMin()[2] + clippingOffset;
 
   if (!camera->isOfType(SoOrthographicCamera::getClassTypeId()) && farval <= 0.0f) return;
 
