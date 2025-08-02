@@ -41,6 +41,15 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
+      - name: Cache boost
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/boost
+            ./cmake_download_dir/boost_1_88_0
+          key: boost-windows-latest-boost_1_88_0
+          restore-keys: |
+            boost-windows-latest-
       - name: Create build directory and run CMake
         shell: cmd
         run: |
