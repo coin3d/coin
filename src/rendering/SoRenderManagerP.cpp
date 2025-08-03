@@ -135,10 +135,10 @@ SoRenderManagerP::setClippingPlanes(void)
 
   float sizeX, sizeY, sizeZ;
   box.getSize(sizeX, sizeY, sizeZ);
-  const auto boxDiagonal = sqrtf(sizeX * sizeX + sizeY * sizeY + sizeZ * sizeZ);
+  float boxDiagonal = sqrtf(sizeX * sizeX + sizeY * sizeY + sizeZ * sizeZ);
 
   // Clipping offset is 1% of the bounding box diagonal or at most 1.0 and at least std::numeric_limits<float>::epsilon()
-  const auto clippingOffset = std::min(1.0f, std::max(std::numeric_limits<float>::epsilon(), 0.01f * boxDiagonal));
+  float clippingOffset = SbMin(1.0f, SbMax(std::numeric_limits<float>::epsilon(), 0.01f * boxDiagonal));
   float nearval = -box.getMax()[2] - clippingOffset;
   float farval = -box.getMin()[2] + clippingOffset;
 
