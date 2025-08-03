@@ -41,25 +41,18 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Cache boost
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/boost
-            ./cmake_download_dir/boost_1_88_0
-          key: boost-windows-latest-boost_1_88_0
-          restore-keys: |
-            boost-windows-latest-
       - name: Create build directory and run CMake
         shell: cmd
         run: |
           mkdir cmake_download_dir
-          set DOWNLOAD_FILE_BOOST=boost_1_88_0.7z
-          set DOWNLOAD_ADDRESS_BOOST=https://sourceforge.net/projects/boost/files/boost-binaries/1.88.0/boost_1_88_0-bin-msvc-all-32-64.7z/download
+          set DOWNLOAD_FILE_BOOST=boost_1_78_0-bin-msvc-14.3-64.7z
+          for /f %%i in ('curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/coin3d/coin/releases ^| jq -r --arg COIN_REPO_TAG_NAME "CI-builds" ".[] | select(.tag_name==$COIN_REPO_TAG_NAME) | .id"') do set RELEASE_ID=%%i
+          for /f %%i in ('curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/coin3d/coin/releases/%RELEASE_ID% ^| jq -r --arg DOWNLOAD_FILE_BOOST "%DOWNLOAD_FILE_BOOST%" ".assets[] | select(.name==$DOWNLOAD_FILE_BOOST) | .id"') do set ASSET_ID=%%i
+          set DOWNLOAD_ADDRESS_BOOST=https://api.github.com/repos/coin3d/coin/releases/assets/%ASSET_ID%
           echo download file %DOWNLOAD_FILE_BOOST% from address %DOWNLOAD_ADDRESS_BOOST%
-          curl -L -o %DOWNLOAD_FILE_BOOST% %DOWNLOAD_ADDRESS_BOOST%
+          curl -s -S -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/octet-stream" -o %DOWNLOAD_FILE_BOOST% %DOWNLOAD_ADDRESS_BOOST%
           7z x %DOWNLOAD_FILE_BOOST% -ocmake_download_dir
-          cmake -S . -B cmake_build_dir -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=cmake_install_dir -DCMAKE_PREFIX_PATH=cmake_download_dir/boost_1_88_0 -DBoost_DIR=cmake_download_dir/boost_1_88_0/lib64-msvc-14.3/cmake/Boost-1.88.0
+          cmake -S . -B cmake_build_dir -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=cmake_install_dir -DCMAKE_PREFIX_PATH=cmake_download_dir/boost_1_78_0 -DBoost_DIR=cmake_download_dir/boost_1_78_0/lib64-msvc-14.3/cmake/Boost-1.78.0
       - name: Build project
         run: cmake --build cmake_build_dir --target INSTALL --config Release -- /nologo /verbosity:minimal /maxcpucount:2 /property:MultiProcessorCompilation=true
       - name: Run tests
