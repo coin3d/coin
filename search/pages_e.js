@@ -17,5 +17,6 @@ var searchData=
   ['in_20coin_20v4_200_202_14',['New Features in Coin v4.0.2',['../coin402.html',1,'coin_new_features']]],
   ['in_20coin_20v4_200_203_15',['New Features in Coin v4.0.3',['../coin403.html',1,'coin_new_features']]],
   ['in_20coin_20v4_200_204_16',['New Features in Coin v4.0.4',['../coin404.html',1,'coin_new_features']]],
-  ['inventor_20coin_17',['Books Related to Open Inventor / Coin',['../coin_books.html',1,'']]]
+  ['in_20coin_20v4_200_205_17',['New Features in Coin v4.0.5',['../coin405.html',1,'coin_new_features']]],
+  ['inventor_20coin_18',['Books Related to Open Inventor / Coin',['../coin_books.html',1,'']]]
 ];

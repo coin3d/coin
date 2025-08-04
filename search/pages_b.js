@@ -17,8 +17,9 @@ var searchData=
   ['features_20in_20coin_20v4_200_202_14',['New Features in Coin v4.0.2',['../coin402.html',1,'coin_new_features']]],
   ['features_20in_20coin_20v4_200_203_15',['New Features in Coin v4.0.3',['../coin403.html',1,'coin_new_features']]],
   ['features_20in_20coin_20v4_200_204_16',['New Features in Coin v4.0.4',['../coin404.html',1,'coin_new_features']]],
-  ['file_20compression_17',['File compression',['../coin_compression_overview.html',1,'coin_related_pages']]],
-  ['file_20format_20support_18',['Foreign File Format Support',['../coin_foreign_file_support.html',1,'coin_related_pages']]],
-  ['foreign_20file_20format_20support_19',['Foreign File Format Support',['../coin_foreign_file_support.html',1,'coin_related_pages']]],
-  ['format_20support_20',['Foreign File Format Support',['../coin_foreign_file_support.html',1,'coin_related_pages']]]
+  ['features_20in_20coin_20v4_200_205_17',['New Features in Coin v4.0.5',['../coin405.html',1,'coin_new_features']]],
+  ['file_20compression_18',['File compression',['../coin_compression_overview.html',1,'coin_related_pages']]],
+  ['file_20format_20support_19',['Foreign File Format Support',['../coin_foreign_file_support.html',1,'coin_related_pages']]],
+  ['foreign_20file_20format_20support_20',['Foreign File Format Support',['../coin_foreign_file_support.html',1,'coin_related_pages']]],
+  ['format_20support_21',['Foreign File Format Support',['../coin_foreign_file_support.html',1,'coin_related_pages']]]
 ];
