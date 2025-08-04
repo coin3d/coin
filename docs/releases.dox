@@ -1,5 +1,6 @@
 /*!
 \page coin_new_features New Features in Coin
+- \subpage coin405 "New Features in Coin v4.0.5"
 - \subpage coin404 "New Features in Coin v4.0.4"
 - \subpage coin403 "New Features in Coin v4.0.3"
 - \subpage coin402 "New Features in Coin v4.0.2"
@@ -18,6 +19,21 @@
 - \subpage coin200 "New Features in Coin v2.0.0"
 
 */ 
+
+/**
+\page coin405 New Features in Coin v4.0.5
+
+This is a bugfix release.
+
+This is a brief summary of the new features in Coin v4.0.5:
+- Added SDL3 example.
+
+Bug fixes:
+- More robust EGL display initilization.
+- Added a clipping offset dependent on bounding box size.
+- Only use GLX on platforms with X11.
+
+*/
 
 /**
 \page coin404 New Features in Coin v4.0.4

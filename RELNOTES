@@ -8,6 +8,17 @@ The changes described here are issues that might have an effect on the
 compatibility of your source code when upgrading the library.
 
 
+Coin 4.0.5
+==========
+
+Added SDL3 example.
+
+More robust EGL display initilization.
+
+Added a clipping offset dependent on bounding box size.
+
+Only use GLX on platforms with X11.
+
 Coin 4.0.4
 ==========
 

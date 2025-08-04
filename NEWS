@@ -1,3 +1,11 @@
+New in Coin v4.0.5 (2025-08-04):
+* new:
+  - Added SDL3 example.
+* bugfixes:
+  - More robust EGL display initilization.
+  - Added a clipping offset dependent on bounding box size.
+  - Only use GLX on platforms with X11.
+
 New in Coin v4.0.4 (2025-06-24):
 * new:
   - Added EGL support
