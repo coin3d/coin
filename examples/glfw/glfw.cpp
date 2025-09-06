@@ -14,25 +14,17 @@
 #include <Inventor/nodes/SoCube.h>
 #include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoTexture2.h>
-#include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 #include <Inventor/nodes/SoRotationXYZ.h>
-#include <Inventor/nodes/SoImage.h>
 
 #include <cstdlib>
 #include <functional>
 
-#ifdef HAVE_EGL
-static bool useEGL = true;
-#else
-static bool useEGL = false;
-#endif
 
 #define GL_GLEXT_PROTOTYPES
 #include <GLFW/glfw3.h>
-#include <GLFW/glfw3native.h>
 
 // ----------------------------------------------------------------------
 
@@ -116,19 +108,6 @@ int main(void)
 
     if (!glfwInit())
         return EXIT_FAILURE;
-
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
-
-#ifndef HAVE_EGL
-    if (useEGL) {
-      fprintf(stderr, "Error: EGL support is not compiled in\n");
-    }
-#endif
-
-    if (useEGL) {
-      putenv((char*)"COIN_EGL=1");
-      glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_EGL_CONTEXT_API);
-    }
 
     glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
 
