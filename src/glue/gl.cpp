@@ -2194,13 +2194,29 @@ static void check_force_agl()
 
 static void check_egl()
 {
-#if defined(HAVE_EGL) && !defined(HAVE_GLX)
+#if !defined(HAVE_EGL)
+  COIN_USE_EGL = 0;
+#elif defined(HAVE_EGL) && !defined(HAVE_GLX)
   COIN_USE_EGL = 1;
-#else
+#else // HAVE_EGL && HAVE_GLX
   if (COIN_USE_EGL == -1) {
+    // If COIN_EGL is set use EGL
     const char * env = coin_getenv("COIN_EGL");
     if (env) {
       COIN_USE_EGL = atoi(env);
+      return;
+    }
+
+    // Detect wayland
+    const char * sessionType = coin_getenv("XDG_SESSION_TYPE");
+    if (sessionType) {
+      if (strcmp(sessionType, "wayland") == 0 && coin_getenv("WAYLAND_DISPLAY")) {
+        EGLContext context = eglGetCurrentContext();
+        if (context != EGL_NO_CONTEXT) {
+          COIN_USE_EGL = 1;
+          return;
+        }
+      }
     }
   }
 #endif
