@@ -2211,9 +2211,15 @@ static void check_egl()
     const char * sessionType = coin_getenv("XDG_SESSION_TYPE");
     if (sessionType) {
       if (strcmp(sessionType, "wayland") == 0 && coin_getenv("WAYLAND_DISPLAY")) {
-        EGLContext context = eglGetCurrentContext();
-        if (context != EGL_NO_CONTEXT) {
+        EGLContext eglContext = eglGetCurrentContext();
+        if (eglContext != EGL_NO_CONTEXT) {
           COIN_USE_EGL = 1;
+          return;
+        }
+
+        GLXContext glxContext = glXGetCurrentContext();
+        if (glxContext != nullptr) {
+          COIN_USE_EGL = 0;
           return;
         }
       }
