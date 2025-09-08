@@ -2207,22 +2207,18 @@ static void check_egl()
       return;
     }
 
-    // Detect wayland
-    const char * sessionType = coin_getenv("XDG_SESSION_TYPE");
-    if (sessionType) {
-      if (strcmp(sessionType, "wayland") == 0 && coin_getenv("WAYLAND_DISPLAY")) {
-        EGLContext eglContext = eglGetCurrentContext();
-        if (eglContext != EGL_NO_CONTEXT) {
-          COIN_USE_EGL = 1;
-          return;
-        }
+    // Detect EGL
+    EGLContext eglContext = eglGetCurrentContext();
+    if (eglContext != EGL_NO_CONTEXT) {
+      COIN_USE_EGL = 1;
+      return;
+    }
 
-        GLXContext glxContext = glXGetCurrentContext();
-        if (glxContext != nullptr) {
-          COIN_USE_EGL = 0;
-          return;
-        }
-      }
+    // Detect GLX
+    GLXContext glxContext = glXGetCurrentContext();
+    if (glxContext != nullptr) {
+      COIN_USE_EGL = 0;
+      return;
     }
   }
 #endif

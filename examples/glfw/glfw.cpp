@@ -109,6 +109,8 @@ int main(void)
     if (!glfwInit())
         return EXIT_FAILURE;
 
+    glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_EGL_CONTEXT_API); // Use for EGL on X11
+
     glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
 
     window = glfwCreateWindow(640, 480, "Coin3D", NULL, NULL);
