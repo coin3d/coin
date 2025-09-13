@@ -2194,14 +2194,43 @@ static void check_force_agl()
 
 static void check_egl()
 {
-#if defined(HAVE_EGL) && !defined(HAVE_GLX)
+#if !defined(HAVE_EGL)
+  COIN_USE_EGL = 0;
+#elif defined(HAVE_EGL) && !defined(HAVE_GLX)
   COIN_USE_EGL = 1;
-#else
+#else // HAVE_EGL && HAVE_GLX
   if (COIN_USE_EGL == -1) {
+    // If COIN_EGL is set use EGL
     const char * env = coin_getenv("COIN_EGL");
     if (env) {
-      COIN_USE_EGL = atoi(env);
+      // Only accept '0' and '1' otherwise auto detect
+      if (env[0] == '0' && env[1] == '\0') {
+        COIN_USE_EGL = 0;
+        return;
+      }
+      if (env[0] == '1' && env[1] == '\0') {
+        COIN_USE_EGL = 1;
+        return;
+      }
     }
+
+    // Detect EGL
+    EGLContext eglContext = eglGetCurrentContext();
+    if (eglContext != EGL_NO_CONTEXT) {
+      COIN_USE_EGL = 1;
+      return;
+    }
+
+    // Detect GLX
+    GLXContext glxContext = glXGetCurrentContext();
+    if (glxContext != nullptr) {
+      COIN_USE_EGL = 0;
+      return;
+    }
+
+    // Use GLX by default if could not detect any current context
+    COIN_USE_EGL = 0;
+    cc_debugerror_postwarning("check_egl", "Could not detect EGL or GLX context, using GLX as default.");
   }
 #endif
 }
