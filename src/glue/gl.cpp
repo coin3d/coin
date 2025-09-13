@@ -2203,8 +2203,15 @@ static void check_egl()
     // If COIN_EGL is set use EGL
     const char * env = coin_getenv("COIN_EGL");
     if (env) {
-      COIN_USE_EGL = atoi(env);
-      return;
+      // Only accept '0' and '1' otherwise auto detect
+      if (env[0] == '0' && env[1] == '\0') {
+        COIN_USE_EGL = 0;
+        return;
+      }
+      if (env[0] == '1' && env[1] == '\0') {
+        COIN_USE_EGL = 1;
+        return;
+      }
     }
 
     // Detect EGL
