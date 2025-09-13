@@ -2220,6 +2220,10 @@ static void check_egl()
       COIN_USE_EGL = 0;
       return;
     }
+
+    // Use GLX by default if could not detect any current context
+    COIN_USE_EGL = 0;
+    cc_debugerror_postwarning("check_egl", "Could not detect EGL or GLX context, using GLX as default.");
   }
 #endif
 }
