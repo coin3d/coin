@@ -478,6 +478,11 @@ SoShape::getScreenSize(SoState * const state, const SbBox3f & boundingbox,
                 SoProjectionMatrixElement::get(state));
 
   SbVec2s vpsize = SoViewportRegionElement::get(state).getViewportSizePixels();
+  if (boundingbox.isEmpty())
+  {
+      rectsize = vpsize * 0.5;
+      return;
+  }
   SbVec3f bmin, bmax;
   boundingbox.getBounds(bmin, bmax);
 
