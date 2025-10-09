@@ -1,5 +1,6 @@
 /*!
 \page coin_new_features New Features in Coin
+- \subpage coin406 "New Features in Coin v4.0.6"
 - \subpage coin405 "New Features in Coin v4.0.5"
 - \subpage coin404 "New Features in Coin v4.0.4"
 - \subpage coin403 "New Features in Coin v4.0.3"
@@ -19,6 +20,18 @@
 - \subpage coin200 "New Features in Coin v2.0.0"
 
 */ 
+
+/**
+\page coin406 New Features in Coin v4.0.6
+
+This is a bugfix release.
+
+Bug fixes:
+- Fixed SoShape::getScreenSize to handle empty bounding box case.
+- Fixed EGL and GLX handling on Wayland.
+- Applied Debian patch for fixing compatibility with 64-bit time_t.
+
+*/
 
 /**
 \page coin405 New Features in Coin v4.0.5

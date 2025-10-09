@@ -1,3 +1,9 @@
+New in Coin v4.0.6 (2025-10-09):
+* bugfixes:
+  - Fixed SoShape::getScreenSize to handle empty bounding box case
+  - Fixed EGL and GLX handling on Wayland
+  - Applied Debian patch for fixing compatibility with 64-bit time_t
+
 New in Coin v4.0.5 (2025-08-04):
 * new:
   - Added SDL3 example.

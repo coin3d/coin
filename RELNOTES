@@ -8,6 +8,15 @@ The changes described here are issues that might have an effect on the
 compatibility of your source code when upgrading the library.
 
 
+Coin 4.0.6
+==========
+
+Fixed SoShape::getScreenSize to handle empty bounding box case.
+
+Fixed EGL and GLX handling on Wayland.
+
+Applied Debian patch for fixing compatibility with 64-bit time_t.
+
 Coin 4.0.5
 ==========
 
