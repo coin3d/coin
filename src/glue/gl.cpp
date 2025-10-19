@@ -4787,14 +4787,15 @@ cc_glglue_context_can_render_to_texture(void * COIN_UNUSED_ARG(ctx))
 #endif
 #if defined(HAVE_GLX)
   return FALSE;
-#endif
+#else
 #if defined(HAVE_AGL)
   if (COIN_USE_AGL > 0) return aglglue_context_can_render_to_texture(ctx); else
 #endif
 #if defined(HAVE_CGL)
   return cglglue_context_can_render_to_texture(ctx);
 #else
-  ;
+  return FALSE;
+#endif
 #endif
 #endif
 }
