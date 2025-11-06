@@ -23,7 +23,19 @@ macro(create_testsuite input)
 endmacro()
 
 macro(create_file_test input testfunc filter)
-	file(GLOB_RECURSE COIN_IV_FILES RELATIVE ${PROJECT_SOURCE_DIR} ../${input}/*.wrl ../${input}/*.vrml ../${input}/*.gz ../${input}/*.iv)
+	file(GLOB_RECURSE COIN_IV_FILES RELATIVE ${PROJECT_SOURCE_DIR}
+		../${input}/*.iv
+		../${input}/*.iv.gz
+	)
+	if (HAVE_VRML97)
+		file(GLOB_RECURSE COIN_WRL_VRML_FILES RELATIVE ${PROJECT_SOURCE_DIR}
+			../${input}/*.wrl
+			../${input}/*.vrml
+			../${input}/*.wrl.gz
+			../${input}/*.vrml.gz
+		)
+		list(APPEND COIN_IV_FILES ${COIN_WRL_VRML_FILES})
+	endif()
 	string(REGEX REPLACE "[\\./\\-]+" "" TESTSUITENAME "${input}")
 	set(COIN_STR_TEST_INCL "")
 	set(COIN_STR_TEST_CODE "const char *readError[] = { \"Coin read error:\", 0 };\n")

@@ -1724,6 +1724,7 @@ readErrorHandler(const SoError * error, void * data)
 {
 }
 
+#ifdef HAVE_VRML97
 BOOST_AUTO_TEST_CASE(readChildList)
 {
   static const char scene[] = "#VRML V2.0 utf8\n"
@@ -1740,6 +1741,7 @@ BOOST_AUTO_TEST_CASE(readChildList)
   }
   root->unref();
 }
+#endif
 
 BOOST_AUTO_TEST_CASE(readEmptyChildList)
 {

@@ -1748,6 +1748,8 @@ DEF root Separator {
   }
 }
 */
+
+#ifdef HAVE_VRML97
 	    SoVRMLGroup *newroot;
 	   for(int j=0;j<2;j++) {
 		   if(j==1) {
@@ -1835,6 +1837,7 @@ DEF root Separator {
 	
        root->unref();
 	   newroot->unref();
+#endif
  }
 
 #endif // COIN_TEST_SUITE
