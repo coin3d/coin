@@ -601,7 +601,7 @@ SoVRMLExtrusion::GLRender(SoGLRenderAction * action)
 
     SoGLVertexAttributeElement::getInstance(state)->enableVBO(action);
 
-    PRIVATE(this)->vbocache->getVertexArrayIndexer()->render(glue, TRUE, contextid);
+    PRIVATE(this)->vbocache->getVertexArrayIndexer()->render(state, TRUE, contextid);
 
     cc_glglue_glBindBuffer(glue, GL_ARRAY_BUFFER, 0); // Reset VBO binding
     cc_glglue_glDisableClientState(glue, GL_NORMAL_ARRAY);

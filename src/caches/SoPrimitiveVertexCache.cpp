@@ -378,13 +378,13 @@ SoPrimitiveVertexCache::renderTriangles(SoState * state, const int arrays) const
     SoPrimitiveVertexCacheP * thisp = const_cast<SoPrimitiveVertexCacheP *>(&PRIVATE(this).get());
 
     thisp->enableVBOs(glue, contextid, color, normal, texture, enabled, lastenabled);
-    PRIVATE(this)->triangleindexer->render(glue, TRUE, contextid);
+    PRIVATE(this)->triangleindexer->render(state, TRUE, contextid);
     thisp->disableVBOs(glue, color, normal, texture, enabled, lastenabled);
   }
   else if (SoGLDriverDatabase::isSupported(glue, SO_GL_VERTEX_ARRAY)) {
     SoPrimitiveVertexCacheP * thisp = const_cast<SoPrimitiveVertexCacheP *>(&PRIVATE(this).get());
     thisp->enableArrays(glue, color, normal, texture, enabled, lastenabled);
-    PRIVATE(this)->triangleindexer->render(glue, FALSE, contextid);
+    PRIVATE(this)->triangleindexer->render(state, FALSE, contextid);
     thisp->disableArrays(glue, color, normal, texture, enabled, lastenabled);
   }
   else {
@@ -425,7 +425,7 @@ SoPrimitiveVertexCache::renderLines(SoState * state, const int arrays) const
   if (SoGLDriverDatabase::isSupported(glue, SO_GL_VERTEX_ARRAY)) {
     SoPrimitiveVertexCacheP * thisp = const_cast<SoPrimitiveVertexCacheP *>(&PRIVATE(this).get());
     thisp->enableArrays(glue, color, normal, texture, enabled, lastenabled);
-    PRIVATE(this)->lineindexer->render(glue, FALSE, contextid);
+    PRIVATE(this)->lineindexer->render(state, FALSE, contextid);
     thisp->disableArrays(glue, color, normal, texture, enabled, lastenabled);
   }
   else {
@@ -465,7 +465,7 @@ SoPrimitiveVertexCache::renderPoints(SoState * state, const int arrays) const
   if (SoGLDriverDatabase::isSupported(glue, SO_GL_VERTEX_ARRAY)) {
     SoPrimitiveVertexCacheP * thisp = const_cast<SoPrimitiveVertexCacheP *>(&PRIVATE(this).get());
     thisp->enableArrays(glue, color, normal, texture, enabled, lastenabled);
-    PRIVATE(this)->pointindexer->render(glue, FALSE, contextid);
+    PRIVATE(this)->pointindexer->render(state, FALSE, contextid);
     thisp->disableArrays(glue, color, normal, texture, enabled, lastenabled);
   }
   else {

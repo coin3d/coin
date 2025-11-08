@@ -366,7 +366,7 @@ SoIndexedPointSet::GLRender(SoGLRenderAction * action)
     }
 
     if (this->vaindexer) {
-      this->vaindexer->render(sogl_glue_instance(state), vbo, contextid);
+      this->vaindexer->render(state, vbo, contextid);
     }
     UNLOCK_VAINDEXER(this);
     this->finishVertexArray(action, vbo,

@@ -48,6 +48,7 @@
 
 #include "tidbitsp.h"
 #include "rendering/SoVBO.h"
+#include "rendering/SoGL.h"
 #include "coindefs.h"
 
 #if BOOST_WORKAROUND(COIN_MSVC, <= COIN_MSVC_6_0_VERSION)
@@ -244,8 +245,10 @@ SoVertexArrayIndexer::close(void)
   Render all added targets/indices.
 */
 void
-SoVertexArrayIndexer::render(const cc_glglue * glue, const SbBool renderasvbo, const uint32_t contextid)
+SoVertexArrayIndexer::render(SoState * state, const SbBool renderasvbo, const uint32_t contextid)
 {
+  const cc_glglue * glue = sogl_glue_instance(state);
+
   switch (this->target) {
   case GL_TRIANGLES:
   case GL_QUADS:
@@ -307,7 +310,7 @@ SoVertexArrayIndexer::render(const cc_glglue * glue, const SbBool renderasvbo, c
     break;
   }
 
-  if (this->next) this->next->render(glue, renderasvbo, contextid);
+  if (this->next) this->next->render(state, renderasvbo, contextid);
 }
 
 /*!
