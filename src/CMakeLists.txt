@@ -256,7 +256,13 @@ elseif(APPLE)
 endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${COIN_TARGET_INCLUDE_DIRECTORIES})
-target_link_libraries(${PROJECT_NAME} PRIVATE ${COIN_TARGET_LINK_LIBRARIES})
+
+if (COIN_BUILD_SHARED_LIBS)
+  target_link_libraries(${PROJECT_NAME} PRIVATE ${COIN_TARGET_LINK_LIBRARIES})
+else()
+  target_link_libraries(${PROJECT_NAME} INTERFACE ${COIN_TARGET_LINK_LIBRARIES})
+endif()
+
 if(NOT COIN_BUILD_MAC_FRAMEWORK)
   target_include_directories(${PROJECT_NAME} INTERFACE $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 endif()
