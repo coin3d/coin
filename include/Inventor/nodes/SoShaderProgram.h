@@ -62,6 +62,7 @@ public:
 SoEXTENDER public:
   virtual void GLRender(SoGLRenderAction * action);
   virtual void search(SoSearchAction * action);
+  void render(SoState * state);
 
 SoINTERNAL public:
   static void initClass();

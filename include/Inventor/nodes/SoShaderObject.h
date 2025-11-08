@@ -70,6 +70,7 @@ public:
 
   virtual void GLRender(SoGLRenderAction * action);
   virtual void search(SoSearchAction * action);
+  void render(SoState * state);
 
   void updateParameters(SoState * state);
 

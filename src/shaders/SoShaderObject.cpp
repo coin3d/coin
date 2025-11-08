@@ -139,6 +139,7 @@ public:
   ~SoShaderObjectP();
 
   void GLRender(SoGLRenderAction *action);
+  void render(SoState * state);
 
   SoGLShaderObject * getGLShaderObject(const uint32_t cachecontext) {
     SoGLShaderObject * obj = NULL;
@@ -391,14 +392,18 @@ SoShaderObjectP::~SoShaderObjectP()
 void
 SoShaderObjectP::GLRender(SoGLRenderAction * action)
 {
-  SbBool isactive = this->owner->isActive.getValue();
-  if (!isactive) return;
+  this->render(action ? action->getState() : NULL);
+}
 
-  SoState * state = action->getState();
+void
+SoShaderObjectP::render(SoState * state)
+{
+  SbBool isactive = this->owner->isActive.getValue();
+  if (!isactive || !state) return;
 
   SoGLShaderProgram * shaderProgram = SoGLShaderProgramElement::get(state);
   if (!shaderProgram) {
-    SoDebugError::postWarning("SoShaderObject::GLRender",
+    SoDebugError::postWarning("SoShaderObject::render",
                               "SoShaderObject seems to not be under a SoShaderProgram node");
     return;
   }
@@ -428,7 +433,7 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
       case SoShaderObject::GLSL_PROGRAM: s = "GLSL_PROGRAM"; break;
       default: assert(FALSE && "unknown shader");
       }
-      SoDebugError::postWarning("SoShaderObjectP::GLRender",
+      SoDebugError::postWarning("SoShaderObjectP::render",
                                 "%s is not supported", s.getString());
       return;
     }
@@ -471,6 +476,12 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
     shaderProgram->addShaderObject(shaderobject);
     shaderobject->setIsActive(isactive);
   }
+}
+
+void
+SoShaderObject::render(SoState * state)
+{
+  PRIVATE(this)->render(state);
 }
 
 // sets this->cachedSourceType to [ARB|CG|GLSL]_PROGRAM
