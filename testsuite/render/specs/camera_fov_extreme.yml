@@ -1,0 +1,34 @@
+id: camera_fov_extreme
+scene: ../scenes/cube.iv
+
+camera:
+  type: perspective
+  position: [2.5, 2.5, 2.5]
+  target: [0, 0, 0]
+  up: [0, 1, 0]
+  fov_deg: 85
+  near: 0.05
+  far: 20.0
+
+viewport:
+  width: 512
+  height: 512
+  background: [0.15, 0.15, 0.2, 1.0]
+
+state:
+  depth_test: true
+  blend: false
+  cull_face: true
+  msaa_samples: 0
+  srgb: false
+
+toggles:
+  lighting: true
+
+outputs:
+  - backend: gl
+    baseline: ../baselines/gl/camera_fov_extreme.png
+    tolerance:
+      per_channel: 2
+      max_diff_pct: 0.5
+      rmse: 1.0
