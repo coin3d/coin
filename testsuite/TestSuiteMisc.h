@@ -36,6 +36,7 @@
 #include <string>
 #include <ostream>
 #include <boost/lexical_cast.hpp>
+#include <boost/static_assert.hpp>
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbTypeInfo.h>
 
