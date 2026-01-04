@@ -196,9 +196,29 @@
    is either fiddling manually with config.h, or in case a change is
    made which breaks this protection in the configure script. */
 
-#define GRAPHICS_API_COUNT (((defined(HAVE_WGL) ? 1 : 0) + \
-                            ((defined(HAVE_EGL) || defined(HAVE_GLX)) ? 1 : 0) + \
-                            ((defined(HAVE_AGL) || defined(HAVE_CGL)) ? 1 : 0)))
+#if defined(HAVE_WGL)
+#  define GRAPHICS_API_WGL_COUNT 1
+#else
+#  define GRAPHICS_API_WGL_COUNT 0
+#endif
+
+// Compute EGL/GLX group count (treated as one logical API group)
+#if defined(HAVE_EGL) || defined(HAVE_GLX)
+#  define GRAPHICS_API_EGLGLX_COUNT 1
+#else
+#  define GRAPHICS_API_EGLGLX_COUNT 0
+#endif
+
+// Compute AGL/CGL group count (treated as one logical API group)
+#if defined(HAVE_AGL) || defined(HAVE_CGL)
+#  define GRAPHICS_API_AGLCGL_COUNT 1
+#else
+#  define GRAPHICS_API_AGLCGL_COUNT 0
+#endif
+
+#define GRAPHICS_API_COUNT (GRAPHICS_API_WGL_COUNT + \
+                            GRAPHICS_API_EGLGLX_COUNT + \
+                            GRAPHICS_API_AGLCGL_COUNT)
 
 #if GRAPHICS_API_COUNT == 0
 // Define HAVE_NOGL if no platform GL binding exists
@@ -207,6 +227,9 @@
 #error More than one of HAVE_WGL, HAVE_EGL|HAVE_GLX, and HAVE_AGL|HAVE_CGL set simultaneously!
 #endif
 
+#undef GRAPHICS_API_WGL_COUNT
+#undef GRAPHICS_API_EGLGLX_COUNT
+#undef GRAPHICS_API_AGLCGL_COUNT
 #undef GRAPHICS_API_COUNT
 
 // *************************************************************************
