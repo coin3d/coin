@@ -56,9 +56,8 @@ cat $srcdir/$srcdirpath | grep "^#include" | grep -v config.h | head -1 >&5
 
 cat >&5 <<EOF
 
-#define BOOST_TEST_NO_LIB 1
-#include <boost/test/unit_test.hpp>
-#include <boost/intrusive_ptr.hpp>
+#include "CoinTest.h"
+#include <Inventor/misc/SoRefPtr.h>
 
 #include <cassert>
 #include <cstdio>

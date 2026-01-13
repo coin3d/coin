@@ -30,16 +30,12 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#define BOOST_TEST_MODULE CoinTests
-#define BOOST_TEST_NO_MAIN
-#define BOOST_TEST_ALTERNATIVE_INIT_API
-#include <boost/test/included/unit_test.hpp>
 #include <iostream>
-namespace utf = boost::unit_test;
 
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInteraction.h>
 #include "TestSuiteUtils.h"
+#include "CoinTest.h"
 
 using namespace SIM::Coin3D::Coin;
 
@@ -50,7 +46,7 @@ int main(int argc, char* argv[])
     SoInteraction::init();
     TestSuite::Init();
 
-    int rc = utf::unit_test_main(init_unit_test, argc, argv);
+    int rc = CoinTest::run_all();
 
     SoDB::finish();
 
