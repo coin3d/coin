@@ -180,13 +180,6 @@ endif()
 
 # As not all CMake FindXXX modules and config packages provide target support,
 # we should explicitly check for them on.
-find_package(Boost REQUIRED) # almost any Boost will do
-# Boost::boost - Target for header only dependencies (Boost include directory)
-if(NOT TARGET Boost::boost)
-  list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIRS})
-else()
-  list(APPEND COIN_TARGET_LINK_LIBRARIES Boost::boost)
-endif()
 
 if(COIN_BUILD_MAC_X11)
   find_package(X11 REQUIRED)
@@ -530,7 +523,7 @@ if(MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
   endif ()
 
-  # Enable C++ exception handling (for code that uses boost in SbByteBuffer)
+  # Enable C++ exception handling
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
 
   coin_msvc_link_static_crt(${COIN_BUILD_MSVC_STATIC_RUNTIME})

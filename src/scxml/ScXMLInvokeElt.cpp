@@ -64,7 +64,7 @@
 #include <cstring>
 #include <vector>
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/XML/element.h>
@@ -183,15 +183,15 @@ ScXMLInvokeEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocum
 
 class ScXMLInvokeElt::PImpl {
 public:
-  PImpl(void) : finalizeptr(NULL), contentptr(NULL) { }
+  PImpl(void) { }
   ~PImpl(void)
   {
     SCXML__CLEAR_STD_VECTOR(this->paramlist, ScXMLParamElt *);
   }
 
   std::vector<ScXMLParamElt *> paramlist;
-  boost::scoped_ptr<ScXMLFinalizeElt> finalizeptr;
-  boost::scoped_ptr<ScXMLContentElt> contentptr;
+  std::unique_ptr<ScXMLFinalizeElt> finalizeptr;
+  std::unique_ptr<ScXMLContentElt> contentptr;
 };
 
 #define PRIVATE(obj) ((obj)->pimpl)

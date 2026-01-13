@@ -49,7 +49,7 @@
 #include <list>
 #include <algorithm>
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include <Inventor/SbName.h>
 #include <Inventor/C/threads/mutex.h>
@@ -68,7 +68,7 @@ class DelayEventData {
   // FIXME: these objects should per spec die with the invoking eventtarget.
 public:
   DelayEventData(void)
-  : targettype(NULL), targetname(NULL), delay(0.0f), alarm(NULL), event(NULL)
+  : targettype(NULL), targetname(NULL), delay(0.0f), alarm(), event(NULL)
   {
   }
   ~DelayEventData(void)
@@ -81,7 +81,7 @@ public:
   char * targettype;
   char * targetname;
   float delay;
-  boost::scoped_ptr<SoAlarmSensor> alarm;
+  std::unique_ptr<SoAlarmSensor> alarm;
   const ScXMLEvent * event;
 };
 

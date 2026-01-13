@@ -43,16 +43,7 @@ Instead of doing so you need to clone the repository, e.g. calling
 Boost
 -----
 
-Boost C++ libraries are needed (at least version 1.45.0 from
-[boost](http://www.boost.org)).  Up to now Coin only uses the header only
-libraries, so downloading and installing the sources without building is
-sufficient.  Boost binary packages are provided for Windows on
-[sourceforge](https://sourceforge.net/projects/boost/files/boost-binaries/).  To
-find out how the Visual Studio version is related to the internal numbering have
-a look at
-[Internal_version_numbering](https://en.wikipedia.org/wiki/Microsoft_Visual_C%2B%2B#Internal_version_numbering).
-On Linux prebuilt binaries for your distribution should be provided by the
-package manager.
+Coin does not require Boost.
 
 Doxygen
 -------
@@ -152,7 +143,7 @@ Windows
 
     (1) git clone --recurse-submodules https://github.com/coin3d/coin coin
     (2) cmake -Hcoin -Bcoin_build -G "Visual Studio 2015 Win64" -DCMAKE_INSTALL_PREFIX=C:\Coin3D
-              -DBOOST_ROOT=C:\Data\Boost-1.56.0 -DCOIN_BUILD_DOCUMENTATION=OFF
+              -DCOIN_BUILD_DOCUMENTATION=OFF
     (3) cmake --build coin_build --target ALL_BUILD --config Release -- /nologo
               /verbosity:minimal /maxcpucount
     (4) cmake --build coin_build --target INSTALL --config Release -- /nologo
@@ -164,7 +155,7 @@ Windows
 
     (1) git clone --recurse-submodules https://github.com/coin3d/coin coin
     (2) cmake -Hcoin -Bcoin_build -G "Visual Studio 2015 Win64" -DCMAKE_INSTALL_PREFIX=C:\Coin3D
-              -DBOOST_ROOT=C:\Data\Boost-1.56.0 -DCOIN_BUILD_DOCUMENTATION=OFF
+              -DCOIN_BUILD_DOCUMENTATION=OFF
     (3) MSBuild /p:Configuration=Release /t:ALL_BUILD Coin.sln /nologo
                 /verbosity:minimal /maxcpucount
     (4) MSBuild /p:Configuration=Release /t:INSTALL Coin.sln /nologo
@@ -185,8 +176,6 @@ Windows
    On recent CMake versions (3.13 and later) the option `-H` has been superseded
    by `-S`.  Or, if available, you can edit all options in a GUI like this
    `cmake-gui ./coin`
-   On Windows the Boost root directory need to be explicitly specified as it
-   could not be found otherwise.
 
 3. Build the Coin library
    Open Coin.sln in the build directory from Microsoft Visual Studio. Build the
@@ -301,8 +290,8 @@ CMake searches for config packages, e.g. for `simage` with
 `find_package(simage)`, these directories are searched to find
 `<PackageName>Config.cmake` or `<packagename>-config.cmake`.  This can be used
 to specify non standard installation places for required package information,
-e.g. `/opt/local/Boost;/opt/local/Qt5` or
-`C:\Data\local\Boost;C:\Data\Qt-5.12.0`.
+e.g. `/opt/local/Qt5;/opt/local/simage` or
+`C:\Data\local\simage;C:\Data\Qt-5.12.0`.
 
     COIN_BUILD_SHARED_LIBS
 
@@ -372,12 +361,6 @@ OFF for other platforms.
 Enable build with multiple processes in Visual Studio.  Default is ON.  (Only
 available when using Visual C++ compiler)
 
-    BOOST_ROOT
-
-If you placed your Boost installation into a directory that is not known to
-CMake you may need to specify `BOOST ROOT` on the CMake command line, e.g.
-`-DBOOST_ROOT=/opt/local/boost-1.56.0` on Linux and
-`-DBOOST_ROOT=C:\Data\Boost-1.56.0 on Windows`.
 
 GUI-Toolkit (SoQt, SoWin, SoXt, Quarter) build configuration using CMake
 ========================================================================
@@ -406,7 +389,7 @@ Windows
     (1) git clone --recurse-submodules https://github.com/coin3d/soqt soqt
     (2) cmake -Hsoqt -Bsoqt_build -G "Visual Studio 2015" -A x64 -DCMAKE_INSTALL_PREFIX=C:\Coin3D
               -DCMAKE_PREFIX_PATH="C:\Coin3D;C:\Qt\5.12.1\msvc2015_64"
-              -DBOOST_ROOT=C:\Data\Boost-1.56.0 -DSOQT_BUILD_DOCUMENTATION=OFF
+              -DSOQT_BUILD_DOCUMENTATION=OFF
     (3) cmake --build soqt_build --target ALL_BUILD --config Release -- /nologo
               /verbosity:minimal /maxcpucount
     (4) cmake --build soqt_build --target INSTALL --config Release -- /nologo

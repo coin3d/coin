@@ -43,13 +43,12 @@
 #include <cmath>
 #include <cfloat>
 
-#include <boost/intrusive_ptr.hpp>
-
 #include <Inventor/SbViewVolume.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbLine.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoRefPtr.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 #include <Inventor/fields/SoSFVec3d.h>
@@ -72,7 +71,7 @@ public:
 
   SbBool spinning;
 
-  boost::intrusive_ptr<SoCamera> camera;
+  SoRefPtr<SoCamera> camera;
   SbTime updatetime;
   SbRotation spinrotation;
 };
@@ -192,7 +191,7 @@ SoScXMLSpinTarget::processOneEvent(const ScXMLEvent * event)
 
     data->spinning = TRUE;
 
-    data->camera = static_cast<SoCamera *>(camera->copy());
+    data->camera.reset(static_cast<SoCamera *>(camera->copy()));
 
     double dtime = 0.0;
     SbRotation spinrot;

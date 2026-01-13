@@ -15,13 +15,13 @@
 #define INLINE
 #endif
 
-#include <boost/shared_array.hpp>
+#include <memory>
 
 class SbByteBufferP {
   friend class SbByteBuffer;
   SbByteBufferP(size_t size_in)
     : size_(size_in),
-      buffer(size_in?boost::shared_array<char>(new char[size_in]):boost::shared_array<char>()),
+      buffer(size_in?std::shared_ptr<char>(new char[size_in], std::default_delete<char[]>()):std::shared_ptr<char>()),
       invalid(FALSE)
   {
   }
@@ -32,7 +32,7 @@ INLINE void
 SbByteBuffer::makeUnique()
 {
   if (PRIVATE(this)->size_ && !PRIVATE(this)->buffer.unique()) {
-    boost::shared_array<char> tmp_buffer(new char [PRIVATE(this)->size_]);
+    std::shared_ptr<char> tmp_buffer(new char [PRIVATE(this)->size_], std::default_delete<char[]>());
     memcpy(tmp_buffer.get(),PRIVATE(this)->buffer.get(),PRIVATE(this)->size_);
     PRIVATE(this)->buffer=tmp_buffer;
   }
@@ -41,7 +41,7 @@ SbByteBuffer::makeUnique()
 INLINE SbByteBuffer::SbByteBuffer(size_t size_in, const unsigned char * buffer_in)
 #ifdef ABI_BREAKING_OPTIMIZE
 : size_(size_in),
-  buffer(size_in?boost::shared_array<char>(new char[size_in]):boost::shared_array<char>()),
+  buffer(size_in?std::shared_ptr<char>(new char[size_in], std::default_delete<char[]>()):std::shared_ptr<char>()),
   invalid(FALSE)
 #else
   : pimpl(new SbByteBufferP(size_in))
@@ -70,7 +70,7 @@ INLINE SbByteBuffer::SbByteBuffer(const SbByteBuffer & buffer)
 INLINE SbByteBuffer::SbByteBuffer(size_t size_in, const char * buffer_in)
 #ifdef ABI_BREAKING_OPTIMIZE
 : size_(size_in),
-  buffer(size_in?boost::shared_array<char>(new char[size_in]):boost::shared_array<char>()),
+  buffer(size_in?std::shared_ptr<char>(new char[size_in], std::default_delete<char[]>()):std::shared_ptr<char>()),
   invalid(FALSE)
 #else
   : pimpl(new SbByteBufferP(size_in))
@@ -83,7 +83,7 @@ INLINE SbByteBuffer::SbByteBuffer(size_t size_in, const char * buffer_in)
 INLINE SbByteBuffer::SbByteBuffer(const char * buffer_in)
 #ifdef ABI_BREAKING_OPTIMIZE
 : size_(buffer_in?strlen(buffer_in)+1:0),
-  buffer(size_?boost::shared_array<char>(new char[size_]):boost::shared_array<char>()),
+  buffer(size_?std::shared_ptr<char>(new char[size_], std::default_delete<char[]>()):std::shared_ptr<char>()),
   invalid(FALSE)
 #else
   : pimpl(new SbByteBufferP(strlen(buffer_in)+1))

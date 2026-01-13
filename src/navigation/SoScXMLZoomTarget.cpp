@@ -80,7 +80,7 @@
 #include <cfloat>
 #include <cmath>
 
-#include <boost/intrusive_ptr.hpp>
+#include <Inventor/misc/SoRefPtr.h>
 
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbRotation.h>
@@ -476,7 +476,7 @@ SoScXMLZoomTarget::reset(SoCamera * camera)
 
   SoType cameratype = camera->getTypeId();
   assert(cameratype.canCreateInstance());
-  boost::intrusive_ptr<SoCamera> defaultcamera = static_cast<SoCamera *>(cameratype.createInstance());
+  SoRefPtr<SoCamera> defaultcamera(static_cast<SoCamera *>(cameratype.createInstance()));
 
   if (camera->isOfType(SoOrthographicCamera::getClassTypeId())) {
     static_cast<SoOrthographicCamera *>(camera)->height =

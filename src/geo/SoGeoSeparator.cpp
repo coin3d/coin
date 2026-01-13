@@ -264,7 +264,7 @@ BOOST_AUTO_TEST_CASE(initialized)
 {
   BOOST_CHECK_MESSAGE(SoGeoSeparator::getClassTypeId() != SoType::badType(),
                       "SoGeoSeparator class not initialized");
-  boost::intrusive_ptr<SoGeoSeparator> node(new SoGeoSeparator);
+  SoRefPtr<SoGeoSeparator> node(new SoGeoSeparator);
   BOOST_CHECK_MESSAGE(node->getTypeId() != SoType::badType(),
                       "SoGeoSeparator object wrongly initialized");
 }

@@ -44,14 +44,14 @@
 #include <cmath>
 #include <cfloat>
 
-#include <boost/scoped_ptr.hpp>
-#include <boost/intrusive_ptr.hpp>
+#include <memory>
 
 #include <Inventor/SbViewVolume.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbLine.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoRefPtr.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 #include <Inventor/fields/SoSFVec3d.h>
@@ -89,8 +89,8 @@ public:
   }
 
   SbVec2f downposn;
-  boost::intrusive_ptr<SoCamera> cameraclone;
-  boost::scoped_ptr<SbSphereSheetProjector> projector;
+  SoRefPtr<SoCamera> cameraclone;
+  std::unique_ptr<SbSphereSheetProjector> projector;
 
   struct log {
     SbVec2f posn;
@@ -243,7 +243,7 @@ SoScXMLRotateTarget::processOneEvent(const ScXMLEvent * event)
     if unlikely (!camera) { return FALSE; }
 
     // store current camera position
-    data->cameraclone = static_cast<SoCamera *>(camera->copy());
+    data->cameraclone.reset(static_cast<SoCamera *>(camera->copy()));
 
     return TRUE;
   }

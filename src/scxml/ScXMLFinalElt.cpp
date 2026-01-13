@@ -46,7 +46,7 @@
 #include <cassert>
 #include <cstring>
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/XML/element.h>
@@ -151,10 +151,10 @@ ScXMLFinalEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocume
 
 class ScXMLFinalElt::PImpl {
 public:
-  PImpl(void) : onentry(NULL), onexit(NULL) { }
+  PImpl(void) { }
 
-  boost::scoped_ptr<ScXMLOnEntryElt> onentry;
-  boost::scoped_ptr<ScXMLOnExitElt> onexit;
+  std::unique_ptr<ScXMLOnEntryElt> onentry;
+  std::unique_ptr<ScXMLOnExitElt> onexit;
 
 };
 

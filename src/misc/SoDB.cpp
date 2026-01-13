@@ -1699,7 +1699,6 @@ SoDB::removeRoute(SoNode * fromnode, const char * eventout,
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoRotationXYZ.h>
-#include <boost/detail/workaround.hpp>
 
 BOOST_AUTO_TEST_CASE(globalRealTimeField)
 {

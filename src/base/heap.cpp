@@ -31,7 +31,6 @@
 \**************************************************************************/
 
 #include <Inventor/C/base/heap.h>
-#include <boost/lexical_cast.hpp>
 
 #include <cassert>
 #include <cstdlib>
@@ -372,6 +371,7 @@ cc_heap_print(cc_heap * h, cc_heap_print_cb * printcb, SbString& str, SbBool pri
 #undef HEAP_RIGHT
 
 #ifdef COIN_TEST_SUITE
+#include <sstream>
 class mock_up {
 public:
   typedef struct wrapped_value {
@@ -380,7 +380,9 @@ public:
 
   static void heap_print_cb(void * v, SbString& str) {
     wrapped_value* value = reinterpret_cast<wrapped_value*>(v);
-    str += boost::lexical_cast<std::string>(value->x).c_str();
+    std::ostringstream oss;
+    oss << value->x;
+    str += oss.str().c_str();
   }
 
   static double heap_evaluate_cb(void * v)

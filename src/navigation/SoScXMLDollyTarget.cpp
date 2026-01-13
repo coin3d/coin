@@ -80,7 +80,7 @@
 #include <string>
 #include <cfloat>
 
-#include <boost/scoped_array.hpp>
+#include <memory>
 
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbViewportRegion.h>
@@ -316,7 +316,7 @@ SoScXMLDollyTarget::processOneEvent(const ScXMLEvent * event)
     if (motiontype) {
       SbString motiontypestr = motiontype;
       if (motiontype[0] == '\'') { // unwrap
-        boost::scoped_array<char> buf(new char [strlen(motiontypestr.getString()) + 1]);
+        std::unique_ptr<char[]> buf(new char [strlen(motiontypestr.getString()) + 1]);
         int res = sscanf(motiontype, "'%[^']'", buf.get());
         if (res == 1) {
           motiontypestr = buf.get();

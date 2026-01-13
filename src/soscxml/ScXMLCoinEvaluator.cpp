@@ -47,8 +47,7 @@
 #include <cstring>
 #include <map>
 
-#include <boost/scoped_array.hpp>
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include <Inventor/SoDB.h>
 #include <Inventor/SbVec2f.h>
@@ -702,8 +701,6 @@ ScXMLCoinLengthFuncExprDataObj::evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj
 #include <cmath>
 #include <cfloat>
 
-#include <boost/scoped_ptr.hpp>
-
 #include <Inventor/scxml/ScXMLStateMachine.h>
 
 template<class EXPECTED_TYPE>
@@ -734,10 +731,9 @@ struct DataObjDemangler<ScXMLBoolDataObj> {
 
 template <class EXPECTED_TYPE>
 bool
-TestReturnValue(const std::string & evaluationString, typename DataObjDemangler< EXPECTED_TYPE >::RET_VAL retVal, boost::scoped_ptr<ScXMLEvaluator> & evaluator)
+TestReturnValue(const std::string & evaluationString, typename DataObjDemangler< EXPECTED_TYPE >::RET_VAL retVal, ScXMLEvaluator * evaluator)
 {
   ScXMLDataObj * res = NULL;
-
 
   res = evaluator->evaluate(evaluationString.c_str());
   COIN_REQUIRE_MESSAGE(res != NULL, std::string("Evaluation returned nothing for expression: ") + evaluationString);
@@ -755,24 +751,24 @@ TestReturnValue(const std::string & evaluationString, typename DataObjDemangler<
 
 BOOST_AUTO_TEST_CASE(BasicExpressions)
 {
-  boost::scoped_ptr<ScXMLStateMachine> sm(new ScXMLStateMachine);
-  boost::scoped_ptr<ScXMLEvaluator> evaluator(new ScXMLCoinEvaluator);
+  std::unique_ptr<ScXMLStateMachine> sm(new ScXMLStateMachine);
+  std::unique_ptr<ScXMLEvaluator> evaluator(new ScXMLCoinEvaluator);
   evaluator->setStateMachine(sm.get());
 
-  TestReturnValue<ScXMLRealDataObj>("M_PI",M_PI,evaluator);
-  TestReturnValue<ScXMLRealDataObj>("5.0",5.0,evaluator);
-  TestReturnValue<ScXMLRealDataObj>("5 + 5",10.0,evaluator);
-  TestReturnValue<ScXMLRealDataObj>("5 - 4",1.0,evaluator);
-  TestReturnValue<ScXMLRealDataObj>("5 * 4",20.0,evaluator);
-  TestReturnValue<ScXMLRealDataObj>("5 / 4",1.25,evaluator);
-  TestReturnValue<ScXMLRealDataObj>("-5",-5.0,evaluator);
+  TestReturnValue<ScXMLRealDataObj>("M_PI",M_PI,evaluator.get());
+  TestReturnValue<ScXMLRealDataObj>("5.0",5.0,evaluator.get());
+  TestReturnValue<ScXMLRealDataObj>("5 + 5",10.0,evaluator.get());
+  TestReturnValue<ScXMLRealDataObj>("5 - 4",1.0,evaluator.get());
+  TestReturnValue<ScXMLRealDataObj>("5 * 4",20.0,evaluator.get());
+  TestReturnValue<ScXMLRealDataObj>("5 / 4",1.25,evaluator.get());
+  TestReturnValue<ScXMLRealDataObj>("-5",-5.0,evaluator.get());
 
-  TestReturnValue<ScXMLBoolDataObj>("True",TRUE,evaluator);
-  TestReturnValue<ScXMLBoolDataObj>("false",FALSE,evaluator);
-  TestReturnValue<ScXMLBoolDataObj>("!false",TRUE,evaluator);
-  TestReturnValue<ScXMLBoolDataObj>("M_PI != M_LN2",TRUE,evaluator);
-  TestReturnValue<ScXMLBoolDataObj>("M_PI == M_LN2",FALSE,evaluator);
-  TestReturnValue<ScXMLBoolDataObj>("false && !false",FALSE,evaluator);
+  TestReturnValue<ScXMLBoolDataObj>("True",TRUE,evaluator.get());
+  TestReturnValue<ScXMLBoolDataObj>("false",FALSE,evaluator.get());
+  TestReturnValue<ScXMLBoolDataObj>("!false",TRUE,evaluator.get());
+  TestReturnValue<ScXMLBoolDataObj>("M_PI != M_LN2",TRUE,evaluator.get());
+  TestReturnValue<ScXMLBoolDataObj>("M_PI == M_LN2",FALSE,evaluator.get());
+  TestReturnValue<ScXMLBoolDataObj>("false && !false",FALSE,evaluator.get());
 }
 
 #endif // !COIN_TEST_SUITE

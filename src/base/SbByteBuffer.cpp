@@ -10,8 +10,6 @@ SbByteBuffer SbByteBufferP::invalidBuffer_;
 #endif
 
 #ifdef COIN_TEST_SUITE
-#include <boost/lexical_cast.hpp>
-
 BOOST_AUTO_TEST_CASE(pushUnique)
 {
 
@@ -53,7 +51,7 @@ BOOST_AUTO_TEST_CASE(pushOnEmpty)
   SbByteBuffer b("foo");
 
   BOOST_CHECK_MESSAGE(a.empty(),
-                      std::string("Size of empty buffer is") + boost::lexical_cast<std::string>(a.size())
+                      std::string("Size of empty buffer is") + ::CoinTest::stringify(a.size())
                       );
 
   a.push(b);
