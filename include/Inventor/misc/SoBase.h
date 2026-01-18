@@ -132,8 +132,4 @@ private:
   friend class PImpl; // MSVC6
 };
 
-// support for boost::intrusive_ptr<SoBase>
-inline void intrusive_ptr_add_ref(SoBase * obj) { obj->ref(); }
-inline void intrusive_ptr_release(SoBase * obj) { obj->unref(); }
-
 #endif // !COIN_SOBASE_H

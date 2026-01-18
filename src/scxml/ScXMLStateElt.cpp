@@ -515,7 +515,7 @@ public:
   std::vector<ScXMLAnchorElt *> anchorlist;
   std::unique_ptr<ScXMLDataModelElt> datamodelptr;
   std::unique_ptr<ScXMLInvokeElt> invokeptr;
-  //boost::scoped_ptr<ScXMLDocument> srcref;
+  // std::unique_ptr<ScXMLDocument> srcref;
 };
 
 #define PRIVATE(obj) ((obj)->pimpl)
