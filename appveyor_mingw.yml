@@ -25,12 +25,12 @@ environment:
 #      CMAKE_ARCH_FLAGS: -m32
 #      COMPILER_ID: gcc
 #
-    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu1804
-      CMAKE_GENERATOR: 'Unix Makefiles'
-      CMAKE_PLATFORM: x64
-      CMAKE_ARCH_FLAGS: -m64
-      COMPILER_ID: gcc
-
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu1804
+#      CMAKE_GENERATOR: 'Unix Makefiles'
+#      CMAKE_PLATFORM: x64
+#      CMAKE_ARCH_FLAGS: -m64
+#      COMPILER_ID: gcc
+#
     - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu2004
       CMAKE_GENERATOR: 'Unix Makefiles'
       CMAKE_PLATFORM: x64
