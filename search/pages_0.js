@@ -7,5 +7,6 @@ var searchData=
   ['0_203_4',['New Features in Coin v4.0.3',['../coin403.html',1,'coin_new_features']]],
   ['0_204_5',['New Features in Coin v4.0.4',['../coin404.html',1,'coin_new_features']]],
   ['0_205_6',['New Features in Coin v4.0.5',['../coin405.html',1,'coin_new_features']]],
-  ['0_206_7',['New Features in Coin v4.0.6',['../coin406.html',1,'coin_new_features']]]
+  ['0_206_7',['New Features in Coin v4.0.6',['../coin406.html',1,'coin_new_features']]],
+  ['0_207_8',['New Features in Coin v4.0.7',['../coin407.html',1,'coin_new_features']]]
 ];

@@ -8,5 +8,6 @@ var searchData=
   ['0_204_5',['New Features in Coin v4.0.4',['../coin404.html',1,'coin_new_features']]],
   ['0_205_6',['New Features in Coin v4.0.5',['../coin405.html',1,'coin_new_features']]],
   ['0_206_7',['New Features in Coin v4.0.6',['../coin406.html',1,'coin_new_features']]],
-  ['0_20reference_20manual_8',['The Annotated VRML2.0 Reference Manual',['../coin_books.html#vrml2refbook',1,'']]]
+  ['0_207_8',['New Features in Coin v4.0.7',['../coin407.html',1,'coin_new_features']]],
+  ['0_20reference_20manual_9',['The Annotated VRML2.0 Reference Manual',['../coin_books.html#vrml2refbook',1,'']]]
 ];
