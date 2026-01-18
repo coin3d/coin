@@ -1,3 +1,9 @@
+New in Coin v4.0.7 (2026-01-18):
+* bugfixes:
+  - Fixed check for platform GL binding
+  - Fixed build issue with Boost 1.90
+  - Ensure cc_glglue_context_can_render_to_texture() always returns a value
+
 New in Coin v4.0.6 (2025-10-09):
 * bugfixes:
   - Fixed SoShape::getScreenSize to handle empty bounding box case

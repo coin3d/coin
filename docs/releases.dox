@@ -1,5 +1,6 @@
 /*!
 \page coin_new_features New Features in Coin
+- \subpage coin407 "New Features in Coin v4.0.7"
 - \subpage coin406 "New Features in Coin v4.0.6"
 - \subpage coin405 "New Features in Coin v4.0.5"
 - \subpage coin404 "New Features in Coin v4.0.4"
@@ -20,6 +21,18 @@
 - \subpage coin200 "New Features in Coin v2.0.0"
 
 */ 
+
+/**
+\page coin407 New Features in Coin v4.0.7
+
+This is a bugfix release.
+
+Bug fixes:
+- Fixed check for platform GL binding.
+- Fixed build issue with Boost 1.90.
+- Ensure cc_glglue_context_can_render_to_texture() always returns a value.
+
+*/
 
 /**
 \page coin406 New Features in Coin v4.0.6

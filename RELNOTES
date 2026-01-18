@@ -8,6 +8,16 @@ The changes described here are issues that might have an effect on the
 compatibility of your source code when upgrading the library.
 
 
+
+Coin 4.0.7
+==========
+
+Fixed check for platform GL binding.
+
+Fixed build issue with Boost 1.90.
+
+Ensure cc_glglue_context_can_render_to_texture() always returns a value.
+
 Coin 4.0.6
 ==========
 
