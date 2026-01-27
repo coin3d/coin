@@ -1,0 +1,34 @@
+id: viewport_wide_bg
+scene: ../scenes/cube.iv
+
+camera:
+  type: perspective
+  position: [4, 2, 4]
+  target: [0, 0, 0]
+  up: [0, 1, 0]
+  fov_deg: 60
+  near: 0.1
+  far: 15.0
+
+viewport:
+  width: 960
+  height: 540
+  background: [0.18, 0.12, 0.08, 1.0]
+
+state:
+  depth_test: true
+  blend: false
+  cull_face: true
+  msaa_samples: 0
+  srgb: false
+
+toggles:
+  lighting: true
+
+outputs:
+  - backend: gl
+    baseline: ../baselines/gl/viewport_wide_bg.png
+    tolerance:
+      per_channel: 2
+      max_diff_pct: 0.5
+      rmse: 1.0

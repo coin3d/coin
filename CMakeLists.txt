@@ -76,6 +76,7 @@ option(COIN_BUILD_TESTS "Build unit tests when ON (default), skips them when OFF
 option(COIN_BUILD_DOCUMENTATION "Build and install API documentation (requires Doxygen)." OFF)
 option(COIN_BUILD_AWESOME_DOCUMENTATION "Build and install API documentation in new modern style (requires Doxygen)." OFF)
 option(COIN_BUILD_EXAMPLES "Build examples when ON (default), skips them when OFF." OFF)
+
 cmake_dependent_option(COIN_BUILD_INTERNAL_DOCUMENTATION "Document internal code not part of the API." OFF "COIN_BUILD_DOCUMENTATION" OFF)
 cmake_dependent_option(COIN_BUILD_DOCUMENTATION_MAN "Build Coin man pages." OFF "COIN_BUILD_DOCUMENTATION" OFF)
 cmake_dependent_option(COIN_BUILD_DOCUMENTATION_QTHELP "Build QtHelp documentation." OFF "COIN_BUILD_DOCUMENTATION" OFF)
@@ -116,6 +117,12 @@ option(COIN_BUILD_EGL "Build for EGL on Linux when ON. Default is ON." ON)
 check_include_file_cxx(thread HAVE_STD_THREAD)
 cmake_dependent_option(COIN_DEBUG_CHECK_THREAD "Enable thread check in several central Coin functions." OFF "HAVE_STD_THREAD" OFF)
 
+# Render regression testing options
+option(RENDER_TESTS_ENABLED "Enable render regression test tooling and CLI helpers." OFF)
+cmake_dependent_option(RENDER_TESTS_ENABLE_GLES "Enable GLES render backend when render tests are enabled." OFF "RENDER_TESTS_ENABLED" OFF)
+cmake_dependent_option(RENDER_TESTS_ENABLE_WEB "Enable web render backend tooling when render tests are enabled." OFF "RENDER_TESTS_ENABLED" OFF)
+cmake_dependent_option(RENDER_TESTS_ENABLE_PERCEPTUAL_METRICS "Enable perceptual regression metrics once compare tooling is in place." OFF "RENDER_TESTS_ENABLED" OFF)
+
 report_prepare(
   COIN_BUILD_SHARED_LIBS
   COIN_BUILD_TESTS
@@ -145,6 +152,10 @@ report_prepare(
   ZLIB_RUNTIME_LINKING
   GLU_RUNTIME_LINKING
   SPIDERMONKEY_RUNTIME_LINKING
+  RENDER_TESTS_ENABLED
+  RENDER_TESTS_ENABLE_GLES
+  RENDER_TESTS_ENABLE_WEB
+  RENDER_TESTS_ENABLE_PERCEPTUAL_METRICS
   HAVE_MULTIPLE_VERSION
   IF_APPLE
     COIN_BUILD_MAC_FRAMEWORK
@@ -921,6 +932,21 @@ endif()
 if(COIN_BUILD_TESTS)
   enable_testing()
   add_subdirectory(testsuite)
+endif()
+
+if(RENDER_TESTS_ENABLED)
+  enable_testing()
+  find_package(yaml-cpp REQUIRED)
+  add_subdirectory(thirdparty)
+  add_subdirectory(tools)
+  add_test(NAME render_smoke COMMAND CoinRenderTests snapshot --help)
+  add_test(
+    NAME render_gl
+    COMMAND CoinRenderTests run
+      --spec-dir ${CMAKE_CURRENT_SOURCE_DIR}/testsuite/render/specs
+      --backend gl
+      --artifacts-dir ${CMAKE_BINARY_DIR}/render_artifacts/gl
+  )
 endif()
 
 # add_feature_info(ThreadSafe COIN_THREADSAFE "Thread safe render traversals.")

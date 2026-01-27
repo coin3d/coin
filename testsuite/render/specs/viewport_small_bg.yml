@@ -1,0 +1,34 @@
+id: viewport_small_bg
+scene: ../scenes/cube.iv
+
+camera:
+  type: perspective
+  position: [3, 3, 3]
+  target: [0, 0, 0]
+  up: [0, 1, 0]
+  fov_deg: 50
+  near: 0.1
+  far: 10.0
+
+viewport:
+  width: 256
+  height: 256
+  background: [0.05, 0.08, 0.12, 1.0]
+
+state:
+  depth_test: true
+  blend: false
+  cull_face: true
+  msaa_samples: 0
+  srgb: false
+
+toggles:
+  lighting: true
+
+outputs:
+  - backend: gl
+    baseline: ../baselines/gl/viewport_small_bg.png
+    tolerance:
+      per_channel: 2
+      max_diff_pct: 0.5
+      rmse: 1.0

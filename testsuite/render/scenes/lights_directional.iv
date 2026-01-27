@@ -1,0 +1,31 @@
+#Inventor V2.1 ascii
+
+Separator {
+  DirectionalLight { direction -0.4 -1 -0.6 intensity 1.0 }
+
+  # Ground plane
+  Separator {
+    Material { diffuseColor 0.30 0.30 0.35 }
+    Transform {
+      translation 0 -1 0
+      scaleFactor 40 0.2 40
+    }
+    Cube { }
+  }
+
+  # Backdrop wall behind the object
+  Separator {
+    Material { diffuseColor 0.20 0.25 0.30 }
+    Transform {
+      translation 0 0 -3
+      scaleFactor 40 40 0.2
+    }
+    Cube { }
+  }
+
+  # Subject cube
+  Separator {
+    Material { diffuseColor 0.7 0.7 0.7 }
+    Cube { width 2 height 2 depth 2 }
+  }
+}

@@ -1,0 +1,35 @@
+id: lighting_point
+scene: ../scenes/lights_point.iv
+
+camera:
+  type: perspective
+  position: [2.5, 2.5, 3.5]
+  target: [0, 0, 0]
+  up: [0, 1, 0]
+  fov_deg: 55
+  near: 0.1
+  far: 15.0
+
+viewport:
+  width: 512
+  height: 512
+  background: [0.1, 0.1, 0.15, 1.0]
+
+state:
+  depth_test: true
+  blend: false
+  cull_face: true
+  msaa_samples: 0
+  srgb: false
+
+toggles:
+  lighting: false
+  point_light: true
+
+outputs:
+  - backend: gl
+    baseline: ../baselines/gl/lighting_point.png
+    tolerance:
+      per_channel: 2
+      max_diff_pct: 0.5
+      rmse: 1.0

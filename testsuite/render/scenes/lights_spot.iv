@@ -1,0 +1,42 @@
+#Inventor V2.1 ascii
+
+Separator {
+  SpotLight {
+    on TRUE
+    location 0 10 0
+    direction 0 -1 0
+    cutOffAngle 1.57
+    dropOffRate 0.5
+    intensity 2.0
+  }
+
+  # Visible spotlight cone (gizmo)
+  #Separator {
+  #  Material { emissiveColor 1.0 0.9 0.6 diffuseColor 0 0 0 }
+  #  Transform {
+  #    translation 0 4 0
+  #    rotation 1 0 0 0
+  #    scaleFactor 0.5 1.2 0.5
+  #  }
+  #  Cone { bottomRadius 1.0 height 2.0 }
+  #}
+
+  # Ground plane to catch the spot
+  Separator {
+    Material { ambientColor 0.12 0.12 0.12 diffuseColor 0.30 0.30 0.35 }
+    Cube { width 12 height 1 depth 12 }
+  }
+
+  # Backdrop wall
+  #Separator {
+  #  Material { ambientColor 0.12 0.12 0.12 diffuseColor 0.20 0.25 0.30 }
+  #  Transform { translation 0 0 -6 }
+  #  Cube { width 12 height 12 depth 1 }
+  #}
+
+  # Subject cube
+  Separator {
+    Material { ambientColor 0.12 0.12 0.12 diffuseColor 0.7 0.7 0.7 }
+    Cube { width 2 height 2 depth 2 }
+  }
+}
