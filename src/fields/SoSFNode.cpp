@@ -358,6 +358,7 @@ BOOST_AUTO_TEST_CASE(initialized)
                       "missing class initialization");
 }
 
+#ifdef HAVE_VRML97
 BOOST_AUTO_TEST_CASE(vrml97nullchild)
 {
   // NULL values for children must be allowed, or we break VRML97
@@ -377,5 +378,6 @@ BOOST_AUTO_TEST_CASE(vrml97nullchild)
     g->unref();
   }
 }
+#endif
 
 #endif // COIN_TEST_SUITE
