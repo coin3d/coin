@@ -35,10 +35,9 @@
 
 #include <string>
 #include <ostream>
-#include <boost/lexical_cast.hpp>
-#include <boost/static_assert.hpp>
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbTypeInfo.h>
+#include "CoinTest.h"
 
 #ifndef TEST_SUITE_THOROUGHNESS
 /*
@@ -104,7 +103,7 @@ floatEquals(float a, float b, float tol)
   return fabs(b-a)/fabs(a)<tol;
 }
 
-#define COIN_TESTCASE_CHECK_FLOAT(X,Y) BOOST_CHECK_MESSAGE(floatEquals((X), (Y), 1), std::string("unexpected value: expected ") + boost::lexical_cast<std::string>((Y)) +", got " + boost::lexical_cast<std::string>((X)) + " difference is: " + boost::lexical_cast<std::string>((X)-(Y)))
+#define COIN_TESTCASE_CHECK_FLOAT(X,Y) BOOST_CHECK_MESSAGE(floatEquals((X), (Y), 1), std::string("unexpected value: expected ") + ::CoinTest::stringify((Y)) +", got " + ::CoinTest::stringify((X)) + " difference is: " + ::CoinTest::stringify((X)-(Y)))
 
 namespace SIM { namespace Coin { namespace TestSuite {
 
@@ -133,7 +132,8 @@ template <typename T, typename S, typename U>
 bool
 fuzzyCompare(const T & v1, const S & v2, U tolerance = 64) 
 {
-  BOOST_STATIC_ASSERT(static_cast<int>(SbTypeInfo<T>::Dimensions)==static_cast<int>(SbTypeInfo<S>::Dimensions));
+  static_assert(static_cast<int>(SbTypeInfo<T>::Dimensions) == static_cast<int>(SbTypeInfo<S>::Dimensions),
+                "SbTypeInfo dimension mismatch");
   return fCompare<SbTypeInfo<T>::Dimensions>::cmp(v1,v2,tolerance);
 }
 
@@ -153,7 +153,7 @@ struct to<1> {
   static std::string 
   String(const T & v) 
   {
-    return  boost::lexical_cast<std::string>(v);
+    return ::CoinTest::stringify(v);
   }
 };
 } //namespace internal
@@ -172,7 +172,7 @@ struct to<1> {
 
 
 /*
- * The following ostream << operators are needed for the Boost.Test macros
+ * The following ostream << operators are needed for the testsuite macros
  * for when they report on failures with our custom datatypes.
  * Expand as needed.
  *

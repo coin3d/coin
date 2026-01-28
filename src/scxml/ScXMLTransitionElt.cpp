@@ -103,7 +103,7 @@
 #include <algorithm>
 #include <vector>
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/XML/element.h>
@@ -528,7 +528,7 @@ ScXMLTransitionElt::evaluateCondition(ScXMLStateMachine * statemachine)
   }
   ScXMLEvaluator * evaluator = statemachine->getEvaluator();
   assert(evaluator);
-  boost::scoped_ptr<ScXMLDataObj> cond(evaluator->evaluate(this->getCondAttribute()));
+  std::unique_ptr<ScXMLDataObj> cond(evaluator->evaluate(this->getCondAttribute()));
   if (cond.get()) {
     ScXMLDataObj * res = cond.get();
     if (cond->isOfType(ScXMLExprDataObj::getClassTypeId())) {

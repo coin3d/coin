@@ -262,14 +262,6 @@ Type cstyle_cast(FARPROC procaddr)
   libraries to be installed on the system beforehand for Coin to build
   or run.
 
-  Coin makes use of certain utilities like smart-pointers from \b
-  Boost. The boost headers can be found under \c include/ in the Coin
-  source code directory. No boost types are exposed in the Coin API,
-  nor will they ever be. They are completely hidden, viewed from the
-  outside of Coin. All boost types used in Coin are completely inlined
-  in the boost headers and therefore do not require a link library to
-  pull their implementation from at runtime.
-
   For XML reading, Coin uses the \b Expat library, which has also been
   integrated directly into Coin, so also here there are no extra
   linktime or runtime dependencies to other libraries. The \b Expat API

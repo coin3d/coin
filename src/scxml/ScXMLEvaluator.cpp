@@ -44,7 +44,7 @@
 #include <cstring>
 #include <cstdio>
 
-#include <boost/scoped_array.hpp>
+#include <memory>
 
 #include <Inventor/SbString.h>
 #include <Inventor/scxml/ScXMLEvent.h>
@@ -239,7 +239,7 @@ ScXMLDataObj *
 ScXMLStringDataObj::createFor(const char * strval)
 {
   assert(strval && strval[0] == '\'');
-  boost::scoped_array<char> buf(new char [strlen(strval) + 1]);
+  std::unique_ptr<char[]> buf(new char [strlen(strval) + 1]);
   int res = sscanf(strval, "'%[^']'", buf.get());
   if (res == 1) {
     return new ScXMLStringDataObj(buf.get());

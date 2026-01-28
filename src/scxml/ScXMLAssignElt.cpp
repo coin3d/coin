@@ -73,7 +73,7 @@
 #include <cassert>
 #include <cstring>
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/XML/element.h>
@@ -263,7 +263,7 @@ ScXMLAssignElt::execute(ScXMLStateMachine * statemachine) const
   assert(evaluator);
 
   //printf("assign: '%s'\n", this->getExprAttribute());
-  boost::scoped_ptr<ScXMLDataObj> dataobj(evaluator->evaluate(this->getExprAttribute()));
+  std::unique_ptr<ScXMLDataObj> dataobj(evaluator->evaluate(this->getExprAttribute()));
   if (dataobj.get()) {
     ScXMLDataObj * result = dataobj.get(); // default if not an expression
     if (dataobj->isOfType(ScXMLExprDataObj::getClassTypeId())) {

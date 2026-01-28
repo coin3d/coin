@@ -1003,19 +1003,17 @@ SoOutput::write(const double d)
 }
 
 #ifdef __CYGWIN__
-#include <boost/static_assert.hpp>
-
 void
 SoOutput::write(long int i)
 {
-  BOOST_STATIC_ASSERT(sizeof(long int) == sizeof(int));
+  static_assert(sizeof(long int) == sizeof(int), "long int size must match int on Cygwin");
   write(static_cast<int>(i));
 }
 
 void
 SoOutput::write(unsigned long int i)
 {
-  BOOST_STATIC_ASSERT(sizeof(unsigned long int) == sizeof(unsigned int));
+  static_assert(sizeof(unsigned long int) == sizeof(unsigned int), "unsigned long int size must match unsigned int on Cygwin");
   write(static_cast<unsigned int>(i));
 }
 #endif //__CYGWIN__

@@ -54,8 +54,7 @@
 
 #include <TestSuiteUtils.h>
 
-#define BOOST_TEST_NO_LIB 1
-#include <boost/test/unit_test.hpp>
+#include "CoinTest.h"
 
 
 

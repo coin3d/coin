@@ -219,7 +219,7 @@ BOOST_AUTO_TEST_CASE(initialized)
 {
   BOOST_CHECK_MESSAGE(SoGeoCoordinate::getClassTypeId() != SoType::badType(),
                       "SoGeoCoordinate class not initialized");
-  boost::intrusive_ptr<SoGeoCoordinate> node(new SoGeoCoordinate);
+  SoRefPtr<SoGeoCoordinate> node(new SoGeoCoordinate);
   BOOST_CHECK_MESSAGE(node->getTypeId() != SoType::badType(),
                       "missing class initialization");
   BOOST_CHECK_EQUAL(node->point.getNum(), 1);

@@ -48,14 +48,14 @@
 #include <cstdlib>
 #include <cstdio>
 
-#include <boost/scoped_ptr.hpp>
-#include <boost/scoped_array.hpp>
-#include <boost/intrusive_ptr.hpp>
+#include <memory>
+#include <vector>
 
 #include <Inventor/SbTime.h>
 #include <Inventor/SbColor.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/sensors/SoFieldSensor.h>
+#include <Inventor/misc/SoRefPtr.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoBaseColor.h>
 #include <Inventor/nodes/SoCoordinate3.h>
@@ -115,8 +115,8 @@ public:
     }
   }
 
-  boost::intrusive_ptr<SoSeparator> chart;
-  boost::scoped_ptr<SoFieldSensor> addValuesSensor;
+  SoRefPtr<SoSeparator> chart;
+  std::unique_ptr<SoFieldSensor> addValuesSensor;
 
   void pullStatistics(void);
   Graph * getGraph(const SbName & key);
@@ -201,7 +201,7 @@ SoScrollingGraphKit::SoScrollingGraphKit(void)
   PRIVATE(this)->addValuesSensor->setData(this);
   PRIVATE(this)->addValuesSensor->attach(&(this->addValues));
 
-  PRIVATE(this)->chart = static_cast<SoSeparator *>(this->getAnyPart("scene", TRUE));
+  PRIVATE(this)->chart.reset(static_cast<SoSeparator *>(this->getAnyPart("scene", TRUE)));
 }
 
 SoScrollingGraphKit::~SoScrollingGraphKit(void)
@@ -350,11 +350,11 @@ SoScrollingGraphKitP::generateStackedBarsChart(void)
   const int numgraphs = this->graphs.getNumElements();
   if (numgraphs == 0) return;
 
-  boost::scoped_array<SoBaseColor *> colors(new SoBaseColor * [numgraphs]);
-  boost::scoped_array<SoCoordinate3 *> coords(new SoCoordinate3 * [numgraphs]);
-  boost::scoped_array<SoLineSet *> lines(new SoLineSet * [numgraphs]);
-  boost::scoped_array<SoTranslation *> texttrans(new SoTranslation * [numgraphs]);
-  boost::scoped_array<SoText2 *> textnodes(new SoText2 * [numgraphs]);
+  std::vector<SoBaseColor *> colors(numgraphs);
+  std::vector<SoCoordinate3 *> coords(numgraphs);
+  std::vector<SoLineSet *> lines(numgraphs);
+  std::vector<SoTranslation *> texttrans(numgraphs);
+  std::vector<SoText2 *> textnodes(numgraphs);
 
   if (this->chart->getNumChildren() != (numgraphs * 4 + 3) ||
       !(this->chart->getChild(2+2)->isOfType(SoLineSet::getClassTypeId()))) {

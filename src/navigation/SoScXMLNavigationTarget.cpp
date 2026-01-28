@@ -48,7 +48,7 @@
 #include <cstdio>
 #include <map>
 
-#include <boost/scoped_array.hpp>
+#include <memory>
 
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec3f.h>
@@ -171,7 +171,7 @@ SoScXMLNavigationTarget::getSessionId(const ScXMLEvent * event)
     return SbName::empty();
   }
   if (sessionidstr[0] == '\'') { // unwrap string representation
-    boost::scoped_array<char> buf(new char [strlen(sessionidstr)+1]);
+    std::unique_ptr<char[]> buf(new char [strlen(sessionidstr)+1]);
     int res = sscanf(sessionidstr, "'%[^']'", buf.get());
     if (res == 1) {
       return SbName(buf.get());
@@ -310,7 +310,7 @@ SoScXMLNavigationTarget::getEventString(const ScXMLEvent * event, const char * l
     return FALSE;
   }
   else {
-    boost::scoped_array<char> buf(new char [strlen(valuestr) + 1]);
+    std::unique_ptr<char[]> buf(new char [strlen(valuestr) + 1]);
     int res = sscanf(valuestr, "'%[^']'", buf.get());
     if (res == 1) {
       str_out = buf.get();

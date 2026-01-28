@@ -45,7 +45,7 @@ environment:
 
 install:
   - sh: |
-      brew install jq boost
+      brew install jq
       #brew install doxygen
   - git submodule update --init --recursive
 

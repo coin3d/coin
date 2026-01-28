@@ -30,17 +30,17 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#define BOOST_TEST_NO_LIB 1
-#include <boost/test/unit_test.hpp>
-
 #include <cassert>
 #include <cstdio>
 #include <iostream>
+#include <string>
+#include <vector>
 
 #include <Inventor/nodes/SoNode.h>
 
 #include <TestSuiteUtils.h>
 #include <TestSuiteMisc.h>
+#include "CoinTest.h"
 
 
 using namespace SIM::Coin3D::Coin;

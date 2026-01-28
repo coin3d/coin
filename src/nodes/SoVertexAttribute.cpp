@@ -33,7 +33,7 @@
 #include <Inventor/nodes/SoVertexAttribute.h>
 #include <Inventor/elements/SoGLVertexAttributeElement.h>
 
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -118,8 +118,8 @@ public:
   GLenum gltype;
   SbBool isreading;
   SoMFFloat dummyfield;
-  boost::scoped_ptr<SoMField> valuesfield;
-  boost::scoped_ptr<SoFieldData> fielddata;
+  std::unique_ptr<SoMField> valuesfield;
+  std::unique_ptr<SoFieldData> fielddata;
   SoVertexAttributeData * attributedata;
   SoVertexAttribute * publ;
 }; // SoVertexAttributeP

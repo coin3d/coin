@@ -44,8 +44,7 @@
   \ingroup coin_soscxml
 */
 
-#include <boost/scoped_ptr.hpp>
-#include <boost/intrusive_ptr.hpp>
+#include <memory>
 
 #include <Inventor/SbString.h>
 #include <Inventor/SbViewportRegion.h>
@@ -54,6 +53,7 @@
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/events/SoEvents.h>
+#include <Inventor/misc/SoRefPtr.h>
 #include <Inventor/scxml/ScXML.h>
 #include <Inventor/scxml/SoScXMLEvent.h>
 #include "base/coinString.h"
@@ -70,11 +70,11 @@ public:
   ~PImpl(void) { }
 
   // hold a couple of custom non-SoEvent-based events
-  boost::scoped_ptr<ScXMLEvent> preGLRenderEvent;
-  boost::scoped_ptr<ScXMLEvent> postGLRenderEvent;
+  std::unique_ptr<ScXMLEvent> preGLRenderEvent;
+  std::unique_ptr<ScXMLEvent> postGLRenderEvent;
 
-  boost::intrusive_ptr<SoNode> scenegraphroot;
-  boost::intrusive_ptr<SoCamera> activecamera;
+  SoRefPtr<SoNode> scenegraphroot;
+  SoRefPtr<SoCamera> activecamera;
   SbViewportRegion viewport;
 
   mutable SbString varstring;
@@ -112,7 +112,7 @@ SoScXMLStateMachine::~SoScXMLStateMachine(void)
 void
 SoScXMLStateMachine::setSceneGraphRoot(SoNode * root)
 {
-  PRIVATE(this)->scenegraphroot = root;
+  PRIVATE(this)->scenegraphroot.reset(root);
 }
 
 SoNode *
@@ -124,7 +124,7 @@ SoScXMLStateMachine::getSceneGraphRoot(void) const
 void
 SoScXMLStateMachine::setActiveCamera(SoCamera * camera)
 {
-  PRIVATE(this)->activecamera = camera;
+  PRIVATE(this)->activecamera.reset(camera);
 }
 
 SoCamera *
@@ -168,8 +168,7 @@ SoScXMLStateMachine::processSoEvent(const SoEvent * event)
   // FIXME: Not sure if this check should be here and not somewhere else,
   // but removing this again makes us crash on NULL scene graphs. kintel 20080729.
   if (PRIVATE(this)->scenegraphroot.get()) {
-    boost::scoped_ptr<SoScXMLEvent> wrapperevent;
-    wrapperevent.reset(new SoScXMLEvent);
+    std::unique_ptr<SoScXMLEvent> wrapperevent(new SoScXMLEvent);
     wrapperevent->setSoEvent(event);
     wrapperevent->setUpIdentifier();
     this->queueEvent(wrapperevent.get());

@@ -50,8 +50,6 @@
 #include <map>
 #include <string>
 
-#include <boost/scoped_ptr.hpp>
-
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoPickedPoint.h>

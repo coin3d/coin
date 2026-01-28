@@ -38,7 +38,7 @@
 #include <cstdarg>
 #include <cstring>
 
-#include <boost/scoped_array.hpp>
+#include <vector>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/threads/SbMutex.h>
@@ -455,8 +455,7 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
       sortingconfig = NULL;
       return;
     }
-    boost::scoped_array<int> indexarray;
-    indexarray.reset(new int [ numindexes ]);
+    std::vector<int> indexarray(numindexes);
     for (c = 0; c < numindexes; ++c) {
       indexarray[c] = c;
     }
@@ -465,7 +464,7 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
     arraystart = &indexarray[0];
     arrayend = &indexarray[numindexes-1];
 
-    qsort(indexarray.get(), numindexes, sizeof(int), gencompare);
+    qsort(indexarray.data(), numindexes, sizeof(int), gencompare);
 
     // output
     const int maxindexes = (count > 0) ? SbMin(numindexes, count) : numindexes;
@@ -507,8 +506,7 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
       sortingconfig = NULL;
       return;
     }
-    boost::scoped_array<int> indexarray;
-    indexarray.reset(new int [ numindexes ]);
+    std::vector<int> indexarray(numindexes);
     for (c = 0; c < numindexes; ++c) {
       indexarray[c] = c;
     }
@@ -517,7 +515,7 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
     arraystart = &indexarray[0];
     arrayend = &indexarray[numindexes-1];
 
-    qsort(indexarray.get(), numindexes, sizeof(int), gencompare);
+    qsort(indexarray.data(), numindexes, sizeof(int), gencompare);
 
     // output
     const int maxindexes = (count > 0) ? SbMin(numindexes, count) : numindexes;
@@ -560,8 +558,7 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
       sortingconfig = NULL;
       return;
     }
-    boost::scoped_array<int> indexarray;
-    indexarray.reset(new int [ numindexes ]);
+    std::vector<int> indexarray(numindexes);
     for (c = 0; c < numindexes; ++c) {
       indexarray[c] = c;
     }
@@ -570,7 +567,7 @@ SoProfilingReportGenerator::generate(const SbProfilingData & data,
     arraystart = &indexarray[0];
     arrayend = &indexarray[numindexes-1];
 
-    qsort(indexarray.get(), numindexes, sizeof(int), gencompare);
+    qsort(indexarray.data(), numindexes, sizeof(int), gencompare);
 
     // output
     const int maxindexes = (count > 0) ? SbMin(numindexes, count) : numindexes;

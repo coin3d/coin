@@ -32,7 +32,7 @@
 
 #include <Inventor/engines/SoHeightMapToNormalMap.h>
 
-#include <boost/scoped_array.hpp>
+#include <memory>
 
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbImage.h>
@@ -116,7 +116,7 @@ SoHeightMapToNormalMap::convert(const unsigned char * srcptr, SbVec2s size, int 
   float dx, dy;
   int width = size[0];
   int height = size[1];
-  boost::scoped_array<unsigned char> dstarray(new unsigned char[width*height*3]);
+  std::unique_ptr<unsigned char[]> dstarray(new unsigned char[width*height*3]);
   unsigned char * dstptr = dstarray.get();
   unsigned char red;
   SbVec3f n;

@@ -435,11 +435,11 @@ BOOST_AUTO_TEST_CASE(noNormalizingNormalized)
     BOOST_CHECK_MESSAGE(
                         testVal==vec[i],
                         std::string("Wrong value when trying to access value #")
-                        + boost::lexical_cast<std::string>(i)
+                        + ::CoinTest::stringify(i)
                         + ": "
-                        + boost::lexical_cast<std::string>(vec[i]) +
+                        + ::CoinTest::stringify(vec[i]) +
                         " == "
-                        + boost::lexical_cast<std::string>(testVal)
+                        + ::CoinTest::stringify(testVal)
                         );
   }
 
@@ -458,11 +458,11 @@ BOOST_AUTO_TEST_CASE(normalizingDeNormalized)
     BOOST_CHECK_MESSAGE(
                         floatEquals(testVal,vec[i],FLOAT_SENSITIVITY),
                         std::string("Wrong value when trying to access value #")
-                        + boost::lexical_cast<std::string>(i)
+                        + ::CoinTest::stringify(i)
                         + ": "
-                        + boost::lexical_cast<std::string>(vec[i]) +
+                        + ::CoinTest::stringify(vec[i]) +
                         " == "
-                        + boost::lexical_cast<std::string>(testVal)
+                        + ::CoinTest::stringify(testVal)
                         );
   }
 

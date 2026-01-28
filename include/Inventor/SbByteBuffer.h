@@ -10,7 +10,7 @@
 */
 #define SBBYTEBUFFER_PRIVATE_VARIABLES \
   size_t size_; \
-  boost::shared_array<char> buffer; \
+  std::shared_ptr<char> buffer; \
   SbBool invalid; \
   static SbByteBuffer invalidBuffer_;
 
@@ -18,12 +18,11 @@
 #define COIN_SBBYTEBUFFER_H
 
 #include <cstring>
+#include <memory>
 #include <Inventor/SbBasic.h>
 
 #ifndef ABI_BREAKING_OPTIMIZE
 class SbByteBufferP;
-#else
-#include <boost/shared_array.hpp>
 #endif //ABI_BREAKING_OPTIMIZE
 
 

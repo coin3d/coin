@@ -30,14 +30,14 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#define BOOST_TEST_NO_LIB 1
-#include <boost/test/unit_test.hpp>
-#include <boost/intrusive_ptr.hpp>
+#include "CoinTest.h"
 #include <cassert>
 #include <cstdio>
 #include <iostream>
+#include <memory>
 #include "TestSuiteUtils.h"
 #include "TestSuiteMisc.h"
+#include <Inventor/misc/SoRefPtr.h>
 using namespace SIM::Coin3D::Coin;
 using namespace SIM::Coin3D::Coin::TestSuite;
 @COIN_STR_TEST_INCL@

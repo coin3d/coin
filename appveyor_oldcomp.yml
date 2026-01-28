@@ -34,42 +34,36 @@ environment:
 # older compilers are supported in a separate appveyor project
 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      BOOST_VERSION: 1_69_0
       CMAKE_GENERATOR: 'Visual Studio 10 2010'
       CMAKE_ARCHITECTURE: Win32
       CMAKE_PLATFORM: x86
       COMPILER_ID: msvc10
 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      BOOST_VERSION: 1_69_0
       CMAKE_GENERATOR: 'Visual Studio 10 2010'
       CMAKE_ARCHITECTURE: x64
       CMAKE_PLATFORM: x64
       COMPILER_ID: msvc10
 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      BOOST_VERSION: 1_69_0
       CMAKE_GENERATOR: 'Visual Studio 14 2015'
       CMAKE_ARCHITECTURE: Win32
       CMAKE_PLATFORM: x86
       COMPILER_ID: msvc14
 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      BOOST_VERSION: 1_69_0
       CMAKE_GENERATOR: 'Visual Studio 14 2015'
       CMAKE_ARCHITECTURE: x64
       CMAKE_PLATFORM: x64
       COMPILER_ID: msvc14
 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      BOOST_VERSION: 1_69_0
       CMAKE_GENERATOR: 'Visual Studio 15 2017'
       CMAKE_ARCHITECTURE: Win32
       CMAKE_PLATFORM: x86
       COMPILER_ID: msvc15
 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      BOOST_VERSION: 1_69_0
       CMAKE_GENERATOR: 'Visual Studio 15 2017'
       CMAKE_ARCHITECTURE: x64
       CMAKE_PLATFORM: x64
@@ -78,28 +72,24 @@ environment:
 # newer compilers are supported in a separate appveyor project
 #
 #    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#      BOOST_VERSION: 1_71_0
 #      CMAKE_GENERATOR: 'Visual Studio 16 2019'
 #      CMAKE_ARCHITECTURE: Win32
 #      CMAKE_PLATFORM: x86
 #      COMPILER_ID: msvc16
 #
 #    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-#      BOOST_VERSION: 1_71_0
 #      CMAKE_GENERATOR: 'Visual Studio 16 2019'
 #      CMAKE_ARCHITECTURE: x64
 #      CMAKE_PLATFORM: x64
 #      COMPILER_ID: msvc16
 #
 #    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-#      BOOST_VERSION: 1_77_0
 #      CMAKE_GENERATOR: 'Visual Studio 17 2022'
 #      CMAKE_ARCHITECTURE: Win32
 #      CMAKE_PLATFORM: x86
 #      COMPILER_ID: msvc17
 #
 #    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
-#      BOOST_VERSION: 1_77_0
 #      CMAKE_GENERATOR: 'Visual Studio 17 2022'
 #      CMAKE_ARCHITECTURE: x64
 #      CMAKE_PLATFORM: x64
@@ -144,7 +134,7 @@ before_build:
       curl -s -S -L -H "Authorization: token %GH_AUTH_TOKEN%" -H "Accept: application/octet-stream" -o %DOWNLOAD_FILE_SUPERGLU% %DOWNLOAD_ADDRESS_SUPERGLU%
       7z x %DOWNLOAD_FILE_SUPERGLU% -o%APPVEYOR_BUILD_FOLDER%\downloads
       rem ##############
-      cmake -H. -Bbuild -G "%CMAKE_GENERATOR%" -A %CMAKE_ARCHITECTURE% -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%\Coin3D -DCMAKE_PREFIX_PATH=%APPVEYOR_BUILD_FOLDER%\downloads\Coin3D -DBOOST_ROOT=C:\Libraries\boost_%BOOST_VERSION% -DUSE_SUPERGLU=ON
+      cmake -H. -Bbuild -G "%CMAKE_GENERATOR%" -A %CMAKE_ARCHITECTURE% -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%\Coin3D -DCMAKE_PREFIX_PATH=%APPVEYOR_BUILD_FOLDER%\downloads\Coin3D -DUSE_SUPERGLU=ON
 
 build_script:
   - cmd: |

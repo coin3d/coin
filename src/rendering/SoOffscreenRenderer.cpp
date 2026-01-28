@@ -344,8 +344,6 @@
 #include "tidbitsp.h"
 #include "coindefs.h" // COIN_STUB()
 
-#include <boost/current_function.hpp>
-
 // *************************************************************************
 
 #include "CoinOffscreenGLCanvas.h"
@@ -1583,19 +1581,19 @@ SoOffscreenRenderer::writeToFile(const SbString & filename, const SbName & filet
     //HAVE_CPP_COMPILER_FUNCTION_NAME_VAR should be massaged correctly
     //to fit here. BFG 20090917
     if (!simage_wrapper()->available) {
-      SoDebugError::post(BOOST_CURRENT_FUNCTION,
+      SoDebugError::post(__func__,
                              "simage library not available.");
     }
     else {
       int major, minor, micro;
       simage_wrapper()->simage_version(&major,&minor,&micro);
-      SoDebugError::post(BOOST_CURRENT_FUNCTION,
+      SoDebugError::post(__func__,
                          "simage version is older than 1.1.0, available version is %d.%d.%d", major,minor,micro);
     }
     return FALSE;
   }
   if (SoOffscreenRendererP::offscreenContextsNotSupported()) {
-    SoDebugError::post(BOOST_CURRENT_FUNCTION,
+    SoDebugError::post(__func__,
                        "Offscreen contexts not supported.");
     return FALSE;
   }

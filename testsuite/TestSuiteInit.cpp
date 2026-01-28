@@ -30,19 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-// The purpose of this file is threefold:
-// - to initialize Coin before the unit tests are run.
-//   (the static initializer class)
-// - to compile into the link unit that provides the main() function.
-//   (implicitly happens when BOOST_TEST_MODULE is defined before including
-//    boost/test/unit_test.hpp)
-// - to compile in the whole of Boost.Test so the unit-tests files can
-//   include just the declarations (faster) without needing to link against
-//   an external Boost.Test library (complicates the build system).
-//   (by specifying the include path with the "included" directory)
-
-#define BOOST_TEST_MODULE Coin_TestSuite
-#include <boost/test/included/unit_test.hpp>
+// Legacy file kept for historical reasons. CoinTests now uses the in-tree
+// testsuite runner in testsuite/TestSuiteMain.cpp.
 
 #include <Inventor/SoDB.h>
 #include <Inventor/nodekits/SoNodeKit.h>
