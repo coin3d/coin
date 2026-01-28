@@ -1,5 +1,6 @@
 var NAVTREEINDEX26 =
 {
+"classSoMemoryError.html":[3,8,2],
 "classSoMemoryError.html#a12d0e7beb7d839c0aebd7196e446677e":[3,8,2,0],
 "classSoMemoryError.html#a6c92570a67f436b410e4d37117fc1c64":[3,8,2,1],
 "classSoModelMatrixElement.html":[3,6,72],
@@ -248,6 +249,5 @@ var NAVTREEINDEX26 =
 "classSoNodeKitPath.html#ae3218e321593b0f509f91e9ca2d8de56":[3,14,8,10],
 "classSoNodeList.html":[5,0,470],
 "classSoNodeList.html#a23d4ce6d0bd24a1fc8cf1b76a2a5613b":[5,0,470,3],
-"classSoNodeList.html#a44082be280e347a8d20e65f951ca8cb8":[5,0,470,2],
-"classSoNodeList.html#a5f8cdd4e4ce2f1751e860e2198bc6fac":[5,0,470,0]
+"classSoNodeList.html#a44082be280e347a8d20e65f951ca8cb8":[5,0,470,2]
 };

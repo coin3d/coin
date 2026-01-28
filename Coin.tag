@@ -57235,6 +57235,11 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>SoRefPtr</name>
+    <filename>classSoRefPtr.html</filename>
+    <templarg>typename T</templarg>
+  </compound>
+  <compound kind="class">
     <name>SoRenderManager</name>
     <filename>classSoRenderManager.html</filename>
     <class kind="class">SoRenderManager::Superimposition</class>

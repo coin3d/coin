@@ -1,5 +1,6 @@
 var NAVTREEINDEX10 =
 {
+"classScXMLEqualsOpExprDataObj.html#a212d86df462e6d05ce529435380e3e62":[5,0,123,0],
 "classScXMLEvaluator.html":[3,21,15],
 "classScXMLEvaluator.html#a22f5bcbd102a6ebfbf399c35addc24e6":[3,21,15,1],
 "classScXMLEvaluator.html#a7eb59462c0c8b1a267522a89ec22d607":[3,21,15,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX10 =
 "classSoAnnoText3CharOrientElement.html#afdc0a6ff633e8fb9bd74e71f513b1049":[3,6,2,1],
 "classSoAnnoText3FontSizeHintElement.html":[3,6,3],
 "classSoAnnoText3FontSizeHintElement.html#a98f0d14bf9b70be20542b622b125d15a":[3,6,3,0],
-"classSoAnnoText3FontSizeHintElement.html#a98f0d14bf9b70be20542b622b125d15aa2b42ebc9b99846c2693d98f90bc27e7d":[3,6,3,0,0],
-"classSoAnnoText3FontSizeHintElement.html#a98f0d14bf9b70be20542b622b125d15aa3d87032f51a21767617c9934d52ff347":[3,6,3,0,1]
+"classSoAnnoText3FontSizeHintElement.html#a98f0d14bf9b70be20542b622b125d15aa2b42ebc9b99846c2693d98f90bc27e7d":[3,6,3,0,0]
 };

@@ -22,6 +22,7 @@ var dir_c6fd86a54b85be66f511a749989088b2 =
     [ "SoNotRec.h", "SoNotRec_8h_source.html", null ],
     [ "SoProto.h", "SoProto_8h_source.html", null ],
     [ "SoProtoInstance.h", "SoProtoInstance_8h_source.html", null ],
+    [ "SoRefPtr.h", "SoRefPtr_8h_source.html", null ],
     [ "SoScriptEngine.h", "SoScriptEngine_8h_source.html", null ],
     [ "SoState.h", "SoState_8h_source.html", null ],
     [ "SoTempPath.h", "SoTempPath_8h_source.html", null ],

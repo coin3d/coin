@@ -537,6 +537,7 @@ var annotated_dup =
     [ "SoQuadMesh", "classSoQuadMesh.html", "classSoQuadMesh" ],
     [ "SoRayPickAction", "classSoRayPickAction.html", "classSoRayPickAction" ],
     [ "SoReadError", "classSoReadError.html", "classSoReadError" ],
+    [ "SoRefPtr", "classSoRefPtr.html", null ],
     [ "SoRenderManager", "classSoRenderManager.html", "classSoRenderManager" ],
     [ "SoReorganizeAction", "classSoReorganizeAction.html", "classSoReorganizeAction" ],
     [ "SoReplacedElement", "classSoReplacedElement.html", "classSoReplacedElement" ],

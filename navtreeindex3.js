@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"SoVRMLColor_8h_source.html":[6,0,1,0,26,8],
 "SoVRMLCone_8h_source.html":[6,0,1,0,26,10],
 "SoVRMLCoordinateInterpolator_8h_source.html":[6,0,1,0,26,12],
 "SoVRMLCoordinate_8h_source.html":[6,0,1,0,26,11],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "classSbBox3d.html#a3fbf030c2133d5d00ee57f475fe8ab52":[3,1,5,22],
 "classSbBox3d.html#a43a4b2b558e8a21d33648b1bda85f789":[3,1,5,32],
 "classSbBox3d.html#a43f86fc2ffcb57fc8a18e9d204f9430c":[3,1,5,24],
-"classSbBox3d.html#a45ea275b28082f1ee978041b7a0ca6a8":[3,1,5,0],
-"classSbBox3d.html#a4770f04a2ad3da733a3057a49cb73668":[3,1,5,19]
+"classSbBox3d.html#a45ea275b28082f1ee978041b7a0ca6a8":[3,1,5,0]
 };

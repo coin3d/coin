@@ -1091,6 +1091,12 @@ var hierarchy =
     [ "SoPrimitiveVertex", "classSoPrimitiveVertex.html", null ],
     [ "SoProfiler", "classSoProfiler.html", null ],
     [ "SoProfilingReportGenerator", "classSoProfilingReportGenerator.html", null ],
+    [ "SoRefPtr< T >", "classSoRefPtr.html", null ],
+    [ "SoRefPtr< SoCalculator >", "classSoRefPtr.html", null ],
+    [ "SoRefPtr< SoCamera >", "classSoRefPtr.html", null ],
+    [ "SoRefPtr< SoNode >", "classSoRefPtr.html", null ],
+    [ "SoRefPtr< SoProfilerTopEngine >", "classSoRefPtr.html", null ],
+    [ "SoRefPtr< SoSeparator >", "classSoRefPtr.html", null ],
     [ "SoRenderManager", "classSoRenderManager.html", null ],
     [ "SoSceneManager", "classSoSceneManager.html", null ],
     [ "SoScriptEngine", "classSoScriptEngine.html", [

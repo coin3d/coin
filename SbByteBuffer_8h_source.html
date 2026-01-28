@@ -147,7 +147,7 @@ $(function(){initNavTree('SbByteBuffer_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">*/</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#define SBBYTEBUFFER_PRIVATE_VARIABLES \</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">  size_t size_; \</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">  boost::shared_array&lt;char&gt; buffer; \</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">  std::shared_ptr&lt;char&gt; buffer; \</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">  SbBool invalid; \</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">  static SbByteBuffer invalidBuffer_;</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
@@ -155,68 +155,67 @@ $(function(){initNavTree('SbByteBuffer_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#define COIN_SBBYTEBUFFER_H</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &lt;cstring&gt;</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &lt;Inventor/SbBasic.h&gt;</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#ifndef ABI_BREAKING_OPTIMIZE</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">class </span><a class="code hl_class" href="classSbList.html">SbByteBufferP</a>;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#include &lt;boost/shared_array.hpp&gt;</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#endif </span><span class="comment">//ABI_BREAKING_OPTIMIZE</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &lt;Inventor/SbBasic.h&gt;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#ifndef ABI_BREAKING_OPTIMIZE</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">class </span><a class="code hl_class" href="classSbList.html">SbByteBufferP</a>;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#endif </span><span class="comment">//ABI_BREAKING_OPTIMIZE</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">//Consider making a general Buffer class for non bytes;</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">//Implements as a minimum the Buffer concept as defined by</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">//http://www.boost.org/doc/libs/1_37_0/libs/graph/doc/Buffer.html</span></div>
-<div class="foldopen" id="foldopen00034" data-start="{" data-end="};">
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classSbByteBuffer.html">   34</a></span><span class="keyword">class </span><a class="code hl_class" href="classSbList.html">COIN_DLL_API</a> <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a> {</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * buffer);</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a>(<span class="keyword">const</span> <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a> &amp; buffer);</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a>(<span class="keywordtype">size_t</span> size = 0, <span class="keyword">const</span> <span class="keywordtype">char</span> * buffer = <a class="code hl_class" href="classSbList.html">NULL</a>);</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a>(<span class="keywordtype">size_t</span> size, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> * buffer);</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <a class="code hl_class" href="classSbByteBuffer.html">~SbByteBuffer</a>();</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  SbBool isValid() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keywordtype">size_t</span> size() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  SbBool empty() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> &amp; <a class="code hl_function" href="classSbList.html#af3d4a59556a9dbbcf041a7c4d9fcbbc4">operator[]</a>(<span class="keywordtype">size_t</span> idx) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a> &amp; <a class="code hl_function" href="classSbList.html#a54522df5b70fac1df3c4eaa8808ccbc6">operator=</a>(<span class="keyword">const</span> <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a> &amp; <a class="code hl_class" href="classSbList.html">in</a>);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  SbBool <a class="code hl_function" href="classSbList.html#acdd08e7aa8935c8e2acc1391768d6d50">operator==</a>(<span class="keyword">const</span> <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a> &amp; <a class="code hl_class" href="classSbList.html">that</a>) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a> &amp; operator+=(<span class="keyword">const</span> <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a> &amp; <a class="code hl_class" href="classSbList.html">buf</a>) {</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    this-&gt;<a class="code hl_function" href="classSbList.html#af8b64ab9fa5562d1ae179a2ba3c825fe">push</a>(buf);</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  }</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classSbList.html#af8b64ab9fa5562d1ae179a2ba3c825fe">push</a>(<span class="keyword">const</span> <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a> &amp; <a class="code hl_class" href="classSbList.html">buf</a>);</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> * constData() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordtype">char</span> * data();</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keyword">static</span> <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a> &amp; invalidBuffer();</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keywordtype">void</span> makeUnique();</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="preprocessor">#ifndef ABI_BREAKING_OPTIMIZE</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <a class="code hl_class" href="classSbList.html">SbByteBufferP</a> * pimpl;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  SBBYTEBUFFER_PRIVATE_VARIABLES</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="preprocessor">#endif </span><span class="comment">//ABI_BREAKING_OPTIMIZE</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>};</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">//Consider making a general Buffer class for non bytes;</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">//Implements as a minimum the Buffer concept as defined by</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">//http://www.boost.org/doc/libs/1_37_0/libs/graph/doc/Buffer.html</span></div>
+<div class="foldopen" id="foldopen00033" data-start="{" data-end="};">
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classSbByteBuffer.html">   33</a></span><span class="keyword">class </span><a class="code hl_class" href="classSbList.html">COIN_DLL_API</a> <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a> {</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * buffer);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a>(<span class="keyword">const</span> <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a> &amp; buffer);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a>(<span class="keywordtype">size_t</span> size = 0, <span class="keyword">const</span> <span class="keywordtype">char</span> * buffer = <a class="code hl_class" href="classSbList.html">NULL</a>);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a>(<span class="keywordtype">size_t</span> size, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> * buffer);</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <a class="code hl_class" href="classSbByteBuffer.html">~SbByteBuffer</a>();</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  SbBool isValid() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keywordtype">size_t</span> size() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  SbBool empty() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> &amp; <a class="code hl_function" href="classSbList.html#af3d4a59556a9dbbcf041a7c4d9fcbbc4">operator[]</a>(<span class="keywordtype">size_t</span> idx) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a> &amp; <a class="code hl_function" href="classSbList.html#a54522df5b70fac1df3c4eaa8808ccbc6">operator=</a>(<span class="keyword">const</span> <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a> &amp; <a class="code hl_class" href="classSbList.html">in</a>);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  SbBool <a class="code hl_function" href="classSbList.html#acdd08e7aa8935c8e2acc1391768d6d50">operator==</a>(<span class="keyword">const</span> <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a> &amp; <a class="code hl_class" href="classSbList.html">that</a>) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a> &amp; operator+=(<span class="keyword">const</span> <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a> &amp; <a class="code hl_class" href="classSbList.html">buf</a>) {</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    this-&gt;<a class="code hl_function" href="classSbList.html#af8b64ab9fa5562d1ae179a2ba3c825fe">push</a>(buf);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  }</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classSbList.html#af8b64ab9fa5562d1ae179a2ba3c825fe">push</a>(<span class="keyword">const</span> <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a> &amp; <a class="code hl_class" href="classSbList.html">buf</a>);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> * constData() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keywordtype">char</span> * data();</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keyword">static</span> <a class="code hl_class" href="classSbByteBuffer.html">SbByteBuffer</a> &amp; invalidBuffer();</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keywordtype">void</span> makeUnique();</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="preprocessor">#ifndef ABI_BREAKING_OPTIMIZE</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <a class="code hl_class" href="classSbList.html">SbByteBufferP</a> * pimpl;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  SBBYTEBUFFER_PRIVATE_VARIABLES</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="preprocessor">#endif </span><span class="comment">//ABI_BREAKING_OPTIMIZE</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>};</div>
 </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">#ifdef ABI_BREAKING_OPTIMIZE</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">#include &quot;SbByteBufferP.icc&quot;</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="preprocessor">#endif </span><span class="comment">//ABI_BREAKING_OPTIMIZE</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="preprocessor">#endif </span><span class="comment">// !COIN_SBBYTEBUFFER_H</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="comment">//The SBBYTEBUFFER_PRIVATE_VARIABLES must survive an inclusion from the .icc file</span></div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">#ifndef COIN_ICC_INCLUDE</span></div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="preprocessor">#undef SBBYTEBUFFER_PRIVATE_VARIABLES</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="preprocessor">#endif </span><span class="comment">//COIN_ICC_INCLUDE</span></div>
-<div class="ttc" id="aclassSbByteBuffer_html"><div class="ttname"><a href="classSbByteBuffer.html">SbByteBuffer</a></div><div class="ttdef"><b>Definition</b> SbByteBuffer.h:34</div></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="preprocessor">#ifdef ABI_BREAKING_OPTIMIZE</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">#include &quot;SbByteBufferP.icc&quot;</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">#endif </span><span class="comment">//ABI_BREAKING_OPTIMIZE</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="preprocessor">#endif </span><span class="comment">// !COIN_SBBYTEBUFFER_H</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="comment">//The SBBYTEBUFFER_PRIVATE_VARIABLES must survive an inclusion from the .icc file</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="preprocessor">#ifndef COIN_ICC_INCLUDE</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">#undef SBBYTEBUFFER_PRIVATE_VARIABLES</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="preprocessor">#endif </span><span class="comment">//COIN_ICC_INCLUDE</span></div>
+<div class="ttc" id="aclassSbByteBuffer_html"><div class="ttname"><a href="classSbByteBuffer.html">SbByteBuffer</a></div><div class="ttdef"><b>Definition</b> SbByteBuffer.h:33</div></div>
 <div class="ttc" id="aclassSbList_html"><div class="ttname"><a href="classSbList.html">SbList</a></div><div class="ttdoc">The SbList class is a template container class for lists.</div><div class="ttdef"><b>Definition</b> SbList.h:70</div></div>
 <div class="ttc" id="aclassSbList_html_a54522df5b70fac1df3c4eaa8808ccbc6"><div class="ttname"><a href="classSbList.html#a54522df5b70fac1df3c4eaa8808ccbc6">SbList::operator=</a></div><div class="ttdeci">SbList&lt; Type &gt; &amp; operator=(const SbList&lt; Type &gt; &amp;l)</div><div class="ttdef"><b>Definition</b> SbList.h:99</div></div>
 <div class="ttc" id="aclassSbList_html_acdd08e7aa8935c8e2acc1391768d6d50"><div class="ttname"><a href="classSbList.html#acdd08e7aa8935c8e2acc1391768d6d50">SbList::operator==</a></div><div class="ttdeci">int operator==(const SbList&lt; Type &gt; &amp;l) const</div><div class="ttdef"><b>Definition</b> SbList.h:209</div></div>
@@ -228,7 +227,7 @@ $(function(){initNavTree('SbByteBuffer_8h_source.html',''); initResizable(); });
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><b>SbByteBuffer.h</b></li>
-    <li class="footer">Generated on Tue Jan 27 2026 20:28:00 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Wed Jan 28 2026 21:43:53 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

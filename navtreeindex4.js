@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"classSbBox3d.html#a4770f04a2ad3da733a3057a49cb73668":[3,1,5,19],
 "classSbBox3d.html#a4d6f74741bd4b69b12399df0a945c4ca":[3,1,5,8],
 "classSbBox3d.html#a4f58579aa9e0febd54299cae8cd6a0c0":[3,1,5,26],
 "classSbBox3d.html#a54dd241796af5a3b58300856e1e3f4b9":[3,1,5,14],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "classSbCylinderSheetProjector.html#ac37ca81fe5dd8d1e7ecb176b692c8697":[3,16,3,4],
 "classSbCylinderSheetProjector.html#af431cab97204963a160c156e04d103ce":[3,16,3,6],
 "classSbCylinderSheetProjector.html#af48ce18494eb4209176f1f6aab916d0d":[3,16,3,5],
-"classSbDPLine.html":[3,1,15],
-"classSbDPLine.html#a01f65400965ff8aa1627b09d4a1223a0":[3,1,15,2]
+"classSbDPLine.html":[3,1,15]
 };

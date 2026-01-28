@@ -1,5 +1,6 @@
 var NAVTREEINDEX18 =
 {
+"classSoFont.html#ab69f7ddb085b9ca87d99176dc0f82ee8":[3,15,29,4],
 "classSoFont.html#aec10736bf3a4d8a4e5d488e001a4e142":[3,15,29,3],
 "classSoFontNameElement.html":[3,6,27],
 "classSoFontNameElement.html#a020172cd377be432ad26674684769d14":[3,6,27,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX18 =
 "classSoGLMultiTextureEnabledElement.html#a84e75b738348b60f634b467628f08e35":[3,6,44,0],
 "classSoGLMultiTextureEnabledElement.html#a96776d8802da4e4d31b0cdf1f5a9ae2d":[3,6,44,4],
 "classSoGLMultiTextureImageElement.html":[3,6,45],
-"classSoGLMultiTextureImageElement.html#a0b938ba6086b4832541a0f2b8908c7bb":[3,6,45,2],
-"classSoGLMultiTextureImageElement.html#a26d849d55c14961aad89c8711256da48":[3,6,45,3]
+"classSoGLMultiTextureImageElement.html#a0b938ba6086b4832541a0f2b8908c7bb":[3,6,45,2]
 };
