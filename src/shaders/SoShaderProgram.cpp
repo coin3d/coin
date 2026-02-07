@@ -225,7 +225,7 @@ public:
   SoShaderProgramP(SoShaderProgram * ownerptr);
   ~SoShaderProgramP();
 
-  void GLRender(SoGLRenderAction * action);
+  void render(SoState * state);
 
   SoShaderProgramEnableCB * enablecb;
   void * enablecbclosure;
@@ -288,7 +288,14 @@ SoShaderProgram::~SoShaderProgram()
 void
 SoShaderProgram::GLRender(SoGLRenderAction * action)
 {
-  PRIVATE(this)->GLRender(action);
+  if (!action) return;
+  PRIVATE(this)->render(action->getState());
+}
+
+void
+SoShaderProgram::render(SoState * state)
+{
+  PRIVATE(this)->render(state);
 }
 
 // doc from parent
@@ -349,9 +356,9 @@ SoShaderProgramP::~SoShaderProgramP()
 }
 
 void
-SoShaderProgramP::GLRender(SoGLRenderAction * action)
+SoShaderProgramP::render(SoState * state)
 {
-  SoState *state = action->getState();
+  if (!state) return;
 
   int i, cnt = PUBLIC(this)->shaderObject.getNum();
   if (cnt == 0) {
@@ -371,7 +378,7 @@ SoShaderProgramP::GLRender(SoGLRenderAction * action)
   for (i = 0; i <cnt; i++) {
     SoNode * node = PUBLIC(this)->shaderObject[i];
     if (node->isOfType(SoShaderObject::getClassTypeId())) {
-      ((SoShaderObject *)node)->GLRender(action);
+      ((SoShaderObject *)node)->render(state);
     }
   }
 
