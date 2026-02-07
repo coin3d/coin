@@ -609,7 +609,7 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
     }
 
     if (PRIVATE(this)->vaindexer) {
-      PRIVATE(this)->vaindexer->render(sogl_glue_instance(state), dovbo, contextid);
+      PRIVATE(this)->vaindexer->render(state, dovbo, contextid);
     }
     UNLOCK_VAINDEXER(this);
     this->finishVertexArray(action,

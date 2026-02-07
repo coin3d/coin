@@ -43,6 +43,7 @@
 #include <stdlib.h>
 
 class SoVBO;
+class SoState;
 
 class SoVertexArrayIndexer {
 public:
@@ -67,7 +68,7 @@ public:
   void endTarget(GLenum target);
 
   void close(void);
-  void render(const cc_glglue * glue, const SbBool renderasvbo, const uint32_t vbocontextid);
+  void render(SoState * state, const SbBool renderasvbo, const uint32_t vbocontextid);
 
   int getNumVertices(void);
   int getNumIndices(void) const;
