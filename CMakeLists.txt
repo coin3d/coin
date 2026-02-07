@@ -27,9 +27,19 @@ if(POLICY CMP0072)
   cmake_policy(SET CMP0072 NEW)
 endif()
 
+if (POLICY CMP0074)
+    # find_package() uses <PackageName>_ROOT variables (from CMake 3.12)
+    cmake_policy(SET CMP0074 NEW)
+endif()
+
 if(POLICY CMP0075)
   # get rid of CMAKE_REQUIRED_LIBRARIES warning from CMake 3.12.2
   cmake_policy(SET CMP0075 NEW)
+endif()
+
+if (POLICY CMP0167)
+    # The FindBoost module is removed (from CMake 3.12)
+    cmake_policy(SET CMP0167 OLD)
 endif()
 
 # ############################################################################
