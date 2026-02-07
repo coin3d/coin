@@ -44,6 +44,7 @@
 
 #ifdef HAVE_TIME_H
 #include <ctime>
+#include <time.h>
 #endif /* HAVE_TIME_H */
 
 /* On Mac OS X / Darwin, timeb.h uses time_t from time.h, so the order
@@ -106,6 +107,20 @@ cc_internal_queryperformancecounter(cc_time * COIN_UNUSED_ARG(t))
 }
 
 static SbBool
+cc_internal_clock_gettime(cc_time * t)
+{
+#if defined(CLOCK_REALTIME)
+  struct timespec ts;
+  if (clock_gettime(CLOCK_REALTIME, &ts) == 0) {
+    *t = static_cast<double>(ts.tv_sec);
+    *t += static_cast<double>(ts.tv_nsec) / 1000000000.0;
+    return TRUE;
+  }
+#endif /* CLOCK_REALTIME */
+  return FALSE;
+}
+
+static SbBool
 cc_internal_gettimeofday(cc_time * t)
 {
 #ifdef HAVE_GETTIMEOFDAY
@@ -133,7 +148,7 @@ cc_internal_ftime(cc_time * t)
   /* FIXME: should use timezone field of struct _timeb as well. 20011023 mortene. */
   *t = (double)timebuffer.time + (double)timebuffer.millitm / 1000.0;
   return TRUE;
-#elif defined(HAVE_FTIME)
+#elif defined(HAVE_FTIME) && !defined(CLOCK_REALTIME)
   struct timeb timebuffer;
   /* FIXME: should use timezone field of struct _timeb as well. 20011023 mortene. */
   ftime(&timebuffer);
@@ -155,6 +170,7 @@ cc_time_gettimeofday(void)
 {
   cc_time t = 0.0;
   if (cc_internal_queryperformancecounter(&t)) { return t; }
+  if (cc_internal_clock_gettime(&t)) { return t; }
   if (cc_internal_gettimeofday(&t)) { return t; }
   if (cc_internal_ftime(&t)) { return t; }
   /* FIXME: write better debug output. 20011218 mortene. */
