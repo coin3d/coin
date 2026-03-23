@@ -9,6 +9,22 @@ compatibility of your source code when upgrading the library.
 
 
 
+
+Coin 4.0.8
+==========
+
+Refactor OpenGL version check to use cc_glglue (get around Intel driver issue).
+
+Export the include directories for in-tree builds.
+
+Extract shader GLRender logic into helper.
+
+Refactor SoVertexArrayIndexer render() to take SoState*.
+
+Removed Boost from Coin.
+
+Fix tests with disabled VRML97 support.
+
 Coin 4.0.7
 ==========
 

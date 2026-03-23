@@ -1,5 +1,6 @@
 /*!
 \page coin_new_features New Features in Coin
+- \subpage coin408 "New Features in Coin v4.0.8"
 - \subpage coin407 "New Features in Coin v4.0.7"
 - \subpage coin406 "New Features in Coin v4.0.6"
 - \subpage coin405 "New Features in Coin v4.0.5"
@@ -21,6 +22,21 @@
 - \subpage coin200 "New Features in Coin v2.0.0"
 
 */ 
+
+/**
+\page coin408 New Features in Coin v4.0.8
+
+This is a bugfix release.
+
+Bug fixes:
+- Refactor OpenGL version check to use cc_glglue (get around Intel driver issue).
+- Export the include directories for in-tree builds.
+- Extract shader GLRender logic into helper.
+- Refactor SoVertexArrayIndexer render() to take SoState*.
+- Removed Boost from Coin.
+- Fix tests with disabled VRML97 support.
+
+*/
 
 /**
 \page coin407 New Features in Coin v4.0.7
