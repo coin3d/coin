@@ -1,0 +1,172 @@
+2026-03-23 22:50:18 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (04d35a2c3d)
+
+	Bump version number to 4.0.8
+
+M	CMakeLists.txt
+M	configure
+M	configure.ac
+
+2026-03-23 22:48:55 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (19bf21680b)
+
+	fix: speed up build on outdated macOS versions
+
+M	appveyor_macos.yml
+
+2026-03-23 22:48:07 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (a23aad4329)
+
+	Update NEWS, RELNOTES, and releases.dox files.
+
+M	NEWS
+M	RELNOTES
+M	docs/releases.dox
+
+2026-03-18 08:33:04 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (bb7d380c70)
+
+	Refactor OpenGL version check to use cc_glglue
+
+M	src/elements/GL/SoGLDisplayList.cpp
+
+2026-02-22 21:04:31 +0530  captain0xff  <sayantandebin@gmail.com> (41357dda4d)
+
+	Export the include directories for in-tree builds
+
+M	src/CMakeLists.txt
+
+2026-02-04 19:25:14 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (baaa78437c)
+
+	Remove MSVC 2010 from build matrix.
+
+M	appveyor_oldcomp.yml
+
+2025-11-08 19:37:42 +0000  tritao  <joao@tritao.eu> (1a2d702b1b)
+
+	Extract shader GLRender logic into helper
+
+M	include/Inventor/nodes/SoShaderObject.h
+M	include/Inventor/nodes/SoShaderProgram.h
+M	src/shaders/SoShaderObject.cpp
+M	src/shaders/SoShaderProgram.cpp
+
+2025-11-08 19:02:27 +0000  tritao  <joao@tritao.eu> (2880e9b4c4)
+
+	Refactor SoVertexArrayIndexer render() to take SoState*
+
+M	src/caches/SoPrimitiveVertexCache.cpp
+M	src/rendering/SoVertexArrayIndexer.cpp
+M	src/rendering/SoVertexArrayIndexer.h
+M	src/shapenodes/SoIndexedFaceSet.cpp
+M	src/shapenodes/SoIndexedLineSet.cpp
+M	src/shapenodes/SoIndexedPointSet.cpp
+M	src/vrml97/Extrusion.cpp
+M	src/vrml97/IndexedFaceSet.cpp
+M	src/vrml97/IndexedLineSet.cpp
+
+2025-11-06 00:44:09 +0000  tritao  <joao@tritao.eu> (5a28bec306)
+
+	Fix tests with disabled VRML97 support.
+
+M	src/fields/SoSFNode.cpp
+M	src/misc/SoBase.cpp
+M	src/misc/SoDB.cpp
+M	testsuite/CMakeLists.txt
+
+2026-01-18 17:16:26 +0000  tritao  <joao@tritao.eu> (d814f784fb)
+
+	Remove leftover Boost ptr mentions and SoBase intrusive_ptr helpers
+
+M	include/Inventor/misc/SoBase.h
+M	src/scxml/ScXMLParallelElt.cpp
+M	src/scxml/ScXMLStateElt.cpp
+
+2026-01-13 01:34:55 +0000  tritao  <joao@tritao.eu> (90572e8860)
+
+	Autotools/CI: remove Boost references
+
+M	.github/workflows/codeql.yml
+M	.github/workflows/continuous-integration-workflow.yml
+M	.github/workflows/cross-build-arch-workflow.yml
+M	.github/workflows/documentation-workflow.yml
+M	Makefile.am
+M	appveyor_macos.yml
+M	appveyor_mingw.yml
+M	appveyor_newcomp.yml
+M	appveyor_oldcomp.yml
+M	configure.ac
+D	include/Makefile.inc
+D	scripts/findNecessaryBoostIncludes.sh
+D	scripts/genBoostIncFile.sh
+
+2026-01-13 01:34:40 +0000  tritao  <joao@tritao.eu> (7fcc8f978e)
+
+	Replace Boost.Test with in-tree test runner
+
+A	testsuite/CoinTest.h
+M	testsuite/README
+M	testsuite/StandardTests.cpp
+M	testsuite/TestSuiteInit.cpp
+M	testsuite/TestSuiteMain.cpp
+M	testsuite/TestSuiteMisc.h
+M	testsuite/TestSuiteTemplate.cmake.in
+M	testsuite/TestSuiteUtils.cpp
+M	testsuite/makeextract.sh
+
+2026-01-13 01:34:22 +0000  tritao  <joao@tritao.eu> (b9fde857f2)
+
+	Remove Boost from Coin core
+
+M	CMakeLists.txt
+M	INSTALL
+M	include/Inventor/SbByteBuffer.h
+M	include/Inventor/SbByteBufferP.icc
+A	include/Inventor/misc/SoRefPtr.h
+M	src/actions/SoGLRenderAction.cpp
+M	src/base/SbByteBuffer.cpp
+M	src/base/SbRotation.cpp
+M	src/base/SbVec3f.cpp
+M	src/base/SbVec3s.cpp
+M	src/base/SbVec4f.cpp
+M	src/base/heap.cpp
+M	src/coin-config.cmake.in
+M	src/coindefs.h
+M	src/collision/SoIntersectionDetectionAction.cpp
+M	src/engines/SoHeightMapToNormalMap.cpp
+M	src/geo/SoGeoCoordinate.cpp
+M	src/geo/SoGeoSeparator.cpp
+M	src/glue/dl.cpp
+M	src/io/SoInput.cpp
+M	src/io/SoOutput.cpp
+M	src/misc/CoinResources.cpp
+M	src/misc/SoDB.cpp
+M	src/navigation/SoScXMLDollyTarget.cpp
+M	src/navigation/SoScXMLNavigationTarget.cpp
+M	src/navigation/SoScXMLRotateTarget.cpp
+M	src/navigation/SoScXMLSpinTarget.cpp
+M	src/navigation/SoScXMLZoomTarget.cpp
+M	src/nodes/SoVertexAttribute.cpp
+M	src/profiler/SoNodeVisualize.cpp
+M	src/profiler/SoProfilerTopKit.cpp
+M	src/profiler/SoProfilerVisualizeKit.cpp
+M	src/profiler/SoProfilingReportGenerator.cpp
+M	src/profiler/SoScrollingGraphKit.cpp
+M	src/rendering/SoGLImage.cpp
+M	src/rendering/SoOffscreenRenderer.cpp
+M	src/rendering/SoRenderManager.cpp
+M	src/rendering/SoVertexArrayIndexer.cpp
+M	src/scxml/ScXMLAssignElt.cpp
+M	src/scxml/ScXMLDocument.cpp
+M	src/scxml/ScXMLEvaluator.cpp
+M	src/scxml/ScXMLEventTarget.cpp
+M	src/scxml/ScXMLFinalElt.cpp
+M	src/scxml/ScXMLHistoryElt.cpp
+M	src/scxml/ScXMLIfElt.cpp
+M	src/scxml/ScXMLInitialElt.cpp
+M	src/scxml/ScXMLInvokeElt.cpp
+M	src/scxml/ScXMLMinimumEvaluator.cpp
+M	src/scxml/ScXMLParallelElt.cpp
+M	src/scxml/ScXMLScxmlElt.cpp
+M	src/scxml/ScXMLStateElt.cpp
+M	src/scxml/ScXMLStateMachine.cpp
+M	src/scxml/ScXMLTransitionElt.cpp
+M	src/soscxml/ScXMLCoinEvaluator.cpp
+M	src/soscxml/SoScXMLStateMachine.cpp
+M	src/xml/document.cpp
