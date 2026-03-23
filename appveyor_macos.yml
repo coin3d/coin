@@ -45,7 +45,7 @@ environment:
 
 install:
   - sh: |
-      brew install jq
+      HOMEBREW_NO_AUTO_UPDATE=1 brew install jq
       #brew install doxygen
   - git submodule update --init --recursive
 
