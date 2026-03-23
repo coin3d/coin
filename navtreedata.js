@@ -110,7 +110,7 @@ var NAVTREEINDEX =
 "classSoVRMLSphereSensor.html#a40e81d1963f438f22b65139dbd17caec",
 "classSoVRMLVisibilitySensor.html#a21557cd67fe0c42afd497b7a6ca910ed",
 "classSoWWWInline.html#a5337971a1acc874c2dcc556a628ee256",
-"functions_vars_c.html"
+"functions_vars_b.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

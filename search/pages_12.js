@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['macros_0',['Node Macros',['../group__coin__macros.html',1,'']]],
-  ['multithreading_20support_20in_20coin_1',['Multithreading Support in Coin',['../coin_multithreading_support.html',1,'coin_related_pages']]]
+  ['libraries_0',['Coin use of 3rd party libraries.',['../coin_libraries.html',1,'coin_related_pages']]],
+  ['loading_20of_20extension_20nodes_1',['Dynamic Loading of Extension Nodes',['../coin_dynload_overview.html',1,'coin_related_pages']]]
 ];

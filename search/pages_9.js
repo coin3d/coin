@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['books_20related_20to_20open_20inventor_20coin_0',['Books Related to Open Inventor / Coin',['../coin_books.html',1,'']]],
-  ['bundle_20classes_1',['The Bundle Classes',['../group__coin__bundles.html',1,'']]]
+  ['a_20hardcopy_20overview_0',['A HardCopy Overview',['../group__coin__hardcopy.html',1,'coin_related_pages']]],
+  ['and_20vbo_20rendering_20in_20coin_1',['Vertex array and VBO rendering in Coin',['../coin_vbo_rendering.html',1,'coin_related_pages']]],
+  ['array_20and_20vbo_20rendering_20in_20coin_2',['Vertex array and VBO rendering in Coin',['../coin_vbo_rendering.html',1,'coin_related_pages']]]
 ];
