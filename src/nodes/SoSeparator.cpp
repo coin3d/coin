@@ -853,6 +853,9 @@ ray_intersect(SoRayPickAction * action, const SbBox3f &box)
   return action->intersect(box, TRUE);
 }
 
+// Minimum children to activate per-child bbox culling during ray pick
+static const int SOSEPARATOR_RAYPICK_CULL_THRESHOLD = 8;
+
 // Doc from superclass.
 void
 SoSeparator::rayPick(SoRayPickAction * action)
@@ -861,7 +864,40 @@ SoSeparator::rayPick(SoRayPickAction * action)
       !PRIVATE(this)->bboxcache || !PRIVATE(this)->bboxcache->isValid(action->getState()) ||
       !action->hasWorldSpaceRay() ||
       ray_intersect(action, PRIVATE(this)->bboxcache->getProjectedBox())) {
-    SoSeparator::doAction(action);
+
+    SoChildList * children = this->getChildren();
+    int n = children->getLength();
+
+    // For small child counts, use standard traversal (no culling overhead)
+    if (n <= SOSEPARATOR_RAYPICK_CULL_THRESHOLD) {
+      SoSeparator::doAction(action);
+      return;
+    }
+
+    // Custom traversal with per-child bbox culling for SoSeparator children.
+    // SoSeparator children are state-isolated (push/pop), so skipping them
+    // when their bbox doesn't intersect the ray is safe.
+    action->getState()->push();
+    action->pushCurPath();
+    for (int i = 0; i < n && !action->hasTerminated(); i++) {
+      SoNode * child = (*children)[i];
+
+      if (child->isOfType(SoSeparator::getClassTypeId())) {
+        SoSeparator * sep = static_cast<SoSeparator *>(child);
+        SoBoundingBoxCache * childCache = PRIVATE(sep)->bboxcache;
+        if (childCache && childCache->isValid(action->getState())) {
+          SbBox3f childBox = childCache->getProjectedBox();
+          if (!childBox.isEmpty() && !action->intersect(childBox, TRUE)) {
+            continue; // Ray misses this child separator — skip
+          }
+        }
+      }
+
+      action->popPushCurPath(i, child);
+      action->traverse(child);
+    }
+    action->popCurPath();
+    action->getState()->pop();
   }
 }
 
