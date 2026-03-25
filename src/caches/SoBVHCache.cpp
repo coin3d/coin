@@ -31,6 +31,7 @@
 \**************************************************************************/
 
 #include "SoBVHCache.h"
+#include "CoinTracyConfig.h"
 
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/SoPickedPoint.h>
@@ -223,6 +224,7 @@ SoBVHCache::buildFlat(const SbVec3f * triVertices,
 SbBool
 SoBVHCache::rayPick(SoRayPickAction * action, SoShape * shape) const
 {
+  CoinZoneScopedN("SoBVHCache::rayPick");
   SoBVHCacheP * p = this->pimpl;
 
   if (!p->built || p->nodes.empty()) return FALSE;

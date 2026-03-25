@@ -49,6 +49,8 @@
 
 #include <Inventor/actions/SoHandleEventAction.h>
 
+#include "CoinTracyConfig.h"
+
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/elements/SoSwitchElement.h>
@@ -357,6 +359,7 @@ SoHandleEventAction::getPickedPoint(void)
 const SoPickedPointList &
 SoHandleEventAction::getPickedPointList(void)
 {
+  CoinZoneScopedN("SoHandleEventAction::getPickedPointList");
   SoRayPickAction * ra = PRIVATE(this)->getPickAction();
   if (!PRIVATE(this)->pickvalid || !PRIVATE(this)->didpickall) {
     ra->setPickAll(TRUE);
@@ -411,6 +414,7 @@ SoHandleEventActionP::getPickAction(void) const
 void
 SoHandleEventActionP::doPick(SoRayPickAction * ra)
 {
+  CoinZoneScopedN("SoHandleEventAction::doPick");
   if (!this->event || !this->pickroot) return;
 
   SbBool didapply = FALSE;

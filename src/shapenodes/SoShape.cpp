@@ -122,6 +122,7 @@
 #include "tidbitsp.h"
 #include "rendering/SoVBO.h"
 #include "caches/SoBVHCache.h"
+#include "CoinTracyConfig.h"
 #include "coindefs.h" // COIN_OBSOLETED()
 
 // SoShape.cpp grew too big, so I had to move some code into new
@@ -464,6 +465,7 @@ static const int SOSHAPE_BVH_MIN_TRIANGLES = 64;
 void
 SoShape::rayPick(SoRayPickAction * action)
 {
+  CoinZoneScopedN("SoShape::rayPick");
   if (this->shouldRayPick(action)) {
     this->computeObjectSpaceRay(action);
 
@@ -479,7 +481,10 @@ SoShape::rayPick(SoRayPickAction * action)
         PRIVATE(this)->bvhCollecting = TRUE;
         PRIVATE(this)->bvhCollectVertices.clear();
         PRIVATE(this)->bvhCollectNormals.clear();
-        this->generatePrimitives(action);
+        {
+          CoinZoneScopedN("SoShape::rayPick/generatePrimitives");
+          this->generatePrimitives(action);
+        }
         PRIVATE(this)->bvhCollecting = FALSE;
 
         // Build BVH from collected triangles if enough were gathered
