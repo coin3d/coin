@@ -63,6 +63,7 @@
 #include <Inventor/misc/SoState.h>
 
 #include "actions/SoSubActionP.h"
+#include "caches/SoSceneBVH.h"
 
 // *************************************************************************
 
@@ -419,6 +420,15 @@ SoHandleEventActionP::doPick(SoRayPickAction * ra)
 
   SbBool didapply = FALSE;
   ra->setPoint(this->event->getPosition());
+
+  // Scene-level BVH: set the active BVH for SoShape::rayPick() to use.
+  // On first pick: shapes collect their world-space bboxes.
+  // On subsequent picks: the first shape triggers a BVH query to populate
+  // the candidate set, then all shapes self-filter.
+  SoSceneBVH * sceneBVH = SoSceneBVH::getForRoot(this->pickroot);
+  SoSceneBVH::setCollecting(sceneBVH);
+  SoSceneBVH::setActiveCandidates(NULL);  // reset from previous pick
+
   if (this->owner->getWhatAppliedTo() == SoAction::PATH) {
     const SoPath * path = this->owner->getPathAppliedTo();
     if (path->getHead() == this->pickroot) {
@@ -440,6 +450,14 @@ SoHandleEventActionP::doPick(SoRayPickAction * ra)
     }
   }
   if (!didapply) ra->apply(this->pickroot);
+
+  SoSceneBVH::setCollecting(NULL);
+
+  // Build scene BVH from collected shapes (first pick only)
+  if (sceneBVH && !sceneBVH->isBuilt() && sceneBVH->numShapes() > 0) {
+    sceneBVH->build();
+  }
+
   this->didpickall = ra->isPickAll();
   this->pickvalid = TRUE;
 }

@@ -76,6 +76,8 @@
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
+#include "caches/SoChildBVH.h"
+#include "CoinTracyConfig.h"
 #include <Inventor/caches/SoGLCacheList.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoCullElement.h>
@@ -307,9 +309,11 @@ public:
                     soseparator_storage_construct,
                     soseparator_storage_destruct);
     this->pub = NULL;
+    this->childbvh = NULL;
   }
   ~SoSeparatorP() {
     delete this->glcachestorage;
+    delete this->childbvh;
   }
 
   SoSeparator * pub;
@@ -317,6 +321,8 @@ public:
   SoBoundingBoxCache * bboxcache;
   uint32_t bboxcache_usecount;
   uint32_t bboxcache_destroycount;
+
+  SoChildBVH * childbvh;
 
 #ifdef COIN_THREADSAFE
   // FIXME: a mutex for every SoSeparator instance seems a bit
@@ -853,8 +859,9 @@ ray_intersect(SoRayPickAction * action, const SbBox3f &box)
   return action->intersect(box, TRUE);
 }
 
-// Minimum children to activate per-child bbox culling during ray pick
-static const int SOSEPARATOR_RAYPICK_CULL_THRESHOLD = 8;
+// Minimum children to activate per-child BVH culling during ray pick.
+// Low threshold ensures BVH is used at most separator levels.
+static const int SOSEPARATOR_RAYPICK_CULL_THRESHOLD = 4;
 
 // Doc from superclass.
 void
@@ -874,28 +881,99 @@ SoSeparator::rayPick(SoRayPickAction * action)
       return;
     }
 
-    // Custom traversal with per-child bbox culling for SoSeparator children.
-    // SoSeparator children are state-isolated (push/pop), so skipping them
-    // when their bbox doesn't intersect the ray is safe.
-    action->getState()->push();
-    action->pushCurPath();
-    for (int i = 0; i < n && !action->hasTerminated(); i++) {
-      SoNode * child = (*children)[i];
+    // Build child BVH lazily. Rebuild only when child count changes
+    // (not on every notify, which fires for selection state changes too).
+    if (!PRIVATE(this)->childbvh || !PRIVATE(this)->childbvh->isValid(n)) {
+      delete PRIVATE(this)->childbvh;
+      PRIVATE(this)->childbvh = NULL;
+      CoinZoneScopedN("SoSeparator::rayPick/buildChildBVH");
+      std::vector<std::pair<int, SbBox3f>> entries;
+      entries.reserve(n);
 
-      if (child->isOfType(SoSeparator::getClassTypeId())) {
-        SoSeparator * sep = static_cast<SoSeparator *>(child);
-        SoBoundingBoxCache * childCache = PRIVATE(sep)->bboxcache;
-        if (childCache && childCache->isValid(action->getState())) {
-          SbBox3f childBox = childCache->getProjectedBox();
-          if (!childBox.isEmpty() && !action->intersect(childBox, TRUE)) {
-            continue; // Ray misses this child separator — skip
+      SoGetBoundingBoxAction bboxAction(action->getViewportRegion());
+
+      for (int i = 0; i < n; i++) {
+        SoNode * child = (*children)[i];
+
+        // Skip state-affecting nodes — they have no bbox and are never culled
+        if (child->affectsState()) {
+          continue;
+        }
+
+        SbBox3f childBox;
+
+        // For SoSeparator children, use their cached bbox (cheap)
+        if (child->isOfType(SoSeparator::getClassTypeId())) {
+          SoSeparator * sep = static_cast<SoSeparator *>(child);
+          SoBoundingBoxCache * childCache = PRIVATE(sep)->bboxcache;
+          if (childCache && childCache->isValid(action->getState())) {
+            childBox = childCache->getProjectedBox();
           }
+        }
+
+        // For other non-state children, compute bbox
+        if (childBox.isEmpty()) {
+          bboxAction.apply(child);
+          childBox = bboxAction.getBoundingBox();
+        }
+
+        if (!childBox.isEmpty()) {
+          entries.push_back({i, childBox});
         }
       }
 
-      action->popPushCurPath(i, child);
-      action->traverse(child);
+      if (static_cast<int>(entries.size()) > SOSEPARATOR_RAYPICK_CULL_THRESHOLD) {
+        PRIVATE(this)->lock();
+        PRIVATE(this)->childbvh = new SoChildBVH();
+        PRIVATE(this)->childbvh->build(entries, n);
+        PRIVATE(this)->unlock();
+      }
     }
+
+    // Traverse with BVH-accelerated child culling
+    action->getState()->push();
+    action->pushCurPath();
+
+    if (PRIVATE(this)->childbvh && PRIVATE(this)->childbvh->isValid(n)) {
+      // BVH path: query to find which children the ray hits
+      CoinZoneScopedN("SoSeparator::rayPick/queryChildBVH");
+      std::vector<bool> hitChildren(n, false);
+      PRIVATE(this)->childbvh->query(action, hitChildren);
+
+      for (int i = 0; i < n && !action->hasTerminated(); i++) {
+        SoNode * child = (*children)[i];
+
+        // Always traverse state-affecting nodes (transforms, materials, etc.)
+        // Skip non-state children that the BVH says don't intersect
+        if (!hitChildren[i] && !child->affectsState()) {
+          continue;
+        }
+
+        action->popPushCurPath(i, child);
+        action->traverse(child);
+      }
+    }
+    else {
+      // Fallback: linear traversal with SoSeparator-only culling
+      for (int i = 0; i < n && !action->hasTerminated(); i++) {
+        SoNode * child = (*children)[i];
+
+        if (child->isOfType(SoSeparator::getClassTypeId())) {
+          SoSeparator * sep = static_cast<SoSeparator *>(child);
+          SoBoundingBoxCache * childCache = PRIVATE(sep)->bboxcache;
+          if (childCache && childCache->isValid(action->getState())) {
+            SbBox3f childBox = childCache->getProjectedBox();
+            if (!childBox.isEmpty() && !action->intersect(childBox, TRUE)) {
+              continue;
+            }
+          }
+        }
+
+        action->popPushCurPath(i, child);
+        action->traverse(child);
+      }
+    }
+
     action->popCurPath();
     action->getState()->pop();
   }
@@ -990,6 +1068,9 @@ SoSeparator::notify(SoNotList * nl)
   // are valid while reading them
   PRIVATE(this)->lock();
   if (PRIVATE(this)->bboxcache) PRIVATE(this)->bboxcache->invalidate();
+  // Note: childbvh is NOT invalidated here. Selection/preselection state
+  // changes trigger notify() frequently but don't affect child bboxes.
+  // The childbvh is invalidated lazily by checking child count at query time.
   PRIVATE(this)->invalidateGLCaches();
   PRIVATE(this)->hassoundchild = SoSeparatorP::MAYBE;
   PRIVATE(this)->unlock();

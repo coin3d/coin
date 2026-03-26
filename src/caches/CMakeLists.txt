@@ -2,6 +2,8 @@
 set(COIN_CACHES_FILES
 	SoBoundingBoxCache.cpp
 	SoBVHCache.cpp
+	SoChildBVH.cpp
+	SoSceneBVH.cpp
 	SoCache.cpp
 	SoConvexDataCache.cpp
 	SoGLCacheList.cpp
@@ -18,6 +20,10 @@ set(COIN_CACHES_FILES
 set(COIN_CACHES_INTERNAL_FILES
 	SoBVHCache.h
 	SoBVHCache.cpp
+	SoChildBVH.h
+	SoChildBVH.cpp
+	SoSceneBVH.h
+	SoSceneBVH.cpp
 	SoGlyphCache.h
 	SoGlyphCache.cpp
 	SoShaderProgramCache.h

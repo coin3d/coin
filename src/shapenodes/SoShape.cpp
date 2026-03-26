@@ -122,6 +122,7 @@
 #include "tidbitsp.h"
 #include "rendering/SoVBO.h"
 #include "caches/SoBVHCache.h"
+#include "caches/SoSceneBVH.h"
 #include "CoinTracyConfig.h"
 #include "coindefs.h" // COIN_OBSOLETED()
 
@@ -455,8 +456,10 @@ soshape_ray_intersect(SoRayPickAction * action, const SbBox3f & box)
   return action->intersect(box, TRUE);
 }
 
-// Minimum triangle count to justify building a BVH
-static const int SOSHAPE_BVH_MIN_TRIANGLES = 64;
+// Minimum triangle count to justify building a BVH.
+// Low threshold ensures most shapes get BVH acceleration after first pick.
+// The BVH build cost for small shapes is negligible.
+static const int SOSHAPE_BVH_MIN_TRIANGLES = 8;
 
 
 /*!
@@ -466,6 +469,51 @@ void
 SoShape::rayPick(SoRayPickAction * action)
 {
   CoinZoneScopedN("SoShape::rayPick");
+
+  // Scene-level BVH acceleration
+  {
+    SoSceneBVH * sceneBVH = SoSceneBVH::getCollecting();
+    if (sceneBVH) {
+      if (!sceneBVH->isBuilt()) {
+        // First pick: register this shape with its world-space bbox
+        if (PRIVATE(this)->bboxcache && PRIVATE(this)->bboxcache->isValid(action->getState())) {
+          SbBox3f localBox = PRIVATE(this)->bboxcache->getProjectedBox();
+          if (!localBox.isEmpty()) {
+            SbMatrix modelMatrix = SoModelMatrixElement::get(action->getState());
+            SbVec3f bmin = localBox.getMin(), bmax = localBox.getMax();
+            SbBox3f worldBox;
+            for (int c = 0; c < 8; c++) {
+              SbVec3f corner(
+                (c & 1) ? bmax[0] : bmin[0],
+                (c & 2) ? bmax[1] : bmin[1],
+                (c & 4) ? bmax[2] : bmin[2]
+              );
+              SbVec3f worldCorner;
+              modelMatrix.multVecMatrix(corner, worldCorner);
+              worldBox.extendBy(worldCorner);
+            }
+            sceneBVH->addShape(this, worldBox);
+          }
+        }
+      }
+      else {
+        // BVH is built: lazily query on first shape visit in this pick
+        std::set<SoShape*> * candidates = SoSceneBVH::getActiveCandidates();
+        if (!candidates) {
+          // Trigger BVH query — world ray is available by now
+          static std::set<SoShape*> s_candidateSet;
+          s_candidateSet.clear();
+          sceneBVH->query(action, s_candidateSet);
+          SoSceneBVH::setActiveCandidates(&s_candidateSet);
+          candidates = &s_candidateSet;
+        }
+        if (candidates->find(this) == candidates->end()) {
+          return;  // Ray misses this shape — skip
+        }
+      }
+    }
+  }
+
   if (this->shouldRayPick(action)) {
     this->computeObjectSpaceRay(action);
 
