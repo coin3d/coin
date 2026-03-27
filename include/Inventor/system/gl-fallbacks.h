@@ -1,0 +1,689 @@
+#ifndef COIN_GL_FALLBACKS_H
+#define COIN_GL_FALLBACKS_H
+
+/* Fallback enum values for legacy OpenGL/GLU/WGL headers.
+ *
+ * Some environments (notably Windows) still ship very old OpenGL headers
+ * where common enums are missing unless additional extension headers are
+ * available and included.
+ *
+ * This list is intentionally limited to symbols known to be missing in
+ * such environments. Values are taken from the historical fallback block
+ * previously shipped in
+ * `include/Inventor/system/gl.h`, with a small number of aliases added
+ * (e.g. *_ARB rectangle texture enums matching the EXT/NV values).
+ */
+
+#ifndef GL_ARRAY_BUFFER
+#define GL_ARRAY_BUFFER 0x8892
+#endif
+
+#ifndef GL_BGR
+#define GL_BGR 0x80E0
+#endif
+
+#ifndef GL_CLAMP_TO_BORDER
+#define GL_CLAMP_TO_BORDER 0x812D
+#endif
+
+#ifndef GL_CLAMP_TO_EDGE
+#define GL_CLAMP_TO_EDGE 0x812F
+#endif
+
+#ifndef GL_COLOR_ATTACHMENT0_EXT
+#define GL_COLOR_ATTACHMENT0_EXT 0x8CE0
+#endif
+
+#ifndef GL_COLOR_TABLE_WIDTH
+#define GL_COLOR_TABLE_WIDTH 0x80D9
+#endif
+
+#ifndef GL_COLOR_SUM_CLAMP_NV
+#define GL_COLOR_SUM_CLAMP_NV 0x854F
+#endif
+
+#ifndef GL_COMPRESSED_LUMINANCE_ARB
+#define GL_COMPRESSED_LUMINANCE_ARB 0x84EA
+#endif
+
+#ifndef GL_COMPRESSED_LUMINANCE_ALPHA_ARB
+#define GL_COMPRESSED_LUMINANCE_ALPHA_ARB 0x84EB
+#endif
+
+#ifndef GL_COMPRESSED_RGB_ARB
+#define GL_COMPRESSED_RGB_ARB 0x84ED
+#endif
+
+#ifndef GL_COMPRESSED_RGBA_ARB
+#define GL_COMPRESSED_RGBA_ARB 0x84EE
+#endif
+
+#ifndef GL_COMBINE
+#define GL_COMBINE 0x8570
+#endif
+
+#ifndef GL_COMBINE_ALPHA
+#define GL_COMBINE_ALPHA 0x8572
+#endif
+
+#ifndef GL_COMBINER0_NV
+#define GL_COMBINER0_NV 0x8550
+#endif
+
+#ifndef GL_COMBINE_RGB
+#define GL_COMBINE_RGB 0x8571
+#endif
+
+#ifndef GL_COMPARE_R_TO_TEXTURE
+#define GL_COMPARE_R_TO_TEXTURE 0x884E
+#endif
+
+#ifndef GL_DEPTH_ATTACHMENT_EXT
+#define GL_DEPTH_ATTACHMENT_EXT 0x8D00
+#endif
+
+#ifndef GL_DEPTH_COMPONENT24
+#define GL_DEPTH_COMPONENT24 0x81A6
+#endif
+
+#ifndef GL_DISCARD_NV
+#define GL_DISCARD_NV 0x8530
+#endif
+
+#ifndef GL_DOT3_RGB
+#define GL_DOT3_RGB 0x86AE
+#endif
+
+#ifndef GL_DOT_PRODUCT_DEPTH_REPLACE_NV
+#define GL_DOT_PRODUCT_DEPTH_REPLACE_NV 0x86ED
+#endif
+
+#ifndef GL_DOT_PRODUCT_NV
+#define GL_DOT_PRODUCT_NV 0x86EC
+#endif
+
+#ifndef GL_DYNAMIC_DRAW
+#define GL_DYNAMIC_DRAW 0x88E8
+#endif
+
+#ifndef GL_ELEMENT_ARRAY_BUFFER
+#define GL_ELEMENT_ARRAY_BUFFER 0x8893
+#endif
+
+#ifndef GL_FLOAT_MAT4_ARB
+#define GL_FLOAT_MAT4_ARB 0x8B5C
+#endif
+
+#ifndef GL_FLOAT_VEC2_ARB
+#define GL_FLOAT_VEC2_ARB 0x8B50
+#endif
+
+#ifndef GL_FLOAT_VEC3_ARB
+#define GL_FLOAT_VEC3_ARB 0x8B51
+#endif
+
+#ifndef GL_FLOAT_VEC4_ARB
+#define GL_FLOAT_VEC4_ARB 0x8B52
+#endif
+
+#ifndef GL_NUM_EXTENSIONS
+#define GL_NUM_EXTENSIONS 0x821D
+#endif
+
+#ifndef GL_FUNC_ADD
+#define GL_FUNC_ADD 0x8006
+#endif
+
+#ifndef GL_MIN
+#define GL_MIN 0x8007
+#endif
+
+#ifndef GL_MAX
+#define GL_MAX 0x8008
+#endif
+
+#ifndef GL_MAX_TEXTURE_COORDS_ARB
+#define GL_MAX_TEXTURE_COORDS_ARB 0x8871
+#endif
+
+#ifndef GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT
+#define GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT 0x84FF
+#endif
+
+#ifndef GL_POLYGON_OFFSET_EXT
+#define GL_POLYGON_OFFSET_EXT 0x8037
+#endif
+
+#ifndef GL_FRAGMENT_PROGRAM_ARB
+#define GL_FRAGMENT_PROGRAM_ARB 0x8804
+#endif
+
+#ifndef GL_FRAGMENT_SHADER_ARB
+#define GL_FRAGMENT_SHADER_ARB 0x8B30
+#endif
+
+#ifndef GL_FRAMEBUFFER_BINDING_EXT
+#define GL_FRAMEBUFFER_BINDING_EXT 0x8CA6
+#endif
+
+#ifndef GL_FRAMEBUFFER_COMPLETE_EXT
+#define GL_FRAMEBUFFER_COMPLETE_EXT 0x8CD5
+#endif
+
+#ifndef GL_FRAMEBUFFER_EXT
+#define GL_FRAMEBUFFER_EXT 0x8D40
+#endif
+
+#ifndef GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT
+#define GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT 0x8CD6
+#endif
+
+#ifndef GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT
+#define GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT 0x8CD9
+#endif
+
+#ifndef GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT
+#define GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT 0x8CDB
+#endif
+
+#ifndef GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT
+#define GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT 0x8CDA
+#endif
+
+#ifndef GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT
+#define GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT 0x8CD7
+#endif
+
+#ifndef GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT
+#define GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT 0x8CDC
+#endif
+
+#ifndef GL_FRAMEBUFFER_UNSUPPORTED_EXT
+#define GL_FRAMEBUFFER_UNSUPPORTED_EXT 0x8CDD
+#endif
+
+#ifndef GL_GENERATE_MIPMAP_SGIS
+#define GL_GENERATE_MIPMAP_SGIS 0x8191
+#endif
+
+#ifndef GL_GEOMETRY_INPUT_TYPE_EXT
+#define GL_GEOMETRY_INPUT_TYPE_EXT 0x8DDB
+#endif
+
+#ifndef GL_GEOMETRY_OUTPUT_TYPE_EXT
+#define GL_GEOMETRY_OUTPUT_TYPE_EXT 0x8DDC
+#endif
+
+#ifndef GL_GEOMETRY_SHADER_EXT
+#define GL_GEOMETRY_SHADER_EXT 0x8DD9
+#endif
+
+#ifndef GL_GEOMETRY_VERTICES_OUT_EXT
+#define GL_GEOMETRY_VERTICES_OUT_EXT 0x8DDA
+#endif
+
+#ifndef GL_INT_VEC2_ARB
+#define GL_INT_VEC2_ARB 0x8B53
+#endif
+
+#ifndef GL_INT_VEC3_ARB
+#define GL_INT_VEC3_ARB 0x8B54
+#endif
+
+#ifndef GL_INT_VEC4_ARB
+#define GL_INT_VEC4_ARB 0x8B55
+#endif
+
+#ifndef GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB
+#define GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB 0x84F8
+#endif
+
+#ifndef GL_MAX_RENDERBUFFER_SIZE
+#define GL_MAX_RENDERBUFFER_SIZE 0x84E8
+#endif
+
+#ifndef GL_MAX_TEXTURE_UNITS
+#define GL_MAX_TEXTURE_UNITS 0x84E2
+#endif
+
+#ifndef GL_NORMAL_MAP
+#define GL_NORMAL_MAP 0x8511
+#endif
+
+#ifndef GL_NUM_GENERAL_COMBINERS_NV
+#define GL_NUM_GENERAL_COMBINERS_NV 0x854E
+#endif
+
+#ifndef GL_OBJECT_ACTIVE_UNIFORMS_ARB
+#define GL_OBJECT_ACTIVE_UNIFORMS_ARB 0x8B86
+#endif
+
+#ifndef GL_OBJECT_COMPILE_STATUS_ARB
+#define GL_OBJECT_COMPILE_STATUS_ARB 0x8B81
+#endif
+
+#ifndef GL_OBJECT_INFO_LOG_LENGTH_ARB
+#define GL_OBJECT_INFO_LOG_LENGTH_ARB 0x8B84
+#endif
+
+#ifndef GL_OBJECT_LINK_STATUS_ARB
+#define GL_OBJECT_LINK_STATUS_ARB 0x8B82
+#endif
+
+#ifndef GL_OPERAND0_ALPHA
+#define GL_OPERAND0_ALPHA 0x8598
+#endif
+
+#ifndef GL_OPERAND0_RGB
+#define GL_OPERAND0_RGB 0x8590
+#endif
+
+#ifndef GL_OPERAND1_ALPHA
+#define GL_OPERAND1_ALPHA 0x8599
+#endif
+
+#ifndef GL_OPERAND1_RGB
+#define GL_OPERAND1_RGB 0x8591
+#endif
+
+#ifndef GL_OPERAND2_ALPHA
+#define GL_OPERAND2_ALPHA 0x859A
+#endif
+
+#ifndef GL_OPERAND2_RGB
+#define GL_OPERAND2_RGB 0x8592
+#endif
+
+#ifndef GL_PREVIOUS
+#define GL_PREVIOUS 0x8578
+#endif
+
+#ifndef GL_PREVIOUS_TEXTURE_INPUT_NV
+#define GL_PREVIOUS_TEXTURE_INPUT_NV 0x86E4
+#endif
+
+#ifndef GL_PRIMARY_COLOR_NV
+#define GL_PRIMARY_COLOR_NV 0x852C
+#endif
+
+#ifndef GL_PROGRAM_ERROR_POSITION_ARB
+#define GL_PROGRAM_ERROR_POSITION_ARB 0x864B
+#endif
+
+#ifndef GL_PROGRAM_ERROR_STRING_ARB
+#define GL_PROGRAM_ERROR_STRING_ARB 0x8874
+#endif
+
+#ifndef GL_PROGRAM_FORMAT_ASCII_ARB
+#define GL_PROGRAM_FORMAT_ASCII_ARB 0x8875
+#endif
+
+#ifndef GL_REFLECTION_MAP
+#define GL_REFLECTION_MAP 0x8512
+#endif
+
+#ifndef GL_REGISTER_COMBINERS_NV
+#define GL_REGISTER_COMBINERS_NV 0x8522
+#endif
+
+#ifndef GL_RENDERBUFFER_EXT
+#define GL_RENDERBUFFER_EXT 0x8D41
+#endif
+
+#ifndef GL_RGB16F_ARB
+#define GL_RGB16F_ARB 0x881B
+#endif
+
+#ifndef GL_RGB32F_ARB
+#define GL_RGB32F_ARB 0x8815
+#endif
+
+#ifndef GL_RGBA16F_ARB
+#define GL_RGBA16F_ARB 0x881A
+#endif
+
+#ifndef GL_RGBA32F_ARB
+#define GL_RGBA32F_ARB 0x8814
+#endif
+
+#ifndef GL_RGB_SCALE
+#define GL_RGB_SCALE 0x8573
+#endif
+
+#ifndef GL_SAMPLER_1D_ARB
+#define GL_SAMPLER_1D_ARB 0x8B5D
+#endif
+
+#ifndef GL_SAMPLER_1D_SHADOW_ARB
+#define GL_SAMPLER_1D_SHADOW_ARB 0x8B61
+#endif
+
+#ifndef GL_SAMPLER_2D_ARB
+#define GL_SAMPLER_2D_ARB 0x8B5E
+#endif
+
+#ifndef GL_SAMPLER_2D_RECT_ARB
+#define GL_SAMPLER_2D_RECT_ARB 0x8B63
+#endif
+
+#ifndef GL_SAMPLER_2D_RECT_SHADOW_ARB
+#define GL_SAMPLER_2D_RECT_SHADOW_ARB 0x8B64
+#endif
+
+#ifndef GL_SAMPLER_2D_SHADOW_ARB
+#define GL_SAMPLER_2D_SHADOW_ARB 0x8B62
+#endif
+
+#ifndef GL_SAMPLER_3D_ARB
+#define GL_SAMPLER_3D_ARB 0x8B5F
+#endif
+
+#ifndef GL_SAMPLER_CUBE_ARB
+#define GL_SAMPLER_CUBE_ARB 0x8B60
+#endif
+
+#ifndef GL_SHADER_OPERATION_NV
+#define GL_SHADER_OPERATION_NV 0x86DF
+#endif
+
+#ifndef GL_SIGNED_IDENTITY_NV
+#define GL_SIGNED_IDENTITY_NV 0x853C
+#endif
+
+#ifndef GL_SOURCE0_ALPHA
+#define GL_SOURCE0_ALPHA 0x8588
+#endif
+
+#ifndef GL_SOURCE0_RGB
+#define GL_SOURCE0_RGB 0x8580
+#endif
+
+#ifndef GL_SOURCE1_ALPHA
+#define GL_SOURCE1_ALPHA 0x8589
+#endif
+
+#ifndef GL_SOURCE1_RGB
+#define GL_SOURCE1_RGB 0x8581
+#endif
+
+#ifndef GL_SOURCE2_ALPHA
+#define GL_SOURCE2_ALPHA 0x858A
+#endif
+
+#ifndef GL_SOURCE2_RGB
+#define GL_SOURCE2_RGB 0x8582
+#endif
+
+#ifndef GL_SPARE0_NV
+#define GL_SPARE0_NV 0x852E
+#endif
+
+#ifndef GL_STATIC_DRAW
+#define GL_STATIC_DRAW 0x88E4
+#endif
+
+#ifndef GL_STREAM_DRAW
+#define GL_STREAM_DRAW 0x88E0
+#endif
+
+#ifndef GL_TEXTURE0
+#define GL_TEXTURE0 0x84C0
+#endif
+
+#ifndef GL_TEXTURE1
+#define GL_TEXTURE1 0x84C1
+#endif
+
+#ifndef GL_TEXTURE2
+#define GL_TEXTURE2 0x84C2
+#endif
+
+#ifndef GL_TEXTURE3
+#define GL_TEXTURE3 0x84C3
+#endif
+
+#ifndef GL_MAX_3D_TEXTURE_SIZE
+#define GL_MAX_3D_TEXTURE_SIZE 0x8073
+#endif
+
+#ifndef GL_PACK_IMAGE_HEIGHT
+#define GL_PACK_IMAGE_HEIGHT 0x806C
+#endif
+
+#ifndef GL_PACK_SKIP_IMAGES
+#define GL_PACK_SKIP_IMAGES 0x806B
+#endif
+
+#ifndef GL_PROXY_TEXTURE_2D
+#define GL_PROXY_TEXTURE_2D 0x8064
+#endif
+
+#ifndef GL_PROXY_TEXTURE_3D
+#define GL_PROXY_TEXTURE_3D 0x8070
+#endif
+
+#ifndef GL_TEXTURE_3D
+#define GL_TEXTURE_3D 0x806F
+#endif
+
+#ifndef GL_TEXTURE_DEPTH
+#define GL_TEXTURE_DEPTH 0x8071
+#endif
+
+#ifndef GL_TEXTURE_COMPARE_FUNC
+#define GL_TEXTURE_COMPARE_FUNC 0x884D
+#endif
+
+#ifndef GL_TEXTURE_COMPARE_MODE
+#define GL_TEXTURE_COMPARE_MODE 0x884C
+#endif
+
+#ifndef GL_TEXTURE_CUBE_MAP
+#define GL_TEXTURE_CUBE_MAP 0x8513
+#endif
+
+#ifndef GL_TEXTURE_CUBE_MAP_NEGATIVE_X
+#define GL_TEXTURE_CUBE_MAP_NEGATIVE_X 0x8516
+#endif
+
+#ifndef GL_TEXTURE_CUBE_MAP_NEGATIVE_Y
+#define GL_TEXTURE_CUBE_MAP_NEGATIVE_Y 0x8518
+#endif
+
+#ifndef GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
+#define GL_TEXTURE_CUBE_MAP_NEGATIVE_Z 0x851A
+#endif
+
+#ifndef GL_TEXTURE_CUBE_MAP_POSITIVE_X
+#define GL_TEXTURE_CUBE_MAP_POSITIVE_X 0x8515
+#endif
+
+#ifndef GL_TEXTURE_CUBE_MAP_POSITIVE_Y
+#define GL_TEXTURE_CUBE_MAP_POSITIVE_Y 0x8517
+#endif
+
+#ifndef GL_TEXTURE_CUBE_MAP_POSITIVE_Z
+#define GL_TEXTURE_CUBE_MAP_POSITIVE_Z 0x8519
+#endif
+
+#ifndef GL_TEXTURE_MAX_ANISOTROPY_EXT
+#define GL_TEXTURE_MAX_ANISOTROPY_EXT 0x84FE
+#endif
+
+#ifndef GL_TEXTURE_RECTANGLE_ARB
+#define GL_TEXTURE_RECTANGLE_ARB 0x84F5
+#endif
+
+#ifndef GL_TEXTURE_RECTANGLE_NV
+#define GL_TEXTURE_RECTANGLE_NV 0x84F5
+#endif
+
+#ifndef GL_TEXTURE_SHADER_NV
+#define GL_TEXTURE_SHADER_NV 0x86DE
+#endif
+
+#ifndef GL_HILO_NV
+#define GL_HILO_NV 0x86F4
+#endif
+
+#ifndef GL_TEXTURE_WRAP_R
+#define GL_TEXTURE_WRAP_R 0x8072
+#endif
+
+#ifndef GL_UNPACK_IMAGE_HEIGHT
+#define GL_UNPACK_IMAGE_HEIGHT 0x806E
+#endif
+
+#ifndef GL_UNPACK_SKIP_IMAGES
+#define GL_UNPACK_SKIP_IMAGES 0x806D
+#endif
+
+#ifndef GL_UNSIGNED_IDENTITY_NV
+#define GL_UNSIGNED_IDENTITY_NV 0x8536
+#endif
+
+#ifndef GL_UNSIGNED_INVERT_NV
+#define GL_UNSIGNED_INVERT_NV 0x8537
+#endif
+
+#ifndef GL_VARIABLE_A_NV
+#define GL_VARIABLE_A_NV 0x8523
+#endif
+
+#ifndef GL_VARIABLE_B_NV
+#define GL_VARIABLE_B_NV 0x8524
+#endif
+
+#ifndef GL_VARIABLE_C_NV
+#define GL_VARIABLE_C_NV 0x8525
+#endif
+
+#ifndef GL_VARIABLE_D_NV
+#define GL_VARIABLE_D_NV 0x8526
+#endif
+
+#ifndef GL_VARIABLE_E_NV
+#define GL_VARIABLE_E_NV 0x8527
+#endif
+
+#ifndef GL_VARIABLE_F_NV
+#define GL_VARIABLE_F_NV 0x8528
+#endif
+
+#ifndef GL_VARIABLE_G_NV
+#define GL_VARIABLE_G_NV 0x8529
+#endif
+
+#ifndef GL_VERTEX_PROGRAM_ARB
+#define GL_VERTEX_PROGRAM_ARB 0x8620
+#endif
+
+#ifndef GL_VERTEX_SHADER_ARB
+#define GL_VERTEX_SHADER_ARB 0x8B31
+#endif
+
+#ifndef GLU_NURBS_BEGIN_DATA
+#define GLU_NURBS_BEGIN_DATA 100170
+#endif
+
+#ifndef GLU_NURBS_END_DATA
+#define GLU_NURBS_END_DATA 100175
+#endif
+
+#ifndef GLU_NURBS_MODE
+#define GLU_NURBS_MODE 100160
+#endif
+
+#ifndef GLU_NURBS_NORMAL_DATA
+#define GLU_NURBS_NORMAL_DATA 100172
+#endif
+
+#ifndef GLU_NURBS_RENDERER
+#define GLU_NURBS_RENDERER 100162
+#endif
+
+#ifndef GLU_NURBS_TESSELLATOR
+#define GLU_NURBS_TESSELLATOR 100161
+#endif
+
+#ifndef GLU_NURBS_TEXTURE_COORD_DATA
+#define GLU_NURBS_TEXTURE_COORD_DATA 100173
+#endif
+
+#ifndef GLU_NURBS_VERTEX
+#define GLU_NURBS_VERTEX 100165
+#endif
+
+#ifndef GLU_NURBS_VERTEX_DATA
+#define GLU_NURBS_VERTEX_DATA 100171
+#endif
+
+#ifndef GLU_OBJECT_PARAMETRIC_ERROR
+#define GLU_OBJECT_PARAMETRIC_ERROR 100208
+#endif
+
+#ifndef WGL_ALPHA_BITS_ARB
+#define WGL_ALPHA_BITS_ARB 0x201B
+#endif
+
+#ifndef WGL_BIND_TO_TEXTURE_RGBA_ARB
+#define WGL_BIND_TO_TEXTURE_RGBA_ARB 0x2071
+#endif
+
+#ifndef WGL_COLOR_BITS_ARB
+#define WGL_COLOR_BITS_ARB 0x2014
+#endif
+
+#ifndef WGL_DEPTH_BITS_ARB
+#define WGL_DEPTH_BITS_ARB 0x2022
+#endif
+
+#ifndef WGL_DRAW_TO_PBUFFER_ARB
+#define WGL_DRAW_TO_PBUFFER_ARB 0x202D
+#endif
+
+#ifndef WGL_FRONT_LEFT_ARB
+#define WGL_FRONT_LEFT_ARB 0x2083
+#endif
+
+#ifndef WGL_MAX_PBUFFER_HEIGHT_ARB
+#define WGL_MAX_PBUFFER_HEIGHT_ARB 0x2030
+#endif
+
+#ifndef WGL_MAX_PBUFFER_PIXELS_ARB
+#define WGL_MAX_PBUFFER_PIXELS_ARB 0x202E
+#endif
+
+#ifndef WGL_MAX_PBUFFER_WIDTH_ARB
+#define WGL_MAX_PBUFFER_WIDTH_ARB 0x202F
+#endif
+
+#ifndef WGL_PBUFFER_HEIGHT_ARB
+#define WGL_PBUFFER_HEIGHT_ARB 0x2035
+#endif
+
+#ifndef WGL_PBUFFER_WIDTH_ARB
+#define WGL_PBUFFER_WIDTH_ARB 0x2034
+#endif
+
+#ifndef WGL_STENCIL_BITS_ARB
+#define WGL_STENCIL_BITS_ARB 0x2023
+#endif
+
+#ifndef WGL_TEXTURE_2D_ARB
+#define WGL_TEXTURE_2D_ARB 0x207A
+#endif
+
+#ifndef WGL_TEXTURE_FORMAT_ARB
+#define WGL_TEXTURE_FORMAT_ARB 0x2072
+#endif
+
+#ifndef WGL_TEXTURE_RGBA_ARB
+#define WGL_TEXTURE_RGBA_ARB 0x2076
+#endif
+
+#ifndef WGL_TEXTURE_TARGET_ARB
+#define WGL_TEXTURE_TARGET_ARB 0x2073
+#endif
+
+#endif /* COIN_GL_FALLBACKS_H */
