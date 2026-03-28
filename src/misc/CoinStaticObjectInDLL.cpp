@@ -147,7 +147,7 @@ CoinStaticObjectInDLL::CoinStaticObjectInDLL(void)
   CoinStaticObjectInDLL::singleton = this;
 
   if (!CoinStaticObjectInDLL::activateMutex()) {
-    MessageBox(NULL,
+    MessageBoxA(NULL,
                "Detected two instances of the Coin library in the same\n"
                "process image!!\n\n"
 
@@ -249,7 +249,7 @@ CoinStaticObjectInDLL::activateMutex(void)
   SetLastError(0); // so we don't react to an old error for the check below
 
   CoinStaticObjectInDLL::mutexhandle = (HANDLE)
-    CreateMutex(NULL, TRUE, CoinStaticObjectInDLL::mutexName().getString());
+    CreateMutexA(NULL, TRUE, CoinStaticObjectInDLL::mutexName().getString());
   // (The mutex is automatically destructed by the operating system
   // when the process exits.)
 
@@ -280,7 +280,7 @@ CoinStaticObjectInDLL::deactivateMutex(void)
                CoinStaticObjectInDLL::mutexhandle);
       }
 
-      MessageBox(NULL,
+      MessageBoxA(NULL,
                  "CloseHandle() in CoinStaticObjectInDLL::deactivateMutex()\n"
                  "failed! Please report to <coin-support@coin3d.org>.\n",
                  "Warning!", MB_OK | MB_ICONERROR | MB_TASKMODAL);

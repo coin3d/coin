@@ -72,7 +72,7 @@
 extern "C" {
 #endif
 
-  typedef int (WINAPI * GetTextFace_t)(HDC, int, LPTSTR);
+  typedef int (WINAPI * GetTextFace_t)(HDC, int, LPSTR);
   typedef void (WINAPI * LocalFree_t)(HLOCAL);
   typedef void (WINAPI * GetVersionEx_t)(LPOSVERSIONINFO);
   typedef HGDIOBJ (WINAPI * SelectObject_t)(HDC, HGDIOBJ);

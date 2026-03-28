@@ -282,7 +282,7 @@ namespace {
       return "";
 #endif //USE_POSIX
 #ifdef USE_WIN32
-    GetCurrentDirectory(sizeof(buf),buf);
+    GetCurrentDirectoryA(sizeof(buf),buf);
 #endif //USE_WIN32
     return buf;
   }
@@ -294,7 +294,7 @@ namespace {
     return chdir(path.c_str());
 #endif //POSIX
 #ifdef USE_WIN32
-    return SetCurrentDirectory(path.c_str());
+    return SetCurrentDirectoryA(path.c_str());
 #endif //_WIN32
   }
 
@@ -317,7 +317,7 @@ namespace {
 #ifdef USE_WIN32
     DWORD       fileAttr;
 
-    fileAttr = GetFileAttributes(path.c_str());
+    fileAttr = GetFileAttributesA(path.c_str());
     if (INVALID_FILE_ATTRIBUTES == fileAttr)
 #endif //USE_WIN32
       return false;
@@ -334,7 +334,7 @@ namespace {
 #ifdef USE_WIN32
     DWORD       fileAttr;
 
-    fileAttr = GetFileAttributes(path.c_str());
+    fileAttr = GetFileAttributesA(path.c_str());
     return (fileAttr & FILE_ATTRIBUTE_DIRECTORY);
 #endif //USE_WIN32
   }
@@ -354,8 +354,8 @@ namespace {
         std::string filename = itr->d_name;
 #endif //USE_POSIX
 #ifdef USE_WIN32
-  WIN32_FIND_DATA f;
-  HANDLE h = FindFirstFile((dir_path+"/*").c_str(), &f);
+  WIN32_FIND_DATAA f;
+  HANDLE h = FindFirstFileA((dir_path+"/*").c_str(), &f);
   if(h != INVALID_HANDLE_VALUE)
   {
     do
@@ -378,7 +378,7 @@ namespace {
       closedir(dh);
 #endif //USE_POSIX
 #ifdef USE_WIN32
-    } while(FindNextFile(h, &f));
+    } while(FindNextFileA(h, &f));
 #endif //USE_WIN32
   }
 

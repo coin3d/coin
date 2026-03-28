@@ -148,9 +148,9 @@ coin_GetVersionEx(LPOSVERSIONINFO osvi)
 static int WINAPI
 coin_GetTextFace(HDC hdc, /* handle to device context */
                  int nCount, /* length of buffer receiving typeface name */
-                 LPTSTR lpFaceName) /* pointer to buffer receiving typeface name */
+                 LPSTR lpFaceName) /* pointer to buffer receiving typeface name */
 {
-  int copied = GetTextFace(hdc, nCount, lpFaceName);
+  int copied = GetTextFaceA(hdc, nCount, lpFaceName);
 
   if (copied == 0 && lpFaceName == NULL) {    
     /* Due to a well known bug in Win95/98/ME, GetTextFace(-,-,NULL)

@@ -539,7 +539,7 @@ coin_getenv(const char * envname)
      having to copy it around. 20060314 mortene. */
 #ifdef HAVE_GETENVIRONMENTVARIABLE
   int neededsize;
-  neededsize = GetEnvironmentVariable(envname, NULL, 0);
+  neededsize = GetEnvironmentVariableA(envname, NULL, 0);
   /* neededsize includes the \0-terminating character */
   if (neededsize >= 1) {
     int resultsize;
@@ -551,7 +551,7 @@ coin_getenv(const char * envname)
          to reuse it (much work for a non-100% solution).  20030205 larsa */
       return NULL;
     }
-    resultsize = GetEnvironmentVariable(envname, valbuf, neededsize);
+    resultsize = GetEnvironmentVariableA(envname, valbuf, neededsize);
     if (resultsize != (neededsize - 1)) {
       /* Augh. Could we handle this any better? */
       /* How about looping to top and trying again (in case the reason is mt
@@ -649,8 +649,8 @@ coin_setenv(const char * name, const char * value, int overwrite)
   sign (=), or foreign lowercase characters in the variable name.
   */
 
-  if (overwrite || (GetEnvironmentVariable(name, NULL, 0) == 0))
-    return SetEnvironmentVariable(name, value) ? TRUE : FALSE;
+  if (overwrite || (GetEnvironmentVariableA(name, NULL, 0) == 0))
+    return SetEnvironmentVariableA(name, value) ? TRUE : FALSE;
   else
     return TRUE;
 #else /* !HAVE_GETENVIRONMENTVARIABLE */
@@ -685,7 +685,7 @@ coin_unsetenv(const char * name)
     free(envptr->val);
     free(envptr);
   }
-  SetEnvironmentVariable(name, NULL);
+  SetEnvironmentVariableA(name, NULL);
 #else /* !HAVE_GETENVIRONMENTVARIABLE */
   unsetenv(name);
 #endif /* !HAVE_GETENVIRONMENTVARIABLE */

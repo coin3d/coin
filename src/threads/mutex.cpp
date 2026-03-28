@@ -279,10 +279,10 @@ cc_mutex_init(void)
 
 #ifdef USE_W32THREAD /* TryEnterCriticalSection test. */
 
-  HINSTANCE h = GetModuleHandle("kernel32.dll");
+  HINSTANCE h = GetModuleHandleA("kernel32.dll");
   /* If we can't get a handle to kernel32.dll, something is seriously
      wrong, and we should investigate. <mortene> */
-  assert(h && "GetModuleHandle('kernel32.dll') failed!");
+  assert(h && "GetModuleHandleA('kernel32.dll') failed!");
 
   /* This function is unsupported in Win95/98/Me and NT <=3.51, but we
      still want to use it if it is available, since it can provide
