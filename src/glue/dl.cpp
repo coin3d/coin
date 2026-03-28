@@ -690,7 +690,7 @@ cc_dl_open(const char * filename)
        somewhere else between us opening it, and until it is used for
        resolving symbols.
     */
-    h->nativehnd = LoadLibrary(filename);
+    h->nativehnd = LoadLibraryEx(filename, NULL, LOAD_LIBRARY_SEARCH_DEFAULT_DIRS);
 
     if (cc_dl_debugging() && (h->nativehnd == NULL)) {
       cc_string funcstr;
