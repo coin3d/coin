@@ -209,8 +209,8 @@ SoDBP::listWin32ProcessModules(void)
 {
   BOOL ok;
 
-  HINSTANCE kernel32dll = LoadLibrary("kernel32.dll");
-  assert(kernel32dll && "LoadLibrary(''kernel32.dll'') failed");
+  HINSTANCE kernel32dll = LoadLibraryA("kernel32.dll");
+  assert(kernel32dll && "LoadLibraryA(''kernel32.dll'') failed");
 
   funCreateToolhelp32Snapshot = (CreateToolhelp32Snapshot_t)
     GetProcAddress(kernel32dll, "CreateToolhelp32Snapshot");

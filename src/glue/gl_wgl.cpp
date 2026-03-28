@@ -722,24 +722,24 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
        also properly unregister there... 20060207 kyrah */
     static int didregister = 0;
     if (!didregister) {
-      WNDCLASS wc;
+      WNDCLASSA wc;
       didregister = 1;
 
       wc.style          = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
-      wc.lpfnWndProc    = DefWindowProc;
+      wc.lpfnWndProc    = DefWindowProcA;
       wc.cbClsExtra     = 0;
       wc.cbWndExtra     = 0;
-      wc.hInstance      = GetModuleHandle(NULL);
+      wc.hInstance      = GetModuleHandleA(NULL); /* explicit A: lpszClassName is narrow */
       wc.hIcon          = NULL;
       wc.hCursor        = NULL;
       wc.hbrBackground  = NULL;
       wc.lpszMenuName   = NULL;
       wc.lpszClassName  = "coin_gl_wgl";
 
-      if (!RegisterClass(&wc)) {
+      if (!RegisterClassA(&wc)) {
         DWORD dwError = GetLastError();
         cc_debugerror_postwarning("wglglue_context_create_pbuffer",
-                                  "RegisterClass(&wc) failed with "
+                                  "RegisterClassA(&wc) failed with "
                                   "error code %d.", dwError);
         return FALSE;
       }
@@ -748,9 +748,9 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
 
     {
       HWND hWnd;
-      HINSTANCE hInstance = GetModuleHandle(NULL);
+      HINSTANCE hInstance = GetModuleHandleA(NULL);
 
-      if (!(hWnd = CreateWindow(
+      if (!(hWnd = CreateWindowA(
                      "coin_gl_wgl",   /* class name */
                      "coin_gl_wgl",   /* window title */
                      0,               /* selected window style */
@@ -764,7 +764,7 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
       {
         DWORD dwError = GetLastError();
         cc_debugerror_postwarning("wglglue_context_create_pbuffer",
-                                  "CreateWindow(...) failed with "
+                                  "CreateWindowA(...) failed with "
                                   "error code %d.", dwError);
         return FALSE;
       }

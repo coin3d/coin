@@ -213,7 +213,7 @@ cc_flww32_initialize(void)
   OSVERSIONINFO osvi;
   UINT previous;
 
-  cc_flww32_globals.devctx = CreateDC("DISPLAY", NULL, NULL, NULL);
+  cc_flww32_globals.devctx = CreateDCA("DISPLAY", NULL, NULL, NULL);
   if (cc_flww32_globals.devctx == NULL) {
     cc_win32_print_error("cc_flww32_initialize", "CreateDC()", GetLastError());
     return FALSE;
@@ -384,7 +384,7 @@ static HFONT cc_flww32_create_font(const char* fontname, int sizey,
   static const int disable_utf8 = (coin_getenv("COIN_DISABLE_UTF8") != NULL);
 
   if (disable_utf8) {
-    font = CreateFont(-sizey,
+    font = CreateFontA(-sizey,
 		      /* Using a negative 'sizey'. Otherwise
 			 leads to less details as it seems like
 			 the Win32 systems tries to 'quantize'
