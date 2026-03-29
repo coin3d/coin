@@ -1,6 +1,9 @@
 # source files
 set(COIN_CACHES_FILES
 	SoBoundingBoxCache.cpp
+	SoBVHCache.cpp
+	SoChildBVH.cpp
+	SoSceneBVH.cpp
 	SoCache.cpp
 	SoConvexDataCache.cpp
 	SoGLCacheList.cpp
@@ -15,6 +18,12 @@ set(COIN_CACHES_FILES
 
 # Files excluded from public API documentation, included in complete documentation.
 set(COIN_CACHES_INTERNAL_FILES
+	SoBVHCache.h
+	SoBVHCache.cpp
+	SoChildBVH.h
+	SoChildBVH.cpp
+	SoSceneBVH.h
+	SoSceneBVH.cpp
 	SoGlyphCache.h
 	SoGlyphCache.cpp
 	SoShaderProgramCache.h
