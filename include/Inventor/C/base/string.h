@@ -44,7 +44,7 @@ extern "C" {
 /* ********************************************************************** */
 
 enum cc_string_constants {
-  CC_STRING_MIN_SIZE = 128 - sizeof(char *) + sizeof(size_t),
+  CC_STRING_MIN_SIZE = 128 - sizeof(char *) - sizeof(size_t),
   CC_STRING_RESIZE   = 128
 };
 
