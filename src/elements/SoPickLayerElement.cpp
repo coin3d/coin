@@ -1,25 +1,22 @@
-#ifndef COIN_SOPICKSTYLE_H
-#define COIN_SOPICKSTYLE_H
-
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- * 
+ *
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- * 
+ *
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -33,38 +30,85 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFInt32.h>
-#include <Inventor/elements/SoPickStyleElement.h>
+/*!
+  \class SoPickLayerElement Inventor/elements/SoPickLayerElement.h
+  \brief The SoPickLayerElement holds the current pick layer.
 
-class COIN_DLL_API SoPickStyle : public SoNode {
-  typedef SoNode inherited;
+  \ingroup coin_elements
 
-  SO_NODE_HEADER(SoPickStyle);
+  The pick layer orders picked points across the scene graph. Picked points
+  in a higher layer sort in front of those in a lower layer, independent of
+  their depth. It is paired with SoPickStyleElement: on-top pick styles ignore
+  the layer and always sort frontmost. The default layer is 0.
+*/
 
-public:
-  static void initClass(void);
-  SoPickStyle(void);
+#include <Inventor/elements/SoPickLayerElement.h>
 
-  enum Style {
-    SHAPE = SoPickStyleElement::SHAPE,
-    BOUNDING_BOX = SoPickStyleElement::BOUNDING_BOX,
-    UNPICKABLE = SoPickStyleElement::UNPICKABLE,
-    SHAPE_ON_TOP = SoPickStyleElement::SHAPE_ON_TOP,
-    BOUNDING_BOX_ON_TOP = SoPickStyleElement::BOUNDING_BOX_ON_TOP,
-    SHAPE_FRONTFACES = SoPickStyleElement::SHAPE_FRONTFACES
-  };
+SO_ELEMENT_SOURCE(SoPickLayerElement);
 
-  SoSFEnum style;
-  SoSFInt32 layer;
+/*!
+  \copydetails SoElement::initClass(void)
+*/
 
-  virtual void doAction(SoAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void pick(SoPickAction * action);
+void
+SoPickLayerElement::initClass(void)
+{
+  SO_ELEMENT_INIT_CLASS(SoPickLayerElement, inherited);
+}
 
-protected:
-  virtual ~SoPickStyle();
-};
+/*!
+  Destructor.
+*/
 
-#endif // !COIN_SOPICKSTYLE_H
+SoPickLayerElement::~SoPickLayerElement()
+{
+}
+
+//! Sets the current pick layer.
+
+void
+SoPickLayerElement::set(SoState * const state,
+                        SoNode * const node,
+                        const int32_t layer)
+{
+  SoInt32Element::set(classStackIndex, state, node, layer);
+}
+
+/*!
+  Initializes the element to its default value. The default
+  value for the pick layer is 0.
+*/
+
+void
+SoPickLayerElement::init(SoState * state)
+{
+  inherited::init(state);
+  this->data = getDefault();
+}
+
+//! Sets the current pick layer.
+
+//$ EXPORT INLINE
+void
+SoPickLayerElement::set(SoState * const state, const int32_t layer)
+{
+  set(state, NULL, layer);
+}
+
+//! Returns the current pick layer.
+
+//$ EXPORT INLINE
+int32_t
+SoPickLayerElement::get(SoState * const state)
+{
+  return SoInt32Element::get(classStackIndex, state);
+}
+
+//! Returns the default pick layer (0).
+
+//$ EXPORT INLINE
+int32_t
+SoPickLayerElement::getDefault()
+{
+  return 0;
+}
