@@ -153,7 +153,8 @@ find_string_address(const char * s)
     headchunk = newchunk;
   }
 
-  (void)strcpy(headchunk->curbyte, s);
+  (void)strncpy(headchunk->curbyte, s, headchunk->bytesleft - 1);
+  headchunk->curbyte[headchunk->bytesleft - 1] = '\0';
   s = headchunk->curbyte;
 
   headchunk->curbyte += len;

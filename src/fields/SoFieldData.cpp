@@ -287,6 +287,9 @@ SoFieldData::overlay(SoFieldContainer * to, const SoFieldContainer * from,
   for (int i = 0; i < num; i++) {
     SoField * field0 = fd0->getField(to, i);
     SoField * field1 = fd1->getField(from, i);
+
+    if (!field0 || !field1) continue;
+
     // copy value only if necessary (note how SoTexture2::filename and
     // SoTexture2::image would affect each other without this test)
     if ( !field0->isDefault() || !field1->isDefault() ) {

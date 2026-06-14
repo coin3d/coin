@@ -379,6 +379,9 @@ SoPath::append(SoNode * const node, const int index)
 
   // Add ourself as an auditor to the node's list of children.
   if (this->isauditing) {
+    if (node == NULL)
+      return;
+
     SoChildList * cl = node->getChildren();
     if (cl) cl->addPathAuditor(this);
   }
