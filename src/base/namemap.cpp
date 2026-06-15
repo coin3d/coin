@@ -153,12 +153,13 @@ find_string_address(const char * s)
     headchunk = newchunk;
   }
 
-  (void)strncpy(headchunk->curbyte, s, headchunk->bytesleft - 1);
-  headchunk->curbyte[headchunk->bytesleft - 1] = '\0';
+  size_t count = SbMin(len, headchunk->bytesleft);
+  (void)strncpy(headchunk->curbyte, s, count);
+  headchunk->curbyte[count - 1] = '\0';
   s = headchunk->curbyte;
 
-  headchunk->curbyte += len;
-  headchunk->bytesleft -= len;
+  headchunk->curbyte += count;
+  headchunk->bytesleft -= count;
 
   return s;
 }
