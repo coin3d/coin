@@ -491,6 +491,36 @@ SoInput_FileInfo::getReader(void)
 }
 
 SbBool
+SoInput_FileInfo::readUnsignedIntegerString()
+{
+  assert(!this->isBinary());
+  int minSize = 1;
+  char c;
+  size_t oldLength = readString.length();
+
+  if (this->readChar(&c, '0')) {
+    readString += c;
+    if (this->readChar(&c, 'x')) {
+      readString += c;
+      readHexDigits();
+      minSize = 3;
+    }
+    else
+      readDigits();
+  }
+  else
+    readDigits();
+
+  if (readString.length() - oldLength < minSize)
+    return FALSE;
+
+  return TRUE;
+}
+
+/*!
+  \deprecated Will not be available in Coin 5 due to absence of bounds checking.
+ */
+SbBool
 SoInput_FileInfo::readUnsignedIntegerString(char * str)
 {
   assert(!this->isBinary());
@@ -519,16 +549,14 @@ SbBool
 SoInput_FileInfo::readUnsignedInteger(uint32_t & l)
 {
   assert(!this->isBinary());
-  // FIXME: fixed size buffer for input of unknown
-  // length. Ouch. 19990530 mortene.
-  char str[512];
-  if (! this->readUnsignedIntegerString(str))
+  readString.clear();
+  if (! this->readUnsignedIntegerString())
     return FALSE;
 
   // FIXME: check man page of strtoul and exploit the functionality
   // provided better -- it looks like we are duplicating some of the
   // effort. 19990530 mortene.
-  l = strtoul(str, NULL, 0);
+  l = strtoul(readString.data(), NULL, 0);
 
   return TRUE;
 }
@@ -537,24 +565,24 @@ SbBool
 SoInput_FileInfo::readInteger(int32_t & l)
 {
   assert(!this->isBinary());
-  // FIXME: fixed size buffer for input of unknown
-  // length. Ouch. 19990530 mortene.
-  char str[512];
-  char * s = str;
+  readString.clear();
+  char c;
   SbBool minus = FALSE;
-  if (this->readChar(s, '-')) {
+  if (this->readChar(&c, '-')) {
     minus = TRUE;
-    s++;
+    readString += c;
   }
-  else if (this->readChar(s, '+')) s++;
-  if (! this->readUnsignedIntegerString(s))
+  else if (this->readChar(&c, '+')) {
+    readString += c;
+  }
+  if (! this->readUnsignedIntegerString())
     return FALSE;
 
   // FIXME: check man page of strtol and exploit the functionality
   // provided better -- it looks like we are duplicating some of the
   // effort. 19990530 mortene.
 #if 1 // old code
-  l = strtol(str, NULL, 0);
+  l = strtol(readString.data(), NULL, 0);
 #else // first version of replacement of strtol. Not activated yet
   int i, n = strlen(s);
   if (n >= 3 && s[0] == '0' && s[1] == 'x') {
@@ -594,47 +622,44 @@ SbBool
 SoInput_FileInfo::readReal(double & d)
 {
   assert(!this->isBinary());
-  const int BUFSIZE = 2048;
   SbBool minus = FALSE;
   SbBool gotNum = FALSE;
   int i, n;
-  char str[BUFSIZE];
-  char * s = str;
+  char c;
 
   double number;
   double exponent;
 
-  n = this->readChar(s, '-');
-  if (n == 0) {
-    n = this->readChar(s, '+');
+  if (this->readChar(&c, '-')) {
+    minus = TRUE;
+    readString += c;
   }
-  else minus = TRUE;
-  s += n;
+  else if (this->readChar(&c, '+')) {
+    readString += c;
+  }
 
-  if ((n = this->readDigits(s)) > 0) {
+  if ((n = this->readDigits()) > 0) {
     gotNum = TRUE;
     number = 0.0;
     double mul = 1.0;
-    for (i = 0; i < n; i++) {
-      number += (s[(n-1)-i] - '0') * mul;
+    for (i = 1; i <= n; i++) {
+      number += (readString[readString.length()-i] - '0') * mul;
       mul *= 10.0;
     }
-    s += n;
   }
   else {
     number = 0.0;
   }
-  if (this->readChar(s, '.') > 0) {
-    s++;
+  if (this->readChar(&c, '.') > 0) {
+    readString += c;
 
-    if ((n = this->readDigits(s)) > 0) {
+    if ((n = this->readDigits()) > 0) {
       gotNum = TRUE;
       double mul = 0.1;
-      for (i = 0; i < n; i++) {
-        number += (s[i]-'0') * mul;
+      for (i = n; i > 0; i--) {
+        number += (readString[readString.length()-i] - '0') * mul;
         mul *= 0.1;
       }
-      s += n;
     }
   }
 
@@ -643,26 +668,23 @@ SoInput_FileInfo::readReal(double & d)
 
   if (minus) number = -number;
 
-  n = this->readChar(s, 'e');
-  if (n == 0)
-    n = this->readChar(s, 'E');
-
-  if (n > 0) {
-    s += n;
+  if (this->readChar(&c, 'e') || this->readChar(&c, 'E')) {
+    readString += c;
 
     minus = FALSE;
-    n = this->readChar(s, '-');
-    if (n == 0) {
-      n = this->readChar(s, '+');
+    if (this->readChar(&c, '-')) {
+      minus = TRUE;
+      readString += c;
     }
-    else minus = TRUE;
-    s += n;
+    else if (this->readChar(&c, '+')) {
+      readString += c;
+    }
 
-    if ((n = this->readDigits(s)) > 0) {
+    if ((n = this->readDigits()) > 0) {
       exponent = 0.0;
       double mul = 1.0;
-      for (i = 0; i < n; i++) {
-        exponent += (s[(n-1)-i]-'0') * mul;
+      for (i = 1; i <= n; i++) {
+        exponent += (readString[readString.length()-i] - '0') * mul;
         mul *= 10.0;
       }
       if (minus) exponent = -exponent;
@@ -695,6 +717,28 @@ SoInput_FileInfo::readChar(char * s, char charToRead)
 }
 
 int
+SoInput_FileInfo::readDigits()
+{
+  assert(!this->isBinary());
+  char c;
+  size_t oldLength = readString.length();
+
+  while (this->get(c)) {
+    if (isdigit(c))
+      readString += c;
+    else {
+      this->putBack(c);
+      break;
+    }
+  }
+  const ptrdiff_t offset = readString.length() - oldLength;
+  return (int)offset;
+}
+
+/*!
+  \deprecated Will not be available in Coin 5 due to absence of bounds checking.
+ */
+int
 SoInput_FileInfo::readDigits(char * str)
 {
   assert(!this->isBinary());
@@ -712,6 +756,28 @@ SoInput_FileInfo::readDigits(char * str)
   return (int)offset;
 }
 
+int
+SoInput_FileInfo::readHexDigits()
+{
+  assert(!this->isBinary());
+  char c;
+  size_t oldLength = readString.length();
+
+  while (this->get(c)) {
+    if (isxdigit(c))
+      readString += c;
+    else {
+      this->putBack(c);
+      break;
+    }
+  }
+  const ptrdiff_t offset = readString.length() - oldLength;
+  return (int)offset;
+}
+
+/*!
+  \deprecated Will not be available in Coin 5 due to absence of bounds checking.
+ */
 int
 SoInput_FileInfo::readHexDigits(char * str)
 {

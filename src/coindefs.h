@@ -86,6 +86,9 @@
   information. Used where there is an obsoleted or unsupported
   function. Typically a function that we feel should have been private
   in Open Inventor.
+
+  COIN_DEPRECATED: Macro to be used as attribute of deprecated
+  function declarations. Emits warnings during compilation.
 */
 
 #if COIN_DEBUG
@@ -136,6 +139,14 @@
 #define COIN_STUB_ONCE()  do { } while (0)
 
 #endif /* !COIN_DEBUG */
+
+#if defined(__GNUC__) || defined(__clang__)
+    #define COIN_DEPRECATED(msg) __attribute__((deprecated(msg)))
+#elif defined(_MSC_VER)
+    #define COIN_DEPRECATED(msg) __declspec(deprecated(msg))
+#else
+    #define COIN_DEPRECATED(msg)
+#endif
 
 #ifdef __GNUC__
 #define COIN_UNUSED_ARG(x) x __attribute__((__unused__))
