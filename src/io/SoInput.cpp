@@ -2237,6 +2237,8 @@ SoInput::readReal(double & d)
 
   Returns \c FALSE if no string representing an unsigned integer could be
   read.
+
+  \deprecated Will not be available in Coin 5 due to absence of bounds checking.
  */
 SbBool
 SoInput::readUnsignedIntegerString(char * str)
@@ -2249,7 +2251,9 @@ SoInput::readUnsignedIntegerString(char * str)
 /*!
   Read decimal base digits from the current input stream into \a str and
   returns the number of characters read.
- */
+
+  \deprecated Will not be available in Coin 5 due to absence of bounds checking.
+  */
 int
 SoInput::readDigits(char * str)
 {
@@ -2261,6 +2265,8 @@ SoInput::readDigits(char * str)
 /*!
   Read hexadecimal base digits from the current input stream into \a str and
   returns the number of characters read.
+
+  \deprecated Will not be available in Coin 5 due to absence of bounds checking.
  */
 int
 SoInput::readHexDigits(char * str)
