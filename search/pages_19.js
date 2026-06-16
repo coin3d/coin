@@ -1,7 +1,9 @@
 var searchData=
 [
-  ['the_20bundle_20classes_0',['The Bundle Classes',['../group__coin__bundles.html',1,'']]],
-  ['the_20cache_20classes_1',['The Cache Classes',['../group__coin__caches.html',1,'']]],
-  ['the_20element_20classes_2',['The Element Classes',['../group__coin__elements.html',1,'']]],
-  ['to_20open_20inventor_20coin_3',['Books Related to Open Inventor / Coin',['../coin_books.html',1,'']]]
+  ['scene_20graph_20profiler_0',['Scene Graph Profiler',['../group__coin__envvars.html',1,'']]],
+  ['scene_20graph_20profiling_1',['Scene Graph Profiling',['../coin_profiling_intro.html',1,'coin_related_pages']]],
+  ['shaders_20in_20coin_2',['Shaders in Coin',['../coin_shaders_page.html',1,'coin_related_pages']]],
+  ['state_20chart_20xml_3',['State Chart XML',['../group__coin__scxml.html',1,'coin_related_pages']]],
+  ['support_4',['Foreign File Format Support',['../coin_foreign_file_support.html',1,'coin_related_pages']]],
+  ['support_20in_20coin_5',['Multithreading Support in Coin',['../coin_multithreading_support.html',1,'coin_related_pages']]]
 ];
