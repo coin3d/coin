@@ -1,0 +1,370 @@
+2026-06-16 21:37:36 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (7c4305c85b)
+
+	Bump version number to 4.0.9
+
+M	CMakeLists.txt
+
+2026-06-16 21:35:54 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (50562bf89e)
+
+	Update NEWS, RELNOTES, THANKS, and releases.dox files.
+
+M	NEWS
+M	RELNOTES
+M	THANKS
+M	docs/releases.dox
+
+2026-06-12 10:55:23 +0100  João Matos  <602268+tritao@users.noreply.github.com> (d8d2643a8e)
+
+	Pin Windows CI to Windows Server 2022
+
+M	.github/workflows/continuous-integration-workflow.yml
+
+2026-06-12 10:44:35 +0100  João Matos  <602268+tritao@users.noreply.github.com> (fdc91a2aa1)
+
+	Skip negative indices in SoIndexedPointSet vertex arrays
+
+M	src/shapenodes/SoIndexedPointSet.cpp
+
+2026-05-22 15:39:10 +0800  TVIX  <529042596@qq.com> (5ad70cf714)
+
+	Fix cc_string inline buffer size calculation in string.h
+
+M	include/Inventor/C/base/string.h
+
+2026-03-30 12:17:13 +0100  tritao  <joao@tritao.eu> (540d566d89)
+
+	Remove old unused files.
+
+D	INSTALL.GNU
+D	Makefile.am
+D	Makefile.in
+D	README.MACOSX
+D	README.UNIX
+D	README.WIN32
+D	aclocal.m4
+D	bin/Makefile.am
+D	bin/Makefile.in
+D	cfg/coin.m4
+D	cfg/config.guess
+D	cfg/config.sub
+D	cfg/csubst.exe
+D	cfg/depcomp
+D	cfg/doxy4win.pl
+D	cfg/errors.txt
+D	cfg/gendsp.pl.in
+D	cfg/gendsp.sh.in
+D	cfg/install-sh
+D	cfg/ltconfig
+D	cfg/ltmain.sh
+D	cfg/missing
+D	cfg/mkinstalldirs
+D	cfg/texinfo.tex
+D	cfg/wrapmsvc.exe
+D	configure
+D	configure.ac
+
+2025-11-08 21:50:57 +0000  tritao  <joao@tritao.eu> (233bdafc67)
+
+	Remove outdated build files.
+
+M	.gitmodules
+D	build/README
+D	build/Xcode/Coin.xcodeproj/project.pbxproj
+D	build/Xcode/English.lproj/InfoPlist.strings
+D	build/Xcode/Info.plist
+D	build/Xcode/Inventor_Prefix.pch
+D	build/Xcode/data/draggerDefaults/centerballDragger.h
+D	build/Xcode/data/draggerDefaults/directionalLightDragger.h
+D	build/Xcode/data/draggerDefaults/dragPointDragger.h
+D	build/Xcode/data/draggerDefaults/handleBoxDragger.h
+D	build/Xcode/data/draggerDefaults/iv2h.sh
+D	build/Xcode/data/draggerDefaults/jackDragger.h
+D	build/Xcode/data/draggerDefaults/pointLightDragger.h
+D	build/Xcode/data/draggerDefaults/rotateCylindricalDragger.h
+D	build/Xcode/data/draggerDefaults/rotateDiscDragger.h
+D	build/Xcode/data/draggerDefaults/rotateSphericalDragger.h
+D	build/Xcode/data/draggerDefaults/scale1Dragger.h
+D	build/Xcode/data/draggerDefaults/scale2Dragger.h
+D	build/Xcode/data/draggerDefaults/scale2UniformDragger.h
+D	build/Xcode/data/draggerDefaults/scaleUniformDragger.h
+D	build/Xcode/data/draggerDefaults/spotLightDragger.h
+D	build/Xcode/data/draggerDefaults/tabBoxDragger.h
+D	build/Xcode/data/draggerDefaults/tabPlaneDragger.h
+D	build/Xcode/data/draggerDefaults/trackballDragger.h
+D	build/Xcode/data/draggerDefaults/transformBoxDragger.h
+D	build/Xcode/data/draggerDefaults/transformerDragger.h
+D	build/Xcode/data/draggerDefaults/translate1Dragger.h
+D	build/Xcode/data/draggerDefaults/translate2Dragger.h
+D	build/Xcode/data/shaders/lights/DirSpotLight.h
+D	build/Xcode/data/shaders/lights/DirectionalLight.h
+D	build/Xcode/data/shaders/lights/PointLight.h
+D	build/Xcode/data/shaders/lights/SpotLight.h
+D	build/Xcode/data/shaders/lights/glsl2h.sh
+D	build/Xcode/data/shaders/vsm/VsmLookup.h
+D	build/Xcode/data/shaders/vsm/glsl2h.sh
+D	build/Xcode/include/Inventor/C/basic.h
+D	build/Xcode/include/Inventor/system/gl-headers.h
+D	build/Xcode/include/Inventor/system/inttypes.h
+D	build/Xcode/src/config.h
+D	build/Xcode/src/setup.h
+D	build/coin.spec.in
+D	build/data/coin4.sln
+D	build/general
+D	build/html/Coin_logo.png
+D	build/misc/StartMSVCGeneration.sh
+D	build/misc/build-docs.bat
+D	build/misc/config-wrapper.h
+D	build/misc/create-directories.bat
+D	build/misc/generate.sh
+D	build/misc/install-headers.bat
+D	build/misc/install-sdk.bat
+D	build/misc/uninstall-headers.bat
+D	build/misc/uninstall-sdk.bat
+D	build/msvc10/coin4.sln
+D	build/msvc10/coin4.vcxproj
+D	build/msvc10/coin4.vcxproj.filters
+D	build/msvc10/coin4_docs.vcxproj
+D	build/msvc10/coin4_docs.vcxproj.filters
+D	build/msvc10/coin4_install.vcxproj
+D	build/msvc10/coin4_install.vcxproj.filters
+D	build/msvc10/coin4_uninstall.vcxproj
+D	build/msvc10/coin4_uninstall.vcxproj.filters
+D	build/msvc10/data/draggerDefaults/centerballDragger.h
+D	build/msvc10/data/draggerDefaults/directionalLightDragger.h
+D	build/msvc10/data/draggerDefaults/dragPointDragger.h
+D	build/msvc10/data/draggerDefaults/handleBoxDragger.h
+D	build/msvc10/data/draggerDefaults/jackDragger.h
+D	build/msvc10/data/draggerDefaults/pointLightDragger.h
+D	build/msvc10/data/draggerDefaults/rotateCylindricalDragger.h
+D	build/msvc10/data/draggerDefaults/rotateDiscDragger.h
+D	build/msvc10/data/draggerDefaults/rotateSphericalDragger.h
+D	build/msvc10/data/draggerDefaults/scale1Dragger.h
+D	build/msvc10/data/draggerDefaults/scale2Dragger.h
+D	build/msvc10/data/draggerDefaults/scale2UniformDragger.h
+D	build/msvc10/data/draggerDefaults/scaleUniformDragger.h
+D	build/msvc10/data/draggerDefaults/spotLightDragger.h
+D	build/msvc10/data/draggerDefaults/tabBoxDragger.h
+D	build/msvc10/data/draggerDefaults/tabPlaneDragger.h
+D	build/msvc10/data/draggerDefaults/trackballDragger.h
+D	build/msvc10/data/draggerDefaults/transformBoxDragger.h
+D	build/msvc10/data/draggerDefaults/transformerDragger.h
+D	build/msvc10/data/draggerDefaults/translate1Dragger.h
+D	build/msvc10/data/draggerDefaults/translate2Dragger.h
+D	build/msvc10/data/shaders/lights/DirSpotLight.h
+D	build/msvc10/data/shaders/lights/DirectionalLight.h
+D	build/msvc10/data/shaders/lights/PointLight.h
+D	build/msvc10/data/shaders/lights/SpotLight.h
+D	build/msvc10/data/shaders/vsm/VsmLookup.h
+D	build/msvc10/docs/coin4.doxygen
+D	build/msvc10/include/Inventor/C/basic.h
+D	build/msvc10/include/Inventor/system/gl-headers.h
+D	build/msvc10/include/Inventor/system/inttypes.h
+D	build/msvc10/src/config-debug.h
+D	build/msvc10/src/config-release.h
+D	build/msvc10/src/config.h
+D	build/msvc10/src/setup.h
+D	build/msvc6/coin4.dsp
+D	build/msvc6/coin4.dsw
+D	build/msvc6/coin4_docs.dsp
+D	build/msvc6/coin4_install.dsp
+D	build/msvc6/coin4_uninstall.dsp
+D	build/msvc6/data/draggerDefaults/centerballDragger.h
+D	build/msvc6/data/draggerDefaults/directionalLightDragger.h
+D	build/msvc6/data/draggerDefaults/dragPointDragger.h
+D	build/msvc6/data/draggerDefaults/handleBoxDragger.h
+D	build/msvc6/data/draggerDefaults/jackDragger.h
+D	build/msvc6/data/draggerDefaults/pointLightDragger.h
+D	build/msvc6/data/draggerDefaults/rotateCylindricalDragger.h
+D	build/msvc6/data/draggerDefaults/rotateDiscDragger.h
+D	build/msvc6/data/draggerDefaults/rotateSphericalDragger.h
+D	build/msvc6/data/draggerDefaults/scale1Dragger.h
+D	build/msvc6/data/draggerDefaults/scale2Dragger.h
+D	build/msvc6/data/draggerDefaults/scale2UniformDragger.h
+D	build/msvc6/data/draggerDefaults/scaleUniformDragger.h
+D	build/msvc6/data/draggerDefaults/spotLightDragger.h
+D	build/msvc6/data/draggerDefaults/tabBoxDragger.h
+D	build/msvc6/data/draggerDefaults/tabPlaneDragger.h
+D	build/msvc6/data/draggerDefaults/trackballDragger.h
+D	build/msvc6/data/draggerDefaults/transformBoxDragger.h
+D	build/msvc6/data/draggerDefaults/transformerDragger.h
+D	build/msvc6/data/draggerDefaults/translate1Dragger.h
+D	build/msvc6/data/draggerDefaults/translate2Dragger.h
+D	build/msvc6/data/shaders/lights/DirSpotLight.h
+D	build/msvc6/data/shaders/lights/DirectionalLight.h
+D	build/msvc6/data/shaders/lights/PointLight.h
+D	build/msvc6/data/shaders/lights/SpotLight.h
+D	build/msvc6/data/shaders/vsm/VsmLookup.h
+D	build/msvc6/docs/coin4.doxygen
+D	build/msvc6/include/Inventor/C/basic.h
+D	build/msvc6/include/Inventor/system/gl-headers.h
+D	build/msvc6/include/Inventor/system/inttypes.h
+D	build/msvc6/src/config-debug.h
+D	build/msvc6/src/config-release.h
+D	build/msvc6/src/config.h
+D	build/msvc6/src/setup.h
+D	build/msvc7/coin4.sln
+D	build/msvc7/coin4.vcproj
+D	build/msvc7/coin4_docs.vcproj
+D	build/msvc7/coin4_install.vcproj
+D	build/msvc7/coin4_uninstall.vcproj
+D	build/msvc7/data/draggerDefaults/centerballDragger.h
+D	build/msvc7/data/draggerDefaults/directionalLightDragger.h
+D	build/msvc7/data/draggerDefaults/dragPointDragger.h
+D	build/msvc7/data/draggerDefaults/handleBoxDragger.h
+D	build/msvc7/data/draggerDefaults/jackDragger.h
+D	build/msvc7/data/draggerDefaults/pointLightDragger.h
+D	build/msvc7/data/draggerDefaults/rotateCylindricalDragger.h
+D	build/msvc7/data/draggerDefaults/rotateDiscDragger.h
+D	build/msvc7/data/draggerDefaults/rotateSphericalDragger.h
+D	build/msvc7/data/draggerDefaults/scale1Dragger.h
+D	build/msvc7/data/draggerDefaults/scale2Dragger.h
+D	build/msvc7/data/draggerDefaults/scale2UniformDragger.h
+D	build/msvc7/data/draggerDefaults/scaleUniformDragger.h
+D	build/msvc7/data/draggerDefaults/spotLightDragger.h
+D	build/msvc7/data/draggerDefaults/tabBoxDragger.h
+D	build/msvc7/data/draggerDefaults/tabPlaneDragger.h
+D	build/msvc7/data/draggerDefaults/trackballDragger.h
+D	build/msvc7/data/draggerDefaults/transformBoxDragger.h
+D	build/msvc7/data/draggerDefaults/transformerDragger.h
+D	build/msvc7/data/draggerDefaults/translate1Dragger.h
+D	build/msvc7/data/draggerDefaults/translate2Dragger.h
+D	build/msvc7/data/shaders/lights/DirSpotLight.h
+D	build/msvc7/data/shaders/lights/DirectionalLight.h
+D	build/msvc7/data/shaders/lights/PointLight.h
+D	build/msvc7/data/shaders/lights/SpotLight.h
+D	build/msvc7/data/shaders/vsm/VsmLookup.h
+D	build/msvc7/docs/coin4.doxygen
+D	build/msvc7/include/Inventor/C/basic.h
+D	build/msvc7/include/Inventor/system/gl-headers.h
+D	build/msvc7/include/Inventor/system/inttypes.h
+D	build/msvc7/src/config-debug.h
+D	build/msvc7/src/config-release.h
+D	build/msvc7/src/config.h
+D	build/msvc7/src/setup.h
+D	build/msvc8/coin4.sln
+D	build/msvc8/coin4.vcproj
+D	build/msvc8/coin4_docs.vcproj
+D	build/msvc8/coin4_install.vcproj
+D	build/msvc8/coin4_uninstall.vcproj
+D	build/msvc8/data/draggerDefaults/centerballDragger.h
+D	build/msvc8/data/draggerDefaults/directionalLightDragger.h
+D	build/msvc8/data/draggerDefaults/dragPointDragger.h
+D	build/msvc8/data/draggerDefaults/handleBoxDragger.h
+D	build/msvc8/data/draggerDefaults/jackDragger.h
+D	build/msvc8/data/draggerDefaults/pointLightDragger.h
+D	build/msvc8/data/draggerDefaults/rotateCylindricalDragger.h
+D	build/msvc8/data/draggerDefaults/rotateDiscDragger.h
+D	build/msvc8/data/draggerDefaults/rotateSphericalDragger.h
+D	build/msvc8/data/draggerDefaults/scale1Dragger.h
+D	build/msvc8/data/draggerDefaults/scale2Dragger.h
+D	build/msvc8/data/draggerDefaults/scale2UniformDragger.h
+D	build/msvc8/data/draggerDefaults/scaleUniformDragger.h
+D	build/msvc8/data/draggerDefaults/spotLightDragger.h
+D	build/msvc8/data/draggerDefaults/tabBoxDragger.h
+D	build/msvc8/data/draggerDefaults/tabPlaneDragger.h
+D	build/msvc8/data/draggerDefaults/trackballDragger.h
+D	build/msvc8/data/draggerDefaults/transformBoxDragger.h
+D	build/msvc8/data/draggerDefaults/transformerDragger.h
+D	build/msvc8/data/draggerDefaults/translate1Dragger.h
+D	build/msvc8/data/draggerDefaults/translate2Dragger.h
+D	build/msvc8/data/shaders/lights/DirSpotLight.h
+D	build/msvc8/data/shaders/lights/DirectionalLight.h
+D	build/msvc8/data/shaders/lights/PointLight.h
+D	build/msvc8/data/shaders/lights/SpotLight.h
+D	build/msvc8/data/shaders/vsm/VsmLookup.h
+D	build/msvc8/docs/coin4.doxygen
+D	build/msvc8/include/Inventor/C/basic.h
+D	build/msvc8/include/Inventor/system/gl-headers.h
+D	build/msvc8/include/Inventor/system/inttypes.h
+D	build/msvc8/src/config-debug.h
+D	build/msvc8/src/config-release.h
+D	build/msvc8/src/config.h
+D	build/msvc8/src/setup.h
+D	build/msvc9/coin4.sln
+D	build/msvc9/coin4.vcproj
+D	build/msvc9/coin4_docs.vcproj
+D	build/msvc9/coin4_install.vcproj
+D	build/msvc9/coin4_uninstall.vcproj
+D	build/msvc9/data/draggerDefaults/centerballDragger.h
+D	build/msvc9/data/draggerDefaults/directionalLightDragger.h
+D	build/msvc9/data/draggerDefaults/dragPointDragger.h
+D	build/msvc9/data/draggerDefaults/handleBoxDragger.h
+D	build/msvc9/data/draggerDefaults/jackDragger.h
+D	build/msvc9/data/draggerDefaults/pointLightDragger.h
+D	build/msvc9/data/draggerDefaults/rotateCylindricalDragger.h
+D	build/msvc9/data/draggerDefaults/rotateDiscDragger.h
+D	build/msvc9/data/draggerDefaults/rotateSphericalDragger.h
+D	build/msvc9/data/draggerDefaults/scale1Dragger.h
+D	build/msvc9/data/draggerDefaults/scale2Dragger.h
+D	build/msvc9/data/draggerDefaults/scale2UniformDragger.h
+D	build/msvc9/data/draggerDefaults/scaleUniformDragger.h
+D	build/msvc9/data/draggerDefaults/spotLightDragger.h
+D	build/msvc9/data/draggerDefaults/tabBoxDragger.h
+D	build/msvc9/data/draggerDefaults/tabPlaneDragger.h
+D	build/msvc9/data/draggerDefaults/trackballDragger.h
+D	build/msvc9/data/draggerDefaults/transformBoxDragger.h
+D	build/msvc9/data/draggerDefaults/transformerDragger.h
+D	build/msvc9/data/draggerDefaults/translate1Dragger.h
+D	build/msvc9/data/draggerDefaults/translate2Dragger.h
+D	build/msvc9/data/shaders/lights/DirSpotLight.h
+D	build/msvc9/data/shaders/lights/DirectionalLight.h
+D	build/msvc9/data/shaders/lights/PointLight.h
+D	build/msvc9/data/shaders/lights/SpotLight.h
+D	build/msvc9/data/shaders/vsm/VsmLookup.h
+D	build/msvc9/docs/coin4.doxygen
+D	build/msvc9/include/Inventor/C/basic.h
+D	build/msvc9/include/Inventor/system/gl-headers.h
+D	build/msvc9/include/Inventor/system/inttypes.h
+D	build/msvc9/src/config-debug.h
+D	build/msvc9/src/config-release.h
+D	build/msvc9/src/config.h
+D	build/msvc9/src/setup.h
+
+2023-09-19 19:45:27 +0100  Joao Matos  <joao@tritao.eu> (e491adb71e)
+
+	Update .gitignore
+
+A	.gitignore
+
+2026-03-30 12:12:49 +0100  tritao  <joao@tritao.eu> (5c0b3310d5)
+
+	CMake build fix for target-specific `COIN_BUILD_SHARED_LIBS` linking.
+
+M	src/CMakeLists.txt
+
+2025-11-06 12:53:13 +0000  tritao  <joao@tritao.eu> (cea589b632)
+
+	CMake build modernization fixes.
+
+M	CMakeLists.txt
+
+2022-09-25 16:18:07 +0100  Joao Matos  <joao@tritao.eu> (f795d850ec)
+
+	Fix wrong specifier warnings in element.cpp
+
+M	src/xml/element.cpp
+
+2025-11-06 14:01:02 +0000  tritao  <joao@tritao.eu> (5963c49f51)
+
+	Use `clock_gettime` when its available instead of deprecated `ftime`.
+
+M	src/base/time.cpp
+
+2026-03-28 17:16:22 +0530  captain0xff  <sayantandebin@gmail.com> (30185e027d)
+
+	fix building with C++20
+
+M	include/Inventor/SbByteBufferP.icc
+
+2026-03-28 17:15:59 +0530  captain0xff  <sayantandebin@gmail.com> (7858b8e6e2)
+
+	create a alias target Coin::Coin while building as a sub-directory
+
+M	CMakeLists.txt
+M	src/CMakeLists.txt
+
+2026-03-27 20:50:50 -0500  Chris Hennes  <chennes@pioneerlibrarysystem.org> (c517a58f25)
+
+	Only search for GcGL/libCgGL in system default dir
+
+M	src/glue/dl.cpp
