@@ -10,6 +10,21 @@ compatibility of your source code when upgrading the library.
 
 
 
+Coin 4.0.9
+==========
+
+Skipped negative indices in SoIndexedPointSet vertex arrays.
+
+Fixed cc_string inline buffer size calculation in string.h
+
+Removed outdated build files.
+
+Used `clock_gettime` when its available instead of deprecated `ftime`.
+
+Created alias target Coin::Coin when building as a sub-directory.
+
+Only search for CgGL/libCgGL in system default dir.
+
 Coin 4.0.8
 ==========
 

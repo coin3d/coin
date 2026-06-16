@@ -1,5 +1,6 @@
 /*!
 \page coin_new_features New Features in Coin
+- \subpage coin409 "New Features in Coin v4.0.9"
 - \subpage coin408 "New Features in Coin v4.0.8"
 - \subpage coin407 "New Features in Coin v4.0.7"
 - \subpage coin406 "New Features in Coin v4.0.6"
@@ -22,6 +23,21 @@
 - \subpage coin200 "New Features in Coin v2.0.0"
 
 */ 
+
+/**
+\page coin409 New Features in Coin v4.0.9
+
+This is a bugfix release.
+
+Bug fixes:
+- Skip negative indices in SoIndexedPointSet vertex arrays.
+- Fix cc_string inline buffer size calculation in string.h
+- Remove outdated build files.
+- Use `clock_gettime` when its available instead of deprecated `ftime`.
+- Create alias target Coin::Coin when building as a sub-directory.
+- Only search for CgGL/libCgGL in system default dir.
+
+*/
 
 /**
 \page coin408 New Features in Coin v4.0.8
