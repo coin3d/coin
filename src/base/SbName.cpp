@@ -194,11 +194,21 @@ SbName::isIdentStartChar(const char c)
 SbBool
 SbName::isIdentChar(const char c)
 {
+  // There is an important reason why the cast below is necessary:
+  // isalnum() et al takes an "int" as input argument. A _signed_ char
+  // value for any character above the 127-value ASCII character set
+  // will be promoted to a negative integer, which can cause the
+  // function to make an array reference that's out of bounds.
+  //
+  // FIXME: this needs to be fixed other places isalnum() is used,
+  // as well as for other is*() function. 20021124 mortene / 20260617 veelo.
+  const unsigned char uc = static_cast<unsigned char>(c);
+
   // FIXME: isalnum() takes the current locale into account. This can
   // lead to "interesting" artifacts. We very likely need to audit and
   // fix our isalnum() calls in the Coin sourcecode to behave in the
   // exact manner that we expect them to. 20020319 mortene.
-  return (isalnum(c) || c == '_');
+  return (isalnum(uc) || c == '_');
 }
 
 /*!
