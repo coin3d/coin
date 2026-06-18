@@ -1,6 +1,5 @@
 var NAVTREEINDEX17 =
 {
-"classSoExtSelection.html#a301800e1eb43e801b9806cdb5c9c05fd":[3,15,26,22],
 "classSoExtSelection.html#a312b1897793d9a7f78e4624d9a63e115":[3,15,26,26],
 "classSoExtSelection.html#a34786b10d242f155cea1ea023b98781d":[3,15,26,4],
 "classSoExtSelection.html#a3f1be9f9f9e2500f16ba9526682af7a8":[3,15,26,32],
@@ -249,5 +248,6 @@ var NAVTREEINDEX17 =
 "classSoFont.html#a5eac7310bbb9bad00a51bc6ab93c2ce2":[3,15,29,7],
 "classSoFont.html#a6e05868c24cbaeeee3f8e2e89e024a5e":[3,15,29,10],
 "classSoFont.html#a8994026608cc3b61e226d9e1d43975ad":[3,15,29,6],
-"classSoFont.html#a8d2c7630d8020176d56802a9f336cdeb":[3,15,29,11]
+"classSoFont.html#a8d2c7630d8020176d56802a9f336cdeb":[3,15,29,11],
+"classSoFont.html#aa4cbe62cf7233f5e274e6bb4eeee20d5":[3,15,29,1]
 };

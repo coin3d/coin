@@ -1364,7 +1364,6 @@ var group__coin__nodes =
       [ "getFieldData", "classSoPickStyle.html#a5535ea21b15f74b782820ac52cc3771e", null ],
       [ "getTypeId", "classSoPickStyle.html#a4962dd662d22d85ad6c9fb8dd9ec59fe", null ],
       [ "pick", "classSoPickStyle.html#abf0c9ee342011e88cb045461f8261d5c", null ],
-      [ "layer", "classSoPickStyle.html#a5785ff5ba3e19b271c0723bc93cc0cf3", null ],
       [ "style", "classSoPickStyle.html#a85089766be4c884fce884971ac8cbcac", null ]
     ] ],
     [ "SoPointLight", "classSoPointLight.html", [

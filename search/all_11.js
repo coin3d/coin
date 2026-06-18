@@ -32,6 +32,6 @@ var searchData=
   ['hitpoint_5fchanged_29',['hitPoint_changed',['../classSoVRMLTouchSensor.html#ab3e9a1a82f45e33b97d63e34fd3936c2',1,'SoVRMLTouchSensor']]],
   ['hittexcoord_5fchanged_30',['hitTexCoord_changed',['../classSoVRMLTouchSensor.html#a20b8523cda40ff9b0284d51de72d66e6',1,'SoVRMLTouchSensor']]],
   ['hlvisible_31',['hlVisible',['../classSoBoxHighlightRenderAction.html#a3dab10ba7c71802379899c6dd6b8ef0b',1,'SoBoxHighlightRenderAction::hlVisible'],['../classSoLineHighlightRenderAction.html#a8a54d4a40f5f2b8c5f9fdf30900d0610',1,'SoLineHighlightRenderAction::hlVisible']]],
-  ['horalignment_32',['horAlignment',['../classSoImage.html#a83f5d85b3b60c9d40bed2ba0d412a5bf',1,'SoImage']]],
-  ['horalignment_33',['HorAlignment',['../classSoImage.html#a85dee2c63494827b752aa7d9ead26f6b',1,'SoImage']]]
+  ['horalignment_32',['HorAlignment',['../classSoImage.html#a85dee2c63494827b752aa7d9ead26f6b',1,'SoImage']]],
+  ['horalignment_33',['horAlignment',['../classSoImage.html#a83f5d85b3b60c9d40bed2ba0d412a5bf',1,'SoImage']]]
 ];

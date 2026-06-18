@@ -1,10 +1,5 @@
 var NAVTREEINDEX46 =
 {
-"functions_t.html":[5,3,0,19],
-"functions_type.html":[5,3,3],
-"functions_u.html":[5,3,0,20],
-"functions_v.html":[5,3,0,21],
-"functions_vars.html":[5,3,2,0],
 "functions_vars.html":[5,3,2],
 "functions_vars_b.html":[5,3,2,1],
 "functions_vars_c.html":[5,3,2,2],
@@ -52,7 +47,7 @@ var NAVTREEINDEX46 =
 "group__coin__details.html":[3,4],
 "group__coin__draggers.html":[3,5],
 "group__coin__elements.html":[3,6],
-"group__coin__elements.html#elements":[3,6,112],
+"group__coin__elements.html#elements":[3,6,111],
 "group__coin__engines.html":[3,7],
 "group__coin__envvars.html":[3,28],
 "group__coin__envvars.html#coin_envvars_profiler":[3,28,0],

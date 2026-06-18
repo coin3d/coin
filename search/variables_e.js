@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['oa_0',['oA',['../classSoCalculator.html#a6b200d36871a6093f5eca0b8b81f4842',1,'SoCalculator']]],
-  ['oa_1',['oa',['../classSoCalculator.html#ad0b4e58a658ee51d1a1857b6ec5118a1',1,'SoCalculator']]],
-  ['ob_2',['ob',['../classSoCalculator.html#ad3b448b93813d089c095b58480e1c0ad',1,'SoCalculator']]],
-  ['ob_3',['oB',['../classSoCalculator.html#ac5e01d8c507dea3b037b1f81f42f6560',1,'SoCalculator']]],
+  ['oa_0',['oa',['../classSoCalculator.html#ad0b4e58a658ee51d1a1857b6ec5118a1',1,'SoCalculator']]],
+  ['oa_1',['oA',['../classSoCalculator.html#a6b200d36871a6093f5eca0b8b81f4842',1,'SoCalculator']]],
+  ['ob_2',['oB',['../classSoCalculator.html#ac5e01d8c507dea3b037b1f81f42f6560',1,'SoCalculator']]],
+  ['ob_3',['ob',['../classSoCalculator.html#ad3b448b93813d089c095b58480e1c0ad',1,'SoCalculator']]],
   ['objectcenter_4',['objectCenter',['../classSoComputeBoundingBox.html#accd5aff5caa72d580e74002aff2f5074',1,'SoComputeBoundingBox']]],
   ['oc_5',['oC',['../classSoCalculator.html#a5788e010ccd9647bbdb1cde3200e8a26',1,'SoCalculator']]],
   ['oc_6',['oc',['../classSoCalculator.html#adf922a722a33ed51f13f9ea9747e7a20',1,'SoCalculator']]],

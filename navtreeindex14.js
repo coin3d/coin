@@ -1,6 +1,5 @@
 var NAVTREEINDEX14 =
 {
-"classSoComposeRotationFromTo.html":[3,7,4],
 "classSoComposeRotationFromTo.html#a054cc01b1fc1f12967ec90f76f818d12":[3,7,4,3],
 "classSoComposeRotationFromTo.html#a1ea16072a2127bcb9b79d06a007a0b8f":[3,7,4,2],
 "classSoComposeRotationFromTo.html#a4e3534ec76500304ce568b878ae7fdaa":[3,7,4,0],
@@ -249,5 +248,6 @@ var NAVTREEINDEX14 =
 "classSoDecimationTypeElement.html#ab77cb535bf5eca102428ce829a5db59fa03a9549b69e8d02e9f4b07e6b82ee48a":[3,6,18,0,3],
 "classSoDecimationTypeElement.html#ab77cb535bf5eca102428ce829a5db59faba058f013cbeea06a6381c3f154ca335":[3,6,18,0,2],
 "classSoDecimationTypeElement.html#ab77cb535bf5eca102428ce829a5db59fac131512aae756013ca5dd231cb37ba2e":[3,6,18,0,1],
-"classSoDecimationTypeElement.html#ab77cb535bf5eca102428ce829a5db59fad08f397c8732b723143b34cfbf3df246":[3,6,18,0,0]
+"classSoDecimationTypeElement.html#ab77cb535bf5eca102428ce829a5db59fad08f397c8732b723143b34cfbf3df246":[3,6,18,0,0],
+"classSoDecomposeMatrix.html":[3,7,11]
 };

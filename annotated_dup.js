@@ -504,7 +504,6 @@ var annotated_dup =
     [ "SoPickAction", "classSoPickAction.html", "classSoPickAction" ],
     [ "SoPickedPoint", "classSoPickedPoint.html", "classSoPickedPoint" ],
     [ "SoPickedPointList", "classSoPickedPointList.html", "classSoPickedPointList" ],
-    [ "SoPickLayerElement", "classSoPickLayerElement.html", "classSoPickLayerElement" ],
     [ "SoPickRayElement", "classSoPickRayElement.html", "classSoPickRayElement" ],
     [ "SoPickStyle", "classSoPickStyle.html", "classSoPickStyle" ],
     [ "SoPickStyleElement", "classSoPickStyleElement.html", "classSoPickStyleElement" ],

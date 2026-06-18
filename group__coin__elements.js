@@ -748,10 +748,6 @@ var group__coin__elements =
       [ "print", "classSoOverrideElement.html#a8a151be1a4be2092079e91a429d52f9a", null ],
       [ "push", "classSoOverrideElement.html#acc982f58f20b8fae6917204722646cdc", null ]
     ] ],
-    [ "SoPickLayerElement", "classSoPickLayerElement.html", [
-      [ "~SoPickLayerElement", "classSoPickLayerElement.html#a97be52e8609e0d0cac11689564e93ef2", null ],
-      [ "init", "classSoPickLayerElement.html#a864826530cdf577a3725148744d2b884", null ]
-    ] ],
     [ "SoPickRayElement", "classSoPickRayElement.html", [
       [ "~SoPickRayElement", "classSoPickRayElement.html#a6108cf13cf835409b2fcbe6ad11474c2", null ],
       [ "copyMatchInfo", "classSoPickRayElement.html#aa01a0d1f2850c95a7da0e5e7a6b8d18b", null ],

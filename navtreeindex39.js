@@ -1,10 +1,5 @@
 var NAVTREEINDEX39 =
 {
-"classSoTransformBoxDragger.html#a63e0976d3a951ed4a394b4ab92b5a49a":[3,5,18,9],
-"classSoTransformBoxDragger.html#a7c1a9c6d642ceab3afa84d2c528bee8c":[3,5,18,6],
-"classSoTransformBoxDragger.html#a82d32a084014ab40b30151da895473f4":[3,5,18,5],
-"classSoTransformBoxDragger.html#aa6057570edb16712b345e9ac0255a15d":[3,5,18,10],
-"classSoTransformBoxDragger.html#ab13644d4005af49dc79dbe24935ff205":[3,5,18,7],
 "classSoTransformBoxDragger.html#ab23a5523cf09a0a71e87c7d77c4fa541":[3,5,18,12],
 "classSoTransformBoxDragger.html#af660e2e6fe14f992f053d5f1d3d87661":[3,5,18,3],
 "classSoTransformBoxManip.html":[3,12,9],
@@ -163,12 +158,12 @@ var NAVTREEINDEX39 =
 "classSoTranslation.html#aae7f53ea7be83b408d2e1e1eb54af8bd":[3,15,129,6],
 "classSoTranslation.html#ada85a1c1b76bc5cff92e87661cf0ad51":[3,15,129,3],
 "classSoTranslation.html#af6e41e8b3707a211addc723baec1c5aa":[3,15,129,0],
-"classSoTransparencyElement.html":[3,6,104],
-"classSoTransparencyElement.html#a0661ad74537a987c5bf5bea2952c04b2":[3,6,104,0],
-"classSoTransparencyElement.html#a53372cd106f5811a088015bcdcdc6105":[3,6,104,1],
-"classSoTransparencyElement.html#a5448b2db8e7e96b4cafea758a8d55156":[3,6,104,4],
-"classSoTransparencyElement.html#a66b6943817a383e31e5215837099f3ec":[3,6,104,2],
-"classSoTransparencyElement.html#abfb84d4c69b66f884fbe1e92948d2060":[3,6,104,3],
+"classSoTransparencyElement.html":[3,6,103],
+"classSoTransparencyElement.html#a0661ad74537a987c5bf5bea2952c04b2":[3,6,103,0],
+"classSoTransparencyElement.html#a53372cd106f5811a088015bcdcdc6105":[3,6,103,1],
+"classSoTransparencyElement.html#a5448b2db8e7e96b4cafea758a8d55156":[3,6,103,4],
+"classSoTransparencyElement.html#a66b6943817a383e31e5215837099f3ec":[3,6,103,2],
+"classSoTransparencyElement.html#abfb84d4c69b66f884fbe1e92948d2060":[3,6,103,3],
 "classSoTransparencyType.html":[3,15,130],
 "classSoTransparencyType.html#a2a6d579c076626d6beefd5c6f5bb24e6":[3,15,130,8],
 "classSoTransparencyType.html#a58e29a623706a68dd3df042720f0a29f":[3,15,130,0],
@@ -249,5 +244,10 @@ var NAVTREEINDEX39 =
 "classSoUniformShaderParameter.html":[3,18,24],
 "classSoUniformShaderParameter.html#a17eb2f6011617149e44390bc4c6de23b":[3,18,24,1],
 "classSoUniformShaderParameter.html#a557a03c6ba49249444a303f1402949ce":[3,18,24,2],
-"classSoUniformShaderParameter.html#aca777a1f28f9ceafc036d1d158e93670":[3,18,24,0]
+"classSoUniformShaderParameter.html#aca777a1f28f9ceafc036d1d158e93670":[3,18,24,0],
+"classSoUnits.html":[3,15,132],
+"classSoUnits.html#a0f35a38df21126538ac05b4c6bd8196e":[3,15,132,11],
+"classSoUnits.html#a19c624183b30cb510294fb5c9f183672":[3,15,132,9],
+"classSoUnits.html#a27a9614b150474bbe4356268cc754ff2":[3,15,132,7],
+"classSoUnits.html#a2e3f830f5e74631050a8903eaf1a1366":[3,15,132,4]
 };

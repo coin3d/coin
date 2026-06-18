@@ -53898,81 +53898,6 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>SoPickLayerElement</name>
-    <filename>classSoPickLayerElement.html</filename>
-    <base>SoInt32Element</base>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
-      <name>init</name>
-      <anchorfile>classSoPickLayerElement.html</anchorfile>
-      <anchor>a864826530cdf577a3725148744d2b884</anchor>
-      <arglist>(SoState *state)</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static void *</type>
-      <name>createInstance</name>
-      <anchorfile>classSoPickLayerElement.html</anchorfile>
-      <anchor>a0463af3963bb62dc65ad5692bcd7aa16</anchor>
-      <arglist>(void)</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static int32_t</type>
-      <name>get</name>
-      <anchorfile>classSoPickLayerElement.html</anchorfile>
-      <anchor>a0f929d3b13c5eeddc667804397522e91</anchor>
-      <arglist>(SoState *const state)</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static int</type>
-      <name>getClassStackIndex</name>
-      <anchorfile>classSoPickLayerElement.html</anchorfile>
-      <anchor>a4898d7afce0095cc1811a55acb61d780</anchor>
-      <arglist>(void)</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static SoType</type>
-      <name>getClassTypeId</name>
-      <anchorfile>classSoPickLayerElement.html</anchorfile>
-      <anchor>aea44a4732630da53e0d9c8bc5d7b89cc</anchor>
-      <arglist>(void)</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static int32_t</type>
-      <name>getDefault</name>
-      <anchorfile>classSoPickLayerElement.html</anchorfile>
-      <anchor>abdf2100cbcf654a129a90b07288bc4d4</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static void</type>
-      <name>initClass</name>
-      <anchorfile>classSoPickLayerElement.html</anchorfile>
-      <anchor>a76ee4467de836515b94dd2c5d426d9b7</anchor>
-      <arglist>(void)</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static void</type>
-      <name>set</name>
-      <anchorfile>classSoPickLayerElement.html</anchorfile>
-      <anchor>a58a07ffa431a4acdc566029b07a9f1b7</anchor>
-      <arglist>(SoState *const state, const int32_t layer)</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>static void</type>
-      <name>set</name>
-      <anchorfile>classSoPickLayerElement.html</anchorfile>
-      <anchor>a615ab1cc941b71507069ef03be0b6077</anchor>
-      <arglist>(SoState *const state, SoNode *const node, const int32_t layer)</arglist>
-    </member>
-    <member kind="function" protection="protected" virtualness="virtual">
-      <type>virtual</type>
-      <name>~SoPickLayerElement</name>
-      <anchorfile>classSoPickLayerElement.html</anchorfile>
-      <anchor>a97be52e8609e0d0cac11689564e93ef2</anchor>
-      <arglist>()</arglist>
-    </member>
-  </compound>
-  <compound kind="class">
     <name>SoPickRayElement</name>
     <filename>classSoPickRayElement.html</filename>
     <base>SoElement</base>
@@ -54185,13 +54110,6 @@
       <anchorfile>classSoPickStyle.html</anchorfile>
       <anchor>a6d60cb3cfe063ab595deda0bba88dbf5</anchor>
       <arglist>(void)</arglist>
-    </member>
-    <member kind="variable">
-      <type>SoSFInt32</type>
-      <name>layer</name>
-      <anchorfile>classSoPickStyle.html</anchorfile>
-      <anchor>a5785ff5ba3e19b271c0723bc93cc0cf3</anchor>
-      <arglist></arglist>
     </member>
     <member kind="variable">
       <type>SoSFEnum</type>
@@ -89803,7 +89721,6 @@
     <class kind="class">SoNormalBindingElement</class>
     <class kind="class">SoNormalElement</class>
     <class kind="class">SoOverrideElement</class>
-    <class kind="class">SoPickLayerElement</class>
     <class kind="class">SoPickRayElement</class>
     <class kind="class">SoPickStyleElement</class>
     <class kind="class">SoPointSizeElement</class>
