@@ -431,6 +431,18 @@ SoInput::checkISReference(SoFieldContainer * container,
       readok = this->read(iname, TRUE);
       if (readok) {
         assert(container->isOfType(SoNode::getClassTypeId()));
+
+        // Check that the field exists in the node.
+        SoNode * node = (SoNode *) container;
+        if (node->getField(fieldname) == NULL) {
+          SoReadError::post(this,
+            "PROTO '%s': invalid IS mapping, field '%s' does not exist in %s.",
+            proto->getProtoName().getString(),
+            fieldname.getString(),
+            node->getTypeId().getName().getString());
+          return FALSE;   // SoFieldData::read will abort because erroronunknownfield == true.
+        }
+
         proto->addISReference((SoNode*) container, fieldname, iname);
       }
     }
