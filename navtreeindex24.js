@@ -1,5 +1,6 @@
 var NAVTREEINDEX24 =
 {
+"classSoMFMatrix.html#aa86fec5889769982b9f9c2429f98d7d0":[3,10,13,4],
 "classSoMFMatrix.html#accdb4f897af56021ffe4a89d63c44289":[3,10,13,2],
 "classSoMFName.html":[3,10,14],
 "classSoMFName.html#a387a7fb2fd012bacdbf4f8eadc070b64":[3,10,14,5],
@@ -248,6 +249,5 @@ var NAVTREEINDEX24 =
 "classSoMFVec4f.html#a5133cd3b5d5ffcece274c7d30ccf7a69":[3,10,36,1],
 "classSoMFVec4f.html#a5764906fdc39e715594b1eacb6d37201":[3,10,36,0],
 "classSoMFVec4f.html#a7c0b984888fc60ba611725314ec5380b":[3,10,36,9],
-"classSoMFVec4f.html#a848407618b5107c8f0c3b9c175bd14b3":[3,10,36,7],
-"classSoMFVec4f.html#a8a3e075d3e32296538fc9c07aaa7c1a4":[3,10,36,2]
+"classSoMFVec4f.html#a848407618b5107c8f0c3b9c175bd14b3":[3,10,36,7]
 };

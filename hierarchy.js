@@ -874,6 +874,7 @@ var hierarchy =
         ] ],
         [ "SoMaterialBindingElement", "classSoMaterialBindingElement.html", null ],
         [ "SoNormalBindingElement", "classSoNormalBindingElement.html", null ],
+        [ "SoPickLayerElement", "classSoPickLayerElement.html", null ],
         [ "SoPickStyleElement", "classSoPickStyleElement.html", null ],
         [ "SoShadowStyleElement", "classSoShadowStyleElement.html", null ],
         [ "SoSwitchElement", "classSoSwitchElement.html", null ],

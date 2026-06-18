@@ -1,5 +1,6 @@
 var NAVTREEINDEX15 =
 {
+"classSoDecomposeMatrix.html":[3,7,11],
 "classSoDecomposeMatrix.html#a181aa5ce78179323d129b697ae73d47b":[3,7,11,3],
 "classSoDecomposeMatrix.html#a2ce672c879ac926e26148e56d373ea6a":[3,7,11,0],
 "classSoDecomposeMatrix.html#a52236a9363acf8f347ff5e82b88a34cb":[3,7,11,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX15 =
 "classSoDragger.html#afdfe9d11fcbde8e42fff713907f6c7a1a1740183c2afc21c9650e8c0ab7647750":[3,5,2,0,1],
 "classSoDragger.html#afdfe9d11fcbde8e42fff713907f6c7a1a9afe09d041b239cbfda699703db89f2a":[3,5,2,0,0],
 "classSoDrawStyle.html":[3,15,23],
-"classSoDrawStyle.html#a0a6b8b0f1dff7456c8e9c382201cc5d7":[3,15,23,7],
-"classSoDrawStyle.html#a24dc0b5c2d88c3f1d22c2415a9689e65":[3,15,23,8]
+"classSoDrawStyle.html#a0a6b8b0f1dff7456c8e9c382201cc5d7":[3,15,23,7]
 };

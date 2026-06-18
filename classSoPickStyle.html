@@ -446,6 +446,8 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:a5785ff5ba3e19b271c0723bc93cc0cf3" id="r_a5785ff5ba3e19b271c0723bc93cc0cf3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoSFInt32.html">SoSFInt32</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5785ff5ba3e19b271c0723bc93cc0cf3">layer</a></td></tr>
+<tr class="separator:a5785ff5ba3e19b271c0723bc93cc0cf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85089766be4c884fce884971ac8cbcac" id="r_a85089766be4c884fce884971ac8cbcac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoSFEnum.html">SoSFEnum</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a85089766be4c884fce884971ac8cbcac">style</a></td></tr>
 <tr class="separator:a85089766be4c884fce884971ac8cbcac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -535,8 +537,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="line">    <a class="code hl_variable" href="#a85089766be4c884fce884971ac8cbcac">style</a> <a class="code hl_enumvalue" href="#a8c23088ad3a4eb7bdeaa93ae5a29b910a8ae8ec595b7fe45f29d7ce88d1e8ab41">SHAPE</a></div>
 <div class="line">}</div>
 <div class="ttc" id="aclassSbList_html"><div class="ttname"><a href="classSbList.html">SbList</a></div><div class="ttdoc">The SbList class is a template container class for lists.</div><div class="ttdef"><b>Definition</b> SbList.h:70</div></div>
-<div class="ttc" id="aclassSoPickStyle_html_a85089766be4c884fce884971ac8cbcac"><div class="ttname"><a href="#a85089766be4c884fce884971ac8cbcac">SoPickStyle::style</a></div><div class="ttdeci">SoSFEnum style</div><div class="ttdef"><b>Definition</b> SoPickStyle.h:58</div></div>
-<div class="ttc" id="aclassSoPickStyle_html_a8c23088ad3a4eb7bdeaa93ae5a29b910a8ae8ec595b7fe45f29d7ce88d1e8ab41"><div class="ttname"><a href="#a8c23088ad3a4eb7bdeaa93ae5a29b910a8ae8ec595b7fe45f29d7ce88d1e8ab41">SoPickStyle::SHAPE</a></div><div class="ttdeci">@ SHAPE</div><div class="ttdef"><b>Definition</b> SoPickStyle.h:50</div></div>
+<div class="ttc" id="aclassSoPickStyle_html_a85089766be4c884fce884971ac8cbcac"><div class="ttname"><a href="#a85089766be4c884fce884971ac8cbcac">SoPickStyle::style</a></div><div class="ttdeci">SoSFEnum style</div><div class="ttdef"><b>Definition</b> SoPickStyle.h:59</div></div>
+<div class="ttc" id="aclassSoPickStyle_html_a8c23088ad3a4eb7bdeaa93ae5a29b910a8ae8ec595b7fe45f29d7ce88d1e8ab41"><div class="ttname"><a href="#a8c23088ad3a4eb7bdeaa93ae5a29b910a8ae8ec595b7fe45f29d7ce88d1e8ab41">SoPickStyle::SHAPE</a></div><div class="ttdeci">@ SHAPE</div><div class="ttdef"><b>Definition</b> SoPickStyle.h:51</div></div>
 </div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoRayPickAction.html" title="The SoRayPickAction class does ray intersection with scene graphs.">SoRayPickAction</a> </dd></dl>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a8c23088ad3a4eb7bdeaa93ae5a29b910" name="a8c23088ad3a4eb7bdeaa93ae5a29b910"></a>
@@ -818,6 +820,21 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a5785ff5ba3e19b271c0723bc93cc0cf3" name="a5785ff5ba3e19b271c0723bc93cc0cf3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5785ff5ba3e19b271c0723bc93cc0cf3">&#9670;&#160;</a></span>layer</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoSFInt32.html">SoSFInt32</a> SoPickStyle::layer</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The pick layer for subsequent shapes in the scene graph. Picked points in a higher layer sort in front of those in a lower layer, regardless of their depth; within a layer, the usual depth order applies. The on-top pick styles ignore the layer and always sort frontmost. Default value is 0. </p>
+
+</div>
+</div>
 <a id="a85089766be4c884fce884971ac8cbcac" name="a85089766be4c884fce884971ac8cbcac"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a85089766be4c884fce884971ac8cbcac">&#9670;&#160;</a></span>style</h2>
 
@@ -843,7 +860,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoPickStyle.html">SoPickStyle</a></li>
-    <li class="footer">Generated on Thu Jun 18 2026 20:46:23 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Thu Jun 18 2026 21:12:50 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
