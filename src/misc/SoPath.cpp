@@ -571,7 +571,9 @@ SoPath::truncate(const int length, const SbBool donotify)
   // Remove ourself as an auditor to the nodes' children lists.
   if (this->isauditing) {
     for (int i = length; i < this->getFullLength(); i++) {
-      SoChildList * cl = this->nodes[i]->getChildren();
+      SoNode* node = this->nodes[i];
+      if (node == nullptr) continue;
+      SoChildList * cl = node->getChildren();
 #if COIN_DEBUG && 0 // debug
       if (cl) {
         SoDebugError::postInfo("SoPath::truncate",
@@ -1135,24 +1137,32 @@ SoPath::readInstance(SoInput * in, unsigned short COIN_UNUSED_ARG(flags))
 {
   SoBase * baseptr;
   if (!SoBase::read(in, baseptr, SoNode::getClassTypeId())) return FALSE;
-  this->setHead((SoNode *)baseptr);
 
-  int nrindices;
-  if (!in->read(nrindices)) {
+  int nrindices = -1;
+  if (!in->read(nrindices)|| nrindices < 0) {
     SoReadError::post(in, "Couldn't read number of indices");
     return FALSE;
   }
 
-  for (int i=0; i < nrindices; i++) {
-    int index;
-    if (!in->read(index)) {
+  // Read all indices into a temporary list first
+  SbList<int> indices;
+  for (int i = 0; i < nrindices; i++) {
+    int index = -1;
+    if (!in->read(index) || index < 0) {
       SoReadError::post(in, "Couldn't read index value");
       return FALSE;
     }
+    indices.append(index);
+  }
+
+  this->setHead((SoNode *)baseptr);
+  for (int i = 0; i < indices.getLength(); i++) {
+    int index = indices[i];
 
     SoChildList * tailchildren = this->getTail()->getChildren();
-    if (!tailchildren || index < 0 || index >= tailchildren->getLength()) {
+    if (!tailchildren || index >= tailchildren->getLength()) {
       SoReadError::post(in, "Invalid index value %d", index);
+      this->truncate(0);   // clean up on error
       return FALSE;
     }
 
