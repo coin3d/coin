@@ -456,7 +456,7 @@ SoVRMLParent::updateChildList(SoNode * nodewithsfnode,
   SoType sosftype = SoSFNode::getClassTypeId();
   for (int i = 0; i < n; i++) {
     SoField * f = fd->getField(nodewithsfnode, i);
-    if (f->getTypeId() == sosftype) {
+    if (f != NULL && f->getTypeId() == sosftype) {
       SoNode * node = ((SoSFNode*) f)->getValue();
       if (node) nodelist.append(node);
     }

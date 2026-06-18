@@ -167,6 +167,9 @@ cc_heap_construct(unsigned int size,
                   cc_heap_compare_cb * comparecb,
                   SbBool support_remove)
 {
+  if (size == 0)
+    return NULL;
+
   cc_heap * h = static_cast<cc_heap *>(malloc(sizeof(cc_heap)));
   assert(h);
 

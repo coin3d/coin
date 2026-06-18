@@ -43,7 +43,7 @@
 #ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
 using std::malloc;
 using std::free;
-using std::strcpy;
+using std::strncpy;
 using std::strlen;
 using std::strcmp;
 #endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
@@ -153,11 +153,13 @@ find_string_address(const char * s)
     headchunk = newchunk;
   }
 
-  (void)strcpy(headchunk->curbyte, s);
+  size_t count = len < headchunk->bytesleft ? len : headchunk->bytesleft;
+  (void)strncpy(headchunk->curbyte, s, count);
+  headchunk->curbyte[count - 1] = '\0';
   s = headchunk->curbyte;
 
-  headchunk->curbyte += len;
-  headchunk->bytesleft -= len;
+  headchunk->curbyte += count;
+  headchunk->bytesleft -= count;
 
   return s;
 }

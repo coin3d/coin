@@ -1757,11 +1757,13 @@ SoCoordinate3* FaceGroup::createSoCoordinate3_n(tagContext *con)
 
   SoCoordinate3 *coords = new SoCoordinate3;
   int num = faceList.getLength();
+  int numVertices = con->numVertices;
   coords->point.setNum((num-numDegFaces)*3);
   SbVec3f *c = coords->point.startEditing();
   for (int i=0; i<num; i++) {
     Face *f = faceList[i];
-    if (!f->isDegenerated) {
+    if (!f->isDegenerated &&
+      f->v1 < numVertices && f->v2 < numVertices && f->v3 < numVertices) {
       *(c++) = con->vertexList[f->v1].point;
       *(c++) = con->vertexList[f->v2].point;
       *(c++) = con->vertexList[f->v3].point;
@@ -1779,11 +1781,13 @@ SoTextureCoordinate2* FaceGroup::createSoTextureCoordinate2_n(tagContext *con)
 
   SoTextureCoordinate2 *tCoords = new SoTextureCoordinate2;
   int num = faceList.getLength();
+  int numVertices = con->numVertices;
   tCoords->point.setNum((num-numDegFaces)*3);
   SbVec2f *c = tCoords->point.startEditing();
   for (int i=0; i<num; i++) {
     Face *f = faceList[i];
-    if (!f->isDegenerated) {
+    if (!f->isDegenerated &&
+      f->v1 < numVertices && f->v2 < numVertices && f->v3 < numVertices) {
       *(c++) = con->vertexList[f->v1].texturePoint;
       *(c++) = con->vertexList[f->v2].texturePoint;
       *(c++) = con->vertexList[f->v3].texturePoint;
@@ -1908,12 +1912,14 @@ SoCoordinate3* DefaultFaceGroup::createSoCoordinate3_n(tagContext *con)
 
   SoCoordinate3 *coords = new SoCoordinate3;
   int num = con->numFaces;
+  int numVertices = con->numVertices;
   coords->point.setNum((num - con->numDefaultDegFaces) * 3);
   SbVec3f *c = coords->point.startEditing();
   int j = 0;
   for (int i=0; i<num; i++) {
     Face *f = &con->faceList[i];
-    if (f->faceGroup == NULL && !f->isDegenerated) {
+    if (f->faceGroup == NULL && !f->isDegenerated &&
+      f->v1 < numVertices && f->v2 < numVertices && f->v3 < numVertices) {
       *(c++) = con->vertexList[f->v1].point;
       *(c++) = con->vertexList[f->v2].point;
       *(c++) = con->vertexList[f->v3].point;
