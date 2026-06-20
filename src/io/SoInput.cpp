@@ -867,27 +867,13 @@ SoInput::getASCIIFile(char & c)
   A number in hexadecimal format must have the "0x" prefix.
 
   Returns \c FALSE if end of file is encountered.
+
+  \deprecated Use readUnsignedInteger instead.
 */
 SbBool
 SoInput::readHex(uint32_t & l)
 {
-  assert(!this->isBinary());
-
-  // FIXME: this is a tremendously stupid function. Should obsolete it.
-
-  // FIXME: no checking for array overwriting. Dangerous. 19990625 mortene.
-  char buffer[1024];
-  char * bufptr = buffer;
-
-  if (this->readChar(bufptr, '0')) {
-    if (this->readChar(bufptr + 1, 'x')) {
-      bufptr += 2 + this->readHexDigits(bufptr + 2);
-    }
-  }
-
-  *bufptr = '\0';
-  sscanf(buffer, "%x", &l);
-  return TRUE;
+  return this->readUnsignedInteger(l);
 }
 
 /*!
@@ -2209,6 +2195,8 @@ SoInput::freeBytesInBuf(void) const
 /*!
   Reads 32-bit signed integer value from the current stream. Returns
   \c FALSE if we hit end of file prematurely.
+
+  Supports decimal, hexadecimal and octal formats.
  */
 SbBool
 SoInput::readInteger(int32_t & l)
@@ -2221,6 +2209,8 @@ SoInput::readInteger(int32_t & l)
 /*!
   Reads 32-bit unsigned integer value from the current stream. Returns
   \c FALSE if we hit end of file prematurely.
+
+  Supports decimal, hexadecimal and octal formats.
  */
 SbBool
 SoInput::readUnsignedInteger(uint32_t & l)
