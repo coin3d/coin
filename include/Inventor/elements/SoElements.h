@@ -64,7 +64,6 @@
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoPickStyleElement.h>
-#include <Inventor/elements/SoPickLayerElement.h>
 #include <Inventor/elements/SoSwitchElement.h>
 #include <Inventor/elements/SoTextOutlineEnabledElement.h>
 #include <Inventor/elements/SoTextureCoordinateBindingElement.h>
