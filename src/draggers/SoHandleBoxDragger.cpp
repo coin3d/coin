@@ -1009,7 +1009,7 @@ SoHandleBoxDragger::getDraggerCenter(void)
 }
 
 SbVec3f
-SoHandleBoxDragger::calcCtrlOffset(const SbVec3f startpt)
+SoHandleBoxDragger::calcCtrlOffset(const SbVec3f & startpt)
 {
   SbMatrix m, inv;
   this->getSurroundScaleMatrices(m, inv);
