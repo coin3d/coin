@@ -18,13 +18,14 @@ var searchData=
   ['coin_20v3_201_203_15',['New Features in Coin v3.1.3',['../coin313.html',1,'coin_new_features']]],
   ['coin_20v4_200_200_16',['New Features in Coin v4.0.0',['../coin400.html',1,'coin_new_features']]],
   ['coin_20v4_200_201_17',['New Features in Coin v4.0.1',['../coin401.html',1,'coin_new_features']]],
-  ['coin_20v4_200_202_18',['New Features in Coin v4.0.2',['../coin402.html',1,'coin_new_features']]],
-  ['coin_20v4_200_203_19',['New Features in Coin v4.0.3',['../coin403.html',1,'coin_new_features']]],
-  ['coin_20v4_200_204_20',['New Features in Coin v4.0.4',['../coin404.html',1,'coin_new_features']]],
-  ['coin_20v4_200_205_21',['New Features in Coin v4.0.5',['../coin405.html',1,'coin_new_features']]],
-  ['coin_20v4_200_206_22',['New Features in Coin v4.0.6',['../coin406.html',1,'coin_new_features']]],
-  ['coin_20v4_200_207_23',['New Features in Coin v4.0.7',['../coin407.html',1,'coin_new_features']]],
-  ['coin_20v4_200_208_24',['New Features in Coin v4.0.8',['../coin408.html',1,'coin_new_features']]],
-  ['coin_20v4_200_209_25',['New Features in Coin v4.0.9',['../coin409.html',1,'coin_new_features']]],
-  ['compression_26',['File compression',['../coin_compression_overview.html',1,'coin_related_pages']]]
+  ['coin_20v4_200_2010_18',['New Features in Coin v4.0.10',['../coin4010.html',1,'coin_new_features']]],
+  ['coin_20v4_200_202_19',['New Features in Coin v4.0.2',['../coin402.html',1,'coin_new_features']]],
+  ['coin_20v4_200_203_20',['New Features in Coin v4.0.3',['../coin403.html',1,'coin_new_features']]],
+  ['coin_20v4_200_204_21',['New Features in Coin v4.0.4',['../coin404.html',1,'coin_new_features']]],
+  ['coin_20v4_200_205_22',['New Features in Coin v4.0.5',['../coin405.html',1,'coin_new_features']]],
+  ['coin_20v4_200_206_23',['New Features in Coin v4.0.6',['../coin406.html',1,'coin_new_features']]],
+  ['coin_20v4_200_207_24',['New Features in Coin v4.0.7',['../coin407.html',1,'coin_new_features']]],
+  ['coin_20v4_200_208_25',['New Features in Coin v4.0.8',['../coin408.html',1,'coin_new_features']]],
+  ['coin_20v4_200_209_26',['New Features in Coin v4.0.9',['../coin409.html',1,'coin_new_features']]],
+  ['compression_27',['File compression',['../coin_compression_overview.html',1,'coin_related_pages']]]
 ];

@@ -14,13 +14,14 @@ var searchData=
   ['in_20coin_20v3_201_203_11',['New Features in Coin v3.1.3',['../coin313.html',1,'coin_new_features']]],
   ['in_20coin_20v4_200_200_12',['New Features in Coin v4.0.0',['../coin400.html',1,'coin_new_features']]],
   ['in_20coin_20v4_200_201_13',['New Features in Coin v4.0.1',['../coin401.html',1,'coin_new_features']]],
-  ['in_20coin_20v4_200_202_14',['New Features in Coin v4.0.2',['../coin402.html',1,'coin_new_features']]],
-  ['in_20coin_20v4_200_203_15',['New Features in Coin v4.0.3',['../coin403.html',1,'coin_new_features']]],
-  ['in_20coin_20v4_200_204_16',['New Features in Coin v4.0.4',['../coin404.html',1,'coin_new_features']]],
-  ['in_20coin_20v4_200_205_17',['New Features in Coin v4.0.5',['../coin405.html',1,'coin_new_features']]],
-  ['in_20coin_20v4_200_206_18',['New Features in Coin v4.0.6',['../coin406.html',1,'coin_new_features']]],
-  ['in_20coin_20v4_200_207_19',['New Features in Coin v4.0.7',['../coin407.html',1,'coin_new_features']]],
-  ['in_20coin_20v4_200_208_20',['New Features in Coin v4.0.8',['../coin408.html',1,'coin_new_features']]],
-  ['in_20coin_20v4_200_209_21',['New Features in Coin v4.0.9',['../coin409.html',1,'coin_new_features']]],
-  ['inventor_20coin_22',['Books Related to Open Inventor / Coin',['../coin_books.html',1,'']]]
+  ['in_20coin_20v4_200_2010_14',['New Features in Coin v4.0.10',['../coin4010.html',1,'coin_new_features']]],
+  ['in_20coin_20v4_200_202_15',['New Features in Coin v4.0.2',['../coin402.html',1,'coin_new_features']]],
+  ['in_20coin_20v4_200_203_16',['New Features in Coin v4.0.3',['../coin403.html',1,'coin_new_features']]],
+  ['in_20coin_20v4_200_204_17',['New Features in Coin v4.0.4',['../coin404.html',1,'coin_new_features']]],
+  ['in_20coin_20v4_200_205_18',['New Features in Coin v4.0.5',['../coin405.html',1,'coin_new_features']]],
+  ['in_20coin_20v4_200_206_19',['New Features in Coin v4.0.6',['../coin406.html',1,'coin_new_features']]],
+  ['in_20coin_20v4_200_207_20',['New Features in Coin v4.0.7',['../coin407.html',1,'coin_new_features']]],
+  ['in_20coin_20v4_200_208_21',['New Features in Coin v4.0.8',['../coin408.html',1,'coin_new_features']]],
+  ['in_20coin_20v4_200_209_22',['New Features in Coin v4.0.9',['../coin409.html',1,'coin_new_features']]],
+  ['inventor_20coin_23',['Books Related to Open Inventor / Coin',['../coin_books.html',1,'']]]
 ];
