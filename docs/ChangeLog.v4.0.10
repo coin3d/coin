@@ -1,0 +1,101 @@
+2026-06-21 11:23:56 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (9951ef9154)
+
+	Bump version number to 4.0.10
+
+M	CMakeLists.txt
+
+2026-06-21 11:23:01 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (6fa2fb8b7b)
+
+	Update NEWS, RELNOTES, and releases.dox files.
+
+M	NEWS
+M	RELNOTES
+M	docs/releases.dox
+
+2026-06-18 23:11:13 +0200  Bastiaan Veelo  <veelo@users.noreply.github.com> (5c04b6cea5)
+
+	Revert "Add pick layer to SoPickStyle for ordered on-top picking"
+
+M	include/Inventor/elements/SoElements.h
+D	include/Inventor/elements/SoPickLayerElement.h
+M	include/Inventor/nodes/SoPickStyle.h
+M	src/actions/SoRayPickAction.cpp
+M	src/elements/CMakeLists.txt
+M	src/elements/SoElement.cpp
+D	src/elements/SoPickLayerElement.cpp
+M	src/nodes/SoPickStyle.cpp
+
+2026-06-13 16:55:10 +0200  Kacper Donat  <kadet1090@gmail.com> (da0b6e96f3)
+
+	Add pick layer to SoPickStyle for ordered on-top picking
+
+M	include/Inventor/elements/SoElements.h
+A	include/Inventor/elements/SoPickLayerElement.h
+M	include/Inventor/nodes/SoPickStyle.h
+M	src/actions/SoRayPickAction.cpp
+M	src/elements/CMakeLists.txt
+M	src/elements/SoElement.cpp
+A	src/elements/SoPickLayerElement.cpp
+M	src/nodes/SoPickStyle.cpp
+
+2026-06-18 02:19:42 +0200  Bastiaan Veelo  <Bastiaan@SARC.nl> (9bacdb118b)
+
+	Fail gracefully on recursive PROTO definitions.
+
+M	src/misc/SoBaseP.cpp
+
+2026-06-17 18:52:53 +0200  Bastiaan Veelo  <Bastiaan@SARC.nl> (5d81b41f5f)
+
+	Handle values above the 127-value ASCII character set.
+
+M	src/base/SbName.cpp
+
+2026-06-16 01:23:59 +0200  Bastiaan Veelo  <Bastiaan@SARC.nl> (a802bde723)
+
+	Replaced fixed length buffers in parsing functions...
+
+M	src/coindefs.h
+M	src/io/SoInput.cpp
+M	src/io/SoInput_FileInfo.cpp
+M	src/io/SoInput_FileInfo.h
+
+2026-06-18 17:08:46 +0200  Bastiaan Veelo  <Bastiaan@SARC.nl> (d1303c2ccf)
+
+	Increase robustness against malformed SoPath input.
+
+M	src/misc/SoPath.cpp
+
+2026-06-18 12:56:03 +0200  Bastiaan Veelo  <Bastiaan@SARC.nl> (90941c0310)
+
+	Reject input with invalid IS mappings.
+
+M	src/io/SoInput.cpp
+
+2026-06-15 21:48:09 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (6e172ee74a)
+
+	avoid using SbMin in local function
+
+M	src/base/namemap.cpp
+
+2026-06-15 21:42:51 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (cc720bd64a)
+
+	resolved review comment about safely determining count of characters for std::strncpy
+
+M	src/base/namemap.cpp
+
+2026-06-14 21:58:05 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (9c445e7b9c)
+
+	resolved review comment about using std::strncpy
+
+M	src/base/namemap.cpp
+
+2026-06-14 21:39:40 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (042ccd34ca)
+
+	Fixed some vulnerabilities reported by @oddmunds
+
+M	src/3ds/3dsLoader.cpp
+M	src/base/heap.cpp
+M	src/base/namemap.cpp
+M	src/fields/SoFieldData.cpp
+M	src/misc/SoPath.cpp
+M	src/vrml97/Parent.cpp
