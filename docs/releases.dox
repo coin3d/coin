@@ -1,5 +1,6 @@
 /*!
 \page coin_new_features New Features in Coin
+- \subpage coin4010 "New Features in Coin v4.0.10"
 - \subpage coin409 "New Features in Coin v4.0.9"
 - \subpage coin408 "New Features in Coin v4.0.8"
 - \subpage coin407 "New Features in Coin v4.0.7"
@@ -23,6 +24,20 @@
 - \subpage coin200 "New Features in Coin v2.0.0"
 
 */ 
+
+/**
+\page coin4010 New Features in Coin v4.0.10
+
+This is a bugfix release.
+
+Bug fixes:
+- Fail gracefully on recursive PROTO definitions.
+- Replaced fixed length buffers in parsing functions.
+- Increase robustness against malformed SoPath input.
+- Reject input with invalid IS mappings.
+- Fixed some vulnerabilities reported in GHSA-hcqw-f3m9-mq7p
+
+*/
 
 /**
 \page coin409 New Features in Coin v4.0.9

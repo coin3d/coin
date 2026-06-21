@@ -10,6 +10,19 @@ compatibility of your source code when upgrading the library.
 
 
 
+Coin 4.0.10
+==========
+
+Fail gracefully on recursive PROTO definitions.
+
+Replaced fixed length buffers in parsing functions.
+
+Increase robustness against malformed SoPath input.
+
+Reject input with invalid IS mappings.
+
+Fixed some vulnerabilities reported in GHSA-hcqw-f3m9-mq7p
+
 Coin 4.0.9
 ==========
 
