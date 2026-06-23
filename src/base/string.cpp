@@ -47,20 +47,6 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
-using std::strlen;
-using std::strcpy;
-using std::strncpy;
-using std::strcat;
-using std::strcmp;
-using std::strncmp;
-using std::malloc;
-using std::free;
-using std::memmove;
-using std::atoi;
-using std::printf;
-#endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
-
 /* ********************************************************************** */
 
 /* FIXME:
