@@ -3,7 +3,7 @@ name: Continuous Integration Build
 on:
   workflow_dispatch:  # Allow manual triggers
   pull_request:
-    branches: [ master ]
+    branches: [ master, coin-5 ]
   #push:
   #  branches: [ master ]
 
