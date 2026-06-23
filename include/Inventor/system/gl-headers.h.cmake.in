@@ -49,4 +49,7 @@
 @SIM_INCLUDE_GLU_H@
 @SIM_INCLUDE_GLEXT_H@
 
+/* Fallback enums for environments with legacy GL/GLU/WGL headers. */
+#include <Inventor/system/gl-fallbacks.h>
+
 #endif /* ! COIN_GLHEADERS_H */
