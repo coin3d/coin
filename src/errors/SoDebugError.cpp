@@ -89,14 +89,6 @@
 #include "coindefs.h"
 #include "tidbitsp.h"
 
-#ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
-using std::strcmp;
-using std::strlen;
-using std::strcpy;
-using std::strchr;
-using std::memcpy;
-#endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
-
 #ifdef HAVE_UNISTD_H
   #include <sys/types.h>
   #include <unistd.h>

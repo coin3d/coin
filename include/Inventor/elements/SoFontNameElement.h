@@ -49,7 +49,7 @@ public:
   virtual void init(SoState * state);
 
   static void set(SoState * const state, SoNode * const node,
-                  const SbName fontName);
+                  const SbName & fontName);
   static const SbName & get(SoState * const state);
   static SbName getDefault(void);
 

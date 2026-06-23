@@ -189,13 +189,6 @@ static void inline COIN_CONCAT(compile_only_before_nofunction,__LINE__) () { \
 #define COIN_MSVC_8_0_VERSION 1400
 #define COIN_MSVC_9_0_VERSION 1500
 
-/* see SbTime.cpp for example usage */
-#define COIN_WORKAROUND(def, test) ((def) != 0 && ((def) test))
-
-#if COIN_WORKAROUND(_MSC_VER, <= COIN_MSVC_6_0_VERSION)
-#define COIN_WORKAROUND_NO_USING_STD_FUNCS
-#endif
-
 #ifdef HAVE___BUILTIN_EXPECT
 /* for branch-prediction hint optimization */
 #ifndef likely
