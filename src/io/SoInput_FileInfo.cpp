@@ -517,34 +517,6 @@ SoInput_FileInfo::readUnsignedIntegerString()
   return TRUE;
 }
 
-/*!
-  \deprecated Will not be available in Coin 5 due to absence of bounds checking.
- */
-SbBool
-SoInput_FileInfo::readUnsignedIntegerString(char * str)
-{
-  assert(!this->isBinary());
-  int minSize = 1;
-  char * s = str;
-
-  if (this->readChar(s, '0')) {
-    if (this->readChar(s + 1, 'x')) {
-      s += 2 + this->readHexDigits(s + 2);
-      minSize = 3;
-    }
-    else
-      s += 1 + this->readDigits(s + 1);
-  }
-  else
-    s += this->readDigits(s);
-
-  if (s - str < minSize)
-    return FALSE;
-
-  *s = '\0';
-  return TRUE;
-}
-
 SbBool
 SoInput_FileInfo::readUnsignedInteger(uint32_t & l)
 {
@@ -735,27 +707,6 @@ SoInput_FileInfo::readDigits()
   return (int)offset;
 }
 
-/*!
-  \deprecated Will not be available in Coin 5 due to absence of bounds checking.
- */
-int
-SoInput_FileInfo::readDigits(char * str)
-{
-  assert(!this->isBinary());
-  char c, * s = str;
-
-  while (this->get(c)) {
-    if (isdigit(c))
-      *s++ = c;
-    else {
-      this->putBack(c);
-      break;
-    }
-  }
-  const ptrdiff_t offset = s - str;
-  return (int)offset;
-}
-
 int
 SoInput_FileInfo::readHexDigits()
 {
@@ -772,25 +723,5 @@ SoInput_FileInfo::readHexDigits()
     }
   }
   const ptrdiff_t offset = readString.length() - oldLength;
-  return (int)offset;
-}
-
-/*!
-  \deprecated Will not be available in Coin 5 due to absence of bounds checking.
- */
-int
-SoInput_FileInfo::readHexDigits(char * str)
-{
-  assert(!this->isBinary());
-  char c, * s = str;
-  while (this->get(c)) {
-
-    if (isxdigit(c)) *s++ = c;
-    else {
-      this->putBack(c);
-      break;
-    }
-  }
-  const ptrdiff_t offset = s - str;
   return (int)offset;
 }
