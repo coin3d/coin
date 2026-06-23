@@ -860,37 +860,6 @@ SoInput::getASCIIFile(char & c)
 }
 
 /*!
-  Reads an unsigned integer in hexadecimal format from the current stream.
-  Note that no error checking is done to see if it actually is a hex
-  format value.
-
-  A number in hexadecimal format must have the "0x" prefix.
-
-  Returns \c FALSE if end of file is encountered.
-*/
-SbBool
-SoInput::readHex(uint32_t & l)
-{
-  assert(!this->isBinary());
-
-  // FIXME: this is a tremendously stupid function. Should obsolete it.
-
-  // FIXME: no checking for array overwriting. Dangerous. 19990625 mortene.
-  char buffer[1024];
-  char * bufptr = buffer;
-
-  if (this->readChar(bufptr, '0')) {
-    if (this->readChar(bufptr + 1, 'x')) {
-      bufptr += 2 + this->readHexDigits(bufptr + 2);
-    }
-  }
-
-  *bufptr = '\0';
-  sscanf(buffer, "%x", &l);
-  return TRUE;
-}
-
-/*!
   Skips whitespace and reads next character in input stream.
   Returns \c FALSE if encountering end of file.
 */
@@ -2241,51 +2210,6 @@ SoInput::readReal(double & d)
   SoInput_FileInfo * fi = PRIVATE(this)->getTopOfStackPopOnEOF();
   if (!fi) return FALSE;
   return fi->readReal(d);
-}
-
-/*!
-  Reads a set of bytes from the stream making up an unsigned integer and
-  puts them at \a str.
-
-  Returns \c FALSE if no string representing an unsigned integer could be
-  read.
-
-  \deprecated Will not be available in Coin 5 due to absence of bounds checking.
- */
-SbBool
-SoInput::readUnsignedIntegerString(char * str)
-{
-  SoInput_FileInfo * fi = PRIVATE(this)->getTopOfStackPopOnEOF();
-  if (!fi) return FALSE;
-  return fi->readUnsignedIntegerString(str);
-}
-
-/*!
-  Read decimal base digits from the current input stream into \a str and
-  returns the number of characters read.
-
-  \deprecated Will not be available in Coin 5 due to absence of bounds checking.
-  */
-int
-SoInput::readDigits(char * str)
-{
-  SoInput_FileInfo * fi = PRIVATE(this)->getTopOfStackPopOnEOF();
-  if (!fi) return FALSE;
-  return fi->readDigits(str);
-}
-
-/*!
-  Read hexadecimal base digits from the current input stream into \a str and
-  returns the number of characters read.
-
-  \deprecated Will not be available in Coin 5 due to absence of bounds checking.
- */
-int
-SoInput::readHexDigits(char * str)
-{
-  SoInput_FileInfo * fi = PRIVATE(this)->getTopOfStackPopOnEOF();
-  if (!fi) return FALSE;
-  return fi->readHexDigits(str);
 }
 
 /*!

@@ -203,13 +203,7 @@ public:
   void connectRoutes(SoInput * in);
   void unrefProtos(void);
   int readChar(char * s, char charToRead);
-  COIN_DEPRECATED("Unsafe, will be removed from Coin 5")
-  int readDigits(char * str);
-  COIN_DEPRECATED("Unsafe, will be removed from Coin 5")
-  int readHexDigits(char * str);
 
-  COIN_DEPRECATED("Unsafe, will be removed from Coin 5")
-  SbBool readUnsignedIntegerString(char * str);
   SbBool readUnsignedInteger(uint32_t & l);
   SbBool readInteger(int32_t & l);
   SbBool readReal(double & d);

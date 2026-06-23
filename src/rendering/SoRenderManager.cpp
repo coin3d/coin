@@ -333,7 +333,6 @@ SoRenderManager::~SoRenderManager()
 void
 SoRenderManager::setSceneGraph(SoNode * const sceneroot)
 {
-  //this->detachClipSensor();
   this->detachRootSensor();
   // Don't unref() until after we've set up the new root, in case the
   // old root == the new sceneroot. (Just to be that bit more robust.)
@@ -344,7 +343,6 @@ SoRenderManager::setSceneGraph(SoNode * const sceneroot)
   if (PRIVATE(this)->scene) {
     PRIVATE(this)->scene->ref();
     this->attachRootSensor(PRIVATE(this)->scene);
-    //this->attachClipSensor(PRIVATE(this)->scene);
   }
   
   if (oldroot) oldroot->unref();
@@ -388,8 +386,6 @@ SoRenderManager::getCamera(void) const
   Internal callback
 
   \param[in] data Pointer to SoRenderManager
-
-  \deprecated Will be made private in a later version of Coin
 */
 void
 SoRenderManager::nodesensorCB(void * data, SoSensor * /* sensor */)
@@ -405,8 +401,6 @@ SoRenderManager::nodesensorCB(void * data, SoSensor * /* sensor */)
   Attaches this SoRenderManagers root sensor to a scene
 
   \param[in] sceneroot scene to attach to
-
-  \deprecated Will be private available in Coin 4
 */
 void
 SoRenderManager::attachRootSensor(SoNode * const sceneroot)
@@ -427,8 +421,6 @@ SoRenderManager::attachRootSensor(SoNode * const sceneroot)
 
 /*
   Detaches the rootsensor from all tracked scenes
-
-  \deprecated Will not be available in Coin 4
 */
 void
 SoRenderManager::detachRootSensor(void)
@@ -436,38 +428,6 @@ SoRenderManager::detachRootSensor(void)
   if (PRIVATE(this)->rootsensor) {
     PRIVATE(this)->rootsensor->detach();
   }
-}
-
-/*
-  Attaches this SoRenderManagers clipsensor to a scene
-
-  \param[in] sceneroot scene to attach to
-
-  \deprecated Will not be available in Coin 5
-*/
-void
-SoRenderManager::attachClipSensor(SoNode * const sceneroot)
-{
-  //PRIVATE(this)->clipsensor->attach(sceneroot);
-  //if (PRIVATE(this)->autoclipping != SoRenderManager::NO_AUTO_CLIPPING) {
-  //  PRIVATE(this)->clipsensor->schedule();
-  //}
-}
-
-/*
-  Detaches the clipsensor from all tracked scenes
-
-  \deprecated Will not be available in Coin 5
-*/
-void
-SoRenderManager::detachClipSensor(void)
-{
-  //if (PRIVATE(this)->clipsensor->isScheduled()) {
-  //  PRIVATE(this)->clipsensor->unschedule();
-  //}
-  //if (PRIVATE(this)->clipsensor->getAttachedNode()) {
-  //  PRIVATE(this)->clipsensor->detach();
-  //}
 }
 
 /*!
@@ -492,8 +452,6 @@ SoRenderManager::clearBuffers(SbBool color, SbBool depth)
 
   \param[in] userdata GLbitfield mask
   \param[in] action Calling action
-
-  \deprecated Will be made private in a later version of Coin
 */
 void
 SoRenderManager::prerendercb(void * userdata, SoGLRenderAction * action)
