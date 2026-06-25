@@ -483,7 +483,10 @@ SbImage::readFile(const SbString & filename,
       if (cbdata.cb(filename, this, cbdata.closure)) return TRUE;
     }
     if (!simage_wrapper()->available) {
-      return FALSE;
+        SoDebugError::postWarning("SbImage::readFile",
+                                  "The simage library is not available, "
+                                  "cannot import any images from disk.");
+        return FALSE;
     }
   }
 
