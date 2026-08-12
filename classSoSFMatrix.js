@@ -1,7 +1,7 @@
 var classSoSFMatrix =
 [
-    [ "copyFrom", "classSoSFMatrix.html#a8f583437e0afdbd2a315ea0c91116e35", null ],
-    [ "getTypeId", "classSoSFMatrix.html#ab1777aef5e9b98df4b3615c925b30631", null ],
-    [ "isSame", "classSoSFMatrix.html#a25ec755a6398731d1bd9a40f71a18163", null ],
+    [ "copyFrom", "classSoSFMatrix.html#ad5070e016cb8e90b3df983aa83c50957", null ],
+    [ "getTypeId", "classSoSFMatrix.html#ad6bacb461df8fc7dad414304f6c9a7eb", null ],
+    [ "isSame", "classSoSFMatrix.html#a8650cacca28a463f1100ac3698b51b0e", null ],
     [ "setValue", "classSoSFMatrix.html#a948122a09e8639e8982f2fe4de0788fb", null ]
 ];

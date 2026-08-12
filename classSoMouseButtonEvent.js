@@ -11,6 +11,6 @@ var classSoMouseButtonEvent =
     [ "SoMouseButtonEvent", "classSoMouseButtonEvent.html#aa5b1a326508aff5a863143808b915d9c", null ],
     [ "~SoMouseButtonEvent", "classSoMouseButtonEvent.html#a0792710e85d19b8ef15f31ba71ebdf03", null ],
     [ "getButton", "classSoMouseButtonEvent.html#ac38e6592c3e8d81620c1af97bb1ef1e8", null ],
-    [ "getTypeId", "classSoMouseButtonEvent.html#a2a59cd64526d6aa8cd219c6b22719701", null ],
+    [ "getTypeId", "classSoMouseButtonEvent.html#aa21a75e5d8a1e401ff222621c2ac04e5", null ],
     [ "setButton", "classSoMouseButtonEvent.html#a9b359f6069edec93f0c191db85ac54af", null ]
 ];

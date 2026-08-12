@@ -1,6 +1,6 @@
 var classSoSFBool =
 [
-    [ "copyFrom", "classSoSFBool.html#a289e072851051783dae5ec910d439ce6", null ],
-    [ "getTypeId", "classSoSFBool.html#af1e639fbb2ff898ab7923ebb37fb6ce9", null ],
-    [ "isSame", "classSoSFBool.html#acdc16f8c8b1b2923027b40f7bc0e89ab", null ]
+    [ "copyFrom", "classSoSFBool.html#a49e43804e1956b45b05ec1d8cbd009ec", null ],
+    [ "getTypeId", "classSoSFBool.html#a7293e8a4ff62b94dec30bb8b4af5eb96", null ],
+    [ "isSame", "classSoSFBool.html#ab35a203b77d6d0147a9031eefa71f563", null ]
 ];

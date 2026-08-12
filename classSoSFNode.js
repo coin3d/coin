@@ -1,8 +1,8 @@
 var classSoSFNode =
 [
-    [ "copyFrom", "classSoSFNode.html#ac9f6cf8d1657fde9302672470d3600bf", null ],
-    [ "fixCopy", "classSoSFNode.html#aa2f5f9e0ef5519fb9de6b46274b8d5c8", null ],
-    [ "getTypeId", "classSoSFNode.html#af37a6941f2a0c060d21babdc8d61d313", null ],
-    [ "isSame", "classSoSFNode.html#ab61aef3c35f8d0a0b292599f8b14145f", null ],
-    [ "referencesCopy", "classSoSFNode.html#a1a7ebe1e56de5f4bb3cda425e621f9e5", null ]
+    [ "copyFrom", "classSoSFNode.html#a02db4d64265f53f292cd7789adc6cb54", null ],
+    [ "fixCopy", "classSoSFNode.html#a7b4a882103d62972c0155dacff3a59da", null ],
+    [ "getTypeId", "classSoSFNode.html#ab9ca2743c47a0dfb6607363dc92d0c45", null ],
+    [ "isSame", "classSoSFNode.html#a20ac563a8dcfd66f80ce8ebb90cfe7db", null ],
+    [ "referencesCopy", "classSoSFNode.html#a631d41e1acc488a6d5f80d09b0ab69ff", null ]
 ];

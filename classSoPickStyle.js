@@ -10,10 +10,10 @@ var classSoPickStyle =
     ] ],
     [ "SoPickStyle", "classSoPickStyle.html#abdb60829515f29ff3eb4d21b05c7bf2c", null ],
     [ "~SoPickStyle", "classSoPickStyle.html#a8969b7fe748a0dc35b6c4835a4855978", null ],
-    [ "callback", "classSoPickStyle.html#a966a157ec8174d28be481881de1856ea", null ],
-    [ "doAction", "classSoPickStyle.html#aefeef5e8db1e21ac4e750fca2c6a807c", null ],
-    [ "getFieldData", "classSoPickStyle.html#a5535ea21b15f74b782820ac52cc3771e", null ],
-    [ "getTypeId", "classSoPickStyle.html#a4962dd662d22d85ad6c9fb8dd9ec59fe", null ],
-    [ "pick", "classSoPickStyle.html#abf0c9ee342011e88cb045461f8261d5c", null ],
+    [ "callback", "classSoPickStyle.html#a8d30dfad9776dd96519b17debce2b148", null ],
+    [ "doAction", "classSoPickStyle.html#a658d863cffe74bc274931de5c2202640", null ],
+    [ "getFieldData", "classSoPickStyle.html#aacd1461e6f3f1d27eab72f14b29e5b58", null ],
+    [ "getTypeId", "classSoPickStyle.html#a0e2a67c04c2b96caeaeb4e8080d015e9", null ],
+    [ "pick", "classSoPickStyle.html#a0a111fce915a8d1cb8342ca992f0079d", null ],
     [ "style", "classSoPickStyle.html#a85089766be4c884fce884971ac8cbcac", null ]
 ];

@@ -174,9 +174,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5213759cf99a59285d7094d666710859" id="r_a5213759cf99a59285d7094d666710859"><td class="memItemLeft" align="right" valign="top"><a id="a5213759cf99a59285d7094d666710859" name="a5213759cf99a59285d7094d666710859"></a>
 <a class="el" href="classSbList.html">const</a> char *&#160;</td><td class="memItemRight" valign="bottom"><b>getEventTargetType</b> (<a class="el" href="classSbList.html">void</a>) <a class="el" href="classSbList.html">const</a></td></tr>
 <tr class="separator:a5213759cf99a59285d7094d666710859"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83c3e492e1f1cd43160447442ca05828" id="r_a83c3e492e1f1cd43160447442ca05828"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbList.html">virtual</a> <a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a83c3e492e1f1cd43160447442ca05828">getTypeId</a> (<a class="el" href="classSbList.html">void</a>) <a class="el" href="classSbList.html">const</a> =0</td></tr>
-<tr class="memdesc:a83c3e492e1f1cd43160447442ca05828"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the type identification of an object derived from a class inheriting <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a>. This is used for runtime type checking and "downward" casting.    <br /></td></tr>
-<tr class="separator:a83c3e492e1f1cd43160447442ca05828"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3dfc46fa2c37e438716b43beb142bfc0" id="r_a3dfc46fa2c37e438716b43beb142bfc0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoType.html">SoType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3dfc46fa2c37e438716b43beb142bfc0">getTypeId</a> (<a class="el" href="classSbList.html">void</a>) <a class="el" href="classSbList.html">const</a> <a class="el" href="classSbList.html">override</a>=0</td></tr>
+<tr class="memdesc:a3dfc46fa2c37e438716b43beb142bfc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the type identification of an object derived from a class inheriting <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a>. This is used for runtime type checking and "downward" casting.    <br /></td></tr>
+<tr class="separator:a3dfc46fa2c37e438716b43beb142bfc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3d16a8a6bf692e27c582265718f4870" id="r_aa3d16a8a6bf692e27c582265718f4870"><td class="memItemLeft" align="right" valign="top"><a id="aa3d16a8a6bf692e27c582265718f4870" name="aa3d16a8a6bf692e27c582265718f4870"></a>
 <a class="el" href="classSbList.html">virtual</a> SbBool&#160;</td><td class="memItemRight" valign="bottom"><b>processEventQueue</b> (<a class="el" href="classSbList.html">void</a>)</td></tr>
 <tr class="separator:aa3d16a8a6bf692e27c582265718f4870"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -310,8 +310,8 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>targettype</b></td>
 
 </div>
 </div>
-<a id="a83c3e492e1f1cd43160447442ca05828" name="a83c3e492e1f1cd43160447442ca05828"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a83c3e492e1f1cd43160447442ca05828">&#9670;&#160;</a></span>getTypeId()</h2>
+<a id="a3dfc46fa2c37e438716b43beb142bfc0" name="a3dfc46fa2c37e438716b43beb142bfc0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3dfc46fa2c37e438716b43beb142bfc0">&#9670;&#160;</a></span>getTypeId()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -320,7 +320,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>targettype</b></td>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classSbList.html">virtual</a> <a class="el" href="classSoType.html">SoType</a> ScXMLEventTarget::getTypeId </td>
+          <td class="memname"><a class="el" href="classSoType.html">SoType</a> ScXMLEventTarget::getTypeId </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classSbList.html">void</a></td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
           <td> const</td>
@@ -328,7 +328,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>targettype</b></td>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">pure virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -338,7 +338,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>targettype</b></td>
 
 <p>Implements <a class="el" href="classScXMLObject.html#a99bfd8003e56ea165441c66a33da44c6">ScXMLObject</a>.</p>
 
-<p>Implemented in <a class="el" href="classSoScXMLDollyTarget.html#ac557c9915728049bbaffe65b4cc2f920">SoScXMLDollyTarget</a>, <a class="el" href="classSoScXMLFlightControlTarget.html#a5c1b59c4515d92d4aeec8fd9b9c9646b">SoScXMLFlightControlTarget</a>, <a class="el" href="classSoScXMLMiscTarget.html#aee8eea447a1cdbf8845271949ac4a27b">SoScXMLMiscTarget</a>, <a class="el" href="classSoScXMLMotionTarget.html#a5c141d97db49c74e1e9e488086e8de41">SoScXMLMotionTarget</a>, <a class="el" href="classSoScXMLPanTarget.html#ad6f0da0b31925f4f54a680fb6fc98fe0">SoScXMLPanTarget</a>, <a class="el" href="classSoScXMLRotateTarget.html#a31dc9220da97300ccc0265c0602216d3">SoScXMLRotateTarget</a>, <a class="el" href="classSoScXMLSeekTarget.html#ac7daf158b9d348b3693ebba08b56ffa9">SoScXMLSeekTarget</a>, <a class="el" href="classSoScXMLSpinTarget.html#a56c3c33e072e7d20a3762ba79a2cee55">SoScXMLSpinTarget</a>, <a class="el" href="classSoScXMLZoomTarget.html#a163d3f74f8277a6ecac130047ae9a549">SoScXMLZoomTarget</a>, <a class="el" href="classScXMLStateMachine.html#ac598573a1f6498a705251cf5f2b30d75">ScXMLStateMachine</a>, <a class="el" href="classSoScXMLStateMachine.html#aa55d5011cfc4f78337f04b58e9a41c65">SoScXMLStateMachine</a>, and <a class="el" href="classSoScXMLNavigationTarget.html#ae069d9168c40e876a58fa4d0f53c4eb1">SoScXMLNavigationTarget</a>.</p>
+<p>Implemented in <a class="el" href="classSoScXMLDollyTarget.html#a38c9160cb3dbc80af2abdca9d51b3b8c">SoScXMLDollyTarget</a>, <a class="el" href="classSoScXMLFlightControlTarget.html#a22c820aa620b18c7d233bf37073d3c02">SoScXMLFlightControlTarget</a>, <a class="el" href="classSoScXMLMiscTarget.html#a6aa65a64d8d00b3397b609bbb3167023">SoScXMLMiscTarget</a>, <a class="el" href="classSoScXMLMotionTarget.html#a8508a7128a31b8109133952d268f958e">SoScXMLMotionTarget</a>, <a class="el" href="classSoScXMLPanTarget.html#ab78cbf584a50377c9a774d8e070504ef">SoScXMLPanTarget</a>, <a class="el" href="classSoScXMLRotateTarget.html#a740b0cbdea79329225743730589ccfec">SoScXMLRotateTarget</a>, <a class="el" href="classSoScXMLSeekTarget.html#a1948ec432ad62bae0f04cbcb3ae7d798">SoScXMLSeekTarget</a>, <a class="el" href="classSoScXMLSpinTarget.html#a81ff039c74bf99105a129cb95252ac2e">SoScXMLSpinTarget</a>, <a class="el" href="classSoScXMLZoomTarget.html#ac51531574df808565369b21110d73987">SoScXMLZoomTarget</a>, <a class="el" href="classScXMLStateMachine.html#a1527a6479edcb9c7a3ca9ea3c388ea83">ScXMLStateMachine</a>, <a class="el" href="classSoScXMLStateMachine.html#a0bd086b837bef943e9183ae23c6195be">SoScXMLStateMachine</a>, and <a class="el" href="classSoScXMLNavigationTarget.html#a3be32670607405badda3573ebecb997a">SoScXMLNavigationTarget</a>.</p>
 
 </div>
 </div>
@@ -366,7 +366,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>targettype</b></td>
 </div><div class="memdoc">
 <p>This function processes one event. The base class implementation does nothing. </p>
 
-<p>Reimplemented in <a class="el" href="classSoScXMLDollyTarget.html#a1c06e7a3f0438d4253af4169dfba704d">SoScXMLDollyTarget</a>, <a class="el" href="classSoScXMLFlightControlTarget.html#a41e426aa1e15ee506d1dfff2951c7138">SoScXMLFlightControlTarget</a>, <a class="el" href="classSoScXMLMiscTarget.html#a1bd9afdd566d4c21d66297d48f395e86">SoScXMLMiscTarget</a>, <a class="el" href="classSoScXMLMotionTarget.html#ab73bd1dc38be2b6b256b2a8e370a9d78">SoScXMLMotionTarget</a>, <a class="el" href="classSoScXMLPanTarget.html#a1bc9ef9512f7c984e828860c1109fead">SoScXMLPanTarget</a>, <a class="el" href="classSoScXMLRotateTarget.html#a1e80eef7d03f707782589f87bfe5a186">SoScXMLRotateTarget</a>, <a class="el" href="classSoScXMLSeekTarget.html#a6d93cce7c9530a91ed42ebd2b52898b4">SoScXMLSeekTarget</a>, <a class="el" href="classSoScXMLSpinTarget.html#a06264565ff274cc1ae96b912c7d98230">SoScXMLSpinTarget</a>, <a class="el" href="classSoScXMLZoomTarget.html#ab8a236de1f571a2db85a2a03011ac56e">SoScXMLZoomTarget</a>, and <a class="el" href="classScXMLStateMachine.html#a9dbeab737cb398f1a50cb523fd417e64">ScXMLStateMachine</a>.</p>
+<p>Reimplemented in <a class="el" href="classSoScXMLDollyTarget.html#aaaceedeccd153671662c844bb14c2774">SoScXMLDollyTarget</a>, <a class="el" href="classSoScXMLFlightControlTarget.html#aaff071ec6590870bb2cb316695293b07">SoScXMLFlightControlTarget</a>, <a class="el" href="classSoScXMLMiscTarget.html#a56366f416bf42cf0686aafb770b0f177">SoScXMLMiscTarget</a>, <a class="el" href="classSoScXMLMotionTarget.html#a4521764ede736c35d4bf9a626bba1daa">SoScXMLMotionTarget</a>, <a class="el" href="classSoScXMLPanTarget.html#abb96fde830f04e3ffe97974826311347">SoScXMLPanTarget</a>, <a class="el" href="classSoScXMLRotateTarget.html#ab486d18a2923a7f1bf9d752c553897b6">SoScXMLRotateTarget</a>, <a class="el" href="classSoScXMLSeekTarget.html#a16fb2c5763de93597ed3ac58e6c372a9">SoScXMLSeekTarget</a>, <a class="el" href="classSoScXMLSpinTarget.html#ac3ba41eb3ca516ef6487345493e2e4be">SoScXMLSpinTarget</a>, <a class="el" href="classSoScXMLZoomTarget.html#a8c0787b9adcb83a6bdddd08d12cc3c39">SoScXMLZoomTarget</a>, and <a class="el" href="classScXMLStateMachine.html#aef4661fbcfd9355a5f3027a61a56cf4e">ScXMLStateMachine</a>.</p>
 
 </div>
 </div>
@@ -458,7 +458,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>targettype</b></td>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classScXMLEventTarget.html">ScXMLEventTarget</a></li>
-    <li class="footer">Generated on Mon Aug 10 2026 19:00:43 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Wed Aug 12 2026 20:09:50 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

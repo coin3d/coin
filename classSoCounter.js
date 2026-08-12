@@ -2,9 +2,9 @@ var classSoCounter =
 [
     [ "SoCounter", "classSoCounter.html#a864ad6b12b2055c5fb6354186a26a81f", null ],
     [ "~SoCounter", "classSoCounter.html#abf9471f79a6924f8999bfbc46ef10a5d", null ],
-    [ "getFieldData", "classSoCounter.html#a1a78bf7b1e514cb013f8c89762f170c7", null ],
-    [ "getOutputData", "classSoCounter.html#ae099a69249233ed638239e27920deea2", null ],
-    [ "getTypeId", "classSoCounter.html#a7bb142a15666bd2ed47c3cb490e0605d", null ],
+    [ "getFieldData", "classSoCounter.html#aee7e015055545ce49447ce355cb2eb7d", null ],
+    [ "getOutputData", "classSoCounter.html#a0681c58600d39a67075408444d7fd392", null ],
+    [ "getTypeId", "classSoCounter.html#af44ba83d1b95f4e8c728528a41963855", null ],
     [ "max", "classSoCounter.html#a166edeaf3a199340f9a37581cd30e6e9", null ],
     [ "min", "classSoCounter.html#a18b72f09eb77fe0b9929ba74f058c5d0", null ],
     [ "output", "classSoCounter.html#a90c4163f33d4d3ae0556e9c5e0aa84e5", null ],

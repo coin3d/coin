@@ -7,5 +7,5 @@ var classSoDrawStyleElement =
       [ "INVISIBLE", "classSoDrawStyleElement.html#a3563b11c949573a479f104696a841ea6ae8a5fb75a913f72e629ced8a4d71dff5", null ]
     ] ],
     [ "~SoDrawStyleElement", "classSoDrawStyleElement.html#af4bcdfa6bd35bc8d0a22af0e976e09a3", null ],
-    [ "init", "classSoDrawStyleElement.html#a746cf3a5438b106e7e462ee35cd67b28", null ]
+    [ "init", "classSoDrawStyleElement.html#a5ac6192f7efe8d90d860ee8c1d8e0d0b", null ]
 ];

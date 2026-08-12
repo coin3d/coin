@@ -1,8 +1,8 @@
 var classSoSFColorRGBA =
 [
-    [ "copyFrom", "classSoSFColorRGBA.html#ad841dddc23ef85240e3affd52560e27b", null ],
-    [ "getTypeId", "classSoSFColorRGBA.html#aba2c9680af5d0be22f3db0d3fc6f89fa", null ],
-    [ "isSame", "classSoSFColorRGBA.html#ac7dca64ea8d2fe125e91631543982efd", null ],
+    [ "copyFrom", "classSoSFColorRGBA.html#ad0d1e70d78354824d73c7db8a803eb78", null ],
+    [ "getTypeId", "classSoSFColorRGBA.html#aeeea5d0d3759914ac15a9c1de84aa8bb", null ],
+    [ "isSame", "classSoSFColorRGBA.html#a01f835a2899fc93c7897a649655e9e1a", null ],
     [ "setHSVValue", "classSoSFColorRGBA.html#a41c616fe1bcbdf794dfd2e1a0f3424e3", null ],
     [ "setHSVValue", "classSoSFColorRGBA.html#a11e4dcc0b7c1b27147cd6437372a113f", null ],
     [ "setValue", "classSoSFColorRGBA.html#a191e7eafe1efa66d7278bca01045ecc9", null ],

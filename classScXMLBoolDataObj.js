@@ -1,4 +1,4 @@
 var classScXMLBoolDataObj =
 [
-    [ "getTypeId", "classScXMLBoolDataObj.html#afe498dcdc3803ef8bcd583d2778e5f76", null ]
+    [ "getTypeId", "classScXMLBoolDataObj.html#a35d822983194595b8f2bdf16fea5614d", null ]
 ];

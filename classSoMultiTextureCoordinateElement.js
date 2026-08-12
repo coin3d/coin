@@ -3,7 +3,7 @@ var classSoMultiTextureCoordinateElement =
     [ "UnitData", "classSoMultiTextureCoordinateElement_1_1UnitData.html", null ],
     [ "SoMultiTextureCoordinateElement", "classSoMultiTextureCoordinateElement.html#a1e5c06cf7e4bda1f97cd4e95db366919", null ],
     [ "~SoMultiTextureCoordinateElement", "classSoMultiTextureCoordinateElement.html#ab551a9259d46d386211485a1f3395604", null ],
-    [ "copyMatchInfo", "classSoMultiTextureCoordinateElement.html#afd994c8910c79a1f5be24338fe6b81da", null ],
+    [ "copyMatchInfo", "classSoMultiTextureCoordinateElement.html#ae38c980ef574037692daf208060e261d", null ],
     [ "get", "classSoMultiTextureCoordinateElement.html#a29a8af15d3b86ca4a1017f11118463e1", null ],
     [ "get2", "classSoMultiTextureCoordinateElement.html#a5f964e00d6322ee980d38a2b1bf3a55d", null ],
     [ "get3", "classSoMultiTextureCoordinateElement.html#a793d5cf708b3b6c0b6c3127e199f4b8f", null ],
@@ -15,8 +15,8 @@ var classSoMultiTextureCoordinateElement =
     [ "getNum", "classSoMultiTextureCoordinateElement.html#aaec7353aa01a011e5d20a954ec07601e", null ],
     [ "getType", "classSoMultiTextureCoordinateElement.html#a0593a0dc89d4afd6cc97a54920ae5bbf", null ],
     [ "getUnitData", "classSoMultiTextureCoordinateElement.html#aa208bc28ed5b6f7f1f875629353a8d24", null ],
-    [ "init", "classSoMultiTextureCoordinateElement.html#a4414df2321b9996ef0764ae1bbe02530", null ],
+    [ "init", "classSoMultiTextureCoordinateElement.html#a94965d64fd2e07f0f5b80bca8380503b", null ],
     [ "is2D", "classSoMultiTextureCoordinateElement.html#a2e88bdbccd436747c7a4e3eefbc2bfc5", null ],
-    [ "matches", "classSoMultiTextureCoordinateElement.html#a5d38d94e9a765bec9afcdff0f676c03c", null ],
-    [ "push", "classSoMultiTextureCoordinateElement.html#a66e3959b413972d272550e46047daa82", null ]
+    [ "matches", "classSoMultiTextureCoordinateElement.html#a6a10c259906b12cddae7704cf3929977", null ],
+    [ "push", "classSoMultiTextureCoordinateElement.html#a2326f9bfe153ca985d20fb628a39f6c1", null ]
 ];

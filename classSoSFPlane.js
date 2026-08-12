@@ -1,6 +1,6 @@
 var classSoSFPlane =
 [
-    [ "copyFrom", "classSoSFPlane.html#a205738a40ecbbe8a0b0467f36c00f356", null ],
-    [ "getTypeId", "classSoSFPlane.html#aaeaaf8718ff86eb669740d71d9148e58", null ],
-    [ "isSame", "classSoSFPlane.html#aeaa9e80752613ade9c38ed97b490b699", null ]
+    [ "copyFrom", "classSoSFPlane.html#a095abb74e7c1c5f49f63c3da2321b0dc", null ],
+    [ "getTypeId", "classSoSFPlane.html#a5c725cd4d75a5de3c3f9af2023382a9e", null ],
+    [ "isSame", "classSoSFPlane.html#a1d40d5e5489f70b0c72ba2576371ab3c", null ]
 ];

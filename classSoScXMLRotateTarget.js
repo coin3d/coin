@@ -1,5 +1,5 @@
 var classSoScXMLRotateTarget =
 [
-    [ "getTypeId", "classSoScXMLRotateTarget.html#a31dc9220da97300ccc0265c0602216d3", null ],
-    [ "processOneEvent", "classSoScXMLRotateTarget.html#a1e80eef7d03f707782589f87bfe5a186", null ]
+    [ "getTypeId", "classSoScXMLRotateTarget.html#a740b0cbdea79329225743730589ccfec", null ],
+    [ "processOneEvent", "classSoScXMLRotateTarget.html#ab486d18a2923a7f1bf9d752c553897b6", null ]
 ];

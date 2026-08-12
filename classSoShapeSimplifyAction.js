@@ -1,6 +1,6 @@
 var classSoShapeSimplifyAction =
 [
-    [ "beginTraversal", "classSoShapeSimplifyAction.html#afc0ddec6da55b11a4e03b91c46e6211f", null ],
-    [ "getEnabledElements", "classSoShapeSimplifyAction.html#a0ac63346fc5de5eaff9daafbd8a2f3e1", null ],
-    [ "getTypeId", "classSoShapeSimplifyAction.html#a7e3e773e118c2e19ea262394ddbef4df", null ]
+    [ "beginTraversal", "classSoShapeSimplifyAction.html#afc365d716dbc3d73b1418bd850607fe0", null ],
+    [ "getEnabledElements", "classSoShapeSimplifyAction.html#a5c7cd1e5f331b707340d2912b8278595", null ],
+    [ "getTypeId", "classSoShapeSimplifyAction.html#af2a16f022a0119b2db06a45fba7a7abd", null ]
 ];

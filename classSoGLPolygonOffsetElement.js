@@ -1,8 +1,8 @@
 var classSoGLPolygonOffsetElement =
 [
     [ "~SoGLPolygonOffsetElement", "classSoGLPolygonOffsetElement.html#ac11c7b2b8e83a3902e19faabe97b9799", null ],
-    [ "init", "classSoGLPolygonOffsetElement.html#ad4a0b3eb3f3f09d6a37de2c3bafaedb5", null ],
-    [ "pop", "classSoGLPolygonOffsetElement.html#a1ce1f60ae50dd7b3e54c2627b0943500", null ],
-    [ "push", "classSoGLPolygonOffsetElement.html#ad9b7806385e0635bd7fbc0bc7ea60ea0", null ],
-    [ "setElt", "classSoGLPolygonOffsetElement.html#a7864d1bcd6c893104db857eb3b083bd7", null ]
+    [ "init", "classSoGLPolygonOffsetElement.html#aa7c4663e4605cafac3754a9a7ff595a1", null ],
+    [ "pop", "classSoGLPolygonOffsetElement.html#a2cf73e138e2544c65c68a89bb2ef763c", null ],
+    [ "push", "classSoGLPolygonOffsetElement.html#a9e7ed57bc01c0fd7a2b3e278f0569c96", null ],
+    [ "setElt", "classSoGLPolygonOffsetElement.html#aa421f10f2588db7b7be01b67e40a0947", null ]
 ];

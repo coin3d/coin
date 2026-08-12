@@ -339,8 +339,8 @@ Static Public Member Functions</h2></td></tr>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a687eeb3ee47c6caa258694bb659678f9" id="r_a687eeb3ee47c6caa258694bb659678f9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a687eeb3ee47c6caa258694bb659678f9">SoMField</a> (<a class="el" href="classSbList.html">void</a>)</td></tr>
 <tr class="separator:a687eeb3ee47c6caa258694bb659678f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66c71f07e8204ba2ee7d7aa8e9cb739b" id="r_a66c71f07e8204ba2ee7d7aa8e9cb739b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbList.html">virtual</a> <a class="el" href="classSoNotRec.html">SoNotRec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a66c71f07e8204ba2ee7d7aa8e9cb739b">createNotRec</a> (<a class="el" href="classSoBase.html">SoBase</a> *container)</td></tr>
-<tr class="separator:a66c71f07e8204ba2ee7d7aa8e9cb739b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a343e492116a109e0de027fdd2c2320d6" id="r_a343e492116a109e0de027fdd2c2320d6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoNotRec.html">SoNotRec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a343e492116a109e0de027fdd2c2320d6">createNotRec</a> (<a class="el" href="classSoBase.html">SoBase</a> *container) <a class="el" href="classSbList.html">override</a></td></tr>
+<tr class="separator:a343e492116a109e0de027fdd2c2320d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac07f6388c27eba3c4be8437e035adc4a" id="r_ac07f6388c27eba3c4be8437e035adc4a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbList.html">virtual</a> <a class="el" href="classSbList.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac07f6388c27eba3c4be8437e035adc4a">makeRoom</a> (int <a class="el" href="classSbList.html">newnum</a>)</td></tr>
 <tr class="separator:ac07f6388c27eba3c4be8437e035adc4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8bd73aeda259e3679bbfc827df3705d" id="r_aa8bd73aeda259e3679bbfc827df3705d"><td class="memItemLeft" align="right" valign="top"><a id="aa8bd73aeda259e3679bbfc827df3705d" name="aa8bd73aeda259e3679bbfc827df3705d"></a>
@@ -553,8 +553,8 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a66c71f07e8204ba2ee7d7aa8e9cb739b" name="a66c71f07e8204ba2ee7d7aa8e9cb739b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a66c71f07e8204ba2ee7d7aa8e9cb739b">&#9670;&#160;</a></span>createNotRec()</h2>
+<a id="a343e492116a109e0de027fdd2c2320d6" name="a343e492116a109e0de027fdd2c2320d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a343e492116a109e0de027fdd2c2320d6">&#9670;&#160;</a></span>createNotRec()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -571,7 +571,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -610,7 +610,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Elements with indices larger than the last deleted element will be moved downwards in the value array.</p>
 <p>If <em>num</em> equals -1, delete from index <em>start</em> and to the end of the array. </p>
 
-<p>Reimplemented in <a class="el" href="classSoMFEngine.html#a75e6b106ba70f4408d595cfc7dfcb878">SoMFEngine</a>, <a class="el" href="classSoMFNode.html#ae84bef6b8dfaf807ba08710ad3329842">SoMFNode</a>, and <a class="el" href="classSoMFPath.html#a116b84beb9f733a318a47f627e642393">SoMFPath</a>.</p>
+<p>Reimplemented in <a class="el" href="classSoMFEngine.html#a2c6a76796a33a28461dae70db3cd5176">SoMFEngine</a>, <a class="el" href="classSoMFNode.html#a637c6511701859db71233970b2958291">SoMFNode</a>, and <a class="el" href="classSoMFPath.html#a3473aa173797096095dd6c2062b2bf29">SoMFPath</a>.</p>
 
 </div>
 </div>
@@ -773,7 +773,7 @@ TGS Inventor <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c33
 </div><div class="memdoc">
 <p>Insert <em>num</em> "slots" for new value elements from <em>start</em>. The elements already present from <em>start</em> will be moved "upward" in the extended array. </p>
 
-<p>Reimplemented in <a class="el" href="classSoMFEngine.html#a08f8d1ee8b4e04c6fdb242c433470bfd">SoMFEngine</a>, <a class="el" href="classSoMFNode.html#adac23e1714ca11172daaecc55214a31d">SoMFNode</a>, and <a class="el" href="classSoMFPath.html#aefe9513cb523b93c3f41b9a371ca0ab3">SoMFPath</a>.</p>
+<p>Reimplemented in <a class="el" href="classSoMFEngine.html#afea2af961dc69ed06393cbb104dcc82d">SoMFEngine</a>, <a class="el" href="classSoMFNode.html#ac81dc9273b7e364aeeb7df9ead89f099">SoMFNode</a>, and <a class="el" href="classSoMFPath.html#a095921f8f0bc8464c85a1f0b6720c217">SoMFPath</a>.</p>
 
 </div>
 </div>
@@ -955,7 +955,7 @@ TGS Inventor <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c33
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoMField.html">SoMField</a></li>
-    <li class="footer">Generated on Mon Aug 10 2026 19:00:45 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Wed Aug 12 2026 20:09:52 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

@@ -187,8 +187,8 @@ $(function(){initNavTree('SoProfilerElement_8h_source.html',''); initResizable()
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keyword">static</span> <a class="code hl_class" href="classSoProfilerElement.html">SoProfilerElement</a> * get(<a class="code hl_class" href="classSoState.html">SoState</a> * state);</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keyword">virtual</span> SbBool <a class="code hl_function" href="classSoElement.html#a50b30f50781837a7aedc5cdbd25c5ecb">matches</a>(<span class="keyword">const</span> <a class="code hl_class" href="classSoElement.html">SoElement</a> * element) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classSoElement.html">SoElement</a> * <a class="code hl_function" href="classSoElement.html#a4a6e2a38cdbbdd1dccbb3e9928e68d55">copyMatchInfo</a>(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  SbBool <a class="code hl_function" href="classSoElement.html#a50b30f50781837a7aedc5cdbd25c5ecb">matches</a>(<span class="keyword">const</span> <a class="code hl_class" href="classSoElement.html">SoElement</a> * element) <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <a class="code hl_class" href="classSoElement.html">SoElement</a> * <a class="code hl_function" href="classSoElement.html#a4a6e2a38cdbbdd1dccbb3e9928e68d55">copyMatchInfo</a>(<span class="keywordtype">void</span>) <span class="keyword">const override</span>;</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <a class="code hl_class" href="classSbProfilingData.html">SbProfilingData</a> &amp; getProfilingData(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keyword">const</span> <a class="code hl_class" href="classSbProfilingData.html">SbProfilingData</a> &amp; getProfilingData(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
@@ -199,8 +199,8 @@ $(function(){initNavTree('SoProfilerElement_8h_source.html',''); initResizable()
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <a class="code hl_class" href="classSbProfilingData.html">SbProfilingData</a> data;</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classSoElement.html#a69fc44b31adb066ba40bbc555298b107">push</a>(<a class="code hl_class" href="classSoState.html">SoState</a> * state);</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classSoElement.html#a47fb7cba01227fed02b5d48d7797dddb">pop</a>(<a class="code hl_class" href="classSoState.html">SoState</a> * state, <span class="keyword">const</span> <a class="code hl_class" href="classSoElement.html">SoElement</a> * elt);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classSoElement.html#a69fc44b31adb066ba40bbc555298b107">push</a>(<a class="code hl_class" href="classSoState.html">SoState</a> * state) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classSoElement.html#a47fb7cba01227fed02b5d48d7797dddb">pop</a>(<a class="code hl_class" href="classSoState.html">SoState</a> * state, <span class="keyword">const</span> <a class="code hl_class" href="classSoElement.html">SoElement</a> * elt) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>}; <span class="comment">// SoProfilerElement</span></div>
 </div>
@@ -221,7 +221,7 @@ $(function(){initNavTree('SoProfilerElement_8h_source.html',''); initResizable()
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_7eabc74ee96f78b1d9e65fb468addeca.html">annex</a></li><li class="navelem"><a class="el" href="dir_087b523aeb037e0c64242cae2e781c74.html">Profiler</a></li><li class="navelem"><a class="el" href="dir_409432276736cd13e9c81aea90c147a2.html">elements</a></li><li class="navelem"><b>SoProfilerElement.h</b></li>
-    <li class="footer">Generated on Mon Aug 10 2026 19:00:41 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Wed Aug 12 2026 20:09:48 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

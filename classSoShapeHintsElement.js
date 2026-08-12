@@ -1,11 +1,11 @@
 var classSoShapeHintsElement =
 [
     [ "~SoShapeHintsElement", "classSoShapeHintsElement.html#abaf14451c7ca12221d78a434de707548", null ],
-    [ "copyMatchInfo", "classSoShapeHintsElement.html#aa49f0e22efd3ddd7bffc0a13d75160ba", null ],
-    [ "init", "classSoShapeHintsElement.html#a70b3d7d5fb9ae94ccc2198755c7d37c5", null ],
-    [ "matches", "classSoShapeHintsElement.html#aa247d3abbc4492997f846f5ccd875eac", null ],
-    [ "pop", "classSoShapeHintsElement.html#ad41d00bd5b082bb2536afcb3265c931f", null ],
-    [ "print", "classSoShapeHintsElement.html#a601b2b8a4a30f6a53aec3dc4502219b0", null ],
-    [ "push", "classSoShapeHintsElement.html#ab7b5e792a6d5e9ecd8ecf108a133b8d0", null ],
+    [ "copyMatchInfo", "classSoShapeHintsElement.html#a0d338355d39e0e9c9332681013cf0ed9", null ],
+    [ "init", "classSoShapeHintsElement.html#a1b74312c4f2ceaf3585d074faee3a029", null ],
+    [ "matches", "classSoShapeHintsElement.html#aeb282dfae54338215a3195f24095584d", null ],
+    [ "pop", "classSoShapeHintsElement.html#a7f3ef0564b4efb74b83521b99d70a259", null ],
+    [ "print", "classSoShapeHintsElement.html#a0a8d92fc1cf79303912dba0f35a763e0", null ],
+    [ "push", "classSoShapeHintsElement.html#a04e3bc45bdffab956b16ca5a7bd5f319", null ],
     [ "setElt", "classSoShapeHintsElement.html#adf726728c1e8136e6c14e335813948ea", null ]
 ];

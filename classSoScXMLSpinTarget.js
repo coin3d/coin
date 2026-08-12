@@ -1,5 +1,5 @@
 var classSoScXMLSpinTarget =
 [
-    [ "getTypeId", "classSoScXMLSpinTarget.html#a56c3c33e072e7d20a3762ba79a2cee55", null ],
-    [ "processOneEvent", "classSoScXMLSpinTarget.html#a06264565ff274cc1ae96b912c7d98230", null ]
+    [ "getTypeId", "classSoScXMLSpinTarget.html#a81ff039c74bf99105a129cb95252ac2e", null ],
+    [ "processOneEvent", "classSoScXMLSpinTarget.html#ac3ba41eb3ca516ef6487345493e2e4be", null ]
 ];

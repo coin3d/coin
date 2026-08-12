@@ -4,10 +4,10 @@ var classSoTimerQueueSensor =
     [ "SoTimerQueueSensor", "classSoTimerQueueSensor.html#a4d62dc9062913ecfa745fde7c06169a8", null ],
     [ "~SoTimerQueueSensor", "classSoTimerQueueSensor.html#ad2d8778f4f166cc1fbd70968a5b2638c", null ],
     [ "getTriggerTime", "classSoTimerQueueSensor.html#a2fbde37afa40cbdb857fe43cc6656ec7", null ],
-    [ "isScheduled", "classSoTimerQueueSensor.html#a2668c9fde7d8b9edf7118809beae9c4f", null ],
-    [ "schedule", "classSoTimerQueueSensor.html#a21262b8464a737246dcc092b115e89ad", null ],
+    [ "isScheduled", "classSoTimerQueueSensor.html#a777867fc1dd4d513c86ce117a4b0022b", null ],
+    [ "schedule", "classSoTimerQueueSensor.html#a94ecf0c665ea724c9aac91f40b765937", null ],
     [ "setTriggerTime", "classSoTimerQueueSensor.html#aa2720312ff24da9ecf460d6e8b7fb592", null ],
-    [ "trigger", "classSoTimerQueueSensor.html#a3459bf3e4f6bda6de8da7d0a8d64f814", null ],
-    [ "unschedule", "classSoTimerQueueSensor.html#aa6d792983952ef2af6a3e7f005af3b11", null ],
+    [ "trigger", "classSoTimerQueueSensor.html#adf0f5a0364399cfda3afb48330b89ddb", null ],
+    [ "unschedule", "classSoTimerQueueSensor.html#afde246facb3dbd52aab69c8d71750a4c", null ],
     [ "scheduled", "classSoTimerQueueSensor.html#a22000bb83389ed0058939e77416751df", null ]
 ];

@@ -12,9 +12,9 @@ var classSoGeometryShader =
     ] ],
     [ "SoGeometryShader", "classSoGeometryShader.html#a2cacfd81750e6b11efc899afb0befc20", null ],
     [ "~SoGeometryShader", "classSoGeometryShader.html#a24032b0b22dd4a9a8e88c52c27d6b9b6", null ],
-    [ "getFieldData", "classSoGeometryShader.html#a9de244cfd46a75fc54eeef981ceb8d12", null ],
-    [ "getTypeId", "classSoGeometryShader.html#a458d2ed7313388495dc537e154a7ec40", null ],
-    [ "GLRender", "classSoGeometryShader.html#acde2fb104c72e86a476b69fd20eae2b4", null ],
+    [ "getFieldData", "classSoGeometryShader.html#a66a209161b06cc2ff88828a485c152ca", null ],
+    [ "getTypeId", "classSoGeometryShader.html#a8cf30eab5a88847b0bf7762db8bf54ad", null ],
+    [ "GLRender", "classSoGeometryShader.html#ac6e68ff5c6cc4045f054dc959e9b1187", null ],
     [ "inputType", "classSoGeometryShader.html#a8e155b73190430685427af5bbb7d75ff", null ],
     [ "maxEmit", "classSoGeometryShader.html#ac6a64c98d2ccc4e18a9b5d9a2c0c99ba", null ],
     [ "outputType", "classSoGeometryShader.html#a2470879057ac0847a35f563cb8282734", null ]

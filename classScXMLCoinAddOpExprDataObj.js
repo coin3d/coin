@@ -1,4 +1,4 @@
 var classScXMLCoinAddOpExprDataObj =
 [
-    [ "getTypeId", "classScXMLCoinAddOpExprDataObj.html#a1f9d4e255269eeeaf17a4c1825d92ee7", null ]
+    [ "getTypeId", "classScXMLCoinAddOpExprDataObj.html#a93aac05288e2a59036705f3985a7ff0a", null ]
 ];

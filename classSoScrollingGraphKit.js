@@ -1,6 +1,6 @@
 var classSoScrollingGraphKit =
 [
-    [ "getFieldData", "classSoScrollingGraphKit.html#a9d99907622ab6d953b186adef904997e", null ],
-    [ "getNodekitCatalog", "classSoScrollingGraphKit.html#a8f29dcf6c184f1ca4f4372b0588d3735", null ],
-    [ "getTypeId", "classSoScrollingGraphKit.html#a2f3a3205c7866ee7d428fc5c23a74a17", null ]
+    [ "getFieldData", "classSoScrollingGraphKit.html#a628d9407542d8158d7ec5716373f97a2", null ],
+    [ "getNodekitCatalog", "classSoScrollingGraphKit.html#aa688936df94b03be71edca2b7a31bc18", null ],
+    [ "getTypeId", "classSoScrollingGraphKit.html#ad9abfb2aa5f4aa8e7cd352a3024e9167", null ]
 ];

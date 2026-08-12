@@ -24,53 +24,53 @@ var group__coin__profiler =
     ] ],
     [ "SoProfiler", "classSoProfiler.html", null ],
     [ "SoProfilerElement", "classSoProfilerElement.html", [
-      [ "copyMatchInfo", "classSoProfilerElement.html#a0d2df64ac0a014e567db7a1eeac627ad", null ],
-      [ "matches", "classSoProfilerElement.html#a18744a8ae163910434ef7383e670c301", null ]
+      [ "copyMatchInfo", "classSoProfilerElement.html#abe6d57437c157101e0ba860a4f757cb0", null ],
+      [ "matches", "classSoProfilerElement.html#adec4403262713efaa44558cb29a46d33", null ]
     ] ],
     [ "SoProfilerOverlayKit", "classSoProfilerOverlayKit.html", [
       [ "SoProfilerOverlayKit", "classSoProfilerOverlayKit.html#a1b0103dcebdbc874c45b6b9583a136c0", null ],
       [ "~SoProfilerOverlayKit", "classSoProfilerOverlayKit.html#a647b3eef96b983ae613747cac41ef58d", null ],
       [ "addOverlayGeometry", "classSoProfilerOverlayKit.html#a4215573ce556b7a0e7b163885df0098c", null ],
-      [ "getFieldData", "classSoProfilerOverlayKit.html#a5f76669e27a0c2efaaf8b4e8f3c45a54", null ],
-      [ "getNodekitCatalog", "classSoProfilerOverlayKit.html#a8243b4115e76832c8c6fc91867b1417b", null ],
-      [ "getTypeId", "classSoProfilerOverlayKit.html#a9e6d740c1e86f669e3327a6507bc3676", null ]
+      [ "getFieldData", "classSoProfilerOverlayKit.html#a1f05d2d35302ee84ab8c01def1801814", null ],
+      [ "getNodekitCatalog", "classSoProfilerOverlayKit.html#a39cfa0a020dc507a4cbdb08b249453a9", null ],
+      [ "getTypeId", "classSoProfilerOverlayKit.html#a2b3dd245db96a357033a604a03890948", null ]
     ] ],
     [ "SoProfilerStats", "classSoProfilerStats.html", [
       [ "SoProfilerStats", "classSoProfilerStats.html#a1ba56b69fe878bb11140c63a1aadbd8e", null ],
       [ "~SoProfilerStats", "classSoProfilerStats.html#a70c3ba16418d39590a1aa80b3e382858", null ],
-      [ "audioRender", "classSoProfilerStats.html#aa4cd6c322fe34cf483e8d8ea759f7372", null ],
-      [ "callback", "classSoProfilerStats.html#aacacd8ec8201b99bcc243f826eed30fa", null ],
-      [ "getBoundingBox", "classSoProfilerStats.html#a22e63be13ab094ce3ba72df36338f433", null ],
-      [ "getFieldData", "classSoProfilerStats.html#ab8555414b4b0fbfabc00987536aa123f", null ],
-      [ "getMatrix", "classSoProfilerStats.html#aa439458670b855842c7f9f64bf2610b7", null ],
-      [ "getPrimitiveCount", "classSoProfilerStats.html#adaa326f20feb8c71a822c0624298c046", null ],
-      [ "getTypeId", "classSoProfilerStats.html#a9afd2858c549042c2ebd1c025f7b709a", null ],
-      [ "GLRender", "classSoProfilerStats.html#adc652f0ce0e3299046ff3848d4fc25a6", null ],
-      [ "handleEvent", "classSoProfilerStats.html#a3b79a561786d92913da8d53cb8acfaef", null ],
-      [ "notify", "classSoProfilerStats.html#a512f26d25b1bd15cc389374145579e7d", null ],
-      [ "pick", "classSoProfilerStats.html#aca954bdce909e11709e6c0eaf87747f2", null ],
-      [ "rayPick", "classSoProfilerStats.html#a0af42fb5b8eaca4d7a6d9b2b1b06b3cd", null ],
-      [ "search", "classSoProfilerStats.html#ad0ae17901b51ab3e65b733b04dbfb281", null ],
-      [ "write", "classSoProfilerStats.html#aca6676e5bf6e40dbe2b431037e2132bc", null ],
+      [ "audioRender", "classSoProfilerStats.html#a676fdb0e99e322419d0c1a1ca611c1fe", null ],
+      [ "callback", "classSoProfilerStats.html#afe61c9d1d37a02203b7660412ed6fdd8", null ],
+      [ "getBoundingBox", "classSoProfilerStats.html#aefdc92fdc28b19bdaf8d5c2e13f3ee71", null ],
+      [ "getFieldData", "classSoProfilerStats.html#a1848ba543c3e68bc02be8a1ac5394c78", null ],
+      [ "getMatrix", "classSoProfilerStats.html#adc5417d1c603cd66464c04bc3bf65ecb", null ],
+      [ "getPrimitiveCount", "classSoProfilerStats.html#a5e7677fce298784ac99532b8100a7872", null ],
+      [ "getTypeId", "classSoProfilerStats.html#ab9fc6c132467f536c61ed4afc0f6945a", null ],
+      [ "GLRender", "classSoProfilerStats.html#aa5052159753db110bf2d27e8393bb85b", null ],
+      [ "handleEvent", "classSoProfilerStats.html#a1a805d54b66d3f39f6cade0e473cf8b4", null ],
+      [ "notify", "classSoProfilerStats.html#a2626cb1070b81d4be7a5ed06d39b0f65", null ],
+      [ "pick", "classSoProfilerStats.html#aa8e5e49a802b88aede17237c782d8fed", null ],
+      [ "rayPick", "classSoProfilerStats.html#a50f1425d3582470a845ad4e0ba35fd56", null ],
+      [ "search", "classSoProfilerStats.html#a9a4d40643900f7b4a1c701a0c1331042", null ],
+      [ "write", "classSoProfilerStats.html#a2d89b822c90920dd1a0de99299b33190", null ],
       [ "renderedNodeType", "classSoProfilerStats.html#ab8f938eac96792ecd1614fdb0b615e28", null ],
       [ "renderingTimePerNodeType", "classSoProfilerStats.html#ab09e6e0c199ef6d4ee738b4bd3740d6e", null ]
     ] ],
     [ "SoProfilerTopKit", "classSoProfilerTopKit.html", [
-      [ "getFieldData", "classSoProfilerTopKit.html#abad7b86d6d00b01b87d825d5906c5dfb", null ],
-      [ "getNodekitCatalog", "classSoProfilerTopKit.html#ae4a9890ea84c8e76381d82a7520c1c9a", null ],
-      [ "getTypeId", "classSoProfilerTopKit.html#a0e6ff1abd03bdac76e5f8d0aca9f4a69", null ]
+      [ "getFieldData", "classSoProfilerTopKit.html#a3cd2cb573bcbc06508603fc34c56a4e7", null ],
+      [ "getNodekitCatalog", "classSoProfilerTopKit.html#a40cd1ea53b30cc087e9ba800cb7456b3", null ],
+      [ "getTypeId", "classSoProfilerTopKit.html#a34cee48078d01430500d6defe68a0f7e", null ]
     ] ],
     [ "SoProfilerVisualizeKit", "classSoProfilerVisualizeKit.html", [
-      [ "getFieldData", "classSoProfilerVisualizeKit.html#adbd9f8ae74a6eba9c2ea41bc584435fb", null ],
-      [ "getNodekitCatalog", "classSoProfilerVisualizeKit.html#af530f68a867b66fd5aa0563bbaae9369", null ],
-      [ "getTypeId", "classSoProfilerVisualizeKit.html#af30b3c6ba17576deff793a94b5879cc8", null ],
+      [ "getFieldData", "classSoProfilerVisualizeKit.html#a2b0b583d4054eb4cbd969e8160b7a263", null ],
+      [ "getNodekitCatalog", "classSoProfilerVisualizeKit.html#a91cf38289d78c3538ac7e0fef8217710", null ],
+      [ "getTypeId", "classSoProfilerVisualizeKit.html#a1ae98d67f6359b3af7021d1df2499f89", null ],
       [ "root", "classSoProfilerVisualizeKit.html#a1998e21b9839fb402fe1ce1fe44c1b54", null ],
       [ "statsTrigger", "classSoProfilerVisualizeKit.html#af48a9ea384680f935e5532120b766934", null ]
     ] ],
     [ "SoProfilingReportGenerator", "classSoProfilingReportGenerator.html", null ],
     [ "SoScrollingGraphKit", "classSoScrollingGraphKit.html", [
-      [ "getFieldData", "classSoScrollingGraphKit.html#a9d99907622ab6d953b186adef904997e", null ],
-      [ "getNodekitCatalog", "classSoScrollingGraphKit.html#a8f29dcf6c184f1ca4f4372b0588d3735", null ],
-      [ "getTypeId", "classSoScrollingGraphKit.html#a2f3a3205c7866ee7d428fc5c23a74a17", null ]
+      [ "getFieldData", "classSoScrollingGraphKit.html#a628d9407542d8158d7ec5716373f97a2", null ],
+      [ "getNodekitCatalog", "classSoScrollingGraphKit.html#aa688936df94b03be71edca2b7a31bc18", null ],
+      [ "getTypeId", "classSoScrollingGraphKit.html#ad9abfb2aa5f4aa8e7cd352a3024e9167", null ]
     ] ]
 ];

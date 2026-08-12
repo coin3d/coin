@@ -1,6 +1,6 @@
 var classScXMLIfElt =
 [
-    [ "getTypeId", "classScXMLIfElt.html#aed4954eb11758087ab104f3bd0cb0cb1", null ],
-    [ "handleXMLAttributes", "classScXMLIfElt.html#ae628a920951925caf369ebef3c69c262", null ],
-    [ "search", "classScXMLIfElt.html#afc15cbb987aebc166f03910263df51ca", null ]
+    [ "getTypeId", "classScXMLIfElt.html#aa627a16e6ca757e1999ba55fab7170f7", null ],
+    [ "handleXMLAttributes", "classScXMLIfElt.html#a88884543c01cea5947f98e7586502a23", null ],
+    [ "search", "classScXMLIfElt.html#a6e3e242894761112800839df77c918e3", null ]
 ];

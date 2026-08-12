@@ -6,5 +6,5 @@ var classSoFieldSensor =
     [ "attach", "classSoFieldSensor.html#a7bd0f67e9cc6e174c0367fdc86c2b09c", null ],
     [ "detach", "classSoFieldSensor.html#a120b58812997b3579c108f00010e19c5", null ],
     [ "getAttachedField", "classSoFieldSensor.html#a6fdb0b44b971477fd2b3e46cc7cacd39", null ],
-    [ "trigger", "classSoFieldSensor.html#aa09e27d3812f5ac53d4fa532d313d607", null ]
+    [ "trigger", "classSoFieldSensor.html#a0e4f86b0f16de82c6bf960806929a510", null ]
 ];

@@ -1,5 +1,5 @@
 var classSoScXMLMotionTarget =
 [
-    [ "getTypeId", "classSoScXMLMotionTarget.html#a5c141d97db49c74e1e9e488086e8de41", null ],
-    [ "processOneEvent", "classSoScXMLMotionTarget.html#ab73bd1dc38be2b6b256b2a8e370a9d78", null ]
+    [ "getTypeId", "classSoScXMLMotionTarget.html#a8508a7128a31b8109133952d268f958e", null ],
+    [ "processOneEvent", "classSoScXMLMotionTarget.html#a4521764ede736c35d4bf9a626bba1daa", null ]
 ];

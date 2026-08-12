@@ -186,12 +186,12 @@ $(function(){initNavTree('SoSFPath_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classSoSField.html#a69c6a49a723770b2eb64c2acde9266e6">initClass</a>(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classSoField.html#a917c364cae1a18863084cdf8ad6f8e7e">notify</a>(<a class="code hl_class" href="classSoNotList.html">SoNotList</a> * l);</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classSoField.html#a7d7a05ee937f6790f38fe727415e5d84">fixCopy</a>(SbBool copyconnections);</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keyword">virtual</span> SbBool <a class="code hl_function" href="classSoField.html#a5b165d938e0f830b806ab634ca09dc74">referencesCopy</a>(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classSoField.html#a917c364cae1a18863084cdf8ad6f8e7e">notify</a>(<a class="code hl_class" href="classSoNotList.html">SoNotList</a> * l) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classSoField.html#a7d7a05ee937f6790f38fe727415e5d84">fixCopy</a>(SbBool copyconnections) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  SbBool <a class="code hl_function" href="classSoField.html#a5b165d938e0f830b806ab634ca09dc74">referencesCopy</a>(<span class="keywordtype">void</span>) <span class="keyword">const override</span>;</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classSoField.html#aa11d8d54a8238021cf4034d288408e30">countWriteRefs</a>(<a class="code hl_class" href="classSoOutput.html">SoOutput</a> * out) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classSoField.html#aa11d8d54a8238021cf4034d288408e30">countWriteRefs</a>(<a class="code hl_class" href="classSoOutput.html">SoOutput</a> * out) <span class="keyword">const override</span>;</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <a class="code hl_class" href="classSoNode.html">SoNode</a> * head;</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="comment">// For accessing the readValue() and writeValue() methods.</span></div>
@@ -218,7 +218,7 @@ $(function(){initNavTree('SoSFPath_8h_source.html',''); initResizable(); });
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_3a848b90e1404780a5d06bb25bf974e3.html">fields</a></li><li class="navelem"><b>SoSFPath.h</b></li>
-    <li class="footer">Generated on Mon Aug 10 2026 19:00:42 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Wed Aug 12 2026 20:09:49 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

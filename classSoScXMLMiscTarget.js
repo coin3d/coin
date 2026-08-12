@@ -1,5 +1,5 @@
 var classSoScXMLMiscTarget =
 [
-    [ "getTypeId", "classSoScXMLMiscTarget.html#aee8eea447a1cdbf8845271949ac4a27b", null ],
-    [ "processOneEvent", "classSoScXMLMiscTarget.html#a1bd9afdd566d4c21d66297d48f395e86", null ]
+    [ "getTypeId", "classSoScXMLMiscTarget.html#a6aa65a64d8d00b3397b609bbb3167023", null ],
+    [ "processOneEvent", "classSoScXMLMiscTarget.html#a56366f416bf42cf0686aafb770b0f177", null ]
 ];

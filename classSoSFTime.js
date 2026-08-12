@@ -1,6 +1,6 @@
 var classSoSFTime =
 [
-    [ "copyFrom", "classSoSFTime.html#ab883d07da23c4e371d832bffc4ec592c", null ],
-    [ "getTypeId", "classSoSFTime.html#ada1b7b8ff64a38cd2266c1326bf5a8ea", null ],
-    [ "isSame", "classSoSFTime.html#a5730e458cafaf262ec66be87ea1e8b2c", null ]
+    [ "copyFrom", "classSoSFTime.html#aee06cd3defc3932ceb38f410f0abee67", null ],
+    [ "getTypeId", "classSoSFTime.html#a29331d5a61aa1ec3daf67eed816ba78a", null ],
+    [ "isSame", "classSoSFTime.html#afb4e324b83d8debf1e36988ab9953f9a", null ]
 ];

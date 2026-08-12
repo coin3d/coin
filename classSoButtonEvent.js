@@ -8,6 +8,6 @@ var classSoButtonEvent =
     [ "SoButtonEvent", "classSoButtonEvent.html#ac38b34ea72bf9fff5b48cd805093e801", null ],
     [ "~SoButtonEvent", "classSoButtonEvent.html#ac4f44f6cde4311ff95e5ff515415e623", null ],
     [ "getState", "classSoButtonEvent.html#ad13cb474a27796399000cd269ee38a4a", null ],
-    [ "getTypeId", "classSoButtonEvent.html#ae7fbfa66885216e9e8f6d9cb4cb96fcd", null ],
+    [ "getTypeId", "classSoButtonEvent.html#a775edfb1ebe955d739aa775d59ff9b40", null ],
     [ "setState", "classSoButtonEvent.html#a1a0ddb89d141d2944c726749e4eeac23", null ]
 ];

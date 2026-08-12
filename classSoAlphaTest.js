@@ -13,9 +13,9 @@ var classSoAlphaTest =
     ] ],
     [ "SoAlphaTest", "classSoAlphaTest.html#ac5237575286ae6204fbb62999dd96ec4", null ],
     [ "~SoAlphaTest", "classSoAlphaTest.html#a66c7ac9fdd3bdd8ae4b88594d6b34bcb", null ],
-    [ "getFieldData", "classSoAlphaTest.html#a4856fc515b3214cb25608c464ef95116", null ],
-    [ "getTypeId", "classSoAlphaTest.html#a6945acee260c82e5047bb500a4bb197c", null ],
-    [ "GLRender", "classSoAlphaTest.html#a458d60b8f8a4d99945b6cac555393166", null ],
+    [ "getFieldData", "classSoAlphaTest.html#aef76c4d4aed3e9b3daafd30173f8707a", null ],
+    [ "getTypeId", "classSoAlphaTest.html#aba098004252c11032cd569d32e1b6ae5", null ],
+    [ "GLRender", "classSoAlphaTest.html#a2f4a68772ea875e83d6acd4024733f6f", null ],
     [ "function", "classSoAlphaTest.html#a683d9420bd0b60257d6eb077dd0331a5", null ],
     [ "value", "classSoAlphaTest.html#ae6897e246889a1e8fa43567d332639dc", null ]
 ];

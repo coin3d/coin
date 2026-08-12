@@ -12,5 +12,5 @@ var classSoMaterialBindingElement =
       [ "NONE", "classSoMaterialBindingElement.html#a5656483f86cb0b6b64bdb482bbf84e18a370c8d1afb936b077aa80dcfac6d04db", null ]
     ] ],
     [ "~SoMaterialBindingElement", "classSoMaterialBindingElement.html#a29721e0893cd0d000ef4026384d35653", null ],
-    [ "init", "classSoMaterialBindingElement.html#a0279c5eaf27c33dae03415d1af6940d0", null ]
+    [ "init", "classSoMaterialBindingElement.html#a308df1bc04d362ca3b985ab9d3c65338", null ]
 ];

@@ -7,5 +7,5 @@ var classSoVertexAttributeBindingElement =
       [ "DEFAULT", "classSoVertexAttributeBindingElement.html#a545715f4fd780f6683c783a75c4168adaee336c4b49107cfd5904131e83377831", null ]
     ] ],
     [ "~SoVertexAttributeBindingElement", "classSoVertexAttributeBindingElement.html#abb5d795b8e3c051a859a18d006de740e", null ],
-    [ "init", "classSoVertexAttributeBindingElement.html#af2815d37cfeb131212d33ec72ebebe79", null ]
+    [ "init", "classSoVertexAttributeBindingElement.html#abab17a8c47db0864951a5d1378f9569d", null ]
 ];

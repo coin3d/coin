@@ -12,7 +12,7 @@ var classSbSphereProjector =
     [ "setFront", "classSbSphereProjector.html#a071532046e8c7319df2a29befe5903e2", null ],
     [ "setOrientToEye", "classSbSphereProjector.html#ac4d069b1a39639e6700a63d659c7236f", null ],
     [ "setSphere", "classSbSphereProjector.html#ace6896e5966432ac44d86c04d1e4eb61", null ],
-    [ "setWorkingSpace", "classSbSphereProjector.html#afe1519305c87d7726dc40b9daaa59764", null ],
+    [ "setWorkingSpace", "classSbSphereProjector.html#a34537e0e22b754d9162107d78a7c9bf3", null ],
     [ "intersectFront", "classSbSphereProjector.html#af53c03608a41fad58f82856113d20f65", null ],
     [ "lastPoint", "classSbSphereProjector.html#a23eb381f2626c24f4c2fa378e89412b4", null ],
     [ "needSetup", "classSbSphereProjector.html#a136681b3e872e38473160fe0fde0352d", null ],

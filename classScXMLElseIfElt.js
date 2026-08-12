@@ -1,6 +1,6 @@
 var classScXMLElseIfElt =
 [
-    [ "getTypeId", "classScXMLElseIfElt.html#ada89fc99f57ab0e2ceb0cfd431679efd", null ],
-    [ "handleXMLAttributes", "classScXMLElseIfElt.html#a0150583699cdc62856c7dc3e949ad520", null ],
-    [ "search", "classScXMLElseIfElt.html#a4ae2104a2dad43abf6b63840162fcee7", null ]
+    [ "getTypeId", "classScXMLElseIfElt.html#aa206098dbe4c663fcc7764d36cbe329d", null ],
+    [ "handleXMLAttributes", "classScXMLElseIfElt.html#a6a3b6e048b50af951e9d193902e64976", null ],
+    [ "search", "classScXMLElseIfElt.html#a3f9a99f216c58a64697111f5c67a662e", null ]
 ];

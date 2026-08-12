@@ -1,11 +1,11 @@
 var classSoMFColorRGBA =
 [
-    [ "copyFrom", "classSoMFColorRGBA.html#a70cedf621c804332680fab2c199492c4", null ],
-    [ "copyValue", "classSoMFColorRGBA.html#a4f07d4cfa8b9d6660354e57f370686be", null ],
-    [ "deleteAllValues", "classSoMFColorRGBA.html#ad59b3dd08e2f6af0f5d26ee01596bce2", null ],
-    [ "getTypeId", "classSoMFColorRGBA.html#a4c6aa8306cb0342d5ba72d5761843558", null ],
+    [ "copyFrom", "classSoMFColorRGBA.html#a4bce4b49b574ec10a649aef37b5e3e66", null ],
+    [ "copyValue", "classSoMFColorRGBA.html#aaa312e7a38a1e2e2868d51745004a1bf", null ],
+    [ "deleteAllValues", "classSoMFColorRGBA.html#acf52c005d3479e64ac45f0aad4516a51", null ],
+    [ "getTypeId", "classSoMFColorRGBA.html#af57143ec06a1dabceb8f756a94a49f7b", null ],
     [ "getValues", "classSoMFColorRGBA.html#a2b4d600e8ea257166e715aff4f55551d", null ],
-    [ "isSame", "classSoMFColorRGBA.html#ae7494292d0dd55ecde61cf91b2ef31cd", null ],
+    [ "isSame", "classSoMFColorRGBA.html#adf8d13f2f67499ecc352a744e8a993e5", null ],
     [ "set1HSVValue", "classSoMFColorRGBA.html#a8281388e0e1714557e79cdd32c41799b", null ],
     [ "set1HSVValue", "classSoMFColorRGBA.html#a290798a90a9019ed9070d2042342079e", null ],
     [ "set1Value", "classSoMFColorRGBA.html#a16ba3faac35a46fb25aea9e5b0e705c1", null ],

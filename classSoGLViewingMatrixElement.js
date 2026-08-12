@@ -1,8 +1,8 @@
 var classSoGLViewingMatrixElement =
 [
     [ "~SoGLViewingMatrixElement", "classSoGLViewingMatrixElement.html#ad60b7bac108084fbe95e659335e14b84", null ],
-    [ "init", "classSoGLViewingMatrixElement.html#add79da62cd04d73f428866b870e38824", null ],
-    [ "pop", "classSoGLViewingMatrixElement.html#a2e5ef046552143d95256bbce26f8866d", null ],
-    [ "push", "classSoGLViewingMatrixElement.html#aeefcfbf89a5366e585c6c919934e82d5", null ],
-    [ "setElt", "classSoGLViewingMatrixElement.html#a2892f59a2860c324798b5e47e5a522df", null ]
+    [ "init", "classSoGLViewingMatrixElement.html#aeb24e0586a429815a22a54e2a03d007b", null ],
+    [ "pop", "classSoGLViewingMatrixElement.html#a8ad0d55f9a3745a0891f48005f1a0551", null ],
+    [ "push", "classSoGLViewingMatrixElement.html#ad3ec62361966f799dc9a07e98fa8932a", null ],
+    [ "setElt", "classSoGLViewingMatrixElement.html#a649a3979a44b5c3255aae4adaadf54e9", null ]
 ];

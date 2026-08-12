@@ -6,8 +6,8 @@ var classSoTimerSensor =
     [ "getBaseTime", "classSoTimerSensor.html#a43d8597a226371b412cd3039e773bad3", null ],
     [ "getInterval", "classSoTimerSensor.html#a54fcf288bebff385ad385481b34b3e96", null ],
     [ "reschedule", "classSoTimerSensor.html#a911ba001eaab612f16d40efb9ac751fa", null ],
-    [ "schedule", "classSoTimerSensor.html#a40861c60dca0b4181ba39676a4489279", null ],
+    [ "schedule", "classSoTimerSensor.html#a59ecd139c0a7c9779b95db3088add63b", null ],
     [ "setBaseTime", "classSoTimerSensor.html#a39b95dd1f164c05310c9119833ef7357", null ],
     [ "setInterval", "classSoTimerSensor.html#aba8f968935ab0c6ab79252f0b3e7478d", null ],
-    [ "unschedule", "classSoTimerSensor.html#a46022349d38a1d8372b385b91de337e6", null ]
+    [ "unschedule", "classSoTimerSensor.html#a144179b5d37c8012028323578cb21790", null ]
 ];

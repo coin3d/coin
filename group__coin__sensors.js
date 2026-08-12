@@ -5,7 +5,7 @@ var group__coin__sensors =
       [ "SoAlarmSensor", "classSoAlarmSensor.html#a2b5ca4eee57d66a63d73a89cf9324b2a", null ],
       [ "~SoAlarmSensor", "classSoAlarmSensor.html#ab504b1bd587ec26c7ffcbc5a72ac3f1f", null ],
       [ "getTime", "classSoAlarmSensor.html#a06072d1d5a45921e7cd81534c8ffb065", null ],
-      [ "schedule", "classSoAlarmSensor.html#a457a8626f5856284e66367e5ec8bf54a", null ],
+      [ "schedule", "classSoAlarmSensor.html#a94eb77f5bab11e6d393a580a380e3bfa", null ],
       [ "setTime", "classSoAlarmSensor.html#af1886674d1187f94ff408349f738d3cc", null ],
       [ "setTimeFromNow", "classSoAlarmSensor.html#a8988efd19de1d900859696a628e8e55f", null ]
     ] ],
@@ -27,7 +27,7 @@ var group__coin__sensors =
       [ "notify", "classSoDataSensor.html#af19eeacd02a6b3e210a07f1bef483428", null ],
       [ "setDeleteCallback", "classSoDataSensor.html#a150448b51a530012ae970553e0cd59d0", null ],
       [ "setTriggerPathFlag", "classSoDataSensor.html#a84765fde3a1daf9447f7a3883fb1657a", null ],
-      [ "trigger", "classSoDataSensor.html#a4200be321b36a977e358322b229329d6", null ]
+      [ "trigger", "classSoDataSensor.html#a21ba69f8963e94d17fb926803fbe2985", null ]
     ] ],
     [ "SoDelayQueueSensor", "classSoDelayQueueSensor.html", [
       [ "SoDelayQueueSensor", "classSoDelayQueueSensor.html#ad13897ccad36d059d146f1956b83e08c", null ],
@@ -35,11 +35,11 @@ var group__coin__sensors =
       [ "~SoDelayQueueSensor", "classSoDelayQueueSensor.html#a89ca819b836f56b8699e5f8a62f0e0b3", null ],
       [ "getPriority", "classSoDelayQueueSensor.html#a8773ffbf35032af50cb58c5033c41a17", null ],
       [ "isIdleOnly", "classSoDelayQueueSensor.html#a83f9af4c34f79ae426b3a8e3fa779e48", null ],
-      [ "isScheduled", "classSoDelayQueueSensor.html#ae2267844f63b8bec0bb134aefbaceec4", null ],
-      [ "schedule", "classSoDelayQueueSensor.html#a6d3e044f4a81d2e43a51113757d3f86e", null ],
+      [ "isScheduled", "classSoDelayQueueSensor.html#a07b6c7a457bae6a4f824c5b2f21c7425", null ],
+      [ "schedule", "classSoDelayQueueSensor.html#af8aba2f532e6c126c8ac9c77330efdf8", null ],
       [ "setPriority", "classSoDelayQueueSensor.html#abdf3c976cf2f6ca0a1cd67118b326de4", null ],
-      [ "trigger", "classSoDelayQueueSensor.html#a0b8ec90cc9ab774853624c2f9de76344", null ],
-      [ "unschedule", "classSoDelayQueueSensor.html#a0e3737bdbcb78844beae7c759a9e7af4", null ],
+      [ "trigger", "classSoDelayQueueSensor.html#a054bbe6df5a9846ccc9733a71061b4ce", null ],
+      [ "unschedule", "classSoDelayQueueSensor.html#aa459b0684d49daa70ed822d22160fae1", null ],
       [ "scheduled", "classSoDelayQueueSensor.html#a5b81587b893c71b31856ee3a8085b9d5", null ]
     ] ],
     [ "SoFieldSensor", "classSoFieldSensor.html", [
@@ -49,7 +49,7 @@ var group__coin__sensors =
       [ "attach", "classSoFieldSensor.html#a7bd0f67e9cc6e174c0367fdc86c2b09c", null ],
       [ "detach", "classSoFieldSensor.html#a120b58812997b3579c108f00010e19c5", null ],
       [ "getAttachedField", "classSoFieldSensor.html#a6fdb0b44b971477fd2b3e46cc7cacd39", null ],
-      [ "trigger", "classSoFieldSensor.html#aa09e27d3812f5ac53d4fa532d313d607", null ]
+      [ "trigger", "classSoFieldSensor.html#a0e4f86b0f16de82c6bf960806929a510", null ]
     ] ],
     [ "SoIdleSensor", "classSoIdleSensor.html", [
       [ "SoIdleSensor", "classSoIdleSensor.html#a38f4ba3784a19ef721730304cb59518b", null ],
@@ -82,7 +82,7 @@ var group__coin__sensors =
       [ "detach", "classSoPathSensor.html#aa22f4e63a909c16ab4a1083d55abd718", null ],
       [ "getAttachedPath", "classSoPathSensor.html#aa671e23388b4be9ed6ca684b234331fb", null ],
       [ "getTriggerFilter", "classSoPathSensor.html#a75b7c38bacd2668f1571100ccef6b1b5", null ],
-      [ "notify", "classSoPathSensor.html#a7ef4a67b977aba476b25c44d839099af", null ],
+      [ "notify", "classSoPathSensor.html#ab80937dc9abacff45bb1d5e4b2a47ead", null ],
       [ "setTriggerFilter", "classSoPathSensor.html#ab158a94ca8c31d52afa579d2232ade31", null ]
     ] ],
     [ "SoSensor", "classSoSensor.html", [
@@ -127,11 +127,11 @@ var group__coin__sensors =
       [ "SoTimerQueueSensor", "classSoTimerQueueSensor.html#a4d62dc9062913ecfa745fde7c06169a8", null ],
       [ "~SoTimerQueueSensor", "classSoTimerQueueSensor.html#ad2d8778f4f166cc1fbd70968a5b2638c", null ],
       [ "getTriggerTime", "classSoTimerQueueSensor.html#a2fbde37afa40cbdb857fe43cc6656ec7", null ],
-      [ "isScheduled", "classSoTimerQueueSensor.html#a2668c9fde7d8b9edf7118809beae9c4f", null ],
-      [ "schedule", "classSoTimerQueueSensor.html#a21262b8464a737246dcc092b115e89ad", null ],
+      [ "isScheduled", "classSoTimerQueueSensor.html#a777867fc1dd4d513c86ce117a4b0022b", null ],
+      [ "schedule", "classSoTimerQueueSensor.html#a94ecf0c665ea724c9aac91f40b765937", null ],
       [ "setTriggerTime", "classSoTimerQueueSensor.html#aa2720312ff24da9ecf460d6e8b7fb592", null ],
-      [ "trigger", "classSoTimerQueueSensor.html#a3459bf3e4f6bda6de8da7d0a8d64f814", null ],
-      [ "unschedule", "classSoTimerQueueSensor.html#aa6d792983952ef2af6a3e7f005af3b11", null ],
+      [ "trigger", "classSoTimerQueueSensor.html#adf0f5a0364399cfda3afb48330b89ddb", null ],
+      [ "unschedule", "classSoTimerQueueSensor.html#afde246facb3dbd52aab69c8d71750a4c", null ],
       [ "scheduled", "classSoTimerQueueSensor.html#a22000bb83389ed0058939e77416751df", null ]
     ] ],
     [ "SoTimerSensor", "classSoTimerSensor.html", [
@@ -141,9 +141,9 @@ var group__coin__sensors =
       [ "getBaseTime", "classSoTimerSensor.html#a43d8597a226371b412cd3039e773bad3", null ],
       [ "getInterval", "classSoTimerSensor.html#a54fcf288bebff385ad385481b34b3e96", null ],
       [ "reschedule", "classSoTimerSensor.html#a911ba001eaab612f16d40efb9ac751fa", null ],
-      [ "schedule", "classSoTimerSensor.html#a40861c60dca0b4181ba39676a4489279", null ],
+      [ "schedule", "classSoTimerSensor.html#a59ecd139c0a7c9779b95db3088add63b", null ],
       [ "setBaseTime", "classSoTimerSensor.html#a39b95dd1f164c05310c9119833ef7357", null ],
       [ "setInterval", "classSoTimerSensor.html#aba8f968935ab0c6ab79252f0b3e7478d", null ],
-      [ "unschedule", "classSoTimerSensor.html#a46022349d38a1d8372b385b91de337e6", null ]
+      [ "unschedule", "classSoTimerSensor.html#a144179b5d37c8012028323578cb21790", null ]
     ] ]
 ];

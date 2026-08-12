@@ -15,6 +15,6 @@ var classSoSpaceballButtonEvent =
     [ "SoSpaceballButtonEvent", "classSoSpaceballButtonEvent.html#a3416dbe940928a5bc3bf1f50289e3c51", null ],
     [ "~SoSpaceballButtonEvent", "classSoSpaceballButtonEvent.html#ac7be0dec848059a6defff74f9517b014", null ],
     [ "getButton", "classSoSpaceballButtonEvent.html#af74586ad84331798b1e8b3164edba152", null ],
-    [ "getTypeId", "classSoSpaceballButtonEvent.html#af452bd55ba5d47330dc28c8e81e9533c", null ],
+    [ "getTypeId", "classSoSpaceballButtonEvent.html#a325e6de45e369abcc02642caa6755820", null ],
     [ "setButton", "classSoSpaceballButtonEvent.html#a6c6888899a0f7a56be99afa80242df38", null ]
 ];

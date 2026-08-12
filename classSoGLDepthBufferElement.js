@@ -1,8 +1,8 @@
 var classSoGLDepthBufferElement =
 [
     [ "~SoGLDepthBufferElement", "classSoGLDepthBufferElement.html#afe6cf5c76c66d13b48874025d9725a78", null ],
-    [ "init", "classSoGLDepthBufferElement.html#a9f08d9e229bf59df4a061dedff41c8a4", null ],
-    [ "pop", "classSoGLDepthBufferElement.html#a1772bc47aac09221b56ade8c1374616c", null ],
-    [ "push", "classSoGLDepthBufferElement.html#a480cf9263f8bc9d90e70791c6dc95327", null ],
-    [ "setElt", "classSoGLDepthBufferElement.html#a94f78042249843283e85e0fa5203a05b", null ]
+    [ "init", "classSoGLDepthBufferElement.html#a7cd0d08df6d0697b59e47db03d6081a7", null ],
+    [ "pop", "classSoGLDepthBufferElement.html#ab664fb6dfbb75b752c059c4267ae8069", null ],
+    [ "push", "classSoGLDepthBufferElement.html#ac54359e84e3b94f978ce82e2e145d6b2", null ],
+    [ "setElt", "classSoGLDepthBufferElement.html#a6d3aa53d19f7b0a12d55aaea12d16193", null ]
 ];

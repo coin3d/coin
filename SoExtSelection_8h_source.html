@@ -257,8 +257,8 @@ $(function(){initNavTree('SoExtSelection_8h_source.html',''); initResizable(); }
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="keywordtype">void</span> animateOverlayLasso(<span class="keyword">const</span> SbBool <a class="code hl_class" href="classSbList.html">animate</a> = TRUE);</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  SbBool isOverlayLassoAnimated(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> handleEvent(<a class="code hl_class" href="classSoHandleEventAction.html">SoHandleEventAction</a> * action);</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> GLRenderBelowPath(<a class="code hl_class" href="classSoGLRenderAction.html">SoGLRenderAction</a> * action);</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="keywordtype">void</span> handleEvent(<a class="code hl_class" href="classSoHandleEventAction.html">SoHandleEventAction</a> * action) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="keywordtype">void</span> GLRenderBelowPath(<a class="code hl_class" href="classSoGLRenderAction.html">SoGLRenderAction</a> * action) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="keywordtype">void</span> select(<a class="code hl_class" href="classSoNode.html">SoNode</a> * root, <span class="keywordtype">int</span> numcoords, <a class="code hl_class" href="classSbVec2f.html">SbVec2f</a> * <a class="code hl_class" href="classSbList.html">lasso</a>, </div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>              <span class="keyword">const</span> <a class="code hl_class" href="classSbViewportRegion.html">SbViewportRegion</a> &amp; <a class="code hl_class" href="classSbList.html">vp</a>, SbBool <a class="code hl_class" href="classSbList.html">shiftpolicy</a>);</div>
@@ -323,7 +323,7 @@ $(function(){initNavTree('SoExtSelection_8h_source.html',''); initResizable(); }
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_a1c1d9fc954b6310fc06e1f59b6e0117.html">nodes</a></li><li class="navelem"><b>SoExtSelection.h</b></li>
-    <li class="footer">Generated on Mon Aug 10 2026 19:00:42 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Wed Aug 12 2026 20:09:49 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

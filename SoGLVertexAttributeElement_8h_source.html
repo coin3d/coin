@@ -183,7 +183,7 @@ $(function(){initNavTree('SoGLVertexAttributeElement_8h_source.html',''); initRe
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classSoVertexAttributeElement.html#aacd80768c47a274b21fde77eaf7069c6">initClass</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classSoVertexAttributeElement.html#ad56fac3aae96530c7907ef0b026ca570">init</a>(<a class="code hl_class" href="classSoState.html">SoState</a> * state);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classSoVertexAttributeElement.html#a73058c36e50d3cea2cca27aae3660a56">init</a>(<a class="code hl_class" href="classSoState.html">SoState</a> * state) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordtype">void</span> enableVBO(<a class="code hl_class" href="classSoGLRenderAction.html">SoGLRenderAction</a> * action) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keywordtype">void</span> disableVBO(<a class="code hl_class" href="classSoGLRenderAction.html">SoGLRenderAction</a> * action) <span class="keyword">const</span>;</div>
@@ -192,7 +192,7 @@ $(function(){initNavTree('SoGLVertexAttributeElement_8h_source.html',''); initRe
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keyword">protected</span>:</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classSoGLVertexAttributeElement.html">~SoGLVertexAttributeElement</a>();</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> addElt(SoVertexAttributeData * attribdata);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordtype">void</span> addElt(SoVertexAttributeData * attribdata) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>};</div>
 </div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
@@ -201,15 +201,15 @@ $(function(){initNavTree('SoGLVertexAttributeElement_8h_source.html',''); initRe
 <div class="ttc" id="aclassSoGLVertexAttributeElement_html"><div class="ttname"><a href="classSoGLVertexAttributeElement.html">SoGLVertexAttributeElement</a></div><div class="ttdoc">The SoGLVertexAttributeElement class is yet to be documented.</div><div class="ttdef"><b>Definition</b> SoGLVertexAttributeElement.h:42</div></div>
 <div class="ttc" id="aclassSoState_html"><div class="ttname"><a href="classSoState.html">SoState</a></div><div class="ttdoc">The SoState class manages the Coin scene graph traversal state data.</div><div class="ttdef"><b>Definition</b> SoState.h:44</div></div>
 <div class="ttc" id="aclassSoVertexAttributeElement_html"><div class="ttname"><a href="classSoVertexAttributeElement.html">SoVertexAttributeElement</a></div><div class="ttdoc">The SoVertexAttributeElement class is yet to be documented.</div><div class="ttdef"><b>Definition</b> SoVertexAttributeElement.h:45</div></div>
+<div class="ttc" id="aclassSoVertexAttributeElement_html_a73058c36e50d3cea2cca27aae3660a56"><div class="ttname"><a href="classSoVertexAttributeElement.html#a73058c36e50d3cea2cca27aae3660a56">SoVertexAttributeElement::init</a></div><div class="ttdeci">void init(SoState *state) override</div><div class="ttdef"><b>Definition</b> SoVertexAttributeElement.cpp:77</div></div>
 <div class="ttc" id="aclassSoVertexAttributeElement_html_aacd80768c47a274b21fde77eaf7069c6"><div class="ttname"><a href="classSoVertexAttributeElement.html#aacd80768c47a274b21fde77eaf7069c6">SoVertexAttributeElement::initClass</a></div><div class="ttdeci">static void initClass(void)</div><div class="ttdef"><b>Definition</b> SoVertexAttributeElement.cpp:69</div></div>
-<div class="ttc" id="aclassSoVertexAttributeElement_html_ad56fac3aae96530c7907ef0b026ca570"><div class="ttname"><a href="classSoVertexAttributeElement.html#ad56fac3aae96530c7907ef0b026ca570">SoVertexAttributeElement::init</a></div><div class="ttdeci">virtual void init(SoState *state)</div><div class="ttdef"><b>Definition</b> SoVertexAttributeElement.cpp:77</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_4be52554de5475a620e8b38d2057de84.html">elements</a></li><li class="navelem"><b>SoGLVertexAttributeElement.h</b></li>
-    <li class="footer">Generated on Mon Aug 10 2026 19:00:41 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Wed Aug 12 2026 20:09:49 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

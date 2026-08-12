@@ -1,9 +1,9 @@
 var classSoSFPath =
 [
-    [ "copyFrom", "classSoSFPath.html#ac0781fb1f346517f29e79bb2af80d56e", null ],
-    [ "fixCopy", "classSoSFPath.html#a60f6e7960364afce4547908db55fad00", null ],
-    [ "getTypeId", "classSoSFPath.html#a22b50d9759741094b691ff7fbbe5ec22", null ],
-    [ "isSame", "classSoSFPath.html#a0b4e453d5989a025bbc9c9ce95b980bc", null ],
-    [ "notify", "classSoSFPath.html#a9e901becab866677723bb6aae8ee4863", null ],
-    [ "referencesCopy", "classSoSFPath.html#a7d7149fe56e4611a6fece1011b1c0018", null ]
+    [ "copyFrom", "classSoSFPath.html#a9e1367c2a38b71a5a2069e251b276f7d", null ],
+    [ "fixCopy", "classSoSFPath.html#a6465c1be56b13ffeec968e2e8b30357a", null ],
+    [ "getTypeId", "classSoSFPath.html#aa9320e573be9e498529ea65b9a702614", null ],
+    [ "isSame", "classSoSFPath.html#ac6b13b994cb7e9d0d8b99f1ae2c4da7b", null ],
+    [ "notify", "classSoSFPath.html#a5e7cd4779c2e41daaf292964f653b7f6", null ],
+    [ "referencesCopy", "classSoSFPath.html#a5209765ef9e4e0715dcaed7529151d5c", null ]
 ];

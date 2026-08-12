@@ -1,5 +1,5 @@
 var classSoScXMLFlightControlTarget =
 [
-    [ "getTypeId", "classSoScXMLFlightControlTarget.html#a5c1b59c4515d92d4aeec8fd9b9c9646b", null ],
-    [ "processOneEvent", "classSoScXMLFlightControlTarget.html#a41e426aa1e15ee506d1dfff2951c7138", null ]
+    [ "getTypeId", "classSoScXMLFlightControlTarget.html#a22c820aa620b18c7d233bf37073d3c02", null ],
+    [ "processOneEvent", "classSoScXMLFlightControlTarget.html#aaff071ec6590870bb2cb316695293b07", null ]
 ];

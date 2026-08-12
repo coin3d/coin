@@ -9,5 +9,5 @@ var classSoPickStyleElement =
       [ "SHAPE_FRONTFACES", "classSoPickStyleElement.html#aa8be905ec6ff573cf54db40b70a0eda5a5b23d76e0c7fc0797b1a3285ca13aefe", null ]
     ] ],
     [ "~SoPickStyleElement", "classSoPickStyleElement.html#a5278b06605224592373df162fdda485a", null ],
-    [ "init", "classSoPickStyleElement.html#aeb584dec0f6a37a1b5792e63034c4654", null ]
+    [ "init", "classSoPickStyleElement.html#ad312f6e43238169a081e55f05db054f6", null ]
 ];

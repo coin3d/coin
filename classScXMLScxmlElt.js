@@ -1,6 +1,6 @@
 var classScXMLScxmlElt =
 [
-    [ "getTypeId", "classScXMLScxmlElt.html#a2a9a791d42fa80936c150f3a730cb38a", null ],
-    [ "handleXMLAttributes", "classScXMLScxmlElt.html#a29134c57770eedc8f9b15a251890ae13", null ],
-    [ "search", "classScXMLScxmlElt.html#aad80392e87a513dc72de1349172379b0", null ]
+    [ "getTypeId", "classScXMLScxmlElt.html#a5102da5edcf853be63368d34fc8c9324", null ],
+    [ "handleXMLAttributes", "classScXMLScxmlElt.html#a4d00763aaf88e424040477e76efa6997", null ],
+    [ "search", "classScXMLScxmlElt.html#a73d7c6495833d5acf3e2e840c6699341", null ]
 ];

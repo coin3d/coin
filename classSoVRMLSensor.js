@@ -1,5 +1,5 @@
 var classSoVRMLSensor =
 [
-    [ "getFieldData", "classSoVRMLSensor.html#a5307902e462f3690e8205d61cc95babe", null ],
-    [ "getTypeId", "classSoVRMLSensor.html#ae774f219e23536993dc6940b3a574954", null ]
+    [ "getFieldData", "classSoVRMLSensor.html#a72c7ec7ba04490ae10fba9d28f71cedd", null ],
+    [ "getTypeId", "classSoVRMLSensor.html#aaf94b30a03358ca5de1bd9d50071c8d6", null ]
 ];

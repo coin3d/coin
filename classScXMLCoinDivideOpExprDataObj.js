@@ -1,4 +1,4 @@
 var classScXMLCoinDivideOpExprDataObj =
 [
-    [ "getTypeId", "classScXMLCoinDivideOpExprDataObj.html#a4f2e7391c5a283cf815d09b40c258323", null ]
+    [ "getTypeId", "classScXMLCoinDivideOpExprDataObj.html#a16a203299ba06aa499dbde903ed96440", null ]
 ];

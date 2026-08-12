@@ -10,8 +10,8 @@ var classSoNodeEngine =
     [ "getOutputs", "classSoNodeEngine.html#a285992721aa3011889c06546258a149a", null ],
     [ "inputChanged", "classSoNodeEngine.html#a3d7f09a6ee88f91a718ef692b47d25f9", null ],
     [ "isNotifying", "classSoNodeEngine.html#a0872c55bd87570d8d6cc3c907e3a76ed", null ],
-    [ "notify", "classSoNodeEngine.html#a40413791c6f3f3421183a4e499db195a", null ],
-    [ "readInstance", "classSoNodeEngine.html#a95569ab1ef2a6821a2277fb549342305", null ],
-    [ "writeInstance", "classSoNodeEngine.html#a37846b3b14d6cc800ed030b6401d7066", null ],
+    [ "notify", "classSoNodeEngine.html#a33283708b8b55723bef359cbf268690f", null ],
+    [ "readInstance", "classSoNodeEngine.html#a25a20b76b3d99ad07b2993f4ed007539", null ],
+    [ "writeInstance", "classSoNodeEngine.html#ab4f51df8c5bc1d039e5979b504ce1b12", null ],
     [ "writeOutputTypes", "classSoNodeEngine.html#af30c4fefca9bafed14e9eca71390a413", null ]
 ];

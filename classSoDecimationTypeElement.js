@@ -7,5 +7,5 @@ var classSoDecimationTypeElement =
       [ "PERCENTAGE", "classSoDecimationTypeElement.html#ab77cb535bf5eca102428ce829a5db59fa03a9549b69e8d02e9f4b07e6b82ee48a", null ]
     ] ],
     [ "~SoDecimationTypeElement", "classSoDecimationTypeElement.html#a51b7e15b0322b7d97b932365c7bbbdf2", null ],
-    [ "init", "classSoDecimationTypeElement.html#a6ca12ce719de9f37265fda7abdf3f79e", null ]
+    [ "init", "classSoDecimationTypeElement.html#a3585548ae8f914535b1527f35728cdd3", null ]
 ];

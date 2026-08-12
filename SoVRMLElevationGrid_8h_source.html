@@ -208,17 +208,17 @@ $(function(){initNavTree('SoVRMLElevationGrid_8h_source.html',''); initResizable
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="classSoVRMLElevationGrid.html#ad9007f182baab51119638e48e208dc05">   70</a></span>  <a class="code hl_class" href="classSoSFBool.html">SoSFBool</a> <a class="code hl_variable" href="classSoVRMLElevationGrid.html#ad9007f182baab51119638e48e208dc05">colorPerVertex</a>;</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="classSoVRMLElevationGrid.html#a236aac9596059ad89860c972a4177f9b">   71</a></span>  <a class="code hl_class" href="classSoSFBool.html">SoSFBool</a> <a class="code hl_variable" href="classSoVRMLElevationGrid.html#a236aac9596059ad89860c972a4177f9b">normalPerVertex</a>;</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> GLRender(<a class="code hl_class" href="classSoGLRenderAction.html">SoGLRenderAction</a> * action);</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> rayPick(<a class="code hl_class" href="classSoRayPickAction.html">SoRayPickAction</a> * action);</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> getPrimitiveCount(<a class="code hl_class" href="classSoGetPrimitiveCountAction.html">SoGetPrimitiveCountAction</a> * action);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keywordtype">void</span> GLRender(<a class="code hl_class" href="classSoGLRenderAction.html">SoGLRenderAction</a> * action) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keywordtype">void</span> rayPick(<a class="code hl_class" href="classSoRayPickAction.html">SoRayPickAction</a> * action) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keywordtype">void</span> getPrimitiveCount(<a class="code hl_class" href="classSoGetPrimitiveCountAction.html">SoGetPrimitiveCountAction</a> * action) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="keyword">protected</span>:</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classSoVRMLElevationGrid.html">~SoVRMLElevationGrid</a>(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> notify(<a class="code hl_class" href="classSoNotList.html">SoNotList</a> * <a class="code hl_class" href="classSbList.html">list</a>);</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> generatePrimitives( <a class="code hl_class" href="classSoAction.html">SoAction</a> * action );</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="keywordtype">void</span> notify(<a class="code hl_class" href="classSoNotList.html">SoNotList</a> * <a class="code hl_class" href="classSbList.html">list</a>) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keywordtype">void</span> generatePrimitives( <a class="code hl_class" href="classSoAction.html">SoAction</a> * action ) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> computeBBox(<a class="code hl_class" href="classSoAction.html">SoAction</a> * action, <a class="code hl_class" href="classSbBox3f.html">SbBox3f</a> &amp; bbox,</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                           <a class="code hl_class" href="classSbVec3f.html">SbVec3f</a> &amp; center);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                           <a class="code hl_class" href="classSbVec3f.html">SbVec3f</a> &amp; center) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keyword">friend</span> <span class="keyword">class </span>SoVRMLElevationGridP;</div>
@@ -275,7 +275,7 @@ $(function(){initNavTree('SoVRMLElevationGrid_8h_source.html',''); initResizable
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_70e8847371073bf77721a53510588bff.html">VRMLnodes</a></li><li class="navelem"><b>SoVRMLElevationGrid.h</b></li>
-    <li class="footer">Generated on Mon Aug 10 2026 19:00:42 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Wed Aug 12 2026 20:09:49 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

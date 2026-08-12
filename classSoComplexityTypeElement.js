@@ -6,5 +6,5 @@ var classSoComplexityTypeElement =
       [ "BOUNDING_BOX", "classSoComplexityTypeElement.html#a5d7dd88dc55b157955d92b3a2ea712a2ab82a0aa0030fd696aad7780f5bbf7a5a", null ]
     ] ],
     [ "~SoComplexityTypeElement", "classSoComplexityTypeElement.html#adeb898d66e4068c3927510aefe28f62b", null ],
-    [ "init", "classSoComplexityTypeElement.html#ad103cffd7e26efec256819ac4ace3a51", null ]
+    [ "init", "classSoComplexityTypeElement.html#a3990dd47010dcf8986065e6ebe1952f4", null ]
 ];

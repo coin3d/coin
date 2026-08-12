@@ -2,10 +2,10 @@ var classSoTextureCoordinateSphere =
 [
     [ "SoTextureCoordinateSphere", "classSoTextureCoordinateSphere.html#a0762fc3727c78a2a36fdcdf4e2bc3174", null ],
     [ "~SoTextureCoordinateSphere", "classSoTextureCoordinateSphere.html#aac1c05bb6d3fc5369231600cffe641b4", null ],
-    [ "callback", "classSoTextureCoordinateSphere.html#abefac8c3781ece5e8dea3c0c5af5639c", null ],
-    [ "doAction", "classSoTextureCoordinateSphere.html#a182738061095d400c82c92b562b2a16c", null ],
-    [ "getFieldData", "classSoTextureCoordinateSphere.html#aae42c007d28d0bc44033019aef85a8c1", null ],
-    [ "getTypeId", "classSoTextureCoordinateSphere.html#a42cf85404bdb324e6c3a08ae79b8da91", null ],
-    [ "GLRender", "classSoTextureCoordinateSphere.html#a7ad5c3793df5922038d256aacf0115e5", null ],
-    [ "pick", "classSoTextureCoordinateSphere.html#a18835c241c7bbb1b0c799f6e71e27f42", null ]
+    [ "callback", "classSoTextureCoordinateSphere.html#a60d78d71807386107d7e3d175e6adc1b", null ],
+    [ "doAction", "classSoTextureCoordinateSphere.html#acc0e881eead8cc2ed6b866ab46892206", null ],
+    [ "getFieldData", "classSoTextureCoordinateSphere.html#a7195ffb35cc68128898219d14a175560", null ],
+    [ "getTypeId", "classSoTextureCoordinateSphere.html#afd6fb18c1fbe4dabfec609402f3100cc", null ],
+    [ "GLRender", "classSoTextureCoordinateSphere.html#a57f12756f806c211925a5044280a25d0", null ],
+    [ "pick", "classSoTextureCoordinateSphere.html#a9fd317990918b4e83c4c063ed1828709", null ]
 ];

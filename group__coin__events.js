@@ -9,7 +9,7 @@ var group__coin__events =
       [ "SoButtonEvent", "classSoButtonEvent.html#ac38b34ea72bf9fff5b48cd805093e801", null ],
       [ "~SoButtonEvent", "classSoButtonEvent.html#ac4f44f6cde4311ff95e5ff515415e623", null ],
       [ "getState", "classSoButtonEvent.html#ad13cb474a27796399000cd269ee38a4a", null ],
-      [ "getTypeId", "classSoButtonEvent.html#ae7fbfa66885216e9e8f6d9cb4cb96fcd", null ],
+      [ "getTypeId", "classSoButtonEvent.html#a775edfb1ebe955d739aa775d59ff9b40", null ],
       [ "setState", "classSoButtonEvent.html#a1a0ddb89d141d2944c726749e4eeac23", null ]
     ] ],
     [ "SoEvent", "classSoEvent.html", [
@@ -153,21 +153,21 @@ var group__coin__events =
       [ "~SoKeyboardEvent", "classSoKeyboardEvent.html#adab72607ed498df93552773b24dc0847", null ],
       [ "getKey", "classSoKeyboardEvent.html#a03fcc1505a715464521bdf7c0fa365d7", null ],
       [ "getPrintableCharacter", "classSoKeyboardEvent.html#a086369a51ce8ee2d7b6b87b74d2142c8", null ],
-      [ "getTypeId", "classSoKeyboardEvent.html#a74c4640d34c90967cfca8b4f20bea2a6", null ],
+      [ "getTypeId", "classSoKeyboardEvent.html#a2e100e39ca731b32d30eded82d64273c", null ],
       [ "setKey", "classSoKeyboardEvent.html#a0dd7e1b26c29d974f035112287c590fb", null ],
       [ "setPrintableCharacter", "classSoKeyboardEvent.html#a6f6fa7ab12631619ca0817df57af066c", null ]
     ] ],
     [ "SoLocation2Event", "classSoLocation2Event.html", [
       [ "SoLocation2Event", "classSoLocation2Event.html#a31062f16ed60ad5ba77d0c5dab26eaab", null ],
       [ "~SoLocation2Event", "classSoLocation2Event.html#ac86547016b7b44cc1e18170225adec6e", null ],
-      [ "getTypeId", "classSoLocation2Event.html#ae2858571425de39fb1053fd5e01735ab", null ]
+      [ "getTypeId", "classSoLocation2Event.html#abb8290a59b809a56dc8cdba078951713", null ]
     ] ],
     [ "SoMotion3Event", "classSoMotion3Event.html", [
       [ "SoMotion3Event", "classSoMotion3Event.html#ac9bed796981c0cc8aa35cee4c650ada9", null ],
       [ "~SoMotion3Event", "classSoMotion3Event.html#a374a2d684e0d8fc75ae97a1f2081e763", null ],
       [ "getRotation", "classSoMotion3Event.html#a06751fa254a845fc4b9c8c8b6baa220a", null ],
       [ "getTranslation", "classSoMotion3Event.html#ae3684cd3e3423d9b2176a805a1ace7ae", null ],
-      [ "getTypeId", "classSoMotion3Event.html#aabf19123d2582d80312b4f68c1c4d25e", null ],
+      [ "getTypeId", "classSoMotion3Event.html#a8e26283d721ecf5acafce53cd5aebfbb", null ],
       [ "setRotation", "classSoMotion3Event.html#ad8939e78c9bda17c6df6c58ce4af6bf5", null ],
       [ "setTranslation", "classSoMotion3Event.html#a43af2b05b6cc203b65a33af89b0fe3c6", null ]
     ] ],
@@ -183,7 +183,7 @@ var group__coin__events =
       [ "SoMouseButtonEvent", "classSoMouseButtonEvent.html#aa5b1a326508aff5a863143808b915d9c", null ],
       [ "~SoMouseButtonEvent", "classSoMouseButtonEvent.html#a0792710e85d19b8ef15f31ba71ebdf03", null ],
       [ "getButton", "classSoMouseButtonEvent.html#ac38e6592c3e8d81620c1af97bb1ef1e8", null ],
-      [ "getTypeId", "classSoMouseButtonEvent.html#a2a59cd64526d6aa8cd219c6b22719701", null ],
+      [ "getTypeId", "classSoMouseButtonEvent.html#aa21a75e5d8a1e401ff222621c2ac04e5", null ],
       [ "setButton", "classSoMouseButtonEvent.html#a9b359f6069edec93f0c191db85ac54af", null ]
     ] ],
     [ "SoSpaceballButtonEvent", "classSoSpaceballButtonEvent.html", [
@@ -202,7 +202,7 @@ var group__coin__events =
       [ "SoSpaceballButtonEvent", "classSoSpaceballButtonEvent.html#a3416dbe940928a5bc3bf1f50289e3c51", null ],
       [ "~SoSpaceballButtonEvent", "classSoSpaceballButtonEvent.html#ac7be0dec848059a6defff74f9517b014", null ],
       [ "getButton", "classSoSpaceballButtonEvent.html#af74586ad84331798b1e8b3164edba152", null ],
-      [ "getTypeId", "classSoSpaceballButtonEvent.html#af452bd55ba5d47330dc28c8e81e9533c", null ],
+      [ "getTypeId", "classSoSpaceballButtonEvent.html#a325e6de45e369abcc02642caa6755820", null ],
       [ "setButton", "classSoSpaceballButtonEvent.html#a6c6888899a0f7a56be99afa80242df38", null ]
     ] ]
 ];

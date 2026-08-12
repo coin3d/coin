@@ -20,7 +20,7 @@ var classSoPath =
     [ "getNode", "classSoPath.html#a00bb607dc1a29977cc9875af299e162e", null ],
     [ "getNodeFromTail", "classSoPath.html#a7c9d3b31973df085f32f886790796b24", null ],
     [ "getTail", "classSoPath.html#a60c8ed4e98df2bea9efddc8057376055", null ],
-    [ "getTypeId", "classSoPath.html#a9a318bcef02b670ba82cb7d4f64f4ff8", null ],
+    [ "getTypeId", "classSoPath.html#a5648817ef3a6fc7a6c88e7961dc18099", null ],
     [ "insertIndex", "classSoPath.html#ac2c8ab31aaece572afc70082e52f81cd", null ],
     [ "isRelevantNotification", "classSoPath.html#aa9b6748214f721d3962575406885ecfb", null ],
     [ "operator=", "classSoPath.html#a0098c2fc11f7d2e50e22937d414cb3d1", null ],

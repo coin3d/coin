@@ -559,7 +559,7 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Returns or creates a <a class="el" href="classSoGLDisplayList.html" title="The SoGLDisplayList class stores and manages OpenGL display lists.">SoGLDisplayList</a> to be used for rendering. Returns NULL if no <a class="el" href="classSoGLDisplayList.html" title="The SoGLDisplayList class stores and manages OpenGL display lists.">SoGLDisplayList</a> could be created. </p>
 
-<p>Reimplemented in <a class="el" href="classSoGLBigImage.html#a34c957db1299d20e1e2d339dce664552">SoGLBigImage</a>, and <a class="el" href="classSoGLCubeMapImage.html#acfd924916d8c5403f7279f5a3d6e55cf">SoGLCubeMapImage</a>.</p>
+<p>Reimplemented in <a class="el" href="classSoGLBigImage.html#af650a4a75dddb992ef9cb3fd0c2d290c">SoGLBigImage</a>, and <a class="el" href="classSoGLCubeMapImage.html#ad94d17f8002828106aaee5cb01466a46">SoGLCubeMapImage</a>.</p>
 
 </div>
 </div>
@@ -642,7 +642,7 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Returns the type identification of an object derived from a class inheriting <a class="el" href="classSoGLImage.html" title="The SoGLImage class is used to handle OpenGL 2D/3D textures.">SoGLImage</a>. This is used for runtime type checking and "downward" casting. </p>
 
-<p>Reimplemented in <a class="el" href="classSoGLBigImage.html#aa727323a821c784a6fedd469105e90b8">SoGLBigImage</a>, and <a class="el" href="classSoGLCubeMapImage.html#aba10c0a2e0d74510cd11139516ed913a">SoGLCubeMapImage</a>.</p>
+<p>Reimplemented in <a class="el" href="classSoGLBigImage.html#a73b7c760d796b383cfe6a0b025a336f7">SoGLBigImage</a>, and <a class="el" href="classSoGLCubeMapImage.html#a5125964c4b73f5fa22be730bbc844d11">SoGLCubeMapImage</a>.</p>
 
 </div>
 </div>
@@ -828,7 +828,7 @@ Protected Member Functions</h2></td></tr>
 <p>Also if <em>createinstate</em> is supplied, and all the attributes are the same as the current data in the image, glTexSubImage() will be used to insert the image data instead of creating a new texture object. This is much faster on most OpenGL drivers, and is very useful, for instance when doing animated textures.</p>
 <p>If you supply NULL for <em>image</em>, the instance will be reset, causing all display lists and memory to be freed. </p>
 
-<p>Reimplemented in <a class="el" href="classSoGLBigImage.html#a25f7c25cbc4e13dfa1c63be7927df04f">SoGLBigImage</a>, and <a class="el" href="classSoGLCubeMapImage.html#a3a7865d02a0f1b7c99b0965892241385">SoGLCubeMapImage</a>.</p>
+<p>Reimplemented in <a class="el" href="classSoGLBigImage.html#ad76ef958f948bd4f220671ebca7c638d">SoGLBigImage</a>, and <a class="el" href="classSoGLCubeMapImage.html#afd86c1c2b91fd43b1e81d38594160ec8">SoGLCubeMapImage</a>.</p>
 
 </div>
 </div>
@@ -880,7 +880,7 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Convenience 2D wrapper function around the 3D <a class="el" href="#a9224330dccd39954755029af4bb4a24c">setData()</a>. </p>
 
-<p>Reimplemented in <a class="el" href="classSoGLBigImage.html#a03d83d40ee2851ecf90d90abfae412cf">SoGLBigImage</a>, and <a class="el" href="classSoGLCubeMapImage.html#a46893eb4e6ef479dcd73c2e737cb1162">SoGLCubeMapImage</a>.</p>
+<p>Reimplemented in <a class="el" href="classSoGLBigImage.html#ad48cc5b31dfc422e29f6a52236092c3c">SoGLBigImage</a>, and <a class="el" href="classSoGLCubeMapImage.html#a13525e6499ee54f722a642ac1704b97d">SoGLCubeMapImage</a>.</p>
 
 </div>
 </div>
@@ -1203,7 +1203,7 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>This class has a private destructor since we want users to supply the current GL state when deleting the image. This is to make sure GL texture objects are freed as soon as possible. If you supply NULL to this method, the GL texture objects won't be deleted until the next time an GLRenderAction is applied in the image's cache context(s). </p>
 
-<p>Reimplemented in <a class="el" href="classSoGLBigImage.html#a66f4ebbb9a4d6a914f46faa82212f7f3">SoGLBigImage</a>, and <a class="el" href="classSoGLCubeMapImage.html#a3b76cfb097f3135fc8e2928ba9b8baf1">SoGLCubeMapImage</a>.</p>
+<p>Reimplemented in <a class="el" href="classSoGLBigImage.html#a69f0a2ce05d475da502c82dcf75c6e17">SoGLBigImage</a>, and <a class="el" href="classSoGLCubeMapImage.html#a54c143092570bae449a6364661a3bee7">SoGLCubeMapImage</a>.</p>
 
 </div>
 </div>
@@ -1235,7 +1235,7 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Virtual method that will be called once each frame. The method should unref display lists that have an age bigger or equal to <em>maxage</em>, and increment the age for other display lists. </p>
 
-<p>Reimplemented in <a class="el" href="classSoGLBigImage.html#aeab189f04a025e0a49954c8374621d5c">SoGLBigImage</a>.</p>
+<p>Reimplemented in <a class="el" href="classSoGLBigImage.html#afac4153391dbead8997694437b3deaef">SoGLBigImage</a>.</p>
 
 </div>
 </div>
@@ -1267,7 +1267,7 @@ Protected Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoGLImage.html">SoGLImage</a></li>
-    <li class="footer">Generated on Mon Aug 10 2026 19:00:44 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Wed Aug 12 2026 20:09:51 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

@@ -6,10 +6,10 @@ var classSoLightModel =
     ] ],
     [ "SoLightModel", "classSoLightModel.html#a2d81ca7b2a8b90d5e2761fc3c0bea480", null ],
     [ "~SoLightModel", "classSoLightModel.html#a0b4754ad5dc44f6df678aa72c788edaa", null ],
-    [ "callback", "classSoLightModel.html#a5ab42d0a22574c40fca78a05fb8d463e", null ],
-    [ "doAction", "classSoLightModel.html#ac874a9f52b8bff2750a58cd0580a61ad", null ],
-    [ "getFieldData", "classSoLightModel.html#a1e12238b7aca6cc54ec18db55abd7eba", null ],
-    [ "getTypeId", "classSoLightModel.html#a45dca8feb45d82e1c7641a4240e06158", null ],
-    [ "GLRender", "classSoLightModel.html#aa5b4cfc96eac8982a974b0f49b9a2e1b", null ],
+    [ "callback", "classSoLightModel.html#ad3fe0426852c778a3dff5d331cd7660e", null ],
+    [ "doAction", "classSoLightModel.html#ae2460dce90ddbd98f830cd1a1326928f", null ],
+    [ "getFieldData", "classSoLightModel.html#a17c26565381dacbd4bda44919099e5f9", null ],
+    [ "getTypeId", "classSoLightModel.html#ac91de09cb2ece924cd24704efd64298d", null ],
+    [ "GLRender", "classSoLightModel.html#a621674cd10b7e791f833c02d74bc020a", null ],
     [ "model", "classSoLightModel.html#a6fa4ebe215e5b9aa11757c2aeda6e3bb", null ]
 ];

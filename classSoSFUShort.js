@@ -1,6 +1,6 @@
 var classSoSFUShort =
 [
-    [ "copyFrom", "classSoSFUShort.html#a52c477d044961baa59d3302df06d19c7", null ],
-    [ "getTypeId", "classSoSFUShort.html#aca0045779c75c6191529166125e98f74", null ],
-    [ "isSame", "classSoSFUShort.html#afc65b9f68b673cfbd3273f39ca9a3a56", null ]
+    [ "copyFrom", "classSoSFUShort.html#a39d7b5a3616ae731583ed8b92ebde9c9", null ],
+    [ "getTypeId", "classSoSFUShort.html#a21a3b54429f672a4c56d736fa44be168", null ],
+    [ "isSame", "classSoSFUShort.html#a82c9bc4fd6f95bac2525d0c2a5e0b5fe", null ]
 ];

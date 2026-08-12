@@ -1,11 +1,11 @@
 var classSoMFVec4d =
 [
-    [ "copyFrom", "classSoMFVec4d.html#a344addb93b3de450e5f48f308f839208", null ],
-    [ "copyValue", "classSoMFVec4d.html#a8f572df1cbc9af88774d388df49f894a", null ],
-    [ "deleteAllValues", "classSoMFVec4d.html#a8230fe34fb38be0b4775767eb68bcfb9", null ],
-    [ "getTypeId", "classSoMFVec4d.html#abe43419583bb5e053969d063a59d050f", null ],
+    [ "copyFrom", "classSoMFVec4d.html#ac42f68212aabd48abbe0605498f53845", null ],
+    [ "copyValue", "classSoMFVec4d.html#a1732a3cc1284eaf89b5e0627251196b5", null ],
+    [ "deleteAllValues", "classSoMFVec4d.html#a94f8c44ee88dc2c1adeb7368bf5cbc63", null ],
+    [ "getTypeId", "classSoMFVec4d.html#ab4b1ac5dec7375841025148edb391f79", null ],
     [ "getValues", "classSoMFVec4d.html#a15c0a29f309ebba08f85fcc7050b2ab0", null ],
-    [ "isSame", "classSoMFVec4d.html#af5cdec0933752490dab4f116c5f62b72", null ],
+    [ "isSame", "classSoMFVec4d.html#a11902820ca7d4f0b17cb72bc652c15c7", null ],
     [ "set1Value", "classSoMFVec4d.html#ab3e1930eab18354c716e34c59b05f9de", null ],
     [ "set1Value", "classSoMFVec4d.html#aa9971fc6860b18b6b34fc54101e3cae4", null ],
     [ "setValue", "classSoMFVec4d.html#a73cd42aa540f611a5eaa44498dc82080", null ],

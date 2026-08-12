@@ -12,6 +12,6 @@ var classSoPathSensor =
     [ "detach", "classSoPathSensor.html#aa22f4e63a909c16ab4a1083d55abd718", null ],
     [ "getAttachedPath", "classSoPathSensor.html#aa671e23388b4be9ed6ca684b234331fb", null ],
     [ "getTriggerFilter", "classSoPathSensor.html#a75b7c38bacd2668f1571100ccef6b1b5", null ],
-    [ "notify", "classSoPathSensor.html#a7ef4a67b977aba476b25c44d839099af", null ],
+    [ "notify", "classSoPathSensor.html#ab80937dc9abacff45bb1d5e4b2a47ead", null ],
     [ "setTriggerFilter", "classSoPathSensor.html#ab158a94ca8c31d52afa579d2232ade31", null ]
 ];

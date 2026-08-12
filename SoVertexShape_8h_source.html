@@ -195,18 +195,18 @@ $(function(){initNavTree('SoVertexShape_8h_source.html',''); initResizable(); })
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="classSoVertexShape.html#a1498e2ce09250c39efc589303119cfb8">   58</a></span>  <a class="code hl_class" href="classSoSFNode.html">SoSFNode</a> <a class="code hl_variable" href="classSoVertexShape.html#a1498e2ce09250c39efc589303119cfb8">vertexProperty</a>;</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> notify(<a class="code hl_class" href="classSoNotList.html">SoNotList</a> * <a class="code hl_class" href="classSbList.html">nl</a>);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keywordtype">void</span> notify(<a class="code hl_class" href="classSoNotList.html">SoNotList</a> * <a class="code hl_class" href="classSbList.html">nl</a>) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keyword">virtual</span> SbBool generateDefaultNormals(<a class="code hl_class" href="classSoState.html">SoState</a> * state,</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                                        <a class="code hl_class" href="classSoNormalBundle.html">SoNormalBundle</a> * <a class="code hl_class" href="classSbList.html">bundle</a>);</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keyword">virtual</span> SbBool generateDefaultNormals(<a class="code hl_class" href="classSoState.html">SoState</a> * state,</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                                        <a class="code hl_class" href="classSoNormalCache.html">SoNormalCache</a> * cache);</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> write(<a class="code hl_class" href="classSoWriteAction.html">SoWriteAction</a> * action);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keywordtype">void</span> write(<a class="code hl_class" href="classSoWriteAction.html">SoWriteAction</a> * action) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="keyword">protected</span>:</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <a class="code hl_class" href="classSoVertexShape.html">SoVertexShape</a>(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classSoVertexShape.html">~SoVertexShape</a>();</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keyword">virtual</span> SbBool shouldGLRender(<a class="code hl_class" href="classSoGLRenderAction.html">SoGLRenderAction</a> * action);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  SbBool shouldGLRender(<a class="code hl_class" href="classSoGLRenderAction.html">SoGLRenderAction</a> * action) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keywordtype">void</span> setNormalCache(<a class="code hl_class" href="classSoState.html">SoState</a> * <span class="keyword">const</span> state,</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                      <span class="keyword">const</span> <span class="keywordtype">int</span> num, <span class="keyword">const</span> <a class="code hl_class" href="classSbVec3f.html">SbVec3f</a> * normals);</div>
@@ -248,7 +248,7 @@ $(function(){initNavTree('SoVertexShape_8h_source.html',''); initResizable(); })
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_a1c1d9fc954b6310fc06e1f59b6e0117.html">nodes</a></li><li class="navelem"><b>SoVertexShape.h</b></li>
-    <li class="footer">Generated on Mon Aug 10 2026 19:00:42 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Wed Aug 12 2026 20:09:49 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

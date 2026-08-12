@@ -122,7 +122,7 @@ var classSoKeyboardEvent =
     [ "~SoKeyboardEvent", "classSoKeyboardEvent.html#adab72607ed498df93552773b24dc0847", null ],
     [ "getKey", "classSoKeyboardEvent.html#a03fcc1505a715464521bdf7c0fa365d7", null ],
     [ "getPrintableCharacter", "classSoKeyboardEvent.html#a086369a51ce8ee2d7b6b87b74d2142c8", null ],
-    [ "getTypeId", "classSoKeyboardEvent.html#a74c4640d34c90967cfca8b4f20bea2a6", null ],
+    [ "getTypeId", "classSoKeyboardEvent.html#a2e100e39ca731b32d30eded82d64273c", null ],
     [ "setKey", "classSoKeyboardEvent.html#a0dd7e1b26c29d974f035112287c590fb", null ],
     [ "setPrintableCharacter", "classSoKeyboardEvent.html#a6f6fa7ab12631619ca0817df57af066c", null ]
 ];

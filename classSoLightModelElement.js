@@ -5,5 +5,5 @@ var classSoLightModelElement =
       [ "PHONG", "classSoLightModelElement.html#a69590485158a7b504334ce4c2bff15edad02e4a6393b461edaa25e200716769f2", null ]
     ] ],
     [ "~SoLightModelElement", "classSoLightModelElement.html#a6ab85d9ddc6e359df81ed7d6fcc142a9", null ],
-    [ "init", "classSoLightModelElement.html#ad0723bdf5580594fb4f5e01922479cdb", null ]
+    [ "init", "classSoLightModelElement.html#a0534c8c1a90cd8e4d672e62dfe6d5a3a", null ]
 ];

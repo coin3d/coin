@@ -253,17 +253,17 @@ $(function(){initNavTree('SoNode_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> grabEventsSetup(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> grabEventsCleanup(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> startNotify(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> notify(<a class="code hl_class" href="classSoNotList.html">SoNotList</a> * <a class="code hl_class" href="classSbList.html">l</a>);</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="keywordtype">void</span> startNotify(<span class="keywordtype">void</span>) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="keywordtype">void</span> notify(<a class="code hl_class" href="classSoNotList.html">SoNotList</a> * <a class="code hl_class" href="classSbList.html">l</a>) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  SbUniqueId getNodeId(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classSoChildList.html">SoChildList</a> * getChildren(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> writeInstance(<a class="code hl_class" href="classSoOutput.html">SoOutput</a> * <a class="code hl_class" href="classSbList.html">out</a>);</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="keywordtype">void</span> writeInstance(<a class="code hl_class" href="classSoOutput.html">SoOutput</a> * <a class="code hl_class" href="classSbList.html">out</a>) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classSoNode.html">SoNode</a> * addToCopyDict(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> copyContents(<span class="keyword">const</span> <a class="code hl_class" href="classSoFieldContainer.html">SoFieldContainer</a> * from,</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>                            SbBool <a class="code hl_class" href="classSbList.html">copyconnections</a>);</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classSoFieldContainer.html">SoFieldContainer</a> * copyThroughConnection(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>                            SbBool <a class="code hl_class" href="classSbList.html">copyconnections</a>) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <a class="code hl_class" href="classSoFieldContainer.html">SoFieldContainer</a> * copyThroughConnection(<span class="keywordtype">void</span>) <span class="keyword">const override</span>;</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="keyword">static</span> <a class="code hl_class" href="classSoType.html">SoType</a> getClassTypeId(<span class="keywordtype">void</span>);</div>
@@ -292,7 +292,7 @@ $(function(){initNavTree('SoNode_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  <a class="code hl_class" href="classSoNode.html">SoNode</a>(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classSoNode.html">~SoNode</a>();</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  <span class="keyword">virtual</span> SbBool readInstance(<a class="code hl_class" href="classSoInput.html">SoInput</a> * <a class="code hl_class" href="classSbList.html">in</a>, <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> flags);</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>  SbBool readInstance(<a class="code hl_class" href="classSoInput.html">SoInput</a> * <a class="code hl_class" href="classSbList.html">in</a>, <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> flags) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>  <span class="keyword">static</span> <span class="keyword">const</span> <a class="code hl_class" href="classSoFieldData.html">SoFieldData</a> ** getFieldDataPtr(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
@@ -362,7 +362,7 @@ $(function(){initNavTree('SoNode_8h_source.html',''); initResizable(); });
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_a1c1d9fc954b6310fc06e1f59b6e0117.html">nodes</a></li><li class="navelem"><b>SoNode.h</b></li>
-    <li class="footer">Generated on Mon Aug 10 2026 19:00:42 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Wed Aug 12 2026 20:09:49 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

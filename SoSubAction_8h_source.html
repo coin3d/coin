@@ -195,7 +195,7 @@ $(function(){initNavTree('SoSubAction_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">#define SO_ACTION_HEADER(_classname_) \</span></div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">public: \</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">  virtual SoType getTypeId(void) const; \</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">  SoType getTypeId(void) const override; \</span></div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="preprocessor">  static SoType getClassTypeId(void); \</span></div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="preprocessor"> \</span></div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="preprocessor">  static void addMethod(const SoType type, SoActionMethod method); \</span></div>
@@ -203,7 +203,7 @@ $(function(){initNavTree('SoSubAction_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="preprocessor">  static void enableElement(const SoType type, const int stackindex); \</span></div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="preprocessor"> \</span></div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">protected: \</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="preprocessor">  virtual const SoEnabledElementsList &amp; getEnabledElements(void) const; \</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="preprocessor">  const SoEnabledElementsList &amp; getEnabledElements(void) const override; \</span></div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">  </span><span class="comment">/* These two methods are not available in the original OIV API. */</span><span class="preprocessor"> \</span></div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">  </span><span class="comment">/* They have been added as a work-around for Win32 DLL headaches. */</span><span class="preprocessor"> \</span></div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="preprocessor">  </span><span class="comment">/* See further explanation below. 20000808 mortene. */</span><span class="preprocessor"> \</span></div>
@@ -290,7 +290,7 @@ $(function(){initNavTree('SoSubAction_8h_source.html',''); initResizable(); });
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_4be02981134b54e3e345677ce1882bfe.html">actions</a></li><li class="navelem"><b>SoSubAction.h</b></li>
-    <li class="footer">Generated on Mon Aug 10 2026 19:00:41 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Wed Aug 12 2026 20:09:48 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

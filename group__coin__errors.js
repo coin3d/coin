@@ -6,9 +6,9 @@ var group__coin__errors =
         [ "WARNING", "classSoDebugError.html#a75af94a4fc4f0feb5b2ead59b04e9bbdae3f62335bdeb576ebb5271cb709086c5", null ],
         [ "INFO", "classSoDebugError.html#a75af94a4fc4f0feb5b2ead59b04e9bbda82d0263c9b2944dd4838f64a4d2db48e", null ]
       ] ],
-      [ "getHandler", "classSoDebugError.html#a970013727a70589286444289e10250f3", null ],
+      [ "getHandler", "classSoDebugError.html#aa204b331242f8c9078355d6b2154bea2", null ],
       [ "getSeverity", "classSoDebugError.html#ac615e564326854aa2c057fa681401b2f", null ],
-      [ "getTypeId", "classSoDebugError.html#acfe12f826175835bea8764d4d0df1d14", null ]
+      [ "getTypeId", "classSoDebugError.html#a7aa553264cfd7e76d6a44795fc05c5a5", null ]
     ] ],
     [ "SoError", "classSoError.html", [
       [ "~SoError", "classSoError.html#aedcf39df541330db83bb8264c81b7033", null ],
@@ -21,11 +21,11 @@ var group__coin__errors =
       [ "setDebugString", "classSoError.html#a2538d100bcb6df743a8fc9f51602dcea", null ]
     ] ],
     [ "SoMemoryError", "classSoMemoryError.html", [
-      [ "getHandler", "classSoMemoryError.html#a12d0e7beb7d839c0aebd7196e446677e", null ],
-      [ "getTypeId", "classSoMemoryError.html#a6c92570a67f436b410e4d37117fc1c64", null ]
+      [ "getHandler", "classSoMemoryError.html#a299b9489112b4e3f79d62906e076d1d3", null ],
+      [ "getTypeId", "classSoMemoryError.html#ad2d32826c1cf27d9015902d06e0bc3de", null ]
     ] ],
     [ "SoReadError", "classSoReadError.html", [
-      [ "getHandler", "classSoReadError.html#ab635e43fefb9be3adddfa62ea7724233", null ],
-      [ "getTypeId", "classSoReadError.html#ac674b8949e2437fb3966f1c178af5938", null ]
+      [ "getHandler", "classSoReadError.html#a47668f7a8cac8f78f6353d66a65154c6", null ],
+      [ "getTypeId", "classSoReadError.html#a814b9960530d15f1b18bddc5307ea153", null ]
     ] ]
 ];

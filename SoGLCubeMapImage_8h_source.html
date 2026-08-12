@@ -180,10 +180,10 @@ $(function(){initNavTree('SoGLCubeMapImage_8h_source.html',''); initResizable();
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <a class="code hl_class" href="classSoGLCubeMapImage.html">SoGLCubeMapImage</a>();</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> unref(<a class="code hl_class" href="classSoState.html">SoState</a> * state = <a class="code hl_class" href="classSbList.html">NULL</a>);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordtype">void</span> unref(<a class="code hl_class" href="classSoState.html">SoState</a> * state = <a class="code hl_class" href="classSbList.html">NULL</a>) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keyword">static</span> <a class="code hl_class" href="classSoType.html">SoType</a> getClassTypeId(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classSoType.html">SoType</a> getTypeId(<span class="keywordtype">void</span>) <span class="keyword">const</span> ;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <a class="code hl_class" href="classSoType.html">SoType</a> getTypeId(<span class="keywordtype">void</span>) <span class="keyword">const  override</span>;</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keyword">enum</span> Target {</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    NEGATIVE_X = 0,</div>
@@ -199,22 +199,22 @@ $(function(){initNavTree('SoGLCubeMapImage_8h_source.html',''); initResizable();
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                       <span class="keyword">const</span> <a class="code hl_class" href="classSbVec2s.html">SbVec2s</a> &amp; size,</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                       <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code hl_class" href="classSbList.html">numcomponents</a>);</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> setData(<span class="keyword">const</span> <a class="code hl_class" href="classSbImage.html">SbImage</a> * image,</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keywordtype">void</span> setData(<span class="keyword">const</span> <a class="code hl_class" href="classSbImage.html">SbImage</a> * image,</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>                       <span class="keyword">const</span> <a class="code hl_enumeration" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a> wraps = REPEAT,</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>                       <span class="keyword">const</span> <a class="code hl_enumeration" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a> wrapt = REPEAT,</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>                       <span class="keyword">const</span> <span class="keywordtype">float</span> quality = 0.5f,</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>                       <span class="keyword">const</span> <span class="keywordtype">int</span> border = 0,</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>                       <a class="code hl_class" href="classSoState.html">SoState</a> * <a class="code hl_class" href="classSbList.html">createinstate</a> = <a class="code hl_class" href="classSbList.html">NULL</a>);</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>                       <a class="code hl_class" href="classSoState.html">SoState</a> * <a class="code hl_class" href="classSbList.html">createinstate</a> = <a class="code hl_class" href="classSbList.html">NULL</a>) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> setData(<span class="keyword">const</span> <a class="code hl_class" href="classSbImage.html">SbImage</a> * image,</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keywordtype">void</span> setData(<span class="keyword">const</span> <a class="code hl_class" href="classSbImage.html">SbImage</a> * image,</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>                       <span class="keyword">const</span> <a class="code hl_enumeration" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a> wraps,</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>                       <span class="keyword">const</span> <a class="code hl_enumeration" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a> wrapt,</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                       <span class="keyword">const</span> <a class="code hl_enumeration" href="classSoGLImage.html#aa7a651ee3183f5497290ce3d92141524">Wrap</a> wrapr,</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>                       <span class="keyword">const</span> <span class="keywordtype">float</span> quality = 0.5f,</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>                       <span class="keyword">const</span> <span class="keywordtype">int</span> border = 0,</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>                       <a class="code hl_class" href="classSoState.html">SoState</a> * <a class="code hl_class" href="classSbList.html">createinstate</a> = <a class="code hl_class" href="classSbList.html">NULL</a>);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>                       <a class="code hl_class" href="classSoState.html">SoState</a> * <a class="code hl_class" href="classSbList.html">createinstate</a> = <a class="code hl_class" href="classSbList.html">NULL</a>) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classSoGLDisplayList.html">SoGLDisplayList</a> * getGLDisplayList(<a class="code hl_class" href="classSoState.html">SoState</a> * state);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <a class="code hl_class" href="classSoGLDisplayList.html">SoGLDisplayList</a> * getGLDisplayList(<a class="code hl_class" href="classSoState.html">SoState</a> * state) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> <span class="keyword">public</span>:</div>
@@ -245,7 +245,7 @@ $(function(){initNavTree('SoGLCubeMapImage_8h_source.html',''); initResizable();
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_c6fd86a54b85be66f511a749989088b2.html">misc</a></li><li class="navelem"><b>SoGLCubeMapImage.h</b></li>
-    <li class="footer">Generated on Mon Aug 10 2026 19:00:42 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Wed Aug 12 2026 20:09:49 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

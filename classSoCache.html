@@ -202,7 +202,7 @@ Protected Member Functions</h2></td></tr>
 </div><!-- fragment --><p>First you reset and store the old value of the cache invalid-flag. Then you push the state so that the cache can detect when something outside the cache is changed (and to be able to change the cache element). Next, you create the cache - don't forget to ref it. Finally, set the current cache in the cache element and build the cache. After building the cache, you pop the state and restore the invalid-cache flag.</p>
 <p>When building the cache, all elements that are read will be copied into the cache (using <a class="el" href="classSoElement.html#a4a6e2a38cdbbdd1dccbb3e9928e68d55">SoElement::copyMatchInfo()</a>), and these copied elements are used to test the validity of the cache (in <a class="el" href="#a7e1b3f532a7bc38340bf1bb19cb2bcc3">SoCache::isValid()</a>).</p>
 <p>You don't have to manually add element dependencies. They will automatically be picked up when creating the cache. This is handled in <a class="el" href="classSoElement.html#ab8cb20060c9b527c8b2e343b1cf4032a">SoElement::getConstElement()</a>.</p>
-<p>If you want the cache to be invalidated when some field inside your node is changed, it's common to overload the notify()-method, and call <a class="el" href="#a6c8892faf5317b9ad1fb19e9acabd504">SoCache::invalidate()</a> whenever the notify()-method for your node is called. See for instance <a class="el" href="classSoShape.html#a954e546c49b3078934c159d05836cfa3">SoShape::notify()</a>.</p>
+<p>If you want the cache to be invalidated when some field inside your node is changed, it's common to overload the notify()-method, and call <a class="el" href="#a6c8892faf5317b9ad1fb19e9acabd504">SoCache::invalidate()</a> whenever the notify()-method for your node is called. See for instance <a class="el" href="classSoShape.html#a3104db270c9361decc2dbd2f4737a176">SoShape::notify()</a>.</p>
 <p>Also, don't delete the cache in your notify() method. Wait until the next time the cache is needed before unref-ing the old cache. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a545dadd5bed78d7c9ab756bb1c430b3f" name="a545dadd5bed78d7c9ab756bb1c430b3f"></a>
@@ -322,7 +322,7 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Can be overridden by subclasses to clean up before they are deleted. Default method does nothing. </p>
 
-<p>Reimplemented in <a class="el" href="classSoGLRenderCache.html#affc61d6e4f277b9f24546ae1ac41e10a">SoGLRenderCache</a>.</p>
+<p>Reimplemented in <a class="el" href="classSoGLRenderCache.html#a5f82b5e135595a6f4fa7a4d6557e741d">SoGLRenderCache</a>.</p>
 
 </div>
 </div>
@@ -386,7 +386,7 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Return <em>TRUE</em> if this cache is valid, <em>FALSE</em> otherwise. </p>
 
-<p>Reimplemented in <a class="el" href="classSoGLRenderCache.html#a226e3e50b856b1b887e126d7f2303c57">SoGLRenderCache</a>, and <a class="el" href="classSoPrimitiveVertexCache.html#ab78cda5fcc6f3250a7b612b39c55fcf3">SoPrimitiveVertexCache</a>.</p>
+<p>Reimplemented in <a class="el" href="classSoGLRenderCache.html#a1d27f728499c69df3197cad45f6eeb57">SoGLRenderCache</a>, and <a class="el" href="classSoPrimitiveVertexCache.html#a81984b231495979e682739650014e0ca">SoPrimitiveVertexCache</a>.</p>
 
 </div>
 </div>
@@ -436,7 +436,7 @@ Protected Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoCache.html">SoCache</a></li>
-    <li class="footer">Generated on Mon Aug 10 2026 19:00:43 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Wed Aug 12 2026 20:09:51 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

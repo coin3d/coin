@@ -12,5 +12,5 @@ var classSoNormalBindingElement =
       [ "NONE", "classSoNormalBindingElement.html#aac0e8417b30d1e5910a9bf5e2cd6c009a3facd1ae90d0b9ca387e41724705f6b3", null ]
     ] ],
     [ "~SoNormalBindingElement", "classSoNormalBindingElement.html#a5f1152a5d4bcab862acc9798e74f4a28", null ],
-    [ "init", "classSoNormalBindingElement.html#a630c146cf89169c29d938f5470f3f531", null ]
+    [ "init", "classSoNormalBindingElement.html#ae3c391dd17f26b125c0dd28715ddfa1a", null ]
 ];

@@ -5,8 +5,8 @@ var classSoGLRenderCache =
     [ "addNestedCache", "classSoGLRenderCache.html#aa2f230810931b1e980efb975342242e2", null ],
     [ "call", "classSoGLRenderCache.html#a33aa1f6480c71974e42bba21436dd204", null ],
     [ "close", "classSoGLRenderCache.html#a74f05a561558771e30a3b796a950d825", null ],
-    [ "destroy", "classSoGLRenderCache.html#affc61d6e4f277b9f24546ae1ac41e10a", null ],
+    [ "destroy", "classSoGLRenderCache.html#a5f82b5e135595a6f4fa7a4d6557e741d", null ],
     [ "getCacheContext", "classSoGLRenderCache.html#ab9ed371614d7006ef2561c227cdb9bea", null ],
-    [ "isValid", "classSoGLRenderCache.html#a226e3e50b856b1b887e126d7f2303c57", null ],
+    [ "isValid", "classSoGLRenderCache.html#a1d27f728499c69df3197cad45f6eeb57", null ],
     [ "open", "classSoGLRenderCache.html#a1c23e0c0dc558e47ced5e0726698a920", null ]
 ];

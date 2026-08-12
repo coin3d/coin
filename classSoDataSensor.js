@@ -17,5 +17,5 @@ var classSoDataSensor =
     [ "notify", "classSoDataSensor.html#af19eeacd02a6b3e210a07f1bef483428", null ],
     [ "setDeleteCallback", "classSoDataSensor.html#a150448b51a530012ae970553e0cd59d0", null ],
     [ "setTriggerPathFlag", "classSoDataSensor.html#a84765fde3a1daf9447f7a3883fb1657a", null ],
-    [ "trigger", "classSoDataSensor.html#a4200be321b36a977e358322b229329d6", null ]
+    [ "trigger", "classSoDataSensor.html#a21ba69f8963e94d17fb926803fbe2985", null ]
 ];

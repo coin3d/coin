@@ -1,8 +1,8 @@
 var classSoGLLinePatternElement =
 [
     [ "~SoGLLinePatternElement", "classSoGLLinePatternElement.html#a354b03da856e112005952af9f439ce37", null ],
-    [ "init", "classSoGLLinePatternElement.html#a0272499c2428eed44aedcc62916018b9", null ],
-    [ "pop", "classSoGLLinePatternElement.html#a43a72b560f153056f2cd8c404f5b839c", null ],
-    [ "push", "classSoGLLinePatternElement.html#a8c11ddd4d73f060362f65369a05cb17b", null ],
-    [ "setElt", "classSoGLLinePatternElement.html#a8d341ae39b3e092032c27006614d5c7c", null ]
+    [ "init", "classSoGLLinePatternElement.html#a13f7d9a7002339c3b412daeed306cae6", null ],
+    [ "pop", "classSoGLLinePatternElement.html#a903ded3cf0ccb629ba05c240e901a377", null ],
+    [ "push", "classSoGLLinePatternElement.html#a1398542dfdbecae00d21b97168ba5aab", null ],
+    [ "setElt", "classSoGLLinePatternElement.html#aa98571054241ba22d372c82b19d6b70a", null ]
 ];

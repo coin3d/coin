@@ -195,9 +195,9 @@ $(function(){initNavTree('SoVRMLTimeSensor_8h_source.html',''); initResizable();
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classSoVRMLTimeSensor.html#a58ee7997b2ef219cbc653d85876d41e5">   57</a></span>  <a class="code hl_class" href="classSoSFTime.html">SoSFTime</a> <a class="code hl_variable" href="classSoVRMLTimeSensor.html#a58ee7997b2ef219cbc653d85876d41e5">startTime</a>;</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="classSoVRMLTimeSensor.html#a08037d651cb86af0bf55722b21a18a27">   58</a></span>  <a class="code hl_class" href="classSoSFTime.html">SoSFTime</a> <a class="code hl_variable" href="classSoVRMLTimeSensor.html#a08037d651cb86af0bf55722b21a18a27">stopTime</a>;</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> notify(<a class="code hl_class" href="classSoNotList.html">SoNotList</a> * <a class="code hl_class" href="classSbList.html">list</a>);</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> handleEvent(<a class="code hl_class" href="classSoHandleEventAction.html">SoHandleEventAction</a> * action);</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> write(<a class="code hl_class" href="classSoWriteAction.html">SoWriteAction</a> * action);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keywordtype">void</span> notify(<a class="code hl_class" href="classSoNotList.html">SoNotList</a> * <a class="code hl_class" href="classSbList.html">list</a>) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordtype">void</span> handleEvent(<a class="code hl_class" href="classSoHandleEventAction.html">SoHandleEventAction</a> * action) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keywordtype">void</span> write(<a class="code hl_class" href="classSoWriteAction.html">SoWriteAction</a> * action) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="classSoVRMLTimeSensor.html#a7df2018e3b2b9aa234a5a5fb93d15f42">   64</a></span>  <a class="code hl_class" href="classSoEngineOutput.html">SoEngineOutput</a> <a class="code hl_variable" href="classSoVRMLTimeSensor.html#a7df2018e3b2b9aa234a5a5fb93d15f42">cycleTime</a>; <span class="comment">// (SoSFTime)</span></div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="classSoVRMLTimeSensor.html#a5b43d3af42e796cd540c11c25a0cd71e">   65</a></span>  <a class="code hl_class" href="classSoEngineOutput.html">SoEngineOutput</a> <a class="code hl_variable" href="classSoVRMLTimeSensor.html#a5b43d3af42e796cd540c11c25a0cd71e">fraction_changed</a>; <span class="comment">// (SoSFFloat)</span></div>
@@ -206,10 +206,10 @@ $(function(){initNavTree('SoVRMLTimeSensor_8h_source.html',''); initResizable();
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="keyword">protected</span>:</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classSoVRMLTimeSensor.html">~SoVRMLTimeSensor</a>();</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> inputChanged(<a class="code hl_class" href="classSoField.html">SoField</a> * <a class="code hl_class" href="classSbList.html">whichInput</a>);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keywordtype">void</span> inputChanged(<a class="code hl_class" href="classSoField.html">SoField</a> * <a class="code hl_class" href="classSbList.html">whichInput</a>) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> evaluate(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keywordtype">void</span> evaluate(<span class="keywordtype">void</span>) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <a class="code hl_class" href="classSoSFTime.html">SoSFTime</a> timeIn;</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keyword">class </span><a class="code hl_class" href="classSbList.html">SoVRMLTimeSensorP</a> * pimpl;</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>}; <span class="comment">// class SoVRMLTimeSensor</span></div>
@@ -242,7 +242,7 @@ $(function(){initNavTree('SoVRMLTimeSensor_8h_source.html',''); initResizable();
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_70e8847371073bf77721a53510588bff.html">VRMLnodes</a></li><li class="navelem"><b>SoVRMLTimeSensor.h</b></li>
-    <li class="footer">Generated on Mon Aug 10 2026 19:00:42 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Wed Aug 12 2026 20:09:49 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
