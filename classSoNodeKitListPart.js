@@ -1,7 +1,7 @@
 var classSoNodeKitListPart =
 [
     [ "SoNodeKitListPart", "classSoNodeKitListPart.html#aacbae6fc4f8b1b7955f09caffd70d926", null ],
-    [ "~SoNodeKitListPart", "classSoNodeKitListPart.html#af923ee97d679dc70e1ac115a16db4851", null ],
+    [ "~SoNodeKitListPart", "classSoNodeKitListPart.html#ab4eb32286233f77774a6fee952da3df9", null ],
     [ "addChild", "classSoNodeKitListPart.html#a36b268c13ffd50300622651f5244b670", null ],
     [ "addChildType", "classSoNodeKitListPart.html#a2c3732febfb0ff5925c6838ea692f970", null ],
     [ "affectsState", "classSoNodeKitListPart.html#a1af9fad022289ea77bf8b6987d48572b", null ],

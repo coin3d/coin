@@ -2535,8 +2535,8 @@
       <anchor>a2b9594de529d57838e79bd7f0d31cbd2</anchor>
       <arglist>(void) const override</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual SbRotation</type>
+    <member kind="function">
+      <type>SbRotation</type>
       <name>getRotation</name>
       <anchorfile>classSbCylinderPlaneProjector.html</anchorfile>
       <anchor>a285afd754310ee3e5e8424a193e0fa9c</anchor>
@@ -2720,8 +2720,8 @@
       <anchor>ab36df0b6e80d4e4390041795a8bd8092</anchor>
       <arglist>(void) const override</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual SbRotation</type>
+    <member kind="function">
+      <type>SbRotation</type>
       <name>getRotation</name>
       <anchorfile>classSbCylinderSectionProjector.html</anchorfile>
       <anchor>af381e9a660f4f01208a176bdcf852ff6</anchor>
@@ -6397,8 +6397,8 @@
       <anchor>acdd69fdac71debe10b7467bf435a8da1</anchor>
       <arglist>(void) const override</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual SbRotation</type>
+    <member kind="function">
+      <type>SbRotation</type>
       <name>getRotation</name>
       <anchorfile>classSbSpherePlaneProjector.html</anchorfile>
       <anchor>aa47953a5c60768005dc8849e2ae8aacc</anchor>
@@ -6582,8 +6582,8 @@
       <anchor>a56e97badb2f0f2e59e8a986a1970fe6d</anchor>
       <arglist>(void) const</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual SbRotation</type>
+    <member kind="function">
+      <type>SbRotation</type>
       <name>getRotation</name>
       <anchorfile>classSbSphereSectionProjector.html</anchorfile>
       <anchor>ab2651470a3f9640fbde65223a6c033bf</anchor>
@@ -15185,8 +15185,8 @@
       <anchor>a5f63886df8a0cb1072eebdc775adee98</anchor>
       <arglist>(void)</arglist>
     </member>
-    <member kind="function" protection="protected" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function" protection="protected">
+      <type>void</type>
       <name>copyContents</name>
       <anchorfile>classSoBaseKit.html</anchorfile>
       <anchor>a54c3e69da614d2c3127079727815631c</anchor>
@@ -29294,8 +29294,8 @@
       <anchor>aec4f8d289f6d92b52b1334f69fd7f8cf</anchor>
       <arglist>(void) const</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function">
+      <type>void</type>
       <name>copyContents</name>
       <anchorfile>classSoFile.html</anchorfile>
       <anchor>af72c577359d9b2c445ec43377bfe3c6c</anchor>
@@ -32144,8 +32144,8 @@
       <anchor>a18c5373b3756338f0802a47fd0aac753</anchor>
       <arglist>(SoState *state) override</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function">
+      <type>void</type>
       <name>pop</name>
       <anchorfile>classSoGLClipPlaneElement.html</anchorfile>
       <anchor>a29c3a023b8796dbccfc26469d25ee08b</anchor>
@@ -32193,8 +32193,8 @@
       <anchor>ad2653fc3e7a0499804341369b29f67ac</anchor>
       <arglist>()</arglist>
     </member>
-    <member kind="function" protection="protected" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function" protection="protected">
+      <type>void</type>
       <name>addToElt</name>
       <anchorfile>classSoGLClipPlaneElement.html</anchorfile>
       <anchor>a0b36c947889975adbdc1cc6605c3a1d7</anchor>
@@ -32472,8 +32472,8 @@
       <anchor>afe6cf5c76c66d13b48874025d9725a78</anchor>
       <arglist>()</arglist>
     </member>
-    <member kind="function" protection="protected" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function" protection="protected">
+      <type>void</type>
       <name>setElt</name>
       <anchorfile>classSoGLDepthBufferElement.html</anchorfile>
       <anchor>a6d3aa53d19f7b0a12d55aaea12d16193</anchor>
@@ -32593,8 +32593,8 @@
       <anchor>ad68c67de2a87ef0d4bb125e840449fec</anchor>
       <arglist>(SoState *state) override</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function">
+      <type>void</type>
       <name>pop</name>
       <anchorfile>classSoGLDrawStyleElement.html</anchorfile>
       <anchor>a47baaf87f017b1014e1c5877e604dd41</anchor>
@@ -32735,8 +32735,8 @@
       <anchor>ab93ec33a0966174d6c2932d5999e8c5c</anchor>
       <arglist>(SoState *state) override</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function">
+      <type>void</type>
       <name>pop</name>
       <anchorfile>classSoGLEnvironmentElement.html</anchorfile>
       <anchor>a50b81da1c21d70eebb24214b314f897f</anchor>
@@ -32777,8 +32777,8 @@
       <anchor>ad1cc191551e33d311980e4fb10ca52b0</anchor>
       <arglist>()</arglist>
     </member>
-    <member kind="function" protection="protected" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function" protection="protected">
+      <type>void</type>
       <name>setElt</name>
       <anchorfile>classSoGLEnvironmentElement.html</anchorfile>
       <anchor>ad5f71a0e0630667f6b7391740d5baabe</anchor>
@@ -33177,8 +33177,8 @@
       <anchor>afa694f1049db5b3be2d19b07a270c3d4</anchor>
       <arglist>(SoState *state) override</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function">
+      <type>void</type>
       <name>pop</name>
       <anchorfile>classSoGLLightIdElement.html</anchorfile>
       <anchor>ac213dd344050bb676afc6fbfa39b5977</anchor>
@@ -33273,8 +33273,8 @@
       <anchor>a13f7d9a7002339c3b412daeed306cae6</anchor>
       <arglist>(SoState *state) override</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function">
+      <type>void</type>
       <name>pop</name>
       <anchorfile>classSoGLLinePatternElement.html</anchorfile>
       <anchor>a903ded3cf0ccb629ba05c240e901a377</anchor>
@@ -33341,8 +33341,8 @@
       <anchor>acba910985640ebe454ad4c05b9bf3a39</anchor>
       <arglist>(SoState *state) override</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function">
+      <type>void</type>
       <name>pop</name>
       <anchorfile>classSoGLLineWidthElement.html</anchorfile>
       <anchor>a7abe6ff467425fe6021e4d62b29644f2</anchor>
@@ -33409,8 +33409,8 @@
       <anchor>ae97af571fe835b53070945cc0611b0d1</anchor>
       <arglist>(SoState *state) override</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function">
+      <type>void</type>
       <name>pop</name>
       <anchorfile>classSoGLModelMatrixElement.html</anchorfile>
       <anchor>aa0f34fe1a7a2ff0a9b1eea4dce278789</anchor>
@@ -33548,8 +33548,8 @@
       <anchor>a8ce55da87c09c436be51de780f780565</anchor>
       <arglist>(const SbBool *enabled, const int maxenabled) const</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function">
+      <type>void</type>
       <name>pop</name>
       <anchorfile>classSoGLMultiTextureCoordinateElement.html</anchorfile>
       <anchor>af532a4808a3e67c6cd06be8764d08c4c</anchor>
@@ -33651,8 +33651,8 @@
       <anchor>a619a16106f6fae272a585f888578c9e2</anchor>
       <arglist>(SoState *state) override</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function">
+      <type>void</type>
       <name>pop</name>
       <anchorfile>classSoGLMultiTextureEnabledElement.html</anchorfile>
       <anchor>aecf440dcb9dba927988e87bcaa2e2324</anchor>
@@ -33720,8 +33720,8 @@
       <anchor>a4bc423fc1d90e1cdb4b5335948161277</anchor>
       <arglist>(SoState *state) override</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function">
+      <type>void</type>
       <name>pop</name>
       <anchorfile>classSoGLMultiTextureImageElement.html</anchorfile>
       <anchor>af13965f742b40ae637a4a1fabc1009c5</anchor>
@@ -33823,8 +33823,8 @@
       <anchor>a43e4f31343892e4712ad9a2a68d39b73</anchor>
       <arglist>(const int unit, const SbMatrix &amp;matrix) override</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function">
+      <type>void</type>
       <name>pop</name>
       <anchorfile>classSoGLMultiTextureMatrixElement.html</anchorfile>
       <anchor>ac1c21123c655ec52375feabd528e41de</anchor>
@@ -34114,8 +34114,8 @@
     <name>SoGLProjectionMatrixElement</name>
     <filename>classSoGLProjectionMatrixElement.html</filename>
     <base>SoProjectionMatrixElement</base>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function">
+      <type>void</type>
       <name>pop</name>
       <anchorfile>classSoGLProjectionMatrixElement.html</anchorfile>
       <anchor>aa4c39e363f7bce63d80b327b6d4e000c</anchor>
@@ -35096,8 +35096,8 @@
       <anchor>ae856331a65dda8684dc58d73372e1633</anchor>
       <arglist>(SoState *state) override</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function">
+      <type>void</type>
       <name>pop</name>
       <anchorfile>classSoGLShapeHintsElement.html</anchorfile>
       <anchor>a4c3df0f53be14464155e01a2ced31f3a</anchor>
@@ -35166,8 +35166,8 @@
       <anchor>a2caf7ef48a4e2a55424123a7f29a42b0</anchor>
       <arglist>()</arglist>
     </member>
-    <member kind="function" protection="protected" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function" protection="protected">
+      <type>void</type>
       <name>setElt</name>
       <anchorfile>classSoGLShapeHintsElement.html</anchorfile>
       <anchor>a7274f6684cbf994a3a6cd53536aad70b</anchor>
@@ -35199,8 +35199,8 @@
       <anchor>a758b46ec11bb793381e41f1a140b4491</anchor>
       <arglist>(const SoElement *element) const override</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function">
+      <type>void</type>
       <name>pop</name>
       <anchorfile>classSoGLUpdateAreaElement.html</anchorfile>
       <anchor>a91b9d72b95d02e7fca862e725fb24b00</anchor>
@@ -35515,8 +35515,8 @@
       <anchor>aeb24e0586a429815a22a54e2a03d007b</anchor>
       <arglist>(SoState *state) override</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function">
+      <type>void</type>
       <name>pop</name>
       <anchorfile>classSoGLViewingMatrixElement.html</anchorfile>
       <anchor>a8ad0d55f9a3745a0891f48005f1a0551</anchor>
@@ -35597,8 +35597,8 @@
       <anchor>a563a55d20851f1c6eabdda746ebb0895</anchor>
       <arglist>(SoState *state) override</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function">
+      <type>void</type>
       <name>pop</name>
       <anchorfile>classSoGLViewportRegionElement.html</anchorfile>
       <anchor>a5de3c92de69aab82b0fdeb44aa2d439c</anchor>
@@ -35977,8 +35977,8 @@
       <anchor>a45d9cfe36bf555a90b2e253a2e5a9d9b</anchor>
       <arglist>()</arglist>
     </member>
-    <member kind="function" protection="protected" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function" protection="protected">
+      <type>void</type>
       <name>copyContents</name>
       <anchorfile>classSoGroup.html</anchorfile>
       <anchor>a966397c0b8e4ed1cbecf8eab6bdb40aa</anchor>
@@ -36877,15 +36877,15 @@
       <anchor>a7395181966165160a16034165370183f</anchor>
       <arglist>(void)</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual SbBool</type>
+    <member kind="function">
+      <type>SbBool</type>
       <name>generateDefaultNormals</name>
       <anchorfile>classSoIndexedFaceSet.html</anchorfile>
       <anchor>adfce86bfb10b3f35d4db1788049e02fc</anchor>
       <arglist>(SoState *state, SoNormalBundle *bundle) override</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual SbBool</type>
+    <member kind="function">
+      <type>SbBool</type>
       <name>generateDefaultNormals</name>
       <anchorfile>classSoIndexedFaceSet.html</anchorfile>
       <anchor>a2f41ce8f9389259da031580ea51e2003</anchor>
@@ -37200,8 +37200,8 @@
       <anchor>a038cb78c6643f7dc6a2070432014f93b</anchor>
       <arglist>(SoAction *action, SbBox3f &amp;box, SbVec3f &amp;center) override</arglist>
     </member>
-    <member kind="function" protection="protected" virtualness="virtual">
-      <type>virtual SoDetail *</type>
+    <member kind="function" protection="protected">
+      <type>SoDetail *</type>
       <name>createLineSegmentDetail</name>
       <anchorfile>classSoIndexedNurbsCurve.html</anchorfile>
       <anchor>a4ab7994058810954866b5fc5744f6461</anchor>
@@ -37476,8 +37476,8 @@
       <anchor>a19a02ce2a40b229cb7903c9943c54b3d</anchor>
       <arglist>(SoState *, SoNormalCache *nc) override</arglist>
     </member>
-    <member kind="function" protection="protected" virtualness="virtual">
-      <type>virtual SbBool</type>
+    <member kind="function" protection="protected">
+      <type>SbBool</type>
       <name>generateDefaultNormals</name>
       <anchorfile>classSoIndexedPointSet.html</anchorfile>
       <anchor>a84a64039f74d0d5b1a338f2842993b7e</anchor>
@@ -38713,8 +38713,8 @@
       <anchor>a38e43e95f0f95dc42e5437ffc413328d</anchor>
       <arglist>(SoSeparator *dest, SbBool onOff)</arglist>
     </member>
-    <member kind="function" protection="protected" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function" protection="protected">
+      <type>void</type>
       <name>copyContents</name>
       <anchorfile>classSoInteractionKit.html</anchorfile>
       <anchor>aa7bbf0353f9caa1decd458b28d852903</anchor>
@@ -40545,8 +40545,8 @@
       <anchor>a4ce4221d272a9fcb7363bb513107ca1e</anchor>
       <arglist>(void)</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function">
+      <type>void</type>
       <name>getTrimCurve</name>
       <anchorfile>classSoLinearProfile.html</anchorfile>
       <anchor>a665d1aecfed4aac9d1bd7f6f6e1a04e9</anchor>
@@ -40559,8 +40559,8 @@
       <anchor>aa7229d17b37edb38943e0950bc8ea17e</anchor>
       <arglist>(void) const override</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function">
+      <type>void</type>
       <name>getVertices</name>
       <anchorfile>classSoLinearProfile.html</anchorfile>
       <anchor>a1e3a30569a2aa6aee9d102446b1cf0f3</anchor>
@@ -48197,8 +48197,8 @@
       <anchor>a1435c7f4d354e7598a649ee59a9dd1d0</anchor>
       <arglist>(SbBool copyconnections=FALSE) const</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function">
+      <type>void</type>
       <name>copyContents</name>
       <anchorfile>classSoNode.html</anchorfile>
       <anchor>ab921510d0e9f21f0115cc619246db52c</anchor>
@@ -49354,12 +49354,12 @@
       <anchor>a0cd616cd4955ab9de69b465ae130a4d0</anchor>
       <arglist>(void)</arglist>
     </member>
-    <member kind="function" protection="protected">
-      <type></type>
+    <member kind="function" protection="protected" virtualness="virtual">
+      <type>virtual</type>
       <name>~SoNodeKitListPart</name>
       <anchorfile>classSoNodeKitListPart.html</anchorfile>
-      <anchor>af923ee97d679dc70e1ac115a16db4851</anchor>
-      <arglist>() override</arglist>
+      <anchor>ab4eb32286233f77774a6fee952da3df9</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function" protection="protected">
       <type>void</type>
@@ -50908,8 +50908,8 @@
       <anchor>ab5f8cdbc4023faa7edd812042e66d838</anchor>
       <arglist>(SoAction *action, SbBox3f &amp;box, SbVec3f &amp;center) override</arglist>
     </member>
-    <member kind="function" protection="protected" virtualness="virtual">
-      <type>virtual SoDetail *</type>
+    <member kind="function" protection="protected">
+      <type>SoDetail *</type>
       <name>createLineSegmentDetail</name>
       <anchorfile>classSoNurbsCurve.html</anchorfile>
       <anchor>a47bed1ca6707502da069d9685bfa4814</anchor>
@@ -50953,8 +50953,8 @@
       <anchor>ae72ccd03030cfc36dfe8f51443a39267</anchor>
       <arglist>(void)</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function">
+      <type>void</type>
       <name>getTrimCurve</name>
       <anchorfile>classSoNurbsProfile.html</anchorfile>
       <anchor>af7b9eff4ff530d8bd546f480dc5b2a04</anchor>
@@ -50967,8 +50967,8 @@
       <anchor>a8d5cdf68b05a93d9fcdd5cb05482026e</anchor>
       <arglist>(void) const override</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function">
+      <type>void</type>
       <name>getVertices</name>
       <anchorfile>classSoNurbsProfile.html</anchorfile>
       <anchor>a3df0c59559587883e32641614684c770</anchor>
@@ -54785,8 +54785,8 @@
       <anchor>a38cbb10226716b5cd5291094478a3b1a</anchor>
       <arglist>(SoState *, SoNormalCache *nc) override</arglist>
     </member>
-    <member kind="function" protection="protected" virtualness="virtual">
-      <type>virtual SbBool</type>
+    <member kind="function" protection="protected">
+      <type>SbBool</type>
       <name>generateDefaultNormals</name>
       <anchorfile>classSoPointSet.html</anchorfile>
       <anchor>afd2b7f2e0b9bb319baf102d737e0f2cc</anchor>
@@ -79749,8 +79749,8 @@
       <anchor>aefed6df37ed21fa861efea68cffc6518</anchor>
       <arglist>(void)</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function">
+      <type>void</type>
       <name>copyContents</name>
       <anchorfile>classSoVertexAttribute.html</anchorfile>
       <anchor>a505e75b6462376280eb351319ccf8465</anchor>
@@ -81398,8 +81398,8 @@
       <anchor>a87d2db3f60a8e7b1b0394bdeac788bce</anchor>
       <arglist>()</arglist>
     </member>
-    <member kind="function" protection="protected" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function" protection="protected">
+      <type>void</type>
       <name>computeBBox</name>
       <anchorfile>classSoVRMLBox.html</anchorfile>
       <anchor>a9c1d4841c0b6e298f88d399730ed991e</anchor>
@@ -81768,8 +81768,8 @@
       <anchor>a77352cebd06ce128f49a6f03eb3e532b</anchor>
       <arglist>()</arglist>
     </member>
-    <member kind="function" protection="protected" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function" protection="protected">
+      <type>void</type>
       <name>computeBBox</name>
       <anchorfile>classSoVRMLCone.html</anchorfile>
       <anchor>a54a3df672d93a3ef68eaa5b48d5d977d</anchor>
@@ -82035,8 +82035,8 @@
       <anchor>aaa12227078228e0152894afc68835a65</anchor>
       <arglist>()</arglist>
     </member>
-    <member kind="function" protection="protected" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function" protection="protected">
+      <type>void</type>
       <name>computeBBox</name>
       <anchorfile>classSoVRMLCylinder.html</anchorfile>
       <anchor>a03c2f760a0a65f3e02350903e9e502bf</anchor>
@@ -82524,8 +82524,8 @@
       <anchor>a4d7cb37b53669fae6fcbea5f96cef497</anchor>
       <arglist>(void)</arglist>
     </member>
-    <member kind="function" protection="protected" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function" protection="protected">
+      <type>void</type>
       <name>computeBBox</name>
       <anchorfile>classSoVRMLElevationGrid.html</anchorfile>
       <anchor>a00d3db41fcebfe6c39961e8c4bfd2b1a</anchor>
@@ -82571,8 +82571,8 @@
       <anchor>a2e9871642eafd8329e9348664c2346f6</anchor>
       <arglist>(void)</arglist>
     </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function">
+      <type>void</type>
       <name>computeBBox</name>
       <anchorfile>classSoVRMLExtrusion.html</anchorfile>
       <anchor>a3e41f1c5adaf3639755f1c038f1b800b</anchor>
@@ -82620,8 +82620,8 @@
       <anchor>aefaa2b3a3cc77b2927f7d5ce4690ab11</anchor>
       <arglist>()</arglist>
     </member>
-    <member kind="function" protection="protected" virtualness="virtual">
-      <type>virtual SoDetail *</type>
+    <member kind="function" protection="protected">
+      <type>SoDetail *</type>
       <name>createTriangleDetail</name>
       <anchorfile>classSoVRMLExtrusion.html</anchorfile>
       <anchor>acab1d802322e57af34b49c233cf2ae92</anchor>
@@ -83411,8 +83411,8 @@
       <anchor>aeb365b5d0440f38087ab7fa4785c865e</anchor>
       <arglist>(void)</arglist>
     </member>
-    <member kind="function" protection="protected" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function" protection="protected">
+      <type>void</type>
       <name>computeBBox</name>
       <anchorfile>classSoVRMLIndexedLine.html</anchorfile>
       <anchor>a2155c53d39fe99bb09a76c4d18e53c22</anchor>
@@ -86450,8 +86450,8 @@
       <anchor>a9ea4f57ddc83c13b68a631a9e518ffef</anchor>
       <arglist>()</arglist>
     </member>
-    <member kind="function" protection="protected" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function" protection="protected">
+      <type>void</type>
       <name>computeBBox</name>
       <anchorfile>classSoVRMLSphere.html</anchorfile>
       <anchor>aa3f4d5934ddcb0f30a49a1478ef93dfb</anchor>
@@ -87086,8 +87086,8 @@
       <anchor>afa16d614feb3d6f2ed3205e1b9f86f82</anchor>
       <arglist>()</arglist>
     </member>
-    <member kind="function" protection="protected" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function" protection="protected">
+      <type>void</type>
       <name>computeBBox</name>
       <anchorfile>classSoVRMLText.html</anchorfile>
       <anchor>a07c3280b7d4832ecfa239a0bb2df74e3</anchor>
@@ -88141,8 +88141,8 @@
       <anchor>a03b0a60eafd3f663e2034b503ab05ea4</anchor>
       <arglist>()</arglist>
     </member>
-    <member kind="function" protection="protected" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function" protection="protected">
+      <type>void</type>
       <name>computeBBox</name>
       <anchorfile>classSoVRMLVertexPoint.html</anchorfile>
       <anchor>af7a18ba256941743f2c865e0a58eed87</anchor>
@@ -89415,8 +89415,8 @@
       <anchor>a831bf26c3daeba4c2a16bdc975a6f7b5</anchor>
       <arglist>(SbVec3f center, SbVec3f size)</arglist>
     </member>
-    <member kind="function" protection="protected" virtualness="virtual">
-      <type>virtual void</type>
+    <member kind="function" protection="protected">
+      <type>void</type>
       <name>copyContents</name>
       <anchorfile>classSoWWWInline.html</anchorfile>
       <anchor>aa8de098254e91ef4fcedb64f680f81d6</anchor>

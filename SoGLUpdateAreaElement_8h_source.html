@@ -187,34 +187,33 @@ $(function(){initNavTree('SoGLUpdateAreaElement_8h_source.html',''); initResizab
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classSoElement.html#a620552c04e13e74ac19bfdb3cebca818">init</a>(<a class="code hl_class" href="classSoState.html">SoState</a> * state) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classSoElement.html#a69fc44b31adb066ba40bbc555298b107">push</a>(<a class="code hl_class" href="classSoState.html">SoState</a> * state) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classSoElement.html#a47fb7cba01227fed02b5d48d7797dddb">pop</a>(<a class="code hl_class" href="classSoState.html">SoState</a> * state,</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                   <span class="keyword">const</span> <a class="code hl_class" href="classSoElement.html">SoElement</a> * prevTopElement) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  SbBool <a class="code hl_function" href="classSoElement.html#a50b30f50781837a7aedc5cdbd25c5ecb">matches</a>(<span class="keyword">const</span> <a class="code hl_class" href="classSoElement.html">SoElement</a> * element) <span class="keyword">const override</span>;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <a class="code hl_class" href="classSoElement.html">SoElement</a> * <a class="code hl_function" href="classSoElement.html#a4a6e2a38cdbbdd1dccbb3e9928e68d55">copyMatchInfo</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> set(<a class="code hl_class" href="classSoState.html">SoState</a> * <span class="keyword">const</span> state, <span class="keyword">const</span> <a class="code hl_class" href="classSbVec2f.html">SbVec2f</a> &amp; origin,</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                   <span class="keyword">const</span> <a class="code hl_class" href="classSbVec2f.html">SbVec2f</a> &amp; size);</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keyword">static</span> SbBool get(<a class="code hl_class" href="classSoState.html">SoState</a> * <span class="keyword">const</span> state, <a class="code hl_class" href="classSbVec2f.html">SbVec2f</a> &amp; origin,</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                    <a class="code hl_class" href="classSbVec2f.html">SbVec2f</a> &amp; size);</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keyword">static</span> <a class="code hl_class" href="classSbVec2f.html">SbVec2f</a> getDefaultOrigin();</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keyword">static</span> <a class="code hl_class" href="classSbVec2f.html">SbVec2f</a> getDefaultSize();</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classSoGLUpdateAreaElement.html#a6fce34f182bda9600980e628dbd0b27f">   68</a></span>  <a class="code hl_class" href="classSbVec2f.html">SbVec2f</a> <a class="code hl_variable" href="classSoGLUpdateAreaElement.html#a6fce34f182bda9600980e628dbd0b27f">origin</a>;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="classSoGLUpdateAreaElement.html#ab342dd75e7e701d6f5f21f9cc96c723a">   69</a></span>  <a class="code hl_class" href="classSbVec2f.html">SbVec2f</a> <a class="code hl_variable" href="classSoGLUpdateAreaElement.html#ab342dd75e7e701d6f5f21f9cc96c723a">size</a>;</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  SbBool isDefault(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keywordtype">void</span> updategl(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  SbBool scissorstate;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <a class="code hl_class" href="classSbVec2s.html">SbVec2s</a> screenorigin, screensize;  </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>};</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classSoElement.html#a47fb7cba01227fed02b5d48d7797dddb">pop</a>(<a class="code hl_class" href="classSoState.html">SoState</a> * state, <span class="keyword">const</span> <a class="code hl_class" href="classSoElement.html">SoElement</a> * prevTopElement) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  SbBool <a class="code hl_function" href="classSoElement.html#a50b30f50781837a7aedc5cdbd25c5ecb">matches</a>(<span class="keyword">const</span> <a class="code hl_class" href="classSoElement.html">SoElement</a> * element) <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <a class="code hl_class" href="classSoElement.html">SoElement</a> * <a class="code hl_function" href="classSoElement.html#a4a6e2a38cdbbdd1dccbb3e9928e68d55">copyMatchInfo</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> set(<a class="code hl_class" href="classSoState.html">SoState</a> * <span class="keyword">const</span> state, <span class="keyword">const</span> <a class="code hl_class" href="classSbVec2f.html">SbVec2f</a> &amp; origin,</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                   <span class="keyword">const</span> <a class="code hl_class" href="classSbVec2f.html">SbVec2f</a> &amp; size);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keyword">static</span> SbBool get(<a class="code hl_class" href="classSoState.html">SoState</a> * <span class="keyword">const</span> state, <a class="code hl_class" href="classSbVec2f.html">SbVec2f</a> &amp; origin,</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                    <a class="code hl_class" href="classSbVec2f.html">SbVec2f</a> &amp; size);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keyword">static</span> <a class="code hl_class" href="classSbVec2f.html">SbVec2f</a> getDefaultOrigin();</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keyword">static</span> <a class="code hl_class" href="classSbVec2f.html">SbVec2f</a> getDefaultSize();</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="classSoGLUpdateAreaElement.html#a6fce34f182bda9600980e628dbd0b27f">   67</a></span>  <a class="code hl_class" href="classSbVec2f.html">SbVec2f</a> <a class="code hl_variable" href="classSoGLUpdateAreaElement.html#a6fce34f182bda9600980e628dbd0b27f">origin</a>;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classSoGLUpdateAreaElement.html#ab342dd75e7e701d6f5f21f9cc96c723a">   68</a></span>  <a class="code hl_class" href="classSbVec2f.html">SbVec2f</a> <a class="code hl_variable" href="classSoGLUpdateAreaElement.html#ab342dd75e7e701d6f5f21f9cc96c723a">size</a>;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  SbBool isDefault(<span class="keywordtype">void</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keywordtype">void</span> updategl(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  SbBool scissorstate;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <a class="code hl_class" href="classSbVec2s.html">SbVec2s</a> screenorigin, screensize;  </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>};</div>
 </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="preprocessor">#endif </span><span class="comment">// !COIN_SOGLUPDATEAREAELEMENT_H</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">#endif </span><span class="comment">// !COIN_SOGLUPDATEAREAELEMENT_H</span></div>
 <div class="ttc" id="aclassSbVec2f_html"><div class="ttname"><a href="classSbVec2f.html">SbVec2f</a></div><div class="ttdoc">The SbVec2f class is a 2 dimensional vector with floating point coordinates.</div><div class="ttdef"><b>Definition</b> SbVec2f.h:49</div></div>
 <div class="ttc" id="aclassSbVec2s_html"><div class="ttname"><a href="classSbVec2s.html">SbVec2s</a></div><div class="ttdoc">The SbVec2s class is a 2 dimensional vector with short integer coordinates.</div><div class="ttdef"><b>Definition</b> SbVec2s.h:51</div></div>
 <div class="ttc" id="aclassSoElement_html"><div class="ttname"><a href="classSoElement.html">SoElement</a></div><div class="ttdoc">SoElement is the abstract base class for all elements.</div><div class="ttdef"><b>Definition</b> SoElement.h:43</div></div>
@@ -225,8 +224,8 @@ $(function(){initNavTree('SoGLUpdateAreaElement_8h_source.html',''); initResizab
 <div class="ttc" id="aclassSoElement_html_a620552c04e13e74ac19bfdb3cebca818"><div class="ttname"><a href="classSoElement.html#a620552c04e13e74ac19bfdb3cebca818">SoElement::init</a></div><div class="ttdeci">virtual void init(SoState *state)</div><div class="ttdef"><b>Definition</b> SoElement.cpp:553</div></div>
 <div class="ttc" id="aclassSoElement_html_a69fc44b31adb066ba40bbc555298b107"><div class="ttname"><a href="classSoElement.html#a69fc44b31adb066ba40bbc555298b107">SoElement::push</a></div><div class="ttdeci">virtual void push(SoState *state)</div><div class="ttdef"><b>Definition</b> SoElement.cpp:570</div></div>
 <div class="ttc" id="aclassSoGLUpdateAreaElement_html"><div class="ttname"><a href="classSoGLUpdateAreaElement.html">SoGLUpdateAreaElement</a></div><div class="ttdoc">The SoGLUpdateAreaElement class is yet to be documented.</div><div class="ttdef"><b>Definition</b> SoGLUpdateAreaElement.h:40</div></div>
-<div class="ttc" id="aclassSoGLUpdateAreaElement_html_a6fce34f182bda9600980e628dbd0b27f"><div class="ttname"><a href="classSoGLUpdateAreaElement.html#a6fce34f182bda9600980e628dbd0b27f">SoGLUpdateAreaElement::origin</a></div><div class="ttdeci">SbVec2f origin</div><div class="ttdef"><b>Definition</b> SoGLUpdateAreaElement.h:68</div></div>
-<div class="ttc" id="aclassSoGLUpdateAreaElement_html_ab342dd75e7e701d6f5f21f9cc96c723a"><div class="ttname"><a href="classSoGLUpdateAreaElement.html#ab342dd75e7e701d6f5f21f9cc96c723a">SoGLUpdateAreaElement::size</a></div><div class="ttdeci">SbVec2f size</div><div class="ttdef"><b>Definition</b> SoGLUpdateAreaElement.h:69</div></div>
+<div class="ttc" id="aclassSoGLUpdateAreaElement_html_a6fce34f182bda9600980e628dbd0b27f"><div class="ttname"><a href="classSoGLUpdateAreaElement.html#a6fce34f182bda9600980e628dbd0b27f">SoGLUpdateAreaElement::origin</a></div><div class="ttdeci">SbVec2f origin</div><div class="ttdef"><b>Definition</b> SoGLUpdateAreaElement.h:67</div></div>
+<div class="ttc" id="aclassSoGLUpdateAreaElement_html_ab342dd75e7e701d6f5f21f9cc96c723a"><div class="ttname"><a href="classSoGLUpdateAreaElement.html#ab342dd75e7e701d6f5f21f9cc96c723a">SoGLUpdateAreaElement::size</a></div><div class="ttdeci">SbVec2f size</div><div class="ttdef"><b>Definition</b> SoGLUpdateAreaElement.h:68</div></div>
 <div class="ttc" id="aclassSoState_html"><div class="ttname"><a href="classSoState.html">SoState</a></div><div class="ttdoc">The SoState class manages the Coin scene graph traversal state data.</div><div class="ttdef"><b>Definition</b> SoState.h:44</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -234,7 +233,7 @@ $(function(){initNavTree('SoGLUpdateAreaElement_8h_source.html',''); initResizab
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_4be52554de5475a620e8b38d2057de84.html">elements</a></li><li class="navelem"><b>SoGLUpdateAreaElement.h</b></li>
-    <li class="footer">Generated on Wed Aug 12 2026 20:09:49 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Thu Aug 13 2026 22:44:54 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
