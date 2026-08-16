@@ -141,7 +141,7 @@ $(function(){initNavTree('coin_multithreading_support.html',''); initResizable()
 <li>
 <p class="startli">The other aspect of our multi-threading support is that Coin can be specially configured so that rendering traversals of the scene graph are done in a thread-safe manner. This means e.g. that it is possible to have Coin render the scene in parallel on multiple CPUs for multiple rendering pipes, to better take advantage of such high-end systems (like CAVE environments, for instance).</p>
 <p class="interli">Thread-safe render traversals are <em>off</em> by default, because there is a small overhead involved which would make rendering (very) slightly slower on single-threaded invocations.</p>
-<p class="interli">To get a Coin library built with thread-safe rendering, one must actively reconfigure Coin and build a special, local version. For configure-based builds (UNIX and UNIX-like systems, or with Cygwin on Microsoft Windows) this is done with the option "--enable-threadsafe" to Autoconf configure. To change the configuration and rebuild with Visual Studio, you will need to change the preprocessor directive COIN_THREADSAFE to defined in the file src/setup.h located in the same folder as you found your solution file.</p>
+<p class="interli">To get a Coin library built with thread-safe rendering, configure Coin with \c -DCOIN_THREADSAFE=ON and rebuild it. This option applies to all supported CMake generators.</p>
 <p class="endli"></p>
 </li>
 </ul>
@@ -169,7 +169,7 @@ $(function(){initNavTree('coin_multithreading_support.html',''); initResizable()
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="coin_related_pages.html">Related Pages</a></li>
-    <li class="footer">Generated on Thu Aug 13 2026 22:44:54 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sun Aug 16 2026 19:57:00 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
