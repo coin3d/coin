@@ -200,14 +200,12 @@ soshape_primdata::shapeVertex(const SoPrimitiveVertex * const v)
     if (this->counter >= this->arraySize) {
       this->arraySize <<= 1;
       SoPrimitiveVertex * newArray = new SoPrimitiveVertex[this->arraySize];
-      memcpy(newArray, this->vertsArray,
-             sizeof(SoPrimitiveVertex)* this->counter);
+      for (int i = 0; i < this->counter; i++) { newArray[i] = this->vertsArray[i]; }
       delete [] this->vertsArray;
       this->vertsArray = newArray;
 
       SoPointDetail * newparray = new SoPointDetail[this->arraySize];
-      memcpy(newparray, this->pointDetails,
-             sizeof(SoPointDetail)* this->counter);
+      for (int i = 0; i < this->counter; i++) { newparray[i] = this->pointDetails[i]; }
       delete [] this->pointDetails;
       this->pointDetails = newparray;
 
