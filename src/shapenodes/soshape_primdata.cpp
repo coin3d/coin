@@ -54,9 +54,13 @@ soshape_primdata::soshape_primdata(void)
   this->action = NULL;
   this->shape = NULL;
   this->faceCounter = 0;
-  this->arraySize = 4;
-  this->vertsArray = new SoPrimitiveVertex[this->arraySize];
-  this->pointDetails = new SoPointDetail[this->arraySize];
+  // Fixed-size shapes (triangles, quads, lines, ...) only ever index
+  // 0-3, so pre-populate that many slots up front; the POLYGON case
+  // grows past this on demand, see growPolygonBuffers().
+  for (int i = 0; i < 4; i++) {
+    this->vertsArray.append(SoPrimitiveVertex());
+    this->pointDetails.append(SoPointDetail());
+  }
   this->faceDetail = NULL;
   this->lineDetail = NULL;
   this->matPerFace = FALSE;
@@ -75,8 +79,6 @@ soshape_primdata::soshape_primdata(void)
 
 soshape_primdata::~soshape_primdata()
 {
-  delete[] this->vertsArray;
-  delete[] this->pointDetails;
   delete this->tess;
   delete this->glutess;
 }
@@ -197,23 +199,8 @@ soshape_primdata::shapeVertex(const SoPrimitiveVertex * const v)
     }
     break;
   case SoShape::POLYGON:
-    if (this->counter >= this->arraySize) {
-      this->arraySize <<= 1;
-      SoPrimitiveVertex * newArray = new SoPrimitiveVertex[this->arraySize];
-      for (int i = 0; i < this->counter; i++) { newArray[i] = this->vertsArray[i]; }
-      delete [] this->vertsArray;
-      this->vertsArray = newArray;
-
-      SoPointDetail * newparray = new SoPointDetail[this->arraySize];
-      for (int i = 0; i < this->counter; i++) { newparray[i] = this->pointDetails[i]; }
-      delete [] this->pointDetails;
-      this->pointDetails = newparray;
-
-      if (this->faceDetail) {
-        for (int i = 0; i < this->counter; i++) {
-          this->vertsArray[i].setDetail(&this->pointDetails[i]);
-        }
-      }
+    if (this->counter >= this->vertsArray.getLength()) {
+      this->growPolygonBuffers();
     }
     this->setVertex(this->counter++, v);
     break;
@@ -293,6 +280,25 @@ soshape_primdata::shapeVertex(const SoPrimitiveVertex * const v)
 }
 
 void
+soshape_primdata::growPolygonBuffers(void)
+{
+  // Doubling is handled internally by SbList::append() (it grows its
+  // buffer by doubling whenever it is full); this just adds the one
+  // slot needed to bring the list up to this->counter+1 elements.
+  this->vertsArray.append(SoPrimitiveVertex());
+  this->pointDetails.append(SoPointDetail());
+
+  // A grow of pointDetails may have reallocated its buffer, which
+  // invalidates every SoPointDetail* previously stashed inside
+  // vertsArray[i] via setDetail() -- re-point them at the new buffer.
+  if (this->faceDetail) {
+    for (int i = 0; i < this->counter; i++) {
+      this->vertsArray[i].setDetail(&this->pointDetails[i]);
+    }
+  }
+}
+
+void
 soshape_primdata::copyVertex(const int src, const int dest)
 {
   this->vertsArray[dest] = this->vertsArray[src];
@@ -345,7 +351,7 @@ soshape_primdata::handleLineDetail(void)
 int 
 soshape_primdata::getPointDetailIndex(const SoPrimitiveVertex * v) const
 {
-  const ptrdiff_t d = v - this->vertsArray;
+  const ptrdiff_t d = v - this->vertsArray.getArrayPtr();
   return (int)d;
 }
 
