@@ -282,11 +282,15 @@ eglglue_context_create_offscreen(unsigned int width, unsigned int height)
     EGL_NONE
   };
 
+  // Use the width/height arguments directly: ctx is not assigned until
+  // eglglue_contextdata_init() below, and eglglue_contextdata_init()
+  // sets ctx->width/ctx->height to exactly these values, so there is
+  // no need to (and, before ctx exists, no way to) read them off ctx.
   EGLAttrib surface_attrib[] = {
     EGL_TEXTURE_FORMAT, EGL_TEXTURE_RGBA,
     EGL_TEXTURE_TARGET, EGL_TEXTURE_2D,
-    EGL_WIDTH, (EGLint) ctx->width,
-    EGL_HEIGHT, (EGLint) ctx->height,
+    EGL_WIDTH, (EGLint) width,
+    EGL_HEIGHT, (EGLint) height,
     EGL_NONE
   };
 
