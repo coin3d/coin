@@ -46,7 +46,16 @@ cc_xml_load_file(const char * path)
   FILE * fd = fopen(path, "rb");
   if ( !fd ) return NULL;
   fseek(fd, 0, SEEK_END);
-  const long bufsize = ftell(fd);
+  const long filesize = ftell(fd);
+  if ( filesize < 0 ) {
+    // ftell() failed (e.g. fd does not support seeking) -- without
+    // this check, the negative value below would wrap around to a
+    // huge size_t in the pos/bufsize comparisons and the fread() size
+    // argument further down, both writing past a zero-byte buffer.
+    fclose(fd);
+    return NULL;
+  }
+  const size_t bufsize = static_cast<size_t>(filesize);
   fseek(fd, 0, SEEK_SET);
   char * buffer = new char [ bufsize + 1 ];
   size_t pos = 0, bytes;
@@ -113,3 +122,43 @@ sc_whitespace_p(const char * string)
   return TRUE;
 }
 #endif
+
+#ifdef COIN_TEST_SUITE
+
+#include <cstring>
+
+// utils.h is a private header not on the testsuite's include path
+// (and this component's public declaration surface is this
+// extern "C" prototype, unchanged since it's what utils.h itself
+// declares), so declare it directly rather than trying to reach the
+// header from here.
+extern "C" char * cc_xml_load_file(const char * path);
+
+// Regression test for cc_xml_load_file()'s handling of the size
+// returned by ftell(): a call on an ordinary, seekable file should
+// still round-trip the file's exact contents. (The failure mode this
+// guards against -- ftell() returning -1 on a non-seekable stream,
+// like a pipe -- needs a POSIX FIFO to reproduce and is covered
+// separately by testsuite/reproducers/xml-load-file-ftell-error/,
+// since fork()/mkfifo() aren't available on all platforms this
+// test-suite runs on.)
+BOOST_AUTO_TEST_CASE(load_file_roundtrip)
+{
+  const char * path = "coin_test_cc_xml_load_file_tmp.txt";
+  const char content[] = "some file content\nwith more than one line\n";
+
+  FILE * f = fopen(path, "wb");
+  BOOST_REQUIRE_MESSAGE(f != NULL, "could not create temporary test file");
+  fwrite(content, 1, sizeof(content) - 1, f);
+  fclose(f);
+
+  char * result = cc_xml_load_file(path);
+  remove(path);
+
+  BOOST_REQUIRE_MESSAGE(result != NULL, "cc_xml_load_file() unexpectedly returned NULL");
+  BOOST_CHECK_MESSAGE(strcmp(result, content) == 0,
+                      "cc_xml_load_file() did not return the exact file contents");
+  delete [] result;
+}
+
+#endif // COIN_TEST_SUITE

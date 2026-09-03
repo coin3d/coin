@@ -494,7 +494,7 @@ SbBool
 SoInput_FileInfo::readUnsignedIntegerString()
 {
   assert(!this->isBinary());
-  int minSize = 1;
+  size_t minSize = 1;
   char c;
   size_t oldLength = readString.length();
 
