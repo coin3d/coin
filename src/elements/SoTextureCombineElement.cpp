@@ -312,21 +312,5 @@ SoTextureCombineElement::UnitData::UnitData()
   }
 }
 
-SoTextureCombineElement::UnitData::UnitData(const UnitData & org)
-  : nodeid(org.nodeid),
-    rgboperation(org.rgboperation),
-    alphaoperation(org.alphaoperation),
-    constantcolor(org.constantcolor),
-    rgbscale(org.rgbscale),
-    alphascale(org.alphascale)
-{
-  for (int i = 0; i < 3; i++) {
-    rgbsource[i] = org.rgbsource[i];
-    alphasource[i] = org.alphasource[i];
-    rgboperand[i] = org.rgboperand[i];
-    alphaoperand[i] = org.alphaoperand[i];
-  }
-}
-
 
 #undef PRIVATE
