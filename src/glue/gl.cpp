@@ -294,7 +294,9 @@ static cc_list * gl_instance_created_cblist = NULL;
 static int COIN_MAXIMUM_TEXTURE2_SIZE = -1;
 static int COIN_MAXIMUM_TEXTURE3_SIZE = -1;
 static cc_glglue_offscreen_cb_functions* offscreen_cb = NULL;
+#if defined(HAVE_AGL)
 static int COIN_USE_AGL = -1;
+#endif
 static int COIN_USE_EGL = -1;
 
 /* ********************************************************************** */
@@ -2326,8 +2328,7 @@ cc_glglue_instance(int contextid)
       chk = coin_getenv("COIN_GL_NO_CURRENT_CONTEXT_CHECK") ? 0 : 1;
     }
     if (chk) {
-      const void * current_ctx = coin_gl_current_context();
-      assert(current_ctx && "Must have a current GL context when instantiating cc_glglue!! (Note: if you are using an old Mesa GL version, set the environment variable COIN_GL_NO_CURRENT_CONTEXT_CHECK to get around what may be a Mesa bug.)");
+      if (!coin_gl_current_context()) assert(!"Must have a current GL context when instantiating cc_glglue!! (Note: if you are using an old Mesa GL version, set the environment variable COIN_GL_NO_CURRENT_CONTEXT_CHECK to get around what may be a Mesa bug.)");
     }
 
     /* FIXME: this is not free'd until app exit, which is bad because

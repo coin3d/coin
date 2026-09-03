@@ -213,8 +213,7 @@ SoWriterefCounter::create(SoOutput * out, SoOutput * copyfrom)
 {
   SoWriterefCounter * inst = new SoWriterefCounter(out, copyfrom);
   CC_MUTEX_LOCK(SoWriterefCounterP::mutex);
-  SbBool ret = SoWriterefCounterP::outputdict->put(out, inst);
-  assert(ret && "writeref instance already exists!");
+  if (!SoWriterefCounterP::outputdict->put(out, inst)) assert(!"writeref instance already exists!");
   CC_MUTEX_UNLOCK(SoWriterefCounterP::mutex);
 }
 

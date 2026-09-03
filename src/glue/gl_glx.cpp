@@ -635,8 +635,7 @@ glxglue_find_gl_visual(void)
   if (glxglue_get_display() == NULL) { return NULL; }
 
   while (visinfo == NULL && trynum < 8) {
-    int arraysize = glxglue_build_GL_attrs(attrs, trynum);
-    assert(arraysize < ARRAYSIZE);
+    if (glxglue_build_GL_attrs(attrs, trynum) >= ARRAYSIZE) assert(false);
     visinfo = glXChooseVisual(glxglue_get_display(), DefaultScreen(glxglue_get_display()),
                               attrs);
     trynum++;

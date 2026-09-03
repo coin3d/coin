@@ -688,9 +688,9 @@ SoMField::deleteValues(int start, int numarg)
 
   if (numarg == -1) numarg = oldnum - start;
   if (numarg == 0) return;
-  int end = start + numarg; // First element behind the delete block.
 
 #if COIN_DEBUG
+  const int end = start + numarg; // First element behind the delete block.
   if (start < 0 || start >= oldnum || end > oldnum || numarg < -1) {
     SoDebugError::post("SoMField::deleteValues",
                        "invalid indices [%d, %d] for array of size %d",

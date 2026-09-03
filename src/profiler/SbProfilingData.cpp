@@ -670,15 +670,13 @@ SbProfilingData::getIndexForwardCreate(const SoFullPath * fullpath, int pathlen,
   assert(parentidx < static_cast<int>(PRIVATE(this)->nodeData.size()));
   assert(pathlen > 1);
 
-  SbProfilingNodeKey parent =
-    static_cast<SbProfilingNodeKey>(fullpath->getNode(pathlen - 2));
-  int pidx = fullpath->getIndex(pathlen - 2);
   SoNode * tailnode = fullpath->getNode(pathlen - 1);
   SbProfilingNodeKey tail = static_cast<SbProfilingNodeKey>(tailnode);
   int tidx = fullpath->getIndex(pathlen - 1);
 
-  assert(parent == PRIVATE(this)->nodeData[parentidx].node);
-  assert(pidx == PRIVATE(this)->nodeData[parentidx].childidx);
+  assert(static_cast<SbProfilingNodeKey>(fullpath->getNode(pathlen - 2)) ==
+         PRIVATE(this)->nodeData[parentidx].node);
+  assert(fullpath->getIndex(pathlen - 2) == PRIVATE(this)->nodeData[parentidx].childidx);
 
   const int nodedatacount = (int)PRIVATE(this)->nodeData.size();
   for (int idx = parentidx + 1; idx < nodedatacount; ++idx) {
@@ -710,15 +708,13 @@ SbProfilingData::getIndexForwardNoCreate(const SoFullPath * fullpath, int pathle
   assert(parentidx != -1); // illegal usage
   assert(pathlen > 1);
 
-  SbProfilingNodeKey parent =
-    static_cast<SbProfilingNodeKey>(fullpath->getNode(pathlen - 2));
-  int pidx = fullpath->getIndex(pathlen - 2);
   SbProfilingNodeKey tail =
     static_cast<SbProfilingNodeKey>(fullpath->getNode(pathlen - 1));
   int tidx = fullpath->getIndex(pathlen - 1);
 
-  assert(parent == PRIVATE(this)->nodeData[parentidx].node);
-  assert(pidx == PRIVATE(this)->nodeData[parentidx].childidx);
+  assert(static_cast<SbProfilingNodeKey>(fullpath->getNode(pathlen - 2)) ==
+         PRIVATE(this)->nodeData[parentidx].node);
+  assert(fullpath->getIndex(pathlen - 2) == PRIVATE(this)->nodeData[parentidx].childidx);
 
   const int nodedatacount = (int)PRIVATE(this)->nodeData.size();
   for (int idx = parentidx + 1; idx < nodedatacount; ++idx) {
