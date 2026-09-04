@@ -266,14 +266,12 @@ static void
 rbptree_delete_fixup(cc_rbptree * t, cc_rbptree_node * x)
 {
   /* page 274 */
-  cc_rbptree_node * w, * nil;
-
-  nil = &rbptree_sentinel;
+  cc_rbptree_node * w;
 
   while (x != t->root && x->color == RBPTREE_BLACK) {
     if (x == x->parent->left) { /* x is left child */
       w = x->parent->right;
-      assert(w != nil);
+      assert(w != &rbptree_sentinel);
       if (w->color == RBPTREE_RED) {
         w->color = RBPTREE_BLACK;
         x->parent->color = RBPTREE_RED;
@@ -300,7 +298,7 @@ rbptree_delete_fixup(cc_rbptree * t, cc_rbptree_node * x)
     }
     else { /* x is right child */
       w = x->parent->left;
-      assert(w != nil);
+      assert(w != &rbptree_sentinel);
       if (w->color == RBPTREE_RED) {
         w->color = RBPTREE_BLACK;
         x->parent->color = RBPTREE_RED;

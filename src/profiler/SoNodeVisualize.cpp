@@ -660,7 +660,6 @@ SoNodeVisualize::handleEvent(SoHandleEventAction * action)
   //REVIEW: BFG - Not sure what I'm doing here, the getDetail is
   //from an example source
   if (path->containsNode(shapenode) && pp->getDetail(shapenode) == NULL) {
-    SbVec3f point = pp->getPoint();
     this->clicked();
   }
 }

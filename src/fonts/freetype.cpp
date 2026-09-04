@@ -396,7 +396,7 @@ cc_flwft_initialize(void)
     unsigned int i = 0;
     while (i < sizeof(fontfilenames) / sizeof(fontfilenames[0])) {
       void * val;
-      SbBool found, unused;
+      SbBool found;
       cc_dynarray * array;
       const uintptr_t key = (uintptr_t)cc_namemap_get_address(fontfilenames[i]);
 
@@ -406,8 +406,7 @@ cc_flwft_initialize(void)
       }
       else {
         array = cc_dynarray_new();
-        unused = cc_dict_put(cc_flwft_globals.fontname2filename, key, array);
-        assert(unused);
+        if (!cc_dict_put(cc_flwft_globals.fontname2filename, key, array)) assert(!"cc_dict_put failed");
       }
 
       while (fontfilenames[++i] != NULL) {
@@ -818,14 +817,14 @@ cc_flwft_get_glyph(void * font, unsigned int charidx)
 void
 cc_flwft_get_vector_advance(void * font, int glyph, float *x, float *y)
 {
-  FT_Error error;
   FT_Face face;
   float tmp;
 
   assert(font);
   face = (FT_Face)font;
-  error = cc_ftglue_FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);
-  assert(error == 0 && "FT_Load_Glyph() unexpected failure, investigate");
+  if (cc_ftglue_FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT) != 0) {
+    assert(!"FT_Load_Glyph() unexpected failure, investigate");
+  }
 
   tmp = face->glyph->advance.x * flwft_tessellator.vertex_scale;
   x[0] = (tmp / 64.0f) / flwft_3dfontsize;

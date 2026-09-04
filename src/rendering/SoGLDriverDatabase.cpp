@@ -516,38 +516,9 @@ SoGLDriverDatabaseP::findDriver(const cc_xml_elt * vendor, const cc_glglue * COI
       if (maxversionelement)
         maxversion = cc_xml_elt_get_cdata(maxversionelement);
 
-      unsigned int minversion_major = 0;
-      unsigned int minversion_minor = 0;
-      unsigned int minversion_micro = 0;
-      unsigned int minversion_nano = 0;
-      unsigned int maxversion_major = 0;
-      unsigned int maxversion_minor = 0;
-      unsigned int maxversion_micro = 0;
-      unsigned int maxversion_nano = 0;
-
       SbIntList indices;
-
       minversion.findAll(".", indices);
-
-      if (indices.getLength() >= 0)
-        minversion_major = atoi(minversion.getString());
-      if (indices.getLength() > 0)
-        minversion_minor = atoi(minversion.getSubString(indices[0] + 1).getString());
-      if (indices.getLength() > 1)
-        minversion_micro = atoi(minversion.getSubString(indices[1] + 1).getString());
-      if (indices.getLength() > 2)
-        minversion_nano = atoi(minversion.getSubString(indices[2] + 1).getString());
-
       maxversion.findAll(".", indices);
-
-      if (indices.getLength() >= 0)
-        maxversion_major = atoi(maxversion.getString());
-      if (indices.getLength() > 0)
-        maxversion_minor = atoi(maxversion.getSubString(indices[0] + 1).getString());
-      if (indices.getLength() > 1)
-        maxversion_micro = atoi(maxversion.getSubString(indices[1] + 1).getString());
-      if (indices.getLength() > 2)
-        maxversion_nano = atoi(maxversion.getSubString(indices[2] + 1).getString());
 
       //FIXME: Match Driver and add features.
       //Must probably use platform specific functions to be of any use.
