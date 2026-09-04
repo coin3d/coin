@@ -215,7 +215,7 @@ struct JSErrorReport {
 #define JSVAL_INT_MAX           (JSVAL_INT_POW2(30) - 1)
 #define INT_FITS_IN_JSVAL(i)    ((uint32_t)((i)+JSVAL_INT_MAX) <= 2*JSVAL_INT_MAX)
 #define JSVAL_TO_INT(v)         ((int32_t)(v) >> 1)
-#define INT_TO_JSVAL(i)         (((jsval)(i) << 1) | JSVAL_INT)
+#define INT_TO_JSVAL(i)         (((jsval)((uintptr_t)(i) << 1)) | JSVAL_INT)
 
 #define JSVAL_TO_GCTHING(v)     ((void *)JSVAL_CLRTAG(v))
 #define JSVAL_TO_OBJECT(v)      ((JSObject *)JSVAL_TO_GCTHING(v))
