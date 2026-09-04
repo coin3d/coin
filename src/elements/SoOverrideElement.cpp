@@ -146,7 +146,7 @@ return (element->flags & flag)
 
 #define SO_SET_OVERRIDE(flag) \
 SoOverrideElement * const element = \
-  const_cast<SoOverrideElement * const> \
+  const_cast<SoOverrideElement *> \
   ( \
    coin_safe_cast<const SoOverrideElement *>(getElement(state, classStackIndex)) \
     ); \
