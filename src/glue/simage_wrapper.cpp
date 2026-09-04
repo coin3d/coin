@@ -166,6 +166,15 @@ simage_wrapper_get_saver_description(void * COIN_UNUSED_ARG(handle))
   return NULL;
 }
 
+// These are unused stub fallbacks for when the corresponding simage
+// symbol can't be resolved at runtime -- superseded by the
+// SIMAGEWRAPPER_REGISTER_FUNC-based dynamic resolution below, whose
+// own fallback (in the `else` branch further down) is to set the
+// function pointer to NULL directly instead of pointing it at one of
+// these. Kept, not removed, matching the disabled call sites further
+// down in this file that still reference them (see the #if 0 block
+// there, dated 20021018).
+#if 0
 static unsigned char *
 simage_wrapper_resize3d(unsigned char * COIN_UNUSED_ARG(imagedata),
                         int COIN_UNUSED_ARG(width), int COIN_UNUSED_ARG(height),
@@ -249,6 +258,7 @@ simage_wrapper_s_stream_params(s_stream * COIN_UNUSED_ARG(stream))
 {
   return NULL;
 }
+#endif // 0
 
 
 /* Implemented by using the singleton pattern. */

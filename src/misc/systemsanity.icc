@@ -12,6 +12,8 @@
 // will fail) if the compilation environment is not set up correctly - it
 // does not need to be run from anywhere...
 
+static void SoDB_compileTimeAsserts(void) COIN_UNUSED_FUNC;
+
 static
 void
 SoDB_compileTimeAsserts(void)

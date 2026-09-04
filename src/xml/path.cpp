@@ -79,17 +79,6 @@ path_node_clone(path_node * node)
 }
 
 static
-path_node *
-path_node_delete(path_node * node)
-{
-  path_node * next;
-  next = node->next;
-  delete[] node->element;
-  delete node;
-  return next;
-}
-
-static
 void
 path_node_delete_chain(path_node * head)
 {

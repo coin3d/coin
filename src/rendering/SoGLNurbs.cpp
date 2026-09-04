@@ -452,18 +452,13 @@ namespace {
       delete [] Bin[0];
       delete [] Bin;
     }
-    void Test();
-
     void BinomialCoefficients(const int rows, const int cols);
     int FindSpan(const float u, const int degree, const int numctrlpts, const float* knotvec) const;
-    void BasisFunctions(const float u, const int span, const float* knotvec, const int order, float* N);
     void DersBasisFunctions(const float u, const int span, const float* knotvec, const int order, const int n, float** ders );
     void RationalSurfaceDerivsH(const float u, const float v, const int d, SbVec4f** skl);
     void RationalSurfaceDerivs(const float u, const float v, const int d, SbVec3f** skl);
     SbVec3f normal(const float u, const float v);
     SbVec3f normal(const int i, const int j);
-    SbVec4f SurfacePoint(const float u, const float v);
-    SbVec4f SurfacePoint(const int i, const int j);
     void mapijtouv(const int i, const int j, float& u, float &v);
 
   private:
@@ -536,23 +531,6 @@ namespace {
       mid = (low + high)/2;
     }
     return mid;
-  }
-
-/// Return the basis functions for the specified parameter value.
-  void nurbs::BasisFunctions(const float u, const int span, const float* knotvec, const int order, float* N) {
-    N[0] = 1.0f;
-    for ( int j = 1; j < order; j++ ) {
-      left[j] = u - knotvec[span + 1 - j];
-      right[j] = knotvec[span + j] - u;
-      float saved = 0.0f;
-      for ( int r = 0; r < j; r++ )
-        {
-          float temp = N[r] / (right[r + 1] + left[j - r]);
-          N[r] = saved + right[r + 1] * temp;
-          saved = left[j - r] * temp;
-        }
-      N[j] = saved;
-    }
   }
 
   /// Return the basis functions for the specified parameter value.
@@ -766,167 +744,6 @@ namespace {
     v = (j == numvctrlpts-1) ? vknotvec[numvknots-1] : (vknotvec[0] + j*deltav);
   }
 
-  /// Returns the point on the surface at parameters (u,v).
-  SbVec4f nurbs::SurfacePoint(const float u, const float v) {
-    int uspan = FindSpan( u, udegree, numuctrlpts, uknotvec );
-    BasisFunctions( u, uspan, uknotvec, uorder, Nu[0] );
-    int vspan = FindSpan( v, vdegree, numvctrlpts, vknotvec );
-    BasisFunctions( v, vspan, vknotvec, vorder, Nv[0] );
-
-    for ( int l = 0; l < vorder; l++ ) {
-      temp[l] = SbVec4f(0.0f, 0.0f, 0.0f, 0.0f);
-      for ( int k = 0; k < uorder; k++ ) {
-        int offs = (uspan - udegree + k)*ustride + (vspan - vdegree + l)*vstride;
-        SbVec4f ctlpt4(0.0f, 0.0f, 0.0f, 1.0f);
-        for ( int i = 0; i < dim; i++ )
-          ctlpt4[i] = ctlPoints[offs+i];
-        temp[l] = temp[l] + Nu[0][k]*ctlpt4;
-      }
-    }
-    SbVec4f sp(0.0f, 0.0f, 0.0f, 0.0f);
-    for ( int l = 0; l < vorder; l++ )
-      sp = sp + Nv[0][l]*temp[l];
-
-    return sp;
-  }
-
-  /// Returns the point on the surface at indices (i,j).
-  SbVec4f nurbs::SurfacePoint(const int i, const int j) {
-    float u, v;
-    mapijtouv( i, j, u, v );
-
-    return SurfacePoint( u, v );
-  }
-
-  void nurbs::Test() {
-    // testing the constructor
-    assert(numuknots == 10);
-    assert(numvknots == 12);
-    assert(numuctrlpts == 6);
-    assert(numvctrlpts == 9);
-    assert(uorder == 4);
-    assert(vorder == 3);
-    assert(udegree == 3);
-    assert(vdegree == 2);
-    assert(ustride == 4);
-    assert(vstride == 4*6);
-    assert(dim == 4);
-
-    // testing the routine mapijtouv
-    float u, v;
-    mapijtouv(0, 0, u, v);
-    assert(fabs(u - uknotvec[0]) < 1.e-12);
-    assert(fabs(v - vknotvec[0]) < 1.e-12);
-    mapijtouv(numuctrlpts-1, numvctrlpts-1, u, v);
-    assert(fabs(u - uknotvec[numuknots-1]) < 1.e-12);
-    assert(fabs(v - vknotvec[numvknots-1]) < 1.e-12);
-
-    // testing the findspan routine
-    int i = 0;
-    // rechter rand
-    i = FindSpan(uknotvec[0], udegree, numuctrlpts, uknotvec);
-    assert( i == udegree );
-    // rechts ausserhalb
-    i = FindSpan(-1.0f, udegree, numuctrlpts, uknotvec);
-    assert( i == udegree );
-    // linker rand
-    i = FindSpan(uknotvec[numuknots-1], udegree, numuctrlpts, uknotvec);
-    assert( i == numuctrlpts-1 );
-    // links ausserhalb
-    i = FindSpan(uknotvec[numuknots-1]+1.0f, udegree, numuctrlpts, uknotvec);
-    assert( i == numuctrlpts-1 );
-    // erster Abschnitt
-    i = FindSpan((uknotvec[udegree+1]+uknotvec[udegree])/2.0f, udegree, numuctrlpts, uknotvec);
-    assert( i == udegree );
-    //// zweiter Abschnitt
-    //i = FindSpan((uknotvec[udegree+2]+uknotvec[udegree+1])/2.0f, udegree, numuctrlpts, uknotvec);
-    //assert( i == udegree+2 );
-
-    float* ptrnormals = new float[numvctrlpts*numuctrlpts*3];
-    float* ptr = new float[numvctrlpts*numuctrlpts*dim];
-    char buffer[1024];
-    static int fno = 0;
-    sprintf(buffer, "normaltest%d.iv", fno++);
-    FILE* fp = NULL;
-    fp = fopen(buffer, "w");
-    if ( fp ) fprintf(fp,"#Inventor V2.1 ascii\n"
-                      "Separator {\n"
-                      "Coordinate3 {\n"
-                      "point [\n");
-    for ( int j = 0; j < numvctrlpts; j++) {
-      for ( int i = 0; i < numuctrlpts; i++) {
-        SbVec3f normal = this->normal(i, j);
-        int idx2 = j*3*vstride/dim + i*3*ustride/dim;
-        ptrnormals[idx2] = normal[0];
-        ptrnormals[idx2+1] = normal[1];
-        ptrnormals[idx2+2] = normal[2];
-
-        SbVec4f srfpt = this->SurfacePoint(i, j);
-        //srfpt.Homogenize();
-
-        int idx = j*vstride + i*ustride;
-        ptr[idx] = srfpt[0]/srfpt[3];
-        ptr[idx+1] = srfpt[1]/srfpt[3];
-        ptr[idx+2] = srfpt[2]/srfpt[3];
-
-        sprintf(buffer, "%g %g %g,", srfpt[0]/srfpt[3], srfpt[1]/srfpt[3], srfpt[2]/srfpt[3]);
-        if ( fp ) fputs(buffer,fp);
-      }
-      if ( fp ) fprintf(fp, "\n");
-    }
-    if ( fp ) fprintf(fp, "\n");
-    for (int j = 0; j < numvctrlpts; j++) {
-      for (int i = 0; i < numuctrlpts; i++) {
-        int idx = j*3*vstride/dim + i*3*ustride/dim;
-        int idxpt = j*vstride + i*ustride;
-        // correct the normals if zero normals are present!
-        sprintf(buffer, "%g %g %g, ", ptr[idxpt+0]+ptrnormals[idx+0], ptr[idxpt+1]+ptrnormals[idx+1], ptr[idxpt+2]+ptrnormals[idx+2]);
-        if ( fp ) fputs(buffer, fp);
-      }
-      if ( fp ) fprintf(fp, "\n");
-    }
-    if ( fp ) {
-      fprintf(fp,	"]\n"
-              "}\n"
-              "MarkerSet { numPoints %d markerIndex 21 }\n"
-              "IndexedLineSet { coordIndex [\n", numuctrlpts*numvctrlpts);
-      for (int j = 0; j < numvctrlpts; j++) {
-        for (int i = 0; i < numuctrlpts; i++) {
-			fprintf(fp, "%d, %d, -1, ", j*numuctrlpts+i, j*numuctrlpts+i + numuctrlpts*numvctrlpts);
-        }
-        fprintf(fp, "\n");
-      }
-      fprintf(fp,	"]\n"
-              "}\n"
-              "}\n"
-              "Coordinate4 {\n"
-              "point [\n");
-      for ( int j = 0; j < numvctrlpts; j++ ) {
-        for ( int i = 0; i < numuctrlpts; i++ ) {
-          int idx = j*vstride + i*ustride;
-          fprintf(fp, "%g %g %g %g,\n", ctlPoints[idx+0], ctlPoints[idx+1], ctlPoints[idx+2], ctlPoints[idx+3]);
-        }
-        fprintf(fp, "\n");
-      }
-      fprintf(fp,	"]\n"
-              "}\n"
-              "NurbsSurface {\n"
-              "numUControlPoints %d\n"
-              "numVControlPoints %d\n"
-              "uKnotVector [", numuctrlpts, numvctrlpts);
-      for ( int i = 0; i < numuknots; i++ )
-        fprintf(fp, "%g, ", uknotvec[i]);
-      fprintf(fp,	"]\n"
-              "vKnotVector [");
-      for ( int i = 0; i < numvknots; i++ )
-        fprintf(fp, "%g, ", vknotvec[i]);
-      fprintf(fp,	"]\n"
-              "}\n");
-      fclose(fp);
-      fp = NULL;
-    }
-  }
-
 }
 
 void
@@ -1114,8 +931,6 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
           ptrnormals[idx+2] = ptrnormals[idx2+2];
         }
       }
-      //if ( numuctrlpts == 6 && numvctrlpts == 9 )
-      //  nrb.Test();
     }
 
     GLUWrapper()->gluNurbsSurface(nurbsrenderer,
