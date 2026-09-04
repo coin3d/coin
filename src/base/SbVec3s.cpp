@@ -47,6 +47,8 @@
 
 #include "coinString.h"
 
+#include "coindefs.h"
+
 /*!
   \class SbVec3s SbVec3s.h Inventor/SbVec3s.h
   \brief The SbVec3s class is a 3 dimensional vector with short integer
@@ -424,7 +426,7 @@ SbVec3s::fromString(const SbString & str)
   debug version of library, method does nothing in an optimized build.
 */
 void
-SbVec3s::print(FILE * fp) const
+SbVec3s::print(FILE * COIN_UNUSED_ARG(fp)) const
 {
 #if COIN_DEBUG
   SbString str = "<";

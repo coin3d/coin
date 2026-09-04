@@ -829,7 +829,7 @@ cc_gzm_ftell(cc_gzm_file * file)
 }
 
 static size_t
-cc_gzm_fread(void * ptr, size_t size, size_t nmemb, cc_gzm_file * file)
+cc_gzm_fread(void * ptr, size_t COIN_UNUSED_ARG(size), size_t nmemb, cc_gzm_file * file)
 {
   uint32_t remain;
 

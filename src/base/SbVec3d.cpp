@@ -48,6 +48,8 @@
 #include "tidbitsp.h" // coin_debug_normalize()
 #include "coinString.h"
 
+#include "coindefs.h"
+
 /*!
   \class SbVec3d SbVec3d.h Inventor/SbVec3d.h
   \brief The SbVec3d class is a 3 dimensional vector with double precision floating point coordinates.
@@ -553,7 +555,7 @@ SbVec3d::fromString(const SbString & str)
   debug version of library, method does nothing in an optimized build.
 */
 void
-SbVec3d::print(FILE * fp) const
+SbVec3d::print(FILE * COIN_UNUSED_ARG(fp)) const
 {
 #if COIN_DEBUG
   fputs(this->toString().getString(),fp);

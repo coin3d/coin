@@ -55,6 +55,8 @@
 #include <Inventor/SbLine.h>
 #include <Inventor/errors/SoDebugError.h>
 
+#include "coindefs.h"
+
 
 /*!
   The default constructor does nothing. The line will be uninitialized
@@ -409,7 +411,7 @@ SbLine::getDirection(void) const
   debug version of library, method does nothing in an optimized build.
  */
 void
-SbLine::print(FILE * fp) const
+SbLine::print(FILE * COIN_UNUSED_ARG(fp)) const
 {
 #if COIN_DEBUG
   fprintf( fp, "p: " );

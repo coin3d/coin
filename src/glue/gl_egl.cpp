@@ -60,7 +60,7 @@
 
 #ifndef HAVE_EGL
 
-void * eglglue_getprocaddress(const cc_glglue * glue_in, const char * fname)
+void * eglglue_getprocaddress(const cc_glglue * COIN_UNUSED_ARG(glue_in), const char * fname)
 {
   return NULL;
 }
@@ -497,7 +497,7 @@ eglglue_context_pbuffer_max(void * ctx, unsigned int * lims)
 }
 
 void *
-eglglue_getprocaddress(const cc_glglue * glue_in, const char * fname)
+eglglue_getprocaddress(const cc_glglue * COIN_UNUSED_ARG(glue_in), const char * fname)
 {
   return (void *)eglGetProcAddress(fname);
 }

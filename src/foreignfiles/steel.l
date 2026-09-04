@@ -58,6 +58,7 @@
 #include <Inventor/system/inttypes.h>
 
 #include "steel.h"
+#include "coindefs.h"
 }
 
 %{
@@ -422,7 +423,7 @@ stl_reader_binary_facet(stl_reader * reader)
 
 static
 int
-stl_writer_put_binary_facet(stl_writer * writer, stl_facet * facet)
+stl_writer_put_binary_facet(stl_writer * writer, stl_facet * COIN_UNUSED_ARG(facet))
 {
   int writeok = 1;
   union {
@@ -776,7 +777,7 @@ stl_facet_get_vertex3(stl_facet * facet, stl_real * x, stl_real * y, stl_real * 
  */
 
 void
-stl_facet_set_padding(stl_facet * facet, unsigned int padding)
+stl_facet_set_padding(stl_facet * COIN_UNUSED_ARG(facet), unsigned int COIN_UNUSED_ARG(padding))
 {
   assert(facet != NULL);
 } /* stl_facet_set_padding() */
@@ -785,7 +786,7 @@ stl_facet_set_padding(stl_facet * facet, unsigned int padding)
  */
 
 unsigned int
-stl_facet_get_padding(stl_facet * facet)
+stl_facet_get_padding(stl_facet * COIN_UNUSED_ARG(facet))
 {
   assert(facet != NULL);
   return 0;

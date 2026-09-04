@@ -134,6 +134,8 @@
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/errors/SoDebugError.h>
 
+#include "coindefs.h"
+
 /*!
   The default SbViewportRegion constructor initializes the viewport to
   fully cover a [100, 100] size window with 72 pixels per inch
@@ -591,7 +593,7 @@ operator!=(const SbViewportRegion & reg1, const SbViewportRegion & reg2)
   debug version of library, method does nothing in an optimized build.
  */
 void
-SbViewportRegion::print(FILE * fp) const
+SbViewportRegion::print(FILE * COIN_UNUSED_ARG(fp)) const
 {
 #if COIN_DEBUG
   (void)fprintf( fp, "  winsize:     " );

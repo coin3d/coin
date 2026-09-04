@@ -213,6 +213,7 @@
 #include "rendering/SoGL.h"
 #include "glue/glp.h"
 #include "io/SoWriterefCounter.h"
+#include "coindefs.h"
 
 #include <Inventor/annex/Profiler/SoProfiler.h>
 #include "profiler/SoNodeProfiling.h"
@@ -729,7 +730,7 @@ SoGroup::audioRender(SoAudioRenderAction * action)
 
 // Doc from superclass.
 void
-SoGroup::addWriteReference(SoOutput * out, SbBool isfromfield)
+SoGroup::addWriteReference(SoOutput * out, SbBool COIN_UNUSED_ARG(isfromfield))
 {
   // SoGroup::write() used to count write references of children by calling
   // doAction() when ref was zero in the SoOutput::COUNT_REFS stage. However, 

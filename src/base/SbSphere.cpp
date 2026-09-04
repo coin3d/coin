@@ -49,6 +49,8 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include "coindefs.h"
+
 /*!
   The default constructor does nothing. The center point and the radius
   will be uninitialized.
@@ -227,7 +229,7 @@ SbSphere::pointInside(const SbVec3f &p) const
   debug version of library, method does nothing in an optimized build.
  */
 void
-SbSphere::print(FILE * fp) const
+SbSphere::print(FILE * COIN_UNUSED_ARG(fp)) const
 {
 #if COIN_DEBUG
   fprintf( fp, "center: " );

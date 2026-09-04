@@ -732,7 +732,7 @@ SoVRMLImageTexture::oneshot_readimage_cb(void * closure, SoSensor * sensor)
 // called (from SbImage) when image data is needed.
 //
 SbBool
-SoVRMLImageTexture::image_read_cb(const SbString & filename, SbImage * image, void * closure)
+SoVRMLImageTexture::image_read_cb(const SbString & filename, SbImage * COIN_UNUSED_ARG(image), void * closure)
 {
   SoVRMLImageTexture * thisp = (SoVRMLImageTexture*) closure;
   assert(&PRIVATE(thisp)->image == image);

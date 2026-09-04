@@ -56,6 +56,8 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include "coindefs.h"
+
 /*!
   \fn SbBox3f::SbBox3f(void)
   The default constructor makes an empty box.
@@ -457,7 +459,7 @@ SbBox3f::transform(const SbMatrix & matrix)
   debug version of library, method does nothing in an optimized build.
  */
 void
-SbBox3f::print(FILE * fp) const
+SbBox3f::print(FILE * COIN_UNUSED_ARG(fp)) const
 {
 #if COIN_DEBUG
   SbVec3f minv, maxv;

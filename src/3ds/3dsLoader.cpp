@@ -1799,7 +1799,7 @@ SoTextureCoordinate2* FaceGroup::createSoTextureCoordinate2_n(tagContext *con)
 
 
 
-SoTriangleStripSet* FaceGroup::createSoTriStripSet_n(tagContext *con)
+SoTriangleStripSet* FaceGroup::createSoTriStripSet_n(tagContext * COIN_UNUSED_ARG(con))
 {
   assert(!con->useIndexedTriSet && "Improper use.");
 

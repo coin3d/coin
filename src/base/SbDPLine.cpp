@@ -53,6 +53,8 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include "coindefs.h"
+
 /*!
   The empty constructor does nothing. The line will be uninitialized until
   the first assignment or setValue() call.
@@ -356,7 +358,7 @@ SbDPLine::getDirection(void) const
   debug version of library, method does nothing in an optimized build.
  */
 void
-SbDPLine::print(FILE * fp) const
+SbDPLine::print(FILE * COIN_UNUSED_ARG(fp)) const
 {
 #if COIN_DEBUG
   fprintf( fp, "p: " );
