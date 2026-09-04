@@ -218,7 +218,7 @@ cc_mutex_lock(cc_mutex * mutex)
          recursive call to this function, and a non-terminating lock /
          hang. */
       (void)fprintf(stdout, "DEBUG cc_mutex_lock(): mutex %p spent %f secs in lock\n",
-                    mutex, spent);
+                    (void *)mutex, spent);
     }
 
     assert(spent <= maxmutexlocktime);
