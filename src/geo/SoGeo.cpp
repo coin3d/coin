@@ -204,6 +204,11 @@ static SbDPMatrix find_coordinate_system(const SbString * system,
 // UTM zone from lat/long
 //
 static SbUTMProjection find_utm_projection(const SbString * system,
+                                           const int numsystem,
+                                           const SbVec3d & coords,
+                                           SbVec3d & projcoords) COIN_UNUSED_FUNC;
+
+static SbUTMProjection find_utm_projection(const SbString * system,
                                            const int COIN_UNUSED_ARG(numsystem),
                                            const SbVec3d & coords,
                                            SbVec3d & projcoords)
