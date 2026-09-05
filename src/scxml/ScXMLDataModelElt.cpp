@@ -180,7 +180,8 @@ void
 ScXMLDataModelElt::copyContents(const ScXMLElt * rhs)
 {
   inherited::copyContents(rhs);
-  const ScXMLDataModelElt * orig = coin_assert_cast<const ScXMLDataModelElt *>(rhs);
+  const ScXMLDataModelElt * orig = coin_safe_cast<const ScXMLDataModelElt *>(rhs);
+  if (orig == NULL) return;
   this->setSchemaAttribute(orig->getSchemaAttribute());
 
   for (int c = 0; c < orig->getNumData(); ++c) {

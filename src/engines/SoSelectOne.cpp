@@ -329,7 +329,7 @@ void
 SoSelectOne::copyContents(const SoFieldContainer * from,
                           SbBool copyconnections)
 {
-  const SoSelectOne * selectonesrc = coin_assert_cast<const SoSelectOne *>(from);
-  if (selectonesrc->input) { this->initialize(selectonesrc->input->getTypeId()); }
+  const SoSelectOne * selectonesrc = coin_safe_cast<const SoSelectOne *>(from);
+  if (selectonesrc && selectonesrc->input) { this->initialize(selectonesrc->input->getTypeId()); }
   inherited::copyContents(from, copyconnections);
 }

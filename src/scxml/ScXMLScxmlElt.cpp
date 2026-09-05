@@ -471,7 +471,8 @@ void
 ScXMLScxmlElt::copyContents(const ScXMLElt * rhs)
 {
   inherited::copyContents(rhs);
-  const ScXMLScxmlElt * orig = coin_assert_cast<const ScXMLScxmlElt *>(rhs);
+  const ScXMLScxmlElt * orig = coin_safe_cast<const ScXMLScxmlElt *>(rhs);
+  if (orig == NULL) return;
   this->setNameAttribute(orig->getNameAttribute());
   this->setInitialAttribute(orig->getInitialAttribute());
   this->setXMLNSAttribute(orig->getXMLNSAttribute());

@@ -166,7 +166,8 @@ void
 ScXMLValidateElt::copyContents(const ScXMLElt * rhs)
 {
   inherited::copyContents(rhs);
-  const ScXMLValidateElt * orig = coin_assert_cast<const ScXMLValidateElt *>(rhs);
+  const ScXMLValidateElt * orig = coin_safe_cast<const ScXMLValidateElt *>(rhs);
+  if (orig == NULL) return;
   this->setLocationAttribute(orig->getLocationAttribute());
   this->setSchemaAttribute(orig->getSchemaAttribute());
 }
