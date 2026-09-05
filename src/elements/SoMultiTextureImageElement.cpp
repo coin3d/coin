@@ -415,6 +415,7 @@ SoMultiTextureImageElement::push(SoState * COIN_UNUSED_ARG(state))
   const SoMultiTextureImageElement * prev =
     coin_assert_cast<SoMultiTextureImageElement *>
     (this->getNextInStack());
+  COIN_ASSUME(prev != NULL);
 
   PRIVATE(this)->unitdata = PRIVATE(prev)->unitdata;
 }
@@ -425,6 +426,7 @@ SoMultiTextureImageElement::matches(const SoElement * elem) const
   const SoMultiTextureImageElement * e =
     coin_assert_cast<const SoMultiTextureImageElement *>
     (elem);
+  COIN_ASSUME(e != NULL);
   const int n = PRIVATE(e)->unitdata.getLength();
   if (n != PRIVATE(this)->unitdata.getLength()) return FALSE;
 
@@ -507,8 +509,16 @@ const SbColor &
 SoMultiTextureImageElement::getBlendColor(SoState * const state, const int unit)
 {
   const SoMultiTextureImageElement * elem =
-    coin_assert_cast<const SoMultiTextureImageElement *>
+    coin_safe_cast<const SoMultiTextureImageElement *>
     (getConstElement(state, classStackIndex));
+
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureImageElement::getBlendColor",
+                       "SoMultiTextureImageElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    static const SbColor defaultblendcolor(0.0f, 0.0f, 0.0f);
+    return defaultblendcolor;
+  }
 
   PRIVATE(elem)->ensureCapacity(unit);
   return PRIVATE(elem)->unitdata[unit].blendColor;

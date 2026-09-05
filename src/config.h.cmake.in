@@ -418,6 +418,9 @@
 /* Define if compiler has __builtin_expect() macro */
 #cmakedefine HAVE___BUILTIN_EXPECT
 
+/* Define if compiler has __builtin_unreachable() macro */
+#cmakedefine HAVE___BUILTIN_UNREACHABLE
+
 /* define for runtime linking with zlib */
 #cmakedefine LIBBZIP2_RUNTIME_LINKING 1
 

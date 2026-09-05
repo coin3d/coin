@@ -253,6 +253,7 @@ SoSoundElement::push(SoState * state)
 
   const SoSoundElement * prev = coin_assert_cast<SoSoundElement *>
     (this->getNextInStack());
+  COIN_ASSUME(prev != NULL);
 
   this->scenegraphhassoundnode = FALSE;
   this->soundnodeisplaying = FALSE;
@@ -268,6 +269,7 @@ SoSoundElement::pop(SoState * COIN_UNUSED_ARG(state), const SoElement * prevTopE
 {
   const SoSoundElement * prevtop =
     coin_assert_cast<const SoSoundElement *>(prevTopElement);
+  COIN_ASSUME(prevtop != NULL);
   this->scenegraphhassoundnode = this->scenegraphhassoundnode |
     prevtop->scenegraphhassoundnode;
   this->soundnodeisplaying = this->soundnodeisplaying |

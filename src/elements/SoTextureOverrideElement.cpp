@@ -72,7 +72,9 @@ SoTextureOverrideElement::~SoTextureOverrideElement(void)
 SbBool
 SoTextureOverrideElement::matches(const SoElement *element) const
 {
-  return coin_assert_cast<const SoTextureOverrideElement *>(element)->flags == this->flags;
+  const SoTextureOverrideElement * elem = coin_assert_cast<const SoTextureOverrideElement *>(element);
+  COIN_ASSUME(elem != NULL);
+  return elem->flags == this->flags;
 }
 
 //!
@@ -105,6 +107,7 @@ SoTextureOverrideElement::push(SoState *state)
     (
      this->getNextInStack()
      );
+  COIN_ASSUME(prev != NULL);
   this->flags = prev->flags;
 }
 

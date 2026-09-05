@@ -42,6 +42,7 @@
 #include <Inventor/elements/SoShapeHintsElement.h>
 
 #include "SbBasicP.h"
+#include "coindefs.h"
 
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -92,6 +93,7 @@ SoShapeHintsElement::push(SoState * state)
   inherited::push(state);
   SoShapeHintsElement * prev = coin_assert_cast<SoShapeHintsElement *>
     (this->getNextInStack());
+  COIN_ASSUME(prev != NULL);
   this->vertexOrdering = prev->vertexOrdering;
   this->shapeType = prev->shapeType;
   this->faceType = prev->faceType;
@@ -110,6 +112,7 @@ SoShapeHintsElement::matches(const SoElement * element) const
 {
   const SoShapeHintsElement * elem =
     coin_assert_cast<const SoShapeHintsElement *>(element);
+  COIN_ASSUME(elem != NULL);
   return (this->vertexOrdering == elem->vertexOrdering &&
           this->shapeType == elem->shapeType &&
           this->faceType == elem->faceType);

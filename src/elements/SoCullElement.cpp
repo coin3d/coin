@@ -141,6 +141,7 @@ SoCullElement::push(SoState * COIN_UNUSED_ARG(state))
     (
      this->getNextInStack()
      );
+  COIN_ASSUME(prev != NULL);
 
   this->flags = prev->flags;
   this->numplanes = prev->numplanes;
@@ -340,6 +341,9 @@ SoCullElement::docull(SoState * state, const SbBox3f & box, const SbBool transfo
       (
        SoElement::getElement(state, classStackIndex)
        );
+    // classStackIndex is already proven enabled by the "if (!elem)
+    // return FALSE;" guard above -- getElement() cannot return NULL here
+    COIN_ASSUME(elem != NULL);
     elem->flags = flags;
   }
   return FALSE;

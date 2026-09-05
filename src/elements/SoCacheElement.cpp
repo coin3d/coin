@@ -138,6 +138,7 @@ SoCacheElement::pop(SoState * state, const SoElement * prevTopElement)
                                           prevTopElement
                                          )
      );
+  COIN_ASSUME(prev != NULL);
   if (prev->cache) {
     prev->cache->unref();
     prev->cache = NULL;

@@ -236,6 +236,7 @@ SoOverrideElement::push(SoState * state)
     (
      this->getNextInStack()
      );
+  COIN_ASSUME(prev != NULL);
   this->flags = prev->flags;
 }
 
@@ -244,7 +245,9 @@ SoOverrideElement::push(SoState * state)
 SbBool
 SoOverrideElement::matches(const SoElement *element) const
 {
-  return (coin_assert_cast<const SoOverrideElement *>(element))->flags == this->flags;
+  const SoOverrideElement * elem = coin_assert_cast<const SoOverrideElement *>(element);
+  COIN_ASSUME(elem != NULL);
+  return elem->flags == this->flags;
 }
 
 //! FIXME: write doc.

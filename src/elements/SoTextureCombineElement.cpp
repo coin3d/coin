@@ -231,6 +231,7 @@ SoTextureCombineElement::push(SoState * COIN_UNUSED_ARG(state))
 {
   const SoTextureCombineElement * prev = coin_assert_cast<SoTextureCombineElement *>
     (this->getNextInStack());
+  COIN_ASSUME(prev != NULL);
   PRIVATE(this)->unitdata = PRIVATE(prev)->unitdata;
 }
 
@@ -239,6 +240,7 @@ SoTextureCombineElement::matches(const SoElement * elem) const
 {
   const SoTextureCombineElement * e =
     coin_assert_cast<const SoTextureCombineElement *>(elem);
+  COIN_ASSUME(e != NULL);
   const int n = PRIVATE(e)->unitdata.getLength();
   if (n != PRIVATE(this)->unitdata.getLength()) return FALSE;
 

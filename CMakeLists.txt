@@ -834,6 +834,9 @@ if(NOT HAVE_VSNPRINTF)
 endif()
 check_symbol_exists(__builtin_expect assert.h HAVE___BUILTIN_EXPECT)
 set(HAVE_ASSERT_WITH_BUILTIN_EXPECT ${HAVE___BUILTIN_EXPECT})
+check_cxx_source_compiles("
+  int main(void) { if (0) __builtin_unreachable(); return 0; }
+" HAVE___BUILTIN_UNREACHABLE)
 
 check_symbol_exists(__func__ "" FUNC)
 check_symbol_exists(__PRETTY_FUNCTION__ "" PRETTY_FUNCTION)

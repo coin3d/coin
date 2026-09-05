@@ -478,6 +478,7 @@ SoModelMatrixElement::push(SoState * state)
     (
      this->getNextInStack()
      );
+  COIN_ASSUME(prev != NULL);
 
   this->modelMatrix = prev->modelMatrix;
   this->flags = prev->flags;

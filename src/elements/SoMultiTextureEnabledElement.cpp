@@ -231,6 +231,7 @@ SoMultiTextureEnabledElement::push(SoState * COIN_UNUSED_ARG(state))
 {
   SoMultiTextureEnabledElement * prev = coin_assert_cast<SoMultiTextureEnabledElement *>
     (this->getNextInStack());
+  COIN_ASSUME(prev != NULL);
 
   PRIVATE(this)->mode = PRIVATE(prev)->mode;
   PRIVATE(this)->enabled = PRIVATE(prev)->enabled;
@@ -241,6 +242,7 @@ SoMultiTextureEnabledElement::matches(const SoElement * elem) const
 {
   const SoMultiTextureEnabledElement * e =
     coin_assert_cast<const SoMultiTextureEnabledElement *>(elem);
+  COIN_ASSUME(e != NULL);
   if (PRIVATE(e)->mode.getLength() != PRIVATE(this)->mode.getLength()) return FALSE;
   
   for (int i = 0; i < PRIVATE(e)->mode.getLength(); i++) {

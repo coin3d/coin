@@ -112,6 +112,7 @@ SoCacheHintElement::push(SoState * state)
     (
      this->getNextInStack()
      );
+  COIN_ASSUME(prev != NULL);
   PRIVATE(this)->memvalue = PRIVATE(prev)->memvalue;
   PRIVATE(this)->gfxvalue = PRIVATE(prev)->gfxvalue;
 }
@@ -128,6 +129,7 @@ SbBool
 SoCacheHintElement::matches(const SoElement * element) const
 {
   const SoCacheHintElement * elem = coin_assert_cast<const SoCacheHintElement *>(element);
+  COIN_ASSUME(elem != NULL);
   return
     (PRIVATE(this)->memvalue == PRIVATE(elem)->memvalue) &&
     (PRIVATE(this)->gfxvalue == PRIVATE(elem)->gfxvalue);

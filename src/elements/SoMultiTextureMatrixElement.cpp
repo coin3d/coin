@@ -43,6 +43,7 @@
 */
 
 #include "SbBasicP.h"
+#include "coindefs.h"
 
 #include <Inventor/elements/SoMultiTextureMatrixElement.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -218,7 +219,8 @@ SoMultiTextureMatrixElement::push(SoState * state)
   const SoMultiTextureMatrixElement * prev =
     coin_assert_cast<const SoMultiTextureMatrixElement *>
     (this->getNextInStack());
-  
+  COIN_ASSUME(prev != NULL);
+
   PRIVATE(this)->unitdata = PRIVATE(prev)->unitdata;
   // make sure node ids are accumulated properly
   this->copyNodeIds(prev);

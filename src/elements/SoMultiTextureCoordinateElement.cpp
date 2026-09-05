@@ -546,7 +546,8 @@ SoMultiTextureCoordinateElement::push(SoState * COIN_UNUSED_ARG(state))
   SoMultiTextureCoordinateElement * prev =
     coin_assert_cast<SoMultiTextureCoordinateElement *>
     (this->getNextInStack());
-  
+  COIN_ASSUME(prev != NULL);
+
   PRIVATE(this)->unitdata = PRIVATE(prev)->unitdata;
 }
 
@@ -555,6 +556,7 @@ SoMultiTextureCoordinateElement::matches(const SoElement * elem) const
 {
   const SoMultiTextureCoordinateElement * e =
     coin_assert_cast<const SoMultiTextureCoordinateElement *>(elem);
+  COIN_ASSUME(e != NULL);
   if (PRIVATE(e)->unitdata.getLength() != PRIVATE(this)->unitdata.getLength()) return FALSE;
   
   for (int i = 0; i < PRIVATE(this)->unitdata.getLength(); i++) {
