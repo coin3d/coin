@@ -452,7 +452,7 @@ SoMultiTextureImageElement::getWrapS(SoState * const state, const int unit)
     (getConstElement(state, classStackIndex));
 
   PRIVATE(elem)->ensureCapacity(unit);
-  return PRIVATE(elem)->unitdata[unit].wrapT;
+  return PRIVATE(elem)->unitdata[unit].wrapS;
 }
 
 /*!
@@ -466,7 +466,7 @@ SoMultiTextureImageElement::getWrapT(SoState * const state, const int unit)
     (getConstElement(state, classStackIndex));
 
   PRIVATE(elem)->ensureCapacity(unit);
-  return PRIVATE(elem)->unitdata[unit].wrapS;
+  return PRIVATE(elem)->unitdata[unit].wrapT;
 }
 
 /*!

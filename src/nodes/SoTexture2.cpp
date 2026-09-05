@@ -643,8 +643,8 @@ SoTexture2::doAction(SoAction * action)
   if (size != SbVec2s(0,0)) {
     SoMultiTextureImageElement::set(state, this, unit,
                                     size, nc, bytes,
-                                    (SoMultiTextureImageElement::Wrap)this->wrapT.getValue(),
                                     (SoMultiTextureImageElement::Wrap)this->wrapS.getValue(),
+                                    (SoMultiTextureImageElement::Wrap)this->wrapT.getValue(),
                                     (SoMultiTextureImageElement::Model) model.getValue(),
                                     this->blendColor.getValue());
     SoMultiTextureEnabledElement::set(state, this, unit, TRUE); 
