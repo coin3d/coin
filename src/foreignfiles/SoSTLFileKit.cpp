@@ -777,4 +777,82 @@ SoSTLFileKit::put_facet_cb(void * closure,
 }
 
 #undef PRIVATE
+
+#ifdef COIN_TEST_SUITE
+
+#include <cstdio>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/nodes/SoCube.h>
+#include <Inventor/nodes/SoSeparator.h>
+
+// Regression tests for the binary STL reader/writer in steel.l/steel.cpp
+// (stl_reader_binary_facet(), stl_writer_put_binary_facet(),
+// stl_writer_destroy(), and the binary/ascii probing in
+// stl_reader_create()): round-trip a simple scene through
+// SoSTLFileKit::writeFile()/readFile() and check the triangle count
+// survives exactly. This exercises every readok/writeok accumulation
+// site fixed in fix/unused-but-set-variable-clang along its success
+// path -- the only path testable here without crashing the test
+// binary, since those sites intentionally assert() (a no-op under
+// NDEBUG) rather than change behavior on I/O failure. The actual
+// I/O-failure path is covered separately by
+// testsuite/reproducers/stl-writer-devfull/, which needs a Debug build
+// and a POSIX-only /dev/full trick to force a real write failure.
+
+static int32_t
+STLRoundtripTriangleCount(SoNode * scene)
+{
+  SoGetPrimitiveCountAction pca;
+  pca.apply(scene);
+  return pca.getTriangleCount();
+}
+
+static void
+STLRoundtripTest(SbBool binary)
+{
+  SoSeparator * scene = new SoSeparator;
+  scene->ref();
+  scene->addChild(new SoCube);
+  const int32_t expected = STLRoundtripTriangleCount(scene);
+  BOOST_REQUIRE_MESSAGE(expected > 0, "test setup: SoCube produced no triangles");
+
+  const char * path = binary ?
+    "coin_test_stl_binary_roundtrip_tmp.stl" :
+    "coin_test_stl_ascii_roundtrip_tmp.stl";
+
+  SoSTLFileKit * writer = new SoSTLFileKit;
+  writer->ref();
+  writer->binary = binary;
+  BOOST_REQUIRE_MESSAGE(writer->readScene(scene), "readScene() failed");
+  BOOST_REQUIRE_MESSAGE(writer->writeFile(path), "writeFile() failed");
+  writer->unref();
+  scene->unref();
+
+  SoSTLFileKit * reader = new SoSTLFileKit;
+  reader->ref();
+  SbBool readok = reader->readFile(path);
+  remove(path);
+  BOOST_REQUIRE_MESSAGE(readok, "readFile() failed to read back the file it just wrote");
+
+  SoSeparator * result = reader->convert();
+  BOOST_REQUIRE_MESSAGE(result != NULL, "convert() returned NULL");
+  result->ref();
+  BOOST_CHECK_MESSAGE(STLRoundtripTriangleCount(result) == expected,
+                      "triangle count did not survive the round trip");
+  result->unref();
+  reader->unref();
+}
+
+BOOST_AUTO_TEST_CASE(binary_roundtrip)
+{
+  STLRoundtripTest(TRUE);
+}
+
+BOOST_AUTO_TEST_CASE(ascii_roundtrip)
+{
+  STLRoundtripTest(FALSE);
+}
+
+#endif // COIN_TEST_SUITE
+
 #endif // HAVE_NODEKITS
