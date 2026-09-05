@@ -44,6 +44,7 @@
 #include "SbBasicP.h"
 
 #include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/errors/SoDebugError.h>
 
 #include <cassert>
 
@@ -157,10 +158,19 @@ SoShapeHintsElement::get(SoState * const state,
                          ShapeType & shapeType,
                          FaceType & faceType)
 {
-  const SoShapeHintsElement * elem = coin_assert_cast<const SoShapeHintsElement *>
+  const SoShapeHintsElement * elem = coin_safe_cast<const SoShapeHintsElement *>
     (
      SoElement::getConstElement(state, classStackIndex)
      );
+  if (!elem) {
+    SoDebugError::post("SoShapeHintsElement::get",
+                       "SoShapeHintsElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default values.");
+    vertexOrdering = getDefaultVertexOrdering();
+    shapeType = getDefaultShapeType();
+    faceType = getDefaultFaceType();
+    return;
+  }
   vertexOrdering = elem->vertexOrdering;
   shapeType = elem->shapeType;
   faceType = elem->faceType;
@@ -171,10 +181,16 @@ SoShapeHintsElement::get(SoState * const state,
 SoShapeHintsElement::VertexOrdering
 SoShapeHintsElement::getVertexOrdering(SoState * const state)
 {
-  const SoShapeHintsElement * elem = coin_assert_cast<const SoShapeHintsElement*>
+  const SoShapeHintsElement * elem = coin_safe_cast<const SoShapeHintsElement*>
     (
      SoElement::getConstElement(state, classStackIndex)
      );
+  if (!elem) {
+    SoDebugError::post("SoShapeHintsElement::getVertexOrdering",
+                       "SoShapeHintsElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return getDefaultVertexOrdering();
+  }
   return elem->vertexOrdering;
 }
 
@@ -183,10 +199,16 @@ SoShapeHintsElement::getVertexOrdering(SoState * const state)
 SoShapeHintsElement::ShapeType
 SoShapeHintsElement::getShapeType(SoState * const state)
 {
-  const SoShapeHintsElement * elem = coin_assert_cast<const SoShapeHintsElement *>
+  const SoShapeHintsElement * elem = coin_safe_cast<const SoShapeHintsElement *>
     (
      SoElement::getConstElement(state, classStackIndex)
      );
+  if (!elem) {
+    SoDebugError::post("SoShapeHintsElement::getShapeType",
+                       "SoShapeHintsElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return getDefaultShapeType();
+  }
   return elem->shapeType;
 }
 
@@ -195,10 +217,16 @@ SoShapeHintsElement::getShapeType(SoState * const state)
 SoShapeHintsElement::FaceType
 SoShapeHintsElement::getFaceType(SoState * const state)
 {
-  const SoShapeHintsElement * elem = coin_assert_cast<const SoShapeHintsElement *>
+  const SoShapeHintsElement * elem = coin_safe_cast<const SoShapeHintsElement *>
     (
      SoElement::getConstElement(state, classStackIndex)
      );
+  if (!elem) {
+    SoDebugError::post("SoShapeHintsElement::getFaceType",
+                       "SoShapeHintsElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return getDefaultFaceType();
+  }
   return elem->faceType;
 }
 

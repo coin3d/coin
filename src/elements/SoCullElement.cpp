@@ -91,9 +91,7 @@
 #include "coindefs.h"
 #include "SbBasicP.h"
 
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 SO_ELEMENT_SOURCE(SoCullElement);
 
@@ -243,10 +241,16 @@ SbBool
 SoCullElement::completelyInside(SoState * state)
 {
   // use SoState::getConstElement() to avoid cache dependency on this element
-  const SoCullElement * elem = coin_assert_cast<const SoCullElement *>
+  const SoCullElement * elem = coin_safe_cast<const SoCullElement *>
     (
      state->getConstElement(classStackIndex)
      );
+  if (!elem) {
+    SoDebugError::post("SoCullElement::completelyInside",
+                       "SoCullElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return TRUE; // no active culling planes by default -- see init()
+  }
   unsigned int mask = 0x0001 << elem->numplanes;
   return elem->flags == (mask-1);
 }

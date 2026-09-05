@@ -58,6 +58,7 @@
 
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
 
 #include "coindefs.h"
@@ -110,13 +111,20 @@ SoMultiTextureEnabledElement::set(SoState * state,
                                   const SbBool enabled)
 {
   SoMultiTextureEnabledElement * elem =
-    coin_assert_cast<SoMultiTextureEnabledElement *>
+    coin_safe_cast<SoMultiTextureEnabledElement *>
     (
      state->getElement(classStackIndex)
      );
 
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureEnabledElement::set",
+                       "SoMultiTextureEnabledElement not enabled for this action -- "
+                       "missing SO_ENABLE()?");
+    return;
+  }
+
   elem->setElt(unit, enabled);
-  
+
   if (unit == 0) {
     // FIXME: check all units?
     SoShapeStyleElement::setTextureEnabled(state, enabled);
@@ -139,8 +147,15 @@ SbBool
 SoMultiTextureEnabledElement::get(SoState * state, const int unit)
 {
   const SoMultiTextureEnabledElement * elem =
-    coin_assert_cast<const SoMultiTextureEnabledElement *>
+    coin_safe_cast<const SoMultiTextureEnabledElement *>
     (SoElement::getConstElement(state, classStackIndex));
+
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureEnabledElement::get",
+                       "SoMultiTextureEnabledElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return FALSE;
+  }
 
   if (unit < PRIVATE(elem)->enabled.getLength()) {
     return PRIVATE(elem)->enabled[unit];
@@ -174,8 +189,16 @@ SoMultiTextureEnabledElement::getEnabledUnits(SoState * state,
                                               int & lastenabled)
 {
   const SoMultiTextureEnabledElement * elem =
-    coin_assert_cast<const SoMultiTextureEnabledElement *>
+    coin_safe_cast<const SoMultiTextureEnabledElement *>
     (SoElement::getConstElement(state, classStackIndex));
+
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureEnabledElement::getEnabledUnits",
+                       "SoMultiTextureEnabledElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    lastenabled = -1;
+    return NULL;
+  }
 
   int i = PRIVATE(elem)->enabled.getLength()-1;
   while (i >= 0) {
@@ -250,9 +273,17 @@ const SoMultiTextureEnabledElement::Mode *
 SoMultiTextureEnabledElement::getActiveUnits(SoState * state, int & lastenabled)
 {
   const SoMultiTextureEnabledElement * elem =
-    coin_assert_cast<const SoMultiTextureEnabledElement *>
+    coin_safe_cast<const SoMultiTextureEnabledElement *>
     (SoElement::getConstElement(state, classStackIndex));
-  
+
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureEnabledElement::getActiveUnits",
+                       "SoMultiTextureEnabledElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    lastenabled = -1;
+    return NULL;
+  }
+
   int i = PRIVATE(elem)->mode.getLength()-1;
   while (i >= 0) {
     if (PRIVATE(elem)->mode[i] != DISABLED) break;
@@ -276,8 +307,14 @@ SoMultiTextureEnabledElement::enableRectangle(SoState * state,
                                               const int unit)
 {
   SoMultiTextureEnabledElement * elem =
-    coin_assert_cast<SoMultiTextureEnabledElement *>
+    coin_safe_cast<SoMultiTextureEnabledElement *>
     (state->getElement(classStackIndex));
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureEnabledElement::enableRectangle",
+                       "SoMultiTextureEnabledElement not enabled for this action -- "
+                       "missing SO_ENABLE()?");
+    return;
+  }
   elem->setElt(unit, static_cast<int>(RECTANGLE));
 }
 
@@ -291,8 +328,14 @@ SoMultiTextureEnabledElement::enableCubeMap(SoState * state,
                                             SoNode * COIN_UNUSED_ARG(node),
                                             const int unit)
 {
-  SoMultiTextureEnabledElement * elem = coin_assert_cast<SoMultiTextureEnabledElement *>
+  SoMultiTextureEnabledElement * elem = coin_safe_cast<SoMultiTextureEnabledElement *>
     (state->getElement(classStackIndex));
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureEnabledElement::enableCubeMap",
+                       "SoMultiTextureEnabledElement not enabled for this action -- "
+                       "missing SO_ENABLE()?");
+    return;
+  }
 
   elem->setElt(unit, static_cast<int>(CUBEMAP));
 }
@@ -307,9 +350,15 @@ SoMultiTextureEnabledElement::enableTexture3(SoState * state,
                                              SoNode * COIN_UNUSED_ARG(node),
                                              const int unit)
 {
-  SoMultiTextureEnabledElement * elem = coin_assert_cast<SoMultiTextureEnabledElement *>
+  SoMultiTextureEnabledElement * elem = coin_safe_cast<SoMultiTextureEnabledElement *>
     (state->getElement(classStackIndex));
-  
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureEnabledElement::enableTexture3",
+                       "SoMultiTextureEnabledElement not enabled for this action -- "
+                       "missing SO_ENABLE()?");
+    return;
+  }
+
   elem->setElt(unit, static_cast<int>(TEXTURE3D));
 }
 
@@ -327,12 +376,18 @@ SoMultiTextureEnabledElement::disableAll(SoState * state)
   const SbBool * enabled = getEnabledUnits(state, lastenabled);
   if (enabled) {
     SoMultiTextureEnabledElement * elem =
-      coin_assert_cast<SoMultiTextureEnabledElement *>
+      coin_safe_cast<SoMultiTextureEnabledElement *>
       (state->getElement(classStackIndex));
-
-    for (int i = 0; i <= lastenabled; i++) {
-      if (enabled[i]) {
-        elem->setElt(i, FALSE);
+    if (!elem) {
+      SoDebugError::post("SoMultiTextureEnabledElement::disableAll",
+                         "SoMultiTextureEnabledElement not enabled for this action -- "
+                         "missing SO_ENABLE()?");
+    }
+    else {
+      for (int i = 0; i <= lastenabled; i++) {
+        if (enabled[i]) {
+          elem->setElt(i, FALSE);
+        }
       }
     }
   }
@@ -348,8 +403,15 @@ SoMultiTextureEnabledElement::Mode
 SoMultiTextureEnabledElement::getMode(SoState * state, const int unit)
 {
   const SoMultiTextureEnabledElement * elem =
-    coin_assert_cast<const SoMultiTextureEnabledElement *>
+    coin_safe_cast<const SoMultiTextureEnabledElement *>
     (SoElement::getConstElement(state, classStackIndex));
+
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureEnabledElement::getMode",
+                       "SoMultiTextureEnabledElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return DISABLED;
+  }
 
   return elem->getMode(unit);
 }

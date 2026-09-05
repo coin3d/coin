@@ -43,6 +43,8 @@
 #include "coindefs.h"
 #include "SbBasicP.h"
 
+#include <Inventor/errors/SoDebugError.h>
+
 #include <cassert>
 
 SO_ELEMENT_SOURCE(SoTextureOverrideElement);
@@ -112,10 +114,16 @@ SbBool
 SoTextureOverrideElement::getQualityOverride(SoState *state)
 {
   const SoTextureOverrideElement * const element =
-    coin_assert_cast<const SoTextureOverrideElement *>
+    coin_safe_cast<const SoTextureOverrideElement *>
     (
      getConstElement(state, classStackIndex)
      );
+  if (!element) {
+    SoDebugError::post("SoTextureOverrideElement::getQualityOverride",
+                       "SoTextureOverrideElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return FALSE;
+  }
   return (element->flags & TEXTURE_QUALITY) != 0;
 }
 
@@ -125,10 +133,16 @@ SbBool
 SoTextureOverrideElement::getImageOverride(SoState *state)
 {
   const SoTextureOverrideElement * const element =
-    coin_assert_cast<const SoTextureOverrideElement *>
+    coin_safe_cast<const SoTextureOverrideElement *>
     (
      getConstElement(state, classStackIndex)
      );
+  if (!element) {
+    SoDebugError::post("SoTextureOverrideElement::getImageOverride",
+                       "SoTextureOverrideElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return FALSE;
+  }
   return (element->flags & TEXTURE_IMAGE) != 0;
 }
 
@@ -136,10 +150,16 @@ SbBool
 SoTextureOverrideElement::getBumpMapOverride(SoState *state)
 {
   const SoTextureOverrideElement * const element =
-    coin_assert_cast<const SoTextureOverrideElement *>
+    coin_safe_cast<const SoTextureOverrideElement *>
     (
      getConstElement(state, classStackIndex)
      );
+  if (!element) {
+    SoDebugError::post("SoTextureOverrideElement::getBumpMapOverride",
+                       "SoTextureOverrideElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return FALSE;
+  }
   return (element->flags & BUMP_MAP) != 0;
 }
 
