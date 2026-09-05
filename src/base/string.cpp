@@ -115,7 +115,7 @@ cc_string_grow_buffer(cc_string * me, size_t newsize)
     printf("cc_string_grow_buffer: "
            "me->bufsize==%zu, me->pointer==%p, me->buffer==%p => "
            "newsize==%zu\n",
-           me->bufsize, me->pointer, me->buffer, newsize);
+           me->bufsize, (void *) me->pointer, (void *) me->buffer, newsize);
   }
 
 
@@ -125,11 +125,11 @@ cc_string_grow_buffer(cc_string * me, size_t newsize)
      the current memory buffer is not the default static, of course). */
   if (me->pointer != me->buffer) {
     newbuf = static_cast<char *>(realloc(me->pointer, newsize));
-    if (debug) { printf("cc_string_grow_buffer: newbuf==%p\n", newbuf); }
+    if (debug) { printf("cc_string_grow_buffer: newbuf==%p\n", (void *) newbuf); }
     assert(newbuf != NULL);
   } else {
     newbuf = static_cast<char *>(malloc(newsize));
-    if (debug) { printf("cc_string_grow_buffer: newbuf==%p\n", newbuf); }
+    if (debug) { printf("cc_string_grow_buffer: newbuf==%p\n", (void *) newbuf); }
     assert(newbuf != NULL);
 
     (void) strcpy(newbuf, me->pointer);
