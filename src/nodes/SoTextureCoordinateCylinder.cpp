@@ -116,7 +116,7 @@ public:
   SbStorage * so_texcoord_storage;
 
 private:
-  SoTextureCoordinateCylinder * master;
+  SoTextureCoordinateCylinder * COIN_UNUSED_ARG(master);
 };
 
 

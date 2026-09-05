@@ -71,6 +71,7 @@
 #include "tidbitsp.h"
 #include "misc/AudioTools.h"
 #include "glue/openal_wrapper.h"
+#include "coindefs.h"
 
 // *************************************************************************
 
@@ -91,7 +92,7 @@ public:
   float lastGain;
 
 private:
-  SoAudioDevice *master;
+  SoAudioDevice * COIN_UNUSED_ARG(master);
 };
 
 #define PRIVATE(p) ((p)->pimpl)

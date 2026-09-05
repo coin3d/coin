@@ -52,8 +52,6 @@ class COIN_DLL_API SoProtoInstance : public SoNode {
   PRIVATE_NODE_TYPESYSTEM_HEADER();
 protected:
   const SoFieldData * getFieldData(void) const override;
-private:
-  SoFieldData * classfielddata;
 
 public:
   static void initClass(void);

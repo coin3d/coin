@@ -116,7 +116,7 @@ public:
   SbStorage * so_texcoord_storage;
 
 private:
-  SoTextureCoordinateSphere * master;
+  SoTextureCoordinateSphere * COIN_UNUSED_ARG(master);
 };
 
 

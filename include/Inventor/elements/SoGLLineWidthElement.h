@@ -54,7 +54,14 @@ protected:
   void setElt(float width) override;
 
 private:
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-private-field"
+#endif
   SoState * state;
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
   static float sizerange[2];
   void updategl(void);
 };

@@ -57,7 +57,14 @@ private:
   // Placeholder for any data for the instance. Just added for the
   // sake of making it possible to implement this class after release
   // without breaking ABI compatibility.
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-private-field"
+#endif
   void * pimpl;
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
 };
 
 #endif // !COIN_SOTRANSENDER_H

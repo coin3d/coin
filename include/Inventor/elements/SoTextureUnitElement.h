@@ -55,7 +55,14 @@ public:
   
 private:
   // just in case it is needed at a later stage
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-private-field"
+#endif
   SoTextureUnitElementP * pimpl;
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
 };
 
 #endif // !COIN_SOTEXTUREUNITELEMENT_H

@@ -122,7 +122,7 @@ public:
   SbStorage * so_texcoord_storage;
 
 private:
-  SoTextureCoordinateCube * master;
+  SoTextureCoordinateCube * COIN_UNUSED_ARG(master);
 
 };
 
