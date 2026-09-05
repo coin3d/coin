@@ -136,12 +136,21 @@
 #include <cstdlib>
 
 #include <Inventor/C/tidbits.h>
+#include <Inventor/errors/SoDebugError.h>
+
+#include "coindefs.h" // COIN_STUB_FUNC
 
 // *************************************************************************
 
 #define SO_GET_OVERRIDE(flag) \
 const SoOverrideElement * const element = \
-  coin_assert_cast<const SoOverrideElement *>(getConstElement(state, classStackIndex)); \
+  coin_safe_cast<const SoOverrideElement *>(getConstElement(state, classStackIndex)); \
+if (!element) { \
+  SoDebugError::post(COIN_STUB_FUNC, \
+                     "SoOverrideElement not enabled for this action -- " \
+                     "missing SO_ENABLE()? Returning default value."); \
+  return FALSE; \
+} \
 return (element->flags & flag)
 
 #define SO_SET_OVERRIDE(flag) \

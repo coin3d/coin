@@ -48,6 +48,7 @@
 
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLVBOElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/lists/SbList.h>
 #include <cassert>
@@ -135,8 +136,14 @@ SoMultiTextureCoordinateElement::setDefault(SoState * const state,
     SoGLVBOElement::setTexCoordVBO(state, unit, NULL);
   }
   SoMultiTextureCoordinateElement * element =
-    coin_assert_cast<SoMultiTextureCoordinateElement *>
+    coin_safe_cast<SoMultiTextureCoordinateElement *>
     (SoElement::getElement(state, classStackIndex));
+  if (!element) {
+    SoDebugError::post("SoMultiTextureCoordinateElement::setDefault",
+                       "SoMultiTextureCoordinateElement not enabled for this action -- "
+                       "missing SO_ENABLE()?");
+    return;
+  }
 
   PRIVATE(element)->ensureCapacity(unit);
   UnitData & ud = PRIVATE(element)->unitdata[unit];
@@ -159,8 +166,14 @@ SoMultiTextureCoordinateElement::setFunction(SoState * const state,
   }
 
   SoMultiTextureCoordinateElement * element =
-    coin_assert_cast<SoMultiTextureCoordinateElement *>
+    coin_safe_cast<SoMultiTextureCoordinateElement *>
     (SoElement::getElement(state, classStackIndex));
+  if (!element) {
+    SoDebugError::post("SoMultiTextureCoordinateElement::setFunction",
+                       "SoMultiTextureCoordinateElement not enabled for this action -- "
+                       "missing SO_ENABLE()?");
+    return;
+  }
 
   PRIVATE(element)->ensureCapacity(unit);
   UnitData & ud = PRIVATE(element)->unitdata[unit];
@@ -187,10 +200,16 @@ SoMultiTextureCoordinateElement::set2(SoState * const state,
   if (state->isElementEnabled(SoGLVBOElement::getClassStackIndex())) {
     SoGLVBOElement::setTexCoordVBO(state, unit, NULL);
   }
-  SoMultiTextureCoordinateElement * element = coin_assert_cast<SoMultiTextureCoordinateElement *>
+  SoMultiTextureCoordinateElement * element = coin_safe_cast<SoMultiTextureCoordinateElement *>
     (
      SoElement::getElement(state, classStackIndex)
      );
+  if (!element) {
+    SoDebugError::post("SoMultiTextureCoordinateElement::set2",
+                       "SoMultiTextureCoordinateElement not enabled for this action -- "
+                       "missing SO_ENABLE()?");
+    return;
+  }
 
   PRIVATE(element)->ensureCapacity(unit);
   UnitData & ud = PRIVATE(element)->unitdata[unit];
@@ -218,10 +237,16 @@ SoMultiTextureCoordinateElement::set3(SoState * const state,
     SoGLVBOElement::setTexCoordVBO(state, unit, NULL);
   }
   SoMultiTextureCoordinateElement * element =
-    coin_assert_cast<SoMultiTextureCoordinateElement *>
+    coin_safe_cast<SoMultiTextureCoordinateElement *>
     (
      SoElement::getElement(state, classStackIndex)
      );
+  if (!element) {
+    SoDebugError::post("SoMultiTextureCoordinateElement::set3",
+                       "SoMultiTextureCoordinateElement not enabled for this action -- "
+                       "missing SO_ENABLE()?");
+    return;
+  }
 
   PRIVATE(element)->ensureCapacity(unit);
   UnitData & ud = PRIVATE(element)->unitdata[unit];
@@ -248,10 +273,16 @@ SoMultiTextureCoordinateElement::set4(SoState * const state,
     SoGLVBOElement::setTexCoordVBO(state, unit, NULL);
   }
   SoMultiTextureCoordinateElement * element =
-    coin_assert_cast<SoMultiTextureCoordinateElement *>
+    coin_safe_cast<SoMultiTextureCoordinateElement *>
     (
      SoElement::getElement(state, classStackIndex)
      );
+  if (!element) {
+    SoDebugError::post("SoMultiTextureCoordinateElement::set4",
+                       "SoMultiTextureCoordinateElement not enabled for this action -- "
+                       "missing SO_ENABLE()?");
+    return;
+  }
 
   PRIVATE(element)->ensureCapacity(unit);
   UnitData & ud = PRIVATE(element)->unitdata[unit];
@@ -409,8 +440,14 @@ SoMultiTextureCoordinateElement::CoordType
 SoMultiTextureCoordinateElement::getType(SoState * const state, const int unit)
 {
   const SoMultiTextureCoordinateElement * element =
-    coin_assert_cast<const SoMultiTextureCoordinateElement *>
+    coin_safe_cast<const SoMultiTextureCoordinateElement *>
     (getConstElement(state, classStackIndex));
+  if (!element) {
+    SoDebugError::post("SoMultiTextureCoordinateElement::getType",
+                       "SoMultiTextureCoordinateElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return DEFAULT;
+  }
   return element->getType(unit);
 }
 

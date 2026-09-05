@@ -42,6 +42,7 @@
 
 #include <Inventor/elements/SoCacheHintElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/errors/SoDebugError.h>
 
 #include <cassert>
 
@@ -154,10 +155,17 @@ SoCacheHintElement::set(SoState * state,
                         const float gfxvalue)
 {
   SoCacheHintElement * elem =
-    coin_assert_cast<SoCacheHintElement * >
+    coin_safe_cast<SoCacheHintElement * >
     (
      SoElement::getElement(state, classStackIndex)
      );
+
+  if (!elem) {
+    SoDebugError::post("SoCacheHintElement::set",
+                       "SoCacheHintElement not enabled for this action -- "
+                       "missing SO_ENABLE()?");
+    return;
+  }
 
   PRIVATE(elem)->memvalue = memvalue;
   PRIVATE(elem)->gfxvalue = gfxvalue;
@@ -170,9 +178,18 @@ SoCacheHintElement::set(SoState * state,
 void
 SoCacheHintElement::get(SoState * const state, float & memvalue, float & gfxvalue)
 {
-  const SoCacheHintElement * elem = coin_assert_cast<const SoCacheHintElement *>(
+  const SoCacheHintElement * elem = coin_safe_cast<const SoCacheHintElement *>(
     SoElement::getConstElement(state, classStackIndex)
     );
+
+  if (!elem) {
+    SoDebugError::post("SoCacheHintElement::get",
+                       "SoCacheHintElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default values.");
+    memvalue = 0.5f;
+    gfxvalue = 0.5f;
+    return;
+  }
 
   memvalue = PRIVATE(elem)->memvalue;
   gfxvalue = PRIVATE(elem)->gfxvalue;

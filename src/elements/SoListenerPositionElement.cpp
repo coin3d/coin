@@ -56,6 +56,7 @@
 #include "coindefs.h"
 #include "SbBasicP.h"
 
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoNode.h>
 
 /*!
@@ -127,10 +128,17 @@ const SbVec3f &
 SoListenerPositionElement::get(SoState * const state)
 {
   const SoListenerPositionElement * elem =
-    coin_assert_cast<const SoListenerPositionElement *>
+    coin_safe_cast<const SoListenerPositionElement *>
     (
      SoElement::getConstElement(state, classStackIndex)
      );
+  if (!elem) {
+    SoDebugError::post("SoListenerPositionElement::get",
+                       "SoListenerPositionElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    static const SbVec3f zero(0.0f, 0.0f, 0.0f);
+    return zero;
+  }
   return elem->position;
 }
 
@@ -143,10 +151,16 @@ SbBool
 SoListenerPositionElement::isSetByListener(SoState * const state)
 {
   const SoListenerPositionElement * elem =
-    coin_assert_cast<const SoListenerPositionElement *>
+    coin_safe_cast<const SoListenerPositionElement *>
     (
      SoElement::getConstElement(state, classStackIndex)
      );
+  if (!elem) {
+    SoDebugError::post("SoListenerPositionElement::isSetByListener",
+                       "SoListenerPositionElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return FALSE;
+  }
   return elem->setbylistener;
 }
 

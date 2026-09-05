@@ -45,6 +45,7 @@
 #include "SbBasicP.h"
 
 #include <Inventor/elements/SoMultiTextureMatrixElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
 
 #define PRIVATE(obj) obj->pimpl
@@ -93,8 +94,14 @@ SoMultiTextureMatrixElement::~SoMultiTextureMatrixElement(void)
 void
 SoMultiTextureMatrixElement::set(SoState * const state, SoNode * const node, const int unit, const SbMatrix & matrix)
 {
-  SoMultiTextureMatrixElement * elem = coin_assert_cast<SoMultiTextureMatrixElement *>
+  SoMultiTextureMatrixElement * elem = coin_safe_cast<SoMultiTextureMatrixElement *>
     (SoElement::getElement(state, classStackIndex));
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureMatrixElement::set",
+                       "SoMultiTextureMatrixElement not enabled for this action -- "
+                       "missing SO_ENABLE()?");
+    return;
+  }
   elem->setElt(unit, matrix);
   if (node) elem->addNodeId(node);
 }
@@ -109,8 +116,14 @@ SoMultiTextureMatrixElement::mult(SoState * const state,
                                   const int unit,
                                   const SbMatrix & matrix)
 {
-  SoMultiTextureMatrixElement * elem = coin_assert_cast<SoMultiTextureMatrixElement *>
+  SoMultiTextureMatrixElement * elem = coin_safe_cast<SoMultiTextureMatrixElement *>
     (SoElement::getElement(state, classStackIndex));
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureMatrixElement::mult",
+                       "SoMultiTextureMatrixElement not enabled for this action -- "
+                       "missing SO_ENABLE()?");
+    return;
+  }
   elem->multElt(unit, matrix);
   if (node) elem->addNodeId(node);
 }
@@ -122,8 +135,15 @@ const SbMatrix &
 SoMultiTextureMatrixElement::get(SoState * const state, const int unit)
 {
   const SoMultiTextureMatrixElement * elem =
-    coin_assert_cast<const SoMultiTextureMatrixElement *>
+    coin_safe_cast<const SoMultiTextureMatrixElement *>
     (SoElement::getConstElement(state, classStackIndex));
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureMatrixElement::get",
+                       "SoMultiTextureMatrixElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning identity matrix.");
+    static const SbMatrix identity(SbMatrix::identity());
+    return identity;
+  }
   return elem->getElt(unit);
 }
 

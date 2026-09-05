@@ -50,6 +50,7 @@
 #include "coindefs.h"
 #include "SbBasicP.h"
 
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoNode.h>
 
 /*!
@@ -149,10 +150,17 @@ const SbVec3f &
 SoListenerDopplerElement::getDopplerVelocity(SoState * const state)
 {
   const SoListenerDopplerElement * elem =
-    coin_assert_cast<const SoListenerDopplerElement *>
+    coin_safe_cast<const SoListenerDopplerElement *>
     (
      SoElement::getConstElement(state, classStackIndex)
      );
+  if (!elem) {
+    SoDebugError::post("SoListenerDopplerElement::getDopplerVelocity",
+                       "SoListenerDopplerElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    static const SbVec3f zero(0.0f, 0.0f, 0.0f);
+    return zero;
+  }
   return elem->dopplerVelocity;
 }
 
@@ -162,10 +170,16 @@ float
 SoListenerDopplerElement::getDopplerFactor(SoState * const state)
 {
   const SoListenerDopplerElement * elem =
-    coin_assert_cast<const SoListenerDopplerElement *>
+    coin_safe_cast<const SoListenerDopplerElement *>
     (
      SoElement::getConstElement(state, classStackIndex)
      );
+  if (!elem) {
+    SoDebugError::post("SoListenerDopplerElement::getDopplerFactor",
+                       "SoListenerDopplerElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return 0.0f;
+  }
   return elem->dopplerFactor;
 }
 
