@@ -65,7 +65,9 @@ public:
     // The remaining are Coin extensions to the common Inventor API
     SORTED_OBJECT_SORTED_TRIANGLE_ADD,
     SORTED_OBJECT_SORTED_TRIANGLE_BLEND,
-    NONE, SORTED_LAYERS_BLEND
+    NONE, SORTED_LAYERS_BLEND,
+    // Coin extension: order-independent weighted-blended transparency (WBOIT)
+    WEIGHTED_BLEND
   };
 
   enum TransparentDelayedObjectRenderType {
