@@ -236,7 +236,9 @@ get_byte(cc_gzm_stream * s)
   if (s->z_eof) return EOF;
   if (s->stream.avail_in == 0) {
     /* errno = 0; */
-    s->stream.avail_in = cc_gzm_fread(s->inbuf, 1, Z_BUFSIZE, s->memfile);
+    /* cc_gzm_fread() can't return more than Z_BUFSIZE here (that's the
+       max it was asked to read), which always fits in an unsigned int. */
+    s->stream.avail_in = (unsigned int)cc_gzm_fread(s->inbuf, 1, Z_BUFSIZE, s->memfile);
     if (s->stream.avail_in == 0) {
       s->z_eof = 1;
       if (cc_gzm_ferror(s->memfile)) s->z_err = Z_ERRNO;
@@ -375,7 +377,9 @@ cc_gzm_read (void * file, void * buf, uint32_t len)
         s->stream.avail_in  -= n;
       }
       if (s->stream.avail_out > 0) {
-        s->stream.avail_out -= cc_gzm_fread(next_out, 1, s->stream.avail_out,
+        /* cc_gzm_fread() can't return more than avail_out here (that's
+           the max it was asked to read), which is itself an unsigned int. */
+        s->stream.avail_out -= (unsigned int)cc_gzm_fread(next_out, 1, s->stream.avail_out,
                                          s->memfile);
       }
       len -= s->stream.avail_out;
@@ -387,7 +391,9 @@ cc_gzm_read (void * file, void * buf, uint32_t len)
     if (s->stream.avail_in == 0 && !s->z_eof) {
 
       /* errno = 0; */
-      s->stream.avail_in = cc_gzm_fread(s->inbuf, 1, Z_BUFSIZE, s->memfile);
+      /* cc_gzm_fread() can't return more than Z_BUFSIZE here (that's
+         the max it was asked to read), which always fits in an unsigned int. */
+      s->stream.avail_in = (unsigned int)cc_gzm_fread(s->inbuf, 1, Z_BUFSIZE, s->memfile);
       if (s->stream.avail_in == 0) {
         s->z_eof = 1;
         if (cc_gzm_ferror(s->memfile)) {
@@ -836,7 +842,10 @@ cc_gzm_fread(void * ptr, size_t size, size_t nmemb, cc_gzm_file * file)
   assert(size == 1); /* to simplify implementation */
 
   remain = file->buflen - file->currpos;
-  if (remain > nmemb) remain = nmemb;
+  /* remain is already a uint32_t here, so "remain > nmemb" being true
+     means nmemb is smaller than that uint32_t value, and therefore
+     itself always fits back into one. */
+  if (remain > nmemb) remain = (uint32_t)nmemb;
   if (remain == 0) return 0;
 
   (void) memcpy(ptr, file->buf + file->currpos, remain);

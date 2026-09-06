@@ -163,7 +163,8 @@ build_convert_dicts(void)
        i++
        )
     {
-      d->put(i, ('a' + i - static_cast<int>(SoKeyboardEvent::A)));
+      /* i ranges over A..Z here, so this is always a lowercase ASCII letter. */
+      d->put(i, static_cast<char>('a' + i - static_cast<int>(SoKeyboardEvent::A)));
     }
 
   // shift down
@@ -215,7 +216,8 @@ build_convert_dicts(void)
        i++
        )
     {
-    d->put(i, ('A' + i - static_cast<int>(SoKeyboardEvent::A)));
+    /* i ranges over A..Z here, so this is always an uppercase ASCII letter. */
+    d->put(i, static_cast<char>('A' + i - static_cast<int>(SoKeyboardEvent::A)));
   }
 #undef ADD_KEY
 }
