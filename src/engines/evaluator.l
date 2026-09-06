@@ -60,6 +60,8 @@
 
 %option noyywrap
 %option prefix="so_eval"
+%option nounput
+%option noinput
 
 Digit                           [0-9]
 Space                           [ \t\n]
