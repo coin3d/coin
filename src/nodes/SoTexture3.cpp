@@ -457,7 +457,16 @@ SoTexture3::loadFilenames(SoInput * in)
 {
   SbBool retval = FALSE;
   SbVec3s volumeSize(0,0,0);
-  int volumenc;
+  /* Only read below once this->images.isDefault() is false, which only
+     happens after this->images.setValue() below has run (setValue()
+     implicitly clears the default flag). At the start of every call --
+     first or repeat -- isDefault() is true, since a successful call
+     ends by explicitly setting it back to TRUE ("write filenames, not
+     images", a few lines down); so volumenc is always set on that
+     call's first successfully-read image before any later image in
+     the same call can read it. Initialized only because the compiler
+     can't see that guarantee across the setValue()/isDefault() pair. */
+  int volumenc = 0;
   int numImages = this->filenames.getNum();
   SbBool sizeError = FALSE;
   int i;
