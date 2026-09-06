@@ -126,13 +126,18 @@ sc_whitespace_p(const char * string)
 #ifdef COIN_TEST_SUITE
 
 #include <cstring>
+#include <Inventor/C/basic.h>
 
 // utils.h is a private header not on the testsuite's include path
 // (and this component's public declaration surface is this
 // extern "C" prototype, unchanged since it's what utils.h itself
 // declares), so declare it directly rather than trying to reach the
-// header from here.
-extern "C" char * cc_xml_load_file(const char * path);
+// header from here. COIN_DLL_API is required here on Windows: this
+// generated test file is compiled into CoinTests.exe, a separate
+// binary from Coin.dll, so the symbol must be declared dllimport to
+// resolve at link time (it must also be declared COIN_DLL_API at its
+// real declaration in utils.h so the DLL build exports it).
+extern "C" COIN_DLL_API char * cc_xml_load_file(const char * path);
 
 // Regression test for cc_xml_load_file()'s handling of the size
 // returned by ftell(): a call on an ordinary, seekable file should

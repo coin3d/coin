@@ -41,7 +41,7 @@ extern "C" {
 
 /* ********************************************************************** */
 
-char * cc_xml_load_file(const char * path);
+COIN_DLL_API char * cc_xml_load_file(const char * path);
 char * cc_xml_strndup(const char * string, size_t len);
 char * cc_xml_strdup(const char * string);
 int cc_xml_strieq(const char * s1, const char * s2);
