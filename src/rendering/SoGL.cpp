@@ -771,6 +771,29 @@ static float sogl_cube_3dtexcoords[][3] =
   {0.0f, 0.0f, 0.0f}
 };
 
+// SoTextureCubeMap needs a direction *vector* per vertex (so a flat
+// face samples one, constant, cubemap face -- the vector just needs
+// to point outward from the cube's center through that vertex), not
+// sogl_cube_3dtexcoords' [0,1] volume-texture coordinates above: with
+// those, adjacent corners of the same face differ in one component
+// (e.g. {1,1,1} next to {1,1,0}), so the GPU linearly interpolates
+// between two different cubemap faces' texels across what should be
+// a single uniform-colored face. Same per-vertex ordering as
+// sogl_cube_3dtexcoords, just remapped elementwise from [0,1] to
+// [-1,1] (0 -> -1, 1 -> +1) so each face's four corners agree on the
+// component that identifies it.
+static float sogl_cube_cubemaptexcoords[][3] =
+{
+  {1.0f, 1.0f, 1.0f},
+  {1.0f, 1.0f, -1.0f},
+  {1.0f, -1.0f, 1.0f},
+  {1.0f, -1.0f, -1.0f},
+  {-1.0f, 1.0f, 1.0f},
+  {-1.0f, 1.0f, -1.0f},
+  {-1.0f, -1.0f, 1.0f},
+  {-1.0f, -1.0f, -1.0f}
+};
+
 static float sogl_cube_normals[] =
 {
   0.0f, 0.0f, 1.0f,
@@ -835,7 +858,10 @@ sogl_render_cube(const float width,
     if (flags & SOGL_MATERIAL_PER_PART)
       material->send(i, TRUE);
     for (int j = 0; j < 4; j++) {
-      if (flags & SOGL_NEED_3DTEXCOORDS) {
+      if (flags & SOGL_NEED_CUBEMAPTEXCOORDS) {
+        glTexCoord3fv(sogl_cube_cubemaptexcoords[*iptr]);
+      }
+      else if (flags & SOGL_NEED_3DTEXCOORDS) {
         glTexCoord3fv(sogl_cube_3dtexcoords[*iptr]);
       }
       else if (flags & SOGL_NEED_TEXCOORDS) {
