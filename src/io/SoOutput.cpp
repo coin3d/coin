@@ -1579,7 +1579,8 @@ void
 SoOutput::convertShort(short s, char * to)
 {
   assert(sizeof(s) == sizeof(uint16_t));
-  *((uint16_t *)to) = coin_hton_uint16((uint16_t)s);
+  const uint16_t tmp = coin_hton_uint16((uint16_t)s);
+  memcpy(to, &tmp, sizeof(tmp));
 }
 
 /*!
@@ -1592,7 +1593,8 @@ void
 SoOutput::convertInt32(int32_t l, char * to)
 {
   assert(sizeof(l) == sizeof(uint32_t));
-  *((uint32_t *)to) = coin_hton_uint32(l);
+  const uint32_t tmp = coin_hton_uint32(l);
+  memcpy(to, &tmp, sizeof(tmp));
 }
 
 /*!

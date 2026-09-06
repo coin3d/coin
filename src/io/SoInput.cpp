@@ -2326,7 +2326,9 @@ SoInput::makeRoomInBuf(size_t /* nBytes */)
 void
 SoInput::convertShort(char * from, short * s)
 {
-  *s = (short) (coin_ntoh_uint16(*((uint16_t*)from)));
+  uint16_t tmp;
+  memcpy(&tmp, from, sizeof(tmp));
+  *s = (short) (coin_ntoh_uint16(tmp));
 }
 
 /*!
@@ -2337,7 +2339,9 @@ SoInput::convertShort(char * from, short * s)
 void
 SoInput::convertInt32(char * from, int32_t * l)
 {
-  *l = (int32_t) (coin_ntoh_uint32(*((uint32_t*)from)));
+  uint32_t tmp;
+  memcpy(&tmp, from, sizeof(tmp));
+  *l = (int32_t) (coin_ntoh_uint32(tmp));
 }
 
 /*!
