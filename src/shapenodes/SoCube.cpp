@@ -173,7 +173,7 @@ SoCube::GLRender(SoGLRenderAction * action)
       flags |= SOGL_NEED_TEXCOORDS;
       break;
     case SoMultiTextureEnabledElement::CUBEMAP:
-      flags |= SOGL_NEED_3DTEXCOORDS;
+      flags |= SOGL_NEED_CUBEMAPTEXCOORDS;
       break;
     }
   }
