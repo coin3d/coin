@@ -373,9 +373,9 @@ BOOST_AUTO_TEST_CASE(MimimumExpressions)
 
   //FIXME, this test is not finished. BFG 20090831
 
+  /*
   static const char foo [] =
     "<scxml version=\"1.0\" profile=\"minimum\" name=\"foo\" initial=\"active\"><state id=\"active\"></state><state id=\"inactive\"></state></scxml>";
-  /*
   ScXMLDocument * doc = ScXMLDocument::readBuffer(SbByteBuffer(sizeof(foo),foo));
   assert(doc->getRoot());
   sm->setDescription(doc);
