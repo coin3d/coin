@@ -71,7 +71,7 @@ inline bool floatEquals(float Ain, float Bin, unsigned int maxUlps)
     assert(maxUlps > 0 && maxUlps < 4 * 1024 * 1024);
     union {
       float f32;
-      uint32_t i32;
+      int32_t i32;
     } A,B;
     A.f32 = Ain;
     B.f32 = Bin;

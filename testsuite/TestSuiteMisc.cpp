@@ -88,3 +88,22 @@ operator << (std::ostream & os, const SbColor4f & col4)
   os << col4[3];
   return os;
 }
+
+BOOST_AUTO_TEST_CASE(floatEquals_negativeZero)
+{
+  // -0.0f and 0.0f are numerically equal but have different raw bit
+  // patterns (sign bit set vs. clear). floatEquals()'s ULP comparison
+  // (above in TestSuiteMisc.h) relies on remapping negative floats'
+  // raw bits into the same lexicographic order as positive ones,
+  // which requires reading those bits through a *signed* integer type
+  // so the "< 0" check can detect the sign bit at all -- with an
+  // unsigned type that check can never trigger, no remapping happens,
+  // and the two zeros' raw bit patterns end up ~2^31 apart instead of
+  // equal.
+  BOOST_CHECK_MESSAGE(floatEquals(-0.0f, 0.0f, 1u),
+                      "-0.0f and 0.0f must compare almost-equal");
+
+  // Sanity: a genuinely large difference must still compare unequal.
+  BOOST_CHECK_MESSAGE(!floatEquals(0.0f, 1.0f, 4u),
+                      "clearly different values must not compare equal");
+}
