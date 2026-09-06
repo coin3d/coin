@@ -89,7 +89,7 @@ should_filter(const SbString & msg)
 }
 
 void
-debugerrormsg_handler(const SoError * error, void * data)
+debugerrormsg_handler(const SoError * error, void *)
 {
   assert(error);
   const SoDebugError * dbgerror = static_cast<const SoDebugError *>(error);
@@ -111,7 +111,7 @@ debugerrormsg_handler(const SoError * error, void * data)
 }
 
 void
-readerrormsg_handler(const SoError * error, void * data)
+readerrormsg_handler(const SoError * error, void *)
 {
   ++readerrorcount;
   const SbString & msg = error->getDebugString();
@@ -119,7 +119,7 @@ readerrormsg_handler(const SoError * error, void * data)
 }
 
 void
-memoryerrormsg_handler(const SoError * error, void * data)
+memoryerrormsg_handler(const SoError * error, void *)
 {
   ++memoryerrorcount;
   const SbString & msg = error->getDebugString();

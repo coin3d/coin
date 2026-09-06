@@ -40,7 +40,7 @@
 using namespace SIM::Coin3D::Coin;
 
 
-int main(int argc, char* argv[])
+int main(int, char* [])
 {
     SoDB::init();
     SoInteraction::init();
