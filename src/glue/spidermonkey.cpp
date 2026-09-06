@@ -323,6 +323,31 @@ spidermonkey(void)
   REGISTER_FUNC(JS_GetConstructor, JS_GetConstructor_t);
   REGISTER_FUNC(JS_DestroyIdArray, JS_DestroyIdArray_t);
 
+  /* REGISTER_FUNC() only assert()s a missing symbol, which is a no-op
+     in release builds -- leaving sm->available optimistically TRUE
+     with a handful of NULL function pointers underneath. That combination
+     bites hardest when a library was actually found and opened (e.g.
+     the user pointed COIN_SPIDERMONKEY_LIBNAME at a modern SpiderMonkey
+     install) but its embedding API has moved on since this glue was
+     written and none of the expected C symbols resolve: callers that
+     correctly check spidermonkey()->available before using the API
+     would otherwise be misled into calling through NULL function
+     pointers. Re-derive availability from whether the handful of
+     functions needed to create a runtime, create a context and run a
+     script at all actually resolved, instead of trusting the "be
+     optimistic" default irrespective of what was found. */
+  if (sm->available &&
+      !(sm->JS_NewRuntime && sm->JS_NewContext && sm->JS_DestroyContext &&
+        sm->JS_InitStandardClasses && sm->JS_EvaluateScript)) {
+    sm->available = 0;
+    if (spidermonkey_debug()) {
+      cc_debugerror_postinfo("spidermonkey",
+                             "Found a SpiderMonkey library, but it does not "
+                             "export the (obsolete) API this glue expects -- "
+                             "disabling JavaScript support.");
+    }
+  }
+
 wrapperexit:
   CC_SYNC_END(spidermonkey);
   return spidermonkey_instance;

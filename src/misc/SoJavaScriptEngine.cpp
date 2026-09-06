@@ -32,11 +32,30 @@
 
 /*!
   \class SoJavaScriptEngine SoJavaScriptEngine.h Inventor/misc/SoJavaScriptEngine.h
-  \brief The SoJavaScriptEngine class is yet to be documented.
+  \brief Runs JavaScript for VRML97 Script nodes, via a runtime-loaded
+  SpiderMonkey library.
 
   \ingroup coin_general
 
   \since Coin 2.0
+
+  \deprecated This class binds to the SpiderMonkey C API as it existed
+  around 2007 (JSBool, JS_GetPrivate()/JS_SetPrivate(), no JS::Rooted<>
+  rooting requirement, etc.). SpiderMonkey has gone through multiple
+  incompatible embedding-API rewrites since, and no maintained
+  SpiderMonkey release exposes this API any more -- not even under the
+  same symbol names, since current releases export a C++, name-mangled
+  API rather than the flat C symbols this class's runtime dlopen/dlsym
+  loading looks up (see spidermonkey() in
+  Inventor/C/glue/spidermonkey.h). In practice, on any system with only
+  a current SpiderMonkey installed, this class is unable to load or run
+  JavaScript at all, and callers need to check spidermonkey()->available
+  (or catch that executeScript() and friends will fail) before assuming
+  JavaScript support is present. There is no plan to port this to a
+  current SpiderMonkey release, as its embedding API keeps changing
+  enough that such a port would not be a one-time cost. VRML97's own
+  Script node keeps working for everything not dependent on executing
+  JavaScript.
 */
 
 #ifdef HAVE_CONFIG_H
