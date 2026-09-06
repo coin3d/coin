@@ -1213,9 +1213,12 @@ SoInput::read(SbName & n, SbBool validIdent)
 // to warn if the data doesn't fit in the storage type?
 // std::numeric_limits<type>::max() ought to be all the information
 // needed.  20070520 larsa
+//
+// Assumes a SoInput_FileInfo * named "fi" is already in scope: every
+// call site is the non-binary branch of a SoInput::read()/readByte()
+// overload that has already fetched it via getTopOfStack() to check
+// isBinary().
 #define READ_NUM(reader, readType, num, type) \
-  SoInput_FileInfo * fi = this->getTopOfStack(); \
-  assert(fi); \
   if (!fi->skipWhiteSpace()) return FALSE; \
   readType _tmp; \
   if (!fi->reader(_tmp)) return FALSE; \
