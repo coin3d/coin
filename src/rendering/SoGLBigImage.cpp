@@ -405,7 +405,11 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
                             const SbVec2s & projsize)
 {
   SbVec2s size;
-  int numcomponents;
+  /* If getImage() is NULL, numcomponents is never set by getValue()
+     below, yet it's still used further down to size an allocation.
+     Zero components yields a zero-sized (safe) allocation instead of
+     an indeterminate one in that case. */
+  int numcomponents = 0;
   unsigned char * bytes = this->getImage() ?
     this->getImage()->getValue(size, numcomponents) : NULL;
 
