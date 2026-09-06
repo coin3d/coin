@@ -201,56 +201,57 @@ $(function(){initNavTree('SoMultiTextureMatrixElement_8h_source.html',''); initR
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <a class="code hl_class" href="classSoMultiTextureMatrixElement_1_1UnitData.html">UnitData</a>() : textureMatrix(<a class="code hl_function" href="classSbMatrix.html#adc24591ea5071d7d8f18eee7066c36e3">SbMatrix::identity</a>()) {}</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <a class="code hl_class" href="classSoMultiTextureMatrixElement_1_1UnitData.html">UnitData</a>(<span class="keyword">const</span> <a class="code hl_class" href="classSoMultiTextureMatrixElement_1_1UnitData.html">UnitData</a> &amp; org) : textureMatrix(org.textureMatrix) {}</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <a class="code hl_class" href="classSbMatrix.html">SbMatrix</a> textureMatrix;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  };</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <a class="code hl_class" href="classSoMultiTextureMatrixElement_1_1UnitData.html">UnitData</a> &amp; operator=(<span class="keyword">const</span> <a class="code hl_class" href="classSoMultiTextureMatrixElement_1_1UnitData.html">UnitData</a> &amp; org) = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <a class="code hl_class" href="classSbMatrix.html">SbMatrix</a> textureMatrix;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  };</div>
 </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keywordtype">int</span> getNumUnits() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <a class="code hl_class" href="classSoMultiTextureMatrixElement_1_1UnitData.html">UnitData</a> &amp; getUnitData(<span class="keyword">const</span> <span class="keywordtype">int</span> unit);</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keyword">const</span> <a class="code hl_class" href="classSoMultiTextureMatrixElement_1_1UnitData.html">UnitData</a> &amp; getUnitData(<span class="keyword">const</span> <span class="keywordtype">int</span> unit) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> multElt(<span class="keyword">const</span> <span class="keywordtype">int</span> unit, <span class="keyword">const</span> <a class="code hl_class" href="classSbMatrix.html">SbMatrix</a> &amp; matrix);</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> setElt(<span class="keyword">const</span> <span class="keywordtype">int</span> unit, <span class="keyword">const</span> <a class="code hl_class" href="classSbMatrix.html">SbMatrix</a> &amp; matrix);</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code hl_class" href="classSbMatrix.html">SbMatrix</a> &amp; getElt(<span class="keyword">const</span> <span class="keywordtype">int</span> unit) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  SoMultiTextureMatrixElementP * pimpl;</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> <span class="keyword">public</span>: <span class="comment">// Coin-3 support</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> makeIdentity(<a class="code hl_class" href="classSoState.html">SoState</a> * <span class="keyword">const</span> state, <a class="code hl_class" href="classSoNode.html">SoNode</a> * <span class="keyword">const</span> node, <span class="keyword">const</span> <span class="keywordtype">int</span> unit = 0) {</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    set(state, node, unit, <a class="code hl_function" href="classSbMatrix.html#adc24591ea5071d7d8f18eee7066c36e3">SbMatrix::identity</a>());</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  }</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> set(<a class="code hl_class" href="classSoState.html">SoState</a> * <span class="keyword">const</span> state, <a class="code hl_class" href="classSoNode.html">SoNode</a> * <span class="keyword">const</span> node,</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                  <span class="keyword">const</span> <a class="code hl_class" href="classSbMatrix.html">SbMatrix</a> &amp; matrix) {</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    set(state, node, 0, matrix);</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  }</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> mult(<a class="code hl_class" href="classSoState.html">SoState</a> * <span class="keyword">const</span> state, <a class="code hl_class" href="classSoNode.html">SoNode</a> * <span class="keyword">const</span> node,</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>                   <span class="keyword">const</span> <a class="code hl_class" href="classSbMatrix.html">SbMatrix</a> &amp; matrix) {</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    mult(state, node, 0, matrix);</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  }</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> translateBy(<a class="code hl_class" href="classSoState.html">SoState</a> * <span class="keyword">const</span> state, <a class="code hl_class" href="classSoNode.html">SoNode</a> * <span class="keyword">const</span> node,</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                          <span class="keyword">const</span> <a class="code hl_class" href="classSbVec3f.html">SbVec3f</a> &amp; translation) {</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <a class="code hl_class" href="classSbMatrix.html">SbMatrix</a> m;</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    m.<a class="code hl_function" href="classSbMatrix.html#a9e7499122cfa98b5e3eec4832248343d">setTranslate</a>(translation);</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    mult(state, node, 0, m);</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  }</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> rotateBy(<a class="code hl_class" href="classSoState.html">SoState</a> * <span class="keyword">const</span> state, <a class="code hl_class" href="classSoNode.html">SoNode</a> * <span class="keyword">const</span> node,</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                       <span class="keyword">const</span> <a class="code hl_class" href="classSbRotation.html">SbRotation</a> &amp; rotation) {</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <a class="code hl_class" href="classSbMatrix.html">SbMatrix</a> m;</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    m.<a class="code hl_function" href="classSbMatrix.html#ad980a0a21520443af5f27ad2c3a0ac4d">setRotate</a>(rotation);</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    mult(state, node, 0, m);</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  }</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> scaleBy(<a class="code hl_class" href="classSoState.html">SoState</a> * <span class="keyword">const</span> state, <a class="code hl_class" href="classSoNode.html">SoNode</a> * <span class="keyword">const</span> node,</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                      <span class="keyword">const</span> <a class="code hl_class" href="classSbVec3f.html">SbVec3f</a> &amp; scaleFactor) {</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <a class="code hl_class" href="classSbMatrix.html">SbMatrix</a> m;</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    m.<a class="code hl_function" href="classSbMatrix.html#ac3fe68df7dff290a61a29ee3494559fb">setScale</a>(scaleFactor);</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    mult(state, node, 0, m);</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  }</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>};</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keywordtype">int</span> getNumUnits() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <a class="code hl_class" href="classSoMultiTextureMatrixElement_1_1UnitData.html">UnitData</a> &amp; getUnitData(<span class="keyword">const</span> <span class="keywordtype">int</span> unit);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keyword">const</span> <a class="code hl_class" href="classSoMultiTextureMatrixElement_1_1UnitData.html">UnitData</a> &amp; getUnitData(<span class="keyword">const</span> <span class="keywordtype">int</span> unit) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> multElt(<span class="keyword">const</span> <span class="keywordtype">int</span> unit, <span class="keyword">const</span> <a class="code hl_class" href="classSbMatrix.html">SbMatrix</a> &amp; matrix);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> setElt(<span class="keyword">const</span> <span class="keywordtype">int</span> unit, <span class="keyword">const</span> <a class="code hl_class" href="classSbMatrix.html">SbMatrix</a> &amp; matrix);</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code hl_class" href="classSbMatrix.html">SbMatrix</a> &amp; getElt(<span class="keyword">const</span> <span class="keywordtype">int</span> unit) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  SoMultiTextureMatrixElementP * pimpl;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> <span class="keyword">public</span>: <span class="comment">// Coin-3 support</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> makeIdentity(<a class="code hl_class" href="classSoState.html">SoState</a> * <span class="keyword">const</span> state, <a class="code hl_class" href="classSoNode.html">SoNode</a> * <span class="keyword">const</span> node, <span class="keyword">const</span> <span class="keywordtype">int</span> unit = 0) {</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    set(state, node, unit, <a class="code hl_function" href="classSbMatrix.html#adc24591ea5071d7d8f18eee7066c36e3">SbMatrix::identity</a>());</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  }</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> set(<a class="code hl_class" href="classSoState.html">SoState</a> * <span class="keyword">const</span> state, <a class="code hl_class" href="classSoNode.html">SoNode</a> * <span class="keyword">const</span> node,</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>                  <span class="keyword">const</span> <a class="code hl_class" href="classSbMatrix.html">SbMatrix</a> &amp; matrix) {</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    set(state, node, 0, matrix);</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  }</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> mult(<a class="code hl_class" href="classSoState.html">SoState</a> * <span class="keyword">const</span> state, <a class="code hl_class" href="classSoNode.html">SoNode</a> * <span class="keyword">const</span> node,</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                   <span class="keyword">const</span> <a class="code hl_class" href="classSbMatrix.html">SbMatrix</a> &amp; matrix) {</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    mult(state, node, 0, matrix);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  }</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> translateBy(<a class="code hl_class" href="classSoState.html">SoState</a> * <span class="keyword">const</span> state, <a class="code hl_class" href="classSoNode.html">SoNode</a> * <span class="keyword">const</span> node,</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                          <span class="keyword">const</span> <a class="code hl_class" href="classSbVec3f.html">SbVec3f</a> &amp; translation) {</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <a class="code hl_class" href="classSbMatrix.html">SbMatrix</a> m;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    m.<a class="code hl_function" href="classSbMatrix.html#a9e7499122cfa98b5e3eec4832248343d">setTranslate</a>(translation);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    mult(state, node, 0, m);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  }</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> rotateBy(<a class="code hl_class" href="classSoState.html">SoState</a> * <span class="keyword">const</span> state, <a class="code hl_class" href="classSoNode.html">SoNode</a> * <span class="keyword">const</span> node,</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                       <span class="keyword">const</span> <a class="code hl_class" href="classSbRotation.html">SbRotation</a> &amp; rotation) {</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <a class="code hl_class" href="classSbMatrix.html">SbMatrix</a> m;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    m.<a class="code hl_function" href="classSbMatrix.html#ad980a0a21520443af5f27ad2c3a0ac4d">setRotate</a>(rotation);</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    mult(state, node, 0, m);</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  }</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> scaleBy(<a class="code hl_class" href="classSoState.html">SoState</a> * <span class="keyword">const</span> state, <a class="code hl_class" href="classSoNode.html">SoNode</a> * <span class="keyword">const</span> node,</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                      <span class="keyword">const</span> <a class="code hl_class" href="classSbVec3f.html">SbVec3f</a> &amp; scaleFactor) {</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <a class="code hl_class" href="classSbMatrix.html">SbMatrix</a> m;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    m.<a class="code hl_function" href="classSbMatrix.html#ac3fe68df7dff290a61a29ee3494559fb">setScale</a>(scaleFactor);</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    mult(state, node, 0, m);</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  }</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>};</div>
 </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="preprocessor">#endif </span><span class="comment">// !COIN_SOTEXTUREMATRIXELEMENT_H</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="preprocessor">#endif </span><span class="comment">// !COIN_SOTEXTUREMATRIXELEMENT_H</span></div>
 <div class="ttc" id="aclassSbMatrix_html"><div class="ttname"><a href="classSbMatrix.html">SbMatrix</a></div><div class="ttdoc">The SbMatrix class is a 4x4 dimensional representation of a matrix.</div><div class="ttdef"><b>Definition</b> SbMatrix.h:47</div></div>
 <div class="ttc" id="aclassSbMatrix_html_a9e7499122cfa98b5e3eec4832248343d"><div class="ttname"><a href="classSbMatrix.html#a9e7499122cfa98b5e3eec4832248343d">SbMatrix::setTranslate</a></div><div class="ttdeci">void setTranslate(const SbVec3f &amp;t)</div><div class="ttdef"><b>Definition</b> SbMatrix.cpp:890</div></div>
 <div class="ttc" id="aclassSbMatrix_html_ac3fe68df7dff290a61a29ee3494559fb"><div class="ttname"><a href="classSbMatrix.html#ac3fe68df7dff290a61a29ee3494559fb">SbMatrix::setScale</a></div><div class="ttdeci">void setScale(const float s)</div><div class="ttdef"><b>Definition</b> SbMatrix.cpp:860</div></div>
@@ -272,7 +273,7 @@ $(function(){initNavTree('SoMultiTextureMatrixElement_8h_source.html',''); initR
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_4be52554de5475a620e8b38d2057de84.html">elements</a></li><li class="navelem"><b>SoMultiTextureMatrixElement.h</b></li>
-    <li class="footer">Generated on Sun Sep 6 2026 19:20:07 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sun Sep 6 2026 19:38:20 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
