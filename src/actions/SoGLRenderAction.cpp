@@ -103,6 +103,7 @@
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/misc/SoContextHandler.h>
 #include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoNode.h>
@@ -415,6 +416,36 @@
   \since TGS Inventor 4.0
 */
 
+/*!
+  \var SoGLRenderAction::TransparencyType SoGLRenderAction::WEIGHTED_BLEND
+
+  This transparency type is a Coin extension versus the original SGI
+  Open Inventor API.
+
+  Provides order-independent transparency using the weighted-blended
+  approximation described by McGuire and Bavoil. Transparent geometry is
+  accumulated into floating-point color and revealage buffers in one pass,
+  then composited over the opaque scene.
+
+  Unlike SoGLRenderAction::SORTED_LAYERS_BLEND, this mode does not use depth
+  peeling or legacy vendor-specific texture and register-combiner extensions.
+  It requires framebuffer objects, multiple render targets, floating-point
+  textures, per-target blend functions, GLSL, and an OpenGL compatibility
+  profile. The result is approximate, but does not depend on the order in
+  which transparent geometry is submitted.
+
+  If the required OpenGL capabilities are unavailable, rendering falls back
+  to the SoGLRenderAction::DELAYED_BLEND behavior. The weighted-blended path
+  currently supports fixed-function color with up to two modulated 2D
+  textures. Scene-supplied shader programs are not supported. Multisampled
+  host framebuffers and non-renderbuffer depth attachments on non-default
+  framebuffers also fall back to SoGLRenderAction::DELAYED_BLEND.
+
+  See "Weighted Blended Order-Independent Transparency" by Morgan McGuire
+  and Louis Bavoil, Journal of Computer Graphics Techniques, 2013.
+  https://jcgt.org/published/0002/02/09/
+*/
+
 // FIXME:
 //  todo: - Add debug printout info concerning chosen blend method.
 //        - Add GL_[NV/HP]_occlusion_test support making the number of passes adaptive.
@@ -536,6 +567,55 @@
 
 // *************************************************************************
 
+// glDrawBuffers and several GL3/4 entry points used by the WBOIT path are not
+// part of Coin's cc_glglue function table; they are resolved dynamically.
+typedef void (APIENTRY * coin_glDrawBuffers_t)(GLsizei n, const GLenum * bufs);
+typedef void (APIENTRY * coin_glBlendFunci_t)(GLuint buf, GLenum sfactor, GLenum dfactor);
+typedef void (APIENTRY * coin_glBlitFramebuffer_t)(GLint, GLint, GLint, GLint,
+                                                   GLint, GLint, GLint, GLint,
+                                                   GLbitfield, GLenum);
+typedef void (APIENTRY * coin_glClearBufferfv_t)(GLenum buffer, GLint drawbuffer,
+                                                 const GLfloat * value);
+typedef void (APIENTRY * coin_glUniform1i_t)(GLint location, GLint v0);
+
+namespace {
+  struct wboit_delete_data {
+    GLuint fbo;
+    GLuint accumtex;
+    GLuint revealtex;
+    GLuint depthrb;
+    COIN_GLhandle geomprog;
+    COIN_GLhandle compprog;
+  };
+
+  void
+  wboit_delete_resources(const cc_glglue * glue, const wboit_delete_data & data)
+  {
+    const GLuint textures[2] = { data.accumtex, data.revealtex };
+    glDeleteTextures(2, textures);
+    if (data.depthrb && glue->glDeleteRenderbuffers) {
+      glue->glDeleteRenderbuffers(1, &data.depthrb);
+    }
+    if (data.fbo && glue->glDeleteFramebuffers) {
+      glue->glDeleteFramebuffers(1, &data.fbo);
+    }
+    if (data.geomprog && glue->glDeleteObjectARB) {
+      glue->glDeleteObjectARB(data.geomprog);
+    }
+    if (data.compprog && glue->glDeleteObjectARB) {
+      glue->glDeleteObjectARB(data.compprog);
+    }
+  }
+
+  void
+  wboit_delete_cb(void * closure, uint32_t contextid)
+  {
+    wboit_delete_data * data = static_cast<wboit_delete_data *>(closure);
+    wboit_delete_resources(cc_glglue_instance(contextid), *data);
+    delete data;
+  }
+}
+
 class SoGLRenderActionP {
 public:
   SoGLRenderActionP(void) : action(NULL) { }
@@ -592,6 +672,35 @@ public:
   SoGLSortedObjectOrderCB * sortedobjectcb;
   void * sortedobjectclosure;
 
+  // Weighted-blended OIT (WBOIT) resources for the dedicated MRT render path.
+  uint32_t wboitcachecontext;
+  GLuint wboitfbo;
+  GLuint wboitaccumtex;
+  GLuint wboitrevealtex;
+  GLuint wboitdepthrb;
+  unsigned short wboitwidth;
+  unsigned short wboitheight;
+  SbBool wboitinitialized;
+  SbBool wboitunsupported;
+  coin_glDrawBuffers_t wboitDrawBuffers;
+  coin_glBlendFunci_t wboitBlendFunci;
+  coin_glBlitFramebuffer_t wboitBlitFramebuffer;
+  coin_glClearBufferfv_t wboitClearBufferfv;
+  coin_glUniform1i_t wboitUniform1i;
+  COIN_GLhandle wboitgeomprog;
+  COIN_GLhandle wboitcompprog;
+  GLint wboitUseTex0Loc;
+  GLint wboitUseTex1Loc;
+  SbBool wboitshaderinit;
+  SbBool wboitshaderfailed;
+  SbBool wboitactive;
+  SbBool wboitwarnedmsaa;
+  SbBool wboitwarneddepth;
+  GLint wboitvpx;
+  GLint wboitvpy;
+  GLint wboitvpw;
+  GLint wboitvph;
+
   void setupSortedLayersBlendTextures(const SoState * state);
   void doSortedLayersBlendRendering(const SoState * state, SoNode * node);
   void initSortedLayersBlendRendering(const SoState * state);
@@ -606,6 +715,18 @@ public:
   // ARB_fragment_program specific methods for sorted layers blend
   void setupFragmentProgram();
   void renderSortedLayersFP(const SoState * state);
+
+  // Weighted-blended OIT (WBOIT)
+  void resetWeightedBlendResources(void);
+  void deleteWeightedBlendResources(const cc_glglue * glue);
+  void releaseWeightedBlendResources(void);
+  static void weightedBlendContextDestructionCB(uint32_t contextid, void * closure);
+  SbBool setupWeightedBlendTextures(const SoState * state);
+  void discardWeightedBlendTextures(const cc_glglue * glue);
+  SbBool setupWeightedBlendShaders(const cc_glglue * glue);
+  SbBool beginWeightedBlendPass(const cc_glglue * glue, GLint & savedfbo);
+  void endWeightedBlendPass(const cc_glglue * glue, GLint savedfbo);
+  void doWeightedBlendComposite(const cc_glglue * glue);
 
   void setupBlending(SoState * state, const SoGLRenderAction::TransparencyType newtype);
   void render(SoNode * node);
@@ -737,6 +858,38 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   PRIVATE(this)->sortedobjectstrategy = BBOX_CENTER;
   PRIVATE(this)->sortedobjectcb = NULL;
   PRIVATE(this)->sortedobjectclosure = NULL;
+
+  PRIVATE(this)->wboitcachecontext = PRIVATE(this)->cachecontext;
+  PRIVATE(this)->wboitfbo = 0;
+  PRIVATE(this)->wboitaccumtex = 0;
+  PRIVATE(this)->wboitrevealtex = 0;
+  PRIVATE(this)->wboitdepthrb = 0;
+  PRIVATE(this)->wboitwidth = 0;
+  PRIVATE(this)->wboitheight = 0;
+  PRIVATE(this)->wboitinitialized = FALSE;
+  PRIVATE(this)->wboitunsupported = FALSE;
+  PRIVATE(this)->wboitDrawBuffers = NULL;
+  PRIVATE(this)->wboitBlendFunci = NULL;
+  PRIVATE(this)->wboitBlitFramebuffer = NULL;
+  PRIVATE(this)->wboitClearBufferfv = NULL;
+  PRIVATE(this)->wboitUniform1i = NULL;
+  PRIVATE(this)->wboitgeomprog = 0;
+  PRIVATE(this)->wboitcompprog = 0;
+  PRIVATE(this)->wboitUseTex0Loc = -1;
+  PRIVATE(this)->wboitUseTex1Loc = -1;
+  PRIVATE(this)->wboitshaderinit = FALSE;
+  PRIVATE(this)->wboitshaderfailed = FALSE;
+  PRIVATE(this)->wboitactive = FALSE;
+  PRIVATE(this)->wboitwarnedmsaa = FALSE;
+  PRIVATE(this)->wboitwarneddepth = FALSE;
+  PRIVATE(this)->wboitvpx = 0;
+  PRIVATE(this)->wboitvpy = 0;
+  PRIVATE(this)->wboitvpw = 0;
+  PRIVATE(this)->wboitvph = 0;
+
+  SoContextHandler::addContextDestructionCallback(
+    SoGLRenderActionP::weightedBlendContextDestructionCB,
+    &PRIVATE(this).get());
 }
 
 /*!
@@ -744,6 +897,10 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
 */
 SoGLRenderAction::~SoGLRenderAction()
 {
+  SoContextHandler::removeContextDestructionCallback(
+    SoGLRenderActionP::weightedBlendContextDestructionCB,
+    &PRIVATE(this).get());
+  PRIVATE(this)->releaseWeightedBlendResources();
 }
 
 /*!
@@ -983,7 +1140,9 @@ void
 SoGLRenderAction::setCacheContext(const uint32_t context)
 {
   if (context != PRIVATE(this)->cachecontext) {
+    PRIVATE(this)->releaseWeightedBlendResources();
     PRIVATE(this)->cachecontext = context;
+    PRIVATE(this)->wboitcachecontext = context;
     this->invalidateState();
   }
 }
@@ -1268,6 +1427,23 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
         }
       }
     }
+    if (PRIVATE(this)->transparencytype == SoGLRenderAction::WEIGHTED_BLEND &&
+      PRIVATE(this)->wboitactive) {
+      // WBOIT manages blending itself (per-draw-buffer accum/revealage); do not
+      // let the lazy element issue a normal glBlendFunc, which would clobber the
+      // per-draw-buffer blend state. Also emulate fixed-function MODULATE
+      // multitexturing: tell the geometry shader which texture units are enabled
+      // for this shape so it modulates the color by the active texture(s).
+      if (PRIVATE(this)->wboitUniform1i) {
+        if (PRIVATE(this)->wboitUseTex0Loc >= 0)
+          PRIVATE(this)->wboitUniform1i(PRIVATE(this)->wboitUseTex0Loc,
+                                        SoMultiTextureEnabledElement::get(thestate, 0) ? 1 : 0);
+        if (PRIVATE(this)->wboitUseTex1Loc >= 0)
+          PRIVATE(this)->wboitUniform1i(PRIVATE(this)->wboitUseTex1Loc,
+                                        SoMultiTextureEnabledElement::get(thestate, 1) ? 1 : 0);
+      }
+      return FALSE;
+    }
     PRIVATE(this)->setupBlending(thestate, transptype);
     return FALSE;
   }
@@ -1287,6 +1463,7 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
     return FALSE;
   case SoGLRenderAction::DELAYED_ADD:
   case SoGLRenderAction::DELAYED_BLEND:
+  case SoGLRenderAction::WEIGHTED_BLEND:
     PRIVATE(this)->addTransPath(this->getCurPath()->copy());
     SoCacheElement::setInvalid(TRUE);
     if (thestate->isCacheOpen()) {
@@ -1883,6 +2060,17 @@ SoGLRenderActionP::renderSingle(SoNode * node)
       break;
     }
 
+    // --- WBOIT: redirect the transparent pass into the MRT framebuffer ---
+    const cc_glglue * wbglue = sogl_glue_instance(state);
+    GLint wboit_savedfbo = 0;
+    SbBool usewboit = FALSE;
+    if (this->transparencytype == SoGLRenderAction::WEIGHTED_BLEND &&
+        this->setupWeightedBlendTextures(state) &&
+        this->setupWeightedBlendShaders(wbglue)) {
+      usewboit = this->beginWeightedBlendPass(wbglue, wboit_savedfbo);
+    }
+    this->wboitactive = usewboit;
+
     // All paths in the sorttranspobjpaths should be sorted
     // back-to-front and rendered
     this->doPathSort();
@@ -1921,6 +2109,13 @@ SoGLRenderActionP::renderSingle(SoNode * node)
       // Render all transparent paths that should not be sorted
       this->action->apply(this->transpobjpaths, TRUE);
     }
+
+    // --- WBOIT: composite accum/revealage back over the opaque image ---
+    if (usewboit) {
+      this->endWeightedBlendPass(wbglue, wboit_savedfbo);
+    }
+    this->wboitactive = FALSE;
+
     // enable writing again. FIXME: consider if it is OK to push/pop state instead
     if (!this->transpobjdepthwrite) {
       SoDepthBufferElement::set(state, TRUE, TRUE,
@@ -1951,6 +2146,7 @@ SoGLRenderActionP::setupBlending(SoState * state, const SoGLRenderAction::Transp
   switch (transptype) {
   case SoGLRenderAction::BLEND:
   case SoGLRenderAction::DELAYED_BLEND:
+  case SoGLRenderAction::WEIGHTED_BLEND:
   case SoGLRenderAction::SORTED_OBJECT_BLEND:
   case SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND:
     SoLazyElement::enableBlending(state, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -2036,6 +2232,719 @@ SoGLRenderAction::TransparentDelayedObjectRenderType
 SoGLRenderAction::getTransparentDelayedObjectRenderType(void) const
 {
   return PRIVATE(this)->transpdelayedrendertype;
+}
+
+// *************************************************************************
+// Weighted-blended OIT (WBOIT) support.
+//
+// WEIGHTED_BLEND uses Coin's transparent-object path collections. It renders
+// those paths into an MRT framebuffer containing accumulation and revealage
+// textures, then composites the result over the opaque scene.
+//
+// Preserve the currently bound framebuffer instead of assuming framebuffer 0.
+
+void
+SoGLRenderActionP::resetWeightedBlendResources(void)
+{
+  this->wboitfbo = 0;
+  this->wboitaccumtex = 0;
+  this->wboitrevealtex = 0;
+  this->wboitdepthrb = 0;
+  this->wboitwidth = 0;
+  this->wboitheight = 0;
+  this->wboitinitialized = FALSE;
+  this->wboitunsupported = FALSE;
+  this->wboitDrawBuffers = NULL;
+  this->wboitBlendFunci = NULL;
+  this->wboitBlitFramebuffer = NULL;
+  this->wboitClearBufferfv = NULL;
+  this->wboitUniform1i = NULL;
+  this->wboitgeomprog = 0;
+  this->wboitcompprog = 0;
+  this->wboitUseTex0Loc = -1;
+  this->wboitUseTex1Loc = -1;
+  this->wboitshaderinit = FALSE;
+  this->wboitshaderfailed = FALSE;
+  this->wboitactive = FALSE;
+  this->wboitvpx = 0;
+  this->wboitvpy = 0;
+  this->wboitvpw = 0;
+  this->wboitvph = 0;
+}
+
+void
+SoGLRenderActionP::deleteWeightedBlendResources(const cc_glglue * glue)
+{
+  wboit_delete_data data = {
+    this->wboitfbo,
+    this->wboitaccumtex,
+    this->wboitrevealtex,
+    this->wboitdepthrb,
+    this->wboitgeomprog,
+    this->wboitcompprog
+  };
+  wboit_delete_resources(glue, data);
+  this->resetWeightedBlendResources();
+}
+
+void
+SoGLRenderActionP::releaseWeightedBlendResources(void)
+{
+  if (this->wboitfbo || this->wboitaccumtex || this->wboitrevealtex ||
+      this->wboitdepthrb || this->wboitgeomprog || this->wboitcompprog) {
+    wboit_delete_data * data = new wboit_delete_data;
+    data->fbo = this->wboitfbo;
+    data->accumtex = this->wboitaccumtex;
+    data->revealtex = this->wboitrevealtex;
+    data->depthrb = this->wboitdepthrb;
+    data->geomprog = this->wboitgeomprog;
+    data->compprog = this->wboitcompprog;
+    SoGLCacheContextElement::scheduleDeleteCallback(
+      this->wboitcachecontext, wboit_delete_cb, data);
+  }
+  this->resetWeightedBlendResources();
+}
+
+void
+SoGLRenderActionP::weightedBlendContextDestructionCB(uint32_t contextid,
+                                                      void * closure)
+{
+  SoGLRenderActionP * thisp = static_cast<SoGLRenderActionP *>(closure);
+  if (thisp->wboitcachecontext == contextid) {
+    thisp->deleteWeightedBlendResources(cc_glglue_instance(contextid));
+  }
+}
+
+// Some of these tokens may be absent from older GL headers; define defensively.
+#ifndef GL_FRAMEBUFFER_EXT
+#define GL_FRAMEBUFFER_EXT 0x8D40
+#endif
+#ifndef GL_FRAMEBUFFER_BINDING_EXT
+#define GL_FRAMEBUFFER_BINDING_EXT 0x8CA6
+#endif
+#ifndef GL_RENDERBUFFER_EXT
+#define GL_RENDERBUFFER_EXT 0x8D41
+#endif
+#ifndef GL_COLOR_ATTACHMENT0_EXT
+#define GL_COLOR_ATTACHMENT0_EXT 0x8CE0
+#endif
+#ifndef GL_COLOR_ATTACHMENT1_EXT
+#define GL_COLOR_ATTACHMENT1_EXT 0x8CE1
+#endif
+#ifndef GL_DEPTH_ATTACHMENT_EXT
+#define GL_DEPTH_ATTACHMENT_EXT 0x8D00
+#endif
+#ifndef GL_FRAMEBUFFER_COMPLETE_EXT
+#define GL_FRAMEBUFFER_COMPLETE_EXT 0x8CD5
+#endif
+#ifndef GL_DEPTH_COMPONENT24
+#define GL_DEPTH_COMPONENT24 0x81A6
+#endif
+#ifndef GL_RGBA16F
+#define GL_RGBA16F 0x881A
+#endif
+#ifndef GL_R16F
+#define GL_R16F 0x822D
+#endif
+#ifndef GL_RED
+#define GL_RED 0x1903
+#endif
+#ifndef GL_HALF_FLOAT
+#define GL_HALF_FLOAT 0x140B
+#endif
+#ifndef GL_CLAMP_TO_EDGE
+#define GL_CLAMP_TO_EDGE 0x812F
+#endif
+#ifndef GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE
+#define GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE 0x8CD0
+#endif
+#ifndef GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME
+#define GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME 0x8CD1
+#endif
+#ifndef GL_RENDERBUFFER_WIDTH
+#define GL_RENDERBUFFER_WIDTH 0x8D42
+#endif
+#ifndef GL_RENDERBUFFER_HEIGHT
+#define GL_RENDERBUFFER_HEIGHT 0x8D43
+#endif
+#ifndef GL_TEXTURE
+#define GL_TEXTURE 0x1702
+#endif
+#ifndef GL_SAMPLES
+#define GL_SAMPLES 0x80A9
+#endif
+
+void
+SoGLRenderActionP::discardWeightedBlendTextures(const cc_glglue * glue)
+{
+  if (this->wboitaccumtex) {
+    glDeleteTextures(1, &this->wboitaccumtex);
+    this->wboitaccumtex = 0;
+  }
+  if (this->wboitrevealtex) {
+    glDeleteTextures(1, &this->wboitrevealtex);
+    this->wboitrevealtex = 0;
+  }
+  if (this->wboitdepthrb && glue->glDeleteRenderbuffers) {
+    glue->glDeleteRenderbuffers(1, &this->wboitdepthrb);
+    this->wboitdepthrb = 0;
+  }
+  if (this->wboitfbo && glue->glDeleteFramebuffers) {
+    glue->glDeleteFramebuffers(1, &this->wboitfbo);
+    this->wboitfbo = 0;
+  }
+  this->wboitinitialized = FALSE;
+}
+
+// Allocate (or resize) the WBOIT MRT framebuffer: accum (RGBA16F) + reveal
+// (R16F) color attachments plus a depth renderbuffer. Returns TRUE when the
+// framebuffer is complete and ready to be used.
+SbBool
+SoGLRenderActionP::setupWeightedBlendTextures(const SoState * state)
+{
+  if (this->wboitunsupported) return FALSE;
+
+  const cc_glglue * glue = sogl_glue_instance(state);
+  if (!cc_glglue_has_framebuffer_objects(glue)) {
+    SoDebugError::postWarning("setupWeightedBlendTextures",
+                              "WEIGHTED_BLEND requires framebuffer object support; "
+                              "this mode will be unavailable.");
+    this->wboitunsupported = TRUE;
+    return FALSE;
+  }
+
+  GLint samples = 0;
+  glGetIntegerv(GL_SAMPLES, &samples);
+  if (samples > 0) {
+    if (!this->wboitwarnedmsaa) {
+      SoDebugError::postWarning("setupWeightedBlendTextures",
+                                "WEIGHTED_BLEND does not support multisampled "
+                                "framebuffers; rendering transparent objects "
+                                "using DELAYED_BLEND instead.");
+      this->wboitwarnedmsaa = TRUE;
+    }
+    return FALSE;
+  }
+
+  // glDrawBuffers is not part of cc_glglue; resolve it once.
+  if (this->wboitDrawBuffers == NULL) {
+    this->wboitDrawBuffers =
+      (coin_glDrawBuffers_t) cc_glglue_getprocaddress(glue, "glDrawBuffers");
+    if (this->wboitDrawBuffers == NULL)
+      this->wboitDrawBuffers =
+        (coin_glDrawBuffers_t) cc_glglue_getprocaddress(glue, "glDrawBuffersARB");
+    if (this->wboitDrawBuffers == NULL) {
+      SoDebugError::postWarning("setupWeightedBlendTextures",
+                                "glDrawBuffers unavailable; WEIGHTED_BLEND disabled.");
+      this->wboitunsupported = TRUE;
+      return FALSE;
+    }
+  }
+
+  // Size the WBOIT targets to match the currently bound framebuffer's depth
+  // renderbuffer. FBO attachments must have matching dimensions, which are
+  // not guaranteed to equal the active viewport dimensions.
+  const SbVec2s size = this->action->getViewportRegion().getViewportSizePixels();
+  unsigned short w = (unsigned short) size[0];
+  unsigned short h = (unsigned short) size[1];
+
+  GLint curfbo = 0;
+  glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT, &curfbo);
+  if (curfbo != 0) {
+    GLint dobj = 0, dtype = 0;
+    glue->glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,
+        GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME, &dobj);
+    glue->glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,
+        GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE, &dtype);
+    if (dobj == 0 || dtype != GL_RENDERBUFFER_EXT) {
+      if (!this->wboitwarneddepth) {
+        SoDebugError::postWarning("setupWeightedBlendTextures",
+                                  "WEIGHTED_BLEND requires a renderbuffer depth "
+                                  "attachment for non-default framebuffers; "
+                                  "rendering transparent objects using "
+                                  "DELAYED_BLEND instead.");
+        this->wboitwarneddepth = TRUE;
+      }
+      return FALSE;
+    }
+    GLint rw = 0, rh = 0;
+    glue->glBindRenderbuffer(GL_RENDERBUFFER_EXT, (GLuint) dobj);
+    glue->glGetRenderbufferParameteriv(GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_WIDTH, &rw);
+    glue->glGetRenderbufferParameteriv(GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_HEIGHT, &rh);
+    glue->glBindRenderbuffer(GL_RENDERBUFFER_EXT, 0);
+    if (rw <= 0 || rh <= 0) {
+      if (!this->wboitwarneddepth) {
+        SoDebugError::postWarning("setupWeightedBlendTextures",
+                                  "Unable to determine the host depth-buffer "
+                                  "size; rendering transparent objects using "
+                                  "DELAYED_BLEND instead.");
+        this->wboitwarneddepth = TRUE;
+      }
+      return FALSE;
+    }
+    w = (unsigned short) rw;
+    h = (unsigned short) rh;
+  }
+  if (w == 0 || h == 0) return FALSE;
+
+  if (this->wboitinitialized && w == this->wboitwidth && h == this->wboitheight) {
+    return TRUE; // already allocated at the right size
+  }
+
+  this->discardWeightedBlendTextures(glue);
+
+  // Save the currently bound framebuffer; do not assume framebuffer 0.
+  GLint prevfbo = 0;
+  glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT, &prevfbo);
+
+  glGenTextures(1, &this->wboitaccumtex);
+  glBindTexture(GL_TEXTURE_2D, this->wboitaccumtex);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, w, h, 0, GL_RGBA, GL_HALF_FLOAT, NULL);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+  glGenTextures(1, &this->wboitrevealtex);
+  glBindTexture(GL_TEXTURE_2D, this->wboitrevealtex);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_R16F, w, h, 0, GL_RED, GL_HALF_FLOAT, NULL);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+  glBindTexture(GL_TEXTURE_2D, 0);
+
+  // Depth renderbuffer. Sharing the opaque pass's depth is handled in a later
+  // step; for now this is a standalone depth attachment so the FBO is complete.
+  glue->glGenRenderbuffers(1, &this->wboitdepthrb);
+  glue->glBindRenderbuffer(GL_RENDERBUFFER_EXT, this->wboitdepthrb);
+  glue->glRenderbufferStorage(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT24, w, h);
+  glue->glBindRenderbuffer(GL_RENDERBUFFER_EXT, 0);
+
+  glue->glGenFramebuffers(1, &this->wboitfbo);
+  glue->glBindFramebuffer(GL_FRAMEBUFFER_EXT, this->wboitfbo);
+  glue->glFramebufferTexture2D(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,
+                               GL_TEXTURE_2D, this->wboitaccumtex, 0);
+  glue->glFramebufferTexture2D(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT1_EXT,
+                               GL_TEXTURE_2D, this->wboitrevealtex, 0);
+  glue->glFramebufferRenderbuffer(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,
+                                  GL_RENDERBUFFER_EXT, this->wboitdepthrb);
+
+  const GLenum status = glue->glCheckFramebufferStatus(GL_FRAMEBUFFER_EXT);
+
+  // Restore the previously bound framebuffer (do NOT assume 0).
+  glue->glBindFramebuffer(GL_FRAMEBUFFER_EXT, (GLuint) prevfbo);
+
+  if (status != GL_FRAMEBUFFER_COMPLETE_EXT) {
+    SoDebugError::postWarning("setupWeightedBlendTextures",
+                              "WBOIT framebuffer incomplete (status 0x%x); "
+                              "WEIGHTED_BLEND disabled.", (unsigned int) status);
+    this->discardWeightedBlendTextures(glue);
+    this->wboitunsupported = TRUE;
+    return FALSE;
+  }
+
+  this->wboitwidth = w;
+  this->wboitheight = h;
+  this->wboitinitialized = TRUE;
+  return TRUE;
+}
+
+// More GL tokens that may be missing from older headers.
+#ifndef GL_READ_FRAMEBUFFER
+#define GL_READ_FRAMEBUFFER 0x8CA8
+#endif
+#ifndef GL_DRAW_FRAMEBUFFER
+#define GL_DRAW_FRAMEBUFFER 0x8CA9
+#endif
+#ifndef GL_COLOR
+#define GL_COLOR 0x1800
+#endif
+#ifndef GL_FUNC_ADD
+#define GL_FUNC_ADD 0x8006
+#endif
+#ifndef GL_ONE_MINUS_SRC_COLOR
+#define GL_ONE_MINUS_SRC_COLOR 0x0301
+#endif
+#ifndef GL_FRAGMENT_SHADER_ARB
+#define GL_FRAGMENT_SHADER_ARB 0x8B30
+#endif
+#ifndef GL_OBJECT_COMPILE_STATUS_ARB
+#define GL_OBJECT_COMPILE_STATUS_ARB 0x8B81
+#endif
+#ifndef GL_OBJECT_LINK_STATUS_ARB
+#define GL_OBJECT_LINK_STATUS_ARB 0x8B82
+#endif
+#ifndef GL_TEXTURE0
+#define GL_TEXTURE0 0x84C0
+#endif
+#ifndef GL_TEXTURE1
+#define GL_TEXTURE1 0x84C1
+#endif
+#ifndef GL_STENCIL_ATTACHMENT
+#define GL_STENCIL_ATTACHMENT 0x8D20
+#endif
+
+// Geometry fragment shader: writes the two weighted-blended OIT outputs. The
+// weight uses non-linear window-space depth from gl_FragCoord.z.
+// Reads fixed-function interpolated color and up to two enabled 2D textures,
+// matching MODULATE texturing on a compatibility context.
+static const char * wboit_geom_fragment_source =
+  "#version 120\n"
+  "uniform sampler2D tex0;\n"
+  "uniform sampler2D tex1;\n"
+  "uniform int useTex0;\n"
+  "uniform int useTex1;\n"
+  "void main() {\n"
+  "  vec4 c = gl_Color;\n"
+  "  if (useTex0 != 0) c *= texture2D(tex0, gl_TexCoord[0].st);\n"
+  "  if (useTex1 != 0) c *= texture2D(tex1, gl_TexCoord[1].st);\n"
+  "  float a = c.a;\n"
+  "  float z = gl_FragCoord.z;\n"
+  "  float w = a * clamp(0.03 / (1e-5 + pow(z, 4.0)), 1e-2, 3e3);\n"
+  "  gl_FragData[0] = vec4(c.rgb * a, a) * w;\n"
+  "  gl_FragData[1] = vec4(a);\n"
+  "}\n";
+
+// Composite fragment shader: resolves accum/revealage and emits the final
+// transparent colour to be blended over the opaque image.
+static const char * wboit_composite_fragment_source =
+  "#version 120\n"
+  "uniform sampler2D accumTex;\n"
+  "uniform sampler2D revealTex;\n"
+  "void main() {\n"
+  "  vec2 uv = gl_TexCoord[0].st;\n"
+  "  vec4 accum = texture2D(accumTex, uv);\n"
+  "  float reveal = texture2D(revealTex, uv).r;\n"
+  "  vec3 avg = accum.rgb / max(accum.a, 1e-5);\n"
+  "  gl_FragColor = vec4(avg, 1.0 - reveal);\n"
+  "}\n";
+
+static COIN_GLhandle
+wboit_build_fragment_program(const cc_glglue * glue, const char * fragsrc)
+{
+  COIN_GLhandle fs = glue->glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
+  const COIN_GLchar * src = (const COIN_GLchar *) fragsrc;
+  glue->glShaderSourceARB(fs, 1, &src, NULL);
+  glue->glCompileShaderARB(fs);
+  GLint ok = 0;
+  glue->glGetObjectParameterivARB(fs, GL_OBJECT_COMPILE_STATUS_ARB, &ok);
+  if (!ok) {
+    char log[1024];
+    glue->glGetInfoLogARB(fs, sizeof(log), NULL, (COIN_GLchar *) log);
+    SoDebugError::postWarning("wboit_build_fragment_program",
+                              "WBOIT shader compile failed: %s", log);
+    glue->glDeleteObjectARB(fs);
+    return 0;
+  }
+  COIN_GLhandle prog = glue->glCreateProgramObjectARB();
+  glue->glAttachObjectARB(prog, fs);
+  glue->glLinkProgramARB(prog);
+  glue->glGetObjectParameterivARB(prog, GL_OBJECT_LINK_STATUS_ARB, &ok);
+  glue->glDeleteObjectARB(fs);
+  if (!ok) {
+    char log[1024];
+    glue->glGetInfoLogARB(prog, sizeof(log), NULL, (COIN_GLchar *) log);
+    SoDebugError::postWarning("wboit_build_fragment_program",
+                              "WBOIT program link failed: %s", log);
+    glue->glDeleteObjectARB(prog);
+    return 0;
+  }
+  return prog;
+}
+
+SbBool
+SoGLRenderActionP::setupWeightedBlendShaders(const cc_glglue * glue)
+{
+  if (this->wboitshaderfailed) return FALSE;
+  if (this->wboitshaderinit) return TRUE;
+
+  if (this->wboitBlendFunci == NULL)
+    this->wboitBlendFunci = (coin_glBlendFunci_t) cc_glglue_getprocaddress(glue, "glBlendFunci");
+  if (this->wboitBlitFramebuffer == NULL)
+    this->wboitBlitFramebuffer = (coin_glBlitFramebuffer_t) cc_glglue_getprocaddress(glue, "glBlitFramebuffer");
+  if (this->wboitClearBufferfv == NULL)
+    this->wboitClearBufferfv = (coin_glClearBufferfv_t) cc_glglue_getprocaddress(glue, "glClearBufferfv");
+  if (this->wboitUniform1i == NULL)
+    this->wboitUniform1i = (coin_glUniform1i_t) cc_glglue_getprocaddress(glue, "glUniform1i");
+
+  if (!glue->glCreateShaderObjectARB || !glue->glUseProgramObjectARB ||
+      this->wboitBlendFunci == NULL || this->wboitBlitFramebuffer == NULL ||
+      this->wboitClearBufferfv == NULL || this->wboitUniform1i == NULL) {
+    SoDebugError::postWarning("setupWeightedBlendShaders",
+                              "WEIGHTED_BLEND requires GLSL + GL3/4 entry points "
+                              "that are unavailable; this mode will be disabled.");
+    this->wboitshaderfailed = TRUE;
+    return FALSE;
+  }
+
+  this->wboitgeomprog = wboit_build_fragment_program(glue, wboit_geom_fragment_source);
+  this->wboitcompprog = wboit_build_fragment_program(glue, wboit_composite_fragment_source);
+  if (this->wboitgeomprog == 0 || this->wboitcompprog == 0) {
+    if (this->wboitgeomprog) {
+      glue->glDeleteObjectARB(this->wboitgeomprog);
+      this->wboitgeomprog = 0;
+    }
+    if (this->wboitcompprog) {
+      glue->glDeleteObjectARB(this->wboitcompprog);
+      this->wboitcompprog = 0;
+    }
+    this->wboitshaderfailed = TRUE;
+    return FALSE;
+  }
+
+  // Bind the composite samplers to texture units 0 (accum) and 1 (reveal).
+  glue->glUseProgramObjectARB(this->wboitcompprog);
+  const GLint la = glue->glGetUniformLocationARB(this->wboitcompprog, "accumTex");
+  const GLint lr = glue->glGetUniformLocationARB(this->wboitcompprog, "revealTex");
+  if (la >= 0) this->wboitUniform1i(la, 0);
+  if (lr >= 0) this->wboitUniform1i(lr, 1);
+
+  // Bind the geometry shader's samplers to texture units 0 and 1, and cache
+  // the per-shape texture-enable uniform locations.
+  glue->glUseProgramObjectARB(this->wboitgeomprog);
+  const GLint lt0 = glue->glGetUniformLocationARB(this->wboitgeomprog, "tex0");
+  const GLint lt1 = glue->glGetUniformLocationARB(this->wboitgeomprog, "tex1");
+  if (lt0 >= 0) this->wboitUniform1i(lt0, 0);
+  if (lt1 >= 0) this->wboitUniform1i(lt1, 1);
+  this->wboitUseTex0Loc = glue->glGetUniformLocationARB(this->wboitgeomprog, "useTex0");
+  this->wboitUseTex1Loc = glue->glGetUniformLocationARB(this->wboitgeomprog, "useTex1");
+  glue->glUseProgramObjectARB(0);
+
+  this->wboitshaderinit = TRUE;
+  return TRUE;
+}
+
+// Begin the WBOIT transparent pass: share the opaque depth, bind the MRT, clear
+// accum->0 / revealage->1, set the dual-target blend, and bind the geometry
+// shader. Returns TRUE if the pass is active.
+SbBool
+SoGLRenderActionP::beginWeightedBlendPass(const cc_glglue * glue, GLint & savedfbo)
+{
+  savedfbo = 0;
+  glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT, &savedfbo);
+
+  const GLint w = (GLint) this->wboitwidth;
+  const GLint h = (GLint) this->wboitheight;
+
+  // Share the main framebuffer's depth attachment so transparent geometry
+  // tests against the same opaque depth values.
+  GLint depthobj = 0, depthtype = 0, stencilobj = 0;
+  if (savedfbo != 0) {
+    glue->glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,
+        GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME, &depthobj);
+    glue->glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,
+        GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE, &depthtype);
+    glue->glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER_EXT, GL_STENCIL_ATTACHMENT,
+        GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME, &stencilobj);
+  }
+
+  glue->glBindFramebuffer(GL_FRAMEBUFFER_EXT, this->wboitfbo);
+
+  // Capture the viewport used for transparent-object replay so the composite
+  // uses the same rendering region.
+  {
+    GLint vp[4] = { 0, 0, 0, 0 };
+    glGetIntegerv(GL_VIEWPORT, vp);
+    this->wboitvpx = vp[0];
+    this->wboitvpy = vp[1];
+    this->wboitvpw = vp[2];
+    this->wboitvph = vp[3];
+  }
+
+  SbBool shareddepth = FALSE;
+  if (depthobj != 0 && depthtype == GL_RENDERBUFFER_EXT) {
+    glue->glFramebufferRenderbuffer(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,
+        GL_RENDERBUFFER_EXT, (GLuint) depthobj);
+
+    // Packed depth-stencil: the same object is on the stencil attachment too;
+    // replicate it so the framebuffer is complete.
+    if (stencilobj == depthobj) {
+      glue->glFramebufferRenderbuffer(GL_FRAMEBUFFER_EXT, GL_STENCIL_ATTACHMENT,
+          GL_RENDERBUFFER_EXT, (GLuint) depthobj);
+    }
+
+    shareddepth = (glue->glCheckFramebufferStatus(GL_FRAMEBUFFER_EXT) == GL_FRAMEBUFFER_COMPLETE_EXT);
+  }
+  if (!shareddepth) {
+    if (savedfbo != 0) {
+      glue->glFramebufferRenderbuffer(GL_FRAMEBUFFER_EXT, GL_STENCIL_ATTACHMENT,
+          GL_RENDERBUFFER_EXT, 0);
+      glue->glFramebufferRenderbuffer(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,
+          GL_RENDERBUFFER_EXT, this->wboitdepthrb);
+      glue->glBindFramebuffer(GL_FRAMEBUFFER_EXT, (GLuint) savedfbo);
+      if (!this->wboitwarneddepth) {
+        SoDebugError::postWarning("beginWeightedBlendPass",
+                                  "Unable to share the host depth renderbuffer; "
+                                  "rendering transparent objects using "
+                                  "DELAYED_BLEND instead.");
+        this->wboitwarneddepth = TRUE;
+      }
+      return FALSE;
+    }
+    // Fall back to our own depth renderbuffer + a best-effort depth blit.
+    glue->glFramebufferRenderbuffer(GL_FRAMEBUFFER_EXT, GL_STENCIL_ATTACHMENT,
+        GL_RENDERBUFFER_EXT, 0);
+    glue->glFramebufferRenderbuffer(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT,
+        GL_RENDERBUFFER_EXT, this->wboitdepthrb);
+    const GLenum status = glue->glCheckFramebufferStatus(GL_FRAMEBUFFER_EXT);
+    if (status != GL_FRAMEBUFFER_COMPLETE_EXT) {
+      SoDebugError::postWarning("beginWeightedBlendPass",
+                                "WBOIT framebuffer incomplete after restoring "
+                                "fallback depth attachment (status 0x%x).",
+                                (unsigned int) status);
+      glue->glBindFramebuffer(GL_FRAMEBUFFER_EXT, (GLuint) savedfbo);
+      return FALSE;
+    }
+  }
+
+  const GLenum bufs[2] = { GL_COLOR_ATTACHMENT0_EXT, GL_COLOR_ATTACHMENT1_EXT };
+  this->wboitDrawBuffers(2, bufs);
+
+  // Clear accum -> 0, revealage -> 1.
+  const GLfloat clearaccum[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+  const GLfloat clearreveal[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+  this->wboitClearBufferfv(GL_COLOR, 0, clearaccum);
+  this->wboitClearBufferfv(GL_COLOR, 1, clearreveal);
+
+  if (!shareddepth) {
+    // Our own depth: clear to far, then copy the opaque depth on top.
+    glClearDepth(1.0);
+    glClear(GL_DEPTH_BUFFER_BIT);
+    glue->glBindFramebuffer(GL_READ_FRAMEBUFFER, (GLuint) savedfbo);
+    glue->glBindFramebuffer(GL_DRAW_FRAMEBUFFER, this->wboitfbo);
+    this->wboitBlitFramebuffer(0, 0, w, h, 0, 0, w, h,
+                               GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+    glue->glBindFramebuffer(GL_FRAMEBUFFER_EXT, this->wboitfbo);
+  }
+  // When sharing the opaque depth, do NOT clear it - it already holds the
+  // opaque scene depth we want to test transparent fragments against.
+
+  glEnable(GL_BLEND);
+  glue->glBlendEquation(GL_FUNC_ADD);
+  this->wboitBlendFunci(0, GL_ONE, GL_ONE);                  // accum: additive
+  this->wboitBlendFunci(1, GL_ZERO, GL_ONE_MINUS_SRC_COLOR); // revealage: product
+
+  glEnable(GL_DEPTH_TEST);
+  glDepthFunc(GL_LEQUAL);
+  glDepthMask(GL_FALSE);
+
+  // The transparent apply loops (and opaque pass) may leave a stencil/alpha
+  // test enabled that would discard our MRT fragments. WBOIT does not use them.
+  glDisable(GL_STENCIL_TEST);
+  glDisable(GL_ALPHA_TEST);
+
+  glue->glUseProgramObjectARB(this->wboitgeomprog);
+  return TRUE;
+}
+
+void
+SoGLRenderActionP::endWeightedBlendPass(const cc_glglue * glue, GLint savedfbo)
+{
+  glue->glUseProgramObjectARB(0);
+
+  // Restore the previously bound (main) framebuffer + single draw buffer.
+  glue->glBindFramebuffer(GL_FRAMEBUFFER_EXT, (GLuint) savedfbo);
+  if (savedfbo != 0) {
+    const GLenum one = GL_COLOR_ATTACHMENT0_EXT;
+    this->wboitDrawBuffers(1, &one);
+  }
+
+  this->doWeightedBlendComposite(glue);
+}
+
+// Composite the accum/revealage targets over the opaque image with a
+// full-screen quad.
+void
+SoGLRenderActionP::doWeightedBlendComposite(const cc_glglue * glue)
+{
+  const GLfloat texw = (GLfloat) this->wboitwidth;
+  const GLfloat texh = (GLfloat) this->wboitheight;
+
+  // Use the viewport captured for transparent-object replay. Geometry was
+  // rendered into that region of the full-FBO-sized MRT, so use the same region
+  // for the composite quad and texture coordinates.
+  GLint savedvp[4] = { 0, 0, 0, 0 };
+  glGetIntegerv(GL_VIEWPORT, savedvp);
+  GLint vp[4] = { this->wboitvpx, this->wboitvpy, this->wboitvpw, this->wboitvph };
+  if (vp[2] <= 0 || vp[3] <= 0) {
+    vp[0] = savedvp[0]; vp[1] = savedvp[1]; vp[2] = savedvp[2]; vp[3] = savedvp[3];
+  }
+  glViewport(vp[0], vp[1], vp[2], vp[3]);
+  const GLfloat s0 = texw > 0.0f ? (GLfloat) vp[0] / texw : 0.0f;
+  const GLfloat t0 = texh > 0.0f ? (GLfloat) vp[1] / texh : 0.0f;
+  const GLfloat s1 = texw > 0.0f ? (GLfloat) (vp[0] + vp[2]) / texw : 1.0f;
+  const GLfloat t1 = texh > 0.0f ? (GLfloat) (vp[1] + vp[3]) / texh : 1.0f;
+
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix();
+  glLoadIdentity();
+
+  const SbBool depthtest = glIsEnabled(GL_DEPTH_TEST);
+  glDisable(GL_DEPTH_TEST);
+  glDepthMask(GL_FALSE);
+
+  // A scissor left enabled (to an empty/wrong region) by the transparent apply
+  // loops would clip the composite away. Disable it for the full-screen quad.
+  const SbBool scissor = glIsEnabled(GL_SCISSOR_TEST);
+  glDisable(GL_SCISSOR_TEST);
+
+  // Other per-fragment tests the apply loops may have left enabled and which
+  // would silently discard the composite fragments.
+  const SbBool stenciltest = glIsEnabled(GL_STENCIL_TEST);
+  const SbBool alphatest = glIsEnabled(GL_ALPHA_TEST);
+  const SbBool cullface = glIsEnabled(GL_CULL_FACE);
+  glDisable(GL_STENCIL_TEST);
+  glDisable(GL_ALPHA_TEST);
+  glDisable(GL_CULL_FACE);
+
+  // Ensure colour writes are enabled (a prior pass may have masked them).
+  glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+
+  glEnable(GL_BLEND);
+  glue->glBlendEquation(GL_FUNC_ADD);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  glue->glUseProgramObjectARB(this->wboitcompprog);
+
+  glue->glActiveTexture(GL_TEXTURE1);
+  glBindTexture(GL_TEXTURE_2D, this->wboitrevealtex);
+  glue->glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, this->wboitaccumtex);
+  glEnable(GL_TEXTURE_2D);
+
+  // Full-NDC quad -> fills the current viewport; texcoords -> the rendered region.
+  glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+  glBegin(GL_QUADS);
+  glTexCoord2f(s0, t0); glVertex2f(-1.0f, -1.0f);
+  glTexCoord2f(s1, t0); glVertex2f( 1.0f, -1.0f);
+  glTexCoord2f(s1, t1); glVertex2f( 1.0f,  1.0f);
+  glTexCoord2f(s0, t1); glVertex2f(-1.0f,  1.0f);
+  glEnd();
+
+  glue->glUseProgramObjectARB(0);
+
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glue->glActiveTexture(GL_TEXTURE1);
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glue->glActiveTexture(GL_TEXTURE0);
+
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+  glMatrixMode(GL_MODELVIEW);
+  glPopMatrix();
+
+  glViewport(savedvp[0], savedvp[1], savedvp[2], savedvp[3]);
+
+  if (scissor) glEnable(GL_SCISSOR_TEST);
+  if (stenciltest) glEnable(GL_STENCIL_TEST);
+  if (alphatest) glEnable(GL_ALPHA_TEST);
+  if (cullface) glEnable(GL_CULL_FACE);
+  if (depthtest) glEnable(GL_DEPTH_TEST);
 }
 
 void
