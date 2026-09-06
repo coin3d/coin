@@ -376,7 +376,16 @@ SoVRMLScript::~SoVRMLScript()
         f != &this->url &&
         f != &this->mustEvaluate) delete f;
   }
-  delete this->fielddata;
+  // Clear the pointer before deleting: url/directOutput/mustEvaluate
+  // are plain data members, so their destructors run implicitly right
+  // after this function body returns, and code reachable from them
+  // (e.g. SoField::setDefault()'s debug tracing) calls getFieldData().
+  // Leaving a dangling this->fielddata would make that a use-after-free;
+  // getFieldData() returning NULL here is already handled gracefully
+  // by callers (e.g. SoFieldContainer::getFieldName()).
+  SoFieldData * fd = this->fielddata;
+  this->fielddata = NULL;
+  delete fd;
 }
 
 // *************************************************************************
