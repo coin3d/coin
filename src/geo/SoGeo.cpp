@@ -203,6 +203,10 @@ static SbDPMatrix find_coordinate_system(const SbString * system,
 // Currently not used. Kept here since it might be useful to find and
 // UTM zone from lat/long
 //
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4505) // unreferenced local function removed -- kept intentionally, see comment above
+#endif
 static SbUTMProjection find_utm_projection(const SbString * system,
                                            const int COIN_UNUSED_ARG(numsystem),
                                            const SbVec3d & coords,
@@ -234,6 +238,9 @@ static SbUTMProjection find_utm_projection(const SbString * system,
   projcoords = coords;
   return SbUTMProjection(find_utm_zone(system[1]), SbGeoEllipsoid("WGS84"));
 }
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 SbDPMatrix
 SoGeo::calculateDPTransform(const SbString * originsystem,
