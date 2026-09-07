@@ -235,7 +235,7 @@ SoTextureCoordinate2::GLRender(SoGLRenderAction * action)
     PRIVATE(this)->vbo->setBufferData(NULL, 0, 0);
   }
   SoBase::staticDataUnlock();
-  SoGLVBOElement::setTexCoordVBO(state, 0, setvbo ? PRIVATE(this)->vbo : NULL);
+  SoGLVBOElement::setTexCoordVBO(state, unit, setvbo ? PRIVATE(this)->vbo : NULL);
 }
 
 // Documented in superclass.
