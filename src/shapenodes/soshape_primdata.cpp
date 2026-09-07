@@ -282,11 +282,22 @@ soshape_primdata::shapeVertex(const SoPrimitiveVertex * const v)
 void
 soshape_primdata::growPolygonBuffers(void)
 {
-  // Doubling is handled internally by SbList::append() (it grows its
-  // buffer by doubling whenever it is full); this just adds the one
-  // slot needed to bring the list up to this->counter+1 elements.
-  this->vertsArray.append(SoPrimitiveVertex());
-  this->pointDetails.append(SoPointDetail());
+  // shapeVertex()'s trigger condition is "counter >= vertsArray.getLength()"
+  // -- the list's *logical* size, not SbList::append()'s own internal
+  // buffer capacity (which isn't queryable through the public API). Doubling
+  // the logical size here, instead of appending a single element, is what
+  // actually restores the old arraySize<<=1 behavior: growPolygonBuffers()
+  // (and the O(counter) re-pointing loop below, needed because pointDetails
+  // may have reallocated) then only runs O(log N) times for N vertices,
+  // rather than on every single vertex past the initial 4 -- appending one
+  // element at a time here made the trigger condition true again on the
+  // very next vertex, turning what should be O(N) amortized growth into
+  // O(N^2) total re-pointing work.
+  const int newsize = this->vertsArray.getLength() << 1;
+  while (this->vertsArray.getLength() < newsize) {
+    this->vertsArray.append(SoPrimitiveVertex());
+    this->pointDetails.append(SoPointDetail());
+  }
 
   // A grow of pointDetails may have reallocated its buffer, which
   // invalidates every SoPointDetail* previously stashed inside
