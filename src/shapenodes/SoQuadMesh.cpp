@@ -479,7 +479,13 @@ namespace { namespace SoGL { namespace QuadMesh {
       SbVec4f ccd4;
       SbVec4f sum234d4,sum134d4,sum124d4,sum123d4;
       SbVec4f vec1d4,vec2d4,vec3d4,vec4d4;
-      float s1,s2,s3,s4;
+      /* Only set on the is3d path below; the else branch (4D
+         coordinates) has its own assert(!"4d coordinates handling
+         unimplemented yet") a few lines down and leaves these unset,
+         yet w1..w4 use them unconditionally right after. Initialized
+         only to avoid reading garbage on that already-documented,
+         not-currently-implemented path. */
+      float s1=0.0f,s2=0.0f,s3=0.0f,s4=0.0f;
       float w1,w2,w3,w4;
       const SbVec3f *n1,*n2,*n3,*n4;
       SbVec3f nc;
