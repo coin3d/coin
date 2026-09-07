@@ -30,7 +30,10 @@ CXX=${CXX:-c++}
 export LD_LIBRARY_PATH="$LIBDIR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 ./repro
 status=$?
-if [ "$status" -ne 0 ] && [ "$status" -ne 2 ]; then
+if [ "$status" -eq 2 ]; then
+  echo "=== INCONCLUSIVE: repro couldn't get a GL context in this environment ===" >&2
+  exit 2
+elif [ "$status" -ne 0 ]; then
   echo "=== FAIL: repro exited with status $status ===" >&2
   exit "$status"
 fi
