@@ -95,7 +95,7 @@ cc_internal_queryperformancecounter(cc_time * COIN_UNUSED_ARG(t))
   if (highperf_available) {
     LARGE_INTEGER counter;
     BOOL b = QueryPerformanceCounter(&counter);
-    assert(b && "QueryPerformanceCounter() failed even though QueryPerformanceFrequency() worked");
+    if (!b) assert(!"QueryPerformanceCounter() failed even though QueryPerformanceFrequency() worked");
     *t = (double)counter.QuadPart * highperf_tick + highperf_start;
     return TRUE;
   }

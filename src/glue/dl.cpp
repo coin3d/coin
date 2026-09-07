@@ -776,7 +776,7 @@ cc_dl_open(const char * filename)
 #ifdef HAVE_WINDLL_RUNTIME_BINDING
       char libpath[512];
       DWORD retval = GetModuleFileName((HINSTANCE) h->nativehnd, libpath, sizeof(libpath));
-      assert(retval > 0 && "GetModuleFileName() failed");
+      if (retval == 0) assert(!"GetModuleFileName() failed");
       libpath[sizeof(libpath) - 1] = 0;
       cc_debugerror_postinfo("cc_dl_open", "Opened library '%s'", libpath);
 #elif defined (HAVE_DL_LIB) || defined (HAVE_DLD_LIB)
