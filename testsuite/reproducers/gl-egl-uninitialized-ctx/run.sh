@@ -31,25 +31,48 @@ CXX=${CXX:-c++}
 "$CXX" -O0 -g repro.cpp -o repro -L"$LIBDIR" -lCoin -lEGL || exit 2
 
 export LD_LIBRARY_PATH="$LIBDIR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
-export EGL_SHIM_OUTFILE="$PWD/captured.txt"
-rm -f "$EGL_SHIM_OUTFILE"
+
+# Run both phases even if one is inconclusive: run 2 (via the shim) can
+# still reach a real verdict on environments where run 1's raw,
+# non-intercepted EGL surface creation fails for unrelated reasons (e.g.
+# a real driver rejecting the NULL native window this reproducer passes,
+# independent of anything eglglue_context_create_offscreen() does wrong)
+# -- so a run 1 inconclusive must not hide a real pass or fail from run 2.
+any_inconclusive=0
 
 echo "=== run 1/2: direct call, no interception ==="
+# EGL_SHIM_OUTFILE deliberately unset here: no shim is loaded in this
+# run, so repro would have nothing valid to read from it and (correctly,
+# since context creation not going through the shim isn't a bug in this
+# run) report FAIL for the wrong reason if it were set.
+unset EGL_SHIM_OUTFILE
 ./repro
 status=$?
-if [ "$status" -ne 0 ]; then
+if [ "$status" -eq 2 ]; then
+  echo "=== INCONCLUSIVE (run 1/2): no context created in this environment ==="
+  any_inconclusive=1
+elif [ "$status" -ne 0 ]; then
   echo "=== FAIL: repro exited with status $status (SIGSEGV is status 139) ==="
   exit "$status"
 fi
 
 echo
 echo "=== run 2/2: LD_PRELOAD egl_shim.so, verifying EGL_WIDTH/EGL_HEIGHT ==="
+export EGL_SHIM_OUTFILE="$PWD/captured.txt"
+rm -f "$EGL_SHIM_OUTFILE"
 LD_PRELOAD="$PWD/egl_shim.so" ./repro
 status=$?
-if [ "$status" -ne 0 ]; then
+if [ "$status" -eq 2 ]; then
+  echo "=== INCONCLUSIVE (run 2/2): shim never intercepted a call in this environment ==="
+  any_inconclusive=1
+elif [ "$status" -ne 0 ]; then
   echo "=== FAIL: repro exited with status $status under interception ==="
   exit "$status"
 fi
 
 echo
+if [ "$any_inconclusive" -ne 0 ]; then
+  echo "=== INCONCLUSIVE: neither run crashed or failed, but at least one couldn't verify anything in this environment ==="
+  exit 2
+fi
 echo "=== PASS ==="
