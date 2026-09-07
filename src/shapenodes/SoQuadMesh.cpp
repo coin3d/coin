@@ -808,7 +808,7 @@ SoQuadMesh::initClass(void)
   }
 
 #define SOGL_QUADMESH_GLRENDER_RESOLVE_ARG2(normalbinding, materialbinding, texturing, args) \
-  switch (materialbinding) {                                            \
+  switch ((SoGL::QuadMesh::AttributeBinding)materialbinding) {          \
   case SoGL::QuadMesh::OVERALL:                                         \
     SOGL_QUADMESH_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::QuadMesh::OVERALL, texturing, args); \
     break;                                                              \
@@ -827,7 +827,7 @@ SoQuadMesh::initClass(void)
   }
 
 #define SOGL_QUADMESH_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, texturing, args) \
-  switch (normalbinding) {                                              \
+  switch ((SoGL::QuadMesh::AttributeBinding)normalbinding) {            \
   case SoGL::QuadMesh::OVERALL:                                         \
     SOGL_QUADMESH_GLRENDER_RESOLVE_ARG2(SoGL::QuadMesh::OVERALL, materialbinding, texturing, args); \
     break;                                                              \
