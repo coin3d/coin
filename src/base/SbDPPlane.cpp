@@ -438,9 +438,6 @@ BOOST_AUTO_TEST_CASE(signCorrect)
 
 BOOST_AUTO_TEST_CASE(equalityToFloatPlane)
 {
-  const float delX = 1;
-  const float delY = .1f;
-
   const float XMax = (float)pow(2.,FLT_MAX_EXP/3.);
   const float XMin = -XMax;
 
@@ -460,8 +457,6 @@ BOOST_AUTO_TEST_CASE(equalityToFloatPlane)
   const int YSteps = 10;
 #endif //TEST_SUITE_EXPANSIVE
 
-  int count=0;
- 
   for (int x1=0;x1<XSteps;++x1) {
     float X1=slew(XMin,XMax,XSteps,x1);
     for (int x2=0;x2<XSteps;++x2) {

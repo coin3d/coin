@@ -549,11 +549,6 @@ SbString::print(std::FILE * fp) const
 #ifdef COIN_TEST_SUITE
 #include <Inventor/SbString.h>
 
-static void * createInstance(void)
-{
-  return (void *)0x1234;
-}
-
 BOOST_AUTO_TEST_CASE(testAddition)
 {
   SbString str1("First");
