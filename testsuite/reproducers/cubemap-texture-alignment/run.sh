@@ -24,7 +24,7 @@ fi
 
 CXX=${CXX:-c++}
 
-"$CXX" -O1 -g repro.cpp -o repro -I"$LIBDIR/../include" -L"$LIBDIR" -lCoin || exit 2
+"$CXX" -O1 -g repro.cpp -o repro -I"$LIBDIR/../include" -L"$LIBDIR" -lCoin -lGL || exit 2
 
 export LD_LIBRARY_PATH="$LIBDIR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 ./repro
