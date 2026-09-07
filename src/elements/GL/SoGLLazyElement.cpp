@@ -195,7 +195,25 @@ create_matrix_bitmap(int intensity, unsigned char * bitmap,
 }
 
 
-SO_ELEMENT_SOURCE(SoGLLazyElement);
+SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoGLLazyElement);
+
+// SO_ELEMENT_SOURCE's generated default constructor doesn't initialize
+// any data members beyond type/stack index -- fine for every other
+// member here, since init() (for the root, depth-0 instance) or push()
+// (for every instance created afterwards, see SoState::getElement())
+// always assigns them all before they're read. pimpl is the one
+// exception: push() needs to tell whether this same, possibly-reused
+// C++ instance (SoState reuses element instances across many push()/
+// pop() cycles rather than reallocating) already owns a pimpl from an
+// earlier cycle, which means reading it -- so it must start out reliably
+// NULL rather than whatever the default constructor happened to leave on
+// the heap.
+SoGLLazyElement::SoGLLazyElement(void)
+{
+  this->setTypeId(SoGLLazyElement::classTypeId);
+  this->setStackIndex(SoGLLazyElement::classStackIndex);
+  this->pimpl = NULL;
+}
 
 /*!
   \copydetails SoElement::initClass(void)
@@ -472,7 +490,20 @@ SoGLLazyElement::push(SoState * stateptr)
   this->didntsetbitmask = prev->didntsetbitmask;
   this->cachebitmask = prev->cachebitmask;
   this->opencacheflags = prev->opencacheflags;
-  this->pimpl = new SoGLLazyElementP;
+
+  // SoState reuses this same C++ instance across many push()/pop() cycles
+  // over its lifetime (see SoState::getElement()) rather than allocating a
+  // fresh one every time, so pimpl may already be set from an earlier
+  // cycle -- reset it in place instead of leaking it by overwriting the
+  // pointer with a new allocation. The caching-scope stack should already
+  // be empty at this point (beginCaching()/endCaching() calls are always
+  // balanced), but truncate defensively rather than assume it.
+  if (this->pimpl == NULL) {
+    this->pimpl = new SoGLLazyElementP;
+  }
+  else {
+    this->pimpl->cachingstack.truncate(0);
+  }
 }
 
 void
