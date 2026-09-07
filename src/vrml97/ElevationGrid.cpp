@@ -89,7 +89,7 @@
   \verbatim
     P[i,j].x = xSpacing * i
     P[i,j].y = height[ i + j * xDimension]
-    P[i,j].z = zSpacing * j     
+    P[i,j].z = zSpacing * j
 
     where 0 <= i < xDimension and 0 <= j < zDimension, and 
     P[0,0] is height[0] units above/below the origin of the local
@@ -119,7 +119,7 @@
     where 0 <= i < xDimension-1 and 0 <= j < zDimension-1, and
     QuadColor[i,j] is the colour for the quadrilateral defined by
     height[i+j*xDimension], height[(i+1)+j*xDimension],
-    height[(i+1)+(j+1)*xDimension] and height[i+(j+1)*xDimension] 
+    height[(i+1)+(j+1)*xDimension] and height[i+(j+1)*xDimension]
   \endverbatim
   
   If
@@ -128,11 +128,11 @@
   zDimension colours, one for each vertex, ordered as follows:
 
   \verbatim
-    VertexColor[i,j] = Color[ i + j * xDimension] 
+    VertexColor[i,j] = Color[ i + j * xDimension]
 
     where 0 <= i < xDimension and 0 <= j < zDimension, and 
     VertexColor[i,j] is the colour for the vertex defined by 
-    height[i+j*xDimension] 
+    height[i+j*xDimension]
   \endverbatim
 
   The normal field specifies per-vertex or per-quadrilateral normals
@@ -150,12 +150,12 @@
   ordered as follows: 
 
   \verbatim
-    QuadNormal[i,j] = Normal[ i + j * (xDimension-1)] 
+    QuadNormal[i,j] = Normal[ i + j * (xDimension-1)]
 
     where 0 <= i < xDimension-1 and 0 <= j < zDimension-1, and 
     QuadNormal[i,j] is the normal for the quadrilateral 
-    defined by height[i+j*xDimension], height[(i+1)+j*xDimension], 
-    height[(i+1)+(j+1)*xDimension] and height[i+(j+1)*xDimension] 
+    defined by height[i+j*xDimension], height[(i+1)+j*xDimension],
+    height[(i+1)+(j+1)*xDimension] and height[i+(j+1)*xDimension]
   \endverbatim
 
   If normalPerVertex is TRUE and the normal field is not NULL, the
@@ -164,11 +164,11 @@
   follows:
 
   \verbatim
-    VertexNormal[i,j] = Normal[ i + j * xDimension] 
+    VertexNormal[i,j] = Normal[ i + j * xDimension]
     
     where 0 <= i < xDimension and 0 <= j < zDimension, and
     VertexNormal[i,j] is the normal for the vertex defined by
-    height[i+j*xDimension] 
+    height[i+j*xDimension]
   \endverbatim
 
   The texCoord field specifies per-vertex texture coordinates for the
@@ -182,11 +182,11 @@
   ordered as follows:
 
   \verbatim
-    VertexTexCoord[i,j] = TextureCoordinate[ i + j * xDimension] 
+    VertexTexCoord[i,j] = TextureCoordinate[ i + j * xDimension]
 
     where 0 <= i < xDimension and 0 <= j < zDimension, and 
     VertexTexCoord[i,j] is the texture coordinate for the vertex 
-    defined by height[i+j*xDimension] 
+    defined by height[i+j*xDimension]
   \endverbatim
 
   The ccw, solid, and creaseAngle fields are described in 4.6.3,

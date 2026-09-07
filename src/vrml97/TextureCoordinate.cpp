@@ -67,7 +67,7 @@
   map that has N pixels in the given direction as follows:
 
   \verbatim
-  Texture map location = (C - floor(C)) * N 
+  Texture map location = (C - floor(C)) * N
   \endverbatim
 
   If the texture map is not repeated, the texture coordinates are
