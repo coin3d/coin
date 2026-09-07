@@ -1143,7 +1143,10 @@ SoInput::read(SbName & n, SbBool validIdent)
     SbString s;
     char buf[256];
     char * b = buf;
-    char c;
+    /* Only read below when gotchar is TRUE, which happens only right
+       after fi->get(c) sets both together. Initialized here only
+       because the compiler can't correlate the two variables. */
+    char c = '\0';
     SbBool gotchar = FALSE;
 
     switch (codepath) {

@@ -701,7 +701,11 @@ SoNodeVisualize::internalAlternating(bool alternate,int direction) {
     ->whichChild=(alternate)?SO_SWITCH_ALL:SO_SWITCH_NONE;
 
   SoNodeList * children=this->getChildGeometry();
-  int l;
+  /* Only read below past the early return, which happens only once the
+     assignment on the next line has run. Initialized to the "no
+     children" value since the compiler can't see that guarantee
+     across the short-circuited condition. */
+  int l = 0;
   if (!children ||
       (l=children->getLength())==0 ||
       static_cast<SoSwitch*>(this->getAnyPart("childrenVisible",FALSE))->whichChild.getValue()==SO_SWITCH_NONE)
