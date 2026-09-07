@@ -21,6 +21,15 @@
 // reads corrupt a chunk of the uploaded texel data, so sampled colors drift
 // away from the expected six.
 //
+// Also checks (via an SoCallback node placed after the cube, queried with
+// glGetIntegerv during the same render pass) that GL_UNPACK_ALIGNMENT is
+// restored to OpenGL's default (4) once the cubemap upload is done, rather
+// than left permanently at 1 -- every other glPixelStorei(GL_UNPACK_ALIGNMENT,
+// 1) call site in this codebase (SoGLImage.cpp, SoImage.cpp, SoText2.cpp,
+// SoMarkerSet.cpp, SoIndexedMarkerSet.cpp) restores 4 afterward; leaving it
+// at 1 pollutes GL state for whatever renders next, whether that's other
+// Coin code or an embedding application's own direct GL calls.
+//
 // See run.sh in this directory for how to build and run this against a
 // given libCoin build.
 
@@ -31,12 +40,29 @@
 #include <Inventor/SoOffscreenRenderer.h>
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/SbColor.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoCube.h>
 #include <Inventor/nodes/SoTextureCubeMap.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoCallback.h>
+#include <Inventor/system/gl.h>
+
+static bool g_alignmentChecked = false;
+static GLint g_alignmentAfterUpload = -1;
+
+static void checkAlignmentCB(void *, SoAction * action)
+{
+  if (!action->isOfType(SoGLRenderAction::getClassTypeId())) return;
+  // By this point in the traversal the cube (and its cubemap texture,
+  // uploaded lazily on first GLRender) has already been drawn once --
+  // GL_UNPACK_ALIGNMENT should be back at OpenGL's default (4), not left
+  // at the 1 the cubemap upload needs while it's actually uploading.
+  glGetIntegerv(GL_UNPACK_ALIGNMENT, &g_alignmentAfterUpload);
+  g_alignmentChecked = true;
+}
 
 static void setSolid(SoSFImage & field, unsigned char r, unsigned char g, unsigned char b)
 {
@@ -86,6 +112,10 @@ int main()
 
   root->addChild(new SoCube);
 
+  SoCallback * cb = new SoCallback;
+  cb->setCallback(checkAlignmentCB);
+  root->addChild(cb);
+
   SbViewportRegion vp(256, 256);
   SoOffscreenRenderer renderer(vp);
   renderer.setBackgroundColor(SbColor(0.2f, 0.2f, 0.2f));
@@ -128,6 +158,20 @@ int main()
     fprintf(stderr, "[repro] FAIL: expected ~100%% exact matches\n");
     return 1;
   }
+
+  fprintf(stderr, "[repro] GL_UNPACK_ALIGNMENT after cubemap upload: %d (checked=%d)\n",
+          (int)g_alignmentAfterUpload, (int)g_alignmentChecked);
+  if (!g_alignmentChecked) {
+    fprintf(stderr, "[repro] FAIL: alignment check callback never ran\n");
+    return 1;
+  }
+  if (g_alignmentAfterUpload != 4) {
+    fprintf(stderr, "[repro] FAIL: GL_UNPACK_ALIGNMENT left at %d instead of being "
+                    "restored to OpenGL's default (4) after the cubemap upload\n",
+                    (int)g_alignmentAfterUpload);
+    return 1;
+  }
+
   fprintf(stderr, "[repro] PASS\n");
   return 0;
 }

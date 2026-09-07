@@ -346,6 +346,8 @@ SoGLCubeMapImage::getGLDisplayList(SoState * state)
         }
       }
 
+      glPixelStorei(GL_UNPACK_ALIGNMENT, 4); // restore default value
+
       // FIXME: make it possible to configure filter and mipmap on/off
       glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
       glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
