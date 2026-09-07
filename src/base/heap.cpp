@@ -407,7 +407,7 @@ public:
 };
 
 BOOST_AUTO_TEST_CASE(min_heap) {
-  mock_up::wrapped_value val[] = {3, 2, 1, 15, 5, 4, 45};
+  mock_up::wrapped_value val[] = {{3}, {2}, {1}, {15}, {5}, {4}, {45}};
   cc_heap* heap = cc_heap_construct(256, reinterpret_cast<cc_heap_compare_cb*>(mock_up::min_heap_compare_cb), TRUE);
   for (int i = 0, n = sizeof(val) / sizeof(val[0]); i < n; ++i)
     cc_heap_add(heap, &val[i]);
@@ -421,7 +421,7 @@ BOOST_AUTO_TEST_CASE(min_heap) {
 }
 
 BOOST_AUTO_TEST_CASE(max_heap) {
-  mock_up::wrapped_value val[] = {3, 2, 1, 15, 5, 4, 45};
+  mock_up::wrapped_value val[] = {{3}, {2}, {1}, {15}, {5}, {4}, {45}};
   cc_heap* heap = cc_heap_construct(256, reinterpret_cast<cc_heap_compare_cb*>(mock_up::max_heap_compare_cb), TRUE);
   for (int i = 0, n = sizeof(val) / sizeof(val[0]); i < n; ++i)
     cc_heap_add(heap, &val[i]);
@@ -435,7 +435,7 @@ BOOST_AUTO_TEST_CASE(max_heap) {
 }
 
 BOOST_AUTO_TEST_CASE(heap_add) {
-  mock_up::wrapped_value val[] = {3, 2, 1, 15, 5, 4, 45};
+  mock_up::wrapped_value val[] = {{3}, {2}, {1}, {15}, {5}, {4}, {45}};
   cc_heap* heap = cc_heap_construct(256, reinterpret_cast<cc_heap_compare_cb*>(mock_up::min_heap_compare_cb), TRUE);
   for (int i = 0, n = sizeof(val) / sizeof(val[0]); i < n; ++i)
     cc_heap_add(heap, &val[i]);
@@ -451,7 +451,7 @@ BOOST_AUTO_TEST_CASE(heap_add) {
 }
 
 BOOST_AUTO_TEST_CASE(heap_remove) {
-  mock_up::wrapped_value val[] = {3, 2, 1, 15, 5, 4, 45};
+  mock_up::wrapped_value val[] = {{3}, {2}, {1}, {15}, {5}, {4}, {45}};
   cc_heap* heap = cc_heap_construct(256, reinterpret_cast<cc_heap_compare_cb*>(mock_up::min_heap_compare_cb), TRUE);
   for (int i = 0, n = sizeof(val) / sizeof(val[0]); i < n; ++i)
     cc_heap_add(heap, &val[i]);
@@ -466,7 +466,7 @@ BOOST_AUTO_TEST_CASE(heap_remove) {
 }
 
 BOOST_AUTO_TEST_CASE(heap_update) {
-  mock_up::wrapped_value val[] = {3, 2, 1, 15, 5, 4, 45};
+  mock_up::wrapped_value val[] = {{3}, {2}, {1}, {15}, {5}, {4}, {45}};
   cc_heap* heap = cc_heap_construct(256, reinterpret_cast<cc_heap_compare_cb*>(mock_up::min_heap_compare_cb), TRUE);
   for (int i = 0, n = sizeof(val) / sizeof(val[0]); i < n; ++i)
     cc_heap_add(heap, &val[i]);
