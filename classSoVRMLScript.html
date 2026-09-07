@@ -511,6 +511,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="classSoVRMLScript.html" title="The SoVRMLScript class is used to control the scene using scripts.">SoVRMLScript</a> class is used to control the scene using scripts. </p>
+<dl class="section note"><dt>Note</dt><dd>The node itself, and its fields, work regardless of scripting language support. Actually executing a "javascript:"/"vrmlscript:" url, however, goes through the deprecated <a class="el" href="classSoJavaScriptEngine.html" title="Runs JavaScript for VRML97 Script nodes, via a runtime-loaded SpiderMonkey library.">SoJavaScriptEngine</a> (see its class documentation), which cannot load or run any SpiderMonkey release currently being maintained. On any such system, url evaluation silently fails (spidermonkey()-&gt;available is FALSE) &ndash; it does not crash, but no script code in this node will run.</dd></dl>
 <p><b>The detailed class documentation is taken verbatim from the VRML97 standard (ISO/IEC 14772-1:1997). It is copyright The Web3D Consortium, and is used by permission of the Consortium:</b><br  />
 <br  />
  </p><pre class="fragment">Script {
@@ -1004,7 +1005,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoVRMLScript.html">SoVRMLScript</a></li>
-    <li class="footer">Generated on Mon Sep 7 2026 21:19:17 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Mon Sep 7 2026 21:19:46 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
