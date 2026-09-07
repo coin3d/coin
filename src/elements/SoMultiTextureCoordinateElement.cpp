@@ -335,15 +335,29 @@ SoMultiTextureCoordinateElement::get2(const int unit, const int index) const
   assert(unit < PRIVATE(this)->unitdata.getLength());
   const UnitData & ud = PRIVATE(this)->unitdata[unit];
 
-  assert(index >= 0 && index < ud.numCoords);
   assert(ud.whatKind == EXPLICIT);
+  // need an instance we can write to
+  SoMultiTextureCoordinateElement * elem = const_cast<SoMultiTextureCoordinateElement *>(this);
+
+  // index comes from file/application-controlled data (typically a
+  // shape's textureCoordIndex field) that nothing upstream validates
+  // against ud.numCoords -- an out-of-range value must not reach the
+  // raw array access below.
+  if (index < 0 || index >= ud.numCoords) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SoMultiTextureCoordinateElement::get2",
+                              "texture coordinate index %d out of bounds "
+                              "[0, %d] -- returning a default coordinate",
+                              index, ud.numCoords - 1);
+#endif // COIN_DEBUG
+    elem->convert2.setValue(0.0f, 0.0f);
+    return elem->convert2;
+  }
+
   if (ud.coordsDimension == 2) {
     return ud.coords2[index];
   }
   else {
-    // need an instance we can write to
-    SoMultiTextureCoordinateElement * elem = const_cast<SoMultiTextureCoordinateElement *>(this);
-
     if (ud.coordsDimension == 4) {
       float tmp = ud.coords4[index][3];
       float to2D = tmp == 0.0f ? 1.0f : 1.0f / tmp;
@@ -355,7 +369,7 @@ SoMultiTextureCoordinateElement::get2(const int unit, const int index) const
       elem->convert2.setValue(ud.coords3[index][0],
                               ud.coords3[index][1]);
     }
-    return this->convert2;
+    return elem->convert2;
   }
 }
 
@@ -369,16 +383,30 @@ SoMultiTextureCoordinateElement::get3(const int unit, const int index) const
   assert(unit < PRIVATE(this)->unitdata.getLength());
   const UnitData & ud = PRIVATE(this)->unitdata[unit];
 
-  assert(index >= 0 && index < ud.numCoords);
   assert(ud.whatKind == EXPLICIT);
+  // need an instance we can write to
+  SoMultiTextureCoordinateElement * elem =
+    const_cast<SoMultiTextureCoordinateElement *>(this);
+
+  // index comes from file/application-controlled data (typically a
+  // shape's textureCoordIndex field) that nothing upstream validates
+  // against ud.numCoords -- an out-of-range value must not reach the
+  // raw array access below.
+  if (index < 0 || index >= ud.numCoords) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SoMultiTextureCoordinateElement::get3",
+                              "texture coordinate index %d out of bounds "
+                              "[0, %d] -- returning a default coordinate",
+                              index, ud.numCoords - 1);
+#endif // COIN_DEBUG
+    elem->convert3.setValue(0.0f, 0.0f, 0.0f);
+    return elem->convert3;
+  }
+
   if (ud.coordsDimension == 3) {
     return ud.coords3[index];
   }
   else {
-    // need an instance we can write to
-    SoMultiTextureCoordinateElement * elem =
-      const_cast<SoMultiTextureCoordinateElement *>(this);
-
     if (ud.coordsDimension==2) {
       elem->convert3.setValue(ud.coords2[index][0],
                               ud.coords2[index][1],
@@ -387,7 +415,7 @@ SoMultiTextureCoordinateElement::get3(const int unit, const int index) const
     else { // this->coordsDimension==4
       ud.coords4[index].getReal(elem->convert3);
     }
-    return this->convert3;
+    return elem->convert3;
   }
 }
 
@@ -399,15 +427,30 @@ SoMultiTextureCoordinateElement::get4(const int unit, const int index) const
   assert(unit < PRIVATE(this)->unitdata.getLength());
   const UnitData & ud = PRIVATE(this)->unitdata[unit];
 
-  assert(index >= 0 && index < ud.numCoords);
   assert(ud.whatKind == EXPLICIT);
+  // need an instance we can write to
+  SoMultiTextureCoordinateElement * elem =
+    const_cast<SoMultiTextureCoordinateElement *>(this);
+
+  // index comes from file/application-controlled data (typically a
+  // shape's textureCoordIndex field) that nothing upstream validates
+  // against ud.numCoords -- an out-of-range value must not reach the
+  // raw array access below.
+  if (index < 0 || index >= ud.numCoords) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SoMultiTextureCoordinateElement::get4",
+                              "texture coordinate index %d out of bounds "
+                              "[0, %d] -- returning a default coordinate",
+                              index, ud.numCoords - 1);
+#endif // COIN_DEBUG
+    elem->convert4.setValue(0.0f, 0.0f, 0.0f, 1.0f);
+    return elem->convert4;
+  }
+
   if (ud.coordsDimension==4) {
     return ud.coords4[index];
   }
   else {
-    // need an instance we can write to
-    SoMultiTextureCoordinateElement * elem =
-      const_cast<SoMultiTextureCoordinateElement *>(this);
     if (ud.coordsDimension == 2) {
       elem->convert4.setValue(ud.coords2[index][0],
                               ud.coords2[index][1],
@@ -420,7 +463,7 @@ SoMultiTextureCoordinateElement::get4(const int unit, const int index) const
                               ud.coords3[index][2],
                               1.0f);
     }
-    return this->convert4;
+    return elem->convert4;
   }
 }
 
