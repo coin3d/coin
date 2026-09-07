@@ -12,7 +12,7 @@
 # -fsanitize=undefined) inside SoElement::capture() called through NULL.
 # After the fix: prints PASS and exits 0.
 
-cd "$(dirname "$0")"
+CDPATH= cd "$(dirname "$0")" || exit 2
 
 LIBDIR="$1"
 if [ -z "$LIBDIR" ]; then
@@ -28,7 +28,8 @@ CXX=${CXX:-c++}
 # falls through to /usr/include/Inventor, compiling this reproducer
 # against a different (and possibly ABI-incompatible) Coin version than
 # the one $LIBDIR/libCoin.so was actually built from.
-SRCINCLUDE="$(cd "$(dirname "$0")/../../.." && pwd)/include"
+# The current directory is already the reproducer directory.
+SRCINCLUDE="$(CDPATH= cd ../../.. && pwd)/include" || exit 2
 
 "$CXX" -O1 -g repro.cpp -o repro -I"$SRCINCLUDE" -I"$LIBDIR/../include" -L"$LIBDIR" -lCoin || exit 2
 
