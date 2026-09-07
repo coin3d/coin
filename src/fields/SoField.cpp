@@ -1116,14 +1116,20 @@ SoField::disconnect(SoEngineOutput * master)
   if (coin_debug_extra()) {
     int wLevel =
       SoConfigSettings::getInstance()->settingAsInt("COIN_WARNING_LEVEL");
-    if (wLevel>=3)
+    if (wLevel>=3) {
+      // this->getContainer() (unlike this->storage->container) is the
+      // container==NULL-safe accessor -- a field never added to any
+      // container (e.g. a standalone field connected directly to an
+      // engine output) legitimately has no container here.
+      SoFieldContainer * fc = this->getContainer();
       SoDebugError::postInfo("SoField::disconnect",
                              "removing slave field %p (%s.%s) from master "
                              "engineout %p",
                              this,
-                             this->storage->container->getTypeId().getName().getString(),
+                             fc ? fc->getTypeId().getName().getString() : "<no-container>",
                              this->storage->fieldtype.getName().getString(),
                              master);
+    }
   }
 
 
