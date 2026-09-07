@@ -2732,8 +2732,15 @@ stl_reader_create(const char * filename)
     readok &= !fseek(reader->file, 80, SEEK_SET);
     readok &= fread(bytes, 4, 1, reader->file);
     reader->facets_total =
-      (bytes[3] << 24) | (bytes[2] << 16) | (bytes[1] << 8) | bytes[0];
-    if ( (84 + (reader->facets_total * 50)) != length ) {
+      static_cast<int>((static_cast<uint32_t>(bytes[3]) << 24) |
+                        (static_cast<uint32_t>(bytes[2]) << 16) |
+                        (static_cast<uint32_t>(bytes[1]) << 8) |
+                        bytes[0]);
+    /* bytes[80..83] are attacker/file-controlled and not yet known to
+       be a real facet count at this point (that's what this check is
+       trying to determine) -- do the arithmetic in a wide enough type
+       to avoid signed overflow on a bogus (e.g. ASCII STL) input. */
+    if ( (84 + (static_cast<int64_t>(reader->facets_total) * 50)) != length ) {
       break; /* not a binary stl file */
     }
     reader->flags |= STL_BINARY;
