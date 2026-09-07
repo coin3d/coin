@@ -321,6 +321,8 @@ SoGLCubeMapImage::getGLDisplayList(SoState * state)
 
       dl->open(state);
 
+      glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
       for (int i = 0; i < 6; i++) {
         const SbImage * img = &PRIVATE(this)->image[i];
         if (img->hasData()) {
