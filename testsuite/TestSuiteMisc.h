@@ -81,8 +81,16 @@ inline bool floatEquals(float Ain, float Bin, unsigned int maxUlps)
     // Make B.i32 lexicographically ordered as a twos-complement int
     if (B.i32 < 0)
         B.i32 = 0x80000000 - B.i32;
-    unsigned int intDiff = SbAbs(A.i32 - B.i32);
-    if (intDiff <= maxUlps)
+    // A.i32/B.i32 can each land anywhere across nearly the full int32_t
+    // range after the remap above (an extreme positive float remaps to
+    // roughly +2^31-1, an extreme negative one to roughly -(2^31-1)), so
+    // a plain "A.i32 - B.i32" can itself overflow int32_t -- genuine
+    // signed-integer-overflow UB, not just a theoretical concern: e.g.
+    // floatEquals(100.0f, -100.0f, ...) already hits it. Widen to
+    // int64_t, which comfortably holds any int32_t difference, before
+    // subtracting.
+    int64_t intDiff = SbAbs(static_cast<int64_t>(A.i32) - static_cast<int64_t>(B.i32));
+    if (intDiff <= static_cast<int64_t>(maxUlps))
         return true;
     return false;
 }

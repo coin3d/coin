@@ -30,6 +30,8 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+#include <limits>
+
 #include <Inventor/SbVec4ub.h>
 #include <Inventor/SbVec4us.h>
 #include <Inventor/SbVec4ui32.h>
@@ -106,4 +108,30 @@ BOOST_AUTO_TEST_CASE(floatEquals_negativeZero)
   // Sanity: a genuinely large difference must still compare unequal.
   BOOST_CHECK_MESSAGE(!floatEquals(0.0f, 1.0f, 4u),
                       "clearly different values must not compare equal");
+}
+
+BOOST_AUTO_TEST_CASE(floatEquals_oppositeSignOverflow)
+{
+  // After the sign-bit remap, an extreme positive float's raw bits land
+  // near +2^31-1 and an extreme negative float's land near -(2^31-1) --
+  // subtracting the two as plain int32_t can itself overflow int32_t
+  // (signed-integer-overflow UB), independently of the negative-zero
+  // remap bug covered by floatEquals_negativeZero above. This doesn't
+  // need astronomical values to trigger: opposite-sign floats of even
+  // moderate magnitude (100.0f vs -100.0f already does it) are enough.
+  BOOST_CHECK_MESSAGE(!floatEquals(100.0f, -100.0f, 4u),
+                      "clearly different opposite-sign values must not "
+                      "compare equal (and must not overflow computing that)");
+  BOOST_CHECK_MESSAGE(!floatEquals(3.4e38f, -3.4e38f, 4u),
+                      "extreme opposite-sign values must not compare equal "
+                      "(and must not overflow computing that)");
+
+  // Sanity: opposite-sign values close enough to each other (straddling
+  // zero) must still compare almost-equal, same as the negative-zero case.
+  // denorm_min() is exactly 1 ULP from 0.0f, so its negation is exactly 1
+  // ULP from -0.0f and 2 ULPs from 0.0f -- not e.g. 1e-40f, which despite
+  // looking "close to zero" in decimal is tens of thousands of ULPs away.
+  const float tiny = std::numeric_limits<float>::denorm_min();
+  BOOST_CHECK_MESSAGE(floatEquals(-tiny, tiny, 4u),
+                      "small values straddling zero must compare almost-equal");
 }
