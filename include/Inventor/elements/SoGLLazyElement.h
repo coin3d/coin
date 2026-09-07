@@ -185,7 +185,7 @@ private:
   mutable const uint32_t * packedpointer;
   uint32_t transpmask;
   SoState * state;
-  SoGLLazyElementP * pimpl; // for future use
+  SoGLLazyElementP * pimpl; // holds a stack of saved caching scopes, see beginCaching()/endCaching()
 };
 
 #endif // !COIN_SOGLLAZYELEMENT_H
