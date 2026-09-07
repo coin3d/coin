@@ -36,6 +36,13 @@
 // name (delete outright), and renaming onto an existing name (which
 // deletes the pre-existing field by that name).
 //
+// Also exercises renaming a field to its own current name: the "onto an
+// existing name" lookup then finds the very same container being
+// renamed, so unref()'ing it as if it were a distinct pre-existing entry
+// is a use-after-free (the subsequent gf->setName(to) dereferences the
+// now-deleted object) -- caught by ASan on the very first fix attempt at
+// this leak (which did not special-case from == to).
+//
 // See run.sh in this directory for how to build and run this against a
 // given libCoin build.
 
@@ -79,8 +86,24 @@ int main()
     SoDB::renameGlobalField(SbName(oldname), SbName(""));
   }
 
+  // Branch 3: renameGlobalField(name, name) -- renaming a field to its
+  // own current name must be a no-op, not a use-after-free.
+  for (int i = 0; i < n; i++) {
+    char name[32];
+    snprintf(name, sizeof(name), "leaktest_self_%d", i);
+    SoField * f = SoDB::createGlobalField(SbName(name), SoSFFloat::getClassTypeId());
+    f->getContainer()->ref();
+    SoDB::renameGlobalField(SbName(name), SbName(name));
+    // Field must still be alive and findable under its own name.
+    if (SoDB::getGlobalField(SbName(name)) != f) {
+      fprintf(stderr, "[repro] FAIL: self-rename lost or corrupted the field\n");
+      return 1;
+    }
+    SoDB::renameGlobalField(SbName(name), SbName("")); // clean up
+  }
+
   fprintf(stderr, "[repro] exercised both renameGlobalField() delete paths "
-                  "%d times each\n", n);
+                  "%d times each, plus %d self-renames\n", n, n);
 
   SoDB::finish(); // exercise the documented cleanup path (also frees "realTime")
 

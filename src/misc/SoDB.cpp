@@ -955,6 +955,13 @@ SoDB::renameGlobalField(const SbName & from, const SbName & to)
   }
 #endif // COIN_DEBUG
 
+  // Renaming a field to its own current name is a no-op -- and must be
+  // handled as one: otherwise, "old" below (found by looking up "to")
+  // would be this very same gf, and unref()'ing it out from under
+  // ourselves before the gf->setName(to) call further down would be a
+  // use-after-free.
+  if (from == to) return;
+
   if (to == "") { // Empty string is a special case, remove field.
     assert(gf->getRefCount() == 1);
     // SoGlobalField::removeGlobalFieldContainer(gf) would only remove gf

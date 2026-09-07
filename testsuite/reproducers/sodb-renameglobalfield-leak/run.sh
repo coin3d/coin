@@ -11,7 +11,7 @@
 # SoGlobalField() on exit, and this script exits non-zero.
 # If not leaked: prints PASS and exits 0.
 
-cd "$(dirname "$0")"
+CDPATH= cd "$(dirname "$0")" || exit 2
 
 LIBDIR="$1"
 if [ -z "$LIBDIR" ]; then
@@ -20,7 +20,8 @@ if [ -z "$LIBDIR" ]; then
 fi
 
 CXX=${CXX:-c++}
-SRCINCLUDE="$(cd "$(dirname "$0")/../../.." && pwd)/include"
+# The current directory is already the reproducer directory.
+SRCINCLUDE="$(CDPATH= cd ../../.. && pwd)/include" || exit 2
 
 "$CXX" -O1 -g repro.cpp -o repro -I"$SRCINCLUDE" -I"$LIBDIR/../include" -L"$LIBDIR" -lCoin || exit 2
 
