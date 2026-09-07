@@ -424,26 +424,35 @@ $(function(){initNavTree('SbList_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span> </div>
 <div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>  <span class="keywordtype">void</span> grow(<span class="keyword">const</span> <span class="keywordtype">int</span> size = -1) {</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    <span class="comment">// Default behavior is to double array size.</span></div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    <span class="keywordflow">if</span> (size == -1) this-&gt;itembuffersize &lt;&lt;= 1;</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_class" href="classSbList.html">size &lt;= this-&gt;</a>itembuffersize) <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    <span class="keywordflow">else</span> { this-&gt;itembuffersize = size; }</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    Type * <a class="code hl_class" href="classSbList.html">newbuffer</a> = <span class="keyword">new</span> Type[this-&gt;itembuffersize];</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code hl_class" href="classSbList.html">n</a> = this-&gt;numitems;</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> <a class="code hl_class" href="classSbList.html">i</a> = 0; <a class="code hl_class" href="classSbList.html">i</a> &lt; <a class="code hl_function" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">n</a>; <a class="code hl_class" href="classSbList.html">i</a>++) <a class="code hl_class" href="classSbList.html">newbuffer</a>[<a class="code hl_class" href="classSbList.html">i</a>] = this-&gt;itembuffer[<a class="code hl_class" href="classSbList.html">i</a>];</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    <span class="keywordflow">if</span> (this-&gt;itembuffer != this-&gt;builtinbuffer) <span class="keyword">delete</span>[] this-&gt;itembuffer;</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    this-&gt;itembuffer = <a class="code hl_function" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">newbuffer</a>;</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>  }</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>  <span class="keywordtype">int</span> itembuffersize;</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>  <span class="keywordtype">int</span> numitems;</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>  Type * itembuffer;</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>  Type builtinbuffer[DEFAULTSIZE];</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>};</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    <span class="comment">// Default behavior is to double array size. itembuffersize is</span></div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    <span class="comment">// always &gt;= DEFAULTSIZE for the lifetime of the object (set in</span></div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    <span class="comment">// the constructor, and every other assignment below either</span></div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    <span class="comment">// doubles it or clamps it to at least DEFAULTSIZE), so the &quot;&gt;</span></div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>    <span class="comment">// 0&quot; branch is the only one ever taken in practice -- but the</span></div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    <span class="comment">// explicit floor lets the compiler prove that locally too,</span></div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <span class="comment">// instead of just at this call&#39;s actual call sites, which is</span></div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    <span class="comment">// what silences a GCC -Warray-bounds false positive seen when</span></div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    <span class="comment">// append() is inlined right after code that resets numitems to</span></div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    <span class="comment">// 0 (e.g. truncate(0)) without narrowing itembuffersize.</span></div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    <span class="keywordflow">if</span> (size == -1) this-&gt;itembuffersize = (this-&gt;itembuffersize &gt; 0) ? (this-&gt;itembuffersize &lt;&lt; 1) : DEFAULTSIZE;</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_class" href="classSbList.html">size &lt;= this-&gt;</a>itembuffersize) <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    <span class="keywordflow">else</span> { this-&gt;itembuffersize = size; }</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span> </div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>    Type * <a class="code hl_class" href="classSbList.html">newbuffer</a> = <span class="keyword">new</span> Type[this-&gt;itembuffersize];</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code hl_class" href="classSbList.html">n</a> = this-&gt;numitems;</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> <a class="code hl_class" href="classSbList.html">i</a> = 0; <a class="code hl_class" href="classSbList.html">i</a> &lt; <a class="code hl_function" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">n</a>; <a class="code hl_class" href="classSbList.html">i</a>++) <a class="code hl_class" href="classSbList.html">newbuffer</a>[<a class="code hl_class" href="classSbList.html">i</a>] = this-&gt;itembuffer[<a class="code hl_class" href="classSbList.html">i</a>];</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    <span class="keywordflow">if</span> (this-&gt;itembuffer != this-&gt;builtinbuffer) <span class="keyword">delete</span>[] this-&gt;itembuffer;</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    this-&gt;itembuffer = <a class="code hl_function" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">newbuffer</a>;</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  }</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span> </div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>  <span class="keywordtype">int</span> itembuffersize;</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>  <span class="keywordtype">int</span> numitems;</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>  Type * itembuffer;</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>  Type builtinbuffer[DEFAULTSIZE];</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>};</div>
 </div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span> </div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span><span class="preprocessor">#endif </span><span class="comment">// !COIN_SBLIST_H</span></div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span> </div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span><span class="preprocessor">#endif </span><span class="comment">// !COIN_SBLIST_H</span></div>
 <div class="ttc" id="aclassSbList_html"><div class="ttname"><a href="classSbList.html">SbList</a></div><div class="ttdoc">The SbList class is a template container class for lists.</div><div class="ttdef"><b>Definition</b> SbList.h:70</div></div>
 <div class="ttc" id="aclassSbList_html_a0dc149facedb4f0ac8c1ccb2d628ed1d"><div class="ttname"><a href="classSbList.html#a0dc149facedb4f0ac8c1ccb2d628ed1d">SbList::truncate</a></div><div class="ttdeci">void truncate(const int length, const int dofit=0)</div><div class="ttdef"><b>Definition</b> SbList.h:172</div></div>
 <div class="ttc" id="aclassSbList_html_a0eefe70ca4d6d829657e3e8f70f64595"><div class="ttname"><a href="classSbList.html#a0eefe70ca4d6d829657e3e8f70f64595">SbList::getLength</a></div><div class="ttdeci">int getLength(void) const</div><div class="ttdef"><b>Definition</b> SbList.h:168</div></div>
@@ -475,7 +484,7 @@ $(function(){initNavTree('SbList_8h_source.html',''); initResizable(); });
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_ca70c12236109a46e85d75bbee1802dc.html">lists</a></li><li class="navelem"><b>SbList.h</b></li>
-    <li class="footer">Generated on Mon Sep 7 2026 05:18:48 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Mon Sep 7 2026 05:19:59 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
