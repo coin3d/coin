@@ -473,14 +473,17 @@ SoNodeVisualize::traverse(SoProfilerStats * stats)
     green = 1.0f - (float)msec / (float)CRITICAL;
   }
 
-  if(this->node->isOfType(SoSeparator::getClassTypeId()) &&
-     0 // FIXME: larsa
-     //stats->hasGLCache((SoSeparator *)this->node)
-     ) {
+  // FIXME: larsa -- deliberately disabled, stats->hasGLCache() isn't
+  // wired up yet; keep for future re-enabling
+#if 0
+  if (this->node->isOfType(SoSeparator::getClassTypeId())
+      //&& stats->hasGLCache((SoSeparator *)this->node)
+      ) {
     // FIXME All children are cached. Make them inherit material
     color = SbVec3f(0.0f, green, 1.0f);
     transparency = 0.0f;
   }
+#endif // 0
 
   if (this->node->getTypeId().getName() == SbName("ScenarioSimulator"))
     color = SbVec3f(1.0f, green, 0.0f);
