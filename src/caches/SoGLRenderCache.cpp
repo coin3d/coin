@@ -147,7 +147,12 @@ SoGLRenderCache::call(SoState * state)
       SoGLRenderCache* parentCache = static_cast<SoGLRenderCache *>(
         SoCacheElement::getCurrentCache(state)
        );
-      parentCache->addNestedCache(PRIVATE(this)->displaylist);
+      // state->isCacheOpen() and getCurrentCache() are backed by the same
+      // ancestor-walking lookup, so this should never be NULL here -- but
+      // guard against it rather than dereferencing a NULL pointer through
+      // a virtual call if that invariant is ever broken.
+      assert(parentCache != NULL);
+      if (parentCache) parentCache->addNestedCache(PRIVATE(this)->displaylist);
     }
     else {
       PRIVATE(this)->displaylist->call(state);
