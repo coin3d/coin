@@ -192,17 +192,48 @@ spidermonkey(void)
 
 
   /* Define macro for grabbing function symbols. Casting the type is
-     necessary for this file to be compatible with C++ compilers. */
+     necessary for this file to be compatible with C++ compilers.
+
+     A missing symbol clears sm->available and logs a debug-mode
+     message rather than assert()ing: a library that opens successfully
+     but doesn't export a given flat C symbol (e.g. any current
+     SpiderMonkey, which exports a name-mangled C++ API instead of the
+     ~2007-era C API this glue expects) is an ordinary, expected runtime
+     condition -- "found a library, but not the one this glue can
+     drive" -- not a programming-error invariant violation, so it must
+     be handled the same way in Debug and Release builds instead of
+     aborting the whole process via a failed assert() only in Debug.
+     Tracking this per-symbol (rather than re-deriving availability
+     afterward from a hand-picked subset of "the important" functions)
+     also means every symbol registered below counts, automatically,
+     including ones added here in the future -- not just whichever
+     handful someone remembered to list in a separate check. */
   #define REGISTER_FUNC(_funcname_, _funcsig_) \
           sm->_funcname_ = (_funcsig_)cc_dl_sym(spidermonkey_libhandle, SO__QUOTE(_funcname_)); \
-          assert(sm->_funcname_)
+          if (!sm->_funcname_) { \
+            sm->available = 0; \
+            if (spidermonkey_debug()) { \
+              cc_debugerror_postinfo("spidermonkey", \
+                                     "missing expected symbol '%s' -- " \
+                                     "disabling JavaScript support.", \
+                                     SO__QUOTE(_funcname_)); \
+            } \
+          }
 
   /* Some functions in SpiderMonkey may have a symbol name different
      from the API name. */
   #define REGISTER_FUNC_ALTERNATE(_funcname_, _altname_, _funcsig_) \
           sm->_funcname_ = (_funcsig_)cc_dl_sym(spidermonkey_libhandle, SO__QUOTE(_funcname_)); \
           if (sm->_funcname_ == NULL) { sm->_funcname_ = (_funcsig_)cc_dl_sym(spidermonkey_libhandle, SO__QUOTE(_altname_)); } \
-          assert(sm->_funcname_)
+          if (!sm->_funcname_) { \
+            sm->available = 0; \
+            if (spidermonkey_debug()) { \
+              cc_debugerror_postinfo("spidermonkey", \
+                                     "missing expected symbol '%s' (or alternate '%s') -- " \
+                                     "disabling JavaScript support.", \
+                                     SO__QUOTE(_funcname_), SO__QUOTE(_altname_)); \
+            } \
+          }
 
 #elif defined(HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING) /* static linking */
 
@@ -322,31 +353,6 @@ spidermonkey(void)
   REGISTER_FUNC(JS_GetFunctionName, JS_GetFunctionName_t);
   REGISTER_FUNC(JS_GetConstructor, JS_GetConstructor_t);
   REGISTER_FUNC(JS_DestroyIdArray, JS_DestroyIdArray_t);
-
-  /* REGISTER_FUNC() only assert()s a missing symbol, which is a no-op
-     in release builds -- leaving sm->available optimistically TRUE
-     with a handful of NULL function pointers underneath. That combination
-     bites hardest when a library was actually found and opened (e.g.
-     the user pointed COIN_SPIDERMONKEY_LIBNAME at a modern SpiderMonkey
-     install) but its embedding API has moved on since this glue was
-     written and none of the expected C symbols resolve: callers that
-     correctly check spidermonkey()->available before using the API
-     would otherwise be misled into calling through NULL function
-     pointers. Re-derive availability from whether the handful of
-     functions needed to create a runtime, create a context and run a
-     script at all actually resolved, instead of trusting the "be
-     optimistic" default irrespective of what was found. */
-  if (sm->available &&
-      !(sm->JS_NewRuntime && sm->JS_NewContext && sm->JS_DestroyContext &&
-        sm->JS_InitStandardClasses && sm->JS_EvaluateScript)) {
-    sm->available = 0;
-    if (spidermonkey_debug()) {
-      cc_debugerror_postinfo("spidermonkey",
-                             "Found a SpiderMonkey library, but it does not "
-                             "export the (obsolete) API this glue expects -- "
-                             "disabling JavaScript support.");
-    }
-  }
 
 wrapperexit:
   CC_SYNC_END(spidermonkey);
