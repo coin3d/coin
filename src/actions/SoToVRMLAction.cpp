@@ -162,7 +162,7 @@ public:
     if (this->vrmlpath) {
       this->vrmlpath->unref();
     }
-    this->vrmlpath = reclassify_cast<SoFullPath *>(new SoPath);
+    this->vrmlpath = new SoPath;
     this->vrmlpath->ref();
 
     if (this->vrmlroot) {
@@ -185,7 +185,7 @@ public:
   SbBool nodefuse;
   SoCallbackAction cbaction;
   SoSearchAction searchaction;
-  SoFullPath * vrmlpath;
+  SoPath * vrmlpath;
   SoSeparator * vrmlroot;
 
   SbBSPTree * bsptree;
@@ -573,9 +573,9 @@ SoToVRMLActionP::search_for_node(SoNode * root, const SbName & name, const SoTyp
 
   this->searchaction.apply(root);
   SoNode * tail = NULL;
-  SoFullPath * path = reclassify_cast<SoFullPath*>(this->searchaction.getPath());
+  SoPath * path = this->searchaction.getPath();
   if (path) {
-    tail = path->getTail();
+    tail = path->getFullTail();
   }
   this->searchaction.reset();
 #ifdef HAVE_NODEKITS
@@ -587,7 +587,7 @@ SoToVRMLActionP::search_for_node(SoNode * root, const SbName & name, const SoTyp
 SoGroup *
 SoToVRMLActionP::get_current_tail(void)
 {
-  SoNode * node = this->vrmlpath->getTail();
+  SoNode * node = this->vrmlpath->getFullTail();
   assert(node->isOfType(SoGroup::getClassTypeId()));
   return coin_assert_cast<SoGroup*>(node);
 }
