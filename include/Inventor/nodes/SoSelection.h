@@ -41,7 +41,8 @@
 class SoSelection;
 class SoPath;
 class SoPickedPoint;
-class SoCallbackList;
+class SoSelectionPathCBList;
+class SoSelectionClassCBList;
 
 typedef void SoSelectionPathCB(void * data, SoPath * path);
 typedef void SoSelectionClassCB(void * data, SoSelection * sel);
@@ -112,16 +113,16 @@ protected: // unfortunately only protected in OIV
 
   SoPathList selectionList;
 
-  SoCallbackList *selCBList;
-  SoCallbackList *deselCBList;
-  SoCallbackList *startCBList;
-  SoCallbackList *finishCBList;
+  SoSelectionPathCBList *selCBList;
+  SoSelectionPathCBList *deselCBList;
+  SoSelectionClassCBList *startCBList;
+  SoSelectionClassCBList *finishCBList;
 
   SoSelectionPickCB *pickCBFunc;
   void *pickCBData;
   SbBool callPickCBOnlyIfSelectable;
 
-  SoCallbackList *changeCBList;
+  SoSelectionClassCBList *changeCBList;
 
   SoPath *mouseDownPickPath;
   SbBool pickMatching;

@@ -99,7 +99,7 @@
 #include <Inventor/elements/SoWindowElement.h>
 #include <Inventor/elements/SoGLDepthBufferElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/lists/SoCallbackList.h>
+#include <Inventor/lists/SbList.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/misc/SoState.h>
@@ -536,6 +536,61 @@
 
 // *************************************************************************
 
+// Internal helper class, used in place of SoCallbackList for the
+// pre-render callback list below.
+//
+// SoCallbackList stores callbacks type-erased as SoCallbackListCB
+// (void(*)(void*,void*)) and invokes them through that generic type
+// regardless of what a given callback was actually declared with --
+// addPreRenderCallback() used to reinterpret_cast<>() the caller's
+// SoGLPreRenderCB* (void(*)(void*,SoGLRenderAction*)) to
+// SoCallbackListCB* to store it, and invokeCallbacks() then called
+// back through the generic type. Calling a function through a
+// function pointer of a type other than the one it was defined with
+// is undefined behavior (caught by e.g. -fsanitize=function), even
+// though it has always worked in practice on every ABI Coin supports,
+// since void* and SoGLRenderAction* have identical size and
+// representation everywhere.
+//
+// This class avoids the type mismatch altogether by never erasing the
+// type in the first place: SoGLPreRenderCB pointers are stored and
+// invoked as SoGLPreRenderCB the whole way through, so there is
+// nothing to reinterpret_cast. Mirrors
+// SoCallbackList::{addCallback, removeCallback, invokeCallbacks}'
+// documented behavior, including that invoking iterates over a
+// snapshot so it remains safe for a callback to add or remove
+// callbacks (including itself).
+class SoGLPreRenderCBList {
+public:
+  void add(SoGLPreRenderCB * func, void * data) {
+    this->funcs.append(func);
+    this->datas.append(data);
+  }
+  void remove(SoGLPreRenderCB * func, void * data) {
+    for (int i = this->funcs.getLength() - 1; i >= 0; i--) {
+      if (this->funcs[i] == func && this->datas[i] == data) {
+        this->funcs.remove(i);
+        this->datas.remove(i);
+        return;
+      }
+    }
+#if COIN_DEBUG
+    SoDebugError::post("SoGLRenderAction::removePreRenderCallback",
+                        "Tried to remove non-existent callback function.");
+#endif // COIN_DEBUG
+  }
+  void invoke(SoGLRenderAction * action) {
+    SbList<SoGLPreRenderCB *> funcscopy(this->funcs);
+    SbList<void *> datascopy(this->datas);
+    for (int i = 0; i < funcscopy.getLength(); i++) {
+      funcscopy[i](datascopy[i], action);
+    }
+  }
+private:
+  SbList<SoGLPreRenderCB *> funcs;
+  SbList<void *> datas;
+};
+
 class SoGLRenderActionP {
 public:
   SoGLRenderActionP(void) : action(NULL) { }
@@ -568,7 +623,7 @@ public:
   SbBool isrendering;
   SbBool isrenderingoverlay;
   SbBool transpobjdepthwrite;
-  SoCallbackList precblist;
+  SoGLPreRenderCBList precblist;
 
   enum { RENDERING_UNSET, RENDERING_SET_DIRECT, RENDERING_SET_INDIRECT };
   int rendering;
@@ -1534,7 +1589,7 @@ SoGLRenderActionP::doPathSort(void)
 void
 SoGLRenderAction::addPreRenderCallback(SoGLPreRenderCB * func, void * userdata)
 {
-  PRIVATE(this)->precblist.addCallback(reinterpret_cast<SoCallbackListCB *>(func), userdata);
+  PRIVATE(this)->precblist.add(func, userdata);
 }
 
 /*!
@@ -1547,7 +1602,7 @@ SoGLRenderAction::addPreRenderCallback(SoGLPreRenderCB * func, void * userdata)
 void
 SoGLRenderAction::removePreRenderCallback(SoGLPreRenderCB * func, void * userdata)
 {
-  PRIVATE(this)->precblist.removeCallback(reinterpret_cast<SoCallbackListCB *>(func), userdata);
+  PRIVATE(this)->precblist.remove(func, userdata);
 }
 
 /*!
@@ -1719,7 +1774,7 @@ SoGLRenderActionP::render(SoNode * node)
                                FALSE, !this->isDirectRendering(state));
   SoGLRenderPassElement::set(state, 0);
 
-  this->precblist.invokeCallbacks(static_cast<void *>(this->action));
+  this->precblist.invoke(this->action);
 
   if (this->action->getNumPasses() > 1 && this->internal_multipass) {
     // Check if the current OpenGL context has an accumulation buffer

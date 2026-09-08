@@ -116,7 +116,6 @@
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
-#include <Inventor/lists/SoCallbackList.h>
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoCallback.h>
@@ -127,6 +126,7 @@
 #include <Inventor/misc/SoGLDriverDatabase.h>
 
 #include "nodes/SoSubNodeP.h"
+#include "nodes/SoSelectionP.h"
 #include "coindefs.h" // COIN_OBSOLETED()
 
 // *************************************************************************
