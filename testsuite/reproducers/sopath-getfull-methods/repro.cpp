@@ -13,35 +13,57 @@
 // The new SoPath::getFullXxx() methods expose the exact same "raw"
 // data directly on SoPath, without any cast.
 //
+// P2 fix (code review): this reproducer originally cross-checked the
+// new getFullXxx() methods against reinterpret_cast<SoFullPath *>
+// (path)->getXxx() on a plain SoPath -- exactly the UB this whole
+// branch exists to eliminate, confirmed by the review with
+// -fsanitize=vptr. Replaced that with two independent checks that
+// introduce no cast at all:
+//
+//   - Check 1 (below) cross-checks the new methods against values
+//     obtained through entirely different, already-legitimate
+//     routes: SoBaseKit::getPart() (asks the nodekit catalog for
+//     "translator1" directly, with no path involved at all) for the
+//     expected tail node, and SoPath::getIndex()/getNode() (the
+//     plain, absolute-index accessors, which SoFullPath doesn't
+//     override and which already operate correctly across the full
+//     range -- see SoPath::getNode()'s own bounds check, which uses
+//     getFullLength()) for the expected index/node-at-position.
+//
+//   - Check 2 (further below) tests SoFullPath's own implementation
+//     (which, after this branch's Phase 1, delegates to the new
+//     SoPath methods instead of touching this->nodes/indices
+//     directly) using a real SoTempPath instead of a cast:
+//     SoTempPath genuinely inherits from SoFullPath (see
+//     include/Inventor/misc/SoTempPath.h), so calling
+//     SoFullPath::getTail()/getLength()/etc. on one is completely
+//     legitimate -- no cast, no UB -- and its length/tail/etc are
+//     fully known here since the path is built by hand from three
+//     plain nodes.
+//
 // This builds a real SoNodeKitPath into an SoTransformerDragger's
 // hidden internal geometry (a nodekit "part"), where the
 // hidden-vs-full distinction is actually exercised (a plain
 // SoSeparator-only path has no hidden nodes and wouldn't tell
-// getLength() and getFullLength() apart), and checks:
-//   - SoPath::getLength()/getTail() still stop at the first hidden
-//     node (unchanged, pre-existing behavior).
-//   - SoPath::getFullLength()/getFullTail()/getFullNodeFromTail()/
-//     getFullIndexFromTail() return the same values the *old*
-//     reinterpret_cast<SoFullPath*>(path)->getXxx() pattern would --
-//     compared directly against that still-present, still-legal (if
-//     UB) pattern here, since no call site has been migrated to the
-//     new methods yet.
-//   - SoFullPath::getTail()/getLength()/etc, now implemented by
-//     delegating to the new SoPath methods instead of touching
-//     this->nodes/indices directly, still return the same values too.
+// getLength() and getFullLength() apart).
 
 #include <cstdio>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInteraction.h>
-#include <Inventor/SoFullPath.h>
+#include <Inventor/misc/SoTempPath.h>
 #include <Inventor/draggers/SoTransformerDragger.h>
 #include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoCube.h>
 
 int
 main()
 {
   SoDB::init();
   SoInteraction::init();
+
+  int failures = 0;
+
+  // *** Check 1: real nodekit path, hidden children actually exercised ***
 
   SoSeparator * root = new SoSeparator;
   root->ref();
@@ -57,90 +79,130 @@ main()
   }
   kp->ref();
   // createPathToPart() only returns a path to the dragger itself, not
-  // into geom -- append the rest by hand isn't needed: what matters
-  // for this check is just that the path runs through the nodekit's
-  // hidden catalog machinery at all, which createPathToPart() already
-  // guarantees (SoNodeKitPath paths always carry hidden nodes for the
-  // kit's internal structure down to the named part).
+  // into geom -- what matters for this check is just that the path
+  // runs through the nodekit's hidden catalog machinery at all, which
+  // createPathToPart() already guarantees (SoNodeKitPath paths always
+  // carry hidden nodes for the kit's internal structure down to the
+  // named part).
   SoPath * path = kp;
 
+  // Independently-obtained expected tail: ask the nodekit catalog
+  // directly, no path involved.
+  SoNode * expectedtail = dragger->getPart("translator1", TRUE);
+  if (!expectedtail) {
+    fprintf(stderr, "[repro] FAIL: getPart(\"translator1\") returned NULL\n");
+    failures++;
+  }
+
   int plainlength = path->getLength();
-  int fulllength_new = path->getFullLength();
-  int fulllength_old = reinterpret_cast<SoFullPath *>(path)->getLength();
-
+  int fulllength = path->getFullLength();
   SoNode * plaintail = path->getTail();
-  SoNode * fulltail_new = path->getFullTail();
-  SoNode * fulltail_old = reinterpret_cast<SoFullPath *>(path)->getTail();
+  SoNode * fulltail = path->getFullTail();
+  SoNode * fullnodefromtail = path->getFullNodeFromTail(0);
+  int fullindexfromtail = path->getFullIndexFromTail(0);
 
-  SoNode * fullnodefromtail_new = path->getFullNodeFromTail(0);
-  SoNode * fullnodefromtail_old = reinterpret_cast<SoFullPath *>(path)->getNodeFromTail(0);
-
-  int fullindexfromtail_new = path->getFullIndexFromTail(0);
-  int fullindexfromtail_old = reinterpret_cast<SoFullPath *>(path)->getIndexFromTail(0);
-
-  fprintf(stderr, "[repro] plain getLength()=%d  getFullLength() new=%d old=%d\n",
-          plainlength, fulllength_new, fulllength_old);
-  fprintf(stderr, "[repro] plain getTail()=%p  getFullTail() new=%p old=%p\n",
-          (void *)plaintail, (void *)fulltail_new, (void *)fulltail_old);
-  fprintf(stderr, "[repro] getFullNodeFromTail(0) new=%p old=%p\n",
-          (void *)fullnodefromtail_new, (void *)fullnodefromtail_old);
-  fprintf(stderr, "[repro] getFullIndexFromTail(0) new=%d old=%d\n",
-          fullindexfromtail_new, fullindexfromtail_old);
-
-  int failures = 0;
+  fprintf(stderr, "[repro] plain getLength()=%d  getFullLength()=%d\n",
+          plainlength, fulllength);
+  fprintf(stderr, "[repro] plain getTail()=%p  getFullTail()=%p  expected=%p\n",
+          (void *)plaintail, (void *)fulltail, (void *)expectedtail);
+  fprintf(stderr, "[repro] getFullNodeFromTail(0)=%p  getFullIndexFromTail(0)=%d\n",
+          (void *)fullnodefromtail, fullindexfromtail);
 
   // The whole point of the split: full length must exceed the plain,
   // hidden-node-truncated length for a real nodekit path, otherwise
   // this test isn't actually exercising the distinction it claims to.
-  if (fulllength_new <= plainlength) {
+  if (fulllength <= plainlength) {
     fprintf(stderr, "[repro] FAIL: expected getFullLength() > getLength() for a nodekit path\n");
     failures++;
   }
-  if (fulllength_new != fulllength_old) {
-    fprintf(stderr, "[repro] FAIL: getFullLength() disagrees with the old reinterpret_cast pattern\n");
+  if (fulltail != expectedtail) {
+    fprintf(stderr, "[repro] FAIL: getFullTail() doesn't match getPart(\"translator1\")\n");
     failures++;
   }
-  if (fulltail_new != fulltail_old) {
-    fprintf(stderr, "[repro] FAIL: getFullTail() disagrees with the old reinterpret_cast pattern\n");
+  if (fullnodefromtail != expectedtail) {
+    fprintf(stderr, "[repro] FAIL: getFullNodeFromTail(0) doesn't match getPart(\"translator1\")\n");
     failures++;
   }
-  if (fullnodefromtail_new != fullnodefromtail_old) {
-    fprintf(stderr, "[repro] FAIL: getFullNodeFromTail(0) disagrees with the old reinterpret_cast pattern\n");
+  // Cross-check against the plain, absolute-index accessors (which
+  // SoFullPath doesn't override, and which already range over the
+  // full path -- see SoPath::getNode()'s own bounds check).
+  if (path->getNode(fulllength - 1) != expectedtail) {
+    fprintf(stderr, "[repro] FAIL: getNode(getFullLength()-1) doesn't match getPart(\"translator1\")\n");
     failures++;
   }
-  if (fullindexfromtail_new != fullindexfromtail_old) {
-    fprintf(stderr, "[repro] FAIL: getFullIndexFromTail(0) disagrees with the old reinterpret_cast pattern\n");
-    failures++;
-  }
-  // getFullTail() is, by definition, the very last node -- must match
-  // getFullNodeFromTail(0).
-  if (fulltail_new != fullnodefromtail_new) {
-    fprintf(stderr, "[repro] FAIL: getFullTail() != getFullNodeFromTail(0)\n");
-    failures++;
-  }
-
-  // SoFullPath, now delegating to the new SoPath methods instead of
-  // touching this->nodes/indices directly, must still match too.
-  SoFullPath * fp = reinterpret_cast<SoFullPath *>(path);
-  if (fp->getLength() != fulllength_new) {
-    fprintf(stderr, "[repro] FAIL: SoFullPath::getLength() no longer matches getFullLength()\n");
-    failures++;
-  }
-  if (fp->getTail() != fulltail_new) {
-    fprintf(stderr, "[repro] FAIL: SoFullPath::getTail() no longer matches getFullTail()\n");
-    failures++;
-  }
-  if (fp->getNodeFromTail(0) != fullnodefromtail_new) {
-    fprintf(stderr, "[repro] FAIL: SoFullPath::getNodeFromTail(0) no longer matches getFullNodeFromTail(0)\n");
-    failures++;
-  }
-  if (fp->getIndexFromTail(0) != fullindexfromtail_new) {
-    fprintf(stderr, "[repro] FAIL: SoFullPath::getIndexFromTail(0) no longer matches getFullIndexFromTail(0)\n");
+  if (fullindexfromtail != path->getIndex(fulllength - 1)) {
+    fprintf(stderr, "[repro] FAIL: getFullIndexFromTail(0) doesn't match getIndex(getFullLength()-1)\n");
     failures++;
   }
 
   kp->unref();
   root->unref();
+
+  // *** Check 2: SoFullPath's own implementation, via a real SoTempPath ***
+
+  SoSeparator * broot = new SoSeparator;
+  broot->ref();
+  SoSeparator * bbranch = new SoSeparator;
+  broot->addChild(bbranch);
+  SoCube * bleaf = new SoCube;
+  bbranch->addChild(bleaf);
+
+  // SoTempPath genuinely *is* an SoFullPath (real inheritance, see
+  // include/Inventor/misc/SoTempPath.h) -- built by hand here, so its
+  // length/tail/etc are fully known values, not derived from anything
+  // being tested.
+  SoTempPath temppath(3);
+  temppath.ref();
+  temppath.append(broot);
+  temppath.append(bbranch);
+  temppath.append(bleaf);
+
+  fprintf(stderr, "[repro] SoTempPath: SoFullPath::getLength()=%d getTail()=%p\n",
+          temppath.getLength(), (void *)temppath.getTail());
+
+  if (temppath.getLength() != 3) {
+    fprintf(stderr, "[repro] FAIL: SoFullPath::getLength() on SoTempPath expected 3\n");
+    failures++;
+  }
+  if (temppath.getTail() != bleaf) {
+    fprintf(stderr, "[repro] FAIL: SoFullPath::getTail() on SoTempPath expected bleaf\n");
+    failures++;
+  }
+  if (temppath.getNodeFromTail(0) != bleaf) {
+    fprintf(stderr, "[repro] FAIL: SoFullPath::getNodeFromTail(0) on SoTempPath expected bleaf\n");
+    failures++;
+  }
+  if (temppath.getIndexFromTail(0) != 0) {
+    fprintf(stderr, "[repro] FAIL: SoFullPath::getIndexFromTail(0) on SoTempPath expected 0 "
+                    "(bleaf is bbranch's only child)\n");
+    failures++;
+  }
+  // A path built with no hidden children at all: plain and full must
+  // agree exactly.
+  if (temppath.getFullLength() != 3) {
+    fprintf(stderr, "[repro] FAIL: SoPath::getFullLength() on SoTempPath expected 3\n");
+    failures++;
+  }
+  if (temppath.getFullTail() != bleaf) {
+    fprintf(stderr, "[repro] FAIL: SoPath::getFullTail() on SoTempPath expected bleaf\n");
+    failures++;
+  }
+  if (temppath.getFullNodeFromTail(0) != bleaf) {
+    fprintf(stderr, "[repro] FAIL: SoPath::getFullNodeFromTail(0) on SoTempPath expected bleaf\n");
+    failures++;
+  }
+  if (temppath.getFullIndexFromTail(0) != 0) {
+    fprintf(stderr, "[repro] FAIL: SoPath::getFullIndexFromTail(0) on SoTempPath expected 0\n");
+    failures++;
+  }
+
+  // temppath is stack-allocated: only ref() it (as an established
+  // idiom elsewhere in Coin, e.g. SoPickedPoint::applyMatrixAction(),
+  // does -- to silence an internal Coin warning), never unref() it --
+  // SoBase::unref() calls delete this once the count reaches zero,
+  // which would be fatal for a non-heap object. Its destructor runs
+  // normally via the stack unwind at the end of main().
+  broot->unref();
 
   if (failures > 0) {
     fprintf(stderr, "[repro] FAIL: %d check(s) failed\n", failures);
