@@ -34,7 +34,24 @@
 //    internal SoGLRenderAction's abort callback for the whole
 //    duration of every render() call, so this alone exercises it on
 //    every node visited during rendering.
+//
+//    SoOffscreenRenderer's default GLX backend first probes for
+//    *indirect* (software) context support (glxglue_context_create_
+//    software() in src/glue/gl_glx.cpp), which some environments
+//    (including, at the time of writing, the one this was first
+//    verified in) refuse entirely -- e.g. since RHEL8, many
+//    distributions disable indirect GLX by default following
+//    https://www.x.org/wiki/Development/Security/Advisory-2014-12-09/.
+//    Confirmed independently with a minimal direct-vs-indirect
+//    glXCreateContext() probe: direct succeeds, indirect returns NULL.
+//    Coin already has an escape hatch for exactly this, documented
+//    right there in glxglue_context_create_software()'s own comment:
+//    the COIN_GLX_PIXMAP_DIRECT_RENDERING environment variable forces
+//    a direct-rendering context for the offscreen GLX pixmap instead.
+//    Set it here, before SoDB::init(), so it's in effect before the
+//    glue layer's first (lazily cached) context-creation attempt.
 
+#include <cstdlib>
 #include <cstdio>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoOffscreenRenderer.h>
@@ -143,18 +160,7 @@ test_pathswitch(void)
   return emptywhenmismatched && nonemptywhenmatched;
 }
 
-// Not counted as a pass/fail criterion: SoOffscreenRenderer's default
-// backend needs an *indirect* (software) GLX context on X11, which
-// some environments (including, at the time of writing, the one this
-// was verified in -- confirmed with a minimal direct-vs-indirect
-// glXCreateContext() probe) don't support at all regardless of this
-// fix, for reasons unrelated to Coin. When it *can* run, this
-// exercises SoOffscreenRendererP::GLRenderAbortCallback()'s migrated
-// getFullTail() on every node visited during the render (it's
-// unconditionally registered as the internal SoGLRenderAction's abort
-// callback for the whole render() call) -- when it can't, this is
-// reported as informational only, not a failure.
-static void
+static SbBool
 test_offscreen_render(void)
 {
   SbViewportRegion vp(64, 64);
@@ -170,21 +176,27 @@ test_offscreen_render(void)
   camera->viewAll(root, vp);
 
   SbBool ok = renderer.render(root);
-  fprintf(stderr, "[repro] SoOffscreenRenderer::render() = %d (informational -- "
-                  "not counted towards pass/fail; needs indirect GLX support)\n", (int)ok);
+  fprintf(stderr, "[repro] SoOffscreenRenderer::render() = %d\n", (int)ok);
 
   root->unref();
+  return ok;
 }
 
 int
 main()
 {
+  // See the comment on test_offscreen_render() above: forces a direct
+  // (rather than indirect/software) GLX context for the offscreen
+  // pixmap, since some environments refuse indirect contexts outright.
+  // Must be set before SoDB::init() / any GL context creation.
+  setenv("COIN_GLX_PIXMAP_DIRECT_RENDERING", "1", 0); // don't override if the caller already set it
+
   SoDB::init();
 
   int failures = 0;
   if (!test_pathlist_sort_uniquify()) { fprintf(stderr, "[repro] FAIL: pathlist sort/uniquify\n"); failures++; }
   if (!test_pathswitch()) { fprintf(stderr, "[repro] FAIL: pathswitch\n"); failures++; }
-  test_offscreen_render(); // informational only, see comment above
+  if (!test_offscreen_render()) { fprintf(stderr, "[repro] FAIL: offscreen render\n"); failures++; }
 
   if (failures > 0) {
     fprintf(stderr, "[repro] FAIL: %d check(s) failed\n", failures);
