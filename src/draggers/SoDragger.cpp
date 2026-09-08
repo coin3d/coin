@@ -259,6 +259,7 @@
 #include <Inventor/SoPickedPoint.h>
 
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/lists/SbList.h>
 
 #include "coindefs.h" // COIN_OBSOLETED
 #include "tidbitsp.h"
@@ -309,6 +310,59 @@ public:
   SbMatrix worldToDragger;
 };
 
+// Internal helper class, used in place of SoCallbackList for the five
+// SoDraggerCB callback lists below.
+//
+// SoCallbackList stores callbacks type-erased as SoCallbackListCB
+// (void(*)(void*,void*)) and invokes them through that generic type
+// regardless of what a given callback was actually declared with --
+// e.g. addStartCallback() reinterpret_cast<>s the caller's
+// SoDraggerCB* (void(*)(void*,SoDragger*)) to SoCallbackListCB* to
+// store it, and invokeCallbacks() then calls back through the generic
+// type. Calling a function through a function pointer of a type other
+// than the one it was defined with is undefined behavior (caught by
+// e.g. -fsanitize=function), even though it has always worked in
+// practice on every ABI Coin supports, since void* and SoDragger* have
+// identical size and representation everywhere.
+//
+// This class avoids the type mismatch altogether by never erasing the
+// type in the first place: SoDraggerCB pointers are stored and
+// invoked as SoDraggerCB the whole way through, so there is nothing to
+// reinterpret_cast. Mirrors SoCallbackList::{addCallback,
+// removeCallback, invokeCallbacks}' documented behavior, including
+// that invoking iterates over a snapshot so it remains safe for a
+// callback to add or remove callbacks (including itself).
+class SoDraggerCBList {
+public:
+  void add(SoDraggerCB * func, void * data) {
+    this->funcs.append(func);
+    this->datas.append(data);
+  }
+  void remove(SoDraggerCB * func, void * data) {
+    for (int i = this->funcs.getLength() - 1; i >= 0; i--) {
+      if (this->funcs[i] == func && this->datas[i] == data) {
+        this->funcs.remove(i);
+        this->datas.remove(i);
+        return;
+      }
+    }
+#if COIN_DEBUG
+    SoDebugError::post("SoDragger::removeCallback",
+                       "Tried to remove non-existent callback function.");
+#endif // COIN_DEBUG
+  }
+  void invoke(SoDragger * dragger) {
+    SbList<SoDraggerCB *> funcscopy(this->funcs);
+    SbList<void *> datascopy(this->datas);
+    for (int i = 0; i < funcscopy.getLength(); i++) {
+      funcscopy[i](datascopy[i], dragger);
+    }
+  }
+private:
+  SbList<SoDraggerCB *> funcs;
+  SbList<void *> datas;
+};
+
 class SoDraggerP {
 public:
   int mingesture;
@@ -321,11 +375,11 @@ public:
   SoDraggerCache * draggercache;
   SbBool didmousemove;
 
-  SoCallbackList startCB;
-  SoCallbackList motionCB;
-  SoCallbackList finishCB;
-  SoCallbackList valueChangedCB;
-  SoCallbackList otherEventCB;
+  SoDraggerCBList startCB;
+  SoDraggerCBList motionCB;
+  SoDraggerCBList finishCB;
+  SoDraggerCBList valueChangedCB;
+  SoDraggerCBList otherEventCB;
   SbMatrix startmotionmatrix;
   SbVec3f startingpoint;
   SbViewVolume viewvolume;
@@ -613,7 +667,7 @@ SoDragger::getProjectorEpsilon(void) const
 void
 SoDragger::addStartCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->startCB.addCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
+  PRIVATE(this)->startCB.add(func, data);
 }
 
 /*!
@@ -624,7 +678,7 @@ SoDragger::addStartCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::removeStartCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->startCB.removeCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
+  PRIVATE(this)->startCB.remove(func, data);
 }
 
 /*!
@@ -634,7 +688,7 @@ SoDragger::removeStartCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::addMotionCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->motionCB.addCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
+  PRIVATE(this)->motionCB.add(func, data);
 }
 
 /*!
@@ -645,7 +699,7 @@ SoDragger::addMotionCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::removeMotionCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->motionCB.removeCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
+  PRIVATE(this)->motionCB.remove(func, data);
 }
 
 /*!
@@ -654,7 +708,7 @@ SoDragger::removeMotionCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::addFinishCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->finishCB.addCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
+  PRIVATE(this)->finishCB.add(func, data);
 }
 
 /*!
@@ -665,7 +719,7 @@ SoDragger::addFinishCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::removeFinishCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->finishCB.removeCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
+  PRIVATE(this)->finishCB.remove(func, data);
 }
 
 /*!
@@ -677,7 +731,7 @@ SoDragger::removeFinishCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::addValueChangedCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->valueChangedCB.addCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
+  PRIVATE(this)->valueChangedCB.add(func, data);
 }
 
 /*!
@@ -688,7 +742,7 @@ SoDragger::addValueChangedCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::removeValueChangedCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->valueChangedCB.removeCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
+  PRIVATE(this)->valueChangedCB.remove(func, data);
 }
 
 /*!
@@ -746,7 +800,7 @@ SoDragger::getMotionMatrix(void)
 void
 SoDragger::addOtherEventCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->otherEventCB.addCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
+  PRIVATE(this)->otherEventCB.add(func, data);
 }
 
 /*!
@@ -757,7 +811,7 @@ SoDragger::addOtherEventCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::removeOtherEventCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->otherEventCB.removeCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
+  PRIVATE(this)->otherEventCB.remove(func, data);
 }
 
 /*!
@@ -964,7 +1018,7 @@ void
 SoDragger::valueChanged(void)
 {
   if (PRIVATE(this)->valuechangedcbenabled) {
-    PRIVATE(this)->valueChangedCB.invokeCallbacks(this);
+    PRIVATE(this)->valueChangedCB.invoke(this);
   }
 }
 
@@ -1657,7 +1711,7 @@ SoDragger::handleEvent(SoHandleEventAction * action)
     const SoPickedPoint * pp = this->getPickedPointForStart(action);
     if (pp && this->isPicked(pp->getPath())) {
       this->eventHandled(event, action);
-      PRIVATE(this)->otherEventCB.invokeCallbacks(this);
+      PRIVATE(this)->otherEventCB.invoke(this);
     }
   }
   else if (SO_MOUSE_PRESS_EVENT(event, BUTTON1)) {
@@ -1709,7 +1763,7 @@ SoDragger::handleEvent(SoHandleEventAction * action)
       PRIVATE(this)->startlocaterpos = event->getPosition();
       PRIVATE(this)->isgrabbing = FALSE;
       this->saveStartParameters();
-      PRIVATE(this)->startCB.invokeCallbacks(this);
+      PRIVATE(this)->startCB.invoke(this);
     }
   }
   else if (this->isActive.getValue() && SO_MOUSE_RELEASE_EVENT(event, BUTTON1)) {
@@ -1736,13 +1790,13 @@ SoDragger::handleEvent(SoHandleEventAction * action)
       PRIVATE(this)->surrogatepath = NULL;
     }
 
-    PRIVATE(this)->finishCB.invokeCallbacks(this);
+    PRIVATE(this)->finishCB.invoke(this);
     PRIVATE(this)->draggercache->truncatePath();
   }
   else if (this->isActive.getValue() && event->isOfType(SoLocation2Event::getClassTypeId())) {
     this->eventHandled(event, action);
     PRIVATE(this)->didmousemove = TRUE;
-    PRIVATE(this)->motionCB.invokeCallbacks(this);
+    PRIVATE(this)->motionCB.invoke(this);
     if (!PRIVATE(this)->isgrabbing) {
       this->grabEventsSetup();
       PRIVATE(this)->isgrabbing = TRUE;
@@ -1751,7 +1805,7 @@ SoDragger::handleEvent(SoHandleEventAction * action)
   else if (this->isActive.getValue()) {
     PRIVATE(this)->eventaction = action;
     PRIVATE(this)->currentevent = event;
-    PRIVATE(this)->otherEventCB.invokeCallbacks(this);
+    PRIVATE(this)->otherEventCB.invoke(this);
   }
   if (!action->isHandled())
     inherited::handleEvent(action);
@@ -1884,7 +1938,7 @@ SoDragger::childStartCB(void * data, SoDragger * child)
   child->setProjectorEpsilon(thisp->getProjectorEpsilon());
   thisp->saveStartParameters();
   thisp->setActiveChildDragger(child);
-  PRIVATE(thisp)->startCB.invokeCallbacks(thisp);
+  PRIVATE(thisp)->startCB.invoke(thisp);
   thisp->unref();
 }
 
@@ -1895,7 +1949,7 @@ void
 SoDragger::childMotionCB(void * data, SoDragger * COIN_UNUSED_ARG(child))
 {
   SoDragger * thisp = static_cast<SoDragger *>(data);
-  PRIVATE(thisp)->motionCB.invokeCallbacks(thisp);
+  PRIVATE(thisp)->motionCB.invoke(thisp);
 }
 
 /*!
@@ -1907,7 +1961,7 @@ SoDragger::childFinishCB(void * data, SoDragger * COIN_UNUSED_ARG(child))
   SoDragger * thisp = static_cast<SoDragger *>(data);
 
   thisp->ref();
-  PRIVATE(thisp)->finishCB.invokeCallbacks(thisp);
+  PRIVATE(thisp)->finishCB.invoke(thisp);
   thisp->setActiveChildDragger(NULL);
   if (PRIVATE(thisp)->draggercache) PRIVATE(thisp)->draggercache->truncatePath();
   thisp->unref();
@@ -1922,7 +1976,7 @@ SoDragger::childOtherEventCB(void * data, SoDragger * child)
   SoDragger * thisp = static_cast<SoDragger *>(data);
   PRIVATE(thisp)->currentevent = child->pimpl->currentevent;
   PRIVATE(thisp)->eventaction = child->pimpl->eventaction;
-  PRIVATE(thisp)->otherEventCB.invokeCallbacks(thisp);
+  PRIVATE(thisp)->otherEventCB.invoke(thisp);
 }
 
 // Returns whether path goes through this node (dragger is picked).
