@@ -32,6 +32,17 @@
 //    COIN_GLX_PIXMAP_DIRECT_RENDERING is needed in some environments)
 //    with a pre-render callback registered, confirming it fires.
 //
+//    Environments with no X display reachable at all (e.g. headless
+//    CI/sandboxes with no X server running, as opposed to this
+//    session's own environment, which has a display but refuses
+//    *indirect* GLX contexts) can't run this check at all -- there is
+//    no GL context of any kind to be had. Detected with a direct,
+//    minimal XOpenDisplay() probe, independent of anything Coin's own
+//    glue layer does, so this is skipped (not failed) rather than
+//    either hard-failing where it's genuinely inapplicable or, worse,
+//    silently reporting PASS without ever having exercised the
+//    callback.
+//
 // 2. SoSelection: a real pick (mouse down/up via SoHandleEventAction)
 //    on a cube below an SoSelection node, with all five callback
 //    types registered, confirming select/start/change fire on pick,
@@ -41,6 +52,7 @@
 
 #include <cstdlib>
 #include <cstdio>
+#include <X11/Xlib.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInteraction.h>
 #include <Inventor/SoOffscreenRenderer.h>
@@ -62,13 +74,35 @@ preRenderCB(void *, SoGLRenderAction *)
   prerendercount++;
 }
 
+// Minimal, Coin-independent check for whether any X display is
+// reachable at all -- distinct from (and checked before) the
+// indirect-vs-direct-GLX distinction COIN_GLX_PIXMAP_DIRECT_RENDERING
+// addresses below, which only matters once a display connection is
+// possible in the first place.
+static SbBool
+haveXDisplay(void)
+{
+  Display * dpy = XOpenDisplay(NULL);
+  if (!dpy) return FALSE;
+  XCloseDisplay(dpy);
+  return TRUE;
+}
+
+// Returns FALSE only on genuine failure; a skip (no display) prints
+// its own message and reports success, since there is nothing this
+// environment could have done differently.
 static SbBool
 test_glrenderaction_prerender(void)
 {
-  // See the comment in somisc-fullpath-migration/repro.cpp: some
-  // environments (e.g. many post-RHEL8 distributions) refuse indirect
-  // GLX contexts outright, and SoOffscreenRenderer's default backend
-  // probes one first. Coin's own escape hatch,
+  if (!haveXDisplay()) {
+    fprintf(stderr, "[repro] SKIP: SoGLRenderAction pre-render callback "
+                    "(no X display reachable in this environment)\n");
+    return TRUE;
+  }
+
+  // Some environments (e.g. many post-RHEL8 distributions) refuse
+  // indirect GLX contexts outright, and SoOffscreenRenderer's default
+  // backend probes one first. Coin's own escape hatch,
   // COIN_GLX_PIXMAP_DIRECT_RENDERING, forces a direct-rendering
   // context for the offscreen pixmap instead. Must be set before the
   // glue layer's first (lazily cached) context-creation attempt.

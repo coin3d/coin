@@ -18,7 +18,7 @@ fi
 CXX=${CXX:-c++}
 SRCINCLUDE="$(CDPATH= cd ../../.. && pwd)/include" || exit 2
 
-"$CXX" -O1 -g repro.cpp -o repro -I"$SRCINCLUDE" -I"$LIBDIR/../include" -L"$LIBDIR" -lCoin || exit 2
+"$CXX" -O1 -g repro.cpp -o repro -I"$SRCINCLUDE" -I"$LIBDIR/../include" -L"$LIBDIR" -lCoin -lX11 || exit 2
 
 export LD_LIBRARY_PATH="$LIBDIR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 ./repro
