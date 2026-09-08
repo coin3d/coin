@@ -31,6 +31,7 @@
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/events/SoLocation2Event.h>
+#include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoCube.h>
 #include <Inventor/nodes/SoTranslation.h>
@@ -110,6 +111,25 @@ main()
                   "SoTransformerDragger::dragStart() with found == FALSE)...\n");
   action.apply(root);
   fprintf(stderr, "[repro] mouse-down handled, no abort\n");
+
+  // The base dragger remains active even though dragStart ignored the
+  // part. Modifier callbacks must not inspect uninitialized drag state.
+  const SbMatrix originalMatrix = dragger->getMotionMatrix();
+  SoKeyboardEvent key;
+  key.setKey(SoKeyboardEvent::LEFT_SHIFT);
+  key.setState(SoButtonEvent::DOWN);
+  key.setShiftDown(TRUE);
+  key.setPosition(SbVec2s(x, y));
+  action.setEvent(&key);
+  action.apply(root);
+  key.setKey(SoKeyboardEvent::LEFT_CONTROL);
+  key.setCtrlDown(TRUE);
+  action.apply(root);
+  if (dragger->getCurrentState() != SoTransformerDragger::INACTIVE ||
+      dragger->getMotionMatrix() != originalMatrix) {
+    fprintf(stderr, "[repro] FAIL: ignored drag changed state on modifier input\n");
+    return 1;
+  }
 
   SoLocation2Event move;
   move.setPosition(SbVec2s(short(x + 5), short(y + 5)));

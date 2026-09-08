@@ -811,6 +811,8 @@ SoTransformerDragger::SoTransformerDragger(void)
 
   this->state = INACTIVE;
   PRIVATE(this)->constraintState = CONSTRAINT_OFF;
+  PRIVATE(this)->ctrlDown = FALSE;
+  PRIVATE(this)->shiftDown = FALSE;
   // FIXME: according to SGI classdoc, this flag is supposed to be
   // default TRUE?  Investigate. 20011208 mortene.
   PRIVATE(this)->locateHighlighting = FALSE;
@@ -1099,7 +1101,8 @@ void
 SoTransformerDragger::metaKeyChangeCB(void *, SoDragger *d)
 {
   SoTransformerDragger * thisp = THISP(d);
-  if (!thisp->isActive.getValue()) return;
+  if (!thisp->isActive.getValue() ||
+      PRIVATE(thisp)->whatkind == WHATKIND_NONE) return;
 
   const SoEvent *event = thisp->getEvent();
   if (PRIVATE(thisp)->shiftDown != event->wasShiftDown()) {
