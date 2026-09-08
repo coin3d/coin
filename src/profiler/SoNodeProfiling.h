@@ -73,12 +73,11 @@ public:
     SoState * state = action->getState();
     SoProfilerElement * profilerelt = SoProfilerElement::get(state);
     SbProfilingData & data = profilerelt->getProfilingData();
-    const SoFullPath * fullpath =
-      static_cast<const SoFullPath *>(action->getCurPath());
-    this->entryindex = data.getIndex(fullpath, TRUE);
+    const SoPath * path = action->getCurPath();
+    this->entryindex = data.getIndex(path, TRUE);
     assert(this->entryindex != -1);
     size_t managedmem = 0, unmanagedmem = 0;
-    fullpath->getTail()->getFieldsMemorySize(managedmem, unmanagedmem);
+    path->getFullTail()->getFieldsMemorySize(managedmem, unmanagedmem);
     data.setNodeFootprint(this->entryindex,
                           SbProfilingData::MEMORY_SIZE, managedmem);
     data.setNodeFootprint(this->entryindex,
