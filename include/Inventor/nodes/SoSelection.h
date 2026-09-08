@@ -41,8 +41,8 @@
 class SoSelection;
 class SoPath;
 class SoPickedPoint;
-class SoSelectionPathCBList;
-class SoSelectionClassCBList;
+class SoCallbackList;
+class SoSelectionCBTrampolines;
 
 typedef void SoSelectionPathCB(void * data, SoPath * path);
 typedef void SoSelectionClassCB(void * data, SoSelection * sel);
@@ -113,16 +113,16 @@ protected: // unfortunately only protected in OIV
 
   SoPathList selectionList;
 
-  SoSelectionPathCBList *selCBList;
-  SoSelectionPathCBList *deselCBList;
-  SoSelectionClassCBList *startCBList;
-  SoSelectionClassCBList *finishCBList;
+  SoCallbackList *selCBList;
+  SoCallbackList *deselCBList;
+  SoCallbackList *startCBList;
+  SoCallbackList *finishCBList;
 
   SoSelectionPickCB *pickCBFunc;
   void *pickCBData;
   SbBool callPickCBOnlyIfSelectable;
 
-  SoSelectionClassCBList *changeCBList;
+  SoCallbackList *changeCBList;
 
   SoPath *mouseDownPickPath;
   SbBool pickMatching;
@@ -132,6 +132,15 @@ private:
   SoPath *searchNode(SoNode * node) const;
   SoPath *getSelectionPath(SoHandleEventAction *action,
                            SbBool &ignorepick, SbBool &haltaction);
+
+  // Internal bookkeeping for the add*Callback()/remove*Callback()
+  // methods -- see the class comment on SoSelectionCBTrampolines in
+  // SoSelection.cpp for why this exists. Purely an implementation
+  // detail: not part of the (historically, if unfortunately, public/
+  // protected) SoCallbackList-based storage above, so adding it here
+  // doesn't change any existing member's type or this class' documented
+  // protected-API contract.
+  SoSelectionCBTrampolines * cbtrampolines;
 };
 
 #endif // !COIN_SOSELECTION_H

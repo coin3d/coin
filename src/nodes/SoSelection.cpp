@@ -155,12 +155,200 @@
 
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/lists/SoCallbackList.h>
+#include <Inventor/lists/SbList.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/errors/SoDebugError.h>
 
 #include "tidbitsp.h"
 #include "nodes/SoSubNodeP.h"
-#include "nodes/SoSelectionP.h"
+
+// *************************************************************************
+
+// SoSelection's five callback lists (selCBList, deselCBList,
+// startCBList, finishCBList, changeCBList) are kept as plain
+// SoCallbackList* -- their historical type -- rather than being
+// replaced with differently-typed helper classes: they are
+// `protected: // unfortunately only protected in OIV` members of the
+// public header, and Coin's own SoExtSelection subclass reaches into
+// startCBList/finishCBList directly (calling ->invokeCallbacks() on
+// them). An earlier version of this fix retyped them, which code
+// review confirmed breaks both source compatibility (any third-party
+// subclass following that same, Coin-documented pattern hits an
+// incomplete-type compile error against the new header) and binary
+// compatibility (an already-compiled such subclass, linked against
+// the new library, calls through the *old* SoCallbackList ABI at an
+// address that's now a different class entirely -- caught with
+// -fsanitize=function). So the field type, and everything about it
+// that's part of the class' public/protected contract, is completely
+// unchanged here.
+//
+// SoCallbackList itself is what performs the type erasure that causes
+// the underlying UB: it stores/invokes callbacks as a generic
+// SoCallbackListCB (void(*)(void*,void*)), so addSelectionCallback()
+// et al. used to reinterpret_cast<>/C-style-cast the caller's
+// actually-differently-typed function pointer (SoSelectionPathCB,
+// void(*)(void*,SoPath*), or SoSelectionClassCB,
+// void(*)(void*,SoSelection*)) to SoCallbackListCB* to store it, which
+// SoCallbackList::invokeCallbacks() then called back through that
+// generic type -- calling a function through a function pointer of a
+// type other than the one it was declared with is undefined behavior
+// (caught by e.g. -fsanitize=function), even though it has always
+// worked in practice on every ABI Coin supports.
+//
+// Fixed here without touching the field type, or SoCallbackList
+// itself, at all: register a genuinely SoCallbackListCB-typed
+// trampoline function with the SoCallbackList instead of the user's
+// real callback, smuggling the real (differently-typed) callback and
+// its userdata through in a small heap-allocated entry struct passed
+// as the trampoline's own "userData" argument -- so there is no cast
+// of a wrongly-typed function pointer anywhere; the trampoline itself
+// has exactly the type SoCallbackList expects, and only it ever calls
+// the real callback, with the real, correct signature.
+// SoCallbackList::removeCallback() matches by the exact (function,
+// userData) pair, and since the trampoline is a single, shared
+// function per callback kind, "userData" (the entry pointer) is what
+// actually distinguishes one registration from another -- so removal
+// needs to look up which entry corresponds to a given (real callback,
+// real userdata) pair, hence the small per-list SbList<Entry*> below.
+class SoSelectionCBTrampolines {
+public:
+  ~SoSelectionCBTrampolines()
+  {
+    freeAll(this->selentries);
+    freeAll(this->deselentries);
+    freeAll(this->startentries);
+    freeAll(this->finishentries);
+    freeAll(this->changeentries);
+    freeAll(this->retiredpathentries);
+    freeAll(this->retiredclassentries);
+  }
+
+  void addSelectionCallback(SoCallbackList * list, SoSelectionPathCB * f, void * userdata)
+  { addPathCB(list, this->selentries, f, userdata); }
+  void removeSelectionCallback(SoCallbackList * list, SoSelectionPathCB * f, void * userdata)
+  { removePathCB(list, this->selentries, f, userdata); }
+
+  void addDeselectionCallback(SoCallbackList * list, SoSelectionPathCB * f, void * userdata)
+  { addPathCB(list, this->deselentries, f, userdata); }
+  void removeDeselectionCallback(SoCallbackList * list, SoSelectionPathCB * f, void * userdata)
+  { removePathCB(list, this->deselentries, f, userdata); }
+
+  void addStartCallback(SoCallbackList * list, SoSelectionClassCB * f, void * userdata)
+  { addClassCB(list, this->startentries, f, userdata); }
+  void removeStartCallback(SoCallbackList * list, SoSelectionClassCB * f, void * userdata)
+  { removeClassCB(list, this->startentries, f, userdata); }
+
+  void addFinishCallback(SoCallbackList * list, SoSelectionClassCB * f, void * userdata)
+  { addClassCB(list, this->finishentries, f, userdata); }
+  void removeFinishCallback(SoCallbackList * list, SoSelectionClassCB * f, void * userdata)
+  { removeClassCB(list, this->finishentries, f, userdata); }
+
+  void addChangeCallback(SoCallbackList * list, SoSelectionClassCB * f, void * userdata)
+  { addClassCB(list, this->changeentries, f, userdata); }
+  void removeChangeCallback(SoCallbackList * list, SoSelectionClassCB * f, void * userdata)
+  { removeClassCB(list, this->changeentries, f, userdata); }
+
+private:
+  struct PathEntry { SoSelectionPathCB * func; void * userdata; };
+  struct ClassEntry { SoSelectionClassCB * func; void * userdata; };
+
+  SbList<PathEntry *> selentries;
+  SbList<PathEntry *> deselentries;
+  SbList<ClassEntry *> startentries;
+  SbList<ClassEntry *> finishentries;
+  SbList<ClassEntry *> changeentries;
+
+  // Entries removed while a callback of the same kind might still be
+  // executing (SoCallbackList::invokeCallbacks() iterates its own
+  // snapshot copy, taken before any of the callbacks in this batch
+  // run, and its documentation explicitly guarantees it's safe for a
+  // callback to remove itself or any other callback mid-invocation --
+  // that snapshot can still hold this same entry pointer as the
+  // "userData" for a callback slot not yet reached). Freeing an entry
+  // immediately on removal would leave such a still-pending slot
+  // dangling -- a real use-after-free, not merely theoretical (this
+  // exact scenario is what code review's "list mutation during
+  // execution" testing exercises). So a removed entry is only ever
+  // retired here, never freed, until this object itself (and
+  // therefore every invocation that could possibly reference it) is
+  // gone.
+  SbList<PathEntry *> retiredpathentries;
+  SbList<ClassEntry *> retiredclassentries;
+
+  static void pathTrampoline(void * entryptr, void * callbackdata)
+  {
+    PathEntry * e = static_cast<PathEntry *>(entryptr);
+    e->func(e->userdata, static_cast<SoPath *>(callbackdata));
+  }
+  static void classTrampoline(void * entryptr, void * callbackdata)
+  {
+    ClassEntry * e = static_cast<ClassEntry *>(entryptr);
+    e->func(e->userdata, static_cast<SoSelection *>(callbackdata));
+  }
+
+  static void addPathCB(SoCallbackList * list, SbList<PathEntry *> & entries,
+                        SoSelectionPathCB * f, void * userdata)
+  {
+    PathEntry * e = new PathEntry;
+    e->func = f;
+    e->userdata = userdata;
+    entries.append(e);
+    list->addCallback(pathTrampoline, e);
+  }
+  void removePathCB(SoCallbackList * list, SbList<PathEntry *> & entries,
+                    SoSelectionPathCB * f, void * userdata)
+  {
+    for (int i = entries.getLength() - 1; i >= 0; i--) {
+      if (entries[i]->func == f && entries[i]->userdata == userdata) {
+        list->removeCallback(pathTrampoline, entries[i]);
+        this->retiredpathentries.append(entries[i]); // freed at destruction, not here
+        entries.remove(i);
+        return;
+      }
+    }
+#if COIN_DEBUG
+    SoDebugError::post("SoSelection::removeCallback",
+                       "Tried to remove non-existent callback function.");
+#endif // COIN_DEBUG
+  }
+
+  static void addClassCB(SoCallbackList * list, SbList<ClassEntry *> & entries,
+                         SoSelectionClassCB * f, void * userdata)
+  {
+    ClassEntry * e = new ClassEntry;
+    e->func = f;
+    e->userdata = userdata;
+    entries.append(e);
+    list->addCallback(classTrampoline, e);
+  }
+  void removeClassCB(SoCallbackList * list, SbList<ClassEntry *> & entries,
+                     SoSelectionClassCB * f, void * userdata)
+  {
+    for (int i = entries.getLength() - 1; i >= 0; i--) {
+      if (entries[i]->func == f && entries[i]->userdata == userdata) {
+        list->removeCallback(classTrampoline, entries[i]);
+        this->retiredclassentries.append(entries[i]); // freed at destruction, not here
+        entries.remove(i);
+        return;
+      }
+    }
+#if COIN_DEBUG
+    SoDebugError::post("SoSelection::removeCallback",
+                       "Tried to remove non-existent callback function.");
+#endif // COIN_DEBUG
+  }
+
+  static void freeAll(SbList<PathEntry *> & entries)
+  {
+    for (int i = 0; i < entries.getLength(); i++) delete entries[i];
+  }
+  static void freeAll(SbList<ClassEntry *> & entries)
+  {
+    for (int i = 0; i < entries.getLength(); i++) delete entries[i];
+  }
+};
 
 // *************************************************************************
 
@@ -229,19 +417,19 @@
   \COININTERNAL
 */
 /*!
-  \var SoSelectionPathCBList * SoSelection::selCBList
+  \var SoCallbackList * SoSelection::selCBList
   \COININTERNAL
 */
 /*!
-  \var SoSelectionPathCBList * SoSelection::deselCBList
+  \var SoCallbackList * SoSelection::deselCBList
   \COININTERNAL
 */
 /*!
-  \var SoSelectionClassCBList * SoSelection::startCBList
+  \var SoCallbackList * SoSelection::startCBList
   \COININTERNAL
 */
 /*!
-  \var SoSelectionClassCBList * SoSelection::finishCBList
+  \var SoCallbackList * SoSelection::finishCBList
   \COININTERNAL
 */
 /*!
@@ -257,7 +445,7 @@
   \COININTERNAL
 */
 /*!
-  \var SoSelectionClassCBList * SoSelection::changeCBList
+  \var SoCallbackList * SoSelection::changeCBList
   \COININTERNAL
 */
 /*!
@@ -315,6 +503,7 @@ SoSelection::SoSelection(const int nChildren)
 */
 SoSelection::~SoSelection()
 {
+  delete this->cbtrampolines;
   delete this->selCBList;
   delete this->deselCBList;
   delete this->startCBList;
@@ -350,11 +539,12 @@ SoSelection::init(void)
   SO_NODE_DEFINE_ENUM_VALUE(Policy, DISABLE);
   SO_NODE_SET_SF_ENUM_TYPE(policy, Policy);
 
-  this->selCBList = new SoSelectionPathCBList;
-  this->deselCBList = new SoSelectionPathCBList;
-  this->startCBList = new SoSelectionClassCBList;
-  this->finishCBList = new SoSelectionClassCBList;
-  this->changeCBList = new SoSelectionClassCBList;
+  this->selCBList = new SoCallbackList;
+  this->deselCBList = new SoCallbackList;
+  this->startCBList = new SoCallbackList;
+  this->finishCBList = new SoCallbackList;
+  this->changeCBList = new SoCallbackList;
+  this->cbtrampolines = new SoSelectionCBTrampolines;
 
   this->pickCBFunc = NULL;
   this->pickCBData = NULL;
@@ -538,7 +728,7 @@ SoSelection::operator[](const int i) const
 void
 SoSelection::addSelectionCallback(SoSelectionPathCB * f, void * userData)
 {
-  this->selCBList->addCallback(f, userData);
+  this->cbtrampolines->addSelectionCallback(this->selCBList, f, userData);
 }
 
 /*!
@@ -549,7 +739,7 @@ SoSelection::addSelectionCallback(SoSelectionPathCB * f, void * userData)
 void
 SoSelection::removeSelectionCallback(SoSelectionPathCB * f, void * userData)
 {
-  this->selCBList->removeCallback(f, userData);
+  this->cbtrampolines->removeSelectionCallback(this->selCBList, f, userData);
 }
 
 /*!
@@ -561,7 +751,7 @@ SoSelection::removeSelectionCallback(SoSelectionPathCB * f, void * userData)
 void
 SoSelection::addDeselectionCallback(SoSelectionPathCB * f, void * userData)
 {
-  this->deselCBList->addCallback(f, userData);
+  this->cbtrampolines->addDeselectionCallback(this->deselCBList, f, userData);
 }
 
 /*!
@@ -572,7 +762,7 @@ SoSelection::addDeselectionCallback(SoSelectionPathCB * f, void * userData)
 void
 SoSelection::removeDeselectionCallback(SoSelectionPathCB * f, void * userData)
 {
-  this->deselCBList->removeCallback(f, userData);
+  this->cbtrampolines->removeDeselectionCallback(this->deselCBList, f, userData);
 }
 
 /*!
@@ -587,7 +777,7 @@ SoSelection::removeDeselectionCallback(SoSelectionPathCB * f, void * userData)
 void
 SoSelection::addStartCallback(SoSelectionClassCB * f, void * userData)
 {
-  this->startCBList->addCallback(f, userData);
+  this->cbtrampolines->addStartCallback(this->startCBList, f, userData);
 }
 
 /*!
@@ -598,7 +788,7 @@ SoSelection::addStartCallback(SoSelectionClassCB * f, void * userData)
 void
 SoSelection::removeStartCallback(SoSelectionClassCB * f, void * userData)
 {
-  this->startCBList->removeCallback(f, userData);
+  this->cbtrampolines->removeStartCallback(this->startCBList, f, userData);
 }
 
 /*!
@@ -611,7 +801,7 @@ SoSelection::removeStartCallback(SoSelectionClassCB * f, void * userData)
 void
 SoSelection::addFinishCallback(SoSelectionClassCB * f, void * userData)
 {
-  this->finishCBList->addCallback(f, userData);
+  this->cbtrampolines->addFinishCallback(this->finishCBList, f, userData);
 }
 
 /*!
@@ -622,7 +812,7 @@ SoSelection::addFinishCallback(SoSelectionClassCB * f, void * userData)
 void
 SoSelection::removeFinishCallback(SoSelectionClassCB * f, void * userData)
 {
-  this->finishCBList->removeCallback(f, userData);
+  this->cbtrampolines->removeFinishCallback(this->finishCBList, f, userData);
 }
 
 /*!
@@ -705,7 +895,7 @@ SoSelection::getPickMatching(void) const
 void
 SoSelection::addChangeCallback(SoSelectionClassCB * f, void * userData)
 {
-  this->changeCBList->addCallback(f, userData);
+  this->cbtrampolines->addChangeCallback(this->changeCBList, f, userData);
 }
 
 /*!
@@ -715,7 +905,7 @@ SoSelection::addChangeCallback(SoSelectionClassCB * f, void * userData)
 void
 SoSelection::removeChangeCallback(SoSelectionClassCB * f, void * userData)
 {
-  this->changeCBList->removeCallback(f, userData);
+  this->cbtrampolines->removeChangeCallback(this->changeCBList, f, userData);
 }
 
 /*!
