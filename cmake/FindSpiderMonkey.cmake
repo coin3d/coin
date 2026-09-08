@@ -25,25 +25,35 @@ find_path(
     js-1.7.0 js
 )
 
-string(REGEX REPLACE "^.*js-([0-9]+[.]?[0-9]?[.]?[0-9]?).*" "\\1" SPIDERMONKEY_VERSION ${SPIDERMONKEY_INCLUDE_DIR})
-# dedicated workaround to find version string when not embedded in the includedir (<= 1.8.5)
-if(${SPIDERMONKEY_VERSION} STREQUAL ${SPIDERMONKEY_INCLUDE_DIR})
-  if(EXISTS ${SPIDERMONKEY_INCLUDE_DIR}/jsversion.h)
-    set(VERS_FILE "${SPIDERMONKEY_INCLUDE_DIR}/jsversion.h")
-  elseif(EXISTS ${SPIDERMONKEY_INCLUDE_DIR}/jsconfig.h)
-    set(VERS_FILE "${SPIDERMONKEY_INCLUDE_DIR}/jsconfig.h")
-  else()
-    message(ERROR "unknown location of the header with the version string")
+# Everything below needs a real SPIDERMONKEY_INCLUDE_DIR to look at. When
+# jsapi.h isn't found anywhere, find_path() leaves it set to
+# "SPIDERMONKEY_INCLUDE_DIR-NOTFOUND" (a false value in CMake's boolean
+# context), and none of the version detection below is meaningful -- skip
+# straight to find_package_handle_standard_args() reporting NOT FOUND.
+if(SPIDERMONKEY_INCLUDE_DIR)
+  string(REGEX REPLACE "^.*js-([0-9]+[.]?[0-9]?[.]?[0-9]?).*" "\\1" SPIDERMONKEY_VERSION ${SPIDERMONKEY_INCLUDE_DIR})
+  # dedicated workaround to find version string when not embedded in the includedir (<= 1.8.5)
+  if(${SPIDERMONKEY_VERSION} STREQUAL ${SPIDERMONKEY_INCLUDE_DIR})
+    unset(VERS_FILE)
+    if(EXISTS ${SPIDERMONKEY_INCLUDE_DIR}/jsversion.h)
+      set(VERS_FILE "${SPIDERMONKEY_INCLUDE_DIR}/jsversion.h")
+    elseif(EXISTS ${SPIDERMONKEY_INCLUDE_DIR}/jsconfig.h)
+      set(VERS_FILE "${SPIDERMONKEY_INCLUDE_DIR}/jsconfig.h")
+    else()
+      message(WARNING "SpiderMonkey found at ${SPIDERMONKEY_INCLUDE_DIR}, but its version could not be determined (no js-<version> path suffix, and no jsversion.h/jsconfig.h to read JS_VERSION from). Falling back to unversioned library names.")
+    endif()
+    if(VERS_FILE)
+      file(STRINGS ${VERS_FILE} VERS_STRING REGEX "#define JS_VERSION .*")
+      string(REGEX REPLACE "#define JS_VERSION \(.*\)" "\\1" SPIDERMONKEY_VERSION ${VERS_STRING})
+    endif()
   endif()
-  file(STRINGS ${VERS_FILE} VERS_STRING REGEX "#define JS_VERSION .*")
-  string(REGEX REPLACE "#define JS_VERSION \(.*\)" "\\1" SPIDERMONKEY_VERSION ${VERS_STRING})
-endif()
 
-find_library(
-  SPIDERMONKEY_LIBRARY
-  NAMES mozjs-${SPIDERMONKEY_VERSION} mozjs${SPIDERMONKEY_VERSION} mozjs js js${SPIDERMONKEY_VERSION}
-  ${library_PATHS}
-)
+  find_library(
+    SPIDERMONKEY_LIBRARY
+    NAMES mozjs-${SPIDERMONKEY_VERSION} mozjs${SPIDERMONKEY_VERSION} mozjs js js${SPIDERMONKEY_VERSION}
+    ${library_PATHS}
+  )
+endif()
 
 
 include(FindPackageHandleStandardArgs)
