@@ -43,6 +43,127 @@
 
 #include <Inventor/lists/SoCallbackList.h>
 
+#include "lists/SoCallbackListP.h"
+
+#include <atomic>
+#include <map>
+#include <memory>
+#include <mutex>
+#include <vector>
+
+namespace {
+std::atomic<bool> haveOwnedData(false);
+
+struct OwnedCallback {
+  int index;
+  SoCallbackListCB * invoke;
+  std::shared_ptr<void> data;
+};
+typedef std::vector<OwnedCallback> OwnedCallbacks;
+
+struct CallbackOwners {
+  std::mutex mutex;
+  std::map<const SbPList *, OwnedCallbacks> lists;
+};
+
+CallbackOwners & callbackOwners()
+{
+  // Keep the registry itself available during static/Coin shutdown.
+  // Per-list entries are removed as soon as their ownership ends.
+  static CallbackOwners * owners = new CallbackOwners;
+  return *owners;
+}
+
+OwnedCallbacks snapshotOwners(const SbPList * list)
+{
+  if (!haveOwnedData.load()) return OwnedCallbacks();
+  CallbackOwners & owners = callbackOwners();
+  std::lock_guard<std::mutex> lock(owners.mutex);
+  const auto it = owners.lists.find(list);
+  return it == owners.lists.end() ? OwnedCallbacks() : it->second;
+}
+
+void releaseOwner(const SbPList * list, int index)
+{
+  // Destroy userdata after unlocking: a deleter may itself use a list.
+  if (!haveOwnedData.load()) return;
+  std::shared_ptr<void> removed;
+  CallbackOwners & owners = callbackOwners();
+  {
+    std::lock_guard<std::mutex> lock(owners.mutex);
+    const auto it = owners.lists.find(list);
+    if (it == owners.lists.end()) return;
+    OwnedCallbacks & entries = it->second;
+    for (size_t i = 0; i < entries.size();) {
+      if (entries[i].index == index) {
+        removed = entries[i].data;
+        entries.erase(entries.begin() + i);
+      }
+      else {
+        if (entries[i].index > index) --entries[i].index;
+        ++i;
+      }
+    }
+    if (entries.empty()) owners.lists.erase(it);
+    haveOwnedData.store(!owners.lists.empty());
+  }
+}
+
+void releaseOwners(const SbPList * list)
+{
+  if (!haveOwnedData.load()) return;
+  OwnedCallbacks removed;
+  CallbackOwners & owners = callbackOwners();
+  {
+    std::lock_guard<std::mutex> lock(owners.mutex);
+    const auto it = owners.lists.find(list);
+    if (it == owners.lists.end()) return;
+    removed.swap(it->second);
+    owners.lists.erase(it);
+    haveOwnedData.store(!owners.lists.empty());
+  }
+}
+} // namespace
+
+void
+SoCallbackListP::clearData(const SbPList * list)
+{
+  releaseOwners(list);
+}
+
+void
+SoCallbackListP::copyData(const SbPList * source, const SbPList * destination)
+{
+  if (!haveOwnedData.load()) return;
+  OwnedCallbacks previous;
+  CallbackOwners & owners = callbackOwners();
+  {
+    std::lock_guard<std::mutex> lock(owners.mutex);
+    const auto src = owners.lists.find(source);
+    const auto dst = owners.lists.find(destination);
+    if (dst != owners.lists.end()) previous.swap(dst->second);
+    if (src != owners.lists.end()) owners.lists[destination] = src->second;
+    else if (dst != owners.lists.end()) owners.lists.erase(dst);
+    haveOwnedData.store(!owners.lists.empty());
+  }
+}
+
+void
+SoCallbackListP::addCallback(SoCallbackList * list, SoCallbackListCB * identity,
+                             void * userdata, SoCallbackListCB * invoke,
+                             void * context, void (*destroy)(void *))
+{
+  OwnedCallback entry = { list->getNumCallbacks(), invoke,
+                         std::shared_ptr<void>(context, destroy) };
+  CallbackOwners & owners = callbackOwners();
+  {
+    std::lock_guard<std::mutex> lock(owners.mutex);
+    owners.lists[&list->datalist].push_back(entry);
+    haveOwnedData.store(true);
+  }
+  list->addCallback(identity, userdata);
+}
+
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -68,6 +189,7 @@ SoCallbackList::SoCallbackList(void)
 */
 SoCallbackList::~SoCallbackList(void)
 {
+  releaseOwners(&this->datalist);
 }
 
 /*!
@@ -98,6 +220,7 @@ SoCallbackList::removeCallback(SoCallbackListCB * f, void * userdata)
     if ((this->funclist[idx] == (void*)f) && (this->datalist[idx] == userdata)) {
       this->funclist.remove(idx);
       this->datalist.remove(idx);
+      releaseOwner(&this->datalist, idx);
       break;
     }
     idx--;
@@ -123,6 +246,7 @@ SoCallbackList::clearCallbacks(void)
 {
   this->funclist.truncate(0);
   this->datalist.truncate(0);
+  releaseOwners(&this->datalist);
 }
 
 /*!
@@ -148,11 +272,21 @@ SoCallbackList::getNumCallbacks(void) const
 void
 SoCallbackList::invokeCallbacks(void * callbackdata)
 {
+  const OwnedCallbacks owners = snapshotOwners(&this->datalist);
   SbPList flcopy(this->funclist);
   SbPList dlcopy(this->datalist);
 
+  // Owned entries are ordered by registration index. Walk both snapshots
+  // once, so dispatch remains linear even with mixed raw/typed callbacks.
+  size_t ownedidx = 0;
   for (int idx=0; idx < flcopy.getLength(); idx++) {
-    SoCallbackListCB * func = (SoCallbackListCB*) flcopy[idx];
-    func(dlcopy.operator[](idx), callbackdata);
+    if (ownedidx < owners.size() && owners[ownedidx].index == idx) {
+      const OwnedCallback & entry = owners[ownedidx++];
+      entry.invoke(entry.data.get(), callbackdata);
+    }
+    else {
+      SoCallbackListCB * func = (SoCallbackListCB*) flcopy[idx];
+      func(dlcopy.operator[](idx), callbackdata);
+    }
   }
 }

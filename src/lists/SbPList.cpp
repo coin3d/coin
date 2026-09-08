@@ -40,6 +40,7 @@
 
 
 #include <Inventor/lists/SbPList.h>
+#include "lists/SoCallbackListP.h"
 
 /*!
   \fn SbPList::SbPList(const int sizehint)
@@ -161,6 +162,7 @@ SbPList::SbPList(const SbPList & l)
 */
 SbPList::~SbPList()
 {
+  SoCallbackListP::clearData(this);
   if (this->itembuffer != builtinbuffer) delete[] this->itembuffer;
 }
 
@@ -174,6 +176,7 @@ SbPList::copy(const SbPList & l)
   const int n = l.numitems;
   this->expand(n);
   for (int i = 0; i < n; i++) this->itembuffer[i] = l.itembuffer[i];
+  SoCallbackListP::copyData(&l, this);
 }
 
 /*!

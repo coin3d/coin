@@ -1,25 +1,25 @@
-#ifndef COIN_LISTS_SOCALLBACKLIST_H
-#define COIN_LISTS_SOCALLBACKLIST_H
+#ifndef COIN_SOCALLBACKLISTP_H
+#define COIN_SOCALLBACKLISTP_H
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- * 
+ *
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- * 
+ *
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -33,31 +33,26 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-// NB: make sure the ifdef-test above wrapping this includefile is
-// _not_ checking on and setting the same define-string as the other
-// SoCallbackList.h file in misc/.
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif
 
-#include <Inventor/lists/SbPList.h>
+#include <Inventor/lists/SoCallbackList.h>
 
-typedef void SoCallbackListCB(void * userdata, void * callbackdata);
-
-class COIN_DLL_API SoCallbackList {
+// Internal callbacks may own their userdata. Removal releases ownership,
+// while any invocation snapshots keep it alive until they finish.
+// No storage is added to the public SoCallbackList class.
+class SoCallbackListP {
 public:
-  SoCallbackList(void);
-  ~SoCallbackList();
-
-  void addCallback(SoCallbackListCB * f, void * userData = NULL);
-  void removeCallback(SoCallbackListCB * f, void * userdata = NULL);
-
-  void clearCallbacks(void);
-  int getNumCallbacks(void) const;
-
-  void invokeCallbacks(void * callbackdata);
-
-private:
-  friend class SoCallbackListP;
-  SbPList funclist;
-  SbPList datalist;
+  // Preserve ownership through the existing, out-of-line SbPList copies,
+  // including implicit SoCallbackList copies in already-compiled clients.
+  static void copyData(const SbPList * source, const SbPList * destination);
+  static void clearData(const SbPList * list);
+  // identity/userdata remain the externally visible registration pair.
+  // invoke/context provide the correctly typed, owning adapter.
+  static void addCallback(SoCallbackList * list, SoCallbackListCB * identity,
+                          void * userdata, SoCallbackListCB * invoke,
+                          void * context, void (*destroy)(void *));
 };
 
-#endif // !COIN_LISTS_SOCALLBACKLIST_H
+#endif // COIN_SOCALLBACKLISTP_H

@@ -20,7 +20,7 @@
 //
 // Fixed by keeping the field type completely unchanged and instead
 // registering a correctly-typed trampoline function with the
-// (unmodified) SoCallbackList -- see SoSelectionCBTrampolines.
+// SoCallbackList -- see SoSelectionCBTrampolines.
 //
 // This test:
 //
@@ -46,6 +46,14 @@
 //     fires once more in the in-flight batch, then never again).
 
 #include <cstdio>
+#ifndef __has_feature
+#define __has_feature(x) 0
+#endif
+#if __has_feature(address_sanitizer)
+#include <sanitizer/allocator_interface.h>
+#define CHECK_CALLBACK_ALLOCATIONS 1
+#endif
+
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInteraction.h>
 #include <Inventor/lists/SoCallbackList.h>
@@ -222,6 +230,114 @@ test_remove_during_execution(void)
   return batch1ok && batch2ok;
 }
 
+static int copiedcalls = 0;
+static void copiedCB(void *, SoSelection *) { copiedcalls++; }
+
+static SbBool
+test_copied_list_lifetime(void)
+{
+  class Trigger : public SoSelection {
+  public:
+    const SoCallbackList & callbacks() const { return *this->changeCBList; }
+    void clear() { this->changeCBList->clearCallbacks(); }
+  };
+  Trigger * sel = new Trigger;
+  sel->ref();
+  sel->addChangeCallback(copiedCB);
+  SoCallbackList copied(sel->callbacks());
+  SoCallbackList assigned;
+  assigned = copied;
+  sel->clear();
+  sel->unref();
+  copied.invokeCallbacks(NULL);
+  copied.clearCallbacks();
+  assigned.invokeCallbacks(NULL);
+  assigned.clearCallbacks();
+  fprintf(stderr, "[repro] copied/assigned lists after owner destruction: %d calls\n", copiedcalls);
+  return copiedcalls == 2;
+}
+
+static int nestedcalls = 0;
+static void nestedVictim(void *, SoSelection *) { nestedcalls++; }
+class NestedSelection : public SoSelection {
+public:
+  void fire() { this->changeCBList->invokeCallbacks(this); }
+  void clear() { this->changeCBList->clearCallbacks(); }
+};
+static void clearAndReenter(void *, SoSelection * selection)
+{
+  NestedSelection * sel = static_cast<NestedSelection *>(selection);
+  sel->clear();
+  sel->fire(); // empty nested invocation must not destroy the outer snapshot
+}
+static SbBool
+test_clear_and_reenter(void)
+{
+  NestedSelection * sel = new NestedSelection;
+  sel->ref();
+  sel->addChangeCallback(clearAndReenter);
+  sel->addChangeCallback(nestedVictim);
+  sel->fire();
+  sel->fire();
+  sel->unref();
+  return nestedcalls == 1;
+}
+
+// Protected and public APIs must retain the same callback/userdata identity.
+static int mixedcalls = 0;
+static void mixedTyped(void *, SoSelection *) { mixedcalls += 1; }
+static void mixedGeneric(void *, void *) { mixedcalls += 10; }
+static SbBool
+test_mixed_registration_removal(void)
+{
+  class Trigger : public SoSelection {
+  public:
+    SoCallbackList & callbacks() { return *this->changeCBList; }
+    void fire() { this->changeCBList->invokeCallbacks(this); }
+  };
+  Trigger * sel = new Trigger;
+  sel->ref();
+  sel->addChangeCallback(mixedTyped);
+  sel->callbacks().removeCallback(reinterpret_cast<SoCallbackListCB *>(mixedTyped), NULL);
+  sel->fire();
+  sel->callbacks().addCallback(mixedGeneric);
+  sel->addChangeCallback(mixedTyped);
+  sel->callbacks().addCallback(mixedGeneric, sel);
+  sel->addChangeCallback(mixedTyped, sel);
+  sel->removeChangeCallback(reinterpret_cast<SoSelectionClassCB *>(mixedGeneric));
+  sel->fire(); // remaining typed, generic, typed callbacks: 12
+  sel->removeChangeCallback(mixedTyped);
+  sel->fire(); // remaining generic, typed callbacks: 11
+  sel->callbacks().clearCallbacks();
+  sel->fire();
+  sel->unref();
+  fprintf(stderr, "[repro] mixed registration/removal: %d (expected 23)\n", mixedcalls);
+  return mixedcalls == 23;
+}
+
+static SbBool
+test_registration_churn(void)
+{
+#ifdef CHECK_CALLBACK_ALLOCATIONS
+  SoSelection * sel = new SoSelection;
+  sel->ref();
+  sel->addChangeCallback(copiedCB);
+  sel->removeChangeCallback(copiedCB); // warm up the ownership registry
+  const size_t before = __sanitizer_get_current_allocated_bytes();
+  for (int i = 0; i < 100000; ++i) {
+    sel->addChangeCallback(copiedCB);
+    sel->removeChangeCallback(copiedCB);
+  }
+  const size_t after = __sanitizer_get_current_allocated_bytes();
+  fprintf(stderr, "[repro] live allocation bytes before/after 100000 registrations: %zu/%zu\n", before, after);
+  sel->unref();
+  return after <= before + 4096;
+#else
+  fprintf(stderr, "[repro] INFO: compile with Clang ASan to check registration memory retention\n");
+  return TRUE;
+#endif
+}
+
 int
 main()
 {
@@ -229,6 +345,10 @@ main()
   SoInteraction::init();
 
   int failures = 0;
+  if (!test_registration_churn()) failures++;
+  if (!test_mixed_registration_removal()) failures++;
+  if (!test_copied_list_lifetime()) failures++;
+  if (!test_clear_and_reenter()) failures++;
   if (!test_direct_protected_access()) { fprintf(stderr, "[repro] FAIL: direct protected-member access\n"); failures++; }
   if (!test_public_api_pick()) { fprintf(stderr, "[repro] FAIL: public API pick\n"); failures++; }
   if (!test_remove_during_execution()) { fprintf(stderr, "[repro] FAIL: remove during execution\n"); failures++; }
