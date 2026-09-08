@@ -323,6 +323,20 @@ SoDB::init(void)
   // when checking if its present on the state stack.)
   SoProfilerElement::initClass();
 
+  // Parse COIN_PROFILER here, before SoAction::initClass() below: that
+  // call decides once, based on SoProfiler::isEnabled(), whether to
+  // enable SoProfilerElement on SoAction::enabledElements -- a
+  // decision baked into every SoState built for the rest of the
+  // process' lifetime. The full SoProfiler::init() (further down,
+  // after nodekits/actions/nodes are ready -- it depends on them)
+  // enables profiling unconditionally as a side effect, so it can't
+  // be relied on here to reflect whether COIN_PROFILER was actually
+  // set; parseCoinProfilerVariable() alone only touches an
+  // environment variable and a couple of booleans, with no
+  // dependencies on any other subsystem, so it's safe to call this
+  // early. It runs again, harmlessly, at its original call site below.
+  SoProfilerP::parseCoinProfilerVariable();
+
   ScXML::initClasses();
 
   // Actions must be initialized before nodes (because of SO_ENABLE)
