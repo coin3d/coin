@@ -773,8 +773,17 @@ glxglue_context_create_pbuffer(struct glxglue_contextdata * context)
   COIN_GLXFBConfig * fbc;
   Display * dpy;
 
-  /* number of FBConfigs returned */
-  int fbc_cnt;
+  /* number of FBConfigs returned. Initialized defensively: some GLX
+     implementations have been observed to leave this output parameter
+     unwritten on certain internal failure paths, in violation of the
+     documented glXChooseFBConfig() contract (it's supposed to always
+     set *nelements, even to 0, whenever it returns). An uninitialized
+     read here trips assert(fbc_cnt >= 0) below nondeterministically
+     under AddressSanitizer's stack poisoning (whatever garbage value
+     happens to be on the stack), and in a non-debug (NDEBUG) build
+     would silently feed unpredictable garbage into the fbc_cnt == 0
+     check and the fbc[0] access just below. */
+  int fbc_cnt = 0;
 
   /* set frame buffer attributes */
   /* FIXME: should refactor the attribute selection / setting process
