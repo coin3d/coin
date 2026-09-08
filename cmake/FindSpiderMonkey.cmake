@@ -34,6 +34,14 @@ if(SPIDERMONKEY_INCLUDE_DIR)
   string(REGEX REPLACE "^.*js-([0-9]+[.]?[0-9]?[.]?[0-9]?).*" "\\1" SPIDERMONKEY_VERSION ${SPIDERMONKEY_INCLUDE_DIR})
   # dedicated workaround to find version string when not embedded in the includedir (<= 1.8.5)
   if(${SPIDERMONKEY_VERSION} STREQUAL ${SPIDERMONKEY_INCLUDE_DIR})
+    # The path suffix didn't carry a version, so the regex above left
+    # SPIDERMONKEY_VERSION as a plain copy of SPIDERMONKEY_INCLUDE_DIR --
+    # useless (and actively wrong) as a library-name suffix in the
+    # find_library() call below. Clear it so an unresolved version falls
+    # back to the plain, unversioned names already in that NAMES list,
+    # rather than searching for a library literally named e.g.
+    # "mozjs-/usr/include/mozjs-102".
+    set(SPIDERMONKEY_VERSION "")
     unset(VERS_FILE)
     if(EXISTS ${SPIDERMONKEY_INCLUDE_DIR}/jsversion.h)
       set(VERS_FILE "${SPIDERMONKEY_INCLUDE_DIR}/jsversion.h")
@@ -44,7 +52,11 @@ if(SPIDERMONKEY_INCLUDE_DIR)
     endif()
     if(VERS_FILE)
       file(STRINGS ${VERS_FILE} VERS_STRING REGEX "#define JS_VERSION .*")
-      string(REGEX REPLACE "#define JS_VERSION \(.*\)" "\\1" SPIDERMONKEY_VERSION ${VERS_STRING})
+      if(VERS_STRING)
+        string(REGEX REPLACE "#define JS_VERSION \(.*\)" "\\1" SPIDERMONKEY_VERSION ${VERS_STRING})
+      else()
+        message(WARNING "SpiderMonkey found at ${SPIDERMONKEY_INCLUDE_DIR}, but ${VERS_FILE} does not define JS_VERSION. Falling back to unversioned library names.")
+      endif()
     endif()
   endif()
 
