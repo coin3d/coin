@@ -79,6 +79,20 @@ public:
   int getLength(void) const;
   void truncate(const int length);
 
+  // "Full" variants of getTail()/getNodeFromTail()/getIndexFromTail()/
+  // getLength(): unlike the methods above, these count hidden children
+  // (e.g. nodekit-internal nodes) instead of stopping at the first one.
+  // This is the same data SoFullPath's identically-named methods expose
+  // via a reinterpret_cast<SoFullPath*>(path) of a plain SoPath -- these
+  // provide the same thing directly on SoPath, without the cast (which
+  // is undefined behavior whenever the SoPath instance was never
+  // actually constructed as a SoFullPath, as it usually isn't).
+  // SoFullPath itself now delegates to these.
+  SoNode * getFullTail(void) const;
+  SoNode * getFullNodeFromTail(const int index) const;
+  int getFullIndexFromTail(const int index) const;
+  int getFullLength(void) const;
+
   int findFork(const SoPath * const path) const;
   int findNode(const SoNode * const node) const;
 
@@ -107,7 +121,6 @@ private:
   static void cleanupClass(void);
   static void * createInstance(void);
   void append(SoNode * const node, const int index);
-  int getFullLength(void) const;
   void truncate(const int length, const SbBool donotify);
   SbBool readInstance(SoInput * in, unsigned short flags) override;
   void setFirstHidden(void);
@@ -119,7 +132,6 @@ private:
   SbBool firsthiddendirty;
   static SoType classTypeId;
 
-  friend class SoFullPath;
   friend class SoNodeKitPath;
   friend class SoAction;
   friend class SoTempPath;

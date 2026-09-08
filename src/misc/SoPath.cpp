@@ -49,8 +49,8 @@
   the first node in the path that doesn't inherit SoGroup, and
   getLength() returns the number of nodes down to this node.
 
-  If you need the actual path length, or the actual tail node, you
-  need to cast the path to SoFullPath.
+  If you need the actual path length, or the actual tail node, use
+  getFullLength() or getFullTail() instead.
 */
 
 // *************************************************************************
@@ -395,14 +395,7 @@ SoPath::append(SoNode * const node, const int index)
   inheriting SoGroup) when finding the tail.
 
   If you want to find the real tail node (also below node kits and
-  VRML nodes with hidden children), you have to use
-  SoFullPath::getTail(). You don't have to create an SoFullPath
-  instance to do this, just cast the SoPath instance to SoFullPath
-  before getting the tail node:
-
-  \code
-  SoNode * tail = static_cast<SoFullPath*>(path)->getTail();
-  \endcode
+  VRML nodes with hidden children), use getFullTail() instead.
 */
 SoNode *
 SoPath::getTail(void) const
@@ -504,8 +497,7 @@ SoPath::getIndexFromTail(const int index) const
   "visible" nodes are counted, i.e. hidden nodes of e.g. nodekits are
   not included.
 
-  If you need the actual path length, you need to cast your path to
-  SoFullPath and use SoFullPath::getLength().
+  If you need the actual path length, use getFullLength() instead.
 */
 int
 SoPath::getLength(void) const
@@ -520,6 +512,57 @@ SoPath::getLength(void) const
     return this->firsthidden + 1;
   }
   return this->nodes.getLength();
+}
+
+/*!
+  Full-path variant of getTail(): returns the actual tail node,
+  counting hidden children (e.g. nodekit-internal nodes) that getTail()
+  stops before.
+
+  \sa getFullLength(), getFullNodeFromTail(), getFullIndexFromTail()
+*/
+SoNode *
+SoPath::getFullTail(void) const
+{
+  return this->nodes[this->getFullLength() - 1];
+}
+
+/*!
+  Full-path variant of getNodeFromTail(): counts hidden children (e.g.
+  nodekit-internal nodes) that getNodeFromTail() stops before.
+
+  \sa getFullLength(), getFullTail(), getFullIndexFromTail()
+*/
+SoNode *
+SoPath::getFullNodeFromTail(const int index) const
+{
+#if COIN_DEBUG
+  if (index < 0 || index >= this->getFullLength()) {
+    SoDebugError::post("SoPath::getFullNodeFromTail",
+                       "index %d is out of bounds.", index);
+    return NULL;
+  }
+#endif // COIN_DEBUG
+  return this->nodes[this->getFullLength() - index - 1];
+}
+
+/*!
+  Full-path variant of getIndexFromTail(): counts hidden children (e.g.
+  nodekit-internal nodes) that getIndexFromTail() stops before.
+
+  \sa getFullLength(), getFullTail(), getFullNodeFromTail()
+*/
+int
+SoPath::getFullIndexFromTail(const int index) const
+{
+#if COIN_DEBUG
+  if (index < 0 || index >= this->getFullLength()) {
+    SoDebugError::post("SoPath::getFullIndexFromTail",
+                       "index %d is out of bounds.", index);
+    return -1;
+  }
+#endif // COIN_DEBUG
+  return this->indices[this->getFullLength() - index - 1];
 }
 
 /*!
@@ -556,9 +599,8 @@ SoPath::truncate(const int length, const SbBool donotify)
     // at unrelated locations.
     //
     // mortene -- the paranoid android.
-    SoFullPath * fp = (SoFullPath *)this;
-    for (int l = 0; l < fp->getLength(); l++) {
-      SoNode * n = fp->getNode(l);
+    for (int l = 0; l < this->getFullLength(); l++) {
+      SoNode * n = this->getNode(l);
       // FIXME: are there actually conditions where we can "legally" get
       // a NULL pointer here? Or would that be an indication of an
       // internal error? 20020928 mortene.

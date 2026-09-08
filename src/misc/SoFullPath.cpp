@@ -83,7 +83,7 @@ SoFullPath::~SoFullPath(void)
 SoNode *
 SoFullPath::getTail(void) const
 {
-  return this->nodes[this->nodes.getLength() - 1];
+  return this->getFullTail();
 }
 
 /*!
@@ -94,7 +94,7 @@ SoFullPath::getTail(void) const
 SoNode *
 SoFullPath::getNodeFromTail(const int index) const
 {
-  return this->nodes[this->nodes.getLength() - 1 - index];
+  return this->getFullNodeFromTail(index);
 }
 
 /*!
@@ -105,7 +105,7 @@ SoFullPath::getNodeFromTail(const int index) const
 int
 SoFullPath::getIndexFromTail(const int index) const
 {
-  return this->indices[this->nodes.getLength() - 1 - index];
+  return this->getFullIndexFromTail(index);
 }
 
 /*!
@@ -115,5 +115,5 @@ SoFullPath::getIndexFromTail(const int index) const
 int
 SoFullPath::getLength(void) const
 {
-  return this->nodes.getLength();
+  return this->getFullLength();
 }
