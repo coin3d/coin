@@ -91,27 +91,24 @@ is_matching_paths(const SoPath * currentpath, const SoPath * pathswitchpath)
 {
   if (pathswitchpath == NULL) return FALSE;
 
-  const SoFullPath * current = (const SoFullPath*) currentpath;
-  const SoFullPath * swpath = (const SoFullPath *) pathswitchpath;
-  
-  int swidx = swpath->getLength() - 1;
+  int swidx = pathswitchpath->getFullLength() - 1;
   if (swidx < 0) return TRUE; // an empty path will always match
 
-  int curidx = current->getLength() - 2; // last node is this node. Skip it.
-  
+  int curidx = currentpath->getFullLength() - 2; // last node is this node. Skip it.
+
   // test if swpath is a valid path. Return FALSE if not.
   if (swidx > curidx) return FALSE;
 
   // we know curidx >= swidx
   while (swidx > 0) {
-    if ((swpath->getNode(swidx) != current->getNode(curidx)) ||
-        (swpath->getIndex(swidx) != current->getIndex(curidx))) break;
+    if ((pathswitchpath->getNode(swidx) != currentpath->getNode(curidx)) ||
+        (pathswitchpath->getIndex(swidx) != currentpath->getIndex(curidx))) break;
     swidx--;
     curidx--;
   }
-  
+
   if (swidx == 0) { // don't test index for head node
-    return swpath->getHead() == current->getNode(curidx);
+    return pathswitchpath->getHead() == currentpath->getNode(curidx);
   }
   return FALSE;
 }

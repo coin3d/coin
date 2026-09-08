@@ -1,0 +1,30 @@
+#!/bin/sh
+# Regression test for the "stray" SoPath/SoFullPath downcast UB fixes
+# found outside the original seven-phase inventory (SoPathList.cpp,
+# SoPathSwitch.cpp, SoSurroundScale.cpp, SoOffscreenRenderer.cpp) --
+# see repro.cpp for the full explanation.
+#
+#   testsuite/reproducers/somisc-fullpath-migration/run.sh /path/to/build/lib
+#
+# Prints PASS and exits 0 if all checks hold.
+
+CDPATH= cd "$(dirname "$0")" || exit 2
+
+LIBDIR="$1"
+if [ -z "$LIBDIR" ]; then
+  echo "usage: $0 /path/to/build/lib   (directory containing libCoin.so)" >&2
+  exit 2
+fi
+
+CXX=${CXX:-c++}
+SRCINCLUDE="$(CDPATH= cd ../../.. && pwd)/include" || exit 2
+
+"$CXX" -O1 -g repro.cpp -o repro -I"$SRCINCLUDE" -I"$LIBDIR/../include" -L"$LIBDIR" -lCoin || exit 2
+
+export LD_LIBRARY_PATH="$LIBDIR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+./repro
+status=$?
+if [ "$status" -ne 0 ]; then
+  echo "=== FAIL: repro exited with status $status ===" >&2
+  exit "$status"
+fi

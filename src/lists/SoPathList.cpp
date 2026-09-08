@@ -43,7 +43,6 @@
 
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/SoPath.h>
-#include <Inventor/SoFullPath.h>
 #include <Inventor/C/tidbits.h>
 #include <cassert>
 
@@ -146,20 +145,20 @@ extern "C" {
 static int
 compare_paths(const void * v0, const void * v1)
 {
-  SoFullPath * p0 = *((SoFullPath**)v0);
-  SoFullPath * p1 = *((SoFullPath**)v1);
+  SoPath * p0 = *((SoPath**)v0);
+  SoPath * p1 = *((SoPath**)v1);
 
   const ptrdiff_t diff = (char *)p0->getHead() - (char *)p1->getHead();
   if (diff != 0) { return (int)diff; }
 
-  int n = SbMin(p0->getLength(), p1->getLength());
+  int n = SbMin(p0->getFullLength(), p1->getFullLength());
   int i;
   for (i = 1; i < n; i++) {
     const int diff = p0->getIndex(i) - p1->getIndex(i);
     if (diff != 0) { return (int)diff; }
   }
   // shortest path first
-  return p0->getLength() - p1->getLength();
+  return p0->getFullLength() - p1->getFullLength();
 }
 }
 
@@ -184,19 +183,19 @@ SoPathList::sort(void)
 void
 SoPathList::uniquify(void)
 {
-  SoFullPath ** array = (SoFullPath**) this->getArrayPtr();
-  
+  SoPath ** array = (SoPath**) this->getArrayPtr();
+
   for (int i = this->getLength()-2; i >= 0; i--) {
-    SoFullPath * p = array[i];
+    SoPath * p = array[i];
     int j = i+1;
     // if fork is at tail of current path, remove next path. We might
     // have more than one path that go through this path's tail, so do
     // the test in a while loop
-    while ((j < this->getLength()) && (p->findFork(array[j]) == p->getLength()-1)) {
+    while ((j < this->getLength()) && (p->findFork(array[j]) == p->getFullLength()-1)) {
       this->remove(j);
       // get array pointer again even though it shouldn't change, but
       // it might do in the future so...
-      array = (SoFullPath**) this->getArrayPtr();
+      array = (SoPath**) this->getArrayPtr();
     }
   }
 }

@@ -661,8 +661,8 @@ SoGLRenderAction::AbortCode
 SoOffscreenRendererP::GLRenderAbortCallback(void *userData)
 {
   SoOffscreenRendererP * thisp = (SoOffscreenRendererP *) userData;
-  const SoFullPath * path = (const SoFullPath*) thisp->renderaction->getCurPath();
-  SoNode * node = path->getTail();
+  const SoPath * path = thisp->renderaction->getCurPath();
+  SoNode * node = path->getFullTail();
   assert(node);
 
   if (thisp->lastnodewasacamera) {
