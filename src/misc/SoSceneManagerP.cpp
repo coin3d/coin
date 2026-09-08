@@ -78,9 +78,9 @@ SoSceneManagerP::searchForCamera(SoNode * root,
 #ifdef HAVE_NODEKITS
   SoBaseKit::setSearchingChildren(old);
 #endif // HAVE_NODEKITS
-  SoFullPath * path = (SoFullPath*) this->searchaction->getPath();
+  SoPath * path = this->searchaction->getPath();
   if (path) {
-    SoNode * tail = path->getTail();
+    SoNode * tail = path->getFullTail();
     this->searchaction->reset();
     return (SoCamera*) tail;
   }
