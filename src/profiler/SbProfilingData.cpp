@@ -644,7 +644,7 @@ SbProfilingData::getIndexNoCreate(const SoPath * path, int COIN_UNUSED_ARG(pathl
   int pos = samelength;
   idx = lastentrypathindexes[pos-1];
   ++pos;
-  while (pos < fullpath->getLength() && idx != -1) {
+  while (pos <= fullpath->getLength() && idx != -1) {
     idx = this->getIndexForwardNoCreate(fullpath, pos, idx);
     ++pos;
   }
