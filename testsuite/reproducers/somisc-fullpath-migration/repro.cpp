@@ -50,9 +50,23 @@
 //    a direct-rendering context for the offscreen GLX pixmap instead.
 //    Set it here, before SoDB::init(), so it's in effect before the
 //    glue layer's first (lazily cached) context-creation attempt.
+//
+//    That workaround only helps once a display connection is possible
+//    at all, though -- some environments (headless CI/sandboxes with
+//    no X server running, as opposed to this session's own
+//    environment, which has a display but refuses *indirect* GLX
+//    contexts) have no display reachable whatsoever, so no GL context
+//    of any kind can be created. Detected with a direct, minimal
+//    XOpenDisplay() probe, independent of anything Coin's own glue
+//    layer does: this check is skipped (not failed) in that case,
+//    rather than either hard-failing where it's genuinely
+//    inapplicable or, worse, silently reporting PASS without ever
+//    having exercised the migrated getFullTail() call this check
+//    exists for.
 
 #include <cstdlib>
 #include <cstdio>
+#include <X11/Xlib.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoOffscreenRenderer.h>
 #include <Inventor/SoPath.h>
@@ -65,6 +79,20 @@
 #include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoCube.h>
 #include <Inventor/SbViewportRegion.h>
+
+// Minimal, Coin-independent check for whether any X display is
+// reachable at all -- distinct from (and checked before) the
+// indirect-vs-direct-GLX distinction COIN_GLX_PIXMAP_DIRECT_RENDERING
+// addresses above, which only matters once a display connection is
+// possible in the first place.
+static SbBool
+haveXDisplay(void)
+{
+  Display * dpy = XOpenDisplay(NULL);
+  if (!dpy) return FALSE;
+  XCloseDisplay(dpy);
+  return TRUE;
+}
 
 static SbBool
 test_pathlist_sort_uniquify(void)
@@ -163,6 +191,12 @@ test_pathswitch(void)
 static SbBool
 test_offscreen_render(void)
 {
+  if (!haveXDisplay()) {
+    fprintf(stderr, "[repro] SKIP: SoOffscreenRenderer "
+                    "(no X display reachable in this environment)\n");
+    return TRUE;
+  }
+
   SbViewportRegion vp(64, 64);
   SoOffscreenRenderer renderer(vp);
 
