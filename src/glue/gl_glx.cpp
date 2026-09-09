@@ -773,8 +773,8 @@ glxglue_context_create_pbuffer(struct glxglue_contextdata * context)
   COIN_GLXFBConfig * fbc;
   Display * dpy;
 
-  /* number of FBConfigs returned */
-  int fbc_cnt;
+  /* Keep the count defined if the chooser fails without writing it. */
+  int fbc_cnt = 0;
 
   /* set frame buffer attributes */
   /* FIXME: should refactor the attribute selection / setting process
