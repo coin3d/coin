@@ -2592,6 +2592,8 @@ coin_glglue_destruct(uint32_t contextid)
       if (glue->dl_handle) {
         cc_dl_close(glue->dl_handle);
       }
+      // The removed entry is no longer owned by gldict cleanup.
+      free_glglue_instance((uintptr_t)contextid, glue, NULL);
     }
   }
   CC_SYNC_END(cc_glglue_instance);
