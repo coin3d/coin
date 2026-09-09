@@ -22,6 +22,7 @@
 //    for issue #174's reproducers on the neighboring branch, confirming
 //    the whole start/motion/finish cycle still works.
 
+#include "../CoinCleanup.h"
 #include <cstdio>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInteraction.h>
@@ -165,6 +166,7 @@ int
 main()
 {
   SoDB::init();
+  CoinReproducerCleanup cleanup;
   SoInteraction::init();
 
   int failures = 0;

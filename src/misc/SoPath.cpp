@@ -53,6 +53,15 @@
   getFullLength() or getFullTail() instead.
 */
 
+/*!
+  \fn int SoPath::getFullLength(void) const
+
+  Returns the number of nodes in the complete path, including hidden
+  children. An empty path has length zero.
+
+  \sa getLength(), getFullTail(), getFullNodeFromTail(), getFullIndexFromTail()
+*/
+
 // *************************************************************************
 
 /*!
@@ -88,16 +97,12 @@
 // *************************************************************************
 
 #if COIN_DEBUG && 0 // Convenience function for dumping the SoPath during debugging.
-#include <Inventor/SoFullPath.h>
-
 static void
 sopath_dump(SoPath * p)
 {
-  SoFullPath * path = (SoFullPath *)p;
-
-  (void)fprintf(stderr, "(path %p, len %d)  ", path, path->getLength());
-  for (int i=0; i < path->getLength(); i++) {
-    SoNode * n = path->getNodeFromTail(i);
+  (void)fprintf(stderr, "(path %p, len %d)  ", p, p->getFullLength());
+  for (int i=0; i < p->getFullLength(); i++) {
+    SoNode * n = p->getFullNodeFromTail(i);
     (void)fprintf(stderr, "%p (%s), ",
                   n, n->getTypeId().getName().getString());
   }
@@ -1241,3 +1246,96 @@ SoPath::setFirstHidden(void)
 
   this->firsthiddendirty = FALSE;
 }
+
+
+#ifdef COIN_TEST_SUITE
+
+#include <Inventor/misc/SoChildList.h>
+#include <Inventor/misc/SoTempPath.h>
+#include <Inventor/nodes/SoGroup.h>
+
+// A non-group node with children exercises hidden paths without requiring
+// the optional nodekit or VRML97 subsystems.
+class SoPathTestHiddenNode : public SoNode {
+public:
+  SoPathTestHiddenNode() : children(this) {}
+  SoType getTypeId() const override { return SoNode::getClassTypeId(); }
+  SoChildList * getChildren() const override {
+    return const_cast<SoChildList *>(&this->children);
+  }
+private:
+  SoChildList children;
+};
+
+BOOST_AUTO_TEST_CASE(full_path_hidden_children)
+{
+  SoGroup * root = new SoGroup;
+  root->ref();
+  SoPathTestHiddenNode * hidden = new SoPathTestHiddenNode;
+  root->addChild(new SoGroup);
+  root->addChild(hidden);
+  SoGroup * leaf = new SoGroup;
+  // Repeated child pointers make the edge index significant.
+  hidden->getChildren()->append(leaf);
+  hidden->getChildren()->append(leaf);
+  hidden->getChildren()->append(leaf);
+
+  SoPath * path = new SoPath(root);
+  path->ref();
+  path->append(1);
+  path->append(2);
+
+  BOOST_CHECK_EQUAL(path->getLength(), 2);
+  BOOST_CHECK(path->getTail() == hidden);
+  BOOST_CHECK_EQUAL(path->getIndexFromTail(0), 1);
+  BOOST_CHECK_EQUAL(path->getFullLength(), 3);
+  BOOST_CHECK(path->getFullTail() == leaf);
+  SoNode * expectednodes[] = { leaf, hidden, root };
+  const int expectedindices[] = { 2, 1, 0 };
+  for (int i = 0; i < 3; ++i) {
+    BOOST_CHECK(path->getFullNodeFromTail(i) == expectednodes[i]);
+    BOOST_CHECK_EQUAL(path->getFullIndexFromTail(i), expectedindices[i]);
+  }
+
+  SoPath * copy = path->copy();
+  copy->ref();
+  copy->pop();
+  BOOST_CHECK_EQUAL(copy->getFullLength(), 2);
+  BOOST_CHECK(copy->getFullTail() == hidden);
+  BOOST_CHECK_EQUAL(path->getFullLength(), 3);
+  copy->pop();
+  BOOST_CHECK(copy->getFullTail() == root);
+  copy->pop();
+  BOOST_CHECK_EQUAL(copy->getFullLength(), 0);
+  BOOST_CHECK_EQUAL(copy->getLength(), 0);
+  copy->unref();
+  path->unref();
+  root->unref();
+}
+
+BOOST_AUTO_TEST_CASE(full_path_accessors_on_real_subclass)
+{
+  SoGroup * root = new SoGroup;
+  root->ref();
+  SoGroup * leaf = new SoGroup;
+  root->addChild(new SoGroup);
+  root->addChild(leaf);
+  {
+    // SoTempPath genuinely inherits SoFullPath; no downcast is needed.
+    SoTempPath path(2);
+    path.setHead(root);
+    path.append(1);
+    BOOST_CHECK_EQUAL(path.getLength(), 2);
+    BOOST_CHECK(path.getTail() == leaf);
+    BOOST_CHECK(path.getNodeFromTail(0) == leaf);
+    BOOST_CHECK(path.getNodeFromTail(1) == root);
+    BOOST_CHECK_EQUAL(path.getIndexFromTail(0), 1);
+    BOOST_CHECK_EQUAL(path.getIndexFromTail(1), 0);
+    path.pop();
+    BOOST_CHECK_EQUAL(path.getLength(), 1);
+    BOOST_CHECK(path.getTail() == root);
+  }
+  root->unref();
+}
+
+#endif // COIN_TEST_SUITE

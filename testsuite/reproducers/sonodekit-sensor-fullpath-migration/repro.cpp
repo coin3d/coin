@@ -24,6 +24,7 @@
 //    (PRIVATE(this)->path, now plain SoPath* instead of
 //    reinterpret_cast<SoFullPath*>'d, still correctly audits the path).
 
+#include "../CoinCleanup.h"
 #include <cstdio>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInteraction.h>
@@ -129,6 +130,7 @@ int
 main()
 {
   SoDB::init();
+  CoinReproducerCleanup cleanup;
   SoInteraction::init();
 
   SoSeparator * root = new SoSeparator;

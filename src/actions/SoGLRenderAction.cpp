@@ -1357,11 +1357,11 @@ SoGLRenderAction::abortNow(void)
     debug = env && (atoi(env) > 0);
   }
   if (debug) {
-    const SoFullPath * p = (const SoFullPath *)this->getCurPath();
+    const SoPath * p = this->getCurPath();
     assert(p);
-    const int len = p->getLength();
+    const int len = p->getFullLength();
     for (int i=1; i < len; i++) { printf("  "); }
-    const SoNode * n = p->getTail();
+    const SoNode * n = p->getFullTail();
     assert(n);
     printf("%p %s (\"%s\")\n",
            n, n->getTypeId().getName().getString(),

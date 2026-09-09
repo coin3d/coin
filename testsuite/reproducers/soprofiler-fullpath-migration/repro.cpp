@@ -72,6 +72,7 @@
 // timing/footprint/flag round-trip correctly, and that looking up an
 // unregistered path behaves as documented (returns -1 / zero).
 
+#include "../CoinCleanup.h"
 #include <cstdio>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoPath.h>
@@ -84,6 +85,7 @@ int
 main()
 {
   SoDB::init();
+  CoinReproducerCleanup cleanup;
 
   SoSeparator * root = new SoSeparator;
   root->ref();

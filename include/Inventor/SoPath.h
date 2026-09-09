@@ -82,12 +82,7 @@ public:
   // "Full" variants of getTail()/getNodeFromTail()/getIndexFromTail()/
   // getLength(): unlike the methods above, these count hidden children
   // (e.g. nodekit-internal nodes) instead of stopping at the first one.
-  // This is the same data SoFullPath's identically-named methods expose
-  // via a reinterpret_cast<SoFullPath*>(path) of a plain SoPath -- these
-  // provide the same thing directly on SoPath, without the cast (which
-  // is undefined behavior whenever the SoPath instance was never
-  // actually constructed as a SoFullPath, as it usually isn't).
-  // SoFullPath itself now delegates to these.
+  // Use these to inspect a complete SoPath without casting to SoFullPath.
   SoNode * getFullTail(void) const;
   SoNode * getFullNodeFromTail(const int index) const;
   int getFullIndexFromTail(const int index) const;

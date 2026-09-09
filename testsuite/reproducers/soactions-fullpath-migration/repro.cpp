@@ -27,6 +27,7 @@
 //    get_current_tail()). Confirms the conversion produces a
 //    non-NULL VRML root with at least one child.
 
+#include "../CoinCleanup.h"
 #include <cstdio>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoPath.h>
@@ -158,6 +159,7 @@ int
 main()
 {
   SoDB::init();
+  CoinReproducerCleanup cleanup;
 
   int failures = 0;
   if (!test_bbox_reset()) { fprintf(stderr, "[repro] FAIL: bbox reset check\n"); failures++; }

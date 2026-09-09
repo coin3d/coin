@@ -113,11 +113,11 @@ public:
     assert(adjusted.getValue() >= 0.0);
     data.setNodeTiming(this->entryindex, adjusted);
 #if 0 // DEBUG
-    const SoFullPath * fullpath = (const SoFullPath *)action->getCurPath();
+    const SoPath * path = action->getCurPath();
     SoDebugError::postInfo("Profiling",
                            "%20s (%d): duration %g, offset %g, adjusted %g",
-                           fullpath->getTail()->getTypeId().getName().getString(),
-                           fullpath->getLength(),
+                           path->getFullTail()->getTypeId().getName().getString(),
+                           path->getFullLength(),
                            duration.getValue(), childrenoffset.getValue(),
                            adjusted.getValue());
 #endif

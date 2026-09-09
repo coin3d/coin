@@ -64,6 +64,7 @@
 //    having exercised the migrated getFullTail() call this check
 //    exists for.
 
+#include "../CoinCleanup.h"
 #include <cstdlib>
 #include <cstdio>
 #include <X11/Xlib.h>
@@ -183,6 +184,8 @@ test_pathswitch(void)
   fprintf(stderr, "[repro] SoPathSwitch with matching path: bbox empty=%d\n",
           (int)bbox2.getBoundingBox().isEmpty());
 
+  // Break root -> path switch -> path -> root before dropping ownership.
+  psw->path.setValue(NULL);
   otherroot->unref();
   root->unref();
   return emptywhenmismatched && nonemptywhenmatched;
@@ -226,6 +229,7 @@ main()
   setenv("COIN_GLX_PIXMAP_DIRECT_RENDERING", "1", 0); // don't override if the caller already set it
 
   SoDB::init();
+  CoinReproducerCleanup cleanup;
 
   int failures = 0;
   if (!test_pathlist_sort_uniquify()) { fprintf(stderr, "[repro] FAIL: pathlist sort/uniquify\n"); failures++; }

@@ -12,6 +12,7 @@
 // migration preserved behavior rather than accidentally collapsing
 // onto the "wrong" (hidden-node-truncated) variant.
 
+#include "../CoinCleanup.h"
 #include <cstdio>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInteraction.h>
@@ -27,6 +28,7 @@ int
 main()
 {
   SoDB::init();
+  CoinReproducerCleanup cleanup;
   SoInteraction::init();
 
   SoSeparator * root = new SoSeparator;

@@ -36,23 +36,25 @@
 
   \ingroup coin_general
 
-  SoPath allows only access from the head node to the first node with
-  hidden children, but not any further.
+  SoPath::getTail() and SoPath::getLength() stop at the first node with
+  hidden children. To inspect the complete path, use
+  SoPath::getFullTail(), SoPath::getFullLength(),
+  SoPath::getFullNodeFromTail(), and SoPath::getFullIndexFromTail().
 
-  Since the SoFullPath is derived from SoPath and contains no private
-  data, you can cast SoPath instances to the SoFullPath type.  This
-  will allow you to examine hidden children.
+  Historically, callers cast SoPath instances to SoFullPath to access
+  hidden children. Such a downcast has undefined behavior unless the
+  object actually derives from SoFullPath. The full-path methods on
+  SoPath provide this functionality without a cast.
 
-  (Actually, you are not supposed to allocate instances of this class
-  at all. It is only available as an "extended interface" into the
-  superclass SoPath.)
+  SoFullPath is retained for compatibility and as the base of
+  SoTempPath. Its accessors delegate to the full-path methods on SoPath.
 */
 
 /*!
   \fn void SoFullPath::pop(void)
 
-  This method overrides SoPath::pop() to allow clients to get at all
-  the nodes in the path.
+  Removes the actual tail, including hidden children, just like
+  SoPath::pop().
 */
 
 #include <Inventor/SoFullPath.h>

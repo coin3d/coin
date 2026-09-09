@@ -47,6 +47,7 @@
 // SoSeparator-only path has no hidden nodes and wouldn't tell
 // getLength() and getFullLength() apart).
 
+#include "../CoinCleanup.h"
 #include <cstdio>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInteraction.h>
@@ -59,6 +60,7 @@ int
 main()
 {
   SoDB::init();
+  CoinReproducerCleanup cleanup;
   SoInteraction::init();
 
   int failures = 0;
