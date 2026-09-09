@@ -506,7 +506,9 @@ SbProfilingData::isPathMatch(const SoFullPath * fullpath, int pathlen, int idx)
 
 /*!
   Return the index of the tail node in the path.
-  If node is not registered, add it and return that index.
+  If the path is not registered, return -1 unless create is TRUE.
+  With create set to TRUE, register the path and return its index.
+  Entries distinguish child indices and ancestors, including shared nodes.
 */
 
 int
@@ -682,7 +684,8 @@ SbProfilingData::getIndexForwardCreate(const SoFullPath * fullpath, int pathlen,
 
   const int nodedatacount = (int)PRIVATE(this)->nodeData.size();
   for (int idx = parentidx + 1; idx < nodedatacount; ++idx) {
-    if ((PRIVATE(this)->nodeData[idx].node == tail) &&
+    if ((PRIVATE(this)->nodeData[idx].parentidx == parentidx) &&
+        (PRIVATE(this)->nodeData[idx].node == tail) &&
         (PRIVATE(this)->nodeData[idx].childidx == tidx)) { // found it!
       return idx;
     }
@@ -722,7 +725,8 @@ SbProfilingData::getIndexForwardNoCreate(const SoFullPath * fullpath, int pathle
 
   const int nodedatacount = (int)PRIVATE(this)->nodeData.size();
   for (int idx = parentidx + 1; idx < nodedatacount; ++idx) {
-    if ((PRIVATE(this)->nodeData[idx].node == tail) &&
+    if ((PRIVATE(this)->nodeData[idx].parentidx == parentidx) &&
+        (PRIVATE(this)->nodeData[idx].node == tail) &&
         (PRIVATE(this)->nodeData[idx].childidx == tidx)) { // found it!
       return idx;
     }
@@ -1258,3 +1262,103 @@ SbProfilingData::operator != (const SbProfilingData & rhs) const
 // *************************************************************************
 
 #undef PRIVATE
+
+#ifdef COIN_TEST_SUITE
+
+#include <Inventor/misc/SoTempPath.h>
+#include <Inventor/nodes/SoSeparator.h>
+
+BOOST_AUTO_TEST_CASE(path_lookup_reaches_tail_without_creating_entries)
+{
+  SoSeparator * root = new SoSeparator;
+  root->ref();
+  SoSeparator * branch = new SoSeparator;
+  root->addChild(branch);
+  SoSeparator * leaf = new SoSeparator;
+  // The same node at different child indices represents distinct paths.
+  branch->addChild(leaf);
+  branch->addChild(leaf);
+  branch->addChild(new SoSeparator);
+  {
+    // Real SoFullPath subclasses avoid the separate downcast issue in #714.
+    SoTempPath first(3), second(3), missing(3), prefix(2);
+    first.setHead(root); first.append(0); first.append(0);
+    second.setHead(root); second.append(0); second.append(1);
+    missing.setHead(root); missing.append(0); missing.append(2);
+    prefix.setHead(root); prefix.append(0);
+    SbProfilingData data;
+    BOOST_CHECK_EQUAL(data.getIndex(&first), -1);
+    BOOST_CHECK_EQUAL(data.getNumNodeEntries(), 0);
+    const int firstidx = data.getIndex(&first, TRUE);
+    const int secondidx = data.getIndex(&second, TRUE);
+    BOOST_REQUIRE(firstidx >= 0 && secondidx >= 0 && firstidx != secondidx);
+    const int parentidx = data.getParentIndex(firstidx);
+    BOOST_CHECK_EQUAL(data.getParentIndex(secondidx), parentidx);
+    data.setNodeTiming(firstidx, SbTime(1.5));
+    data.setNodeTiming(parentidx, SbTime(9.0));
+    data.setNodeFootprint(firstidx, SbProfilingData::MEMORY_SIZE, 4096);
+    data.setNodeFootprint(parentidx, SbProfilingData::MEMORY_SIZE, 128);
+    data.setNodeFlag(firstidx, SbProfilingData::GL_CACHED_FLAG, TRUE);
+    const int count = data.getNumNodeEntries();
+
+    // The last cached path is second, so first must take the lookup path.
+    BOOST_CHECK_EQUAL(data.getIndex(&first), firstidx);
+    BOOST_CHECK_EQUAL(data.getNodeTiming(&first).getValue(), 1.5);
+    BOOST_CHECK_EQUAL(data.getNodeFootprint(&first, SbProfilingData::MEMORY_SIZE), 4096);
+    BOOST_CHECK(data.getNodeFlag(&first, SbProfilingData::GL_CACHED_FLAG));
+    BOOST_CHECK_EQUAL(data.getIndex(&missing), -1);
+    BOOST_CHECK_EQUAL(data.getNodeTiming(&missing).getValue(), 0.0);
+    BOOST_CHECK_EQUAL(data.getNodeFootprint(&missing, SbProfilingData::MEMORY_SIZE), 0);
+    BOOST_CHECK(!data.getNodeFlag(&missing, SbProfilingData::GL_CACHED_FLAG));
+    BOOST_CHECK_EQUAL(data.getIndex(&prefix), parentidx);
+    BOOST_CHECK_EQUAL(data.getIndex(&second), secondidx);
+    BOOST_CHECK_EQUAL(data.getIndex(&first), firstidx);
+    BOOST_CHECK_EQUAL(data.getNumNodeEntries(), count);
+  }
+  root->unref();
+}
+
+BOOST_AUTO_TEST_CASE(path_lookup_distinguishes_parents_of_shared_nodes)
+{
+  SoSeparator * root = new SoSeparator;
+  root->ref();
+  SoSeparator * left = new SoSeparator;
+  SoSeparator * right = new SoSeparator;
+  SoSeparator * shared = new SoSeparator;
+  root->addChild(left);
+  root->addChild(right);
+  left->addChild(shared);
+  right->addChild(shared);
+  {
+    SoTempPath leftparent(2), leftpath(3), rightpath(3);
+    leftparent.setHead(root); leftparent.append(0);
+    leftpath.setHead(root); leftpath.append(0); leftpath.append(0);
+    rightpath.setHead(root); rightpath.append(1); rightpath.append(0);
+    SbProfilingData data;
+    const int parentidx = data.getIndex(&leftparent, TRUE);
+    const int rightidx = data.getIndex(&rightpath, TRUE);
+    data.setNodeTiming(rightidx, SbTime(2.5));
+    data.setNodeFootprint(rightidx, SbProfilingData::MEMORY_SIZE, 512);
+    data.setNodeFlag(rightidx, SbProfilingData::GL_CACHED_FLAG, TRUE);
+    const int count = data.getNumNodeEntries();
+
+    // left->shared was never registered, even though right->shared was.
+    BOOST_CHECK_EQUAL(data.getIndex(&leftpath), -1);
+    BOOST_CHECK_EQUAL(data.getNodeTiming(&leftpath).getValue(), 0.0);
+    BOOST_CHECK_EQUAL(data.getNodeFootprint(&leftpath, SbProfilingData::MEMORY_SIZE), 0);
+    BOOST_CHECK(!data.getNodeFlag(&leftpath, SbProfilingData::GL_CACHED_FLAG));
+    BOOST_CHECK_EQUAL(data.getNumNodeEntries(), count);
+    // Reset the fast-path cache before testing creation independently.
+    data.getIndex(&rightpath);
+    const int leftidx = data.getIndex(&leftpath, TRUE);
+    BOOST_CHECK(leftidx != rightidx);
+    BOOST_CHECK_EQUAL(data.getParentIndex(leftidx), parentidx);
+    BOOST_CHECK_EQUAL(data.getNumNodeEntries(), count + 1);
+    data.setNodeTiming(leftidx, SbTime(1.5));
+    BOOST_CHECK_EQUAL(data.getNodeTiming(&rightpath).getValue(), 2.5);
+    BOOST_CHECK_EQUAL(data.getNodeTiming(&leftpath).getValue(), 1.5);
+  }
+  root->unref();
+}
+
+#endif // COIN_TEST_SUITE

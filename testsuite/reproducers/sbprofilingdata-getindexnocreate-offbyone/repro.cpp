@@ -1,44 +1,18 @@
-// Reproducer/regression test for an off-by-one in
-// SbProfilingData::getIndexNoCreate() (src/profiler/SbProfilingData.cpp).
+// Regression for SbProfilingData::getIndexNoCreate() stopping before the
+// requested tail. After registering sibling paths, a lookup of the first
+// path must return its entry and metrics, not those of its parent.
 //
-// getIndexNoCreate()'s forward-walk loop condition was
-// `pos < path->getFullLength()`, one comparison short of its sibling
-// getIndexCreate()'s `pos <= path->getFullLength()`. Both functions
-// build a "lastentrypathindexes" chain from the most-recently-added
-// profiling entry's own ancestry, find how many leading path elements
-// match that chain (samelength), and then walk *forward* from there to
-// resolve/create the remaining entries down to the queried path's
-// tail. getIndexCreate()'s "<=" walks all the way to and including the
-// tail (pos going from samelength+1 up to and including getFullLength());
-// getIndexNoCreate()'s "<" stopped one short, at the tail's *parent*,
-// so the function returned the parent's index instead of the actual
-// queried node's whenever the query path diverges from the
-// last-entry's ancestry exactly at the tail (i.e. shares every node up
-// to but not including the last one).
+// Explicit values are assigned through index-based setters to test each
+// path-based getter. CoinTests additionally covers missing paths, repeated
+// child indices and nodes shared by different parents; see README.md.
 //
-// This affects every path-based *getter* that goes through
-// getIndexNoCreate(): getIndex() with create=FALSE, getNodeTiming(),
-// getNodeFootprint(), getNodeFlag(). The corresponding *setters*
-// (which use getIndexCreate(), already correct) were never affected.
-//
-// Found while verifying the Phase 8 SoPath/SoFullPath downcast UB fix
-// on the sibling branch fix/sopath-fullpath-downcast-ub: reproduced
-// byte-for-byte against the unmigrated code too, confirming it's a
-// separate, pre-existing bug unrelated to that UB category.
-//
-// This test creates two sibling paths (cube, sphere) sharing a
-// root->branch prefix and diverging at the tail -- exactly the
-// scenario above -- then queries *cube*'s index again via the
-// path-based getter (create=FALSE) right after creating *sphere*'s
-// entry (so the "last entry" chain is sphere's, and cube's query
-// diverges from it exactly at the tail). Before the fix this returned
-// branch's index (cube's parent) instead of cube's own; after the fix
-// it returns cube's own index, matching what was returned at creation
-// time.
+// Use real SoTempPath instances to avoid the separate plain-SoPath downcast
+// problem addressed by PR #714. This test checks lookup results, not whether
+// the complete profiler is free of undefined behavior.
 
 #include <cstdio>
 #include <Inventor/SoDB.h>
-#include <Inventor/SoPath.h>
+#include <Inventor/misc/SoTempPath.h>
 #include <Inventor/annex/Profiler/SbProfilingData.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoCube.h>
@@ -58,12 +32,16 @@ main()
   SoSphere * sphere = new SoSphere;
   branch->addChild(sphere);
 
-  SoPath * cubepath = new SoPath(root);
+  // Real SoFullPath subclasses isolate this lookup regression from the
+  // separate SoPath downcast issue addressed by PR #714.
+  SoTempPath * cubepath = new SoTempPath(3);
+  cubepath->setHead(root);
   cubepath->append(branch);
   cubepath->append(cube);
   cubepath->ref();
 
-  SoPath * spherepath = new SoPath(root);
+  SoTempPath * spherepath = new SoTempPath(3);
+  spherepath->setHead(root);
   spherepath->append(branch);
   spherepath->append(sphere);
   spherepath->ref();
@@ -123,6 +101,7 @@ main()
   cubepath->unref();
   spherepath->unref();
   root->unref();
+  SoDB::finish();
 
   if (failures > 0) {
     fprintf(stderr, "[repro] FAIL: %d check(s) failed\n", failures);
