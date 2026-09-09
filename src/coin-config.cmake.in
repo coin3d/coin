@@ -10,6 +10,95 @@ cmake_minimum_required(VERSION 3.0...3.31)
 set(COIN_VERSION @COIN_MAJOR_VERSION@.@COIN_MINOR_VERSION@.@COIN_MICRO_VERSION@)
 @PACKAGE_INIT@
 
+# Check platform, architecture, and compiler compatibility (Issue #162)
+if(NOT COIN_NO_COMPATIBILITY_CHECK)
+	# 1. Operating system / Target system
+	if(DEFINED CMAKE_SYSTEM_NAME AND NOT "@CMAKE_SYSTEM_NAME@" STREQUAL "")
+		if(NOT CMAKE_SYSTEM_NAME STREQUAL "@CMAKE_SYSTEM_NAME@")
+			message(WARNING "Coin was built for system '@CMAKE_SYSTEM_NAME@', but current project is targeting '${CMAKE_SYSTEM_NAME}'. This may cause compatibility issues.")
+		endif()
+	endif()
+
+	# 2. Architecture bitness (pointer size)
+	if(DEFINED CMAKE_SIZEOF_VOID_P AND NOT "@CMAKE_SIZEOF_VOID_P@" STREQUAL "")
+		if(NOT CMAKE_SIZEOF_VOID_P EQUAL @CMAKE_SIZEOF_VOID_P@)
+			math(EXPR _coin_bits "@CMAKE_SIZEOF_VOID_P@ * 8")
+			math(EXPR _curr_bits "${CMAKE_SIZEOF_VOID_P} * 8")
+			message(WARNING "Coin was built for ${_coin_bits}-bit architecture, but current project is targeting ${_curr_bits}-bit architecture. Combining them will cause link failures.")
+		endif()
+	endif()
+
+	# 3. Target processor architecture
+	if(DEFINED CMAKE_SYSTEM_PROCESSOR AND NOT "@CMAKE_SYSTEM_PROCESSOR@" STREQUAL "")
+		string(TOLOWER "${CMAKE_SYSTEM_PROCESSOR}" _coin_curr_proc)
+		string(TOLOWER "@CMAKE_SYSTEM_PROCESSOR@" _coin_built_proc)
+		if(_coin_curr_proc STREQUAL "amd64")
+			set(_coin_curr_proc "x86_64")
+		endif()
+		if(_coin_built_proc STREQUAL "amd64")
+			set(_coin_built_proc "x86_64")
+		endif()
+		if(_coin_curr_proc STREQUAL "arm64")
+			set(_coin_curr_proc "aarch64")
+		endif()
+		if(_coin_built_proc STREQUAL "arm64")
+			set(_coin_built_proc "aarch64")
+		endif()
+		if(NOT _coin_curr_proc STREQUAL _coin_built_proc)
+			message(WARNING "Coin was built for CPU architecture '@CMAKE_SYSTEM_PROCESSOR@', but current project is targeting '${CMAKE_SYSTEM_PROCESSOR}'.")
+		endif()
+		unset(_coin_curr_proc)
+		unset(_coin_built_proc)
+	endif()
+
+	# 4. Compiler and C++ ABI compatibility
+	set(_COIN_BUILT_WITH_MSVC "@MSVC@")
+	set(_COIN_BUILT_COMPILER_ID "@CMAKE_CXX_COMPILER_ID@")
+	set(_COIN_BUILT_MSVC_VERSION "@MSVC_VERSION@")
+	set(_COIN_BUILT_MSVC_STATIC_RUNTIME "@COIN_BUILD_MSVC_STATIC_RUNTIME@")
+
+	if(_COIN_BUILT_WITH_MSVC)
+		if(DEFINED CMAKE_CXX_COMPILER_ID AND NOT MSVC)
+			message(WARNING "Coin was built with MSVC (${_COIN_BUILT_COMPILER_ID}), but current project uses ${CMAKE_CXX_COMPILER_ID}. C++ ABI differences will likely cause link errors or runtime crashes.")
+		elseif(MSVC AND DEFINED MSVC_VERSION AND NOT _COIN_BUILT_MSVC_VERSION STREQUAL "")
+			# Check Visual Studio toolset compatibility
+			if((_COIN_BUILT_MSVC_VERSION LESS 1900 AND MSVC_VERSION GREATER_EQUAL 1900) OR
+			   (_COIN_BUILT_MSVC_VERSION GREATER_EQUAL 1900 AND MSVC_VERSION LESS 1900))
+				message(WARNING "Coin was built with MSVC version ${_COIN_BUILT_MSVC_VERSION}, but current project uses MSVC version ${MSVC_VERSION}. MSVC versions prior to Visual Studio 2015 (1900) are binary incompatible.")
+			elseif(MSVC_VERSION LESS _COIN_BUILT_MSVC_VERSION)
+				message(WARNING "Coin was built with MSVC version ${_COIN_BUILT_MSVC_VERSION}, but current project uses older MSVC version ${MSVC_VERSION}. Microsoft C++ binary compatibility requires the consumer to use an MSVC version equal to or newer than linked libraries.")
+			endif()
+
+			# Check C runtime library linkage (static /MT vs dynamic /MD) if specified
+			if(DEFINED CMAKE_MSVC_RUNTIME_LIBRARY)
+				if(_COIN_BUILT_MSVC_STATIC_RUNTIME AND CMAKE_MSVC_RUNTIME_LIBRARY MATCHES "DLL")
+					message(WARNING "Coin was built with MSVC static runtime (/MT), but current project has CMAKE_MSVC_RUNTIME_LIBRARY='${CMAKE_MSVC_RUNTIME_LIBRARY}'. Mixing static and dynamic MSVC runtimes will cause link errors (LNK2038).")
+				elseif(NOT _COIN_BUILT_MSVC_STATIC_RUNTIME AND CMAKE_MSVC_RUNTIME_LIBRARY MATCHES "^MultiThreaded(Debug)?$")
+					message(WARNING "Coin was built with MSVC dynamic runtime (/MD), but current project has CMAKE_MSVC_RUNTIME_LIBRARY='${CMAKE_MSVC_RUNTIME_LIBRARY}'. Mixing static and dynamic MSVC runtimes will cause link errors (LNK2038).")
+				endif()
+			endif()
+		endif()
+	else()
+		# Coin was not built with MSVC
+		if(MSVC)
+			message(WARNING "Coin was built with ${_COIN_BUILT_COMPILER_ID} (non-MSVC), but current project is using MSVC. C++ ABI differences will likely cause link errors or runtime crashes.")
+		elseif(DEFINED CMAKE_CXX_COMPILER_ID AND NOT _COIN_BUILT_COMPILER_ID STREQUAL "")
+			if(NOT CMAKE_CXX_COMPILER_ID STREQUAL _COIN_BUILT_COMPILER_ID)
+				# GNU and Clang on Unix/Linux generally share the standard C++ library (libstdc++), but others might differ
+				if(NOT (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU" AND _COIN_BUILT_COMPILER_ID MATCHES "Clang|GNU"))
+					message(WARNING "Coin was built with compiler '${_COIN_BUILT_COMPILER_ID}', but current project is using '${CMAKE_CXX_COMPILER_ID}'. This may lead to C++ ABI compatibility problems.")
+				endif()
+			endif()
+		endif()
+	endif()
+
+	unset(_COIN_BUILT_WITH_MSVC)
+	unset(_COIN_BUILT_COMPILER_ID)
+	unset(_COIN_BUILT_MSVC_VERSION)
+	unset(_COIN_BUILT_MSVC_STATIC_RUNTIME)
+endif()
+
+
 set(COIN_BUILD_MAC_FRAMEWORK @COIN_BUILD_MAC_FRAMEWORK@)
 if(NOT COIN_BUILD_MAC_FRAMEWORK)
 
