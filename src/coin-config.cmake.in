@@ -100,13 +100,15 @@ if(NOT COIN_NO_COMPATIBILITY_CHECK)
 						math(EXPR _rt_pass "${_rt_pass} + 1")
 						set(_prev_rt_val "${_rt_val}")
 
-						# Resolve innermost $<IF:...> expressions first
-						string(REGEX REPLACE "\\$<IF:1,([^$<,>]*),([^$<>]*)>" "\\1" _rt_val "${_rt_val}")
-						string(REGEX REPLACE "\\$<IF:0,([^$<,>]*),([^$<>]*)>" "\\2" _rt_val "${_rt_val}")
+						# Resolve expressions where arguments have no nested generator expressions
+						string(REGEX REPLACE "\\$<IF:1,([^$<,>]+),([^$<,>]+)>" "\\1" _rt_val "${_rt_val}")
+						string(REGEX REPLACE "\\$<IF:0,([^$<,>]+),([^$<,>]+)>" "\\2" _rt_val "${_rt_val}")
 
-						# Resolve general $<IF:...> expressions
-						string(REGEX REPLACE "\\$<IF:1,([^,>]*),([^>]*)>" "\\1" _rt_val "${_rt_val}")
-						string(REGEX REPLACE "\\$<IF:0,([^,>]*),([^>]*)>" "\\2" _rt_val "${_rt_val}")
+						# When condition is 1 and true branch is a known literal, resolve cleanly without parsing inactive branch
+						string(REGEX REPLACE "\\$<IF:1,(MultiThreaded(Debug)?(DLL)?),.*>$" "\\1" _rt_val "${_rt_val}")
+
+						# When condition is 0 and false branch is a known literal, resolve cleanly without parsing inactive branch
+						string(REGEX REPLACE "\\$<IF:0,.*,(MultiThreaded(Debug)?(DLL)?)>$" "\\1" _rt_val "${_rt_val}")
 
 						# Resolve conditional expressions
 						string(REGEX REPLACE "\\$<0:[^>]*>" "" _rt_val "${_rt_val}")
@@ -120,13 +122,13 @@ if(NOT COIN_NO_COMPATIBILITY_CHECK)
 					unset(_rt_pass)
 					unset(_prev_rt_val)
 
-					# If unhandled generator expressions remain, treat runtime as UNKNOWN
-					if(NOT _rt_val MATCHES "\\$<")
-						if(_rt_val MATCHES "MultiThreaded" AND NOT _rt_val MATCHES "DLL")
-							set(_cfg_runtime_type "STATIC")
-						elseif(_rt_val MATCHES "DLL")
-							set(_cfg_runtime_type "DYNAMIC")
-						endif()
+					# Classify ONLY complete literal values; any residual or partial string remains UNKNOWN
+					if(_rt_val STREQUAL "MultiThreaded" OR _rt_val STREQUAL "MultiThreadedDebug")
+						set(_cfg_runtime_type "STATIC")
+					elseif(_rt_val STREQUAL "MultiThreadedDLL" OR _rt_val STREQUAL "MultiThreadedDebugDLL")
+						set(_cfg_runtime_type "DYNAMIC")
+					else()
+						set(_cfg_runtime_type "UNKNOWN")
 					endif()
 					unset(_rt_val)
 				else()
