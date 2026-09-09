@@ -43,6 +43,7 @@
 // See run.sh in this directory for how to build and run this against a
 // given Debug libCoin build.
 
+#include "../CoinCleanup.h"
 #include <cstdio>
 #include <cstdlib>
 #include <sys/stat.h>
@@ -66,6 +67,7 @@ main()
   }
 
   SoDB::init();
+  CoinReproducerCleanup cleanup;
   SoInteraction::init();
 
   SoSeparator * scene = new SoSeparator;
