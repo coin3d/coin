@@ -16,6 +16,7 @@
 // is why this needs to be run explicitly rather than via a normal ctest
 // run. See run.sh in this directory.
 
+#include "../CoinCleanup.h"
 #include <cstdio>
 #include <Inventor/SoDB.h>
 #include <Inventor/fields/SoSFFloat.h>
@@ -24,6 +25,7 @@
 int main()
 {
   SoDB::init();
+  CoinReproducerCleanup cleanup;
 
   SoElapsedTime * engine = new SoElapsedTime;
   engine->ref();
