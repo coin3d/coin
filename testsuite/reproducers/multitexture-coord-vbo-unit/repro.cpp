@@ -37,6 +37,7 @@
 // See run.sh in this directory for how to build and run this against a
 // given libCoin build.
 
+#include "../CoinCleanup.h"
 #include <cstdio>
 #include <vector>
 #include <Inventor/SoDB.h>
@@ -76,6 +77,7 @@ static void setSplitTexture(SoTexture2 * tex, unsigned char r0, unsigned char g0
 int main()
 {
   SoDB::init();
+  CoinReproducerCleanup cleanup;
 
   SoSeparator * root = new SoSeparator;
   root->ref();
