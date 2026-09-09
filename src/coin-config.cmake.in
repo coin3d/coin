@@ -90,9 +90,23 @@ if(NOT COIN_NO_COMPATIBILITY_CHECK)
 					endforeach()
 					unset(_configs_found)
 
-					# 2. Evaluate $<NOT:...>
-					string(REPLACE "$<NOT:1>" "0" _rt_val "${_rt_val}")
-					string(REPLACE "$<NOT:0>" "1" _rt_val "${_rt_val}")
+					# 2. Evaluate boolean operators
+					set(_b_pass 0)
+					while(_b_pass LESS 5)
+						math(EXPR _b_pass "${_b_pass} + 1")
+						set(_b_prev "${_rt_val}")
+						string(REPLACE "$<NOT:1>" "0" _rt_val "${_rt_val}")
+						string(REPLACE "$<NOT:0>" "1" _rt_val "${_rt_val}")
+						string(REGEX REPLACE "\\$<OR:[^>]*1[^>]*>" "1" _rt_val "${_rt_val}")
+						string(REGEX REPLACE "\\$<OR:[0, 	]+>" "0" _rt_val "${_rt_val}")
+						string(REGEX REPLACE "\\$<AND:[^>]*0[^>]*>" "0" _rt_val "${_rt_val}")
+						string(REGEX REPLACE "\\$<AND:[1, 	]+>" "1" _rt_val "${_rt_val}")
+						if("${_rt_val}" STREQUAL "${_b_prev}")
+							break()
+						endif()
+					endwhile()
+					unset(_b_pass)
+					unset(_b_prev)
 
 					# 3. Guarded loop to evaluate generator expressions with progress detection
 					set(_rt_pass 0)
@@ -101,14 +115,14 @@ if(NOT COIN_NO_COMPATIBILITY_CHECK)
 						set(_prev_rt_val "${_rt_val}")
 
 						# Resolve expressions where arguments have no nested generator expressions
-						string(REGEX REPLACE "\\$<IF:1,([^$<,>]+),([^$<,>]+)>" "\\1" _rt_val "${_rt_val}")
-						string(REGEX REPLACE "\\$<IF:0,([^$<,>]+),([^$<,>]+)>" "\\2" _rt_val "${_rt_val}")
+						string(REGEX REPLACE "\\$<IF:1,[ 	]*([^$<,>]+)[ 	]*,[ 	]*([^$<,>]+)[ 	]*>" "\\1" _rt_val "${_rt_val}")
+						string(REGEX REPLACE "\\$<IF:0,[ 	]*([^$<,>]+)[ 	]*,[ 	]*([^$<,>]+)[ 	]*>" "\\2" _rt_val "${_rt_val}")
 
 						# When condition is 1 and true branch is a known literal, resolve cleanly without parsing inactive branch
-						string(REGEX REPLACE "\\$<IF:1,(MultiThreaded(Debug)?(DLL)?),.*>$" "\\1" _rt_val "${_rt_val}")
+						string(REGEX REPLACE "\\$<IF:1,[ 	]*(MultiThreaded(Debug)?(DLL)?)[ 	]*,.*>" "\\1" _rt_val "${_rt_val}")
 
 						# When condition is 0 and false branch is a known literal, resolve cleanly without parsing inactive branch
-						string(REGEX REPLACE "\\$<IF:0,.*,(MultiThreaded(Debug)?(DLL)?)>$" "\\1" _rt_val "${_rt_val}")
+						string(REGEX REPLACE "\\$<IF:0,.*,[ 	]*(MultiThreaded(Debug)?(DLL)?)[ 	]*>" "\\1" _rt_val "${_rt_val}")
 
 						# Resolve conditional expressions
 						string(REGEX REPLACE "\\$<0:[^>]*>" "" _rt_val "${_rt_val}")
@@ -121,6 +135,8 @@ if(NOT COIN_NO_COMPATIBILITY_CHECK)
 					endwhile()
 					unset(_rt_pass)
 					unset(_prev_rt_val)
+
+					string(STRIP "${_rt_val}" _rt_val)
 
 					# Classify ONLY complete literal values; any residual or partial string remains UNKNOWN
 					if(_rt_val STREQUAL "MultiThreaded" OR _rt_val STREQUAL "MultiThreadedDebug")
