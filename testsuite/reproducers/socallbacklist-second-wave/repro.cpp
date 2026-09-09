@@ -50,6 +50,7 @@
 //    (SINGLE policy deselects the previous pick). finishCB fires once
 //    per handled mouse-release regardless of selection change.
 
+#include "../CoinCleanup.h"
 #include <cstdlib>
 #include <cstdio>
 #include <X11/Xlib.h>
@@ -213,6 +214,7 @@ int
 main()
 {
   SoDB::init();
+  CoinReproducerCleanup cleanup;
   SoInteraction::init();
 
   int failures = 0;

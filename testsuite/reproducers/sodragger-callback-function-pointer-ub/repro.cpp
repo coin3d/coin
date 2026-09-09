@@ -21,6 +21,7 @@
 // -fsanitize=function/undefined) that the type-punned-function-pointer
 // UB is gone.
 
+#include "../CoinCleanup.h"
 #include <cstdio>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInteraction.h>
@@ -49,6 +50,7 @@ int
 main()
 {
   SoDB::init();
+  CoinReproducerCleanup cleanup;
   SoInteraction::init();
 
   SoSeparator * root = new SoSeparator;

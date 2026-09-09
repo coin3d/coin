@@ -206,7 +206,7 @@ SoCallbackList::addCallback(SoCallbackListCB * f, void * userdata)
 }
 
 /*!
-  Remove callback \a f from the list.
+  Remove the last registration matching callback \a f and \a userdata.
 */
 void
 SoCallbackList::removeCallback(SoCallbackListCB * f, void * userdata)
@@ -266,8 +266,10 @@ SoCallbackList::getNumCallbacks(void) const
   triggered, even though if the code in one callback removes another
   callback.
 
-  It is safe for a callback to remove itself or any other callbacks
-  during execution.
+  It is safe for a callback to remove itself or any other callbacks,
+  clear the list, or add callbacks during execution. Callbacks added during
+  execution are first eligible for a subsequent invocation. Each nested
+  invocation takes its own snapshot of the registrations then present.
 */
 void
 SoCallbackList::invokeCallbacks(void * callbackdata)
@@ -290,3 +292,136 @@ SoCallbackList::invokeCallbacks(void * callbackdata)
     }
   }
 }
+
+#ifdef COIN_TEST_SUITE
+
+#include <Inventor/nodes/SoSelection.h>
+#include <Inventor/SbString.h>
+
+class CallbackListTestSelection : public SoSelection {
+public:
+  SoCallbackList & callbacks() { return *this->changeCBList; }
+  void fire() { this->changeCBList->invokeCallbacks(this); }
+};
+
+static void callbacklist_typed(void * data, SoSelection *)
+{
+  *static_cast<SbString *>(data) += "T";
+}
+
+static void callbacklist_generic(void * data, void *)
+{
+  *static_cast<SbString *>(data) += "G";
+}
+
+BOOST_AUTO_TEST_CASE(typed_callback_copies_preserve_dispatch_and_lifetime)
+{
+  SbString trace;
+  CallbackListTestSelection * selection = new CallbackListTestSelection;
+  selection->ref();
+  selection->addChangeCallback(callbacklist_typed, &trace);
+  selection->callbacks().addCallback(callbacklist_generic, &trace);
+  {
+    SoCallbackList copy(selection->callbacks());
+    SoCallbackList assigned;
+    assigned = copy;
+    assigned = assigned;
+    selection->callbacks().clearCallbacks();
+    selection->unref();
+    copy.invokeCallbacks(NULL);
+    BOOST_CHECK(trace == "TG");
+    copy.clearCallbacks();
+    assigned.invokeCallbacks(NULL);
+    BOOST_CHECK(trace == "TGTG");
+
+    // Overwriting an owned list with a raw list must discard its adapters.
+    SoCallbackList raw;
+    raw.addCallback(callbacklist_generic, &trace);
+    assigned = raw;
+    assigned.invokeCallbacks(NULL);
+    BOOST_CHECK(trace == "TGTGG");
+    assigned.clearCallbacks();
+    BOOST_CHECK_EQUAL(assigned.getNumCallbacks(), 0);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(mixed_callback_removal_preserves_indices_and_last_duplicate)
+{
+  SbString trace;
+  CallbackListTestSelection * selection = new CallbackListTestSelection;
+  selection->ref();
+  selection->addChangeCallback(callbacklist_typed, &trace);
+  selection->callbacks().addCallback(callbacklist_generic, &trace);
+  selection->addChangeCallback(callbacklist_typed, &trace);
+  selection->removeChangeCallback(callbacklist_typed, &trace);
+  selection->fire();
+  BOOST_CHECK(trace == "TG"); // Removing the first duplicate would produce GT.
+  selection->callbacks().removeCallback(callbacklist_generic, &trace);
+  selection->fire();
+  BOOST_CHECK(trace == "TGT");
+  selection->callbacks().removeCallback(
+    reinterpret_cast<SoCallbackListCB *>(callbacklist_typed), &trace);
+  selection->fire();
+  BOOST_CHECK(trace == "TGT");
+  BOOST_CHECK_EQUAL(selection->callbacks().getNumCallbacks(), 0);
+  selection->unref();
+}
+
+struct CallbackListMutation {
+  SbString trace;
+  bool changed;
+};
+
+static void callbacklist_later(void * data, SoSelection *)
+{
+  static_cast<CallbackListMutation *>(data)->trace += "B";
+}
+
+static void callbacklist_added(void * data, SoSelection *)
+{
+  static_cast<CallbackListMutation *>(data)->trace += "C";
+}
+
+static void callbacklist_mutate(void * data, SoSelection * node)
+{
+  CallbackListMutation * state = static_cast<CallbackListMutation *>(data);
+  state->trace += "A";
+  if (!state->changed) {
+    state->changed = true;
+    node->removeChangeCallback(callbacklist_later, data);
+    node->addChangeCallback(callbacklist_added, data);
+  }
+}
+
+static void callbacklist_clear_and_reenter(void * data, SoSelection * node)
+{
+  CallbackListMutation * state = static_cast<CallbackListMutation *>(data);
+  state->trace += "D";
+  CallbackListTestSelection * selection = static_cast<CallbackListTestSelection *>(node);
+  selection->callbacks().clearCallbacks();
+  selection->fire();
+}
+
+BOOST_AUTO_TEST_CASE(callback_mutations_affect_only_later_invocations)
+{
+  CallbackListMutation state;
+  state.changed = false;
+  CallbackListTestSelection * selection = new CallbackListTestSelection;
+  selection->ref();
+  selection->addChangeCallback(callbacklist_mutate, &state);
+  selection->addChangeCallback(callbacklist_later, &state);
+  selection->fire();
+  BOOST_CHECK(state.trace == "AB");
+  selection->fire();
+  BOOST_CHECK(state.trace == "ABAC");
+  selection->callbacks().clearCallbacks();
+  selection->addChangeCallback(callbacklist_clear_and_reenter, &state);
+  selection->addChangeCallback(callbacklist_later, &state);
+  selection->fire();
+  BOOST_CHECK(state.trace == "ABACDB");
+  selection->fire();
+  BOOST_CHECK(state.trace == "ABACDB");
+  selection->unref();
+}
+
+#endif // COIN_TEST_SUITE

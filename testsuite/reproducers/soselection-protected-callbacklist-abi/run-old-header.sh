@@ -1,14 +1,23 @@
 #!/bin/sh
-# Compile a client against the historical header, then run against the new Coin.
-# Usage: run-old-header.sh /absolute/path/to/build/lib [base-ref]
-CDPATH= cd "$(dirname "$0")" || exit 2
-LIBDIR=$1
-[ -n "$LIBDIR" ] || exit 2
-ROOT=$(CDPATH= cd ../../.. && pwd) || exit 2
-BASE=${2:-origin/master}
-TEMP=$(mktemp -d) || exit 2
+# Compile all public headers from a fixed pre-PR revision, then use new Coin.
+set -eu
+if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
+  echo "usage: $0 /path/to/build/lib [historical-ref]" >&2
+  exit 2
+fi
+LIBDIR=$(CDPATH= cd "$1" && pwd)
+HERE=$(CDPATH= cd "$(dirname "$0")" && pwd)
+ROOT=$(CDPATH= cd "$HERE/../../.." && pwd)
+BASE=${2:-c27cf9a72d302c8c1ee3367a8865a603ea26622a}
+CXX=${CXX:-c++}
+TEMP=$(mktemp -d "${TMPDIR:-/tmp}/coin-old-header.XXXXXX")
 trap 'rm -rf "$TEMP"' EXIT HUP INT TERM
-mkdir -p "$TEMP/include/Inventor/nodes" || exit 2
-git -C "$ROOT" show "$BASE:include/Inventor/nodes/SoSelection.h" > "$TEMP/include/Inventor/nodes/SoSelection.h" || exit 2
-"${CXX:-c++}" -g old-header-client.cpp -I"$TEMP/include" -I"$ROOT/include" -I"$LIBDIR/../include" -L"$LIBDIR" -lCoin -o "$TEMP/client" || exit 2
-LD_LIBRARY_PATH="$LIBDIR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" "$TEMP/client"
+# Avoid silently mixing old SoSelection with new SoCallbackList/SbPList.
+git -C "$ROOT" archive --output="$TEMP/headers.tar" "$BASE" include/Inventor
+tar -xf "$TEMP/headers.tar" -C "$TEMP"
+# Generated configuration headers must still come from the selected build.
+"$CXX" ${CXXFLAGS:-} -O1 -g "$HERE/old-header-client.cpp" \
+  -I"$TEMP/include" -I"$LIBDIR/../include" \
+  -L"$LIBDIR" ${LDFLAGS:-} -lCoin -o "$TEMP/client"
+export LD_LIBRARY_PATH="$LIBDIR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+"$TEMP/client"

@@ -1,28 +1,40 @@
+#include <Inventor/SoDB.h>
 #include <Inventor/SoInteraction.h>
 #include <Inventor/nodes/SoSelection.h>
 #include <Inventor/lists/SoCallbackList.h>
-#include <cassert>
 #include <cstdio>
 
-static int calls;
-static void callback(void *, SoSelection *) { ++calls; }
+static int typedcalls, genericcalls;
+static void typed(void *, SoSelection *) { ++typedcalls; }
+static void generic(void *, void *) { ++genericcalls; }
 class ClientSelection : public SoSelection {
 public:
   unsigned long marker;
   ClientSelection() : marker(0x12345678UL) {}
-  const SoCallbackList & callbacks() const { return *changeCBList; }
+  SoCallbackList & callbacks() { return *changeCBList; }
 };
 int main()
 {
   SoInteraction::init();
-  ClientSelection * sel = new ClientSelection;
-  sel->ref();
-  assert(sel->marker == 0x12345678UL);
-  sel->addChangeCallback(callback);
-  SoCallbackList snapshot(sel->callbacks());
-  sel->removeChangeCallback(callback);
-  sel->unref();
-  snapshot.invokeCallbacks(NULL);
-  assert(calls == 1);
-  puts("PASS: old-header subclass layout and callback-list copy");
+  bool valid;
+  {
+    ClientSelection * selection = new ClientSelection;
+    selection->ref();
+    valid = selection->marker == 0x12345678UL;
+    selection->addChangeCallback(typed);
+    selection->callbacks().addCallback(generic);
+    SoCallbackList snapshot(selection->callbacks());
+    SoCallbackList assigned;
+    assigned = snapshot;
+    selection->callbacks().clearCallbacks();
+    selection->unref();
+    snapshot.invokeCallbacks(NULL);
+    snapshot.clearCallbacks();
+    assigned.invokeCallbacks(NULL);
+    valid = valid && typedcalls == 2 && genericcalls == 2;
+  }
+  SoDB::finish();
+  std::printf("old-header layout, mixed dispatch, copy and assignment: %s\n",
+              valid ? "PASS" : "FAIL");
+  return valid ? 0 : 1; // Assertions disabled by NDEBUG must not erase checks.
 }

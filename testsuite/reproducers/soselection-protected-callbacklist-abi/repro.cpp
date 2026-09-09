@@ -45,6 +45,7 @@
 //     the entry being freed too early, and the removed callback still
 //     fires once more in the in-flight batch, then never again).
 
+#include "../CoinCleanup.h"
 #include <cstdio>
 #ifndef __has_feature
 #define __has_feature(x) 0
@@ -342,6 +343,7 @@ int
 main()
 {
   SoDB::init();
+  CoinReproducerCleanup cleanup;
   SoInteraction::init();
 
   int failures = 0;
