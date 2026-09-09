@@ -495,16 +495,25 @@ if(HAVE_VRML97 AND COIN_HAVE_JAVASCRIPT)
   if(NOT SPIDERMONKEY_RUNTIME_LINKING)
     find_package(SpiderMonkey)
     if(SPIDERMONKEY_FOUND)
-      set(HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING 1)
-      set(HAVE_SPIDERMONKEY_H 1)
-      if(NOT TARGET SpiderMonkey::SpiderMonkey)
-        add_library(SpiderMonkey::SpiderMonkey UNKNOWN IMPORTED)
-        set_target_properties(SpiderMonkey::SpiderMonkey PROPERTIES
-          IMPORTED_LOCATION "${SPIDERMONKEY_LIBRARIES}"
-          INTERFACE_INCLUDE_DIRECTORIES "${SPIDERMONKEY_INCLUDE_DIRS}"
-        )
-      endif()
-      list(APPEND COIN_TARGET_LINK_LIBRARIES SpiderMonkey::SpiderMonkey)
+      message(FATAL_ERROR
+        "SPIDERMONKEY_RUNTIME_LINKING=OFF (link-time SpiderMonkey linking) "
+        "found a SpiderMonkey at '${SPIDERMONKEY_INCLUDE_DIR}', but this "
+        "configuration cannot work: Coin's SpiderMonkey glue "
+        "(src/glue/spidermonkey.cpp, include/Inventor/C/glue/spidermonkey.h) "
+        "targets the SpiderMonkey C API as it existed around 2007 (JSBool, "
+        "jsval as a plain integer, no JS::Rooted<>/JS::PropertyKey), and no "
+        "SpiderMonkey release still available today exports that API -- "
+        "compiling against a real, modern <jsapi.h> fails with hundreds of "
+        "conflicting-declaration errors (JSContext, JSType, jsid, ... "
+        "redefined) rather than the intended type reuse (see Coin issue "
+        "#173). Porting this glue to a current SpiderMonkey embedding API "
+        "is out of scope here (see PR #673's rationale). "
+        "Use the default SPIDERMONKEY_RUNTIME_LINKING=ON instead: it loads "
+        "SpiderMonkey dynamically at run-time and safely reports JavaScript "
+        "support as unavailable if no compatible library is found, instead "
+        "of failing the whole Coin build. To disable JavaScript/VRML97 "
+        "\"javascript:\" URL support (SoJavaScriptEngine) entirely, "
+        "configure with -DCOIN_HAVE_JAVASCRIPT=OFF instead.")
     endif()
   endif()
 endif()
