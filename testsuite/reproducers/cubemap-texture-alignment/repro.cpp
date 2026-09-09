@@ -33,6 +33,7 @@
 // See run.sh in this directory for how to build and run this against a
 // given libCoin build.
 
+#include "../CoinCleanup.h"
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -78,6 +79,7 @@ static void setSolid(SoSFImage & field, unsigned char r, unsigned char g, unsign
 int main()
 {
   SoDB::init();
+  CoinReproducerCleanup cleanup;
 
   SoSeparator * root = new SoSeparator;
   root->ref();
