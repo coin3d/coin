@@ -761,47 +761,6 @@ glxglue_glXCreatePbuffer(Display * dpy, COIN_GLXFBConfig config, int width, int 
   return glxglue_glXCreateGLXPbufferSGIX(dpy, config, width, height, sgix_attrs);
 }
 
-/* Calls the given "choose FB config" function and validates its
-   output, returning the resolved config list (and setting
-   *fbc_cnt_out to the number of configs, > 0) on success, or NULL
-   (with *fbc_cnt_out set to 0) if the chooser found nothing usable.
-
-   Extracted out of glxglue_context_create_pbuffer() below (rather
-   than left inline) specifically so it can be exercised
-   deterministically -- with a mock chooser that returns NULL without
-   writing *nelements, the exact, real-world glXChooseFBConfig()
-   contract violation that originally caused fbc_cnt to be read
-   uninitialized here -- without needing any real X11/GLX state to
-   trigger it; see
-   testsuite/reproducers/glx-pbuffer-fbccnt-uninitialized/repro.cpp.
-   Not declared in any public header: this remains a private
-   implementation detail, just one given external linkage so the
-   reproducer, a separate translation unit, can declare a matching
-   prototype and link against it. */
-COIN_GLXFBConfig *
-glxglue_choose_fbconfig(COIN_PFNGLXCHOOSEFBCONFIG chooser,
-                        Display * dpy, int screen, const int * attrs,
-                        int * fbc_cnt_out)
-{
-  /* Initialized defensively: some GLX implementations have been
-     observed to leave this output parameter unwritten on certain
-     internal failure paths, in violation of the documented
-     glXChooseFBConfig() contract (it's supposed to always set
-     *nelements, even to 0, whenever it returns). An uninitialized
-     read here used to trip assert(fbc_cnt >= 0) below
-     nondeterministically under AddressSanitizer's stack poisoning
-     (whatever garbage value happened to be on the stack), and in a
-     non-debug (NDEBUG) build would have silently fed unpredictable
-     garbage into the fbc_cnt == 0 check and the fbc[0] access in the
-     caller. */
-  int fbc_cnt = 0;
-  COIN_GLXFBConfig * fbc = chooser(dpy, screen, attrs, &fbc_cnt);
-  assert(fbc_cnt >= 0);
-  *fbc_cnt_out = fbc_cnt;
-  if ((fbc_cnt == 0) || (fbc == NULL)) { return NULL; }
-  return fbc;
-}
-
 static SbBool
 glxglue_context_create_pbuffer(struct glxglue_contextdata * context)
 {
@@ -813,7 +772,9 @@ glxglue_context_create_pbuffer(struct glxglue_contextdata * context)
   COIN_GLXPbuffer pb;
   COIN_GLXFBConfig * fbc;
   Display * dpy;
-  int fbc_cnt;
+
+  /* Keep the count defined if the chooser fails without writing it. */
+  int fbc_cnt = 0;
 
   /* set frame buffer attributes */
   /* FIXME: should refactor the attribute selection / setting process
@@ -846,9 +807,9 @@ glxglue_context_create_pbuffer(struct glxglue_contextdata * context)
      sorted according to precedence rules where the first entry should be
      fine. */
 
-  fbc = glxglue_choose_fbconfig(glxglue_glXChooseFBConfig, dpy,
-                                DefaultScreen(dpy), attrs, &fbc_cnt);
-  if (fbc == NULL) {
+  fbc = glxglue_glXChooseFBConfig(dpy, DefaultScreen(dpy), attrs, &fbc_cnt);
+  assert(fbc_cnt >= 0);
+  if ((fbc_cnt == 0) || (fbc == NULL)) {
     /* FIXME: we have had reports of this hitting. Is it possible to
        improve the selection technique so we can be absolutely sure no
        usable fb-config is available, e.g. by iterating over all
