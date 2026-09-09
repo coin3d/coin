@@ -35,6 +35,7 @@
 // Release build -- COIN_DEBUG's own assert() in SoState::getConstElement()
 // would otherwise abort first and mask this specific bug).
 
+#include "../CoinCleanup.h"
 #include <cstdio>
 #include <Inventor/SoDB.h>
 #include <Inventor/lists/SoTypeList.h>
@@ -44,6 +45,7 @@
 int main()
 {
   SoDB::init();
+  CoinReproducerCleanup cleanup;
 
   // No elements enabled at all -- SoBumpMapElement::classStackIndex is
   // not among them, so it's disabled for this state.

@@ -40,6 +40,7 @@
 // See run.sh in this directory for how to build and run this against a
 // given libCoin build.
 
+#include "../CoinCleanup.h"
 #include <cstdio>
 #include <cstdlib>
 #include <Inventor/SoDB.h>
@@ -63,6 +64,7 @@ triangle_cb(void *, SoCallbackAction *,
 int main()
 {
   SoDB::init();
+  CoinReproducerCleanup cleanup;
 
   SoSeparator * root = new SoSeparator;
   root->ref();
