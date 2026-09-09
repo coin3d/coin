@@ -1,97 +1,70 @@
-// Reproducer/regression test for a profiler-subsystem initialization
-// ordering bug in SoDB::init() (src/misc/SoDB.cpp).
-//
-// SoAction::initClass() decides once, based on SoProfiler::isEnabled(),
-// whether to enable SoProfilerElement on the static
-// SoAction::enabledElements list -- a decision baked into every
-// SoState built for the rest of the process' lifetime (SoState's
-// stack array is only as large/as populated as that list says).
-// SoDB::init() used to call SoAction::initClass() long before it ever
-// parsed the COIN_PROFILER environment variable (that only happened
-// via SoProfilerP::parseCoinProfilerVariable(), near the very end of
-// SoDB::init(), followed by a conditional SoProfiler::init() call) --
-// so setting COIN_PROFILER before SoDB::init() had no effect on
-// whether SoProfilerElement ever actually got enabled on any state.
-//
-// Confirmed empirically (before the fix) with a throwaway build
-// instrumented to print SoNodeProfiling::isActive()'s return value:
-// SoProfiler::isEnabled() reported TRUE after SoDB::init() (the env
-// var *was* parsed, eventually), yet isActive() returned false for
-// every single node visited by a real action traversal, regardless.
-//
-// Fixed by moving just the (self-contained, dependency-free)
-// SoProfilerP::parseCoinProfilerVariable() call to right after
-// SoProfilerElement::initClass() and before SoAction::initClass(),
-// leaving the original, later call (which still guards the heavier
-// SoProfiler::init() -- SoNodeKit::init() etc., which itself has a
-// hard dependency on SoDB being far enough along not to recurse back
-// into SoDB::init()) exactly where it was.
-//
-// This drives a real SoGetBoundingBoxAction traversal (chosen because
-// it needs no GL context) over a small scene with an SoCallback node,
-// whose callback function -- invoked mid-traversal, with a live
-// SoState -- checks SoProfilerElement::get(state)->getProfilingData().
-// getNumNodeEntries() to directly observe whether profiling data
-// actually got recorded for the nodes visited before the callback
-// (root, camera, and the callback node's own preceding siblings),
-// rather than relying on any indirect proxy.
-
+// Public-API startup regression. The caller sets COIN_PROFILER before this
+// fresh process starts; argv[1] gives the independently expected state.
 #include <cstdlib>
 #include <cstdio>
+#include <cstring>
 #include <Inventor/SoDB.h>
 #include <Inventor/annex/Profiler/SoProfiler.h>
 #include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoCallback.h>
 #include <Inventor/nodes/SoCube.h>
 #include <Inventor/SbViewportRegion.h>
 
-static int numentriesseen = -1;
+struct Observation {
+  int callbacks;
+  SbBool elementenabled;
+  int entries;
+};
 
 static void
-inspectProfilingDataCB(void *, SoAction * action)
+inspect(void * userdata, SoAction * action)
 {
+  Observation * observation = static_cast<Observation *>(userdata);
+  ++observation->callbacks;
   SoState * state = action->getState();
-  if (!state->isElementEnabled(SoProfilerElement::getClassStackIndex())) {
-    numentriesseen = -1; // profiler element not even enabled on this state
-    return;
+  observation->elementenabled =
+    state->isElementEnabled(SoProfilerElement::getClassStackIndex());
+  if (observation->elementenabled) {
+    observation->entries = SoProfilerElement::get(state)->getProfilingData().getNumNodeEntries();
   }
-  SoProfilerElement * elt = SoProfilerElement::get(state);
-  numentriesseen = elt->getProfilingData().getNumNodeEntries();
 }
 
 int
-main()
+main(int argc, char ** argv)
 {
-  setenv("COIN_PROFILER", "on", 1);
-  SoDB::init();
-  fprintf(stderr, "[repro] SoProfiler::isEnabled() after SoDB::init() = %d\n",
-          (int)SoProfiler::isEnabled());
-
-  SoSeparator * root = new SoSeparator;
-  root->ref();
-  root->addChild(new SoCube);
-  root->addChild(new SoCube);
-
-  SoCallback * inspector = new SoCallback;
-  inspector->setCallback(inspectProfilingDataCB);
-  root->addChild(inspector);
-
-  SbViewportRegion vp(64, 64);
-  SoGetBoundingBoxAction action(vp);
-  action.apply(root);
-
-  fprintf(stderr, "[repro] node entries recorded before the callback ran = %d\n",
-          numentriesseen);
-
-  root->unref();
-
-  if (numentriesseen <= 0) {
-    fprintf(stderr, "[repro] FAIL: expected profiling data for at least the "
-                    "already-traversed nodes (root, 2 cubes)\n");
-    return 1;
+  if (argc != 2 || (std::strcmp(argv[1], "0") && std::strcmp(argv[1], "1"))) {
+    std::fprintf(stderr, "usage: %s expected-enabled(0|1)\n", argv[0]);
+    return 2;
   }
-  fprintf(stderr, "[repro] PASS\n");
-  return 0;
+  const SbBool expected = std::strcmp(argv[1], "1") == 0 ? TRUE : FALSE;
+  SoDB::init();
+  SoDB::init(); // Repeated initialization must remain a no-op.
+  const SbBool enabled = SoProfiler::isEnabled();
+  Observation observation = { 0, FALSE, 0 };
+  bool boundsok = false;
+  {
+    SoSeparator * root = new SoSeparator;
+    root->ref();
+    root->addChild(new SoCube);
+    root->addChild(new SoCube);
+    SoCallback * inspector = new SoCallback;
+    inspector->setCallback(inspect, &observation);
+    root->addChild(inspector);
+    SoGetBoundingBoxAction action(SbViewportRegion(64, 64));
+    action.apply(root);
+    boundsok = action.getBoundingBox().getMin() == SbVec3f(-1, -1, -1) &&
+      action.getBoundingBox().getMax() == SbVec3f(1, 1, 1);
+    root->unref();
+  }
+  const bool valid = enabled == expected && observation.callbacks == 1 &&
+    observation.elementenabled == expected &&
+    observation.entries == (expected ? 4 : 0) && boundsok;
+  std::fprintf(stderr, "enabled=%d element=%d callbacks=%d entries=%d bounds=%d: %s\n",
+               enabled, observation.elementenabled, observation.callbacks,
+               observation.entries, boundsok, valid ? "PASS" : "FAIL");
+  SoDB::finish();
+  return valid ? 0 : 1;
 }
