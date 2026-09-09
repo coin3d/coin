@@ -33,6 +33,7 @@
 // See run.sh in this directory for how to build and run this against a
 // given libCoin build.
 
+#include "../CoinCleanup.h"
 #include <cstdio>
 #include <Inventor/SoDB.h>
 #include <Inventor/actions/SoHandleEventAction.h>
@@ -85,6 +86,7 @@ nodeB_getpoint_cb(void *, SoEventCallback * node)
 int main()
 {
   SoDB::init();
+  CoinReproducerCleanup cleanup;
 
   SoSeparator * root = new SoSeparator;
   root->ref();
