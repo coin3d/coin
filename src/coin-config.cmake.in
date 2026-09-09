@@ -118,12 +118,6 @@ if(NOT COIN_NO_COMPATIBILITY_CHECK)
 						string(REGEX REPLACE "\\$<IF:1,[ 	]*([^$<,>]+)[ 	]*,[ 	]*([^$<,>]+)[ 	]*>" "\\1" _rt_val "${_rt_val}")
 						string(REGEX REPLACE "\\$<IF:0,[ 	]*([^$<,>]+)[ 	]*,[ 	]*([^$<,>]+)[ 	]*>" "\\2" _rt_val "${_rt_val}")
 
-						# When condition is 1 and true branch is a known literal, resolve cleanly without parsing inactive branch
-						string(REGEX REPLACE "\\$<IF:1,[ 	]*(MultiThreaded(Debug)?(DLL)?)[ 	]*,.*>" "\\1" _rt_val "${_rt_val}")
-
-						# When condition is 0 and false branch is a known literal, resolve cleanly without parsing inactive branch
-						string(REGEX REPLACE "\\$<IF:0,.*,[ 	]*(MultiThreaded(Debug)?(DLL)?)[ 	]*>" "\\1" _rt_val "${_rt_val}")
-
 						# Resolve conditional expressions
 						string(REGEX REPLACE "\\$<0:[^>]*>" "" _rt_val "${_rt_val}")
 						string(REGEX REPLACE "\\$<1:([^>]*)>" "\\1" _rt_val "${_rt_val}")
