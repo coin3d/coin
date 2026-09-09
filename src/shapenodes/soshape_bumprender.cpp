@@ -510,23 +510,23 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
   const SbVec3f * tptr = this->tangentlist.getArrayPtr();
   
   cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, 0,
-                            (GLvoid*) cache->getVertexArray());
+                            cache->getVertexArray());
   cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
 
   cc_glglue_glTexCoordPointer(glue, 2, GL_FLOAT, 0,
-                              (GLvoid*) cache->getBumpCoordArray());
+                              cache->getBumpCoordArray());
   cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
 
   cc_glglue_glNormalPointer(glue, GL_FLOAT, 0,
-                           (GLvoid*) cache->getNormalArray());
+                           cache->getNormalArray());
   cc_glglue_glEnableClientState(glue, GL_NORMAL_ARRAY);
 
   cc_glglue_glClientActiveTexture(glue, GL_TEXTURE1);
-  cc_glglue_glTexCoordPointer(glue, 3, GL_FLOAT, 6*sizeof(float), (GLvoid*) tptr);
+  cc_glglue_glTexCoordPointer(glue, 3, GL_FLOAT, 6*sizeof(float), tptr);
   cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
 
   cc_glglue_glClientActiveTexture(glue, GL_TEXTURE2);
-  cc_glglue_glTexCoordPointer(glue, 3, GL_FLOAT, 6*sizeof(float), (GLvoid*) (tptr + 1));
+  cc_glglue_glTexCoordPointer(glue, 3, GL_FLOAT, 6*sizeof(float), (tptr + 1));
   cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
 
   cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT,
@@ -654,26 +654,26 @@ soshape_bumprender::renderBump(SoState * state,
   }
 
   cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, 0,
-                            (GLvoid*) cache->getVertexArray());
+                            cache->getVertexArray());
   cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
   cc_glglue_glTexCoordPointer(glue, 2, GL_FLOAT, 0,
-                              (GLvoid*) cache->getBumpCoordArray());
+                              cache->getBumpCoordArray());
   cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
 
   cc_glglue_glClientActiveTexture(glue, GL_TEXTURE1);
   if (use_vertex_program) {
     cc_glglue_glColorPointer(glue, 3, GL_FLOAT, 6*sizeof(float),
-                             (GLvoid*) (tsptr + 1));
+                             (tsptr + 1));
     cc_glglue_glEnableClientState(glue, GL_COLOR_ARRAY);
     cc_glglue_glTexCoordPointer(glue, 3, GL_FLOAT, 6*sizeof(float),
-                                (GLvoid*) tsptr);
+                                tsptr);
     cc_glglue_glNormalPointer(glue, GL_FLOAT, 0,
-                              (GLvoid*) cache->getNormalArray());
+                              cache->getNormalArray());
     cc_glglue_glEnableClientState(glue, GL_NORMAL_ARRAY);
   }
   else {
     cc_glglue_glTexCoordPointer(glue, 3, GL_FLOAT, 0,
-                                (GLvoid*) cmptr);
+                                cmptr);
   }
   cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
 
