@@ -30,6 +30,7 @@
 // See run.sh in this directory for how to build and run this against a
 // given libCoin build. Needs COIN_NESTED_CACHING=1 in the environment.
 
+#include "../CoinCleanup.h"
 #include <cstdio>
 #include <cstdlib>
 #include <Inventor/SoDB.h>
@@ -95,6 +96,7 @@ int main()
 {
   setenv("COIN_NESTED_CACHING", "1", 1);
   SoDB::init();
+  CoinReproducerCleanup cleanup;
 
   SoSeparator * root = new SoSeparator;
   root->ref();
