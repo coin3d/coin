@@ -114,8 +114,8 @@
 
 #include <cassert>
 #include <cstring>
-#include <string>
-#include <vector>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/SbString.h>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/XML/element.h>
@@ -358,19 +358,20 @@ ScXMLSendElt::search(const char * attrname, const char * attrvalue) const
 
 namespace {
 
-void tokenize(const std::string & input, const std::string & delimiters, std::vector<std::string> & tokens, int count = -1)
+void tokenize(const char * input, const char * delimiters, SbList<SbString> & tokens)
 {
-  std::string::size_type last_pos = 0, pos = 0;
-  while (TRUE) {
-    --count;
-    pos = input.find_first_of(delimiters, last_pos);
-    if ((pos == std::string::npos) || (count == 0)) {
-      tokens.push_back(input.substr(last_pos));
-      break;
-    } else {
-      tokens.push_back(input.substr(last_pos, pos - last_pos));
-      last_pos = pos + 1;
+  if (!input || !delimiters) return;
+  const char * cur = input;
+  while (*cur != '\0') {
+    while (*cur != '\0' && strchr(delimiters, *cur) != NULL) {
+      ++cur;
     }
+    if (*cur == '\0') break;
+    const char * start = cur;
+    while (*cur != '\0' && strchr(delimiters, *cur) == NULL) {
+      ++cur;
+    }
+    tokens.append(SbString(start, 0, static_cast<int>(cur - start)));
   }
 }
 
@@ -404,26 +405,25 @@ ScXMLSendElt::createEvent(ScXMLEventTarget * host) const
     ScXMLStateMachine * sm = static_cast<ScXMLStateMachine *>(host);
 
     // user-specific associations
-    std::string nameliststr = this->namelist;
-    std::vector<std::string> tokens;
+    SbList<SbString> tokens;
     tokenize(this->namelist, " ", tokens);
 
     // FIXME: use evaluator
-    for (size_t c = 0; c < tokens.size(); ++c) {
-      std::string token = tokens[c];
-      const char * value = sm->getVariable(token.c_str());
+    for (int c = 0; c < tokens.getLength(); ++c) {
+      const SbString & token = tokens[c];
+      const char * value = sm->getVariable(token.getString());
       if (value) {
-        event->setAssociation(token.c_str(), value);
+        event->setAssociation(token.getString(), value);
       } else {
         ScXMLEvaluator * evaluator = sm->getEvaluator();
         if (evaluator) {
-          ScXMLDataObj * dataobj = evaluator->locate(token.c_str());
+          ScXMLDataObj * dataobj = evaluator->locate(token.getString());
           if (dataobj &&
               dataobj->getTypeId().isDerivedFrom(ScXMLConstantDataObj::getClassTypeId())) {
             SbString str;
             ScXMLConstantDataObj * cobj = static_cast<ScXMLConstantDataObj *>(dataobj);
             cobj->convertToString(str);
-            event->setAssociation(token.c_str(), str.getString());
+            event->setAssociation(token.getString(), str.getString());
           } else {
             host->queueInternalEvent("error.send.InvalidNameListObject");
           }
