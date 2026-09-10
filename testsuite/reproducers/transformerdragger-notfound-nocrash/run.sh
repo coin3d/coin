@@ -1,5 +1,5 @@
 #!/bin/sh
-# Reproducer for Coin issue #174. Two complementary checks:
+# Reproducer for Coin issue #174. Three complementary checks:
 #
 #  - repro.cpp: direct, minimal check that SoTransformerDragger::drag()
 #    and ::dragFinish() no longer abort via assert() when whatkind is
@@ -11,11 +11,18 @@
 #    against a picked path that satisfies none of dragStart()'s 20
 #    recognized part names via the surrogate-part mechanism -- this
 #    exercises dragStart()'s own early-return live, not just its
-#    downstream effect on drag()/dragFinish().
+#    downstream effect on drag()/dragFinish()..
+#
+#  - repro_metakey.cpp: targeted check for the metaKeyChangeCB guard
+#    (WHATKIND_NONE early-return) and ctrlDown/shiftDown initialization.
+#    Drives the real handleEvent() machinery with modifier key events
+#    while isActive==TRUE and whatkind==NONE, verifying that no abort
+#    occurs, that getCurrentState() stays INACTIVE, and that
+#    getMotionMatrix() and the valueChanged callback count are unchanged.
 #
 #   testsuite/reproducers/transformerdragger-notfound-nocrash/run.sh /path/to/build/lib
 #
-# Prints PASS and exits 0 if both checks hold.
+# Prints PASS and exits 0 if all checks hold.
 
 CDPATH= cd "$(dirname "$0")" || exit 2
 
@@ -45,3 +52,13 @@ if [ "$status" -ne 0 ]; then
   echo "=== FAIL: repro_surrogate exited with status $status ===" >&2
   exit "$status"
 fi
+
+"$CXX" -O1 -g repro_metakey.cpp -o repro_metakey -I"$SRCINCLUDE" -I"$LIBDIR/../include" -L"$LIBDIR" -lCoin || exit 2
+./repro_metakey
+status=$?
+if [ "$status" -ne 0 ]; then
+  echo "=== FAIL: repro_metakey exited with status $status ===" >&2
+  exit "$status"
+fi
+
+echo "=== PASS (all three checks) ==="
