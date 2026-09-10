@@ -1038,6 +1038,19 @@ BOOST_AUTO_TEST_CASE(intersect_vv_inside_bbox)
   COIN_TESTCASE_CHECK_FLOAT(isect.getMax()[2], 0.0f);
 }
 
+BOOST_AUTO_TEST_CASE(znarrow)
+{
+  SbViewVolume vv;
+  vv.ortho(-0.5, 0.5, -0.5, 0.5, 2, 10);
+
+  // nearval==1.0 keeps the near plane fixed; farval==0.5 moves the far
+  // plane halfway back from the original far plane towards the near
+  // plane, so the new depth should be half of the original (8 -> 4).
+  SbViewVolume narrowed = vv.zNarrow(1.0f, 0.5f);
+  COIN_TESTCASE_CHECK_FLOAT(narrowed.getNearDist(), 2.0f);
+  COIN_TESTCASE_CHECK_FLOAT(narrowed.getDepth(), 4.0f);
+}
+
 BOOST_AUTO_TEST_CASE(intersect_perspective)
 {
   // FIXME: set up a better perspective vv which also tests left/right/top/bottom

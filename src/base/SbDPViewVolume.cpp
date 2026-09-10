@@ -971,7 +971,7 @@ SbDPViewVolume::zNarrow(double nearval, double farval) const
   SbDPViewVolume narrowed = *this;
 
   narrowed.nearDist = this->nearDist + (1.0f - nearval) * this->nearToFar;
-  narrowed.nearToFar = this->nearDist + this->nearToFar * (1.0f - farval);
+  narrowed.nearToFar = this->nearToFar * (nearval - farval);
 
   SbVec3d dummy;
   this->getPlaneRectangle(narrowed.nearDist - this->nearDist,
