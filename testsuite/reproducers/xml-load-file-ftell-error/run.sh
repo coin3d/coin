@@ -1,32 +1,27 @@
 #!/bin/sh
-# Reproducer for the unchecked ftell() bug in cc_xml_load_file()
-# (src/xml/utils.cpp). POSIX-only (uses fork()/mkfifo()), so this is
-# not part of the default `ctest` suite. Run manually against a build
-# tree's shared library:
-#
-#   testsuite/reproducers/xml-load-file-ftell-error/run.sh /path/to/build/lib
-#
-# Before the fix: glibc's _FORTIFY_SOURCE aborts with
-# "*** buffer overflow detected ***" (fread() asked to read SIZE_MAX
-# bytes into a zero-byte buffer). After the fix: cc_xml_load_file()
-# returns NULL cleanly.
+# Build and run the POSIX reproducer without linking libCoin. Compiling
+# src/xml/utils.cpp directly keeps cc_xml_load_file() private to Coin.
+set -eu
 
-cd "$(dirname "$0")"
-
-LIBDIR="$1"
-if [ -z "$LIBDIR" ]; then
-  echo "usage: $0 /path/to/build/lib   (directory containing libCoin.so)" >&2
+source_root=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
+if [ "$#" -ne 1 ]; then
+  echo "usage: $0 /path/to/configured-coin-build" >&2
   exit 2
 fi
+build_root=$(CDPATH= cd -- "$1" && pwd)
+scratch=$(mktemp -d)
+trap 'rm -rf "$scratch"' EXIT HUP INT TERM
 
-CXX=${CXX:-c++}
+"${CXX:-c++}" -O1 -g \
+  -Wall -Wextra -Wpedantic -Wsign-compare \
+  -fsanitize=address,undefined -fno-omit-frame-pointer \
+  -DCOIN_INTERNAL \
+  -I"$build_root/include" \
+  -I"$source_root/include" \
+  -I"$source_root/src" \
+  "$source_root/src/xml/utils.cpp" \
+  "$source_root/testsuite/reproducers/xml-load-file-ftell-error/repro.cpp" \
+  -o "$scratch/repro"
 
-"$CXX" -O1 -g repro.cpp -o repro -L"$LIBDIR" -lCoin || exit 2
-
-export LD_LIBRARY_PATH="$LIBDIR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
-./repro
-status=$?
-if [ "$status" -ne 0 ]; then
-  echo "=== FAIL: repro exited with status $status ===" >&2
-  exit "$status"
-fi
+cd "$scratch"
+timeout 10 ./repro

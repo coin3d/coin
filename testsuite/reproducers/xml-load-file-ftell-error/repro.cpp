@@ -1,65 +1,57 @@
-// Reproducer for a -Wsign-compare bug in cc_xml_load_file()
-// (src/xml/utils.cpp): ftell()'s return value was never checked for
-// -1 (error), which happens whenever the underlying stream doesn't
-// support seeking -- e.g. a FIFO/pipe. On error, bufsize became -1,
-// `new char[bufsize + 1]` allocated a ZERO-byte buffer, and the
-// resulting unsigned/signed mismatch in `pos != bufsize` /
-// `bufsize - pos` asked fread() to read up to SIZE_MAX bytes into
-// that 0-byte buffer.
-//
-// This uses a POSIX named pipe (mkfifo) -- a completely ordinary way
-// for ftell() to legitimately fail on Linux/macOS -- to reproduce it
-// against the real, exported cc_xml_load_file() symbol. Not portable
-// to Windows (no fork()/mkfifo()), which is why this lives here as a
-// standalone reproducer instead of in the cross-platform CoinTests
-// suite; see load_file_roundtrip in src/xml/utils.cpp for the
-// portable regression test covering the (fixed) happy path.
-//
-// See run.sh in this directory for how to build and run this against
-// a given libCoin build.
+// Reproducer for the unchecked ftell() result in cc_xml_load_file().
+// run.sh compiles the private implementation directly into this executable,
+// so cc_xml_load_file() does not need to be exported from the Coin DLL.
+#include "xml/utils.h"
 
+#include <cerrno>
+#include <csignal>
 #include <cstdio>
-#include <cstdlib>
-#include <cstring>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
 
-extern "C" char * cc_xml_load_file(const char * path);
-
-int main()
+int
+main()
 {
-  const char * fifopath = "./xml_load_file_repro.fifo";
-  unlink(fifopath);
-  if (mkfifo(fifopath, 0600) != 0) {
+  const char * path = "./input.fifo";
+  unlink(path);
+  if (mkfifo(path, 0600) != 0) {
     perror("mkfifo");
     return 2;
   }
-
-  pid_t pid = fork();
+  const pid_t pid = fork();
+  if (pid < 0) {
+    unlink(path);
+    return 2;
+  }
   if (pid == 0) {
-    // child: writer -- feed some bytes into the pipe
-    FILE * wf = fopen(fifopath, "wb");
-    if (wf) {
-      const char msg[] = "hello from the pipe, this is more than zero bytes of data";
-      fwrite(msg, 1, sizeof(msg), wf);
-      fclose(wf);
-    }
-    _exit(0);
+    // The fixed reader returns after ftell() fails and can close the FIFO
+    // before this write completes. EPIPE is therefore an expected outcome.
+    signal(SIGPIPE, SIG_IGN);
+    FILE * writer = fopen(path, "wb");
+    if (!writer) _exit(2);
+    const char message[] = "more than zero bytes";
+    const size_t count = fwrite(message, 1, sizeof(message), writer);
+    const int flushed = fflush(writer);
+    const bool ok = (count == sizeof(message) && flushed == 0) || errno == EPIPE;
+    fclose(writer);
+    _exit(ok ? 0 : 2);
   }
 
-  std::fprintf(stderr, "[repro] calling cc_xml_load_file() on a non-seekable FIFO\n");
-  std::fflush(stderr);
-
-  char * result = cc_xml_load_file(fifopath);
-
-  std::fprintf(stderr, "[repro] returned %s (did not crash) -- PASS\n",
-               result ? "non-NULL" : "NULL");
-
+  char * result = cc_xml_load_file(path);
+  const bool rejected = result == NULL;
+  delete [] result;
   int status = 0;
-  waitpid(pid, &status, 0);
-  unlink(fifopath);
-
-  delete[] result;
+  pid_t waited;
+  do { waited = waitpid(pid, &status, 0); } while (waited < 0 && errno == EINTR);
+  unlink(path);
+  if (waited != pid || !WIFEXITED(status) || WEXITSTATUS(status) != 0) return 2;
+  if (!rejected) {
+    std::fprintf(stderr,
+                 "FAIL: cc_xml_load_file() returned non-NULL after ftell() failed\n");
+    return 1;
+  }
+  std::fprintf(stderr,
+               "PASS: cc_xml_load_file() returned NULL after ftell() failed\n");
   return 0;
 }
