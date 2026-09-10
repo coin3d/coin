@@ -44,12 +44,18 @@
 #include <Inventor/lists/SoCallbackList.h>
 
 #include "lists/SoCallbackListP.h"
+#include "misc/SbHash.h"
 
 #include <atomic>
-#include <map>
 #include <memory>
 #include <mutex>
 #include <vector>
+
+inline unsigned int
+SbHashFunc(const SbPList * key)
+{
+  return SbHashFunc(reinterpret_cast<size_t>(key));
+}
 
 namespace {
 std::atomic<bool> haveOwnedData(false);
@@ -63,7 +69,7 @@ typedef std::vector<OwnedCallback> OwnedCallbacks;
 
 struct CallbackOwners {
   std::mutex mutex;
-  std::map<const SbPList *, OwnedCallbacks> lists;
+  SbHash<const SbPList *, OwnedCallbacks> lists;
 };
 
 CallbackOwners & callbackOwners()
@@ -79,8 +85,9 @@ OwnedCallbacks snapshotOwners(const SbPList * list)
   if (!haveOwnedData.load()) return OwnedCallbacks();
   CallbackOwners & owners = callbackOwners();
   std::lock_guard<std::mutex> lock(owners.mutex);
-  const auto it = owners.lists.find(list);
-  return it == owners.lists.end() ? OwnedCallbacks() : it->second;
+  OwnedCallbacks entries;
+  owners.lists.get(list, entries);
+  return entries;
 }
 
 void releaseOwner(const SbPList * list, int index)
@@ -91,9 +98,8 @@ void releaseOwner(const SbPList * list, int index)
   CallbackOwners & owners = callbackOwners();
   {
     std::lock_guard<std::mutex> lock(owners.mutex);
-    const auto it = owners.lists.find(list);
-    if (it == owners.lists.end()) return;
-    OwnedCallbacks & entries = it->second;
+    OwnedCallbacks entries;
+    if (!owners.lists.get(list, entries)) return;
     for (size_t i = 0; i < entries.size();) {
       if (entries[i].index == index) {
         removed = entries[i].data;
@@ -104,8 +110,9 @@ void releaseOwner(const SbPList * list, int index)
         ++i;
       }
     }
-    if (entries.empty()) owners.lists.erase(it);
-    haveOwnedData.store(!owners.lists.empty());
+    if (entries.empty()) owners.lists.erase(list);
+    else owners.lists.put(list, entries);
+    haveOwnedData.store(owners.lists.getNumElements() != 0);
   }
 }
 
@@ -116,11 +123,9 @@ void releaseOwners(const SbPList * list)
   CallbackOwners & owners = callbackOwners();
   {
     std::lock_guard<std::mutex> lock(owners.mutex);
-    const auto it = owners.lists.find(list);
-    if (it == owners.lists.end()) return;
-    removed.swap(it->second);
-    owners.lists.erase(it);
-    haveOwnedData.store(!owners.lists.empty());
+    if (!owners.lists.get(list, removed)) return;
+    owners.lists.erase(list);
+    haveOwnedData.store(owners.lists.getNumElements() != 0);
   }
 }
 } // namespace
@@ -139,12 +144,12 @@ SoCallbackListP::copyData(const SbPList * source, const SbPList * destination)
   CallbackOwners & owners = callbackOwners();
   {
     std::lock_guard<std::mutex> lock(owners.mutex);
-    const auto src = owners.lists.find(source);
-    const auto dst = owners.lists.find(destination);
-    if (dst != owners.lists.end()) previous.swap(dst->second);
-    if (src != owners.lists.end()) owners.lists[destination] = src->second;
-    else if (dst != owners.lists.end()) owners.lists.erase(dst);
-    haveOwnedData.store(!owners.lists.empty());
+    OwnedCallbacks sourceentries;
+    const bool hassource = owners.lists.get(source, sourceentries);
+    const bool hasdestination = owners.lists.get(destination, previous);
+    if (hassource) owners.lists.put(destination, sourceentries);
+    else if (hasdestination) owners.lists.erase(destination);
+    haveOwnedData.store(owners.lists.getNumElements() != 0);
   }
 }
 
