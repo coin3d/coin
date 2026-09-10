@@ -66,14 +66,7 @@ protected:
   SoSFBool isBound;
 
 private:
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
-#endif
   SoVRMLNavigationInfoP * pimpl;
-#ifdef __clang__
-#pragma clang diagnostic pop
-#endif
 };
 
 #endif // ! COIN_SOVRMLNAVIGATIONINFO_H

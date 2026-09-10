@@ -67,14 +67,7 @@ private:
   const SoNormalElement * elem;
   const SoGLNormalElement * glelem;
   SoNode * node;
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
-#endif
   SoNormalBundleP * pimpl; // for future use
-#ifdef __clang__
-#pragma clang diagnostic pop
-#endif
 };
 
 

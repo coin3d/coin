@@ -28,14 +28,7 @@ protected:
   virtual ~SoProfilerOverlayKit(void);
 
 private:
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
-#endif
   struct SoProfilerOverlayKitP * pimpl;
-#ifdef __clang__
-#pragma clang diagnostic pop
-#endif
 };
 
 #endif // !COIN_SOPROFILEROVERLAYKIT_H

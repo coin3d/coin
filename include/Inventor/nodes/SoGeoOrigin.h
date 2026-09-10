@@ -64,14 +64,7 @@ protected:
   virtual ~SoGeoOrigin();
 
 private:
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
-#endif
   SoGeoOriginP * pimpl;
-#ifdef __clang__
-#pragma clang diagnostic pop
-#endif
 };
 
 

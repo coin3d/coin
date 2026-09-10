@@ -276,14 +276,7 @@ protected:
   virtual void setAlphaTestElt(int func, float value);
 
 private:
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
-#endif
   SoLazyElementP * pimpl; // for future use
-#ifdef __clang__
-#pragma clang diagnostic pop
-#endif
 
 };
 

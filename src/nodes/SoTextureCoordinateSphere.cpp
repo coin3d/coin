@@ -102,7 +102,9 @@ class SoTextureCoordinateSphereP {
 
 public:
   SoTextureCoordinateSphereP(SoTextureCoordinateSphere * texturenode)
-    : master(texturenode) { }
+  {
+    this->master = texturenode;
+  }
 
   SbVec4f calculateTextureCoordinate(const SbVec3f & point, const SbVec3f & n);
 
@@ -116,7 +118,7 @@ public:
   SbStorage * so_texcoord_storage;
 
 private:
-  SoTextureCoordinateSphere * COIN_UNUSED_ARG(master);
+  SoTextureCoordinateSphere * master;
 };
 
 

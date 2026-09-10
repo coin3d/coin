@@ -53,21 +53,8 @@ class COIN_DLL_API SoProtoInstance : public SoNode {
 protected:
   const SoFieldData * getFieldData(void) const override;
 private:
-  // Superseded by pimpl->fielddata (see getFieldData()'s actual
-  // implementation) and never read/written anywhere -- but this is a
-  // COIN_DLL_API class, so removing a private member would shrink its
-  // ABI layout for anyone linking against a prebuilt libCoin.so. Kept
-  // and silenced the same way as every other unused-but-ABI-reserved
-  // private field in this codebase, rather than deleted.
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
-#endif
+  // Reserved for ABI compatibility; field data is stored in pimpl.
   SoFieldData * classfielddata;
-#ifdef __clang__
-#pragma clang diagnostic pop
-#endif
-
 
 public:
   static void initClass(void);

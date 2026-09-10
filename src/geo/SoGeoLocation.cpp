@@ -101,6 +101,7 @@ SO_NODE_SOURCE(SoGeoLocation);
 */
 SoGeoLocation::SoGeoLocation(void)
 {
+  this->pimpl = NULL;
   SO_NODE_INTERNAL_CONSTRUCTOR(SoGeoLocation);
 
   SO_NODE_ADD_FIELD(geoCoords, (0.0, 0.0, 0.0));

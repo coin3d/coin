@@ -64,14 +64,7 @@ protected:
 
 private:
   void commonConstructor(void);
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
-#endif
   SoVRMLCollisionP * pimpl;
-#ifdef __clang__
-#pragma clang diagnostic pop
-#endif
 };
 
 #endif // ! COIN_SOVRMLCOLLISION_H

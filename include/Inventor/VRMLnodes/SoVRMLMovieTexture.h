@@ -73,14 +73,7 @@ protected:
   virtual ~SoVRMLMovieTexture();
 
 private:
-#ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
-#endif
   SoVRMLMovieTextureP * pimpl;
-#ifdef __clang__
-#pragma clang diagnostic pop
-#endif
 };
 
 #endif // ! COIN_SOVRMLMOVIETEXTURE_H
