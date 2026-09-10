@@ -8,19 +8,21 @@
 #
 # Prints PASS and exits 0 if every check passes.
 
-CDPATH= cd "$(dirname "$0")" || exit 2
-
 LIBDIR="$1"
 if [ -z "$LIBDIR" ]; then
   echo "usage: $0 /path/to/build/lib   (directory containing libCoin.so)" >&2
   exit 2
 fi
 
+LIBDIR="$(CDPATH= cd "$LIBDIR" && pwd)" || exit 2
+CDPATH= cd "$(dirname "$0")" || exit 2
+
 CXX=${CXX:-c++}
 # The current directory is already the reproducer directory.
 SRCINCLUDE="$(CDPATH= cd ../../.. && pwd)/include" || exit 2
 
-"$CXX" -O1 -g repro.cpp -o repro -I"$SRCINCLUDE" -I"$LIBDIR/../include" -L"$LIBDIR" -lCoin || exit 2
+# CXXFLAGS/LDFLAGS intentionally use shell word splitting for compiler flags.
+"$CXX" ${CXXFLAGS:--O1 -g} repro.cpp -o repro -I"$SRCINCLUDE" -I"$LIBDIR/../include" -L"$LIBDIR" -lCoin ${LDFLAGS:-} || exit 2
 
 export LD_LIBRARY_PATH="$LIBDIR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 ./repro

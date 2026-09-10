@@ -183,3 +183,18 @@ SoScale::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoScale::doAction((SoAction*)action);
 }
+
+#ifdef COIN_TEST_SUITE
+#include <IdentityTransformCacheTest.h>
+
+static void identity_transform_cache_check(bool result, const char * message)
+{
+  BOOST_CHECK_MESSAGE(result, message);
+}
+
+BOOST_AUTO_TEST_CASE(identity_transform_cache_transitions)
+{
+  for (int kind = 0; kind < 3; ++kind)
+    IdentityTransformCacheTest::run(kind, identity_transform_cache_check);
+}
+#endif // COIN_TEST_SUITE
