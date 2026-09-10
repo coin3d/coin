@@ -562,10 +562,6 @@ static JSBool SFRotationConstructor(JSContext * cx, JSObject * obj,
       }
       // new SFRotation(SFVec3f axis, numeric angle)
       else {
-        SbVec4f * data = new SbVec4f();
-        spidermonkey()->JS_SetPrivate(cx, obj, data);
-        *rval = OBJECT_TO_JSVAL(obj);
-
         double number = 0.0;
         spidermonkey()->JS_ValueToNumber(cx, argv[1], &number);
 

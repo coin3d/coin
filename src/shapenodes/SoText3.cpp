@@ -878,9 +878,6 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
             if (normalb.length() > 0)
               normalb.normalize();
 
-            SoProfile * pn = (SoProfile *) profilenodes[firstprofile];
-            pn->getVertices(state, profnum, profcoords);
-
             SbVec3f vc,vd;
             SbVec2f starta(va[0], va[1]);
             SbVec2f startb(vb[0], vb[1]);
@@ -1329,9 +1326,6 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
             normalb = normalb.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
             if (normalb.length() > 0)
               normalb.normalize();
-
-            SoProfile *pn = (SoProfile *)profilenodes[firstprofile];
-            pn->getVertices(state, profnum, profcoords);
 
             SbVec3f vc,vd;
             SbVec2f starta(va[0], va[1]);
