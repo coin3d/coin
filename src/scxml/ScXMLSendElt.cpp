@@ -371,7 +371,8 @@ void tokenize(const char * input, const char * delimiters, SbList<SbString> & to
     while (*cur != '\0' && strchr(delimiters, *cur) == NULL) {
       ++cur;
     }
-    tokens.append(SbString(start, 0, static_cast<int>(cur - start)));
+    const int len = static_cast<int>(cur - start);
+    tokens.append(len > 0 ? SbString(start, 0, len - 1) : SbString(""));
   }
 }
 
