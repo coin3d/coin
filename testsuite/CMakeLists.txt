@@ -79,6 +79,7 @@ add_executable(CoinTests
 	TestSuiteUtils.cpp
 	TestSuiteMisc.cpp
 	InternalMacroTest.cpp
+	InternalSmallMapTest.cpp
 	${COIN_TEST_SOURCES}
 )
 
@@ -97,7 +98,7 @@ if(WIN32 AND COIN_BUILD_SHARED_LIBS)
 		PROPERTIES COMPILE_DEFINITIONS COIN_INTERNAL)
 endif()
 
-set_source_files_properties(InternalMacroTest.cpp PROPERTIES
+set_source_files_properties(InternalMacroTest.cpp InternalSmallMapTest.cpp PROPERTIES
 	COMPILE_DEFINITIONS COIN_INTERNAL)
 set_target_properties(CoinTests PROPERTIES DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
 target_link_libraries(CoinTests Coin ${COIN_TARGET_LINK_LIBRARIES})
