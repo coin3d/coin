@@ -129,10 +129,10 @@ cc_thread_construct(cc_thread_f * func, void * closure)
 void
 cc_thread_destruct(cc_thread * thread)
 {
-  int ok;
   assert(thread != NULL);
-  ok = internal_clean(thread);
-  assert(ok == CC_OK);
+  if (internal_clean(thread) != CC_OK) {
+    assert(!"thread cleanup failed");
+  }
   free(thread);
 }
 

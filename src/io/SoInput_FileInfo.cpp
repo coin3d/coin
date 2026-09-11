@@ -582,9 +582,7 @@ SoInput_FileInfo::readInteger(int32_t & l)
   assert(!this->isBinary());
   readString.clear();
   char c;
-  SbBool minus = FALSE;
   if (this->readChar(&c, '-')) {
-    minus = TRUE;
     readString += c;
   }
   else if (this->readChar(&c, '+')) {

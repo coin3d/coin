@@ -1233,9 +1233,6 @@ SoExtSelection::GLRenderBelowPath(SoGLRenderAction * action)
 
   if (action->isRenderingDelayedPaths()) {
 
-    SbViewportRegion vp = SoViewportRegionElement::get(state);
-    SbVec2s vpo = vp.getViewportOriginPixels();
-    SbVec2s vps = vp.getViewportSizePixels();
     this->draw(action);
   }
   // render this path after all other (delayed)

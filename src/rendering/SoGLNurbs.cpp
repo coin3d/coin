@@ -822,22 +822,16 @@ namespace {
     assert(fabs(v - vknotvec[numvknots-1]) < 1.e-12);
 
     // testing the findspan routine
-    int i = 0;
     // rechter rand
-    i = FindSpan(uknotvec[0], udegree, numuctrlpts, uknotvec);
-    assert( i == udegree );
+    assert( FindSpan(uknotvec[0], udegree, numuctrlpts, uknotvec) == udegree );
     // rechts ausserhalb
-    i = FindSpan(-1.0f, udegree, numuctrlpts, uknotvec);
-    assert( i == udegree );
+    assert( FindSpan(-1.0f, udegree, numuctrlpts, uknotvec) == udegree );
     // linker rand
-    i = FindSpan(uknotvec[numuknots-1], udegree, numuctrlpts, uknotvec);
-    assert( i == numuctrlpts-1 );
+    assert( FindSpan(uknotvec[numuknots-1], udegree, numuctrlpts, uknotvec) == numuctrlpts-1 );
     // links ausserhalb
-    i = FindSpan(uknotvec[numuknots-1]+1.0f, udegree, numuctrlpts, uknotvec);
-    assert( i == numuctrlpts-1 );
+    assert( FindSpan(uknotvec[numuknots-1]+1.0f, udegree, numuctrlpts, uknotvec) == numuctrlpts-1 );
     // erster Abschnitt
-    i = FindSpan((uknotvec[udegree+1]+uknotvec[udegree])/2.0f, udegree, numuctrlpts, uknotvec);
-    assert( i == udegree );
+    assert( FindSpan((uknotvec[udegree+1]+uknotvec[udegree])/2.0f, udegree, numuctrlpts, uknotvec) == udegree );
     //// zweiter Abschnitt
     //i = FindSpan((uknotvec[udegree+2]+uknotvec[udegree+1])/2.0f, udegree, numuctrlpts, uknotvec);
     //assert( i == udegree+2 );

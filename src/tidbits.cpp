@@ -1386,8 +1386,6 @@ coin_get_stderr(void)
 SbBool
 coin_locale_set_portable(cc_string * storeold)
 {
-  const char * loc;
-
   const char * deflocale = setlocale(LC_NUMERIC, NULL);
   if (strcmp(deflocale, "C") == 0) { return FALSE; }
 
@@ -1396,8 +1394,9 @@ coin_locale_set_portable(cc_string * storeold)
   cc_string_construct(storeold);
   cc_string_set_text(storeold, deflocale);
 
-  loc = setlocale(LC_NUMERIC, "C");
-  assert(loc != NULL && "could not set locale to supposed portable C locale");
+  if (setlocale(LC_NUMERIC, "C") == NULL) {
+    assert(!"could not set locale to supposed portable C locale");
+  }
   return TRUE;
 }
 
