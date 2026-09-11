@@ -54,6 +54,7 @@
 SoNormalBundle::SoNormalBundle(SoAction * action, SbBool forrendering)
   : SoBundle(action)
 {
+  this->pimpl = NULL;
   this->state->push();
   this->node = action->getCurPathTail();
   this->generator = NULL;

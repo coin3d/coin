@@ -326,6 +326,7 @@ SoVRMLViewpoint::initClass(void)
 */
 SoVRMLViewpoint::SoVRMLViewpoint(void)
 {
+  this->pimpl = NULL;
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLViewpoint);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(position, (0.0f, 0.0f, 0.0f));

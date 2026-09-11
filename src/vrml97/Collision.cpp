@@ -191,6 +191,7 @@ SoVRMLCollision::SoVRMLCollision(int numchildren)
 void
 SoVRMLCollision::commonConstructor(void)
 {
+  this->pimpl = NULL;
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLCollision);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(collide, (TRUE));

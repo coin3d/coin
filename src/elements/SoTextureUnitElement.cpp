@@ -46,7 +46,14 @@
 #include <Inventor/elements/SoTextureUnitElement.h>
 #include <cassert>
 
-SO_ELEMENT_SOURCE(SoTextureUnitElement);
+SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoTextureUnitElement);
+
+SoTextureUnitElement::SoTextureUnitElement(void)
+{
+  this->setTypeId(SoTextureUnitElement::classTypeId);
+  this->setStackIndex(SoTextureUnitElement::classStackIndex);
+  this->pimpl = NULL;
+}
 
 /*!
   \copydetails SoElement::initClass(void)

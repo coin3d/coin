@@ -101,8 +101,10 @@ so_texcoordcylinder_destruct_data(void * COIN_UNUSED_ARG(closure))
 class SoTextureCoordinateCylinderP {
 
 public:
-  SoTextureCoordinateCylinderP(SoTextureCoordinateCylinder * texturenode) 
-    : master(texturenode) { }
+  SoTextureCoordinateCylinderP(SoTextureCoordinateCylinder * texturenode)
+  {
+    this->master = texturenode;
+  }
   
   SbVec4f calculateTextureCoordinate(const SbVec3f & point, const SbVec3f & n);
   

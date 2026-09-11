@@ -122,7 +122,14 @@ get_transp_node_id(SoNode * node, const int numtransp,
 }
 
 
-SO_ELEMENT_SOURCE(SoLazyElement);
+SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoLazyElement);
+
+SoLazyElement::SoLazyElement(void)
+{
+  this->setTypeId(SoLazyElement::classTypeId);
+  this->setStackIndex(SoLazyElement::classStackIndex);
+  this->pimpl = NULL;
+}
 
 /*!
   \copydetails SoElement::initClass(void)
