@@ -47,8 +47,7 @@
 
 #include <Inventor/annex/Profiler/nodekits/SoNodeVisualize.h>
 
-#include <map>
-#include <string>
+#include "misc/SbSmallMap.h"
 
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
@@ -127,7 +126,7 @@ namespace {
       //This code should only be called from a static context, so we
       //cannot do any unreffing of Coin-nodes
 
-      assert(this->nodemap.size()==0);
+      assert(this->nodemap.getNumElements() == 0);
 #if 0
       clear();
 #endif
@@ -141,33 +140,28 @@ namespace {
     }
 
     void clear() {
-      std::map<const TextureImageData *, SoTexture2 *>::iterator it, end;
-      for (it = this->nodemap.begin(), end = this->nodemap.end();
-           it != end; ++it) {
-        it->second->unref();
-        it->second = NULL;
+      for (TextureMap::const_iterator it = this->nodemap.const_begin();
+           it != this->nodemap.const_end(); ++it) {
+        it->obj->unref();
       }
       this->nodemap.clear();
     }
 
     SoTexture2 * operator[](const TextureImageData & data)
     {
-      std::map<const TextureImageData *, SoTexture2 *>::iterator e;
-      e = this->nodemap.find(&data);
-      if (e == this->nodemap.end()) {
-        // not found, create
-        SoTexture2 * node = TextureDict::createTexture(&data);
+      SoTexture2 * node = NULL;
+      if (!this->nodemap.get(&data, node)) {
+        node = TextureDict::createTexture(&data);
         node->ref();
-        this->nodemap[&data] = node;
-        return node;
-      } else {
-        return e->second;
+        this->nodemap.put(&data, node);
       }
+      return node;
     }
 
 
   private:
-    std::map<const TextureImageData *, SoTexture2 *> nodemap;
+    typedef SbSmallMap<const TextureImageData *, SoTexture2 *> TextureMap;
+    TextureMap nodemap;
   };
 }
 
@@ -762,6 +756,45 @@ SoNodeVisualize::getChildGeometry() {
   assert(childgeometry);
   return childgeometry;
 }
+
+#ifdef COIN_TEST_SUITE
+
+#include <Inventor/nodekits/SoWrapperKit.h>
+#include <Inventor/nodes/SoCube.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/nodes/SoTranslation.h>
+
+BOOST_AUTO_TEST_CASE(SoNodeVisualize_handles_all_six_cached_textures)
+{
+  SoNodeVisualize::initClass();
+
+  SoNode * sources[] = {
+    new SoMaterial,
+    new SoCube,
+    new SoSeparator,
+    new SoWrapperKit,
+    new SoSwitch,
+    new SoTranslation
+  };
+  const int numtypes = sizeof(sources) / sizeof(sources[0]);
+
+  for (int i = 0; i < numtypes; ++i) {
+    sources[i]->ref();
+    SoNodeVisualize * first = SoNodeVisualize::visualizeTree(sources[i], 1);
+    first->ref();
+
+    SoNodeVisualize * second = SoNodeVisualize::visualizeTree(sources[i], 1);
+    second->ref();
+    BOOST_CHECK(first != second);
+
+    second->unref();
+    first->unref();
+    sources[i]->unref();
+  }
+}
+
+#endif // COIN_TEST_SUITE
 
 #ifdef CACHING
 #undef CACHING
