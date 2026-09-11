@@ -54,6 +54,14 @@
 
   \ingroup coin_VRMLnodes
 
+  \note The node itself, and its fields, work regardless of scripting
+  language support. Actually executing a "javascript:"/"vrmlscript:"
+  url, however, goes through the deprecated SoJavaScriptEngine (see
+  its class documentation), which cannot load or run any SpiderMonkey
+  release currently being maintained. On any such system, url
+  evaluation silently fails (spidermonkey()->available is FALSE) --
+  it does not crash, but no script code in this node will run.
+
   \WEB3DCOPYRIGHT
 
   \verbatim

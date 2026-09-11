@@ -161,9 +161,16 @@ There are many, many ways to break ABI compatibility in C++:
 
   COIN_INTERNAL
 
-    This is a define that is set when the Coin library is being compiled.
-    Setting it when compiling things outside the Coin library is a
-    mistake.
+    Enables access to private Coin implementation interfaces. Coin library
+    sources define it, and selected internal tests may define it while still
+    linking to Coin as ordinary consumers.
+
+  COIN_BUILDING_COIN
+
+    Marks code that is actually being compiled into the Coin library. It
+    controls ABI-sensitive behavior such as Windows symbol export and
+    autolinking. COIN_BUILDING_COIN implies COIN_INTERNAL, but COIN_INTERNAL
+    does not imply COIN_BUILDING_COIN.
 
   COIN_DEBUG
 

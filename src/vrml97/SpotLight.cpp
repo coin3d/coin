@@ -121,7 +121,7 @@
   else:
     multiplier = (angle - cutOffAngle) / (beamWidth - cutOffAngle)
 
-  intensity(angle) = SpotLight.intensity × multiplier
+  intensity(angle) = SpotLight.intensity * multiplier
   \endverbatim
 
   If the beamWidth
@@ -143,7 +143,7 @@
   attenuation coefficients. The attenuation factor is
 
   \verbatim
-  1/max(attenuation[0] + attenuation[1]×r + attenuation[2]×r^2 , 1),
+  1/max(attenuation[0] + attenuation[1]*r + attenuation[2]*r^2 , 1),
   \endverbatim
 
   where r is the distance from the light to the surface being

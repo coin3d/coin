@@ -1079,6 +1079,9 @@ YY_RULE_SETUP
 #line 150 "steel.l"
 {
 	  char * ptr = stl_yytext;
+	  /* The ASCII format probe scans this header before rewinding. */
+	  free(reader->info);
+	  reader->info = NULL;
 	  while ( *ptr == ' ' || *ptr == '\t' ) ptr++;
 	  while ( *ptr != ' ' && *ptr != '\t' ) ptr++;
 	  while ( *ptr && (*ptr == ' ' || *ptr == '\t') ) ptr++;
@@ -2290,6 +2293,9 @@ stl_reader_binary_facet(stl_reader * reader)
   /* byteswap? */
   reader->facet->color = data.bytes[0] | (data.bytes[1] << 8);
   /* fprintf(stderr, "  color : 0x%04x\n", reader->facet->color); */
+  if (!readok) {
+    assert(!"failed to read binary STL facet data");
+  }
   reader->facets++;
 }
 
@@ -2349,7 +2355,7 @@ stl_writer_put_binary_facet(stl_writer * writer, stl_facet * facet)
   writeok &= fwrite(&data.bytes, 2, 1, writer->file);
   /* fprintf(stderr, "  color : 0x%04x\n", reader->facet->color); */
 
-  return TRUE;
+  return writeok;
 }
 
 /* ********************************************************************** */
@@ -2732,8 +2738,15 @@ stl_reader_create(const char * filename)
     readok &= !fseek(reader->file, 80, SEEK_SET);
     readok &= fread(bytes, 4, 1, reader->file);
     reader->facets_total =
-      (bytes[3] << 24) | (bytes[2] << 16) | (bytes[1] << 8) | bytes[0];
-    if ( (84 + (reader->facets_total * 50)) != length ) {
+      static_cast<int>((static_cast<uint32_t>(bytes[3]) << 24) |
+                        (static_cast<uint32_t>(bytes[2]) << 16) |
+                        (static_cast<uint32_t>(bytes[1]) << 8) |
+                        bytes[0]);
+    /* bytes[80..83] are attacker/file-controlled and not yet known to
+       be a real facet count at this point (that's what this check is
+       trying to determine) -- do the arithmetic in a wide enough type
+       to avoid signed overflow on a bogus (e.g. ASCII STL) input. */
+    if ( (84 + (static_cast<int64_t>(reader->facets_total) * 50)) != length ) {
       break; /* not a binary stl file */
     }
     reader->flags |= STL_BINARY;
@@ -2743,6 +2756,9 @@ stl_reader_create(const char * filename)
     readok &= fread(reader->info, 80, 1, reader->file);
     reader->info[80] = '\0';
     readok &= !fseek(reader->file, 84, SEEK_SET); /* position of first facet */
+    if (!readok) {
+      assert(!"failed to read binary STL header");
+    }
     reader->pending = STL_INIT_INFO;
     return reader;
   } while ( FALSE );
@@ -2758,12 +2774,17 @@ stl_reader_create(const char * filename)
       break; /* not an ascii stl file */
     }
     readok &= !fseek(reader->file, 0, SEEK_SET);
+    if (!readok) {
+      assert(!"failed to seek to start of ascii STL file");
+    }
     stl_yyrestart(reader->file);
     reader->pending = STL_NO_PENDING;
     return reader;
   } while ( FALSE );
 
   /* the file is not an stl file */
+  free(reader->info);
+  reader->info = NULL;
   (void)fclose(reader->file);
   free(reader->filename);
   reader->filename = NULL;
@@ -2965,6 +2986,9 @@ stl_writer_destroy(stl_writer * writer)
     writeok &= !fflush(writer->file);
     writeok &= !fseek(writer->file, 80, SEEK_SET);
     writeok &= fwrite(bytes, 4, 1, writer->file);
+    if (!writeok) {
+      assert(!"failed to write binary STL facet count to header");
+    }
   } else {
     fprintf(writer->file, "endsolid\n");
     writer->linenum++;
@@ -2979,6 +3003,7 @@ stl_writer_destroy(stl_writer * writer)
     stl_facet_destroy(writer->facet);
     writer->facet = NULL;
   }
+  free(writer->filename);
   free(writer);
   return STL_OK;
 } /* stl_writer_destroy() */

@@ -319,7 +319,7 @@ SoState::pop(void)
 void
 SoState::print(FILE * const file) const
 {
-  fprintf(file, "SoState[%p]: depth = %d\n", this, PRIVATE(this)->depth);
+  fprintf(file, "SoState[%p]: depth = %d\n", (void *)this, PRIVATE(this)->depth);
   fprintf(file, "  enabled elements {\n");
   for (int i = 0; i < this->numstacks; i++) {
     SoElement * element;

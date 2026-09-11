@@ -111,7 +111,7 @@ void
 SoFloatElement::print(FILE * file) const
 {
   (void)fprintf(file, "%s[%p]: data = %f\n",
-                this->getTypeId().getName().getString(), this, this->data);
+                this->getTypeId().getName().getString(), (void *)this, this->data);
 }
 
 /*!

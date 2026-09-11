@@ -159,14 +159,12 @@ static void
 create_matrix_bitmap(int intensity, unsigned char * bitmap,
                      uint32_t * matrix, int size)
 {
-  int cnt = 0;
   int i,j;
   for (i = 0; i < 32*4; i++) bitmap[i] = 0;
   for (i = 0; i < size; i++) {
     for (j = 0; j < size; j++) {
       if (matrix[i*size+j] > (uint32_t) intensity) {
         set_bit(i*32+j, bitmap);
-        cnt++;
       }
     }
   }

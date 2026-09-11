@@ -70,6 +70,7 @@ public:
   public:
     GLUnitData() : texgenCB(NULL), texgenData(NULL) {}
     GLUnitData(const GLUnitData & org) : texgenCB(org.texgenCB), texgenData(org.texgenData) {}
+    GLUnitData & operator=(const GLUnitData & org) = default;
     SoTexCoordTexgenCB * texgenCB;
     void * texgenData;
   };

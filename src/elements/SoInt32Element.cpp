@@ -115,7 +115,7 @@ void
 SoInt32Element::print(FILE * file) const
 {
   (void)fprintf(file, "%s[%p]: data = %d\n",
-                getTypeId().getName().getString(), this, this->data);
+                getTypeId().getName().getString(), (void *)this, this->data);
 }
 
 /*!

@@ -107,6 +107,7 @@ public:
   public:
     UnitData();
     UnitData(const UnitData & org);
+    UnitData & operator=(const UnitData & org) = default;
 
     SbUniqueId nodeid;
     CoordType whatKind;

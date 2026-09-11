@@ -34,6 +34,9 @@
 #ifndef COIN_BASIC_H
 #define COIN_BASIC_H
 
+/* Whether this Coin library contains the LegacyGL renderer. */
+#cmakedefine01 COIN_HAVE_LEGACY_GL_RENDERER
+
 /*
   NOTE: basic.h is automatically generated from basic.h.in, so don't
   edit basic.h directly.
@@ -248,8 +251,16 @@ typedef uint32_t SbUniqueId;
 
 /* *********************************************************************** */
 
+/*
+  Internal tests may access private Coin interfaces without being
+  compiled as part of the Coin library itself.
+*/
+#if defined(COIN_BUILDING_COIN) && !defined(COIN_INTERNAL)
+# error COIN_BUILDING_COIN requires COIN_INTERNAL.
+#endif
+
 /* For Visual Studio compiler use COIN_DLL by default and auto-linking. */
-#if !defined(COIN_INTERNAL) && defined(_MSC_VER)
+#if !defined(COIN_BUILDING_COIN) && defined(_MSC_VER)
 # if !defined(COIN_NOT_DLL) && !defined(COIN_DLL)
 #  define COIN_DLL
 # endif
@@ -276,14 +287,14 @@ typedef uint32_t SbUniqueId;
 #ifdef COIN_DLL_API
 # error Leave the internal COIN_DLL_API define alone.
 #endif /* COIN_DLL_API */
-#ifdef COIN_INTERNAL
+#ifdef COIN_BUILDING_COIN
 # ifdef COIN_NOT_DLL
 #  error The COIN_NOT_DLL define is not supposed to be used when building the library, only when building Win32 applications.
-# endif /* COIN_INTERNAL && COIN_NOT_DLL */
+# endif /* COIN_BUILDING_COIN && COIN_NOT_DLL */
 # ifdef COIN_DLL
 #  error The COIN_DLL define is not supposed to be used when building the library, only when building Win32 applications.
-# endif /* COIN_INTERNAL && COIN_DLL */
-#endif /* COIN_INTERNAL */
+# endif /* COIN_BUILDING_COIN && COIN_DLL */
+#endif /* COIN_BUILDING_COIN */
 
 /*
   On MSWindows platforms, one of these defines must always be set when
@@ -317,11 +328,11 @@ typedef uint32_t SbUniqueId;
    recognize the __declspec keyword instead of the crap #if below.
    20011201 mortene. */
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-# ifdef COIN_INTERNAL
+# ifdef COIN_BUILDING_COIN
 #  ifdef COIN_MAKE_DLL
 #   define COIN_DLL_API __declspec(dllexport)
 #  endif /* COIN_MAKE_DLL */
-# else /* !COIN_INTERNAL */
+# else /* !COIN_BUILDING_COIN */
 #  ifdef COIN_DLL
 #   ifdef COIN_NOT_DLL
 #     error Define _either_ COIN_DLL _or_ COIN_NOT_DLL as appropriate for your linkage -- not both at the same time! See Inventor/C/basic.h for further instructions.
@@ -332,7 +343,7 @@ typedef uint32_t SbUniqueId;
 #    error Define either COIN_DLL or COIN_NOT_DLL as appropriate for your linkage! See Inventor/C/basic.h for further instructions.
 #   endif /* !COIN_NOT_DLL */
 #  endif /* !COIN_DLL */
-# endif /* !COIN_INTERNAL */
+# endif /* !COIN_BUILDING_COIN */
 #endif /* Microsoft Windows */
 
 /* Empty define to avoid errors when _not_ compiling an MSWindows DLL. */

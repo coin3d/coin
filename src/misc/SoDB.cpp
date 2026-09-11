@@ -1719,7 +1719,7 @@ BOOST_AUTO_TEST_CASE(globalRealTimeField)
 
 // Do-nothing error handler for ignoring read errors while testing.
 static void
-readErrorHandler(const SoError * error, void * data)
+readErrorHandler(const SoError *, void *)
 {
 }
 

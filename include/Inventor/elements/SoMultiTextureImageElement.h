@@ -156,6 +156,7 @@ public:
   public:
     UnitData();
     UnitData(const UnitData & org);
+    UnitData & operator=(const UnitData & org) = default;
     SbUniqueId nodeid;
     SbVec3s size;
     int numComponents;

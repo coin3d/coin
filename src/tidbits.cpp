@@ -121,7 +121,7 @@
       - http://www.apache.org
 
 
-   6) Caolán McNamara's (GNU GPL?):
+   6) Caolan McNamara's (GNU GPL?):
 
       - http://www.csn.ul.ie/~caolan/publink/snprintf-1.1.tar.gz
 
@@ -225,7 +225,7 @@ coin_common_vsnprintf(func_vsnprintf * func,
 
   /* Can not use cc_debugerror_* interface(), as that could cause an
      infinite recursion. */
-  if (debug) { printf("dst==%p, n==%zu, fmtstr=='%s'\n", dst, n, fmtstr); }
+  if (debug) { printf("dst==%p, n==%zu, fmtstr=='%s'\n", (void *) dst, n, fmtstr); }
 
 #ifdef HAVE_VA_COPY_MACRO
   /* The C99 va_copy() is available, so use that to help us "rewind"

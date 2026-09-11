@@ -118,7 +118,11 @@ cmake_dependent_option(COIN_BUILD_MAC_FRAMEWORK "Build framework instead of dyli
 cmake_dependent_option(COIN_BUILD_MAC_X11 "Build for X11 on Mac OS X when ON. Default is OFF." OFF "APPLE" OFF)
 cmake_dependent_option(COIN_BUILD_MAC_AGL "Build for AGL on Mac OS X when ON. Default is OFF." OFF "APPLE" OFF)
 
-option(COIN_BUILD_GLX "Build for GLX on Linux when ON. Default is ON." ON)
+# GLX needs X11, which Android does not have -- there is no windowing
+# system there for Coin to create an on-screen GLX context against,
+# only EGL. Force this off on Android rather than default it on and
+# fail later at find_package(X11 REQUIRED).
+cmake_dependent_option(COIN_BUILD_GLX "Build for GLX on Linux when ON. Default is ON." ON "NOT ANDROID" OFF)
 option(COIN_BUILD_EGL "Build for EGL on Linux when ON. Default is ON." ON)
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -144,6 +148,11 @@ if(COIN_STRICT_WARNINGS)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=inconsistent-missing-override")
   endif()
 endif()
+
+option(COIN_BUILD_LEGACY_GL_RENDERER
+  "Build Coin's legacy fixed-function OpenGL renderer."
+  ON)
+set(COIN_HAVE_LEGACY_GL_RENDERER ${COIN_BUILD_LEGACY_GL_RENDERER})
 
 check_include_file_cxx(thread HAVE_STD_THREAD)
 cmake_dependent_option(COIN_DEBUG_CHECK_THREAD "Enable thread check in several central Coin functions." OFF "HAVE_STD_THREAD" OFF)
@@ -486,16 +495,25 @@ if(HAVE_VRML97 AND COIN_HAVE_JAVASCRIPT)
   if(NOT SPIDERMONKEY_RUNTIME_LINKING)
     find_package(SpiderMonkey)
     if(SPIDERMONKEY_FOUND)
-      set(HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING 1)
-      set(HAVE_SPIDERMONKEY_H 1)
-      if(NOT TARGET SpiderMonkey::SpiderMonkey)
-        add_library(SpiderMonkey::SpiderMonkey UNKNOWN IMPORTED)
-        set_target_properties(SpiderMonkey::SpiderMonkey PROPERTIES
-          IMPORTED_LOCATION "${SPIDERMONKEY_LIBRARIES}"
-          INTERFACE_INCLUDE_DIRECTORIES "${SPIDERMONKEY_INCLUDE_DIRS}"
-        )
-      endif()
-      list(APPEND COIN_TARGET_LINK_LIBRARIES SpiderMonkey::SpiderMonkey)
+      message(FATAL_ERROR
+        "SPIDERMONKEY_RUNTIME_LINKING=OFF (link-time SpiderMonkey linking) "
+        "found a SpiderMonkey at '${SPIDERMONKEY_INCLUDE_DIR}', but this "
+        "configuration cannot work: Coin's SpiderMonkey glue "
+        "(src/glue/spidermonkey.cpp, include/Inventor/C/glue/spidermonkey.h) "
+        "targets the SpiderMonkey C API as it existed around 2007 (JSBool, "
+        "jsval as a plain integer, no JS::Rooted<>/JS::PropertyKey), and no "
+        "SpiderMonkey release still available today exports that API -- "
+        "compiling against a real, modern <jsapi.h> fails with hundreds of "
+        "conflicting-declaration errors (JSContext, JSType, jsid, ... "
+        "redefined) rather than the intended type reuse (see Coin issue "
+        "#173). Porting this glue to a current SpiderMonkey embedding API "
+        "is out of scope here (see PR #673's rationale). "
+        "Use the default SPIDERMONKEY_RUNTIME_LINKING=ON instead: it loads "
+        "SpiderMonkey dynamically at run-time and safely reports JavaScript "
+        "support as unavailable if no compatible library is found, instead "
+        "of failing the whole Coin build. To disable JavaScript/VRML97 "
+        "\"javascript:\" URL support (SoJavaScriptEngine) entirely, "
+        "configure with -DCOIN_HAVE_JAVASCRIPT=OFF instead.")
     endif()
   endif()
 endif()
@@ -665,7 +683,11 @@ check_include_file(ieeefp.h HAVE_IEEEFP_H)
 check_include_file(time.h HAVE_TIME_H)
 check_include_files("stdlib.h;stdarg.h;string.h;float.h" STDC_HEADERS)
 
-check_include_file(windows.h HAVE_WINDOWS_H)
+if(WIN32)
+  check_include_file(windows.h HAVE_WINDOWS_H)
+else()
+  set(HAVE_WINDOWS_H 0)
+endif()
 if(HAVE_WINDOWS_H)
   check_include_file(direct.h HAVE_DIRECT_H)
   check_include_files("windows.h;tlhelp32.h" HAVE_TLHELP32_H)
@@ -749,52 +771,9 @@ if(UNIX AND NOT APPLE AND COIN_BUILD_GLX)
   " HAVE_GLX)
 endif()
 
-# Checks specific OpenGL configurations
-if(HAVE_WINDOWS_H)
-  check_include_files("windows.h;GL/gl.h" HAVE_GL_GL_H)
-  check_include_files("windows.h;GL/glu.h" HAVE_GL_GLU_H)
-  check_include_files("windows.h;GL/gl.h;GL/glext.h" HAVE_GL_GLEXT_H)
-elseif(APPLE AND NOT COIN_BUILD_MAC_X11)
-  check_include_file(OpenGL/gl.h HAVE_OPENGL_GL_H)
+if(APPLE AND NOT COIN_BUILD_MAC_X11)
   check_include_file(OpenGL/glu.h HAVE_OPENGL_GLU_H)
-  check_include_file(OpenGL/glext.h HAVE_OPENGL_GLEXT_H)
   check_include_file(OpenGL/CGLCurrent.h HAVE_OPENGL_CGLCURRENT_H)
-else()
-  check_include_files("GL/gl.h" HAVE_GL_GL_H)
-  check_include_files("GL/glu.h" HAVE_GL_GLU_H)
-  check_include_files("GL/gl.h;GL/glext.h" HAVE_GL_GLEXT_H)
-endif()
-
-set(CMAKE_REQUIRED_INCLUDES)
-set(CMAKE_REQUIRED_LIBRARIES)
-
-if(HAVE_WINDOWS_H)
-  set(SIM_INCLUDE_WINDOWS_H "#include <windows.h>")
-else()
-  set(SIM_INCLUDE_WINDOWS_H "/* #include <windows.h> - not needed on system */")
-endif()
-if(HAVE_GL_GL_H)
-  set(SIM_INCLUDE_GL_H "#include <GL/gl.h>")
-elseif(HAVE_OPENGL_GL_H)
-  set(SIM_INCLUDE_GL_H "#include <OpenGL/gl.h>")
-else()
-  set(SIM_INCLUDE_GL_H "#error \"don't know how to include gl.h header\"")
-endif()
-if(HAVE_SUPERGLU)
-  set(SIM_INCLUDE_GLU_H "/* #include <GL/glu.h> - not used, Coin linked with embedded SuperGLU */")
-elseif(HAVE_GL_GLU_H)
-  set(SIM_INCLUDE_GLU_H "#include <GL/glu.h>")
-elseif(HAVE_OPENGL_GLU_H)
-  set(SIM_INCLUDE_GLU_H "#include <OpenGL/glu.h>")
-else()
-  set(SIM_INCLUDE_GLU_H "/* #include <GL/glu.h> - not found on system */")
-endif()
-if(HAVE_GL_GLEXT_H)
-  set(SIM_INCLUDE_GLEXT_H "#include <GL/glext.h>")
-elseif(HAVE_OPENGL_GLEXT_H)
-  set(SIM_INCLUDE_GLEXT_H "#include <OpenGL/glext.h>")
-else()
-  set(SIM_INCLUDE_GLEXT_H "/* #include <GL/glext.h> - not found on system */")
 endif()
 
 check_symbol_exists(va_copy stdarg.h HAVE_VA_COPY_MACRO)

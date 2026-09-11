@@ -74,20 +74,35 @@ create_file_test("models/io/incorrect" "testIncorrectFile" true "(bug039|bug055-
 # Include all extracted '*Tests.cpp' files in the target.
 FILE(GLOB COIN_TEST_SOURCES "${CMAKE_CURRENT_BINARY_DIR}/*Test.cpp")
 
-add_executable(CoinTests TestSuiteMain.cpp TestSuiteUtils.cpp TestSuiteMisc.cpp ${COIN_TEST_SOURCES})
+add_executable(CoinTests
+	TestSuiteMain.cpp
+	TestSuiteUtils.cpp
+	TestSuiteMisc.cpp
+	InternalMacroTest.cpp
+	${COIN_TEST_SOURCES}
+)
+set_source_files_properties(InternalMacroTest.cpp PROPERTIES
+	COMPILE_DEFINITIONS COIN_INTERNAL)
 set_target_properties(CoinTests PROPERTIES DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
 target_link_libraries(CoinTests Coin ${COIN_TARGET_LINK_LIBRARIES})
 target_include_directories(CoinTests PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}
 	${PROJECT_SOURCE_DIR}/include
 	${PROJECT_SOURCE_DIR}/include/Inventor/annex
+	${PROJECT_SOURCE_DIR}/src
 	${PROJECT_BINARY_DIR}/include
 	${COIN_TARGET_INCLUDE_DIRECTORIES}
 )
+if(NOT WIN32)
+	target_sources(CoinTests PRIVATE GLUWrapperTest.cpp)
+	target_include_directories(CoinTests PRIVATE ${PROJECT_BINARY_DIR}/src)
+endif()
 if (USE_PTHREAD)
 	target_link_libraries(CoinTests pthread)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
+
+include(CheckCoreGLHeaders.cmake)
 
 # Many warnings are generated from test macros on macOS with Xcode.
 include(CheckCXXCompilerFlag)

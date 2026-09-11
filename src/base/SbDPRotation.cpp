@@ -606,10 +606,10 @@ SbDPRotation::slerp(const SbDPRotation & rot0, const SbDPRotation & rot1, double
   double scale0 = 1.0 - t;
   double scale1 = t;
 
-  if ((1.0f - dot) > FLT_EPSILON) {
+  if ((1.0 - dot) > DBL_EPSILON) {
     double angle = static_cast<double>(acos(dot));
     double sinangle = static_cast<double>(sin(angle));
-    if (sinangle > FLT_EPSILON) {
+    if (sinangle > DBL_EPSILON) {
       // calculate spherical interpolation
       scale0 = double(sin((1.0 - t) * angle)) / sinangle;
       scale1 = double(sin(t * angle)) / sinangle;

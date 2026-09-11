@@ -700,7 +700,7 @@ SoShaderStateMatrixParameter::updateParameter(SoGLShaderObject *shader)
   this->ensureParameter(shader);
 
   if (shader->shaderType() == SoShader::CG_SHADER) {
-    CGGLenum type;
+    CGGLenum type = CG_GL_MODELVIEW_MATRIX;
     switch (this->matrixType.getValue()) {
     case MODELVIEW: type = CG_GL_MODELVIEW_MATRIX; break;
     case PROJECTION: type = CG_GL_PROJECTION_MATRIX; break;
@@ -709,7 +709,7 @@ SoShaderStateMatrixParameter::updateParameter(SoGLShaderObject *shader)
     default: assert(0 && "illegal shader type"); break;
     }
 
-    CGGLenum tform;
+    CGGLenum tform = CG_GL_MATRIX_IDENTITY;
     switch (this->matrixTransform.getValue()) {
     case IDENTITY: tform = CG_GL_MATRIX_IDENTITY; break;
     case TRANSPOSE: tform = CG_GL_MATRIX_TRANSPOSE; break;
