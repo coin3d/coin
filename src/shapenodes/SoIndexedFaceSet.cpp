@@ -1137,3 +1137,89 @@ SoIndexedFaceSet::generateDefaultNormals(SoState * state,
 #undef STATUS_CONCAVE
 #undef LOCK_VAINDEXER
 #undef UNLOCK_VAINDEXER
+
+#ifdef COIN_TEST_SUITE
+
+#include <Inventor/SoDB.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/SoPrimitiveVertex.h>
+#include <cmath>
+
+namespace {
+  struct polygon_growth_result {
+    int triangles = 0;
+    SbBox3f bbox;
+  };
+
+  void
+  polygon_growth_triangle_cb(void * userdata, SoCallbackAction *,
+                             const SoPrimitiveVertex * v0,
+                             const SoPrimitiveVertex * v1,
+                             const SoPrimitiveVertex * v2)
+  {
+    polygon_growth_result * result = static_cast<polygon_growth_result *>(userdata);
+    result->triangles++;
+    result->bbox.extendBy(v0->getPoint());
+    result->bbox.extendBy(v1->getPoint());
+    result->bbox.extendBy(v2->getPoint());
+  }
+}
+
+// Regression test for soshape_primdata.cpp's SoShape::POLYGON code
+// path (src/shapenodes/soshape_primdata.cpp), which used to grow its
+// internal SoPrimitiveVertex[]/SoPointDetail[] arrays with memcpy()
+// over non-trivially-copyable class objects (one of them,
+// SoPointDetail, polymorphic) instead of copy-assignment. A face with
+// more than 4 (soshape_primdata's initial array size) coordinate
+// indices forces SoIndexedFaceSet to emit a POLYGON primitive and
+// exercises that growth path multiple times as more vertices come in.
+// This checks the actual resulting geometry is correct end to end
+// through the public API, not just that nothing crashes.
+BOOST_AUTO_TEST_CASE(polygon_with_many_vertices_survives_array_growth)
+{
+  SbBool init = !SoDB::isInitialized();
+  if (init) { SoDB::init(); }
+
+  const int N = 30; // > soshape_primdata's initial arraySize (4),
+                     // forces several grow() calls (4->8->16->32)
+
+  SoSeparator * root = new SoSeparator;
+  root->ref();
+
+  SoCoordinate3 * coords = new SoCoordinate3;
+  coords->point.setNum(N);
+  SbVec3f * pts = coords->point.startEditing();
+  for (int i = 0; i < N; i++) {
+    const float a = float(i) / float(N) * 2.0f * static_cast<float>(M_PI);
+    pts[i] = SbVec3f(std::cos(a), std::sin(a), 0.0f);
+  }
+  coords->point.finishEditing();
+  root->addChild(coords);
+
+  SoIndexedFaceSet * fs = new SoIndexedFaceSet;
+  fs->coordIndex.setNum(N + 1);
+  int32_t * idx = fs->coordIndex.startEditing();
+  for (int i = 0; i < N; i++) { idx[i] = i; }
+  idx[N] = -1;
+  fs->coordIndex.finishEditing();
+  root->addChild(fs);
+
+  polygon_growth_result result;
+  SoCallbackAction action;
+  action.addTriangleCallback(SoIndexedFaceSet::getClassTypeId(),
+                             polygon_growth_triangle_cb, &result);
+  action.apply(root);
+
+  root->unref();
+
+  BOOST_CHECK_MESSAGE(result.triangles > 0,
+                      "expected the polygon to be triangulated into at least one triangle");
+  BOOST_CHECK_MESSAGE(result.bbox.getMin()[0] > -1.01f && result.bbox.getMax()[0] < 1.01f &&
+                     result.bbox.getMin()[1] > -1.01f && result.bbox.getMax()[1] < 1.01f,
+                     "triangulated polygon vertex coordinates do not match the input circle "
+                     "-- would indicate stale/corrupted data after array growth");
+}
+
+#endif // COIN_TEST_SUITE

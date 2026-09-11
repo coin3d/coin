@@ -125,8 +125,11 @@ public:
   class UnitData {
   public:
     UnitData();
-    UnitData(const UnitData & org);
-    UnitData & operator=(const UnitData & org) = default;
+    // No user-declared copy constructor, destructor or operator=:
+    // every member here is trivially copyable (SbUniqueId, enums,
+    // floats, SbColor4f), so the compiler-generated ones are correct
+    // and, unlike a hand-written one, provably identical to them --
+    // this also makes UnitData itself trivially copyable.
 
     SbUniqueId nodeid;
     Source rgbsource[3];
