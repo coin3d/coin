@@ -264,31 +264,34 @@ $(function(){initNavTree('SoTextureCombineElement_8h_source.html',''); initResiz
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="classSoTextureCombineElement_1_1UnitData.html">  125</a></span>  <span class="keyword">class </span><a class="code hl_class" href="classSoTextureCombineElement_1_1UnitData.html">UnitData</a> {</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    <a class="code hl_class" href="classSoTextureCombineElement_1_1UnitData.html">UnitData</a>();</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <a class="code hl_class" href="classSoTextureCombineElement_1_1UnitData.html">UnitData</a>(<span class="keyword">const</span> <a class="code hl_class" href="classSoTextureCombineElement_1_1UnitData.html">UnitData</a> &amp; org);</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <a class="code hl_class" href="classSoTextureCombineElement_1_1UnitData.html">UnitData</a> &amp; operator=(<span class="keyword">const</span> <a class="code hl_class" href="classSoTextureCombineElement_1_1UnitData.html">UnitData</a> &amp; org) = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    SbUniqueId nodeid;</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    Source rgbsource[3];</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    Source alphasource[3];</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    Operand rgboperand[3];</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    Operand alphaoperand[3];</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    Operation rgboperation;</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    Operation alphaoperation;</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <a class="code hl_class" href="classSbColor4f.html">SbColor4f</a> constantcolor;</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="keywordtype">float</span> rgbscale;</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="keywordtype">float</span> alphascale;</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>  };</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="comment">// No user-declared copy constructor, destructor or operator=:</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="comment">// every member here is trivially copyable (SbUniqueId, enums,</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <span class="comment">// floats, SbColor4f), so the compiler-generated ones are correct</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="comment">// and, unlike a hand-written one, provably identical to them --</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="comment">// this also makes UnitData itself trivially copyable.</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    SbUniqueId nodeid;</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    Source rgbsource[3];</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    Source alphasource[3];</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    Operand rgboperand[3];</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    Operand alphaoperand[3];</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    Operation rgboperation;</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    Operation alphaoperation;</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    <a class="code hl_class" href="classSbColor4f.html">SbColor4f</a> constantcolor;</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    <span class="keywordtype">float</span> rgbscale;</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    <span class="keywordtype">float</span> alphascale;</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  };</div>
 </div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>  <span class="keyword">const</span> <a class="code hl_class" href="classSoTextureCombineElement_1_1UnitData.html">UnitData</a> &amp; getUnitData(<span class="keyword">const</span> <span class="keywordtype">int</span> unit) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  SoTextureCombineElementP * pimpl;</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>};</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>  <span class="keyword">const</span> <a class="code hl_class" href="classSoTextureCombineElement_1_1UnitData.html">UnitData</a> &amp; getUnitData(<span class="keyword">const</span> <span class="keywordtype">int</span> unit) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>  SoTextureCombineElementP * pimpl;</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>};</div>
 </div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="preprocessor">#endif </span><span class="comment">// !COIN_SOTEXTURECOMBINEELEMENT_H</span></div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="preprocessor">#endif </span><span class="comment">// !COIN_SOTEXTURECOMBINEELEMENT_H</span></div>
 <div class="ttc" id="aclassSbColor4f_html"><div class="ttname"><a href="classSbColor4f.html">SbColor4f</a></div><div class="ttdoc">The SbColor4f class contains the red, green, blue and alpha components which make up a color value.</div><div class="ttdef"><b>Definition</b> SbColor4f.h:42</div></div>
 <div class="ttc" id="aclassSoElement_html"><div class="ttname"><a href="classSoElement.html">SoElement</a></div><div class="ttdoc">SoElement is the abstract base class for all elements.</div><div class="ttdef"><b>Definition</b> SoElement.h:43</div></div>
 <div class="ttc" id="aclassSoElement_html_a4a6e2a38cdbbdd1dccbb3e9928e68d55"><div class="ttname"><a href="classSoElement.html#a4a6e2a38cdbbdd1dccbb3e9928e68d55">SoElement::copyMatchInfo</a></div><div class="ttdeci">virtual SoElement * copyMatchInfo(void) const =0</div></div>
@@ -306,7 +309,7 @@ $(function(){initNavTree('SoTextureCombineElement_8h_source.html',''); initResiz
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_4be52554de5475a620e8b38d2057de84.html">elements</a></li><li class="navelem"><b>SoTextureCombineElement.h</b></li>
-    <li class="footer">Generated on Fri Sep 11 2026 23:00:00 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Fri Sep 11 2026 23:00:36 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
