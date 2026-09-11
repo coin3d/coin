@@ -124,7 +124,7 @@
 #include <Inventor/lists/SbStringList.h>
 
 #include "nodes/SoSubNodeP.h"
-#include "misc/SbHash.h"
+#include "misc/SbSmallMap.h"
 #include "shaders/SoGLARBShaderObject.h"
 #include "shaders/SoGLCgShaderObject.h"
 #include "shaders/SoGLSLShaderObject.h"
@@ -214,7 +214,8 @@ private:
   static void sensorCB(void *data, SoSensor *);
 
   SbStringList searchdirectories;
-  SbHash<uint32_t, SoGLShaderObject *> glshaderobjects;
+  // Keep the common one- or two-context resource set inline.
+  SbSmallMap<uint32_t, SoGLShaderObject *> glshaderobjects;
 
   void checkType(void); // sets cachedSourceType
   void readSource(void); // sets cachedSourceProgram depending on sourceType
