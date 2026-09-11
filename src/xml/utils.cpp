@@ -46,7 +46,16 @@ cc_xml_load_file(const char * path)
   FILE * fd = fopen(path, "rb");
   if ( !fd ) return NULL;
   fseek(fd, 0, SEEK_END);
-  const long bufsize = ftell(fd);
+  const long filesize = ftell(fd);
+  if ( filesize < 0 ) {
+    // ftell() failed (e.g. fd does not support seeking) -- without
+    // this check, the negative value below would wrap around to a
+    // huge size_t in the pos/bufsize comparisons and the fread() size
+    // argument further down, both writing past a zero-byte buffer.
+    fclose(fd);
+    return NULL;
+  }
+  const size_t bufsize = static_cast<size_t>(filesize);
   fseek(fd, 0, SEEK_SET);
   char * buffer = new char [ bufsize + 1 ];
   size_t pos = 0, bytes;
