@@ -400,6 +400,7 @@ SoElement::initElements(void)
   SoMaterialBindingElement::initClass();
   SoNormalBindingElement::initClass();
   SoPickStyleElement::initClass();
+  SoPickLayerElement::initClass();
   SoSwitchElement::initClass();
   SoTextOutlineEnabledElement::initClass();
   SoTextureCoordinateBindingElement::initClass();

@@ -59,6 +59,7 @@
 #include <Inventor/actions/SoPickAction.h>
 
 #include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoPickLayerElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
 
 #include "nodes/SoSubNodeP.h"
@@ -130,6 +131,16 @@
   in the scene graph. Default value is SoPickStyle::SHAPE.
 */
 
+/*!
+  \var SoSFInt32 SoPickStyle::layer
+
+  The pick layer for subsequent shapes in the scene graph. Picked points
+  in a higher layer sort in front of those in a lower layer, regardless of
+  their depth; within a layer, the usual depth order applies. The on-top
+  pick styles ignore the layer and always sort frontmost. Default value
+  is 0.
+*/
+
 // *************************************************************************
 
 SO_NODE_SOURCE(SoPickStyle);
@@ -142,6 +153,7 @@ SoPickStyle::SoPickStyle(void)
   SO_NODE_INTERNAL_CONSTRUCTOR(SoPickStyle);
 
   SO_NODE_ADD_FIELD(style, (SoPickStyle::SHAPE));
+  SO_NODE_ADD_FIELD(layer, (0));
 
   SO_NODE_DEFINE_ENUM_VALUE(Style, SHAPE);
   SO_NODE_DEFINE_ENUM_VALUE(Style, BOUNDING_BOX);
@@ -170,6 +182,9 @@ SoPickStyle::initClass(void)
 
   SO_ENABLE(SoCallbackAction, SoPickStyleElement);
   SO_ENABLE(SoPickAction, SoPickStyleElement);
+
+  SO_ENABLE(SoCallbackAction, SoPickLayerElement);
+  SO_ENABLE(SoPickAction, SoPickLayerElement);
 }
 
 void
@@ -182,6 +197,9 @@ SoPickStyle::doAction(SoAction * action)
     if (this->isOverride()) {
       SoOverrideElement::setPickStyleOverride(action->getState(), this, TRUE);
     }
+  }
+  if (!this->layer.isIgnored()) {
+    SoPickLayerElement::set(action->getState(), this, this->layer.getValue());
   }
 }
 

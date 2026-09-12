@@ -1,25 +1,25 @@
-#ifndef COIN_SOPICKSTYLE_H
-#define COIN_SOPICKSTYLE_H
+#ifndef COIN_SOPICKLAYERELEMENT_H
+#define COIN_SOPICKLAYERELEMENT_H
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- * 
+ *
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- * 
+ *
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -33,38 +33,24 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/fields/SoSFInt32.h>
-#include <Inventor/elements/SoPickStyleElement.h>
+#include <Inventor/elements/SoInt32Element.h>
 
-class COIN_DLL_API SoPickStyle : public SoNode {
-  typedef SoNode inherited;
+class COIN_DLL_API SoPickLayerElement : public SoInt32Element {
+  typedef SoInt32Element inherited;
 
-  SO_NODE_HEADER(SoPickStyle);
-
+  SO_ELEMENT_HEADER(SoPickLayerElement);
 public:
   static void initClass(void);
-  SoPickStyle(void);
-
-  enum Style {
-    SHAPE = SoPickStyleElement::SHAPE,
-    BOUNDING_BOX = SoPickStyleElement::BOUNDING_BOX,
-    UNPICKABLE = SoPickStyleElement::UNPICKABLE,
-    SHAPE_ON_TOP = SoPickStyleElement::SHAPE_ON_TOP,
-    BOUNDING_BOX_ON_TOP = SoPickStyleElement::BOUNDING_BOX_ON_TOP,
-    SHAPE_FRONTFACES = SoPickStyleElement::SHAPE_FRONTFACES
-  };
-
-  SoSFEnum style;
-  SoSFInt32 layer;
-
-  virtual void doAction(SoAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void pick(SoPickAction * action);
-
 protected:
-  virtual ~SoPickStyle();
+  virtual ~SoPickLayerElement();
+
+public:
+  virtual void init(SoState * state);
+  static void set(SoState * const state, SoNode * const node,
+                  const int32_t layer);
+  static void set(SoState * const state, const int32_t layer);
+  static int32_t get(SoState * const state);
+  static int32_t getDefault();
 };
 
-#endif // !COIN_SOPICKSTYLE_H
+#endif // !COIN_SOPICKLAYERELEMENT_H
