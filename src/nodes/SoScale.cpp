@@ -119,8 +119,17 @@ SoScale::initClass(void)
 void
 SoScale::doAction(SoAction * action)
 {
-  SoModelMatrixElement::scaleBy(action->getState(), this,
-                                this->scaleFactor.getValue());
+  const SbVec3f & sf = this->scaleFactor.getValue();
+  // Skip the matrix element update entirely for an identity scale --
+  // same "no-op transform contributes no GL/matrix work" optimization
+  // SoTransform::doAction() got in issue #534, applied to this sibling
+  // node. Exact comparison on purpose: this is a cheap-and-safe
+  // optimization for the (very common, e.g. CAD-export placeholder
+  // nodes) exact-identity case, not an attempt to snap near-identity
+  // scales to identity.
+  if (sf != SbVec3f(1.0f, 1.0f, 1.0f)) {
+    SoModelMatrixElement::scaleBy(action->getState(), this, sf);
+  }
 }
 
 // Doc in superclass.
@@ -174,3 +183,18 @@ SoScale::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoScale::doAction((SoAction*)action);
 }
+
+#ifdef COIN_TEST_SUITE
+#include <IdentityTransformCacheTest.h>
+
+static void identity_transform_cache_check(bool result, const char * message)
+{
+  BOOST_CHECK_MESSAGE(result, message);
+}
+
+BOOST_AUTO_TEST_CASE(identity_transform_cache_transitions)
+{
+  for (int kind = 0; kind < 3; ++kind)
+    IdentityTransformCacheTest::run(kind, identity_transform_cache_check);
+}
+#endif // COIN_TEST_SUITE
