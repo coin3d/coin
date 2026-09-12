@@ -329,5 +329,20 @@ SoCacheElement::setInvalid(const SbBool newvalue)
 SoCache *
 SoCacheElement::getCurrentCache(SoState * const state)
 {
-  return (coin_assert_cast<const SoCacheElement *>(state->getElementNoPush(classStackIndex)))->cache;
+  // walk up the element stack the same way anyOpen()/invalidate()/
+  // addCacheDependency() do: a cache opened by an ancestor is still the
+  // current one even if state->push() was called since (which creates a
+  // fresh SoCacheElement instance at the new depth, with cache == NULL,
+  // for that depth to record its own, distinct cache into -- see
+  // SoCacheElement::push()). Looking only at the current depth's instance
+  // could return NULL here while state->isCacheOpen() (which does track
+  // this correctly, see set()/pop()) still reports TRUE.
+  const SoCacheElement * elem = coin_assert_cast<const SoCacheElement *>
+    (
+     state->getElementNoPush(classStackIndex)
+     );
+  while (elem && !elem->cache) {
+    elem = coin_safe_cast<const SoCacheElement *>(elem->getNextInStack());
+  }
+  return elem ? elem->cache : NULL;
 }
