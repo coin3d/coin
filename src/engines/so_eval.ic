@@ -30,6 +30,13 @@
 #define FLEX_BETA
 #endif
 
+/* Neither unput() nor input() is ever called by this scanner's rules
+   (evaluator.l has no %option nounput/noinput, but also never invokes
+   either) -- equivalent to adding those options and regenerating,
+   without a flex dependency at build time. */
+#define YY_NO_UNPUT
+#define YY_NO_INPUT
+
     #define yy_create_buffer so_eval_create_buffer
 
     #define yy_delete_buffer so_eval_delete_buffer
