@@ -955,9 +955,23 @@ SoDB::renameGlobalField(const SbName & from, const SbName & to)
   }
 #endif // COIN_DEBUG
 
+  // Renaming a field to its own current name is a no-op -- and must be
+  // handled as one: otherwise, "old" below (found by looking up "to")
+  // would be this very same gf, and unref()'ing it out from under
+  // ourselves before the gf->setName(to) call further down would be a
+  // use-after-free.
+  if (from == to) return;
+
   if (to == "") { // Empty string is a special case, remove field.
     assert(gf->getRefCount() == 1);
-    SoGlobalField::removeGlobalFieldContainer(gf);
+    // SoGlobalField::removeGlobalFieldContainer(gf) would only remove gf
+    // from the internal list without dropping its refcount (see that
+    // method's own doc comment vs. SoGlobalField::initClass(), which sets
+    // up the list with addReferences(FALSE) precisely so it does *not*
+    // do that) -- so it would leak gf here. unref() triggers the actual
+    // deletion, and ~SoGlobalField() removes the container from the list
+    // itself, same fix as SoDBP::removeRealTimeFieldCB() (Coin issue #73).
+    gf->unref();
     return;
   }
 
@@ -965,7 +979,7 @@ SoDB::renameGlobalField(const SbName & from, const SbName & to)
   SoGlobalField * old = SoGlobalField::getGlobalFieldContainer(to);
   if (old) {
     assert(old->getRefCount() == 1);
-    SoGlobalField::removeGlobalFieldContainer(old);
+    old->unref(); // see comment above
   }
 
   gf->setName(to);
