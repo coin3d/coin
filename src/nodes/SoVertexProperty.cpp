@@ -527,7 +527,7 @@ SoVertexProperty::updateTexCoord(SoState * state, SbBool glrender, SbBool vbo)
             // clear buffers to deallocate VBO memory
             PRIVATE(this)->texcoordvbo[i]->setBufferData(NULL, 0, 0);
           }
-          SoGLVBOElement::setTexCoordVBO(state, 0, setvbo ? PRIVATE(this)->texcoordvbo[i] : NULL);
+          SoGLVBOElement::setTexCoordVBO(state, unit, setvbo ? PRIVATE(this)->texcoordvbo[i] : NULL);
         }
       }
     }
