@@ -644,6 +644,8 @@ SbDPRotation::print(FILE * fp) const
 #include <Inventor/SbVec3d.h>
 
 BOOST_AUTO_TEST_CASE(tgsCompliance) {
-  SbDPRotation v = SbRotationd(SbVec3d(0,1,2),3);
+  // Compile-only check: SbRotationd (the TGS Inventor-compatible
+  // alias) must be usable wherever an SbDPRotation is expected.
+  (void) SbDPRotation(SbRotationd(SbVec3d(0,1,2),3));
 }
 #endif //COIN_TEST_SUITE

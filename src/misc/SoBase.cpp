@@ -1591,6 +1591,13 @@ SoBase::createNotRec(void)
 #include <Inventor/actions/SoToVRML2Action.h>
 #include <Inventor/VRMLnodes/SoVRMLGroup.h>
 
+// buffer, buffer_size, dont_mangle_output_names() and buffer_realloc()
+// below are only used inside the #ifdef HAVE_VRML97 block further down
+// in checkWriteWithMultiref() -- gated the same way here, since
+// CoinTests (a separate target from the Coin library itself) never
+// gets HAVE_VRML97 defined, so that block, and everything only used
+// by it, is always compiled out in practice.
+#ifdef HAVE_VRML97
  static char * buffer;
   static size_t buffer_size = 0;
 
@@ -1622,16 +1629,15 @@ dont_mangle_output_names(const SoBase *base)
     buffer_size = size;
     return buffer;
   }
+#endif // HAVE_VRML97
 
 
 BOOST_AUTO_TEST_CASE(checkWriteWithMultiref)
 {
 	SoDB::init();
-	   SoNode* scenegraph;
        SoSeparator *root = new SoSeparator;
        root->ref();
        root->setName("root");
-		scenegraph = root;
        SoSeparator *n0 = new SoSeparator;
        SoSeparator *a0 = new SoSeparator;
        SoSeparator *a1 = new SoSeparator;
@@ -1756,6 +1762,7 @@ DEF root Separator {
 
 #ifdef HAVE_VRML97
 	    SoVRMLGroup *newroot;
+	    SoNode * scenegraph = root;
 	   for(int j=0;j<2;j++) {
 		   if(j==1) {
 	SoToVRML2Action tovrml2;
@@ -1840,9 +1847,10 @@ DEF root Separator {
 	   }
 	   
 	
-       root->unref();
 	   newroot->unref();
 #endif
+       // The original graph exists even when VRML97 checks are excluded.
+       root->unref();
  }
 
 #endif // COIN_TEST_SUITE
