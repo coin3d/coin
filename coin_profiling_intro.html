@@ -131,7 +131,7 @@ $(function(){initNavTree('coin_profiling_intro.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><h2>Enabling profiling in Coin</h2>
-<p>To enable profiling in Coin, use the environment variable COIN_PROFILER. When profiling is enabled, Coin will gather profiling data during every scene graph traversal by any action.</p>
+<p>To enable profiling in Coin, use the environment variable COIN_PROFILER before calling <a class="el" href="classSoDB.html#a970f42dfd362c33c69fa1869bfae72b5">SoDB::init()</a>. When profiling is enabled, Coin will gather profiling data during every scene graph traversal by any action.</p>
 <h2>Enabling the default profiling display</h2>
 <p>To get some profiling data shown on the screen, you also need to use the COIN_PROFILER_OVERLAY environment variable.</p>
 <p>This will give you the default profiling graphics, which shows a top list of node timings categorized by node types, a scrolling graph of action traversal timings, and a scene graph navigator for closer scene graph inspection.</p>
@@ -144,7 +144,7 @@ $(function(){initNavTree('coin_profiling_intro.html',''); initResizable(); });
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="coin_related_pages.html">Related Pages</a></li>
-    <li class="footer">Generated on Sat Sep 12 2026 20:52:44 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sat Sep 12 2026 20:53:11 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
