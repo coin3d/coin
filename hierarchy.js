@@ -82,6 +82,7 @@ var hierarchy =
     [ "SbLine", "classSbLine.html", null ],
     [ "SbList< Type >", "classSbList.html", null ],
     [ "SbList< BogusSet * >", "classSbList.html", null ],
+    [ "SbList< CachingScope >", "classSbList.html", null ],
     [ "SbList< CallbackInfo >", "classSbList.html", null ],
     [ "SbList< cc_xml_attr * >", "classSbList.html", null ],
     [ "SbList< cc_xml_elt * >", "classSbList.html", null ],
