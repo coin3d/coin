@@ -323,6 +323,12 @@ SoDB::init(void)
   // when checking if its present on the state stack.)
   SoProfilerElement::initClass();
 
+  // Read the startup setting before SoAction::initClass() selects its
+  // enabled elements. Error reporting is already initialized for parser
+  // diagnostics; the full profiler initialization must wait for nodes and
+  // actions and for SoDBP::isinitialized below. Parse only once.
+  SoProfilerP::parseCoinProfilerVariable();
+
   ScXML::initClasses();
 
   // Actions must be initialized before nodes (because of SO_ENABLE)
@@ -462,7 +468,6 @@ SoDB::init(void)
   // CoinStaticObjectInDLL.cpp.  Logically, it should not be flagged
   // before after initialization is done, but subsystems invoked from
   // these methods needs to know that Coin is already initialized.
-  SoProfilerP::parseCoinProfilerVariable();
   if (SoProfiler::isEnabled()) {
     SoProfiler::init();
   }

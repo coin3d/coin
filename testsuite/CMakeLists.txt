@@ -102,6 +102,22 @@ if (USE_PTHREAD)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
+# These public-API tests need fresh processes: CoinTests initializes SoDB
+# before running its inline cases, which is too late to test startup options.
+add_executable(CoinProfilerInitTest
+  reproducers/soprofiler-initclass-ordering/repro.cpp)
+target_link_libraries(CoinProfilerInitTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CoinProfilerInitTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+foreach(profile_mode unset off 0 on 1 syncgl invalid)
+  add_test(NAME ProfilerInit_${profile_mode}
+    COMMAND ${CMAKE_COMMAND}
+      -DTEST_EXECUTABLE=$<TARGET_FILE:CoinProfilerInitTest>
+      -DPROFILE_MODE=${profile_mode}
+      -P ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/soprofiler-initclass-ordering/verify.cmake)
+endforeach()
+
 include(CheckCoreGLHeaders.cmake)
 
 # Many warnings are generated from test macros on macOS with Xcode.
