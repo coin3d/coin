@@ -490,16 +490,20 @@ struct CoinVrmlJsMFHandler {
       jsval element;
       uint32_t i;
       uint32_t num;
-      JSBool ok = spidermonkey()->JS_GetArrayLength(cx, JSVAL_TO_OBJECT(*array), &num);
+      if (!spidermonkey()->JS_GetArrayLength(cx, JSVAL_TO_OBJECT(*array), &num)) {
+        assert(!"JS_GetArrayLength failed");
+      }
 
       SFFieldClass * field = (SFFieldClass *)SFFieldClass::createInstance();
 
       for (i=0; i<num; ++i) {
-        ok = spidermonkey()->JS_GetElement(cx, obj, i, &element);
-        assert(ok);
+        if (!spidermonkey()->JS_GetElement(cx, obj, i, &element)) {
+          assert(!"JS_GetElement failed");
+        }
 
-        ok = SoJavaScriptEngine::getEngine(cx)->jsval2field(element, field);
-        assert(ok && "jsval2field failed");
+        if (!SoJavaScriptEngine::getEngine(cx)->jsval2field(element, field)) {
+          assert(!"jsval2field failed");
+        }
         ((MFFieldClass *)f)->set1Value(i, field->getValue());
       }
       delete field;
@@ -562,10 +566,6 @@ static JSBool SFRotationConstructor(JSContext * cx, JSObject * obj,
       }
       // new SFRotation(SFVec3f axis, numeric angle)
       else {
-        SbVec4f * data = new SbVec4f();
-        spidermonkey()->JS_SetPrivate(cx, obj, data);
-        *rval = OBJECT_TO_JSVAL(obj);
-
         double number = 0.0;
         spidermonkey()->JS_ValueToNumber(cx, argv[1], &number);
 

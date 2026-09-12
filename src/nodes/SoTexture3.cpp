@@ -372,8 +372,8 @@ SoTexture3::doAction(SoAction *action)
   if (size != SbVec3s(0,0,0)) {
     SoMultiTextureImageElement::set(state, this, unit,
                                     size, nc, bytes,
-                                    (SoMultiTextureImageElement::Wrap)this->wrapT.getValue(),
                                     (SoMultiTextureImageElement::Wrap)this->wrapS.getValue(),
+                                    (SoMultiTextureImageElement::Wrap)this->wrapT.getValue(),
                                     (SoMultiTextureImageElement::Wrap)this->wrapR.getValue(),
                                     (SoMultiTextureImageElement::Model) model.getValue(),
                                     this->blendColor.getValue());
@@ -387,8 +387,8 @@ SoTexture3::doAction(SoAction *action)
                                              0xff,0xff,0xff,0xff};
     SoMultiTextureImageElement::set(state, this, unit,
                                     SbVec3s(2,2,2), 1, dummytex,
-                                    (SoMultiTextureImageElement::Wrap)this->wrapT.getValue(),
                                     (SoMultiTextureImageElement::Wrap)this->wrapS.getValue(),
+                                    (SoMultiTextureImageElement::Wrap)this->wrapT.getValue(),
                                     (SoMultiTextureImageElement::Wrap)this->wrapR.getValue(),
                                     (SoMultiTextureImageElement::Model) model.getValue(),
                                     this->blendColor.getValue());
@@ -457,7 +457,16 @@ SoTexture3::loadFilenames(SoInput * in)
 {
   SbBool retval = FALSE;
   SbVec3s volumeSize(0,0,0);
-  int volumenc;
+  /* Only read below once this->images.isDefault() is false, which only
+     happens after this->images.setValue() below has run (setValue()
+     implicitly clears the default flag). At the start of every call --
+     first or repeat -- isDefault() is true, since a successful call
+     ends by explicitly setting it back to TRUE ("write filenames, not
+     images", a few lines down); so volumenc is always set on that
+     call's first successfully-read image before any later image in
+     the same call can read it. Initialized only because the compiler
+     can't see that guarantee across the setValue()/isDefault() pair. */
+  int volumenc = 0;
   int numImages = this->filenames.getNum();
   SbBool sizeError = FALSE;
   int i;

@@ -352,10 +352,5 @@ SoTextureCombineElement::UnitData::UnitData()
   }
 }
 
-SoTextureCombineElement::UnitData::UnitData(const UnitData & org)
-{
-  memcpy(this, &org, sizeof(*this));
-}
-
 
 #undef PRIVATE

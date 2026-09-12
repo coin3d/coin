@@ -449,10 +449,10 @@ cc_ftglue_FT_Library_Version(void * library, int * major, int * minor, int * pat
 void 
 cc_ftglue_FT_Done_FreeType(void * library)
 {
-  FT_Error err;
   assert(freetype_instance && freetype_instance->available);
-  err = freetype_instance->FT_Done_FreeType(library);
-  assert(err == 0 && "something bad happened at FreeType exit");
+  if (freetype_instance->FT_Done_FreeType(library) != 0) {
+    assert(!"something bad happened at FreeType exit");
+  }
 }
 
 FT_Error 

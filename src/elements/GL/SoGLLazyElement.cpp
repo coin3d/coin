@@ -67,6 +67,7 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/C/tidbits.h>
+#include <Inventor/lists/SbList.h>
 #include "rendering/SoVBO.h"
 #include <coindefs.h> // COIN_OBSOLETED
 
@@ -76,6 +77,27 @@
 
 #define FLAG_FORCE_DIFFUSE      0x0001
 #define FLAG_DIFFUSE_DEPENDENCY 0x0002
+
+// beginCaching()/endCaching() are not reentrant: a nested call (e.g. a
+// SoShape validating its SoPrimitiveVertexCache while an ancestor
+// SoSeparator's SoGLCacheList recording is already open, see issue #402)
+// would otherwise overwrite the enclosing scope's bookkeeping in-place,
+// and the enclosing endCaching() would then dereference NULL once the
+// inner endCaching() has already cleared it. Save/restore the bookkeeping
+// that's local to one caching scope on a small stack so nested scopes
+// can't clobber their enclosing scope's.
+class SoGLLazyElementP {
+public:
+  struct CachingScope {
+    SoGLLazyElement::GLState * precachestate;
+    SoGLLazyElement::GLState * postcachestate;
+    uint32_t didsetbitmask;
+    uint32_t didntsetbitmask;
+    uint32_t cachebitmask;
+    uint32_t opencacheflags;
+  };
+  SbList<CachingScope> cachingstack;
+};
 
 #if COIN_DEBUG
 // #define GLLAZY_DEBUG(_x_) (SoDebugError::postInfo(COIN_STUB_FUNC, _x_))
@@ -159,21 +181,37 @@ static void
 create_matrix_bitmap(int intensity, unsigned char * bitmap,
                      uint32_t * matrix, int size)
 {
-  int cnt = 0;
   int i,j;
   for (i = 0; i < 32*4; i++) bitmap[i] = 0;
   for (i = 0; i < size; i++) {
     for (j = 0; j < size; j++) {
       if (matrix[i*size+j] > (uint32_t) intensity) {
         set_bit(i*32+j, bitmap);
-        cnt++;
       }
     }
   }
 }
 
 
-SO_ELEMENT_SOURCE(SoGLLazyElement);
+SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoGLLazyElement);
+
+// SO_ELEMENT_SOURCE's generated default constructor doesn't initialize
+// any data members beyond type/stack index -- fine for every other
+// member here, since init() (for the root, depth-0 instance) or push()
+// (for every instance created afterwards, see SoState::getElement())
+// always assigns them all before they're read. pimpl is the one
+// exception: push() needs to tell whether this same, possibly-reused
+// C++ instance (SoState reuses element instances across many push()/
+// pop() cycles rather than reallocating) already owns a pimpl from an
+// earlier cycle, which means reading it -- so it must start out reliably
+// NULL rather than whatever the default constructor happened to leave on
+// the heap.
+SoGLLazyElement::SoGLLazyElement(void)
+{
+  this->setTypeId(SoGLLazyElement::classTypeId);
+  this->setStackIndex(SoGLLazyElement::classStackIndex);
+  this->pimpl = NULL;
+}
 
 /*!
   \copydetails SoElement::initClass(void)
@@ -201,6 +239,7 @@ SoGLLazyElement::initClass()
 
 SoGLLazyElement::~SoGLLazyElement()
 {
+  delete this->pimpl;
 }
 
 //! FIXME: write doc
@@ -415,6 +454,7 @@ SoGLLazyElement::init(SoState * stateptr)
   this->precachestate = NULL;
   this->postcachestate = NULL;
   this->opencacheflags = 0;
+  this->pimpl = new SoGLLazyElementP;
 
   // initialize this here to avoid UMR reports from
   // Purify. cachebitmask is updated even when there are no open
@@ -448,6 +488,20 @@ SoGLLazyElement::push(SoState * stateptr)
   this->didntsetbitmask = prev->didntsetbitmask;
   this->cachebitmask = prev->cachebitmask;
   this->opencacheflags = prev->opencacheflags;
+
+  // SoState reuses this same C++ instance across many push()/pop() cycles
+  // over its lifetime (see SoState::getElement()) rather than allocating a
+  // fresh one every time, so pimpl may already be set from an earlier
+  // cycle -- reset it in place instead of leaking it by overwriting the
+  // pointer with a new allocation. The caching-scope stack should already
+  // be empty at this point (beginCaching()/endCaching() calls are always
+  // balanced), but truncate defensively rather than assume it.
+  if (this->pimpl == NULL) {
+    this->pimpl = new SoGLLazyElementP;
+  }
+  else {
+    this->pimpl->cachingstack.truncate(0);
+  }
 }
 
 void
@@ -1002,6 +1056,20 @@ SoGLLazyElement::beginCaching(SoState * state, GLState * prestate,
 {
   SoGLLazyElement * elem = getInstance(state);
   elem->send(state, ALL_MASK); // send lazy state before starting to build cache
+
+  // save the enclosing caching scope (if any -- e.g. an ancestor
+  // SoGLCacheList's recording that this call is nested inside of), so the
+  // matching endCaching() can restore it instead of leaving it clobbered.
+  // See issue #402.
+  SoGLLazyElementP::CachingScope saved;
+  saved.precachestate = elem->precachestate;
+  saved.postcachestate = elem->postcachestate;
+  saved.didsetbitmask = elem->didsetbitmask;
+  saved.didntsetbitmask = elem->didntsetbitmask;
+  saved.cachebitmask = elem->cachebitmask;
+  saved.opencacheflags = elem->opencacheflags;
+  elem->pimpl->cachingstack.append(saved);
+
   *prestate = elem->glstate; // copy current GL state
   prestate->diffusenodeid = elem->coinstate.diffusenodeid;
   prestate->transpnodeid = elem->coinstate.transpnodeid;
@@ -1033,9 +1101,17 @@ SoGLLazyElement::endCaching(SoState * state)
     elem->precachestate->cachebitmask |= DIFFUSE_MASK;
   }
 
-  elem->precachestate = NULL;
-  elem->postcachestate = NULL;
-  elem->opencacheflags = 0;
+  // restore the enclosing caching scope this call was nested inside of
+  // (if any), rather than unconditionally clearing the bookkeeping --
+  // see the matching save in beginCaching() and issue #402.
+  assert(elem->pimpl->cachingstack.getLength() > 0);
+  SoGLLazyElementP::CachingScope saved = elem->pimpl->cachingstack.pop();
+  elem->precachestate = saved.precachestate;
+  elem->postcachestate = saved.postcachestate;
+  elem->didsetbitmask = saved.didsetbitmask;
+  elem->didntsetbitmask = saved.didntsetbitmask;
+  elem->cachebitmask = saved.cachebitmask;
+  elem->opencacheflags = saved.opencacheflags;
 }
 
 void

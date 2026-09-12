@@ -175,7 +175,11 @@ SoSFNode::operator==(const SoSFNode & field) const
 SbBool
 SoSFNode::readValue(SoInput * in)
 {
-  SoBase * baseptr;
+  /* Always set below: to NULL for the VRML97 explicit-null case, or by
+     SoBase::read() otherwise. Made explicit here (matching the VRML97
+     case's own value) since the compiler can't see that guarantee
+     across the SoBase::read() call. */
+  SoBase * baseptr = NULL;
   SbBool isVRMLspecialCase = FALSE;
 
   // Note: do *not* simply check for baseptr==NULL here, as that is a

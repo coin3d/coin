@@ -450,7 +450,11 @@ SoImage::GLRender(SoGLRenderAction * action)
   glLoadIdentity();
   glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
 
-  float oldzx, oldzy;
+  /* Only read below under the same "orgsize != size" condition that
+     sets them just below. Initialized to GL's own default pixel zoom
+     (1.0, i.e. no zoom) since the compiler can't see that the two
+     conditions are the same. */
+  float oldzx = 1.0f, oldzy = 1.0f;
 
   if (orgsize != size) { // use glPixelZoom to scale image
     glGetFloatv(GL_ZOOM_X, &oldzx);

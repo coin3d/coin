@@ -480,11 +480,12 @@ SoScXMLDollyTarget::dolly(SoCamera * camera, float diffvalue)
   // sqrt(FLT_MAX) == ~ 1e+19, which should be both safe for further
   // calculations and ok for the end-user and app-programmer.
   if (distorigo > float(sqrt(FLT_MAX))) {
-    if (COIN_DEBUG && 0) {
+    // COIN_DEBUG-gated diagnostic, deliberately disabled -- keep for future re-enabling
+#if 0
       SoDebugError::postWarning("SoScXMLDollyTarget::dolly",
                                 "zoomed too far (distance to origo==%f (%e))",
                                 distorigo, distorigo);
-    }
+#endif // 0
   }
   else {
     camera->position = newpos;
@@ -532,11 +533,12 @@ SoScXMLDollyTarget::jump(SoCamera * camera, float focaldistance)
   // sqrt(FLT_MAX) == ~ 1e+19, which should be both safe for further
   // calculations and ok for the end-user and app-programmer.
   if (distorigo > float(sqrt(FLT_MAX))) {
-    if (COIN_DEBUG && 0) {
+    // COIN_DEBUG-gated diagnostic, deliberately disabled -- keep for future re-enabling
+#if 0
       SoDebugError::postWarning("SoScXMLDollyTarget::dolly",
                                 "zoomed too far (distance to origo==%f (%e))",
                                 distorigo, distorigo);
-    }
+#endif // 0
   }
   else {
     camera->position.setValue(newpos);

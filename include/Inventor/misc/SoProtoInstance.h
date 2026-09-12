@@ -53,6 +53,7 @@ class COIN_DLL_API SoProtoInstance : public SoNode {
 protected:
   const SoFieldData * getFieldData(void) const override;
 private:
+  // Reserved for ABI compatibility; field data is stored in pimpl.
   SoFieldData * classfielddata;
 
 public:

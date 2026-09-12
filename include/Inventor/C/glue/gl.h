@@ -576,7 +576,6 @@ COIN_DLL_API void cc_glglue_glFramebufferTexture3D(const cc_glglue * glue, GLenu
 COIN_DLL_API void cc_glglue_glFramebufferRenderbuffer(const cc_glglue * glue, GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer);
 COIN_DLL_API void cc_glglue_glGetFramebufferAttachmentParameteriv(const cc_glglue * glue, GLenum target, GLenum attachment, GLenum pname, GLint *params);
 COIN_DLL_API void cc_glglue_glGenerateMipmap(const cc_glglue * glue, GLenum target);
-COIN_DLL_API SbBool cc_glglue_has_framebuffer_objects(const cc_glglue * glue);
 
 
 /* GL feature queries */

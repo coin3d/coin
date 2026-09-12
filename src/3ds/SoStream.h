@@ -37,8 +37,6 @@
 #include <Inventor/C/basic.h>
 #include <cstdio>
 
-typedef void* SoStreamReallocCB(void *ptr, size_t newSize);
-
 class SoInput;
 
 
@@ -195,7 +193,6 @@ private:
   SbBool readable, writeable;
   StreamEndianOrdering endianOrdering;
   SbBool needEndianConversion;
-  SoStreamReallocCB *reallocCallback;
 
   void commonInit();
   void updateNeedEndianConversion();

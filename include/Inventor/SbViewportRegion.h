@@ -43,6 +43,7 @@ public:
   SbViewportRegion(short width, short height);
   SbViewportRegion(SbVec2s winSize);
   SbViewportRegion(const SbViewportRegion & vpReg);
+  SbViewportRegion & operator=(const SbViewportRegion & vpReg) = default;
 
   void setWindowSize(short width, short height);
   void setWindowSize(SbVec2s winSize);

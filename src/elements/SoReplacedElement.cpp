@@ -122,7 +122,7 @@ void
 SoReplacedElement::print(FILE * file) const
 {
   const char * typen = this->getTypeId().getName().getString();
-  (void)fprintf(file, "%s[%p]\n", typen, this);
+  (void)fprintf(file, "%s[%p]\n", typen, (void *)this);
 }
 
 /*!

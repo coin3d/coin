@@ -655,7 +655,7 @@ SoVRMLBackgroundP::buildGeometry(void)
         } 
         angles.append(angle);
       }
-      if (angle != M_PI)
+      if (angle != (float) M_PI)
         angles.append((float)M_PI);
 
     }

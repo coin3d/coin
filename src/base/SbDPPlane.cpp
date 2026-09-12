@@ -105,9 +105,9 @@ SbDPPlane::SbDPPlane(const SbVec3d & p0, const SbVec3d & p1, const SbVec3d & p2)
   // we test and warn about a null vector above
   (void) this->normal.normalize();
 
-  //     N·point
+  //     N dot point
   // d = -------, |N| == 1
-  //       |N|²
+  //       |N|^2
 
   this->distance = this->normal.dot(p0);
 }
@@ -129,9 +129,9 @@ SbDPPlane::SbDPPlane(const SbVec3d & normalref, const SbVec3d & point)
   // we test and warn about a null vector above
   (void) this->normal.normalize();
 
-  //     N·point
+  //     N dot point
   // d = -------, |N| == 1
-  //       |N|²
+  //       |N|^2
 
   this->distance = this->normal.dot(point);
 }
@@ -172,15 +172,15 @@ SbDPPlane::intersect(const SbDPLine & l, SbVec3d & intersection) const
   //
   // We can also easily see that a point must satisfy this equation to lie
   // in the plane:
-  //                    N·(Q - d*N) = 0, where N is the normal vector,
+  //                    N dot (Q - d*N) = 0, where N is the normal vector,
   //                                     Q is the point and d the offset
   //                                     from the origin.
   //
   // Combining these two equations and simplifying we get:
   //
-  //                          d*|N|² - N·P
+  //                          d*|N|^2 - N dot P
   //                    t = ----------------, |N| == 1
-  //                               N·D
+  //                               N dot D
   //
   // Substituting t back in (1), we've solved the problem.
   //                                                         19980816 mortene.
@@ -231,7 +231,7 @@ SbDPPlane::isInHalfSpace(const SbVec3d & point) const
   // This one is dead easy, we just take the dot product of the normal
   // vector and the vector going from the plane base point to the
   // point we're checking against, and see if the angle between the
-  // vectors are within 90° (which is the same as checking the sign
+  // vectors are within 90 degree (which is the same as checking the sign
   // of the dot product).
   //                                                    19980816 mortene.
 #if 0 // not very efficient code, disabled 19991012 pederb
@@ -438,9 +438,6 @@ BOOST_AUTO_TEST_CASE(signCorrect)
 
 BOOST_AUTO_TEST_CASE(equalityToFloatPlane)
 {
-  const float delX = 1;
-  const float delY = .1f;
-
   const float XMax = (float)pow(2.,FLT_MAX_EXP/3.);
   const float XMin = -XMax;
 
@@ -460,8 +457,6 @@ BOOST_AUTO_TEST_CASE(equalityToFloatPlane)
   const int YSteps = 10;
 #endif //TEST_SUITE_EXPANSIVE
 
-  int count=0;
- 
   for (int x1=0;x1<XSteps;++x1) {
     float X1=slew(XMin,XMax,XSteps,x1);
     for (int x2=0;x2<XSteps;++x2) {

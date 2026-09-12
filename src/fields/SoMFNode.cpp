@@ -631,7 +631,7 @@ SoMFNode::replaceNode(SoNode * oldnode, SoNode * newnode)
 
 // Do-nothing error handler for ignoring read errors while testing.
 static void
-readErrorHandler(const SoError * error, void * data)
+readErrorHandler(const SoError *, void *)
 {
 }
 

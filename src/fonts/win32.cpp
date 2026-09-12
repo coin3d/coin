@@ -1002,7 +1002,12 @@ flww32_getVerticesFromPath(HDC hdc)
 
   LPPOINT p_points = NULL;
   LPBYTE p_types = NULL;
-  int numpoints, i, lastmoveto;
+  int numpoints, i;
+  /* A GDI path from GetPath() always starts with a PT_MOVETO, so this
+     is always set by the time a PT_CLOSEFIGURE can reference it below.
+     Initialized only as a guard against a malformed/unexpected path,
+     since an uninitialized value here would be used as an array index. */
+  int lastmoveto = 0;
   uintptr_t tmp;
 
   if (FlattenPath(hdc) == 0) {

@@ -2219,7 +2219,7 @@ SoTransformerDragger::setDynamicRotatorSwitches(const SoEvent *event)
 
 static
 SoCallbackAction::Response
-register_cb(void * data, SoCallbackAction * action, const SoNode * node)
+register_cb(void * data, SoCallbackAction *, const SoNode * node)
 {
   assert(data);
   SbDict * dict = static_cast<SbDict *>(data);
@@ -2229,7 +2229,7 @@ register_cb(void * data, SoCallbackAction * action, const SoNode * node)
 
 static
 void
-ensure_unique_cb(uintptr_t entry, void * value, void * data)
+ensure_unique_cb(uintptr_t entry, void *, void * data)
 {
   SbDict * copydict = static_cast<SbDict *>(data);
   void * val = NULL;

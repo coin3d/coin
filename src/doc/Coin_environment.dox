@@ -68,6 +68,9 @@
 /*!
   \var EnvironmentVariable COIN_PROFILER
 
+  Set this variable before calling SoDB::init(). It is read during
+  initialization, before the action classes select their enabled elements.
+
   This variable should be a set of profiler settings keywords,
   separated by ":" characters.
 

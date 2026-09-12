@@ -624,7 +624,7 @@ BOOST_AUTO_TEST_CASE(realTime_globalfield_import)
   in->setBuffer(scene, strlen(scene));
   SoNode * g = NULL;
   const SbBool readok = SoDB::read(in, g);
-  assert(readok); // that import is ok is tested by a case in SoDB.cpp
+  if (!readok) assert(!"scene import failed"); // that import is ok is tested by a case in SoDB.cpp
   delete in;
 
   // check that the global field is still the same instance

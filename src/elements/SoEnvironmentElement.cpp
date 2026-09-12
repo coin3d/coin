@@ -300,7 +300,7 @@ SoEnvironmentElement::getFogType(SoState * const state)
 void
 SoEnvironmentElement::print(FILE * file) const
 {
-  fprintf(file, "SoEnvironmentElement[%p]\n", this);
+  fprintf(file, "SoEnvironmentElement[%p]\n", (void *)this);
 }
 
 /*!

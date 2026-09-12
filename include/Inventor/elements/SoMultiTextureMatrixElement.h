@@ -62,6 +62,7 @@ public:
   public:
     UnitData() : textureMatrix(SbMatrix::identity()) {}
     UnitData(const UnitData & org) : textureMatrix(org.textureMatrix) {}
+    UnitData & operator=(const UnitData & org) = default;
     SbMatrix textureMatrix;
   };
 

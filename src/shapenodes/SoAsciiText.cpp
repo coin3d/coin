@@ -536,7 +536,6 @@ void SoAsciiTextP::calculateStringStretch(const int i, const cc_font_specificati
   stretchfactor = master->width[i] / this->stringwidths[i];
 
   cc_glyph3d * prevglyph = NULL;
-  float originalmaxx = 0.0f;
   float originalmaxxpos = 0.0f;
   float originalxpos = 0.0f;
   float maxglyphwidth = 0.0f;
@@ -569,7 +568,6 @@ void SoAsciiTextP::calculateStringStretch(const int i, const cc_font_specificati
     float endx = originalxpos * stretchfactor + glyphwidth;
     if (endx > maxx) {
       originalmaxxpos = originalxpos;
-      originalmaxx = originalxpos + glyphwidth;
 
       maxx = endx;
       maxglyphwidth = glyphwidth;

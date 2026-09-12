@@ -253,6 +253,7 @@ SO_NODE_SOURCE(SoGeoOrigin);
 */
 SoGeoOrigin::SoGeoOrigin(void)
 {
+  this->pimpl = NULL;
   SO_NODE_INTERNAL_CONSTRUCTOR(SoGeoOrigin);
 
   SO_NODE_ADD_FIELD(geoCoords, (0.0, 0.0, 0.0));

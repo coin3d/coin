@@ -330,13 +330,20 @@ SoCacheElement::setInvalid(const SbBool newvalue)
 SoCache *
 SoCacheElement::getCurrentCache(SoState * const state)
 {
-  const SoCacheElement * elem = coin_safe_cast<const SoCacheElement *>
-    (state->getElementNoPush(classStackIndex));
-  if (!elem) {
-    SoDebugError::post("SoCacheElement::getCurrentCache",
-                       "SoCacheElement not enabled for this action -- "
-                       "missing SO_ENABLE()? Returning default value.");
-    return NULL;
+  // walk up the element stack the same way anyOpen()/invalidate()/
+  // addCacheDependency() do: a cache opened by an ancestor is still the
+  // current one even if state->push() was called since (which creates a
+  // fresh SoCacheElement instance at the new depth, with cache == NULL,
+  // for that depth to record its own, distinct cache into -- see
+  // SoCacheElement::push()). Looking only at the current depth's instance
+  // could return NULL here while state->isCacheOpen() (which does track
+  // this correctly, see set()/pop()) still reports TRUE.
+  const SoCacheElement * elem = coin_assert_cast<const SoCacheElement *>
+    (
+     state->getElementNoPush(classStackIndex)
+     );
+  while (elem && !elem->cache) {
+    elem = coin_safe_cast<const SoCacheElement *>(elem->getNextInStack());
   }
-  return elem->cache;
+  return elem ? elem->cache : NULL;
 }
