@@ -49,8 +49,17 @@
   the first node in the path that doesn't inherit SoGroup, and
   getLength() returns the number of nodes down to this node.
 
-  If you need the actual path length, or the actual tail node, you
-  need to cast the path to SoFullPath.
+  If you need the actual path length, or the actual tail node, use
+  getFullLength() or getFullTail() instead.
+*/
+
+/*!
+  \fn int SoPath::getFullLength(void) const
+
+  Returns the number of nodes in the complete path, including hidden
+  children. An empty path has length zero.
+
+  \sa getLength(), getFullTail(), getFullNodeFromTail(), getFullIndexFromTail()
 */
 
 // *************************************************************************
@@ -88,16 +97,12 @@
 // *************************************************************************
 
 #if COIN_DEBUG && 0 // Convenience function for dumping the SoPath during debugging.
-#include <Inventor/SoFullPath.h>
-
 static void
 sopath_dump(SoPath * p)
 {
-  SoFullPath * path = (SoFullPath *)p;
-
-  (void)fprintf(stderr, "(path %p, len %d)  ", path, path->getLength());
-  for (int i=0; i < path->getLength(); i++) {
-    SoNode * n = path->getNodeFromTail(i);
+  (void)fprintf(stderr, "(path %p, len %d)  ", p, p->getFullLength());
+  for (int i=0; i < p->getFullLength(); i++) {
+    SoNode * n = p->getFullNodeFromTail(i);
     (void)fprintf(stderr, "%p (%s), ",
                   n, n->getTypeId().getName().getString());
   }
@@ -395,14 +400,7 @@ SoPath::append(SoNode * const node, const int index)
   inheriting SoGroup) when finding the tail.
 
   If you want to find the real tail node (also below node kits and
-  VRML nodes with hidden children), you have to use
-  SoFullPath::getTail(). You don't have to create an SoFullPath
-  instance to do this, just cast the SoPath instance to SoFullPath
-  before getting the tail node:
-
-  \code
-  SoNode * tail = static_cast<SoFullPath*>(path)->getTail();
-  \endcode
+  VRML nodes with hidden children), use getFullTail() instead.
 */
 SoNode *
 SoPath::getTail(void) const
@@ -504,8 +502,7 @@ SoPath::getIndexFromTail(const int index) const
   "visible" nodes are counted, i.e. hidden nodes of e.g. nodekits are
   not included.
 
-  If you need the actual path length, you need to cast your path to
-  SoFullPath and use SoFullPath::getLength().
+  If you need the actual path length, use getFullLength() instead.
 */
 int
 SoPath::getLength(void) const
@@ -520,6 +517,57 @@ SoPath::getLength(void) const
     return this->firsthidden + 1;
   }
   return this->nodes.getLength();
+}
+
+/*!
+  Full-path variant of getTail(): returns the actual tail node,
+  counting hidden children (e.g. nodekit-internal nodes) that getTail()
+  stops before.
+
+  \sa getFullLength(), getFullNodeFromTail(), getFullIndexFromTail()
+*/
+SoNode *
+SoPath::getFullTail(void) const
+{
+  return this->nodes[this->getFullLength() - 1];
+}
+
+/*!
+  Full-path variant of getNodeFromTail(): counts hidden children (e.g.
+  nodekit-internal nodes) that getNodeFromTail() stops before.
+
+  \sa getFullLength(), getFullTail(), getFullIndexFromTail()
+*/
+SoNode *
+SoPath::getFullNodeFromTail(const int index) const
+{
+#if COIN_DEBUG
+  if (index < 0 || index >= this->getFullLength()) {
+    SoDebugError::post("SoPath::getFullNodeFromTail",
+                       "index %d is out of bounds.", index);
+    return NULL;
+  }
+#endif // COIN_DEBUG
+  return this->nodes[this->getFullLength() - index - 1];
+}
+
+/*!
+  Full-path variant of getIndexFromTail(): counts hidden children (e.g.
+  nodekit-internal nodes) that getIndexFromTail() stops before.
+
+  \sa getFullLength(), getFullTail(), getFullNodeFromTail()
+*/
+int
+SoPath::getFullIndexFromTail(const int index) const
+{
+#if COIN_DEBUG
+  if (index < 0 || index >= this->getFullLength()) {
+    SoDebugError::post("SoPath::getFullIndexFromTail",
+                       "index %d is out of bounds.", index);
+    return -1;
+  }
+#endif // COIN_DEBUG
+  return this->indices[this->getFullLength() - index - 1];
 }
 
 /*!
@@ -556,9 +604,8 @@ SoPath::truncate(const int length, const SbBool donotify)
     // at unrelated locations.
     //
     // mortene -- the paranoid android.
-    SoFullPath * fp = (SoFullPath *)this;
-    for (int l = 0; l < fp->getLength(); l++) {
-      SoNode * n = fp->getNode(l);
+    for (int l = 0; l < this->getFullLength(); l++) {
+      SoNode * n = this->getNode(l);
       // FIXME: are there actually conditions where we can "legally" get
       // a NULL pointer here? Or would that be an indication of an
       // internal error? 20020928 mortene.
@@ -1199,3 +1246,96 @@ SoPath::setFirstHidden(void)
 
   this->firsthiddendirty = FALSE;
 }
+
+
+#ifdef COIN_TEST_SUITE
+
+#include <Inventor/misc/SoChildList.h>
+#include <Inventor/misc/SoTempPath.h>
+#include <Inventor/nodes/SoGroup.h>
+
+// A non-group node with children exercises hidden paths without requiring
+// the optional nodekit or VRML97 subsystems.
+class SoPathTestHiddenNode : public SoNode {
+public:
+  SoPathTestHiddenNode() : children(this) {}
+  SoType getTypeId() const override { return SoNode::getClassTypeId(); }
+  SoChildList * getChildren() const override {
+    return const_cast<SoChildList *>(&this->children);
+  }
+private:
+  SoChildList children;
+};
+
+BOOST_AUTO_TEST_CASE(full_path_hidden_children)
+{
+  SoGroup * root = new SoGroup;
+  root->ref();
+  SoPathTestHiddenNode * hidden = new SoPathTestHiddenNode;
+  root->addChild(new SoGroup);
+  root->addChild(hidden);
+  SoGroup * leaf = new SoGroup;
+  // Repeated child pointers make the edge index significant.
+  hidden->getChildren()->append(leaf);
+  hidden->getChildren()->append(leaf);
+  hidden->getChildren()->append(leaf);
+
+  SoPath * path = new SoPath(root);
+  path->ref();
+  path->append(1);
+  path->append(2);
+
+  BOOST_CHECK_EQUAL(path->getLength(), 2);
+  BOOST_CHECK(path->getTail() == hidden);
+  BOOST_CHECK_EQUAL(path->getIndexFromTail(0), 1);
+  BOOST_CHECK_EQUAL(path->getFullLength(), 3);
+  BOOST_CHECK(path->getFullTail() == leaf);
+  SoNode * expectednodes[] = { leaf, hidden, root };
+  const int expectedindices[] = { 2, 1, 0 };
+  for (int i = 0; i < 3; ++i) {
+    BOOST_CHECK(path->getFullNodeFromTail(i) == expectednodes[i]);
+    BOOST_CHECK_EQUAL(path->getFullIndexFromTail(i), expectedindices[i]);
+  }
+
+  SoPath * copy = path->copy();
+  copy->ref();
+  copy->pop();
+  BOOST_CHECK_EQUAL(copy->getFullLength(), 2);
+  BOOST_CHECK(copy->getFullTail() == hidden);
+  BOOST_CHECK_EQUAL(path->getFullLength(), 3);
+  copy->pop();
+  BOOST_CHECK(copy->getFullTail() == root);
+  copy->pop();
+  BOOST_CHECK_EQUAL(copy->getFullLength(), 0);
+  BOOST_CHECK_EQUAL(copy->getLength(), 0);
+  copy->unref();
+  path->unref();
+  root->unref();
+}
+
+BOOST_AUTO_TEST_CASE(full_path_accessors_on_real_subclass)
+{
+  SoGroup * root = new SoGroup;
+  root->ref();
+  SoGroup * leaf = new SoGroup;
+  root->addChild(new SoGroup);
+  root->addChild(leaf);
+  {
+    // SoTempPath genuinely inherits SoFullPath; no downcast is needed.
+    SoTempPath path(2);
+    path.setHead(root);
+    path.append(1);
+    BOOST_CHECK_EQUAL(path.getLength(), 2);
+    BOOST_CHECK(path.getTail() == leaf);
+    BOOST_CHECK(path.getNodeFromTail(0) == leaf);
+    BOOST_CHECK(path.getNodeFromTail(1) == root);
+    BOOST_CHECK_EQUAL(path.getIndexFromTail(0), 1);
+    BOOST_CHECK_EQUAL(path.getIndexFromTail(1), 0);
+    path.pop();
+    BOOST_CHECK_EQUAL(path.getLength(), 1);
+    BOOST_CHECK(path.getTail() == root);
+  }
+  root->unref();
+}
+
+#endif // COIN_TEST_SUITE

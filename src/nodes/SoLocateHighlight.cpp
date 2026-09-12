@@ -64,7 +64,7 @@
 
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/SoFullPath.h>
+#include <Inventor/SoPath.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/misc/SoState.h>
@@ -153,7 +153,7 @@ public:
 #endif // COIN_THREADSAFE
   }
   SbBool highlighted;
-  static SoFullPath * currenthighlight;
+  static SoPath * currenthighlight;
 
   static void atexit_cleanup(void) {
     if (SoLocateHighlightP::currenthighlight) {
@@ -175,7 +175,7 @@ private:
 
 };
 
-SoFullPath * SoLocateHighlightP::currenthighlight = NULL;
+SoPath * SoLocateHighlightP::currenthighlight = NULL;
 
 // *************************************************************************
 
@@ -251,7 +251,7 @@ SoLocateHighlight::handleEvent(SoHandleEventAction * action)
       if (pp && pp->getPath()->containsPath(action->getCurPath())) {
         if (!PRIVATE(this)->highlighted) {
           SoLocateHighlight::turnoffcurrent(action);
-          SoLocateHighlightP::currenthighlight = (SoFullPath*)
+          SoLocateHighlightP::currenthighlight =
             action->getCurPath()->copy();
           SoLocateHighlightP::currenthighlight->ref();
           PRIVATE(this)->highlighted = TRUE;
@@ -328,8 +328,8 @@ void
 SoLocateHighlight::turnoffcurrent(SoAction * action)
 {
   if (SoLocateHighlightP::currenthighlight &&
-      SoLocateHighlightP::currenthighlight->getLength()) {
-    SoNode * tail = SoLocateHighlightP::currenthighlight->getTail();
+      SoLocateHighlightP::currenthighlight->getFullLength()) {
+    SoNode * tail = SoLocateHighlightP::currenthighlight->getFullTail();
     if (tail->isOfType(SoLocateHighlight::getClassTypeId())) {
       ((SoLocateHighlight*)tail)->pimpl->highlighted = FALSE;
       ((SoLocateHighlight*)tail)->touch(); // force scene redraw

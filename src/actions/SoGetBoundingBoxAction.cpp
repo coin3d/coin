@@ -450,12 +450,12 @@ void
 SoGetBoundingBoxAction::checkResetBefore(void)
 {
   if (this->resetpath && this->isResetBefore()) {
-    const SoFullPath * curpath = reclassify_cast<const SoFullPath *>(this->getCurPath());
-    const SoFullPath * theresetpath = reclassify_cast<const SoFullPath *>(this->resetpath);
-    if ((curpath->getTail() == theresetpath->getTail()) &&
+    const SoPath * curpath = this->getCurPath();
+    const SoPath * theresetpath = this->resetpath;
+    if ((curpath->getFullTail() == theresetpath->getFullTail()) &&
         curpath->containsPath(theresetpath)) {
       if (this->resettype & SoGetBoundingBoxAction::TRANSFORM) {
-        SoBBoxModelMatrixElement::reset(this->getState(), curpath->getTail());
+        SoBBoxModelMatrixElement::reset(this->getState(), curpath->getFullTail());
       }
       if (this->resettype & SoGetBoundingBoxAction::BBOX) {
         this->bbox.makeEmpty();
@@ -474,12 +474,12 @@ void
 SoGetBoundingBoxAction::checkResetAfter(void)
 {
   if (this->resetpath && !this->isResetBefore()) {
-    const SoFullPath * curpath = reclassify_cast<const SoFullPath *>(this->getCurPath());
-    const SoFullPath * theresetpath = reclassify_cast<const SoFullPath *>(this->resetpath);
-    if ((curpath->getTail() == theresetpath->getTail()) &&
+    const SoPath * curpath = this->getCurPath();
+    const SoPath * theresetpath = this->resetpath;
+    if ((curpath->getFullTail() == theresetpath->getFullTail()) &&
         curpath->containsPath(theresetpath)) {
       if (this->resettype & SoGetBoundingBoxAction::TRANSFORM) {
-        SoBBoxModelMatrixElement::reset(this->getState(), curpath->getTail());
+        SoBBoxModelMatrixElement::reset(this->getState(), curpath->getFullTail());
       }
       if (this->resettype & SoGetBoundingBoxAction::BBOX) {
         this->bbox.makeEmpty();

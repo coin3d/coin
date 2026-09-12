@@ -51,7 +51,6 @@
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/SoNodeKitPath.h>
 #include <Inventor/nodes/SoGroup.h>
-#include <Inventor/SoFullPath.h>
 
 /***************************************************************************/
 
@@ -107,8 +106,7 @@
 SbBool \
 _class_::replaceManip(SoPath * path, _parentclass_ * newone) const \
 { \
-  SoFullPath * fullpath = (SoFullPath *) path; \
-  SoNode * fulltail = fullpath->getTail(); \
+  SoNode * fulltail = path->getFullTail(); \
  \
   if (fulltail != (SoNode *)this) { \
     SoDebugError::post("_class_::replaceManip", \
@@ -141,7 +139,7 @@ _class_::replaceManip(SoPath * path, _parentclass_ * newone) const \
     } \
   } \
   else { \
-    if (fullpath->getLength() < 2) { \
+    if (path->getFullLength() < 2) { \
       SoDebugError::post("_class_::replaceManip", "path is too short"); \
       if (constructed) { \
         newone->ref(); \
@@ -150,7 +148,7 @@ _class_::replaceManip(SoPath * path, _parentclass_ * newone) const \
       return FALSE; \
     } \
  \
-    SoNode * parent = fullpath->getNodeFromTail(1); \
+    SoNode * parent = path->getFullNodeFromTail(1); \
  \
     if (!parent->isOfType(SoGroup::getClassTypeId())) { \
       SoDebugError::post("_class_::replaceNode", \

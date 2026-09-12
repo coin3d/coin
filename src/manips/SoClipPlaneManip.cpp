@@ -336,8 +336,7 @@ SoClipPlaneManip::setValue(const SbBox3f & box, const SbVec3f & planenormal, flo
 SbBool
 SoClipPlaneManip::replaceNode(SoPath * path)
 {
-  SoFullPath *fullpath = (SoFullPath*)path;
-  SoNode *fulltail = fullpath->getTail();
+  SoNode *fulltail = path->getFullTail();
   if (!fulltail->isOfType(SoClipPlane::getClassTypeId())) {
 #if COIN_DEBUG
     SoDebugError::post("SoClipPlaneManip::replaceNode",
@@ -364,14 +363,14 @@ SoClipPlaneManip::replaceNode(SoPath * path)
       }
     }
   }
-  if (fullpath->getLength() < 2) {
+  if (path->getFullLength() < 2) {
 #if COIN_DEBUG
     SoDebugError::post("SoClipPlaneManip::replaceNode",
                        "Path is too short");
 #endif // debug
     return FALSE;
   }
-  SoNode *parent = fullpath->getNodeFromTail(1);
+  SoNode *parent = path->getFullNodeFromTail(1);
   if (!parent->isOfType(SoGroup::getClassTypeId())) {
 #if COIN_DEBUG
     SoDebugError::post("SoClipPlaneManip::replaceNode",
@@ -490,8 +489,8 @@ SoClipPlaneManip::handleEvent(SoHandleEventAction * action)
       SO_KEY_PRESS_EVENT(event, RIGHT_CONTROL)) {
     const SoPickedPoint * pp = action->getPickedPoint();
     if (pp) {
-      SoFullPath * path = (SoFullPath *)pp->getPath();
-      for (int i = 0; i < path->getLength(); i++) {
+      SoPath * path = pp->getPath();
+      for (int i = 0; i < path->getFullLength(); i++) {
         SoNode * node = path->getNode(i);
         if (node->isOfType(SoDragPointDragger::getClassTypeId())) {
           this->currAxis--;

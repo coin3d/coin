@@ -1,5 +1,6 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
+#include <Inventor/SoPath.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoTexture2.h>
 #include <Inventor/actions/SoSearchAction.h>
@@ -31,8 +32,8 @@ main(void)
 
   const SoPathList & pl = searchaction.getPaths();
   for (int i=0; i < pl.getLength(); i++) {
-    SoFullPath * fp = (SoFullPath *)pl[i];
-    SoTexture2 * tex = (SoTexture2 *)fp->getTail();
+    SoPath * path = pl[i];
+    SoTexture2 * tex = (SoTexture2 *)path->getFullTail();
     assert(tex->getTypeId() == SoTexture2::getClassTypeId());
     tex->image.touch();
   }

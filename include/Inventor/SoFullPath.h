@@ -56,7 +56,7 @@ public:
 inline void
 SoFullPath::pop(void)
 {
-  this->truncate(this->nodes.getLength() - 1);
+  this->truncate(this->getFullLength() - 1);
 }
 
 #endif // !COIN_SOFULLPATH_H

@@ -52,7 +52,7 @@
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/SbImage.h>
-#include <Inventor/SoFullPath.h>
+#include <Inventor/SoPath.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
@@ -498,8 +498,8 @@ SoGLLazyElement::sendDiffuseByIndex(const int index) const
   if (index < 0 || index >= this->coinstate.numdiffuse) {
     static int first = 1;
     if (first) {
-      SoFullPath * path = (SoFullPath*) this->state->getAction()->getCurPath();
-      SoNode * tail = path->getTail();
+      const SoPath * path = this->state->getAction()->getCurPath();
+      SoNode * tail = path->getFullTail();
       SbName name = tail->getName();
       SoDebugError::postWarning("SoGLLazyElement::sendDiffuseByIndex",
                                 "index %d out of bounds [0, %d] in node %p: %s "
