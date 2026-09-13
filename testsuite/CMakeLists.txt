@@ -19,6 +19,10 @@ macro(create_testsuite input)
 		string(REGEX REPLACE "[\n\r ]*#include[ \t]<[^\n]+" "" COIN_STR_TEST_CODE "${f2}")
 		# generate new test code file with extracted snippets
 		configure_file(TestSuiteTemplate.cmake.in "${FLSUBFLD}${FLNAME}Test.cpp")
+		if("${FLSUBFLD}${FLNAME}" STREQUAL "basedict")
+			set_source_files_properties("${FLSUBFLD}${FLNAME}Test.cpp" PROPERTIES
+				COMPILE_DEFINITIONS COIN_INTERNAL)
+		endif()
 	endif()
 endmacro()
 
