@@ -75,6 +75,7 @@ private:
   void *heapExtractMin(void);
   void heapReserve(const int newsize);
   void heapify(const int idx);
+  void newWeightAt(void *obj, const int hpos);
 };
 
 #endif // !COIN_SBHEAP_H

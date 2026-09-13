@@ -57,17 +57,19 @@
   \var SbHeapFuncs::get_index_func
 
   \e get_index_func is a pointer to a function which should return the
-  element's heap index. If you want to remove an element from the heap
-  (other than the first element), or change the weight for a heap
-  element, you must supply the two index functions. Each element must
-  then store its heap index in its own data structures. An element not in
-  a heap must use an index smaller than 1.  */
+  element's heap index. Supplying it makes removing an arbitrary element
+  or changing its weight faster than the default linear lookup. It may
+  only be supplied together with set_index_func. Each element must then
+  store its heap index in its own data structures. An element not in a
+  heap must use an index smaller than 1.  */
 /*!
   \var SbHeapFuncs::set_index_func
 
   \e set_index_func is used to set this index value, and will be
   called whenever the element is moved in the heap. It is called with -1
-  when an element is removed or extracted.  */
+  when an element is removed, extracted, or discarded by emptyHeap(). It
+  may be supplied without get_index_func when movement notifications are
+  useful but indexed lookup is not.  */
 
 #include <Inventor/SbHeap.h>
 #include <cstring>
@@ -82,16 +84,20 @@
   approximately how many elements the heap will contain, you
   should supply this to avoid some reallocs.
 
-  \a hFuncs must provide an evaluation function. The index getter and
-  setter must either both be supplied or both be NULL. A heap using index
-  callbacks must have exclusive use of each object's stored heap index.
+  \a hFuncs must provide an evaluation function. An index getter requires
+  an index setter, while a setter may be supplied without a getter. A heap
+  using an index getter must have exclusive use of each object's stored heap
+  index.
 */
 SbHeap::SbHeap(const SbHeapFuncs &hFuncs, const int initsize)
   : heap(initsize)
 {
   this->funcs = hFuncs;
   assert(funcs.eval_func);
-  assert((funcs.get_index_func == NULL) == (funcs.set_index_func == NULL));
+  assert(funcs.get_index_func == NULL || funcs.set_index_func != NULL);
+  if (funcs.get_index_func != NULL && funcs.set_index_func == NULL) {
+    this->funcs.get_index_func = NULL;
+  }
   this->heap.append(NULL);
 }
 
@@ -103,13 +109,17 @@ SbHeap::~SbHeap(void)
 }
 
 /*!
-  Removes all the elements from the heap. This operation deliberately does
-  not call the index setter for every element, so clients using index
-  callbacks must consider all stored indices invalid after this call.
+  Removes all the elements from the heap. If an index setter is supplied,
+  every removed element is assigned index -1.
 */
 void
 SbHeap::emptyHeap(void)
 {
+  if (this->funcs.set_index_func) {
+    for (int i = 1; i < this->heap.getLength(); ++i) {
+      this->funcs.set_index_func(this->heap[i], -1);
+    }
+  }
   this->heap.truncate(0);
   this->heap.append(NULL);
 }
@@ -184,7 +194,7 @@ SbHeap::remove(const int idx)
     this->funcs.set_index_func(this->heap[idx], idx);
   this->heap.truncate(hsize);
 
-  this->newWeight(this->heap[idx], idx);
+  this->newWeightAt(this->heap[idx], idx);
   if (this->funcs.set_index_func)
     this->funcs.set_index_func(removed, -1);
 }
@@ -284,6 +294,24 @@ SbHeap::newWeight(void *obj, int hpos)
     assert(hpos >= 1 && hpos <= hsize && this->heap[hpos] == obj);
     return;
   }
+
+  if (this->funcs.get_index_func == NULL) {
+    int occurrences = 0;
+    for (int i = 1; i <= hsize; ++i) {
+      if (this->heap[i] == obj && ++occurrences > 1) {
+        this->buildHeap();
+        return;
+      }
+    }
+  }
+
+  this->newWeightAt(obj, hpos);
+}
+
+void
+SbHeap::newWeightAt(void *obj, const int hpos)
+{
+  int hsize = this->heap.getLength()-1;
   int i = hpos;
 
   float (*eval)(void*) = this->funcs.eval_func;
@@ -805,6 +833,23 @@ BOOST_AUTO_TEST_CASE(sbheap_can_be_emptied_and_reused)
   BOOST_CHECK(heap.extractMin() == &finalitem);
 }
 
+BOOST_AUTO_TEST_CASE(sbheap_empty_heap_invalidates_all_indices)
+{
+  SbHeap heap(sbheap_test_functions(), 2);
+  SbHeapTestItem storage[] = {
+    { 3.0f, -1, TRUE }, { 1.0f, -1, TRUE }, { 2.0f, -1, TRUE }
+  };
+  for (size_t i = 0; i < sizeof(storage) / sizeof(storage[0]); ++i) {
+    heap.add(&storage[i]);
+  }
+
+  heap.emptyHeap();
+  BOOST_CHECK_EQUAL(heap.size(), 0);
+  for (size_t i = 0; i < sizeof(storage) / sizeof(storage[0]); ++i) {
+    BOOST_CHECK_EQUAL(storage[i].index, -1);
+  }
+}
+
 BOOST_AUTO_TEST_CASE(sbheap_handles_extreme_ordered_weights)
 {
   SbHeap heap(sbheap_test_functions(), 2);
@@ -1134,6 +1179,70 @@ BOOST_AUTO_TEST_CASE(sbheap_supports_duplicate_pointers_without_indices)
   BOOST_CHECK(heap.extractMin() == &repeated);
   BOOST_CHECK(heap.extractMin() == &other);
   BOOST_CHECK(heap.extractMin() == NULL);
+}
+
+BOOST_AUTO_TEST_CASE(sbheap_new_weight_repairs_all_duplicate_occurrences)
+{
+  SbHeap heap(sbheap_test_functions(FALSE), 2);
+  SbHeapTestItem repeated = { 0.0f, -1, TRUE };
+  SbHeapTestItem other[] = {
+    { 1.0f, -1, TRUE }, { 2.0f, -1, TRUE }, { 3.0f, -1, TRUE }
+  };
+
+  heap.add(&repeated);
+  heap.add(&repeated);
+  heap.add(&repeated);
+  for (size_t i = 0; i < sizeof(other) / sizeof(other[0]); ++i) {
+    heap.add(&other[i]);
+  }
+
+  repeated.weight = 10.0f;
+  heap.newWeight(&repeated);
+  for (size_t i = 0; i < sizeof(other) / sizeof(other[0]); ++i) {
+    BOOST_CHECK(heap.extractMin() == &other[i]);
+  }
+  BOOST_CHECK(heap.extractMin() == &repeated);
+  BOOST_CHECK(heap.extractMin() == &repeated);
+  BOOST_CHECK(heap.extractMin() == &repeated);
+  BOOST_CHECK(heap.extractMin() == NULL);
+}
+
+BOOST_AUTO_TEST_CASE(sbheap_allows_index_setter_without_getter)
+{
+  SbHeapFuncs functions = sbheap_test_functions(FALSE);
+  functions.set_index_func = sbheap_test_set_index;
+  SbHeap heap(functions, 2);
+  SbHeapTestItem storage[] = {
+    { 3.0f, -1, TRUE }, { 1.0f, -1, TRUE }, { 2.0f, -1, TRUE }
+  };
+  for (size_t i = 0; i < sizeof(storage) / sizeof(storage[0]); ++i) {
+    heap.add(&storage[i]);
+    BOOST_CHECK(storage[i].index >= 1);
+  }
+
+  heap.remove(&storage[0]);
+  BOOST_CHECK_EQUAL(storage[0].index, -1);
+  BOOST_CHECK_EQUAL(heap.size(), 2);
+  while (heap.size() > 0) {
+    SbHeapTestItem * item = static_cast<SbHeapTestItem *>(heap.extractMin());
+    BOOST_REQUIRE(item != NULL);
+    BOOST_CHECK_EQUAL(item->index, -1);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(sbheap_getter_without_setter_falls_back_in_release)
+{
+#ifdef NDEBUG
+  SbHeapFuncs functions = sbheap_test_functions(FALSE);
+  functions.get_index_func = sbheap_test_get_index;
+  SbHeap heap(functions, 1);
+  SbHeapTestItem item = { 1.0f, -1, TRUE };
+  heap.add(&item);
+  heap.remove(&item);
+  BOOST_CHECK_EQUAL(heap.size(), 0);
+#else
+  BOOST_CHECK(TRUE);
+#endif // NDEBUG
 }
 
 BOOST_AUTO_TEST_CASE(sbheap_grows_through_many_reallocations)
