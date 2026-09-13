@@ -94,7 +94,6 @@ public:
   virtual SbBool get(char & c);
   virtual SbBool getASCIIBuffer(char & c);
   virtual SbBool getASCIIFile(char & c);
-  virtual SbBool readHex(uint32_t & l);
   virtual SbBool read(char & c);
   virtual SbBool read(char & c, SbBool skip);
   virtual SbBool read(SbString & s);
@@ -165,9 +164,6 @@ protected:
   SbBool readInteger(int32_t & l);
   SbBool readUnsignedInteger(uint32_t & l);
   SbBool readReal(double & d);
-  SbBool readUnsignedIntegerString(char * str);
-  int readDigits(char * str);
-  int readHexDigits(char * str);
   int readChar(char * str, char charToRead);
 
   SbBool makeRoomInBuf(size_t nBytes);
