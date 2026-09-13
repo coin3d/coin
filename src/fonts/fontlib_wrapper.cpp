@@ -279,6 +279,9 @@ flw_glyphidx2glyphptr(struct cc_flw_font * fs, unsigned int glyphidx)
   void * tmp;
   struct cc_flw_glyph * gs = NULL;
 
+  assert(fs);
+  if (!fs) { return NULL; }
+
   if (cc_dict_get(fs->glyphdict, glyphidx, &tmp)) {
     gs = (struct cc_flw_glyph *) tmp;
   }
@@ -291,6 +294,10 @@ fontstruct_rmglyph(struct cc_flw_font * fs, unsigned int glyph)
 {
   struct cc_flw_glyph * gs = flw_glyphidx2glyphptr(fs, glyph);
   assert(gs);
+  if (!gs) {
+    cc_debugerror_post("fontstruct_rmglyph", "glyph not found -- nothing to remove.");
+    return;
+  }
 
   if (gs->bitmap) {
     if (!gs->fromdefaultfont && gs->bitmap->buffer) { free(gs->bitmap->buffer); }
@@ -330,6 +337,10 @@ fontstruct_rmfont(int font)
     if (fs->fontindex == font) break;
   }
   assert(i < n);
+  if (i >= n) {
+    cc_debugerror_post("fontstruct_rmfont", "font id %d not found -- nothing to remove.", font);
+    return;
+  }
   arrayindex = i;
 
   if (fs->fontname) cc_string_destruct(fs->fontname);
@@ -630,6 +641,12 @@ cc_flw_get_glyph(int font, unsigned int character)
   FLW_MUTEX_LOCK(flw_global_lock);
 
   fs = flw_fontidx2fontptr(font);
+  assert(fs);
+  if (!fs) {
+    cc_debugerror_post("cc_flw_get_glyph", "unknown font -- returning glyph 0.");
+    FLW_MUTEX_UNLOCK(flw_global_lock);
+    return 0;
+  }
 
   /* Check if it has already been set up, and if so, just return. */
   gs = flw_glyphidx2glyphptr(fs, character);
@@ -704,6 +721,12 @@ cc_flw_get_bitmap_advance(int font, unsigned int glyph, int * x, int * y)
   fs = flw_fontidx2fontptr(font);
   gs = flw_glyphidx2glyphptr(fs, glyph);
   assert(gs);
+  if (!gs) {
+    cc_debugerror_post("cc_flw_get_bitmap_advance", "unknown font/glyph -- returning 0.");
+    *x = *y = 0;
+    FLW_MUTEX_UNLOCK(flw_global_lock);
+    return;
+  }
 
   /* the rest should be mt-safe, and we need to give up the lock,
      since we're calling into another cc_flw_*() function (which will
@@ -738,6 +761,12 @@ cc_flw_get_vector_advance(int font, unsigned int glyph, float * x, float * y)
 
   *x = *y = 0.0f;
 
+  if (!gs) {
+    cc_debugerror_post("cc_flw_get_vector_advance", "unknown font/glyph -- returning 0.");
+    FLW_MUTEX_UNLOCK(flw_global_lock);
+    return;
+  }
+
   if (gs->fromdefaultfont) {
     *x = coin_default3dfont_get_advance(gs->character);
   }
@@ -767,12 +796,16 @@ cc_flw_get_bitmap_kerning(int font, unsigned int glyph1, unsigned int glyph2,
   *x = *y = 0;
 
   fs = flw_fontidx2fontptr(font);
+  assert(fs);
 
-  if (!fs->defaultfont) {
+  if (fs && !fs->defaultfont) {
     gs1 = flw_glyphidx2glyphptr(fs, glyph1);
     gs2 = flw_glyphidx2glyphptr(fs, glyph2);
     assert(gs1 && gs2);
-    if (using_win32api()) {
+    if (!gs1 || !gs2) {
+      cc_debugerror_post("cc_flw_get_bitmap_kerning", "unknown glyph -- returning 0.");
+    }
+    else if (using_win32api()) {
       cc_flww32_get_bitmap_kerning(fs->nativefonthandle,
                                    gs1->nativeglyphidx,
                                    gs2->nativeglyphidx, x, y);
@@ -800,11 +833,14 @@ cc_flw_get_vector_kerning(int font, unsigned int glyph1, unsigned int glyph2,
   fs = flw_fontidx2fontptr(font);
   gs1 = flw_glyphidx2glyphptr(fs, glyph1);
   gs2 = flw_glyphidx2glyphptr(fs, glyph2);
-  assert(gs1 && gs2);
+  assert(fs && gs1 && gs2);
 
   *x = *y = 0.0f;
 
-  if (!fs->defaultfont) {
+  if (!fs || !gs1 || !gs2) {
+    cc_debugerror_post("cc_flw_get_vector_kerning", "unknown font/glyph -- returning 0.");
+  }
+  else if (!fs->defaultfont) {
     if (using_win32api()) {
       cc_flww32_get_vector_kerning(fs->nativefonthandle,
                                    gs1->nativeglyphidx,
@@ -830,11 +866,21 @@ cc_flw_done_glyph(int fontidx, unsigned int glyphidx)
 
   fs = flw_fontidx2fontptr(fontidx);
   assert(fs);
+  if (!fs) {
+    cc_debugerror_post("cc_flw_done_glyph", "unknown font -- nothing to do.");
+    FLW_MUTEX_UNLOCK(flw_global_lock);
+    return;
+  }
 
   if (cc_font_debug()) { dump_cc_flw_font("cc_flw_done_glyph", fs); }
 
   gs = flw_glyphidx2glyphptr(fs, glyphidx);
   assert(gs);
+  if (!gs) {
+    cc_debugerror_post("cc_flw_done_glyph", "unknown glyph -- nothing to do.");
+    FLW_MUTEX_UNLOCK(flw_global_lock);
+    return;
+  }
 
   if (cc_font_debug()) { dump_cc_flw_glyph("cc_flw_done_glyph", gs); }
 
@@ -866,6 +912,11 @@ cc_flw_get_bitmap(int font, unsigned int glyph)
   fs = flw_fontidx2fontptr(font);
   gs = flw_glyphidx2glyphptr(fs, glyph);
   assert(gs);
+  if (!gs) {
+    cc_debugerror_post("cc_flw_get_bitmap", "unknown font/glyph -- returning NULL.");
+    FLW_MUTEX_UNLOCK(flw_global_lock);
+    return NULL;
+  }
 
   if (gs->bitmap == NULL) {
 
@@ -915,6 +966,11 @@ cc_flw_get_vector_glyph(int font, unsigned int glyph)
   fs = flw_fontidx2fontptr(font);
   gs = flw_glyphidx2glyphptr(fs, glyph);
   assert(gs);
+  if (!gs) {
+    cc_debugerror_post("cc_flw_get_vector_glyph", "unknown font/glyph -- returning NULL.");
+    FLW_MUTEX_UNLOCK(flw_global_lock);
+    return NULL;
+  }
 
   if (gs->vector == NULL && !gs->fromdefaultfont) {
     struct cc_font_vector_glyph * vector_glyph = NULL;

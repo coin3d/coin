@@ -776,6 +776,20 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
   if (mbind == PER_VERTEX_INDEXED && mindices == NULL) {
     mindices = cindices;
   }
+  // PER_FACE_INDEXED (unlike PER_VERTEX_INDEXED, handled above) has no
+  // documented coordIndex-sharing fallback -- the material/normal index
+  // binding comes purely from the state (a sibling SoMaterialBinding /
+  // SoNormalBinding node) and is independent of whether this node's own
+  // materialIndex/normalIndex field actually has values, so mindices /
+  // nindices can be NULL here even though mbind/nbind ask for indexed
+  // access below. Downgrade to the non-indexed per-face binding instead
+  // of dereferencing a NULL index pointer.
+  if (nbind == PER_FACE_INDEXED && nindices == NULL) {
+    nbind = PER_FACE;
+  }
+  if (mbind == PER_FACE_INDEXED && mindices == NULL) {
+    mbind = PER_FACE;
+  }
 
   SbBool convexcacheused = FALSE;
   if (this->useConvexCache(action, normals, nindices, normalCacheUsed)) {

@@ -91,9 +91,7 @@
 #include "coindefs.h"
 #include "SbBasicP.h"
 
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 SO_ELEMENT_SOURCE(SoCullElement);
 
@@ -143,6 +141,7 @@ SoCullElement::push(SoState * COIN_UNUSED_ARG(state))
     (
      this->getNextInStack()
      );
+  COIN_ASSUME(prev != NULL);
 
   this->flags = prev->flags;
   this->numplanes = prev->numplanes;
@@ -243,10 +242,16 @@ SbBool
 SoCullElement::completelyInside(SoState * state)
 {
   // use SoState::getConstElement() to avoid cache dependency on this element
-  const SoCullElement * elem = coin_assert_cast<const SoCullElement *>
+  const SoCullElement * elem = coin_safe_cast<const SoCullElement *>
     (
      state->getConstElement(classStackIndex)
      );
+  if (!elem) {
+    SoDebugError::post("SoCullElement::completelyInside",
+                       "SoCullElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return TRUE; // no active culling planes by default -- see init()
+  }
   unsigned int mask = 0x0001 << elem->numplanes;
   return elem->flags == (mask-1);
 }
@@ -336,6 +341,9 @@ SoCullElement::docull(SoState * state, const SbBox3f & box, const SbBool transfo
       (
        SoElement::getElement(state, classStackIndex)
        );
+    // classStackIndex is already proven enabled by the "if (!elem)
+    // return FALSE;" guard above -- getElement() cannot return NULL here
+    COIN_ASSUME(elem != NULL);
     elem->flags = flags;
   }
   return FALSE;

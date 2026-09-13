@@ -43,6 +43,7 @@
 #include "coindefs.h"
 #include "SbBasicP.h"
 
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoNode.h>
 
 /*!
@@ -143,10 +144,16 @@ SoSoundElement::setSceneGraphHasSoundNode(SoState * const state,
 SbBool
 SoSoundElement::sceneGraphHasSoundNode(SoState * const state)
 {
-  const SoSoundElement * elem = coin_assert_cast<const SoSoundElement *>
+  const SoSoundElement * elem = coin_safe_cast<const SoSoundElement *>
     (
      SoElement::getConstElement(state, classStackIndex)
      );
+  if (!elem) {
+    SoDebugError::post("SoSoundElement::sceneGraphHasSoundNode",
+                       "SoSoundElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return FALSE;
+  }
   return elem->scenegraphhassoundnode;
 }
 
@@ -179,10 +186,16 @@ SoSoundElement::setSoundNodeIsPlaying(SoState * const state,
 SbBool
 SoSoundElement::soundNodeIsPlaying(SoState * const state)
 {
-  const SoSoundElement * elem = coin_assert_cast<const SoSoundElement *>
+  const SoSoundElement * elem = coin_safe_cast<const SoSoundElement *>
     (
      SoElement::getConstElement(state, classStackIndex)
      );
+  if (!elem) {
+    SoDebugError::post("SoSoundElement::soundNodeIsPlaying",
+                       "SoSoundElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return FALSE;
+  }
   return elem->soundnodeisplaying;
 }
 
@@ -214,10 +227,16 @@ SoSoundElement::setIsPartOfActiveSceneGraph(SoState * const state,
 SbBool
 SoSoundElement::isPartOfActiveSceneGraph(SoState * const state)
 {
-  const SoSoundElement * elem = coin_assert_cast<const SoSoundElement *>
+  const SoSoundElement * elem = coin_safe_cast<const SoSoundElement *>
     (
      SoElement::getConstElement(state, classStackIndex)
      );
+  if (!elem) {
+    SoDebugError::post("SoSoundElement::isPartOfActiveSceneGraph",
+                       "SoSoundElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return TRUE;
+  }
   return elem->ispartofactivescenegraph;
 }
 
@@ -234,6 +253,7 @@ SoSoundElement::push(SoState * state)
 
   const SoSoundElement * prev = coin_assert_cast<SoSoundElement *>
     (this->getNextInStack());
+  COIN_ASSUME(prev != NULL);
 
   this->scenegraphhassoundnode = FALSE;
   this->soundnodeisplaying = FALSE;
@@ -249,6 +269,7 @@ SoSoundElement::pop(SoState * COIN_UNUSED_ARG(state), const SoElement * prevTopE
 {
   const SoSoundElement * prevtop =
     coin_assert_cast<const SoSoundElement *>(prevTopElement);
+  COIN_ASSUME(prevtop != NULL);
   this->scenegraphhassoundnode = this->scenegraphhassoundnode |
     prevtop->scenegraphhassoundnode;
   this->soundnodeisplaying = this->soundnodeisplaying |

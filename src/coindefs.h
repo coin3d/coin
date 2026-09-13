@@ -213,6 +213,18 @@ static void inline COIN_CONCAT(compile_only_before_nofunction,__LINE__) () { \
 #endif /* !unlikely */
 #endif /* !HAVE___BUILTIN_EXPECT */
 
+#ifdef HAVE___BUILTIN_UNREACHABLE
+/* tells the compiler cond is always true; UB if it is not, so only
+   use for invariants enforced elsewhere (e.g. by construction) */
+#ifndef COIN_ASSUME
+#define COIN_ASSUME(cond) do { if (!(cond)) { __builtin_unreachable(); } } while (0)
+#endif /* !COIN_ASSUME */
+#else /* !HAVE___BUILTIN_UNREACHABLE */
+#ifndef COIN_ASSUME
+#define COIN_ASSUME(cond) ((void)0)
+#endif /* !COIN_ASSUME */
+#endif /* !HAVE___BUILTIN_UNREACHABLE */
+
 #ifdef COIN_DEBUG_CHECK_THREAD
 
 #include <thread>

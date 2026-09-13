@@ -48,6 +48,7 @@
 
 #include <Inventor/elements/SoMultiTextureImageElement.h>
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/SbImage.h>
@@ -114,8 +115,14 @@ SoMultiTextureImageElement::setDefault(SoState * const state, SoNode * const COI
   SoMultiTextureImageElement * elem =
     coin_safe_cast<SoMultiTextureImageElement *>
     (state->getElement(classStackIndex));
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureImageElement::setDefault",
+                       "SoMultiTextureImageElement not enabled for this action -- "
+                       "missing SO_ENABLE()?");
+    return;
+  }
   PRIVATE(elem)->ensureCapacity(unit);
-  PRIVATE(elem)->unitdata[unit] = UnitData();  
+  PRIVATE(elem)->unitdata[unit] = UnitData();
 }
 
 //! FIXME: write doc.
@@ -132,6 +139,12 @@ SoMultiTextureImageElement::set(SoState * const state, SoNode * const node,
   SoMultiTextureImageElement * elem =
     coin_safe_cast<SoMultiTextureImageElement *>
     (state->getElement(classStackIndex));
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureImageElement::set",
+                       "SoMultiTextureImageElement not enabled for this action -- "
+                       "missing SO_ENABLE()?");
+    return;
+  }
 
   PRIVATE(elem)->ensureCapacity(unit);
   elem->setElt(unit, node->getNodeId(), size, numComponents, bytes, wrapS, wrapT,
@@ -156,7 +169,13 @@ SoMultiTextureImageElement::set(SoState * const state, SoNode * const node,
 {
   SoMultiTextureImageElement * elem = coin_safe_cast<SoMultiTextureImageElement *>
     (state->getElement(classStackIndex));
-  
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureImageElement::set",
+                       "SoMultiTextureImageElement not enabled for this action -- "
+                       "missing SO_ENABLE()?");
+    return;
+  }
+
   PRIVATE(elem)->ensureCapacity(unit);
   elem->setElt(unit, node->getNodeId(), size, numComponents, bytes, wrapS, wrapT, wrapR,
                model, blendColor);
@@ -175,17 +194,31 @@ SoMultiTextureImageElement::get(SoState * const state,
                                 SbColor &blendColor)
 {
   const SoMultiTextureImageElement * elem =
-    coin_assert_cast<const SoMultiTextureImageElement *>
+    coin_safe_cast<const SoMultiTextureImageElement *>
     (getConstElement(state, classStackIndex));
+
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureImageElement::get",
+                       "SoMultiTextureImageElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default values.");
+    const UnitData defaultud;
+    size.setValue(0, 0);
+    numComponents = defaultud.numComponents;
+    wrapS = defaultud.wrapS;
+    wrapT = defaultud.wrapT;
+    model = defaultud.model;
+    blendColor = defaultud.blendColor;
+    return NULL;
+  }
 
   PRIVATE(elem)->ensureCapacity(unit);
   const UnitData & ud = PRIVATE(elem)->unitdata[unit];
-  
+
   wrapS = ud.wrapS;
   wrapT = ud.wrapT;
   model = ud.model;
   blendColor = ud.blendColor;
-  
+
   return getImage(state, unit, size, numComponents);
 }
 
@@ -207,12 +240,27 @@ SoMultiTextureImageElement::get(SoState * const state,
                                 SbColor &blendColor)
 {
   const SoMultiTextureImageElement * elem =
-    coin_assert_cast<const SoMultiTextureImageElement *>
+    coin_safe_cast<const SoMultiTextureImageElement *>
     (getConstElement(state, classStackIndex));
-  
+
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureImageElement::get",
+                       "SoMultiTextureImageElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default values.");
+    const UnitData defaultud;
+    size.setValue(0, 0, 0);
+    numComponents = defaultud.numComponents;
+    wrapS = defaultud.wrapS;
+    wrapT = defaultud.wrapT;
+    wrapR = defaultud.wrapR;
+    model = defaultud.model;
+    blendColor = defaultud.blendColor;
+    return NULL;
+  }
+
   PRIVATE(elem)->ensureCapacity(unit);
   const UnitData & ud = PRIVATE(elem)->unitdata[unit];
-  
+
   wrapS = ud.wrapS;
   wrapT = ud.wrapT;
   wrapR = ud.wrapR;
@@ -232,12 +280,21 @@ SoMultiTextureImageElement::getImage(SoState * const state,
                                      int & numComponents)
 {
   const SoMultiTextureImageElement * elem =
-    coin_assert_cast<const SoMultiTextureImageElement *>
+    coin_safe_cast<const SoMultiTextureImageElement *>
     (getConstElement(state, classStackIndex));
+
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureImageElement::getImage",
+                       "SoMultiTextureImageElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default values.");
+    size.setValue(0, 0);
+    numComponents = 0;
+    return NULL;
+  }
 
   PRIVATE(elem)->ensureCapacity(unit);
   const UnitData & ud = PRIVATE(elem)->unitdata[unit];
-  
+
   size.setValue(ud.size[0], ud.size[1]);
   numComponents = ud.numComponents;
   return ud.bytes;
@@ -253,12 +310,21 @@ SoMultiTextureImageElement::getImage(SoState * const state,
                                      int & numComponents)
 {
   const SoMultiTextureImageElement * elem =
-    coin_assert_cast<const SoMultiTextureImageElement *>
+    coin_safe_cast<const SoMultiTextureImageElement *>
     (getConstElement(state, classStackIndex));
+
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureImageElement::getImage",
+                       "SoMultiTextureImageElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default values.");
+    size.setValue(0, 0, 0);
+    numComponents = 0;
+    return NULL;
+  }
 
   PRIVATE(elem)->ensureCapacity(unit);
   const UnitData & ud = PRIVATE(elem)->unitdata[unit];
-  
+
   size = ud.size;
   numComponents = ud.numComponents;
   return ud.bytes;
@@ -271,9 +337,16 @@ SbBool
 SoMultiTextureImageElement::containsTransparency(SoState * const state)
 {
   const SoMultiTextureImageElement * elem =
-    coin_assert_cast<const SoMultiTextureImageElement *>
+    coin_safe_cast<const SoMultiTextureImageElement *>
     (getConstElement(state, classStackIndex));
-  
+
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureImageElement::containsTransparency",
+                       "SoMultiTextureImageElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return FALSE;
+  }
+
   for (int i = 0; i < PRIVATE(elem)->unitdata.getLength(); i++) {
     if (elem->hasTransparency(i)) return TRUE;
   }
@@ -342,6 +415,7 @@ SoMultiTextureImageElement::push(SoState * COIN_UNUSED_ARG(state))
   const SoMultiTextureImageElement * prev =
     coin_assert_cast<SoMultiTextureImageElement *>
     (this->getNextInStack());
+  COIN_ASSUME(prev != NULL);
 
   PRIVATE(this)->unitdata = PRIVATE(prev)->unitdata;
 }
@@ -352,6 +426,7 @@ SoMultiTextureImageElement::matches(const SoElement * elem) const
   const SoMultiTextureImageElement * e =
     coin_assert_cast<const SoMultiTextureImageElement *>
     (elem);
+  COIN_ASSUME(e != NULL);
   const int n = PRIVATE(e)->unitdata.getLength();
   if (n != PRIVATE(this)->unitdata.getLength()) return FALSE;
 
@@ -434,8 +509,16 @@ const SbColor &
 SoMultiTextureImageElement::getBlendColor(SoState * const state, const int unit)
 {
   const SoMultiTextureImageElement * elem =
-    coin_assert_cast<const SoMultiTextureImageElement *>
+    coin_safe_cast<const SoMultiTextureImageElement *>
     (getConstElement(state, classStackIndex));
+
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureImageElement::getBlendColor",
+                       "SoMultiTextureImageElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    static const SbColor defaultblendcolor(0.0f, 0.0f, 0.0f);
+    return defaultblendcolor;
+  }
 
   PRIVATE(elem)->ensureCapacity(unit);
   return PRIVATE(elem)->unitdata[unit].blendColor;
@@ -448,8 +531,15 @@ SoMultiTextureImageElement::Wrap
 SoMultiTextureImageElement::getWrapS(SoState * const state, const int unit)
 {
   const SoMultiTextureImageElement * elem =
-    coin_assert_cast<const SoMultiTextureImageElement *>
+    coin_safe_cast<const SoMultiTextureImageElement *>
     (getConstElement(state, classStackIndex));
+
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureImageElement::getWrapS",
+                       "SoMultiTextureImageElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return REPEAT;
+  }
 
   PRIVATE(elem)->ensureCapacity(unit);
   return PRIVATE(elem)->unitdata[unit].wrapS;
@@ -462,8 +552,15 @@ SoMultiTextureImageElement::Wrap
 SoMultiTextureImageElement::getWrapT(SoState * const state, const int unit)
 {
   const SoMultiTextureImageElement * elem =
-    coin_assert_cast<const SoMultiTextureImageElement *>
+    coin_safe_cast<const SoMultiTextureImageElement *>
     (getConstElement(state, classStackIndex));
+
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureImageElement::getWrapT",
+                       "SoMultiTextureImageElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return REPEAT;
+  }
 
   PRIVATE(elem)->ensureCapacity(unit);
   return PRIVATE(elem)->unitdata[unit].wrapT;
@@ -476,8 +573,15 @@ SoMultiTextureImageElement::Wrap
 SoMultiTextureImageElement::getWrapR(SoState * const state, const int unit)
 {
   const SoMultiTextureImageElement * elem =
-    coin_assert_cast<const SoMultiTextureImageElement *>
+    coin_safe_cast<const SoMultiTextureImageElement *>
     (getConstElement(state, classStackIndex));
+
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureImageElement::getWrapR",
+                       "SoMultiTextureImageElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return REPEAT;
+  }
 
   PRIVATE(elem)->ensureCapacity(unit);
   return PRIVATE(elem)->unitdata[unit].wrapR;
@@ -490,8 +594,15 @@ SoMultiTextureImageElement::Model
 SoMultiTextureImageElement::getModel(SoState * const state, const int unit)
 {
   const SoMultiTextureImageElement * elem =
-    coin_assert_cast<const SoMultiTextureImageElement *>
+    coin_safe_cast<const SoMultiTextureImageElement *>
     (getConstElement(state, classStackIndex));
+
+  if (!elem) {
+    SoDebugError::post("SoMultiTextureImageElement::getModel",
+                       "SoMultiTextureImageElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return MODULATE;
+  }
 
   PRIVATE(elem)->ensureCapacity(unit);
   return PRIVATE(elem)->unitdata[unit].model;

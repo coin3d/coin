@@ -180,7 +180,8 @@ void
 ScXMLLogElt::copyContents(const ScXMLElt * rhs)
 {
   inherited::copyContents(rhs);
-  const ScXMLLogElt * orig = coin_assert_cast<const ScXMLLogElt *>(rhs);
+  const ScXMLLogElt * orig = coin_safe_cast<const ScXMLLogElt *>(rhs);
+  if (orig == NULL) return;
   this->setLabelAttribute(orig->getLabelAttribute());
   this->setExprAttribute(orig->getExprAttribute());
   this->setLevelAttribute(orig->getLevelAttribute());

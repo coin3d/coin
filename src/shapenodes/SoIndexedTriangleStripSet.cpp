@@ -516,6 +516,26 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction * action)
   if (mbind == PER_VERTEX_INDEXED && mindices == NULL) {
     mindices = cindices;
   }
+  // PER_STRIP_INDEXED/PER_TRIANGLE_INDEXED (unlike PER_VERTEX_INDEXED,
+  // handled above) have no documented coordIndex-sharing fallback -- the
+  // material/normal index binding comes purely from the state (a sibling
+  // SoMaterialBinding/SoNormalBinding node) and is independent of whether
+  // this node's own materialIndex/normalIndex field actually has values,
+  // so mindices/nindices can be NULL here even though mbind/nbind ask for
+  // indexed access below. Downgrade to the corresponding non-indexed
+  // binding instead of dereferencing a NULL index pointer.
+  if (nbind == PER_STRIP_INDEXED && nindices == NULL) {
+    nbind = PER_STRIP;
+  }
+  else if (nbind == PER_TRIANGLE_INDEXED && nindices == NULL) {
+    nbind = PER_TRIANGLE;
+  }
+  if (mbind == PER_STRIP_INDEXED && mindices == NULL) {
+    mbind = PER_STRIP;
+  }
+  else if (mbind == PER_TRIANGLE_INDEXED && mindices == NULL) {
+    mbind = PER_TRIANGLE;
+  }
 
   SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
   const SbVec3f * currnormal = &dummynormal;

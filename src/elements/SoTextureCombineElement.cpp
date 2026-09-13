@@ -50,6 +50,7 @@
 
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/lists/SbList.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/system/gl.h>
 
@@ -125,6 +126,12 @@ SoTextureCombineElement::set(SoState * const state, SoNode * const node,
 {
   SoTextureCombineElement * elem = coin_safe_cast<SoTextureCombineElement *>
     (state->getElement(classStackIndex));
+  if (!elem) {
+    SoDebugError::post("SoTextureCombineElement::set",
+                       "SoTextureCombineElement not enabled for this action -- "
+                       "missing SO_ENABLE()?");
+    return;
+  }
   PRIVATE(elem)->ensureCapacity(unit);
   elem->setElt(unit, node->getNodeId(),
                rgboperation,
@@ -155,12 +162,29 @@ SoTextureCombineElement::get(SoState * const state,
                              float & alphascale)
 {
   const SoTextureCombineElement * elem =
-    coin_assert_cast<const SoTextureCombineElement *>
+    coin_safe_cast<const SoTextureCombineElement *>
     (getConstElement(state, classStackIndex));
-  
+
+  if (!elem) {
+    SoDebugError::post("SoTextureCombineElement::get",
+                       "SoTextureCombineElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default values.");
+    const UnitData ud;
+    rgboperation = ud.rgboperation;
+    alphaoperation = ud.alphaoperation;
+    memcpy(rgbsource, ud.rgbsource, 3*sizeof(Source));
+    memcpy(alphasource, ud.alphasource, 3*sizeof(Source));
+    memcpy(rgboperand, ud.rgboperand, 3*sizeof(Operand));
+    memcpy(alphaoperand, ud.alphaoperand, 3*sizeof(Operand));
+    constantcolor = ud.constantcolor;
+    rgbscale = ud.rgbscale;
+    alphascale = ud.alphascale;
+    return;
+  }
+
   assert(unit < PRIVATE(elem)->unitdata.getLength());
   const UnitData & ud = PRIVATE(elem)->unitdata[unit];
-  
+
   rgboperation = ud.rgboperation;
   alphaoperation = ud.alphaoperation;
   memcpy(rgbsource, ud.rgbsource, 3*sizeof(Source));
@@ -178,8 +202,15 @@ SoTextureCombineElement::isDefault(SoState * const state,
                                    const int unit)
 {
   const SoTextureCombineElement * elem =
-    coin_assert_cast<const SoTextureCombineElement *>
+    coin_safe_cast<const SoTextureCombineElement *>
     (getConstElement(state, classStackIndex));
+
+  if (!elem) {
+    SoDebugError::post("SoTextureCombineElement::isDefault",
+                       "SoTextureCombineElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return TRUE;
+  }
 
   if (unit < PRIVATE(elem)->unitdata.getLength()) {
     return PRIVATE(elem)->unitdata[unit].nodeid == 0;
@@ -200,6 +231,7 @@ SoTextureCombineElement::push(SoState * COIN_UNUSED_ARG(state))
 {
   const SoTextureCombineElement * prev = coin_assert_cast<SoTextureCombineElement *>
     (this->getNextInStack());
+  COIN_ASSUME(prev != NULL);
   PRIVATE(this)->unitdata = PRIVATE(prev)->unitdata;
 }
 
@@ -208,6 +240,7 @@ SoTextureCombineElement::matches(const SoElement * elem) const
 {
   const SoTextureCombineElement * e =
     coin_assert_cast<const SoTextureCombineElement *>(elem);
+  COIN_ASSUME(e != NULL);
   const int n = PRIVATE(e)->unitdata.getLength();
   if (n != PRIVATE(this)->unitdata.getLength()) return FALSE;
 
@@ -264,12 +297,19 @@ void
 SoTextureCombineElement::apply(SoState * state, const int unit)
 {
   const SoTextureCombineElement * elem =
-    coin_assert_cast<const SoTextureCombineElement *>
+    coin_safe_cast<const SoTextureCombineElement *>
     (getConstElement(state, classStackIndex));
+
+  if (!elem) {
+    SoDebugError::post("SoTextureCombineElement::apply",
+                       "SoTextureCombineElement not enabled for this action -- "
+                       "missing SO_ENABLE()?");
+    return;
+  }
 
   assert(unit < PRIVATE(elem)->unitdata.getLength());
   const UnitData & ud = PRIVATE(elem)->unitdata[unit];
-  
+
   glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
   glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, static_cast<GLenum>(ud.rgboperation));
   glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, static_cast<GLenum>(ud.alphaoperation));

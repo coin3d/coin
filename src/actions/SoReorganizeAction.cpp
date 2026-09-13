@@ -803,7 +803,8 @@ void
 SoReorganizeActionP::replaceIfs(SoFullPath * path)
 {
   SoNode * parent = path->getNodeFromTail(1);
-  if (!parent->isOfType(SoGroup::getClassTypeId())) {
+  SoGroup * g = coin_safe_cast<SoGroup *>(parent);
+  if (!g) {
     return;
   }
 
@@ -831,7 +832,6 @@ SoReorganizeActionP::replaceIfs(SoFullPath * path)
 
   int idx = path->getIndexFromTail(0);
   path->pop();
-  SoGroup * g = coin_assert_cast<SoGroup *>(parent);
   g->replaceChild(idx, ifs);
   path->push(idx);
   ifs->unrefNoDelete();
@@ -923,12 +923,10 @@ SoReorganizeActionP::replaceVrmlIfs(SoFullPath * path)
 
   int idx = path->getIndexFromTail(0);
   path->pop();
-  if (parent->isOfType(SoGroup::getClassTypeId())) {
-    SoGroup * g = coin_assert_cast<SoGroup *>(parent);
+  if (SoGroup * g = coin_safe_cast<SoGroup *>(parent)) {
     g->replaceChild(idx, ifs);
   }
-  else {
-    SoVRMLShape * shape = coin_assert_cast<SoVRMLShape *>(parent);
+  else if (SoVRMLShape * shape = coin_safe_cast<SoVRMLShape *>(parent)) {
     shape->geometry = ifs;
   }
   path->push(idx);
@@ -940,7 +938,8 @@ void
 SoReorganizeActionP::replaceIls(SoFullPath * path)
 {
   SoNode * parent = path->getNodeFromTail(1);
-  if (!parent->isOfType(SoGroup::getClassTypeId())) {
+  SoGroup * g = coin_safe_cast<SoGroup *>(parent);
+  if (!g) {
     return;
   }
 
@@ -966,7 +965,6 @@ SoReorganizeActionP::replaceIls(SoFullPath * path)
 
   int idx = path->getIndexFromTail(0);
   path->pop();
-  SoGroup * g = coin_assert_cast<SoGroup *>(parent);
   g->replaceChild(idx, ils);
   path->push(idx);
   ils->unrefNoDelete();
@@ -1022,12 +1020,10 @@ SoReorganizeActionP::replaceVrmlIls(SoFullPath * path)
 
   int idx = path->getIndexFromTail(0);
   path->pop();
-  if (parent->isOfType(SoGroup::getClassTypeId())) {
-    SoGroup * g = coin_assert_cast<SoGroup *>(parent);
+  if (SoGroup * g = coin_safe_cast<SoGroup *>(parent)) {
     g->replaceChild(idx, ils);
   }
-  else {
-    SoVRMLShape * shape = coin_assert_cast<SoVRMLShape *>(parent);
+  else if (SoVRMLShape * shape = coin_safe_cast<SoVRMLShape *>(parent)) {
     shape->geometry = ils;
   }
   path->push(idx);

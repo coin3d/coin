@@ -50,6 +50,7 @@
 */
 
 #include "SbBasicP.h"
+#include "coindefs.h"
 
 #include <Inventor/elements/SoInt32Element.h>
 
@@ -89,7 +90,9 @@ SoInt32Element::matches(const SoElement * element) const
     assert(element);
     if (getTypeId() != element->getTypeId())
         return FALSE;
-    if (coin_assert_cast<const SoInt32Element *>(element)->data != this->data)
+    const SoInt32Element * elem = coin_assert_cast<const SoInt32Element *>(element);
+    COIN_ASSUME(elem != NULL);
+    if (elem->data != this->data)
         return FALSE;
     return TRUE;
 }

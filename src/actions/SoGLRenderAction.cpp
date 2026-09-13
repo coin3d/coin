@@ -1026,8 +1026,8 @@ void
 SoGLRenderAction::beginTraversal(SoNode * node)
 {
   if (PRIVATE(this)->cachedprofilingsg == NULL) {
-    if (node->isOfType(SoGroup::getClassTypeId()) &&
-        (coin_assert_cast<SoGroup *>(node))->getNumChildren() > 0) {
+    SoGroup * group = coin_safe_cast<SoGroup *>(node);
+    if (group && group->getNumChildren() > 0) {
       PRIVATE(this)->cachedprofilingsg = node;
 
 #ifdef HAVE_NODEKITS

@@ -101,6 +101,7 @@ void
 SoShapeStyleElement::push(SoState * COIN_UNUSED_ARG(state))
 {
   SoShapeStyleElement * prev = coin_assert_cast<SoShapeStyleElement *>(this->getNextInStack());
+  COIN_ASSUME(prev != NULL);
   this->flags = prev->flags;
 }
 
@@ -119,6 +120,7 @@ SoShapeStyleElement::matches(const SoElement * element) const
 {
   const SoShapeStyleElement * elem =
     coin_assert_cast<const SoShapeStyleElement *>(element);
+  COIN_ASSUME(elem != NULL);
   return this->flags == elem->flags;
 }
 

@@ -100,6 +100,7 @@ SoDepthBufferElement::push(SoState * state)
     (
      this->getNextInStack()
      );
+  COIN_ASSUME(prev != NULL);
   this->test = prev->test;
   this->write = prev->write;
   this->function = prev->function;

@@ -40,7 +40,7 @@
 */
 
 #include <Inventor/elements/SoEnvironmentElement.h>
-
+#include <Inventor/errors/SoDebugError.h>
 
 #include <cassert>
 
@@ -150,10 +150,19 @@ SoEnvironmentElement::get(SoState * const state,
                           float & fogVisibility,
                           float & fogStart)
 {
-  const SoEnvironmentElement * element = coin_assert_cast<const SoEnvironmentElement *>
+  const SoEnvironmentElement * element = coin_safe_cast<const SoEnvironmentElement *>
     (
     SoElement::getConstElement(state, classStackIndex)
     );
+
+  if (!element) {
+    SoDebugError::post("SoEnvironmentElement::get",
+                       "SoEnvironmentElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default values.");
+    SoEnvironmentElement::getDefault(ambientIntensity, ambientColor, attenuation,
+                                     fogType, fogColor, fogVisibility, fogStart);
+    return;
+  }
 
   ambientIntensity = element->ambientIntensity;
   ambientColor = element->ambientColor;
@@ -189,10 +198,20 @@ SoEnvironmentElement::getDefault(float & ambientIntensity,
 float
 SoEnvironmentElement::getAmbientIntensity(SoState * const state)
 {
-  const SoEnvironmentElement * element = coin_assert_cast<const SoEnvironmentElement *>
+  const SoEnvironmentElement * element = coin_safe_cast<const SoEnvironmentElement *>
     (
      SoElement::getConstElement(state, classStackIndex)
      );
+  if (!element) {
+    SoDebugError::post("SoEnvironmentElement::getAmbientIntensity",
+                       "SoEnvironmentElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    float ambientIntensity; SbColor ambientColor; SbVec3f attenuation;
+    int32_t fogType; SbColor fogColor; float fogVisibility; float fogStart;
+    SoEnvironmentElement::getDefault(ambientIntensity, ambientColor, attenuation,
+                                     fogType, fogColor, fogVisibility, fogStart);
+    return ambientIntensity;
+  }
   return element->ambientIntensity;
 }
 
@@ -201,10 +220,20 @@ SoEnvironmentElement::getAmbientIntensity(SoState * const state)
 float
 SoEnvironmentElement::getFogVisibility(SoState * const state)
 {
-  const SoEnvironmentElement * element = coin_assert_cast<const SoEnvironmentElement *>
+  const SoEnvironmentElement * element = coin_safe_cast<const SoEnvironmentElement *>
     (
      SoElement::getConstElement(state, classStackIndex)
      );
+  if (!element) {
+    SoDebugError::post("SoEnvironmentElement::getFogVisibility",
+                       "SoEnvironmentElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    float ambientIntensity; SbColor ambientColor; SbVec3f attenuation;
+    int32_t fogType; SbColor fogColor; float fogVisibility; float fogStart;
+    SoEnvironmentElement::getDefault(ambientIntensity, ambientColor, attenuation,
+                                     fogType, fogColor, fogVisibility, fogStart);
+    return fogVisibility;
+  }
   return element->fogVisibility;
 }
 
@@ -249,10 +278,20 @@ SoEnvironmentElement::getFogColor(SoState * const state)
 int32_t
 SoEnvironmentElement::getFogType(SoState * const state)
 {
-  const SoEnvironmentElement * element = coin_assert_cast<const SoEnvironmentElement *>
+  const SoEnvironmentElement * element = coin_safe_cast<const SoEnvironmentElement *>
     (
      SoElement::getConstElement(state, classStackIndex)
      );
+  if (!element) {
+    SoDebugError::post("SoEnvironmentElement::getFogType",
+                       "SoEnvironmentElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    float ambientIntensity; SbColor ambientColor; SbVec3f attenuation;
+    int32_t fogType; SbColor fogColor; float fogVisibility; float fogStart;
+    SoEnvironmentElement::getDefault(ambientIntensity, ambientColor, attenuation,
+                                     fogType, fogColor, fogVisibility, fogStart);
+    return fogType;
+  }
   return element->fogType;
 }
 

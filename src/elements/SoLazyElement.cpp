@@ -206,6 +206,7 @@ SoLazyElement::push(SoState *state)
 {
   inherited::push(state);
   const SoLazyElement * prev = coin_assert_cast<const SoLazyElement *>(this->getNextInStack());
+  COIN_ASSUME(prev != NULL);
   this->coinstate = prev->coinstate;
 }
 
