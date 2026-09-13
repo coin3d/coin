@@ -131,8 +131,9 @@ BOOST_AUTO_TEST_CASE(textinput)
   SoSFVec4us field;
   field.set("1 2 3 4");
   BOOST_CHECK_EQUAL(field.getValue(), SbVec4us(1, 2, 3, 4));
+  // const char * filters[] = { "read error", NULL }; // all read error messages
   TestSuite::ResetReadErrorCount();
-  // TestSuite::PushMessageSuppressFilters(filters); // filters = { "read error", NULL }
+  // TestSuite::PushMessageSuppressFilters(filters);
   SbBool ok;
   ok = field.set("-3 4 32 3"); // should emit error message on '-3'
   BOOST_CHECK_EQUAL(ok, FALSE);
