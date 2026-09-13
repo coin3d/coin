@@ -57,6 +57,7 @@
 #include "coindefs.h"
 #include "SbBasicP.h"
 
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoNode.h>
 
 /*!
@@ -128,10 +129,17 @@ const SbRotation &
 SoListenerOrientationElement::get(SoState * const state)
 {
   const SoListenerOrientationElement * elem =
-    coin_assert_cast<const SoListenerOrientationElement *>
+    coin_safe_cast<const SoListenerOrientationElement *>
     (
      SoElement::getConstElement(state, classStackIndex)
      );
+  if (!elem) {
+    SoDebugError::post("SoListenerOrientationElement::get",
+                       "SoListenerOrientationElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    static const SbRotation identity(0.0f, 0.0f, 1.0f, 0.0f);
+    return identity;
+  }
   return elem->orientation;
 }
 
@@ -144,10 +152,16 @@ SbBool
 SoListenerOrientationElement::isSetByListener(SoState * const state)
 {
   const SoListenerOrientationElement * elem =
-    coin_assert_cast<const SoListenerOrientationElement *>
+    coin_safe_cast<const SoListenerOrientationElement *>
     (
      SoElement::getConstElement(state, classStackIndex)
      );
+  if (!elem) {
+    SoDebugError::post("SoListenerOrientationElement::isSetByListener",
+                       "SoListenerOrientationElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return FALSE;
+  }
   return elem->setbylistener;
 }
 

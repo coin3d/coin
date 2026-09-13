@@ -899,8 +899,8 @@ SoVRMLAudioClipP::internal_read(void * COIN_UNUSED_ARG(datasource), void *buffer
 }
 
 int    
-SoVRMLAudioClipP::internal_seek(void * COIN_UNUSED_ARG(datasource), long COIN_UNUSED_ARG(offset), int whence,
-                       SoVRMLAudioClip *clip)
+SoVRMLAudioClipP::internal_seek(void * COIN_UNUSED_ARG(datasource), long COIN_UNUSED_ARG(offset), int COIN_UNUSED_ARG(whence),
+                       SoVRMLAudioClip * COIN_UNUSED_ARG(clip))
 {
   return -1;
 }

@@ -168,9 +168,7 @@ ScXMLStateEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocume
           }
 #endif
         }
-        else if (parentelt->isOfType(ScXMLStateElt::getClassTypeId())) {
-          ScXMLStateElt * parent =
-            coin_assert_cast<ScXMLStateElt *>(parentelt);
+        else if (ScXMLStateElt * parent = coin_safe_cast<ScXMLStateElt *>(parentelt)) {
           int c = 0;
           if (parent->getOnEntry()) {
             ScXMLOnEntryElt * onentryelt =
@@ -622,7 +620,8 @@ void
 ScXMLStateElt::copyContents(const ScXMLElt * rhs)
 {
   inherited::copyContents(rhs);
-  const ScXMLStateElt * orig = coin_assert_cast<const ScXMLStateElt *>(rhs);
+  const ScXMLStateElt * orig = coin_safe_cast<const ScXMLStateElt *>(rhs);
+  if (orig == NULL) return;
   this->setInitialAttribute(orig->getInitialAttribute());
   this->setSrcAttribute(orig->getSrcAttribute());
   int c = 0;

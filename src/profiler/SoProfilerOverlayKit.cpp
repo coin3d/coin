@@ -102,6 +102,7 @@ SoProfilerOverlayKit::initClass(void)
  */
 SoProfilerOverlayKit::SoProfilerOverlayKit(void)
 {
+  this->pimpl = NULL;
   SO_KIT_INTERNAL_CONSTRUCTOR(SoProfilerOverlayKit);
   SO_KIT_ADD_CATALOG_ENTRY(topSeparator, SoSeparator, TRUE, this, "", FALSE);
   SO_KIT_ADD_CATALOG_ENTRY(profilingStats, SoProfilerStats, FALSE,

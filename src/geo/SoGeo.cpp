@@ -81,9 +81,9 @@ static int find_utm_zone(const SbString & s)
 }
 
 SbVec3d 
-SoGeo::toGD(const SbString * originsystem,
-            const int numoriginsys,
-            const SbVec3d & origincoords)
+SoGeo::toGD(const SbString * COIN_UNUSED_ARG(originsystem),
+            const int COIN_UNUSED_ARG(numoriginsys),
+            const SbVec3d & COIN_UNUSED_ARG(origincoords))
 {
     assert(0 && "not implemented yet");
     return SbVec3d(0.0, 0.0, 0.0);
@@ -94,9 +94,9 @@ SoGeo::toGD(const SbString * originsystem,
 }
 
 SbVec3d 
-SoGeo::fromGD(const SbVec3d & gd,
-              const SbString * tosystem,
-              const int numtosys)
+SoGeo::fromGD(const SbVec3d & COIN_UNUSED_ARG(gd),
+              const SbString * COIN_UNUSED_ARG(tosystem),
+              const int COIN_UNUSED_ARG(numtosys))
 {
     // to convert from GD to GC see this article
     // http://en.wikipedia.org/wiki/Geodetic_system
@@ -203,6 +203,10 @@ static SbDPMatrix find_coordinate_system(const SbString * system,
 // Currently not used. Kept here since it might be useful to find and
 // UTM zone from lat/long
 //
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4505) // unreferenced local function removed -- kept intentionally, see comment above
+#endif
 static SbUTMProjection find_utm_projection(const SbString * system,
                                            const int COIN_UNUSED_ARG(numsystem),
                                            const SbVec3d & coords,
@@ -234,6 +238,9 @@ static SbUTMProjection find_utm_projection(const SbString * system,
   projcoords = coords;
   return SbUTMProjection(find_utm_zone(system[1]), SbGeoEllipsoid("WGS84"));
 }
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 SbDPMatrix
 SoGeo::calculateDPTransform(const SbString * originsystem,

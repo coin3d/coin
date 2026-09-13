@@ -76,9 +76,9 @@
 void
 cc_condvar_struct_init(cc_condvar * condvar_struct)
 {
-  int ok;
-  ok = internal_condvar_struct_init(condvar_struct);
-  assert(ok == CC_OK);
+  if (internal_condvar_struct_init(condvar_struct) != CC_OK) {
+    assert(!"condvar struct init failed");
+  }
 }
 
 /*
@@ -87,10 +87,10 @@ cc_condvar_struct_init(cc_condvar * condvar_struct)
 void
 cc_condvar_struct_clean(cc_condvar * condvar_struct)
 {
-  int ok;
   assert(condvar_struct != NULL);
-  ok = internal_condvar_struct_clean(condvar_struct);
-  assert(ok == CC_OK);
+  if (internal_condvar_struct_clean(condvar_struct) != CC_OK) {
+    assert(!"condvar struct clean failed");
+  }
 }
 
 /* ********************************************************************** */
@@ -150,10 +150,10 @@ cc_condvar_timed_wait(cc_condvar * condvar,
 void
 cc_condvar_wake_one(cc_condvar * condvar)
 {
-  int ok;
   assert(condvar != NULL);
-  ok = internal_condvar_wake_one(condvar);
-  assert(ok == CC_OK);
+  if (internal_condvar_wake_one(condvar) != CC_OK) {
+    assert(!"condvar wake_one failed");
+  }
 }
 
 /*! Wake all threads waiting for the \a condvar conditional variable. */
@@ -161,10 +161,10 @@ cc_condvar_wake_one(cc_condvar * condvar)
 void
 cc_condvar_wake_all(cc_condvar * condvar)
 {
-  int ok;
   assert(condvar != NULL);
 
-  ok = internal_condvar_wake_all(condvar);
-  assert(ok == CC_OK);
+  if (internal_condvar_wake_all(condvar) != CC_OK) {
+    assert(!"condvar wake_all failed");
+  }
 }
 
