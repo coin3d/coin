@@ -288,6 +288,8 @@ cc_dict_get_num_elements(cc_dict * ht)
   Set the hash func that is used to map key values into
   a bucket index.
 
+  \a func must not be NULL.
+
   Existing entries are reindexed using the new function. The entries
   themselves are preserved; only their bucket links are changed.
 */
@@ -295,6 +297,8 @@ void
 cc_dict_set_hash_func(cc_dict * ht, cc_dict_hash_func * func)
 {
   assert(ht != NULL);
+  assert(func != NULL);
+  if (func == NULL) return;
   if (ht->hashfunc == func) return;
   if (ht->elements == 0) {
     ht->hashfunc = func;
