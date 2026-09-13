@@ -197,8 +197,8 @@ Protected Member Functions</h2></td></tr>
 <div class="line">state-&gt;pop();</div>
 <div class="line"><a class="code hl_function" href="classSoCacheElement.html#a6082e45336953d996d9f5738d908a9fd">SoCacheElement::setInvalid</a>(<a class="code hl_class" href="classSbList.html">storedinvalid</a>);</div>
 <div class="ttc" id="aclassSbList_html"><div class="ttname"><a href="classSbList.html">SbList</a></div><div class="ttdoc">The SbList class is a template container class for lists.</div><div class="ttdef"><b>Definition</b> SbList.h:70</div></div>
-<div class="ttc" id="aclassSoCacheElement_html_a6082e45336953d996d9f5738d908a9fd"><div class="ttname"><a href="classSoCacheElement.html#a6082e45336953d996d9f5738d908a9fd">SoCacheElement::setInvalid</a></div><div class="ttdeci">static SbBool setInvalid(const SbBool newvalue)</div><div class="ttdef"><b>Definition</b> SoCacheElement.cpp:312</div></div>
-<div class="ttc" id="aclassSoCacheElement_html_aeed0ab875e5b0685a35f52f0e4a9e8ab"><div class="ttname"><a href="classSoCacheElement.html#aeed0ab875e5b0685a35f52f0e4a9e8ab">SoCacheElement::set</a></div><div class="ttdeci">static void set(SoState *const state, SoCache *const cache)</div><div class="ttdef"><b>Definition</b> SoCacheElement.cpp:154</div></div>
+<div class="ttc" id="aclassSoCacheElement_html_a6082e45336953d996d9f5738d908a9fd"><div class="ttname"><a href="classSoCacheElement.html#a6082e45336953d996d9f5738d908a9fd">SoCacheElement::setInvalid</a></div><div class="ttdeci">static SbBool setInvalid(const SbBool newvalue)</div><div class="ttdef"><b>Definition</b> SoCacheElement.cpp:313</div></div>
+<div class="ttc" id="aclassSoCacheElement_html_aeed0ab875e5b0685a35f52f0e4a9e8ab"><div class="ttname"><a href="classSoCacheElement.html#aeed0ab875e5b0685a35f52f0e4a9e8ab">SoCacheElement::set</a></div><div class="ttdeci">static void set(SoState *const state, SoCache *const cache)</div><div class="ttdef"><b>Definition</b> SoCacheElement.cpp:155</div></div>
 </div><!-- fragment --><p>First you reset and store the old value of the cache invalid-flag. Then you push the state so that the cache can detect when something outside the cache is changed (and to be able to change the cache element). Next, you create the cache - don't forget to ref it. Finally, set the current cache in the cache element and build the cache. After building the cache, you pop the state and restore the invalid-cache flag.</p>
 <p>When building the cache, all elements that are read will be copied into the cache (using <a class="el" href="classSoElement.html#a4a6e2a38cdbbdd1dccbb3e9928e68d55">SoElement::copyMatchInfo()</a>), and these copied elements are used to test the validity of the cache (in <a class="el" href="#a7e1b3f532a7bc38340bf1bb19cb2bcc3">SoCache::isValid()</a>).</p>
 <p>You don't have to manually add element dependencies. They will automatically be picked up when creating the cache. This is handled in <a class="el" href="classSoElement.html#ab8cb20060c9b527c8b2e343b1cf4032a">SoElement::getConstElement()</a>.</p>
@@ -436,7 +436,7 @@ Protected Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoCache.html">SoCache</a></li>
-    <li class="footer">Generated on Sat Sep 12 2026 20:53:13 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sun Sep 13 2026 10:22:55 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
