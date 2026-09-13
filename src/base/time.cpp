@@ -139,7 +139,7 @@ cc_internal_gettimeofday(cc_time * t)
 }
 
 static SbBool
-cc_internal_ftime(cc_time * t)
+cc_internal_ftime(cc_time * COIN_UNUSED_ARG(t))
 {
 #ifdef HAVE__FTIME
   struct _timeb timebuffer;

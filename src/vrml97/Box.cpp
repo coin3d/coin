@@ -196,7 +196,7 @@ SoVRMLBox::generatePrimitives(SoAction * action)
 
 // Doc in parent
 void
-SoVRMLBox::computeBBox(SoAction * action,
+SoVRMLBox::computeBBox(SoAction * COIN_UNUSED_ARG(action),
                        SbBox3f & COIN_UNUSED_ARG(box),
                        SbVec3f & center)
 {

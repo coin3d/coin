@@ -64,6 +64,8 @@
 #include "tidbitsp.h" // coin_debug_normalize()
 #include "coinString.h"
 
+#include "coindefs.h"
+
 /*!
   \fn SbVec3f::SbVec3f(void)
 
@@ -616,7 +618,7 @@ SbVec3f::fromString(const SbString & str)
   debug version of library, method does nothing in an optimized build.
 */
 void
-SbVec3f::print(FILE * fp) const
+SbVec3f::print(FILE * COIN_UNUSED_ARG(fp)) const
 {
 #if COIN_DEBUG
   fputs(this->toString().getString(),fp);

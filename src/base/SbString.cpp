@@ -214,7 +214,7 @@ SbString::upper() const
   debug version of library, method does nothing in an optimized build.
 */
 void
-SbString::print(std::FILE * fp) const
+SbString::print(std::FILE * COIN_UNUSED_ARG(fp)) const
 {
 #if COIN_DEBUG
   std::fputs(this->getString(),fp);

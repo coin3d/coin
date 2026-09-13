@@ -53,6 +53,8 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include "coindefs.h"
+
 
 /*!
   An SbPlane instantiated with the default constructor will be
@@ -375,7 +377,7 @@ operator !=(const SbPlane& p1, const SbPlane& p2)
   debug version of library, method does nothing in an optimized build.
 */
 void
-SbPlane::print(FILE * fp) const
+SbPlane::print(FILE * COIN_UNUSED_ARG(fp)) const
 {
 #if COIN_DEBUG
   this->getNormal().print(fp);

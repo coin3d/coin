@@ -674,7 +674,7 @@ SbViewVolume::getDepth(void) const
   debug version of library, method does nothing in an optimized build.
  */
 void
-SbViewVolume::print(FILE * fp) const
+SbViewVolume::print(FILE * COIN_UNUSED_ARG(fp)) const
 {
 #if COIN_DEBUG
   fprintf( fp, "  projtype: %d\n", static_cast<int>(this->getProjectionType()) );

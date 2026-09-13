@@ -81,7 +81,7 @@ SoEmissiveColorElement::init(SoState * stateptr)
 
 void
 SoEmissiveColorElement::set(SoState * const state, SoNode * const COIN_UNUSED_ARG(node),
-                            const int32_t numcolors,
+                            const int32_t COIN_UNUSED_ARG(numcolors),
                             const SbColor * const colors)
 {
   SoLazyElement::setEmissive(state, colors);
@@ -106,7 +106,7 @@ SoEmissiveColorElement::getNum(void) const
 //! FIXME: write doc.
 
 const SbColor &
-SoEmissiveColorElement::get(const int index) const
+SoEmissiveColorElement::get(const int COIN_UNUSED_ARG(index)) const
 {
   assert(index == 0);
   return SoLazyElement::getEmissive(this->state);

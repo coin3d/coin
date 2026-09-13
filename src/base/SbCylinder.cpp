@@ -49,6 +49,8 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include "coindefs.h"
+
 /*!
   The default constructor will make a cylinder of radius 1, center axis
   going through origo in the parallel direction of the positive y-axis.
@@ -262,7 +264,7 @@ SbCylinder::intersect(const SbLine& l, SbVec3f& enter, SbVec3f& exit) const
   debug version of library, method does nothing in an optimized build.
  */
 void
-SbCylinder::print(FILE * fp) const
+SbCylinder::print(FILE * COIN_UNUSED_ARG(fp)) const
 {
 #if COIN_DEBUG
   fprintf( fp, "axis: " );

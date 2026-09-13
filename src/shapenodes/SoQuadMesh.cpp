@@ -192,6 +192,7 @@
 
 #include "rendering/SoGL.h"
 #include "nodes/SoSubNodeP.h"
+#include "coindefs.h"
 
 /*!
   \var SoSFInt32 SoQuadMesh::verticesPerColumn
@@ -317,7 +318,7 @@ static float precalculateWeight(int i)
   double p = sqrt(p2);
   return float(p / (1.0 + p));
 }
-static float qmeshGetWeight(float value)
+static float qmeshGetWeight(float COIN_UNUSED_ARG(value))
 {
 #if defined(HAVE_ILOGB)
   int exponent = ilogb(value) + (QUADMESH_WEIGHTS_NR / 2);

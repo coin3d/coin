@@ -446,7 +446,7 @@ SoRenderManager::detachRootSensor(void)
   \deprecated Will not be available in Coin 5
 */
 void
-SoRenderManager::attachClipSensor(SoNode * const sceneroot)
+SoRenderManager::attachClipSensor(SoNode * const COIN_UNUSED_ARG(sceneroot))
 {
   //PRIVATE(this)->clipsensor->attach(sceneroot);
   //if (PRIVATE(this)->autoclipping != SoRenderManager::NO_AUTO_CLIPPING) {

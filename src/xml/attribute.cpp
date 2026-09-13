@@ -41,6 +41,7 @@
 #include <cstring>
 
 #include "utils.h"
+#include "coindefs.h"
 
 // TODO:
 // - optimize empty strings to use a static, nonfreeable buffer?
@@ -173,7 +174,7 @@ cc_xml_attr_calculate_size(const cc_xml_attr * attr)
 }
 
 size_t
-cc_xml_attr_write_to_buffer(const cc_xml_attr * attr, char * buffer, size_t bufsize)
+cc_xml_attr_write_to_buffer(const cc_xml_attr * attr, char * buffer, size_t COIN_UNUSED_ARG(bufsize))
 {
   // We assert on mismatches between calculated memory usage and actual memory
   // usage, since this must be calculated correctly for not getting memory corruption

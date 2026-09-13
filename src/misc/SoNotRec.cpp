@@ -58,6 +58,8 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <cassert>
 
+#include "coindefs.h"
+
 #if COIN_DEBUG  // for SoNotRec::print() method
 #include <Inventor/misc/SoBase.h>
 #include <Inventor/SbName.h>
@@ -131,7 +133,7 @@ SoNotRec::setPrevious(const SoNotRec * const prevptr)
   Prints debug information.
 */
 void
-SoNotRec::print(FILE * const file) const
+SoNotRec::print(FILE * const COIN_UNUSED_ARG(file)) const
 {
 #if COIN_DEBUG
   (void)fprintf(file, "\tSoNotRec %p: type ", this);
