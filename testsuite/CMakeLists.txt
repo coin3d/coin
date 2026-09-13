@@ -92,6 +92,8 @@ add_executable(CoinTests
 # resolve the private symbols directly from the Coin archive.
 if(WIN32 AND COIN_BUILD_SHARED_LIBS)
 	target_sources(CoinTests PRIVATE ${PROJECT_SOURCE_DIR}/src/base/dict.cpp)
+	set_source_files_properties(${PROJECT_SOURCE_DIR}/src/base/dict.cpp PROPERTIES
+		COMPILE_DEFINITIONS COIN_INTERNAL)
 endif()
 set_source_files_properties(InternalMacroTest.cpp PROPERTIES
 	COMPILE_DEFINITIONS COIN_INTERNAL)
