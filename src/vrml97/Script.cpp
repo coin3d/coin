@@ -595,8 +595,7 @@ SoVRMLScript::notify(SoNotList * l)
     }
     else {
       SbName name;
-      SbBool ok = this->getFieldName(f, name);
-      assert(ok);
+      if (!this->getFieldName(f, name)) assert(false);
 
       // We silently ignore events for non-eventIn fields
       // FIXME: This will happen when we get a fieldnotification from a
