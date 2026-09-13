@@ -55,6 +55,7 @@ public:
   void invokeCallbacks(void * callbackdata);
 
 private:
+  friend class SoCallbackListP;
   SbPList funclist;
   SbPList datalist;
 };

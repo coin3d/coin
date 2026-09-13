@@ -1066,7 +1066,7 @@ SbTime::addToString(SbString & str, const double v) const
   debug version of library, method does nothing in an optimized build.
  */
 void
-SbTime::print(FILE * fp) const
+SbTime::print(FILE * COIN_UNUSED_ARG(fp)) const
 {
 #if COIN_DEBUG
   struct timeval tm;

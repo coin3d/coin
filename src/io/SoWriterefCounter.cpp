@@ -264,8 +264,7 @@ SoWriterefCounter::instance(SoOutput * out)
 
   SoWriterefCounter * inst = NULL;
 
-  const SbBool ok = SoWriterefCounterP::outputdict->get(out, inst);
-  assert(ok && "no instance");
+  if (!SoWriterefCounterP::outputdict->get(out, inst)) assert(!"no instance");
 
   SoWriterefCounterP::current = inst;
   CC_MUTEX_UNLOCK(SoWriterefCounterP::mutex);

@@ -117,7 +117,11 @@ SoBase::PImpl::removeName2Obj(SoBase * const base, const char * const name)
   SbHash<const char*, SbPList*>::const_iterator iter = SoBase::PImpl::name2obj->find(name);
   SbBool found = (iter != SoBase::PImpl::name2obj->const_end());
   assert(found);
-  
+  if (!found) {
+    CC_MUTEX_UNLOCK(SoBase::PImpl::name2obj_mutex);
+    return;
+  }
+
   SbPList * l = iter->obj;
 
   const int i = l->find(base);

@@ -102,7 +102,7 @@ cc_mutex_struct_init(cc_mutex * mutex_struct)
 #else /* USE_W32THREAD */
   ok = internal_mutex_struct_init(mutex_struct);
 #endif /* ! USE_W32THREAD */
-  assert(ok);
+  if (!ok) assert(!"mutex struct init failed");
 }
 
 /*
@@ -122,7 +122,7 @@ cc_mutex_struct_clean(cc_mutex * mutex_struct)
 #else /* USE_W32THREAD */  
   ok = internal_mutex_struct_clean(mutex_struct);
 #endif /* ! USE_W32THREAD */
-  assert(ok == CC_OK);
+  if (ok != CC_OK) assert(!"mutex struct clean failed");
 }
 
 /**************************************************************************/
@@ -205,7 +205,7 @@ cc_mutex_lock(cc_mutex * mutex)
   ok = internal_mutex_lock(mutex);
 #endif /* USE_W32THREAD */
 
-  assert(ok == CC_OK);
+  if (ok != CC_OK) assert(!"mutex lock failed");
 
   /* This is here as an optional debugging aid, when having problems
      related to locks that are held too long. (Typically resulting in
@@ -260,7 +260,7 @@ cc_mutex_unlock(cc_mutex * mutex)
   ok = internal_mutex_unlock(mutex);
 #endif /* USE_W32THREAD */
 
-  assert(ok == CC_OK);
+  if (ok != CC_OK) assert(!"mutex unlock failed");
 }
 
 static cc_mutex * cc_global_mutex = NULL;

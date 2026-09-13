@@ -529,6 +529,12 @@ SoPath::getLength(void) const
 SoNode *
 SoPath::getFullTail(void) const
 {
+  if (this->getFullLength() == 0) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SoPath::getFullTail", "empty path!");
+#endif // COIN_DEBUG
+    return NULL;
+  }
   return this->nodes[this->getFullLength() - 1];
 }
 
@@ -1308,6 +1314,7 @@ BOOST_AUTO_TEST_CASE(full_path_hidden_children)
   copy->pop();
   BOOST_CHECK_EQUAL(copy->getFullLength(), 0);
   BOOST_CHECK_EQUAL(copy->getLength(), 0);
+  BOOST_CHECK(copy->getFullTail() == NULL);
   copy->unref();
   path->unref();
   root->unref();

@@ -358,19 +358,17 @@ SoMFNode::write1Value(SoOutput * out, int idx) const
   // That's why we check for the base type before writing.
 
   SoBase * base = this->values[idx];
-  if (base) {
-    if (base->isOfType(SoNode::getClassTypeId())) {
-      coin_assert_cast<SoNode *>(base)->writeInstance(out);
-    }
-    else if (base->isOfType(SoPath::getClassTypeId())) {
-      SoWriteAction wa(out);
-      wa.continueToApply(coin_assert_cast<SoPath *>(base));
-    }
-    else if (base->isOfType(SoEngine::getClassTypeId())) {
-      coin_assert_cast<SoEngine *>(base)->writeInstance(out);
-    }
+  if (SoNode * node = coin_safe_cast<SoNode *>(base)) {
+    node->writeInstance(out);
   }
-  else {
+  else if (SoPath * path = coin_safe_cast<SoPath *>(base)) {
+    SoWriteAction wa(out);
+    wa.continueToApply(path);
+  }
+  else if (SoEngine * engine = coin_safe_cast<SoEngine *>(base)) {
+    engine->writeInstance(out);
+  }
+  else if (base == NULL) {
     out->write("NULL");
   }
 }
@@ -387,20 +385,18 @@ SoMFNode::countWriteRefs(SoOutput * out) const
 
   for (int i = 0; i < this->getNum(); i++) {
     SoBase * base = this->values[i];
-    if (base) {
-      // NB: This code is common for SoMFNode, SoMFPath and SoMFEngine.
-      // That's why we check the base type before writing/counting
+    // NB: This code is common for SoMFNode, SoMFPath and SoMFEngine.
+    // That's why we check the base type before writing/counting
 
-      if (base->isOfType(SoNode::getClassTypeId())) {
-        coin_assert_cast<SoNode *>(base)->writeInstance(out);
-      }
-      else if (base->isOfType(SoEngine::getClassTypeId())) {
-        coin_assert_cast<SoEngine*>(base)->addWriteReference(out);
-      }
-      else if (base->isOfType(SoPath::getClassTypeId())) {
-        SoWriteAction wa(out);
-        wa.continueToApply(coin_assert_cast<SoPath *>(base));
-      }
+    if (SoNode * node = coin_safe_cast<SoNode *>(base)) {
+      node->writeInstance(out);
+    }
+    else if (SoEngine * engine = coin_safe_cast<SoEngine *>(base)) {
+      engine->addWriteReference(out);
+    }
+    else if (SoPath * path = coin_safe_cast<SoPath *>(base)) {
+      SoWriteAction wa(out);
+      wa.continueToApply(path);
     }
   }
 }

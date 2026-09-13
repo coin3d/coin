@@ -194,6 +194,7 @@ SoVRMLMovieTexture::initClass(void)
 */
 SoVRMLMovieTexture::SoVRMLMovieTexture(void)
 {
+  this->pimpl = NULL;
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLMovieTexture);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(loop, (FALSE));

@@ -628,7 +628,7 @@ cc_xml_doc_set_root_x(cc_xml_doc * doc, cc_xml_elt * root)
 */
 
 cc_xml_elt *
-cc_xml_doc_get_root(const cc_xml_doc * doc)
+cc_xml_doc_get_root(const cc_xml_doc * COIN_UNUSED_ARG(doc))
 {
   assert(doc);
   return doc->root;
@@ -637,7 +637,7 @@ cc_xml_doc_get_root(const cc_xml_doc * doc)
 // *************************************************************************
 
 void
-cc_xml_doc_strip_whitespace_x(cc_xml_doc * doc)
+cc_xml_doc_strip_whitespace_x(cc_xml_doc * COIN_UNUSED_ARG(doc))
 {
   assert(doc);
   return;

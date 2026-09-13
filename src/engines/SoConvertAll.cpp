@@ -55,6 +55,7 @@
 #include "tidbitsp.h"
 #include "engines/SoSubEngineP.h"
 #include "misc/SbHash.h"
+#include "coindefs.h"
 
 // *************************************************************************
 
@@ -1159,7 +1160,7 @@ SoConvertAll::~SoConvertAll()
 }
 
 SoField *
-SoConvertAll::getInput(SoType type)
+SoConvertAll::getInput(SoType COIN_UNUSED_ARG(type))
 {
 #if COIN_DEBUG
   SoType inputtype = this->input->getTypeId();
@@ -1177,7 +1178,7 @@ SoConvertAll::getInput(SoType type)
 }
 
 SoEngineOutput *
-SoConvertAll::getOutput(SoType type)
+SoConvertAll::getOutput(SoType COIN_UNUSED_ARG(type))
 {
 #if COIN_DEBUG
   SoType outputtype = this->output.getConnectionType();

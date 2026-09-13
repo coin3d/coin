@@ -372,8 +372,8 @@ SoTexture3::doAction(SoAction *action)
   if (size != SbVec3s(0,0,0)) {
     SoMultiTextureImageElement::set(state, this, unit,
                                     size, nc, bytes,
-                                    (SoMultiTextureImageElement::Wrap)this->wrapT.getValue(),
                                     (SoMultiTextureImageElement::Wrap)this->wrapS.getValue(),
+                                    (SoMultiTextureImageElement::Wrap)this->wrapT.getValue(),
                                     (SoMultiTextureImageElement::Wrap)this->wrapR.getValue(),
                                     (SoMultiTextureImageElement::Model) model.getValue(),
                                     this->blendColor.getValue());
@@ -387,8 +387,8 @@ SoTexture3::doAction(SoAction *action)
                                              0xff,0xff,0xff,0xff};
     SoMultiTextureImageElement::set(state, this, unit,
                                     SbVec3s(2,2,2), 1, dummytex,
-                                    (SoMultiTextureImageElement::Wrap)this->wrapT.getValue(),
                                     (SoMultiTextureImageElement::Wrap)this->wrapS.getValue(),
+                                    (SoMultiTextureImageElement::Wrap)this->wrapT.getValue(),
                                     (SoMultiTextureImageElement::Wrap)this->wrapR.getValue(),
                                     (SoMultiTextureImageElement::Model) model.getValue(),
                                     this->blendColor.getValue());

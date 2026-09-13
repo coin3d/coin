@@ -42,6 +42,7 @@
 #include <Inventor/elements/SoLightElement.h>
 #include <Inventor/nodes/SoLight.h>
 #include <Inventor/lists/SbList.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <cassert>
 
 /*!
@@ -125,10 +126,17 @@ SoLightElement::add(SoState * const state, SoLight * const light,
 const SoNodeList &
 SoLightElement::getLights(SoState * const state)
 {
-  const SoLightElement * elem = coin_assert_cast<const SoLightElement *>
+  const SoLightElement * elem = coin_safe_cast<const SoLightElement *>
     (
     SoElement::getConstElement(state, classStackIndex)
     );
+  if (!elem) {
+    SoDebugError::post("SoLightElement::getLights",
+                       "SoLightElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    static const SoNodeList empty;
+    return empty;
+  }
   return elem->lights;
 }
 
@@ -139,10 +147,17 @@ SoLightElement::getLights(SoState * const state)
 const SbMatrix &
 SoLightElement::getMatrix(SoState * const state, const int index)
 {
-  const SoLightElement * elem = coin_assert_cast<const SoLightElement *>
+  const SoLightElement * elem = coin_safe_cast<const SoLightElement *>
     (
      SoElement::getConstElement(state, classStackIndex)
      );
+  if (!elem) {
+    SoDebugError::post("SoLightElement::getMatrix",
+                       "SoLightElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning identity matrix.");
+    static const SbMatrix identity(SbMatrix::identity());
+    return identity;
+  }
   assert(index >= 0 && index < elem->matrixlist->getLength());
   return elem->matrixlist->getArrayPtr()[index];
 }
