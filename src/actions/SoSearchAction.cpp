@@ -242,7 +242,7 @@ SoSearchAction::getType(SbBool & chkderivedref) const
   \sa SoNode::getByName()
 */
 void
-SoSearchAction::setName(const SbName namearg)
+SoSearchAction::setName(const SbName& namearg)
 {
   this->name = namearg;
   this->lookfor |= NAME;

@@ -91,7 +91,7 @@ SoFontNameElement::~SoFontNameElement()
 void
 SoFontNameElement::set(SoState * const state,
                        SoNode * const node,
-                       const SbName fontName)
+                       const SbName & fontName)
 {
   SoFontNameElement * element =
     coin_safe_cast<SoFontNameElement *>

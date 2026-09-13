@@ -56,10 +56,6 @@
 #include "coindefs.h"
 #include "SbBasicP.h"
 
-#ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
-using std::memcpy;
-#endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
-
 class SoTextureCombineElementP {
 public:
   void ensureCapacity(int unit) const {

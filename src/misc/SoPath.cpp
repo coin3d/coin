@@ -755,7 +755,7 @@ SoPath::copy(const int startfromnodeindex, int numnodes) const
   NULL if no SoPath by \a name exists.
 */
 SoPath *
-SoPath::getByName(const SbName name)
+SoPath::getByName(const SbName& name)
 {
   SoBase * b = SoBase::getNamedBase(name, SoPath::getClassTypeId());
   if (!b) return NULL;
@@ -768,7 +768,7 @@ SoPath::getByName(const SbName name)
   with \a name found is returned.
 */
 int
-SoPath::getByName(const SbName name, SoPathList & l)
+SoPath::getByName(const SbName& name, SoPathList & l)
 {
   SoBaseList bl;
   int nr = SoBase::getNamedBases(name, bl, SoPath::getClassTypeId());

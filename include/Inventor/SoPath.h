@@ -88,8 +88,8 @@ public:
   friend COIN_DLL_API SbBool operator==(const SoPath & lhs, const SoPath & rhs);
   friend COIN_DLL_API SbBool operator!=(const SoPath & lhs, const SoPath & rhs);
 
-  static SoPath * getByName(const SbName name);
-  static int getByName(const SbName name, SoPathList & l);
+  static SoPath * getByName(const SbName& name);
+  static int getByName(const SbName& name, SoPathList & l);
 
   void insertIndex(SoNode * const parent, const int newindex);
   void removeIndex(SoNode * const parent, const int oldindex);

@@ -75,12 +75,6 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
-using std::memmove;
-using std::memcmp;
-using std::memcpy;
-#endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
-
 // FIXME: should merge all the PD code we're using from GGIV into
 // SbDPMatrix, SbDPRotation and SbVec3d proper (for two reasons: 1)
 // there's a lot of duplicated code here (like for instance the

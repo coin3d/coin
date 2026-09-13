@@ -1381,7 +1381,7 @@ SoOutput::setReference(const SoBase * base, int refid)
   process.
 */
 void
-SoOutput::addDEFNode(SbName name)
+SoOutput::addDEFNode(const SbName & name)
 {
   void * value = NULL;
   BogusSet * defnames = PRIVATE(this)->getCurrentDefNames(TRUE);
@@ -1393,7 +1393,7 @@ SoOutput::addDEFNode(SbName name)
   Returns TRUE if \a name is DEF'ed.
 */
 SbBool
-SoOutput::lookupDEFNode(SbName name)
+SoOutput::lookupDEFNode(const SbName & name)
 {
   void * value;
   BogusSet * defnames = PRIVATE(this)->getCurrentDefNames(TRUE);
@@ -1406,7 +1406,7 @@ SoOutput::lookupDEFNode(SbName name)
   in the file.
 */
 void
-SoOutput::removeDEFNode(SbName name)
+SoOutput::removeDEFNode(const SbName & name)
 {
   BogusSet * defnames = PRIVATE(this)->getCurrentDefNames(FALSE);
   assert(defnames);

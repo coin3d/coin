@@ -74,10 +74,6 @@
 
 #include "coindefs.h"
 
-#ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
-using std::strlen;
-#endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
-
 // *************************************************************************
 
 // FIXME: I don't agree with this willy-nilly, "gut feeling"
