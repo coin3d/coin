@@ -1238,8 +1238,12 @@ SoFieldContainer::getFieldsMemorySize(size_t & managed, size_t & unmanaged) cons
       } else if (mftypekey == MFVec4us_string.getString()) {
         elementsize = sizeof(SbTypeInfo<SoMFVec4us>::DataType[2]) / 2;
       } else {
-        // unsupported field type
-        elementsize = -1;
+        // unsupported field type -- contribute nothing to the total
+        // rather than corrupting it: elementsize is a size_t, so the
+        // previous "-1 means unknown" sentinel here actually wrapped
+        // to SIZE_MAX and then overflowed further down in
+        // "managed/unmanaged += elementsize * numelements".
+        elementsize = 0;
       }
 
 #undef SBNAMESTRING
