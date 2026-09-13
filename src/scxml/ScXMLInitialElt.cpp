@@ -172,7 +172,8 @@ void
 ScXMLInitialElt::copyContents(const ScXMLElt * rhs)
 {
   inherited::copyContents(rhs);
-  const ScXMLInitialElt * orig = coin_assert_cast<const ScXMLInitialElt *>(rhs);
+  const ScXMLInitialElt * orig = coin_safe_cast<const ScXMLInitialElt *>(rhs);
+  if (orig == NULL) return;
   if (orig->getTransition()) {
     ScXMLTransitionElt * transition =
       coin_assert_cast<ScXMLTransitionElt *>(orig->getTransition()->clone());

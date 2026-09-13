@@ -121,20 +121,14 @@ void SoAudioRenderAction::callAudioRender(SoAction *action, SoNode *node)
 {
   SoAudioRenderAction * audioRenderAction = coin_assert_cast<SoAudioRenderAction *>(action);
 
-  if (node->isOfType(SoListener::getClassTypeId())) {
-    SoListener *listener;
-    listener = coin_assert_cast<SoListener *>(node);
+  if (SoListener * listener = coin_safe_cast<SoListener *>(node)) {
     listener->audioRender(audioRenderAction);
   }
 #ifdef HAVE_VRML97
-  else if (node->isOfType(SoVRMLSound::getClassTypeId())) {
-    SoVRMLSound *sound;
-    sound = coin_assert_cast<SoVRMLSound *>(node);
+  else if (SoVRMLSound * sound = coin_safe_cast<SoVRMLSound *>(node)) {
     sound->audioRender(audioRenderAction);
   }
-  else if (node->isOfType(SoVRMLAudioClip::getClassTypeId())) {
-    SoVRMLAudioClip *clip;
-    clip = coin_assert_cast<SoVRMLAudioClip *>(node);
+  else if (SoVRMLAudioClip * clip = coin_safe_cast<SoVRMLAudioClip *>(node)) {
     clip->audioRender(audioRenderAction);
   }
 #endif // HAVE_VRML97

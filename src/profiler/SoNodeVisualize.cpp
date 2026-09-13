@@ -473,14 +473,17 @@ SoNodeVisualize::traverse(SoProfilerStats * stats)
     green = 1.0f - (float)msec / (float)CRITICAL;
   }
 
-  if(this->node->isOfType(SoSeparator::getClassTypeId()) &&
-     0 // FIXME: larsa
-     //stats->hasGLCache((SoSeparator *)this->node)
-     ) {
+  // FIXME: larsa -- deliberately disabled, stats->hasGLCache() isn't
+  // wired up yet; keep for future re-enabling
+#if 0
+  if (this->node->isOfType(SoSeparator::getClassTypeId())
+      //&& stats->hasGLCache((SoSeparator *)this->node)
+      ) {
     // FIXME All children are cached. Make them inherit material
     color = SbVec3f(0.0f, green, 1.0f);
     transparency = 0.0f;
   }
+#endif // 0
 
   if (this->node->getTypeId().getName() == SbName("ScenarioSimulator"))
     color = SbVec3f(1.0f, green, 0.0f);
@@ -660,7 +663,6 @@ SoNodeVisualize::handleEvent(SoHandleEventAction * action)
   //REVIEW: BFG - Not sure what I'm doing here, the getDetail is
   //from an example source
   if (path->containsNode(shapenode) && pp->getDetail(shapenode) == NULL) {
-    SbVec3f point = pp->getPoint();
     this->clicked();
   }
 }
@@ -698,7 +700,11 @@ SoNodeVisualize::internalAlternating(bool alternate,int direction) {
     ->whichChild=(alternate)?SO_SWITCH_ALL:SO_SWITCH_NONE;
 
   SoNodeList * children=this->getChildGeometry();
-  int l;
+  /* Only read below past the early return, which happens only once the
+     assignment on the next line has run. Initialized to the "no
+     children" value since the compiler can't see that guarantee
+     across the short-circuited condition. */
+  int l = 0;
   if (!children ||
       (l=children->getLength())==0 ||
       static_cast<SoSwitch*>(this->getAnyPart("childrenVisible",FALSE))->whichChild.getValue()==SO_SWITCH_NONE)

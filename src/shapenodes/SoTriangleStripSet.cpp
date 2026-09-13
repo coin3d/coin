@@ -398,7 +398,7 @@ SoTriangleStripSet::initClass(void)
   }
 
 #define SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG2(normalbinding, materialbinding, texturing, args) \
-  switch (materialbinding) {                                              \
+  switch ((SoGL::TriStripSet::AttributeBinding)materialbinding) {         \
   case SoGL::TriStripSet::OVERALL:                                        \
     SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG3(normalbinding, OVERALL, texturing, args); \
     break;                                                                \
@@ -417,7 +417,7 @@ SoTriangleStripSet::initClass(void)
   }
 
 #define SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, texturing, args) \
-  switch (normalbinding) {                                                \
+  switch ((SoGL::TriStripSet::AttributeBinding)normalbinding) {           \
   case SoGL::TriStripSet::OVERALL:                                        \
     SOGL_TRISTRIPSET_GLRENDER_RESOLVE_ARG2(OVERALL, materialbinding, texturing, args); \
     break;                                                                \

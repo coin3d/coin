@@ -776,7 +776,7 @@ cc_dl_open(const char * filename)
 #ifdef HAVE_WINDLL_RUNTIME_BINDING
       char libpath[512];
       DWORD retval = GetModuleFileName((HINSTANCE) h->nativehnd, libpath, sizeof(libpath));
-      assert(retval > 0 && "GetModuleFileName() failed");
+      if (retval == 0) assert(!"GetModuleFileName() failed");
       libpath[sizeof(libpath) - 1] = 0;
       cc_debugerror_postinfo("cc_dl_open", "Opened library '%s'", libpath);
 #elif defined (HAVE_DL_LIB) || defined (HAVE_DLD_LIB)
@@ -1003,7 +1003,7 @@ cc_dl_coin_handle(void)
        the public API) */
 
     if (func) {
-      if (func == cc_dl_open) { return hnd; }
+      if (func == (void *)cc_dl_open) { return hnd; }
 
       if (cc_dl_debugging()) {
         cc_debugerror_post("cc_dl_coin_handle",
@@ -1047,7 +1047,7 @@ cc_dl_opengl_handle(void)
     void * func = cc_dl_sym(hnd, "glGetString");
 
     if (func) {
-      if (func == glGetString) { return hnd; }
+      if (func == (void *)glGetString) { return hnd; }
 
       if (cc_dl_debugging()) {
         cc_debugerror_post("cc_dl_opengl_handle",
