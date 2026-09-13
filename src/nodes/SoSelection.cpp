@@ -156,11 +156,58 @@
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/lists/SoCallbackList.h>
+#include "lists/SoCallbackListP.h"
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/errors/SoDebugError.h>
 
 #include "tidbitsp.h"
 #include "nodes/SoSubNodeP.h"
+
+// *************************************************************************
+
+// Preserve the public/protected SoCallbackList storage and SoSelection's
+// layout. Each typed callback is reached through a correctly typed generic
+// trampoline. The list owns its entry, including pending invocation copies.
+class SoSelectionCBTrampolines {
+  template <typename Callback, typename Argument>
+  struct Entry {
+    Callback * callback;
+    void * userdata;
+    static void invoke(void * data, void * argument) {
+      Entry * entry = static_cast<Entry *>(data);
+      entry->callback(entry->userdata, static_cast<Argument *>(argument));
+    }
+    static void destroy(void * data) { delete static_cast<Entry *>(data); }
+  };
+  typedef Entry<SoSelectionPathCB, SoPath> PathEntry;
+  typedef Entry<SoSelectionClassCB, SoSelection> ClassEntry;
+
+  template <typename E, typename Callback>
+  static void add(SoCallbackList * list, Callback * callback, void * userdata) {
+    E * entry = new E;
+    entry->callback = callback;
+    entry->userdata = userdata;
+    // The converted pointer is only a registration identity, never called
+    // through this type. Keeping the original pair lets protected-list
+    // callers remove public registrations (and vice versa).
+    SoCallbackListP::addCallback(list, reinterpret_cast<SoCallbackListCB *>(callback),
+                                userdata, E::invoke, entry, E::destroy);
+  }
+  template <typename E, typename Callback>
+  static void remove(SoCallbackList * list, Callback * callback, void * userdata) {
+    list->removeCallback(reinterpret_cast<SoCallbackListCB *>(callback), userdata);
+  }
+public:
+  static void addPath(SoCallbackList * list, SoSelectionPathCB * f, void * data)
+  { add<PathEntry>(list, f, data); }
+  static void removePath(SoCallbackList * list, SoSelectionPathCB * f, void * data)
+  { remove<PathEntry>(list, f, data); }
+  static void addClass(SoCallbackList * list, SoSelectionClassCB * f, void * data)
+  { add<ClassEntry>(list, f, data); }
+  static void removeClass(SoCallbackList * list, SoSelectionClassCB * f, void * data)
+  { remove<ClassEntry>(list, f, data); }
+};
 
 // *************************************************************************
 
@@ -538,7 +585,7 @@ SoSelection::operator[](const int i) const
 void
 SoSelection::addSelectionCallback(SoSelectionPathCB * f, void * userData)
 {
-  this->selCBList->addCallback((SoCallbackListCB *)f, userData);
+  SoSelectionCBTrampolines::addPath(this->selCBList, f, userData);
 }
 
 /*!
@@ -549,7 +596,7 @@ SoSelection::addSelectionCallback(SoSelectionPathCB * f, void * userData)
 void
 SoSelection::removeSelectionCallback(SoSelectionPathCB * f, void * userData)
 {
-  this->selCBList->removeCallback((SoCallbackListCB *)f, userData);
+  SoSelectionCBTrampolines::removePath(this->selCBList, f, userData);
 }
 
 /*!
@@ -561,7 +608,7 @@ SoSelection::removeSelectionCallback(SoSelectionPathCB * f, void * userData)
 void
 SoSelection::addDeselectionCallback(SoSelectionPathCB * f, void * userData)
 {
-  this->deselCBList->addCallback((SoCallbackListCB *)f, userData);
+  SoSelectionCBTrampolines::addPath(this->deselCBList, f, userData);
 }
 
 /*!
@@ -572,7 +619,7 @@ SoSelection::addDeselectionCallback(SoSelectionPathCB * f, void * userData)
 void
 SoSelection::removeDeselectionCallback(SoSelectionPathCB * f, void * userData)
 {
-  this->deselCBList->removeCallback((SoCallbackListCB *)f, userData);
+  SoSelectionCBTrampolines::removePath(this->deselCBList, f, userData);
 }
 
 /*!
@@ -587,7 +634,7 @@ SoSelection::removeDeselectionCallback(SoSelectionPathCB * f, void * userData)
 void
 SoSelection::addStartCallback(SoSelectionClassCB * f, void * userData)
 {
-  this->startCBList->addCallback((SoCallbackListCB *)f, userData);
+  SoSelectionCBTrampolines::addClass(this->startCBList, f, userData);
 }
 
 /*!
@@ -598,7 +645,7 @@ SoSelection::addStartCallback(SoSelectionClassCB * f, void * userData)
 void
 SoSelection::removeStartCallback(SoSelectionClassCB * f, void * userData)
 {
-  this->startCBList->removeCallback((SoCallbackListCB *)f, userData);
+  SoSelectionCBTrampolines::removeClass(this->startCBList, f, userData);
 }
 
 /*!
@@ -611,7 +658,7 @@ SoSelection::removeStartCallback(SoSelectionClassCB * f, void * userData)
 void
 SoSelection::addFinishCallback(SoSelectionClassCB * f, void * userData)
 {
-  this->finishCBList->addCallback((SoCallbackListCB *)f, userData);
+  SoSelectionCBTrampolines::addClass(this->finishCBList, f, userData);
 }
 
 /*!
@@ -622,7 +669,7 @@ SoSelection::addFinishCallback(SoSelectionClassCB * f, void * userData)
 void
 SoSelection::removeFinishCallback(SoSelectionClassCB * f, void * userData)
 {
-  this->finishCBList->removeCallback((SoCallbackListCB *)f, userData);
+  SoSelectionCBTrampolines::removeClass(this->finishCBList, f, userData);
 }
 
 /*!
@@ -705,7 +752,7 @@ SoSelection::getPickMatching(void) const
 void
 SoSelection::addChangeCallback(SoSelectionClassCB * f, void * userData)
 {
-  this->changeCBList->addCallback((SoCallbackListCB *)f, userData);
+  SoSelectionCBTrampolines::addClass(this->changeCBList, f, userData);
 }
 
 /*!
@@ -715,7 +762,7 @@ SoSelection::addChangeCallback(SoSelectionClassCB * f, void * userData)
 void
 SoSelection::removeChangeCallback(SoSelectionClassCB * f, void * userData)
 {
-  this->changeCBList->removeCallback((SoCallbackListCB *)f, userData);
+  SoSelectionCBTrampolines::removeClass(this->changeCBList, f, userData);
 }
 
 /*!
