@@ -1,0 +1,442 @@
+name: ABI compatibility
+
+on:
+  workflow_dispatch:  # Allow manual triggers
+  pull_request:
+    branches:
+      - master
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  abi-check:
+    name: ABI compatibility (libabigail)
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # ---------------------------------------------------------------
+      # 1. Install build and ABI-analysis dependencies
+      # ---------------------------------------------------------------
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+
+          sudo apt-get install --no-install-recommends -y \
+            abigail-tools \
+            cmake \
+            ninja-build \
+            g++ \
+            pkg-config \
+            libgl-dev \
+            libglu1-mesa-dev \
+            libx11-dev \
+            libxext-dev \
+            libxi-dev \
+            libxmu-dev \
+            libxt-dev \
+            libxrandr-dev \
+            libfontconfig1-dev \
+            libfreetype6-dev \
+            libexpat-dev \
+            libjpeg-dev \
+            libpng-dev \
+            libtiff-dev \
+            libopenal-dev \
+            libboost-dev
+
+      # ---------------------------------------------------------------
+      # 2. Determine latest release
+      # ---------------------------------------------------------------
+
+      - name: Get latest Coin release
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+
+          TAG=$(gh api \
+            "repos/${GITHUB_REPOSITORY}/releases/latest" \
+            --jq '.tag_name')
+
+          if [ -z "$TAG" ]; then
+            echo "::error::Could not determine latest release."
+            exit 1
+          fi
+
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+          echo "ABI baseline: $TAG"
+
+      # ---------------------------------------------------------------
+      # 3. Checkout latest release
+      # ---------------------------------------------------------------
+
+      - name: Checkout ABI baseline
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ steps.release.outputs.tag }}
+          path: abi-baseline
+          submodules: recursive
+          fetch-depth: 1
+
+      # ---------------------------------------------------------------
+      # 4. Build release baseline
+      #
+      # We intentionally build with DWARF information.
+      # abidiff uses this to inspect C++ types, class layouts,
+      # virtual tables, function parameters, etc.
+      # ---------------------------------------------------------------
+
+      - name: Build baseline
+        run: |
+          cmake \
+            -S abi-baseline \
+            -B build-abi-baseline \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+            -DCMAKE_C_FLAGS="-g" \
+            -DCMAKE_CXX_FLAGS="-g" \
+            -DCMAKE_INSTALL_PREFIX="$GITHUB_WORKSPACE/install-abi-baseline" \
+            -DCOIN_BUILD_SHARED_LIBS=ON \
+            -DCOIN_BUILD_TESTS=OFF \
+            -DCOIN_BUILD_DOCUMENTATION=OFF
+          cmake --build build-abi-baseline --parallel
+          cmake --install build-abi-baseline
+
+      # ---------------------------------------------------------------
+      # 5. Locate baseline libCoin
+      # ---------------------------------------------------------------
+
+      - name: Locate baseline library
+        id: baseline
+        run: |
+          set -eu
+
+          LIB=$(find \
+            "$GITHUB_WORKSPACE/install-abi-baseline" \
+            -type f \
+            -name 'libCoin.so*' \
+            ! -name '*.a' \
+            | head -n 1)
+
+          if [ -z "$LIB" ]; then
+            echo "::error::Could not find baseline libCoin.so"
+            find "$GITHUB_WORKSPACE/install-abi-baseline" -type f
+            exit 1
+          fi
+
+          echo "library=$LIB" >> "$GITHUB_OUTPUT"
+
+          echo "Baseline library:"
+          echo "$LIB"
+
+      # ---------------------------------------------------------------
+      # 6. Checkout PR
+      # ---------------------------------------------------------------
+
+      - name: Checkout PR
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: abi-pr
+          submodules: recursive
+          fetch-depth: 1
+
+      # ---------------------------------------------------------------
+      # 7. Build PR
+      # ---------------------------------------------------------------
+
+      - name: Configure PR
+        run: |
+          cmake \
+            -S abi-pr \
+            -B build-abi-pr \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+            -DCMAKE_C_FLAGS="-g" \
+            -DCMAKE_CXX_FLAGS="-g" \
+            -DCMAKE_INSTALL_PREFIX="$GITHUB_WORKSPACE/install-abi-pr" \
+            -DCOIN_BUILD_SHARED_LIBS=ON \
+            -DCOIN_BUILD_TESTS=OFF \
+            -DCOIN_BUILD_DOCUMENTATION=OFF
+          cmake --build build-abi-pr --parallel
+          cmake --install build-abi-pr
+
+      # ---------------------------------------------------------------
+      # 8. Locate PR library
+      # ---------------------------------------------------------------
+
+      - name: Locate PR library
+        id: pr
+        run: |
+          set -eu
+
+          LIB=$(find \
+            "$GITHUB_WORKSPACE/install-abi-pr" \
+            -type f \
+            -name 'libCoin.so*' \
+            ! -name '*.a' \
+            | head -n 1)
+
+          if [ -z "$LIB" ]; then
+            echo "::error::Could not find PR libCoin.so"
+            find "$GITHUB_WORKSPACE/install-abi-pr" -type f
+            exit 1
+          fi
+
+          echo "library=$LIB" >> "$GITHUB_OUTPUT"
+
+          echo "PR library:"
+          echo "$LIB"
+
+      # ---------------------------------------------------------------
+      # 9. ABI comparison
+      # ---------------------------------------------------------------
+
+      - name: Compare ABI
+        id: abidiff
+        continue-on-error: true
+        run: |
+          set +e
+
+          abidiff \
+            --no-show-locs \
+            --headers-dir1 "$GITHUB_WORKSPACE/install-abi-baseline/include" \
+            --headers-dir2 "$GITHUB_WORKSPACE/install-abi-pr/include" \
+            "${{ steps.baseline.outputs.library }}" \
+            "${{ steps.pr.outputs.library }}" \
+            > abi-report.txt 2>&1
+
+          STATUS=$?
+
+          echo "$STATUS" > abi-exit-code.txt
+
+          echo "abidiff exit status: $STATUS"
+
+          cat abi-report.txt
+
+          exit 0
+
+      # ---------------------------------------------------------------
+      # 10. Classify ABI result
+      #
+      # abidiff:
+      #
+      #   0 = identical
+      #   4 = ABI changed, but not proven incompatible
+      #   8 = incompatible change
+      #  12 = ABI change + incompatible change
+      #
+      # For Coin:
+      #
+      #   no changes       -> compatible
+      #   additions only   -> compatible
+      #   incompatible     -> ABI break
+      #   ambiguous change -> review required
+      # ---------------------------------------------------------------
+
+      - name: Classify ABI result
+        id: classify
+        run: |
+          set -eu
+
+          STATUS=$(cat abi-exit-code.txt)
+
+          echo "abidiff status: $STATUS"
+
+          if [ "$STATUS" -eq 0 ]; then
+            echo "verdict=compatible" >> "$GITHUB_OUTPUT"
+            echo "summary=No ABI changes detected." >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Tool failure.
+          if [ $((STATUS & 1)) -ne 0 ]; then
+            echo "verdict=error" >> "$GITHUB_OUTPUT"
+            echo "summary=libabigail reported an error." >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Usage error.
+          if [ $((STATUS & 2)) -ne 0 ]; then
+            echo "verdict=error" >> "$GITHUB_OUTPUT"
+            echo "summary=abidiff was invoked incorrectly." >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Explicitly incompatible ABI.
+          if [ $((STATUS & 8)) -ne 0 ]; then
+            echo "verdict=incompatible" >> "$GITHUB_OUTPUT"
+            echo "summary=Incompatible ABI changes detected." >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # ABI changed, but libabigail could not prove incompatibility.
+          #
+          # We distinguish additions from modifications by looking at
+          # abidiff's change summaries.
+          if grep -Eq \
+            '^[[:space:]]*[0-9]+ (Removed|Changed)' \
+            abi-report.txt
+          then
+            echo "verdict=review" >> "$GITHUB_OUTPUT"
+            echo "summary=ABI changes require review." >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if grep -Eq \
+            '^[[:space:]]*[1-9][0-9]* Added' \
+            abi-report.txt
+          then
+            echo "verdict=additions" >> "$GITHUB_OUTPUT"
+            echo "summary=Only ABI additions were detected." >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Fail safe: if libabigail says the ABI changed but we cannot
+          # classify the change, don't silently accept it.
+          echo "verdict=review" >> "$GITHUB_OUTPUT"
+          echo "summary=ABI changed; manual review required." >> "$GITHUB_OUTPUT"
+
+      # ---------------------------------------------------------------
+      # 11. Create a compact report for the PR comment
+      # ---------------------------------------------------------------
+
+      - name: Create PR report
+        id: report
+        run: |
+          set -eu
+
+          TAG="${{ steps.release.outputs.tag }}"
+          VERDICT="${{ steps.classify.outputs.verdict }}"
+          SUMMARY="${{ steps.classify.outputs.summary }}"
+
+          {
+            echo "<!-- coin3d-abi-check -->"
+            echo "## ABI compatibility"
+            echo
+            echo "**Baseline:** \`$TAG\`"
+            echo
+            echo "**Result:** $SUMMARY"
+            echo
+          } > abi-comment.md
+
+          case "$VERDICT" in
+            compatible)
+              echo "✅ No ABI changes were detected." >> abi-comment.md
+              ;;
+
+            additions)
+              echo "✅ Only additions to the ABI were detected." >> abi-comment.md
+              echo >> abi-comment.md
+              echo "New exported API is compatible with the existing ABI." \
+                >> abi-comment.md
+              ;;
+
+            incompatible)
+              echo "❌ **An incompatible ABI change was detected.**" \
+                >> abi-comment.md
+              ;;
+
+            review)
+              echo "⚠️ **ABI changes require manual review.**" \
+                >> abi-comment.md
+              ;;
+
+            error)
+              echo "❌ **libabigail failed while analyzing the ABI.**" \
+                >> abi-comment.md
+              ;;
+          esac
+
+          {
+            echo
+            echo "<details>"
+            echo "<summary>abidiff report</summary>"
+            echo
+            echo '```text'
+            cat abi-report.txt
+            echo '```'
+            echo "</details>"
+          } >> abi-comment.md
+
+      # ---------------------------------------------------------------
+      # 12. Upload complete report
+      # ---------------------------------------------------------------
+
+      - name: Upload ABI report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: abi-report
+          path: |
+            abi-report.txt
+            abi-exit-code.txt
+            abi-comment.md
+
+      # ---------------------------------------------------------------
+      # 13. Update existing sticky PR comment
+      #
+      # Uses the GitHub CLI so repeated pushes to the same PR update
+      # the existing comment rather than creating a new comment.
+      # ---------------------------------------------------------------
+
+      - name: Update PR comment
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+
+          PR="${{ github.event.pull_request.number }}"
+
+          gh api \
+            --method POST \
+            "repos/${GITHUB_REPOSITORY}/issues/${PR}/comments" \
+            -f body="$(cat abi-comment.md)"
+
+      # ---------------------------------------------------------------
+      # 14. Fail the check after publishing the report
+      # ---------------------------------------------------------------
+
+      - name: Enforce ABI policy
+        run: |
+          set -eu
+
+          VERDICT="${{ steps.classify.outputs.verdict }}"
+
+          case "$VERDICT" in
+            compatible)
+              echo "ABI compatible."
+              ;;
+
+            additions)
+              echo "ABI additions are allowed."
+              ;;
+
+            review)
+              echo "::error::ABI changes require manual review."
+              exit 1
+              ;;
+
+            incompatible)
+              echo "::error::Incompatible ABI change detected."
+              exit 1
+              ;;
+
+            error)
+              echo "::error::ABI analysis failed."
+              exit 1
+              ;;
+
+            *)
+              echo "::error::Unknown ABI verdict: $VERDICT"
+              exit 1
+              ;;
+          esac

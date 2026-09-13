@@ -53,6 +53,8 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include "coindefs.h"
+
 
 /*!
   An SbPlane instantiated with the default constructor will be
@@ -109,9 +111,9 @@ SbPlane::SbPlane(const SbVec3f& p0, const SbVec3f& p1, const SbVec3f& p2)
 
   // we test and warn about a null vector above
   (void) this->normal.normalize();
-  //     N·point
+  //     N dot point
   // d = -------, |N| == 1
-  //       |N|²
+  //       |N|^2
 
   this->distance = this->normal.dot(p0);
 }
@@ -134,9 +136,9 @@ SbPlane::SbPlane(const SbVec3f& normalref, const SbVec3f& point)
   // we test and warn about a null vector above
   (void) this->normal.normalize();
 
-  //     N·point
+  //     N dot point
   // d = -------, |N| == 1
-  //       |N|²
+  //       |N|^2
 
   this->distance = this->normal.dot(point);
 }
@@ -183,15 +185,15 @@ SbPlane::intersect(const SbLine& l, SbVec3f& intersection) const
   //
   // We can also easily see that a point must satisfy this equation to lie
   // in the plane:
-  //                    N·(Q - d*N) = 0, where N is the normal vector,
+  //                    N dot (Q - d*N) = 0, where N is the normal vector,
   //                                     Q is the point and d the offset
   //                                     from the origin.
   //
   // Combining these two equations and simplifying we get:
   //
-  //                          d*|N|² - N·P
+  //                          d*|N|^2 - N dot P
   //                    t = ----------------, |N| == 1
-  //                               N·D
+  //                               N dot D
   //
   // Substituting t back in (1), we've solved the problem.
   //                                                         19980816 mortene.
@@ -375,7 +377,7 @@ operator !=(const SbPlane& p1, const SbPlane& p2)
   debug version of library, method does nothing in an optimized build.
 */
 void
-SbPlane::print(FILE * fp) const
+SbPlane::print(FILE * COIN_UNUSED_ARG(fp)) const
 {
 #if COIN_DEBUG
   this->getNormal().print(fp);

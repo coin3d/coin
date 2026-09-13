@@ -9,77 +9,81 @@ on:
 
 jobs:
   ubuntu-build:
-    name: Ubuntu Build
+    name: Ubuntu · legacy renderer ${{ matrix.legacy_renderer.label }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        legacy_renderer:
+          - value: 'ON'
+            label: enabled
+          - value: 'OFF'
+            label: disabled
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Create build directory and run CMake
+      - name: Install dependencies
         run: |
           sudo apt-get -y update
           sudo apt-get -y install freeglut3-dev
-          cmake -S . -B cmake_build_dir -G "Unix Makefiles" \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_INSTALL_PREFIX=cmake_install_dir \
-            -DCOIN_STRICT_WARNINGS=ON
-      - name: Build project
-        run: cmake --build cmake_build_dir --target install --config Release -- -j4
-      - name: Run tests
-        run:  ctest -C Release -VV
-        working-directory: cmake_build_dir
+      - name: Build and test
+        run: .github/scripts/build-and-test.sh "${{ matrix.legacy_renderer.value }}"
       - name: Create Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Ubuntu-Artifacts
+          name: Ubuntu-Artifacts-LegacyGL-${{ matrix.legacy_renderer.value }}
           path: cmake_install_dir/
         if: always()
 
   windows-build:
-    name: Windows Build
+    name: Windows · legacy renderer ${{ matrix.legacy_renderer.label }}
     runs-on: windows-2022
+    strategy:
+      fail-fast: false
+      matrix:
+        legacy_renderer:
+          - value: 'ON'
+            label: enabled
+          - value: 'OFF'
+            label: disabled
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Create build directory and run CMake
-        shell: cmd
-        run: |
-          cmake -S . -B cmake_build_dir -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=cmake_install_dir
-      - name: Build project
-        run: cmake --build cmake_build_dir --target INSTALL --config Release -- /nologo /verbosity:minimal /maxcpucount:2 /property:MultiProcessorCompilation=true
-      - name: Run tests
-        run:  ctest -C Release -VV
-        working-directory: cmake_build_dir
+      - name: Build and test
+        shell: pwsh
+        run: .github/scripts/build-and-test.ps1 -LegacyRenderer "${{ matrix.legacy_renderer.value }}"
       - name: Create Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Windows-Artifacts
+          name: Windows-Artifacts-LegacyGL-${{ matrix.legacy_renderer.value }}
           path: cmake_install_dir/
         if: always()
 
   macos-build:
-    name: MacOS Build
+    name: macOS · legacy renderer ${{ matrix.legacy_renderer.label }}
     runs-on: macos-14
+    strategy:
+      fail-fast: false
+      matrix:
+        legacy_renderer:
+          - value: 'ON'
+            label: enabled
+          - value: 'OFF'
+            label: disabled
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Create build directory and run CMake
-        run: |
-          cmake -S . -B cmake_build_dir -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=cmake_install_dir -DCMAKE_CXX_STANDARD=11 -DCOIN_STRICT_WARNINGS=ON
-      - name: Build project
-        run: cmake --build cmake_build_dir --target install --config Release -- -j4
-      - name: Run tests
-        run:  ctest -C Release -VV
-        working-directory: cmake_build_dir
+      - name: Build and test
+        run: .github/scripts/build-and-test.sh "${{ matrix.legacy_renderer.value }}"
       - name: Create Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: MacOS-Artifacts
+          name: MacOS-Artifacts-LegacyGL-${{ matrix.legacy_renderer.value }}
           path: cmake_install_dir/
         if: always()
-        

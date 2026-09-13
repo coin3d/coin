@@ -39,6 +39,7 @@
 
 #include "rendering/SoVertexArrayIndexer.h"
 
+#include <Inventor/system/gl.h>
 #include <cassert>
 #include <cstring>
 #include <cstdio>
@@ -291,7 +292,7 @@ SoVertexArrayIndexer::render(SoState * state, const SbBool renderasvbo, const ui
     if (SoGLDriverDatabase::isSupported(glue, SO_GL_MULTIDRAW_ELEMENTS)) {
       cc_glglue_glMultiDrawElements(glue,
                                     this->target,
-                                    (GLsizei*) this->countarray.getArrayPtr(),
+                                    this->countarray.getArrayPtr(),
                                     GL_UNSIGNED_INT,
                                     (const GLvoid**) this->ciarray.getArrayPtr(),
                                     this->countarray.getLength());

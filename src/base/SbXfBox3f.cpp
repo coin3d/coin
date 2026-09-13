@@ -48,6 +48,8 @@
 #include <cfloat>
 #include <Inventor/errors/SoDebugError.h>
 
+#include "coindefs.h"
+
 // this value is used to signal an invalid inverse matrix
 #define INVALID_TAG FLT_MAX
 
@@ -758,7 +760,7 @@ SbXfBox3f::getVolume(void) const
   debug version of library, method does nothing in an optimized build.
  */
 void
-SbXfBox3f::print(FILE * fp) const
+SbXfBox3f::print(FILE * COIN_UNUSED_ARG(fp)) const
 {
 #if COIN_DEBUG
   SbVec3f minv, maxv;

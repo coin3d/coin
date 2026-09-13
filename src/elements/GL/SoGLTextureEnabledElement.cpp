@@ -85,7 +85,7 @@ SoGLTextureEnabledElement::~SoGLTextureEnabledElement(void)
 
 /*!
   Sets the state of this element. Used for enabling GL_TEXTURE_2D and
-  disabling GL_TEXTURE_2D, GL_TEXTURE_RECTANGLE_EXT or
+  disabling GL_TEXTURE_2D, GL_TEXTURE_RECTANGLE_ARB or
   GL_TEXTURE_CUBE_MAP.
 */
 void
@@ -98,7 +98,7 @@ SoGLTextureEnabledElement::set(SoState * const state,
 }
 
 /*!
-  Enables GL_TEXTURE_RECTANGLE_EXT/NV. GL_TEXTURE_2D/GL_TEXTURE_CUBE_MAP will be
+  Enables GL_TEXTURE_RECTANGLE_ARB/NV. GL_TEXTURE_2D/GL_TEXTURE_CUBE_MAP will be
   disabled if it is enabled earlier.
 
   \since Coin 2.2
@@ -226,7 +226,7 @@ SoGLTextureEnabledElement::updategl(const Mode newvalue, const Mode oldvalue)
     glDisable(GL_TEXTURE_2D);
     break;
   case RECTANGLE:
-    glDisable(GL_TEXTURE_RECTANGLE_EXT);
+    glDisable(GL_TEXTURE_RECTANGLE_ARB);
     break;
   case CUBEMAP:
     glDisable(GL_TEXTURE_CUBE_MAP);
@@ -242,7 +242,7 @@ SoGLTextureEnabledElement::updategl(const Mode newvalue, const Mode oldvalue)
     glEnable(GL_TEXTURE_2D);
     break;
   case RECTANGLE:
-    glEnable(GL_TEXTURE_RECTANGLE_EXT);
+    glEnable(GL_TEXTURE_RECTANGLE_ARB);
     break;
   case CUBEMAP:
     glEnable(GL_TEXTURE_CUBE_MAP);

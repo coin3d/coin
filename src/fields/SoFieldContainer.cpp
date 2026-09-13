@@ -876,10 +876,8 @@ SoFieldContainer::addCopy(const SoFieldContainer * orig,
   assert(copiedinstances);
   assert(contentscopied);
 
-  SbBool s = copiedinstances->put(orig, copy);
-  assert(s);
-  s = contentscopied->put(orig, FALSE);
-  assert(s);
+  if (!copiedinstances->put(orig, copy)) assert(!"put(orig, copy) failed");
+  if (!contentscopied->put(orig, FALSE)) assert(!"put(orig, FALSE) failed");
 }
 
 
@@ -984,8 +982,7 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
   // this is handled by the Proto node.
   if (!protoinst) {
     SbBool copied = FALSE;
-    SbBool chk = contentscopied->get(orig, copied);
-    assert(chk);
+    if (!contentscopied->get(orig, copied)) assert(!"get(orig, copied) failed");
 
     if (!copied) {
       // we have to update the dictionary _before_ calling
@@ -997,8 +994,7 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
       // }
       //
       // pederb, 2002-09-04
-      chk = contentscopied->put(orig, TRUE);
-      assert(!chk && "the key already exists");
+      if (contentscopied->put(orig, TRUE)) assert(!"the key already exists");
       cp->copyContents(orig, copyconnections);
     }
   }
@@ -1095,7 +1091,6 @@ SoFieldContainer::getFieldsMemorySize(size_t & managed, size_t & unmanaged) cons
       // well as the multi-fields
 
       const SoSField * sfield = static_cast<const SoSField *>(field);
-      SoType sftype = sfield->getTypeId();
 
       if (sfield->getTypeId().isDerivedFrom(SoSFImage::getClassTypeId())) {
         const SoSFImage * imgfield = static_cast<const SoSFImage *>(sfield);
@@ -1242,8 +1237,12 @@ SoFieldContainer::getFieldsMemorySize(size_t & managed, size_t & unmanaged) cons
       } else if (mftypekey == MFVec4us_string.getString()) {
         elementsize = sizeof(SbTypeInfo<SoMFVec4us>::DataType[2]) / 2;
       } else {
-        // unsupported field type
-        elementsize = -1;
+        // unsupported field type -- contribute nothing to the total
+        // rather than corrupting it: elementsize is a size_t, so the
+        // previous "-1 means unknown" sentinel here actually wrapped
+        // to SIZE_MAX and then overflowed further down in
+        // "managed/unmanaged += elementsize * numelements".
+        elementsize = 0;
       }
 
 #undef SBNAMESTRING

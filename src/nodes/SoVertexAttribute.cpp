@@ -285,13 +285,11 @@ SoVertexAttribute::GLRender(SoGLRenderAction * action)
   SoVertexAttribute::doAction((SoAction *) action);
 
   // check if vbo rendering should be used and create vbo if yes
-  SbBool setvbo = FALSE;
   // get data length but make sure that field has been created before (after typeName was set)
   int num = PRIVATE(this)->attributedata->data ? PRIVATE(this)->attributedata->data->getNum() : 0;
   SoBase::staticDataLock();
   if (SoGLVBOElement::shouldCreateVBO(state, num)) {
     SbBool dirty = FALSE;
-    setvbo = TRUE;
     if (PRIVATE(this)->attributedata->vbo == NULL) {
       PRIVATE(this)->attributedata->vbo = new SoVBO;
       dirty = TRUE;

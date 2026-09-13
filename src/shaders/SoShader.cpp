@@ -68,6 +68,53 @@
   installed). However, we recommend using GLSL since we will focus
   mostly on support this shader language.
 
+  \e Constructing \e shaders \e at \e run-time
+
+  The scene graph above can just as well be built up programmatically
+  instead of read from an \c .iv file -- there is no separate "runtime
+  loading" API for shaders, since they are just ordinary nodes:
+
+  \code
+  SoSeparator * root = new SoSeparator;
+
+  SoShaderProgram * program = new SoShaderProgram;
+  root->addChild(program);
+
+  SoVertexShader * vshader = new SoVertexShader;
+  vshader->sourceProgram.setValue("myvertexshader.glsl");
+
+  SoFragmentShader * fshader = new SoFragmentShader;
+  fshader->sourceProgram.setValue("myfragmentshader.glsl");
+
+  program->shaderObject.set1Value(0, vshader);
+  program->shaderObject.set1Value(1, fshader);
+
+  root->addChild(new SoCube);
+  \endcode
+
+  \c sourceProgram defaults to being interpreted as a filename
+  (SoShaderObject::sourceType defaults to
+  SoShaderObject::FILENAME). If the shader source itself is only
+  available at run-time -- generated on the fly, downloaded, extracted
+  from an archive, or otherwise not sitting in a plain file Coin can
+  open by path -- set \c sourceType to
+  SoShaderObject::GLSL_PROGRAM and pass the actual GLSL source text to
+  \c sourceProgram instead of a filename:
+
+  \code
+  SbString glslsource = "..."; // built up or loaded however you like
+
+  SoVertexShader * vshader = new SoVertexShader;
+  vshader->sourceType = SoShaderObject::GLSL_PROGRAM;
+  vshader->sourceProgram.setValue(glslsource);
+  \endcode
+
+  Since the shader program is just a node like any other, this works
+  identically regardless of which action ends up traversing the scene
+  graph -- rendering straight to screen with SoGLRenderAction, or
+  rendering to an SoOffscreenRenderer -- there is nothing
+  render-target-specific about setting up shaders.
+
   Coin defines some named parameters that can be added by the
   application programmer, and which will be automatically updated by
   Coin while traversing the scene graph.

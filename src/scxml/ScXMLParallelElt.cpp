@@ -223,9 +223,7 @@ ScXMLParallelEltReader::read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDoc
             parallel->setDataModel(datamodelelt);
           }
         }
-        else if (parentelt->isOfType(ScXMLParallelElt::getClassTypeId())) {
-          ScXMLParallelElt * parent =
-            coin_assert_cast<ScXMLParallelElt *>(parentelt);
+        else if (ScXMLParallelElt * parent = coin_safe_cast<ScXMLParallelElt *>(parentelt)) {
           int c = 0;
           if (parent->getOnEntry()) {
             ScXMLOnEntryElt * onentryelt =
@@ -564,7 +562,8 @@ void
 ScXMLParallelElt::copyContents(const ScXMLElt * rhs)
 {
   inherited::copyContents(rhs);
-  const ScXMLParallelElt * orig = coin_assert_cast<const ScXMLParallelElt *>(rhs);
+  const ScXMLParallelElt * orig = coin_safe_cast<const ScXMLParallelElt *>(rhs);
+  if (orig == NULL) return;
   this->setSrcAttribute(orig->getSrcAttribute());
 
   int c;

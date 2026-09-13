@@ -54,6 +54,7 @@ public:
   SbMatrix(const SbMat & matrix);
   SbMatrix(const SbMat * matrix);
   explicit SbMatrix(const SbDPMatrix & matrix);
+  SbMatrix(const SbMatrix & matrix) = default;
   ~SbMatrix(void);
 
   void setValue(const SbMat & m);

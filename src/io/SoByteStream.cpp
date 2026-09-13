@@ -39,6 +39,7 @@
 
 SoByteStream::SoByteStream(void)
 {
+  this->pimpl = NULL;
   COIN_STUB();
 }
 

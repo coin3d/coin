@@ -970,7 +970,7 @@ SbDPViewVolume::zNarrow(double nearval, double farval) const
   SbDPViewVolume narrowed = *this;
 
   narrowed.nearDist = this->nearDist + (1.0f - nearval) * this->nearToFar;
-  narrowed.nearToFar = this->nearDist + this->nearToFar * (1.0f - farval);
+  narrowed.nearToFar = this->nearToFar * (nearval - farval);
 
   SbVec3d dummy;
   this->getPlaneRectangle(narrowed.nearDist - this->nearDist,
@@ -1158,7 +1158,7 @@ SbDPViewVolume::getDepth(void) const
   debug version of library, method does nothing in an optimized build.
  */
 void
-SbDPViewVolume::print(FILE * fp) const
+SbDPViewVolume::print(FILE * COIN_UNUSED_ARG(fp)) const
 {
 #if COIN_DEBUG
   fprintf( fp, "  projtype: %d\n", static_cast<int>(this->getProjectionType()) );

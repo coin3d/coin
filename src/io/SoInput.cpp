@@ -1143,7 +1143,10 @@ SoInput::read(SbName & n, SbBool validIdent)
     SbString s;
     char buf[256];
     char * b = buf;
-    char c;
+    /* Only read below when gotchar is TRUE, which happens only right
+       after fi->get(c) sets both together. Initialized here only
+       because the compiler can't correlate the two variables. */
+    char c = '\0';
     SbBool gotchar = FALSE;
 
     switch (codepath) {
@@ -1213,9 +1216,12 @@ SoInput::read(SbName & n, SbBool validIdent)
 // to warn if the data doesn't fit in the storage type?
 // std::numeric_limits<type>::max() ought to be all the information
 // needed.  20070520 larsa
+//
+// Assumes a SoInput_FileInfo * named "fi" is already in scope: every
+// call site is the non-binary branch of a SoInput::read()/readByte()
+// overload that has already fetched it via getTopOfStack() to check
+// isBinary().
 #define READ_NUM(reader, readType, num, type) \
-  SoInput_FileInfo * fi = this->getTopOfStack(); \
-  assert(fi); \
   if (!fi->skipWhiteSpace()) return FALSE; \
   readType _tmp; \
   if (!fi->reader(_tmp)) return FALSE; \
@@ -2326,7 +2332,9 @@ SoInput::makeRoomInBuf(size_t /* nBytes */)
 void
 SoInput::convertShort(char * from, short * s)
 {
-  *s = (short) (coin_ntoh_uint16(*((uint16_t*)from)));
+  uint16_t tmp;
+  memcpy(&tmp, from, sizeof(tmp));
+  *s = (short) (coin_ntoh_uint16(tmp));
 }
 
 /*!
@@ -2337,7 +2345,9 @@ SoInput::convertShort(char * from, short * s)
 void
 SoInput::convertInt32(char * from, int32_t * l)
 {
-  *l = (int32_t) (coin_ntoh_uint32(*((uint32_t*)from)));
+  uint32_t tmp;
+  memcpy(&tmp, from, sizeof(tmp));
+  *l = (int32_t) (coin_ntoh_uint32(tmp));
 }
 
 /*!

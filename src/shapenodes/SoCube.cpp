@@ -149,15 +149,7 @@ SoCube::GLRender(SoGLRenderAction * action)
      binding == SoMaterialBindingElement::PER_FACE ||
      binding == SoMaterialBindingElement::PER_FACE_INDEXED);
 
-  SbBool doTextures = FALSE;
-  SbBool do3DTextures = FALSE;
-  if (SoGLMultiTextureEnabledElement::get(state, 0)) {
-    doTextures = TRUE;
-    if (SoGLMultiTextureEnabledElement::getMode(state,0) ==
-        SoMultiTextureEnabledElement::TEXTURE3D) {
-      do3DTextures = TRUE;
-    }
-  }
+  SbBool doTextures = SoGLMultiTextureEnabledElement::get(state, 0);
 
   SoMaterialBundle mb(action);
   mb.sendFirst();
@@ -173,11 +165,11 @@ SoCube::GLRender(SoGLRenderAction * action)
       flags |= SOGL_NEED_TEXCOORDS;
       break;
     case SoMultiTextureEnabledElement::CUBEMAP:
+    case SoMultiTextureEnabledElement::TEXTURE3D:
       flags |= SOGL_NEED_3DTEXCOORDS;
       break;
     }
   }
-  else if (do3DTextures) flags |= SOGL_NEED_3DTEXCOORDS;
   if (sendNormals) flags |= SOGL_NEED_NORMALS;
 
   sogl_render_cube(width.getValue(),
