@@ -190,7 +190,8 @@ heap_restore_duplicate_index(cc_heap * h, void * o)
 
 /*!
 
-  Construct a heap. \a size is the initial array size.
+  Construct a heap. \a size is the initial array size. A zero size is
+  normalized to one element of initial capacity.
 
   For a minimum heap \a comparecb should return 1 if the first element
   is less than the second, zero if they are equal or the first element
@@ -212,8 +213,7 @@ cc_heap_construct(unsigned int size,
                   cc_heap_compare_cb * comparecb,
                   SbBool support_remove)
 {
-  if (size == 0)
-    return NULL;
+  if (size == 0) size = 1;
 
   cc_heap * h = static_cast<cc_heap *>(malloc(sizeof(cc_heap)));
   assert(h);
@@ -327,7 +327,10 @@ cc_heap_extract_top(cc_heap * h)
 int
 cc_heap_remove(cc_heap * h, void * o)
 {
-  if (!h->support_remove) return FALSE;
+  if (!h->support_remove) {
+    assert(h->support_remove);
+    return FALSE;
+  }
 
   void * tmp;
   if (!cc_dict_get(h->hash, reinterpret_cast<uintptr_t>(o), &tmp))
@@ -354,12 +357,18 @@ cc_heap_remove(cc_heap * h, void * o)
 
 /*!
   Updates the heap \a h for the new value of existing object \a o; if the
-  object is present TRUE is returned, otherwise FALSE. If the same pointer
-  occurs more than once, all occurrences are reorganized.
+  object is present TRUE is returned, otherwise FALSE. The heap must have
+  been created with support_remove. If the same pointer occurs more than
+  once, all occurrences are reorganized.
 */
 int
 cc_heap_update(cc_heap * h, void * o)
 {
+  if (!h->support_remove) {
+    assert(h->support_remove);
+    return FALSE;
+  }
+
   void * tmp;
   if (!cc_dict_get(h->hash, reinterpret_cast<uintptr_t>(o), &tmp))
     return FALSE;
@@ -753,7 +762,7 @@ BOOST_AUTO_TEST_CASE(ccheap_extracts_in_comparator_order)
   }
 }
 
-BOOST_AUTO_TEST_CASE(ccheap_remove_reports_missing_and_unsupported_objects)
+BOOST_AUTO_TEST_CASE(ccheap_remove_reports_missing_objects)
 {
   CcHeapTestItem stored = { 2, TRUE };
   CcHeapTestItem absent = { 7, FALSE };
@@ -765,14 +774,6 @@ BOOST_AUTO_TEST_CASE(ccheap_remove_reports_missing_and_unsupported_objects)
   BOOST_CHECK_EQUAL(cc_heap_elements(indexed), 1u);
   BOOST_CHECK(cc_heap_get_top(indexed) == &stored);
   cc_heap_destruct(indexed);
-
-  cc_heap * unindexed = cc_heap_construct(2, ccheap_test_max_compare, FALSE);
-  BOOST_REQUIRE(unindexed != NULL);
-  cc_heap_add(unindexed, &stored);
-  BOOST_CHECK(!cc_heap_remove(unindexed, &stored));
-  BOOST_CHECK_EQUAL(cc_heap_elements(unindexed), 1u);
-  BOOST_CHECK(cc_heap_get_top(unindexed) == &stored);
-  cc_heap_destruct(unindexed);
 }
 
 BOOST_AUTO_TEST_CASE(ccheap_removes_root_and_last_element)
@@ -952,9 +953,15 @@ BOOST_AUTO_TEST_CASE(ccheap_equal_priorities_keep_all_distinct_objects)
   cc_heap_destruct(heap);
 }
 
-BOOST_AUTO_TEST_CASE(ccheap_rejects_zero_initial_capacity)
+BOOST_AUTO_TEST_CASE(ccheap_accepts_zero_initial_capacity)
 {
-  BOOST_CHECK(cc_heap_construct(0, ccheap_test_max_compare, TRUE) == NULL);
+  CcHeapTestItem item = { 7, TRUE };
+  cc_heap * heap = cc_heap_construct(0, ccheap_test_max_compare, TRUE);
+  BOOST_REQUIRE(heap != NULL);
+  cc_heap_add(heap, &item);
+  BOOST_CHECK(cc_heap_extract_top(heap) == &item);
+  BOOST_CHECK(cc_heap_empty(heap));
+  cc_heap_destruct(heap);
 }
 
 BOOST_AUTO_TEST_CASE(ccheap_exhaustive_small_heap_removals)
