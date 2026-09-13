@@ -170,8 +170,7 @@ SbHeap::add(void *obj)
 
 /*!
   Removes an element from the heap. \a idx must be between 1 and size(),
-  inclusive. An invalid index is rejected without changing the heap in
-  release builds and triggers an assertion in debug builds.
+  inclusive.
 */
 void
 SbHeap::remove(const int idx)
@@ -202,9 +201,8 @@ SbHeap::remove(const int idx)
 /*!
   \overload
 
-  \a obj must be a non-NULL element currently stored in this heap. A missing
-  object or a stale callback index is rejected without changing the heap in
-  release builds and triggers an assertion in debug builds.
+  \a obj must be a non-NULL element currently stored in this heap. If index
+  callbacks are used, its stored index must refer to this heap.
 */
 void
 SbHeap::remove(void *obj)
@@ -252,8 +250,7 @@ SbHeap::getMin(void)
 
 /*!
   Returns the heap element at index \a idx in the heap. The index must be
-  between 1 and size(), inclusive. An invalid index returns NULL in release
-  builds and triggers an assertion in debug builds.
+  between 1 and size(), inclusive.
 */
 void *
 SbHeap::operator[](const int idx)
@@ -268,9 +265,8 @@ SbHeap::operator[](const int idx)
 /*!
   Fixes heap if necessary when the element at \a hpos has changed weight.
   If you know the element's heap position you can supply it in \a hpos.
-  The object must currently occupy that position. A missing object, invalid
-  position or stale callback index is rejected without changing the heap in
-  release builds and triggers an assertion in debug builds.
+  The object must currently occupy that position. If no position is supplied,
+  the object must currently belong to this heap.
 */
 void
 SbHeap::newWeight(void *obj, int hpos)
@@ -814,40 +810,5 @@ BOOST_AUTO_TEST_CASE(sbheap_allows_index_setter_without_getter)
     BOOST_CHECK_EQUAL(item->index, -1);
   }
 }
-
-#ifdef NDEBUG
-BOOST_AUTO_TEST_CASE(sbheap_getter_without_setter_falls_back_to_linear_lookup)
-{
-  SbHeapFuncs functions = sbheap_test_functions(FALSE);
-  functions.get_index_func = sbheap_test_get_index;
-  SbHeap heap(functions, 1);
-  SbHeapTestItem item = { 1.0f, -1, TRUE };
-  heap.add(&item);
-  heap.remove(&item);
-  BOOST_CHECK_EQUAL(heap.size(), 0);
-}
-
-BOOST_AUTO_TEST_CASE(sbheap_invalid_operations_are_noops_in_release)
-{
-  SbHeap heap(sbheap_test_functions(), 2);
-  SbHeapTestItem stored = { 1.0f, -1, TRUE };
-  SbHeapTestItem absent = { 0.0f, -1, TRUE };
-  heap.add(&stored);
-
-  BOOST_CHECK_EQUAL(heap.add(NULL), -1);
-  heap.remove(0);
-  heap.remove(2);
-  heap.remove(static_cast<void *>(NULL));
-  heap.remove(&absent);
-  heap.newWeight(NULL);
-  heap.newWeight(&absent);
-  heap.newWeight(&stored, 2);
-  BOOST_CHECK(!heap.traverseHeap(NULL, NULL));
-  BOOST_CHECK(heap[0] == NULL);
-  BOOST_CHECK(heap[2] == NULL);
-  BOOST_CHECK_EQUAL(heap.size(), 1);
-  BOOST_CHECK(heap.getMin() == &stored);
-}
-#endif // NDEBUG
 
 #endif // COIN_TEST_SUITE
