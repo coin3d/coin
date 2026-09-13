@@ -118,9 +118,10 @@ SoGLClipPlaneElement::getMaxGLPlanes(void)
   GLint val;
   glGetIntegerv(GL_MAX_CLIP_PLANES, &val);
 
-  GLenum err = sogl_glerror_debugging() ? glGetError() : GL_NO_ERROR;
-  assert(err == GL_NO_ERROR &&
-         "GL error when calling glGetInteger() -- no current GL context?");
+  const GLenum err = sogl_glerror_debugging() ? glGetError() : GL_NO_ERROR;
+  if (err != GL_NO_ERROR) {
+    assert(!"GL error when calling glGetInteger() -- no current GL context?");
+  }
 
   return (int)val;
 }

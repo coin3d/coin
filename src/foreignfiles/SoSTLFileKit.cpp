@@ -691,8 +691,8 @@ SoSTLFileKit::organizeModel(void)
   SoIndexedFaceSet * facets =
     SO_GET_ANY_PART(this, "facets", SoIndexedFaceSet);
 
-  assert(facets->coordIndex.getNum() == PRIVATE(this)->numfacets*4);
-  assert(facets->normalIndex.getNum() == (PRIVATE(this)->numfacets));
+  if (facets->coordIndex.getNum() != PRIVATE(this)->numfacets*4) assert(false);
+  if (facets->normalIndex.getNum() != (PRIVATE(this)->numfacets)) assert(false);
 
   if ( PRIVATE(this)->numfacets > 300 ) {
     // FIXME: at some number of facets, reorganization for faster

@@ -87,7 +87,6 @@ SoVRMLIndexedLine::computeBBox(SoAction * COIN_UNUSED_ARG(action),
   SoVRMLCoordinate * node = (SoVRMLCoordinate*) this->coord.getValue();
   if (node == NULL) return;
 
-  int numCoords = node->point.getNum();
   const SbVec3f * coords = node->point.getValues(0);
 
   box.makeEmpty();
@@ -95,7 +94,7 @@ SoVRMLIndexedLine::computeBBox(SoAction * COIN_UNUSED_ARG(action),
   const int32_t * endptr = ptr + coordIndex.getNum();
   while (ptr < endptr) {
     int idx = *ptr++;
-    assert(idx < numCoords);
+    assert(idx < node->point.getNum());
     if (idx >= 0) box.extendBy(coords[idx]);
   }
   if (!box.isEmpty()) center = box.getCenter();

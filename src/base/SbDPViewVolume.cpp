@@ -618,8 +618,7 @@ SbDPViewVolume::getWorldToScreenScale(const SbVec3d& worldCenter,
 
     // Find tangent point of sphere.
     SbVec3f tangentpt;
-    SbBool result = p.intersect(tl, tangentpt);
-    assert(result != FALSE);
+    if (p.intersect(tl, tangentpt) == FALSE) assert(false);
 
     // Return radius (which is equal to the scale factor, since we're
     // dealing with a unit sphere).

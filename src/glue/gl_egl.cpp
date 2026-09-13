@@ -267,7 +267,6 @@ void *
 eglglue_context_create_offscreen(unsigned int width, unsigned int height)
 {
   struct eglglue_contextdata * ctx;
-  EGLint format;
   EGLint numConfigs;
   EGLConfig config;
   EGLint attrib[] = {
@@ -478,7 +477,7 @@ eglglue_context_can_render_to_texture(void * ctx)
 SbBool
 eglglue_context_pbuffer_max(void * ctx, unsigned int * lims)
 {
-  int returnval, attribval, i;
+  int attribval, i;
   const int attribs[] = {
     EGL_MAX_PBUFFER_WIDTH, EGL_MAX_PBUFFER_HEIGHT, EGL_MAX_PBUFFER_PIXELS
   };
