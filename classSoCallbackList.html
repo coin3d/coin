@@ -271,7 +271,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Invoke all callback functions, passing the userdata and the <em>callbackdata</em> as the first and second argument, respectively.</p>
 <p>All callbacks registered when the method is invoked will be triggered, even though if the code in one callback removes another callback.</p>
-<p>It is safe for a callback to remove itself or any other callbacks during execution. </p>
+<p>It is safe for a callback to remove itself or any other callbacks, clear the list, or add callbacks during execution. Callbacks added during execution are first eligible for a subsequent invocation. Each nested invocation takes its own snapshot of the registrations then present. </p>
 
 </div>
 </div>
@@ -293,7 +293,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Remove callback <em>f</em> from the list. </p>
+<p>Remove the last registration matching callback <em>f</em> and <em>userdata</em>. </p>
 
 </div>
 </div>
@@ -307,7 +307,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoCallbackList.html">SoCallbackList</a></li>
-    <li class="footer">Generated on Sun Sep 13 2026 10:25:01 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sun Sep 13 2026 10:25:31 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
