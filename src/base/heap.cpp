@@ -140,6 +140,51 @@ heap_heapify_up(cc_heap * h, uintptr_t i)
   }
 }
 
+static void
+heap_heapify(cc_heap * h, uintptr_t i)
+{
+  if (i > 0 && h->compare(h->array[i], h->array[HEAP_PARENT(i)]) > 0) {
+    heap_heapify_up(h, i);
+  }
+  else {
+    heap_heapify_down(h, i);
+  }
+}
+
+static void
+heap_rebuild(cc_heap * h)
+{
+  if (h->support_remove) {
+    cc_dict_clear(h->hash);
+    h->duplicates = 0;
+    for (uintptr_t i = 0; i < h->elements; ++i) {
+      if (!cc_dict_put(h->hash, reinterpret_cast<uintptr_t>(h->array[i]),
+                       reinterpret_cast<void *>(i))) {
+        ++h->duplicates;
+      }
+    }
+  }
+
+  for (uintptr_t i = h->elements / 2; i > 0; --i) {
+    heap_heapify_down(h, i - 1);
+  }
+}
+
+static void
+heap_restore_duplicate_index(cc_heap * h, void * o)
+{
+  if (h->duplicates == 0) return;
+
+  for (uintptr_t i = 0; i < h->elements; ++i) {
+    if (h->array[i] == o) {
+      --h->duplicates;
+      cc_dict_put(h->hash, reinterpret_cast<uintptr_t>(o),
+                  reinterpret_cast<void *>(i));
+      return;
+    }
+  }
+}
+
 /* ********************************************************************** */
 /* public api */
 
@@ -179,6 +224,7 @@ cc_heap_construct(unsigned int size,
   assert(h->array);
   h->compare = comparecb;
   h->support_remove = support_remove;
+  h->duplicates = 0;
   h->hash = NULL;
   if (support_remove) {
     h->hash = cc_dict_construct(size, 0.0f);
@@ -204,11 +250,13 @@ cc_heap_destruct(cc_heap * h)
 void cc_heap_clear(cc_heap * h)
 {
   h->elements = 0;
+  h->duplicates = 0;
   if (h->hash) cc_dict_clear(h->hash);
 }
 
 /*!
-  Add the element \a o to the heap \a h.
+  Add the element \a o to the heap \a h. The same pointer may be added
+  more than once; each addition creates a separate heap entry.
 */
 void
 cc_heap_add(cc_heap * h, void * o)
@@ -221,7 +269,10 @@ cc_heap_add(cc_heap * h, void * o)
   uintptr_t i = h->elements++;
   h->array[i] = o;
   if (h->support_remove) {
-    cc_dict_put(h->hash, reinterpret_cast<uintptr_t>(h->array[i]), reinterpret_cast<void*>(i));
+    if (!cc_dict_put(h->hash, reinterpret_cast<uintptr_t>(h->array[i]),
+                     reinterpret_cast<void*>(i))) {
+      ++h->duplicates;
+    }
   }
 
   heap_heapify_up(h, i);
@@ -248,22 +299,30 @@ cc_heap_extract_top(cc_heap * h)
   if (h->elements == 0) return NULL;
 
   void * top = h->array[0];
-  h->array[0] = h->array[--h->elements];
+  const uintptr_t last = --h->elements;
 
   if (h->support_remove) {
-    cc_dict_put(h->hash, reinterpret_cast<uintptr_t>(h->array[0]), reinterpret_cast<void *>(0));
     cc_dict_remove(h->hash, reinterpret_cast<uintptr_t>(top));
   }
 
-  heap_heapify_down(h, 0);
+  if (last > 0) {
+    h->array[0] = h->array[last];
+    if (h->support_remove) {
+      cc_dict_put(h->hash, reinterpret_cast<uintptr_t>(h->array[0]),
+                  reinterpret_cast<void *>(0));
+    }
+    heap_heapify_down(h, 0);
+  }
+
+  if (h->support_remove) heap_restore_duplicate_index(h, top);
 
   return top;
 }
 
 /*!
-  Remove \a o from the heap \a h; if present TRUE is returned,
-  otherwise FALSE.  Please note that the heap must have been created
-  with support_remove.
+  Remove one occurrence of \a o from the heap \a h; if present TRUE is
+  returned, otherwise FALSE. Please note that the heap must have been
+  created with support_remove.
 */
 int
 cc_heap_remove(cc_heap * h, void * o)
@@ -278,18 +337,25 @@ cc_heap_remove(cc_heap * h, void * o)
   assert(i < h->elements);
   assert(h->array[i] == o);
 
-  h->array[i] = h->array[--h->elements];
-  cc_dict_put(h->hash, reinterpret_cast<uintptr_t>(h->array[i]), reinterpret_cast<void *>(i));
-  heap_heapify_down(h, i);
-
+  const uintptr_t last = --h->elements;
   cc_dict_remove(h->hash, reinterpret_cast<uintptr_t>(o));
+
+  if (i != last) {
+    h->array[i] = h->array[last];
+    cc_dict_put(h->hash, reinterpret_cast<uintptr_t>(h->array[i]),
+                reinterpret_cast<void *>(i));
+    heap_heapify(h, i);
+  }
+
+  heap_restore_duplicate_index(h, o);
 
   return TRUE;
 }
 
 /*!
-  Updates the heap \a h for new value of existent key \a o; if key is present TRUE is returned,
-  otherwise FALSE.
+  Updates the heap \a h for the new value of existing object \a o; if the
+  object is present TRUE is returned, otherwise FALSE. If the same pointer
+  occurs more than once, all occurrences are reorganized.
 */
 int
 cc_heap_update(cc_heap * h, void * o)
@@ -302,12 +368,18 @@ cc_heap_update(cc_heap * h, void * o)
   assert(i < h->elements);
   assert(h->array[i] == o);
 
-  if (i > 0 && h->compare(h->array[i], h->array[HEAP_PARENT(i)]) > 0) {
-    heap_heapify_up(h, i);
+  if (h->duplicates > 0) {
+    unsigned int occurrences = 0;
+    for (uintptr_t j = 0; j < h->elements; ++j) {
+      if (h->array[j] == o) ++occurrences;
+    }
+    if (occurrences > 1) {
+      heap_rebuild(h);
+      return TRUE;
+    }
   }
-  else {
-    heap_heapify_down(h, i);
-  }
+
+  heap_heapify(h, i);
 
   return TRUE;
 }
@@ -1074,6 +1146,30 @@ BOOST_AUTO_TEST_CASE(ccheap_indexed_duplicate_pointer_lifecycle)
   BOOST_CHECK_MESSAGE(removedsecond && cc_heap_elements(heap) == 1u &&
                       cc_heap_get_top(heap) == &other,
     "a second stored occurrence of the same pointer became unreachable");
+
+  cc_heap_destruct(heap);
+}
+
+BOOST_AUTO_TEST_CASE(ccheap_duplicate_pointer_update_and_extract)
+{
+  CcHeapTestItem duplicate = { 50, TRUE };
+  CcHeapTestItem other = { 40, TRUE };
+  cc_heap * heap = cc_heap_construct(1, ccheap_test_max_compare, TRUE);
+  BOOST_REQUIRE(heap != NULL);
+
+  cc_heap_add(heap, &duplicate);
+  cc_heap_add(heap, &other);
+  cc_heap_add(heap, &duplicate);
+  cc_heap_add(heap, &duplicate);
+
+  duplicate.priority = 10;
+  BOOST_CHECK(cc_heap_update(heap, &duplicate));
+  BOOST_CHECK(cc_heap_get_top(heap) == &other);
+  BOOST_CHECK(cc_heap_extract_top(heap) == &other);
+  BOOST_CHECK(cc_heap_extract_top(heap) == &duplicate);
+  BOOST_CHECK(cc_heap_extract_top(heap) == &duplicate);
+  BOOST_CHECK(cc_heap_extract_top(heap) == &duplicate);
+  BOOST_CHECK(cc_heap_empty(heap));
 
   cc_heap_destruct(heap);
 }

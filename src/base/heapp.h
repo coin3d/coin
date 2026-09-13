@@ -51,6 +51,7 @@ extern "C" {
     cc_heap_compare_cb * compare;
     void * compareclosure;
     int support_remove;
+    unsigned int duplicates;
     cc_dict * hash;
   };
 
