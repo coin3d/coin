@@ -381,14 +381,16 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
                       threshold, tmpvec);
 
       // Be robust when it comes to erroneously specified triangles.
-      if ((tmpvec.normalize() == 0.0f) && coin_debug_extra()) {
+      if (tmpvec.normalize() == 0.0f) {
 #if COIN_DEBUG
-        static uint32_t normgenerrors_vertex = 0;
-        if (normgenerrors_vertex < 1) {
-          SoDebugError::postWarning("SoNormalCache::generatePerVertex","Unable to "
-                                    "generate valid normal for face %d", facenum);
+        if (coin_debug_extra()) {
+          static uint32_t normgenerrors_vertex = 0;
+          if (normgenerrors_vertex < 1) {
+            SoDebugError::postWarning("SoNormalCache::generatePerVertex","Unable to "
+                                      "generate valid normal for face %d", facenum);
+          }
+          normgenerrors_vertex++;
         }
-        normgenerrors_vertex++;
 #endif // COIN_DEBUG
       }
       // it's really ok to have a null vector for a face/vertex, and we
@@ -516,23 +518,26 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
         tmpvec = (coords[v2] - coords[v1]).cross(coords[v0] - coords[v1]);
 
       // Be robust when it comes to erroneously specified triangles.
-      if ((tmpvec.normalize() == 0.0f) && coin_debug_extra()) {
-        static uint32_t normgenerrors_face = 0;
-        if (normgenerrors_face < 1) {
-          SoDebugError::postWarning("SoNormalCache::generatePerFace",
-                                    "Erroneous triangle specification in model "
-                                    "(indices= [%d, %d, %d], "
-                                    "coords=<%f, %f, %f>, <%f, %f, %f>, <%f, %f, %f>) "
-                                    "(this warning will be printed only once, "
-                                    "but there might be more errors).",
-                                    v0, v1, v2,
-                                    coords[v0][0], coords[v0][1], coords[v0][2],
-                                    coords[v1][0], coords[v1][1], coords[v1][2],
-                                    coords[v2][0], coords[v2][1], coords[v2][2]);
+      if (tmpvec.normalize() == 0.0f) {
+#if COIN_DEBUG
+        if (coin_debug_extra()) {
+          static uint32_t normgenerrors_face = 0;
+          if (normgenerrors_face < 1) {
+            SoDebugError::postWarning("SoNormalCache::generatePerFace",
+                                      "Erroneous triangle specification in model "
+                                      "(indices= [%d, %d, %d], "
+                                      "coords=<%f, %f, %f>, <%f, %f, %f>, <%f, %f, %f>) "
+                                      "(this warning will be printed only once, "
+                                      "but there might be more errors).",
+                                      v0, v1, v2,
+                                      coords[v0][0], coords[v0][1], coords[v0][2],
+                                      coords[v1][0], coords[v1][1], coords[v1][2],
+                                      coords[v2][0], coords[v2][1], coords[v2][2]);
+          }
+          normgenerrors_face++;
         }
-        normgenerrors_face++;
+#endif // COIN_DEBUG
       }
-      
       PRIVATE(this)->normalArray.append(tmpvec);
       cind += 4; // goto next triangle/polygon
     }
@@ -561,18 +566,21 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
       tmpvec[2] += ((*vert1)[0] - (*vert2)[0]) * ((*vert1)[1] + (*vert2)[1]);
 
       // Be robust when it comes to erroneously specified polygons.
-      if ((tmpvec.normalize() == 0.0f) && coin_debug_extra()) {
-        static uint32_t normgenerrors_face = 0;
-        if (normgenerrors_face < 1) {
-          SoDebugError::postWarning("SoNormalCache::generatePerFace",
-                                    "Erroneous polygon specification in model. "
-                                    "Unable to generate normal; using dummy normal. "
-                                    "(this warning will be printed only once, "
-                                    "but there might be more errors).");
+      if (tmpvec.normalize() == 0.0f) {
+#if COIN_DEBUG
+        if (coin_debug_extra()) {
+          static uint32_t normgenerrors_face = 0;
+          if (normgenerrors_face < 1) {
+            SoDebugError::postWarning("SoNormalCache::generatePerFace",
+                                      "Erroneous polygon specification in model. "
+                                      "Unable to generate normal; using dummy normal. "
+                                      "(this warning will be printed only once, "
+                                      "but there might be more errors).");
+          }
+          normgenerrors_face++;
         }
-        normgenerrors_face++;
+#endif // COIN_DEBUG
       }
-
       PRIVATE(this)->normalArray.append(ccw ? tmpvec : -tmpvec);
       cind++; // skip the -1
     }
@@ -672,24 +680,24 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
     else
       n = (*c2 - *c1).cross(*c0 - *c1);
 
-    static uint32_t normgenerrors_facestrip = 0;
-    if ((n.normalize() == 0.0f) && coin_debug_extra()) {
-      if (normgenerrors_facestrip < 1) {
-        SoDebugError::postWarning("SoNormalCache::generatePerFaceStrip",
-                                  "Erroneous triangle specification in model "
-                                  "(coords=<%f, %f, %f>, <%f, %f, %f>, <%f, %f, %f>) "
-                                  "(this warning will be printed only once, "
-                                  "but there might be more errors).",
-                                  c0[0][0], c0[0][1], c0[0][2],
-                                  c1[0][0], c1[0][1], c1[0][2],
-                                  c2[0][0], c2[0][1], c2[0][2]);
-
-
-
+    if (n.normalize() == 0.0f) {
+#if COIN_DEBUG
+      if (coin_debug_extra()) {
+        static uint32_t normgenerrors_facestrip = 0;
+        if (normgenerrors_facestrip < 1) {
+          SoDebugError::postWarning("SoNormalCache::generatePerFaceStrip",
+                                    "Erroneous triangle specification in model "
+                                    "(coords=<%f, %f, %f>, <%f, %f, %f>, <%f, %f, %f>) "
+                                    "(this warning will be printed only once, "
+                                    "but there might be more errors).",
+                                    c0[0][0], c0[0][1], c0[0][2],
+                                    c1[0][0], c1[0][1], c1[0][2],
+                                    c2[0][0], c2[0][1], c2[0][2]);
+        }
+        normgenerrors_facestrip++;
       }
-      normgenerrors_facestrip++;
+#endif // COIN_DEBUG
     }
-    
     PRIVATE(this)->normalArray.append(n);
 
     int idx = cind < endptr ? *cind++ : -1;
@@ -703,18 +711,23 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
       else
         n = (*c2 - *c1).cross(*c0 - *c1);
 
-      if ((n.normalize() == 0.0f) && coin_debug_extra()) {
-        if (normgenerrors_facestrip < 1) {
-          SoDebugError::postWarning("SoNormalCache::generatePerFaceStrip",
-                                    "Erroneous triangle specification in model "
-                                    "(coords=<%f, %f, %f>, <%f, %f, %f>, <%f, %f, %f>) "
-                                    "(this warning will be printed only once, "
-                                    "but there might be more errors).",
-                                    c0[0][0], c0[0][1], c0[0][2],
-                                    c1[0][0], c1[0][1], c1[0][2],
-                                    c2[0][0], c2[0][1], c2[0][2]);
+      if (n.normalize() == 0.0f) {
+#if COIN_DEBUG
+        if (coin_debug_extra()) {
+          static uint32_t normgenerrors_facestrip = 0;
+          if (normgenerrors_facestrip < 1) {
+            SoDebugError::postWarning("SoNormalCache::generatePerFaceStrip",
+                                      "Erroneous triangle specification in model "
+                                      "(coords=<%f, %f, %f>, <%f, %f, %f>, <%f, %f, %f>) "
+                                      "(this warning will be printed only once, "
+                                      "but there might be more errors).",
+                                      c0[0][0], c0[0][1], c0[0][2],
+                                      c1[0][0], c1[0][1], c1[0][2],
+                                      c2[0][0], c2[0][1], c2[0][2]);
+          }
+          normgenerrors_facestrip++;
         }
-        normgenerrors_facestrip++;
+#endif // COIN_DEBUG
       }
 
       PRIVATE(this)->normalArray.append(n);
@@ -858,19 +871,22 @@ SoNormalCache::generatePerStrip(const SbVec3f * const coords,
     }
 #endif // COIN_DEBUG
 
-    if ((n.normalize() == 0.0f) && coin_debug_extra()) {
-      static uint32_t normgenerrors_strip = 0;
-      if (normgenerrors_strip < 1) {
-        SoDebugError::postWarning("SoNormalCache::generatePerStrip",
-                                  "Erroneous polygon specification in model.  "
-                                  "Unable to generate non-zero normal. Using "
-                                  "dummy normal. "
-                                  "(this warning will be printed only once, "
-                                  "but there might be more errors).");
+    if (n.normalize() == 0.0f) {
+#if COIN_DEBUG
+      if (coin_debug_extra()) {
+        static uint32_t normgenerrors_strip = 0;
+        if (normgenerrors_strip < 1) {
+          SoDebugError::postWarning("SoNormalCache::generatePerStrip",
+                                    "Erroneous polygon specification in model.  "
+                                    "Unable to generate non-zero normal. Using "
+                                    "dummy normal. "
+                                    "(this warning will be printed only once, "
+                                    "but there might be more errors).");
+        }
+        normgenerrors_strip++;
       }
-      normgenerrors_strip++;
+#endif // COIN_DEBUG
     }
-    
     PRIVATE(this)->normalArray.append(n);
   }
 
@@ -937,17 +953,21 @@ SoNormalCache::generatePerVertexQuad(const SbVec3f * const coords,
       if (j > 0 && i > 0 && idx3 < numfacenormals) n += facenormals[idx3];
       if (j > 0 && i < vPerColumn-1 && idx4 < numfacenormals) n += facenormals[idx4];
 
-      if ((n.normalize() == 0.0f) && coin_debug_extra()) {
-        static uint32_t normgenerrors_vertexquad = 0;
-        if (normgenerrors_vertexquad < 1) {
-          SoDebugError::postWarning("SoNormalCache::generatePerVertexQuad",
-                                    "Erroneous polygon specification in model. "
-                                    "Unable to generate valid normal, adding dummy. "
-                                    "(this warning will be printed only once, "
-                                    "but there might be more errors).");
+      if (n.normalize() == 0.0f) {
+#if COIN_DEBUG
+        if (coin_debug_extra()) {
+          static uint32_t normgenerrors_vertexquad = 0;
+          if (normgenerrors_vertexquad < 1) {
+            SoDebugError::postWarning("SoNormalCache::generatePerVertexQuad",
+                                      "Erroneous polygon specification in model. "
+                                      "Unable to generate valid normal, adding dummy. "
+                                      "(this warning will be printed only once, "
+                                      "but there might be more errors).");
+          }
+          normgenerrors_vertexquad++;
         }
-        normgenerrors_vertexquad++;
-      }        
+#endif // COIN_DEBUG
+      }
       PRIVATE(this)->normalArray.append(ccw ? -n : n);
     }
   }
@@ -1008,23 +1028,26 @@ SoNormalCache::generatePerFaceQuad(const SbVec3f * const coords,
         SbVec3f n = (coords[idx2] - coords[idx1]).cross(coords[idx3] - coords[idx1]);
 
         // Be robust when it comes to erroneously specified polygons.
-        if ((n.normalize() == 0.0f) && coin_debug_extra())  {
-          static uint32_t normgenerrors_facequad = 0;
-          if (normgenerrors_facequad < 1) {
-            SoDebugError::postWarning("SoNormalCache::generatePerFaceQuad",
-                                      "Erroneous triangle specification in model "
-                                      "(indices= [%d, %d, %d], "
-                                      "coords=<%f, %f, %f>, <%f, %f, %f>, <%f, %f, %f>) "
-                                      "(this warning will be printed only once, "
-                                      "but there might be more errors).",
-                                      idx1, idx2, idx3,
-                                      coords[idx1][0], coords[idx1][1], coords[idx1][2],
-                                      coords[idx2][0], coords[idx2][1], coords[idx2][2],
-                                      coords[idx3][0], coords[idx3][1], coords[idx3][2]);
+        if (n.normalize() == 0.0f) {
+#if COIN_DEBUG
+          if (coin_debug_extra()) {
+            static uint32_t normgenerrors_facequad = 0;
+            if (normgenerrors_facequad < 1) {
+              SoDebugError::postWarning("SoNormalCache::generatePerFaceQuad",
+                                        "Erroneous triangle specification in model "
+                                        "(indices= [%d, %d, %d], "
+                                        "coords=<%f, %f, %f>, <%f, %f, %f>, <%f, %f, %f>) "
+                                        "(this warning will be printed only once, "
+                                        "but there might be more errors).",
+                                        idx1, idx2, idx3,
+                                        coords[idx1][0], coords[idx1][1], coords[idx1][2],
+                                        coords[idx2][0], coords[idx2][1], coords[idx2][2],
+                                        coords[idx3][0], coords[idx3][1], coords[idx3][2]);
+            }
+            normgenerrors_facequad++;
           }
-          normgenerrors_facequad++;
+#endif // COIN_DEBUG
         }
-        
         PRIVATE(this)->normalArray.append(ccw ? -n : n);
       }
       else {
@@ -1047,7 +1070,6 @@ SoNormalCache::generatePerFaceQuad(const SbVec3f * const coords,
                          "generated normals per face quad: %p %d\n",
                          PRIVATE(this)->normalData.normals, PRIVATE(this)->numNormals);
 #endif
-
 }
 
 /*!
@@ -1095,17 +1117,21 @@ SoNormalCache::generatePerRowQuad(const SbVec3f * const coords,
     }
 
     // Be robust when it comes to erroneously specified polygons.
-    if ((n.normalize() == 0.0f) && coin_debug_extra()) {
-      static uint32_t normgenerrors_rowquad = 0;
-      if (normgenerrors_rowquad < 1) {
-        SoDebugError::postWarning("SoNormalCache::generatePerRowQuad",
-                                  "Erroneous polygon specification in model. "
-                                  "Unable to generate valid normal, adding null vector. "
-                                  "(this warning will be printed only once, "
-                                  "but there might be more errors).");
+    if (n.normalize() == 0.0f) {
+#if COIN_DEBUG
+      if (coin_debug_extra()) {
+        static uint32_t normgenerrors_rowquad = 0;
+        if (normgenerrors_rowquad < 1) {
+          SoDebugError::postWarning("SoNormalCache::generatePerRowQuad",
+                                    "Erroneous polygon specification in model. "
+                                    "Unable to generate valid normal, adding null vector. "
+                                    "(this warning will be printed only once, "
+                                    "but there might be more errors).");
+        }
+        normgenerrors_rowquad++;
       }
-      normgenerrors_rowquad++;
-    }    
+#endif // COIN_DEBUG
+    }
     PRIVATE(this)->normalArray.append(ccw ? -n : n);
   }
   
