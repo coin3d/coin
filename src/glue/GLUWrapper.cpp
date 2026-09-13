@@ -80,6 +80,11 @@ static cc_libhandle GLU_libhandle = NULL;
 static int GLU_failed_to_load = 0;
 static int GLU_is_initializing = 0;
 
+/* Tokens accepted by gluGetString(). Keep these local because Coin resolves
+   GLU at runtime instead of including a profile-specific GLU header. */
+static const GLenum COIN_GLU_VERSION_TOKEN = 100800;
+static const GLenum COIN_GLU_EXTENSIONS_TOKEN = 100801;
+
 /* ******************************************************************** */
 
 static SbBool
@@ -174,12 +179,12 @@ GLUWrapper_set_version(const GLubyte * versionstr)
 
     if (GLUWrapper_debug()) {
       const char * extensions = (const char *)
-        GLU_instance->gluGetString(GLU_EXTENSIONS);
+        GLU_instance->gluGetString(COIN_GLU_EXTENSIONS_TOKEN);
 
       cc_debugerror_postinfo("GLUWrapper_set_version",
                              "gluGetString(GLU_VERSION)=='%s', "
                              "input arg: '%s' (=> %d.%d.%d)",
-                             (const char *) GLU_instance->gluGetString(GLU_VERSION),
+                             (const char *) GLU_instance->gluGetString(COIN_GLU_VERSION_TOKEN),
                              versionstr,
                              GLU_instance->version.major,
                              GLU_instance->version.minor,
@@ -220,7 +225,7 @@ static const GLubyte * APIENTRY
 GLUWrapper_gluGetString(GLenum name)
 {
   static const GLubyte versionstring[] = "1.0.0";
-  if (name == GLU_VERSION) return versionstring;
+  if (name == COIN_GLU_VERSION_TOKEN) return versionstring;
   return NULL;
 }
 
@@ -514,7 +519,7 @@ GLUWrapper(void)
   */
   {
     const GLubyte * versionstr = (const GLubyte *)coin_getenv("COIN_DEBUG_GLU_VERSION");
-    if (!versionstr) { versionstr = gi->gluGetString(GLU_VERSION); }
+    if (!versionstr) { versionstr = gi->gluGetString(COIN_GLU_VERSION_TOKEN); }
     GLUWrapper_set_version(versionstr);
   }
 

@@ -117,7 +117,11 @@ SoBase::PImpl::removeName2Obj(SoBase * const base, const char * const name)
   SbHash<const char*, SbPList*>::const_iterator iter = SoBase::PImpl::name2obj->find(name);
   SbBool found = (iter != SoBase::PImpl::name2obj->const_end());
   assert(found);
-  
+  if (!found) {
+    CC_MUTEX_UNLOCK(SoBase::PImpl::name2obj_mutex);
+    return;
+  }
+
   SbPList * l = iter->obj;
 
   const int i = l->find(base);
@@ -620,7 +624,7 @@ BOOST_AUTO_TEST_CASE(realTime_globalfield_import)
   in->setBuffer(scene, strlen(scene));
   SoNode * g = NULL;
   const SbBool readok = SoDB::read(in, g);
-  assert(readok); // that import is ok is tested by a case in SoDB.cpp
+  if (!readok) assert(!"scene import failed"); // that import is ok is tested by a case in SoDB.cpp
   delete in;
 
   // check that the global field is still the same instance

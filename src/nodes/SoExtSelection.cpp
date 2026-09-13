@@ -1233,9 +1233,6 @@ SoExtSelection::GLRenderBelowPath(SoGLRenderAction * action)
 
   if (action->isRenderingDelayedPaths()) {
 
-    SbViewportRegion vp = SoViewportRegionElement::get(state);
-    SbVec2s vpo = vp.getViewportOriginPixels();
-    SbVec2s vps = vp.getViewportSizePixels();
     this->draw(action);
   }
   // render this path after all other (delayed)
@@ -1533,12 +1530,14 @@ SoExtSelectionP::testShape(SoCallbackAction * action, const SoShape * shape)
 
   SbBool full = FALSE;
   switch (PUBLIC(this)->lassoPolicy.getValue()) {
-  case SoExtSelection::FULL_BBOX: /* fall through intended */
+  case SoExtSelection::FULL_BBOX:
     full = TRUE;
+    /*FALLTHROUGH*/
   case SoExtSelection::PART_BBOX:
     return testBBox(action, projmatrix, shape, rectbbox, full);
-  case SoExtSelection::FULL: /* fall through intended */
+  case SoExtSelection::FULL:
     full = TRUE;
+    /*FALLTHROUGH*/
   case SoExtSelection::PART:
     return testPrimitives(action, projmatrix, shape, rectbbox, full);
   default:

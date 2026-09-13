@@ -53,6 +53,7 @@
 
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/SbVec3f.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <cassert>
 
 // defines for the flags member
@@ -255,10 +256,16 @@ SoModelMatrixElement::pushMatrix(SoState * const state)
 {
   // use SoState::getElementNoPush() instead of
   // SoElement::getConstElement() to avoid cache dependencies
-  SoModelMatrixElement * elem = coin_assert_cast<SoModelMatrixElement *>
+  SoModelMatrixElement * elem = coin_safe_cast<SoModelMatrixElement *>
     (
      state->getElementNoPush(classStackIndex)
      );
+  if (!elem) {
+    SoDebugError::post("SoModelMatrixElement::pushMatrix",
+                       "SoModelMatrixElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning identity matrix.");
+    return SbMatrix::identity();
+  }
   return elem->pushMatrixElt();
 }
 
@@ -272,10 +279,16 @@ SoModelMatrixElement::popMatrix(SoState * const state,
 {
   // use SoState::getElementNoPush() instead of
   // SoElement::getConstElement() to avoid cache dependencies
-  SoModelMatrixElement * elem = coin_assert_cast<SoModelMatrixElement *>
+  SoModelMatrixElement * elem = coin_safe_cast<SoModelMatrixElement *>
     (
      state->getElementNoPush(classStackIndex)
      );
+  if (!elem) {
+    SoDebugError::post("SoModelMatrixElement::popMatrix",
+                       "SoModelMatrixElement not enabled for this action -- "
+                       "missing SO_ENABLE()?");
+    return;
+  }
   elem->popMatrixElt(matrix);
 }
 
@@ -286,10 +299,17 @@ SoModelMatrixElement::popMatrix(SoState * const state,
 const SbMatrix &
 SoModelMatrixElement::getCombinedCullMatrix(SoState * const state)
 {
-  const SoModelMatrixElement * elem = coin_assert_cast<const SoModelMatrixElement *>
+  const SoModelMatrixElement * elem = coin_safe_cast<const SoModelMatrixElement *>
     (
      SoElement::getConstElement(state, classStackIndex)
      );
+  if (!elem) {
+    SoDebugError::post("SoModelMatrixElement::getCombinedCullMatrix",
+                       "SoModelMatrixElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning identity matrix.");
+    static const SbMatrix identity(SbMatrix::identity());
+    return identity;
+  }
   if (!(elem->flags & FLG_COMBINED)) {
     // Need to change this element, so cast away the const (_don't_
     // use the getElement() method, as it may invoke a
@@ -324,10 +344,18 @@ const SbMatrix &
 SoModelMatrixElement::get(SoState * const state,
                           SbBool & isIdentity)
 {
-  const SoModelMatrixElement * elem = coin_assert_cast<const SoModelMatrixElement *>
+  const SoModelMatrixElement * elem = coin_safe_cast<const SoModelMatrixElement *>
     (
      SoElement::getConstElement(state, classStackIndex)
      );
+  if (!elem) {
+    SoDebugError::post("SoModelMatrixElement::get",
+                       "SoModelMatrixElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning identity matrix.");
+    isIdentity = TRUE;
+    static const SbMatrix identity(SbMatrix::identity());
+    return identity;
+  }
   if (elem->flags & FLG_IDENTITY) isIdentity = TRUE;
   else isIdentity = FALSE;
   return elem->modelMatrix;
@@ -450,6 +478,7 @@ SoModelMatrixElement::push(SoState * state)
     (
      this->getNextInStack()
      );
+  COIN_ASSUME(prev != NULL);
 
   this->modelMatrix = prev->modelMatrix;
   this->flags = prev->flags;

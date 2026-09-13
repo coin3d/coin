@@ -368,9 +368,6 @@ BOOST_AUTO_TEST_CASE(MimimumExpressions)
   std::unique_ptr<ScXMLStateMachine> sm(new ScXMLStateMachine);
   std::unique_ptr<ScXMLEvaluator> evaluator(new ScXMLMinimumEvaluator);
 
-  ScXMLDataObj * res = NULL;
-  ScXMLBoolDataObj * boolobj = NULL;
-
   //FIXME, this test is not finished. BFG 20090831
 
   static const char foo [] =

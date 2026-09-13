@@ -272,7 +272,8 @@ void
 ScXMLInvokeElt::copyContents(const ScXMLElt * rhs)
 {
   inherited::copyContents(rhs);
-  const ScXMLInvokeElt * orig = coin_assert_cast<const ScXMLInvokeElt *>(rhs);
+  const ScXMLInvokeElt * orig = coin_safe_cast<const ScXMLInvokeElt *>(rhs);
+  if (orig == NULL) return;
   this->setTargetTypeAttribute(orig->getTargetTypeAttribute());
   this->setSrcAttribute(orig->getSrcAttribute());
   this->setSrcExprAttribute(orig->getSrcExprAttribute());

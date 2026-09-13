@@ -84,7 +84,7 @@ SoShininessElement::init(SoState * stateptr)
 
 void
 SoShininessElement::set(SoState * const state, SoNode * const COIN_UNUSED_ARG(node),
-                           const int32_t numvalues,
+                           const int32_t COIN_UNUSED_ARG(numvalues),
                            const float * const values)
 {
   SoLazyElement::setShininess(state, values[0]);
@@ -108,7 +108,7 @@ SoShininessElement::getNum(void) const
 //! FIXME: write doc.
 
 float
-SoShininessElement::get(const int index) const
+SoShininessElement::get(const int COIN_UNUSED_ARG(index)) const
 {
   assert(index == 0);
   return SoLazyElement::getShininess(this->state);

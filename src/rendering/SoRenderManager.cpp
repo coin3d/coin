@@ -446,7 +446,7 @@ SoRenderManager::detachRootSensor(void)
   \deprecated Will not be available in Coin 5
 */
 void
-SoRenderManager::attachClipSensor(SoNode * const sceneroot)
+SoRenderManager::attachClipSensor(SoNode * const COIN_UNUSED_ARG(sceneroot))
 {
   //PRIVATE(this)->clipsensor->attach(sceneroot);
   //if (PRIVATE(this)->autoclipping != SoRenderManager::NO_AUTO_CLIPPING) {
@@ -1086,7 +1086,6 @@ SoRenderManager::initStencilBufferForInterleavedStereo(void)
   const SbVec2s neworigin = currentvp.getViewportOriginPixels();
   const SbVec2s newsize = currentvp.getViewportSizePixels();
 
-  const SbVec2s oldorigin = PRIVATE(this)->stereostencilmaskvp.getViewportOriginPixels();
   const SbVec2s oldsize = PRIVATE(this)->stereostencilmaskvp.getViewportSizePixels();
 
   allocnewmask = allocnewmask ||

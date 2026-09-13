@@ -21,6 +21,7 @@ set(COIN_GLUE_FILES
 
 # Files excluded from public API documentation, included in complete documentation.
 set(COIN_GLUE_INTERNAL_FILES
+	gl-core.h
 	cg.h
 	cg.cpp
 	spidermonkey.cpp
@@ -58,6 +59,7 @@ if(COIN_BUILD_SINGLE_LIB)
 	endforeach(SRCFILE)
 else()
 	add_library(glue OBJECT ${COIN_GLUE_FILES})
+	target_include_directories(glue PRIVATE "${PROJECT_SOURCE_DIR}/src/glue/khronos")
 	if(HAVE_LIBSIMAGE)
 		target_compile_definitions(glue PRIVATE $<TARGET_PROPERTY:simage::simage,INTERFACE_COMPILE_DEFINITIONS>) 
 		target_include_directories(glue PRIVATE $<TARGET_PROPERTY:simage::simage,INTERFACE_INCLUDE_DIRECTORIES>)

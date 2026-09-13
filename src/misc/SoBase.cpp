@@ -1430,21 +1430,26 @@ SoBase::readRoute(SoInput * in)
   if (ok) {
     ok = FALSE;
 
-    // parse from-string
-    char * str1 = (char*) fromstring.getString();
-    char * str2 = str1 ? (char*) strchr(str1, '.') : NULL;
+    // Parse from-string. Extract the node-name substring via
+    // SbString's own substring constructor rather than writing a NUL
+    // terminator into fromstring's buffer through a const_cast: that
+    // relies on SbString/cc_string never sharing its buffer between
+    // instances, which happens to be true today but isn't part of
+    // getString()'s documented contract. The field-name half needs no
+    // truncation at all, since it runs to fromstring's own (untouched)
+    // terminating NUL.
+    const char * str1 = fromstring.getString();
+    const char * str2 = str1 ? strchr(str1, '.') : NULL;
     if (str1 && str2) {
-      *str2++ = 0;
+      fromnodename = SbString(str1, 0, static_cast<int>(str2 - str1) - 1).getString();
+      fromfieldname = str2 + 1;
 
       // now parse to-string
-      fromnodename = str1;
-      fromfieldname = str2;
-      str1 = (char*) tostring.getString();
+      str1 = tostring.getString();
       str2 = str1 ? strchr(str1, '.') : NULL;
       if (str1 && str2) {
-        *str2++ = 0;
-        tonodename = str1;
-        tofieldname = str2;
+        tonodename = SbString(str1, 0, static_cast<int>(str2 - str1) - 1).getString();
+        tofieldname = str2 + 1;
 
         ok = TRUE;
       }

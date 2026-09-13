@@ -30,6 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+#include <Inventor/lists/SbList.h>
+
 /*!
   \class SbList SbList.h Inventor/lists/SbList.h
   \brief The SbList class is a template container class for lists.
@@ -274,3 +276,42 @@
   
   \since Coin 2.5
 */
+
+#ifdef COIN_TEST_SUITE
+
+// Regression test for the real-world usage pattern found in e.g.
+// SoLightPath::setHead(), SoBaseKit::createFieldList() and
+// SbHeap::emptyHeap(): truncate(0) immediately followed by append(),
+// then growing well past the point where a re-grow of the internal
+// buffer is required. This is also the exact pattern that used to
+// trigger a GCC -Warray-bounds false positive in grow() (GCC's
+// constant propagation of numitems==0 from truncate(0) into the
+// inlined append()/grow() met its inability to prove itembuffersize
+// can never be 0, and it flagged a "new Type[0]" allocation that is
+// not actually reachable) -- this test exercises the real memory
+// behavior so any future change to grow()'s bookkeeping that broke
+// the underlying invariant (itembuffersize is always >= DEFAULTSIZE)
+// would show up here, not just as a compiler warning.
+BOOST_AUTO_TEST_CASE(truncate_zero_then_grow_past_default_size)
+{
+  SbList<int> list;
+  for (int i = 0; i < 4; i++) { list.append(i); }
+  BOOST_CHECK_EQUAL(list.getLength(), 4);
+
+  list.truncate(0);
+  BOOST_CHECK_EQUAL(list.getLength(), 0);
+
+  // Append well past the built-in inline buffer size (4), forcing
+  // grow() to run its "double the buffer" path multiple times right
+  // after numitems was reset to 0 by truncate(0).
+  const int n = 100;
+  for (int i = 0; i < n; i++) { list.append(i * 3); }
+
+  BOOST_REQUIRE_EQUAL(list.getLength(), n);
+  for (int i = 0; i < n; i++) {
+    BOOST_CHECK_MESSAGE(list[i] == i * 3,
+                        "SbList value corrupted after truncate(0) + growth");
+  }
+}
+
+#endif // COIN_TEST_SUITE

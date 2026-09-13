@@ -198,9 +198,14 @@ SoGlobalField::addGlobalFieldContainer(SoGlobalField * fieldcontainer)
 
 // Remove the given global field from the internal list.
 //
-// Note that this will decrease the reference count of the
-// SoGlobalField node, causing it to be destructed unless it has been
-// ref()'ed outside of this class.
+// Note that this does *not* affect the reference count of the
+// SoGlobalField node: allcontainers is set up in initClass() with
+// addReferences(FALSE) precisely so that removing an item from it here
+// does not implicitly ref()/unref() -- callers that actually want the
+// fieldcontainer deleted need to unref() it themselves (which will, in
+// turn, remove it from this list via ~SoGlobalField() -- calling this
+// method first is both unnecessary and unsafe, since the destructor's
+// own removal would then find nothing to remove).
 void
 SoGlobalField::removeGlobalFieldContainer(SoGlobalField * fieldcontainer)
 {

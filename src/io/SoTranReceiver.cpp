@@ -38,6 +38,7 @@
 
 SoTranReceiver::SoTranReceiver(SoGroup * COIN_UNUSED_ARG(root))
 {
+  this->pimpl = NULL;
   COIN_STUB();
 }
 

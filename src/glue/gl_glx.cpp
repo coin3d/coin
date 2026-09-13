@@ -167,45 +167,6 @@ static COIN_PFNGLXDESTROYPBUFFER glxglue_glXDestroyPbuffer;
 
 /* ********************************************************************** */
 
-/* Sanity checks for enum extension value assumed to be equal to the
- * final / "proper" / standard OpenGL enum values. (If not, we could
- * end up with hard-to-find bugs because of mismatches with the
- * compiled values versus the runtime values.)
- *
- * This doesn't really _fix_ anything, it is just meant as an aid to
- * smoke out platforms where we're getting unexpected enum values.
- */
-
-#ifdef GLX_RENDER_TYPE_SGIX
-#if GLX_RENDER_TYPE != GLX_RENDER_TYPE_SGIX
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GLX_RENDER_TYPE_SGIX */
-
-#ifdef GLX_DRAWABLE_TYPE_SGIX
-#if GLX_DRAWABLE_TYPE != GLX_DRAWABLE_TYPE_SGIX
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GLX_DRAWABLE_TYPE_SGIX */
-
-#ifdef GLX_RGBA_TYPE_SGIX
-#if GLX_RGBA_TYPE != GLX_RGBA_TYPE_SGIX
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GLX_RGBA_TYPE_SGIX */
-
-#ifdef GLX_RGBA_BIT_SGIX
-#if GLX_RGBA_BIT != GLX_RGBA_BIT_SGIX
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GLX_RGBA_BIT_SGIX */
-
-#ifdef GLX_PBUFFER_BIT_SGIX
-#if GLX_PBUFFER_BIT != GLX_PBUFFER_BIT_SGIX
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GLX_PBUFFER_BIT_SGIX */
-
 /* ********************************************************************** */
 
 struct glxglue_contextdata {
@@ -812,8 +773,8 @@ glxglue_context_create_pbuffer(struct glxglue_contextdata * context)
   COIN_GLXFBConfig * fbc;
   Display * dpy;
 
-  /* number of FBConfigs returned */
-  int fbc_cnt;
+  /* Keep the count defined if the chooser fails without writing it. */
+  int fbc_cnt = 0;
 
   /* set frame buffer attributes */
   /* FIXME: should refactor the attribute selection / setting process

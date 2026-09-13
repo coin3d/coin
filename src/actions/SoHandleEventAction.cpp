@@ -344,7 +344,19 @@ const SoPickedPoint *
 SoHandleEventAction::getPickedPoint(void)
 {
   SoRayPickAction * ra = PRIVATE(this)->getPickAction();
-  if (!PRIVATE(this)->pickvalid || PRIVATE(this)->didpickall) {
+  // Note: unlike getPickedPointList() below, this does *not* also check
+  // PRIVATE(this)->didpickall. A pick-all result already contains the
+  // single closest point: getPickedPoint() (no args) forwards to
+  // getPickedPoint(0), and getPickedPointList() sorts its result by
+  // distance before returning it, so index 0 is exactly the same point
+  // a PICK_ALL=FALSE pick would have found. Redoing the pick here
+  // whenever the last one happened to be a pick-all was therefore never
+  // necessary -- just an unconditional full re-traversal of the scene
+  // graph every time application code (e.g. independently-written
+  // nodes/draggers) alternates calls to this method and
+  // getPickedPointList() within the same SoHandleEventAction traversal.
+  // See Coin issue #106.
+  if (!PRIVATE(this)->pickvalid) {
     ra->setPickAll(FALSE);
     PRIVATE(this)->doPick(ra);
   }

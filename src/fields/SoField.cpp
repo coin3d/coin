@@ -230,8 +230,7 @@ public:
 
   void removeConverter(const void * item)
   {
-    size_t ok = this->maptoconverter.erase(item);
-    assert(ok);
+    if (!this->maptoconverter.erase(item)) assert(false);
   }
 
   SoFieldConverter * findConverter(const void * item)
@@ -411,8 +410,7 @@ SoFieldP::hashRealloc(void * bufptr, size_t size)
   CC_MUTEX_LOCK(sofield_mutex);
 
   char ** bufptrptr = NULL;
-  SbBool ok = SoFieldP::ptrhash->get(static_cast<char *>(bufptr), bufptrptr);
-  assert(ok);
+  if (!SoFieldP::ptrhash->get(static_cast<char *>(bufptr), bufptrptr)) assert(false);
 
   // If *bufptrptr contains a NULL pointer, this is the first
   // invocation and the initial memory buffer was on the stack.
@@ -427,8 +425,7 @@ SoFieldP::hashRealloc(void * bufptr, size_t size)
     newbuf = static_cast<char *>(realloc(bufptr, size));
   }
   if (newbuf != bufptr) {
-    size_t isok = SoFieldP::ptrhash->erase(static_cast<char *>(bufptr));
-    assert(isok);
+    if (!SoFieldP::ptrhash->erase(static_cast<char *>(bufptr))) assert(false);
     *bufptrptr = newbuf;
     SoFieldP::ptrhash->put(newbuf, bufptrptr);
   }
@@ -1379,8 +1376,7 @@ SoField::get(SbString & valuestring)
   char * bufferptr = NULL; // indicates that initial buffer is on the stack
 
   CC_MUTEX_LOCK(sofield_mutex);
-  SbBool ok = SoFieldP::getReallocHash()->put(initbuffer, &bufferptr);
-  assert(ok);
+  if (!SoFieldP::getReallocHash()->put(initbuffer, &bufferptr)) assert(false);
   CC_MUTEX_UNLOCK(sofield_mutex);
 
   out.setBuffer(initbuffer, sizeof(initbuffer), SoFieldP::hashRealloc);
@@ -1406,8 +1402,7 @@ SoField::get(SbString & valuestring)
   free(bufferptr);
 
   CC_MUTEX_LOCK(sofield_mutex);
-  size_t isok = SoFieldP::getReallocHash()->erase(bufferptr ? bufferptr : initbuffer);
-  assert(isok);
+  if (!SoFieldP::getReallocHash()->erase(bufferptr ? bufferptr : initbuffer)) assert(false);
   CC_MUTEX_UNLOCK(sofield_mutex);
 }
 
@@ -2447,18 +2442,17 @@ SoField::resolveWriteConnection(SbName & mastername) const
   if (this->getConnectedField(fieldmaster)) {
     fc = fieldmaster->getContainer();
     assert(fc);
-    SbBool ok = fc->getFieldName(fieldmaster, mastername);
-    assert(ok);
+    if (!fc->getFieldName(fieldmaster, mastername)) assert(false);
   }
   else if (this->getConnectedEngine(enginemaster)) {
     fc = enginemaster->getFieldContainer();
     assert(fc);
     // FIXME: couldn't we use getFieldName()? 20000129 mortene.
-    SbBool ok =
+    const SbBool ok =
       enginemaster->isNodeEngineOutput() ?
       coin_assert_cast<SoNodeEngine *>(fc)->getOutputName(enginemaster, mastername) :
       coin_assert_cast<SoEngine *>(fc)->getOutputName(enginemaster, mastername);
-    assert(ok);
+    if (!ok) assert(false);
   }
   else assert(FALSE);
 
