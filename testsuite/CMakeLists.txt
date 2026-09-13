@@ -91,7 +91,9 @@ add_executable(CoinTests
 # exercise it without making cc_dict part of the public ABI. Static builds can
 # resolve the private symbols directly from the Coin archive.
 if(WIN32 AND COIN_BUILD_SHARED_LIBS)
-	target_sources(CoinTests PRIVATE ${PROJECT_SOURCE_DIR}/src/base/dict.cpp)
+	target_sources(CoinTests PRIVATE
+		${PROJECT_SOURCE_DIR}/src/base/dict.cpp
+		CcDictWin32TestSupport.cpp)
 	set_source_files_properties(${PROJECT_SOURCE_DIR}/src/base/dict.cpp PROPERTIES
 		COMPILE_DEFINITIONS COIN_INTERNAL)
 endif()
