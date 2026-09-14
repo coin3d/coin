@@ -47,6 +47,8 @@
 
 #include "SbBasicP.h"
 
+#include <Inventor/errors/SoDebugError.h>
+
 #include <cassert>
 
 /*!
@@ -166,10 +168,21 @@ SoWindowElement::get(SoState * state,
                      void * & display,
                      SoGLRenderAction * & action)
 {
-  const SoWindowElement * elem = coin_assert_cast<const SoWindowElement *>
+  const SoWindowElement * elem = coin_safe_cast<const SoWindowElement *>
     (
      SoElement::getConstElement(state, classStackIndex)
      );
+
+  if (!elem) {
+    SoDebugError::post("SoWindowElement::get",
+                       "SoWindowElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default values.");
+    window = 0;
+    context = NULL;
+    display = NULL;
+    action = NULL;
+    return;
+  }
 
   window = elem->window;
   context = elem->context;

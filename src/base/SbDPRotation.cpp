@@ -57,6 +57,8 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include "coindefs.h"
+
 /*!
   The default constructor just initializes a valid rotation. The
   actual value is unspecified, and you should not depend on it.
@@ -633,7 +635,7 @@ SbDPRotation::identity(void)
   debug version of library, method does nothing in an optimized build.
  */
 void
-SbDPRotation::print(FILE * fp) const
+SbDPRotation::print(FILE * COIN_UNUSED_ARG(fp)) const
 {
 #if COIN_DEBUG
   this->quat.print(fp);

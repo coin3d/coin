@@ -129,6 +129,7 @@ SoProtoInstance::cleanupClass(void)
 SoProtoInstance::SoProtoInstance(SoProto * proto,
                                  const SoFieldData * deffielddata)
 {
+  this->classfielddata = NULL;
   PRIVATE(this) = new SoProtoInstanceP;
   PRIVATE(this)->fielddata = new SoFieldData;
   PRIVATE(this)->protodef = proto;

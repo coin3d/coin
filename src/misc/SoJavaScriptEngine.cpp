@@ -162,13 +162,11 @@ static void printJSException(JSContext *cx)
     return;
   }
 
-  SbBool ok;
   /* Todo: we loose unicode information here */
   cstr = spidermonkey()->JS_GetStringBytes(s);
   if (!cstr) {
     SoDebugError::postWarning("printJSException", "could not get string bytes");
-    ok = spidermonkey()->JS_RemoveRoot(cx, &s);
-    assert(ok && "JS_RemoveRoot failed");
+    if (!spidermonkey()->JS_RemoveRoot(cx, &s)) assert(!"JS_RemoveRoot failed");
     return;
   }
   len = spidermonkey()->JS_GetStringLength(s);
@@ -182,8 +180,7 @@ static void printJSException(JSContext *cx)
   const size_t wrote = fwrite(cstr, 1, len, stderr);
   assert(wrote == len);
   (void)fprintf(stderr, "\n");
-  ok = spidermonkey()->JS_RemoveRoot(cx, &s);
-  assert(ok && "JS_RemoveRoot failed");
+  if (!spidermonkey()->JS_RemoveRoot(cx, &s)) assert(!"JS_RemoveRoot failed");
 }
 
 /*!

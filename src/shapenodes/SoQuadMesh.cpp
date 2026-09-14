@@ -192,6 +192,7 @@
 
 #include "rendering/SoGL.h"
 #include "nodes/SoSubNodeP.h"
+#include "coindefs.h"
 
 /*!
   \var SoSFInt32 SoQuadMesh::verticesPerColumn
@@ -317,7 +318,7 @@ static float precalculateWeight(int i)
   double p = sqrt(p2);
   return float(p / (1.0 + p));
 }
-static float qmeshGetWeight(float value)
+static float qmeshGetWeight(float COIN_UNUSED_ARG(value))
 {
 #if defined(HAVE_ILOGB)
   int exponent = ilogb(value) + (QUADMESH_WEIGHTS_NR / 2);
@@ -578,14 +579,14 @@ namespace { namespace SoGL { namespace QuadMesh {
                 SbPlane p1(*c1d3,*c2d3,*c4d3);
                 SbPlane p2(*c1d3,*c4d3,*c3d3);
                 SbVec3f n = p1.getNormal() + p2.getNormal();
-                SbBool quadok = qmeshNormalize(n, n1->sqrLength() + n2->sqrLength() +
-                                               n3->sqrLength() + n4->sqrLength());
+                if (!qmeshNormalize(n, n1->sqrLength() + n2->sqrLength() +
+                                    n3->sqrLength() + n4->sqrLength())) {
 #if COIN_DEBUG
-                if ( !quadok )
                   SoDebugError::postWarning("SoQuadMesh::GLRender",
                                             "Can not compute normal because of "
                                             "wrong quad coordinates.");
 #endif // COIN_DEBUG
+                }
               } else {
                 // FIXME
               }

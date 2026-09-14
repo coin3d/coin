@@ -56,7 +56,6 @@ void
 cc_glyph_unref(cc_dict * dict, cc_glyph * glyph, cc_glyph_finalize * f)
 {
   cc_list * glyphlist;
-  int ret;
   void * tmp;
   int i;
 
@@ -70,8 +69,7 @@ cc_glyph_unref(cc_dict * dict, cc_glyph * glyph, cc_glyph_finalize * f)
 
   /* handling of common data: */
 
-  ret = cc_dict_get(dict, (uintptr_t)glyph->character, &tmp);
-  assert(ret);
+  if (!cc_dict_get(dict, (uintptr_t)glyph->character, &tmp)) assert(!"cc_dict_get failed");
   glyphlist = (cc_list *)tmp;
     
   for (i = 0; i < cc_list_get_length(glyphlist); i++) {

@@ -166,7 +166,8 @@ void
 ScXMLParamElt::copyContents(const ScXMLElt * rhs)
 {
   inherited::copyContents(rhs);
-  const ScXMLParamElt * orig = coin_assert_cast<const ScXMLParamElt *>(rhs);
+  const ScXMLParamElt * orig = coin_safe_cast<const ScXMLParamElt *>(rhs);
+  if (orig == NULL) return;
   this->setNameAttribute(orig->getNameAttribute());
   this->setExprAttribute(orig->getExprAttribute());
 }

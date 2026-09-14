@@ -157,7 +157,8 @@ void
 ScXMLEventElt::copyContents(const ScXMLElt * rhs)
 {
   inherited::copyContents(rhs);
-  const ScXMLEventElt * orig = coin_assert_cast<const ScXMLEventElt *>(rhs);
+  const ScXMLEventElt * orig = coin_safe_cast<const ScXMLEventElt *>(rhs);
+  if (orig == NULL) return;
   this->setNameAttribute(orig->getNameAttribute());
 }
 

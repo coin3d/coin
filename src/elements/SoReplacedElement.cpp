@@ -57,6 +57,7 @@
 #include <Inventor/elements/SoReplacedElement.h>
 
 #include "SbBasicP.h"
+#include "coindefs.h"
 
 #include <Inventor/nodes/SoNode.h>
 #include <cassert>
@@ -98,8 +99,9 @@ SoReplacedElement::init(SoState * state)
 SbBool
 SoReplacedElement::matches(const SoElement * element) const
 {
-  if ((coin_assert_cast<const SoReplacedElement *>(element))->nodeId ==
-      this->nodeId)
+  const SoReplacedElement * elem = coin_assert_cast<const SoReplacedElement *>(element);
+  COIN_ASSUME(elem != NULL);
+  if (elem->nodeId == this->nodeId)
     return TRUE;
   return FALSE;
 }
