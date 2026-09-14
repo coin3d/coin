@@ -315,9 +315,9 @@ SoVRMLTouchSensor::handleEvent(SoHandleEventAction * action)
     const SoPickedPoint * pp = action->getPickedPoint();
     SoNode * parentnode = NULL;
     if (pp) {
-      const SoFullPath * currpath = (const SoFullPath*) action->getCurPath();
-      SoFullPath * parentpath = (SoFullPath*) currpath->copy(0, currpath->getLength()-1);
-      parentnode = parentpath->getTail();
+      const SoPath * currpath = action->getCurPath();
+      SoPath * parentpath = currpath->copy(0, currpath->getFullLength()-1);
+      parentnode = parentpath->getFullTail();
       parentpath->ref();
       isover = pp->getPath()->containsPath(parentpath);
       parentpath->unref();

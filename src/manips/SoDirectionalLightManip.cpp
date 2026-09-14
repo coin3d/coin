@@ -188,8 +188,7 @@ SoDirectionalLightManip::getDragger(void)
 SbBool
 SoDirectionalLightManip::replaceNode(SoPath * path)
 {
-  SoFullPath * fullpath = (SoFullPath *)path;
-  SoNode * fulltail = fullpath->getTail();
+  SoNode * fulltail = path->getFullTail();
   if (!fulltail->isOfType(SoDirectionalLight::getClassTypeId())) {
 #if COIN_DEBUG
     SoDebugError::post("SoDirectionalLightManip::replaceNode",
@@ -216,14 +215,14 @@ SoDirectionalLightManip::replaceNode(SoPath * path)
       }
     }
   }
-  if (fullpath->getLength() < 2) {
+  if (path->getFullLength() < 2) {
 #if COIN_DEBUG
     SoDebugError::post("SoDirectionalLightManip::replaceNode",
                        "Path is too short");
 #endif // debug
     return FALSE;
   }
-  SoNode * parent = fullpath->getNodeFromTail(1);
+  SoNode * parent = path->getFullNodeFromTail(1);
   if (!parent->isOfType(SoGroup::getClassTypeId())) {
 #if COIN_DEBUG
     SoDebugError::post("SoDirectionalLightManip::replaceNode",
