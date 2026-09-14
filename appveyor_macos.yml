@@ -1,4 +1,4 @@
-version: 4.0.3-{branch}-ci-{build}
+version: 4.0.10-{branch}-ci-{build}
 
 branches:
   only:
@@ -45,7 +45,7 @@ environment:
 
 install:
   - sh: |
-      HOMEBREW_NO_AUTO_UPDATE=1 brew install jq
+      HOMEBREW_NO_AUTO_UPDATE=1 brew install jq ninja
       #brew install doxygen
   - git submodule update --init --recursive
 
@@ -65,13 +65,13 @@ before_build:
       export COMPILER_ID=$APPVEYOR_BUILD_WORKER_IMAGE-$COMPILER_ID`$COMPILER_ID -v 2>&1 | grep version | sed 's/^.*version \([0-9]*\)\.[0-9]*\.[0-9]*.*$/\1/g'`
       export CFLAGS=$CMAKE_ARCH_FLAGS
       export CXXFLAGS=$CMAKE_ARCH_FLAGS
-      #cmake -H. -Bbuild_debug   -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=Debug   -DCMAKE_POSITION_INDEPENDENT_CODE=true -DCMAKE_INSTALL_PREFIX=$APPVEYOR_BUILD_FOLDER/Coin3D -DCMAKE_CXX_STANDARD=11
-      cmake -H. -Bbuild_release -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=true -DCMAKE_INSTALL_PREFIX=$APPVEYOR_BUILD_FOLDER/Coin3D -DCMAKE_CXX_STANDARD=11
+      #cmake -S . -B build_debug   -G Ninja -DCMAKE_BUILD_TYPE=Debug   -DCMAKE_POSITION_INDEPENDENT_CODE=true -DCMAKE_INSTALL_PREFIX=$APPVEYOR_BUILD_FOLDER/Coin3D -DCMAKE_CXX_STANDARD=11
+      cmake -S . -B build_release -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=true -DCMAKE_INSTALL_PREFIX=$APPVEYOR_BUILD_FOLDER/Coin3D -DCMAKE_CXX_STANDARD=11
 
 build_script:
   - sh: |
-      #cmake --build build_debug   --target install --config Debug   --parallel
-      cmake --build build_release --target install --config Release --parallel
+      #cmake --build build_debug   --target install --parallel
+      cmake --build build_release --target install --parallel
 
 after_build:
   - sh: |
