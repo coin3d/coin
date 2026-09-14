@@ -11,7 +11,7 @@
 #
 # Before the fix: crashes (SIGSEGV). After the fix: prints PASS and exits 0.
 
-cd "$(dirname "$0")"
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 
 LIBDIR="$1"
 if [ -z "$LIBDIR" ]; then
@@ -20,13 +20,16 @@ if [ -z "$LIBDIR" ]; then
 fi
 
 CXX=${CXX:-c++}
+BUILD_DIR=$(mktemp -d "${TMPDIR:-/tmp}/coin-field-disconnect.XXXXXX") || exit 2
+trap 'rm -rf "$BUILD_DIR"' EXIT HUP INT TERM
 
-"$CXX" -O0 -g repro.cpp -o repro -I"$LIBDIR/../include" -L"$LIBDIR" -lCoin || exit 2
+"$CXX" -O0 -g "$SCRIPT_DIR/repro.cpp" -o "$BUILD_DIR/repro" \
+  -I"$LIBDIR/../include" -L"$LIBDIR" -lCoin || exit 2
 
 export LD_LIBRARY_PATH="$LIBDIR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 export COIN_DEBUG_EXTRA=${COIN_DEBUG_EXTRA:-1}
 export COIN_WARNING_LEVEL=${COIN_WARNING_LEVEL:-3}
-./repro
+"$BUILD_DIR/repro"
 status=$?
 if [ "$status" -ne 0 ]; then
   echo "=== FAIL: repro exited with status $status ===" >&2
