@@ -250,10 +250,9 @@ SoNurbsCurve::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   const SoCoordinateElement * coordelem =
     SoCoordinateElement::getInstance(state);
 
-  int numCoords = coordelem->getNum();
   int num = this->numControlPoints.getValue();
 
-  assert(num <= numCoords);
+  assert(num <= coordelem->getNum());
 
   SbVec3f acccenter(0.0f, 0.0f, 0.0f);
   box.makeEmpty();

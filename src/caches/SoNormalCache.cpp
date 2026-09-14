@@ -464,7 +464,9 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
   PRIVATE(this)->indices.truncate(0);
   PRIVATE(this)->normalArray.truncate(0, TRUE);
 
+#if COIN_DEBUG
   const int32_t * cstart = cind;
+#endif // COIN_DEBUG
   const int32_t * endptr = cind + nv;
 
   SbVec3f tmpvec;
@@ -619,7 +621,9 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
   PRIVATE(this)->indices.truncate(0);
   PRIVATE(this)->normalArray.truncate(0, TRUE);
 
+#if COIN_DEBUG
   const int32_t * cstart = cind;
+#endif // COIN_DEBUG
   const int32_t * endptr = cind + nv;
 
   const SbVec3f * c0, * c1, * c2;
@@ -778,7 +782,9 @@ SoNormalCache::generatePerStrip(const SbVec3f * const coords,
   PRIVATE(this)->indices.truncate(0);
   PRIVATE(this)->normalArray.truncate(0, TRUE);
 
+#if COIN_DEBUG
   const int32_t * cstart = cind;
+#endif // COIN_DEBUG
   const int32_t * endptr = cind + nv;
 
   const SbVec3f * c0, * c1, * c2;
