@@ -131,6 +131,8 @@
 
 // *************************************************************************
 
+static SoPath * solocatehighlight_currenthighlightpath = NULL;
+
 class SoLocateHighlightP {
 public:
   SoLocateHighlightP() 
@@ -154,19 +156,15 @@ public:
 #endif // COIN_THREADSAFE
   }
   SbBool highlighted;
-  // Keep the historical symbol type for binary compatibility. Never call a
-  // SoFullPath member through this pointer: stored objects are plain SoPath.
+  // Kept solely as an ABI bridge for the symbol exported by Coin 4.0.10.
+  // The highlighted path is a plain SoPath and must never be stored here.
   static SoFullPath * currenthighlight;
 
-  static SoPath * currentHighlightPath(void) {
-    return reinterpret_cast<SoPath *>(SoLocateHighlightP::currenthighlight);
-  }
-
   static void atexit_cleanup(void) {
-    SoPath * path = SoLocateHighlightP::currentHighlightPath();
+    SoPath * path = solocatehighlight_currenthighlightpath;
     if (path) {
       path->unref();
-      SoLocateHighlightP::currenthighlight = NULL;
+      solocatehighlight_currenthighlightpath = NULL;
     }
   }
 #ifdef COIN_THREADSAFE
@@ -261,8 +259,7 @@ SoLocateHighlight::handleEvent(SoHandleEventAction * action)
           SoLocateHighlight::turnoffcurrent(action);
           SoPath * path = action->getCurPath()->copy();
           path->ref();
-          SoLocateHighlightP::currenthighlight =
-            reinterpret_cast<SoFullPath *>(path);
+          solocatehighlight_currenthighlightpath = path;
           PRIVATE(this)->highlighted = TRUE;
           this->touch(); // force scene redraw
           this->redrawHighlighted(action, TRUE);
@@ -336,7 +333,7 @@ SoLocateHighlight::setOverride(SoGLRenderAction * action)
 void
 SoLocateHighlight::turnoffcurrent(SoAction * action)
 {
-  SoPath * path = SoLocateHighlightP::currentHighlightPath();
+  SoPath * path = solocatehighlight_currenthighlightpath;
   if (path && path->getFullLength()) {
     SoNode * tail = path->getFullTail();
     if (tail->isOfType(SoLocateHighlight::getClassTypeId())) {
@@ -347,7 +344,7 @@ SoLocateHighlight::turnoffcurrent(SoAction * action)
   }
   if (path) {
     path->unref();
-    SoLocateHighlightP::currenthighlight = NULL;
+    solocatehighlight_currenthighlightpath = NULL;
   }
 }
 
