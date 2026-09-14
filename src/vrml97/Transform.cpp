@@ -113,7 +113,7 @@
   S (scale) are the equivalent transformation matrices,
 
   \verbatim
-  P' = T × C × R × SR × S × -SR × -C × P
+  P' = T * C * R * SR * S * -SR * -C * P
   \endverbatim
 
   The following Transform node:

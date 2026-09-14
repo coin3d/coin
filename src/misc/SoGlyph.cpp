@@ -314,8 +314,7 @@ SoGlyph::getBoundingBox(void) const
     // default. (20030926 handegar)    
     float advancex, advancey;
     cc_flw_get_vector_advance(PRIVATE(this)->fontidx, PRIVATE(this)->glyphidx, &advancex, &advancey);
-    SbVec2f max = PRIVATE(this)->bbox.getMax();
-    
+
     PRIVATE(this)->bbox.extendBy(SbVec2f(advancex, advancey));
    
     PRIVATE(thisp)->flags.didcalcbbox = 1;
@@ -329,7 +328,7 @@ SoGlyph::getBoundingBox(void) const
   Sets the coordinates for this glyph.
 */
 void
-SoGlyph::setCoords(const SbVec2f *coords, int numcoords)
+SoGlyph::setCoords(const SbVec2f *coords, int COIN_UNUSED_ARG(numcoords))
 {
   // It used to be valid to call this function with a negative value
   // (which signified that data should not be copied). All invoking
@@ -348,7 +347,7 @@ SoGlyph::setCoords(const SbVec2f *coords, int numcoords)
   Sets the face indices for this glyph.
 */
 void
-SoGlyph::setFaceIndices(const int *indices, int numindices)
+SoGlyph::setFaceIndices(const int *indices, int COIN_UNUSED_ARG(numindices))
 {
   // It used to be valid to call this function with a negative value
   // (which signified that data should not be copied). All invoking
@@ -367,7 +366,7 @@ SoGlyph::setFaceIndices(const int *indices, int numindices)
   Sets the edge indices for this glyph.
 */
 void
-SoGlyph::setEdgeIndices(const int *indices, int numindices)
+SoGlyph::setEdgeIndices(const int *indices, int COIN_UNUSED_ARG(numindices))
 {
   // It used to be valid to call this function with a negative value
   // (which signified that data should not be copied). All invoking

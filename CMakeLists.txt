@@ -118,7 +118,11 @@ cmake_dependent_option(COIN_BUILD_MAC_FRAMEWORK "Build framework instead of dyli
 cmake_dependent_option(COIN_BUILD_MAC_X11 "Build for X11 on Mac OS X when ON. Default is OFF." OFF "APPLE" OFF)
 cmake_dependent_option(COIN_BUILD_MAC_AGL "Build for AGL on Mac OS X when ON. Default is OFF." OFF "APPLE" OFF)
 
-option(COIN_BUILD_GLX "Build for GLX on Linux when ON. Default is ON." ON)
+# GLX needs X11, which Android does not have -- there is no windowing
+# system there for Coin to create an on-screen GLX context against,
+# only EGL. Force this off on Android rather than default it on and
+# fail later at find_package(X11 REQUIRED).
+cmake_dependent_option(COIN_BUILD_GLX "Build for GLX on Linux when ON. Default is ON." ON "NOT ANDROID" OFF)
 option(COIN_BUILD_EGL "Build for EGL on Linux when ON. Default is ON." ON)
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -491,16 +495,25 @@ if(HAVE_VRML97 AND COIN_HAVE_JAVASCRIPT)
   if(NOT SPIDERMONKEY_RUNTIME_LINKING)
     find_package(SpiderMonkey)
     if(SPIDERMONKEY_FOUND)
-      set(HAVE_SPIDERMONKEY_VIA_LINKTIME_LINKING 1)
-      set(HAVE_SPIDERMONKEY_H 1)
-      if(NOT TARGET SpiderMonkey::SpiderMonkey)
-        add_library(SpiderMonkey::SpiderMonkey UNKNOWN IMPORTED)
-        set_target_properties(SpiderMonkey::SpiderMonkey PROPERTIES
-          IMPORTED_LOCATION "${SPIDERMONKEY_LIBRARIES}"
-          INTERFACE_INCLUDE_DIRECTORIES "${SPIDERMONKEY_INCLUDE_DIRS}"
-        )
-      endif()
-      list(APPEND COIN_TARGET_LINK_LIBRARIES SpiderMonkey::SpiderMonkey)
+      message(FATAL_ERROR
+        "SPIDERMONKEY_RUNTIME_LINKING=OFF (link-time SpiderMonkey linking) "
+        "found a SpiderMonkey at '${SPIDERMONKEY_INCLUDE_DIR}', but this "
+        "configuration cannot work: Coin's SpiderMonkey glue "
+        "(src/glue/spidermonkey.cpp, include/Inventor/C/glue/spidermonkey.h) "
+        "targets the SpiderMonkey C API as it existed around 2007 (JSBool, "
+        "jsval as a plain integer, no JS::Rooted<>/JS::PropertyKey), and no "
+        "SpiderMonkey release still available today exports that API -- "
+        "compiling against a real, modern <jsapi.h> fails with hundreds of "
+        "conflicting-declaration errors (JSContext, JSType, jsid, ... "
+        "redefined) rather than the intended type reuse (see Coin issue "
+        "#173). Porting this glue to a current SpiderMonkey embedding API "
+        "is out of scope here (see PR #673's rationale). "
+        "Use the default SPIDERMONKEY_RUNTIME_LINKING=ON instead: it loads "
+        "SpiderMonkey dynamically at run-time and safely reports JavaScript "
+        "support as unavailable if no compatible library is found, instead "
+        "of failing the whole Coin build. To disable JavaScript/VRML97 "
+        "\"javascript:\" URL support (SoJavaScriptEngine) entirely, "
+        "configure with -DCOIN_HAVE_JAVASCRIPT=OFF instead.")
     endif()
   endif()
 endif()
@@ -800,6 +813,9 @@ if(NOT HAVE_VSNPRINTF)
 endif()
 check_symbol_exists(__builtin_expect assert.h HAVE___BUILTIN_EXPECT)
 set(HAVE_ASSERT_WITH_BUILTIN_EXPECT ${HAVE___BUILTIN_EXPECT})
+check_cxx_source_compiles("
+  int main(void) { if (0) __builtin_unreachable(); return 0; }
+" HAVE___BUILTIN_UNREACHABLE)
 
 check_symbol_exists(__func__ "" FUNC)
 check_symbol_exists(__PRETTY_FUNCTION__ "" PRETTY_FUNCTION)

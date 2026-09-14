@@ -1613,7 +1613,11 @@ SoGLDisplayList *
 SoGLImageP::createGLDisplayList(SoState *state)
 {
   SbVec3s size;
-  int numcomponents;
+  /* Only read below once !this->pbuffer is true (see the early return
+     right below), which combined with that check guarantees bytes,
+     and therefore numcomponents, was set. Initialized only because
+     the compiler can't correlate bytes with numcomponents. */
+  int numcomponents = 0;
   unsigned char *bytes =
     this->image ? this->image->getValue(size, numcomponents) : NULL;
 
@@ -1684,7 +1688,10 @@ SoGLImageP::checkTransparency(void)
   this->hastransparency = FALSE;
 
   SbVec3s size;
-  int numcomponents;
+  /* Only read below in the bytes!=NULL branch, which only happens once
+     getValue() has set it. Initialized only because the compiler
+     can't correlate bytes with numcomponents. */
+  int numcomponents = 0;
   unsigned char *bytes = this->image ?
     this->image->getValue(size, numcomponents) : NULL;
 

@@ -213,8 +213,7 @@ SoWriterefCounter::create(SoOutput * out, SoOutput * copyfrom)
 {
   SoWriterefCounter * inst = new SoWriterefCounter(out, copyfrom);
   CC_MUTEX_LOCK(SoWriterefCounterP::mutex);
-  SbBool ret = SoWriterefCounterP::outputdict->put(out, inst);
-  assert(ret && "writeref instance already exists!");
+  if (!SoWriterefCounterP::outputdict->put(out, inst)) assert(!"writeref instance already exists!");
   CC_MUTEX_UNLOCK(SoWriterefCounterP::mutex);
 }
 
@@ -264,8 +263,7 @@ SoWriterefCounter::instance(SoOutput * out)
 
   SoWriterefCounter * inst = NULL;
 
-  const SbBool ok = SoWriterefCounterP::outputdict->get(out, inst);
-  assert(ok && "no instance");
+  if (!SoWriterefCounterP::outputdict->get(out, inst)) assert(!"no instance");
 
   SoWriterefCounterP::current = inst;
   CC_MUTEX_UNLOCK(SoWriterefCounterP::mutex);
@@ -481,7 +479,11 @@ SoWriterefCounter::addReference(const SoBase * base)
 int
 SoWriterefCounter::findReference(const SoBase * base) const
 {
-  int id;
+  /* Only read below when ok is TRUE, which happens only when get() has
+     set it. Initialized to this function's own "not found" sentinel
+     (see docstring above) since the compiler can't correlate ok with
+     whether id was actually set. */
+  int id = -1;
   const SbBool ok =
     PRIVATE(this)->sobase2id &&
     PRIVATE(this)->sobase2id->get(base, id);

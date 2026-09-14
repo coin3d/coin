@@ -401,8 +401,7 @@ SoVRMLTimeSensor::inputChanged(SoField * which)
     if (!PRIVATE(this)->running) {
       PRIVATE(this)->starttime = this->startTime.getValue().getValue();
       if (currtime >= PRIVATE(this)->starttime) {
-        SbBool old = this->timeIn.enableNotify(TRUE);
-        assert(old == FALSE);
+        if (this->timeIn.enableNotify(TRUE) != FALSE) assert(false);
         which = &this->timeIn; // warning, hack
       } else {
         // enable to wait for timeIn to be >= starttime

@@ -60,7 +60,7 @@
 
 #ifndef HAVE_EGL
 
-void * eglglue_getprocaddress(const cc_glglue * glue_in, const char * fname)
+void * eglglue_getprocaddress(const cc_glglue * COIN_UNUSED_ARG(glue_in), const char * fname)
 {
   return NULL;
 }
@@ -267,7 +267,6 @@ void *
 eglglue_context_create_offscreen(unsigned int width, unsigned int height)
 {
   struct eglglue_contextdata * ctx;
-  EGLint format;
   EGLint numConfigs;
   EGLConfig config;
   EGLint attrib[] = {
@@ -282,11 +281,15 @@ eglglue_context_create_offscreen(unsigned int width, unsigned int height)
     EGL_NONE
   };
 
+  // Use the width/height arguments directly: ctx is not assigned until
+  // eglglue_contextdata_init() below, and eglglue_contextdata_init()
+  // sets ctx->width/ctx->height to exactly these values, so there is
+  // no need to (and, before ctx exists, no way to) read them off ctx.
   EGLAttrib surface_attrib[] = {
     EGL_TEXTURE_FORMAT, EGL_TEXTURE_RGBA,
     EGL_TEXTURE_TARGET, EGL_TEXTURE_2D,
-    EGL_WIDTH, (EGLint) ctx->width,
-    EGL_HEIGHT, (EGLint) ctx->height,
+    EGL_WIDTH, (EGLint) width,
+    EGL_HEIGHT, (EGLint) height,
     EGL_NONE
   };
 
@@ -474,7 +477,7 @@ eglglue_context_can_render_to_texture(void * ctx)
 SbBool
 eglglue_context_pbuffer_max(void * ctx, unsigned int * lims)
 {
-  int returnval, attribval, i;
+  int attribval, i;
   const int attribs[] = {
     EGL_MAX_PBUFFER_WIDTH, EGL_MAX_PBUFFER_HEIGHT, EGL_MAX_PBUFFER_PIXELS
   };
@@ -497,7 +500,7 @@ eglglue_context_pbuffer_max(void * ctx, unsigned int * lims)
 }
 
 void *
-eglglue_getprocaddress(const cc_glglue * glue_in, const char * fname)
+eglglue_getprocaddress(const cc_glglue * COIN_UNUSED_ARG(glue_in), const char * fname)
 {
   return (void *)eglGetProcAddress(fname);
 }

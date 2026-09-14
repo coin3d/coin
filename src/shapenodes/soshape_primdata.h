@@ -38,14 +38,15 @@
 #endif /* !COIN_INTERNAL */
 
 #include <Inventor/nodes/SoShape.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/details/SoPointDetail.h>
 
 // Private class used only by SoShape to aid in generating primitives,
 // handling details ++
 
 class SoDetail;
 class SoAction;
-class SoPrimitiveVertex;
-class SoPointDetail;
 class SoFaceDetail;
 class SoLineDetail;
 
@@ -74,6 +75,7 @@ private:
 
   void copyMaterialIndex(const int lastvertex);
   void copyNormalIndex(const int lastvertex);
+  void growPolygonBuffers(void);
 
 private:
   friend class SoShape;
@@ -81,11 +83,10 @@ private:
   SoShape::TriangleShape shapetype;
   SoAction * action;
   SoShape * shape;
-  SoPrimitiveVertex * vertsArray;
-  SoPointDetail * pointDetails;
+  SbList<SoPrimitiveVertex> vertsArray;
+  SbList<SoPointDetail> pointDetails;
   SoFaceDetail * faceDetail;
   SoLineDetail * lineDetail;
-  int arraySize;
   int counter;
   class SbTesselator * tess;
   class SbGLUTessellator * glutess;

@@ -43,10 +43,7 @@
 
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
 #include <Inventor/misc/SoState.h>
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 /*!
   \fn SoLocalBBoxMatrixElement::localMatrix
@@ -238,10 +235,16 @@ SbMatrix
 SoLocalBBoxMatrixElement::pushMatrix(SoState * const state)
 {
   // use getElementNoPush to avoid element push
-  SoLocalBBoxMatrixElement * elem = coin_assert_cast<SoLocalBBoxMatrixElement *>
+  SoLocalBBoxMatrixElement * elem = coin_safe_cast<SoLocalBBoxMatrixElement *>
     (
      state->getElementNoPush(classStackIndex)
      );
+  if (!elem) {
+    SoDebugError::post("SoLocalBBoxMatrixElement::pushMatrix",
+                       "SoLocalBBoxMatrixElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning identity matrix.");
+    return SbMatrix::identity();
+  }
   return elem->localMatrix;
 }
 
@@ -252,10 +255,16 @@ SoLocalBBoxMatrixElement::popMatrix(SoState * const state,
                                     const SbMatrix & matrix)
 {
   // Important: use getElementNoPush to avoid a push on element
-  SoLocalBBoxMatrixElement *elem = coin_assert_cast<SoLocalBBoxMatrixElement*>
+  SoLocalBBoxMatrixElement *elem = coin_safe_cast<SoLocalBBoxMatrixElement*>
     (
      state->getElementNoPush(classStackIndex)
     );
+  if (!elem) {
+    SoDebugError::post("SoLocalBBoxMatrixElement::popMatrix",
+                       "SoLocalBBoxMatrixElement not enabled for this action -- "
+                       "missing SO_ENABLE()?");
+    return;
+  }
   elem->localMatrix = matrix;
 }
 

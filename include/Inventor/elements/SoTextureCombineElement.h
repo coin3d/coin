@@ -125,8 +125,7 @@ public:
   class UnitData {
   public:
     UnitData();
-    UnitData(const UnitData & org);
-    UnitData & operator=(const UnitData & org) = default;
+    UnitData(const UnitData & org); // keep it for ABI compatibility with 4.0.10
 
     SbUniqueId nodeid;
     Source rgbsource[3];

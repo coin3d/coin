@@ -43,6 +43,8 @@
 #include "coindefs.h"
 #include "SbBasicP.h"
 
+#include <Inventor/errors/SoDebugError.h>
+
 #include <cassert>
 
 SO_ELEMENT_SOURCE(SoTextureOverrideElement);
@@ -70,7 +72,9 @@ SoTextureOverrideElement::~SoTextureOverrideElement(void)
 SbBool
 SoTextureOverrideElement::matches(const SoElement *element) const
 {
-  return coin_assert_cast<const SoTextureOverrideElement *>(element)->flags == this->flags;
+  const SoTextureOverrideElement * elem = coin_assert_cast<const SoTextureOverrideElement *>(element);
+  COIN_ASSUME(elem != NULL);
+  return elem->flags == this->flags;
 }
 
 //!
@@ -103,6 +107,7 @@ SoTextureOverrideElement::push(SoState *state)
     (
      this->getNextInStack()
      );
+  COIN_ASSUME(prev != NULL);
   this->flags = prev->flags;
 }
 
@@ -112,10 +117,16 @@ SbBool
 SoTextureOverrideElement::getQualityOverride(SoState *state)
 {
   const SoTextureOverrideElement * const element =
-    coin_assert_cast<const SoTextureOverrideElement *>
+    coin_safe_cast<const SoTextureOverrideElement *>
     (
      getConstElement(state, classStackIndex)
      );
+  if (!element) {
+    SoDebugError::post("SoTextureOverrideElement::getQualityOverride",
+                       "SoTextureOverrideElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return FALSE;
+  }
   return (element->flags & TEXTURE_QUALITY) != 0;
 }
 
@@ -125,10 +136,16 @@ SbBool
 SoTextureOverrideElement::getImageOverride(SoState *state)
 {
   const SoTextureOverrideElement * const element =
-    coin_assert_cast<const SoTextureOverrideElement *>
+    coin_safe_cast<const SoTextureOverrideElement *>
     (
      getConstElement(state, classStackIndex)
      );
+  if (!element) {
+    SoDebugError::post("SoTextureOverrideElement::getImageOverride",
+                       "SoTextureOverrideElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return FALSE;
+  }
   return (element->flags & TEXTURE_IMAGE) != 0;
 }
 
@@ -136,10 +153,16 @@ SbBool
 SoTextureOverrideElement::getBumpMapOverride(SoState *state)
 {
   const SoTextureOverrideElement * const element =
-    coin_assert_cast<const SoTextureOverrideElement *>
+    coin_safe_cast<const SoTextureOverrideElement *>
     (
      getConstElement(state, classStackIndex)
      );
+  if (!element) {
+    SoDebugError::post("SoTextureOverrideElement::getBumpMapOverride",
+                       "SoTextureOverrideElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return FALSE;
+  }
   return (element->flags & BUMP_MAP) != 0;
 }
 

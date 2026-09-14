@@ -1430,21 +1430,26 @@ SoBase::readRoute(SoInput * in)
   if (ok) {
     ok = FALSE;
 
-    // parse from-string
-    char * str1 = (char*) fromstring.getString();
-    char * str2 = str1 ? (char*) strchr(str1, '.') : NULL;
+    // Parse from-string. Extract the node-name substring via
+    // SbString's own substring constructor rather than writing a NUL
+    // terminator into fromstring's buffer through a const_cast: that
+    // relies on SbString/cc_string never sharing its buffer between
+    // instances, which happens to be true today but isn't part of
+    // getString()'s documented contract. The field-name half needs no
+    // truncation at all, since it runs to fromstring's own (untouched)
+    // terminating NUL.
+    const char * str1 = fromstring.getString();
+    const char * str2 = str1 ? strchr(str1, '.') : NULL;
     if (str1 && str2) {
-      *str2++ = 0;
+      fromnodename = SbString(str1, 0, static_cast<int>(str2 - str1) - 1).getString();
+      fromfieldname = str2 + 1;
 
       // now parse to-string
-      fromnodename = str1;
-      fromfieldname = str2;
-      str1 = (char*) tostring.getString();
+      str1 = tostring.getString();
       str2 = str1 ? strchr(str1, '.') : NULL;
       if (str1 && str2) {
-        *str2++ = 0;
-        tonodename = str1;
-        tofieldname = str2;
+        tonodename = SbString(str1, 0, static_cast<int>(str2 - str1) - 1).getString();
+        tofieldname = str2 + 1;
 
         ok = TRUE;
       }
@@ -1586,6 +1591,13 @@ SoBase::createNotRec(void)
 #include <Inventor/actions/SoToVRML2Action.h>
 #include <Inventor/VRMLnodes/SoVRMLGroup.h>
 
+// buffer, buffer_size, dont_mangle_output_names() and buffer_realloc()
+// below are only used inside the #ifdef HAVE_VRML97 block further down
+// in checkWriteWithMultiref() -- gated the same way here, since
+// CoinTests (a separate target from the Coin library itself) never
+// gets HAVE_VRML97 defined, so that block, and everything only used
+// by it, is always compiled out in practice.
+#ifdef HAVE_VRML97
  static char * buffer;
   static size_t buffer_size = 0;
 
@@ -1617,16 +1629,15 @@ dont_mangle_output_names(const SoBase *base)
     buffer_size = size;
     return buffer;
   }
+#endif // HAVE_VRML97
 
 
 BOOST_AUTO_TEST_CASE(checkWriteWithMultiref)
 {
 	SoDB::init();
-	   SoNode* scenegraph;
        SoSeparator *root = new SoSeparator;
        root->ref();
        root->setName("root");
-		scenegraph = root;
        SoSeparator *n0 = new SoSeparator;
        SoSeparator *a0 = new SoSeparator;
        SoSeparator *a1 = new SoSeparator;
@@ -1751,6 +1762,7 @@ DEF root Separator {
 
 #ifdef HAVE_VRML97
 	    SoVRMLGroup *newroot;
+	    SoNode * scenegraph = root;
 	   for(int j=0;j<2;j++) {
 		   if(j==1) {
 	SoToVRML2Action tovrml2;
@@ -1835,9 +1847,10 @@ DEF root Separator {
 	   }
 	   
 	
-       root->unref();
 	   newroot->unref();
 #endif
+       // The original graph exists even when VRML97 checks are excluded.
+       root->unref();
  }
 
 #endif // COIN_TEST_SUITE

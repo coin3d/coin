@@ -350,7 +350,7 @@ class SbHash {
   }
 
   Type & operator[](const Key & key) {
-    Type * obj;
+    Type * obj = NULL;
     if (!getP(key,obj)) {
       Type dummy = Type();
       if (!put(key,dummy)) assert(false);

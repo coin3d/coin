@@ -238,8 +238,17 @@ protected:
 
 private:
   void grow(const int size = -1) {
-    // Default behavior is to double array size.
-    if (size == -1) this->itembuffersize <<= 1;
+    // Default behavior is to double array size. itembuffersize is
+    // always >= DEFAULTSIZE for the lifetime of the object (set in
+    // the constructor, and every other assignment below either
+    // doubles it or clamps it to at least DEFAULTSIZE), so the ">
+    // 0" branch is the only one ever taken in practice -- but the
+    // explicit floor lets the compiler prove that locally too,
+    // instead of just at this call's actual call sites, which is
+    // what silences a GCC -Warray-bounds false positive seen when
+    // append() is inlined right after code that resets numitems to
+    // 0 (e.g. truncate(0)) without narrowing itembuffersize.
+    if (size == -1) this->itembuffersize = (this->itembuffersize > 0) ? (this->itembuffersize << 1) : DEFAULTSIZE;
     else if (size <= this->itembuffersize) return;
     else { this->itembuffersize = size; }
 

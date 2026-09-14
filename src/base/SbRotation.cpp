@@ -78,6 +78,8 @@
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbMatrix.h>
+
+#include "coindefs.h"
 #include <Inventor/fields/SoSFRotation.h>
 #include <cassert>
 #include <cfloat>
@@ -730,7 +732,7 @@ SbRotation::fromString(const SbString & str)
   debug version of library, method does nothing in an optimized build.
  */
 void
-SbRotation::print(FILE * fp) const
+SbRotation::print(FILE * COIN_UNUSED_ARG(fp)) const
 {
 #if COIN_DEBUG
   this->quat.print(fp);
