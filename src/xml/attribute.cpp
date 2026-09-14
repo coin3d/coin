@@ -181,7 +181,7 @@ cc_xml_attr_write_to_buffer(const cc_xml_attr * attr, char * buffer, size_t COIN
   // on invalid buffer size allocation before writing.
   const char * const origbufferptr = buffer;
   const size_t assumed = cc_xml_attr_calculate_size(attr);
-  assert(assumed < bufsize);
+  if (assumed >= bufsize) assert(false);
   size_t namelen = strlen(attr->name);
   strcpy(buffer, attr->name);
   buffer += namelen;
@@ -196,7 +196,7 @@ cc_xml_attr_write_to_buffer(const cc_xml_attr * attr, char * buffer, size_t COIN
   buffer[0] = '"';
   buffer += 1;
   size_t used = buffer - origbufferptr;
-  assert(used == assumed);
+  if (used != assumed) assert(false);
   return used;
 }
 

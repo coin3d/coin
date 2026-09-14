@@ -70,9 +70,8 @@ before_build:
 
 build_script:
   - sh: |
-      BUILD_TOOL_OPTIONS=-j4
-      #cmake --build build_debug   --target install --config Debug   -- $BUILD_TOOL_OPTIONS
-      cmake --build build_release --target install --config Release -- $BUILD_TOOL_OPTIONS
+      #cmake --build build_debug   --target install --config Debug   --parallel
+      cmake --build build_release --target install --config Release --parallel
 
 after_build:
   - sh: |

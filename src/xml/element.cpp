@@ -501,8 +501,7 @@ cc_xml_elt_insert_child_x(cc_xml_elt * elt, cc_xml_elt * child, int idx)
     // FIXME: error, child already a child of another element
     return;
   }
-  const int numchildren = elt->children.getLength();
-  assert(idx >= 0 && idx <= numchildren);
+  assert(idx >= 0 && idx <= elt->children.getLength());
   elt->children.insert(child, idx);
   child->parent = elt;
 }
@@ -1197,7 +1196,7 @@ cc_xml_elt_write_to_buffer(const cc_xml_elt * elt, char * buffer, size_t bufsize
 #undef ADVANCE_STRING
 #undef ADVANCE_STRING_LITERAL
 
-  assert(bytes == assumed);
+  if (bytes != assumed) assert(false);
   return bytes;
 }
 

@@ -134,8 +134,17 @@ void
 SoRotation::doAction(SoAction * action)
 {
   if (!this->rotation.isIgnored()) {
-    SoModelMatrixElement::rotateBy(action->getState(), this,
-                                   this->rotation.getValue());
+    const SbRotation & rot = this->rotation.getValue();
+    // Skip the matrix element update entirely for an identity rotation
+    // -- same "no-op transform contributes no GL/matrix work"
+    // optimization SoTransform::doAction() got in issue #534, applied
+    // to this sibling node. isIgnored() is a separate, orthogonal
+    // check (an SoField connection/override flag) and is preserved
+    // above exactly as before; this adds a second, independent check
+    // on the field's *value*. Exact comparison on purpose.
+    if (rot != SbRotation::identity()) {
+      SoModelMatrixElement::rotateBy(action->getState(), this, rot);
+    }
   }
 }
 

@@ -61,11 +61,10 @@ SoCompactPathList::SoCompactPathList(const SoPathList & list)
   : stack(256)
 {
   assert(list.getLength());
-  SoNode * head = list[0]->getHead();
   int numnodes = 0;
 
   for (int i = 0; i < list.getLength(); i++) {
-    assert(list[i]->getHead() == head);
+    assert(list[i]->getHead() == list[0]->getHead());
     numnodes += list[i]->getFullLength() - 1;
   }
   // 3 entries for each node + one extra for the root. This is a
