@@ -154,8 +154,7 @@ SoPointLightDragger::SoPointLightDragger(void)
   SO_KIT_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
   SO_KIT_INIT_INSTANCE();
 
-  SoDragger *pdragger = SO_GET_ANY_PART(this, "translator", SoDragPointDragger);
-  assert(pdragger);
+  if (!SO_GET_ANY_PART(this, "translator", SoDragPointDragger)) assert(false);
 
   this->setPartAsDefault("material", "pointLightOverallMaterial");
 
