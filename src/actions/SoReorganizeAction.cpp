@@ -250,6 +250,8 @@
 
 #include <Inventor/actions/SoReorganizeAction.h>
 
+#include <Inventor/SoFullPath.h>
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif // HAVE_CONFIG_H
@@ -374,6 +376,11 @@ class SoReorganizeActionP {
   void replaceVrmlIfs(SoPath * path);
   void replaceIls(SoPath * path);
   void replaceVrmlIls(SoPath * path);
+  void replaceNode(SoFullPath * path);
+  void replaceIfs(SoFullPath * path);
+  void replaceVrmlIfs(SoFullPath * path);
+  void replaceIls(SoFullPath * path);
+  void replaceVrmlIls(SoFullPath * path);
 
   SoVertexProperty * createVertexProperty(const SbBool forlines);
 };
@@ -1029,6 +1036,38 @@ SoReorganizeActionP::replaceVrmlIls(SoPath * path)
   path->push(idx);
   ils->unrefNoDelete();
 #endif // HAVE_VRML97
+}
+
+// Preserve the old private helper symbols without using SoFullPath's hidden
+// interface on objects that may have been constructed as plain SoPath.
+void
+SoReorganizeActionP::replaceNode(SoFullPath * path)
+{
+  this->replaceNode(static_cast<SoPath *>(path));
+}
+
+void
+SoReorganizeActionP::replaceIfs(SoFullPath * path)
+{
+  this->replaceIfs(static_cast<SoPath *>(path));
+}
+
+void
+SoReorganizeActionP::replaceVrmlIfs(SoFullPath * path)
+{
+  this->replaceVrmlIfs(static_cast<SoPath *>(path));
+}
+
+void
+SoReorganizeActionP::replaceIls(SoFullPath * path)
+{
+  this->replaceIls(static_cast<SoPath *>(path));
+}
+
+void
+SoReorganizeActionP::replaceVrmlIls(SoFullPath * path)
+{
+  this->replaceVrmlIls(static_cast<SoPath *>(path));
 }
 
 #undef PRIVATE

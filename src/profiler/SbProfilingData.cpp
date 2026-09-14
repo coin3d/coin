@@ -45,6 +45,8 @@
 */
 
 #include <Inventor/annex/Profiler/SbProfilingData.h>
+
+#include <Inventor/SoFullPath.h>
 #include "coindefs.h"
 
 #include <algorithm> // std::reverse
@@ -502,6 +504,15 @@ SbProfilingData::isPathMatch(const SoPath * path, int pathlen, int idx)
   return FALSE;
 }
 
+// Keep the pre-4.0.11 private symbol available to already-linked clients.
+// The pointer is only converted back to its SoPath base and is never used to
+// dispatch a SoFullPath member on an object that might be a plain SoPath.
+SbBool
+SbProfilingData::isPathMatch(const SoFullPath * path, int pathlen, int idx)
+{
+  return this->isPathMatch(static_cast<const SoPath *>(path), pathlen, idx);
+}
+
 // *************************************************************************
 
 /*!
@@ -599,6 +610,12 @@ SbProfilingData::getIndexCreate(const SoPath * path, int COIN_UNUSED_ARG(pathlen
   }
 
   return idx;
+}
+
+int
+SbProfilingData::getIndexCreate(const SoFullPath * path, int pathlen)
+{
+  return this->getIndexCreate(static_cast<const SoPath *>(path), pathlen);
 }
 
 /*
@@ -700,6 +717,14 @@ SbProfilingData::getIndexForwardCreate(const SoPath * path, int pathlen, int par
   return (int)PRIVATE(this)->nodeData.size() - 1;
 }
 
+int
+SbProfilingData::getIndexForwardCreate(const SoFullPath * path, int pathlen,
+                                       int parentidx)
+{
+  return this->getIndexForwardCreate(static_cast<const SoPath *>(path),
+                                     pathlen, parentidx);
+}
+
 /*
  *
  */
@@ -729,6 +754,14 @@ SbProfilingData::getIndexForwardNoCreate(const SoPath * path, int pathlen, int p
     }
   }
   return -1;
+}
+
+int
+SbProfilingData::getIndexForwardNoCreate(const SoFullPath * path, int pathlen,
+                                         int parentidx) const
+{
+  return this->getIndexForwardNoCreate(static_cast<const SoPath *>(path),
+                                       pathlen, parentidx);
 }
 
 // *************************************************************************

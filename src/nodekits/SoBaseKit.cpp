@@ -544,6 +544,7 @@
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
+#include <Inventor/SoFullPath.h>
 #include <Inventor/details/SoNodeKitDetail.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/lists/SoPickedPointList.h>
@@ -570,6 +571,7 @@ public:
   SbList<SoSFNode*> instancelist;
 
   void addKitDetail(SoPath * path, SoPickedPoint * pp);
+  void addKitDetail(SoFullPath * path, SoPickedPoint * pp);
   void createWriteData(void);
   void testParentWrite(void);
 
@@ -2661,6 +2663,13 @@ SoBaseKitP::addKitDetail(SoPath * path, SoPickedPoint * pp)
       break;
     }
   }
+}
+
+// ABI bridge for the pre-4.0.11 private helper symbol.
+void
+SoBaseKitP::addKitDetail(SoFullPath * path, SoPickedPoint * pp)
+{
+  this->addKitDetail(static_cast<SoPath *>(path), pp);
 }
 
 //  Reading in parts of nested nodekits does not allow certain shortcuts

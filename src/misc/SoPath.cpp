@@ -94,6 +94,8 @@
 #include "tidbitsp.h"
 #include "coindefs.h" // COIN_STUB()
 
+#include <stdexcept>
+
 // *************************************************************************
 
 #if COIN_DEBUG && 0 // Convenience function for dumping the SoPath during debugging.
@@ -542,18 +544,20 @@ SoPath::getFullTail(void) const
   Full-path variant of getNodeFromTail(): counts hidden children (e.g.
   nodekit-internal nodes) that getNodeFromTail() stops before.
 
+  Throws \c std::out_of_range if \a index is outside the complete path.
+
   \sa getFullLength(), getFullTail(), getFullIndexFromTail()
 */
 SoNode *
 SoPath::getFullNodeFromTail(const int index) const
 {
-#if COIN_DEBUG
   if (index < 0 || index >= this->getFullLength()) {
+#if COIN_DEBUG
     SoDebugError::post("SoPath::getFullNodeFromTail",
                        "index %d is out of bounds.", index);
-    return NULL;
-  }
 #endif // COIN_DEBUG
+    throw std::out_of_range("SoPath::getFullNodeFromTail: index out of bounds");
+  }
   return this->nodes[this->getFullLength() - index - 1];
 }
 
@@ -561,18 +565,20 @@ SoPath::getFullNodeFromTail(const int index) const
   Full-path variant of getIndexFromTail(): counts hidden children (e.g.
   nodekit-internal nodes) that getIndexFromTail() stops before.
 
+  Throws \c std::out_of_range if \a index is outside the complete path.
+
   \sa getFullLength(), getFullTail(), getFullNodeFromTail()
 */
 int
 SoPath::getFullIndexFromTail(const int index) const
 {
-#if COIN_DEBUG
   if (index < 0 || index >= this->getFullLength()) {
+#if COIN_DEBUG
     SoDebugError::post("SoPath::getFullIndexFromTail",
                        "index %d is out of bounds.", index);
-    return -1;
-  }
 #endif // COIN_DEBUG
+    throw std::out_of_range("SoPath::getFullIndexFromTail: index out of bounds");
+  }
   return this->indices[this->getFullLength() - index - 1];
 }
 
@@ -1259,8 +1265,6 @@ SoPath::setFirstHidden(void)
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/misc/SoTempPath.h>
 #include <Inventor/nodes/SoGroup.h>
-
-#include <stdexcept>
 
 // A non-group node with children exercises hidden paths without requiring
 // the optional nodekit or VRML97 subsystems.
