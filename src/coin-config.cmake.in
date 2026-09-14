@@ -10,7 +10,11 @@ cmake_minimum_required(VERSION 3.0...3.31)
 set(COIN_VERSION @COIN_MAJOR_VERSION@.@COIN_MINOR_VERSION@.@COIN_MICRO_VERSION@)
 @PACKAGE_INIT@
 
-# Check platform, architecture, and compiler compatibility (Issue #162)
+# Check platform, architecture, and compiler compatibility (Issue #162).
+# Define COIN_NO_COMPATIBILITY_CHECK before find_package(Coin) to disable
+# these advisory checks.
+# BEGIN Coin compatibility checks
+function(_coin_check_binary_compatibility)
 if(NOT COIN_NO_COMPATIBILITY_CHECK)
 	# 1. Operating system / Target system
 	if(DEFINED CMAKE_SYSTEM_NAME AND NOT "@CMAKE_SYSTEM_NAME@" STREQUAL "")
@@ -203,6 +207,9 @@ if(NOT COIN_NO_COMPATIBILITY_CHECK)
 	unset(_COIN_BUILT_MSVC_VERSION)
 	unset(_COIN_BUILT_MSVC_STATIC_RUNTIME)
 endif()
+endfunction()
+_coin_check_binary_compatibility()
+# END Coin compatibility checks
 set(COIN_BUILD_MAC_FRAMEWORK @COIN_BUILD_MAC_FRAMEWORK@)
 if(NOT COIN_BUILD_MAC_FRAMEWORK)
 
