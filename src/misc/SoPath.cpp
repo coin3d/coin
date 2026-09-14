@@ -1260,6 +1260,8 @@ SoPath::setFirstHidden(void)
 #include <Inventor/misc/SoTempPath.h>
 #include <Inventor/nodes/SoGroup.h>
 
+#include <stdexcept>
+
 // A non-group node with children exercises hidden paths without requiring
 // the optional nodekit or VRML97 subsystems.
 class SoPathTestHiddenNode : public SoNode {
@@ -1342,6 +1344,28 @@ BOOST_AUTO_TEST_CASE(full_path_accessors_on_real_subclass)
     BOOST_CHECK_EQUAL(path.getLength(), 1);
     BOOST_CHECK(path.getTail() == root);
   }
+  root->unref();
+}
+
+BOOST_AUTO_TEST_CASE(full_path_accessors_reject_invalid_indices)
+{
+  SoGroup * root = new SoGroup;
+  root->ref();
+  root->addChild(new SoGroup);
+
+  SoPath * path = new SoPath(root);
+  path->ref();
+  path->append(0);
+
+  BOOST_REQUIRE_THROW(path->getFullNodeFromTail(-1), std::out_of_range);
+  BOOST_REQUIRE_THROW(path->getFullNodeFromTail(2), std::out_of_range);
+  BOOST_REQUIRE_THROW(path->getFullIndexFromTail(-1), std::out_of_range);
+  BOOST_REQUIRE_THROW(path->getFullIndexFromTail(2), std::out_of_range);
+
+  BOOST_CHECK_EQUAL(path->getFullLength(), 2);
+  BOOST_CHECK(path->getFullTail() == root->getChild(0));
+
+  path->unref();
   root->unref();
 }
 
