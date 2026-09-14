@@ -1,7 +1,6 @@
 name: ABI compatibility
 
 on:
-  workflow_dispatch:  # Allow manual triggers
   pull_request:
     branches:
       - master
@@ -78,7 +77,7 @@ jobs:
       # ---------------------------------------------------------------
 
       - name: Checkout ABI baseline
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           ref: ${{ steps.release.outputs.tag }}
           path: abi-baseline
@@ -141,7 +140,7 @@ jobs:
       # ---------------------------------------------------------------
 
       - name: Checkout PR
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           path: abi-pr
@@ -372,7 +371,7 @@ jobs:
 
       - name: Upload ABI report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: abi-report
           path: |
@@ -391,15 +390,39 @@ jobs:
         if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
         env:
           GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
         run: |
           set -eu
 
-          PR="${{ github.event.pull_request.number }}"
+          MARKER="<!-- coin3d-abi-check -->"
 
-          gh api \
-            --method POST \
-            "repos/${GITHUB_REPOSITORY}/issues/${PR}/comments" \
-            -f body="$(cat abi-comment.md)"
+          BODY="$(cat abi-comment.md)"
+
+          # Find an existing ABI comment.
+          COMMENT_ID=$(
+            gh api \
+              "repos/${GITHUB_REPOSITORY}/issues/${PR}/comments" \
+              --paginate \
+              --jq ".[] | select(.body | contains(\"$MARKER\")) | .id" \
+              | head -n 1
+          )
+
+          if [ -n "$COMMENT_ID" ]; then
+            echo "Updating existing ABI comment $COMMENT_ID"
+
+            gh api \
+              --method PATCH \
+              "repos/${GITHUB_REPOSITORY}/issues/comments/${COMMENT_ID}" \
+              -f body="$BODY"
+
+          else
+            echo "Creating ABI comment"
+
+            gh api \
+              --method POST \
+              "repos/${GITHUB_REPOSITORY}/issues/${PR}/comments" \
+              -f body="$BODY"
+          fi
 
       # ---------------------------------------------------------------
       # 14. Fail the check after publishing the report

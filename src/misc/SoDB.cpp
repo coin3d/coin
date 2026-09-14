@@ -187,7 +187,9 @@ static void cleanup_func(void)
 // rather placed static in a thunk in the DLL/.so. Needs to fetch a
 // value that cannot have been compiled in. 20050506 mortene.
 
+#if COIN_DEBUG
 static uint32_t a_static_variable = 0xdeadbeef;
+#endif // COIN_DEBUG
 
 // *************************************************************************
 
@@ -1261,7 +1263,9 @@ SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
     return NULL;
   }
 
+#if COIN_DEBUG
   const int stackdepth = in->filestack.getLength();
+#endif // COIN_DEBUG
 
   SoGroup * root = (SoGroup *)grouptype.createInstance();
   SoNode * topnode;

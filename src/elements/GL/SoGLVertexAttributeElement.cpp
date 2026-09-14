@@ -205,9 +205,8 @@ static void enable_vbo(const Key & COIN_UNUSED_ARG(key),
   SoGLRenderAction * action = static_cast<SoGLRenderAction *>(closure);
   const cc_glglue * glue = sogl_glue_instance(action->getState());
 
-  const SoCoordinateElement * coords =
-    SoCoordinateElement::getInstance(action->getState());
-  assert(coords->getNum() == attribdata->data->getNum());
+  assert(SoCoordinateElement::getInstance(action->getState())->getNum() ==
+         attribdata->data->getNum());
 
   const void * dataptr = NULL;
 

@@ -759,8 +759,7 @@ cc_xml_doc_write_to_file(const cc_xml_doc * doc, const char * path)
     buffer.reset(bufptr);
   }
 
-  const size_t bytes = strlen(buffer.get());
-  assert(bufsize == bytes);
+  if (bufsize != strlen(buffer.get())) assert(false);
   FILE * fp = NULL;
   if (strcmp(path, "-") == 0)
     fp = stdout;
