@@ -42,6 +42,8 @@
 #include <Inventor/elements/SoBumpMapElement.h>
 #include <cassert>
 
+#include <Inventor/errors/SoDebugError.h>
+
 #include "SbBasicP.h"
 
 SO_ELEMENT_SOURCE(SoBumpMapElement);
@@ -79,10 +81,16 @@ void
 SoBumpMapElement::set(SoState * state, SoNode * node,
                       SoGLImage * image)
 {
-  SoBumpMapElement * elem = coin_assert_cast<SoBumpMapElement *>
+  SoBumpMapElement * elem = coin_safe_cast<SoBumpMapElement *>
     (
      SoReplacedElement::getElement(state, classStackIndex, node)
      );
+  if (!elem) {
+    SoDebugError::post("SoBumpMapElement::set",
+                       "SoBumpMapElement not enabled for this action -- "
+                       "missing SO_ENABLE()?");
+    return;
+  }
   elem->setElt(image);
 }
 
@@ -91,9 +99,16 @@ SoBumpMapElement::set(SoState * state, SoNode * node,
 SoGLImage *
 SoBumpMapElement::get(SoState * const state)
 {
-  const SoBumpMapElement * elem = coin_assert_cast<const SoBumpMapElement *>(
+  const SoBumpMapElement * elem = coin_safe_cast<const SoBumpMapElement *>(
     getConstElement(state, classStackIndex)
     );
+
+  if (!elem) {
+    SoDebugError::post("SoBumpMapElement::get",
+                       "SoBumpMapElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default value.");
+    return NULL;
+  }
 
   return elem->image;
 }

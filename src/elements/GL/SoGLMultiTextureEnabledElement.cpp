@@ -158,7 +158,7 @@ SoGLMultiTextureEnabledElement::updategl(const int unit, const Mode newvalue, co
     glDisable(GL_TEXTURE_2D);
     break;
   case RECTANGLE:
-    glDisable(GL_TEXTURE_RECTANGLE_EXT);
+    glDisable(GL_TEXTURE_RECTANGLE_ARB);
     break;
   case CUBEMAP:
     glDisable(GL_TEXTURE_CUBE_MAP);
@@ -177,7 +177,7 @@ SoGLMultiTextureEnabledElement::updategl(const int unit, const Mode newvalue, co
     glEnable(GL_TEXTURE_2D);
     break;
   case RECTANGLE:
-    glEnable(GL_TEXTURE_RECTANGLE_EXT);
+    glEnable(GL_TEXTURE_RECTANGLE_ARB);
     break;
   case CUBEMAP:
     glEnable(GL_TEXTURE_CUBE_MAP);

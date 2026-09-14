@@ -465,7 +465,6 @@ SoCamera::getViewVolume(const SbViewportRegion & vp,
   if (adjustvp) {
     float cameraratio = this->aspectRatio.getValue();
     if (aspectratio != cameraratio) {
-      SbViewportRegion oldvp = resultvp;
       if (aspectratio < cameraratio) {
         resultvp.scaleHeight(aspectratio/cameraratio);
       }

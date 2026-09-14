@@ -48,6 +48,8 @@
 #include "tidbitsp.h" // coin_debug_normalize()
 #include "coinString.h"
 
+#include "coindefs.h"
+
 /*!
   \class SbVec3d SbVec3d.h Inventor/SbVec3d.h
   \brief The SbVec3d class is a 3 dimensional vector with double precision floating point coordinates.
@@ -136,7 +138,7 @@ SbVec3d::SbVec3d(const SbDPPlane & p0, const SbDPPlane & p1, const SbDPPlane & p
 
   // The equation for a point in a plane can be:
   //
-  //                N·(P - P0) = 0    , N is the plane's normal vectors,
+  //                N dot (P - P0) = 0    , N is the plane's normal vectors,
   //                                    P is the point and P0 is the "root
   //                                    point" of the plane (i.e. the point
   //                                    in the plane closest to the coordinate
@@ -144,13 +146,13 @@ SbVec3d::SbVec3d(const SbDPPlane & p0, const SbDPPlane & p1, const SbDPPlane & p
   //
   // Simplifying and substituting, we get this:
   //
-  //                N·P = d           , d is the distance from the origin to
+  //                N dot P = d           , d is the distance from the origin to
   //                                    the closest point on the plane
   //
   // Using this for all three given planes:
-  //                N0·P = d0
-  //                N1·P = d1
-  //                N2·P = d2
+  //                N0 dot P = d0
+  //                N1 dot P = d1
+  //                N2 dot P = d2
   //
   // Taking the dot products we get a set of linear equations:
   //
@@ -183,7 +185,7 @@ SbVec3d::SbVec3d(const SbDPPlane & p0, const SbDPPlane & p1, const SbDPPlane & p
 
 
   int i, j;
-  const int n = 3; // Input matrix dimensions are n × (n+1).
+  const int n = 3; // Input matrix dimensions are n * (n+1).
 
   for (int k=0; k < n-1; k++) {
     j=k;
@@ -553,7 +555,7 @@ SbVec3d::fromString(const SbString & str)
   debug version of library, method does nothing in an optimized build.
 */
 void
-SbVec3d::print(FILE * fp) const
+SbVec3d::print(FILE * COIN_UNUSED_ARG(fp)) const
 {
 #if COIN_DEBUG
   fputs(this->toString().getString(),fp);

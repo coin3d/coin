@@ -41,6 +41,7 @@ public:
   SoTypeList(void) : SbPList() { }
   SoTypeList(const int sizehint) : SbPList(sizehint) { }
   SoTypeList(const SoTypeList & l) : SbPList(l) { }
+  SoTypeList & operator=(const SoTypeList & l) = default;
 
   void append(const SoType type);
   int find(const SoType type) const;

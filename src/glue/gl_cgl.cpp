@@ -368,18 +368,18 @@ cglglue_context_create_pbuffer(struct cglglue_contextdata * ctx)
   
   /* The dimension of CGL pBuffers creating with the GL_TEXTURE_2D
      flag must be both squared and powers of two; else we have to
-     use GL_TEXTURE_RECTANGLE_EXT. (It would of course be ok to use
+     use GL_TEXTURE_RECTANGLE_ARB. (It would of course be ok to use
      the rectangle extension in all cases, but drivers may optimize
      for the square, pow2 case.)  
      Note that it is not necessary to check for the availability of
-     GL_TEXTURE_RECTANGLE_EXT - we can always assume this extension
+     GL_TEXTURE_RECTANGLE_ARB - we can always assume this extension
      to be present when pBuffers are supported.
   */
   GLenum target = GL_TEXTURE_2D;
   if (!coin_is_power_of_two(ctx->width)  ||
       !coin_is_power_of_two(ctx->height) ||
       ctx->width != ctx->height) {
-    target = GL_TEXTURE_RECTANGLE_EXT;
+    target = GL_TEXTURE_RECTANGLE_ARB;
   }
   
   err = cglglue_CGLCreatePBuffer(ctx->width, ctx->height, target, 

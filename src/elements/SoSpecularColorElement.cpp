@@ -84,7 +84,7 @@ SoSpecularColorElement::init(SoState * stateptr)
 
 void
 SoSpecularColorElement::set(SoState * const state, SoNode * const COIN_UNUSED_ARG(node),
-                            const int32_t numcolors,
+                            const int32_t COIN_UNUSED_ARG(numcolors),
                             const SbColor * const colors)
 {
   SoLazyElement::setSpecular(state, colors);
@@ -109,7 +109,7 @@ SoSpecularColorElement::getNum() const
 //! FIXME: write doc.
 
 const SbColor &
-SoSpecularColorElement::get(const int index) const
+SoSpecularColorElement::get(const int COIN_UNUSED_ARG(index)) const
 {
   assert(index == 0);
   return SoLazyElement::getSpecular(this->state);

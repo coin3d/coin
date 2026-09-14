@@ -239,6 +239,8 @@
 #include <cstring>
 #include <climits> /* SHRT_MAX */
 
+#include <Inventor/C/glue/gl.h>
+
 #ifdef HAVE_AGL
 #include <AGL/agl.h>
 #endif /* HAVE_AGL */
@@ -260,8 +262,6 @@
 #include <EGL/eglext.h>
 #endif /* HAVE_EGL */
 
-#include <Inventor/C/glue/gl.h>
-
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/dl.h>
 #include <Inventor/C/tidbits.h>
@@ -271,6 +271,10 @@
 #include "tidbitsp.h"
 #include "base/dict.h"
 #include "base/namemap.h"
+#ifdef HAVE_WGL
+#include <windows.h>
+#include "glue/khronos/GL/wglext.h"
+#endif
 #include "glue/glp.h"
 #include "glue/dlp.h"
 #include "glue/gl_agl.h"
@@ -298,111 +302,6 @@ static int COIN_USE_AGL = -1;
 static int COIN_USE_EGL = -1;
 
 /* ********************************************************************** */
-
-/* Sanity checks for enum extension value assumed to be equal to the
- * final / "proper" / standard OpenGL enum values. (If not, we could
- * end up with hard-to-find bugs because of mismatches with the
- * compiled values versus the runtime values.)
- *
- * This doesn't really _fix_ anything, it is just meant as an aid to
- * smoke out platforms where we're getting unexpected enum values.
- */
-
-#ifdef GL_CLAMP_TO_EDGE_EXT
-#if GL_CLAMP_TO_EDGE != GL_CLAMP_TO_EDGE_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_CLAMP_TO_EDGE_EXT */
-
-#ifdef GL_CLAMP_TO_EDGE_SGIS
-#if GL_CLAMP_TO_EDGE != GL_CLAMP_TO_EDGE_SGIS
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_CLAMP_TO_EDGE_SGIS */
-
-#ifdef GL_MAX_3D_TEXTURE_SIZE_EXT
-#if GL_MAX_3D_TEXTURE_SIZE != GL_MAX_3D_TEXTURE_SIZE_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_MAX_3D_TEXTURE_SIZE_EXT */
-
-#ifdef GL_PACK_IMAGE_HEIGHT_EXT
-#if GL_PACK_IMAGE_HEIGHT != GL_PACK_IMAGE_HEIGHT_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_PACK_IMAGE_HEIGHT_EXT */
-
-#ifdef GL_PACK_SKIP_IMAGES_EXT
-#if GL_PACK_SKIP_IMAGES != GL_PACK_SKIP_IMAGES_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_PACK_SKIP_IMAGES_EXT */
-
-#ifdef GL_PROXY_TEXTURE_2D_EXT
-#if GL_PROXY_TEXTURE_2D != GL_PROXY_TEXTURE_2D_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_PROXY_TEXTURE_2D_EXT */
-
-#ifdef GL_PROXY_TEXTURE_3D_EXT
-#if GL_PROXY_TEXTURE_3D != GL_PROXY_TEXTURE_3D_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_PROXY_TEXTURE_3D_EXT */
-
-#ifdef GL_TEXTURE_3D_EXT
-#if GL_TEXTURE_3D != GL_TEXTURE_3D_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_TEXTURE_3D_EXT */
-
-#ifdef GL_TEXTURE_DEPTH_EXT
-#if GL_TEXTURE_DEPTH != GL_TEXTURE_DEPTH_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_TEXTURE_DEPTH_EXT */
-
-#ifdef GL_TEXTURE_WRAP_R_EXT
-#if GL_TEXTURE_WRAP_R != GL_TEXTURE_WRAP_R_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_TEXTURE_WRAP_R_EXT */
-
-#ifdef GL_UNPACK_IMAGE_HEIGHT_EXT
-#if GL_UNPACK_IMAGE_HEIGHT != GL_UNPACK_IMAGE_HEIGHT_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_UNPACK_IMAGE_HEIGHT_EXT */
-
-#ifdef GL_UNPACK_SKIP_IMAGES_EXT
-#if GL_UNPACK_SKIP_IMAGES != GL_UNPACK_SKIP_IMAGES_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_UNPACK_SKIP_IMAGES_EXT */
-
-#ifdef GL_FUNC_ADD_EXT
-#if GL_FUNC_ADD != GL_FUNC_ADD_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_FUNC_ADD_EXT */
-
-#ifdef GL_MIN_EXT
-#if GL_MIN != GL_MIN_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_MIN_EXT */
-
-#ifdef GL_MAX_EXT
-#if GL_MAX != GL_MAX_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_MAX_EXT */
-
-#ifdef GL_COLOR_TABLE_WIDTH_EXT
-#if GL_COLOR_TABLE_WIDTH != GL_COLOR_TABLE_WIDTH_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_COLOR_TABLE_WIDTH_EXT */
 
 /* ********************************************************************** */
 

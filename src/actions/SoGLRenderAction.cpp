@@ -99,7 +99,7 @@
 #include <Inventor/elements/SoWindowElement.h>
 #include <Inventor/elements/SoGLDepthBufferElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/lists/SoCallbackList.h>
+#include <Inventor/lists/SbList.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/misc/SoState.h>
@@ -536,6 +536,40 @@
 
 // *************************************************************************
 
+// Store and invoke pre-render callbacks with their declared function type.
+// Snapshots preserve registration order and allow callbacks to change the
+// list during dispatch without changing the current invocation.
+class SoGLPreRenderCBList {
+public:
+  void add(SoGLPreRenderCB * func, void * data) {
+    this->funcs.append(func);
+    this->datas.append(data);
+  }
+  void remove(SoGLPreRenderCB * func, void * data) {
+    for (int i = this->funcs.getLength() - 1; i >= 0; i--) {
+      if (this->funcs[i] == func && this->datas[i] == data) {
+        this->funcs.remove(i);
+        this->datas.remove(i);
+        return;
+      }
+    }
+#if COIN_DEBUG
+    SoDebugError::post("SoGLRenderAction::removePreRenderCallback",
+                        "Tried to remove non-existent callback function.");
+#endif // COIN_DEBUG
+  }
+  void invoke(SoGLRenderAction * action) {
+    SbList<SoGLPreRenderCB *> funcscopy(this->funcs);
+    SbList<void *> datascopy(this->datas);
+    for (int i = 0; i < funcscopy.getLength(); i++) {
+      funcscopy[i](datascopy[i], action);
+    }
+  }
+private:
+  SbList<SoGLPreRenderCB *> funcs;
+  SbList<void *> datas;
+};
+
 class SoGLRenderActionP {
 public:
   SoGLRenderActionP(void) : action(NULL) { }
@@ -568,7 +602,7 @@ public:
   SbBool isrendering;
   SbBool isrenderingoverlay;
   SbBool transpobjdepthwrite;
-  SoCallbackList precblist;
+  SoGLPreRenderCBList precblist;
 
   enum { RENDERING_UNSET, RENDERING_SET_DIRECT, RENDERING_SET_INDIRECT };
   int rendering;
@@ -1026,8 +1060,8 @@ void
 SoGLRenderAction::beginTraversal(SoNode * node)
 {
   if (PRIVATE(this)->cachedprofilingsg == NULL) {
-    if (node->isOfType(SoGroup::getClassTypeId()) &&
-        (coin_assert_cast<SoGroup *>(node))->getNumChildren() > 0) {
+    SoGroup * group = coin_safe_cast<SoGroup *>(node);
+    if (group && group->getNumChildren() > 0) {
       PRIVATE(this)->cachedprofilingsg = node;
 
 #ifdef HAVE_NODEKITS
@@ -1534,7 +1568,7 @@ SoGLRenderActionP::doPathSort(void)
 void
 SoGLRenderAction::addPreRenderCallback(SoGLPreRenderCB * func, void * userdata)
 {
-  PRIVATE(this)->precblist.addCallback(reinterpret_cast<SoCallbackListCB *>(func), userdata);
+  PRIVATE(this)->precblist.add(func, userdata);
 }
 
 /*!
@@ -1547,7 +1581,7 @@ SoGLRenderAction::addPreRenderCallback(SoGLPreRenderCB * func, void * userdata)
 void
 SoGLRenderAction::removePreRenderCallback(SoGLPreRenderCB * func, void * userdata)
 {
-  PRIVATE(this)->precblist.removeCallback(reinterpret_cast<SoCallbackListCB *>(func), userdata);
+  PRIVATE(this)->precblist.remove(func, userdata);
 }
 
 /*!
@@ -1719,7 +1753,7 @@ SoGLRenderActionP::render(SoNode * node)
                                FALSE, !this->isDirectRendering(state));
   SoGLRenderPassElement::set(state, 0);
 
-  this->precblist.invokeCallbacks(static_cast<void *>(this->action));
+  this->precblist.invoke(this->action);
 
   if (this->action->getNumPasses() > 1 && this->internal_multipass) {
     // Check if the current OpenGL context has an accumulation buffer
@@ -2147,25 +2181,25 @@ SoGLRenderActionP::renderOneBlendLayer(const SoState * state,
     if (glue->has_arb_fragment_program && !this->usenvidiaregistercombiners) {
       // Fragment program cleanup
       glDisable(GL_FRAGMENT_PROGRAM_ARB);
-      glDisable(GL_TEXTURE_RECTANGLE_EXT);
+      glDisable(GL_TEXTURE_RECTANGLE_ARB);
       glDisable(GL_ALPHA_TEST);
 
       cc_glglue_glActiveTexture(glue, GL_TEXTURE3);
-      glDisable(GL_TEXTURE_RECTANGLE_EXT);
+      glDisable(GL_TEXTURE_RECTANGLE_ARB);
       this->texgenEnable(FALSE);
 
       glMatrixMode(GL_TEXTURE);
       glLoadIdentity();
       glMatrixMode(GL_MODELVIEW);
       cc_glglue_glActiveTexture(glue, GL_TEXTURE0);
-      glDisable(GL_TEXTURE_RECTANGLE_EXT);
+      glDisable(GL_TEXTURE_RECTANGLE_ARB);
       glDisable(GL_ALPHA_TEST);
 
     }
     else {
       // Regular NViDIA register combiner cleanup
       cc_glglue_glActiveTexture(glue, GL_TEXTURE3);
-      glDisable(GL_TEXTURE_RECTANGLE_EXT);
+      glDisable(GL_TEXTURE_RECTANGLE_ARB);
       this->texgenEnable(FALSE);
 
       glMatrixMode(GL_TEXTURE);
@@ -2186,14 +2220,14 @@ SoGLRenderActionP::renderOneBlendLayer(const SoState * state,
   // to be a performance hit for large canvases. (20031127 handegar)
 
   // copy the RGBA of the layer to a texture
-  glEnable(GL_TEXTURE_RECTANGLE_EXT);
-  glBindTexture(GL_TEXTURE_RECTANGLE_EXT, this->rgbatextureids[this->sortedlayersblendcounter]);
-  glCopyTexSubImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, 0, 0, 0, 0,
+  glEnable(GL_TEXTURE_RECTANGLE_ARB);
+  glBindTexture(GL_TEXTURE_RECTANGLE_ARB, this->rgbatextureids[this->sortedlayersblendcounter]);
+  glCopyTexSubImage2D(GL_TEXTURE_RECTANGLE_ARB, 0, 0, 0, 0, 0,
                       this->viewportwidth, this->viewportheight);
 
   if (updatedepthtexture) {
-    glBindTexture(GL_TEXTURE_RECTANGLE_EXT, this->depthtextureid);
-    glCopyTexSubImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, 0, 0, 0, 0,
+    glBindTexture(GL_TEXTURE_RECTANGLE_ARB, this->depthtextureid);
+    glCopyTexSubImage2D(GL_TEXTURE_RECTANGLE_ARB, 0, 0, 0, 0, 0,
                         this->viewportwidth, this->viewportheight);
   }
 
@@ -2465,21 +2499,21 @@ SoGLRenderActionP::setupSortedLayersBlendTextures(const SoState * state)
     // FIXME: the texture id must be bound to the current rendering
     // context, and deallocated when it is destructed. 20040718 mortene.
     glGenTextures(1, &this->depthtextureid);
-    glBindTexture(GL_TEXTURE_RECTANGLE_EXT, this->depthtextureid);
-    glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_DEPTH_COMPONENT24, canvassize[0], canvassize[1],
+    glBindTexture(GL_TEXTURE_RECTANGLE_ARB, this->depthtextureid);
+    glTexImage2D(GL_TEXTURE_RECTANGLE_ARB, 0, GL_DEPTH_COMPONENT24, canvassize[0], canvassize[1],
                  0, GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, NULL);
-    glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     if (glue->has_arb_fragment_program && !this->usenvidiaregistercombiners) {
       // Not disabled as default by NVIDIA when using fragment programs (according to spec.)
-      glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_COMPARE_MODE, GL_NONE);
+      glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_COMPARE_MODE, GL_NONE);
     }
     else {
-      glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
-      glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+      glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
+      glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
     }
 
     // The "register combiner"-way if explicitly chosen or FP is unavailable
@@ -2508,10 +2542,10 @@ SoGLRenderActionP::setupSortedLayersBlendTextures(const SoState * state)
     // context, and deallocated when it is destructed. 20040718 mortene.
     glGenTextures(this->sortedlayersblendpasses, this->rgbatextureids.get());
     for (int i=0;i<sortedlayersblendpasses;++i) {
-      glBindTexture(GL_TEXTURE_RECTANGLE_EXT, this->rgbatextureids[i]);
-      glCopyTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_RGBA8, 0, 0, canvassize[0], canvassize[1], 0);
-      glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-      glTexParameteri(GL_TEXTURE_RECTANGLE_EXT, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+      glBindTexture(GL_TEXTURE_RECTANGLE_ARB, this->rgbatextureids[i]);
+      glCopyTexImage2D(GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA8, 0, 0, canvassize[0], canvassize[1], 0);
+      glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+      glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     }
 
     this->viewportwidth = canvassize[0];
@@ -2550,10 +2584,10 @@ SoGLRenderActionP::renderSortedLayersFP(const SoState * state)
   glEnable(GL_BLEND);
   glDisable(GL_LIGHTING);
   glColor3f(1.0f,1.0f,1.0f);
-  glEnable(GL_TEXTURE_RECTANGLE_EXT);
+  glEnable(GL_TEXTURE_RECTANGLE_ARB);
 
   for(int i=this->sortedlayersblendpasses-1;i>=0;--i) {
-    glBindTexture(GL_TEXTURE_RECTANGLE_EXT, this->rgbatextureids[i]);
+    glBindTexture(GL_TEXTURE_RECTANGLE_ARB, this->rgbatextureids[i]);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
     glVertex2f(0, 0);
@@ -2566,7 +2600,7 @@ SoGLRenderActionP::renderSortedLayersFP(const SoState * state)
     glEnd();
   }
 
-  glDisable(GL_TEXTURE_RECTANGLE_EXT);
+  glDisable(GL_TEXTURE_RECTANGLE_ARB);
 
   glDisable(GL_BLEND);
   glEnable(GL_DEPTH_TEST);
@@ -2650,10 +2684,10 @@ SoGLRenderActionP::renderSortedLayersNV(const SoState * state)
                                GL_UNSIGNED_IDENTITY_NV, GL_ALPHA);
 
   glEnable(GL_REGISTER_COMBINERS_NV);
-  glEnable(GL_TEXTURE_RECTANGLE_EXT);
+  glEnable(GL_TEXTURE_RECTANGLE_ARB);
 
   for(int i=this->sortedlayersblendpasses-1;i>=0;--i) {
-    glBindTexture(GL_TEXTURE_RECTANGLE_EXT, this->rgbatextureids[i]);
+    glBindTexture(GL_TEXTURE_RECTANGLE_ARB, this->rgbatextureids[i]);
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0);
     glVertex2f(0, 0);
@@ -2667,7 +2701,7 @@ SoGLRenderActionP::renderSortedLayersNV(const SoState * state)
   }
 
   glDisable(GL_REGISTER_COMBINERS_NV);
-  glDisable(GL_TEXTURE_RECTANGLE_EXT);
+  glDisable(GL_TEXTURE_RECTANGLE_ARB);
 
   glDisable(GL_BLEND);
   glEnable(GL_DEPTH_TEST);

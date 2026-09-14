@@ -74,20 +74,51 @@ create_file_test("models/io/incorrect" "testIncorrectFile" true "(bug039|bug055-
 # Include all extracted '*Tests.cpp' files in the target.
 FILE(GLOB COIN_TEST_SOURCES "${CMAKE_CURRENT_BINARY_DIR}/*Test.cpp")
 
-add_executable(CoinTests TestSuiteMain.cpp TestSuiteUtils.cpp TestSuiteMisc.cpp ${COIN_TEST_SOURCES})
+add_executable(CoinTests
+	TestSuiteMain.cpp
+	TestSuiteUtils.cpp
+	TestSuiteMisc.cpp
+	InternalMacroTest.cpp
+	${COIN_TEST_SOURCES}
+)
+set_source_files_properties(InternalMacroTest.cpp PROPERTIES
+	COMPILE_DEFINITIONS COIN_INTERNAL)
 set_target_properties(CoinTests PROPERTIES DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
 target_link_libraries(CoinTests Coin ${COIN_TARGET_LINK_LIBRARIES})
 target_include_directories(CoinTests PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}
 	${PROJECT_SOURCE_DIR}/include
 	${PROJECT_SOURCE_DIR}/include/Inventor/annex
+	${PROJECT_SOURCE_DIR}/src
 	${PROJECT_BINARY_DIR}/include
 	${COIN_TARGET_INCLUDE_DIRECTORIES}
 )
+if(NOT WIN32)
+	target_sources(CoinTests PRIVATE GLUWrapperTest.cpp)
+	target_include_directories(CoinTests PRIVATE ${PROJECT_BINARY_DIR}/src)
+endif()
 if (USE_PTHREAD)
 	target_link_libraries(CoinTests pthread)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
+
+# These public-API tests need fresh processes: CoinTests initializes SoDB
+# before running its inline cases, which is too late to test startup options.
+add_executable(CoinProfilerInitTest
+  reproducers/soprofiler-initclass-ordering/repro.cpp)
+target_link_libraries(CoinProfilerInitTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CoinProfilerInitTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+foreach(profile_mode unset off 0 on 1 syncgl invalid)
+  add_test(NAME ProfilerInit_${profile_mode}
+    COMMAND ${CMAKE_COMMAND}
+      -DTEST_EXECUTABLE=$<TARGET_FILE:CoinProfilerInitTest>
+      -DPROFILE_MODE=${profile_mode}
+      -P ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/soprofiler-initclass-ordering/verify.cmake)
+endforeach()
+
+include(CheckCoreGLHeaders.cmake)
 
 # Many warnings are generated from test macros on macOS with Xcode.
 include(CheckCXXCompilerFlag)

@@ -185,7 +185,12 @@ dot_product(float *v0, float *v1)
 void
 so_eval_traverse(so_eval_node *node, so_eval_param *result, const so_eval_cbdata *cbdata)
 {
-  so_eval_param param1, param2, param3;
+  /* Each param is only read below by opcodes whose arity the grammar
+     (evaluator.y) guarantees matches the number of children set on
+     the node, so e.g. a binary opcode's node always has child1 and
+     child2. Zero-initialized only because the compiler can't see
+     that grammar-level guarantee. */
+  so_eval_param param1 = {0}, param2 = {0}, param3 = {0};
 
   if (node->id != ID_FLT_COND && node->id != ID_VEC_COND &&
       node->id != ID_ASSIGN_FLT && node->id != ID_ASSIGN_VEC) {

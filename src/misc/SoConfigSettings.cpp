@@ -18,7 +18,6 @@ namespace {
   {
     return sizeof(VALID_OPTIONS)/sizeof(VALID_OPTIONS[0]);
   }
-  const char COIN [] = "COIN";
 
   SbBool isValidOption(const SbString & option)
   {
@@ -79,6 +78,7 @@ SoConfigSettings::reinitialize()
   //disabling this for now. Write a configure test for this in the
   //future. BFG 20091013
 #if COIN_DEBUG && 0
+  const char COIN [] = "COIN";
   for (char ** test = environ; *test != NULL; ++test) {
     char * first = strchr(*test,'=');
     if (first) {

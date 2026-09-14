@@ -108,7 +108,9 @@ class SoTextureCoordinateCubeP {
 
 public:
   SoTextureCoordinateCubeP(SoTextureCoordinateCube * texturenode)
-    : master(texturenode) { }
+  {
+    this->master = texturenode;
+  }
 
   SbVec4f calculateTextureCoordinate(const SbVec3f & point, const SbVec3f & n);
 

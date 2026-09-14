@@ -79,7 +79,7 @@ SoGLEnvironmentElement::init(SoState * state)
 // doc in superclass
 void
 SoGLEnvironmentElement::pop(SoState * COIN_UNUSED_ARG(state),
-                           const SoElement * prevTopElement)
+                           const SoElement * COIN_UNUSED_ARG(prevTopElement))
 {
   this->capture(state);
   this->updategl(state);

@@ -136,17 +136,26 @@
 #include <cstdlib>
 
 #include <Inventor/C/tidbits.h>
+#include <Inventor/errors/SoDebugError.h>
+
+#include "coindefs.h" // COIN_STUB_FUNC
 
 // *************************************************************************
 
 #define SO_GET_OVERRIDE(flag) \
 const SoOverrideElement * const element = \
-  coin_assert_cast<const SoOverrideElement *>(getConstElement(state, classStackIndex)); \
+  coin_safe_cast<const SoOverrideElement *>(getConstElement(state, classStackIndex)); \
+if (!element) { \
+  SoDebugError::post(COIN_STUB_FUNC, \
+                     "SoOverrideElement not enabled for this action -- " \
+                     "missing SO_ENABLE()? Returning default value."); \
+  return FALSE; \
+} \
 return (element->flags & flag)
 
 #define SO_SET_OVERRIDE(flag) \
 SoOverrideElement * const element = \
-  const_cast<SoOverrideElement * const> \
+  const_cast<SoOverrideElement *> \
   ( \
    coin_safe_cast<const SoOverrideElement *>(getElement(state, classStackIndex)) \
     ); \
@@ -227,6 +236,7 @@ SoOverrideElement::push(SoState * state)
     (
      this->getNextInStack()
      );
+  COIN_ASSUME(prev != NULL);
   this->flags = prev->flags;
 }
 
@@ -235,7 +245,9 @@ SoOverrideElement::push(SoState * state)
 SbBool
 SoOverrideElement::matches(const SoElement *element) const
 {
-  return (coin_assert_cast<const SoOverrideElement *>(element))->flags == this->flags;
+  const SoOverrideElement * elem = coin_assert_cast<const SoOverrideElement *>(element);
+  COIN_ASSUME(elem != NULL);
+  return elem->flags == this->flags;
 }
 
 //! FIXME: write doc.
