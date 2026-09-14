@@ -131,6 +131,15 @@ SoRotationXYZ::initClass(void)
 void
 SoRotationXYZ::doAction(SoAction * action)
 {
+  // Skip the matrix element update entirely for an identity rotation --
+  // same "no-op transform contributes no GL/matrix work" optimization
+  // SoTransform::doAction() got in issue #534, applied to this sibling
+  // node. angle == 0.0f is identity regardless of which axis field
+  // selects, so this exact-zero case alone already covers it -- no
+  // need to also construct rotvec/SbRotation just to compare against
+  // SbRotation::identity(). Exact comparison on purpose.
+  if (this->angle.getValue() == 0.0f) return;
+
   SbVec3f rotvec;
   if (this->getVector(rotvec)) {
     SoModelMatrixElement::rotateBy(action->getState(), this,

@@ -21,7 +21,7 @@ jobs:
             label: disabled
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: recursive
       - name: Install dependencies
@@ -31,7 +31,7 @@ jobs:
       - name: Build and test
         run: .github/scripts/build-and-test.sh "${{ matrix.legacy_renderer.value }}"
       - name: Create Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Ubuntu-Artifacts-LegacyGL-${{ matrix.legacy_renderer.value }}
           path: cmake_install_dir/
@@ -50,14 +50,14 @@ jobs:
             label: disabled
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: recursive
       - name: Build and test
         shell: pwsh
         run: .github/scripts/build-and-test.ps1 -LegacyRenderer "${{ matrix.legacy_renderer.value }}"
       - name: Create Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Windows-Artifacts-LegacyGL-${{ matrix.legacy_renderer.value }}
           path: cmake_install_dir/
@@ -76,13 +76,13 @@ jobs:
             label: disabled
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: recursive
       - name: Build and test
         run: .github/scripts/build-and-test.sh "${{ matrix.legacy_renderer.value }}"
       - name: Create Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: MacOS-Artifacts-LegacyGL-${{ matrix.legacy_renderer.value }}
           path: cmake_install_dir/

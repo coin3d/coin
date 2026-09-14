@@ -977,7 +977,7 @@ BOOST_AUTO_TEST_CASE(testRemoveType)
 {
   BOOST_CHECK_MESSAGE(SoType::fromName(SbName("MyClass")) == SoType::badType(),
                       "Type didn't init to badType");
-  SoType newtype = SoType::createType(SoNode::getClassTypeId(), SbName("MyClass"), createInstance, 0);
+  SoType::createType(SoNode::getClassTypeId(), SbName("MyClass"), createInstance, 0);
   BOOST_CHECK_MESSAGE(SoType::fromName(SbName("MyClass")) != SoType::badType(),
                       "Type didn't init correctly");
   bool success = SoType::removeType(SbName("MyClass"));
