@@ -127,7 +127,7 @@ install:
 # Assumes that we use the vx.y.z tagging scheme (e.g. v1.3.0)
 before_build:
   - cmd: |
-      if "%COMPILER_ID%" == "msvc14" call "C:\Program Files (x86)\Microsoft Visual Studio\2015\Community\Common7\Tools\vsdevcmd.bat" -arch=%CMAKE_PLATFORM% -host_arch=x64
+      if "%COMPILER_ID%" == "msvc14" call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\vsdevcmd.bat" -arch=%CMAKE_PLATFORM% -host_arch=x64
       if "%COMPILER_ID%" == "msvc15" call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\Tools\vsdevcmd.bat" -arch=%CMAKE_PLATFORM% -host_arch=x64
       if "%COMPILER_ID%" == "msvc16" call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\Tools\vsdevcmd.bat" -arch=%CMAKE_PLATFORM% -host_arch=x64
       if "%COMPILER_ID%" == "msvc17" call "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\vsdevcmd.bat" -arch=%CMAKE_PLATFORM% -host_arch=x64
