@@ -25,12 +25,12 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
       with:
         submodules: recursive
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
+      uses: github/codeql-action/init@v4
       with:
         languages: c-cpp
         config: |
@@ -56,12 +56,12 @@ jobs:
       run: |
         sudo apt-get -y update
         sudo apt-get -y install freeglut3-dev
-        cmake -S . -B cmake_build_dir -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCOIN_BUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=cmake_install_dir
+        cmake -S . -B cmake_build_dir -G Ninja -DCMAKE_BUILD_TYPE=Release -DCOIN_BUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=cmake_install_dir
 
     - name: Build project with CMake
-      run: cmake --build cmake_build_dir --target all --config Release -- -j4
+      run: cmake --build cmake_build_dir --target all --config Release --parallel
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
+      uses: github/codeql-action/analyze@v4
       with:
         category: "/language:c-cpp"
