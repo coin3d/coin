@@ -1403,8 +1403,7 @@ coin_locale_set_portable(cc_string * storeold)
 void
 coin_locale_reset(cc_string * storedold)
 {
-  const char * l = setlocale(LC_NUMERIC, cc_string_get_text(storedold));
-  assert(l != NULL && "could not reset locale");
+  if (!setlocale(LC_NUMERIC, cc_string_get_text(storedold))) assert(!"could not reset locale");
   cc_string_clean(storedold);
 }
 
