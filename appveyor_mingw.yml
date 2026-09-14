@@ -208,15 +208,13 @@ before_build:
 
 build_script:
   - cmd: |
-      set BUILD_TOOL_OPTIONS=/nologo /verbosity:minimal /maxcpucount
-      if "%CMAKE_GENERATOR%" == "MSYS Makefiles" cmake --build build_debug   --target install --config Debug   -- -j4
-      if "%CMAKE_GENERATOR%" == "MSYS Makefiles" cmake --build build_release --target install --config Release -- -j4
-      if not "%CMAKE_GENERATOR%" == "MSYS Makefiles" cmake --build build --target INSTALL --config Debug   -- %BUILD_TOOL_OPTIONS%
-      if not "%CMAKE_GENERATOR%" == "MSYS Makefiles" cmake --build build --target INSTALL --config Release -- %BUILD_TOOL_OPTIONS%
+      if "%CMAKE_GENERATOR%" == "MSYS Makefiles" cmake --build build_debug   --target install --config Debug   --parallel
+      if "%CMAKE_GENERATOR%" == "MSYS Makefiles" cmake --build build_release --target install --config Release --parallel
+      if not "%CMAKE_GENERATOR%" == "MSYS Makefiles" cmake --build build --target INSTALL --config Debug   --parallel
+      if not "%CMAKE_GENERATOR%" == "MSYS Makefiles" cmake --build build --target INSTALL --config Release --parallel
   - sh: |
-      BUILD_TOOL_OPTIONS=-j4
-      cmake --build build_debug   --target install --config Debug   -- $BUILD_TOOL_OPTIONS
-      cmake --build build_release --target install --config Release -- $BUILD_TOOL_OPTIONS
+      cmake --build build_debug   --target install --config Debug   --parallel
+      cmake --build build_release --target install --config Release --parallel
 
 after_build:
   - cmd: |

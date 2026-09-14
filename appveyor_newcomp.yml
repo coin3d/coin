@@ -150,9 +150,8 @@ before_build:
 
 build_script:
   - cmd: |
-      set BUILD_TOOL_OPTIONS=/nologo /verbosity:minimal /maxcpucount /property:MultiProcessorCompilation=true;CL_MPCount=3
-      cmake --build build --target INSTALL --config Debug   -- %BUILD_TOOL_OPTIONS%
-      cmake --build build --target INSTALL --config Release -- %BUILD_TOOL_OPTIONS%
+      cmake --build build --target INSTALL --config Debug   --parallel
+      cmake --build build --target INSTALL --config Release --parallel
 
 after_build:
   - cmd: |
