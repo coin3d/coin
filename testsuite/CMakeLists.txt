@@ -19,6 +19,10 @@ macro(create_testsuite input)
 		string(REGEX REPLACE "[\n\r ]*#include[ \t]<[^\n]+" "" COIN_STR_TEST_CODE "${f2}")
 		# generate new test code file with extracted snippets
 		configure_file(TestSuiteTemplate.cmake.in "${FLSUBFLD}${FLNAME}Test.cpp")
+		if("${FLSUBFLD}${FLNAME}" STREQUAL "basedict")
+			set_source_files_properties("${FLSUBFLD}${FLNAME}Test.cpp" PROPERTIES
+				COMPILE_DEFINITIONS COIN_INTERNAL)
+		endif()
 	endif()
 endmacro()
 
@@ -81,6 +85,18 @@ add_executable(CoinTests
 	InternalMacroTest.cpp
 	${COIN_TEST_SOURCES}
 )
+
+# Private Coin symbols are not exported from the Windows DLL. Compile the
+# dictionary implementation into the test executable so basedictTest.cpp can
+# exercise it without making cc_dict part of the public ABI. Static builds can
+# resolve the private symbols directly from the Coin archive.
+if(WIN32 AND COIN_BUILD_SHARED_LIBS)
+	target_sources(CoinTests PRIVATE
+		${PROJECT_SOURCE_DIR}/src/base/dict.cpp
+		CcDictWin32TestSupport.cpp)
+	set_source_files_properties(${PROJECT_SOURCE_DIR}/src/base/dict.cpp PROPERTIES
+		COMPILE_DEFINITIONS COIN_INTERNAL)
+endif()
 set_source_files_properties(InternalMacroTest.cpp PROPERTIES
 	COMPILE_DEFINITIONS COIN_INTERNAL)
 set_target_properties(CoinTests PROPERTIES DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
