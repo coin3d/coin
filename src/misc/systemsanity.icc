@@ -16,6 +16,8 @@
 #pragma warning(push)
 #pragma warning(disable: 4505) // unreferenced local function removed -- deliberately never called, see comment above
 #endif
+static void SoDB_compileTimeAsserts(void) COIN_UNUSED_FUNC;
+
 static
 void
 SoDB_compileTimeAsserts(void)
