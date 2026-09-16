@@ -537,8 +537,15 @@ SoPath::truncate(const int length)
 void
 SoPath::truncate(const int length, const SbBool donotify)
 {
-  assert((length >= 0) && (length <= this->getFullLength()) &&
-         "invalid truncation length");
+  const int fulllength = this->getFullLength();
+  if (length < 0 || length > fulllength) {
+#if COIN_DEBUG
+    SoDebugError::post("SoPath::truncate",
+                       "length %d is out of bounds [0, %d].",
+                       length, fulllength);
+#endif // COIN_DEBUG
+    return;
+  }
 
 #if COIN_DEBUG
   // Don't run this alive test if the node list is not referencing.
