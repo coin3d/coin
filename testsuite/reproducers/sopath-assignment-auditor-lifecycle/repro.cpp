@@ -1,4 +1,4 @@
-// Contract probe for SoPath copy-assignment auditor ownership.
+// Contract probe for SoPath copy and assignment auditor ownership.
 
 #include <cstdio>
 #include <cstdlib>
@@ -94,11 +94,44 @@ test_self_assignment()
   return 0;
 }
 
+static int
+test_copy_construction()
+{
+  SoSeparator * root = new SoSeparator;
+  root->ref();
+  SoGroup * selected = new SoGroup;
+  root->addChild(selected);
+
+  SoPath * source = new SoPath(root);
+  source->ref();
+  source->append(selected);
+  SoPath * copy = new SoPath(*source);
+  copy->ref();
+
+  root->insertChild(new SoGroup, 0);
+  if (source->getIndex(1) != 1 || copy->getIndex(1) != 1) {
+    return fail_without_cleanup(
+      "copy construction did not establish one independent auditor");
+  }
+
+  copy->unref();
+  root->insertChild(new SoGroup, 0);
+  if (source->getIndex(1) != 2) {
+    return fail_without_cleanup(
+      "destroying the copy damaged the source auditor");
+  }
+
+  source->unref();
+  root->unref();
+  return 0;
+}
+
 int
 main(int argc, char ** argv)
 {
   if (argc != 2) {
-    std::fprintf(stderr, "usage: %s reassign|self-assign\n", argv[0]);
+    std::fprintf(stderr,
+                 "usage: %s reassign|self-assign|copy-construct\n", argv[0]);
     return 2;
   }
 
@@ -108,6 +141,8 @@ main(int argc, char ** argv)
     result = test_reassignment();
   else if (std::strcmp(argv[1], "self-assign") == 0)
     result = test_self_assignment();
+  else if (std::strcmp(argv[1], "copy-construct") == 0)
+    result = test_copy_construction();
   else
     std::fprintf(stderr, "unknown case: %s\n", argv[1]);
   SoDB::finish();

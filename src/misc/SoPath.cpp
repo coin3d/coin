@@ -135,7 +135,8 @@ SoPath::SoPath(SoNode * const head)
   Copy constructor. Not part of the original Open Inventor API.
 */
 SoPath::SoPath(const SoPath & rhs)
-  : inherited(), nodes(rhs.getFullLength()), indices(rhs.getFullLength())
+  : inherited(), nodes(rhs.getFullLength()), indices(rhs.getFullLength()),
+    isauditing(FALSE), firsthidden(-1), firsthiddendirty(FALSE)
 {
   this->operator=(rhs);
 }
@@ -149,17 +150,10 @@ SoPath::operator=(const SoPath & rhs)
 {
   if (this == &rhs) return *this;
 
-  // Stop observing the old route before replacing it.  The child lists keep
-  // raw SoPath pointers, so leaving any of these registrations behind would
-  // let later scene-graph edits call an unrelated or destroyed path.
-  if (this->isauditing) {
-    for (int i = 0; i < this->getFullLength(); i++) {
-      SoNode * node = this->nodes[i];
-      if (node == NULL) continue;
-      SoChildList * cl = node->getChildren();
-      if (cl) cl->removePathAuditor(this);
-    }
-  }
+  // This must unregister the address of *this* before replacing its route.
+  // Copy-and-swap alone cannot do that: an external SoChildList stores the
+  // auditor object's identity, not just its swappable member state.
+  this->removePathAuditors(0);
 
   this->firsthidden = rhs.firsthidden;
   this->firsthiddendirty = rhs.firsthiddendirty;
@@ -547,6 +541,31 @@ SoPath::truncate(const int length)
   this->truncate(length, TRUE);
 }
 
+// Remove ourself as an auditor from the selected suffix of the route.
+void
+SoPath::removePathAuditors(const int startindex)
+{
+  assert(startindex >= 0 && startindex <= this->getFullLength());
+  if (!this->isauditing) return;
+
+  for (int i = startindex; i < this->getFullLength(); i++) {
+    SoNode * node = this->nodes[i];
+    if (node == NULL) continue;
+    SoChildList * cl = node->getChildren();
+#if COIN_DEBUG && 0 // debug
+    if (cl) {
+      SoDebugError::postInfo("SoPath::removePathAuditors",
+                             "nodes[%d]=%p childlist=%p "
+                             "removePathAuditor(%p)",
+                             i, static_cast<void *>(this->nodes[i]),
+                             static_cast<void *>(cl),
+                             static_cast<void *>(this));
+    }
+#endif // debug
+    if (cl) cl->removePathAuditor(this);
+  }
+}
+
 // This method truncates the path to the given length.
 void
 SoPath::truncate(const int length, const SbBool donotify)
@@ -581,24 +600,7 @@ SoPath::truncate(const int length, const SbBool donotify)
   }
 #endif // COIN_DEBUG
 
-
-  // Remove ourself as an auditor to the nodes' children lists.
-  if (this->isauditing) {
-    for (int i = length; i < this->getFullLength(); i++) {
-      SoNode* node = this->nodes[i];
-      if (node == nullptr) continue;
-      SoChildList * cl = node->getChildren();
-#if COIN_DEBUG && 0 // debug
-      if (cl) {
-        SoDebugError::postInfo("SoPath::truncate",
-                               "nodes[%d]=%p childlist=%p "
-                               "removePathAuditor(%p)",
-                               i, this->nodes[i], cl, this);
-      }
-#endif // debug
-      if (cl) cl->removePathAuditor(this);
-    }
-  }
+  this->removePathAuditors(length);
 
   this->nodes.truncate(length);
   this->indices.truncate(length);
