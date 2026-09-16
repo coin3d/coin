@@ -4,6 +4,7 @@
 #include <Inventor/SoNodeKitPath.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/misc/SoChildList.h>
+#include <Inventor/misc/SoTempPath.h>
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/nodekits/SoNodeKit.h>
 #include <Inventor/nodes/SoSeparator.h>
@@ -19,6 +20,14 @@ public:
 };
 
 static int failures;
+
+static int
+fullLength(const SoPath & path)
+{
+  SoTempPath copy(8);
+  copy.append(&path);
+  return copy.getLength();
+}
 
 static void
 expect(bool condition, const char * message)
@@ -65,8 +74,8 @@ main()
     expect(projected->getRefCount() == 0, "fromPath result starts unreferenced");
     projected->ref();
 
-    expect(projected->getFullLength() == 5, "fromPath copies full hidden route");
-    for (int i = 0; i < source->getFullLength(); ++i) {
+    expect(fullLength(*projected) == 5, "fromPath copies full hidden route");
+    for (int i = 0; i < fullLength(*source); ++i) {
       expect(projected->SoPath::getNode(i) == source->getNode(i),
              "fromPath preserves full nodes");
       expect(projected->SoPath::getIndex(i) == source->getIndex(i),
@@ -81,7 +90,7 @@ main()
     expect(projected->getNode(2) == childkit, "fromPath K contains nested kit");
 
     projected->truncate(1);
-    expect(source->getFullLength() == 5,
+    expect(fullLength(*source) == 5,
            "mutating materialized path does not mutate source");
     projected->unref();
 
@@ -90,7 +99,7 @@ main()
     if (projected2) {
       projected2->ref();
       source->truncate(1);
-      expect(projected2->getFullLength() == 5,
+      expect(fullLength(*projected2) == 5,
              "mutating source does not mutate materialized path");
       projected2->unref();
     }

@@ -4,6 +4,7 @@
 #include <Inventor/SoNodeKitPath.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/misc/SoChildList.h>
+#include <Inventor/misc/SoTempPath.h>
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/nodekits/SoNodeKit.h>
 #include <Inventor/nodekits/SoSeparatorKit.h>
@@ -50,6 +51,22 @@ public:
 
 static int failures;
 
+static int
+fullLength(const SoPath & path)
+{
+  SoTempPath copy(8);
+  copy.append(&path);
+  return copy.getLength();
+}
+
+static SoNode *
+fullTail(const SoPath & path)
+{
+  SoTempPath copy(8);
+  copy.append(&path);
+  return copy.getTail();
+}
+
 static void
 expect(bool condition, const char * message)
 {
@@ -62,11 +79,12 @@ expect(bool condition, const char * message)
 static void
 expectSameFullRoute(const SoPath & lhs, const SoPath & rhs, const char * message)
 {
-  if (lhs.getFullLength() != rhs.getFullLength()) {
+  const int length = fullLength(lhs);
+  if (length != fullLength(rhs)) {
     expect(false, message);
     return;
   }
-  for (int i = 0; i < lhs.getFullLength(); ++i) {
+  for (int i = 0; i < length; ++i) {
     if (lhs.getNode(i) != rhs.getNode(i) || lhs.getIndex(i) != rhs.getIndex(i)) {
       expect(false, message);
       return;
@@ -131,7 +149,7 @@ caseViewsAndBounds()
   path.appendFixtureIndex(0);
   path.appendFixtureIndex(0);
 
-  expect(path.getFullLength() == 3, "F contains head, intermediate group, and kit");
+  expect(fullLength(path) == 3, "F contains head, intermediate group, and kit");
   expect(path.SoPath::getLength() == 3, "V includes the first hidden node");
   expect(path.getLength() == 2, "K includes the non-kit head and later kit");
   expect(path.getNode(0) == nonkithead, "K[0] is always the head");
@@ -255,14 +273,14 @@ caseAppendBelowNonKitTail()
   path.setFixtureHead(f.root);
   path.appendFixtureIndex(2); // non-kit full tail below logical root kit
 
-  expect(path.getFullTail() == f.leaf, "control: full tail starts below logical tail");
+  expect(fullTail(path) == f.leaf, "control: full tail starts below logical tail");
   expect(path.getTail() == f.root, "control: logical tail is root kit");
 
   path.append(f.shared);
   expect(path.getLength() == 2, "append adds child below logical nodekit tail");
   expect(path.getTail() == f.shared, "append reaches requested child kit");
-  expect(path.getFullTail() == f.shared, "append replaces obsolete non-kit suffix");
-  expect(path.getFullLength() == 3, "append keeps the discovered full route");
+  expect(fullTail(path) == f.shared, "append replaces obsolete non-kit suffix");
+  expect(fullLength(path) == 3, "append keeps the discovered full route");
   expect(path.SoPath::getIndex(1) == 0, "append uses first matching route");
 }
 
@@ -337,7 +355,7 @@ checkFactoryResult(FactorySeparatorKit * kit, SoNode * transform,
     path->ref();
     expect(path->getLength() == 1, "factory K contains its kit head");
     expect(path->getTail() == kit, "factory logical tail is the kit head");
-    expect(path->getFullTail() == transform, "factory preserves hidden full tail");
+    expect(fullTail(*path) == transform, "factory preserves hidden full tail");
     path->unref();
   }
 }

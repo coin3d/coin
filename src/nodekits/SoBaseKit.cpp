@@ -525,6 +525,7 @@
 */
 
 #include <Inventor/nodekits/SoBaseKit.h>
+#include <Inventor/SoNodeKitPath.h>
 
 #include <cstdlib>
 #include <climits>
@@ -1789,14 +1790,17 @@ SoBaseKit::createPathToAnyPart(const SbName & partname, SbBool makeifneeded,
                                SbBool leafcheck, SbBool publiccheck,
                                const SoPath * pathtoextend)
 {
-  SoFullPath * path;
+  SoPath * path;
   if (pathtoextend) {
-    path = (SoFullPath *)pathtoextend->copy();
+    path = SoNodeKitPath::fromPath(pathtoextend);
     path->ref();
+    // Keep the historical full-path view until the independent SoFullPath
+    // migration lands. The object itself is now genuinely a SoNodeKitPath.
+    SoFullPath * fullpath = (SoFullPath *)path;
     // pop off nodes beyond this kit node
-    if (path->containsNode(this)) while (path->getTail() != this && path->getLength()) path->pop();
-    else if (path->getLength()) {
-      SoNode * node = path->getTail();
+    if (path->containsNode(this)) while (fullpath->getTail() != this && fullpath->getLength()) path->pop();
+    else if (fullpath->getLength()) {
+      SoNode * node = fullpath->getTail();
       if (!node->getChildren() || node->getChildren()->find(this) < 0) {
 #if COIN_DEBUG
         SoDebugError::postWarning("SoBaseKit::createPathToAnyPart",
@@ -1809,7 +1813,9 @@ SoBaseKit::createPathToAnyPart(const SbName & partname, SbBool makeifneeded,
     }
   }
   else {
-    path = (SoFullPath *)new SoPath(this);
+    SoNodeKitPath * nodekitpath = new SoNodeKitPath(4);
+    nodekitpath->SoPath::setHead(this);
+    path = nodekitpath;
     path->ref();
   }
 
@@ -1863,7 +1869,7 @@ SoBaseKit::createPathToAnyPart(const SbName & partname, SbBool makeifneeded,
         }
       }
       path->unrefNoDelete();
-      return (SoNodeKitPath *)path;
+      return static_cast<SoNodeKitPath *>(path);
     }
   }
   path->unref();

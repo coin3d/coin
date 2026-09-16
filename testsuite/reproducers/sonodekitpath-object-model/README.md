@@ -1,9 +1,9 @@
 # SoNodeKitPath object-model contract probe
 
-This directory contains a candidate Coin 4 contract and implementation-blind
-probes.  It does not contain the fix and is intentionally not wired into the
-normal CTest target while the frozen baseline is expected to violate several
-requirements.
+This directory contains the Coin 4 contract and implementation-blind probes
+used to characterize the historical behavior and verify the fix.  The probes
+remain separate from the normal CTest target so they can also be compiled
+against an unmodified baseline.
 
 The probes separate:
 
@@ -31,6 +31,14 @@ The script compiles the caller with UBSan/vptr and stops on the first sanitizer
 diagnostic.  A sanitizer abort, compile failure, failed assertion, or nonzero
 exit is `Violated`, not a successful detection test.  Sanitizer silence alone
 does not pass: each executable also checks semantic observations.
+
+When verifying this branch directly on upstream `master`, build the Coin
+library with UBSan but without `vptr`, and let `run.sh` instrument each caller
+with `vptr`.  Upstream `master` still contains the independent `SoFullPath`
+downcast diagnosed by coin3d/coin#714, including in code reached by these
+probes.  This split keeps that known finding from masking the contract under
+test while still making an invalid factory-produced `SoNodeKitPath *` fail at
+its ordinary caller-side member use.
 
 A missing required member such as `fromPath` in an otherwise configured
 baseline is `Violated`.  Failure to locate the compiler, generated headers,

@@ -9,9 +9,9 @@ implementation and is not a protocol seal by itself.
 ```text
 40f3d422f315f59bb2d918d5d3be22f0d56679aa2d4770669c8414f4739cdba1  CONTRACT.md
 a25b0c252235f76dfe012a9ea19487c0b74eebe1cd62f185f242b84d26e0edfb  MANIFEST.md
-92688eb5b303bed65fe060c9cd0965865a279e999734d8f2f116770363ec288b  README.md
-a0893190412a7fc062172b134eb68755e88c31d9e0908190e9588d807153c097  repro.cpp
-3d6eeda0340c8d8fc35592c776b3517a2a110a48f1d4ffc0565f5e5f27f4bd58  frompath.cpp
+b844f4c70f168163ee8669e93867df9c527d22004a195001d2084c9ffd62bf7f  README.md
+43cb9b2e8371a44739680b5b1e6996edbd07240e8c4228d38ee79b0d3f4af0dd  repro.cpp
+1da8ae54d626169c27c7f919a1a77c31c967cfeefae85bd2da5b54274f4cb66b  frompath.cpp
 0f971fca6b77b350e2ad0a2aac09231e2476796b05e71981eab97795a488394f  run.sh
 ```
 
@@ -72,3 +72,23 @@ extended without changing the frozen contract.
 No `Unknown` case was counted as preserved.  External inability to locate a
 compiler, generated headers, or a requested library remains `Unknown`; that
 setup failure did not occur in these runs.
+
+## Independent-branch verification
+
+The two commits were subsequently rebased directly onto upstream `master` at
+`40c6372d29`.  The Coin library was built in both Debug and Release modes.  The
+Debug library used `-fsanitize=undefined -fno-sanitize=vptr`; each contract
+caller retained
+`-fsanitize=undefined,vptr -fno-sanitize-recover=undefined`.  This isolates the
+`SoNodeKitPath` dynamic-type contract from the separate historical
+`SoFullPath` downcast still present on `master` and tracked by coin3d/coin#714.
+
+All three aggregate gates passed in both configurations:
+
+- `contract all`;
+- `factory all`;
+- `frompath`.
+
+The complete configured CTest suite also passed in both configurations: 8/8
+tests, including the full `CoinTests` binary.  A full library and test build
+completed before each execution.
