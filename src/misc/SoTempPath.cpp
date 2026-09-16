@@ -77,6 +77,8 @@ SoTempPath::simpleAppend(SoNode * const node, const int index)
 void 
 SoTempPath::replaceTail(SoNode * const node, const int index)
 {
+  if (this->nodes.getLength() == 0) return;
+
   // this will make SoPath rescan the path for hidden children the
   // next time getLength() is called.
   this->firsthiddendirty = TRUE;
