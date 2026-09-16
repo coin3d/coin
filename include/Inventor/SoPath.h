@@ -108,6 +108,7 @@ private:
   static void * createInstance(void);
   void append(SoNode * const node, const int index);
   int getFullLength(void) const;
+  void removePathAuditors(const int startindex);
   void truncate(const int length, const SbBool donotify);
   SbBool readInstance(SoInput * in, unsigned short flags) override;
   void setFirstHidden(void);
