@@ -147,6 +147,20 @@ SoPath::SoPath(const SoPath & rhs)
 SoPath &
 SoPath::operator=(const SoPath & rhs)
 {
+  if (this == &rhs) return *this;
+
+  // Stop observing the old route before replacing it.  The child lists keep
+  // raw SoPath pointers, so leaving any of these registrations behind would
+  // let later scene-graph edits call an unrelated or destroyed path.
+  if (this->isauditing) {
+    for (int i = 0; i < this->getFullLength(); i++) {
+      SoNode * node = this->nodes[i];
+      if (node == NULL) continue;
+      SoChildList * cl = node->getChildren();
+      if (cl) cl->removePathAuditor(this);
+    }
+  }
+
   this->firsthidden = rhs.firsthidden;
   this->firsthiddendirty = rhs.firsthiddendirty;
   this->isauditing = rhs.isauditing;
