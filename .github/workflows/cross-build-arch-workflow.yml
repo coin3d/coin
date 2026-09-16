@@ -26,7 +26,7 @@ jobs:
           - arch: ppc64le
             distro: ubuntu24.04
           - arch: s390x
-            distro: fedora_latest
+            distro: fedora
           - arch: armv7
             distro: ubuntu24.04
           #- arch: armv6
