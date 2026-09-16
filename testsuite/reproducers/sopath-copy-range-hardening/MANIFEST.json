@@ -1,0 +1,101 @@
+{
+  "protocol": "tekt-segregated-materialization/v1",
+  "phase": "pre-implementation-contract-and-oracle",
+  "status": "calibrated-contract-candidate-not-final-verdict",
+  "created_at": "2026-09-16T15:48:53-03:00",
+  "baseline": {
+    "commit": "2adeaa8a039067a76d098e8e2be52b431f97d18e",
+    "tree": "154e044578b2aadf3d77298efbbe5c60f5754acd"
+  },
+  "branch": "codex/contract-sopath-copy-range",
+  "worktree": "/tmp/coin-sopath-copy-contract",
+  "frozen_prompt": {
+    "path": "testsuite/reproducers/sopath-copy-range-hardening/L0_PROMPT.md",
+    "sha256": "391849aedcd40b6b49d8d929041c81a5b48c65792e464974eeffac1bca5bd40c"
+  },
+  "contract": {
+    "path": "testsuite/reproducers/sopath-copy-range-hardening/CONTRACT.md",
+    "sha256": "b918557f54d91a8b2d549af7277aa5cae1f62812ee0a83e52f5606c8d42bf817"
+  },
+  "oracles": [
+    {
+      "path": "testsuite/reproducers/sopath-copy-range-hardening/repro.cpp",
+      "sha256": "003887a974e241ceadc80b2ebb7e27a44379e4904b4b51f75c9ec41a92e8238b"
+    },
+    {
+      "path": "testsuite/reproducers/sopath-copy-range-hardening/old-header-client.cpp",
+      "sha256": "4bc6e9c1da6f3c3233ff335306b9458bb2294065898b9c84f4d9f5f257adae64"
+    },
+    {
+      "path": "testsuite/reproducers/sopath-copy-range-hardening/run.sh",
+      "sha256": "2f34b1d51cf7c37413da68c12c68b53356c33ce9c2b9a949af876de712c1c168"
+    },
+    {
+      "path": "testsuite/reproducers/sopath-copy-range-hardening/run-old-header.sh",
+      "sha256": "4050d17a21ceba0cb68e4dcbf3c8328c0712ad4a3233ec73681dd806d77c2bf5"
+    }
+  ],
+  "supporting_artifacts": [
+    {
+      "path": "testsuite/reproducers/sopath-copy-range-hardening/README.md",
+      "sha256": "a48f8a54bf2422cb662bc0c5877e6512017ec0b271639650e6cb0d9e23f3426e"
+    }
+  ],
+  "required_observables": [
+    "invalid start and negative count return NULL normally without source mutation",
+    "zero count copies the full remaining suffix",
+    "excessive count including INT_MAX clamps without overflow or hostile allocation",
+    "a partial result has head index zero and preserves later node/index relationships",
+    "valid complete copy and hidden full-path copy preserve the complete sequence",
+    "copy of SoTempPath returns a normally auditing SoPath",
+    "same per-configuration classification in forward and reverse order",
+    "representative behavior remains callable through frozen baseline headers"
+  ],
+  "unknown_policy": "Compile, link, archive, runner setup, or unavailable timeout support is Unknown and never passes. After a named operation starts, exception, signal, abort, memory-limit termination, timeout, unexpected pointer result, state mismatch, or audit mismatch is Violated. Only expected exit zero is Preserved.",
+  "roles": {
+    "intent_author": {
+      "executor": "parent task and user-approved obligation",
+      "writes": [
+        "L0 intent"
+      ]
+    },
+    "contract_and_oracle_author": {
+      "executor": "/root/sopath_copy_contract",
+      "read_allowlist": [
+        "frozen L0 intent",
+        "baseline public headers and baseline SoPath implementation",
+        "baseline build and test conventions",
+        "Tekt segregated-materialization skill"
+      ],
+      "write_allowlist": [
+        "testsuite/reproducers/sopath-copy-range-hardening/"
+      ],
+      "forbidden_inputs": [
+        "future candidate implementation",
+        "future candidate worktree",
+        "private implementer conclusions"
+      ],
+      "environment": "/tmp/coin-sopath-copy-contract"
+    },
+    "implementer": {
+      "executor": "unassigned",
+      "writes": []
+    },
+    "independent_verifier": {
+      "executor": "unassigned",
+      "writes": []
+    }
+  },
+  "calibration_budget": {
+    "maximum_oracle_revisions": 2,
+    "maximum_full_corpus_rounds": 2,
+    "consumed_oracle_revisions": 2,
+    "consumed_full_corpus_rounds": 1,
+    "stop_rule": "Stop after two revisions with no classification gain, any further post-budget oracle defect, or the final order-invariance round."
+  },
+  "limits": [
+    "No future candidate implementation was inspected or modified.",
+    "No production source was modified.",
+    "No mutation score, seal, implementation verdict, or final certificate is claimed by this role."
+  ]
+}
