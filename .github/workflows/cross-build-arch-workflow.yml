@@ -7,55 +7,60 @@ on:
   #push:
   #  branches: [ master ]
 
+permissions:
+  contents: read
+
 jobs:
   cross-build:
-    # The host should always be linux
-    runs-on: ubuntu-18.04
+    # The host should always be Linux.
+    runs-on: ubuntu-24.04
     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
 
-    # Run steps on a matrix of 5 arch/distro combinations
+    # Run steps on a matrix of 5 arch/distro combinations.
     strategy:
       fail-fast: false
       matrix:
         include:
           - arch: aarch64
-            distro: ubuntu18.04
+            distro: ubuntu24.04
           - arch: ppc64le
-            distro: ubuntu18.04
+            distro: ubuntu24.04
           - arch: s390x
             distro: fedora_latest
           - arch: armv7
-            distro: ubuntu18.04
+            distro: ubuntu24.04
           #- arch: armv6
           #  distro: buster
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Checkout submodules
-        run: git submodule update --init --recursive
-      - uses: uraimo/run-on-arch-action@v2.0.7
-        name: Build artifact
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+
+      - name: Build artifact
+        uses: uraimo/run-on-arch-action@v3.1.0
         id: build
         with:
           arch: ${{ matrix.arch }}
           distro: ${{ matrix.distro }}
 
-          # Not required, but speeds up builds
+          # Not required, but speeds up builds by caching the container image.
           githubToken: ${{ github.token }}
 
-          # Create an install directory
+          # Create an install directory.
           setup: |
             mkdir -p "${PWD}/cmake_install_dir"
 
-          # Mount the install directory as /cmake_install_dir in the container
+          # Mount the install directory into the container.
           dockerRunArgs: |
             --volume "${PWD}/cmake_install_dir:/cmake_install_dir"
 
-          # Pass some environment variables to the container
-          env: | # YAML, but pipe character is necessary
+          # Pass environment variables to the container.
+          env: |
             artifact_name: coin-${{ matrix.distro }}_${{ matrix.arch }}
 
-          # The shell to run commands with in the container
+          # The shell to run commands with in the container.
           shell: /bin/sh
 
           # Install some dependencies in the container. This speeds up builds if
@@ -66,33 +71,56 @@ jobs:
           # no secrets are present in the container state or logs.
           install: |
             case "${{ matrix.distro }}" in
-              ubuntu*|jessie|stretch|buster)
+              ubuntu*)
                 apt-get update -y
-                apt-get install -y build-essential cmake git freeglut3-dev libexpat-dev
+                apt-get install -y \
+                  build-essential \
+                  cmake \
+                  git \
+                  freeglut3-dev \
+                  libexpat1-dev
                 ;;
               fedora*)
                 dnf -y update
                 dnf -y groupinstall "Development Tools"
-                dnf -y install make automake gcc gcc-c++ cmake git which freeglut-devel expat-devel
+                dnf -y install \
+                  cmake \
+                  expat-devel \
+                  freeglut-devel \
+                  git \
+                  make \
+                  which
                 ;;
               alpine*)
                 apk update
-                apk add alpine-sdk cmake freeglut-dev expat-dev
+                apk add \
+                  alpine-sdk \
+                  cmake \
+                  expat-dev \
+                  freeglut-dev
                 ;;
             esac
 
-          # Produce a binary artifact and place it in the mounted volume
           run: |
             which cmake
             cmake --version
-            cmake -H. -Bcmake_build_dir -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/cmake_install_dir
-            cmake --build cmake_build_dir --target install --config Release -- -j4
 
-      - name: Create Artifacts
-        # Items placed in /cmake_install_dir in the container will be in
-        # ${PWD}/cmake_install_dir on the host.
-        uses: actions/upload-artifact@v1
+            cmake \
+              -S . \
+              -B cmake_build_dir \
+              -G "Unix Makefiles" \
+              -DCMAKE_BUILD_TYPE=Release \
+              -DCMAKE_INSTALL_PREFIX=/cmake_install_dir
+
+            cmake --build cmake_build_dir \
+              --target install \
+              --config Release \
+              --parallel 4
+
+      - name: Create artifacts
+        if: always()
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.distro }}_${{ matrix.arch }}-Artifacts
           path: cmake_install_dir/
-        if: always()
+          if-no-files-found: warn
