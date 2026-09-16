@@ -8,9 +8,10 @@ destroyed. Self-assignment must preserve the route without duplicating auditor
 registrations.
 
 The `copy-construct` case was added after implementation review exposed that
-the copy constructor delegated to assignment without first initializing the
-destination's auditor policy. It is an implementation-informed regression
-test, not part of the original independently ordered A/B contract.
+the copy constructor delegates to assignment and therefore requires an
+initialized destination auditor policy. It is implementation-informed
+coverage, not a regression test and not part of the original independently
+ordered A/B contract.
 
 Copy-and-swap is intentionally not used here. Child lists register the address
 of the auditor object. Swapping path members with a temporary does not transfer
