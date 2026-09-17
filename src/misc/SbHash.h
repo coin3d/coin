@@ -510,13 +510,14 @@ public:
     memset(this->buckets, 0, this->size * sizeof(SbHashEntry *));
   }
 
+ protected:
   void getStats(int & buckets_used, int & buckets, int & elements, float & chain_length_avg, int & chain_length_max)
   {
     unsigned int i;
     buckets_used = 0, chain_length_max = 0;
     for (i = 0; i < this->size; i++) {
       if (this->buckets[i]) {
-        unsigned int chain_l = 0;
+        int chain_l = 0;
         SbHashEntry * entry = this->buckets[i];
         buckets_used++;
         while (entry) {
@@ -528,9 +529,11 @@ public:
     }
     buckets = this->size;
     elements = this->elements;
-    chain_length_avg = static_cast<float>( this->elements / buckets_used);
+    chain_length_avg = buckets_used == 0 ? 0.0f :
+      static_cast<float>(this->elements) / static_cast<float>(buckets_used);
   }
 
+ private:
   float loadfactor;
   unsigned int size;
   unsigned int elements;
