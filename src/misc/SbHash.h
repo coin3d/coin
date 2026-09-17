@@ -426,31 +426,40 @@ protected:
     return this->getIndex(key, this->size);
   }
 
+  unsigned int getNumBuckets(void) const noexcept {
+    return this->size;
+  }
+
+  unsigned int getResizeThreshold(void) const noexcept {
+    return this->threshold;
+  }
+
   void resize(unsigned int newsize) {
     /* we don't shrink the table */
     if (this->size >= newsize) return;
 
-    unsigned int oldsize = this->size;
-    SbHashEntry ** oldbuckets = this->buckets;
+    SbHashEntry ** newbuckets = new SbHashEntry * [newsize];
+    memset(newbuckets, 0, newsize * sizeof(SbHashEntry *));
 
-    this->size = newsize;
-    this->elements = 0;
-    this->threshold = static_cast<unsigned int> (newsize * this->loadfactor);
-    this->buckets = new SbHashEntry * [newsize];
-    memset(this->buckets, 0, this->size * sizeof(SbHashEntry *));
-
-    /* Transfer all mappings */
+    /* Relink all mappings without copying keys or values. Allocation happens
+       before any existing node is touched, and hashing is required to be
+       non-throwing, so the table remains unchanged if allocation fails. */
     unsigned int i;
-    for (i = 0; i < oldsize; i++) {
-      SbHashEntry * entry = oldbuckets[i];
+    for (i = 0; i < this->size; i++) {
+      SbHashEntry * entry = this->buckets[i];
       while (entry) {
-        this->put(entry->key, entry->obj);
-        SbHashEntry * preventry = entry;
-        entry = entry->next;
-        delete preventry;
+        SbHashEntry * next = entry->next;
+        const unsigned int newindex = this->getIndex(entry->key, newsize);
+        entry->next = newbuckets[newindex];
+        newbuckets[newindex] = entry;
+        entry = next;
       }
     }
-    delete [] oldbuckets;
+
+    delete [] this->buckets;
+    this->buckets = newbuckets;
+    this->size = newsize;
+    this->threshold = static_cast<unsigned int> (newsize * this->loadfactor);
   }
 
   //FIXME: Make this private when SbHash goes public: BFG 20090430
