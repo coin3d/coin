@@ -163,7 +163,7 @@ public:
 
 // *************************************************************************
 
-unsigned int SbHashFunc(const SoOutput * key) {
+unsigned int SbHashFunc(const SoOutput * key) noexcept {
   return SbHashFunc(reinterpret_cast<size_t>(key));
 }
 
