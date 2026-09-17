@@ -72,6 +72,38 @@ public:
   }
 };
 
+class SbHashCopyCounter {
+public:
+  SbHashCopyCounter(int valuearg = 0) : value(valuearg) { }
+  SbHashCopyCounter(const SbHashCopyCounter & other) : value(other.value)
+  {
+    ++copies;
+  }
+  ~SbHashCopyCounter() { ++destructions; }
+
+  SbHashCopyCounter & operator=(const SbHashCopyCounter & other)
+  {
+    this->value = other.value;
+    return *this;
+  }
+
+  static int copies;
+  static int destructions;
+  int value;
+};
+
+int SbHashCopyCounter::copies = 0;
+int SbHashCopyCounter::destructions = 0;
+
+class SbHashRelinkProbe : public SbHash<int, SbHashCopyCounter> {
+public:
+  SbHashRelinkProbe(unsigned int sizearg) :
+    SbHash<int, SbHashCopyCounter>(sizearg) { }
+
+  unsigned int bucketCount(void) const { return this->getNumBuckets(); }
+  unsigned int resizeThreshold(void) const { return this->getResizeThreshold(); }
+};
+
 } // namespace
 
 BOOST_AUTO_TEST_CASE(SbHash_self_assignment_preserves_entries)
@@ -172,4 +204,39 @@ BOOST_AUTO_TEST_CASE(SbHash_hashes_c_strings_without_an_SbString_temporary)
                 "C-string hashing must satisfy the SbHash noexcept contract");
   BOOST_CHECK_EQUAL(SbHashFunc(static_cast<const char *>(NULL)), 0U);
   BOOST_CHECK_EQUAL(SbHashFunc(text), SbHashFunc(string));
+}
+
+BOOST_AUTO_TEST_CASE(SbHash_resize_relinks_entries_at_the_real_threshold)
+{
+  SbHashRelinkProbe hash(3);
+  SbHashCopyCounter one(1);
+  SbHashCopyCounter two(2);
+  SbHashCopyCounter three(3);
+  SbHashCopyCounter four(4);
+
+  BOOST_CHECK_EQUAL(hash.bucketCount(), 5U);
+  BOOST_CHECK_EQUAL(hash.resizeThreshold(), 3U);
+
+  BOOST_REQUIRE(hash.put(1, one));
+  BOOST_REQUIRE(hash.put(2, two));
+  BOOST_REQUIRE(hash.put(3, three));
+  BOOST_CHECK_EQUAL(hash.bucketCount(), 5U);
+
+  SbHash<int, SbHashCopyCounter>::const_iterator before = hash.find(1);
+  BOOST_REQUIRE(before != hash.const_end());
+  const SbHashCopyCounter * address = &before->obj;
+
+  SbHashCopyCounter::copies = 0;
+  SbHashCopyCounter::destructions = 0;
+
+  BOOST_REQUIRE(hash.put(4, four));
+  BOOST_CHECK_EQUAL(hash.bucketCount(), 11U);
+  BOOST_CHECK_EQUAL(SbHashCopyCounter::copies, 1);
+  BOOST_CHECK_EQUAL(SbHashCopyCounter::destructions, 0);
+
+  SbHash<int, SbHashCopyCounter>::const_iterator after = hash.find(1);
+  BOOST_REQUIRE(after != hash.const_end());
+  BOOST_CHECK_EQUAL(&after->obj, address);
+  BOOST_CHECK_EQUAL(after->obj.value, 1);
+  BOOST_CHECK_EQUAL(hash.getNumElements(), 4U);
 }
