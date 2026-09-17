@@ -206,7 +206,7 @@ class SbHash {
       setNextUsedBucket();
     }
 
-    SbHash<Key, Type> * master;
+    const SbHash<Key, Type> * master;
     unsigned int index;
     SbHashEntry * elem;
     friend class SbHash<Key, Type>;
@@ -325,21 +325,11 @@ class SbHash {
   }
 
   iterator begin() const {
-    iterator retVal;
-
-    retVal.master = this;
-    retVal.index=0;
-
-    return retVal;
+    return iterator(this);
   }
 
   iterator end() const {
-    iterator retVal;
-
-    retVal.master = this;
-    retVal.index = this->size;
-
-    return retVal;
+    return iterator();
   }
 
   const_iterator const_begin() const {
