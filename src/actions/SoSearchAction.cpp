@@ -342,16 +342,15 @@ SoSearchAction::isSearchingAll(void) const
   returned from either this method or the getPaths() method below:
   "why am I not getting the complete path as expected?"
 
-  Well, then you probably have to cast the path to a SoFullPath, since
+  Well, then you probably need SoPath::getFullTail() instead, since
   certain nodes (nodekits, many VRML97 nodes) have hidden
   children. SoPath::getTail() will return the first node that has
   hidden children, or the tail if none of the nodes have hidden
-  children. SoFullPath::getTail() will always return the actual
-  tail. Just do like this:
- 
+  children. getFullTail() will always return the actual tail. Just do
+  like this:
+
   \code
-    SoFullPath * path = (SoFullPath *) searchaction->getPath();
-    SoVRMLCoordinate * vrmlcord = (SoVRMLCoordinate *) path->getTail();
+    SoVRMLCoordinate * vrmlcord = (SoVRMLCoordinate *) searchaction->getPath()->getFullTail();
   \endcode
 */
 SoPath *

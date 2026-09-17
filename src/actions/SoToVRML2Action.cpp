@@ -352,7 +352,7 @@ public:
     if (this->vrml2path) {
       this->vrml2path->unref();
     }
-    this->vrml2path = reclassify_cast<SoFullPath *>(new SoPath);
+    this->vrml2path = new SoPath;
     this->vrml2path->ref();
 
     if (this->vrml2root) {
@@ -411,7 +411,7 @@ public:
 
   static SoCallbackAction::Response unsupported_cb(void *, SoCallbackAction *, const SoNode *);
 
-  SoFullPath * vrml2path;
+  SoPath * vrml2path;
   SoVRMLGroup * vrml2root;
   SbList <SoVRMLCoordinate *> * vrmlcoords;
   SbList <SoVRMLNormal *> * vrmlnormals;
@@ -724,9 +724,9 @@ SoToVRML2ActionP::search_for_recent_node(SoAction * action, const SoType & type)
   this->searchaction.apply(const_cast<SoPath *>(action->getCurPath()));
 
   SoNode * tail = NULL;
-  SoFullPath * path = reclassify_cast<SoFullPath *>(this->searchaction.getPath());
+  SoPath * path = this->searchaction.getPath();
   if (path) {
-    tail = path->getTail();
+    tail = path->getFullTail();
   }
   this->searchaction.reset();
 #ifdef HAVE_NODEKITS
@@ -739,7 +739,7 @@ SoToVRML2ActionP::search_for_recent_node(SoAction * action, const SoType & type)
 SoGroup *
 SoToVRML2ActionP::get_current_tail(void)
 {
-  SoNode * node = this->vrml2path->getTail();
+  SoNode * node = this->vrml2path->getFullTail();
   assert(node->isOfType(SoVRMLGroup::getClassTypeId()) ||
          node->isOfType(SoVRMLSwitch::getClassTypeId()) ||
          node->isOfType(SoVRMLLOD::getClassTypeId()));
