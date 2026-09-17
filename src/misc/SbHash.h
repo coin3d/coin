@@ -73,7 +73,7 @@
 
 //Create an uint of an arbitrary length datatype
 template <class T>
-inline unsigned int toUint(T in) {
+inline unsigned int toUint(T in) noexcept {
   if (sizeof(T)>sizeof(unsigned int)) {
     T retVal=in;
     for (size_t i = sizeof(T)/sizeof(unsigned int)-1; i>0; i--) {
@@ -89,7 +89,7 @@ inline unsigned int toUint(T in) {
 #if !defined(_MSC_VER) || (_MSC_VER >= 1300) // 'long long' not in vc6
 #ifndef COIN_INTERNAL //Not available for internal use, as this is not
                     //available on all platforms.
-inline unsigned int SbHashFunc(unsigned long long key) { return toUint<unsigned long long>(key); }
+inline unsigned int SbHashFunc(unsigned long long key) noexcept { return toUint<unsigned long long>(key); }
 #endif //COIN_INTERNAL
 #endif
 
@@ -98,20 +98,37 @@ inline unsigned int SbHashFunc(unsigned long long key) { return toUint<unsigned 
  * where int is 32-bit and long and pointer are 64-bit. */
 /* FIXME: the following solution is a kludge. 20081001 tamer. */
 #if defined(_WIN64)
-inline unsigned int SbHashFunc(unsigned long long key) { return toUint<unsigned long long>(key); }
+inline unsigned int SbHashFunc(unsigned long long key) noexcept { return toUint<unsigned long long>(key); }
 #else
 //The identity hash function
-inline unsigned int SbHashFunc(unsigned int key) { return key; }
+inline unsigned int SbHashFunc(unsigned int key) noexcept { return key; }
 
 //Some implementation of other basetypes
-inline unsigned int SbHashFunc(int key) { return static_cast<unsigned int>(key); }
+inline unsigned int SbHashFunc(int key) noexcept { return static_cast<unsigned int>(key); }
 
-inline unsigned int SbHashFunc(unsigned long key) { return toUint<unsigned long>(key); }
+inline unsigned int SbHashFunc(unsigned long key) noexcept { return toUint<unsigned long>(key); }
 #endif
+
+// Preserve the historical content hash for interned C strings without
+// allocating an SbString temporary. Mutable character buffers are used as
+// pointer-identity keys by SoField and keep that distinct behavior.
+inline unsigned int SbHashFunc(const char * key) noexcept {
+  if (key == NULL) return 0;
+  const unsigned char * str = reinterpret_cast<const unsigned char *>(key);
+  unsigned long hash = 0;
+  while (*str) {
+    hash = (*str++) + (hash << 6) + (hash << 16) - hash;
+  }
+  return static_cast<unsigned int>(hash);
+}
+
+inline unsigned int SbHashFunc(char * key) noexcept {
+  return SbHashFunc(reinterpret_cast<size_t>(key));
+}
 
 //String has its own implementation
 class SbString;
-unsigned int SbHashFunc(const SbString & key);
+unsigned int SbHashFunc(const SbString & key) noexcept;
 
 /*
   Some implementations of pointers, all functions are per writing only reinterpret_casts to size_t
@@ -120,9 +137,9 @@ unsigned int SbHashFunc(const SbString & key);
 class SoBase;
 class SoOutput;
 class SoSensor;
-unsigned int SbHashFunc(const SoBase * key);
-unsigned int SbHashFunc(const SoOutput * key);
-unsigned int SbHashFunc(const SoSensor * key);
+unsigned int SbHashFunc(const SoBase * key) noexcept;
+unsigned int SbHashFunc(const SoOutput * key) noexcept;
+unsigned int SbHashFunc(const SoSensor * key) noexcept;
 
 template <class Key, class Type>
 class SbHash {
@@ -405,9 +422,8 @@ class SbHash {
 
 
 protected:
-  unsigned int getIndex(const Key & key) const {
-    unsigned int idx = SbHashFunc(key);
-    return (idx % this->size);
+  unsigned int getIndex(const Key & key) const noexcept {
+    return this->getIndex(key, this->size);
   }
 
   void resize(unsigned int newsize) {
@@ -481,6 +497,13 @@ public:
   }
 
  private:
+  static unsigned int getIndex(const Key & key, unsigned int bucketsize) noexcept
+  {
+    static_assert(noexcept(SbHashFunc(key)),
+                  "SbHashFunc(key) and implicit key conversions must be noexcept");
+    return SbHashFunc(key) % bucketsize;
+  }
+
   SbBool getP(const Key & key, Type *& obj) const
   {
     SbHashEntry * entry;
