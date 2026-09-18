@@ -52,7 +52,7 @@
 #include <vector>
 
 inline unsigned int
-SbHashFunc(const SbPList * key)
+SbHashFunc(const SbPList * key) noexcept
 {
   return SbHashFunc(reinterpret_cast<size_t>(key));
 }
