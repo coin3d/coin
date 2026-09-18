@@ -102,6 +102,46 @@ if (USE_PTHREAD)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
+add_test(NAME CoinTestsFilterExact
+  COMMAND CoinTests --run_test=SbList_TestSuite/truncate_zero_then_grow_past_default_size)
+set_tests_properties(CoinTestsFilterExact PROPERTIES
+  PASS_REGULAR_EXPRESSION "\\[OK\\] 1 tests")
+
+add_test(NAME CoinTestsFilterWildcard
+  COMMAND CoinTests -t SbList_TestSuite/truncate*)
+set_tests_properties(CoinTestsFilterWildcard PROPERTIES
+  PASS_REGULAR_EXPRESSION "\\[OK\\] 1 tests")
+
+add_test(NAME CoinTestsFilterCombined
+  COMMAND CoinTests
+    --run_test=SoCallbackList_TestSuite/typed_callback_copies_preserve_dispatch_and_lifetime,mixed_callback_removal_preserves_indices_and_last_duplicate:SbList_TestSuite/truncate_zero_then_grow_past_default_size)
+set_tests_properties(CoinTestsFilterCombined PROPERTIES
+  PASS_REGULAR_EXPRESSION "\\[OK\\] 3 tests")
+
+add_test(NAME CoinTestsFilterRepeated
+  COMMAND CoinTests
+    --run_test=SbList_TestSuite/truncate_zero_then_grow_past_default_size
+    --run_test=SoCallbackList_TestSuite/callback_mutations_affect_only_later_invocations)
+set_tests_properties(CoinTestsFilterRepeated PROPERTIES
+  PASS_REGULAR_EXPRESSION "\\[OK\\] 2 tests")
+
+add_test(NAME CoinTestsFilterNoMatch
+  COMMAND CoinTests --run_test=CoinTest_NoSuchSuite/*)
+set_tests_properties(CoinTestsFilterNoMatch PROPERTIES WILL_FAIL TRUE)
+
+add_test(NAME CoinTestsFilterMissingValue COMMAND CoinTests --run_test)
+set_tests_properties(CoinTestsFilterMissingValue PROPERTIES WILL_FAIL TRUE)
+
+add_test(NAME CoinTestsFilterEmptyValue COMMAND CoinTests --run_test=)
+set_tests_properties(CoinTestsFilterEmptyValue PROPERTIES WILL_FAIL TRUE)
+
+if(NOT WIN32)
+  add_test(NAME CoinTestsFilterDirectSuite
+    COMMAND CoinTests --run_test=GLUWrapper_TestSuite/runtimeLoader)
+  set_tests_properties(CoinTestsFilterDirectSuite PROPERTIES
+    PASS_REGULAR_EXPRESSION "\\[OK\\] 1 tests")
+endif()
+
 # These public-API tests need fresh processes: CoinTests initializes SoDB
 # before running its inline cases, which is too late to test startup options.
 add_executable(CoinProfilerInitTest
