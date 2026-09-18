@@ -81,6 +81,22 @@ add_executable(CoinTests
 	InternalMacroTest.cpp
 	${COIN_TEST_SOURCES}
 )
+
+# Private Coin symbols are not exported from the Windows DLL. SbHash's
+# resize()/operator=() (now exercised directly from InternalMacroTest.cpp)
+# call coin_geq_prime_number(), so compile its small, self-contained
+# implementation directly into the test executable. Static builds can
+# resolve the private symbol directly from the Coin archive.
+if(WIN32 AND COIN_BUILD_SHARED_LIBS)
+	target_sources(CoinTests PRIVATE
+		CoinGeqPrimeNumberWin32TestSupport.cpp
+		SbHashFuncSbStringWin32TestSupport.cpp)
+	set_source_files_properties(
+		CoinGeqPrimeNumberWin32TestSupport.cpp
+		SbHashFuncSbStringWin32TestSupport.cpp
+		PROPERTIES COMPILE_DEFINITIONS COIN_INTERNAL)
+endif()
+
 set_source_files_properties(InternalMacroTest.cpp PROPERTIES
 	COMPILE_DEFINITIONS COIN_INTERNAL)
 set_target_properties(CoinTests PROPERTIES DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
