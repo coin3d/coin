@@ -88,9 +88,13 @@ add_executable(CoinTests
 # implementation directly into the test executable. Static builds can
 # resolve the private symbol directly from the Coin archive.
 if(WIN32 AND COIN_BUILD_SHARED_LIBS)
-	target_sources(CoinTests PRIVATE CoinGeqPrimeNumberWin32TestSupport.cpp)
-	set_source_files_properties(CoinGeqPrimeNumberWin32TestSupport.cpp PROPERTIES
-		COMPILE_DEFINITIONS COIN_INTERNAL)
+	target_sources(CoinTests PRIVATE
+		CoinGeqPrimeNumberWin32TestSupport.cpp
+		SbHashFuncSbStringWin32TestSupport.cpp)
+	set_source_files_properties(
+		CoinGeqPrimeNumberWin32TestSupport.cpp
+		SbHashFuncSbStringWin32TestSupport.cpp
+		PROPERTIES COMPILE_DEFINITIONS COIN_INTERNAL)
 endif()
 
 set_source_files_properties(InternalMacroTest.cpp PROPERTIES
