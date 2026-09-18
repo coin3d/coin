@@ -146,7 +146,7 @@ public:
 #ifdef COIN_EXTRA_DEBUG
     assert(idx != -1);
 #endif // COIN_EXTRA_DEBUG
-    this->remove(idx);
+    if (idx >= 0) this->remove(idx);
   }
 
   void remove(const int index) {
