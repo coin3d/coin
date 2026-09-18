@@ -136,7 +136,14 @@ BOOST_AUTO_TEST_CASE(SbHash_statistics_are_fractional_and_empty_safe)
 
 BOOST_AUTO_TEST_CASE(SbHash_preserves_legacy_bucket_mapping)
 {
-  static_assert(noexcept(SbHashFunc(0U)),
+  // A literal 0U is also a null-pointer-constant candidate for SbHashFunc's
+  // pointer overloads (const char *, const SoBase *, ...), which MSVC and
+  // GCC/Clang rank differently and MSVC reports as ambiguous. MSVC also
+  // treats a *const* integral variable initialized to 0 as a null-pointer
+  // constant (the pre-C++11 rule), so this must be a non-const variable to
+  // reliably fail the "constant expression" test under every compiler.
+  unsigned int zero = 0U;
+  static_assert(noexcept(SbHashFunc(zero)),
                 "built-in SbHash functions must be non-throwing");
   SbHashIndexProbe hash(257);
   BOOST_CHECK_EQUAL(hash.bucketIndex(0U), 0U);
