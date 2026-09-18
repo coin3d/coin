@@ -289,6 +289,7 @@ class SbHash {
 
   SbHash & operator=(const SbHash & from)
   {
+    if (this == &from) return *this;
     this->clear();
     unsigned int i;
     SbHashEntry * elem;
