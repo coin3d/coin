@@ -206,7 +206,7 @@ class SbHash {
       setNextUsedBucket();
     }
 
-    SbHash<Key, Type> * master;
+    const SbHash<Key, Type> * master;
     unsigned int index;
     SbHashEntry * elem;
     friend class SbHash<Key, Type>;
@@ -289,6 +289,7 @@ class SbHash {
 
   SbHash & operator=(const SbHash & from)
   {
+    if (this == &from) return *this;
     this->clear();
     unsigned int i;
     SbHashEntry * elem;
@@ -324,21 +325,11 @@ class SbHash {
   }
 
   iterator begin() const {
-    iterator retVal;
-
-    retVal.master = this;
-    retVal.index=0;
-
-    return retVal;
+    return iterator(this);
   }
 
   iterator end() const {
-    iterator retVal;
-
-    retVal.master = this;
-    retVal.index = this->size;
-
-    return retVal;
+    return iterator();
   }
 
   const_iterator const_begin() const {
@@ -519,13 +510,14 @@ public:
     memset(this->buckets, 0, this->size * sizeof(SbHashEntry *));
   }
 
+ protected:
   void getStats(int & buckets_used, int & buckets, int & elements, float & chain_length_avg, int & chain_length_max)
   {
     unsigned int i;
     buckets_used = 0, chain_length_max = 0;
     for (i = 0; i < this->size; i++) {
       if (this->buckets[i]) {
-        unsigned int chain_l = 0;
+        int chain_l = 0;
         SbHashEntry * entry = this->buckets[i];
         buckets_used++;
         while (entry) {
@@ -537,9 +529,11 @@ public:
     }
     buckets = this->size;
     elements = this->elements;
-    chain_length_avg = static_cast<float>( this->elements / buckets_used);
+    chain_length_avg = buckets_used == 0 ? 0.0f :
+      static_cast<float>(this->elements) / static_cast<float>(buckets_used);
   }
 
+ private:
   float loadfactor;
   unsigned int size;
   unsigned int elements;

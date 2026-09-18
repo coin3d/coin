@@ -42,6 +42,82 @@
 #error InternalMacroTest is not part of the Coin library.
 #endif
 
+#include "CoinTest.h"
 #include "misc/SbHash.h"
 
 static_assert(sizeof(SbHash<int, int>) > 0, "private Coin type is unavailable");
+
+namespace {
+
+class SbHashStatsProbe : public SbHash<unsigned int, int> {
+public:
+  SbHashStatsProbe(unsigned int sizearg) : SbHash<unsigned int, int>(sizearg) { }
+
+  void stats(int & bucketsUsed, int & buckets, int & elements,
+             float & average, int & maximum)
+  {
+    this->getStats(bucketsUsed, buckets, elements, average, maximum);
+  }
+};
+
+} // namespace
+
+BOOST_AUTO_TEST_CASE(SbHash_self_assignment_preserves_entries)
+{
+  SbHash<unsigned int, int> hash(3);
+  hash.put(1, 10);
+  hash.put(2, 20);
+
+  hash = hash;
+
+  int value = 0;
+  BOOST_CHECK_EQUAL(hash.getNumElements(), 2);
+  BOOST_REQUIRE(hash.get(1, value));
+  BOOST_CHECK_EQUAL(value, 10);
+  BOOST_REQUIRE(hash.get(2, value));
+  BOOST_CHECK_EQUAL(value, 20);
+}
+
+BOOST_AUTO_TEST_CASE(SbHash_mutable_iterator_visits_entries)
+{
+  SbHash<unsigned int, int> hash(3);
+  BOOST_REQUIRE(hash.put(1, 10));
+  BOOST_REQUIRE(hash.put(2, 20));
+  BOOST_REQUIRE(hash.put(3, 30));
+
+  unsigned int count = 0;
+  int sum = 0;
+  for (SbHash<unsigned int, int>::iterator it = hash.begin();
+       it != hash.end(); ++it) {
+    ++count;
+    sum += it->obj;
+  }
+
+  BOOST_CHECK_EQUAL(count, 3U);
+  BOOST_CHECK_EQUAL(sum, 60);
+}
+
+BOOST_AUTO_TEST_CASE(SbHash_statistics_are_fractional_and_empty_safe)
+{
+  SbHashStatsProbe hash(3);
+  int bucketsUsed = -1;
+  int buckets = -1;
+  int elements = -1;
+  int maximum = -1;
+  float average = -1.0f;
+
+  hash.stats(bucketsUsed, buckets, elements, average, maximum);
+  BOOST_CHECK_EQUAL(bucketsUsed, 0);
+  BOOST_CHECK_EQUAL(elements, 0);
+  BOOST_CHECK_EQUAL(average, 0.0f);
+
+  BOOST_REQUIRE(hash.put(0, 1));
+  BOOST_REQUIRE(hash.put(5, 2));
+  BOOST_REQUIRE(hash.put(1, 3));
+  hash.stats(bucketsUsed, buckets, elements, average, maximum);
+  BOOST_CHECK_EQUAL(buckets, 5);
+  BOOST_CHECK_EQUAL(bucketsUsed, 2);
+  BOOST_CHECK_EQUAL(elements, 3);
+  BOOST_CHECK_EQUAL(average, 1.5f);
+  BOOST_CHECK_EQUAL(maximum, 2);
+}
