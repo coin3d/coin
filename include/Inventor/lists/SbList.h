@@ -34,7 +34,10 @@
 \**************************************************************************/
 
 #include <cassert>
+#include <climits>
 #include <cstddef> // NULL definition
+#include <memory>
+#include <new>
 #include <Inventor/SbBasic.h> // TRUE/FALSE
 
 // We usually implement inline functions below the class definition,
@@ -248,15 +251,20 @@ private:
     // what silences a GCC -Warray-bounds false positive seen when
     // append() is inlined right after code that resets numitems to
     // 0 (e.g. truncate(0)) without narrowing itembuffersize.
-    if (size == -1) this->itembuffersize = (this->itembuffersize > 0) ? (this->itembuffersize << 1) : DEFAULTSIZE;
+    int newsize;
+    if (size == -1) {
+      if (this->itembuffersize > INT_MAX / 2) throw std::bad_alloc();
+      newsize = this->itembuffersize * 2;
+    }
     else if (size <= this->itembuffersize) return;
-    else { this->itembuffersize = size; }
+    else { newsize = size; }
 
-    Type * newbuffer = new Type[this->itembuffersize];
+    std::unique_ptr<Type[]> newbuffer(new Type[newsize]);
     const int n = this->numitems;
     for (int i = 0; i < n; i++) newbuffer[i] = this->itembuffer[i];
     if (this->itembuffer != this->builtinbuffer) delete[] this->itembuffer;
-    this->itembuffer = newbuffer;
+    this->itembuffer = newbuffer.release();
+    this->itembuffersize = newsize;
   }
 
   int itembuffersize;
