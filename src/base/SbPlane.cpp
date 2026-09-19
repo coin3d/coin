@@ -48,12 +48,44 @@
 #include <Inventor/SbVec3d.h>
 #include <Inventor/SbMatrix.h>
 #include <cfloat>
+#include <cmath>
+#include <limits>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
 #include "coindefs.h"
+
+struct coin_sbplane_data {
+  SbVec3d normal;
+  double distance;
+};
+
+static SbBool
+coin_sbplane_less(const coin_sbplane_data & lhs,
+                  const coin_sbplane_data & rhs)
+{
+  for (int i = 0; i < 3; ++i) {
+    if (lhs.normal[i] < rhs.normal[i]) return TRUE;
+    if (lhs.normal[i] > rhs.normal[i]) return FALSE;
+  }
+  return lhs.distance < rhs.distance;
+}
+
+static void
+coin_sbplane_sort(coin_sbplane_data planes[3])
+{
+  for (int i = 1; i < 3; ++i) {
+    const coin_sbplane_data current = planes[i];
+    int j = i;
+    while (j > 0 && coin_sbplane_less(current, planes[j - 1])) {
+      planes[j] = planes[j - 1];
+      --j;
+    }
+    planes[j] = current;
+  }
+}
 
 
 /*!
@@ -349,6 +381,88 @@ SbPlane::intersect(const SbPlane & pl, SbLine & line) const
 }
 
 /*!
+  Intersect this plane with \a p1 and \a p2, and return the unique
+  intersection point in \a point. Returns \c FALSE when the three planes do
+  not define a numerically stable, finite point.
+
+  A system is considered numerically stable when the absolute normalized
+  scalar triple product of the plane normals is greater than the square root
+  of the single-precision machine epsilon.
+
+  The \a point argument is left unchanged when this method returns \c FALSE.
+
+  \COIN_FUNCTION_EXTENSION
+*/
+SbBool
+SbPlane::intersect(const SbPlane & p1, const SbPlane & p2,
+                   SbVec3f & point) const
+{
+  // Do the computation in double precision. The plane data is still float,
+  // so the conditioning limit below is based on FLT_EPSILON.
+  coin_sbplane_data planes[3] = {
+    { SbVec3d(this->normal), this->distance },
+    { SbVec3d(p1.normal), p1.distance },
+    { SbVec3d(p2.normal), p2.distance }
+  };
+  for (int i = 0; i < 3; ++i) {
+    if (!std::isfinite(planes[i].distance)) return FALSE;
+    for (int component = 0; component < 3; ++component) {
+      if (!std::isfinite(planes[i].normal[component])) return FALSE;
+    }
+  }
+  coin_sbplane_sort(planes);
+
+  const SbVec3d & n0 = planes[0].normal;
+  const SbVec3d & n1 = planes[1].normal;
+  const SbVec3d & n2 = planes[2].normal;
+  const SbVec3d c12 = n1.cross(n2);
+  const SbVec3d c20 = n2.cross(n0);
+  const SbVec3d c01 = n0.cross(n1);
+  const double determinant = n0.dot(c12);
+  const double normalproduct = n0.length() * n1.length() * n2.length();
+  const double determinantlimit =
+    std::sqrt(static_cast<double>(FLT_EPSILON));
+
+  if (!std::isfinite(determinant) || !std::isfinite(normalproduct) ||
+      normalproduct == 0.0 ||
+      std::fabs(determinant) <= determinantlimit * normalproduct) {
+    return FALSE;
+  }
+
+  const double distances[3] = {
+    planes[0].distance, planes[1].distance, planes[2].distance
+  };
+  double distancescale = 0.0;
+  for (int i = 0; i < 3; ++i) {
+    const double magnitude = std::fabs(distances[i]);
+    if (magnitude > distancescale) distancescale = magnitude;
+  }
+
+  SbVec3d candidate(0.0, 0.0, 0.0);
+  if (distancescale != 0.0) {
+    const SbVec3d scaledcandidate =
+      ((distances[0] / distancescale) * c12 +
+       (distances[1] / distancescale) * c20 +
+       (distances[2] / distancescale) * c01) / determinant;
+    candidate = scaledcandidate * distancescale;
+  }
+
+  for (int i = 0; i < 3; ++i) {
+    if (!std::isfinite(candidate[i]) ||
+        std::fabs(candidate[i]) > std::numeric_limits<float>::max()) {
+      return FALSE;
+    }
+  }
+
+  const SbVec3f result(static_cast<float>(candidate[0]),
+                       static_cast<float>(candidate[1]),
+                       static_cast<float>(candidate[2]));
+
+  point = result;
+  return TRUE;
+}
+
+/*!
   \relates SbPlane
 
   Check the two given planes for equality.
@@ -388,6 +502,9 @@ SbPlane::print(FILE * COIN_UNUSED_ARG(fp)) const
 #ifdef COIN_TEST_SUITE
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbLine.h>
+#include <cfloat>
+#include <cmath>
+#include <limits>
 
 using namespace SIM::Coin::TestSuite;
 
@@ -403,6 +520,127 @@ BOOST_AUTO_TEST_CASE(signCorrect)
 
   check_compare(intersect,vec, "SbPlane SignCorrect", .1f);
 
+}
+
+BOOST_AUTO_TEST_CASE(intersectThreePlanesUniquePointAndPermutations)
+{
+  const SbVec3f expected(2.0f, -3.0f, 5.0f);
+  const SbPlane planes[3] = {
+    SbPlane(SbVec3f(1.0f, 2.0f, 3.0f), expected),
+    SbPlane(SbVec3f(-2.0f, 1.0f, 4.0f), expected),
+    SbPlane(SbVec3f(3.0f, -1.0f, 2.0f), expected)
+  };
+  const int permutations[6][3] = {
+    { 0, 1, 2 }, { 0, 2, 1 }, { 1, 0, 2 },
+    { 1, 2, 0 }, { 2, 0, 1 }, { 2, 1, 0 }
+  };
+
+  for (int i = 0; i < 6; ++i) {
+    SbVec3f result(123.0f, -456.0f, 789.0f);
+    const SbBool ok = planes[permutations[i][0]].intersect(
+      planes[permutations[i][1]], planes[permutations[i][2]], result);
+    BOOST_CHECK_MESSAGE(ok == TRUE,
+                        "Three non-singular planes must have a unique point");
+    BOOST_CHECK_MESSAGE(result.equals(expected, 1.0e-10f),
+                        "Plane permutation changed the intersection point");
+  }
+}
+
+BOOST_AUTO_TEST_CASE(intersectThreePlanesFailurePreservesOutput)
+{
+  // These normals are pairwise non-parallel but linearly dependent.
+  const SbPlane p0(SbVec3f(1.0f, 0.0f, 0.0f), 1.0f);
+  const SbPlane p1(SbVec3f(0.0f, 1.0f, 0.0f), 2.0f);
+  const SbPlane p2(SbVec3f(1.0f, 1.0f, 0.0f), 3.0f);
+  const SbVec3f sentinel(123.0f, -456.0f, 789.0f);
+  SbVec3f result = sentinel;
+
+  BOOST_CHECK_MESSAGE(p0.intersect(p1, p2, result) == FALSE,
+                      "A rank-deficient system must not produce a point");
+  BOOST_CHECK_MESSAGE(result == sentinel,
+                      "A failed intersection must preserve the output");
+
+  const float maximum = std::numeric_limits<float>::max();
+  const SbPlane huge0(SbVec3f(1.0f, 0.0f, 0.0f), maximum);
+  const SbPlane huge1(SbVec3f(0.0f, 1.0f, 0.0f), maximum);
+  const SbPlane huge2(SbVec3f(1.0f, 0.0f, 1.0e-3f), -maximum);
+  result = sentinel;
+  BOOST_CHECK_MESSAGE(huge0.intersect(huge1, huge2, result) == FALSE,
+                      "An unrepresentable float point must be rejected");
+  BOOST_CHECK_MESSAGE(result == sentinel,
+                      "Overflow failure must preserve the output");
+
+  const SbPlane infinite(SbVec3f(0.0f, 0.0f, 1.0f),
+                         std::numeric_limits<float>::infinity());
+  result = sentinel;
+  BOOST_CHECK_MESSAGE(p0.intersect(p1, infinite, result) == FALSE,
+                      "A non-finite plane distance must be rejected");
+  BOOST_CHECK_MESSAGE(result == sentinel,
+                      "Non-finite input failure must preserve the output");
+}
+
+BOOST_AUTO_TEST_CASE(intersectThreePlanesRejectsNearSingularFloatSystem)
+{
+  const SbVec3f expected(2.0f, -3.0f, 5.0f);
+  const SbPlane p0(SbVec3f(1.0f, 0.0f, 0.0f), expected);
+  const SbPlane p1(SbVec3f(0.0f, 1.0f, 0.0f), expected);
+  const SbPlane p2(SbVec3f(1.0f, 1.0f, 1.0e-8f), expected);
+  const SbVec3f sentinel(123.0f, -456.0f, 789.0f);
+  SbVec3f result = sentinel;
+
+  BOOST_CHECK_MESSAGE(p0.intersect(p1, p2, result) == FALSE,
+                      "An ill-conditioned float system must be rejected");
+  BOOST_CHECK_MESSAGE(result == sentinel,
+                      "Near-singular failure must preserve the output");
+}
+
+BOOST_AUTO_TEST_CASE(intersectThreePlanesConditioningBoundary)
+{
+  const float limit = std::sqrt(FLT_EPSILON);
+  const SbVec3f expected(2.0f, -3.0f, 5.0f);
+  const SbPlane xplane(SbVec3f(1.0f, 0.0f, 0.0f), expected);
+  const SbPlane yplane(SbVec3f(0.0f, 1.0f, 0.0f), expected);
+  const float stablez = 2.0f * limit;
+  const SbPlane stable(SbVec3f(std::sqrt(1.0f - stablez * stablez),
+                               0.0f, stablez), expected);
+  const SbPlane planes[3] = { xplane, yplane, stable };
+  const int permutations[6][3] = {
+    { 0, 1, 2 }, { 0, 2, 1 }, { 1, 0, 2 },
+    { 1, 2, 0 }, { 2, 0, 1 }, { 2, 1, 0 }
+  };
+
+  for (int i = 0; i < 6; ++i) {
+    SbVec3f result(123.0f, -456.0f, 789.0f);
+    BOOST_CHECK_MESSAGE(
+      planes[permutations[i][0]].intersect(
+        planes[permutations[i][1]], planes[permutations[i][2]], result) == TRUE,
+      "A system above the float conditioning limit must be accepted");
+    BOOST_CHECK_MESSAGE(result.equals(expected, 1.0e-6f),
+                        "A plane permutation changed the stable result");
+  }
+
+  const float unstablez = 0.5f * limit;
+  const SbPlane unstable(SbVec3f(std::sqrt(1.0f - unstablez * unstablez),
+                                 0.0f, unstablez), expected);
+  const SbVec3f sentinel(123.0f, -456.0f, 789.0f);
+  SbVec3f result = sentinel;
+  BOOST_CHECK_MESSAGE(xplane.intersect(yplane, unstable, result) == FALSE,
+                      "A system below the float conditioning limit must fail");
+  BOOST_CHECK_MESSAGE(result == sentinel,
+                      "Conditioning failure must preserve the output");
+}
+
+BOOST_AUTO_TEST_CASE(intersectThreePlanesCanReturnTheOrigin)
+{
+  const SbPlane xplane(SbVec3f(1.0f, 0.0f, 0.0f), 0.0f);
+  const SbPlane yplane(SbVec3f(0.0f, 1.0f, 0.0f), 0.0f);
+  const SbPlane zplane(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f);
+  SbVec3f result(123.0f, -456.0f, 789.0f);
+
+  BOOST_CHECK_MESSAGE(xplane.intersect(yplane, zplane, result) == TRUE,
+                      "A valid intersection at the origin must succeed");
+  BOOST_CHECK_MESSAGE(result == SbVec3f(0.0f, 0.0f, 0.0f),
+                      "The origin intersection must be returned exactly");
 }
 
 #endif //COIN_TEST_SUITE
