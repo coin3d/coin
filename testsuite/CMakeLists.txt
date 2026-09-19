@@ -82,6 +82,7 @@ add_executable(CoinTests
 	InternalSmallMapTest.cpp
 	${COIN_TEST_SOURCES}
 )
+
 # Private Coin symbols are not exported from the Windows DLL. SbHash's
 # resize()/operator=() (now exercised directly from InternalMacroTest.cpp)
 # call coin_geq_prime_number(), so compile its small, self-contained
