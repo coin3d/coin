@@ -96,6 +96,8 @@ endif()
 
 set_source_files_properties(InternalMacroTest.cpp InternalSmallMapTest.cpp PROPERTIES
 	COMPILE_DEFINITIONS COIN_INTERNAL)
+set_property(SOURCE InternalSmallMapTest.cpp APPEND PROPERTY
+	COMPILE_DEFINITIONS COIN_SMALLMAP_TESTING)
 set_target_properties(CoinTests PROPERTIES DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
 target_link_libraries(CoinTests Coin ${COIN_TARGET_LINK_LIBRARIES})
 target_include_directories(CoinTests PRIVATE
