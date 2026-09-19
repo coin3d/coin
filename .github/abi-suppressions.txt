@@ -1,0 +1,42 @@
+# libabigail suppression rules for the "ABI compatibility" CI check
+# (see .github/workflows/abi-check.yml).
+#
+# SbHash<Key, Type> (src/misc/SbHash.h) is explicitly documented as
+# "internal and must not be exposed in the Coin API": it is a private
+# implementation detail, never declared in a public header, and no
+# external Coin consumer can legitimately depend on any of its
+# instantiated methods' symbols. Changes to its internals (e.g. which
+# methods get instantiated for a given Key/Type pair) routinely add or
+# remove symbols as an incidental side effect of unrelated internal
+# improvements -- that is not a real ABI break, so it is suppressed
+# here rather than forcing every such PR to explain away a false
+# positive.
+
+[suppress_type]
+  type_kind = class
+  name_regexp = ^SbHash<
+  label = SbHash is a private internal container (src/misc/SbHash.h: "must not be exposed in the Coin API"); its instantiated methods are implementation detail, not part of the public ABI.
+
+[suppress_function]
+  name_regexp = ^SbHash<
+  label = SbHash is a private internal container (src/misc/SbHash.h: "must not be exposed in the Coin API"); its instantiated methods are implementation detail, not part of the public ABI.
+
+# Lazy SbHash storage means SoGLDriverDatabaseP::SoGLDriver no longer needs an
+# out-of-line default constructor. SoGLDriver is defined only in the private
+# implementation file src/rendering/SoGLDriverDatabase.cpp; these constructor
+# symbols therefore cannot be used by Coin clients. Match the exact Itanium ABI
+# symbols rather than suppressing the enclosing implementation class broadly.
+
+[suppress_function]
+  symbol_name_regexp = ^_ZN19SoGLDriverDatabaseP10SoGLDriverC[12]Ev$
+  label = SoGLDriverDatabaseP::SoGLDriver is a source-file-private implementation type; its compiler-emitted constructors are not part of Coin's public ABI.
+
+# Replacing the private glparams container changes whether the compiler emits
+# the inline SoUniformShaderParameterP destructor. The class is defined only in
+# src/shaders/SoShaderParameter.cpp and is not part of Coin's public API. Match
+# the exact complete/base destructor symbols instead of suppressing the private
+# implementation class broadly.
+
+[suppress_function]
+  symbol_name_regexp = ^_ZN25SoUniformShaderParameterPD[12]Ev$
+  label = SoUniformShaderParameterP is a source-file-private implementation type; its compiler-emitted destructor symbols are not part of Coin's public ABI.
