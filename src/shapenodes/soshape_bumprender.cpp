@@ -60,6 +60,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/misc/SoContextHandler.h>
 #include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoPointLight.h>
@@ -230,45 +231,156 @@ SbBool bumphack = TRUE;
 // *************************************************************************
 
 static void
-soshape_bumprender_diffuseprogramdeletion(unsigned long COIN_UNUSED_ARG(key), void * COIN_UNUSED_ARG(value))
+soshape_bumprender_delete_programs(const cc_glglue * glue,
+                                   const GLuint * programs,
+                                   const int numprograms)
 {
-#if 0 // FIXME: cleanup routines not implemented yet (for no good
-      // reason, really). 20050524 mortene.
-  diffuse_programidx * pidx = (diffuse_programidx *) value;
-  /* FIXME: There are no pointlight program initialized for diffuse
-     rendering yet. Enable when implemented. (20040209 handegar) */
-  //pidx->glue->glDeleteProgramsARB(1, &pidx->pointlight);
-  cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->dirlight);
-  cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->normalrendering);
-#endif // FIXME
+  assert(numprograms <= 3);
+  GLuint validprograms[3];
+  int numvalid = 0;
+  for (int i = 0; i < numprograms; i++) {
+    if (programs[i] != 0) validprograms[numvalid++] = programs[i];
+  }
+  if (numvalid > 0) {
+    cc_glglue_glDeletePrograms(glue, (GLsizei) numvalid, validprograms);
+  }
 }
 
-static void
-soshape_bumprender_specularprogramdeletion(unsigned long COIN_UNUSED_ARG(key), void * COIN_UNUSED_ARG(value))
+static SbBool
+soshape_bumprender_load_program(const cc_glglue * glue,
+                                const GLenum target,
+                                const char * source,
+                                const char * description,
+                                GLuint & program)
 {
-#if 0 // FIXME: cleanup routines not implemented yet (for no good
-      // reason, really). 20050524 mortene.
-  spec_programidx * pidx = (spec_programidx *) value;
-  cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->pointlight);
-  cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->dirlight);
-  cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->fragment);
-#endif // FIXME
+  // Isolate errors from this upload. The old implementation consumed one
+  // error after ProgramString too, but using a sticky error as a publication
+  // gate would otherwise reject a valid program because of an earlier call.
+  while (glGetError() != GL_NO_ERROR) { }
+
+  GLint previousprogram = 0;
+  cc_glglue_glGetProgramiv(glue, target, GL_PROGRAM_BINDING_ARB,
+                           &previousprogram);
+  const GLenum bindingqueryerr = glGetError();
+
+  program = 0;
+  cc_glglue_glGenPrograms(glue, 1, &program);
+  cc_glglue_glBindProgram(glue, target, program);
+  cc_glglue_glProgramString(glue, target, GL_PROGRAM_FORMAT_ASCII_ARB,
+                            (GLsizei) strlen(source), source);
+
+  const GLenum uploaderr = glGetError();
+  GLint errorpos = -1;
+  GLint programlength = 0;
+  glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorpos);
+  cc_glglue_glGetProgramiv(glue, target, GL_PROGRAM_LENGTH_ARB, &programlength);
+  const GLenum queryerr = glGetError();
+
+  // Program creation is transactional with respect to both the cache and the
+  // caller's GL state. In particular, rollback should not discard a program
+  // that was bound before this helper was entered.
+  cc_glglue_glBindProgram(glue, target, (GLuint) previousprogram);
+  const GLenum restoreerr = glGetError();
+
+  const GLenum err = bindingqueryerr != GL_NO_ERROR ? bindingqueryerr :
+    (uploaderr != GL_NO_ERROR ? uploaderr :
+     (queryerr != GL_NO_ERROR ? queryerr : restoreerr));
+
+  if (err != GL_NO_ERROR || program == 0 || programlength <= 0) {
+    const GLubyte * errorstring = glGetString(GL_PROGRAM_ERROR_STRING_ARB);
+    SoDebugError::postWarning("soshape_bumprender::ensurePrograms",
+                              "Error in %s! (GL error: 0x%x, byte pos: %d) '%s'.\n",
+                              description, (unsigned int) err, errorpos,
+                              errorstring ? (const char *) errorstring : "unknown error");
+    return FALSE;
+  }
+  return TRUE;
 }
 
 soshape_bumprender::soshape_bumprender(void)
 {
-  this->diffuseprogramsinitialized = FALSE;
-  this->programsinitialized = FALSE;
+  SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
 }
 
 soshape_bumprender::~soshape_bumprender()
 {
+  SoContextHandler::removeContextDestructionCallback(context_destruction_cb, this);
 
-  // FIXME: Cannot delete programs just yet, as we dont know if the
-  // context was valid or not. We must wait for new functionality to be
-  // implemented for the context element code. (20040209 handegar)
-  //this->diffuseprogramdict.applyToAll(soshape_bumprender_diffuseprogramdeletion);
-  //this->specularprogramdict.applyToAll(soshape_bumprender_specularprogramdeletion);
+  for (ContextId2SpecStruct::const_iterator iter =
+         this->specularprogramdict.const_begin();
+       iter != this->specularprogramdict.const_end(); ++iter) {
+    const GLuint programs[] = {
+      iter->obj.fragment, iter->obj.dirlight, iter->obj.pointlight
+    };
+    for (int i = 0; i < 3; i++) {
+      if (programs[i] != 0) {
+        void * closure = (void *) ((uintptr_t) programs[i]);
+        SoGLCacheContextElement::scheduleDeleteCallback(iter->key,
+                                                        delete_program_cb,
+                                                        closure);
+      }
+    }
+  }
+  this->specularprogramdict.clear();
+
+  for (ContextId2DiffuseStruct::const_iterator iter =
+         this->diffuseprogramdict.const_begin();
+       iter != this->diffuseprogramdict.const_end(); ++iter) {
+    const GLuint programs[] = {
+      iter->obj.dirlight, iter->obj.pointlight, iter->obj.normalrendering
+    };
+    for (int i = 0; i < 3; i++) {
+      if (programs[i] != 0) {
+        void * closure = (void *) ((uintptr_t) programs[i]);
+        SoGLCacheContextElement::scheduleDeleteCallback(iter->key,
+                                                        delete_program_cb,
+                                                        closure);
+      }
+    }
+  }
+  this->diffuseprogramdict.clear();
+}
+
+void
+soshape_bumprender::delete_program_cb(void * closure, uint32_t contextid)
+{
+  const GLuint program = (GLuint) ((uintptr_t) closure);
+  const cc_glglue * glue = cc_glglue_instance((int) contextid);
+  cc_glglue_glDeletePrograms(glue, 1, &program);
+}
+
+void
+soshape_bumprender::context_destruction_cb(uint32_t contextid, void * userdata)
+{
+  soshape_bumprender * thisp = (soshape_bumprender *) userdata;
+  spec_programidx specularprograms;
+  diffuse_programidx diffuseprograms;
+  const SbBool havespecular =
+    thisp->specularprogramdict.get(contextid, specularprograms);
+  const SbBool havediffuse =
+    thisp->diffuseprogramdict.get(contextid, diffuseprograms);
+
+  if (!havespecular && !havediffuse) return;
+
+  const cc_glglue * glue = cc_glglue_instance((int) contextid);
+  if (havespecular) {
+    const GLuint programs[] = {
+      specularprograms.fragment,
+      specularprograms.dirlight,
+      specularprograms.pointlight
+    };
+    soshape_bumprender_delete_programs(glue, programs, 3);
+    (void) thisp->specularprogramdict.erase(contextid);
+  }
+  if (havediffuse) {
+    const GLuint programs[] = {
+      diffuseprograms.dirlight,
+      diffuseprograms.pointlight,
+      diffuseprograms.normalrendering
+    };
+    soshape_bumprender_delete_programs(glue, programs, 3);
+    (void) thisp->diffuseprogramdict.erase(contextid);
+  }
 }
 
 // to avoid warnings from SbVec3f::normalize()
@@ -283,128 +395,96 @@ inline void NORMALIZE(SbVec3f &v)
   }
 }
 
-void
-soshape_bumprender::initDiffusePrograms(const cc_glglue * glue, SoState * state)
+SbBool
+soshape_bumprender::ensureDiffusePrograms(const cc_glglue * glue,
+                                          SoState * state,
+                                          diffuse_programidx & programs)
 {
-  const int contextid = SoGLCacheContextElement::get(state);
-  diffuse_programidx * old;
-  if (this->diffuseprogramdict.get(contextid, old)) {
-    this->diffusebumpdirlightvertexprogramid = old->dirlight;
-    this->normalrenderingvertexprogramid = old->normalrendering;
-  }
-  else {
+  const uint32_t contextid =
+    (uint32_t) SoGLCacheContextElement::get(state);
+  if (this->diffuseprogramdict.get(contextid, programs)) return TRUE;
 
-    cc_glglue_glGenPrograms(glue, 1, &this->diffusebumpdirlightvertexprogramid);
-    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, this->diffusebumpdirlightvertexprogramid);
-    cc_glglue_glProgramString(glue, GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                              (GLsizei)strlen(diffusebumpdirlightvpprogram),
-                              diffusebumpdirlightvpprogram);
-    GLint errorPos;
-    GLenum err = glGetError();
+  programs.pointlight = 0; // Pointlight diffuse rendering is not implemented.
+  programs.dirlight = 0;
+  programs.normalrendering = 0;
 
-    if (err != GL_NO_ERROR) {
-      glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
-      SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
-                                "Error in diffuse dirlight vertex program! (byte pos: %d) '%s'.\n",
-                                errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-
-    }
-
-    cc_glglue_glGenPrograms(glue, 1, &this->normalrenderingvertexprogramid);
-    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, this->normalrenderingvertexprogramid);
-    cc_glglue_glProgramString(glue, GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                              (GLsizei)strlen(normalrenderingvpprogram),
-                              normalrenderingvpprogram);
-    err = glGetError();
-
-    if (err != GL_NO_ERROR) {
-      glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
-      SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
-                                "Error in normal rendering vertex program! (byte pos: %d) '%s'.\n",
-                                errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-
-    }
-
-    diffuse_programidx * newstruct = new diffuse_programidx;
-    newstruct->glue = glue; // Store the cc_glglue for later when class is to be destructed.
-    newstruct->dirlight = this->diffusebumpdirlightvertexprogramid;
-    newstruct->pointlight = 0; // Pointlight vertex program not implemented yet.
-    newstruct->normalrendering = this->normalrenderingvertexprogramid;
-
-    (void) this->diffuseprogramdict.put(contextid, newstruct);
-
+  if (!soshape_bumprender_load_program(glue, GL_VERTEX_PROGRAM_ARB,
+                                       diffusebumpdirlightvpprogram,
+                                       "diffuse directional light vertex program",
+                                       programs.dirlight) ||
+      !soshape_bumprender_load_program(glue, GL_VERTEX_PROGRAM_ARB,
+                                       normalrenderingvpprogram,
+                                       "normal rendering vertex program",
+                                       programs.normalrendering)) {
+    const GLuint ids[] = {
+      programs.dirlight, programs.pointlight, programs.normalrendering
+    };
+    soshape_bumprender_delete_programs(glue, ids, 3);
+    programs.dirlight = programs.pointlight = programs.normalrendering = 0;
+    return FALSE;
   }
 
-  this->diffuseprogramsinitialized = TRUE;
+  (void) this->diffuseprogramdict.put(contextid, programs);
+  return TRUE;
 }
 
+SbBool
+soshape_bumprender::ensurePrograms(const cc_glglue * glue,
+                                   SoState * state,
+                                   spec_programidx & programs)
+{
+  const uint32_t contextid =
+    (uint32_t) SoGLCacheContextElement::get(state);
+  if (this->specularprogramdict.get(contextid, programs)) return TRUE;
+
+  programs.fragment = 0;
+  programs.dirlight = 0;
+  programs.pointlight = 0;
+
+  if (!soshape_bumprender_load_program(glue, GL_FRAGMENT_PROGRAM_ARB,
+                                       bumpspecfpprogram,
+                                       "fragment program",
+                                       programs.fragment) ||
+      !soshape_bumprender_load_program(glue, GL_VERTEX_PROGRAM_ARB,
+                                       directionallightvpprogram,
+                                       "directional light vertex program",
+                                       programs.dirlight) ||
+      !soshape_bumprender_load_program(glue, GL_VERTEX_PROGRAM_ARB,
+                                       pointlightvpprogram,
+                                       "point light vertex program",
+                                       programs.pointlight)) {
+    const GLuint ids[] = {
+      programs.fragment, programs.dirlight, programs.pointlight
+    };
+    soshape_bumprender_delete_programs(glue, ids, 3);
+    programs.fragment = programs.dirlight = programs.pointlight = 0;
+    return FALSE;
+  }
+
+  (void) this->specularprogramdict.put(contextid, programs);
+  return TRUE;
+}
+
+// These wrappers retain private symbols exported by earlier Coin releases.
+// Rendering uses the result-returning helpers above so failed program uploads
+// are never published or used.
 void
 soshape_bumprender::initPrograms(const cc_glglue * glue, SoState * state)
 {
-  const int contextid = SoGLCacheContextElement::get(state);
-  spec_programidx * old;
-  if (this->specularprogramdict.get(contextid, old)) {
-    this->fragmentprogramid = old->fragment;
-    this->dirlightvertexprogramid = old->dirlight;
-    this->pointlightvertexprogramid = old->pointlight;
-  }
-  else {
-    cc_glglue_glGenPrograms(glue, 1, &this->fragmentprogramid); // -- Fragment program
-    cc_glglue_glBindProgram(glue, GL_FRAGMENT_PROGRAM_ARB, this->fragmentprogramid);
-    cc_glglue_glProgramString(glue, GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                              (GLsizei)strlen(bumpspecfpprogram), bumpspecfpprogram);
-    // FIXME: Maybe a wrapper for catching fragment program errors
-    // should be a part of GLUE... (20031204 handegar)
-    GLint errorPos;
-    GLenum err = glGetError();
-    if (err != GL_NO_ERROR) {
-      glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
-      SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
-                                "Error in fragment program! (byte pos: %d) '%s'.\n",
-                                errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-
-    }
-
-    cc_glglue_glGenPrograms(glue, 1, &this->dirlightvertexprogramid); // -- Directional light program
-    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, this->dirlightvertexprogramid);
-    cc_glglue_glProgramString(glue, GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                              (GLsizei)strlen(directionallightvpprogram), directionallightvpprogram);
-
-    err = glGetError();
-    if (err != GL_NO_ERROR) {
-      glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
-      SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
-                                "Error in directional light vertex program! "
-                                "(byte pos: %d) '%s'.\n",
-                                errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-
-    }
-
-    cc_glglue_glGenPrograms(glue, 1, &this->pointlightvertexprogramid); // -- Point light program
-    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, this->pointlightvertexprogramid);
-    cc_glglue_glProgramString(glue, GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                              (GLsizei)strlen(pointlightvpprogram), pointlightvpprogram);
-
-    err = glGetError();
-    if (err != GL_NO_ERROR) {
-      glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
-      SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
-                                "Error in point light vertex program! (byte pos: %d) '%s'.\n",
-                                errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-
-    }
-
-    spec_programidx * newstruct = new spec_programidx;
-    newstruct->glue = glue; // Store the cc_glglue for later when class is to be destructed.
-    newstruct->fragment = this->fragmentprogramid;
-    newstruct->dirlight = this->dirlightvertexprogramid;
-    newstruct->pointlight = this->pointlightvertexprogramid;
-
-    (void) this->specularprogramdict.put(contextid, newstruct);
-  }
-
-  this->programsinitialized = TRUE;
+  spec_programidx programs;
+  (void) this->ensurePrograms(glue, state, programs);
 }
+
+void
+soshape_bumprender::initDiffusePrograms(const cc_glglue * glue, SoState * state)
+{
+  diffuse_programidx programs;
+  (void) this->ensureDiffusePrograms(glue, state, programs);
+}
+
+// Preserve the destructor symbol for the old private cache specialization.
+// The live cache stores values and does not incur the legacy allocation cost.
+template SbHash<int, soshape_bumprender::diffuse_programidx *>::~SbHash();
 
 void
 soshape_bumprender::renderBumpSpecular(SoState * state,
@@ -423,8 +503,8 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
   const SbColor spec = SoLazyElement::getSpecular(state);
   float shininess = SoLazyElement::getShininess(state);
 
-  if (!this->programsinitialized)
-    this->initPrograms(glue, state);
+  spec_programidx programs;
+  if (!this->ensurePrograms(glue, state, programs)) return;
 
   this->initLight(light, toobjectspace);
 
@@ -456,7 +536,7 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
 
   // FRAGMENT: Setting up spec. colour and shininess for the fragment program
   glEnable(GL_FRAGMENT_PROGRAM_ARB);
-  cc_glglue_glBindProgram(glue, GL_FRAGMENT_PROGRAM_ARB, fragmentprogramid);
+  cc_glglue_glBindProgram(glue, GL_FRAGMENT_PROGRAM_ARB, programs.fragment);
   cc_glglue_glProgramEnvParameter4f(glue, GL_FRAGMENT_PROGRAM_ARB, 0,
                                     spec[0], spec[1], spec[2], 1.0f);
 
@@ -472,10 +552,10 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
   // VERTEX: Setting up lightprograms
   glEnable(GL_VERTEX_PROGRAM_ARB);
   if (!this->ispointlight) {
-    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, dirlightvertexprogramid);
+    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, programs.dirlight);
   }
   else {
-    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, pointlightvertexprogramid);
+    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, programs.pointlight);
   }
 
   cc_glglue_glProgramEnvParameter4f(glue, GL_VERTEX_PROGRAM_ARB, 0,
@@ -601,12 +681,12 @@ soshape_bumprender::renderBump(SoState * state,
   SbBool use_vertex_program = lastenabled <= 1 && SoGLDriverDatabase::isSupported(glue, SO_GL_ARB_VERTEX_PROGRAM);
   use_vertex_program = FALSE; // FIXME: disabled until vertex program
                               // for point lights is implemented
-  if (use_vertex_program) {
-    if (!this->diffuseprogramsinitialized) {
-      this->initDiffusePrograms(glue, state);
-    }
+  diffuse_programidx diffuseprograms;
+  if (use_vertex_program &&
+      !this->ensureDiffusePrograms(glue, state, diffuseprograms)) {
+    use_vertex_program = FALSE;
   }
-  else {
+  if (!use_vertex_program) {
     // need to calculate tsb coordinates manually
     this->calcTSBCoords(cache, light);
   }
@@ -680,7 +760,8 @@ soshape_bumprender::renderBump(SoState * state,
   if (use_vertex_program) {
     glEnable(GL_VERTEX_PROGRAM_ARB);
     if (!this->ispointlight) {
-      cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, diffusebumpdirlightvertexprogramid);
+      cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB,
+                              diffuseprograms.dirlight);
     }
     else {
       assert(0);
@@ -740,12 +821,15 @@ soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache *
   SbBool use_vertex_program = lastenabled <= 1 && SoGLDriverDatabase::isSupported(glue, SO_GL_ARB_VERTEX_PROGRAM);
   use_vertex_program = FALSE; // FIXME: disabled until vertex program
                               // for point lights is implemented
+  diffuse_programidx diffuseprograms;
+  if (use_vertex_program &&
+      !this->ensureDiffusePrograms(glue, state, diffuseprograms)) {
+    use_vertex_program = FALSE;
+  }
   if (use_vertex_program) {
-    if (!this->diffuseprogramsinitialized) {
-      this->initDiffusePrograms(glue, state);
-    }
     glEnable(GL_VERTEX_PROGRAM_ARB);
-    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, normalrenderingvertexprogramid);
+    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB,
+                            diffuseprograms.normalrendering);
   }
 
   int arrays =
