@@ -465,6 +465,27 @@ soshape_bumprender::ensurePrograms(const cc_glglue * glue,
   return TRUE;
 }
 
+// These wrappers retain private symbols exported by earlier Coin releases.
+// Rendering uses the result-returning helpers above so failed program uploads
+// are never published or used.
+void
+soshape_bumprender::initPrograms(const cc_glglue * glue, SoState * state)
+{
+  spec_programidx programs;
+  (void) this->ensurePrograms(glue, state, programs);
+}
+
+void
+soshape_bumprender::initDiffusePrograms(const cc_glglue * glue, SoState * state)
+{
+  diffuse_programidx programs;
+  (void) this->ensureDiffusePrograms(glue, state, programs);
+}
+
+// Preserve the destructor symbol for the old private cache specialization.
+// The live cache stores values and does not incur the legacy allocation cost.
+template SbHash<int, soshape_bumprender::diffuse_programidx *>::~SbHash();
+
 void
 soshape_bumprender::renderBumpSpecular(SoState * state,
                                        const SoPrimitiveVertexCache * cache,

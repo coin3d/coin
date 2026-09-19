@@ -85,6 +85,8 @@ private:
   void initLight(SoLight * light, const SbMatrix & m);
   void calcTSBCoords(const SoPrimitiveVertexCache * cache, SoLight * light);
   SbVec3f getLightVec(const SbVec3f & v) const;
+  void initPrograms(const cc_glglue * glue, SoState * state);
+  void initDiffusePrograms(const cc_glglue * glue, SoState * state);
   SbBool ensurePrograms(const cc_glglue * glue, SoState * state,
                         spec_programidx & programs);
   SbBool ensureDiffusePrograms(const cc_glglue * glue, SoState * state,
