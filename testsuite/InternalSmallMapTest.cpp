@@ -34,6 +34,7 @@
 #include "CoinTest.h"
 
 #include <map>
+#include <new>
 
 BOOST_AUTO_TEST_CASE(SbSmallMap_inline_and_spill_storage)
 {
@@ -106,6 +107,38 @@ BOOST_AUTO_TEST_CASE(SbSmallMap_subscript_and_find)
   BOOST_CHECK_EQUAL(found->key, 7);
   BOOST_CHECK_EQUAL(found->obj, 42);
   BOOST_CHECK(map.find(8) == map.const_end());
+}
+
+BOOST_AUTO_TEST_CASE(SbSmallMap_spill_failure_preserves_contents_and_recovers)
+{
+  SbSmallMap<int, int> map;
+  for (int key = 0; key < 4; ++key) {
+    BOOST_REQUIRE(map.put(key, key * 10));
+  }
+
+  SbSmallMap<int, int>::failNextAllocationForTesting();
+  bool threw = false;
+  try {
+    map.put(4, 40);
+  }
+  catch (const std::bad_alloc &) {
+    threw = true;
+  }
+  BOOST_REQUIRE(threw);
+
+  BOOST_CHECK_EQUAL(map.getNumElements(), 4U);
+  for (int key = 0; key < 4; ++key) {
+    int value = -1;
+    BOOST_REQUIRE(map.get(key, value));
+    BOOST_CHECK_EQUAL(value, key * 10);
+  }
+  int missing = -1;
+  BOOST_CHECK(!map.get(4, missing));
+
+  BOOST_REQUIRE(map.put(4, 40));
+  BOOST_CHECK_EQUAL(map.getNumElements(), 5U);
+  BOOST_REQUIRE(map.get(4, missing));
+  BOOST_CHECK_EQUAL(missing, 40);
 }
 
 BOOST_AUTO_TEST_CASE(SbSmallMap_inline_copy_clear_and_reuse)
