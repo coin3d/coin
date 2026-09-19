@@ -279,6 +279,97 @@
 
 #ifdef COIN_TEST_SUITE
 
+#include <new>
+
+class SbListGrowthFailureValue {
+public:
+  SbListGrowthFailureValue(const int valuearg = 0)
+    : value(valuearg)
+  {
+    if (SbListGrowthFailureValue::faildefault && valuearg == 0) {
+      throw std::bad_alloc();
+    }
+    ++SbListGrowthFailureValue::livecount;
+  }
+
+  SbListGrowthFailureValue(const SbListGrowthFailureValue & other)
+    : value(other.value)
+  {
+    ++SbListGrowthFailureValue::livecount;
+  }
+
+  ~SbListGrowthFailureValue()
+  {
+    --SbListGrowthFailureValue::livecount;
+  }
+
+  SbListGrowthFailureValue & operator=(const SbListGrowthFailureValue & other)
+  {
+    this->value = other.value;
+    return *this;
+  }
+
+  static void failDefaultConstruction(const bool enable)
+  {
+    SbListGrowthFailureValue::faildefault = enable;
+  }
+
+  static int live(void)
+  {
+    return SbListGrowthFailureValue::livecount;
+  }
+
+  int value;
+
+private:
+  static bool faildefault;
+  static int livecount;
+};
+
+bool SbListGrowthFailureValue::faildefault = false;
+int SbListGrowthFailureValue::livecount = 0;
+
+class SbListGrowthFailureAccess : public SbList<SbListGrowthFailureValue> {
+public:
+  int capacity(void) const { return this->getArraySize(); }
+};
+
+BOOST_AUTO_TEST_CASE(growth_construction_failure_preserves_capacity_and_recovery)
+{
+  SbListGrowthFailureAccess list;
+  for (int i = 0; i < 4; ++i) {
+    list.append(SbListGrowthFailureValue(i + 1));
+  }
+
+  SbListGrowthFailureValue fifth(5);
+  const SbListGrowthFailureValue * const oldarray = list.getArrayPtr();
+  const int oldlive = SbListGrowthFailureValue::live();
+
+  bool threw = false;
+  SbListGrowthFailureValue::failDefaultConstruction(true);
+  try {
+    list.append(fifth);
+  }
+  catch (const std::bad_alloc &) {
+    threw = true;
+  }
+  SbListGrowthFailureValue::failDefaultConstruction(false);
+
+  BOOST_REQUIRE(threw);
+  BOOST_CHECK_EQUAL(list.getLength(), 4);
+  BOOST_REQUIRE_EQUAL(list.capacity(), 4);
+  BOOST_CHECK(list.getArrayPtr() == oldarray);
+  BOOST_CHECK_EQUAL(SbListGrowthFailureValue::live(), oldlive);
+  for (int i = 0; i < 4; ++i) {
+    BOOST_CHECK_EQUAL(list[i].value, i + 1);
+  }
+
+  list.append(fifth);
+  BOOST_CHECK_EQUAL(list.getLength(), 5);
+  BOOST_CHECK_EQUAL(list.capacity(), 8);
+  BOOST_CHECK_EQUAL(list[4].value, 5);
+}
+
 // Regression test for the real-world usage pattern found in e.g.
 // SoLightPath::setHead(), SoBaseKit::createFieldList() and
 // SbHeap::emptyHeap(): truncate(0) immediately followed by append(),
