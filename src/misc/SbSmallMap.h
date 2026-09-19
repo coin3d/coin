@@ -39,23 +39,34 @@
 
 #include <stddef.h>
 #include <type_traits>
+#include <utility>
+
+#ifdef COIN_SMALLMAP_TESTING
+#include <new>
+#endif
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/lists/SbList.h>
 
 #include "coindefs.h"
 
-/* A compact linear map for the common case of at most four small entries.
-   SbList keeps its first four elements inside the list object, so this map
-   performs no allocation until a fifth distinct key is inserted. Insertion
-   past that limit and erase() may invalidate iterators and references. */
+/* A compact linear map for trivial keys and values in the common case of at
+   most four entries. SbList keeps its first four elements inside the list
+   object, so this map performs no allocation until a fifth distinct key is
+   inserted. Allocation is the only operation that may throw; insertion keeps
+   the map unchanged when allocation fails. Insertion past the inline limit
+   and erase() may invalidate iterators and references. erase() does not
+   preserve iteration order, and clear() retains spilled storage for reuse. */
 template <typename Key, typename Type>
 class SbSmallMap {
 public:
-  static_assert(std::is_trivially_destructible<Key>::value,
-                "SbSmallMap keys must be trivially destructible");
-  static_assert(std::is_trivially_destructible<Type>::value,
-                "SbSmallMap values must be trivially destructible");
+  static_assert(std::is_trivial<Key>::value,
+                "SbSmallMap keys must be trivial types");
+  static_assert(std::is_trivial<Type>::value,
+                "SbSmallMap values must be trivial types");
+  static_assert(noexcept(std::declval<const Key &>() ==
+                         std::declval<const Key &>()),
+                "SbSmallMap key equality must be noexcept");
 
   class Entry {
   public:
@@ -65,6 +76,30 @@ public:
 
     Key key;
     Type obj;
+
+#ifdef COIN_SMALLMAP_TESTING
+    static void failNextAllocation(void) {
+      Entry::allocationFailureFlag() = true;
+    }
+
+    static void * operator new[](size_t size) {
+      if (Entry::allocationFailureFlag()) {
+        Entry::allocationFailureFlag() = false;
+        throw std::bad_alloc();
+      }
+      return ::operator new[](size);
+    }
+
+    static void operator delete[](void * ptr) noexcept {
+      ::operator delete[](ptr);
+    }
+
+  private:
+    static bool & allocationFailureFlag(void) {
+      static bool fail = false;
+      return fail;
+    }
+#endif
   };
 
   class const_iterator {
@@ -99,6 +134,12 @@ public:
   };
 
   SbSmallMap(void) { }
+
+#ifdef COIN_SMALLMAP_TESTING
+  static void failNextAllocationForTesting(void) {
+    Entry::failNextAllocation();
+  }
+#endif
 
   void clear(void) {
     this->entries.truncate(0);
