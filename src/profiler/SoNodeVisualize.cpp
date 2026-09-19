@@ -765,9 +765,20 @@ SoNodeVisualize::getChildGeometry() {
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTranslation.h>
 
+class TestableNodeVisualize : public SoNodeVisualize {
+public:
+  TestableNodeVisualize(void) : SoNodeVisualize() { }
+  ~TestableNodeVisualize() override { }
+
+  SoNode * getCachedTexture(void) {
+    return this->getAnyPart("texture", FALSE);
+  }
+};
+
 BOOST_AUTO_TEST_CASE(SoNodeVisualize_handles_all_six_cached_textures)
 {
   SoNodeVisualize::initClass();
+  SoNodeVisualize::cleanClass();
 
   SoNode * sources[] = {
     new SoMaterial,
@@ -778,20 +789,32 @@ BOOST_AUTO_TEST_CASE(SoNodeVisualize_handles_all_six_cached_textures)
     new SoTranslation
   };
   const int numtypes = sizeof(sources) / sizeof(sources[0]);
+  SoNode * textures[numtypes];
 
   for (int i = 0; i < numtypes; ++i) {
     sources[i]->ref();
-    SoNodeVisualize * first = SoNodeVisualize::visualizeTree(sources[i], 1);
+    TestableNodeVisualize * first = new TestableNodeVisualize;
     first->ref();
+    first->visualize(sources[i]);
 
-    SoNodeVisualize * second = SoNodeVisualize::visualizeTree(sources[i], 1);
+    TestableNodeVisualize * second = new TestableNodeVisualize;
     second->ref();
+    second->visualize(sources[i]);
     BOOST_CHECK(first != second);
+
+    textures[i] = first->getCachedTexture();
+    BOOST_REQUIRE(textures[i] != NULL);
+    BOOST_CHECK_EQUAL(second->getCachedTexture(), textures[i]);
+    for (int previous = 0; previous < i; ++previous) {
+      BOOST_CHECK(textures[i] != textures[previous]);
+    }
 
     second->unref();
     first->unref();
     sources[i]->unref();
   }
+
+  SoNodeVisualize::cleanClass();
 }
 
 #endif // COIN_TEST_SUITE
