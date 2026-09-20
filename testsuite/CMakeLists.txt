@@ -102,17 +102,17 @@ if (USE_PTHREAD)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
-add_executable(SoTempPathPolicyContract
+add_executable(SoTempPathPolicyTest
   reproducers/sotemppath-policy-preservation/repro.cpp)
-target_link_libraries(SoTempPathPolicyContract
+target_link_libraries(SoTempPathPolicyTest
   Coin ${COIN_TARGET_LINK_LIBRARIES})
-target_include_directories(SoTempPathPolicyContract PRIVATE
+target_include_directories(SoTempPathPolicyTest PRIVATE
   ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
   ${COIN_TARGET_INCLUDE_DIRECTORIES})
 add_test(NAME SoTempPathPolicy_nonempty_destination
-  COMMAND SoTempPathPolicyContract nonempty-destination)
+  COMMAND SoTempPathPolicyTest nonempty-destination)
 add_test(NAME SoTempPathPolicy_empty_destination
-  COMMAND SoTempPathPolicyContract empty-destination)
+  COMMAND SoTempPathPolicyTest empty-destination)
 
 # These public-API tests need fresh processes: CoinTests initializes SoDB
 # before running its inline cases, which is too late to test startup options.

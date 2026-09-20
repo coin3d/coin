@@ -1,8 +1,4 @@
-// Independent contract oracle for SoTempPath's non-owning/non-auditing policy.
-//
-// Authored from the frozen Coin 4 intent and baseline
-// 40c6372d2984a94c6ac17f059caee7b8d6374654 without access to an
-// implementation candidate. See README.md for scope and Unknown policy.
+// Regression test for SoTempPath's non-owning/non-auditing policy.
 
 #include <cstdio>
 #include <cstring>
