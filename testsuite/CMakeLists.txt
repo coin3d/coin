@@ -102,16 +102,16 @@ if (USE_PTHREAD)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
-add_executable(SoPathAuditorCallbackContract
+add_executable(SoPathAuditorCallbackTest
   reproducers/sopath-auditor-callback-validation/repro.cpp)
-target_link_libraries(SoPathAuditorCallbackContract
+target_link_libraries(SoPathAuditorCallbackTest
   Coin ${COIN_TARGET_LINK_LIBRARIES})
-target_include_directories(SoPathAuditorCallbackContract PRIVATE
+target_include_directories(SoPathAuditorCallbackTest PRIVATE
   ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
   ${COIN_TARGET_INCLUDE_DIRECTORIES})
 foreach(callback_case empty foreign-parent negative-index null-replacement)
   add_test(NAME SoPathAuditorCallback_${callback_case}
-    COMMAND SoPathAuditorCallbackContract ${callback_case})
+    COMMAND SoPathAuditorCallbackTest ${callback_case})
 endforeach()
 
 # These public-API tests need fresh processes: CoinTests initializes SoDB

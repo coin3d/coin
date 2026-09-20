@@ -1,4 +1,4 @@
-// Contract probe for SoPath's public child-list auditor callbacks.
+// Regression test for SoPath's public child-list auditor callbacks.
 
 #include <cstdio>
 #include <cstring>
