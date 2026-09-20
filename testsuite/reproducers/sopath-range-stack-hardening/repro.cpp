@@ -220,19 +220,19 @@ main(int argc, char ** argv)
       result = cases[i].run() ? 0 : 1;
     }
     catch (const std::exception & e) {
-      std::fprintf(stderr, "[repro] %s VIOLATED: exception: %s\n", argv[1], e.what());
+      std::fprintf(stderr, "[repro] %s FAIL: exception: %s\n", argv[1], e.what());
       result = 1;
     }
     catch (...) {
-      std::fprintf(stderr, "[repro] %s VIOLATED: unknown exception\n", argv[1]);
+      std::fprintf(stderr, "[repro] %s FAIL: unknown exception\n", argv[1]);
       result = 1;
     }
     break;
   }
   SoDB::finish();
 
-  if (result == 0) std::fprintf(stderr, "[repro] %s PRESERVED\n", argv[1]);
-  else if (result == 1) std::fprintf(stderr, "[repro] %s VIOLATED\n", argv[1]);
+  if (result == 0) std::fprintf(stderr, "[repro] %s PASS\n", argv[1]);
+  else if (result == 1) std::fprintf(stderr, "[repro] %s FAIL\n", argv[1]);
   else std::fprintf(stderr, "[repro] unknown case: %s\n", argv[1]);
   return result;
 }

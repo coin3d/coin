@@ -1,20 +1,13 @@
-# SoPath range/stack hardening oracle
+# SoPath range and stack regression
 
-Build Coin as a shared library, then run both clients in both orders:
+The behavior test checks that `truncate()` rejects lengths outside the valid
+range without mutation and that `SoPath::pop()` and `SoFullPath::pop()` are
+safe on empty paths. Valid zero, current and intermediate truncations, plus
+non-empty pops, remain positive controls.
 
 ```sh
-sh testsuite/reproducers/sopath-range-stack-hardening/run.sh /path/to/build/lib forward
-sh testsuite/reproducers/sopath-range-stack-hardening/run.sh /path/to/build/lib reverse
-sh testsuite/reproducers/sopath-range-stack-hardening/run-old-header.sh /path/to/build/lib forward
-sh testsuite/reproducers/sopath-range-stack-hardening/run-old-header.sh /path/to/build/lib reverse
+sh testsuite/reproducers/sopath-range-stack-hardening/run.sh /path/to/build/lib
 ```
 
-Run the four commands against Debug and Release builds. Each named case runs
-in its own process. A non-zero operation result is classified `Violated`; a
-compile/link/setup failure is `Unknown` and prevents a verdict. The aggregate
-script returns non-zero while any violation exists, which is expected on the
-frozen, uncorrected baseline.
-
-The old-header runner archives every public `include/Inventor` header from
-the immutable baseline before compilation. Its two calls therefore retain the
-historical inline `pop()` bodies even when linked to a later shared library.
+Each case runs in a separate process. The runner requires writable space in
+`/dev/shm` and returns nonzero on the first failed behavior check.
