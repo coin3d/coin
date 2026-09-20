@@ -33,7 +33,7 @@ static void
 expect(bool condition, const char * message)
 {
   if (!condition) {
-    std::fprintf(stderr, "[VIOLATED] %s\n", message);
+    std::fprintf(stderr, "[FAIL] %s\n", message);
     ++failures;
   }
 }
@@ -109,9 +109,9 @@ main()
   head->unref();
 
   if (failures) {
-    std::fprintf(stderr, "[VIOLATED] %d fromPath observable(s)\n", failures);
+    std::fprintf(stderr, "[FAIL] %d fromPath behavior(s)\n", failures);
     return 1;
   }
-  std::fprintf(stderr, "[PRESERVED] fromPath observables\n");
+  std::fprintf(stderr, "[PASS] fromPath behaviors\n");
   return 0;
 }

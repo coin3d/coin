@@ -71,7 +71,7 @@ static void
 expect(bool condition, const char * message)
 {
   if (!condition) {
-    std::fprintf(stderr, "[VIOLATED] %s\n", message);
+    std::fprintf(stderr, "[FAIL] %s\n", message);
     ++failures;
   }
 }
@@ -401,9 +401,9 @@ main(int argc, char ** argv)
   if (selected(requested, "factory-any")) caseFactory(true);
 
   if (failures) {
-    std::fprintf(stderr, "[VIOLATED] %d observable(s)\n", failures);
+    std::fprintf(stderr, "[FAIL] %d behavior(s)\n", failures);
     return 1;
   }
-  std::fprintf(stderr, "[PRESERVED] selected observables\n");
+  std::fprintf(stderr, "[PASS] selected behaviors\n");
   return 0;
 }
