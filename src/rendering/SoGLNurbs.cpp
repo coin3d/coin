@@ -31,6 +31,7 @@
 \**************************************************************************/
 
 #include "rendering/SoGLNurbs.h"
+#include "coindefs.h"
 #include <Inventor/threads/SbStorage.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
@@ -454,11 +455,14 @@ namespace {
     }
     void BinomialCoefficients(const int rows, const int cols);
     int FindSpan(const float u, const int degree, const int numctrlpts, const float* knotvec) const;
+    void BasisFunctions(const float u, const int span, const float* knotvec, const int order, float* N);
     void DersBasisFunctions(const float u, const int span, const float* knotvec, const int order, const int n, float** ders );
     void RationalSurfaceDerivsH(const float u, const float v, const int d, SbVec4f** skl);
     void RationalSurfaceDerivs(const float u, const float v, const int d, SbVec3f** skl);
     SbVec3f normal(const float u, const float v);
     SbVec3f normal(const int i, const int j);
+    SbVec4f SurfacePoint(const float u, const float v) COIN_UNUSED_FUNC;
+    SbVec4f SurfacePoint(const int i, const int j) COIN_UNUSED_FUNC;
     void mapijtouv(const int i, const int j, float& u, float &v);
 
   private:
@@ -531,6 +535,23 @@ namespace {
       mid = (low + high)/2;
     }
     return mid;
+  }
+
+  /// Return the basis functions for the specified parameter value.
+  void nurbs::BasisFunctions(const float u, const int span, const float* knotvec, const int order, float* N) {
+    N[0] = 1.0f;
+    for ( int j = 1; j < order; j++ ) {
+      left[j] = u - knotvec[span + 1 - j];
+      right[j] = knotvec[span + j] - u;
+      float saved = 0.0f;
+      for ( int r = 0; r < j; r++ )
+        {
+          float temp = N[r] / (right[r + 1] + left[j - r]);
+          N[r] = saved + right[r + 1] * temp;
+          saved = left[j - r] * temp;
+        }
+      N[j] = saved;
+    }
   }
 
   /// Return the basis functions for the specified parameter value.
@@ -742,6 +763,38 @@ namespace {
     float deltav = (vknotvec[numvknots-1] - vknotvec[0]) / (numvctrlpts - 1);
     u = (i == numuctrlpts-1) ? uknotvec[numuknots-1] : (uknotvec[0] + i*deltau);
     v = (j == numvctrlpts-1) ? vknotvec[numvknots-1] : (vknotvec[0] + j*deltav);
+  }
+
+  /// Returns the point on the surface at parameters (u,v).
+  SbVec4f nurbs::SurfacePoint(const float u, const float v) {
+    int uspan = FindSpan( u, udegree, numuctrlpts, uknotvec );
+    BasisFunctions( u, uspan, uknotvec, uorder, Nu[0] );
+    int vspan = FindSpan( v, vdegree, numvctrlpts, vknotvec );
+    BasisFunctions( v, vspan, vknotvec, vorder, Nv[0] );
+
+    for ( int l = 0; l < vorder; l++ ) {
+      temp[l] = SbVec4f(0.0f, 0.0f, 0.0f, 0.0f);
+      for ( int k = 0; k < uorder; k++ ) {
+        int offs = (uspan - udegree + k)*ustride + (vspan - vdegree + l)*vstride;
+        SbVec4f ctlpt4(0.0f, 0.0f, 0.0f, 1.0f);
+        for ( int i = 0; i < dim; i++ )
+          ctlpt4[i] = ctlPoints[offs+i];
+        temp[l] = temp[l] + Nu[0][k]*ctlpt4;
+      }
+    }
+    SbVec4f sp(0.0f, 0.0f, 0.0f, 0.0f);
+    for ( int l = 0; l < vorder; l++ )
+      sp = sp + Nv[0][l]*temp[l];
+
+    return sp;
+  }
+
+  /// Returns the point on the surface at indices (i,j).
+  SbVec4f nurbs::SurfacePoint(const int i, const int j) {
+    float u, v;
+    mapijtouv( i, j, u, v );
+
+    return SurfacePoint( u, v );
   }
 
 }
