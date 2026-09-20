@@ -102,9 +102,9 @@ if (USE_PTHREAD)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
-# Independent process-isolated A/B checks for TEKT_CONTRACT.md. Keeping each
-# invalid access in its own CTest process prevents one unsafe baseline access
-# from masking the remaining boundary classes.
+# Process-isolated public behavior checks. Keeping each invalid access in its
+# own CTest process prevents one unsafe access from masking the remaining
+# boundary classes.
 add_executable(SoPathLegacyAccessorBoundsTest
   reproducers/sopath-legacy-accessor-bounds/repro.cpp)
 target_link_libraries(SoPathLegacyAccessorBoundsTest Coin ${COIN_TARGET_LINK_LIBRARIES})
@@ -121,18 +121,18 @@ foreach(accessor ${SOPATH_LEGACY_ACCESSORS})
     add_test(NAME SoPathLegacyAccessorBounds_${accessor}_${boundary}
       COMMAND SoPathLegacyAccessorBoundsTest ${accessor} ${boundary})
     set_tests_properties(SoPathLegacyAccessorBounds_${accessor}_${boundary}
-      PROPERTIES LABELS sopath-legacy-accessor-contract)
+      PROPERTIES LABELS sopath-legacy-accessor)
   endforeach()
   add_test(NAME SoPathLegacyAccessorBounds_${accessor}_empty
     COMMAND SoPathLegacyAccessorBoundsTest ${accessor} empty)
   set_tests_properties(SoPathLegacyAccessorBounds_${accessor}_empty
-    PROPERTIES LABELS sopath-legacy-accessor-contract)
+    PROPERTIES LABELS sopath-legacy-accessor)
 endforeach()
 foreach(control valid visibility)
   add_test(NAME SoPathLegacyAccessorBounds_${control}
     COMMAND SoPathLegacyAccessorBoundsTest ${control})
   set_tests_properties(SoPathLegacyAccessorBounds_${control}
-    PROPERTIES LABELS sopath-legacy-accessor-contract)
+    PROPERTIES LABELS sopath-legacy-accessor)
 endforeach()
 
 # These public-API tests need fresh processes: CoinTests initializes SoDB

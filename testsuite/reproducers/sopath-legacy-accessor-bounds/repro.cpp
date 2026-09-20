@@ -1,5 +1,4 @@
-// Independent A/B oracle for TEKT_CONTRACT.md. Keep implementation details
-// out of this file: all expectations come from the frozen public contract.
+// Process-isolated public-API regression test for SoPath accessor bounds.
 
 #include <climits>
 #include <cstdio>
@@ -58,7 +57,7 @@ struct Fixture {
 int
 fail(const char * test, const char * reason)
 {
-  std::fprintf(stderr, "[sopath-contract] FAIL %s: %s\n", test, reason);
+  std::fprintf(stderr, "[sopath-bounds] FAIL %s: %s\n", test, reason);
   return 1;
 }
 
@@ -74,7 +73,7 @@ unchanged(const Fixture & fixture)
     path->getIndex(0) == 0 && path->getIndex(1) == 1 && path->getIndex(2) == 1;
   if (!result) {
     std::fprintf(stderr,
-                 "[sopath-contract] state: visible=%d full=%d nodes=%p,%p,%p "
+                 "[sopath-bounds] state: visible=%d full=%d nodes=%p,%p,%p "
                  "expected=%p,%p,%p indices=%d,%d,%d\n",
                  path->getLength(), full->getLength(),
                  static_cast<void *>(path->getNode(0)),
