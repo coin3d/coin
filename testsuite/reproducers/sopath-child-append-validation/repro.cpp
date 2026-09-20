@@ -1,4 +1,4 @@
-// Independent public-API contract test for safe SoPath child appends.
+// Public-API regression test for safe SoPath child appends.
 // Each named case runs in a fresh process (see run.sh), so a crash in one
 // invalid-input case does not mask the remaining cases.
 

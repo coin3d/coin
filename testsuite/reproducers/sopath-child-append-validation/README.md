@@ -1,17 +1,15 @@
-# SoPath child-append validation contract test
+# SoPath child-append regression
 
-This standalone test is the independent A/B oracle described in
-`TEKT_CONTRACT.md`. It tests only public API and intentionally lives outside
-the production implementation.
+This public-API test checks that invalid child appends fail without changing
+the path and that valid node and path appends retain their route and indices.
+Each case runs in a separate process so a memory-safety failure cannot hide
+later cases.
 
-Build Coin in the desired configuration, then run:
+With a configured shared-library build:
 
 ```sh
 sh testsuite/reproducers/sopath-child-append-validation/run.sh /path/to/build/lib
 ```
 
-Run it against both a Debug and a Release build. Each named case is a separate
-process so crashes are attributed and do not suppress the remaining cases.
-Compilation or setup failure is `Unknown`, not a pass. On an unfixed baseline,
-one or more negative cases are expected to fail or crash; on a conforming
-candidate, every case passes.
+The runner requires writable space in `/dev/shm` and returns nonzero if any
+behavior check fails.
