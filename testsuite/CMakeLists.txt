@@ -102,22 +102,22 @@ if (USE_PTHREAD)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
-# Keep this contract in a fresh process: the unfixed implementation corrupts
+# Keep this regression test in a fresh process: the unfixed implementation corrupts
 # SoTempPath's internal empty-list storage before ordinary assertions can
 # observe the violation.
-add_executable(SoTempPathReplaceTailContract
+add_executable(SoTempPathReplaceTailTest
   reproducers/sotemppath-empty-replace-tail/repro.cpp)
-target_link_libraries(SoTempPathReplaceTailContract
+target_link_libraries(SoTempPathReplaceTailTest
   Coin ${COIN_TARGET_LINK_LIBRARIES})
-target_include_directories(SoTempPathReplaceTailContract PRIVATE
+target_include_directories(SoTempPathReplaceTailTest PRIVATE
   ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
   ${COIN_TARGET_INCLUDE_DIRECTORIES})
 add_test(NAME SoTempPathReplaceTail_valid_sentinel
-  COMMAND SoTempPathReplaceTailContract valid-sentinel)
+  COMMAND SoTempPathReplaceTailTest valid-sentinel)
 add_test(NAME SoTempPathReplaceTail_valid_replacement
-  COMMAND SoTempPathReplaceTailContract valid-replacement)
+  COMMAND SoTempPathReplaceTailTest valid-replacement)
 add_test(NAME SoTempPathReplaceTail_empty_noop
-  COMMAND SoTempPathReplaceTailContract empty-noop)
+  COMMAND SoTempPathReplaceTailTest empty-noop)
 
 # These public-API tests need fresh processes: CoinTests initializes SoDB
 # before running its inline cases, which is too late to test startup options.

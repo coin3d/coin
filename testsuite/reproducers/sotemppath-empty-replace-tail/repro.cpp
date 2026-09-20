@@ -1,8 +1,4 @@
-// Independent contract oracle for SoTempPath::replaceTail().
-//
-// This file was authored from the frozen Coin 4 intent and baseline
-// 40c6372d2984a94c6ac17f059caee7b8d6374654, without reading an
-// implementation candidate. See README.md for scope and Unknown policy.
+// Public-API regression test for SoTempPath::replaceTail().
 
 #include <cstdio>
 #include <cstring>
@@ -66,10 +62,8 @@ empty_noop()
     return 1;
   }
 
-  // A no-op must leave the object reusable. On the frozen baseline, the
-  // out-of-bounds writes corrupt the empty lists' internal buffer pointers;
-  // this append makes the violation deterministic instead of relying only on
-  // destruction or a sanitizer diagnostic.
+  // A no-op must leave the object reusable; the next append detects damage
+  // to the empty-path storage without relying only on a sanitizer diagnostic.
   path.simpleAppend(static_cast<SoNode *>(NULL), -1);
   if (path.getLength() != 1 || path.getTail() != NULL ||
       path.getIndexFromTail(0) != -1) {
