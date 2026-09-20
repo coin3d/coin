@@ -1,4 +1,4 @@
-// Contract probe for SoPath copy and assignment auditor ownership.
+// Regression test for SoPath copy and assignment auditor ownership.
 
 #include <cstdio>
 #include <cstdlib>

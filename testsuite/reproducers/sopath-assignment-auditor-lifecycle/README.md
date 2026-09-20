@@ -1,23 +1,6 @@
-# SoPath assignment auditor contract
+# SoPath assignment auditor lifecycle regression
 
-Baseline: `40c6372d2984a94c6ac17f059caee7b8d6374654`.
-
-The destination of copy assignment must stop auditing its former route, audit
-the assigned route exactly once, and unregister every auditor before it is
-destroyed. Self-assignment must preserve the route without duplicating auditor
-registrations.
-
-The `copy-construct` case was added after implementation review exposed that
-the copy constructor delegates to assignment and therefore requires an
-initialized destination auditor policy. It is implementation-informed
-coverage, not a regression test and not part of the original independently
-ordered A/B contract.
-
-Copy-and-swap is intentionally not used here. Child lists register the address
-of the auditor object. Swapping path members with a temporary does not transfer
-that external identity, so destruction of the temporary would try to remove
-the wrong address and leave the destination registered on its old route.
-
-The observable cases are valid, nonempty paths. Allocation failure, malformed
-paths, concurrent scene-graph mutation, and deliberately cyclic graphs are
-outside this contract and remain `Unknown`.
+The tests verify that copy assignment stops auditing the old route, audits the
+new route exactly once and unregisters auditors before destruction.
+Self-assignment preserves the route, and copy construction creates an
+independent auditor without damaging the source when the copy is destroyed.
