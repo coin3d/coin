@@ -102,6 +102,14 @@ if (USE_PTHREAD)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
+add_executable(SoPathRangeTest SoPathRangeTest.cpp)
+target_link_libraries(SoPathRangeTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(SoPathRangeTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+add_test(NAME SoPathRange COMMAND SoPathRangeTest)
+
 # These public-API tests need fresh processes: CoinTests initializes SoDB
 # before running its inline cases, which is too late to test startup options.
 add_executable(CoinProfilerInitTest
