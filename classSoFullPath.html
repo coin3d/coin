@@ -185,6 +185,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af3afd770f54150a657bc74cce2b726f3 inherit pub_methods_classSoPath"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0f4de2f26dffbecda41eb4ef4faa6c8 inherit pub_methods_classSoPath" id="r_ae0f4de2f26dffbecda41eb4ef4faa6c8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPath.html#ae0f4de2f26dffbecda41eb4ef4faa6c8">findNode</a> (<a class="el" href="classSbList.html">const</a> <a class="el" href="classSoNode.html">SoNode</a> *<a class="el" href="classSbList.html">const</a> node) <a class="el" href="classSbList.html">const</a></td></tr>
 <tr class="separator:ae0f4de2f26dffbecda41eb4ef4faa6c8 inherit pub_methods_classSoPath"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ecf9b16bb5ee9f843e6b961e2352208 inherit pub_methods_classSoPath" id="r_a4ecf9b16bb5ee9f843e6b961e2352208"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoFullPathView.html">SoFullPathView</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPath.html#a4ecf9b16bb5ee9f843e6b961e2352208">fullPath</a> (<a class="el" href="classSbList.html">void</a>) <a class="el" href="classSbList.html">const</a></td></tr>
+<tr class="separator:a4ecf9b16bb5ee9f843e6b961e2352208 inherit pub_methods_classSoPath"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3632fb20e653dbdd3dae5ae4dc3e1057 inherit pub_methods_classSoPath" id="r_a3632fb20e653dbdd3dae5ae4dc3e1057"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPath.html#a3632fb20e653dbdd3dae5ae4dc3e1057">getHead</a> (<a class="el" href="classSbList.html">void</a>) <a class="el" href="classSbList.html">const</a></td></tr>
 <tr class="separator:a3632fb20e653dbdd3dae5ae4dc3e1057 inherit pub_methods_classSoPath"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e36dd7f35753cd532453f8c873b5220 inherit pub_methods_classSoPath" id="r_a2e36dd7f35753cd532453f8c873b5220"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSoPath.html#a2e36dd7f35753cd532453f8c873b5220">getIndex</a> (<a class="el" href="classSbList.html">const</a> int index) <a class="el" href="classSbList.html">const</a></td></tr>
@@ -342,9 +344,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="classSoFullPath.html" title="The SoFullPath class allows examination of hidden children in paths.">SoFullPath</a> class allows examination of hidden children in paths. </p>
-<p><a class="el" href="classSoPath.html" title="The SoPath class is a container class for traversal path descriptions.">SoPath</a> allows only access from the head node to the first node with hidden children, but not any further.</p>
-<p>Since the <a class="el" href="classSoFullPath.html" title="The SoFullPath class allows examination of hidden children in paths.">SoFullPath</a> is derived from <a class="el" href="classSoPath.html" title="The SoPath class is a container class for traversal path descriptions.">SoPath</a> and contains no private data, you can cast <a class="el" href="classSoPath.html" title="The SoPath class is a container class for traversal path descriptions.">SoPath</a> instances to the <a class="el" href="classSoFullPath.html" title="The SoFullPath class allows examination of hidden children in paths.">SoFullPath</a> type. This will allow you to examine hidden children.</p>
-<p>(Actually, you are not supposed to allocate instances of this class at all. It is only available as an "extended interface" into the superclass <a class="el" href="classSoPath.html" title="The SoPath class is a container class for traversal path descriptions.">SoPath</a>.) </p>
+<p><a class="el" href="classSoPath.html#a60c8ed4e98df2bea9efddc8057376055">SoPath::getTail()</a> and <a class="el" href="classSoPath.html#abb68ff2080762ca7f329c4b256d78029">SoPath::getLength()</a> stop at the first node with hidden children. To inspect the complete path, use <a class="el" href="classSoPath.html#a4ecf9b16bb5ee9f843e6b961e2352208">SoPath::fullPath()</a>.</p>
+<p>Historically, callers cast <a class="el" href="classSoPath.html" title="The SoPath class is a container class for traversal path descriptions.">SoPath</a> instances to <a class="el" href="classSoFullPath.html" title="The SoFullPath class allows examination of hidden children in paths.">SoFullPath</a> to access hidden children. Such a downcast has undefined behavior unless the object actually derives from <a class="el" href="classSoFullPath.html" title="The SoFullPath class allows examination of hidden children in paths.">SoFullPath</a>. <a class="el" href="classSoPath.html#a4ecf9b16bb5ee9f843e6b961e2352208">SoPath::fullPath()</a> provides this functionality without a cast.</p>
+<p><a class="el" href="classSoFullPath.html" title="The SoFullPath class allows examination of hidden children in paths.">SoFullPath</a> is retained for compatibility and as the base of <a class="el" href="classSoTempPath.html" title="The SoTempPath class is used to store temporary paths.">SoTempPath</a>. Its accessors delegate to <a class="el" href="classSoFullPathView.html" title="The SoFullPathView class provides safe access to a complete SoPath.">SoFullPathView</a>. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aa097cb570b7b2f2beac84dc65405314d" name="aa097cb570b7b2f2beac84dc65405314d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa097cb570b7b2f2beac84dc65405314d">&#9670;&#160;</a></span>getIndexFromTail()</h2>
@@ -440,7 +442,7 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This method overrides <a class="el" href="classSoPath.html#aa82bbd8566a5cddf2139d85402858b77">SoPath::pop()</a> to allow clients to get at all the nodes in the path. </p>
+<p>Removes the actual tail, including hidden children, just like <a class="el" href="classSoPath.html#aa82bbd8566a5cddf2139d85402858b77">SoPath::pop()</a>. </p>
 
 </div>
 </div>
@@ -454,7 +456,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoFullPath.html">SoFullPath</a></li>
-    <li class="footer">Generated on Mon Sep 21 2026 09:22:11 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Mon Sep 21 2026 20:30:41 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

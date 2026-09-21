@@ -177,6 +177,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af3afd770f54150a657bc74cce2b726f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0f4de2f26dffbecda41eb4ef4faa6c8" id="r_ae0f4de2f26dffbecda41eb4ef4faa6c8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae0f4de2f26dffbecda41eb4ef4faa6c8">findNode</a> (<a class="el" href="classSbList.html">const</a> <a class="el" href="classSoNode.html">SoNode</a> *<a class="el" href="classSbList.html">const</a> node) <a class="el" href="classSbList.html">const</a></td></tr>
 <tr class="separator:ae0f4de2f26dffbecda41eb4ef4faa6c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ecf9b16bb5ee9f843e6b961e2352208" id="r_a4ecf9b16bb5ee9f843e6b961e2352208"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoFullPathView.html">SoFullPathView</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4ecf9b16bb5ee9f843e6b961e2352208">fullPath</a> (<a class="el" href="classSbList.html">void</a>) <a class="el" href="classSbList.html">const</a></td></tr>
+<tr class="separator:a4ecf9b16bb5ee9f843e6b961e2352208"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3632fb20e653dbdd3dae5ae4dc3e1057" id="r_a3632fb20e653dbdd3dae5ae4dc3e1057"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoNode.html">SoNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3632fb20e653dbdd3dae5ae4dc3e1057">getHead</a> (<a class="el" href="classSbList.html">void</a>) <a class="el" href="classSbList.html">const</a></td></tr>
 <tr class="separator:a3632fb20e653dbdd3dae5ae4dc3e1057"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e36dd7f35753cd532453f8c873b5220" id="r_a2e36dd7f35753cd532453f8c873b5220"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e36dd7f35753cd532453f8c873b5220">getIndex</a> (<a class="el" href="classSbList.html">const</a> int index) <a class="el" href="classSbList.html">const</a></td></tr>
@@ -341,7 +343,7 @@ Additional Inherited Members</h2></td></tr>
 <p><a class="el" href="classSoPath.html" title="The SoPath class is a container class for traversal path descriptions.">SoPath</a> objects contain a list of <a class="el" href="classSoNode.html" title="The SoNode class is the base class for nodes used in scene graphs.">SoNode</a> pointers and a list of child indices. Indices are necessary to disambiguate situations where a node uses the same node as a child multiple times.</p>
 <p>Paths can be export and imported to/from file, like other <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a> derived objects. Read the documentation on the <a class="el" href="#a3b45195e0e17b98f437de45223c97a20">write()</a> method to see how the file format is.</p>
 <p>It's important to know the difference between this class and <a class="el" href="classSoFullPath.html" title="The SoFullPath class allows examination of hidden children in paths.">SoFullPath</a> when working with paths. <a class="el" href="#a60c8ed4e98df2bea9efddc8057376055">SoPath::getTail()</a> will return the first node in the path that doesn't inherit <a class="el" href="classSoGroup.html" title="The SoGroup class is a node which managed other node instances.">SoGroup</a>, and <a class="el" href="#abb68ff2080762ca7f329c4b256d78029">getLength()</a> returns the number of nodes down to this node.</p>
-<p>If you need the actual path length, or the actual tail node, you need to cast the path to <a class="el" href="classSoFullPath.html" title="The SoFullPath class allows examination of hidden children in paths.">SoFullPath</a>. </p>
+<p>If you need the actual path length or tail node, including hidden children, use <a class="el" href="#a4ecf9b16bb5ee9f843e6b961e2352208">fullPath()</a> to obtain a <a class="el" href="classSoFullPathView.html" title="The SoFullPathView class provides safe access to a complete SoPath.">SoFullPathView</a>. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a358fb5c0804a2326dbe9a0365dee0eee" name="a358fb5c0804a2326dbe9a0365dee0eee"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a358fb5c0804a2326dbe9a0365dee0eee">&#9670;&#160;</a></span>SoPath() <span class="overload">[1/3]</span></h2>
@@ -600,6 +602,25 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="a4ecf9b16bb5ee9f843e6b961e2352208" name="a4ecf9b16bb5ee9f843e6b961e2352208"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ecf9b16bb5ee9f843e6b961e2352208">&#9670;&#160;</a></span>fullPath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoFullPathView.html">SoFullPathView</a> SoPath::fullPath </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSbList.html">void</a></td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns a non-owning view of the complete path, including hidden children.</p>
+<p>The returned view must not outlive this <a class="el" href="classSoPath.html" title="The SoPath class is a container class for traversal path descriptions.">SoPath</a>. </p>
+
+</div>
+</div>
 <a id="a4fc80e2d0e9330731b5c51ecd9f4e590" name="a4fc80e2d0e9330731b5c51ecd9f4e590"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4fc80e2d0e9330731b5c51ecd9f4e590">&#9670;&#160;</a></span>getByName() <span class="overload">[1/2]</span></h2>
 
@@ -725,7 +746,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>This method returns the number of nodes in the path. Only the "visible" nodes are counted, i.e. hidden nodes of e.g. nodekits are not included.</p>
-<p>If you need the actual path length, you need to cast your path to <a class="el" href="classSoFullPath.html" title="The SoFullPath class allows examination of hidden children in paths.">SoFullPath</a> and use <a class="el" href="classSoFullPath.html#a9105009b476fea9b0fe7e163f20343ae">SoFullPath::getLength()</a>. </p>
+<p>If you need the actual path length, use <a class="el" href="#a4ecf9b16bb5ee9f843e6b961e2352208">fullPath()</a>.<a class="el" href="#abb68ff2080762ca7f329c4b256d78029">getLength()</a> instead. </p>
 
 </div>
 </div>
@@ -780,12 +801,8 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>This method returns the tail node of the path. Please note that this method only considers group nodes without hidden children (nodes inheriting <a class="el" href="classSoGroup.html" title="The SoGroup class is a node which managed other node instances.">SoGroup</a>) when finding the tail.</p>
-<p>If you want to find the real tail node (also below node kits and VRML nodes with hidden children), you have to use <a class="el" href="classSoFullPath.html#a6f10361f7f8af28a937a2ad52efeb7b9">SoFullPath::getTail()</a>. You don't have to create an <a class="el" href="classSoFullPath.html" title="The SoFullPath class allows examination of hidden children in paths.">SoFullPath</a> instance to do this, just cast the <a class="el" href="classSoPath.html" title="The SoPath class is a container class for traversal path descriptions.">SoPath</a> instance to <a class="el" href="classSoFullPath.html" title="The SoFullPath class allows examination of hidden children in paths.">SoFullPath</a> before getting the tail node:</p>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classSoNode.html">SoNode</a> * tail = <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classSoFullPath.html">SoFullPath</a>*<span class="keyword">&gt;</span>(path)-&gt;<a class="code hl_function" href="#a60c8ed4e98df2bea9efddc8057376055">getTail</a>();</div>
-<div class="ttc" id="aclassSoFullPath_html"><div class="ttname"><a href="classSoFullPath.html">SoFullPath</a></div><div class="ttdoc">The SoFullPath class allows examination of hidden children in paths.</div><div class="ttdef"><b>Definition</b> SoFullPath.h:38</div></div>
-<div class="ttc" id="aclassSoNode_html"><div class="ttname"><a href="classSoNode.html">SoNode</a></div><div class="ttdoc">The SoNode class is the base class for nodes used in scene graphs.</div><div class="ttdef"><b>Definition</b> SoNode.h:56</div></div>
-<div class="ttc" id="aclassSoPath_html_a60c8ed4e98df2bea9efddc8057376055"><div class="ttname"><a href="#a60c8ed4e98df2bea9efddc8057376055">SoPath::getTail</a></div><div class="ttdeci">SoNode * getTail(void) const</div><div class="ttdef"><b>Definition</b> SoPath.cpp:408</div></div>
-</div><!-- fragment --> 
+<p>If you want to find the real tail node (also below node kits and VRML nodes with hidden children), use <a class="el" href="#a4ecf9b16bb5ee9f843e6b961e2352208">fullPath()</a>.<a class="el" href="#a60c8ed4e98df2bea9efddc8057376055">getTail()</a> instead. </p>
+
 </div>
 </div>
 <a id="a5648817ef3a6fc7a6c88e7961dc18099" name="a5648817ef3a6fc7a6c88e7961dc18099"></a>
@@ -823,6 +840,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="ttc" id="aclassSoBase_html_a873b521c1386368d4d63ff893856590a"><div class="ttname"><a href="classSoBase.html#a873b521c1386368d4d63ff893856590a">SoBase::getTypeId</a></div><div class="ttdeci">virtual SoType getTypeId(void) const =0</div><div class="ttdoc">Returns the type identification of an object derived from a class inheriting SoBase....</div></div>
 <div class="ttc" id="aclassSoFile_html"><div class="ttname"><a href="classSoFile.html">SoFile</a></div><div class="ttdoc">The SoFile class is node container for another model file.</div><div class="ttdef"><b>Definition</b> SoFile.h:43</div></div>
 <div class="ttc" id="aclassSoFile_html_affecb4ab49250c1c95d2b2510791cf6c"><div class="ttname"><a href="classSoFile.html#affecb4ab49250c1c95d2b2510791cf6c">SoFile::getClassTypeId</a></div><div class="ttdeci">static SoType getClassTypeId(void)</div><div class="ttdef"><b>Definition</b> SoFile.cpp:100</div></div>
+<div class="ttc" id="aclassSoNode_html"><div class="ttname"><a href="classSoNode.html">SoNode</a></div><div class="ttdoc">The SoNode class is the base class for nodes used in scene graphs.</div><div class="ttdef"><b>Definition</b> SoNode.h:56</div></div>
 </div><!-- fragment --><p>For application programmers wanting to extend the library with new nodes, engines, nodekits, draggers or others: this method needs to be overridden in <em>all</em> subclasses. This is typically done as part of setting up the full type system for extension classes, which is usually accomplished by using the predefined macros available through for instance <a class="el" href="SoSubNode_8h_source.html">Inventor/nodes/SoSubNode.h</a> (SO_NODE_INIT_CLASS and SO_NODE_CONSTRUCTOR for node classes), <a class="el" href="SoSubEngine_8h_source.html">Inventor/engines/SoSubEngine.h</a> (for engine classes) and so on.</p>
 <p>For more information on writing Coin extensions, see the class documentation of the top level superclasses for the various class groups. </p>
 
@@ -1108,7 +1126,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoPath.html">SoPath</a></li>
-    <li class="footer">Generated on Mon Sep 21 2026 09:22:12 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Mon Sep 21 2026 20:30:42 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

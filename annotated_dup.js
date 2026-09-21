@@ -300,6 +300,7 @@ var annotated_dup =
     [ "SoFragmentShader", "classSoFragmentShader.html", "classSoFragmentShader" ],
     [ "SoFrustumCamera", "classSoFrustumCamera.html", "classSoFrustumCamera" ],
     [ "SoFullPath", "classSoFullPath.html", "classSoFullPath" ],
+    [ "SoFullPathView", "classSoFullPathView.html", "classSoFullPathView" ],
     [ "SoGate", "classSoGate.html", "classSoGate" ],
     [ "SoGeo", "classSoGeo.html", null ],
     [ "SoGeoCoordinate", "classSoGeoCoordinate.html", "classSoGeoCoordinate" ],

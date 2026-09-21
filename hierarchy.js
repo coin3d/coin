@@ -1067,6 +1067,7 @@ var hierarchy =
       ] ]
     ] ],
     [ "SoFieldData", "classSoFieldData.html", null ],
+    [ "SoFullPathView", "classSoFullPathView.html", null ],
     [ "SoGeo", "classSoGeo.html", null ],
     [ "SoGLCacheList", "classSoGLCacheList.html", null ],
     [ "SoGLDisplayList", "classSoGLDisplayList.html", null ],

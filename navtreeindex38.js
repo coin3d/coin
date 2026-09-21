@@ -1,5 +1,11 @@
 var NAVTREEINDEX38 =
 {
+"classSoTextureCoordinatePlane.html#a653394cacbd4652fc138bf4fc62fee19":[3,15,119,7],
+"classSoTextureCoordinatePlane.html#a6e13fcb53f98d02f1d6a66cca9671800":[3,15,119,3],
+"classSoTextureCoordinatePlane.html#a84a9399478ef7d7da853d437689107ca":[3,15,119,9],
+"classSoTextureCoordinatePlane.html#a99ae109c11b3b310b6a482577a5ddde4":[3,15,119,5],
+"classSoTextureCoordinatePlane.html#ab6e1ceb805c7c09407db14406006b4ee":[3,15,119,2],
+"classSoTextureCoordinatePlane.html#ad0843cfdfcff576582db2a4a34be1fc6":[3,15,119,4],
 "classSoTextureCoordinateReflectionMap.html":[3,15,120],
 "classSoTextureCoordinateReflectionMap.html#a134a3c31eaa967e2e7e21128d1d475e5":[3,15,120,7],
 "classSoTextureCoordinateReflectionMap.html#a1a1c5e44392216840879dc2d7e1c456b":[3,15,120,2],
@@ -209,8 +215,8 @@ var NAVTREEINDEX38 =
 "classSoTrackballManip.html#a24638271f1d0c553669efd654c2bad3a":[3,12,8,3],
 "classSoTrackballManip.html#a38626b6361b86f319744039426b99d8b":[3,12,8,1],
 "classSoTrackballManip.html#acb7e636e5df8359b2465d32e9d144cdd":[3,12,8,2],
-"classSoTranReceiver.html":[5,0,726],
-"classSoTranSender.html":[5,0,727],
+"classSoTranReceiver.html":[5,0,727],
+"classSoTranSender.html":[5,0,728],
 "classSoTransform.html":[3,15,126],
 "classSoTransform.html#a0727452cecd58c765d49b4191e1b8c03":[3,15,126,1],
 "classSoTransform.html#a09c8cda47698d289028330d7f4ed5d85":[3,15,126,4],
@@ -243,11 +249,5 @@ var NAVTREEINDEX38 =
 "classSoTransformBoxDragger.html#a23d90c4e3956a48740befd28ff6d551b":[3,5,18,1],
 "classSoTransformBoxDragger.html#a2f83c931ec3de0c670f1f7c9985e62d3":[3,5,18,0],
 "classSoTransformBoxDragger.html#a33b173d3dd35e1dcbf6064f49b39ae76":[3,5,18,11],
-"classSoTransformBoxDragger.html#a400029604aa1b57510b69afd59ef054a":[3,5,18,8],
-"classSoTransformBoxDragger.html#a408ce1fcdfe4d8f8243b9112150f2880":[3,5,18,6],
-"classSoTransformBoxDragger.html#a59c283b81f3751cc67ccc321d30bfdb3":[3,5,18,4],
-"classSoTransformBoxDragger.html#a63e0976d3a951ed4a394b4ab92b5a49a":[3,5,18,9],
-"classSoTransformBoxDragger.html#aa6057570edb16712b345e9ac0255a15d":[3,5,18,10],
-"classSoTransformBoxDragger.html#ab13644d4005af49dc79dbe24935ff205":[3,5,18,7],
-"classSoTransformBoxDragger.html#ab23a5523cf09a0a71e87c7d77c4fa541":[3,5,18,12]
+"classSoTransformBoxDragger.html#a400029604aa1b57510b69afd59ef054a":[3,5,18,8]
 };

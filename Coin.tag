@@ -30440,6 +30440,38 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>SoFullPathView</name>
+    <filename>classSoFullPathView.html</filename>
+    <member kind="function">
+      <type>int</type>
+      <name>getIndexFromTail</name>
+      <anchorfile>classSoFullPathView.html</anchorfile>
+      <anchor>a7fbec968328ae22adcb8293a31c7e1a5</anchor>
+      <arglist>(const int index) const</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>getLength</name>
+      <anchorfile>classSoFullPathView.html</anchorfile>
+      <anchor>a4c0fe03781d2f35a888fc0a1baf5cbff</anchor>
+      <arglist>(void) const</arglist>
+    </member>
+    <member kind="function">
+      <type>SoNode *</type>
+      <name>getNodeFromTail</name>
+      <anchorfile>classSoFullPathView.html</anchorfile>
+      <anchor>a5a040f299601881f9e4086b5b0b14607</anchor>
+      <arglist>(const int index) const</arglist>
+    </member>
+    <member kind="function">
+      <type>SoNode *</type>
+      <name>getTail</name>
+      <anchorfile>classSoFullPathView.html</anchorfile>
+      <anchor>ae5ec5be8248034f5ec9553ebb3b9abfd</anchor>
+      <arglist>(void) const</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>SoGate</name>
     <filename>classSoGate.html</filename>
     <base>SoEngine</base>
@@ -52882,6 +52914,13 @@
       <anchorfile>classSoPath.html</anchorfile>
       <anchor>ae0f4de2f26dffbecda41eb4ef4faa6c8</anchor>
       <arglist>(const SoNode *const node) const</arglist>
+    </member>
+    <member kind="function">
+      <type>SoFullPathView</type>
+      <name>fullPath</name>
+      <anchorfile>classSoPath.html</anchorfile>
+      <anchor>a4ecf9b16bb5ee9f843e6b961e2352208</anchor>
+      <arglist>(void) const</arglist>
     </member>
     <member kind="function">
       <type>SoNode *</type>
@@ -89929,6 +89968,7 @@
     <class kind="class">SoDB</class>
     <class kind="class">SoFieldContainer</class>
     <class kind="class">SoFullPath</class>
+    <class kind="class">SoFullPathView</class>
     <class kind="class">SoInput</class>
     <class kind="class">SoInteraction</class>
     <class kind="class">SoJavaScriptEngine</class>

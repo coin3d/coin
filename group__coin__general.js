@@ -141,6 +141,12 @@ var group__coin__general =
       [ "getTail", "classSoFullPath.html#a6f10361f7f8af28a937a2ad52efeb7b9", null ],
       [ "pop", "classSoFullPath.html#ac910125223965d59eb473cadc636f8c6", null ]
     ] ],
+    [ "SoFullPathView", "classSoFullPathView.html", [
+      [ "getIndexFromTail", "classSoFullPathView.html#a7fbec968328ae22adcb8293a31c7e1a5", null ],
+      [ "getLength", "classSoFullPathView.html#a4c0fe03781d2f35a888fc0a1baf5cbff", null ],
+      [ "getNodeFromTail", "classSoFullPathView.html#a5a040f299601881f9e4086b5b0b14607", null ],
+      [ "getTail", "classSoFullPathView.html#ae5ec5be8248034f5ec9553ebb3b9abfd", null ]
+    ] ],
     [ "SoInput", "classSoInput.html", [
       [ "SoInput", "classSoInput.html#aad6a27869faabd1cfc94d537881af73e", null ],
       [ "SoInput", "classSoInput.html#aec1751434db4f9bc397d872f7efcf100", null ],
@@ -426,6 +432,7 @@ var group__coin__general =
       [ "copy", "classSoPath.html#a8f53657fec841ac70742df42a93e45a6", null ],
       [ "findFork", "classSoPath.html#af3afd770f54150a657bc74cce2b726f3", null ],
       [ "findNode", "classSoPath.html#ae0f4de2f26dffbecda41eb4ef4faa6c8", null ],
+      [ "fullPath", "classSoPath.html#a4ecf9b16bb5ee9f843e6b961e2352208", null ],
       [ "getHead", "classSoPath.html#a3632fb20e653dbdd3dae5ae4dc3e1057", null ],
       [ "getIndex", "classSoPath.html#a2e36dd7f35753cd532453f8c873b5220", null ],
       [ "getIndexFromTail", "classSoPath.html#a96de7bd8fc32c2be05faa3ad0041de4e", null ],

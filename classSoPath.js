@@ -13,6 +13,7 @@ var classSoPath =
     [ "copy", "classSoPath.html#a8f53657fec841ac70742df42a93e45a6", null ],
     [ "findFork", "classSoPath.html#af3afd770f54150a657bc74cce2b726f3", null ],
     [ "findNode", "classSoPath.html#ae0f4de2f26dffbecda41eb4ef4faa6c8", null ],
+    [ "fullPath", "classSoPath.html#a4ecf9b16bb5ee9f843e6b961e2352208", null ],
     [ "getHead", "classSoPath.html#a3632fb20e653dbdd3dae5ae4dc3e1057", null ],
     [ "getIndex", "classSoPath.html#a2e36dd7f35753cd532453f8c873b5220", null ],
     [ "getIndexFromTail", "classSoPath.html#a96de7bd8fc32c2be05faa3ad0041de4e", null ],
