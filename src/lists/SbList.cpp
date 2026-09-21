@@ -167,6 +167,9 @@
 
   Removes an \a item from the list. If there are several items with
   the same value, removes the \a item with the lowest index.
+
+  If \a item is not present, the list is left unchanged. Builds with
+  COIN_EXTRA_DEBUG enabled also report the invalid removal with an assertion.
 */
 
 /*!
@@ -404,5 +407,26 @@ BOOST_AUTO_TEST_CASE(truncate_zero_then_grow_past_default_size)
                         "SbList value corrupted after truncate(0) + growth");
   }
 }
+
+#if !defined(COIN_EXTRA_DEBUG)
+BOOST_AUTO_TEST_CASE(remove_missing_item_preserves_list)
+{
+  SbList<int> list;
+  list.append(10);
+  list.append(20);
+  list.append(30);
+
+  list.removeItem(99);
+
+  BOOST_REQUIRE_EQUAL(list.getLength(), 3);
+  BOOST_CHECK_EQUAL(list[0], 10);
+  BOOST_CHECK_EQUAL(list[1], 20);
+  BOOST_CHECK_EQUAL(list[2], 30);
+
+  SbList<int> empty;
+  empty.removeItem(99);
+  BOOST_CHECK_EQUAL(empty.getLength(), 0);
+}
+#endif // !COIN_EXTRA_DEBUG
 
 #endif // COIN_TEST_SUITE
