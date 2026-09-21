@@ -494,9 +494,9 @@ SbBool
 SoInput_FileInfo::readUnsignedIntegerString()
 {
   assert(!this->isBinary());
-  size_t minSize = 1;
+  int minSize = 1;
   char c;
-  size_t oldLength = readString.length();
+  const int oldLength = readString.getLength();
 
   if (this->readChar(&c, '0')) {
     readString += c;
@@ -511,7 +511,7 @@ SoInput_FileInfo::readUnsignedIntegerString()
   else
     readDigits();
 
-  if (readString.length() - oldLength < minSize)
+  if (readString.getLength() - oldLength < minSize)
     return FALSE;
 
   return TRUE;
@@ -564,14 +564,14 @@ SbBool
 SoInput_FileInfo::readUnsignedInteger(uint32_t & l)
 {
   assert(!this->isBinary());
-  readString.clear();
+  readString.makeEmpty(FALSE);
   if (! this->readUnsignedIntegerString())
     return FALSE;
 
   // FIXME: check man page of strtoul and exploit the functionality
   // provided better -- it looks like we are duplicating some of the
   // effort. 19990530 mortene.
-  l = strtoul(readString.data(), NULL, 0);
+  l = strtoul(readString.getString(), NULL, 0);
 
   return TRUE;
 }
@@ -580,7 +580,7 @@ SbBool
 SoInput_FileInfo::readInteger(int32_t & l)
 {
   assert(!this->isBinary());
-  readString.clear();
+  readString.makeEmpty(FALSE);
   char c;
   if (this->readChar(&c, '-')) {
     readString += c;
@@ -595,7 +595,7 @@ SoInput_FileInfo::readInteger(int32_t & l)
   // provided better -- it looks like we are duplicating some of the
   // effort. 19990530 mortene.
 #if 1 // old code
-  l = strtol(readString.data(), NULL, 0);
+  l = strtol(readString.getString(), NULL, 0);
 #else // first version of replacement of strtol. Not activated yet
   int i, n = strlen(s);
   if (n >= 3 && s[0] == '0' && s[1] == 'x') {
@@ -658,7 +658,7 @@ SoInput_FileInfo::readReal(double & d)
     number = 0.0;
     double mul = 1.0;
     for (i = 1; i <= n; i++) {
-      number += (readString[readString.length()-i] - '0') * mul;
+      number += (readString[readString.getLength()-i] - '0') * mul;
       mul *= 10.0;
     }
   }
@@ -672,7 +672,7 @@ SoInput_FileInfo::readReal(double & d)
       gotNum = TRUE;
       double mul = 0.1;
       for (i = n; i > 0; i--) {
-        number += (readString[readString.length()-i] - '0') * mul;
+        number += (readString[readString.getLength()-i] - '0') * mul;
         mul *= 0.1;
       }
     }
@@ -699,7 +699,7 @@ SoInput_FileInfo::readReal(double & d)
       exponent = 0.0;
       double mul = 1.0;
       for (i = 1; i <= n; i++) {
-        exponent += (readString[readString.length()-i] - '0') * mul;
+        exponent += (readString[readString.getLength()-i] - '0') * mul;
         mul *= 10.0;
       }
       if (minus) exponent = -exponent;
@@ -736,7 +736,7 @@ SoInput_FileInfo::readDigits()
 {
   assert(!this->isBinary());
   char c;
-  size_t oldLength = readString.length();
+  const int oldLength = readString.getLength();
 
   while (this->get(c)) {
     if (isdigit(c))
@@ -746,8 +746,8 @@ SoInput_FileInfo::readDigits()
       break;
     }
   }
-  const ptrdiff_t offset = readString.length() - oldLength;
-  return (int)offset;
+  const int offset = readString.getLength() - oldLength;
+  return offset;
 }
 
 /*!
@@ -776,7 +776,7 @@ SoInput_FileInfo::readHexDigits()
 {
   assert(!this->isBinary());
   char c;
-  size_t oldLength = readString.length();
+  const int oldLength = readString.getLength();
 
   while (this->get(c)) {
     if (isxdigit(c))
@@ -786,8 +786,8 @@ SoInput_FileInfo::readHexDigits()
       break;
     }
   }
-  const ptrdiff_t offset = readString.length() - oldLength;
-  return (int)offset;
+  const int offset = readString.getLength() - oldLength;
+  return offset;
 }
 
 /*!
