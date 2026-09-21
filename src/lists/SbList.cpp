@@ -308,6 +308,9 @@ public:
 
   SbListGrowthFailureValue & operator=(const SbListGrowthFailureValue & other)
   {
+    if (SbListGrowthFailureValue::failassignment) {
+      throw std::bad_alloc();
+    }
     this->value = other.value;
     return *this;
   }
@@ -315,6 +318,11 @@ public:
   static void failDefaultConstruction(const bool enable)
   {
     SbListGrowthFailureValue::faildefault = enable;
+  }
+
+  static void failAssignment(const bool enable)
+  {
+    SbListGrowthFailureValue::failassignment = enable;
   }
 
   static int live(void)
@@ -326,10 +334,12 @@ public:
 
 private:
   static bool faildefault;
+  static bool failassignment;
   static int livecount;
 };
 
 bool SbListGrowthFailureValue::faildefault = false;
+bool SbListGrowthFailureValue::failassignment = false;
 int SbListGrowthFailureValue::livecount = 0;
 
 class SbListGrowthFailureAccess : public SbList<SbListGrowthFailureValue> {
@@ -371,6 +381,80 @@ BOOST_AUTO_TEST_CASE(growth_construction_failure_preserves_capacity_and_recovery
   BOOST_CHECK_EQUAL(list.getLength(), 5);
   BOOST_CHECK_EQUAL(list.capacity(), 8);
   BOOST_CHECK_EQUAL(list[4].value, 5);
+}
+
+BOOST_AUTO_TEST_CASE(growth_assignment_failure_releases_candidate_buffer)
+{
+  SbListGrowthFailureAccess list;
+  for (int i = 0; i < 4; ++i) {
+    list.append(SbListGrowthFailureValue(i + 1));
+  }
+
+  SbListGrowthFailureValue fifth(5);
+  const SbListGrowthFailureValue * const oldarray = list.getArrayPtr();
+  const int oldlive = SbListGrowthFailureValue::live();
+
+  bool threw = false;
+  SbListGrowthFailureValue::failAssignment(true);
+  try {
+    list.append(fifth);
+  }
+  catch (const std::bad_alloc &) {
+    threw = true;
+  }
+  SbListGrowthFailureValue::failAssignment(false);
+
+  BOOST_REQUIRE(threw);
+  BOOST_CHECK_EQUAL(list.getLength(), 4);
+  BOOST_REQUIRE_EQUAL(list.capacity(), 4);
+  BOOST_CHECK(list.getArrayPtr() == oldarray);
+  BOOST_CHECK_EQUAL(SbListGrowthFailureValue::live(), oldlive);
+  for (int i = 0; i < 4; ++i) {
+    BOOST_CHECK_EQUAL(list[i].value, i + 1);
+  }
+
+  list.append(fifth);
+  BOOST_CHECK_EQUAL(list.getLength(), 5);
+  BOOST_CHECK_EQUAL(list.capacity(), 8);
+  BOOST_CHECK_EQUAL(list[4].value, 5);
+}
+
+BOOST_AUTO_TEST_CASE(fit_assignment_failure_releases_candidate_buffer)
+{
+  SbListGrowthFailureAccess list;
+  for (int i = 0; i < 9; ++i) {
+    list.append(SbListGrowthFailureValue(i + 1));
+  }
+  list.truncate(6);
+
+  const SbListGrowthFailureValue * const oldarray = list.getArrayPtr();
+  const int oldlive = SbListGrowthFailureValue::live();
+
+  bool threw = false;
+  SbListGrowthFailureValue::failAssignment(true);
+  try {
+    list.fit();
+  }
+  catch (const std::bad_alloc &) {
+    threw = true;
+  }
+  SbListGrowthFailureValue::failAssignment(false);
+
+  BOOST_REQUIRE(threw);
+  BOOST_CHECK_EQUAL(list.getLength(), 6);
+  BOOST_REQUIRE_EQUAL(list.capacity(), 16);
+  BOOST_CHECK(list.getArrayPtr() == oldarray);
+  BOOST_CHECK_EQUAL(SbListGrowthFailureValue::live(), oldlive);
+  for (int i = 0; i < 6; ++i) {
+    BOOST_CHECK_EQUAL(list[i].value, i + 1);
+  }
+
+  list.fit();
+  BOOST_CHECK_EQUAL(list.getLength(), 6);
+  BOOST_CHECK_EQUAL(list.capacity(), 6);
+  for (int i = 0; i < 6; ++i) {
+    BOOST_CHECK_EQUAL(list[i].value, i + 1);
+  }
 }
 
 // Regression test for the real-world usage pattern found in e.g.

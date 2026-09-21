@@ -36,7 +36,6 @@
 #include <cassert>
 #include <climits>
 #include <cstddef> // NULL definition
-#include <memory>
 #include <new>
 #include <Inventor/SbBasic.h> // TRUE/FALSE
 
@@ -112,7 +111,13 @@ public:
       if (items > DEFAULTSIZE) newitembuffer = new Type[items];
 
       if (newitembuffer != this->itembuffer) {
-        for (int i = 0; i < items; i++) newitembuffer[i] = this->itembuffer[i];
+        try {
+          for (int i = 0; i < items; i++) newitembuffer[i] = this->itembuffer[i];
+        }
+        catch (...) {
+          if (newitembuffer != this->builtinbuffer) delete[] newitembuffer;
+          throw;
+        }
       }
 
       if (this->itembuffer != this->builtinbuffer) delete[] this->itembuffer;
@@ -241,16 +246,8 @@ protected:
 
 private:
   void grow(const int size = -1) {
-    // Default behavior is to double array size. itembuffersize is
-    // always >= DEFAULTSIZE for the lifetime of the object (set in
-    // the constructor, and every other assignment below either
-    // doubles it or clamps it to at least DEFAULTSIZE), so the ">
-    // 0" branch is the only one ever taken in practice -- but the
-    // explicit floor lets the compiler prove that locally too,
-    // instead of just at this call's actual call sites, which is
-    // what silences a GCC -Warray-bounds false positive seen when
-    // append() is inlined right after code that resets numitems to
-    // 0 (e.g. truncate(0)) without narrowing itembuffersize.
+    // Default growth doubles the current capacity. Check before the
+    // multiplication to avoid signed overflow.
     int newsize;
     if (size == -1) {
       if (this->itembuffersize > INT_MAX / 2) throw std::bad_alloc();
@@ -259,11 +256,17 @@ private:
     else if (size <= this->itembuffersize) return;
     else { newsize = size; }
 
-    std::unique_ptr<Type[]> newbuffer(new Type[newsize]);
+    Type * newbuffer = new Type[newsize];
     const int n = this->numitems;
-    for (int i = 0; i < n; i++) newbuffer[i] = this->itembuffer[i];
+    try {
+      for (int i = 0; i < n; i++) newbuffer[i] = this->itembuffer[i];
+    }
+    catch (...) {
+      delete[] newbuffer;
+      throw;
+    }
     if (this->itembuffer != this->builtinbuffer) delete[] this->itembuffer;
-    this->itembuffer = newbuffer.release();
+    this->itembuffer = newbuffer;
     this->itembuffersize = newsize;
   }
 
