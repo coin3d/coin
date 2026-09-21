@@ -575,7 +575,7 @@ SoToVRMLActionP::search_for_node(SoNode * root, const SbName & name, const SoTyp
   SoNode * tail = NULL;
   SoPath * path = this->searchaction.getPath();
   if (path) {
-    tail = path->getFullTail();
+    tail = path->fullPath().getTail();
   }
   this->searchaction.reset();
 #ifdef HAVE_NODEKITS
@@ -587,7 +587,7 @@ SoToVRMLActionP::search_for_node(SoNode * root, const SbName & name, const SoTyp
 SoGroup *
 SoToVRMLActionP::get_current_tail(void)
 {
-  SoNode * node = this->vrmlpath->getFullTail();
+  SoNode * node = this->vrmlpath->fullPath().getTail();
   assert(node->isOfType(SoGroup::getClassTypeId()));
   return coin_assert_cast<SoGroup*>(node);
 }

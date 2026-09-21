@@ -452,10 +452,10 @@ SoGetBoundingBoxAction::checkResetBefore(void)
   if (this->resetpath && this->isResetBefore()) {
     const SoPath * curpath = this->getCurPath();
     const SoPath * theresetpath = this->resetpath;
-    if ((curpath->getFullTail() == theresetpath->getFullTail()) &&
+    if ((curpath->fullPath().getTail() == theresetpath->fullPath().getTail()) &&
         curpath->containsPath(theresetpath)) {
       if (this->resettype & SoGetBoundingBoxAction::TRANSFORM) {
-        SoBBoxModelMatrixElement::reset(this->getState(), curpath->getFullTail());
+        SoBBoxModelMatrixElement::reset(this->getState(), curpath->fullPath().getTail());
       }
       if (this->resettype & SoGetBoundingBoxAction::BBOX) {
         this->bbox.makeEmpty();
@@ -476,10 +476,10 @@ SoGetBoundingBoxAction::checkResetAfter(void)
   if (this->resetpath && !this->isResetBefore()) {
     const SoPath * curpath = this->getCurPath();
     const SoPath * theresetpath = this->resetpath;
-    if ((curpath->getFullTail() == theresetpath->getFullTail()) &&
+    if ((curpath->fullPath().getTail() == theresetpath->fullPath().getTail()) &&
         curpath->containsPath(theresetpath)) {
       if (this->resettype & SoGetBoundingBoxAction::TRANSFORM) {
-        SoBBoxModelMatrixElement::reset(this->getState(), curpath->getFullTail());
+        SoBBoxModelMatrixElement::reset(this->getState(), curpath->fullPath().getTail());
       }
       if (this->resettype & SoGetBoundingBoxAction::BBOX) {
         this->bbox.makeEmpty();

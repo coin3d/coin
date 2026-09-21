@@ -726,7 +726,7 @@ SoToVRML2ActionP::search_for_recent_node(SoAction * action, const SoType & type)
   SoNode * tail = NULL;
   SoPath * path = this->searchaction.getPath();
   if (path) {
-    tail = path->getFullTail();
+    tail = path->fullPath().getTail();
   }
   this->searchaction.reset();
 #ifdef HAVE_NODEKITS
@@ -739,7 +739,7 @@ SoToVRML2ActionP::search_for_recent_node(SoAction * action, const SoType & type)
 SoGroup *
 SoToVRML2ActionP::get_current_tail(void)
 {
-  SoNode * node = this->vrml2path->getFullTail();
+  SoNode * node = this->vrml2path->fullPath().getTail();
   assert(node->isOfType(SoVRMLGroup::getClassTypeId()) ||
          node->isOfType(SoVRMLSwitch::getClassTypeId()) ||
          node->isOfType(SoVRMLLOD::getClassTypeId()));

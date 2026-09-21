@@ -106,7 +106,7 @@
 SbBool \
 _class_::replaceManip(SoPath * path, _parentclass_ * newone) const \
 { \
-  SoNode * fulltail = path->getFullTail(); \
+  SoNode * fulltail = path->fullPath().getTail(); \
  \
   if (fulltail != (SoNode *)this) { \
     SoDebugError::post("_class_::replaceManip", \
@@ -139,7 +139,7 @@ _class_::replaceManip(SoPath * path, _parentclass_ * newone) const \
     } \
   } \
   else { \
-    if (path->getFullLength() < 2) { \
+    if (path->fullPath().getLength() < 2) { \
       SoDebugError::post("_class_::replaceManip", "path is too short"); \
       if (constructed) { \
         newone->ref(); \
@@ -148,7 +148,7 @@ _class_::replaceManip(SoPath * path, _parentclass_ * newone) const \
       return FALSE; \
     } \
  \
-    SoNode * parent = path->getFullNodeFromTail(1); \
+    SoNode * parent = path->fullPath().getNodeFromTail(1); \
  \
     if (!parent->isOfType(SoGroup::getClassTypeId())) { \
       SoDebugError::post("_class_::replaceNode", \

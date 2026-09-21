@@ -84,8 +84,8 @@
 
     for (int i = 0; i < pl.getLength(); i++) {
       SoPath * p = pl[i];
-      if (p->getFullTail()->isOfType(SoTexture2::getClassTypeId())) {
-        SoTexture2 * tex = (SoTexture2*) p->getFullTail();
+      if (p->fullPath().getTail()->isOfType(SoTexture2::getClassTypeId())) {
+        SoTexture2 * tex = (SoTexture2*) p->fullPath().getTail();
         if (tex->filename.getValue().getLength()) {
           SbName name = tex->filename.getValue().getString();
           unsigned long key = (unsigned long) ((void*) name.getString());
@@ -95,8 +95,8 @@
             (void) namedict.enter(key, tex);
           }
           else if (tmp != (void*) tex) { // replace with node found in dict
-            SoGroup * parent = (SoGroup*) p->getFullNodeFromTail(1);
-            int idx = p->getFullIndexFromTail(0);
+            SoGroup * parent = (SoGroup*) p->fullPath().getNodeFromTail(1);
+            int idx = p->fullPath().getIndexFromTail(0);
             parent->replaceChild(idx, (SoNode*) tmp);
           }
         }
@@ -154,7 +154,7 @@
 
     const SoPathList & pl = searchaction.getPaths();
     for (int i=0; i < pl.getLength(); i++) {
-      SoTexture2 * tex = (SoTexture2 *)pl[i]->getFullTail();
+      SoTexture2 * tex = (SoTexture2 *)pl[i]->fullPath().getTail();
       assert(tex->getTypeId() == SoTexture2::getClassTypeId());
       tex->image.touch();
     }

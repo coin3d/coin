@@ -219,7 +219,7 @@ SoLineHighlightRenderAction::apply(SoNode * node)
         for (i = 0; i < pathlist.getLength(); i++) {
           SoPath * path = pathlist[i];
           assert(path);
-          SoSelection * selection = static_cast<SoSelection *>(path->getFullTail());
+          SoSelection * selection = static_cast<SoSelection *>(path->fullPath().getTail());
           if (selection->getNumSelected() > 0)
             PRIVATE(this)->drawBoxes(path, selection->getList());
         }
@@ -228,7 +228,7 @@ SoLineHighlightRenderAction::apply(SoNode * node)
     else {
       SoPath * path = PRIVATE(this)->searchaction->getPath();
       if (path) {
-        SoSelection * selection = static_cast<SoSelection *>(path->getFullTail());
+        SoSelection * selection = static_cast<SoSelection *>(path->fullPath().getTail());
         assert(selection->getTypeId().isDerivedFrom(SoSelection::getClassTypeId()));
         if (selection->getNumSelected() > 0) {
           PRIVATE(this)->drawBoxes(path, selection->getList());
@@ -345,7 +345,7 @@ SoLineHighlightRenderActionP::drawBoxes(SoPath * pathtothis,
                                         const SoPathList * pathlist)
 {
   int i;
-  int thispos = pathtothis->getFullLength()-1;
+  int thispos = pathtothis->fullPath().getLength()-1;
   assert(thispos >= 0);
   this->postprocpath->setHead(pathtothis->getHead()); // reset
 
@@ -390,7 +390,7 @@ SoLineHighlightRenderActionP::drawBoxes(SoPath * pathtothis,
     SoPath * path = (*pathlist)[i];
 
     this->postprocpath->append(path->getHead());
-    for (int j = 1; j < path->getFullLength(); j++) {
+    for (int j = 1; j < path->fullPath().getLength(); j++) {
       this->postprocpath->append(path->getIndex(j));
     }
 

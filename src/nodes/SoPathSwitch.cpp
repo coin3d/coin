@@ -91,10 +91,10 @@ is_matching_paths(const SoPath * currentpath, const SoPath * pathswitchpath)
 {
   if (pathswitchpath == NULL) return FALSE;
 
-  int swidx = pathswitchpath->getFullLength() - 1;
+  int swidx = pathswitchpath->fullPath().getLength() - 1;
   if (swidx < 0) return TRUE; // an empty path will always match
 
-  int curidx = currentpath->getFullLength() - 2; // last node is this node. Skip it.
+  int curidx = currentpath->fullPath().getLength() - 2; // last node is this node. Skip it.
 
   // test if swpath is a valid path. Return FALSE if not.
   if (swidx > curidx) return FALSE;

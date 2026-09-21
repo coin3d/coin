@@ -77,7 +77,7 @@ public:
     this->entryindex = data.getIndex(path, TRUE);
     assert(this->entryindex != -1);
     size_t managedmem = 0, unmanagedmem = 0;
-    path->getFullTail()->getFieldsMemorySize(managedmem, unmanagedmem);
+    path->fullPath().getTail()->getFieldsMemorySize(managedmem, unmanagedmem);
     data.setNodeFootprint(this->entryindex,
                           SbProfilingData::MEMORY_SIZE, managedmem);
     data.setNodeFootprint(this->entryindex,
@@ -116,8 +116,8 @@ public:
     const SoPath * path = action->getCurPath();
     SoDebugError::postInfo("Profiling",
                            "%20s (%d): duration %g, offset %g, adjusted %g",
-                           path->getFullTail()->getTypeId().getName().getString(),
-                           path->getFullLength(),
+                           path->fullPath().getTail()->getTypeId().getName().getString(),
+                           path->fullPath().getLength(),
                            duration.getValue(), childrenoffset.getValue(),
                            adjusted.getValue());
 #endif

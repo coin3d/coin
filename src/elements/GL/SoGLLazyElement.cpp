@@ -555,7 +555,7 @@ SoGLLazyElement::sendDiffuseByIndex(const int index) const
     static int first = 1;
     if (first) {
       const SoPath * path = this->state->getAction()->getCurPath();
-      SoNode * tail = path->getFullTail();
+      SoNode * tail = path->fullPath().getTail();
       SbName name = tail->getName();
       SoDebugError::postWarning("SoGLLazyElement::sendDiffuseByIndex",
                                 "index %d out of bounds [0, %d] in node %p: %s "

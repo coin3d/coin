@@ -1610,10 +1610,10 @@ SoDragger::shouldGrabBasedOnSurrogate(const SoPath * pickpath, const SoPath * su
 {
   if (!pickpath->containsPath(surrogatepath)) return FALSE;
 
-  SoNode * tail = surrogatepath->getFullTail();
+  SoNode * tail = surrogatepath->fullPath().getTail();
   SoType draggertype = SoDragger::getClassTypeId();
 
-  for (int i = pickpath->getFullLength()-1; i >= 0; i--) {
+  for (int i = pickpath->fullPath().getLength()-1; i >= 0; i--) {
     SoNode * node = pickpath->getNode(i);
     if (node == tail) return TRUE;
     if (node->isOfType(draggertype))
@@ -1967,7 +1967,7 @@ SoDragger::isPicked(SoPath * path)
   // if this is a composite dragger, the path will go through this
   // dragger, but it should not be regarded as picked if a child
   // dragger is picked.
-  int n = path->getFullLength();
+  int n = path->fullPath().getLength();
   for (++i; i < n; i++) {
     SoNode * node = path->getNode(i);
     if (node->isOfType(SoDragger::getClassTypeId())) return FALSE;

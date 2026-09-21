@@ -49,17 +49,30 @@
   the first node in the path that doesn't inherit SoGroup, and
   getLength() returns the number of nodes down to this node.
 
-  If you need the actual path length, or the actual tail node, use
-  getFullLength() or getFullTail() instead.
+  If you need the actual path length or tail node, including hidden
+  children, use fullPath() to obtain a SoFullPathView.
 */
 
 /*!
-  \fn int SoPath::getFullLength(void) const
+  \class SoFullPathView SoPath.h Inventor/SoPath.h
+  \brief The SoFullPathView class provides safe access to a complete SoPath.
 
-  Returns the number of nodes in the complete path, including hidden
-  children. An empty path has length zero.
+  \ingroup coin_general
 
-  \sa getLength(), getFullTail(), getFullNodeFromTail(), getFullIndexFromTail()
+  SoFullPathView is a non-owning view over a SoPath. It provides the
+  alternate path operations whose SoPath equivalents stop at hidden
+  children. The source SoPath must outlive the view.
+
+  Obtain a view through SoPath::fullPath(). The view reflects subsequent
+  changes to the source path and does not allocate or alter reference counts.
+*/
+
+/*!
+  \fn SoFullPathView SoPath::fullPath(void) const
+
+  Returns a non-owning view of the complete path, including hidden children.
+
+  The returned view must not outlive this SoPath.
 */
 
 // *************************************************************************
@@ -94,17 +107,16 @@
 #include "tidbitsp.h"
 #include "coindefs.h" // COIN_STUB()
 
-#include <stdexcept>
-
 // *************************************************************************
 
 #if COIN_DEBUG && 0 // Convenience function for dumping the SoPath during debugging.
 static void
 sopath_dump(SoPath * p)
 {
-  (void)fprintf(stderr, "(path %p, len %d)  ", p, p->getFullLength());
-  for (int i=0; i < p->getFullLength(); i++) {
-    SoNode * n = p->getFullNodeFromTail(i);
+  const SoFullPathView fullpath = p->fullPath();
+  (void)fprintf(stderr, "(path %p, len %d)  ", p, fullpath.getLength());
+  for (int i=0; i < fullpath.getLength(); i++) {
+    SoNode * n = fullpath.getNodeFromTail(i);
     (void)fprintf(stderr, "%p (%s), ",
                   n, n->getTypeId().getName().getString());
   }
@@ -402,7 +414,7 @@ SoPath::append(SoNode * const node, const int index)
   inheriting SoGroup) when finding the tail.
 
   If you want to find the real tail node (also below node kits and
-  VRML nodes with hidden children), use getFullTail() instead.
+  VRML nodes with hidden children), use fullPath().getTail() instead.
 */
 SoNode *
 SoPath::getTail(void) const
@@ -504,7 +516,7 @@ SoPath::getIndexFromTail(const int index) const
   "visible" nodes are counted, i.e. hidden nodes of e.g. nodekits are
   not included.
 
-  If you need the actual path length, use getFullLength() instead.
+  If you need the actual path length, use fullPath().getLength() instead.
 */
 int
 SoPath::getLength(void) const
@@ -521,65 +533,79 @@ SoPath::getLength(void) const
   return this->nodes.getLength();
 }
 
-/*!
-  Full-path variant of getTail(): returns the actual tail node,
-  counting hidden children (e.g. nodekit-internal nodes) that getTail()
-  stops before.
+SoFullPathView
+SoPath::fullPath(void) const
+{
+  return SoFullPathView(*this);
+}
 
-  \sa getFullLength(), getFullNodeFromTail(), getFullIndexFromTail()
+SoFullPathView::SoFullPathView(const SoPath & sourcepath)
+  : path(&sourcepath)
+{
+}
+
+/*!
+  Returns the number of nodes in the complete path, including hidden
+  children. An empty path has length zero.
+*/
+int
+SoFullPathView::getLength(void) const
+{
+  return this->path->getFullLength();
+}
+
+/*!
+  Returns the actual tail node, including hidden children. Returns \c NULL
+  when the path is empty.
 */
 SoNode *
-SoPath::getFullTail(void) const
+SoFullPathView::getTail(void) const
 {
-  if (this->getFullLength() == 0) {
+  const int length = this->getLength();
+  if (length == 0) {
 #if COIN_DEBUG
-    SoDebugError::postWarning("SoPath::getFullTail", "empty path!");
+    SoDebugError::postWarning("SoFullPathView::getTail", "empty path!");
 #endif // COIN_DEBUG
     return NULL;
   }
-  return this->nodes[this->getFullLength() - 1];
+  return this->path->getNode(length - 1);
 }
 
 /*!
-  Full-path variant of getNodeFromTail(): counts hidden children (e.g.
-  nodekit-internal nodes) that getNodeFromTail() stops before.
-
-  Throws \c std::out_of_range if \a index is outside the complete path.
-
-  \sa getFullLength(), getFullTail(), getFullIndexFromTail()
+  Returns the node positioned \a index nodes from the actual tail, counting
+  hidden children. Returns \c NULL if \a index is outside the complete path.
 */
 SoNode *
-SoPath::getFullNodeFromTail(const int index) const
+SoFullPathView::getNodeFromTail(const int index) const
 {
-  if (index < 0 || index >= this->getFullLength()) {
+  const int length = this->getLength();
+  if (index < 0 || index >= length) {
 #if COIN_DEBUG
-    SoDebugError::post("SoPath::getFullNodeFromTail",
+    SoDebugError::post("SoFullPathView::getNodeFromTail",
                        "index %d is out of bounds.", index);
 #endif // COIN_DEBUG
-    throw std::out_of_range("SoPath::getFullNodeFromTail: index out of bounds");
+    return NULL;
   }
-  return this->nodes[this->getFullLength() - index - 1];
+  return this->path->getNode(length - index - 1);
 }
 
 /*!
-  Full-path variant of getIndexFromTail(): counts hidden children (e.g.
-  nodekit-internal nodes) that getIndexFromTail() stops before.
-
-  Throws \c std::out_of_range if \a index is outside the complete path.
-
-  \sa getFullLength(), getFullTail(), getFullNodeFromTail()
+  Returns the child index positioned \a index nodes from the actual tail,
+  counting hidden children. Returns -1 if \a index is outside the complete
+  path.
 */
 int
-SoPath::getFullIndexFromTail(const int index) const
+SoFullPathView::getIndexFromTail(const int index) const
 {
-  if (index < 0 || index >= this->getFullLength()) {
+  const int length = this->getLength();
+  if (index < 0 || index >= length) {
 #if COIN_DEBUG
-    SoDebugError::post("SoPath::getFullIndexFromTail",
+    SoDebugError::post("SoFullPathView::getIndexFromTail",
                        "index %d is out of bounds.", index);
 #endif // COIN_DEBUG
-    throw std::out_of_range("SoPath::getFullIndexFromTail: index out of bounds");
+    return -1;
   }
-  return this->indices[this->getFullLength() - index - 1];
+  return this->path->getIndex(length - index - 1);
 }
 
 /*!
@@ -1300,27 +1326,29 @@ BOOST_AUTO_TEST_CASE(full_path_hidden_children)
   BOOST_CHECK_EQUAL(path->getLength(), 2);
   BOOST_CHECK(path->getTail() == hidden);
   BOOST_CHECK_EQUAL(path->getIndexFromTail(0), 1);
-  BOOST_CHECK_EQUAL(path->getFullLength(), 3);
-  BOOST_CHECK(path->getFullTail() == leaf);
+  const SoFullPathView fullpath = path->fullPath();
+  BOOST_CHECK_EQUAL(fullpath.getLength(), 3);
+  BOOST_CHECK(fullpath.getTail() == leaf);
   SoNode * expectednodes[] = { leaf, hidden, root };
   const int expectedindices[] = { 2, 1, 0 };
   for (int i = 0; i < 3; ++i) {
-    BOOST_CHECK(path->getFullNodeFromTail(i) == expectednodes[i]);
-    BOOST_CHECK_EQUAL(path->getFullIndexFromTail(i), expectedindices[i]);
+    BOOST_CHECK(fullpath.getNodeFromTail(i) == expectednodes[i]);
+    BOOST_CHECK_EQUAL(fullpath.getIndexFromTail(i), expectedindices[i]);
   }
 
   SoPath * copy = path->copy();
   copy->ref();
+  const SoFullPathView fullcopy = copy->fullPath();
   copy->pop();
-  BOOST_CHECK_EQUAL(copy->getFullLength(), 2);
-  BOOST_CHECK(copy->getFullTail() == hidden);
-  BOOST_CHECK_EQUAL(path->getFullLength(), 3);
+  BOOST_CHECK_EQUAL(fullcopy.getLength(), 2);
+  BOOST_CHECK(fullcopy.getTail() == hidden);
+  BOOST_CHECK_EQUAL(fullpath.getLength(), 3);
   copy->pop();
-  BOOST_CHECK(copy->getFullTail() == root);
+  BOOST_CHECK(fullcopy.getTail() == root);
   copy->pop();
-  BOOST_CHECK_EQUAL(copy->getFullLength(), 0);
+  BOOST_CHECK_EQUAL(fullcopy.getLength(), 0);
   BOOST_CHECK_EQUAL(copy->getLength(), 0);
-  BOOST_CHECK(copy->getFullTail() == NULL);
+  BOOST_CHECK(fullcopy.getTail() == NULL);
   copy->unref();
   path->unref();
   root->unref();
@@ -1338,6 +1366,15 @@ BOOST_AUTO_TEST_CASE(full_path_accessors_on_real_subclass)
     SoTempPath path(2);
     path.setHead(root);
     path.append(1);
+    const SoFullPathView fullpath = path.fullPath();
+    BOOST_CHECK_EQUAL(fullpath.getLength(), 2);
+    BOOST_CHECK(fullpath.getTail() == leaf);
+    BOOST_CHECK(fullpath.getNodeFromTail(0) == leaf);
+    BOOST_CHECK(fullpath.getNodeFromTail(1) == root);
+    BOOST_CHECK_EQUAL(fullpath.getIndexFromTail(0), 1);
+    BOOST_CHECK_EQUAL(fullpath.getIndexFromTail(1), 0);
+
+    // The genuine SoFullPath interface remains available for SoTempPath.
     BOOST_CHECK_EQUAL(path.getLength(), 2);
     BOOST_CHECK(path.getTail() == leaf);
     BOOST_CHECK(path.getNodeFromTail(0) == leaf);
@@ -1351,7 +1388,7 @@ BOOST_AUTO_TEST_CASE(full_path_accessors_on_real_subclass)
   root->unref();
 }
 
-BOOST_AUTO_TEST_CASE(full_path_accessors_reject_invalid_indices)
+BOOST_AUTO_TEST_CASE(full_path_view_rejects_invalid_indices)
 {
   SoGroup * root = new SoGroup;
   root->ref();
@@ -1361,13 +1398,14 @@ BOOST_AUTO_TEST_CASE(full_path_accessors_reject_invalid_indices)
   path->ref();
   path->append(0);
 
-  BOOST_REQUIRE_THROW(path->getFullNodeFromTail(-1), std::out_of_range);
-  BOOST_REQUIRE_THROW(path->getFullNodeFromTail(2), std::out_of_range);
-  BOOST_REQUIRE_THROW(path->getFullIndexFromTail(-1), std::out_of_range);
-  BOOST_REQUIRE_THROW(path->getFullIndexFromTail(2), std::out_of_range);
+  const SoFullPathView fullpath = path->fullPath();
+  BOOST_CHECK(fullpath.getNodeFromTail(-1) == NULL);
+  BOOST_CHECK(fullpath.getNodeFromTail(2) == NULL);
+  BOOST_CHECK_EQUAL(fullpath.getIndexFromTail(-1), -1);
+  BOOST_CHECK_EQUAL(fullpath.getIndexFromTail(2), -1);
 
-  BOOST_CHECK_EQUAL(path->getFullLength(), 2);
-  BOOST_CHECK(path->getFullTail() == root->getChild(0));
+  BOOST_CHECK_EQUAL(fullpath.getLength(), 2);
+  BOOST_CHECK(fullpath.getTail() == root->getChild(0));
 
   path->unref();
   root->unref();

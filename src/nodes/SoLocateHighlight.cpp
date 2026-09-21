@@ -334,8 +334,8 @@ void
 SoLocateHighlight::turnoffcurrent(SoAction * action)
 {
   SoPath * path = solocatehighlight_currenthighlightpath;
-  if (path && path->getFullLength()) {
-    SoNode * tail = path->getFullTail();
+  if (path && path->fullPath().getLength()) {
+    SoNode * tail = path->fullPath().getTail();
     if (tail->isOfType(SoLocateHighlight::getClassTypeId())) {
       ((SoLocateHighlight*)tail)->pimpl->highlighted = FALSE;
       ((SoLocateHighlight*)tail)->touch(); // force scene redraw

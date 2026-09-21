@@ -1848,7 +1848,7 @@ SoTransformerDragger::updateAntiSquishList(void)
 
     SoPathList &pl = sa.getPaths();
     for (int i = 0; i < pl.getLength(); i++) {
-      SoNode * tail = pl[i]->getFullTail();
+      SoNode * tail = pl[i]->fullPath().getTail();
       int j, n = this->antiSquishList.getLength();
       for (j = 0; j < n; j++) {
         if (this->antiSquishList[j] == tail) break;

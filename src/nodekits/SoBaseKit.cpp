@@ -726,7 +726,7 @@ SoBaseKit::getPartString(const SoBase * part)
     SoBaseKit * kit = this;
     SbString partname;
     int parentnum = 0;
-    SoNode * tail = path->getFullTail();
+    SoNode * tail = path->fullPath().getTail();
     SoNode * node = kit;
     while (node != tail) {
       node = path->getNode(++pathidx);
@@ -747,7 +747,7 @@ SoBaseKit::getPartString(const SoBase * part)
         assert(catalog->isLeaf(partnum));
         SoNodeKitListPart * list = (SoNodeKitListPart *)node;
         pathidx += 2; // // skip container node
-        if (pathidx >= path->getFullLength()) {
+        if (pathidx >= path->fullPath().getLength()) {
 #if COIN_DEBUG
           SoDebugError::postWarning("SoBaseKit::getPartString",
                                     "Path too short");
@@ -1796,9 +1796,9 @@ SoBaseKit::createPathToAnyPart(const SbName & partname, SbBool makeifneeded,
     path = pathtoextend->copy();
     path->ref();
     // pop off nodes beyond this kit node
-    if (path->containsNode(this)) while (path->getFullTail() != this && path->getFullLength()) path->pop();
-    else if (path->getFullLength()) {
-      SoNode * node = path->getFullTail();
+    if (path->containsNode(this)) while (path->fullPath().getTail() != this && path->fullPath().getLength()) path->pop();
+    else if (path->fullPath().getLength()) {
+      SoNode * node = path->fullPath().getTail();
       if (!node->getChildren() || node->getChildren()->find(this) < 0) {
 #if COIN_DEBUG
         SoDebugError::postWarning("SoBaseKit::createPathToAnyPart",
@@ -2637,7 +2637,7 @@ SoBaseKitP::addKitDetail(SoPath * path, SoPickedPoint * pp)
 
   assert(path->findNode(this->kit) >= 0);
 
-  const int n = path->getFullLength();
+  const int n = path->fullPath().getLength();
   for (int i = path->findNode(this->kit) + 1; i < n; i++) {
     SoNode * node = path->getNode(i);
     int idx = this->kit->findNodeInThisKit(node, -1);
@@ -2650,7 +2650,7 @@ SoBaseKitP::addKitDetail(SoPath * path, SoPickedPoint * pp)
       // path extends into the children. Supply index in partname
       // if this is the case.
       if (node->isOfType(SoNodeKitListPart::getClassTypeId()) &&
-          path->getFullLength() >= i + 2) {
+          path->fullPath().getLength() >= i + 2) {
         SbString str;
         str.sprintf("%s[%d]",
                     partname.getString(),

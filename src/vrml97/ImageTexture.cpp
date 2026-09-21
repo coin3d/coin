@@ -141,8 +141,8 @@
 
     for (int i = 0; i < pl.getLength(); i++) {
       SoPath * p = pl[i];
-      if (p->getFullTail()->isOfType(SoVRMLImageTexture::getClassTypeId())) {
-        SoVRMLImageTexture * tex = (SoVRMLImageTexture*) p->getFullTail();
+      if (p->fullPath().getTail()->isOfType(SoVRMLImageTexture::getClassTypeId())) {
+        SoVRMLImageTexture * tex = (SoVRMLImageTexture*) p->fullPath().getTail();
         if (tex->url.getNum()) {
           // FIXME: we only check the first name here. Should really check all of them
           SbName name = tex->url[0].getString();
@@ -152,7 +152,7 @@
             (void) namedict.enter(key, tex);
           }
           else if (tmp != (void*) tex) {
-            SoNode * parent = p->getFullNodeFromTail(1);
+            SoNode * parent = p->fullPath().getNodeFromTail(1);
             if (parent->isOfType(SoVRMLAppearance::getClassTypeId())) {
               ((SoVRMLAppearance*)parent)->texture = (SoNode*) tmp;
             }

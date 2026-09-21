@@ -37,17 +37,15 @@
   \ingroup coin_general
 
   SoPath::getTail() and SoPath::getLength() stop at the first node with
-  hidden children. To inspect the complete path, use
-  SoPath::getFullTail(), SoPath::getFullLength(),
-  SoPath::getFullNodeFromTail(), and SoPath::getFullIndexFromTail().
+  hidden children. To inspect the complete path, use SoPath::fullPath().
 
   Historically, callers cast SoPath instances to SoFullPath to access
   hidden children. Such a downcast has undefined behavior unless the
-  object actually derives from SoFullPath. The full-path methods on
-  SoPath provide this functionality without a cast.
+  object actually derives from SoFullPath. SoPath::fullPath() provides
+  this functionality without a cast.
 
   SoFullPath is retained for compatibility and as the base of
-  SoTempPath. Its accessors delegate to the full-path methods on SoPath.
+  SoTempPath. Its accessors delegate to SoFullPathView.
 */
 
 /*!
@@ -85,7 +83,7 @@ SoFullPath::~SoFullPath(void)
 SoNode *
 SoFullPath::getTail(void) const
 {
-  return this->getFullTail();
+  return this->fullPath().getTail();
 }
 
 /*!
@@ -96,7 +94,7 @@ SoFullPath::getTail(void) const
 SoNode *
 SoFullPath::getNodeFromTail(const int index) const
 {
-  return this->getFullNodeFromTail(index);
+  return this->fullPath().getNodeFromTail(index);
 }
 
 /*!
@@ -107,7 +105,7 @@ SoFullPath::getNodeFromTail(const int index) const
 int
 SoFullPath::getIndexFromTail(const int index) const
 {
-  return this->getFullIndexFromTail(index);
+  return this->fullPath().getIndexFromTail(index);
 }
 
 /*!
@@ -117,5 +115,5 @@ SoFullPath::getIndexFromTail(const int index) const
 int
 SoFullPath::getLength(void) const
 {
-  return this->getFullLength();
+  return this->fullPath().getLength();
 }

@@ -151,14 +151,14 @@ compare_paths(const void * v0, const void * v1)
   const ptrdiff_t diff = (char *)p0->getHead() - (char *)p1->getHead();
   if (diff != 0) { return (int)diff; }
 
-  int n = SbMin(p0->getFullLength(), p1->getFullLength());
+  int n = SbMin(p0->fullPath().getLength(), p1->fullPath().getLength());
   int i;
   for (i = 1; i < n; i++) {
     const int diff = p0->getIndex(i) - p1->getIndex(i);
     if (diff != 0) { return (int)diff; }
   }
   // shortest path first
-  return p0->getFullLength() - p1->getFullLength();
+  return p0->fullPath().getLength() - p1->fullPath().getLength();
 }
 }
 
@@ -191,7 +191,7 @@ SoPathList::uniquify(void)
     // if fork is at tail of current path, remove next path. We might
     // have more than one path that go through this path's tail, so do
     // the test in a while loop
-    while ((j < this->getLength()) && (p->findFork(array[j]) == p->getFullLength()-1)) {
+    while ((j < this->getLength()) && (p->findFork(array[j]) == p->fullPath().getLength()-1)) {
       this->remove(j);
       // get array pointer again even though it shouldn't change, but
       // it might do in the future so...

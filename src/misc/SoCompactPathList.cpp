@@ -65,7 +65,7 @@ SoCompactPathList::SoCompactPathList(const SoPathList & list)
 
   for (int i = 0; i < list.getLength(); i++) {
     assert(list[i]->getHead() == list[0]->getHead());
-    numnodes += list[i]->getFullLength() - 1;
+    numnodes += list[i]->fullPath().getLength() - 1;
   }
   // 3 entries for each node + one extra for the root. This is a
   // worst-case size, but memory usage isn't an issue for this class
@@ -156,7 +156,7 @@ SoCompactPathList::createLookupTable(int curidx, int depth,
 {
   // When we get to the tail, store a 0 for no children. The traversal
   // will switch to BELOW_PATH when this happens.
-  if (depth >= list[firstpath]->getFullLength()) {
+  if (depth >= list[firstpath]->fullPath().getLength()) {
     this->lookuptable[curidx] = 0;
     return curidx + 1;
   }

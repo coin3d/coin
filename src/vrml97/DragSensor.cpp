@@ -169,8 +169,8 @@ SoVRMLDragSensor::handleEvent(SoHandleEventAction * action)
     const SoPickedPoint * pp = action->getPickedPoint();
     if (pp) {
       const SoPath * currpath = action->getCurPath();
-      SoPath * parentpath = currpath->copy(0, currpath->getFullLength()-1);
-      SoNode * parentnode = parentpath->getFullTail();
+      SoPath * parentpath = currpath->copy(0, currpath->fullPath().getLength()-1);
+      SoNode * parentnode = parentpath->fullPath().getTail();
       parentpath->ref();
       hit = pp->getPath()->containsPath(parentpath);
       parentpath->unref();

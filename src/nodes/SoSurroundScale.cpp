@@ -397,7 +397,7 @@ SoSurroundScale::updateMySurroundParams(SoAction * action,
   int numtocontainer = this->numNodesUpToContainer.getValue();
   int numtoreset = this->numNodesUpToReset.getValue();
   const SoPath * curpath = action->getCurPath();
-  const int curpathlen = curpath->getFullLength();
+  const int curpathlen = curpath->fullPath().getLength();
 
   if ((numtocontainer <= 0) || (numtocontainer >= curpathlen)) {
 #if COIN_DEBUG

@@ -46,7 +46,24 @@
 class SoWriteAction;
 class SoNotList;
 class SoInput;
+class SoNode;
 class SoPathList;
+class SoPath;
+
+
+class COIN_DLL_API SoFullPathView final {
+public:
+  int getLength(void) const;
+  SoNode * getTail(void) const;
+  SoNode * getNodeFromTail(const int index) const;
+  int getIndexFromTail(const int index) const;
+
+private:
+  friend class SoPath;
+  explicit SoFullPathView(const SoPath & sourcepath);
+
+  const SoPath * path;
+};
 
 
 class COIN_DLL_API SoPath : public SoBase {
@@ -77,16 +94,8 @@ public:
   int getIndex(const int index) const;
   int getIndexFromTail(const int index) const;
   int getLength(void) const;
+  SoFullPathView fullPath(void) const;
   void truncate(const int length);
-
-  // "Full" variants of getTail()/getNodeFromTail()/getIndexFromTail()/
-  // getLength(): unlike the methods above, these count hidden children
-  // (e.g. nodekit-internal nodes) instead of stopping at the first one.
-  // Use these to inspect a complete SoPath without casting to SoFullPath.
-  SoNode * getFullTail(void) const;
-  SoNode * getFullNodeFromTail(const int index) const;
-  int getFullIndexFromTail(const int index) const;
-  int getFullLength(void) const;
 
   int findFork(const SoPath * const path) const;
   int findNode(const SoNode * const node) const;
@@ -116,6 +125,7 @@ private:
   static void cleanupClass(void);
   static void * createInstance(void);
   void append(SoNode * const node, const int index);
+  int getFullLength(void) const;
   void truncate(const int length, const SbBool donotify);
   SbBool readInstance(SoInput * in, unsigned short flags) override;
   void setFirstHidden(void);
@@ -127,6 +137,8 @@ private:
   SbBool firsthiddendirty;
   static SoType classTypeId;
 
+  friend class SoFullPathView;
+  friend class SoFullPath;
   friend class SoNodeKitPath;
   friend class SoAction;
   friend class SoTempPath;

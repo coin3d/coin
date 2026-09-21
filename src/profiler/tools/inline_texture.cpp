@@ -33,7 +33,7 @@ main(void)
   const SoPathList & pl = searchaction.getPaths();
   for (int i=0; i < pl.getLength(); i++) {
     SoPath * path = pl[i];
-    SoTexture2 * tex = (SoTexture2 *)path->getFullTail();
+    SoTexture2 * tex = (SoTexture2 *)path->fullPath().getTail();
     assert(tex->getTypeId() == SoTexture2::getClassTypeId());
     tex->image.touch();
   }

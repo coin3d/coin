@@ -80,7 +80,7 @@ SoSceneManagerP::searchForCamera(SoNode * root,
 #endif // HAVE_NODEKITS
   SoPath * path = this->searchaction->getPath();
   if (path) {
-    SoNode * tail = path->getFullTail();
+    SoNode * tail = path->fullPath().getTail();
     this->searchaction->reset();
     return (SoCamera*) tail;
   }

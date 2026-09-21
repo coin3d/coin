@@ -178,7 +178,7 @@ textureCoordinateSphereCallback(void * userdata,
 
   SoState * state = data->currentstate;
   const SoPath * path = state->getAction()->getCurPath();
-  SoNode * node = path->getFullTail();
+  SoNode * node = path->fullPath().getTail();
 
 
   if (!node->isOfType(SoShape::getClassTypeId())) {

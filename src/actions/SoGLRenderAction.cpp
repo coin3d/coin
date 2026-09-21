@@ -1077,7 +1077,7 @@ SoGLRenderAction::beginTraversal(SoNode * node)
         SoBaseKit::setSearchingChildren(oldchildsearch);
         SoPathList plist = sa.getPaths();
         for (int i = 0, n = plist.getLength(); i < n; ++i) {
-          SoNode * tail = plist[i]->getFullTail();
+          SoNode * tail = plist[i]->fullPath().getTail();
           if ((tail != NULL) &&
               (tail->isOfType(SoProfilerVisualizeKit::getClassTypeId()))) {
             SoProfilerVisualizeKit * viskit = coin_assert_cast<SoProfilerVisualizeKit *>(tail);
@@ -1393,9 +1393,9 @@ SoGLRenderAction::abortNow(void)
   if (debug) {
     const SoPath * p = this->getCurPath();
     assert(p);
-    const int len = p->getFullLength();
+    const int len = p->fullPath().getLength();
     for (int i=1; i < len; i++) { printf("  "); }
-    const SoNode * n = p->getFullTail();
+    const SoNode * n = p->fullPath().getTail();
     assert(n);
     printf("%p %s (\"%s\")\n",
            n, n->getTypeId().getName().getString(),
@@ -1632,7 +1632,7 @@ SoGLRenderActionP::addSortTransPath(SoPath * path)
   }
 
   SoState * state = action->getState();
-  SoNode * tail = path->getFullTail();
+  SoNode * tail = path->fullPath().getTail();
   float dist;
   SbBox3f bbox;
   // test if we can find the bbox using SoShape::getBoundingBoxCache()
