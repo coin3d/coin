@@ -640,6 +640,8 @@ SoInput_FileInfo::readReal(double & d)
   int i, n;
   char c;
 
+  readString.makeEmpty(FALSE);
+
   double number;
   double exponent;
 
