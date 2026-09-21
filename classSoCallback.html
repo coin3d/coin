@@ -516,7 +516,7 @@ Additional Inherited Members</h2></td></tr>
 <p>The callback function will be executed during traversal of <em>any</em> action, so check the type of the <em>action</em> argument of the callback function if you only want to run your code at specific actions.</p>
 <p><b>FILE FORMAT/DEFAULTS:</b> </p><div class="fragment"><div class="line"><a class="code hl_class" href="classSbList.html">Callback</a> {</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassSbList_html"><div class="ttname"><a href="classSbList.html">SbList</a></div><div class="ttdoc">The SbList class is a template container class for lists.</div><div class="ttdef"><b>Definition</b> SbList.h:70</div></div>
+<div class="ttc" id="aclassSbList_html"><div class="ttname"><a href="classSbList.html">SbList</a></div><div class="ttdoc">The SbList class is a template container class for lists.</div><div class="ttdef"><b>Definition</b> SbList.h:72</div></div>
 </div><!-- fragment --> </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af1e3717dfd82737b6f1d864748857130" name="af1e3717dfd82737b6f1d864748857130"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af1e3717dfd82737b6f1d864748857130">&#9670;&#160;</a></span>SoCallback()</h2>
@@ -622,7 +622,7 @@ Additional Inherited Members</h2></td></tr>
 <p>This is the method that should be overridden by extension node / engine / dragger / whatever subclasses which need to account for internal data that are not handled automatically.</p>
 <p>For copying nodes from application code, you should not invoke this function directly, but rather call the <a class="el" href="classSoNode.html#a1435c7f4d354e7598a649ee59a9dd1d0">SoNode::copy()</a> function:</p>
 <div class="fragment"><div class="line"><a class="code hl_class" href="classSoNode.html">SoNode</a> * <a class="code hl_class" href="classSbList.html">mynewnode</a> = <a class="code hl_class" href="classSbList.html">templatenode</a>-&gt;<a class="code hl_function" href="classSbList.html#ad35a42495f3ecb04a19a387dc468ce92">copy</a>();</div>
-<div class="ttc" id="aclassSbList_html_ad35a42495f3ecb04a19a387dc468ce92"><div class="ttname"><a href="classSbList.html#ad35a42495f3ecb04a19a387dc468ce92">SbList::copy</a></div><div class="ttdeci">void copy(const SbList&lt; Type &gt; &amp;l)</div><div class="ttdef"><b>Definition</b> SbList.h:92</div></div>
+<div class="ttc" id="aclassSbList_html_ad35a42495f3ecb04a19a387dc468ce92"><div class="ttname"><a href="classSbList.html#ad35a42495f3ecb04a19a387dc468ce92">SbList::copy</a></div><div class="ttdeci">void copy(const SbList&lt; Type &gt; &amp;l)</div><div class="ttdef"><b>Definition</b> SbList.h:94</div></div>
 <div class="ttc" id="aclassSoNode_html"><div class="ttname"><a href="classSoNode.html">SoNode</a></div><div class="ttdoc">The SoNode class is the base class for nodes used in scene graphs.</div><div class="ttdef"><b>Definition</b> SoNode.h:56</div></div>
 </div><!-- fragment --><p>The same also goes for engines.</p>
 <p>Make sure that when you override the <a class="el" href="#a6958bbf18fabdbe6b75a1f12d06cad21">copyContents()</a> method in your extension class that you also make it call upwards to its parent superclass in the inheritance hierarchy, as <a class="el" href="#a6958bbf18fabdbe6b75a1f12d06cad21">copyContents()</a> in for instance <a class="el" href="classSoNode.html" title="The SoNode class is the base class for nodes used in scene graphs.">SoNode</a> and <a class="el" href="classSoFieldContainer.html" title="The SoFieldContainer class is a base class for all classes that contain fields.">SoFieldContainer</a> does important work. It should go something like this:</p>
@@ -1082,7 +1082,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoCallback.html">SoCallback</a></li>
-    <li class="footer">Generated on Mon Sep 21 2026 09:03:31 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Mon Sep 21 2026 09:22:10 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

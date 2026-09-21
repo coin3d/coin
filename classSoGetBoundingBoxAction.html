@@ -382,7 +382,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Also, some 3D shapes like for instance <a class="el" href="classSoNurbsSurface.html" title="The SoNurbsSurface class is used to render smooth surfaces.">SoNurbsSurface</a>, get slightly distorted if there's an <a class="el" href="classSoComplexity.html" title="The SoComplexity class is a node type which is used to set the trade-off between quality and performa...">SoComplexity</a> node in the scene graph with the <a class="el" href="classSoComplexity.html#a0679d84b90988ecd1f0c8874d1368b6e">SoComplexity::value</a> field set to SCREEN_SPACE. Then it is also necessary to know the viewport region to find out how to accurately calculate the bounding box of those shapes.</p>
 <p>You would usually want to pass in a viewport region equal to the layout of the current render area canvas. If you have a viewer or So@Gui@RenderArea available, you can get hold of the viewport region data simply by doing</p>
 <div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_class" href="classSbViewportRegion.html">SbViewportRegion</a> &amp; <a class="code hl_class" href="classSbList.html">vpreg</a> = <a class="code hl_class" href="classSbList.html">viewer</a>-&gt;getViewportRegion();</div>
-<div class="ttc" id="aclassSbList_html"><div class="ttname"><a href="classSbList.html">SbList</a></div><div class="ttdoc">The SbList class is a template container class for lists.</div><div class="ttdef"><b>Definition</b> SbList.h:70</div></div>
+<div class="ttc" id="aclassSbList_html"><div class="ttname"><a href="classSbList.html">SbList</a></div><div class="ttdoc">The SbList class is a template container class for lists.</div><div class="ttdef"><b>Definition</b> SbList.h:72</div></div>
 <div class="ttc" id="aclassSbViewportRegion_html"><div class="ttname"><a href="classSbViewportRegion.html">SbViewportRegion</a></div><div class="ttdoc">The SbViewportRegion class is a viewport within a full window.</div><div class="ttdef"><b>Definition</b> SbViewportRegion.h:40</div></div>
 </div><!-- fragment --><p>(If you don't have a viewer or render area available in your application at the point where you want to get the bounding box, it probably doesn't matter much what you set it to. The accuracy of the bounding box calculation might be slightly wrong versus the actual rendered appearance of the scene, but this is usually not noticeable.) </p>
 
@@ -1058,7 +1058,7 @@ Set a new center point during traversal. </p>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoGetBoundingBoxAction.html">SoGetBoundingBoxAction</a></li>
-    <li class="footer">Generated on Mon Sep 21 2026 09:03:32 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Mon Sep 21 2026 09:22:11 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

@@ -357,7 +357,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Fields of this type stores their value to file as a rotation axis vector plus a rotation angle: "axis0 axis1 axis2 angle".</p>
 <p>Note that there is one <em>very</em> common mistake that is easy to make when setting the value of an <a class="el" href="classSoSFRotation.html" title="The SoSFRotation class is a container for an SbRotation.">SoSFRotation</a> field, and that is to inadvertently use the wrong <a class="el" href="classSbRotation.html" title="The SbRotation class represents a rotation in 3D space.">SbRotation</a> constructor. This example should clarify the problem:</p>
 <div class="fragment"><div class="line"><a class="code hl_class" href="classSbList.html">mytransformnode</a>-&gt;rotation.setValue(0, 0, 1, 1.5707963f);</div>
-<div class="ttc" id="aclassSbList_html"><div class="ttname"><a href="classSbList.html">SbList</a></div><div class="ttdoc">The SbList class is a template container class for lists.</div><div class="ttdef"><b>Definition</b> SbList.h:70</div></div>
+<div class="ttc" id="aclassSbList_html"><div class="ttname"><a href="classSbList.html">SbList</a></div><div class="ttdoc">The SbList class is a template container class for lists.</div><div class="ttdef"><b>Definition</b> SbList.h:72</div></div>
 </div><!-- fragment --><p>The programmer clearly tries to set a PI/2 rotation around the Z axis, but this will fail, as the <a class="el" href="classSbRotation.html" title="The SbRotation class represents a rotation in 3D space.">SbRotation</a> constructor invoked above is the one that takes as arguments the 4 floats of a <em>quaternion</em>. What the programmer almost certainly wanted to do was to use the <a class="el" href="classSbRotation.html" title="The SbRotation class represents a rotation in 3D space.">SbRotation</a> constructor that takes a rotation vector and a rotation angle, which is invoked like this:</p>
 <div class="fragment"><div class="line"><a class="code hl_class" href="classSbList.html">mytransformnode</a>-&gt;rotation.setValue(<a class="code hl_class" href="classSbVec3f.html">SbVec3f</a>(0, 0, 1), 1.5707963f);</div>
 <div class="ttc" id="aclassSbVec3f_html"><div class="ttname"><a href="classSbVec3f.html">SbVec3f</a></div><div class="ttdoc">The SbVec3f class is a 3 dimensional vector with floating point coordinates.</div><div class="ttdef"><b>Definition</b> SbVec3f.h:51</div></div>
@@ -634,7 +634,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoSFRotation.html">SoSFRotation</a></li>
-    <li class="footer">Generated on Mon Sep 21 2026 09:03:33 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Mon Sep 21 2026 09:22:13 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

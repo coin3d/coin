@@ -628,8 +628,8 @@ Action Shot of ClipPlane Manipulator</div></div>
 <div class="line">}</div>
 <div class="ttc" id="aclassSbBox3f_html"><div class="ttname"><a href="classSbBox3f.html">SbBox3f</a></div><div class="ttdoc">The SbBox3f class is an abstraction for an axis aligned 3 dimensional box.</div><div class="ttdef"><b>Definition</b> SbBox3f.h:46</div></div>
 <div class="ttc" id="aclassSbColor_html"><div class="ttname"><a href="classSbColor.html">SbColor</a></div><div class="ttdoc">The SbColor class contains the red, green and blue components which make up a color value.</div><div class="ttdef"><b>Definition</b> SbColor.h:39</div></div>
-<div class="ttc" id="aclassSbList_html"><div class="ttname"><a href="classSbList.html">SbList</a></div><div class="ttdoc">The SbList class is a template container class for lists.</div><div class="ttdef"><b>Definition</b> SbList.h:70</div></div>
-<div class="ttc" id="aclassSbList_html_ab18cad4eb2d06030cd564917a8c331f4"><div class="ttname"><a href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">SbList::SbList</a></div><div class="ttdeci">SbList(const int sizehint=DEFAULTSIZE)</div><div class="ttdef"><b>Definition</b> SbList.h:78</div></div>
+<div class="ttc" id="aclassSbList_html"><div class="ttname"><a href="classSbList.html">SbList</a></div><div class="ttdoc">The SbList class is a template container class for lists.</div><div class="ttdef"><b>Definition</b> SbList.h:72</div></div>
+<div class="ttc" id="aclassSbList_html_ab18cad4eb2d06030cd564917a8c331f4"><div class="ttname"><a href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">SbList::SbList</a></div><div class="ttdeci">SbList(const int sizehint=DEFAULTSIZE)</div><div class="ttdef"><b>Definition</b> SbList.h:80</div></div>
 <div class="ttc" id="aclassSbVec3f_html"><div class="ttname"><a href="classSbVec3f.html">SbVec3f</a></div><div class="ttdoc">The SbVec3f class is a 3 dimensional vector with floating point coordinates.</div><div class="ttdef"><b>Definition</b> SbVec3f.h:51</div></div>
 <div class="ttc" id="aclassSoBase_html_a254b1ac395fe4d4d10438b994bdb3561"><div class="ttname"><a href="classSoBase.html#a254b1ac395fe4d4d10438b994bdb3561">SoBase::unref</a></div><div class="ttdeci">void unref(void) const</div><div class="ttdef"><b>Definition</b> SoBase.cpp:530</div></div>
 <div class="ttc" id="aclassSoBase_html_ac01cf34901b2a2be1bc2671bb2463851"><div class="ttname"><a href="classSoBase.html#ac01cf34901b2a2be1bc2671bb2463851">SoBase::ref</a></div><div class="ttdeci">void ref(void) const</div><div class="ttdef"><b>Definition</b> SoBase.cpp:478</div></div>
@@ -749,7 +749,7 @@ Coin <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">1.0
 <p>This is the method that should be overridden by extension node / engine / dragger / whatever subclasses which need to account for internal data that are not handled automatically.</p>
 <p>For copying nodes from application code, you should not invoke this function directly, but rather call the <a class="el" href="classSoNode.html#a1435c7f4d354e7598a649ee59a9dd1d0">SoNode::copy()</a> function:</p>
 <div class="fragment"><div class="line"><a class="code hl_class" href="classSoNode.html">SoNode</a> * <a class="code hl_class" href="classSbList.html">mynewnode</a> = <a class="code hl_class" href="classSbList.html">templatenode</a>-&gt;<a class="code hl_function" href="classSbList.html#ad35a42495f3ecb04a19a387dc468ce92">copy</a>();</div>
-<div class="ttc" id="aclassSbList_html_ad35a42495f3ecb04a19a387dc468ce92"><div class="ttname"><a href="classSbList.html#ad35a42495f3ecb04a19a387dc468ce92">SbList::copy</a></div><div class="ttdeci">void copy(const SbList&lt; Type &gt; &amp;l)</div><div class="ttdef"><b>Definition</b> SbList.h:92</div></div>
+<div class="ttc" id="aclassSbList_html_ad35a42495f3ecb04a19a387dc468ce92"><div class="ttname"><a href="classSbList.html#ad35a42495f3ecb04a19a387dc468ce92">SbList::copy</a></div><div class="ttdeci">void copy(const SbList&lt; Type &gt; &amp;l)</div><div class="ttdef"><b>Definition</b> SbList.h:94</div></div>
 <div class="ttc" id="aclassSoNode_html"><div class="ttname"><a href="classSoNode.html">SoNode</a></div><div class="ttdoc">The SoNode class is the base class for nodes used in scene graphs.</div><div class="ttdef"><b>Definition</b> SoNode.h:56</div></div>
 </div><!-- fragment --><p>The same also goes for engines.</p>
 <p>Make sure that when you override the <a class="el" href="#a6fe513843960b1c225f65dda7e7ef398">copyContents()</a> method in your extension class that you also make it call upwards to its parent superclass in the inheritance hierarchy, as <a class="el" href="#a6fe513843960b1c225f65dda7e7ef398">copyContents()</a> in for instance <a class="el" href="classSoNode.html" title="The SoNode class is the base class for nodes used in scene graphs.">SoNode</a> and <a class="el" href="classSoFieldContainer.html" title="The SoFieldContainer class is a base class for all classes that contain fields.">SoFieldContainer</a> does important work. It should go something like this:</p>
@@ -1450,7 +1450,7 @@ Called whenever dragger is touched. </p>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoClipPlaneManip.html">SoClipPlaneManip</a></li>
-    <li class="footer">Generated on Mon Sep 21 2026 09:03:31 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Mon Sep 21 2026 09:22:10 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

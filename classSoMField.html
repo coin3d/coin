@@ -451,7 +451,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><span class="comment">// Calling the finishEditing() method is necessary for the</span></div>
 <div class="line"><span class="comment">// scene graph to be updated (and re-rendered).</span></div>
 <div class="line"><a class="code hl_class" href="classSbList.html">textnode</a>-&gt;string.finishEditing();</div>
-<div class="ttc" id="aclassSbList_html"><div class="ttname"><a href="classSbList.html">SbList</a></div><div class="ttdoc">The SbList class is a template container class for lists.</div><div class="ttdef"><b>Definition</b> SbList.h:70</div></div>
+<div class="ttc" id="aclassSbList_html"><div class="ttname"><a href="classSbList.html">SbList</a></div><div class="ttdoc">The SbList class is a template container class for lists.</div><div class="ttdef"><b>Definition</b> SbList.h:72</div></div>
 <div class="ttc" id="aclassSbString_html"><div class="ttname"><a href="classSbString.html">SbString</a></div><div class="ttdoc">The SbString class is a string class with convenience functions for string operations.</div><div class="ttdef"><b>Definition</b> SbString.h:52</div></div>
 <div class="ttc" id="aclassSoText2_html"><div class="ttname"><a href="classSoText2.html">SoText2</a></div><div class="ttdoc">The SoText2 class is a node type for visualizing 2D text aligned with the camera plane.</div><div class="ttdef"><b>Definition</b> SoText2.h:42</div></div>
 </div><!-- fragment --><p>The reason it is more effective to wrap many modifications within startEditing() / finishEditing() is because we avoid the stream of notification messages which would otherwise be sent for each and every modification done. Instead there will just be a single notification about the changes, triggered by the finishEditing() call.</p>
@@ -955,7 +955,7 @@ TGS Inventor <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c33
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoMField.html">SoMField</a></li>
-    <li class="footer">Generated on Mon Sep 21 2026 09:03:32 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Mon Sep 21 2026 09:22:12 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

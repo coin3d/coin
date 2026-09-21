@@ -574,7 +574,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line">    <a class="code hl_variable" href="#af6ab3633187f00e2f1357d837323aca3">bboxSize</a> 0 0 0</div>
 <div class="line">    <a class="code hl_variable" href="#a5337971a1acc874c2dcc556a628ee256">alternateRep</a> <a class="code hl_class" href="classSbList.html">NULL</a></div>
 <div class="line">}</div>
-<div class="ttc" id="aclassSbList_html"><div class="ttname"><a href="classSbList.html">SbList</a></div><div class="ttdoc">The SbList class is a template container class for lists.</div><div class="ttdef"><b>Definition</b> SbList.h:70</div></div>
+<div class="ttc" id="aclassSbList_html"><div class="ttname"><a href="classSbList.html">SbList</a></div><div class="ttdoc">The SbList class is a template container class for lists.</div><div class="ttdef"><b>Definition</b> SbList.h:72</div></div>
 <div class="ttc" id="aclassSoWWWInline_html_a159d4fcea61be137b8fbbbbac86449fb"><div class="ttname"><a href="#a159d4fcea61be137b8fbbbbac86449fb">SoWWWInline::name</a></div><div class="ttdeci">SoSFString name</div><div class="ttdef"><b>Definition</b> SoWWWInline.h:66</div></div>
 <div class="ttc" id="aclassSoWWWInline_html_a5337971a1acc874c2dcc556a628ee256"><div class="ttname"><a href="#a5337971a1acc874c2dcc556a628ee256">SoWWWInline::alternateRep</a></div><div class="ttdeci">SoSFNode alternateRep</div><div class="ttdef"><b>Definition</b> SoWWWInline.h:69</div></div>
 <div class="ttc" id="aclassSoWWWInline_html_ad31888d169955f6c49a5b4636ec22b70"><div class="ttname"><a href="#ad31888d169955f6c49a5b4636ec22b70">SoWWWInline::bboxCenter</a></div><div class="ttdeci">SoSFVec3f bboxCenter</div><div class="ttdef"><b>Definition</b> SoWWWInline.h:67</div></div>
@@ -806,7 +806,7 @@ Coin <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">1.0
 <p>This is the method that should be overridden by extension node / engine / dragger / whatever subclasses which need to account for internal data that are not handled automatically.</p>
 <p>For copying nodes from application code, you should not invoke this function directly, but rather call the <a class="el" href="classSoNode.html#a1435c7f4d354e7598a649ee59a9dd1d0">SoNode::copy()</a> function:</p>
 <div class="fragment"><div class="line"><a class="code hl_class" href="classSoNode.html">SoNode</a> * <a class="code hl_class" href="classSbList.html">mynewnode</a> = <a class="code hl_class" href="classSbList.html">templatenode</a>-&gt;<a class="code hl_function" href="classSbList.html#ad35a42495f3ecb04a19a387dc468ce92">copy</a>();</div>
-<div class="ttc" id="aclassSbList_html_ad35a42495f3ecb04a19a387dc468ce92"><div class="ttname"><a href="classSbList.html#ad35a42495f3ecb04a19a387dc468ce92">SbList::copy</a></div><div class="ttdeci">void copy(const SbList&lt; Type &gt; &amp;l)</div><div class="ttdef"><b>Definition</b> SbList.h:92</div></div>
+<div class="ttc" id="aclassSbList_html_ad35a42495f3ecb04a19a387dc468ce92"><div class="ttname"><a href="classSbList.html#ad35a42495f3ecb04a19a387dc468ce92">SbList::copy</a></div><div class="ttdeci">void copy(const SbList&lt; Type &gt; &amp;l)</div><div class="ttdef"><b>Definition</b> SbList.h:94</div></div>
 <div class="ttc" id="aclassSoNode_html"><div class="ttname"><a href="classSoNode.html">SoNode</a></div><div class="ttdoc">The SoNode class is the base class for nodes used in scene graphs.</div><div class="ttdef"><b>Definition</b> SoNode.h:56</div></div>
 </div><!-- fragment --><p>The same also goes for engines.</p>
 <p>Make sure that when you override the <a class="el" href="#aa8de098254e91ef4fcedb64f680f81d6">copyContents()</a> method in your extension class that you also make it call upwards to its parent superclass in the inheritance hierarchy, as <a class="el" href="#aa8de098254e91ef4fcedb64f680f81d6">copyContents()</a> in for instance <a class="el" href="classSoNode.html" title="The SoNode class is the base class for nodes used in scene graphs.">SoNode</a> and <a class="el" href="classSoFieldContainer.html" title="The SoFieldContainer class is a base class for all classes that contain fields.">SoFieldContainer</a> does important work. It should go something like this:</p>
@@ -1649,7 +1649,7 @@ Coin <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">1.0
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoWWWInline.html">SoWWWInline</a></li>
-    <li class="footer">Generated on Mon Sep 21 2026 09:03:35 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Mon Sep 21 2026 09:22:15 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

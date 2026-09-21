@@ -341,7 +341,7 @@ Additional Inherited Members</h2></td></tr>
 <p>For texture maps, the components / bytes-per-pixel setting translates as follows: use 1 for a grayscale imagemap, 2 for grayscale + opacity (i.e. alpha value), 3 for RGB (1 byte each for red, green and blue) and 4 components means 3 bytes for RGB + 1 byte opacity value (aka RGBA).</p>
 <p>This field is serializable into the Inventor / Coin file format in the following manner:</p>
 <div class="fragment"><div class="line"><a class="code hl_class" href="classSbList.html">FIELDNAME</a> X Y Z C 0xRRGGBBAA 0xRRGGBBAA ...</div>
-<div class="ttc" id="aclassSbList_html"><div class="ttname"><a href="classSbList.html">SbList</a></div><div class="ttdoc">The SbList class is a template container class for lists.</div><div class="ttdef"><b>Definition</b> SbList.h:70</div></div>
+<div class="ttc" id="aclassSbList_html"><div class="ttname"><a href="classSbList.html">SbList</a></div><div class="ttdoc">The SbList class is a template container class for lists.</div><div class="ttdef"><b>Definition</b> SbList.h:72</div></div>
 </div><!-- fragment --><p>"X", "Y" and "Z" are the image dimensions along the given axes, "C" is the number of components in the image. The number of 0xRRGGBBAA pixel color specifications needs to equal the exact number of pixels, which is X*Y*Z. Each part of the pixel color value is in the range 0x00 to 0xff (hexadecimal, 0 to 255 decimal).</p>
 <p>For 3-component images, the pixel-format is 0xXXRRGGBB, where the byte in the pixel color value marked as "XX" is ignored and can be left out.</p>
 <p>For 2-component images, the pixel-format is 0xXXXXGGAA, where the bytes in the pixel color values marked as "XX" are ignored and can be left out. "GG" is the part which gives a grayscale value and "AA" is for opacity.</p>
@@ -676,7 +676,7 @@ TGS Inventor <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c33
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoSFImage3.html">SoSFImage3</a></li>
-    <li class="footer">Generated on Mon Sep 21 2026 09:03:33 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Mon Sep 21 2026 09:22:13 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
