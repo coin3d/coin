@@ -35,6 +35,7 @@
 #include <cstdlib>
 #include <cstddef>
 #include <cassert>
+#include <climits>
 #include <cstdio>
 
 #include "coindefs.h"
@@ -164,10 +165,15 @@ cc_memalloc_construct(const unsigned int unitsize)
   cc_memalloc * allocator = (cc_memalloc*)
     malloc(sizeof(cc_memalloc));
 
-  allocator->chunksize = unitsize;
-  if (unitsize < sizeof(cc_memalloc_free)) {
-    allocator->chunksize = sizeof(cc_memalloc_free);
+  const size_t alignment = alignof(cc_memalloc_free);
+  size_t chunksize = unitsize;
+  if (chunksize < sizeof(cc_memalloc_free)) {
+    chunksize = sizeof(cc_memalloc_free);
   }
+  const size_t remainder = chunksize % alignment;
+  if (remainder != 0) chunksize += alignment - remainder;
+  assert(chunksize <= UINT_MAX);
+  allocator->chunksize = static_cast<unsigned int>(chunksize);
   allocator->free = NULL;
   allocator->memnode = NULL;
   allocator->num_allocated_units = 0;
@@ -231,6 +237,7 @@ cc_memalloc_clear(cc_memalloc * allocator)
   }
   allocator->free = NULL;
   allocator->memnode = NULL;
+  allocator->num_allocated_units = 0;
 }
 
 extern "C" {
@@ -261,3 +268,55 @@ cc_memalloc_set_strategy(cc_memalloc * allocator, cc_memalloc_strategy_cb * cb)
   if (cb == NULL) allocator->strategy = default_strategy;
   else allocator->strategy = cb;
 }
+
+#ifdef COIN_TEST_SUITE
+
+#include <cstdint>
+
+static int memalloc_strategy_input = -1;
+
+static int
+memalloc_single_unit_strategy(const int numunits_allocated)
+{
+  memalloc_strategy_input = numunits_allocated;
+  return 1;
+}
+
+BOOST_AUTO_TEST_CASE(cc_memalloc_aligns_and_reuses_units)
+{
+  cc_memalloc * allocator = cc_memalloc_construct(9);
+  void * first = cc_memalloc_allocate(allocator);
+  void * second = cc_memalloc_allocate(allocator);
+
+  BOOST_CHECK_EQUAL(reinterpret_cast<uintptr_t>(first) %
+                    alignof(void *), 0U);
+  BOOST_CHECK_EQUAL(reinterpret_cast<uintptr_t>(second) %
+                    alignof(void *), 0U);
+
+  cc_memalloc_deallocate(allocator, first);
+  cc_memalloc_deallocate(allocator, second);
+  BOOST_CHECK(cc_memalloc_allocate(allocator) == second);
+  BOOST_CHECK(cc_memalloc_allocate(allocator) == first);
+
+  cc_memalloc_destruct(allocator);
+}
+
+BOOST_AUTO_TEST_CASE(cc_memalloc_clear_resets_strategy_count)
+{
+  cc_memalloc * allocator = cc_memalloc_construct(sizeof(void *));
+  cc_memalloc_set_strategy(allocator, memalloc_single_unit_strategy);
+
+  memalloc_strategy_input = -1;
+  cc_memalloc_allocate(allocator);
+  BOOST_CHECK_EQUAL(memalloc_strategy_input, 1);
+  cc_memalloc_allocate(allocator);
+  BOOST_CHECK_EQUAL(memalloc_strategy_input, 2);
+
+  cc_memalloc_clear(allocator);
+  cc_memalloc_allocate(allocator);
+  BOOST_CHECK_EQUAL(memalloc_strategy_input, 1);
+
+  cc_memalloc_destruct(allocator);
+}
+
+#endif // COIN_TEST_SUITE
