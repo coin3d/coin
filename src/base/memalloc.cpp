@@ -99,10 +99,11 @@ struct cc_memalloc {
  * the memory node is full.
  */
 static void *
-node_alloc(struct cc_memalloc_memnode * memnode, const int numbytes)
+node_alloc(struct cc_memalloc_memnode * memnode, const unsigned int numbytes)
 {
   unsigned char * ret = NULL;
-  if (memnode->currpos + numbytes <= memnode->size) {
+  if (memnode->currpos <= memnode->size &&
+      numbytes <= memnode->size - memnode->currpos) {
     ret = memnode->block + memnode->currpos;
     memnode->currpos += numbytes;
   }
@@ -116,20 +117,25 @@ node_alloc(struct cc_memalloc_memnode * memnode, const int numbytes)
 static struct cc_memalloc_memnode *
 create_memnode(cc_memalloc * allocator)
 {
-  unsigned int numbytes;
-  int chunkmultiplier;
+  const int chunkmultiplier = allocator->strategy(allocator->num_allocated_units);
+  if (chunkmultiplier <= 0 ||
+      static_cast<unsigned int>(chunkmultiplier) >
+        UINT_MAX / allocator->chunksize) return NULL;
+
+  const unsigned int numbytes =
+    allocator->chunksize * static_cast<unsigned int>(chunkmultiplier);
   cc_memalloc_memnode * node =
     (cc_memalloc_memnode*) malloc(sizeof(cc_memalloc_memnode));
+  if (node == NULL) return NULL;
 
-  chunkmultiplier = allocator->strategy(allocator->num_allocated_units);
-  assert(chunkmultiplier >= 1 && "strategy callback returned erroneous value");
-  numbytes = allocator->chunksize * chunkmultiplier;
-  
-  node->next = allocator->memnode;
   node->block = (unsigned char*) malloc(numbytes);
+  if (node->block == NULL) {
+    free(node);
+    return NULL;
+  }
+  node->next = allocator->memnode;
   node->currpos = 0;
   node->size = numbytes;
-
   return node;
 }
 
@@ -144,13 +150,11 @@ alloc_from_memnode(cc_memalloc * allocator)
 
   if (allocator->memnode) ret = node_alloc(allocator->memnode, allocator->chunksize);
   if (ret == NULL) {
-    allocator->memnode = create_memnode(allocator);
-    ret = node_alloc(allocator->memnode, allocator->chunksize);
-    /* FIXME: I've seen this assert() hit, but I couldn't easily
-       reproduce it. (It hit for a system that was running a viewer
-       spin overnight.) I've inserted additional assert() calls to try
-       to catch the problem closer to the source. 20031008 mortene. */
-    assert(ret);
+    cc_memalloc_memnode * node = create_memnode(allocator);
+    if (node == NULL) return NULL;
+    allocator->memnode = node;
+    ret = node_alloc(node, allocator->chunksize);
+    assert(ret != NULL);
   }
   return ret;
 }
@@ -162,17 +166,21 @@ alloc_from_memnode(cc_memalloc * allocator)
 cc_memalloc *
 cc_memalloc_construct(const unsigned int unitsize)
 {
-  cc_memalloc * allocator = (cc_memalloc*)
-    malloc(sizeof(cc_memalloc));
-
   const size_t alignment = alignof(cc_memalloc_free);
   size_t chunksize = unitsize;
   if (chunksize < sizeof(cc_memalloc_free)) {
     chunksize = sizeof(cc_memalloc_free);
   }
   const size_t remainder = chunksize % alignment;
-  if (remainder != 0) chunksize += alignment - remainder;
-  assert(chunksize <= UINT_MAX);
+  if (remainder != 0) {
+    const size_t padding = alignment - remainder;
+    if (chunksize > UINT_MAX - padding) return NULL;
+    chunksize += padding;
+  }
+  if (chunksize > UINT_MAX) return NULL;
+
+  cc_memalloc * allocator = (cc_memalloc*) malloc(sizeof(cc_memalloc));
+  if (allocator == NULL) return NULL;
   allocator->chunksize = static_cast<unsigned int>(chunksize);
   allocator->free = NULL;
   allocator->memnode = NULL;
@@ -199,13 +207,16 @@ cc_memalloc_destruct(cc_memalloc * allocator)
 void *
 cc_memalloc_allocate(cc_memalloc * allocator)
 {
+  if (allocator->num_allocated_units >= INT_MAX) return NULL;
   allocator->num_allocated_units++;
   if (allocator->free) {
     void * storage = allocator->free;
     allocator->free = allocator->free->next;
     return storage;
   }
-  return alloc_from_memnode(allocator);
+  void * storage = alloc_from_memnode(allocator);
+  if (storage == NULL) allocator->num_allocated_units--;
+  return storage;
 }
 
 /*!
@@ -272,6 +283,7 @@ cc_memalloc_set_strategy(cc_memalloc * allocator, cc_memalloc_strategy_cb * cb)
 #ifdef COIN_TEST_SUITE
 
 #include <cstdint>
+#include <climits>
 
 static int memalloc_strategy_input = -1;
 
@@ -316,6 +328,38 @@ BOOST_AUTO_TEST_CASE(cc_memalloc_clear_resets_strategy_count)
   cc_memalloc_allocate(allocator);
   BOOST_CHECK_EQUAL(memalloc_strategy_input, 1);
 
+  cc_memalloc_destruct(allocator);
+}
+
+static int memalloc_test_multiplier;
+
+static int
+memalloc_test_strategy(const int numunits_allocated)
+{
+  memalloc_strategy_input = numunits_allocated;
+  return memalloc_test_multiplier;
+}
+
+BOOST_AUTO_TEST_CASE(cc_memalloc_rejects_overflow_and_invalid_strategy)
+{
+  BOOST_CHECK(cc_memalloc_construct(UINT_MAX) == NULL);
+
+  cc_memalloc * allocator = cc_memalloc_construct(64);
+  BOOST_REQUIRE(allocator != NULL);
+  cc_memalloc_set_strategy(allocator, memalloc_test_strategy);
+
+  memalloc_test_multiplier = 0;
+  BOOST_CHECK(cc_memalloc_allocate(allocator) == NULL);
+  memalloc_test_multiplier = -1;
+  BOOST_CHECK(cc_memalloc_allocate(allocator) == NULL);
+  memalloc_test_multiplier = INT_MAX;
+  BOOST_CHECK(cc_memalloc_allocate(allocator) == NULL);
+
+  memalloc_test_multiplier = 1;
+  void * value = cc_memalloc_allocate(allocator);
+  BOOST_REQUIRE(value != NULL);
+  BOOST_CHECK_EQUAL(memalloc_strategy_input, 1);
+  cc_memalloc_deallocate(allocator, value);
   cc_memalloc_destruct(allocator);
 }
 
