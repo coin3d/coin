@@ -43,6 +43,9 @@ public:
     { this->storage = cc_storage_construct_etc(size, constr, destr); }
   ~SbTypedStorage(void) { cc_storage_destruct(this->storage); }
 
+  SbTypedStorage(const SbTypedStorage &) = delete;
+  SbTypedStorage & operator=(const SbTypedStorage &) = delete;
+
   Type get(void) { return (Type) cc_storage_get(this->storage); }
 
 private:

@@ -44,6 +44,9 @@ public:
     { this->storage = cc_storage_construct_etc(size, constr, destr); }
   ~SbStorage(void) { cc_storage_destruct(this->storage); }
 
+  SbStorage(const SbStorage &) = delete;
+  SbStorage & operator=(const SbStorage &) = delete;
+
   void * get(void) { return cc_storage_get(this->storage); }
   void applyToAll(SbStorageApplyFunc * func, void * closure) {
     cc_storage_apply_to_all(this->storage, 
