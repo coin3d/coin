@@ -73,6 +73,9 @@ test_foreign_parent()
   fixture.path->insertIndex(foreign, 0);
   fixture.path->removeIndex(foreign, 0);
   fixture.path->replaceIndex(foreign, 0, replacement);
+  fixture.path->insertIndex(NULL, 0);
+  fixture.path->removeIndex(NULL, 0);
+  fixture.path->replaceIndex(NULL, 0, replacement);
   const bool ok = fixture.unchanged();
 
   foreign->unref();
@@ -118,13 +121,47 @@ test_null_replacement()
   return 0;
 }
 
+static int
+test_valid_callbacks()
+{
+  PathFixture fixture;
+
+  fixture.root->insertChild(new SoGroup, 0);
+  if (fixture.path->getIndex(1) != 1) {
+    std::fprintf(stderr, "FAIL: valid insertion did not update the index\n");
+    return 1;
+  }
+
+  SoGroup * replacement = new SoGroup;
+  fixture.root->replaceChild(1, replacement);
+  if (fixture.path->getLength() != 2 ||
+      fixture.path->getNode(1) != replacement ||
+      fixture.path->getIndex(1) != 1) {
+    std::fprintf(stderr, "FAIL: valid replacement did not update the path\n");
+    return 1;
+  }
+
+  fixture.root->removeChild(0);
+  if (fixture.path->getIndex(1) != 0) {
+    std::fprintf(stderr, "FAIL: valid removal did not update the index\n");
+    return 1;
+  }
+
+  fixture.root->removeChild(0);
+  if (fixture.path->getLength() != 1) {
+    std::fprintf(stderr, "FAIL: removing the selected child did not truncate\n");
+    return 1;
+  }
+  return 0;
+}
+
 int
 main(int argc, char ** argv)
 {
   if (argc != 2) {
     std::fprintf(stderr,
                  "usage: %s empty|foreign-parent|negative-index|"
-                 "null-replacement\n", argv[0]);
+                 "null-replacement|valid-callbacks\n", argv[0]);
     return 2;
   }
 
@@ -138,6 +175,8 @@ main(int argc, char ** argv)
     result = test_negative_index();
   else if (std::strcmp(argv[1], "null-replacement") == 0)
     result = test_null_replacement();
+  else if (std::strcmp(argv[1], "valid-callbacks") == 0)
+    result = test_valid_callbacks();
   else
     std::fprintf(stderr, "unknown case: %s\n", argv[1]);
   SoDB::finish();
