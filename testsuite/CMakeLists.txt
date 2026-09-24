@@ -136,6 +136,20 @@ foreach(profile_mode unset off 0 on 1 syncgl invalid)
       -P ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/soprofiler-initclass-ordering/verify.cmake)
 endforeach()
 
+include(CheckCSourceCompiles)
+include(CMakePushCheckState)
+cmake_push_check_state(RESET)
+set(CMAKE_REQUIRED_INCLUDES
+  ${PROJECT_BINARY_DIR}/include
+  ${PROJECT_SOURCE_DIR}/include)
+check_c_source_compiles([[#include <Inventor/C/base/heap.h>
+int main(void) { return 0; }
+]] COIN_PUBLIC_C_HEAP_HEADER_COMPILES)
+if(NOT COIN_PUBLIC_C_HEAP_HEADER_COMPILES)
+  message(FATAL_ERROR "Coin public C heap header does not compile as C")
+endif()
+cmake_pop_check_state()
+
 include(CheckCoreGLHeaders.cmake)
 
 # Many warnings are generated from test macros on macOS with Xcode.

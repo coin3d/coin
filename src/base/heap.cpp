@@ -194,7 +194,9 @@ heap_restore_duplicate_index(cc_heap * h, void * o)
 
 /*!
 
-  Construct a heap. \a size is the initial array size.
+  Construct a heap. \a size is the initial array size. A zero size is
+  normalized to one element of initial capacity. A NULL \a comparecb is
+  rejected and returns NULL.
 
   For a minimum heap \a comparecb should return 1 if the first element
   is less than the second, zero if they are equal or the first element
@@ -264,7 +266,8 @@ void cc_heap_clear(cc_heap * h)
 }
 
 /*!
-  Add the element \a o to the heap \a h.
+  Add the element \a o to the heap \a h. If the internal storage cannot grow,
+  the heap is left unchanged.
 */
 void
 cc_heap_add(cc_heap * h, void * o)
@@ -331,9 +334,9 @@ cc_heap_extract_top(cc_heap * h)
 }
 
 /*!
-  Remove \a o from the heap \a h; if present TRUE is returned,
-  otherwise FALSE.  Please note that the heap must have been created
-  with support_remove.
+  Remove one occurrence of \a o from the heap \a h; if present TRUE is
+  returned, otherwise FALSE. If the heap was created without support_remove,
+  FALSE is returned and the heap is left unchanged.
 */
 int
 cc_heap_remove(cc_heap * h, void * o)
@@ -364,8 +367,10 @@ cc_heap_remove(cc_heap * h, void * o)
 }
 
 /*!
-  Updates the heap \a h for new value of existent key \a o; if key is present TRUE is returned,
-  otherwise FALSE.
+  Update the heap \a h for the new value of existing object \a o; if the
+  object is present TRUE is returned, otherwise FALSE. If the same pointer
+  occurs more than once, all occurrences are reorganized. If the heap was
+  created without support_remove, FALSE is returned and the heap is unchanged.
 */
 int
 cc_heap_update(cc_heap * h, void * o)
@@ -628,7 +633,7 @@ BOOST_AUTO_TEST_CASE(cc_heap_keeps_duplicate_pointer_occurrences_indexed)
   cc_heap_destruct(heap);
 }
 
-BOOST_AUTO_TEST_CASE(cc_heap_update_requires_remove_support)
+BOOST_AUTO_TEST_CASE(cc_heap_remove_and_update_require_remove_support)
 {
   mock_up::wrapped_value value = { 7 };
   cc_heap * heap = cc_heap_construct(
@@ -638,9 +643,12 @@ BOOST_AUTO_TEST_CASE(cc_heap_update_requires_remove_support)
   cc_heap_add(heap, &value);
   value.x = 8;
   BOOST_CHECK(!cc_heap_update(heap, &value));
+  BOOST_CHECK(!cc_heap_remove(heap, &value));
+  BOOST_CHECK_EQUAL(cc_heap_elements(heap), 1u);
   BOOST_CHECK(cc_heap_get_top(heap) == &value);
   cc_heap_destruct(heap);
 }
+
 BOOST_AUTO_TEST_CASE(cc_heap_rejects_null_comparator)
 {
   BOOST_CHECK(cc_heap_construct(1, NULL, FALSE) == NULL);
@@ -653,7 +661,10 @@ BOOST_AUTO_TEST_CASE(cc_heap_grows_from_single_slot)
     1, reinterpret_cast<cc_heap_compare_cb *>(mock_up::min_heap_compare_cb), FALSE);
   BOOST_REQUIRE(heap != NULL);
   for (unsigned int i = 0; i < 3; ++i) cc_heap_add(heap, &values[i]);
-  BOOST_CHECK_EQUAL(cc_heap_elements(heap), 3u);
+  BOOST_CHECK(cc_heap_extract_top(heap) == &values[1]);
+  BOOST_CHECK(cc_heap_extract_top(heap) == &values[2]);
+  BOOST_CHECK(cc_heap_extract_top(heap) == &values[0]);
+  BOOST_CHECK(cc_heap_empty(heap));
   cc_heap_destruct(heap);
 }
 
