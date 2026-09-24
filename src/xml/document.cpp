@@ -199,8 +199,9 @@ cc_xml_doc_expat_element_end_handler_cb(void * userdata, const XML_Char * elemen
           cc_xml_elt_delete_x(topelt);
         } else {
           if (topelt == doc->root) {
-            cc_xml_doc_set_root_x(doc, NULL);
-            cc_xml_elt_delete_x(topelt);
+            cc_xml_elt * root = cc_xml_doc_release_root_x(doc);
+            assert(root == topelt);
+            cc_xml_elt_delete_x(root);
           } else {
             assert(!"invalid case - investigate");
           }
@@ -444,8 +445,7 @@ cc_xml_doc_read_file_x(cc_xml_doc * doc, const char * path)
 {
   assert(doc);
   if (doc->root) {
-    cc_xml_elt_delete_x(doc->root);
-    doc->root = NULL;
+    cc_xml_elt_delete_x(cc_xml_doc_release_root_x(doc));
   }
 
   if (!doc->parser) {
@@ -612,19 +612,41 @@ cc_xml_doc_get_current(const cc_xml_doc * doc)
 }
 
 /*!
-  Sets the root element for the document.  Only useful when
-  constructing documents to be written.
+  Sets the root element for the document and transfers its ownership to the
+  document.  The root must not have a parent.
+
+  If a different root was already set, it is released without being deleted.
+  Call cc_xml_doc_release_root_x() first when replacing a root so the ownership
+  transfer is explicit.
 */
 
 void
 cc_xml_doc_set_root_x(cc_xml_doc * doc, cc_xml_elt * root)
 {
   assert(doc);
+  if (root && cc_xml_elt_get_parent(root)) return;
+  if (doc->root != root) doc->current = NULL;
   doc->root = root;
 }
 
 /*!
-  Returns the root element of the document.
+  Releases the document root and transfers its ownership to the caller.
+  Returns NULL if the document has no root.  The document's non-owning current
+  pointer is cleared as it may point into the released tree.
+*/
+
+cc_xml_elt *
+cc_xml_doc_release_root_x(cc_xml_doc * doc)
+{
+  assert(doc);
+  cc_xml_elt * root = doc->root;
+  doc->root = NULL;
+  doc->current = NULL;
+  return root;
+}
+
+/*!
+  Returns a borrowed pointer to the document root.
 */
 
 cc_xml_elt *
@@ -878,7 +900,10 @@ cc_xml_doc_handle_parse_warning(const cc_xml_doc * doc, const char * message)
 
 #ifdef COIN_TEST_SUITE
 
+#include <cstring>
 #include <memory>
+#include <Inventor/C/XML/attribute.h>
+#include <Inventor/C/XML/element.h>
 #include <Inventor/C/XML/parser.h>
 #include <Inventor/C/XML/path.h>
 
@@ -907,6 +932,92 @@ BOOST_AUTO_TEST_CASE(bufread)
 
   cc_xml_doc_delete_x(doc1);
   cc_xml_doc_delete_x(doc2);
+}
+
+BOOST_AUTO_TEST_CASE(dom_attribute_ownership)
+{
+  cc_xml_elt * elt = cc_xml_elt_new();
+  cc_xml_attr * original = cc_xml_attr_new_from_data("key", "old");
+  cc_xml_elt_set_attribute_x(elt, original);
+
+  cc_xml_attr * replacement = cc_xml_attr_new_from_data("key", "new");
+  cc_xml_elt_set_attribute_x(elt, replacement);
+
+  BOOST_CHECK(cc_xml_elt_get_num_attributes(elt) == 1);
+  BOOST_CHECK(cc_xml_elt_get_attribute(elt, "key") == original);
+  BOOST_CHECK(strcmp(cc_xml_attr_get_value(original), "new") == 0);
+
+  cc_xml_elt_remove_all_attributes_x(elt);
+  BOOST_CHECK(cc_xml_elt_get_num_attributes(elt) == 0);
+  BOOST_CHECK(cc_xml_elt_get_attribute(elt, "key") == NULL);
+  cc_xml_elt_delete_x(elt);
+}
+
+BOOST_AUTO_TEST_CASE(dom_child_ownership)
+{
+  cc_xml_elt * parent = cc_xml_elt_new();
+  cc_xml_elt * oldchild = cc_xml_elt_new();
+  cc_xml_elt * otherparent = cc_xml_elt_new();
+  cc_xml_elt * newchild = cc_xml_elt_new();
+
+  cc_xml_elt_add_child_x(parent, oldchild);
+  cc_xml_elt_add_child_x(otherparent, newchild);
+
+  cc_xml_elt_set_parent_x(oldchild, otherparent);
+  BOOST_CHECK(cc_xml_elt_get_num_children(parent) == 0);
+  BOOST_CHECK(cc_xml_elt_get_parent(oldchild) == otherparent);
+  cc_xml_elt_set_parent_x(oldchild, parent);
+  BOOST_CHECK(cc_xml_elt_get_num_children(otherparent) == 1);
+  BOOST_CHECK(cc_xml_elt_get_parent(oldchild) == parent);
+  cc_xml_elt_set_parent_x(oldchild, NULL);
+  BOOST_CHECK(cc_xml_elt_get_num_children(parent) == 0);
+  BOOST_CHECK(cc_xml_elt_get_parent(oldchild) == NULL);
+  cc_xml_elt_add_child_x(parent, oldchild);
+
+  // Failure is transactional: neither child changes owners.
+  BOOST_CHECK(!cc_xml_elt_replace_child_x(parent, oldchild, newchild));
+  BOOST_CHECK(cc_xml_elt_get_parent(oldchild) == parent);
+  BOOST_CHECK(cc_xml_elt_get_parent(newchild) == otherparent);
+  BOOST_CHECK(cc_xml_elt_get_child(parent, 0) == oldchild);
+
+  cc_xml_elt_remove_child_x(otherparent, newchild);
+  BOOST_CHECK(cc_xml_elt_get_parent(newchild) == NULL);
+  BOOST_REQUIRE(cc_xml_elt_replace_child_x(parent, oldchild, newchild));
+  BOOST_CHECK(cc_xml_elt_get_parent(oldchild) == NULL);
+  BOOST_CHECK(cc_xml_elt_get_parent(newchild) == parent);
+  BOOST_CHECK(cc_xml_elt_get_child(parent, 0) == newchild);
+
+  // Adopting an ancestor would create a recursively owned cycle.
+  cc_xml_elt_add_child_x(newchild, parent);
+  BOOST_CHECK(cc_xml_elt_get_parent(parent) == NULL);
+  BOOST_CHECK(cc_xml_elt_get_num_children(newchild) == 0);
+
+  cc_xml_elt_delete_x(oldchild);
+  cc_xml_elt_delete_x(otherparent);
+  cc_xml_elt_delete_x(parent);
+}
+
+BOOST_AUTO_TEST_CASE(dom_root_ownership)
+{
+  cc_xml_doc * doc = cc_xml_doc_new();
+  cc_xml_elt * root = cc_xml_elt_new();
+  cc_xml_doc_set_root_x(doc, root);
+  cc_xml_doc_set_current_x(doc, root);
+  BOOST_CHECK(cc_xml_doc_get_root(doc) == root);
+
+  cc_xml_elt * released = cc_xml_doc_release_root_x(doc);
+  BOOST_CHECK(released == root);
+  BOOST_CHECK(cc_xml_doc_get_root(doc) == NULL);
+  BOOST_CHECK(cc_xml_doc_get_current(doc) == NULL);
+  BOOST_CHECK(cc_xml_doc_release_root_x(doc) == NULL);
+
+  cc_xml_doc_delete_x(doc);
+  cc_xml_elt_delete_x(released);
+
+  // A still-attached root is recursively deleted with its document.
+  doc = cc_xml_doc_new();
+  cc_xml_doc_set_root_x(doc, cc_xml_elt_new());
+  cc_xml_doc_delete_x(doc);
 }
 
 #endif // !COIN_TEST_SUITE

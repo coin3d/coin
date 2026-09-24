@@ -41,7 +41,9 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/* basic construction */
+/* basic construction
+   A document returned by new() is caller-owned.  delete_x() also deletes the
+   root tree still owned by the document. */
 COIN_DLL_API cc_xml_doc * cc_xml_doc_new(void);
 COIN_DLL_API void cc_xml_doc_delete_x(cc_xml_doc * doc);
 
@@ -67,7 +69,14 @@ COIN_DLL_API const char * cc_xml_doc_get_filename(const cc_xml_doc * doc);
 
 /* misc... */
 
+/* Root ownership:
+   - set_root_x() transfers ownership of root to doc.
+   - get_root() returns a borrowed pointer.
+   - release_root_x() transfers ownership from doc to the caller.
+   Replacing a non-NULL root with set_root_x() releases the previous root
+   without deleting it.  Prefer release_root_x() before replacing it. */
 COIN_DLL_API cc_xml_elt *   cc_xml_doc_get_root(const cc_xml_doc * doc);
+COIN_DLL_API cc_xml_elt *   cc_xml_doc_release_root_x(cc_xml_doc * doc);
 COIN_DLL_API void           cc_xml_doc_set_current_x(cc_xml_doc * doc, cc_xml_elt * elt);
 COIN_DLL_API cc_xml_elt *   cc_xml_doc_get_current(const cc_xml_doc * doc);
 COIN_DLL_API void           cc_xml_doc_strip_whitespace_x(cc_xml_doc * doc);
