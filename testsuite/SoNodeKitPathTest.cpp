@@ -1,5 +1,4 @@
 #include <Inventor/SoDB.h>
-#include <Inventor/SoFullPath.h>
 #include <Inventor/SoNodeKitPath.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/misc/SoChildList.h>
@@ -30,7 +29,7 @@ static int failures;
 static int
 fullLength(const SoPath * path)
 {
-  return static_cast<const SoFullPath *>(path)->getLength();
+  return path->fullPath().getLength();
 }
 
 static void
@@ -139,11 +138,44 @@ checkFactoryType()
           "factory returned a fake derived pointer");
     path->ref();
     check(path->getLength() == 1 && path->getTail() == kit &&
-          static_cast<SoFullPath *>(static_cast<SoPath *>(path))->getTail() == transform,
+          static_cast<SoPath *>(path)->fullPath().getTail() == transform,
           "factory path lost its projected or full tail");
     path->unref();
   }
   kit->unref();
+}
+
+static void
+checkFactoryTypeWithExtension()
+{
+  SoSeparator * root = new SoSeparator;
+  SoSeparatorKit * kit = new SoSeparatorKit;
+  root->ref();
+  root->addChild(kit);
+
+  SoPath * prefix = new SoPath(root);
+  prefix->ref();
+  prefix->append(kit);
+
+  SoNode * transform = kit->getPart("transform", TRUE);
+  SoNodeKitPath * path = kit->createPathToPart("transform", TRUE, prefix);
+  check(path != NULL, "factory did not extend the supplied path");
+  if (path != NULL) {
+    check(dynamic_cast<SoNodeKitPath *>(static_cast<SoPath *>(path)) == path,
+          "extended factory path is not a genuine SoNodeKitPath object");
+    path->ref();
+    const SoFullPathView complete = static_cast<SoPath *>(path)->fullPath();
+    check(path->getLength() == 2 &&
+          path->getNode(0) == root && path->getTail() == kit &&
+          complete.getLength() >= 3 &&
+          complete.getNodeFromTail(complete.getLength() - 1) == root &&
+          complete.getTail() == transform,
+          "extended factory path lost its projected or complete route");
+    path->unref();
+  }
+
+  prefix->unref();
+  root->unref();
 }
 
 int
@@ -154,6 +186,7 @@ main()
   checkProjectionAndOwnership();
   checkAppendBelowLogicalTail();
   checkFactoryType();
+  checkFactoryTypeWithExtension();
   SoDB::finish();
   return failures == 0 ? 0 : 1;
 }

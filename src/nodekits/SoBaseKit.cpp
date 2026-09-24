@@ -545,6 +545,7 @@
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
+#include <Inventor/SoFullPath.h>
 #include <Inventor/details/SoNodeKitDetail.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/lists/SoPickedPointList.h>
@@ -570,6 +571,7 @@ public:
   // indices into this array.
   SbList<SoSFNode*> instancelist;
 
+  void addKitDetail(SoPath * path, SoPickedPoint * pp);
   void addKitDetail(SoFullPath * path, SoPickedPoint * pp);
   void createWriteData(void);
   void testParentWrite(void);
@@ -719,13 +721,13 @@ SoBaseKit::getPartString(const SoBase * part)
     return SbString();
   }
   else if (part->isOfType(SoPath::getClassTypeId())) {
-    SoFullPath * path = (SoFullPath *)part;
+    SoPath * path = (SoPath *)part;
     int pathidx = path->findNode(this);
     if (pathidx < 0) return SbString();
     SoBaseKit * kit = this;
     SbString partname;
     int parentnum = 0;
-    SoNode * tail = path->getTail();
+    SoNode * tail = path->fullPath().getTail();
     SoNode * node = kit;
     while (node != tail) {
       node = path->getNode(++pathidx);
@@ -746,7 +748,7 @@ SoBaseKit::getPartString(const SoBase * part)
         assert(catalog->isLeaf(partnum));
         SoNodeKitListPart * list = (SoNodeKitListPart *)node;
         pathidx += 2; // // skip container node
-        if (pathidx >= path->getLength()) {
+        if (pathidx >= path->fullPath().getLength()) {
 #if COIN_DEBUG
           SoDebugError::postWarning("SoBaseKit::getPartString",
                                     "Path too short");
@@ -1073,7 +1075,7 @@ SoBaseKit::rayPick(SoRayPickAction * action)
   const int n = pplist.getLength();
   for (int i = 0; i < n; i++) {
     SoPickedPoint * pp = pplist[i];
-    SoFullPath * path = (SoFullPath*) pp->getPath();
+    SoPath * path = pp->getPath();
     if (path->containsNode(this) && pp->getDetail(this) == NULL) {
       PRIVATE(this)->addKitDetail(path, pp);
     }
@@ -1794,13 +1796,10 @@ SoBaseKit::createPathToAnyPart(const SbName & partname, SbBool makeifneeded,
   if (pathtoextend) {
     path = SoNodeKitPath::fromPath(pathtoextend);
     path->ref();
-    // Keep the historical full-path view until the independent SoFullPath
-    // migration lands. The object itself is now genuinely a SoNodeKitPath.
-    SoFullPath * fullpath = (SoFullPath *)path;
     // pop off nodes beyond this kit node
-    if (path->containsNode(this)) while (fullpath->getTail() != this && fullpath->getLength()) path->pop();
-    else if (fullpath->getLength()) {
-      SoNode * node = fullpath->getTail();
+    if (path->containsNode(this)) while (path->fullPath().getTail() != this && path->fullPath().getLength()) path->pop();
+    else if (path->fullPath().getLength()) {
+      SoNode * node = path->fullPath().getTail();
       if (!node->getChildren() || node->getChildren()->find(this) < 0) {
 #if COIN_DEBUG
         SoDebugError::postWarning("SoBaseKit::createPathToAnyPart",
@@ -2635,13 +2634,13 @@ SoBaseKitP::setParts(SbList <SoNode*> partlist, const SbBool leafparts)
 // contain this kit.
 //
 void
-SoBaseKitP::addKitDetail(SoFullPath * path, SoPickedPoint * pp)
+SoBaseKitP::addKitDetail(SoPath * path, SoPickedPoint * pp)
 {
   const SoNodekitCatalog * catalog = this->kit->getNodekitCatalog();
 
   assert(path->findNode(this->kit) >= 0);
 
-  const int n = path->getLength();
+  const int n = path->fullPath().getLength();
   for (int i = path->findNode(this->kit) + 1; i < n; i++) {
     SoNode * node = path->getNode(i);
     int idx = this->kit->findNodeInThisKit(node, -1);
@@ -2654,7 +2653,7 @@ SoBaseKitP::addKitDetail(SoFullPath * path, SoPickedPoint * pp)
       // path extends into the children. Supply index in partname
       // if this is the case.
       if (node->isOfType(SoNodeKitListPart::getClassTypeId()) &&
-          path->getLength() >= i + 2) {
+          path->fullPath().getLength() >= i + 2) {
         SbString str;
         str.sprintf("%s[%d]",
                     partname.getString(),
@@ -2667,6 +2666,13 @@ SoBaseKitP::addKitDetail(SoFullPath * path, SoPickedPoint * pp)
       break;
     }
   }
+}
+
+// ABI bridge for the pre-4.0.11 private helper symbol.
+void
+SoBaseKitP::addKitDetail(SoFullPath * path, SoPickedPoint * pp)
+{
+  this->addKitDetail(static_cast<SoPath *>(path), pp);
 }
 
 //  Reading in parts of nested nodekits does not allow certain shortcuts

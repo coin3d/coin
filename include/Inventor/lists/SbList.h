@@ -34,7 +34,9 @@
 \**************************************************************************/
 
 #include <cassert>
+#include <climits>
 #include <cstddef> // NULL definition
+#include <new>
 #include <Inventor/SbBasic.h> // TRUE/FALSE
 
 // We usually implement inline functions below the class definition,
@@ -109,7 +111,13 @@ public:
       if (items > DEFAULTSIZE) newitembuffer = new Type[items];
 
       if (newitembuffer != this->itembuffer) {
-        for (int i = 0; i < items; i++) newitembuffer[i] = this->itembuffer[i];
+        try {
+          for (int i = 0; i < items; i++) newitembuffer[i] = this->itembuffer[i];
+        }
+        catch (...) {
+          if (newitembuffer != this->builtinbuffer) delete[] newitembuffer;
+          throw;
+        }
       }
 
       if (this->itembuffer != this->builtinbuffer) delete[] this->itembuffer;
@@ -146,7 +154,7 @@ public:
 #ifdef COIN_EXTRA_DEBUG
     assert(idx != -1);
 #endif // COIN_EXTRA_DEBUG
-    this->remove(idx);
+    if (idx >= 0) this->remove(idx);
   }
 
   void remove(const int index) {
@@ -238,25 +246,28 @@ protected:
 
 private:
   void grow(const int size = -1) {
-    // Default behavior is to double array size. itembuffersize is
-    // always >= DEFAULTSIZE for the lifetime of the object (set in
-    // the constructor, and every other assignment below either
-    // doubles it or clamps it to at least DEFAULTSIZE), so the ">
-    // 0" branch is the only one ever taken in practice -- but the
-    // explicit floor lets the compiler prove that locally too,
-    // instead of just at this call's actual call sites, which is
-    // what silences a GCC -Warray-bounds false positive seen when
-    // append() is inlined right after code that resets numitems to
-    // 0 (e.g. truncate(0)) without narrowing itembuffersize.
-    if (size == -1) this->itembuffersize = (this->itembuffersize > 0) ? (this->itembuffersize << 1) : DEFAULTSIZE;
+    // Default growth doubles the current capacity. Check before the
+    // multiplication to avoid signed overflow.
+    int newsize;
+    if (size == -1) {
+      if (this->itembuffersize > INT_MAX / 2) throw std::bad_alloc();
+      newsize = this->itembuffersize * 2;
+    }
     else if (size <= this->itembuffersize) return;
-    else { this->itembuffersize = size; }
+    else { newsize = size; }
 
-    Type * newbuffer = new Type[this->itembuffersize];
+    Type * newbuffer = new Type[newsize];
     const int n = this->numitems;
-    for (int i = 0; i < n; i++) newbuffer[i] = this->itembuffer[i];
+    try {
+      for (int i = 0; i < n; i++) newbuffer[i] = this->itembuffer[i];
+    }
+    catch (...) {
+      delete[] newbuffer;
+      throw;
+    }
     if (this->itembuffer != this->builtinbuffer) delete[] this->itembuffer;
     this->itembuffer = newbuffer;
+    this->itembuffersize = newsize;
   }
 
   int itembuffersize;
