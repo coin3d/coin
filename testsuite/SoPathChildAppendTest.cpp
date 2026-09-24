@@ -1,5 +1,4 @@
 #include <Inventor/SoDB.h>
-#include <Inventor/SoFullPath.h>
 #include <Inventor/SoNodeKitPath.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/nodekits/SoNodeKit.h>
@@ -43,7 +42,7 @@ checkInvalidAppends()
   empty->append(0);
   checkUnchanged(empty, before, "integer append changed an empty path");
   empty->push(0);
-  check(static_cast<SoFullPath *>(empty)->getLength() == 0,
+  check(empty->fullPath().getLength() == 0,
         "integer push changed an empty path");
   empty->unref();
 
@@ -82,7 +81,7 @@ checkInvalidAppends()
   outsider->unref();
 
   path->append(child);
-  check(static_cast<SoFullPath *>(path)->getLength() == 2 &&
+  check(path->fullPath().getLength() == 2 &&
         path->getTail() == child,
         "valid child append did not extend the path");
   path->unref();
@@ -101,10 +100,10 @@ checkHiddenTail()
     SoPath * path = hold(static_cast<SoPath *>(kitpath));
     path->pop();
     const int visible = path->getLength();
-    const int full = static_cast<SoFullPath *>(path)->getLength();
+    const int full = path->fullPath().getLength();
     path->append(kit->getPart("shape", FALSE));
     check(path->getLength() == visible &&
-          static_cast<SoFullPath *>(path)->getLength() == full + 1,
+          path->fullPath().getLength() == full + 1,
           "valid append below a hidden tail was not preserved");
     path->unref();
   }
