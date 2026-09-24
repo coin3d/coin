@@ -30,3 +30,11 @@
 [suppress_function]
   symbol_name_regexp = ^_ZN19SoGLDriverDatabaseP10SoGLDriverC[12]Ev$
   label = SoGLDriverDatabaseP::SoGLDriver is a source-file-private implementation type; its compiler-emitted constructors are not part of Coin's public ABI.
+
+# SoUniformShaderParameterP is defined only inside SoShaderParameter.cpp.
+# Replacing its private context map can change whether this destructor is
+# emitted, but clients cannot name or use the implementation class.
+
+[suppress_function]
+  symbol_name_regexp = ^_ZN25SoUniformShaderParameterPD[12]Ev$
+  label = SoUniformShaderParameterP is a source-file-private implementation class; its destructor is not part of Coin's public ABI.
