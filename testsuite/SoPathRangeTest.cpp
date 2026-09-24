@@ -1,5 +1,4 @@
 #include <Inventor/SoDB.h>
-#include <Inventor/SoFullPath.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/nodes/SoCube.h>
 #include <Inventor/nodes/SoSeparator.h>
@@ -12,14 +11,14 @@ static int failures;
 static SoPath *
 hold(SoPath * path)
 {
-  path->ref();
+  if (path != NULL) path->ref();
   return path;
 }
 
 static int
 fullLength(const SoPath * path)
 {
-  return static_cast<const SoFullPath *>(path)->getLength();
+  return path->fullPath().getLength();
 }
 
 static void
@@ -37,6 +36,7 @@ struct Fixture {
       path(NULL)
   {
     this->root->ref();
+    this->root->addChild(new SoCube);
     this->root->addChild(this->branch);
     this->branch->addChild(this->leaf);
     this->path = hold(new SoPath(this->root));
@@ -96,8 +96,10 @@ checkCopyRanges()
 
   SoPath * suffix = hold(fixture.path->copy(1));
   check(suffix != NULL && fullLength(suffix) == 2 &&
-        suffix->getHead() == fixture.branch && suffix->getTail() == fixture.leaf,
-        "copy from a nonzero start returned the wrong suffix");
+        suffix->getHead() == fixture.branch &&
+        suffix->getTail() == fixture.leaf &&
+        suffix->getIndex(0) == 1,
+        "copy from a nonzero start did not preserve the suffix");
   if (suffix != NULL) suffix->unref();
 
   SoPath * prefix = hold(fixture.path->copy(0, 2));
@@ -106,10 +108,8 @@ checkCopyRanges()
         "bounded copy returned the wrong prefix");
   if (prefix != NULL) prefix->unref();
 
-  SoPath * oversized = hold(fixture.path->copy(1, INT_MAX));
-  check(oversized != NULL && fullLength(oversized) == 2,
-        "oversized copy did not clamp to the available suffix");
-  if (oversized != NULL) oversized->unref();
+  SoPath * oversized = fixture.path->copy(1, INT_MAX);
+  check(oversized == NULL, "oversized copy length was accepted");
 
   check(fixture.path->copy(-1) == NULL, "negative copy start was accepted");
   check(fixture.path->copy(3) == NULL, "past-end copy start was accepted");
