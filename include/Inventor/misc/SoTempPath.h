@@ -38,9 +38,6 @@
 class COIN_DLL_API SoTempPath : public SoFullPath {
 public:
   SoTempPath(const int approxlength);
-
-  using SoPath::append;
-  void append(const SoPath * const frompath);
   
   // these two methods are used for optimized SoAction traversal
   void simpleAppend(SoNode * const node, const int index);

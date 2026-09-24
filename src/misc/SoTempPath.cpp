@@ -53,27 +53,6 @@ SoTempPath::SoTempPath(const int approxlength)
 }
 
 /*!
-  Append \a frompath while preserving the non-auditing, non-owning policy
-  of this temporary path.
-*/
-void
-SoTempPath::append(const SoPath * const frompath)
-{
-  if (this->nodes.getLength() != 0) {
-    SoPath::append(frompath);
-    return;
-  }
-
-  const int length = frompath->nodes.getLength();
-  for (int i = 0; i < length; i++) {
-    this->nodes.append(frompath->nodes[i]);
-    this->indices.append(frompath->indices[i]);
-  }
-  this->firsthidden = frompath->firsthidden;
-  this->firsthiddendirty = frompath->firsthiddendirty;
-}
-
-/*!
   Append a node (specified by \a node and parent child \a index) to the path.
   This method is only available in SoTempPath, since it will not
   consider auditing or hidden children.
