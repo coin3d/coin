@@ -935,10 +935,9 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
   // here in those cases to be compatible with SGI Inventor.
   if (copydict->copiedinstancestack->getLength() == 0) return NULL;
 
-  SoFieldContainerCopyMap * copiedinstances = (*(copydict->copiedinstancestack))[0];
   ContentsCopiedMap * contentscopied  = (*(copydict->contentscopiedstack))[0];
 
-  assert(copiedinstances);
+  assert((*(copydict->copiedinstancestack))[0]);
   assert(contentscopied);
 
   const SoNode * protonode = coin_safe_cast<const SoNode *>(orig);

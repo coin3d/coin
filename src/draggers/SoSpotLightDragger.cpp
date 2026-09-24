@@ -231,10 +231,8 @@ SoSpotLightDragger::SoSpotLightDragger(void)
   SO_KIT_ADD_FIELD(angle, (1.0f));
   SO_KIT_INIT_INSTANCE();
 
-  SoDragger *pdragger = SO_GET_ANY_PART(this, "translator", SoDragPointDragger);
-  assert(pdragger);
-  SoDragger *sdragger = SO_GET_ANY_PART(this, "rotator", SoDragPointDragger);
-  assert(sdragger);
+  if (!SO_GET_ANY_PART(this, "translator", SoDragPointDragger)) assert(false);
+  if (!SO_GET_ANY_PART(this, "rotator", SoDragPointDragger)) assert(false);
 
   this->setPartAsDefault("beam", "spotLightBeam");
   this->setPartAsDefault("beamActive", "spotLightBeamActive");

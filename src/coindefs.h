@@ -154,6 +154,17 @@
 #define COIN_UNUSED_ARG(x) x
 #endif
 
+/* For a function that is deliberately never called (e.g. one that
+   only exists so its body gets compiled, for compile-time checks, or
+   one kept around on purpose for later use) -- silences
+   -Wunused-function without hiding a genuine dead-code case
+   elsewhere. */
+#ifdef __GNUC__
+#define COIN_UNUSED_FUNC __attribute__((__unused__))
+#else
+#define COIN_UNUSED_FUNC
+#endif
+
 
 /* COIN_CT_ASSERT() - a macro for doing compile-time asserting */
 #define COIN_CT_ASSERT(expr) \
