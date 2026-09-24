@@ -19,12 +19,14 @@ namespace {
     return sizeof(VALID_OPTIONS)/sizeof(VALID_OPTIONS[0]);
   }
 
+#if COIN_DEBUG && 0
   SbBool isValidOption(const SbString & option)
   {
     size_t i;
     for (i = 0; i<options_size() && option != VALID_OPTIONS[i]; ++i) {}
     return (i!=options_size());
   }
+#endif // COIN_DEBUG && 0
 
   const SbString INVALID_SETTING("");
 };

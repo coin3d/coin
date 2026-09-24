@@ -144,12 +144,18 @@ private:
 
   void constructorInit(void);
 
+  SbBool isPathMatch(const SoPath * path, int pathlen, int idx);
   SbBool isPathMatch(const SoFullPath * path, int pathlen, int idx);
 
+  int getIndexCreate(const SoPath * path, int pathlen);
   int getIndexCreate(const SoFullPath * path, int pathlen);
   int getIndexNoCreate(const SoPath * path, int pathlen) const;
+  int getIndexForwardCreate(const SoPath * path, int pathlen,
+                            int parentindex);
   int getIndexForwardCreate(const SoFullPath * path, int pathlen,
                             int parentindex);
+  int getIndexForwardNoCreate(const SoPath * path, int pathlen,
+                              int parentindex) const;
   int getIndexForwardNoCreate(const SoFullPath * path, int pathlen,
                               int parentindex) const;
 
