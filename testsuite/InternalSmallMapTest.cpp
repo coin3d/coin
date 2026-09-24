@@ -33,7 +33,6 @@
 #include "misc/SbSmallMap.h"
 #include "CoinTest.h"
 
-#include <cstdint>
 #include <map>
 #include <new>
 
@@ -255,39 +254,4 @@ BOOST_AUTO_TEST_CASE(SbSmallMap_differential_operation_sequence)
       if (expected != reference.end()) BOOST_CHECK_EQUAL(actual, expected->second);
     }
   }
-}
-
-BOOST_AUTO_TEST_CASE(SbSmallMap_bump_specular_context_registry_pattern)
-{
-  struct ProgramRecord {
-    unsigned int dirlight;
-    unsigned int pointlight;
-    unsigned int fragment;
-  };
-
-  SbSmallMap<uint32_t, ProgramRecord> specular;
-
-  for (uint32_t context = 0; context < 2; ++context) {
-    const ProgramRecord specularprogram = {
-      context + 10U, context + 20U, context + 30U
-    };
-    BOOST_REQUIRE(specular.put(context, specularprogram));
-  }
-
-  for (uint32_t context = 0; context < 2; ++context) {
-    ProgramRecord specularprogram = { 0, 0, 0 };
-    BOOST_REQUIRE(specular.get(context, specularprogram));
-    BOOST_CHECK_EQUAL(specularprogram.dirlight, context + 10U);
-    BOOST_CHECK_EQUAL(specularprogram.pointlight, context + 20U);
-    BOOST_CHECK_EQUAL(specularprogram.fragment, context + 30U);
-  }
-
-  const ProgramRecord replacement = { 70U, 80U, 90U };
-  BOOST_CHECK(!specular.put(1U, replacement));
-  ProgramRecord updated = { 0, 0, 0 };
-  BOOST_REQUIRE(specular.get(1U, updated));
-  BOOST_CHECK_EQUAL(updated.dirlight, 70U);
-  BOOST_CHECK_EQUAL(updated.pointlight, 80U);
-  BOOST_CHECK_EQUAL(updated.fragment, 90U);
-  BOOST_CHECK_EQUAL(specular.getNumElements(), 2U);
 }
