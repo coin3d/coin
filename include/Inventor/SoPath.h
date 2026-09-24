@@ -46,7 +46,24 @@
 class SoWriteAction;
 class SoNotList;
 class SoInput;
+class SoNode;
 class SoPathList;
+class SoPath;
+
+
+class COIN_DLL_API SoFullPathView final {
+public:
+  int getLength(void) const;
+  SoNode * getTail(void) const;
+  SoNode * getNodeFromTail(const int index) const;
+  int getIndexFromTail(const int index) const;
+
+private:
+  friend class SoPath;
+  explicit SoFullPathView(const SoPath & sourcepath);
+
+  const SoPath * path;
+};
 
 
 class COIN_DLL_API SoPath : public SoBase {
@@ -77,6 +94,7 @@ public:
   int getIndex(const int index) const;
   int getIndexFromTail(const int index) const;
   int getLength(void) const;
+  SoFullPathView fullPath(void) const;
   void truncate(const int length);
 
   int findFork(const SoPath * const path) const;
@@ -120,6 +138,7 @@ private:
   SbBool firsthiddendirty;
   static SoType classTypeId;
 
+  friend class SoFullPathView;
   friend class SoFullPath;
   friend class SoNodeKitPath;
   friend class SoAction;
