@@ -353,4 +353,10 @@ cc_xml_path_dump(cc_xml_path * path)
   fprintf(stderr, "\n");
 }
 
+void
+cc_xml_path_dump(const cc_xml_path * path)
+{
+  cc_xml_path_dump(const_cast<cc_xml_path *>(path));
+}
+
 /* ********************************************************************** */
