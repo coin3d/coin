@@ -102,6 +102,63 @@ cc_xml_strieq(const char * s1, const char * s2)
   return TRUE;
 }
 
+// *************************************************************************
+
+static const char *
+cc_xml_escape_sequence(char character, enum cc_xml_escape_mode mode)
+{
+  switch (character) {
+  case '&': return "&amp;";
+  case '<': return "&lt;";
+  case '>': return "&gt;";
+  case '"': return mode == CC_XML_ESCAPE_ATTRIBUTE ? "&quot;" : NULL;
+  case '\'': return mode == CC_XML_ESCAPE_ATTRIBUTE ? "&apos;" : NULL;
+  default: return NULL;
+  }
+}
+
+size_t
+cc_xml_escape_calculate_size(const char * string,
+                             enum cc_xml_escape_mode mode)
+{
+  assert(string);
+  size_t bytes = 0;
+  while (*string) {
+    const char character = *string++;
+    const char * sequence = cc_xml_escape_sequence(character, mode);
+    bytes += sequence ? strlen(sequence) : 1;
+  }
+  return bytes;
+}
+
+size_t
+cc_xml_escape_write_to_buffer(const char * string,
+                              char * buffer,
+                              size_t bufsize,
+                              enum cc_xml_escape_mode mode)
+{
+  assert(string);
+  assert(buffer);
+
+  const size_t required = cc_xml_escape_calculate_size(string, mode);
+  assert(required <= bufsize);
+  if (required > bufsize) return 0;
+
+  char * here = buffer;
+  while (*string) {
+    const char character = *string++;
+    const char * sequence = cc_xml_escape_sequence(character, mode);
+    if (sequence) {
+      const size_t length = strlen(sequence);
+      memcpy(here, sequence, length);
+      here += length;
+    } else {
+      *here++ = character;
+    }
+  }
+  return required;
+}
+
 #if 0
 int
 sc_whitespace_p(const char * string)

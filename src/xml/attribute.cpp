@@ -41,7 +41,6 @@
 #include <cstring>
 
 #include "utils.h"
-#include "coindefs.h"
 
 // TODO:
 // - optimize empty strings to use a static, nonfreeable buffer?
@@ -167,14 +166,16 @@ cc_xml_attr_calculate_size(const cc_xml_attr * attr)
   size_t bytes = 0;
   bytes += strlen(attr->name);
   bytes += 2; // ="
-  // FIXME: count quotables in string value, and add up quote count
-  if (attr->value) bytes += strlen(attr->value);
+  if (attr->value) {
+    bytes += cc_xml_escape_calculate_size(attr->value,
+                                          CC_XML_ESCAPE_ATTRIBUTE);
+  }
   bytes += 1; // "
   return bytes;
 }
 
 size_t
-cc_xml_attr_write_to_buffer(const cc_xml_attr * attr, char * buffer, size_t COIN_UNUSED_ARG(bufsize))
+cc_xml_attr_write_to_buffer(const cc_xml_attr * attr, char * buffer, size_t bufsize)
 {
   // We assert on mismatches between calculated memory usage and actual memory
   // usage, since this must be calculated correctly for not getting memory corruption
@@ -188,9 +189,9 @@ cc_xml_attr_write_to_buffer(const cc_xml_attr * attr, char * buffer, size_t COIN
   strcpy(buffer, "=\"");
   buffer += 2;
   if (attr->value) {
-    size_t valuelen = strlen(attr->value);
-    // FIXME: count quotables, and insert quoting in value string if needed
-    strcpy(buffer, attr->value);
+    const size_t used = static_cast<size_t>(buffer - origbufferptr);
+    const size_t valuelen = cc_xml_escape_write_to_buffer(
+      attr->value, buffer, bufsize - used, CC_XML_ESCAPE_ATTRIBUTE);
     buffer += valuelen;
   }
   buffer[0] = '"';
