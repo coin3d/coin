@@ -50,8 +50,8 @@ public:
          const int initsize = 1024);
   ~SbHeap();
 
-  SbHeap(const SbHeap &) = delete;
-  SbHeap & operator=(const SbHeap &) = delete;
+  SbHeap(const SbHeap & heap);
+  SbHeap & operator=(const SbHeap & heap);
 
   void emptyHeap(void);
   int size(void) const;

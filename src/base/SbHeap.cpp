@@ -102,6 +102,46 @@ SbHeap::SbHeap(const SbHeapFuncs &hFuncs, const int initsize)
 }
 
 /*!
+  Copy constructor. The element pointers and heap ordering are copied, but
+  index callbacks are intentionally detached. An element can store the index
+  for only one heap, so sharing index callbacks between two heaps would make
+  one of them stale as soon as either heap changed.
+*/
+SbHeap::SbHeap(const SbHeap & other)
+  : funcs(other.funcs),
+    heap(other.heap)
+{
+  this->funcs.get_index_func = NULL;
+  this->funcs.set_index_func = NULL;
+}
+
+/*!
+  Assignment operator. Like the copy constructor, the assigned heap is a
+  non-indexed snapshot. Elements removed from the previous destination are
+  invalidated through its old index setter after the replacement succeeds.
+*/
+SbHeap &
+SbHeap::operator=(const SbHeap & other)
+{
+  if (this == &other) return *this;
+
+  const SbHeapFuncs oldfuncs = this->funcs;
+  const SbList<void *> oldheap(this->heap);
+
+  this->heap = other.heap;
+  this->funcs = other.funcs;
+  this->funcs.get_index_func = NULL;
+  this->funcs.set_index_func = NULL;
+
+  if (oldfuncs.set_index_func) {
+    for (int i = 1; i < oldheap.getLength(); ++i) {
+      oldfuncs.set_index_func(oldheap[i], -1);
+    }
+  }
+  return *this;
+}
+
+/*!
   Destructor.
 */
 SbHeap::~SbHeap(void)
@@ -162,6 +202,8 @@ SbHeap::add(void *obj)
   // Indexed objects can only represent membership in one heap position.
   if (this->funcs.get_index_func) {
     assert(this->funcs.get_index_func(obj) < 1);
+  }
+  if (this->funcs.set_index_func) {
     assert(this->heap.find(obj) < 0);
   }
 #endif // !NDEBUG
@@ -649,10 +691,65 @@ BOOST_AUTO_TEST_CASE(sbheap_handles_extreme_ordered_weights)
   }
 }
 
-BOOST_AUTO_TEST_CASE(sbheap_is_not_copyable)
+BOOST_AUTO_TEST_CASE(sbheap_copy_constructor_detaches_index_callbacks)
 {
-  BOOST_STATIC_ASSERT(!std::is_copy_constructible<SbHeap>::value);
-  BOOST_STATIC_ASSERT(!std::is_copy_assignable<SbHeap>::value);
+  BOOST_STATIC_ASSERT(std::is_copy_constructible<SbHeap>::value);
+  BOOST_STATIC_ASSERT(std::is_copy_assignable<SbHeap>::value);
+
+  SbHeap source(sbheap_test_functions(), 2);
+  SbHeapTestItem storage[] = {
+    { 3.0f, -1, TRUE }, { 1.0f, -1, TRUE }, { 2.0f, -1, TRUE }
+  };
+  for (size_t i = 0; i < sizeof(storage) / sizeof(storage[0]); ++i) {
+    source.add(&storage[i]);
+  }
+
+  SbHeap copy(source);
+  BOOST_CHECK_EQUAL(copy.size(), source.size());
+  copy.remove(&storage[0]);
+  BOOST_CHECK_EQUAL(copy.size(), 2);
+  BOOST_CHECK_EQUAL(source.size(), 3);
+
+  for (int i = 1; i <= source.size(); ++i) {
+    SbHeapTestItem * item = static_cast<SbHeapTestItem *>(source[i]);
+    BOOST_CHECK_EQUAL(item->index, i);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(sbheap_assignment_detaches_and_invalidates_destination)
+{
+  SbHeap source(sbheap_test_functions(), 2);
+  SbHeapTestItem sourceitems[] = {
+    { 4.0f, -1, TRUE }, { 1.0f, -1, TRUE }, { 3.0f, -1, TRUE }
+  };
+  for (size_t i = 0; i < sizeof(sourceitems) / sizeof(sourceitems[0]); ++i) {
+    source.add(&sourceitems[i]);
+  }
+
+  SbHeap destination(sbheap_test_functions(), 2);
+  SbHeapTestItem olditems[] = {
+    { 8.0f, -1, TRUE }, { 6.0f, -1, TRUE }
+  };
+  for (size_t i = 0; i < sizeof(olditems) / sizeof(olditems[0]); ++i) {
+    destination.add(&olditems[i]);
+  }
+
+  destination = source;
+  BOOST_CHECK_EQUAL(destination.size(), source.size());
+  for (size_t i = 0; i < sizeof(olditems) / sizeof(olditems[0]); ++i) {
+    BOOST_CHECK_EQUAL(olditems[i].index, -1);
+  }
+
+  destination.remove(&sourceitems[0]);
+  BOOST_CHECK_EQUAL(destination.size(), 2);
+  BOOST_CHECK_EQUAL(source.size(), 3);
+  for (int i = 1; i <= source.size(); ++i) {
+    SbHeapTestItem * item = static_cast<SbHeapTestItem *>(source[i]);
+    BOOST_CHECK_EQUAL(item->index, i);
+  }
+
+  destination = destination;
+  BOOST_CHECK_EQUAL(destination.size(), 2);
 }
 
 BOOST_AUTO_TEST_CASE(sbheap_removed_objects_have_invalid_indices)
