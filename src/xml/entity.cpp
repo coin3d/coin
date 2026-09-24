@@ -63,6 +63,12 @@ cc_xml_ent_delete(cc_xml_ent * ent)
   delete ent;
 }
 
+void
+cc_xml_ent_delete_x(cc_xml_ent * ent)
+{
+  cc_xml_ent_delete(ent);
+}
+
 const char *
 cc_xml_ent_get_name(cc_xml_ent * ent)
 {
@@ -71,10 +77,22 @@ cc_xml_ent_get_name(cc_xml_ent * ent)
 }
 
 const char *
+cc_xml_ent_get_name(const cc_xml_ent * ent)
+{
+  return cc_xml_ent_get_name(const_cast<cc_xml_ent *>(ent));
+}
+
+const char *
 cc_xml_ent_get_value(cc_xml_ent * ent)
 {
   assert(ent);
   return ent->value;
+}
+
+const char *
+cc_xml_ent_get_value(const cc_xml_ent * ent)
+{
+  return cc_xml_ent_get_value(const_cast<cc_xml_ent *>(ent));
 }
 
 // *************************************************************************
