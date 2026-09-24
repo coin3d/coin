@@ -70,28 +70,30 @@ public:
 
 private:
 
-  void initLight(SoLight * light, const SbMatrix & m);
-  void calcTSBCoords(const SoPrimitiveVertexCache * cache, SoLight * light);
-  SbVec3f getLightVec(const SbVec3f & v) const;
-  void initPrograms(const cc_glglue * glue, SoState * state);
-  void initDiffusePrograms(const cc_glglue * glue, SoState * state);
-
-  void soshape_diffuseprogramdeletion(unsigned long key, void * value);
-  void soshape_specularprogramdeletion(unsigned long key, void * value);
-
   struct spec_programidx {
-    const cc_glglue * glue;
     GLuint dirlight;
     GLuint pointlight;
     GLuint fragment;
   };
 
   struct diffuse_programidx {
-    const cc_glglue * glue;
     GLuint pointlight; // Pointlight diffuse rendering not implemented as a program yet.
     GLuint dirlight;
     GLuint normalrendering;
   };
+
+  void initLight(SoLight * light, const SbMatrix & m);
+  void calcTSBCoords(const SoPrimitiveVertexCache * cache, SoLight * light);
+  SbVec3f getLightVec(const SbVec3f & v) const;
+  void initPrograms(const cc_glglue * glue, SoState * state);
+  void initDiffusePrograms(const cc_glglue * glue, SoState * state);
+  SbBool ensurePrograms(const cc_glglue * glue, SoState * state,
+                        spec_programidx & programs);
+  SbBool ensureDiffusePrograms(const cc_glglue * glue, SoState * state,
+                               diffuse_programidx & programs);
+
+  static void context_destruction_cb(uint32_t contextid, void * userdata);
+  static void delete_program_cb(void * closure, uint32_t contextid);
 
   SbList <SbVec3f> cubemaplist;
   SbList <SbVec3f> tangentlist;
@@ -99,20 +101,11 @@ private:
   SbVec3f lightvec;
   SbBool ispointlight;
 
-  typedef SbHash<int, struct diffuse_programidx *> ContextId2DiffuseStruct;
+  typedef SbHash<uint32_t, diffuse_programidx> ContextId2DiffuseStruct;
   ContextId2DiffuseStruct diffuseprogramdict;
 
-  typedef SbHash<int, struct spec_programidx *> ContextId2SpecStruct;
+  typedef SbHash<uint32_t, spec_programidx> ContextId2SpecStruct;
   ContextId2SpecStruct specularprogramdict;
-
-  GLuint fragmentprogramid;
-  GLuint dirlightvertexprogramid;
-  GLuint pointlightvertexprogramid;
-  SbBool programsinitialized;
-
-  GLuint normalrenderingvertexprogramid;
-  GLuint diffusebumpdirlightvertexprogramid;
-  SbBool diffuseprogramsinitialized;
 };
 
 #endif // COIN_SOSHAPE_BUMPRENDER
