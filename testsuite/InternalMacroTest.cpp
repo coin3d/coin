@@ -66,6 +66,8 @@ BOOST_AUTO_TEST_CASE(SbHash_self_assignment_preserves_entries)
 BOOST_AUTO_TEST_CASE(SbHash_mutable_iterator_visits_entries)
 {
   SbHash<unsigned int, int> hash(3);
+  BOOST_CHECK(hash.begin() == hash.end());
+
   BOOST_REQUIRE(hash.put(1, 10));
   BOOST_REQUIRE(hash.put(2, 20));
   BOOST_REQUIRE(hash.put(3, 30));
@@ -76,8 +78,17 @@ BOOST_AUTO_TEST_CASE(SbHash_mutable_iterator_visits_entries)
        it != hash.end(); ++it) {
     ++count;
     sum += it->obj;
+    it->obj += 1;
   }
 
   BOOST_CHECK_EQUAL(count, 3U);
   BOOST_CHECK_EQUAL(sum, 60);
+
+  int value = 0;
+  BOOST_REQUIRE(hash.get(1, value));
+  BOOST_CHECK_EQUAL(value, 11);
+  BOOST_REQUIRE(hash.get(2, value));
+  BOOST_CHECK_EQUAL(value, 21);
+  BOOST_REQUIRE(hash.get(3, value));
+  BOOST_CHECK_EQUAL(value, 31);
 }
