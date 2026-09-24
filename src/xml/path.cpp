@@ -336,7 +336,7 @@ cc_xml_path_truncate_x(cc_xml_path * path, int length)
 
 /* ********************************************************************** */
 
-void
+COIN_DLL_API void
 cc_xml_path_dump(cc_xml_path * path)
 {
   assert(path);
