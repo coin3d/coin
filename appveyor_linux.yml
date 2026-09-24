@@ -155,7 +155,7 @@ before_build:
       rem we need this update, as we need to ensure every dependent package uses the same compiler and environment
       C:\msys64\usr\bin\bash -lc "pacman --needed --noconfirm -Syu"
       C:\msys64\usr\bin\bash -lc "pacman --needed --noconfirm -Syu"
-      C:\msys64\usr\bin\bash -lc "pacman -S ninja"
+      C:\msys64\usr\bin\bash -lc "pacman -S --noconfirm mingw-w64-x86_64-cmake mingw-w64-x86_64-ninja"
       if "%CMAKE_GENERATOR%" == "MSYS Makefiles" for /f %%i in ('gcc -dumpversion') do set GCC_VERSION=%%i
       if "%CMAKE_GENERATOR%" == "MSYS Makefiles" set COMPILER_ID=mingw-gcc%GCC_VERSION:.=%
       if defined APPVEYOR_REPO_TAG_NAME (set CI_REPO_VERSION=%APPVEYOR_REPO_TAG_NAME:~1%) else (set CI_REPO_VERSION=latest)
