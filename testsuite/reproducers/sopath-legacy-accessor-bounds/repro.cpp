@@ -185,6 +185,18 @@ runEmpty(const char * test, const char * accessor)
 }
 
 int
+runAccessor(const char * accessor)
+{
+  const char * boundaries[] = { "neg-one", "neg-min", "limit", "above", "max" };
+  int result = 0;
+  for (size_t i = 0; i < sizeof(boundaries) / sizeof(boundaries[0]); ++i) {
+    if (runInvalid(accessor, accessor, boundaries[i]) != 0) result = 1;
+  }
+  if (runEmpty(accessor, accessor) != 0) result = 1;
+  return result;
+}
+
+int
 runValid(const char * test)
 {
   Fixture fixture;
@@ -280,6 +292,9 @@ main(int argc, char ** argv)
   int result = 1;
   if (std::strcmp(test, "valid") == 0) result = runValid(test);
   else if (std::strcmp(test, "visibility") == 0) result = runVisibility(test);
+  else if (argc == 3 && std::strcmp(argv[2], "all") == 0) {
+    result = runAccessor(argv[1]);
+  }
   else if (argc == 3 && std::strcmp(argv[2], "empty") == 0) {
     result = runEmpty(test, argv[1]);
   }

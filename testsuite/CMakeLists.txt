@@ -81,6 +81,18 @@ add_executable(CoinTests
 	InternalMacroTest.cpp
 	${COIN_TEST_SOURCES}
 )
+
+# Private Coin symbols are not exported from the Windows DLL. SbHash's
+# resize()/operator=() (now exercised directly from InternalMacroTest.cpp)
+# call coin_geq_prime_number(), so compile its small, self-contained
+# implementation directly into the test executable. Static builds can
+# resolve the private symbol directly from the Coin archive.
+if(WIN32 AND COIN_BUILD_SHARED_LIBS)
+	target_sources(CoinTests PRIVATE CoinGeqPrimeNumberWin32TestSupport.cpp)
+	set_source_files_properties(CoinGeqPrimeNumberWin32TestSupport.cpp PROPERTIES
+		COMPILE_DEFINITIONS COIN_INTERNAL)
+endif()
+
 set_source_files_properties(InternalMacroTest.cpp PROPERTIES
 	COMPILE_DEFINITIONS COIN_INTERNAL)
 set_target_properties(CoinTests PROPERTIES DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
@@ -115,17 +127,10 @@ target_compile_definitions(SoPathLegacyAccessorBoundsTest PRIVATE
   COIN_DEBUG=$<CONFIG:Debug>)
 
 set(SOPATH_LEGACY_ACCESSORS node node-tail index index-tail)
-set(SOPATH_LEGACY_BOUNDARIES neg-one neg-min limit above max)
 foreach(accessor ${SOPATH_LEGACY_ACCESSORS})
-  foreach(boundary ${SOPATH_LEGACY_BOUNDARIES})
-    add_test(NAME SoPathLegacyAccessorBounds_${accessor}_${boundary}
-      COMMAND SoPathLegacyAccessorBoundsTest ${accessor} ${boundary})
-    set_tests_properties(SoPathLegacyAccessorBounds_${accessor}_${boundary}
-      PROPERTIES LABELS sopath-legacy-accessor)
-  endforeach()
-  add_test(NAME SoPathLegacyAccessorBounds_${accessor}_empty
-    COMMAND SoPathLegacyAccessorBoundsTest ${accessor} empty)
-  set_tests_properties(SoPathLegacyAccessorBounds_${accessor}_empty
+  add_test(NAME SoPathLegacyAccessorBounds_${accessor}
+    COMMAND SoPathLegacyAccessorBoundsTest ${accessor} all)
+  set_tests_properties(SoPathLegacyAccessorBounds_${accessor}
     PROPERTIES LABELS sopath-legacy-accessor)
 endforeach()
 foreach(control valid visibility)
@@ -134,6 +139,11 @@ foreach(control valid visibility)
   set_tests_properties(SoPathLegacyAccessorBounds_${control}
     PROPERTIES LABELS sopath-legacy-accessor)
 endforeach()
+add_test(NAME CoinConfigCompatibility
+  COMMAND ${CMAKE_COMMAND}
+    -DCOIN_CONFIG_TEMPLATE=${PROJECT_SOURCE_DIR}/src/coin-config.cmake.in
+    -DCOIN_COMPAT_TEST_DIR=${CMAKE_CURRENT_BINARY_DIR}/coin-config-compatibility
+    -P ${CMAKE_CURRENT_SOURCE_DIR}/CoinConfigCompatibilityTest.cmake)
 
 # These public-API tests need fresh processes: CoinTests initializes SoDB
 # before running its inline cases, which is too late to test startup options.

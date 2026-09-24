@@ -229,31 +229,37 @@ SbBool bumphack = TRUE;
 
 // *************************************************************************
 
+// Both of these are unused: the destructor's calls to them (via
+// applyToAll()) are commented out below, and have been since before
+// these were last touched -- see the FIXME there. Their own bodies
+// are also entirely #if 0'd out already. Gating the whole function on
+// the same #if 0, rather than deleting them, since they're clearly
+// meant to be finished later, not abandoned.
+#if 0
 static void
 soshape_bumprender_diffuseprogramdeletion(unsigned long COIN_UNUSED_ARG(key), void * COIN_UNUSED_ARG(value))
 {
-#if 0 // FIXME: cleanup routines not implemented yet (for no good
-      // reason, really). 20050524 mortene.
+  // FIXME: cleanup routines not implemented yet (for no good
+  // reason, really). 20050524 mortene.
   diffuse_programidx * pidx = (diffuse_programidx *) value;
   /* FIXME: There are no pointlight program initialized for diffuse
      rendering yet. Enable when implemented. (20040209 handegar) */
   //pidx->glue->glDeleteProgramsARB(1, &pidx->pointlight);
   cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->dirlight);
   cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->normalrendering);
-#endif // FIXME
 }
 
 static void
 soshape_bumprender_specularprogramdeletion(unsigned long COIN_UNUSED_ARG(key), void * COIN_UNUSED_ARG(value))
 {
-#if 0 // FIXME: cleanup routines not implemented yet (for no good
-      // reason, really). 20050524 mortene.
+  // FIXME: cleanup routines not implemented yet (for no good
+  // reason, really). 20050524 mortene.
   spec_programidx * pidx = (spec_programidx *) value;
   cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->pointlight);
   cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->dirlight);
   cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->fragment);
-#endif // FIXME
 }
+#endif // 0
 
 soshape_bumprender::soshape_bumprender(void)
 {

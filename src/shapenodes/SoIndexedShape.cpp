@@ -105,7 +105,9 @@ SoIndexedShape::initClass(void)
 }
 
 // Collects common error msg code for computeBBox() for both
-// Coordinate3 and Coordinate4 loops.
+// Coordinate3 and Coordinate4 loops. Only called from the
+// #if COIN_DEBUG blocks below.
+#if COIN_DEBUG
 static void
 error_idx_out_of_bounds(const SoIndexedShape * node, int idxidx, int upper)
 {
@@ -136,6 +138,7 @@ error_idx_out_of_bounds(const SoIndexedShape * node, int idxidx, int upper)
                      node->coordIndex[idxidx],
                      bounds.getString());
 }
+#endif // COIN_DEBUG
 
 // Documented in superclass. Overridden to calculate bounding box of
 // all indexed coordinates, using the coordIndex field.
