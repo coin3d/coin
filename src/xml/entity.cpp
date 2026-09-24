@@ -57,7 +57,7 @@ cc_xml_ent_new(void)
   return ent;
 }
 
-void
+COIN_DLL_API void
 cc_xml_ent_delete(cc_xml_ent * ent)
 {
   delete ent;
@@ -69,7 +69,7 @@ cc_xml_ent_delete_x(cc_xml_ent * ent)
   cc_xml_ent_delete(ent);
 }
 
-const char *
+COIN_DLL_API const char *
 cc_xml_ent_get_name(cc_xml_ent * ent)
 {
   assert(ent);
@@ -82,7 +82,7 @@ cc_xml_ent_get_name(const cc_xml_ent * ent)
   return cc_xml_ent_get_name(const_cast<cc_xml_ent *>(ent));
 }
 
-const char *
+COIN_DLL_API const char *
 cc_xml_ent_get_value(cc_xml_ent * ent)
 {
   assert(ent);

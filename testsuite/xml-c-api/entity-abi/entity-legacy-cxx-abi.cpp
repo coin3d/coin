@@ -1,8 +1,4 @@
-#include <Inventor/C/basic.h>
-
-struct cc_xml_ent;
-
-extern "C" COIN_DLL_API cc_xml_ent * cc_xml_ent_new(void);
+#include <Inventor/C/XML/entity.h>
 
 // These are the signatures exported by Coin before the public C declarations
 // and the implementation were made consistent. Existing binaries still need

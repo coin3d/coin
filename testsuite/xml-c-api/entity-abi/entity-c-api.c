@@ -1,15 +1,8 @@
-#include <Inventor/C/basic.h>
+#include <Inventor/C/XML/entity.h>
 
 #ifdef __cplusplus
 #error "This regression client must be compiled as C"
 #endif
-
-typedef struct cc_xml_ent cc_xml_ent;
-
-COIN_DLL_API cc_xml_ent * cc_xml_ent_new(void);
-COIN_DLL_API void cc_xml_ent_delete_x(cc_xml_ent * ent);
-COIN_DLL_API const char * cc_xml_ent_get_name(const cc_xml_ent * ent);
-COIN_DLL_API const char * cc_xml_ent_get_value(const cc_xml_ent * ent);
 
 int
 main(void)
