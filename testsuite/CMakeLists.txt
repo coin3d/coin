@@ -136,6 +136,9 @@ foreach(profile_mode unset off 0 on 1 syncgl invalid)
       -P ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/soprofiler-initclass-ordering/verify.cmake)
 endforeach()
 
+add_library(CoinCHeapHeaderCompileTest OBJECT CHeapHeaderCompileTest.c)
+target_link_libraries(CoinCHeapHeaderCompileTest PRIVATE Coin)
+
 include(CheckCoreGLHeaders.cmake)
 
 # Many warnings are generated from test macros on macOS with Xcode.
