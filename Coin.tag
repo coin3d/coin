@@ -34468,6 +34468,12 @@
       <anchor>ab318debd5fb749f9fcc16487522b860ca10f40549a0473dbc8692c998b41feef5</anchor>
       <arglist></arglist>
     </member>
+    <member kind="enumvalue">
+      <name>WEIGHTED_BLEND</name>
+      <anchorfile>classSoGLRenderAction.html</anchorfile>
+      <anchor>ab318debd5fb749f9fcc16487522b860ca2bc1a4feb3a04a4f55784b45bfb2c4fe</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="enumeration">
       <type></type>
       <name>TransparentDelayedObjectRenderType</name>
@@ -34485,6 +34491,12 @@
       <name>NONSOLID_SEPARATE_BACKFACE_PASS</name>
       <anchorfile>classSoGLRenderAction.html</anchorfile>
       <anchor>aca1a078631b10e969ddcb4a156b93863aee00f0cc1104f13934bc9fc793ea63cd</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>WEIGHTED_BLEND</name>
+      <anchorfile>classSoGLRenderAction.html</anchorfile>
+      <anchor>ab318debd5fb749f9fcc16487522b860ca2bc1a4feb3a04a4f55784b45bfb2c4fe</anchor>
       <arglist></arglist>
     </member>
     <member kind="function">

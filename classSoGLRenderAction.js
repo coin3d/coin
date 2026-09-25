@@ -24,7 +24,8 @@ var classSoGLRenderAction =
       [ "SORTED_OBJECT_SORTED_TRIANGLE_ADD", "classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860cac636aa256a6893c78796376f482210a4", null ],
       [ "SORTED_OBJECT_SORTED_TRIANGLE_BLEND", "classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca85eeb15a9ae8ff2e08e19004f54103db", null ],
       [ "NONE", "classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca99990d4157e3622b968773e9892b87c2", null ],
-      [ "SORTED_LAYERS_BLEND", "classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca10f40549a0473dbc8692c998b41feef5", null ]
+      [ "SORTED_LAYERS_BLEND", "classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca10f40549a0473dbc8692c998b41feef5", null ],
+      [ "WEIGHTED_BLEND", "classSoGLRenderAction.html#ab318debd5fb749f9fcc16487522b860ca2bc1a4feb3a04a4f55784b45bfb2c4fe", null ]
     ] ],
     [ "TransparentDelayedObjectRenderType", "classSoGLRenderAction.html#aca1a078631b10e969ddcb4a156b93863", [
       [ "ONE_PASS", "classSoGLRenderAction.html#aca1a078631b10e969ddcb4a156b93863a9c36bc5510e0673aac2d2cd8105b824b", null ],

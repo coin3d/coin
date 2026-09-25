@@ -184,6 +184,7 @@ Public Types</h2></td></tr>
 &#160;&#160;<a class="el" href="#ab318debd5fb749f9fcc16487522b860ca85eeb15a9ae8ff2e08e19004f54103db">SORTED_OBJECT_SORTED_TRIANGLE_BLEND</a>
 , <a class="el" href="#ab318debd5fb749f9fcc16487522b860ca99990d4157e3622b968773e9892b87c2">NONE</a>
 , <a class="el" href="#ab318debd5fb749f9fcc16487522b860ca10f40549a0473dbc8692c998b41feef5">SORTED_LAYERS_BLEND</a>
+, <a class="el" href="#ab318debd5fb749f9fcc16487522b860ca2bc1a4feb3a04a4f55784b45bfb2c4fe">WEIGHTED_BLEND</a>
 <br />
  }</td></tr>
 <tr class="separator:ab318debd5fb749f9fcc16487522b860c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -545,6 +546,12 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section since"><dt>Since</dt><dd>Coin <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">2.2</a> </dd>
 <dd>
 TGS Inventor <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">4.0</a> </dd></dl>
+</td></tr>
+<tr><td class="fieldname"><a id="ab318debd5fb749f9fcc16487522b860ca2bc1a4feb3a04a4f55784b45bfb2c4fe" name="ab318debd5fb749f9fcc16487522b860ca2bc1a4feb3a04a4f55784b45bfb2c4fe"></a>WEIGHTED_BLEND&#160;</td><td class="fielddoc"><p>This transparency type is a Coin extension versus the original SGI Open Inventor API.</p>
+<p>Provides order-independent transparency using the weighted-blended approximation described by McGuire and Bavoil. Transparent geometry is accumulated into floating-point color and revealage buffers in one pass, then composited over the opaque scene.</p>
+<p>Unlike <a class="el" href="#ab318debd5fb749f9fcc16487522b860ca10f40549a0473dbc8692c998b41feef5">SoGLRenderAction::SORTED_LAYERS_BLEND</a>, this mode does not use depth peeling or legacy vendor-specific texture and register-combiner extensions. It requires framebuffer objects, multiple render targets, floating-point textures, per-target blend functions, GLSL, and an OpenGL compatibility profile. The result is approximate, but does not depend on the order in which transparent geometry is submitted.</p>
+<p>If the required OpenGL capabilities are unavailable, rendering falls back to the <a class="el" href="#ab318debd5fb749f9fcc16487522b860cadbc8dd4b5600709df598ab300699bc26">SoGLRenderAction::DELAYED_BLEND</a> behavior. The weighted-blended path currently supports fixed-function color with up to two modulated 2D textures. Scene-supplied shader programs are not supported. Multisampled host framebuffers and non-renderbuffer depth attachments on non-default framebuffers also fall back to <a class="el" href="#ab318debd5fb749f9fcc16487522b860cadbc8dd4b5600709df598ab300699bc26">SoGLRenderAction::DELAYED_BLEND</a>.</p>
+<p>See "Weighted Blended Order-Independent Transparency" by Morgan McGuire and Louis Bavoil, Journal of Computer Graphics Techniques, 2013. <a href="https://jcgt.org/published/0002/02/09/">https://jcgt.org/published/0002/02/09/</a> </p>
 </td></tr>
 </table>
 
@@ -1388,8 +1395,8 @@ TGS Inventor <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c33
 <div class="ttc" id="aclassSbList_html"><div class="ttname"><a href="classSbList.html">SbList</a></div><div class="ttdoc">The SbList class is a template container class for lists.</div><div class="ttdef"><b>Definition</b> SbList.h:72</div></div>
 <div class="ttc" id="aclassSoAction_html_af5920f3da63a6ba8577dc56621815341"><div class="ttname"><a href="classSoAction.html#af5920f3da63a6ba8577dc56621815341">SoAction::getCurPath</a></div><div class="ttdeci">const SoPath * getCurPath(void)</div><div class="ttdef"><b>Definition</b> SoAction.cpp:1108</div></div>
 <div class="ttc" id="aclassSoGLRenderAction_html"><div class="ttname"><a href="classSoGLRenderAction.html">SoGLRenderAction</a></div><div class="ttdoc">The SoGLRenderAction class renders the scene graph with OpenGL calls.</div><div class="ttdef"><b>Definition</b> SoGLRenderAction.h:50</div></div>
-<div class="ttc" id="aclassSoGLRenderAction_html_a016763ba5e313424f2450aa41693e8f6"><div class="ttname"><a href="#a016763ba5e313424f2450aa41693e8f6">SoGLRenderAction::AbortCode</a></div><div class="ttdeci">AbortCode</div><div class="ttdef"><b>Definition</b> SoGLRenderAction.h:76</div></div>
-<div class="ttc" id="aclassSoGLRenderAction_html_a016763ba5e313424f2450aa41693e8f6ac45fb1cc909525052e4b7b5e4e534e2b"><div class="ttname"><a href="#a016763ba5e313424f2450aa41693e8f6ac45fb1cc909525052e4b7b5e4e534e2b">SoGLRenderAction::CONTINUE</a></div><div class="ttdeci">@ CONTINUE</div><div class="ttdef"><b>Definition</b> SoGLRenderAction.h:77</div></div>
+<div class="ttc" id="aclassSoGLRenderAction_html_a016763ba5e313424f2450aa41693e8f6"><div class="ttname"><a href="#a016763ba5e313424f2450aa41693e8f6">SoGLRenderAction::AbortCode</a></div><div class="ttdeci">AbortCode</div><div class="ttdef"><b>Definition</b> SoGLRenderAction.h:78</div></div>
+<div class="ttc" id="aclassSoGLRenderAction_html_a016763ba5e313424f2450aa41693e8f6ac45fb1cc909525052e4b7b5e4e534e2b"><div class="ttname"><a href="#a016763ba5e313424f2450aa41693e8f6ac45fb1cc909525052e4b7b5e4e534e2b">SoGLRenderAction::CONTINUE</a></div><div class="ttdeci">@ CONTINUE</div><div class="ttdef"><b>Definition</b> SoGLRenderAction.h:79</div></div>
 <div class="ttc" id="aclassSoNode_html"><div class="ttname"><a href="classSoNode.html">SoNode</a></div><div class="ttdoc">The SoNode class is the base class for nodes used in scene graphs.</div><div class="ttdef"><b>Definition</b> SoNode.h:56</div></div>
 </div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="#a016763ba5e313424f2450aa41693e8f6">SoGLRenderAction::AbortCode</a> </dd></dl>
 
@@ -1698,7 +1705,7 @@ TGS Inventor <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c33
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoGLRenderAction.html">SoGLRenderAction</a></li>
-    <li class="footer">Generated on Tue Sep 22 2026 11:13:25 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Fri Sep 25 2026 08:54:48 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

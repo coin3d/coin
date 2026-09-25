@@ -1,5 +1,6 @@
 var NAVTREEINDEX27 =
 {
+"classSoNodeKitPath.html#aaa7b5e960e4c751a0e5a7c3c8f75c1fe":[3,14,8,11],
 "classSoNodeKitPath.html#ab1419322991dc95ed80ebada53ee6e76":[3,14,8,0],
 "classSoNodeKitPath.html#ae3218e321593b0f509f91e9ca2d8de56":[3,14,8,10],
 "classSoNodeList.html":[5,0,471],
@@ -248,6 +249,5 @@ var NAVTREEINDEX27 =
 "classSoNurbsSurface.html#a03c0b159091819cbef5704276b235ba1":[3,15,67,9],
 "classSoNurbsSurface.html#a1895b33b61f19fe60e7c297391980118":[3,15,67,7],
 "classSoNurbsSurface.html#a1f7964faee2c4b36d4600c2b861ce144":[3,15,67,2],
-"classSoNurbsSurface.html#a360f3db13ba21273f9dd72f7691428c0":[3,15,67,15],
-"classSoNurbsSurface.html#a3b81b3723118cca4b254d6a4cc2d66f5":[3,15,67,10]
+"classSoNurbsSurface.html#a360f3db13ba21273f9dd72f7691428c0":[3,15,67,15]
 };

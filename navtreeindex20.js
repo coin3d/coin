@@ -1,5 +1,6 @@
 var NAVTREEINDEX20 =
 {
+"classSoGeoSeparator.html#ac9ad87951a90c57b2cd390807b952ed3":[3,15,35,11],
 "classSoGeoSeparator.html#ac9e1f6718ac64409c1fd3881eda0e93e":[3,15,35,4],
 "classSoGeoSeparator.html#ae4b1982ad9a8a1b97612ef0bbe19eb1d":[3,15,35,9],
 "classSoGeoSeparator.html#ae5e405b364a5cdd35ffb54e4d749be25":[3,15,35,8],
@@ -248,6 +249,5 @@ var NAVTREEINDEX20 =
 "classSoIndexedLineSet.html#aac23888ee2f43ab2cb0a3a4776f31aab":[3,15,39,2],
 "classSoIndexedLineSet.html#ab87dc43f1b88aac41d54e6b43ea4dab9":[3,15,39,6],
 "classSoIndexedLineSet.html#ac4d34638cb4669e8c6b9ff4dc94ca045":[3,15,39,7],
-"classSoIndexedLineSet.html#aec61d02f397b0aa35f7f932e3f73ebfc":[3,15,39,1],
-"classSoIndexedMarkerSet.html":[3,15,40]
+"classSoIndexedLineSet.html#aec61d02f397b0aa35f7f932e3f73ebfc":[3,15,39,1]
 };

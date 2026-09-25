@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['d_0',['D',['../classSoCalculator.html#aa4835d39b560519b4411dc82e04dd108',1,'SoCalculator']]],
-  ['d_1',['d',['../classSoCalculator.html#ad06a1196f4dcb1031691439cd222edc2',1,'SoCalculator']]],
+  ['d_0',['d',['../classSoCalculator.html#ad06a1196f4dcb1031691439cd222edc2',1,'SoCalculator']]],
+  ['d_1',['D',['../classSoCalculator.html#aa4835d39b560519b4411dc82e04dd108',1,'SoCalculator']]],
   ['data_2',['data',['../classSoFloatElement.html#a99e4dbb7cb48a8eab24eeaabc44f47f5',1,'SoFloatElement::data'],['../classSoInt32Element.html#a2b7a0019f5fbdc039be45a986fcda7a7',1,'SoInt32Element::data']]],
   ['depth_3',['depth',['../classSoElement.html#a60e3b7f1344de81f7d6a198e7655235f',1,'SoElement::depth'],['../classSoCube.html#a21b8e5af4479ac00b2f93cd5171b2ee5',1,'SoCube::depth']]],
   ['description_4',['description',['../classSoVRMLAnchor.html#a2e0b8fb3f1918dd509800afdb011042f',1,'SoVRMLAnchor::description'],['../classSoVRMLAudioClip.html#ae388c19b9324349d0498bb4ae10ac5ac',1,'SoVRMLAudioClip::description'],['../classSoVRMLViewpoint.html#af143420228111539c80ef9e55f525c92',1,'SoVRMLViewpoint::description'],['../classSoWWWAnchor.html#a428199dd1c076d07965f3e8458161c1c',1,'SoWWWAnchor::description']]],

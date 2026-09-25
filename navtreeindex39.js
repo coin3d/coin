@@ -1,5 +1,6 @@
 var NAVTREEINDEX39 =
 {
+"classSoTransformBoxDragger.html#a400029604aa1b57510b69afd59ef054a":[3,5,18,8],
 "classSoTransformBoxDragger.html#a408ce1fcdfe4d8f8243b9112150f2880":[3,5,18,6],
 "classSoTransformBoxDragger.html#a59c283b81f3751cc67ccc321d30bfdb3":[3,5,18,4],
 "classSoTransformBoxDragger.html#a63e0976d3a951ed4a394b4ab92b5a49a":[3,5,18,9],
@@ -248,6 +249,5 @@ var NAVTREEINDEX39 =
 "classSoTypeList.html#ac397dd08d4a6a2c617f02ec1edae492b":[3,11,30,1],
 "classSoTypeList.html#ae6ea0c2a6293f7cfbe41f5d3da7bcd06":[3,11,30,5],
 "classSoUniformShaderParameter.html":[3,18,24],
-"classSoUniformShaderParameter.html#a0d78c2914a760803c68d988074948fab":[3,18,24,1],
-"classSoUniformShaderParameter.html#a557a03c6ba49249444a303f1402949ce":[3,18,24,2]
+"classSoUniformShaderParameter.html#a0d78c2914a760803c68d988074948fab":[3,18,24,1]
 };

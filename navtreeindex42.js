@@ -1,5 +1,6 @@
 var NAVTREEINDEX42 =
 {
+"classSoVRMLMaterial.html#a4bb37b0ba620906990d4805ae17af9e8":[3,23,26,2],
 "classSoVRMLMaterial.html#a7abf4332cc1d16e9993aabd470436b69":[3,23,26,6],
 "classSoVRMLMaterial.html#a928cc4168441de4cdc516ad5fc7e9d97":[3,23,26,10],
 "classSoVRMLMaterial.html#ab33e5c8b4311ee26cc80567a4c7191f5":[3,23,26,5],
@@ -248,6 +249,5 @@ var NAVTREEINDEX42 =
 "classSoVRMLSphere.html#a1ea5486e2808458db8afde07ac7f3b93":[3,23,42,7],
 "classSoVRMLSphere.html#a35ed96b1a1774b443924984862648177":[3,23,42,6],
 "classSoVRMLSphere.html#a45c3f4597599f702163d89f6ce760d33":[3,23,42,5],
-"classSoVRMLSphere.html#a64278a568dcade907fe0e9a5ba2c95b2":[3,23,42,4],
-"classSoVRMLSphere.html#a9d87a016a33c7f58a98d0a23ea459d3e":[3,23,42,8]
+"classSoVRMLSphere.html#a64278a568dcade907fe0e9a5ba2c95b2":[3,23,42,4]
 };
