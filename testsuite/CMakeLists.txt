@@ -114,6 +114,18 @@ if (USE_PTHREAD)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
+add_executable(SoPathAssignmentAuditorTest
+  reproducers/sopath-assignment-auditor-lifecycle/repro.cpp)
+target_link_libraries(SoPathAssignmentAuditorTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(SoPathAssignmentAuditorTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+foreach(assignment_case reassign self-assign copy-construct)
+  add_test(NAME SoPathAssignmentAuditor_${assignment_case}
+    COMMAND SoPathAssignmentAuditorTest ${assignment_case})
+endforeach()
+
 add_test(NAME CoinConfigCompatibility
   COMMAND ${CMAKE_COMMAND}
     -DCOIN_CONFIG_TEMPLATE=${PROJECT_SOURCE_DIR}/src/coin-config.cmake.in
