@@ -448,13 +448,13 @@ SoPath::getTail(void) const
 SoNode *
 SoPath::getNode(const int index) const
 {
-#if COIN_DEBUG
   if (index < 0 || index >= this->getFullLength()) {
+#if COIN_DEBUG
     SoDebugError::post("SoPath::getNode", "index %d is out of bounds.",
                        index);
+#endif // COIN_DEBUG
     return NULL;
   }
-#endif // COIN_DEBUG
   return this->nodes[index];
 }
 
@@ -465,13 +465,13 @@ SoPath::getNode(const int index) const
 SoNode *
 SoPath::getNodeFromTail(const int index) const
 {
-#if COIN_DEBUG
   if (index < 0 || index >= this->getLength()) {
+#if COIN_DEBUG
     SoDebugError::post("SoPath::getNodeFromTail",
                        "index %d is out of bounds.", index);
+#endif // COIN_DEBUG
     return NULL;
   }
-#endif // COIN_DEBUG
   return this->nodes[this->getLength() - index - 1];
 }
 
@@ -482,13 +482,13 @@ SoPath::getNodeFromTail(const int index) const
 int
 SoPath::getIndex(const int index) const
 {
-#if COIN_DEBUG
   if (index < 0 || index >= this->getFullLength()) {
+#if COIN_DEBUG
     SoDebugError::post("SoPath::getIndex", "index %d is out of bounds.",
                        index);
+#endif // COIN_DEBUG
     return -1;
   }
-#endif // COIN_DEBUG
 
   return this->indices[index];
 }
@@ -501,13 +501,13 @@ SoPath::getIndex(const int index) const
 int
 SoPath::getIndexFromTail(const int index) const
 {
-#if COIN_DEBUG
   if (index < 0 || index >= this->getLength()) {
+#if COIN_DEBUG
     SoDebugError::post("SoPath::getIndexFromTail",
                        "index %d is out of bounds.", index);
+#endif // COIN_DEBUG
     return -1;
   }
-#endif // COIN_DEBUG
   return this->indices[this->getLength() - index - 1];
 }
 

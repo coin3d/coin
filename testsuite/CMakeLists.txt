@@ -114,6 +114,31 @@ if (USE_PTHREAD)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
+# Process-isolated public behavior checks. Keeping each invalid access in its
+# own CTest process prevents one unsafe access from masking the remaining
+# boundary classes.
+add_executable(SoPathLegacyAccessorBoundsTest
+  reproducers/sopath-legacy-accessor-bounds/repro.cpp)
+target_link_libraries(SoPathLegacyAccessorBoundsTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(SoPathLegacyAccessorBoundsTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+target_compile_definitions(SoPathLegacyAccessorBoundsTest PRIVATE
+  COIN_DEBUG=$<CONFIG:Debug>)
+
+set(SOPATH_LEGACY_ACCESSORS node node-tail index index-tail)
+foreach(accessor ${SOPATH_LEGACY_ACCESSORS})
+  add_test(NAME SoPathLegacyAccessorBounds_${accessor}
+    COMMAND SoPathLegacyAccessorBoundsTest ${accessor} all)
+  set_tests_properties(SoPathLegacyAccessorBounds_${accessor}
+    PROPERTIES LABELS sopath-legacy-accessor)
+endforeach()
+foreach(control valid visibility)
+  add_test(NAME SoPathLegacyAccessorBounds_${control}
+    COMMAND SoPathLegacyAccessorBoundsTest ${control})
+  set_tests_properties(SoPathLegacyAccessorBounds_${control}
+    PROPERTIES LABELS sopath-legacy-accessor)
+endforeach()
 add_test(NAME CoinConfigCompatibility
   COMMAND ${CMAKE_COMMAND}
     -DCOIN_CONFIG_TEMPLATE=${PROJECT_SOURCE_DIR}/src/coin-config.cmake.in
