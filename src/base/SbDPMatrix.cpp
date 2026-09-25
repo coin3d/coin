@@ -332,7 +332,7 @@ double
 SbDPMatrix::det3(int r1, int r2, int r3,
                int c1, int c2, int c3) const
 {
-#if COIN_EXTRA_DEBUG
+#ifdef COIN_EXTRA_DEBUG
   // Check indices.
   if (r1<0 || r1>3 || r2<0 || r2>3 || r3<0 || r3>3 ||
       c1<0 || c1>3 || c2<0 || c2>3 || c3<0 || c3>3) {
@@ -610,7 +610,7 @@ SbDPMatrix::operator SbDPMat&(void)
 double *
 SbDPMatrix::operator [](int i)
 {
-#if COIN_EXTRA_DEBUG
+#ifdef COIN_EXTRA_DEBUG
   if (i<0 || i>3) {
     SoDebugError::post("SbDPMatrix::operator[]", "Index out of bounds. ");
   }
@@ -628,7 +628,7 @@ SbDPMatrix::operator [](int i)
 const double *
 SbDPMatrix::operator [](int i) const
 {
-#if COIN_EXTRA_DEBUG
+#ifdef COIN_EXTRA_DEBUG
   if (i<0 || i>3) {
     SoDebugError::postWarning("SbDPMatrix::operator[]", "Index out of bounds. ");
   }
