@@ -881,12 +881,26 @@ SoPath::insertIndex(SoNode * const parent, const int newindex)
   sopath_dump(this);
 #endif // debug
 
-  if (parent == this->nodes[this->getFullLength() - 1]) return;
+  if (newindex < 0) {
+#if COIN_DEBUG
+    SoDebugError::post("SoPath::insertIndex",
+                       "newindex was negative (%d)", newindex);
+#endif // COIN_DEBUG
+    return;
+  }
+
+  const int length = this->getFullLength();
+  if (length == 0 || parent == this->nodes[length - 1]) return;
 
   int pos = this->findNode(parent);
-#ifdef COIN_EXTRA_DEBUG
-  assert(pos != -1); // shouldn't be notified if parent is not in path
-#endif // COIN_EXTRA_DEBUG
+  if (pos < 0 || pos >= length - 1) {
+#if COIN_DEBUG
+    SoDebugError::post("SoPath::insertIndex",
+                       "parent %p is not an audited non-tail path node",
+                       (void *) parent);
+#endif // COIN_DEBUG
+    return;
+  }
   pos++;
 
   if (newindex <= this->indices[pos]) this->indices[pos]++;
@@ -913,20 +927,26 @@ SoPath::removeIndex(SoNode * const parent, const int oldindex)
   sopath_dump(this);
 #endif // debug
 
-  if (parent == this->nodes[this->getFullLength() - 1]) return;
-
-  int pos = this->findNode(parent);
+  if (oldindex < 0) {
 #if COIN_DEBUG
-  // shouldn't be notified if parent is not in path
-  if (!(pos >= 0 && pos < this->getFullLength()-1)) {
     SoDebugError::post("SoPath::removeIndex",
-                       "failure: pos==%d (len=%d), parent=%p (%s)",
-                       pos, this->getFullLength(),
-                       parent,
-                       parent->getTypeId().getName().getString());
+                       "oldindex was negative (%d)", oldindex);
+#endif // COIN_DEBUG
     return;
   }
+
+  const int length = this->getFullLength();
+  if (length == 0 || parent == this->nodes[length - 1]) return;
+
+  int pos = this->findNode(parent);
+  if (pos < 0 || pos >= length - 1) {
+#if COIN_DEBUG
+    SoDebugError::post("SoPath::removeIndex",
+                       "parent %p is not an audited non-tail path node",
+                       (void *) parent);
 #endif // COIN_DEBUG
+    return;
+  }
   pos++;
 
   if (oldindex < this->indices[pos]) this->indices[pos]--;
@@ -951,12 +971,27 @@ SoPath::replaceIndex(SoNode * const parent, const int index,
 
 #endif // debug
 
-  if (parent == this->nodes[this->getFullLength() - 1]) return;
+  if (index < 0 || newchild == NULL) {
+#if COIN_DEBUG
+    SoDebugError::post("SoPath::replaceIndex",
+                       "invalid index (%d) or null replacement (%p)",
+                       index, (void *) newchild);
+#endif // COIN_DEBUG
+    return;
+  }
+
+  const int length = this->getFullLength();
+  if (length == 0 || parent == this->nodes[length - 1]) return;
 
   int pos = this->findNode(parent);
-#ifdef COIN_EXTRA_DEBUG
-  assert(pos != -1); // shouldn't be notified if parent is not in path
-#endif // COIN_EXTRA_DEBUG
+  if (pos < 0 || pos >= length - 1) {
+#if COIN_DEBUG
+    SoDebugError::post("SoPath::replaceIndex",
+                       "parent %p is not an audited non-tail path node",
+                       (void *) parent);
+#endif // COIN_DEBUG
+    return;
+  }
   pos++;
 
   if (index == this->indices[pos]) {
