@@ -114,6 +114,8 @@ if (USE_PTHREAD)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
+add_subdirectory(xml-c-api/c-headers)
+
 add_test(NAME CoinConfigCompatibility
   COMMAND ${CMAKE_COMMAND}
     -DCOIN_CONFIG_TEMPLATE=${PROJECT_SOURCE_DIR}/src/coin-config.cmake.in
