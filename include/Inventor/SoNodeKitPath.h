@@ -43,6 +43,8 @@ class COIN_DLL_API SoNodeKitPath : public SoPath {
   typedef SoPath inherited;
 
 public:
+  static SoNodeKitPath * fromPath(const SoPath * path);
+
   int getLength(void) const;
   SoNode * getTail(void) const;
   SoNode * getNode(const int idx) const;
@@ -55,6 +57,7 @@ public:
   int findFork(const SoNodeKitPath * path) const;
 
   friend COIN_DLL_API int operator==(const SoNodeKitPath & p1, const SoNodeKitPath & p2);
+  friend COIN_DLL_API int operator!=(const SoNodeKitPath & p1, const SoNodeKitPath & p2);
 
 protected:
   SoNodeKitPath(const int approxLength);
@@ -76,8 +79,11 @@ private:
   void insertIndex(SoNode *parent,const int newIndex);
   void removeIndex(SoNode *parent,const int oldIndex);
   void replaceIndex(SoNode *parent,const int index,SoNode *newChild);
+
+  friend class SoBaseKit;
 };
 
 COIN_DLL_API int operator==(const SoNodeKitPath & p1, const SoNodeKitPath & p2);
+COIN_DLL_API int operator!=(const SoNodeKitPath & p1, const SoNodeKitPath & p2);
 
 #endif // !COIN_SONODEKITPATH_H

@@ -114,6 +114,16 @@ if (USE_PTHREAD)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
+if(HAVE_NODEKITS)
+  add_executable(SoNodeKitPathTest SoNodeKitPathTest.cpp)
+  target_link_libraries(SoNodeKitPathTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(SoNodeKitPathTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  add_test(NAME SoNodeKitPathBehavior COMMAND SoNodeKitPathTest)
+endif()
+
 add_test(NAME CoinConfigCompatibility
   COMMAND ${CMAKE_COMMAND}
     -DCOIN_CONFIG_TEMPLATE=${PROJECT_SOURCE_DIR}/src/coin-config.cmake.in

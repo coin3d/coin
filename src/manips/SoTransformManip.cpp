@@ -54,8 +54,8 @@
 // *************************************************************************
 
 #include <Inventor/manips/SoTransformManip.h>
+#include <Inventor/SoPath.h>
 
-#include <Inventor/SoNodeKitPath.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -241,7 +241,7 @@ SoTransformManip::replaceNode(SoPath * path)
   }
   SoNode *tail = path->getTail();
   if (tail->isOfType(SoBaseKit::getClassTypeId())) {
-    SoBaseKit *kit = (SoBaseKit*) ((SoNodeKitPath*)path)->getTail();
+    SoBaseKit *kit = (SoBaseKit*) path->getTail();
     SbString partname = kit->getPartString(path);
     if (partname != "") {  // FIXME: isn't this an assert condition? 20010909 mortene.
       SoTransform *oldpart = (SoTransform*) kit->getPart(partname, TRUE);
