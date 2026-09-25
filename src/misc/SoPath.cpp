@@ -308,7 +308,19 @@ void
 SoPath::append(const SoPath * const frompath)
 {
   if (!this->getFullLength()) { // append to empty path
-    this->operator=(*frompath);
+    const int length = frompath->getFullLength();
+    for (int i = 0; i < length; i++) {
+      SoNode * const node = frompath->nodes[i];
+      this->nodes.append(node);
+      this->indices.append(frompath->indices[i]);
+      if (this->isauditing && node) {
+        SoChildList * const children = node->getChildren();
+        if (children) children->addPathAuditor(this);
+      }
+    }
+    this->firsthidden = frompath->firsthidden;
+    this->firsthiddendirty = frompath->firsthiddendirty;
+    if (this->isauditing) this->startNotify();
     return;
   }
 

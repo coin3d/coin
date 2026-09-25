@@ -114,6 +114,20 @@ if (USE_PTHREAD)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
+add_executable(SoTempPathPolicyTest
+  reproducers/sotemppath-policy-preservation/repro.cpp)
+target_link_libraries(SoTempPathPolicyTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(SoTempPathPolicyTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+add_test(NAME SoTempPathPolicy_nonempty_destination
+  COMMAND SoTempPathPolicyTest nonempty-destination)
+add_test(NAME SoTempPathPolicy_empty_destination
+  COMMAND SoTempPathPolicyTest empty-destination)
+add_test(NAME SoTempPathPolicy_ordinary_empty_destination
+  COMMAND SoTempPathPolicyTest ordinary-empty-destination)
+
 add_test(NAME CoinConfigCompatibility
   COMMAND ${CMAKE_COMMAND}
     -DCOIN_CONFIG_TEMPLATE=${PROJECT_SOURCE_DIR}/src/coin-config.cmake.in
