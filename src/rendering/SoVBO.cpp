@@ -41,6 +41,8 @@
 
 #include "rendering/SoVBO.h"
 
+#include "misc/SbHash.h"
+
 #include <cstdio>
 #include <cstdlib>
 #include <cassert>
@@ -80,8 +82,7 @@ SoVBO::SoVBO(const GLenum target, const GLenum usage)
     data(NULL),
     datasize(0),
     dataid(0),
-    didalloc(FALSE),
-    vbohash(5)
+    didalloc(FALSE)
 {
   SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
 }
@@ -106,7 +107,7 @@ SoVBO::~SoVBO()
   SoContextHandler::removeContextDestructionCallback(context_destruction_cb, this);
   // schedule delete for all allocated GL resources
   for(
-      SbHash<uint32_t, GLuint>::const_iterator iter =
+      SbSmallMap<uint32_t, GLuint>::const_iterator iter =
        this->vbohash.const_begin();
       iter!=this->vbohash.const_end();
       ++iter
@@ -206,7 +207,7 @@ SoVBO::allocBufferData(intptr_t size, SbUniqueId dataid)
 {
   // schedule delete for all allocated GL resources
   for(
-      SbHash<uint32_t, GLuint>::const_iterator iter =
+      SbSmallMap<uint32_t, GLuint>::const_iterator iter =
        this->vbohash.const_begin();
       iter!=this->vbohash.const_end();
       ++iter
@@ -244,7 +245,7 @@ SoVBO::setBufferData(const GLvoid * data, intptr_t size, SbUniqueId dataid)
 {
   // schedule delete for all allocated GL resources
   for(
-      SbHash<uint32_t, GLuint>::const_iterator iter =
+      SbSmallMap<uint32_t, GLuint>::const_iterator iter =
        this->vbohash.const_begin();
       iter!=this->vbohash.const_end();
       ++iter

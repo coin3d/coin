@@ -47,7 +47,6 @@
 // *************************************************************************
 
 SoGLSLShaderProgram::SoGLSLShaderProgram(void)
-  : programHandles(5)
 {
   this->isExecutable = FALSE;
   this->neededlinking = TRUE;
