@@ -73,7 +73,7 @@
 
 //Create an uint of an arbitrary length datatype
 template <class T>
-inline unsigned int toUint(T in) {
+inline unsigned int toUint(T in) noexcept {
   if (sizeof(T)>sizeof(unsigned int)) {
     T retVal=in;
     for (size_t i = sizeof(T)/sizeof(unsigned int)-1; i>0; i--) {
@@ -89,7 +89,7 @@ inline unsigned int toUint(T in) {
 #if !defined(_MSC_VER) || (_MSC_VER >= 1300) // 'long long' not in vc6
 #ifndef COIN_INTERNAL //Not available for internal use, as this is not
                     //available on all platforms.
-inline unsigned int SbHashFunc(unsigned long long key) { return toUint<unsigned long long>(key); }
+inline unsigned int SbHashFunc(unsigned long long key) noexcept { return toUint<unsigned long long>(key); }
 #endif //COIN_INTERNAL
 #endif
 
@@ -98,20 +98,37 @@ inline unsigned int SbHashFunc(unsigned long long key) { return toUint<unsigned 
  * where int is 32-bit and long and pointer are 64-bit. */
 /* FIXME: the following solution is a kludge. 20081001 tamer. */
 #if defined(_WIN64)
-inline unsigned int SbHashFunc(unsigned long long key) { return toUint<unsigned long long>(key); }
+inline unsigned int SbHashFunc(unsigned long long key) noexcept { return toUint<unsigned long long>(key); }
 #else
 //The identity hash function
-inline unsigned int SbHashFunc(unsigned int key) { return key; }
+inline unsigned int SbHashFunc(unsigned int key) noexcept { return key; }
 
 //Some implementation of other basetypes
-inline unsigned int SbHashFunc(int key) { return static_cast<unsigned int>(key); }
+inline unsigned int SbHashFunc(int key) noexcept { return static_cast<unsigned int>(key); }
 
-inline unsigned int SbHashFunc(unsigned long key) { return toUint<unsigned long>(key); }
+inline unsigned int SbHashFunc(unsigned long key) noexcept { return toUint<unsigned long>(key); }
 #endif
+
+// Preserve the historical content hash for interned C strings without
+// allocating an SbString temporary. Mutable character buffers are used as
+// pointer-identity keys by SoField and keep that distinct behavior.
+inline unsigned int SbHashFunc(const char * key) noexcept {
+  if (key == NULL) return 0;
+  const unsigned char * str = reinterpret_cast<const unsigned char *>(key);
+  unsigned long hash = 0;
+  while (*str) {
+    hash = (*str++) + (hash << 6) + (hash << 16) - hash;
+  }
+  return static_cast<unsigned int>(hash);
+}
+
+inline unsigned int SbHashFunc(char * key) noexcept {
+  return SbHashFunc(reinterpret_cast<size_t>(key));
+}
 
 //String has its own implementation
 class SbString;
-unsigned int SbHashFunc(const SbString & key);
+unsigned int SbHashFunc(const SbString & key) noexcept;
 
 /*
   Some implementations of pointers, all functions are per writing only reinterpret_casts to size_t
@@ -120,9 +137,9 @@ unsigned int SbHashFunc(const SbString & key);
 class SoBase;
 class SoOutput;
 class SoSensor;
-unsigned int SbHashFunc(const SoBase * key);
-unsigned int SbHashFunc(const SoOutput * key);
-unsigned int SbHashFunc(const SoSensor * key);
+unsigned int SbHashFunc(const SoBase * key) noexcept;
+unsigned int SbHashFunc(const SoOutput * key) noexcept;
+unsigned int SbHashFunc(const SoSensor * key) noexcept;
 
 template <class Key, class Type>
 class SbHash {
@@ -187,6 +204,10 @@ class SbHash {
     }
 
     inline void setNextUsedBucket() {
+      if (this->master->buckets == NULL) {
+        this->elem = NULL;
+        return;
+      }
       for (; this->index < this->master->size; ++this->index) {
         if (this->master->buckets[this->index]) {
           this->elem = this->master->buckets[this->index];
@@ -206,7 +227,7 @@ class SbHash {
       setNextUsedBucket();
     }
 
-    SbHash<Key, Type> * master;
+    const SbHash<Key, Type> * master;
     unsigned int index;
     SbHashEntry * elem;
     friend class SbHash<Key, Type>;
@@ -251,6 +272,10 @@ class SbHash {
     }
 
     inline void setNextUsedBucket() {
+      if (this->master->buckets == NULL) {
+        this->elem = NULL;
+        return;
+      }
       for (; this->index < this->master->size; ++this->index) {
         if (this->master->buckets[this->index]) {
           this->elem = this->master->buckets[this->index];
@@ -291,6 +316,7 @@ class SbHash {
   {
     if (this == &from) return *this;
     this->clear();
+    if (from.buckets == NULL) return *this;
     unsigned int i;
     SbHashEntry * elem;
     for (i = 0; i < from.size; ++i) {
@@ -305,13 +331,15 @@ class SbHash {
 
   ~SbHash()
   {
-    this->clear();
-    cc_memalloc_destruct(this->memhandler);
-    delete [] this->buckets;
+    this->releaseStorage();
   }
 
   void clear(void)
   {
+    if (this->buckets == NULL) {
+      this->elements = 0;
+      return;
+    }
     unsigned int i;
     for (i = 0; i < this->size; i++) {
       while (this->buckets[i]) {
@@ -324,22 +352,25 @@ class SbHash {
     this->elements = 0;
   }
 
+  /* Clear the table and return its bucket and entry-pool allocations. The
+     normal clear() deliberately retains them for inexpensive reuse. */
+  void releaseStorage(void)
+  {
+    this->clear();
+    if (this->memhandler != NULL) {
+      cc_memalloc_destruct(this->memhandler);
+      this->memhandler = NULL;
+    }
+    delete [] this->buckets;
+    this->buckets = NULL;
+  }
+
   iterator begin() const {
-    iterator retVal;
-
-    retVal.master = this;
-    retVal.index=0;
-
-    return retVal;
+    return iterator(this);
   }
 
   iterator end() const {
-    iterator retVal;
-
-    retVal.master = this;
-    retVal.index = this->size;
-
-    return retVal;
+    return iterator();
   }
 
   const_iterator const_begin() const {
@@ -362,6 +393,7 @@ class SbHash {
   
   size_t erase(const Key & key)
   {
+    if (this->elements == 0) return 0;
     unsigned int i = this->getIndex(key);
     SbHashEntry * entry = this->buckets[i], * next, * prev = NULL;
     while (entry) {
@@ -385,6 +417,7 @@ class SbHash {
 
   void makeKeyList(SbList<Key> & l) const
   {
+    if (this->buckets == NULL) return;
     unsigned int i;
     SbHashEntry * elem;
     for (i = 0; i < this->size; ++i) {
@@ -400,6 +433,7 @@ class SbHash {
 
   const_iterator find(const Key & key) const
   {
+    if (this->elements == 0) return const_end();
     const_iterator iter(this);
     iter.index = this->getIndex(key);
     
@@ -415,42 +449,55 @@ class SbHash {
 
 
 protected:
-  unsigned int getIndex(const Key & key) const {
-    unsigned int idx = SbHashFunc(key);
-    return (idx % this->size);
+  SbBool hasAllocatedStorage(void) const {
+    return this->buckets != NULL ? TRUE : FALSE;
+  }
+
+  unsigned int getIndex(const Key & key) const noexcept {
+    return this->getIndex(key, this->size);
+  }
+
+  unsigned int getNumBuckets(void) const noexcept {
+    return this->size;
+  }
+
+  unsigned int getResizeThreshold(void) const noexcept {
+    return this->threshold;
   }
 
   void resize(unsigned int newsize) {
     /* we don't shrink the table */
     if (this->size >= newsize) return;
 
-    unsigned int oldsize = this->size;
-    SbHashEntry ** oldbuckets = this->buckets;
+    SbHashEntry ** newbuckets = new SbHashEntry * [newsize];
+    memset(newbuckets, 0, newsize * sizeof(SbHashEntry *));
 
-    this->size = newsize;
-    this->elements = 0;
-    this->threshold = static_cast<unsigned int> (newsize * this->loadfactor);
-    this->buckets = new SbHashEntry * [newsize];
-    memset(this->buckets, 0, this->size * sizeof(SbHashEntry *));
-
-    /* Transfer all mappings */
+    /* Relink all mappings without copying keys or values. Allocation happens
+       before any existing node is touched, and hashing is required to be
+       non-throwing, so the table remains unchanged if allocation fails. */
     unsigned int i;
-    for (i = 0; i < oldsize; i++) {
-      SbHashEntry * entry = oldbuckets[i];
+    for (i = 0; i < this->size; i++) {
+      SbHashEntry * entry = this->buckets[i];
       while (entry) {
-        this->put(entry->key, entry->obj);
-        SbHashEntry * preventry = entry;
-        entry = entry->next;
-        delete preventry;
+        SbHashEntry * next = entry->next;
+        const unsigned int newindex = this->getIndex(entry->key, newsize);
+        entry->next = newbuckets[newindex];
+        newbuckets[newindex] = entry;
+        entry = next;
       }
     }
-    delete [] oldbuckets;
+
+    delete [] this->buckets;
+    this->buckets = newbuckets;
+    this->size = newsize;
+    this->threshold = static_cast<unsigned int> (newsize * this->loadfactor);
   }
 
   //FIXME: Make this private when SbHash goes public: BFG 20090430
 public:
   SbBool put(const Key & key, const Type & obj)
   {
+    this->ensureStorage();
     unsigned int i = this->getIndex(key);
     SbHashEntry * entry = this->buckets[i];
     while (entry) {
@@ -477,6 +524,7 @@ public:
 
   SbBool get(const Key & key, Type & obj) const
   {
+    if (this->elements == 0) return FALSE;
     SbHashEntry * entry;
     unsigned int i = this->getIndex(key);
     entry = this->buckets[i];
@@ -491,8 +539,16 @@ public:
   }
 
  private:
+  static unsigned int getIndex(const Key & key, unsigned int bucketsize) noexcept
+  {
+    static_assert(noexcept(SbHashFunc(key)),
+                  "SbHashFunc(key) and implicit key conversions must be noexcept");
+    return SbHashFunc(key) % bucketsize;
+  }
+
   SbBool getP(const Key & key, Type *& obj) const
   {
+    if (this->elements == 0) return FALSE;
     SbHashEntry * entry;
     unsigned int i = this->getIndex(key);
     entry = this->buckets[i];
@@ -511,22 +567,35 @@ public:
   {
     if (loadfactorarg <= 0.0f) { loadfactorarg = 0.75f; }
     unsigned int s = coin_geq_prime_number(sizearg);
-    this->memhandler = cc_memalloc_construct(sizeof(SbHashEntry));
+    this->memhandler = NULL;
     this->size = s;
     this->elements = 0;
     this->threshold = static_cast<unsigned int> (s * loadfactorarg);
     this->loadfactor = loadfactorarg;
-    this->buckets = new SbHashEntry * [this->size];
-    memset(this->buckets, 0, this->size * sizeof(SbHashEntry *));
+    this->buckets = NULL;
   }
 
+  void ensureStorage(void)
+  {
+    if (this->buckets != NULL) return;
+    assert(this->memhandler == NULL);
+
+    SbHashEntry ** newbuckets = new SbHashEntry * [this->size];
+    memset(newbuckets, 0, this->size * sizeof(SbHashEntry *));
+    cc_memalloc * newmemhandler = cc_memalloc_construct(sizeof(SbHashEntry));
+
+    this->buckets = newbuckets;
+    this->memhandler = newmemhandler;
+  }
+
+ protected:
   void getStats(int & buckets_used, int & buckets, int & elements, float & chain_length_avg, int & chain_length_max)
   {
     unsigned int i;
     buckets_used = 0, chain_length_max = 0;
-    for (i = 0; i < this->size; i++) {
+    for (i = 0; this->buckets != NULL && i < this->size; i++) {
       if (this->buckets[i]) {
-        unsigned int chain_l = 0;
+        int chain_l = 0;
         SbHashEntry * entry = this->buckets[i];
         buckets_used++;
         while (entry) {
@@ -538,9 +607,11 @@ public:
     }
     buckets = this->size;
     elements = this->elements;
-    chain_length_avg = static_cast<float>( this->elements / buckets_used);
+    chain_length_avg = buckets_used == 0 ? 0.0f :
+      static_cast<float>(this->elements) / static_cast<float>(buckets_used);
   }
 
+ private:
   float loadfactor;
   unsigned int size;
   unsigned int elements;
