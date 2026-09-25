@@ -82,7 +82,7 @@ public:
       this->closure == theother.closure;
   }
 
-  operator unsigned long(void) const {
+  operator unsigned long(void) const noexcept {
     unsigned long key = 0;
     // create an xor key
     const unsigned char * ptr = (const unsigned char *) this;
