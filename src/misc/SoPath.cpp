@@ -623,8 +623,15 @@ SoPath::truncate(const int length)
 void
 SoPath::truncate(const int length, const SbBool donotify)
 {
-  assert((length >= 0) && (length <= this->getFullLength()) &&
-         "invalid truncation length");
+  const int fulllength = this->getFullLength();
+  if (length < 0 || length > fulllength) {
+#if COIN_DEBUG
+    SoDebugError::post("SoPath::truncate",
+                       "length %d is out of bounds [0, %d].",
+                       length, fulllength);
+#endif // COIN_DEBUG
+    return;
+  }
 
 #if COIN_DEBUG
   // Don't run this alive test if the node list is not referencing.
@@ -797,25 +804,37 @@ operator!=(const SoPath & lhs, const SoPath & rhs)
 SoPath *
 SoPath::copy(const int startfromnodeindex, int numnodes) const
 {
-#if COIN_DEBUG
+  const int fulllength = this->getFullLength();
+
   if (startfromnodeindex < 0 ||
-      startfromnodeindex >= this->getFullLength()) {
+      startfromnodeindex >= fulllength) {
+#if COIN_DEBUG
     SoDebugError::post("SoPath::copy",
                        "startfromnodeindex was out of bounds with %d.",
                        startfromnodeindex);
+#endif // COIN_DEBUG
     return NULL;
   }
-#endif // COIN_DEBUG
-  if (numnodes == 0) numnodes = this->getFullLength() - startfromnodeindex;
 
+  if (numnodes < 0) {
 #if COIN_DEBUG
-  if (numnodes <= 0 ||
-      (startfromnodeindex + numnodes) > this->getFullLength()) {
     SoDebugError::post("SoPath::copy", "numnodes has invalid value %d",
                        numnodes);
+#endif // COIN_DEBUG
     return NULL;
   }
+
+  const int remaining = fulllength - startfromnodeindex;
+  if (numnodes == 0) {
+    numnodes = remaining;
+  }
+  else if (numnodes > remaining) {
+#if COIN_DEBUG
+    SoDebugError::post("SoPath::copy", "numnodes has invalid value %d",
+                       numnodes);
 #endif // COIN_DEBUG
+    return NULL;
+  }
 
   SoPath * newpath = new SoPath(numnodes);
   // Note: it is not by oversight that we're not copying the
@@ -824,9 +843,9 @@ SoPath::copy(const int startfromnodeindex, int numnodes) const
   // pointer is an SoTempPath and the newly created SoPath _is_
   // supposed to audit its path for changes.
 
-  const int max = startfromnodeindex + numnodes;
-  for (int i = startfromnodeindex; i < max; i++) {
-    newpath->append(this->nodes[i], this->indices[i]);
+  for (int i = 0; i < numnodes; i++) {
+    const int sourceindex = startfromnodeindex + i;
+    newpath->append(this->nodes[sourceindex], this->indices[sourceindex]);
   }
   newpath->firsthiddendirty = TRUE;
   return newpath;
