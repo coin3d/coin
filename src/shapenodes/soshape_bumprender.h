@@ -41,6 +41,7 @@
 #include <Inventor/C/glue/gl.h>
 
 #include "misc/SbHash.h"
+#include <memory>
 
 // *************************************************************************
 
@@ -69,6 +70,9 @@ public:
   void renderNormal(SoState * state, const SoPrimitiveVertexCache * cache);
 
 private:
+  // A renderer owns one registration/resource lifetime, not a copyable handle.
+  soshape_bumprender(const soshape_bumprender &) = delete;
+  soshape_bumprender & operator=(const soshape_bumprender &) = delete;
 
   struct spec_programidx {
     GLuint dirlight;
@@ -94,6 +98,8 @@ private:
 
   static void context_destruction_cb(uint32_t contextid, void * userdata);
   static void delete_program_cb(void * closure, uint32_t contextid);
+  static void initialize_program_cb(void * closure, uint32_t contextid);
+  static void cleanup_program_cb(void * closure, uint32_t contextid);
 
   SbList <SbVec3f> cubemaplist;
   SbList <SbVec3f> tangentlist;
@@ -102,10 +108,9 @@ private:
   SbBool ispointlight;
 
   typedef SbHash<uint32_t, diffuse_programidx> ContextId2DiffuseStruct;
-  ContextId2DiffuseStruct diffuseprogramdict;
-
   typedef SbHash<uint32_t, spec_programidx> ContextId2SpecStruct;
-  ContextId2SpecStruct specularprogramdict;
+  struct ProgramCache;
+  std::shared_ptr<ProgramCache> programcache;
 };
 
 #endif // COIN_SOSHAPE_BUMPRENDER
