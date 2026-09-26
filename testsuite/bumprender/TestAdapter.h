@@ -1,6 +1,11 @@
 #ifndef COIN_BUMP_TEST_ADAPTER_H
 #define COIN_BUMP_TEST_ADAPTER_H
 
+// Keep windows.h from replacing std::numeric_limits<T>::max().
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+
 #include <Inventor/SoDB.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/elements/SoCacheElement.h>
@@ -13,12 +18,40 @@
 #include <cstdio>
 #include <cstdlib>
 
+#include "glue/glp.h"
+#include "rendering/SoGL.h"
+#include "tidbitsp.h"
+
 #define CHECK(expr) do { if (!(expr)) { \
   std::fprintf(stderr, "%s:%d: %s\n", __FILE__, __LINE__, #expr); \
   std::abort(); } } while (0)
 
+// The private implementation is compiled into this executable, not into Coin.
+// Use the public client cleanup API so shared-library builds on Windows do not
+// need coin_atexit_func exported. Client cleanup runs before Coin's own context
+// dispatcher cleanup, preserving the ordering needed by this test registry.
+inline void bumpTestAtExit(coin_atexit_f * func, coin_atexit_priorities priority) {
+  CHECK(priority == CC_ATEXIT_NORMAL);
+  cc_coin_atexit(func);
+}
+#undef coin_atexit
+#define coin_atexit(func, priority) bumpTestAtExit(func, priority)
+
+// Only the private cache/upload entry points are exercised here. Keep the two
+// unexported drawing helpers out of the executable's DLL imports, and fail if a
+// test accidentally starts using those unadapted drawing paths. GLXTest's real
+// SoShape integration still exercises the original helpers inside Coin.
+inline const cc_glglue * bumpTestStateGlue(const SoState *) {
+  CHECK(false);
+  return NULL;
+}
+inline void bumpTestNormalizationCubeMap(const cc_glglue *) { CHECK(false); }
+#define sogl_glue_instance bumpTestStateGlue
+#define coin_apply_normalization_cube_map bumpTestNormalizationCubeMap
+
 // Compile the production implementation under a separate private class name.
-// Only context/state bookkeeping is adapted; no cache logic is copied here.
+// Adapt external context/platform dependencies, but keep the production cache
+// and upload logic unchanged; no cache logic is copied into this adapter.
 #define soshape_bumprender CoinBumpTestRenderer
 #define private public
 #include "shapenodes/soshape_bumprender.h"

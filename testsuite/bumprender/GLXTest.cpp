@@ -4,6 +4,9 @@
 #include <GL/glx.h>
 #include <X11/Xlib.h>
 #include <cstring>
+#include <Inventor/SoSceneManager.h>
+#include <Inventor/nodes/SoCallback.h>
+#include <Inventor/sensors/SoSensorManager.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
@@ -60,40 +63,97 @@ void check_lengths(const cc_glglue * glue, const CoinBumpTestRenderer::spec_prog
   bindProgram(GL_FRAGMENT_PROGRAM_ARB, 0); bindProgram(GL_VERTEX_PROGRAM_ARB, 0);
   CHECK(glGetError() == GL_NO_ERROR);
 }
-void integration_scene() {
-  SoSeparator * scene = new SoSeparator; scene->ref();
+struct ListTrace {
+  ListTrace() : listed(0) { }
+  int listed;
+};
+void trace_list(void * closure, SoAction * action) {
+  if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
+    GLint list = 0; glGetIntegerv(GL_LIST_INDEX, &list);
+    if (list != 0) ++((ListTrace *) closure)->listed;
+  }
+}
+void redraw_scene(void * closure, SoSceneManager * manager) {
+  ++*(int *) closure;
+  manager->render();
+}
+void read_pixel(GLubyte * pixel) { glReadPixels(8, 8, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel); }
+void drain_redraws() {
+  // Process the viewer's queued redraw, not another explicit action.apply().
+  for (int i = 0; i < 4 && SoDB::getSensorManager()->isDelaySensorPending(); ++i) {
+    SoDB::getSensorManager()->processDelayQueue(TRUE);
+  }
+}
+void integration_scene(GLContext & a, GLContext & b) {
+  SoSeparator * root = new SoSeparator; root->ref();
+  root->renderCaching = SoSeparator::OFF;
+  SoOrthographicCamera * camera = new SoOrthographicCamera;
+  camera->position.setValue(0, 0, 5); camera->height = 3;
+  camera->nearDistance = 1; camera->farDistance = 10; root->addChild(camera);
+  root->addChild(new SoDirectionalLight);
+  SoSeparator * scene = new SoSeparator;
   scene->renderCaching = SoSeparator::ON;
-  scene->addChild(new SoOrthographicCamera);
-  scene->addChild(new SoDirectionalLight);
+  root->addChild(scene);
   SoMaterial * material = new SoMaterial;
+  material->diffuseColor.setValue(0.1f, 0.1f, 0.1f);
   material->specularColor.setValue(0.8f, 0.8f, 0.8f); scene->addChild(material);
   SoBumpMap * bump = new SoBumpMap;
   const unsigned char pixels[] = {128,128,255,128,128,255,128,128,255,128,128,255};
   bump->image.setValue(SbVec2s(2,2), 3, pixels); scene->addChild(bump);
+  ListTrace trace;
+  SoCallback * callback = new SoCallback;
+  callback->setCallback(trace_list, &trace); scene->addChild(callback);
   scene->addChild(new SoCube);
   {
-    SoGLRenderAction action(SbViewportRegion(16,16)); action.setCacheContext(73);
-    action.apply(scene); action.apply(scene); action.apply(scene);
-    GLint fragment = 0, vertex = 0;
-    getProgramiv(GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_BINDING_ARB, &fragment);
-    getProgramiv(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_BINDING_ARB, &vertex);
-    CHECK(fragment != 0 && vertex != 0);
+    SoGLRenderAction action(SbViewportRegion(16,16));
+    SoSceneManager manager;
+    manager.setGLRenderAction(&action); manager.setViewportRegion(SbViewportRegion(16,16));
+    manager.setRedrawPriority(0); // Must not reenter an action inside its display list.
+    manager.setSceneGraph(root); manager.setBackgroundColor(SbColor(0,0,0));
+    int redraws = 0;
+    manager.setRenderCallback(redraw_scene, &redraws); manager.activate();
+    a.current(73); action.setCacheContext(73);
+    manager.render(); manager.render(); manager.render(); drain_redraws();
+    CHECK(trace.listed > 0);
+    GLubyte expected[3]; read_pixel(expected); CHECK(expected[0] > 0);
+    GLint fragmenta = 0, vertexa = 0;
+    getProgramiv(GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_BINDING_ARB, &fragmenta);
+    getProgramiv(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_BINDING_ARB, &vertexa);
+    CHECK(fragmenta != 0 && vertexa != 0);
+
+    // The separator is already warm, but B has no programs. Its first visit
+    // really compiles a list; then the scene-manager notification must render
+    // again without any user input, initializing outside the list.
+    b.current(74); action.setCacheContext(74);
+    const int listed = trace.listed, before = redraws;
+    manager.render(); CHECK(trace.listed > listed);
+    drain_redraws(); CHECK(redraws > before);
+    GLubyte actual[3]; read_pixel(actual);
+    for (int i = 0; i < 3; ++i) CHECK(std::abs((int) actual[i] - (int) expected[i]) <= 2);
+    GLint fragmentb = 0, vertexb = 0;
+    getProgramiv(GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_BINDING_ARB, &fragmentb);
+    getProgramiv(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_BINDING_ARB, &vertexb);
+    CHECK(fragmentb != 0 && vertexb != 0);
     GLint length = 0;
     getProgramiv(GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_LENGTH_ARB, &length); CHECK(length > 0);
     getProgramiv(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_LENGTH_ARB, &length); CHECK(length > 0);
-    scene->unref();
+    const int settled = redraws; manager.render(); drain_redraws(); CHECK(redraws == settled);
+    manager.deactivate(); manager.setSceneGraph(NULL); root->unref();
     SoSeparator * empty = new SoSeparator; empty->ref();
     action.apply(empty); empty->unref();
-    CHECK(!isProgram((GLuint) fragment) && !isProgram((GLuint) vertex));
+    CHECK(!isProgram((GLuint) fragmentb) && !isProgram((GLuint) vertexb));
+    SoContextHandler::destructingContext(74);
+    a.current(73); SoContextHandler::destructingContext(73);
+    CHECK(!isProgram((GLuint) fragmenta) && !isProgram((GLuint) vertexa));
   }
-  SoContextHandler::destructingContext(73);
-  std::puts("PASS: actual SoShape traversal with renderCaching=ON and real deferred cleanup.");
+  std::puts("PASS: real deferred initialization in a second context, automatic redraw and cleanup.");
 }
+
 }
 int main() {
   Display * display = XOpenDisplay(NULL);
   if (!display) { std::puts("SKIP: no X display"); return 77; }
-  int attr[] = { GLX_RGBA, None };
+  int attr[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, None };
   XVisualInfo * visual = glXChooseVisual(display, DefaultScreen(display), attr);
   if (!visual) { XCloseDisplay(display); return 77; }
   SoDB::init();
@@ -142,7 +202,7 @@ int main() {
     SoContextHandler::destructingContext(72);
     CHECK(CoinBumpTestRenderer::ProgramCache::registry().entries.empty());
     CHECK(BumpTestCacheContext::queue().empty());
-    a.current(73); integration_scene();
+    integration_scene(a, b);
   }
   SoDB::finish(); XFree(visual); XCloseDisplay(display);
   std::puts("Bump GLX display-list and two-context lifecycle tests passed.");

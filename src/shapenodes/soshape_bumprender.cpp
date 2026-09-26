@@ -77,6 +77,7 @@
 #include "glue/glp.h"
 #include "rendering/SoGL.h"
 #include "tidbitsp.h"
+#include <Inventor/sensors/SoNodeSensor.h>
 
 // *************************************************************************
 
@@ -356,11 +357,45 @@ struct soshape_bumprender::ProgramCache {
     uintptr_t nexttoken;
     bool cleanupregistered;
   };
+  struct RedrawSensor : SoNodeSensor, std::enable_shared_from_this<RedrawSensor> {
+    explicit RedrawSensor(uintptr_t token) : SoNodeSensor(redraw_cb, (void *) token) {
+      // Never notify priority-zero viewers from inside display-list traversal.
+      this->setPriority(100);
+    }
+    void trigger() override {
+      // A notification handler may destroy the renderer. Keep its sensor alive
+      // until SoDataSensor::trigger() has finished its post-callback cleanup.
+      const std::shared_ptr<RedrawSensor> sensor = this->shared_from_this();
+      SoNodeSensor::trigger();
+    }
+  };
+  typedef std::shared_ptr<RedrawSensor> RedrawPtr;
+  typedef std::map<SoNode *, RedrawPtr> Redraws;
   ProgramCache() : token(0), alive(true) { }
   std::mutex mutex;
   uintptr_t token;
   bool alive;
   Contexts contexts;
+  Redraws redraws;
+
+  static void redraw_cb(void * closure, SoSensor * sensor) {
+    const Ptr cache = lookup((uintptr_t) closure);
+    if (!cache) return;
+    SoNode * root = NULL;
+    {
+      std::lock_guard<std::mutex> lock(cache->mutex);
+      SoNodeSensor * node = static_cast<SoNodeSensor *>(sensor);
+      if (cache->alive) root = node->getAttachedNode();
+      if (root) root->ref();
+      node->detach();
+    }
+    // Node deletion detaches the sensor. Keep a surviving root alive through
+    // user notification handlers, with no cache/render lock held.
+    if (root) {
+      root->touch();
+      root->unref();
+    }
+  }
 
   static Registry & registry() {
     static Registry reg;
@@ -515,9 +550,11 @@ soshape_bumprender::~soshape_bumprender()
 {
   const ProgramCache::Ptr cache = this->programcache;
   std::vector<uint32_t> contexts;
+  ProgramCache::Redraws redraws;
   {
     std::lock_guard<std::mutex> lock(cache->mutex);
     cache->alive = false;
+    redraws.swap(cache->redraws);
     for (ProgramCache::Contexts::iterator it = cache->contexts.begin();
          it != cache->contexts.end();) {
       if (it->second.specstatus == ProgramCache::READY ||
@@ -528,9 +565,15 @@ soshape_bumprender::~soshape_bumprender()
       else cache->contexts.erase(it++);
     }
   }
+  // Sensor queue changes can invoke application callbacks; never cancel under
+  // the cache mutex, and keep every sensor alive through reentrant handlers.
+  for (ProgramCache::Redraws::const_iterator it = redraws.begin(); it != redraws.end(); ++it) {
+    if (it->second->isScheduled()) it->second->unschedule();
+    it->second->detach();
+  }
   // Never take the scheduler's mutex while holding the cache mutex: cleanup
-  // invokes deferred callbacks under the scheduler's lock. Pending callbacks
-  // contain tokens, not program names or pointers to this dead renderer.
+  // invokes deferred callbacks under its own lock. Queued callbacks contain
+  // tokens, not program names or pointers to this dead renderer.
   for (size_t i = 0; i < contexts.size(); ++i) {
     SoGLCacheContextElement::scheduleDeleteCallback(contexts[i], cleanup_program_cb,
                                                     (void *) cache->token);
@@ -605,6 +648,45 @@ inline void NORMALIZE(SbVec3f &v)
     v[0] *= len;
     v[1] *= len;
     v[2] *= len;
+  }
+}
+
+void
+soshape_bumprender::scheduleRedraw(SoState * state, SoNode * root)
+{
+  const ProgramCache::Ptr cache = this->programcache;
+  ProgramCache::RedrawPtr sensor;
+  {
+    std::lock_guard<std::mutex> lock(cache->mutex);
+    for (ProgramCache::Redraws::iterator it = cache->redraws.begin(); it != cache->redraws.end();) {
+      if (!it->second->isScheduled() && !it->second->getAttachedNode()) cache->redraws.erase(it++);
+      else ++it;
+    }
+    ProgramCache::Contexts::const_iterator it =
+      cache->contexts.find((uint32_t) SoGLCacheContextElement::get(state));
+    if (!cache->alive || it == cache->contexts.end() ||
+        (it->second.specstatus != ProgramCache::PENDING &&
+         it->second.diffusestatus != ProgramCache::PENDING)) return;
+    // A shared shape may belong to multiple viewers. Notify every root, not
+    // just the most recently traversed one. Sensors do not keep roots alive.
+    ProgramCache::RedrawPtr & entry = cache->redraws[root];
+    if (!entry) entry.reset(new ProgramCache::RedrawSensor(cache->token));
+    sensor = entry;
+    if (sensor->getAttachedNode() != root) {
+      sensor->detach();
+      sensor->attach(root);
+    }
+  }
+  sensor->schedule(); // notifyChanged() is an application callback.
+  bool alive;
+  {
+    std::lock_guard<std::mutex> lock(cache->mutex);
+    alive = cache->alive;
+  }
+  // Cancellation may have run reentrantly while the queue was changing.
+  if (!alive) {
+    if (sensor->isScheduled()) sensor->unschedule();
+    sensor->detach();
   }
 }
 

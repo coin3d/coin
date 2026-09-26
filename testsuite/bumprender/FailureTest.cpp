@@ -1,4 +1,8 @@
 #include "TestAdapter.h"
+#include <Inventor/SbTime.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/sensors/SoNodeSensor.h>
+#include <Inventor/sensors/SoSensorManager.h>
 #include <cstring>
 #include <thread>
 #include <atomic>
@@ -178,6 +182,152 @@ void stale_initializer_case() {
     CHECK(mock.uploads == 3 && mock.deleted == 0); }
   BumpTestCacheContext::flush(1); CHECK(mock.deleted == 3);
 }
+struct RedrawProbe {
+  RedrawProbe() : renderer(NULL), notifications(0), destroyRenderer(false) { }
+  CoinBumpTestRenderer * renderer;
+  int notifications;
+  bool destroyRenderer;
+};
+void observe_redraw(void * closure, SoSensor *) {
+  RedrawProbe * probe = (RedrawProbe *) closure;
+  ++probe->notifications;
+  if (probe->destroyRenderer) {
+    CoinBumpTestRenderer * renderer = probe->renderer;
+    probe->renderer = NULL;
+    delete renderer;
+  }
+}
+void redraw_lifetime_cases() {
+  reset(); mock.list = 5;
+  SoSeparator * root = new SoSeparator; root->ref();
+  RedrawProbe probe;
+  SoNodeSensor monitor(observe_redraw, &probe); monitor.setPriority(0); monitor.attach(root);
+  probe.renderer = new CoinBumpTestRenderer;
+  CoinBumpTestRenderer::spec_programidx p;
+  CHECK(!probe.renderer->ensurePrograms(testGlueInstance(1), NULL, p));
+  const uintptr_t token = probe.renderer->programcache->token;
+  std::weak_ptr<CoinBumpTestRenderer::ProgramCache> lifetime = probe.renderer->programcache;
+  probe.renderer->scheduleRedraw(NULL, root);
+  probe.renderer->scheduleRedraw(NULL, root); // One redraw for repeated PENDING requests.
+  CHECK(probe.notifications == 0 && root->getRefCount() == 1);
+  CHECK(probe.renderer->programcache->redraws[root]->isScheduled());
+  probe.destroyRenderer = true;
+  SoDB::getSensorManager()->processDelayQueue(TRUE);
+  // The immediate observer destroys the renderer from inside redraw touch().
+  // No strong test reference may mask the sensor's post-callback lifetime.
+  CHECK(probe.renderer == NULL && probe.notifications == 1);
+  CHECK(lifetime.expired());
+  CHECK(CoinBumpTestRenderer::ProgramCache::registry().entries.count(token) == 0);
+  CHECK(root->getRefCount() == 1);
+  SoDB::getSensorManager()->processDelayQueue(TRUE); CHECK(probe.notifications == 1);
+  mock.list = 0; BumpTestCacheContext::flush(1); CHECK(mock.generated == 0);
+  monitor.detach(); root->unref();
+
+  // Destruction before queue processing must cancel redraw and initialization.
+  reset(); mock.list = 5;
+  root = new SoSeparator; root->ref();
+  probe.destroyRenderer = false; probe.notifications = 0;
+  monitor.attach(root); probe.renderer = new CoinBumpTestRenderer;
+  CHECK(!probe.renderer->ensurePrograms(testGlueInstance(1), NULL, p));
+  probe.renderer->scheduleRedraw(NULL, root);
+  lifetime = probe.renderer->programcache;
+  delete probe.renderer; probe.renderer = NULL;
+  CHECK(lifetime.expired());
+  SoDB::getSensorManager()->processDelayQueue(TRUE); CHECK(probe.notifications == 0);
+  mock.list = 0; BumpTestCacheContext::flush(1); CHECK(mock.generated == 0);
+  monitor.detach(); root->unref();
+
+  // A queued sensor does not retain its root and must tolerate root deletion.
+  reset(); mock.list = 5;
+  root = new SoSeparator; root->ref();
+  monitor.attach(root); probe.renderer = new CoinBumpTestRenderer;
+  CHECK(!probe.renderer->ensurePrograms(testGlueInstance(1), NULL, p));
+  probe.renderer->scheduleRedraw(NULL, root);
+  CHECK(root->getRefCount() == 1);
+  root->unref();
+  CHECK(monitor.getAttachedNode() == NULL);
+  CHECK(probe.renderer->programcache->redraws[root]->getAttachedNode() == NULL);
+  SoDB::getSensorManager()->processDelayQueue(TRUE); CHECK(probe.notifications == 0);
+  CHECK(!probe.renderer->programcache->redraws[root]->isScheduled());
+  delete probe.renderer; probe.renderer = NULL;
+  mock.list = 0; BumpTestCacheContext::flush(1); CHECK(mock.generated == 0);
+}
+void multiple_root_redraw_case() {
+  reset(); mock.list = 5;
+  SoSeparator * a = new SoSeparator; a->ref();
+  SoSeparator * b = new SoSeparator; b->ref();
+  RedrawProbe aprobe, bprobe;
+  SoNodeSensor amonitor(observe_redraw, &aprobe), bmonitor(observe_redraw, &bprobe);
+  amonitor.setPriority(0); amonitor.attach(a);
+  bmonitor.setPriority(0); bmonitor.attach(b);
+  {
+    CoinBumpTestRenderer renderer; CoinBumpTestRenderer::spec_programidx p;
+    CHECK(!renderer.ensurePrograms(testGlueInstance(1), NULL, p));
+    renderer.scheduleRedraw(NULL, a); renderer.scheduleRedraw(NULL, b);
+    renderer.scheduleRedraw(NULL, a); renderer.scheduleRedraw(NULL, b);
+    CHECK(renderer.programcache->redraws.size() == 2);
+    CHECK(aprobe.notifications == 0 && bprobe.notifications == 0);
+    CHECK(a->getRefCount() == 1 && b->getRefCount() == 1);
+    SoDB::getSensorManager()->processDelayQueue(TRUE);
+    CHECK(aprobe.notifications == 1 && bprobe.notifications == 1);
+    SoDB::getSensorManager()->processDelayQueue(TRUE);
+    CHECK(aprobe.notifications == 1 && bprobe.notifications == 1);
+  }
+  mock.list = 0; BumpTestCacheContext::flush(1); CHECK(mock.generated == 0);
+  amonitor.detach(); bmonitor.detach(); a->unref(); b->unref();
+}
+struct QueueChangeProbe {
+  QueueChangeProbe(CoinBumpTestRenderer ** owner, bool destroy)
+    : renderer(owner), calls(0), destroyRenderer(destroy) { }
+  CoinBumpTestRenderer ** renderer;
+  int calls;
+  bool destroyRenderer;
+};
+void change_queue_reentrantly(void * closure) {
+  QueueChangeProbe * probe = (QueueChangeProbe *) closure;
+  ++probe->calls;
+  // Unscheduling also changes the queue. Disarm first to avoid nested deletes.
+  SoDB::getSensorManager()->setChangedCallback(NULL, NULL);
+  if (probe->destroyRenderer) {
+    CoinBumpTestRenderer * renderer = *probe->renderer;
+    *probe->renderer = NULL;
+    delete renderer;
+  }
+  else SoContextHandler::destructingContext(1);
+}
+void queue_changed_lifetime_cases() {
+  SoSensorManager * manager = SoDB::getSensorManager();
+  const SbTime timeout = manager->getDelaySensorTimeout();
+  // Test the delay queue insertion itself, rather than the timeout timer.
+  manager->setDelaySensorTimeout(SbTime::zero());
+  for (int destroy = 0; destroy < 2; ++destroy) {
+    reset(); mock.list = 5;
+    SoSeparator * root = new SoSeparator; root->ref();
+    RedrawProbe observer;
+    SoNodeSensor monitor(observe_redraw, &observer); monitor.setPriority(0); monitor.attach(root);
+    CoinBumpTestRenderer * renderer = new CoinBumpTestRenderer;
+    CoinBumpTestRenderer::spec_programidx p;
+    CHECK(!renderer->ensurePrograms(testGlueInstance(1), NULL, p));
+    const uintptr_t token = renderer->programcache->token;
+    std::weak_ptr<CoinBumpTestRenderer::ProgramCache> lifetime = renderer->programcache;
+    QueueChangeProbe probe(&renderer, destroy != 0);
+    manager->setChangedCallback(change_queue_reentrantly, &probe);
+    renderer->scheduleRedraw(NULL, root);
+    CHECK(probe.calls == 1 && observer.notifications == 0);
+    if (destroy) {
+      CHECK(renderer == NULL && lifetime.expired());
+      CHECK(CoinBumpTestRenderer::ProgramCache::registry().entries.count(token) == 0);
+    }
+    else CHECK(renderer->programcache->contexts.empty());
+    manager->processDelayQueue(TRUE);
+    CHECK(observer.notifications == (destroy ? 0 : 1));
+    delete renderer;
+    mock.list = 0; BumpTestCacheContext::flush(1); CHECK(mock.generated == 0);
+    monitor.detach(); root->unref();
+  }
+  manager->setChangedCallback(NULL, NULL);
+  manager->setDelaySensorTimeout(timeout);
+}
 void delete_renderer(uint32_t, void * closure) { delete (CoinBumpTestRenderer *) closure; }
 void lifetime_cases() {
   reset(); CoinBumpTestRenderer * r = new CoinBumpTestRenderer;
@@ -263,7 +413,8 @@ void concurrent_cases() {
 int main() {
   SoDB::init();
   failure_cases(); deferred_cases(); stale_initializer_case(); lifetime_cases(); diffuse_and_context_cases();
-  error_handler_cases(); concurrent_cases();
+  error_handler_cases(); redraw_lifetime_cases(); multiple_root_redraw_case();
+  queue_changed_lifetime_cases(); concurrent_cases();
   CHECK(CoinBumpTestRenderer::ProgramCache::registry().entries.empty());
   CHECK(BumpTestCacheContext::queue().empty());
   SoDB::finish();

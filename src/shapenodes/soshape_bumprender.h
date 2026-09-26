@@ -46,6 +46,7 @@
 // *************************************************************************
 
 class SoState;
+class SoNode;
 class SoLight;
 class SoGLImage;
 class SbMatrix;
@@ -59,6 +60,7 @@ class soshape_bumprender {
 public:
   soshape_bumprender(void);
   ~soshape_bumprender();
+  void scheduleRedraw(SoState * state, SoNode * root);
 
   void calcTangentSpace(const SoPrimitiveVertexCache * cache);
   void renderBump(SoState * state,

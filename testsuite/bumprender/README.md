@@ -13,7 +13,12 @@ available; otherwise CTest reports it as skipped. It verifies the actual shaders
 in two independent contexts, binding restoration, both GL destruction orders,
 and deferred initialization with default and pre-existing bindings inside
 `GL_COMPILE`. A real `SoShape` scene with `renderCaching=ON` also exercises Coin's
-actual current-context scheduler and resource cleanup.
+actual current-context scheduler and resource cleanup. It warms a cached scene
+in context A, then verifies that the first visit to context B enters a display
+list with uninitialized programs. A `SoSceneManager` notification must schedule
+the next rendering automatically, restore the expected pixel color, and settle
+without repeated redraws. The private test adapter uses exported cleanup APIs
+and fails explicitly if an unadapted drawing helper is accidentally exercised.
 
 Run both with:
 
@@ -25,7 +30,11 @@ The private cache distinguishes pending initialization from failed uploads.
 While a display list is open, it invalidates that incomplete cache and queues
 initialization for the next current-context opportunity before cache traversal.
 That first traversal can omit the specular contribution; the next one uses the
-validated set, including with forced render caching. If a callback itself runs
+validated set, including with forced render caching. `SoShape` notifies the scene
+root after releasing its render lock, scheduling that next frame in event-driven
+viewers without requiring user interaction. A standalone render action still
+needs the application to service the redraw notification or perform another
+traversal. If a callback itself runs
 inside a user display list, it does not upload and a later traversal can schedule
 another attempt.
 
