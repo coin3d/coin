@@ -144,3 +144,16 @@ CHECK_CXX_COMPILER_FLAG(-Wtautological-compare DISABLE_WARNING_TAUTOLOGCOMPARE)
 if(DISABLE_WARNING_TAUTOLOGCOMPARE)
 	target_compile_options(CoinTests PUBLIC -Wno-tautological-compare)
 endif()
+
+# Compile the private wrapper in the test so no internal DLL export is needed.
+if(WIN32)
+  add_executable(CoinWin32FontApiTest Win32FontApiTest.cpp
+    ${PROJECT_SOURCE_DIR}/src/glue/win32api.cpp)
+  target_compile_definitions(CoinWin32FontApiTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
+  target_include_directories(CoinWin32FontApiTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/src ${PROJECT_BINARY_DIR}/src
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include)
+  target_link_libraries(CoinWin32FontApiTest Coin gdi32)
+  add_test(NAME Win32FontApi COMMAND CoinWin32FontApiTest)
+  set_tests_properties(Win32FontApi PROPERTIES LABELS "unit;windows" TIMEOUT 30)
+endif()
