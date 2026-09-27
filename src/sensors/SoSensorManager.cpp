@@ -636,7 +636,9 @@ SoSensorManager::processDelayQueue(SbBool isidle)
 
   // If we still have pending sensors and the timeoutsensor
   // isn't currently scheduled, schedule it.
-  if (PRIVATE(this)->delayqueue.getLength() && !PRIVATE(this)->timeoutsensor->isScheduled()) {
+  if (PRIVATE(this)->delayqueue.getLength() &&
+      PRIVATE(this)->delaysensortimeout != SbTime::zero() &&
+      !PRIVATE(this)->timeoutsensor->isScheduled()) {
     PRIVATE(this)->timeoutsensor->setTimeFromNow(PRIVATE(this)->delaysensortimeout);
     PRIVATE(this)->timeoutsensor->schedule();
   }
@@ -816,10 +818,11 @@ SoSensorManager::setDelaySensorTimeout(const SbTime & t)
 
   PRIVATE(this)->delaysensortimeout = t;
 
-  if (t == SbTime::zero() && PRIVATE(this)->timeoutsensor->isScheduled()) {
+  // Replace the pending alarm rather than scheduling the same sensor twice.
+  if (PRIVATE(this)->timeoutsensor->isScheduled()) {
     PRIVATE(this)->timeoutsensor->unschedule();
   }
-  else if (PRIVATE(this)->delayqueue.getLength()) {
+  if (t != SbTime::zero() && PRIVATE(this)->delayqueue.getLength()) {
     PRIVATE(this)->timeoutsensor->setTimeFromNow(t);
     PRIVATE(this)->timeoutsensor->schedule();
   }

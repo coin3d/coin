@@ -144,3 +144,16 @@ CHECK_CXX_COMPILER_FLAG(-Wtautological-compare DISABLE_WARNING_TAUTOLOGCOMPARE)
 if(DISABLE_WARNING_TAUTOLOGCOMPARE)
 	target_compile_options(CoinTests PUBLIC -Wno-tautological-compare)
 endif()
+
+# These cases inspect the global queues and disable realTime. Keep each in
+# its own process to avoid changing the shared CoinTests sensor state.
+add_executable(CoinSensorSchedulingTest SensorSchedulingTest.cpp)
+target_link_libraries(CoinSensorSchedulingTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CoinSensorSchedulingTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+foreach(sensor_case alarm_cancel recurring_cancel alarm_reschedule
+                    timeout_change_cancel zero_repeat zero_nonidle nonzero_timeout)
+  add_test(NAME SensorScheduling_${sensor_case}
+    COMMAND CoinSensorSchedulingTest ${sensor_case})
+endforeach()

@@ -195,13 +195,13 @@ SoTimerSensor::schedule(void)
   SoDebugError::postInfo("SoTimerSensor::schedule", "");
 #endif // debug
 
-#if COIN_DEBUG
   if (this->isScheduled()) {
+#if COIN_DEBUG
     SoDebugError::postWarning("SoTimerSensor::schedule",
                               "was already scheduled!");
+#endif // COIN_DEBUG
     return;
   }
-#endif // COIN_DEBUG
 
   // need to handle the case where the callback has unscheduled
   // the timer, and then scheduled it again. Since we are

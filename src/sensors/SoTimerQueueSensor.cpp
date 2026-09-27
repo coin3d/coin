@@ -177,21 +177,22 @@ SoTimerQueueSensor::trigger(void)
 }
 
 /*!
-  Put the sensor in the global timer queue.
+  Put the sensor in the global timer queue. Repeated scheduling does not
+  insert another queue entry.
 
   \sa unschedule(), isScheduled()
  */
 void
 SoTimerQueueSensor::schedule(void)
 {
-#if COIN_DEBUG
   assert(this->scheduled == TRUE || this->scheduled == FALSE);
   if (this->isScheduled()) {
+#if COIN_DEBUG
     SoDebugError::postWarning("SoTimerQueueSensor::schedule",
                               "already scheduled!");
+#endif // COIN_DEBUG
     return;
   }
-#endif // COIN_DEBUG
 
   SoDB::getSensorManager()->insertTimerSensor(this);
   this->scheduled = TRUE;
