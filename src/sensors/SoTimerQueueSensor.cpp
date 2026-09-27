@@ -180,6 +180,10 @@ SoTimerQueueSensor::trigger(void)
   Put the sensor in the global timer queue. Repeated scheduling does not
   insert another queue entry.
 
+  The scheduled state is updated before the sensor manager's changed
+  callback is invoked. If that callback throws, the queue operation has
+  already taken effect; isScheduled() reflects the current queue state.
+
   \sa unschedule(), isScheduled()
  */
 void
@@ -194,8 +198,8 @@ SoTimerQueueSensor::schedule(void)
     return;
   }
 
-  SoDB::getSensorManager()->insertTimerSensor(this);
   this->scheduled = TRUE;
+  SoDB::getSensorManager()->insertTimerSensor(this);
 }
 
 /*!
@@ -214,8 +218,8 @@ SoTimerQueueSensor::unschedule(void)
     return;
   }
 #endif // COIN_DEBUG
-  SoDB::getSensorManager()->removeTimerSensor(this);
   this->scheduled = FALSE;
+  SoDB::getSensorManager()->removeTimerSensor(this);
 }
 
 /*!

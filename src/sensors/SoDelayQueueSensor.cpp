@@ -168,14 +168,18 @@ SoDelayQueueSensor::trigger(void)
   triggered either when the CPU is idle, or when the specified delay
   queue timeout is reached.
 
+  The scheduled state is updated before the sensor manager's changed
+  callback is invoked. If that callback throws, the queue operation has
+  already taken effect; isScheduled() reflects the current queue state.
+
   \sa SoDB::setDelaySensorTimeout(), unschedule(), isScheduled()
  */
 void
 SoDelayQueueSensor::schedule(void)
 {
   if (!this->scheduled) {
-    SoDB::getSensorManager()->insertDelaySensor(this);
     this->scheduled = TRUE;
+    SoDB::getSensorManager()->insertDelaySensor(this);
   }
 }
 
@@ -196,8 +200,8 @@ SoDelayQueueSensor::unschedule(void)
   }
 #endif // COIN_DEBUG
 
-  SoDB::getSensorManager()->removeDelaySensor(this);
   this->scheduled = FALSE;
+  SoDB::getSensorManager()->removeDelaySensor(this);
 }
 
 /*!

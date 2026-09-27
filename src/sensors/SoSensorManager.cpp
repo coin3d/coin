@@ -301,12 +301,6 @@ SoSensorManager::insertDelaySensor(SoDelayQueueSensor * newentry)
     UNLOCK_IMMEDIATE_QUEUE(this);
   }
   else {
-    if (!PRIVATE(this)->timeoutsensor->isScheduled() &&
-        PRIVATE(this)->delaysensortimeout != SbTime::zero()) {
-      PRIVATE(this)->timeoutsensor->setTimeFromNow(PRIVATE(this)->delaysensortimeout);
-      PRIVATE(this)->timeoutsensor->schedule();
-    }
-
     LOCK_DELAY_QUEUE(this);
     SbList <SoDelayQueueSensor *> & delayqueue = PRIVATE(this)->delayqueue;
 
@@ -320,6 +314,12 @@ SoSensorManager::insertDelaySensor(SoDelayQueueSensor * newentry)
     }
     delayqueue.insert(newentry, pos);
     UNLOCK_DELAY_QUEUE(this);
+    if (!PRIVATE(this)->timeoutsensor->isScheduled() &&
+        PRIVATE(this)->delaysensortimeout != SbTime::zero()) {
+      PRIVATE(this)->timeoutsensor->setTimeFromNow(PRIVATE(this)->delaysensortimeout);
+      PRIVATE(this)->timeoutsensor->schedule();
+    }
+
     this->notifyChanged();
   }
 
@@ -444,6 +444,10 @@ SoSensorManager::removeTimerSensor(SoTimerQueueSensor * entry)
 
 /*!
   Trigger all the timers which have expired.
+
+  If a sensor callback throws, recurring timers awaiting rescheduling are
+  restored before the exception is propagated. Timers canceled by the
+  callback remain canceled.
  */
 void
 SoSensorManager::processTimerQueue(void)
@@ -478,6 +482,20 @@ SoSensorManager::processTimerQueue(void)
   PRIVATE(this)->processingtimerqueue = TRUE;
   FlagReset fr(PRIVATE(this)->processingtimerqueue);
 
+  // Callback exceptions must not strand recurring timers outside the queue.
+  const auto restoreTimers = [this]() {
+    LOCK_RESCHEDULE_LIST(this);
+    int n = PRIVATE(this)->reschedulelist.getLength();
+    if (n) {
+      SbTime time = SbTime::getTimeOfDay();
+      for (int i = 0; i < n; i++) {
+        PRIVATE(this)->reschedulelist[i]->reschedule(time);
+      }
+      PRIVATE(this)->reschedulelist.truncate(0);
+    }
+    UNLOCK_RESCHEDULE_LIST(this);
+  };
+
   LOCK_TIMER_QUEUE(this);
 
   SbTime currenttime = SbTime::getTimeOfDay();
@@ -491,7 +509,13 @@ SoSensorManager::processTimerQueue(void)
     SoSensor * sensor = PRIVATE(this)->timerqueue[0];
     PRIVATE(this)->timerqueue.remove(0);
     UNLOCK_TIMER_QUEUE(this);
-    sensor->trigger();
+    try {
+      sensor->trigger();
+    }
+    catch (...) {
+      restoreTimers();
+      throw;
+    }
     LOCK_TIMER_QUEUE(this);
   }
 
@@ -503,16 +527,7 @@ SoSensorManager::processTimerQueue(void)
                          PRIVATE(this)->timerqueue.getLength());
 #endif // debug
 
-  LOCK_RESCHEDULE_LIST(this);
-  int n = PRIVATE(this)->reschedulelist.getLength();
-  if (n) {
-    SbTime time = SbTime::getTimeOfDay();
-    for (int i = 0; i < n; i++) {
-      PRIVATE(this)->reschedulelist[i]->reschedule(time);
-    }
-    PRIVATE(this)->reschedulelist.truncate(0);
-  }
-  UNLOCK_RESCHEDULE_LIST(this);
+  restoreTimers();
 
   PRIVATE(this)->processingtimerqueue = FALSE;
 
@@ -535,6 +550,9 @@ SoSensorManager::processTimerQueue(void)
   during processDelayQueue(), it is not processed until the next time
   this function is called. This is done to avoid an infinite loop
   while processing the sensors.
+
+  If a sensor callback throws, skipped idle sensors and sensors deferred
+  to the next pass are restored before the exception is propagated.
 
   A delay queue sensor with priority 0 is called an immediate sensor.
 
@@ -584,6 +602,33 @@ SoSensorManager::processDelayQueue(SbBool isidle)
   // again, etc...
   PRIVATE(this)->triggerdict.clear();
 
+  // Preserve skipped idle sensors and sensors deferred to the next pass,
+  // including when a user callback exits by throwing an exception.
+  const auto restoreDelays = [this]() {
+    // reinsert sensors that couldn't be triggered, either because it
+    // was an idle sensor, or because the sensor had already been
+    // triggered
+    for(
+        SbHash<SoDelayQueueSensor *, SoDelayQueueSensor *>::const_iterator iter =
+         PRIVATE(this)->reinsertdict.const_begin();
+        iter!=PRIVATE(this)->reinsertdict.const_end();
+        ++iter
+        ) {
+      this->insertDelaySensor(iter->obj);
+    }
+    PRIVATE(this)->reinsertdict.clear();
+
+    // If we still have pending sensors and the timeoutsensor
+    // isn't currently scheduled, schedule it.
+    if (PRIVATE(this)->delayqueue.getLength() &&
+        PRIVATE(this)->delaysensortimeout != SbTime::zero() &&
+        !PRIVATE(this)->timeoutsensor->isScheduled()) {
+      PRIVATE(this)->timeoutsensor->setTimeFromNow(PRIVATE(this)->delaysensortimeout);
+      PRIVATE(this)->timeoutsensor->schedule();
+    }
+
+  };
+
   LOCK_DELAY_QUEUE(this);
 
   // Sensors with higher priorities are triggered first.
@@ -608,7 +653,13 @@ SoSensorManager::processDelayQueue(SbBool isidle)
     else {
       // only trigger sensor once per processing loop
       if (PRIVATE(this)->triggerdict.put(sensor, sensor)) {
-        sensor->trigger();
+        try {
+          sensor->trigger();
+        }
+        catch (...) {
+          restoreDelays();
+          throw;
+        }
       }
       else {
         // Reuse the "reinsert" list to store the sensor. It will be
@@ -620,28 +671,8 @@ SoSensorManager::processDelayQueue(SbBool isidle)
   }
   UNLOCK_DELAY_QUEUE(this);
 
-  // reinsert sensors that couldn't be triggered, either because it
-  // was an idle sensor, or because the sensor had already been
-  // triggered
-  for(
-      SbHash<SoDelayQueueSensor *, SoDelayQueueSensor *>::const_iterator iter =
-       PRIVATE(this)->reinsertdict.const_begin();
-      iter!=PRIVATE(this)->reinsertdict.const_end();
-      ++iter
-      ) {
-    this->insertDelaySensor(iter->obj);
-  }
-  PRIVATE(this)->reinsertdict.clear();
+  restoreDelays();
   PRIVATE(this)->processingdelayqueue = FALSE;
-
-  // If we still have pending sensors and the timeoutsensor
-  // isn't currently scheduled, schedule it.
-  if (PRIVATE(this)->delayqueue.getLength() &&
-      PRIVATE(this)->delaysensortimeout != SbTime::zero() &&
-      !PRIVATE(this)->timeoutsensor->isScheduled()) {
-    PRIVATE(this)->timeoutsensor->setTimeFromNow(PRIVATE(this)->delaysensortimeout);
-    PRIVATE(this)->timeoutsensor->schedule();
-  }
 }
 
 /*!

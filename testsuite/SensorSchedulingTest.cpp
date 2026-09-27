@@ -39,6 +39,8 @@
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/sensors/SoOneShotSensor.h>
 #include <Inventor/sensors/SoIdleSensor.h>
+#include <Inventor/sensors/SoNodeSensor.h>
+#include <Inventor/nodes/SoSeparator.h>
 
 #include <iostream>
 #include <stdexcept>
@@ -57,6 +59,50 @@ bool timerPending()
 {
   SbTime deadline;
   return SoDB::getSensorManager()->isTimerSensorPending(deadline) != FALSE;
+}
+// Expose the protected trigger-time setter to make timer dispatch deterministic.
+class TestTimerSensor : public SoTimerSensor {
+public:
+  TestTimerSensor(SoSensorCB * callback, void * data) : SoTimerSensor(callback, data) {}
+  using SoTimerQueueSensor::setTriggerTime;
+};
+void fail(void * data, SoSensor *)
+{
+  ++*static_cast<int *>(data);
+  throw std::runtime_error("injected callback exception");
+}
+void rescheduleSelf(void * data, SoSensor * sensor)
+{
+  ++*static_cast<int *>(data);
+  sensor->schedule();
+}
+void cancelAndFail(void * data, SoSensor * sensor)
+{
+  sensor->unschedule();
+  fail(data, sensor);
+}
+void failChanged(void *)
+{
+  throw std::runtime_error("injected changed callback exception");
+}
+void drainDelay(void *)
+{
+  SoDB::getSensorManager()->processDelayQueue(TRUE);
+}
+void drainTimer(void *)
+{
+  SoDB::getSensorManager()->processTimerQueue();
+}
+struct ChangeState {
+  SoSensor * sensor;
+  bool observed;
+};
+void rescheduleChanged(void * data)
+{
+  ChangeState * state = static_cast<ChangeState *>(data);
+  SoDB::getSensorManager()->setChangedCallback(NULL, NULL);
+  state->observed = state->sensor->isScheduled() == FALSE;
+  state->sensor->schedule();
 }
 void run(const std::string & name)
 {
@@ -135,6 +181,140 @@ void run(const std::string & name)
     check(calls == 1, "normal delay processing stopped working");
     manager->setDelaySensorTimeout(SbTime::zero());
     check(!timerPending(), "timeout cancellation failed after delay processing");
+  }
+  else if (name == "node_detach") {
+    SoSeparator * node = new SoSeparator;
+    node->ref();
+    {
+      SoNodeSensor sensor(count, &calls);
+      sensor.attach(node);
+      node->touch();
+      check(sensor.isScheduled(), "node touch did not schedule sensor");
+      sensor.detach();
+      check(!sensor.isScheduled(), "detach left sensor scheduled");
+      manager->processDelayQueue(TRUE);
+      check(calls == 0, "detached node sensor invoked callback");
+      sensor.attach(node);
+      node->touch();
+      manager->processDelayQueue(TRUE);
+      check(calls == 1, "reattached sensor stopped working");
+    }
+    node->unref();
+  }
+  else if (name == "delay_reentry" || name == "delay_timeout_reentry") {
+    if (name == "delay_timeout_reentry") manager->setDelaySensorTimeout(SbTime(60.0));
+    SoOneShotSensor sensor(count, &calls);
+    manager->setChangedCallback(drainDelay, NULL);
+    sensor.schedule();
+    manager->setChangedCallback(NULL, NULL);
+    check(calls == 1, "reentrant callback did not drain delay queue");
+    check(!sensor.isScheduled(), "reentrant processing left phantom scheduled flag");
+    check(!manager->isDelaySensorPending(), "reentrant processing left delay entry");
+    manager->setDelaySensorTimeout(SbTime::zero());
+  }
+  else if (name == "timer_reentry") {
+    SoAlarmSensor sensor(count, &calls);
+    sensor.setTime(SbTime::getTimeOfDay() - SbTime(1.0));
+    manager->setChangedCallback(drainTimer, NULL);
+    sensor.schedule();
+    manager->setChangedCallback(NULL, NULL);
+    check(calls == 1, "reentrant callback did not drain timer queue");
+    check(!sensor.isScheduled() && !timerPending(), "reentrant timer state inconsistent");
+  }
+  else if (name == "delay_changed_exception" || name == "timer_changed_exception") {
+    SoOneShotSensor delay(count, &calls);
+    SoAlarmSensor timer(count, &calls);
+    timer.setTime(SbTime::getTimeOfDay() - SbTime(1.0));
+    SoSensor * sensor = name == "delay_changed_exception" ?
+      static_cast<SoSensor *>(&delay) : static_cast<SoSensor *>(&timer);
+    manager->setChangedCallback(failChanged, NULL);
+    bool caught = false;
+    try { sensor->schedule(); }
+    catch (const std::runtime_error &) { caught = true; }
+    manager->setChangedCallback(NULL, NULL);
+    check(caught, "changed callback exception was swallowed");
+    check(sensor->isScheduled(), "queued sensor lost its scheduled flag");
+    sensor->unschedule();
+    manager->processDelayQueue(TRUE);
+    manager->processTimerQueue();
+    check(calls == 0, "canceled sensor triggered after changed exception");
+  }
+  else if (name == "delay_remove_reentry" || name == "timer_remove_reentry") {
+    SoOneShotSensor delay(count, &calls);
+    SoAlarmSensor timer(count, &calls);
+    timer.setTimeFromNow(SbTime(60.0));
+    SoSensor * sensor = name == "delay_remove_reentry" ?
+      static_cast<SoSensor *>(&delay) : static_cast<SoSensor *>(&timer);
+    sensor->schedule();
+    ChangeState state = {sensor, false};
+    manager->setChangedCallback(rescheduleChanged, &state);
+    sensor->unschedule();
+    manager->setChangedCallback(NULL, NULL);
+    check(state.observed, "removal callback observed stale scheduled flag");
+    check(sensor->isScheduled(), "removal callback could not reschedule sensor");
+    sensor->unschedule();
+    check(!manager->isDelaySensorPending() && !timerPending(), "rescheduled sensor could not be canceled");
+  }
+  else if (name == "timer_exception") {
+    TestTimerSensor timer(fail, &calls);
+    timer.setInterval(SbTime(60.0));
+    timer.schedule();
+    timer.setTriggerTime(SbTime::getTimeOfDay() - SbTime(1.0));
+    bool caught = false;
+    try { manager->processTimerQueue(); }
+    catch (const std::runtime_error &) { caught = true; }
+    check(caught && calls == 1, "timer callback exception was not propagated");
+    check(timer.isScheduled() && timerPending(), "exception stranded recurring timer");
+    timer.setFunction(count);
+    timer.setTriggerTime(SbTime::getTimeOfDay() - SbTime(1.0));
+    manager->processTimerQueue();
+    check(calls == 2 && timerPending(), "recurring timer did not recover after exception");
+    timer.unschedule();
+    check(!timerPending(), "recovered recurring timer could not be canceled");
+  }
+  else if (name == "timer_cancel_exception") {
+    TestTimerSensor timer(cancelAndFail, &calls);
+    timer.setInterval(SbTime(60.0));
+    timer.schedule();
+    timer.setTriggerTime(SbTime::getTimeOfDay() - SbTime(1.0));
+    bool caught = false;
+    try { manager->processTimerQueue(); }
+    catch (const std::runtime_error &) { caught = true; }
+    check(caught && calls == 1, "canceling timer exception was not propagated");
+    check(!timer.isScheduled() && !timerPending(), "exception resurrected canceled timer");
+  }
+  else if (name == "delay_deferred_exception") {
+    int selfcalls = 0;
+    SoOneShotSensor self(rescheduleSelf, &selfcalls);
+    self.setPriority(50);
+    SoOneShotSensor throwing(fail, &calls);
+    throwing.setPriority(100);
+    self.schedule();
+    throwing.schedule();
+    bool caught = false;
+    try { manager->processDelayQueue(TRUE); }
+    catch (const std::runtime_error &) { caught = true; }
+    check(caught && calls == 1 && selfcalls == 1, "deferred sensor pass did not stop at exception");
+    check(self.isScheduled() && manager->isDelaySensorPending(), "exception stranded deferred sensor");
+    self.setFunction(count);
+    manager->processDelayQueue(TRUE);
+    check(selfcalls == 2 && !self.isScheduled(), "deferred sensor did not recover after exception");
+  }
+  else if (name == "delay_exception") {
+    int idlecalls = 0;
+    SoIdleSensor idle(count, &idlecalls);
+    idle.setPriority(50);
+    SoOneShotSensor throwing(fail, &calls);
+    throwing.setPriority(100);
+    idle.schedule();
+    throwing.schedule();
+    bool caught = false;
+    try { manager->processDelayQueue(FALSE); }
+    catch (const std::runtime_error &) { caught = true; }
+    check(caught && calls == 1, "delay callback exception was not propagated");
+    check(idle.isScheduled() && manager->isDelaySensorPending(), "exception stranded idle sensor");
+    manager->processDelayQueue(TRUE);
+    check(idlecalls == 1 && !idle.isScheduled(), "idle sensor did not recover after exception");
   }
   else throw std::runtime_error("unknown test case");
 }

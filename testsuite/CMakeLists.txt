@@ -153,7 +153,11 @@ target_include_directories(CoinSensorSchedulingTest PRIVATE
   ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
   ${COIN_TARGET_INCLUDE_DIRECTORIES})
 foreach(sensor_case alarm_cancel recurring_cancel alarm_reschedule
-                    timeout_change_cancel zero_repeat zero_nonidle nonzero_timeout)
+                    timeout_change_cancel zero_repeat zero_nonidle nonzero_timeout
+                    node_detach delay_reentry delay_timeout_reentry timer_reentry
+                    delay_changed_exception timer_changed_exception
+                    delay_remove_reentry timer_remove_reentry
+                    timer_exception delay_exception timer_cancel_exception delay_deferred_exception)
   add_test(NAME SensorScheduling_${sensor_case}
     COMMAND CoinSensorSchedulingTest ${sensor_case})
 endforeach()
