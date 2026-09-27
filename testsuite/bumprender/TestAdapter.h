@@ -6,6 +6,17 @@
 #define NOMINMAX
 #endif
 
+// This executable consumes Coin's public DLL classes even though it compiles
+// the private bump renderer below. Do not define imported Pimpl methods here:
+// MSVC rejects their out-of-line definitions with C2491. The public declarations
+// are enough; the wrapper implementations remain inside Coin.
+#ifdef _WIN32
+#pragma push_macro("COIN_INTERNAL")
+#undef COIN_INTERNAL
+#include <Inventor/tools/SbPimplPtr.h>
+#pragma pop_macro("COIN_INTERNAL")
+#endif
+
 #include <Inventor/SoDB.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/elements/SoCacheElement.h>
