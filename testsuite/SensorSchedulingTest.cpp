@@ -85,6 +85,14 @@ void failChanged(void *)
 {
   throw std::runtime_error("injected changed callback exception");
 }
+void changed(void * data)
+{
+  ++*static_cast<int *>(data);
+}
+void scheduleAnotherTimer(void * data, SoSensor *)
+{
+  static_cast<SoAlarmSensor *>(data)->schedule();
+}
 void drainDelay(void *)
 {
   SoDB::getSensorManager()->processDelayQueue(TRUE);
@@ -315,6 +323,58 @@ void run(const std::string & name)
     check(idle.isScheduled() && manager->isDelaySensorPending(), "exception stranded idle sensor");
     manager->processDelayQueue(TRUE);
     check(idlecalls == 1 && !idle.isScheduled(), "idle sensor did not recover after exception");
+  }
+  else if (name == "absolute_deadline") {
+    SbTime deadline(123.0);
+    check(!manager->isTimerSensorPending(deadline) && deadline == SbTime(123.0),
+          "empty timer query changed output time");
+    SoAlarmSensor alarm(count, &calls);
+    const SbTime expected = SbTime::getTimeOfDay() + SbTime(60.0);
+    alarm.setTime(expected);
+    alarm.schedule();
+    check(manager->isTimerSensorPending(deadline) && deadline == expected,
+          "timer query did not return absolute trigger time");
+    SbTime wait = deadline - SbTime::getTimeOfDay();
+    check(wait > SbTime::zero() && wait <= SbTime(60.0), "invalid relative wait");
+    alarm.setTime(SbTime::getTimeOfDay() - SbTime(1.0));
+    alarm.schedule();
+    check(manager->isTimerSensorPending(deadline), "overdue alarm missing");
+    wait = deadline - SbTime::getTimeOfDay();
+    if (wait < SbTime::zero()) wait = SbTime::zero();
+    check(wait == SbTime::zero(), "overdue wait was not clamped to zero");
+    manager->processTimerQueue();
+    check(calls == 1 && !timerPending(), "overdue alarm did not dispatch");
+  }
+  else if (name == "changed_during_dispatch") {
+    int notices = 0;
+    SoAlarmSensor next(count, &calls);
+    next.setTimeFromNow(SbTime(60.0));
+    SoAlarmSensor first(scheduleAnotherTimer, &next);
+    first.setTime(SbTime::getTimeOfDay() - SbTime(1.0));
+    manager->setChangedCallback(changed, &notices);
+    first.schedule();
+    check(notices == 1, "ordinary insertion did not notify integration");
+    notices = 0;
+    manager->processTimerQueue();
+    manager->setChangedCallback(NULL, NULL);
+    check(notices == 0, "queue-processing notification behavior changed");
+    SbTime deadline;
+    check(manager->isTimerSensorPending(deadline) && deadline == next.getTriggerTime(),
+          "post-dispatch query did not find newly scheduled timer");
+    next.unschedule();
+  }
+  else if (name == "immediate_notification") {
+    int notices = 0;
+    SoOneShotSensor sensor(count, &calls);
+    sensor.setPriority(0);
+    manager->setChangedCallback(changed, &notices);
+    sensor.schedule();
+    check(notices == 0 && manager->isDelaySensorPending(),
+          "immediate insertion notification contract changed");
+    manager->processImmediateQueue();
+    manager->setChangedCallback(NULL, NULL);
+    check(calls == 1 && !sensor.isScheduled() && !manager->isDelaySensorPending(),
+          "immediate processing did not drain pending work");
   }
   else throw std::runtime_error("unknown test case");
 }

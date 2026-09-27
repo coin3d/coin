@@ -157,7 +157,8 @@ foreach(sensor_case alarm_cancel recurring_cancel alarm_reschedule
                     node_detach delay_reentry delay_timeout_reentry timer_reentry
                     delay_changed_exception timer_changed_exception
                     delay_remove_reentry timer_remove_reentry
-                    timer_exception delay_exception timer_cancel_exception delay_deferred_exception)
+                    timer_exception delay_exception timer_cancel_exception delay_deferred_exception
+                    absolute_deadline changed_during_dispatch immediate_notification)
   add_test(NAME SensorScheduling_${sensor_case}
     COMMAND CoinSensorSchedulingTest ${sensor_case})
 endforeach()
