@@ -409,6 +409,82 @@ void concurrent_cases() {
   destroy.join();
   SoContextHandler::destructingContext(1);
 }
+
+// Run last: exhausted tokens must never be reset, even by this test.
+void token_exhaustion_cases() {
+  reset();
+  typedef CoinBumpTestRenderer::ProgramCache Cache;
+  const uintptr_t limit = std::numeric_limits<uintptr_t>::max() >> 1;
+  CHECK(Cache::registry().nexttoken < limit - 1);
+  Cache::registry().nexttoken = limit - 1;
+  std::vector<BumpTestCacheContext::Callback> stale;
+  {
+    CoinBumpTestRenderer valid;
+    CHECK(valid.programcache && valid.programcache->token == limit);
+    CoinBumpTestRenderer::spec_programidx spec;
+    CoinBumpTestRenderer::diffuse_programidx diffuse;
+    mock.list = 5;
+    CHECK(!valid.ensurePrograms(testGlueInstance(1), NULL, spec));
+    CHECK(!valid.ensureDiffusePrograms(testGlueInstance(1), NULL, diffuse));
+    CHECK(BumpTestCacheContext::queue().size() == 2);
+    stale = BumpTestCacheContext::queue();
+
+    // The diagnostic may reenter the registry, but cannot run under its lock.
+    warningCallback = [] {
+      CHECK(Cache::lookup(std::numeric_limits<uintptr_t>::max() >> 1));
+      CHECK(!Cache::create()); // No recursive warning or registry lock held.
+    };
+    {
+      CoinBumpTestRenderer unavailable;
+      CHECK(!unavailable.programcache && mock.warnings == 1);
+      CHECK(Cache::registry().nexttoken == limit && Cache::registry().entries.size() == 1);
+      spec.dirlight = spec.pointlight = spec.fragment = 7;
+      diffuse.dirlight = diffuse.pointlight = diffuse.normalrendering = 8;
+      for (int i = 0; i < 2; ++i) {
+        CHECK(!unavailable.ensurePrograms(NULL, NULL, spec));
+        CHECK(!unavailable.ensureDiffusePrograms(NULL, NULL, diffuse));
+        unavailable.initPrograms(NULL, NULL);
+        unavailable.initDiffusePrograms(NULL, NULL);
+        unavailable.scheduleRedraw(NULL, NULL);
+      }
+      CHECK(spec.dirlight == 7 && spec.pointlight == 7 && spec.fragment == 7);
+      CHECK(diffuse.dirlight == 8 && diffuse.pointlight == 8 && diffuse.normalrendering == 8);
+      CHECK(mock.warnings == 1 && mock.generated == 0 && mock.uploads == 0 && mock.deleted == 0);
+      CHECK(BumpTestCacheContext::queue().size() == 2);
+      // A second failure cannot advance the counter or replace the live cache.
+      CoinBumpTestRenderer another;
+      CHECK(!another.programcache && mock.warnings == 1);
+      CHECK(Cache::registry().nexttoken == limit && Cache::registry().entries.size() == 1);
+    }
+    warningCallback = NULL;
+    CHECK(Cache::lookup(limit) == valid.programcache);
+    mock.list = 0;
+    BumpTestCacheContext::flush(1);
+    CHECK(valid.ensurePrograms(testGlueInstance(1), NULL, spec));
+    CHECK(valid.ensureDiffusePrograms(testGlueInstance(1), NULL, diffuse));
+    CHECK(mock.generated == 5 && mock.uploads == 5);
+  }
+  BumpTestCacheContext::flush(1);
+  CHECK(mock.deleted == 5 && Cache::registry().entries.empty());
+  for (size_t i = 0; i < stale.size(); ++i) stale[i].func(stale[i].closure, stale[i].id);
+  CoinBumpTestRenderer::context_destruction_cb(1, (void *) limit);
+  CHECK(mock.generated == 5 && mock.uploads == 5 && mock.deleted == 5);
+  CHECK(BumpTestCacheContext::queue().empty());
+
+  // SoDB reinitialization must not make an exhausted identity available again.
+  SoDB::finish();
+  SoDB::init();
+  reset();
+  {
+    CoinBumpTestRenderer unavailable;
+    CHECK(!unavailable.programcache && mock.warnings == 0);
+    CHECK(Cache::registry().nexttoken == limit && Cache::registry().entries.empty());
+    unavailable.scheduleRedraw(NULL, NULL);
+  }
+  SoContextHandler::destructingContext(1);
+  CHECK(mock.generated == 0 && mock.uploads == 0 && mock.deleted == 0);
+  CHECK(BumpTestCacheContext::queue().empty());
+}
 }
 int main() {
   SoDB::init();
@@ -424,6 +500,7 @@ int main() {
     CHECK(r.ensurePrograms(testGlueInstance(1), NULL, p)); }
   BumpTestCacheContext::flush(1);
   CHECK(CoinBumpTestRenderer::ProgramCache::registry().entries.empty());
+  token_exhaustion_cases();
   SoDB::finish();
   std::puts("Bump program failure, cache, deferred initialization and lifetime tests passed.");
 }

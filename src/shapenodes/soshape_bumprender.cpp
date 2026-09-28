@@ -36,7 +36,6 @@
 #include <limits>
 #include <map>
 #include <mutex>
-#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -351,11 +350,12 @@ struct soshape_bumprender::ProgramCache {
   typedef std::shared_ptr<ProgramCache> Ptr;
   typedef std::map<uintptr_t, Ptr> Entries;
   struct Registry {
-    Registry() : nexttoken(0), cleanupregistered(false) { }
+    Registry() : nexttoken(0), cleanupregistered(false), exhaustionreported(false) { }
     std::mutex mutex;
     Entries entries;
     uintptr_t nexttoken;
     bool cleanupregistered;
+    bool exhaustionreported;
   };
   struct RedrawSensor : SoNodeSensor, std::enable_shared_from_this<RedrawSensor> {
     explicit RedrawSensor(uintptr_t token) : SoNodeSensor(redraw_cb, (void *) token) {
@@ -402,13 +402,23 @@ struct soshape_bumprender::ProgramCache {
     return reg;
   }
   static Ptr create() {
-    Ptr cache(new ProgramCache);
     Registry & reg = registry();
-    std::lock_guard<std::mutex> lock(reg.mutex);
+    std::unique_lock<std::mutex> lock(reg.mutex);
     // The low bit is reserved for the deferred initialization's program kind.
-    if (reg.nexttoken == (std::numeric_limits<uintptr_t>::max() >> 1)) {
-      throw std::overflow_error("bump program callback tokens exhausted");
+    if (reg.nexttoken >= (std::numeric_limits<uintptr_t>::max() >> 1)) {
+      // Keep exhausted tokens unavailable in release builds too. Error
+      // handlers may inspect the registry, so report after releasing its lock.
+      // Record the diagnostic first, preventing recursive/repeated warnings.
+      const bool report = !reg.exhaustionreported;
+      reg.exhaustionreported = true;
+      lock.unlock();
+      if (report) {
+        SoDebugError::postWarning("soshape_bumprender::ProgramCache::create",
+                                  "Bump program callback tokens exhausted; program cache unavailable.");
+      }
+      return Ptr();
     }
+    Ptr cache(new ProgramCache);
     cache->token = ++reg.nexttoken;
     reg.entries.insert(std::make_pair(cache->token, cache));
     if (!reg.cleanupregistered) {
@@ -444,7 +454,7 @@ struct soshape_bumprender::ProgramCache {
       std::lock_guard<std::mutex> lock(reg.mutex);
       entries.swap(reg.entries);
       reg.cleanupregistered = false;
-      // Do not reuse tokens across SoDB::finish()/init() either.
+      // Do not reuse tokens or repeat exhaustion diagnostics after SoDB::init().
     }
     for (Entries::const_iterator it = entries.begin(); it != entries.end(); ++it) {
       SoContextHandler::removeContextDestructionCallback(context_destruction_cb,
@@ -542,6 +552,7 @@ struct soshape_bumprender::ProgramCache {
 soshape_bumprender::soshape_bumprender(void)
   : programcache(ProgramCache::create())
 {
+  if (!this->programcache) return;
   SoContextHandler::addContextDestructionCallback(context_destruction_cb,
                                                    (void *) this->programcache->token);
 }
@@ -549,6 +560,7 @@ soshape_bumprender::soshape_bumprender(void)
 soshape_bumprender::~soshape_bumprender()
 {
   const ProgramCache::Ptr cache = this->programcache;
+  if (!cache) return;
   std::vector<uint32_t> contexts;
   ProgramCache::Redraws redraws;
   {
@@ -655,6 +667,7 @@ void
 soshape_bumprender::scheduleRedraw(SoState * state, SoNode * root)
 {
   const ProgramCache::Ptr cache = this->programcache;
+  if (!cache) return;
   ProgramCache::RedrawPtr sensor;
   {
     std::lock_guard<std::mutex> lock(cache->mutex);
@@ -696,6 +709,7 @@ soshape_bumprender::ensureDiffusePrograms(const cc_glglue * glue,
                                           diffuse_programidx & programs)
 {
   const ProgramCache::Ptr cache = this->programcache;
+  if (!cache) return FALSE;
   return cache->request(glue, state, (uint32_t) SoGLCacheContextElement::get(state),
                          true, NULL, &programs);
 }
@@ -706,6 +720,7 @@ soshape_bumprender::ensurePrograms(const cc_glglue * glue,
                                    spec_programidx & programs)
 {
   const ProgramCache::Ptr cache = this->programcache;
+  if (!cache) return FALSE;
   return cache->request(glue, state, (uint32_t) SoGLCacheContextElement::get(state),
                          false, &programs, NULL);
 }

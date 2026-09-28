@@ -6,7 +6,9 @@ context/state bookkeeping. It uses the real `SoContextHandler` dispatcher.
 Coverage includes each upload stage, partial rollback, failure caching and
 context-id reuse, pending initialization cancellation, diffuse/specular sets,
 both resource destruction orders, stale callback snapshots, concurrent cache
-access, and reentrant error handlers. Checks remain enabled in Release builds.
+access, and reentrant error handlers. Token-limit tests cover the last valid
+registration, controlled exhaustion, null-cache operations, stale callbacks and
+exhaustion across SoDB reinitialization. Checks remain enabled in Release builds.
 
 `BumpProgramGLX` runs when an X display and ARB vertex/fragment programs are
 available; otherwise CTest reports it as skipped. It verifies the actual shaders
@@ -43,6 +45,13 @@ context id, including transient GL allocation failures. Context destruction
 clears this failure state and permits a recycled id to try again. Deferred
 callbacks never call user error handlers under the scheduler lock; a failure is
 reported once on the next renderer request, outside the private cache mutex.
+
+Exhaustion of callback tokens refuses new program caches without explicitly
+throwing or recycling identities. Existing caches remain usable; an unavailable
+cache makes program requests fail and redraw scheduling/destruction become safe
+no-ops. The creation diagnostic runs once for the registry lifetime, outside its
+mutex, including when its handler reenters cache creation. This does not promise
+that unrelated allocation failures cannot throw.
 
 The existing Coin context contract still applies: notify context destruction
 with that context current, and use distinct ids for incompatible contexts.
