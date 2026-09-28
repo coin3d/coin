@@ -33,11 +33,11 @@
 #include "shapenodes/soshape_bumprender.h"
 
 #include <cassert>
+#include <cstring>
 #include <limits>
 #include <map>
 #include <mutex>
-#include <string>
-#include <vector>
+#include <new>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -254,18 +254,35 @@ soshape_bumprender_delete_programs(const cc_glglue * glue,
 }
 
 struct soshape_bump_program_error {
-  soshape_bump_program_error() : description(NULL), stage(NULL), error(GL_NO_ERROR), position(-1) { }
+  soshape_bump_program_error() : description(NULL), stage(NULL), error(GL_NO_ERROR), position(-1) {
+    std::memset(this->message, 0, sizeof(this->message));
+  }
   const char * description;
   const char * stage;
   GLenum error;
   GLint position;
-  std::string message;
+  // Diagnostics must not allocate while rolling back or deleting GL objects.
+  enum { MESSAGE_CAPACITY = 512 };
+  char message[MESSAGE_CAPACITY];
+  void setMessage(const char * text) {
+    size_t i = 0;
+    while (i < MESSAGE_CAPACITY - 1 && text && text[i]) {
+      this->message[i] = text[i];
+      ++i;
+    }
+    this->message[i] = '\0';
+    if (text && text[i]) {
+      this->message[MESSAGE_CAPACITY - 4] = '.';
+      this->message[MESSAGE_CAPACITY - 3] = '.';
+      this->message[MESSAGE_CAPACITY - 2] = '.';
+    }
+  }
   void report() const {
     if (this->description) {
       SoDebugError::postWarning("soshape_bumprender::ensurePrograms",
                                 "Error in %s during %s! (GL error: 0x%x, byte pos: %d) '%s'.\n",
                                 this->description, this->stage, (unsigned int) this->error,
-                                this->position, this->message.c_str());
+                                this->position, this->message);
     }
   }
 };
@@ -324,7 +341,7 @@ soshape_bumprender_load_program(const cc_glglue * glue,
   if (err != GL_NO_ERROR || program == 0 || programlength <= 0) {
     failure.description = description; failure.stage = stage;
     failure.error = err; failure.position = errorpos;
-    failure.message = errorstring ? (const char *) errorstring : "";
+    failure.setMessage((const char *) errorstring);
     return FALSE;
   }
   return TRUE;
@@ -525,7 +542,7 @@ struct soshape_bumprender::ProgramCache {
     }
     if (result == FAILED) {
       soshape_bump_program_error & cached = diffuse ? ctx.diffuseerror : ctx.specerror;
-      failure = std::move(cached);
+      failure = cached;
       cached.description = NULL; // Report at most once, on use by a renderer.
     }
     lock.unlock();
@@ -540,9 +557,31 @@ struct soshape_bumprender::ProgramCache {
       SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
       if (schedule) {
         const uintptr_t closure = (this->token << 1) | (diffuse ? 1 : 0);
-        SoGLCacheContextElement::scheduleDeleteCallback(contextid,
-                                                        initialize_program_cb,
-                                                        (void *) closure);
+        try {
+          SoGLCacheContextElement::scheduleDeleteCallback(contextid,
+                                                          initialize_program_cb,
+                                                          (void *) closure);
+        }
+        catch (const std::bad_alloc &) {
+          // No queued work may own this PENDING state. Fail this family closed
+          // until context destruction, just like an allocation/upload failure.
+          lock.lock();
+          Contexts::iterator it = this->contexts.find(contextid);
+          if (this->alive && it != this->contexts.end()) {
+            InitStatus & current = diffuse ? it->second.diffusestatus : it->second.specstatus;
+            if (current == PENDING) {
+              current = FAILED;
+              soshape_bump_program_error & cached = diffuse ? it->second.diffuseerror : it->second.specerror;
+              cached.description = diffuse ? "diffuse program set" : "specular program set";
+              cached.stage = "schedule initialization";
+              cached.error = GL_OUT_OF_MEMORY;
+              failure = cached;
+              cached.description = NULL;
+            }
+          }
+          lock.unlock();
+          failure.report();
+        }
       }
     }
     return result == READY;
@@ -561,7 +600,6 @@ soshape_bumprender::~soshape_bumprender()
 {
   const ProgramCache::Ptr cache = this->programcache;
   if (!cache) return;
-  std::vector<uint32_t> contexts;
   ProgramCache::Redraws redraws;
   {
     std::lock_guard<std::mutex> lock(cache->mutex);
@@ -570,10 +608,7 @@ soshape_bumprender::~soshape_bumprender()
     for (ProgramCache::Contexts::iterator it = cache->contexts.begin();
          it != cache->contexts.end();) {
       if (it->second.specstatus == ProgramCache::READY ||
-          it->second.diffusestatus == ProgramCache::READY) {
-        contexts.push_back(it->first);
-        ++it;
-      }
+          it->second.diffusestatus == ProgramCache::READY) ++it;
       else cache->contexts.erase(it++);
     }
   }
@@ -586,9 +621,29 @@ soshape_bumprender::~soshape_bumprender()
   // Never take the scheduler's mutex while holding the cache mutex: cleanup
   // invokes deferred callbacks under its own lock. Queued callbacks contain
   // tokens, not program names or pointers to this dead renderer.
-  for (size_t i = 0; i < contexts.size(); ++i) {
-    SoGLCacheContextElement::scheduleDeleteCallback(contexts[i], cleanup_program_cb,
-                                                    (void *) cache->token);
+  // Visit numeric keys, not iterators retained across reentrant callbacks, and
+  // do not allocate a temporary context list inside this noexcept destructor.
+  bool first = true;
+  uint32_t previous = 0;
+  for (;;) {
+    uint32_t contextid;
+    {
+      std::lock_guard<std::mutex> lock(cache->mutex);
+      ProgramCache::Contexts::const_iterator it = first ? cache->contexts.begin() :
+        cache->contexts.upper_bound(previous);
+      if (it == cache->contexts.end()) break;
+      contextid = it->first;
+    }
+    first = false;
+    previous = contextid;
+    try {
+      SoGLCacheContextElement::scheduleDeleteCallback(contextid, cleanup_program_cb,
+                                                      (void *) cache->token);
+    }
+    catch (const std::bad_alloc &) {
+      // The registry and existing destruction callback still own these names.
+      // Leave them there until this context is destroyed; never unwind here.
+    }
   }
   ProgramCache::retire(cache);
 }

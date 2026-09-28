@@ -1,3 +1,4 @@
+#include "AllocationFailure.h"
 #include "TestAdapter.h"
 #include <Inventor/SbTime.h>
 #include <Inventor/nodes/SoSeparator.h>
@@ -10,6 +11,7 @@
 namespace {
 enum Failure { NONE, SAVE, GENERATE, ZERO_NAME, BIND, UPLOAD, LENGTH, ZERO_LENGTH, RESTORE };
 void (*warningCallback)() = NULL;
+const char * programErrorString = "injected upload failure";
 struct MockGL {
   MockGL() : failure(NONE), failupload(1), error(GL_NO_ERROR), list(0), next(100),
              generated(0), uploads(0), deleted(0), warnings(0) { }
@@ -33,7 +35,7 @@ void testGetIntegerv(GLenum pname, GLint * value) {
   std::lock_guard<std::mutex> lock(mock.mutex);
   *value = pname == GL_LIST_INDEX ? mock.list : -1;
 }
-const GLubyte * testGetString(GLenum) { return (const GLubyte *) "injected upload failure"; }
+const GLubyte * testGetString(GLenum) { return (const GLubyte *) programErrorString; }
 const cc_glglue * testGlueInstance(int) { return (const cc_glglue *) 1; }
 void testGetProgramiv(const cc_glglue *, GLenum target, GLenum pname, GLint * value) {
   std::lock_guard<std::mutex> lock(mock.mutex);
@@ -107,6 +109,8 @@ void reset(Failure failure = NONE) {
   mock.next = 100; mock.generated = mock.uploads = mock.deleted = mock.warnings = 0;
   mock.bindings.clear(); mock.lengths.clear(); mock.deletions.clear();
   warningCallback = NULL;
+  programErrorString = "injected upload failure";
+  BumpTestCacheContext::failNextScheduling() = false;
   BumpTestCacheContext::current() = 1;
   mock.bindings[std::make_pair(1, GL_FRAGMENT_PROGRAM_ARB)] = 91;
   mock.bindings[std::make_pair(1, GL_VERTEX_PROGRAM_ARB)] = 92;
@@ -410,6 +414,130 @@ void concurrent_cases() {
   SoContextHandler::destructingContext(1);
 }
 
+void allocation_failure_cases() {
+  typedef CoinBumpTestRenderer Renderer;
+  typedef Renderer::ProgramCache Cache;
+  // Long driver text is bounded and copied without allocating host memory.
+  char text[soshape_bump_program_error::MESSAGE_CAPACITY + 32];
+  std::memset(text, 'x', sizeof(text)); text[sizeof(text) - 1] = '\0';
+  {
+    BumpTestAllocation::Scope failure;
+    soshape_bump_program_error error;
+    error.setMessage(NULL); CHECK(error.message[0] == '\0');
+    error.setMessage(text);
+    CHECK(std::strlen(error.message) == soshape_bump_program_error::MESSAGE_CAPACITY - 1);
+    CHECK(std::strcmp(error.message + soshape_bump_program_error::MESSAGE_CAPACITY - 4, "...") == 0);
+    text[soshape_bump_program_error::MESSAGE_CAPACITY - 1] = '\0';
+    error.setMessage(text);
+    CHECK(error.message[soshape_bump_program_error::MESSAGE_CAPACITY - 2] == 'x');
+    error.setMessage(""); CHECK(error.message[0] == '\0');
+    CHECK(failure.untouched());
+  }
+  // Diagnostic capture cannot interrupt rollback after an upload error.
+  for (int longtext = 0; longtext < 2; ++longtext) {
+    reset(UPLOAD); mock.deletions.reserve(16);
+    if (longtext) {
+      text[soshape_bump_program_error::MESSAGE_CAPACITY - 1] = 'x';
+      programErrorString = text;
+    }
+    Renderer r; r.programcache->contexts[1];
+    Renderer::spec_programidx p;
+    BumpTestAllocation::Scope failure;
+    CHECK(!r.ensurePrograms(testGlueInstance(1), NULL, p));
+    CHECK(mock.generated == 1 && mock.deleted == 1 && mock.warnings == 1);
+    CHECK(r.programcache->contexts[1].specstatus == Cache::FAILED);
+    CHECK(r.programcache->contexts[1].spec.fragment == 0);
+    CHECK(mock.bindings[std::make_pair(1, GL_FRAGMENT_PROGRAM_ARB)] == 91);
+    CHECK(failure.untouched());
+  }
+  // Context cleanup must not allocate while copying an unreported diagnostic.
+  reset(); mock.deletions.reserve(16);
+  {
+    Renderer r; Renderer::spec_programidx spec; Renderer::diffuse_programidx diffuse;
+    CHECK(r.ensurePrograms(testGlueInstance(1), NULL, spec));
+    mock.list = 5; CHECK(!r.ensureDiffusePrograms(testGlueInstance(1), NULL, diffuse));
+    mock.list = 0; mock.failure = UPLOAD; mock.failupload = mock.uploads + 1;
+    BumpTestCacheContext::flush(1);
+    CHECK(r.programcache->contexts[1].diffusestatus == Cache::FAILED && mock.warnings == 0);
+    CHECK(std::strlen(r.programcache->contexts[1].diffuseerror.message) > 15);
+    mock.failure = NONE;
+    BumpTestAllocation::Scope failure;
+    Renderer::context_destruction_cb(1, (void *) r.programcache->token);
+    CHECK(r.programcache->contexts.empty() && mock.deleted == 4);
+    CHECK(failure.untouched());
+  }
+  // No allocation for destructor metadata, including zero and maximal IDs.
+  reset();
+  BumpTestCacheContext::queue().reserve(8);
+  Renderer * renderer = new Renderer;
+  const uint32_t ids[] = { 0, 1, std::numeric_limits<uint32_t>::max() };
+  for (size_t i = 0; i < 3; ++i) {
+    BumpTestCacheContext::current() = ids[i];
+    Renderer::spec_programidx p;
+    CHECK(renderer->ensurePrograms(testGlueInstance((int) ids[i]), NULL, p));
+  }
+  {
+    BumpTestAllocation::Scope failure;
+    delete renderer;
+    CHECK(BumpTestCacheContext::queue().size() == 3 && failure.untouched());
+  }
+  for (size_t i = 0; i < 3; ++i) {
+    BumpTestCacheContext::current() = ids[i];
+    BumpTestCacheContext::flush(ids[i]);
+  }
+  CHECK(mock.deleted == 9 && Cache::registry().entries.empty());
+
+  // If deletion cannot be queued, the registry retains ownership until the
+  // context's existing destruction callback releases the names, without throw.
+  reset(); renderer = new Renderer;
+  Renderer::spec_programidx p;
+  CHECK(renderer->ensurePrograms(testGlueInstance(1), NULL, p));
+  std::weak_ptr<Cache> lifetime = renderer->programcache;
+  BumpTestCacheContext::failNextScheduling() = true;
+  {
+    BumpTestAllocation::Scope failure;
+    delete renderer;
+    CHECK(failure.untouched());
+  }
+  CHECK(BumpTestCacheContext::queue().empty() && !lifetime.expired());
+  CHECK(mock.deleted == 0 && Cache::registry().entries.size() == 1);
+  SoContextHandler::destructingContext(1);
+  CHECK(mock.deleted == 3 && lifetime.expired() && Cache::registry().entries.empty());
+
+  // A real allocation failure in the adapted queue must not leave PENDING
+  // without a callback, and must stay isolated to its own program family.
+  for (int diffuse = 0; diffuse < 2; ++diffuse) {
+    reset();
+    { std::vector<BumpTestCacheContext::Callback> empty;
+      empty.swap(BumpTestCacheContext::queue()); }
+    {
+      Renderer r; r.programcache->contexts[1];
+      Renderer::spec_programidx spec; Renderer::diffuse_programidx diff;
+      mock.list = 5;
+      {
+        BumpTestAllocation::Scope failure;
+        CHECK(!(diffuse ? r.ensureDiffusePrograms(testGlueInstance(1), NULL, diff) :
+                          r.ensurePrograms(testGlueInstance(1), NULL, spec)));
+        CHECK(!failure.untouched());
+      }
+      const Cache::Context & ctx = r.programcache->contexts[1];
+      CHECK((diffuse ? ctx.diffusestatus : ctx.specstatus) == Cache::FAILED);
+      CHECK((diffuse ? ctx.specstatus : ctx.diffusestatus) == Cache::EMPTY);
+      CHECK((diffuse ? ctx.diffuseerror : ctx.specerror).error == GL_OUT_OF_MEMORY);
+      CHECK(BumpTestCacheContext::queue().empty() && mock.generated == 0 && mock.warnings == 1);
+      mock.list = 0;
+      CHECK(!(diffuse ? r.ensureDiffusePrograms(testGlueInstance(1), NULL, diff) :
+                        r.ensurePrograms(testGlueInstance(1), NULL, spec)));
+      CHECK(mock.warnings == 1 && mock.generated == 0);
+      SoContextHandler::destructingContext(1);
+      CHECK(diffuse ? r.ensureDiffusePrograms(testGlueInstance(1), NULL, diff) :
+                      r.ensurePrograms(testGlueInstance(1), NULL, spec));
+    }
+    BumpTestCacheContext::flush(1);
+    CHECK(mock.deleted == (diffuse ? 2 : 3));
+  }
+}
+
 // Run last: exhausted tokens must never be reset, even by this test.
 void token_exhaustion_cases() {
   reset();
@@ -491,6 +619,7 @@ int main() {
   failure_cases(); deferred_cases(); stale_initializer_case(); lifetime_cases(); diffuse_and_context_cases();
   error_handler_cases(); redraw_lifetime_cases(); multiple_root_redraw_case();
   queue_changed_lifetime_cases(); concurrent_cases();
+  allocation_failure_cases();
   CHECK(CoinBumpTestRenderer::ProgramCache::registry().entries.empty());
   CHECK(BumpTestCacheContext::queue().empty());
   SoDB::finish();
@@ -502,5 +631,5 @@ int main() {
   CHECK(CoinBumpTestRenderer::ProgramCache::registry().entries.empty());
   token_exhaustion_cases();
   SoDB::finish();
-  std::puts("Bump program failure, cache, deferred initialization and lifetime tests passed.");
+  std::puts("Bump program failure, allocation, cache, deferred initialization and lifetime tests passed.");
 }

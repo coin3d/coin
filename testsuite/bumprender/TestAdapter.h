@@ -25,6 +25,7 @@
 #include <memory>
 #include <map>
 #include <mutex>
+#include <new>
 #include <vector>
 #include <cstdio>
 #include <cstdlib>
@@ -79,7 +80,12 @@ struct BumpTestCacheContext {
   static int get(SoState *) { return (int) current(); }
   static void shouldAutoCache(SoState *, int) { }
   static std::vector<Callback> & queue() { static std::vector<Callback> q; return q; }
+  static bool & failNextScheduling() { static bool fail = false; return fail; }
   static void scheduleDeleteCallback(uint32_t id, void (*func)(void *, uint32_t), void * closure) {
+    if (failNextScheduling()) {
+      failNextScheduling() = false;
+      throw std::bad_alloc();
+    }
     queue().push_back(Callback{id, func, closure});
   }
   static void flush(uint32_t id) {

@@ -6,7 +6,9 @@ context/state bookkeeping. It uses the real `SoContextHandler` dispatcher.
 Coverage includes each upload stage, partial rollback, failure caching and
 context-id reuse, pending initialization cancellation, diffuse/specular sets,
 both resource destruction orders, stale callback snapshots, concurrent cache
-access, and reentrant error handlers. Token-limit tests cover the last valid
+access, and reentrant error handlers. Allocation-failure tests verify upload
+rollback, bounded diagnostics, context cleanup, allocation-free destructor
+metadata and failed queue submission. Token-limit tests cover the last valid
 registration, controlled exhaustion, null-cache operations, stale callbacks and
 exhaustion across SoDB reinitialization. Checks remain enabled in Release builds.
 
@@ -52,6 +54,17 @@ cache makes program requests fail and redraw scheduling/destruction become safe
 no-ops. The creation diagnostic runs once for the registry lifetime, outside its
 mutex, including when its handler reenters cache creation. This does not promise
 that unrelated allocation failures cannot throw.
+
+Driver diagnostics use a fixed 512-byte buffer (511 text bytes plus terminator),
+marking truncated messages with an ellipsis. Capturing/copying a diagnostic
+cannot interrupt upload rollback or context cleanup through a host allocation.
+If initialization cannot be queued, its family becomes failed rather than
+remaining pending without a callback; context destruction allows another try.
+Destructor metadata does not allocate. If a deletion callback cannot be queued,
+the existing registry/context-destruction registration retains the GL names
+until context destruction instead of unwinding the destructor. This is local
+cache recovery, not a guarantee that the underlying Coin scheduler, glue or user
+callback APIs preserve all their own invariants under arbitrary exceptions.
 
 The existing Coin context contract still applies: notify context destruction
 with that context current, and use distinct ids for incompatible contexts.
