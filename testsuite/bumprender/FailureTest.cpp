@@ -541,9 +541,21 @@ void allocation_failure_cases() {
 void owned_allocation_cases() {
   typedef CoinBumpTestRenderer Renderer;
   typedef Renderer::ProgramCache Cache;
-  // Cache object, shared ownership and registry node each fail independently.
+  // Sweep every owned factory allocation, including STL-specific empty-map
+  // sentinels/proxies. Do not include external callback registration in this
+  // count; create() alone does not register a context destruction callback.
+  reset();
+  int cacheallocations;
+  {
+    BumpTestAllocation::Count count;
+    const Cache::Ptr probe = Cache::create();
+    CHECK(probe && count.total() >= 3);
+    CHECK(count.total() <= (std::size_t) std::numeric_limits<int>::max());
+    cacheallocations = (int) count.total();
+    CHECK(Cache::registry().entries.erase(probe->token) == 1);
+  }
   // A failed factory never publishes an entry or rewinds a consumed token.
-  for (int stage = 0; stage < 3; ++stage) {
+  for (int stage = 0; stage < cacheallocations; ++stage) {
     reset();
     const uintptr_t previous = Cache::registry().nexttoken;
     {
@@ -560,7 +572,7 @@ void owned_allocation_cases() {
       CHECK(spec.fragment == 7 && spec.dirlight == 7 && spec.pointlight == 7);
       CHECK(diffuse.dirlight == 8 && diffuse.pointlight == 8 && diffuse.normalrendering == 8);
       CHECK(Cache::registry().entries.empty());
-      CHECK(Cache::registry().nexttoken == previous + (stage == 2 ? 1 : 0));
+      CHECK(Cache::registry().nexttoken == previous + (stage == cacheallocations - 1 ? 1 : 0));
       CHECK(mock.generated == 0 && BumpTestCacheContext::queue().empty());
     }
     Renderer recovered;
@@ -629,7 +641,18 @@ void owned_allocation_cases() {
   // Sensor object, shared ownership and redraw-map node. The other viewer's
   // existing sensor survives, and there is never an empty map entry to crash
   // pruning/destruction. A later traversal can retry the failed viewer.
-  for (int stage = 0; stage < 3; ++stage) {
+  int sensorallocations;
+  {
+    Cache::Redraws prepared; // Construct container infrastructure before counting.
+    BumpTestAllocation::Count count;
+    const Cache::RedrawPtr sensor(new Cache::RedrawSensor(0));
+    sensor->self = sensor;
+    prepared.insert(std::make_pair(static_cast<SoNode *>(NULL), sensor));
+    CHECK(count.total() >= 3);
+    CHECK(count.total() <= (std::size_t) std::numeric_limits<int>::max());
+    sensorallocations = (int) count.total();
+  }
+  for (int stage = 0; stage < sensorallocations; ++stage) {
     reset(); mock.list = 5;
     SoSeparator * a = new SoSeparator; a->ref();
     SoSeparator * b = new SoSeparator; b->ref();
@@ -704,6 +727,39 @@ void dependency_failure_boundary_cases() {
   Renderer::context_destruction_cb(1, (void *) r.programcache->token);
   CHECK(r.ensurePrograms(testGlueInstance(1), NULL, spec));
   SoContextHandler::destructingContext(1);
+}
+
+void cold_registry_allocation_case() {
+  typedef CoinBumpTestRenderer::ProgramCache Cache;
+  // Run before any test accesses the registry. On an allocating-empty-map
+  // STL, this rejects registry construction; on others it rejects the cache.
+  {
+    BumpTestAllocation::Scope failure;
+    CHECK(!Cache::create() && !failure.untouched());
+  }
+  CHECK(Cache::registry().entries.empty());
+}
+
+void registry_cleanup_allocation_case() {
+  typedef CoinBumpTestRenderer Renderer;
+  typedef Renderer::ProgramCache Cache;
+  reset();
+  {
+    Renderer a, b; // Real provider registrations, but no GL names to retain.
+    const uintptr_t first = a.programcache->token, second = b.programcache->token;
+    CHECK(Cache::registry().entries.size() == 2);
+    {
+      BumpTestAllocation::Scope failure;
+      Cache::cleanup_registry();
+      CHECK(failure.untouched());
+    }
+    CHECK(Cache::registry().entries.empty() && !Cache::registry().cleanupregistered);
+    Renderer::context_destruction_cb(1, (void *) first);
+    Renderer::context_destruction_cb(1, (void *) second);
+  }
+  // Their destructors must not try to remove the unregistered callbacks twice.
+  Renderer recovered;
+  CHECK(recovered.programcache && Cache::registry().cleanupregistered);
 }
 
 // Run last: exhausted tokens must never be reset, even by this test.
@@ -784,11 +840,18 @@ void token_exhaustion_cases() {
 }
 int main() {
   SoDB::init();
-  failure_cases(); deferred_cases(); stale_initializer_case(); lifetime_cases(); diffuse_and_context_cases();
-  error_handler_cases(); redraw_lifetime_cases(); multiple_root_redraw_case();
-  queue_changed_lifetime_cases(); concurrent_cases();
-  allocation_failure_cases();
-  owned_allocation_cases(); dependency_failure_boundary_cases();
+  // Preserve the last completed group in CTest output if a platform terminates
+  // before CHECK can report an expression (e.g. noexcept allocation failure).
+#define RUN_CASE(func) do { std::fprintf(stderr, "Running %s\n", #func); \
+  std::fflush(stderr); func(); } while (0)
+  RUN_CASE(cold_registry_allocation_case);
+  RUN_CASE(failure_cases); RUN_CASE(deferred_cases); RUN_CASE(stale_initializer_case);
+  RUN_CASE(lifetime_cases); RUN_CASE(diffuse_and_context_cases);
+  RUN_CASE(error_handler_cases); RUN_CASE(redraw_lifetime_cases); RUN_CASE(multiple_root_redraw_case);
+  RUN_CASE(queue_changed_lifetime_cases); RUN_CASE(concurrent_cases);
+  RUN_CASE(allocation_failure_cases);
+  RUN_CASE(owned_allocation_cases); RUN_CASE(dependency_failure_boundary_cases);
+  RUN_CASE(registry_cleanup_allocation_case);
   CHECK(CoinBumpTestRenderer::ProgramCache::registry().entries.empty());
   CHECK(BumpTestCacheContext::queue().empty());
   SoDB::finish();
@@ -798,7 +861,8 @@ int main() {
     CHECK(r.ensurePrograms(testGlueInstance(1), NULL, p)); }
   BumpTestCacheContext::flush(1);
   CHECK(CoinBumpTestRenderer::ProgramCache::registry().entries.empty());
-  token_exhaustion_cases();
+  RUN_CASE(token_exhaustion_cases);
+#undef RUN_CASE
   SoDB::finish();
   std::puts("Bump program failure, allocation, cache, deferred initialization and lifetime tests passed.");
 }

@@ -7,6 +7,15 @@
 // Only FailureTest.cpp includes this header. Other threads are unaffected.
 namespace BumpTestAllocation {
 thread_local int remaining = -1;
+thread_local std::size_t allocations = 0;
+struct Count {
+  Count() : initial(allocations) { }
+  std::size_t total() const { return allocations - initial; }
+private:
+  const std::size_t initial;
+  Count(const Count &) = delete;
+  Count & operator=(const Count &) = delete;
+};
 struct Scope {
   explicit Scope(int successfulAllocations = 0) { remaining = successfulAllocations; }
   ~Scope() { remaining = -1; }
@@ -18,6 +27,7 @@ private:
 }
 
 void * operator new(std::size_t size) {
+  ++BumpTestAllocation::allocations;
   if (BumpTestAllocation::remaining == 0) {
     BumpTestAllocation::remaining = -1;
     throw std::bad_alloc();

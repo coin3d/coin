@@ -426,7 +426,15 @@ struct soshape_bumprender::ProgramCache {
     return reg;
   }
   static Ptr create() {
-    Registry & reg = registry();
+    Registry * registry;
+    try {
+      // An empty std::map may allocate a sentinel (notably with MSVC).
+      registry = &ProgramCache::registry();
+    }
+    catch (const std::bad_alloc &) {
+      return Ptr(); // Failed static initialization can retry on the next call.
+    }
+    Registry & reg = *registry;
     std::unique_lock<std::mutex> lock(reg.mutex);
     // The low bit is reserved for the deferred initialization's program kind.
     if (reg.nexttoken >= (std::numeric_limits<uintptr_t>::max() >> 1)) {
@@ -485,17 +493,28 @@ struct soshape_bumprender::ProgramCache {
     }
   }
   static void cleanup_registry() {
-    Entries entries;
     Registry & reg = registry();
+    uintptr_t lasttoken;
     {
       std::lock_guard<std::mutex> lock(reg.mutex);
-      entries.swap(reg.entries);
+      lasttoken = reg.nexttoken;
       reg.cleanupregistered = false;
       // Do not reuse tokens or repeat exhaustion diagnostics after SoDB::init().
     }
-    for (Entries::const_iterator it = entries.begin(); it != entries.end(); ++it) {
+    // Drain the old identities without constructing an allocating empty map.
+    // New registrations made by a reentrant provider have larger tokens and
+    // belong to the next cleanup registration, not to this snapshot.
+    for (;;) {
+      Ptr cache;
+      {
+        std::lock_guard<std::mutex> lock(reg.mutex);
+        Entries::iterator it = reg.entries.begin();
+        if (it == reg.entries.end() || it->first > lasttoken) break;
+        cache = it->second;
+        reg.entries.erase(it);
+      }
       SoContextHandler::removeContextDestructionCallback(context_destruction_cb,
-                                                         (void *) it->first);
+                                                         (void *) cache->token);
     }
   }
   // Caller holds mutex. The entry exists before allocating GL names, so
@@ -649,11 +668,9 @@ soshape_bumprender::~soshape_bumprender()
 {
   const ProgramCache::Ptr cache = this->programcache;
   if (!cache) return;
-  ProgramCache::Redraws redraws;
   {
     std::lock_guard<std::mutex> lock(cache->mutex);
     cache->alive = false;
-    redraws.swap(cache->redraws);
     for (ProgramCache::Contexts::iterator it = cache->contexts.begin();
          it != cache->contexts.end();) {
       if (it->second.specstatus == ProgramCache::READY ||
@@ -662,10 +679,21 @@ soshape_bumprender::~soshape_bumprender()
     }
   }
   // Sensor queue changes can invoke application callbacks; never cancel under
-  // the cache mutex, and keep every sensor alive through reentrant handlers.
-  for (ProgramCache::Redraws::const_iterator it = redraws.begin(); it != redraws.end(); ++it) {
-    if (it->second->isScheduled()) it->second->unschedule();
-    it->second->detach();
+  // the cache mutex. Transfer one shared owner at a time: an empty temporary
+  // std::map is not allocation-free on all STL implementations.
+  for (;;) {
+    ProgramCache::RedrawPtr sensor;
+    {
+      std::lock_guard<std::mutex> lock(cache->mutex);
+      ProgramCache::Redraws::iterator it = cache->redraws.begin();
+      if (it == cache->redraws.end()) break;
+      sensor = it->second;
+      cache->redraws.erase(it);
+    }
+    // This sensor, and all sensors still owned by the cache, remain alive
+    // through any reentrant application queue-change handler.
+    if (sensor->isScheduled()) sensor->unschedule();
+    sensor->detach();
   }
   // Never take the scheduler's mutex while holding the cache mutex: cleanup
   // invokes deferred callbacks under its own lock. Queued callbacks contain

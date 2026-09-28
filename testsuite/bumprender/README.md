@@ -16,6 +16,11 @@ Boundary tests check local constructor rollback and propagation of provider and
 diagnostic-handler exceptions. Token-limit tests cover the last valid
 registration, controlled exhaustion, null-cache operations, stale callbacks and
 exhaustion across SoDB reinitialization. Checks remain enabled in Release builds.
+The allocation sweeps measure each implementation's actual factory/sensor
+allocation count, including STL-specific sentinel/proxy allocations, rather
+than assuming three calls to operator new. Destruction and registry cleanup
+drain existing nodes without constructing a temporary empty map, since even an
+empty map may allocate with MSVC. Cold-registry failure/retry is covered too.
 
 `BumpProgramGLX` runs when an X display and ARB vertex/fragment programs are
 available; otherwise CTest reports it as skipped. It verifies the actual shaders
