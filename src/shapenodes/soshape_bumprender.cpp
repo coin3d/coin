@@ -38,6 +38,7 @@
 #include <map>
 #include <mutex>
 #include <new>
+#include <utility>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -45,7 +46,7 @@
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/SbMatrix.h>
-#include <Inventor/details/SoPointDetail.h>
+#include <Inventor/SbVec2f.h>
 #include <Inventor/elements/SoBumpMapElement.h>
 #include <Inventor/elements/SoBumpMapMatrixElement.h>
 #include <Inventor/elements/SoCacheElement.h>
@@ -58,10 +59,7 @@
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoMultiTextureMatrixElement.h>
-#include <Inventor/elements/SoProjectionMatrixElement.h>
-#include <Inventor/elements/SoMultiTextureMatrixElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/misc/SoState.h>
@@ -76,6 +74,7 @@
 #include "glue/glp.h"
 #include "rendering/SoGL.h"
 #include "tidbitsp.h"
+#include "misc/SbHash.h" // Explicit legacy destructor specialization below.
 #include <Inventor/sensors/SoNodeSensor.h>
 
 // *************************************************************************
@@ -924,7 +923,6 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
                                     shininess * 64, 0.0f, 0.0f, 1.0f);
 
   const SbViewVolume & vv = SoViewVolumeElement::get(state);
-  //const SbMatrix & vm = SoViewingMatrixElement::get(state);
 
   SbVec3f eyepos = vv.getProjectionPoint();
   SoModelMatrixElement::get(state).inverse().multVecMatrix(eyepos, eyepos);

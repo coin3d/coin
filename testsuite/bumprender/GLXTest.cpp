@@ -33,11 +33,10 @@ void getProgramiv(GLenum target, GLenum pname, GLint * value) {
 
 struct GLContext {
   Display * display;
-  XVisualInfo * visual;
   GLXContext context;
   Colormap colormap;
   Window window;
-  GLContext(Display * d, XVisualInfo * v) : display(d), visual(v) {
+  GLContext(Display * d, XVisualInfo * v) : display(d) {
     context = glXCreateContext(d, v, NULL, True); CHECK(context);
     colormap = XCreateColormap(d, RootWindow(d, v->screen), v->visual, AllocNone);
     XSetWindowAttributes attr = {}; attr.colormap = colormap;

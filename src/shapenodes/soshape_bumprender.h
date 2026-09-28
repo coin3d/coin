@@ -33,14 +33,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif // COIN_INTERNAL
+
 #include <Inventor/SbVec3f.h>
-#include <Inventor/SbVec2f.h>
-#include <Inventor/SbVec2s.h>
 #include <Inventor/lists/SbList.h>
-#include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/C/glue/gl.h>
 
-#include "misc/SbHash.h"
 #include <memory>
 
 // *************************************************************************
@@ -48,13 +48,13 @@
 class SoState;
 class SoNode;
 class SoLight;
-class SoGLImage;
 class SbMatrix;
 class SoPrimitiveVertexCache;
 
 // *************************************************************************
 
-// FIXME: inherit from SoCache to avoid regenerating everything every frame
+// GL programs are cached per Coin cache context. Tangent data follows the
+// primitive vertex cache; light-dependent coordinates are computed on use.
 
 class soshape_bumprender {
 public:
@@ -109,10 +109,8 @@ private:
   SbVec3f lightvec;
   SbBool ispointlight;
 
-  typedef SbHash<uint32_t, diffuse_programidx> ContextId2DiffuseStruct;
-  typedef SbHash<uint32_t, spec_programidx> ContextId2SpecStruct;
   struct ProgramCache;
   std::shared_ptr<ProgramCache> programcache;
 };
 
-#endif // COIN_SOSHAPE_BUMPRENDER
+#endif // COIN_SOSHAPE_BUMPRENDER_H
