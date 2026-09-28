@@ -171,40 +171,46 @@ $(function(){initNavTree('heap_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">\**************************************************************************/</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#include &lt;Inventor/C/basic.h&gt;</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#include &lt;Inventor/SbString.h&gt;</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#endif </span><span class="comment">/* __cplusplus */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keyword">typedef</span> <span class="keywordtype">int</span> cc_heap_compare_cb(<span class="keywordtype">void</span> * o1, <span class="keywordtype">void</span> * o2);</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keyword">typedef</span> <span class="keywordtype">void</span> cc_heap_print_cb(<span class="keywordtype">void</span> * o, <a class="code hl_class" href="classSbString.html">SbString</a>&amp; str);</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keyword">typedef</span> <span class="keyword">struct </span>cc_heap cc_heap;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  COIN_DLL_API cc_heap * cc_heap_construct(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> size,</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                                           cc_heap_compare_cb * comparecb,</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                                           SbBool support_remove);</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_heap_destruct(cc_heap * h);</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_heap_clear(cc_heap * h);</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_heap_add(cc_heap * h, <span class="keywordtype">void</span> * o);</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  COIN_DLL_API <span class="keywordtype">void</span> * cc_heap_get_top(cc_heap * h);</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  COIN_DLL_API <span class="keywordtype">void</span> * cc_heap_extract_top(cc_heap * h);</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  COIN_DLL_API <span class="keywordtype">int</span> cc_heap_remove(cc_heap * h, <span class="keywordtype">void</span> * o);</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  COIN_DLL_API <span class="keywordtype">int</span> cc_heap_update(cc_heap * h, <span class="keywordtype">void</span> * o);</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  COIN_DLL_API <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> cc_heap_elements(cc_heap * h);</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  COIN_DLL_API SbBool cc_heap_empty(cc_heap * h);</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_heap_print(cc_heap * h, cc_heap_print_cb * printcb, <a class="code hl_class" href="classSbString.html">SbString</a>&amp; str, SbBool printLeveled = FALSE);</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment">/* ********************************************************************** */</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#include &lt;Inventor/SbString.h&gt;</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#endif </span><span class="comment">/* __cplusplus */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keyword">typedef</span> <span class="keywordtype">int</span> cc_heap_compare_cb(<span class="keywordtype">void</span> * o1, <span class="keywordtype">void</span> * o2);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keyword">typedef</span> <span class="keywordtype">void</span> cc_heap_print_cb(<span class="keywordtype">void</span> * o, <a class="code hl_class" href="classSbString.html">SbString</a>&amp; str);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keyword">typedef</span> <span class="keyword">struct </span>cc_heap cc_heap;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  COIN_DLL_API cc_heap * cc_heap_construct(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> size,</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                                           cc_heap_compare_cb * comparecb,</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                                           SbBool support_remove);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_heap_destruct(cc_heap * h);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_heap_clear(cc_heap * h);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_heap_add(cc_heap * h, <span class="keywordtype">void</span> * o);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  COIN_DLL_API <span class="keywordtype">void</span> * cc_heap_get_top(cc_heap * h);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  COIN_DLL_API <span class="keywordtype">void</span> * cc_heap_extract_top(cc_heap * h);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  COIN_DLL_API <span class="keywordtype">int</span> cc_heap_remove(cc_heap * h, <span class="keywordtype">void</span> * o);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  COIN_DLL_API <span class="keywordtype">int</span> cc_heap_update(cc_heap * h, <span class="keywordtype">void</span> * o);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  COIN_DLL_API <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> cc_heap_elements(cc_heap * h);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  COIN_DLL_API SbBool cc_heap_empty(cc_heap * h);</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>} <span class="comment">/* extern &quot;C&quot; */</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">#endif </span><span class="comment">/* __cplusplus */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_heap_print(cc_heap * h, cc_heap_print_cb * printcb, <a class="code hl_class" href="classSbString.html">SbString</a>&amp; str, SbBool printLeveled = FALSE);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">#endif </span><span class="comment">/* ! CC_HEAP_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="comment">/* ********************************************************************** */</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>} <span class="comment">/* extern &quot;C&quot; */</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="preprocessor">#endif </span><span class="comment">/* __cplusplus */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="preprocessor">#endif </span><span class="comment">/* ! CC_HEAP_H */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aclassSbString_html"><div class="ttname"><a href="classSbString.html">SbString</a></div><div class="ttdoc">The SbString class is a string class with convenience functions for string operations.</div><div class="ttdef"><b>Definition</b> SbString.h:52</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -212,7 +218,7 @@ $(function(){initNavTree('heap_8h_source.html',''); initResizable(); });
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_c926cf464acaebc2091d00c8a935648f.html">C</a></li><li class="navelem"><a class="el" href="dir_7a50db6ab5259f91fa54d5ee03ce5859.html">base</a></li><li class="navelem"><b>heap.h</b></li>
-    <li class="footer">Generated on Fri Sep 25 2026 09:22:23 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Mon Sep 28 2026 16:24:43 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
