@@ -538,6 +538,174 @@ void allocation_failure_cases() {
   }
 }
 
+void owned_allocation_cases() {
+  typedef CoinBumpTestRenderer Renderer;
+  typedef Renderer::ProgramCache Cache;
+  // Cache object, shared ownership and registry node each fail independently.
+  // A failed factory never publishes an entry or rewinds a consumed token.
+  for (int stage = 0; stage < 3; ++stage) {
+    reset();
+    const uintptr_t previous = Cache::registry().nexttoken;
+    {
+      BumpTestAllocation::Scope failure(stage);
+      Renderer unavailable;
+      CHECK(!failure.untouched() && !unavailable.programcache);
+      Renderer::spec_programidx spec;
+      Renderer::diffuse_programidx diffuse;
+      spec.fragment = spec.dirlight = spec.pointlight = 7;
+      diffuse.dirlight = diffuse.pointlight = diffuse.normalrendering = 8;
+      CHECK(!unavailable.ensurePrograms(NULL, NULL, spec));
+      CHECK(!unavailable.ensureDiffusePrograms(NULL, NULL, diffuse));
+      unavailable.scheduleRedraw(NULL, NULL);
+      CHECK(spec.fragment == 7 && spec.dirlight == 7 && spec.pointlight == 7);
+      CHECK(diffuse.dirlight == 8 && diffuse.pointlight == 8 && diffuse.normalrendering == 8);
+      CHECK(Cache::registry().entries.empty());
+      CHECK(Cache::registry().nexttoken == previous + (stage == 2 ? 1 : 0));
+      CHECK(mock.generated == 0 && BumpTestCacheContext::queue().empty());
+    }
+    Renderer recovered;
+    CHECK(recovered.programcache && recovered.programcache->token > previous);
+  }
+  // Failed insertion precedes all GL/queue operations. A scalar latch rejects
+  // new contexts, not ready resources in an existing context, and warns once.
+  for (int diffuse = 0; diffuse < 2; ++diffuse) {
+    for (int inlist = 0; inlist < 2; ++inlist) {
+      reset(); mock.deletions.reserve(16);
+      Renderer r; Renderer::spec_programidx spec; Renderer::diffuse_programidx diff;
+      CHECK(r.ensurePrograms(testGlueInstance(1), NULL, spec));
+      CHECK(r.ensureDiffusePrograms(testGlueInstance(1), NULL, diff));
+      const int generated = mock.generated;
+      spec.fragment = spec.dirlight = spec.pointlight = 7;
+      diff.dirlight = diff.pointlight = diff.normalrendering = 8;
+      BumpTestCacheContext::current() = 2; mock.list = inlist ? 5 : 0;
+      static Renderer * warningOwner;
+      warningOwner = &r;
+      warningCallback = [] {
+        Renderer::spec_programidx ignored;
+        // Reentry proves that diagnostics run outside our mutex and the latch
+        // is visible before invoking the external handler.
+        CHECK(!warningOwner->ensurePrograms(NULL, NULL, ignored));
+      };
+      {
+        BumpTestAllocation::Scope failure;
+        CHECK(!(diffuse ? r.ensureDiffusePrograms(testGlueInstance(2), NULL, diff) :
+                          r.ensurePrograms(testGlueInstance(2), NULL, spec)));
+        CHECK(!failure.untouched());
+      }
+      warningCallback = NULL;
+      CHECK(r.programcache->contextallocationfailed && r.programcache->contexts.size() == 1);
+      CHECK(mock.generated == generated && mock.warnings == 1);
+      CHECK(BumpTestCacheContext::queue().empty());
+      CHECK(spec.fragment == 7 && spec.dirlight == 7 && spec.pointlight == 7);
+      CHECK(diff.dirlight == 8 && diff.pointlight == 8 && diff.normalrendering == 8);
+      {
+        BumpTestAllocation::Scope failure;
+        BumpTestCacheContext::current() = 3;
+        CHECK(!r.ensurePrograms(NULL, NULL, spec));
+        CHECK(!r.ensureDiffusePrograms(NULL, NULL, diff));
+        BumpTestCacheContext::current() = 1;
+        CHECK(r.ensurePrograms(NULL, NULL, spec));
+        CHECK(r.ensureDiffusePrograms(NULL, NULL, diff));
+        CHECK(failure.untouched() && mock.warnings == 1 && mock.generated == generated);
+        Renderer::context_destruction_cb(2, (void *) r.programcache->token);
+        CHECK(failure.untouched() && !r.programcache->contextallocationfailed);
+      }
+      BumpTestCacheContext::current() = 2;
+      if (inlist) {
+        CHECK(!(diffuse ? r.ensureDiffusePrograms(testGlueInstance(2), NULL, diff) :
+                          r.ensurePrograms(testGlueInstance(2), NULL, spec)));
+        CHECK(BumpTestCacheContext::queue().size() == 1);
+        mock.list = 0; BumpTestCacheContext::flush(2);
+      }
+      CHECK(diffuse ? r.ensureDiffusePrograms(testGlueInstance(2), NULL, diff) :
+                      r.ensurePrograms(testGlueInstance(2), NULL, spec));
+      CHECK(mock.generated == generated + (diffuse ? 2 : 3));
+      SoContextHandler::destructingContext(2);
+      BumpTestCacheContext::current() = 1;
+      SoContextHandler::destructingContext(1);
+      CHECK(mock.deleted == mock.generated);
+    }
+  }
+  // Sensor object, shared ownership and redraw-map node. The other viewer's
+  // existing sensor survives, and there is never an empty map entry to crash
+  // pruning/destruction. A later traversal can retry the failed viewer.
+  for (int stage = 0; stage < 3; ++stage) {
+    reset(); mock.list = 5;
+    SoSeparator * a = new SoSeparator; a->ref();
+    SoSeparator * b = new SoSeparator; b->ref();
+    RedrawProbe aprobe, bprobe;
+    SoNodeSensor amonitor(observe_redraw, &aprobe), bmonitor(observe_redraw, &bprobe);
+    amonitor.setPriority(0); amonitor.attach(a);
+    bmonitor.setPriority(0); bmonitor.attach(b);
+    {
+      Renderer r; Renderer::spec_programidx spec;
+      CHECK(!r.ensurePrograms(testGlueInstance(1), NULL, spec));
+      r.scheduleRedraw(NULL, a);
+      const Cache::RedrawPtr existing = r.programcache->redraws.find(a)->second;
+      {
+        BumpTestAllocation::Scope failure(stage);
+        r.scheduleRedraw(NULL, b);
+        CHECK(!failure.untouched());
+      }
+      CHECK(r.programcache->redraws.size() == 1 && r.programcache->redraws.count(b) == 0);
+      CHECK(existing->isScheduled() && existing->getAttachedNode() == a);
+      CHECK(existing->self.lock() == existing);
+      CHECK(a->getRefCount() == 1 && b->getRefCount() == 1);
+      CHECK(mock.generated == 0 && BumpTestCacheContext::queue().size() == 1);
+      CHECK(r.programcache->contexts[1].specstatus == Cache::PENDING);
+      r.scheduleRedraw(NULL, b);
+      CHECK(r.programcache->redraws.size() == 2);
+      SoDB::getSensorManager()->processDelayQueue(TRUE);
+      CHECK(aprobe.notifications == 1 && bprobe.notifications == 1);
+      mock.list = 0; BumpTestCacheContext::flush(1);
+      CHECK(r.ensurePrograms(testGlueInstance(1), NULL, spec));
+      SoContextHandler::destructingContext(1);
+    }
+    amonitor.detach(); bmonitor.detach(); a->unref(); b->unref();
+  }
+}
+
+void dependency_failure_boundary_cases() {
+  typedef CoinBumpTestRenderer Renderer;
+  typedef Renderer::ProgramCache Cache;
+  // Constructor rollback removes only our entry. Provider exceptions, even
+  // bad_alloc, propagate instead of claiming the provider recovered its state.
+  for (int value = BumpTestContextHandler::ALLOCATION;
+       value <= BumpTestContextHandler::FOREIGN; ++value) {
+    reset();
+    BumpTestContextHandler::failNextRegistration() = (BumpTestContextHandler::Failure) value;
+    bool caught = false;
+    try { Renderer r; }
+    catch (const std::bad_alloc &) { CHECK(value == BumpTestContextHandler::ALLOCATION); caught = true; }
+    catch (const BumpTestForeignFailure &) { CHECK(value == BumpTestContextHandler::FOREIGN); caught = true; }
+    CHECK(caught && Cache::registry().entries.empty());
+    const uintptr_t failed = BumpTestContextHandler::lastToken();
+    Renderer::context_destruction_cb(1, (void *) failed);
+    CHECK(mock.generated == 0 && BumpTestCacheContext::queue().empty());
+    Renderer recovered;
+    CHECK(recovered.programcache->token > failed);
+  }
+  // A user diagnostic handler is not an internal allocation site. Its throw
+  // must remain distinguishable, with our state committed and mutex released.
+  reset();
+  Renderer r; Renderer::spec_programidx spec;
+  warningCallback = [] { throw std::bad_alloc(); };
+  bool caught = false;
+  {
+    BumpTestAllocation::Scope failure;
+    try { (void) r.ensurePrograms(NULL, NULL, spec); }
+    catch (const std::bad_alloc &) { caught = true; }
+    CHECK(!failure.untouched());
+  }
+  warningCallback = NULL;
+  CHECK(caught && r.programcache->contextallocationfailed);
+  CHECK(!r.ensurePrograms(NULL, NULL, spec));
+  CHECK(r.programcache->contexts.empty() && mock.warnings == 1 && mock.generated == 0);
+  Renderer::context_destruction_cb(1, (void *) r.programcache->token);
+  CHECK(r.ensurePrograms(testGlueInstance(1), NULL, spec));
+  SoContextHandler::destructingContext(1);
+}
+
 // Run last: exhausted tokens must never be reset, even by this test.
 void token_exhaustion_cases() {
   reset();
@@ -620,6 +788,7 @@ int main() {
   error_handler_cases(); redraw_lifetime_cases(); multiple_root_redraw_case();
   queue_changed_lifetime_cases(); concurrent_cases();
   allocation_failure_cases();
+  owned_allocation_cases(); dependency_failure_boundary_cases();
   CHECK(CoinBumpTestRenderer::ProgramCache::registry().entries.empty());
   CHECK(BumpTestCacheContext::queue().empty());
   SoDB::finish();

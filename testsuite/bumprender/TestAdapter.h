@@ -22,6 +22,7 @@
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoContextHandler.h>
 #include <memory>
 #include <map>
 #include <mutex>
@@ -73,6 +74,27 @@ struct BumpTestCacheElement {
   static void invalidate(SoState *) { ++invalidations(); }
   static int & invalidations() { static int count = 0; return count; }
 };
+struct BumpTestForeignFailure { };
+// Faults occur before the real provider is called: its own partial-failure
+// guarantees are deliberately not simulated by this private-cache fixture.
+struct BumpTestContextHandler {
+  typedef SoContextHandler::ContextDestructionCB ContextDestructionCB;
+  enum Failure { NONE, ALLOCATION, FOREIGN };
+  static Failure & failNextRegistration() { static Failure failure = NONE; return failure; }
+  static uintptr_t & lastToken() { static uintptr_t token = 0; return token; }
+  static void addContextDestructionCallback(ContextDestructionCB * func, void * closure) {
+    lastToken() = (uintptr_t) closure;
+    const Failure failure = failNextRegistration();
+    failNextRegistration() = NONE;
+    if (failure == ALLOCATION) throw std::bad_alloc();
+    if (failure == FOREIGN) throw BumpTestForeignFailure();
+    SoContextHandler::addContextDestructionCallback(func, closure);
+  }
+  static void removeContextDestructionCallback(ContextDestructionCB * func, void * closure) {
+    SoContextHandler::removeContextDestructionCallback(func, closure);
+  }
+  static void destructingContext(uint32_t id) { SoContextHandler::destructingContext(id); }
+};
 struct BumpTestCacheContext {
   struct Callback { uint32_t id; void (*func)(void *, uint32_t); void * closure; };
   enum { DONT_AUTO_CACHE = 0 };
@@ -103,5 +125,6 @@ struct BumpTestCacheContext {
 
 #define SoCacheElement BumpTestCacheElement
 #define SoGLCacheContextElement BumpTestCacheContext
+#define SoContextHandler BumpTestContextHandler
 
 #endif

@@ -374,7 +374,7 @@ struct soshape_bumprender::ProgramCache {
     bool cleanupregistered;
     bool exhaustionreported;
   };
-  struct RedrawSensor : SoNodeSensor, std::enable_shared_from_this<RedrawSensor> {
+  struct RedrawSensor : SoNodeSensor {
     explicit RedrawSensor(uintptr_t token) : SoNodeSensor(redraw_cb, (void *) token) {
       // Never notify priority-zero viewers from inside display-list traversal.
       this->setPriority(100);
@@ -382,16 +382,19 @@ struct soshape_bumprender::ProgramCache {
     void trigger() override {
       // A notification handler may destroy the renderer. Keep its sensor alive
       // until SoDataSensor::trigger() has finished its post-callback cleanup.
-      const std::shared_ptr<RedrawSensor> sensor = this->shared_from_this();
+      const std::shared_ptr<RedrawSensor> sensor = this->self.lock();
+      if (!sensor) return;
       SoNodeSensor::trigger();
     }
+    std::weak_ptr<RedrawSensor> self;
   };
   typedef std::shared_ptr<RedrawSensor> RedrawPtr;
   typedef std::map<SoNode *, RedrawPtr> Redraws;
-  ProgramCache() : token(0), alive(true) { }
+  ProgramCache() : token(0), alive(true), contextallocationfailed(false) { }
   std::mutex mutex;
   uintptr_t token;
   bool alive;
+  bool contextallocationfailed;
   Contexts contexts;
   Redraws redraws;
 
@@ -409,8 +412,13 @@ struct soshape_bumprender::ProgramCache {
     // Node deletion detaches the sensor. Keep a surviving root alive through
     // user notification handlers, with no cache/render lock held.
     if (root) {
+      // Release our reference even if an application notification throws.
+      // This only rolls back our ownership; it does not recover that handler.
+      struct Unref {
+        void operator()(SoNode * node) const { node->unref(); }
+      };
+      const std::unique_ptr<SoNode, Unref> reference(root);
       root->touch();
-      root->unref();
     }
   }
 
@@ -435,12 +443,25 @@ struct soshape_bumprender::ProgramCache {
       }
       return Ptr();
     }
-    Ptr cache(new ProgramCache);
+    Ptr cache;
+    try {
+      cache.reset(new ProgramCache);
+    }
+    catch (const std::bad_alloc &) {
+      return Ptr(); // No resource or callback has been published.
+    }
     cache->token = ++reg.nexttoken;
-    reg.entries.insert(std::make_pair(cache->token, cache));
+    // Registration belongs to Coin, not to our host-allocation guard. Do it
+    // before publishing an entry, so its exception cannot orphan our cache.
     if (!reg.cleanupregistered) {
       coin_atexit(cleanup_registry, CC_ATEXIT_NORMAL);
       reg.cleanupregistered = true;
+    }
+    try {
+      reg.entries.insert(std::make_pair(cache->token, cache));
+    }
+    catch (const std::bad_alloc &) {
+      return Ptr(); // Never roll back/reuse the consumed callback token.
     }
     return cache;
   }
@@ -523,7 +544,26 @@ struct soshape_bumprender::ProgramCache {
     soshape_bump_program_error failure;
     std::unique_lock<std::mutex> lock(this->mutex);
     if (!this->alive) return FALSE;
-    Context & ctx = this->contexts[contextid];
+    Contexts::iterator context = this->contexts.find(contextid);
+    if (context == this->contexts.end()) {
+      if (this->contextallocationfailed) return FALSE;
+      try {
+        context = this->contexts.insert(std::make_pair(contextid, Context())).first;
+      }
+      catch (const std::bad_alloc &) {
+        // No GL operation has started. Keep existing contexts usable, but
+        // refuse new metadata until a destruction notification allows retry.
+        // The scalar latch cannot itself allocate and suppresses retry storms.
+        this->contextallocationfailed = true;
+        failure.description = diffuse ? "diffuse program set" : "specular program set";
+        failure.stage = "allocate context metadata";
+        failure.error = GL_OUT_OF_MEMORY;
+        lock.unlock();
+        failure.report(); // External handler exceptions are not swallowed.
+        return FALSE;
+      }
+    }
+    Context & ctx = context->second;
     InitStatus & status = diffuse ? ctx.diffusestatus : ctx.specstatus;
     bool schedule = false;
     if (status == EMPTY) {
@@ -592,8 +632,18 @@ soshape_bumprender::soshape_bumprender(void)
   : programcache(ProgramCache::create())
 {
   if (!this->programcache) return;
-  SoContextHandler::addContextDestructionCallback(context_destruction_cb,
-                                                   (void *) this->programcache->token);
+  try {
+    SoContextHandler::addContextDestructionCallback(context_destruction_cb,
+                                                     (void *) this->programcache->token);
+  }
+  catch (...) {
+    // Roll back our entry, not the provider's possibly partial registration.
+    // A retained callback can only look up the now-absent, non-reused token.
+    ProgramCache::Registry & reg = ProgramCache::registry();
+    std::lock_guard<std::mutex> lock(reg.mutex);
+    reg.entries.erase(this->programcache->token);
+    throw; // Provider failures are not reported as successful local recovery.
+  }
 }
 
 soshape_bumprender::~soshape_bumprender()
@@ -665,6 +715,7 @@ soshape_bumprender::context_destruction_cb(uint32_t contextid, void * userdata)
   ProgramCache::Context ctx;
   {
     std::lock_guard<std::mutex> lock(cache->mutex);
+    cache->contextallocationfailed = false;
     ProgramCache::Contexts::iterator it = cache->contexts.find(contextid);
     if (it == cache->contexts.end()) return;
     ctx = it->second;
@@ -737,9 +788,23 @@ soshape_bumprender::scheduleRedraw(SoState * state, SoNode * root)
          it->second.diffusestatus != ProgramCache::PENDING)) return;
     // A shared shape may belong to multiple viewers. Notify every root, not
     // just the most recently traversed one. Sensors do not keep roots alive.
-    ProgramCache::RedrawPtr & entry = cache->redraws[root];
-    if (!entry) entry.reset(new ProgramCache::RedrawSensor(cache->token));
-    sensor = entry;
+    ProgramCache::Redraws::iterator redraw = cache->redraws.find(root);
+    if (redraw == cache->redraws.end()) {
+      try {
+        ProgramCache::RedrawPtr candidate(new ProgramCache::RedrawSensor(cache->token));
+        candidate->self = candidate; // weak lock cannot throw bad_weak_ptr.
+        redraw = cache->redraws.insert(std::make_pair(root, candidate)).first;
+      }
+      catch (const std::bad_alloc &) {
+        // Best-effort redraw only: no empty entry, attachment or queued sensor
+        // remains. Deferred GL initialization still owns its separate callback;
+        // a later traversal can retry notification or use the validated set.
+        return;
+      }
+    }
+    sensor = redraw->second;
+    // These dependency operations are deliberately outside the allocation
+    // guard: their queues/auditors and application callbacks own their contract.
     if (sensor->getAttachedNode() != root) {
       sensor->detach();
       sensor->attach(root);
