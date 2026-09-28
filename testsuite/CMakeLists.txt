@@ -1,3 +1,31 @@
+if(COIN_BUILD_LEGACY_GL_RENDERER)
+  find_package(Threads REQUIRED)
+  add_executable(CoinBumpProgramTest bumprender/FailureTest.cpp)
+  target_compile_definitions(CoinBumpProgramTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
+  target_include_directories(CoinBumpProgramTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${PROJECT_SOURCE_DIR}/src ${PROJECT_BINARY_DIR}/src
+    ${PROJECT_SOURCE_DIR}/include/Inventor/annex ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  target_link_libraries(CoinBumpProgramTest Coin Threads::Threads ${COIN_TARGET_LINK_LIBRARIES})
+  add_test(NAME BumpProgramFailuresAndLifetime COMMAND CoinBumpProgramTest)
+
+  if(UNIX AND NOT APPLE)
+    find_package(X11 QUIET)
+    if(X11_FOUND AND HAVE_GLX)
+      add_executable(CoinBumpGLXTest bumprender/GLXTest.cpp)
+      target_compile_definitions(CoinBumpGLXTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
+      target_include_directories(CoinBumpGLXTest PRIVATE
+        ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+        ${PROJECT_SOURCE_DIR}/src ${PROJECT_BINARY_DIR}/src
+        ${PROJECT_SOURCE_DIR}/include/Inventor/annex
+        ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+      target_link_libraries(CoinBumpGLXTest Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+      add_test(NAME BumpProgramGLX COMMAND CoinBumpGLXTest)
+      set_tests_properties(BumpProgramGLX PROPERTIES SKIP_RETURN_CODE 77)
+    endif()
+  endif()
+endif()
+
 macro(create_testsuite input)
 	get_filename_component(FLNAME "${input}" NAME_WE)
 	get_filename_component(FLPATH "${input}" PATH)
