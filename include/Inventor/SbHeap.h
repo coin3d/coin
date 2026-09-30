@@ -50,6 +50,9 @@ public:
          const int initsize = 1024);
   ~SbHeap();
 
+  SbHeap(const SbHeap & heap);
+  SbHeap & operator=(const SbHeap & heap);
+
   void emptyHeap(void);
   int size(void) const;
   int add(void *obj);
@@ -72,6 +75,7 @@ private:
   void *heapExtractMin(void);
   void heapReserve(const int newsize);
   void heapify(const int idx);
+  void newWeightAt(void *obj, const int hpos);
 };
 
 #endif // !COIN_SBHEAP_H
