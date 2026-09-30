@@ -40,13 +40,13 @@
 using namespace SIM::Coin3D::Coin;
 
 
-int main(int, char* [])
+int main(int argc, char * argv[])
 {
     SoDB::init();
     SoInteraction::init();
     TestSuite::Init();
 
-    int rc = CoinTest::run_all();
+    int rc = CoinTest::run_all(argc, argv);
 
     SoDB::finish();
 
