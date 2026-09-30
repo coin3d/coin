@@ -807,7 +807,7 @@ SoPath::copy(const int startfromnodeindex, int numnodes) const
   const int fulllength = this->getFullLength();
 
   if (startfromnodeindex < 0 ||
-      startfromnodeindex >= fulllength) {
+      startfromnodeindex > fulllength) {
 #if COIN_DEBUG
     SoDebugError::post("SoPath::copy",
                        "startfromnodeindex was out of bounds with %d.",
@@ -843,9 +843,9 @@ SoPath::copy(const int startfromnodeindex, int numnodes) const
   // pointer is an SoTempPath and the newly created SoPath _is_
   // supposed to audit its path for changes.
 
-  for (int i = 0; i < numnodes; i++) {
-    const int sourceindex = startfromnodeindex + i;
-    newpath->append(this->nodes[sourceindex], this->indices[sourceindex]);
+  const int max = startfromnodeindex + numnodes;
+  for (int i = startfromnodeindex; i < max; i++) {
+    newpath->append(this->nodes[i], this->indices[i]);
   }
   newpath->firsthiddendirty = TRUE;
   return newpath;

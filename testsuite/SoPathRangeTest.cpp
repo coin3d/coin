@@ -1,5 +1,6 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/SoPath.h>
+#include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/nodes/SoCube.h>
 #include <Inventor/nodes/SoSeparator.h>
 
@@ -112,11 +113,33 @@ checkCopyRanges()
   check(oversized == NULL, "oversized copy length was accepted");
 
   check(fixture.path->copy(-1) == NULL, "negative copy start was accepted");
-  check(fixture.path->copy(3) == NULL, "past-end copy start was accepted");
+  SoPath * end = hold(fixture.path->copy(3));
+  check(end != NULL && fullLength(end) == 0 && end->getHead() == NULL,
+        "copy at the end did not return an empty path");
+  if (end != NULL) end->unref();
+
+  check(fixture.path->copy(3, 1) == NULL,
+        "nonempty copy at the end was accepted");
+  check(fixture.path->copy(4) == NULL, "past-end copy start was accepted");
   check(fixture.path->copy(0, -1) == NULL, "negative copy length was accepted");
 
   SoPath * empty = hold(new SoPath);
-  check(empty->copy(0) == NULL, "copy from an empty path was accepted");
+  SoPath * emptycopy = hold(empty->copy());
+  check(emptycopy != NULL && fullLength(emptycopy) == 0 &&
+        emptycopy->getHead() == NULL,
+        "copy from an empty path did not return an empty path");
+  if (emptycopy != NULL) emptycopy->unref();
+
+  SoEventCallback * callback = new SoEventCallback;
+  callback->ref();
+  callback->setPath(empty);
+  const SoPath * filter = callback->getPath();
+  check(filter != NULL && fullLength(filter) == 0 &&
+        !fixture.path->containsPath(filter),
+        "empty callback filter was lost or became unrestricted");
+  callback->setPath(NULL);
+  check(callback->getPath() == NULL, "NULL did not clear the callback filter");
+  callback->unref();
   empty->unref();
 }
 
