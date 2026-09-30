@@ -118,8 +118,9 @@ SbHeap::SbHeap(const SbHeap & other)
 
 /*!
   Assignment operator. Like the copy constructor, the assigned heap is a
-  non-indexed snapshot. Elements no longer present in the destination are
-  invalidated through its old index setter after the replacement succeeds.
+  non-indexed snapshot. The destination's former indices are invalidated
+  after replacement, except for shared elements whose source still owns an
+  index callback.
 */
 SbHeap &
 SbHeap::operator=(const SbHeap & other)
@@ -137,7 +138,7 @@ SbHeap::operator=(const SbHeap & other)
   if (oldfuncs.set_index_func) {
     for (int i = 1; i < oldheap.getLength(); ++i) {
       void * obj = oldheap[i];
-      if (this->heap.find(obj) < 0)
+      if (other.funcs.set_index_func == NULL || this->heap.find(obj) < 0)
         oldfuncs.set_index_func(obj, -1);
     }
   }
@@ -604,13 +605,13 @@ sbheap_test_find_item(SbHeapTestItem * items, int count, SbBool active,
 
 BOOST_AUTO_TEST_CASE(sbheap_extracts_in_nondecreasing_order)
 {
-  SbHeap heap(sbheap_test_functions(), 2);
   SbHeapTestItem storage[] = {
     { 8.0f, -1, TRUE }, { -3.0f, -1, TRUE },
     { 5.0f, -1, TRUE }, { 5.0f, -1, TRUE },
     { 1.0f, -1, TRUE }, { 13.0f, -1, TRUE },
     { 0.0f, -1, TRUE }, { -1.0f, -1, TRUE }
   };
+  SbHeap heap(sbheap_test_functions(), 2);
   std::vector<SbHeapTestItem *> items;
 
   for (size_t i = 0; i < sizeof(storage) / sizeof(storage[0]); ++i) {
@@ -653,10 +654,10 @@ BOOST_AUTO_TEST_CASE(sbheap_removes_without_index_callbacks)
 
 BOOST_AUTO_TEST_CASE(sbheap_empty_heap_invalidates_all_indices)
 {
-  SbHeap heap(sbheap_test_functions(), 2);
   SbHeapTestItem storage[] = {
     { 3.0f, -1, TRUE }, { 1.0f, -1, TRUE }, { 2.0f, -1, TRUE }
   };
+  SbHeap heap(sbheap_test_functions(), 2);
   for (size_t i = 0; i < sizeof(storage) / sizeof(storage[0]); ++i) {
     heap.add(&storage[i]);
   }
@@ -691,7 +692,6 @@ BOOST_AUTO_TEST_CASE(sbheap_destruction_invalidates_indices)
 
 BOOST_AUTO_TEST_CASE(sbheap_handles_extreme_ordered_weights)
 {
-  SbHeap heap(sbheap_test_functions(), 2);
   const float infinity = std::numeric_limits<float>::infinity();
   SbHeapTestItem storage[] = {
     { FLT_MAX, -1, TRUE },
@@ -701,6 +701,7 @@ BOOST_AUTO_TEST_CASE(sbheap_handles_extreme_ordered_weights)
     { 0.0f, -1, TRUE },
     { -0.0f, -1, TRUE }
   };
+  SbHeap heap(sbheap_test_functions(), 2);
   std::vector<SbHeapTestItem *> items;
 
   for (size_t i = 0; i < sizeof(storage) / sizeof(storage[0]); ++i) {
@@ -776,6 +777,23 @@ BOOST_AUTO_TEST_CASE(sbheap_assignment_detaches_and_invalidates_destination)
 
   destination = destination;
   BOOST_CHECK_EQUAL(destination.size(), 2);
+}
+
+BOOST_AUTO_TEST_CASE(sbheap_assignment_from_detached_copy_releases_indices)
+{
+  SbHeapTestItem storage[] = {
+    { 3.0f, -1, TRUE }, { 1.0f, -1, TRUE }
+  };
+  SbHeap indexed(sbheap_test_functions(), 2);
+  indexed.add(&storage[0]);
+  indexed.add(&storage[1]);
+
+  SbHeap snapshot(indexed);
+  indexed = snapshot;
+  BOOST_CHECK_EQUAL(indexed.size(), 2);
+  for (size_t i = 0; i < sizeof(storage) / sizeof(storage[0]); ++i) {
+    BOOST_CHECK_EQUAL(storage[i].index, -1);
+  }
 }
 
 BOOST_AUTO_TEST_CASE(sbheap_removed_objects_have_invalid_indices)
@@ -915,10 +933,10 @@ BOOST_AUTO_TEST_CASE(sbheap_allows_index_setter_without_getter)
 {
   SbHeapFuncs functions = sbheap_test_functions(FALSE);
   functions.set_index_func = sbheap_test_set_index;
-  SbHeap heap(functions, 2);
   SbHeapTestItem storage[] = {
     { 3.0f, -1, TRUE }, { 1.0f, -1, TRUE }, { 2.0f, -1, TRUE }
   };
+  SbHeap heap(functions, 2);
   for (size_t i = 0; i < sizeof(storage) / sizeof(storage[0]); ++i) {
     heap.add(&storage[i]);
     BOOST_CHECK(storage[i].index >= 1);
