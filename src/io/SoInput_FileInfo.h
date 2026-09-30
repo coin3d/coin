@@ -41,7 +41,6 @@
 
 #include <ctype.h>
 #include <stdio.h>
-#include <string>
 
 #include <Inventor/SoDB.h>
 #include <Inventor/SbName.h>
@@ -251,7 +250,7 @@ private:
   char * deletebuffer;
   SbHash<const char *, SoBase *> references;
 
-  std::string readString;
+  SbString readString;
   int readDigits();
   int readHexDigits();
   SbBool readUnsignedIntegerString();

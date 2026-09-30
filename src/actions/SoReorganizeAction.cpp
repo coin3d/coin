@@ -169,10 +169,10 @@
 
     SoPathList & pl = sa.getPaths();
     for (int i = 0; i < pl.getLength(); i++) {
-      SoFullPath * p = (SoFullPath*) pl[i];
-        if (p->getTail()->isOfType(type)) {
-          SoGroup * g = (SoGroup*) p->getNodeFromTail(1);
-          g->removeChild(p->getIndexFromTail(0));
+      SoPath * p = pl[i];
+        if (p->fullPath().getTail()->isOfType(type)) {
+          SoGroup * g = (SoGroup*) p->fullPath().getNodeFromTail(1);
+          g->removeChild(p->fullPath().getIndexFromTail(0));
         }
       }
     sa.reset();
@@ -249,6 +249,8 @@
 */
 
 #include <Inventor/actions/SoReorganizeAction.h>
+
+#include <Inventor/SoFullPath.h>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -369,6 +371,11 @@ class SoReorganizeActionP {
                               const SoPrimitiveVertex * v2);
 
   SbBool initShape(SoCallbackAction * action);
+  void replaceNode(SoPath * path);
+  void replaceIfs(SoPath * path);
+  void replaceVrmlIfs(SoPath * path);
+  void replaceIls(SoPath * path);
+  void replaceVrmlIls(SoPath * path);
   void replaceNode(SoFullPath * path);
   void replaceIfs(SoFullPath * path);
   void replaceVrmlIfs(SoFullPath * path);
@@ -527,7 +534,7 @@ void
 SoReorganizeAction::apply(SoPath * path)
 {
   PRIVATE(this)->cbaction.apply(path);
-  PRIVATE(this)->replaceNode(reclassify_cast<SoFullPath *>(path));
+  PRIVATE(this)->replaceNode(path);
 }
 
 void
@@ -717,7 +724,7 @@ SoReorganizeActionP::initShape(SoCallbackAction * action)
 }
 
 void
-SoReorganizeActionP::replaceNode(SoFullPath * path)
+SoReorganizeActionP::replaceNode(SoPath * path)
 {
   if (this->pvcache == NULL) return;
   this->pvcache->fit(); // needed to do optimize-sort of data
@@ -800,9 +807,9 @@ SoReorganizeActionP::createVertexProperty(const SbBool forlines)
 }
 
 void
-SoReorganizeActionP::replaceIfs(SoFullPath * path)
+SoReorganizeActionP::replaceIfs(SoPath * path)
 {
-  SoNode * parent = path->getNodeFromTail(1);
+  SoNode * parent = path->fullPath().getNodeFromTail(1);
   SoGroup * g = coin_safe_cast<SoGroup *>(parent);
   if (!g) {
     return;
@@ -830,7 +837,7 @@ SoReorganizeActionP::replaceIfs(SoFullPath * path)
   }
   ifs->coordIndex.finishEditing();
 
-  int idx = path->getIndexFromTail(0);
+  int idx = path->fullPath().getIndexFromTail(0);
   path->pop();
   g->replaceChild(idx, ifs);
   path->push(idx);
@@ -838,16 +845,16 @@ SoReorganizeActionP::replaceIfs(SoFullPath * path)
 }
 
 void
-SoReorganizeActionP::replaceVrmlIfs(SoFullPath * path)
+SoReorganizeActionP::replaceVrmlIfs(SoPath * path)
 {
 #ifdef HAVE_VRML97
-  SoNode * parent = path->getNodeFromTail(1);
+  SoNode * parent = path->fullPath().getNodeFromTail(1);
   if (!parent->isOfType(SoGroup::getClassTypeId()) &&
       !parent->isOfType(SoVRMLShape::getClassTypeId())) {
     return;
   }
 
-  SoVRMLIndexedFaceSet * oldifs = coin_assert_cast<SoVRMLIndexedFaceSet *>(path->getTail());
+  SoVRMLIndexedFaceSet * oldifs = coin_assert_cast<SoVRMLIndexedFaceSet *>(path->fullPath().getTail());
   assert(oldifs->isOfType(SoVRMLIndexedFaceSet::getClassTypeId()));
   SoVRMLIndexedFaceSet * ifs = new SoVRMLIndexedFaceSet;
   ifs->ref();
@@ -921,7 +928,7 @@ SoReorganizeActionP::replaceVrmlIfs(SoFullPath * path)
   }
   ifs->coordIndex.finishEditing();
 
-  int idx = path->getIndexFromTail(0);
+  int idx = path->fullPath().getIndexFromTail(0);
   path->pop();
   if (SoGroup * g = coin_safe_cast<SoGroup *>(parent)) {
     g->replaceChild(idx, ifs);
@@ -935,9 +942,9 @@ SoReorganizeActionP::replaceVrmlIfs(SoFullPath * path)
 }
 
 void
-SoReorganizeActionP::replaceIls(SoFullPath * path)
+SoReorganizeActionP::replaceIls(SoPath * path)
 {
-  SoNode * parent = path->getNodeFromTail(1);
+  SoNode * parent = path->fullPath().getNodeFromTail(1);
   SoGroup * g = coin_safe_cast<SoGroup *>(parent);
   if (!g) {
     return;
@@ -963,7 +970,7 @@ SoReorganizeActionP::replaceIls(SoFullPath * path)
   }
   ils->coordIndex.finishEditing();
 
-  int idx = path->getIndexFromTail(0);
+  int idx = path->fullPath().getIndexFromTail(0);
   path->pop();
   g->replaceChild(idx, ils);
   path->push(idx);
@@ -971,10 +978,10 @@ SoReorganizeActionP::replaceIls(SoFullPath * path)
 }
 
 void
-SoReorganizeActionP::replaceVrmlIls(SoFullPath * path)
+SoReorganizeActionP::replaceVrmlIls(SoPath * path)
 {
 #ifdef HAVE_VRML97
-  SoNode * parent = path->getNodeFromTail(1);
+  SoNode * parent = path->fullPath().getNodeFromTail(1);
   if (!parent->isOfType(SoGroup::getClassTypeId()) &&
       !parent->isOfType(SoVRMLShape::getClassTypeId())) {
     return;
@@ -1018,7 +1025,7 @@ SoReorganizeActionP::replaceVrmlIls(SoFullPath * path)
   }
   ils->colorIndex.setNum(0);
 
-  int idx = path->getIndexFromTail(0);
+  int idx = path->fullPath().getIndexFromTail(0);
   path->pop();
   if (SoGroup * g = coin_safe_cast<SoGroup *>(parent)) {
     g->replaceChild(idx, ils);
@@ -1029,6 +1036,38 @@ SoReorganizeActionP::replaceVrmlIls(SoFullPath * path)
   path->push(idx);
   ils->unrefNoDelete();
 #endif // HAVE_VRML97
+}
+
+// Preserve the old private helper symbols without using SoFullPath's hidden
+// interface on objects that may have been constructed as plain SoPath.
+void
+SoReorganizeActionP::replaceNode(SoFullPath * path)
+{
+  this->replaceNode(static_cast<SoPath *>(path));
+}
+
+void
+SoReorganizeActionP::replaceIfs(SoFullPath * path)
+{
+  this->replaceIfs(static_cast<SoPath *>(path));
+}
+
+void
+SoReorganizeActionP::replaceVrmlIfs(SoFullPath * path)
+{
+  this->replaceVrmlIfs(static_cast<SoPath *>(path));
+}
+
+void
+SoReorganizeActionP::replaceIls(SoFullPath * path)
+{
+  this->replaceIls(static_cast<SoPath *>(path));
+}
+
+void
+SoReorganizeActionP::replaceVrmlIls(SoFullPath * path)
+{
+  this->replaceVrmlIls(static_cast<SoPath *>(path));
 }
 
 #undef PRIVATE

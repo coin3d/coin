@@ -835,7 +835,16 @@ sogl_render_cube(const float width,
     if (flags & SOGL_MATERIAL_PER_PART)
       material->send(i, TRUE);
     for (int j = 0; j < 4; j++) {
-      if (flags & SOGL_NEED_3DTEXCOORDS) {
+      if (flags & SOGL_NEED_CUBEMAPTEXCOORDS) {
+        // The direction vector a cubemap lookup needs is just the
+        // vertex's own position relative to the cube's center (the
+        // GPU normalizes it, so magnitude doesn't matter) -- using
+        // the real vertex coordinates instead of a separately
+        // hand-maintained table rules out a table/vertex-order
+        // mismatch by construction.
+        glTexCoord3fv((const GLfloat*)&varray[*iptr]);
+      }
+      else if (flags & SOGL_NEED_3DTEXCOORDS) {
         glTexCoord3fv(sogl_cube_3dtexcoords[*iptr]);
       }
       else if (flags & SOGL_NEED_TEXCOORDS) {

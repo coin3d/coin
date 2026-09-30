@@ -154,6 +154,17 @@
 #define COIN_UNUSED_ARG(x) x
 #endif
 
+/* For a function that is deliberately never called (e.g. one that
+   only exists so its body gets compiled, for compile-time checks, or
+   one kept around on purpose for later use) -- silences
+   -Wunused-function without hiding a genuine dead-code case
+   elsewhere. */
+#ifdef __GNUC__
+#define COIN_UNUSED_FUNC __attribute__((__unused__))
+#else
+#define COIN_UNUSED_FUNC
+#endif
+
 
 /* COIN_CT_ASSERT() - a macro for doing compile-time asserting */
 #define COIN_CT_ASSERT(expr) \
@@ -181,6 +192,8 @@ static void inline COIN_CONCAT(compile_only_before_nofunction,__LINE__) () { \
 
 #ifdef _MSC_VER
 #define COIN_MSVC _MSC_VER
+#else
+#define COIN_MSVC 0
 #endif /* _MSC_VER */
 
 #define COIN_MSVC_6_0_VERSION 1200
@@ -192,7 +205,7 @@ static void inline COIN_CONCAT(compile_only_before_nofunction,__LINE__) () { \
 /* see SbTime.cpp for example usage */
 #define COIN_WORKAROUND(def, test) ((def) != 0 && ((def) test))
 
-#if COIN_WORKAROUND(_MSC_VER, <= COIN_MSVC_6_0_VERSION)
+#if COIN_WORKAROUND(COIN_MSVC, <= COIN_MSVC_6_0_VERSION)
 #define COIN_WORKAROUND_NO_USING_STD_FUNCS
 #endif
 

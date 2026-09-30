@@ -42,6 +42,23 @@
 #error InternalMacroTest is not part of the Coin library.
 #endif
 
+#include "CoinTest.h"
 #include "misc/SbHash.h"
 
 static_assert(sizeof(SbHash<int, int>) > 0, "private Coin type is unavailable");
+
+BOOST_AUTO_TEST_CASE(SbHash_self_assignment_preserves_entries)
+{
+  SbHash<unsigned int, int> hash(3);
+  hash.put(1, 10);
+  hash.put(2, 20);
+
+  hash = hash;
+
+  int value = 0;
+  BOOST_CHECK_EQUAL(hash.getNumElements(), 2);
+  BOOST_REQUIRE(hash.get(1, value));
+  BOOST_CHECK_EQUAL(value, 10);
+  BOOST_REQUIRE(hash.get(2, value));
+  BOOST_CHECK_EQUAL(value, 20);
+}

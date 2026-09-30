@@ -181,7 +181,7 @@ artifacts:
 
 test_script:
   - cmd: |
-      cd build
+      cd build_release
       ctest -C Release -VV
 
 notifications:

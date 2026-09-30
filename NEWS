@@ -1,3 +1,13 @@
+Unreleased:
+* API additions:
+  - Added SoPath::fullPath() as the preferred way to access the complete
+    path, including hidden children. Code that previously downcast an
+    SoPath to SoFullPath should call path->fullPath() and use the returned
+    view's getLength(), getTail(), getNodeFromTail(), or getIndexFromTail()
+    accessors instead. This removes the undefined behavior caused by
+    treating an arbitrary SoPath object as an SoFullPath. See pull request
+    #714.
+
 New in Coin v4.0.10 (2026-06-21):
 * bugfixes:
   - Fail gracefully on recursive PROTO definitions.

@@ -165,6 +165,8 @@ SoCube::GLRender(SoGLRenderAction * action)
       flags |= SOGL_NEED_TEXCOORDS;
       break;
     case SoMultiTextureEnabledElement::CUBEMAP:
+      flags |= SOGL_NEED_CUBEMAPTEXCOORDS;
+      break;
     case SoMultiTextureEnabledElement::TEXTURE3D:
       flags |= SOGL_NEED_3DTEXCOORDS;
       break;

@@ -79,12 +79,12 @@
 #define PRIVATE(p) (p)->pimpl
 
 #include <Inventor/sensors/SoPathSensor.h>
-#include <Inventor/SoFullPath.h>
+#include <Inventor/SoPath.h>
 #include <Inventor/nodes/SoNode.h>
 
 class SoPathSensorP {
 public:
-  SoFullPath * path; // to audit path
+  SoPath * path; // to audit path
   SoNode * headnode; // to audit nodes in path
   SoPathSensor::TriggerFilter triggerfilter;
 };
@@ -144,7 +144,7 @@ SoPathSensor::attach(SoPath * path)
 {
   this->detach();
 
-  PRIVATE(this)->path = (SoFullPath*) path;
+  PRIVATE(this)->path = path;
   PRIVATE(this)->path->addAuditor(this, SoNotRec::SENSOR);
 
   PRIVATE(this)->headnode = path->getHead();

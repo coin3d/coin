@@ -167,6 +167,9 @@
 
   Removes an \a item from the list. If there are several items with
   the same value, removes the \a item with the lowest index.
+
+  If \a item is not present, the list is left unchanged. Builds with
+  COIN_EXTRA_DEBUG enabled also report the invalid removal with an assertion.
 */
 
 /*!
@@ -279,6 +282,181 @@
 
 #ifdef COIN_TEST_SUITE
 
+#include <new>
+
+class SbListGrowthFailureValue {
+public:
+  SbListGrowthFailureValue(const int valuearg = 0)
+    : value(valuearg)
+  {
+    if (SbListGrowthFailureValue::faildefault && valuearg == 0) {
+      throw std::bad_alloc();
+    }
+    ++SbListGrowthFailureValue::livecount;
+  }
+
+  SbListGrowthFailureValue(const SbListGrowthFailureValue & other)
+    : value(other.value)
+  {
+    ++SbListGrowthFailureValue::livecount;
+  }
+
+  ~SbListGrowthFailureValue()
+  {
+    --SbListGrowthFailureValue::livecount;
+  }
+
+  SbListGrowthFailureValue & operator=(const SbListGrowthFailureValue & other)
+  {
+    if (SbListGrowthFailureValue::failassignment) {
+      throw std::bad_alloc();
+    }
+    this->value = other.value;
+    return *this;
+  }
+
+  static void failDefaultConstruction(const bool enable)
+  {
+    SbListGrowthFailureValue::faildefault = enable;
+  }
+
+  static void failAssignment(const bool enable)
+  {
+    SbListGrowthFailureValue::failassignment = enable;
+  }
+
+  static int live(void)
+  {
+    return SbListGrowthFailureValue::livecount;
+  }
+
+  int value;
+
+private:
+  static bool faildefault;
+  static bool failassignment;
+  static int livecount;
+};
+
+bool SbListGrowthFailureValue::faildefault = false;
+bool SbListGrowthFailureValue::failassignment = false;
+int SbListGrowthFailureValue::livecount = 0;
+
+class SbListGrowthFailureAccess : public SbList<SbListGrowthFailureValue> {
+public:
+  int capacity(void) const { return this->getArraySize(); }
+};
+
+BOOST_AUTO_TEST_CASE(growth_construction_failure_preserves_capacity_and_recovery)
+{
+  SbListGrowthFailureAccess list;
+  for (int i = 0; i < 4; ++i) {
+    list.append(SbListGrowthFailureValue(i + 1));
+  }
+
+  SbListGrowthFailureValue fifth(5);
+  const SbListGrowthFailureValue * const oldarray = list.getArrayPtr();
+  const int oldlive = SbListGrowthFailureValue::live();
+
+  bool threw = false;
+  SbListGrowthFailureValue::failDefaultConstruction(true);
+  try {
+    list.append(fifth);
+  }
+  catch (const std::bad_alloc &) {
+    threw = true;
+  }
+  SbListGrowthFailureValue::failDefaultConstruction(false);
+
+  BOOST_REQUIRE(threw);
+  BOOST_CHECK_EQUAL(list.getLength(), 4);
+  BOOST_REQUIRE_EQUAL(list.capacity(), 4);
+  BOOST_CHECK(list.getArrayPtr() == oldarray);
+  BOOST_CHECK_EQUAL(SbListGrowthFailureValue::live(), oldlive);
+  for (int i = 0; i < 4; ++i) {
+    BOOST_CHECK_EQUAL(list[i].value, i + 1);
+  }
+
+  list.append(fifth);
+  BOOST_CHECK_EQUAL(list.getLength(), 5);
+  BOOST_CHECK_EQUAL(list.capacity(), 8);
+  BOOST_CHECK_EQUAL(list[4].value, 5);
+}
+
+BOOST_AUTO_TEST_CASE(growth_assignment_failure_releases_candidate_buffer)
+{
+  SbListGrowthFailureAccess list;
+  for (int i = 0; i < 4; ++i) {
+    list.append(SbListGrowthFailureValue(i + 1));
+  }
+
+  SbListGrowthFailureValue fifth(5);
+  const SbListGrowthFailureValue * const oldarray = list.getArrayPtr();
+  const int oldlive = SbListGrowthFailureValue::live();
+
+  bool threw = false;
+  SbListGrowthFailureValue::failAssignment(true);
+  try {
+    list.append(fifth);
+  }
+  catch (const std::bad_alloc &) {
+    threw = true;
+  }
+  SbListGrowthFailureValue::failAssignment(false);
+
+  BOOST_REQUIRE(threw);
+  BOOST_CHECK_EQUAL(list.getLength(), 4);
+  BOOST_REQUIRE_EQUAL(list.capacity(), 4);
+  BOOST_CHECK(list.getArrayPtr() == oldarray);
+  BOOST_CHECK_EQUAL(SbListGrowthFailureValue::live(), oldlive);
+  for (int i = 0; i < 4; ++i) {
+    BOOST_CHECK_EQUAL(list[i].value, i + 1);
+  }
+
+  list.append(fifth);
+  BOOST_CHECK_EQUAL(list.getLength(), 5);
+  BOOST_CHECK_EQUAL(list.capacity(), 8);
+  BOOST_CHECK_EQUAL(list[4].value, 5);
+}
+
+BOOST_AUTO_TEST_CASE(fit_assignment_failure_releases_candidate_buffer)
+{
+  SbListGrowthFailureAccess list;
+  for (int i = 0; i < 9; ++i) {
+    list.append(SbListGrowthFailureValue(i + 1));
+  }
+  list.truncate(6);
+
+  const SbListGrowthFailureValue * const oldarray = list.getArrayPtr();
+  const int oldlive = SbListGrowthFailureValue::live();
+
+  bool threw = false;
+  SbListGrowthFailureValue::failAssignment(true);
+  try {
+    list.fit();
+  }
+  catch (const std::bad_alloc &) {
+    threw = true;
+  }
+  SbListGrowthFailureValue::failAssignment(false);
+
+  BOOST_REQUIRE(threw);
+  BOOST_CHECK_EQUAL(list.getLength(), 6);
+  BOOST_REQUIRE_EQUAL(list.capacity(), 16);
+  BOOST_CHECK(list.getArrayPtr() == oldarray);
+  BOOST_CHECK_EQUAL(SbListGrowthFailureValue::live(), oldlive);
+  for (int i = 0; i < 6; ++i) {
+    BOOST_CHECK_EQUAL(list[i].value, i + 1);
+  }
+
+  list.fit();
+  BOOST_CHECK_EQUAL(list.getLength(), 6);
+  BOOST_CHECK_EQUAL(list.capacity(), 6);
+  for (int i = 0; i < 6; ++i) {
+    BOOST_CHECK_EQUAL(list[i].value, i + 1);
+  }
+}
+
 // Regression test for the real-world usage pattern found in e.g.
 // SoLightPath::setHead(), SoBaseKit::createFieldList() and
 // SbHeap::emptyHeap(): truncate(0) immediately followed by append(),
@@ -313,5 +491,26 @@ BOOST_AUTO_TEST_CASE(truncate_zero_then_grow_past_default_size)
                         "SbList value corrupted after truncate(0) + growth");
   }
 }
+
+#if !defined(COIN_EXTRA_DEBUG)
+BOOST_AUTO_TEST_CASE(remove_missing_item_preserves_list)
+{
+  SbList<int> list;
+  list.append(10);
+  list.append(20);
+  list.append(30);
+
+  list.removeItem(99);
+
+  BOOST_REQUIRE_EQUAL(list.getLength(), 3);
+  BOOST_CHECK_EQUAL(list[0], 10);
+  BOOST_CHECK_EQUAL(list[1], 20);
+  BOOST_CHECK_EQUAL(list[2], 30);
+
+  SbList<int> empty;
+  empty.removeItem(99);
+  BOOST_CHECK_EQUAL(empty.getLength(), 0);
+}
+#endif // !COIN_EXTRA_DEBUG
 
 #endif // COIN_TEST_SUITE
