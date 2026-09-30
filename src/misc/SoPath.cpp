@@ -229,27 +229,31 @@ SoPath::getHead(void) const
 void
 SoPath::append(const int childindex)
 {
-#if COIN_DEBUG
   if (this->getFullLength() == 0) {
+#if COIN_DEBUG
     SoDebugError::post("SoPath::append",
                        "SoPath was empty.\n");
+#endif // COIN_DEBUG
     return;
   }
-#endif // COIN_DEBUG
 
   SoChildList * children =
     this->nodes[this->getFullLength() - 1]->getChildren();
-#ifdef COIN_EXTRA_DEBUG
-  assert(children);
-#endif // COIN_EXTRA_DEBUG
-
+  if (children == NULL) {
 #if COIN_DEBUG
-  if (childindex >= children->getLength()) {
-    SoDebugError::post("SoPath::append", "childindex (%d) out of bounds",
-                       childindex);
+    SoDebugError::post("SoPath::append",
+                       "The current tail of the SoPath has no children.");
+#endif // COIN_DEBUG
     return;
   }
+
+  if (childindex < 0 || childindex >= children->getLength()) {
+#if COIN_DEBUG
+    SoDebugError::post("SoPath::append", "childindex (%d) out of bounds",
+                       childindex);
 #endif // debug
+    return;
+  }
 
   SoNode * node = (*children)[childindex];
   this->append(node, childindex);
@@ -273,27 +277,27 @@ SoPath::append(SoNode * const node)
   SoNode * tail = this->nodes[full_length - 1];
   const SoChildList * children = tail->getChildren();
 
-#if COIN_DEBUG
   if (!children) {
+#if COIN_DEBUG
     SoDebugError::post("SoPath::append",
                        "The current tail of the SoPath, of type %s, does "
                        "not have any children, so append()'ing new elements "
                        "is bogus!",
                        tail->getTypeId().getName().getString());
+#endif // COIN_DEBUG
     return;
   }
-#endif // COIN_DEBUG
 
   const int idx = children->find(node);
-#if COIN_DEBUG
   if (idx < 0) {
+#if COIN_DEBUG
     SoDebugError::post("SoPath::append",
                        "The current tail of the SoPath does not have the "
                        "input argument node as a child, so append()'ing "
                        "it is bogus!");
+#endif // COIN_DEBUG
     return;
   }
-#endif // COIN_DEBUG
 
   this->append(node, idx);
 }
@@ -317,6 +321,17 @@ SoPath::append(const SoPath * const frompath)
 
   SoNode * const head = frompath->getHead();
   SoNode * const tail = this->nodes[this->getFullLength() - 1];
+  SoChildList * tailchildren = tail->getChildren();
+
+  if (tailchildren == NULL || tailchildren->getLength() == 0) {
+#if COIN_DEBUG
+    SoDebugError::post("SoPath::append",
+                       "The tail of this SoPath has no children node ('%s').\n",
+                       tail->getTypeId().getName().getString());
+#endif // COIN_DEBUG
+    return;
+  }
+
   if (head == tail) { // easy
     const int length = frompath->getFullLength();
     for (int i = 1; i < length; i++) {
@@ -330,17 +345,6 @@ SoPath::append(const SoPath * const frompath)
     return;
   }
   // head of frompath must be child
-
-  SoChildList * tailchildren = tail->getChildren();
-
-#if COIN_DEBUG
-  if (tailchildren == NULL) {
-    SoDebugError::post("SoPath::append",
-                       "The tail of this SoPath has no children node ('%s').\n",
-                       tail->getTypeId().getName().getString());
-    return;
-  }
-#endif // COIN_DEBUG
 
   const int kids = tailchildren->getLength();
   for (int kid = 0; kid < kids; kid++) {
