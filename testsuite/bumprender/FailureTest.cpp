@@ -549,7 +549,7 @@ void owned_allocation_cases() {
   {
     BumpTestAllocation::Count count;
     const Cache::Ptr probe = Cache::create();
-    CHECK(probe && count.total() >= 3);
+    CHECK(probe && count.total() >= 2);
     CHECK(count.total() <= (std::size_t) std::numeric_limits<int>::max());
     cacheallocations = (int) count.total();
     CHECK(Cache::registry().entries.erase(probe->token) == 1);
@@ -645,10 +645,10 @@ void owned_allocation_cases() {
   {
     Cache::Redraws prepared; // Construct container infrastructure before counting.
     BumpTestAllocation::Count count;
-    const Cache::RedrawPtr sensor(new Cache::RedrawSensor(0));
+    const Cache::RedrawPtr sensor = std::make_shared<Cache::RedrawSensor>(0);
     sensor->self = sensor;
     prepared.insert(std::make_pair(static_cast<SoNode *>(NULL), sensor));
-    CHECK(count.total() >= 3);
+    CHECK(count.total() >= 2);
     CHECK(count.total() <= (std::size_t) std::numeric_limits<int>::max());
     sensorallocations = (int) count.total();
   }

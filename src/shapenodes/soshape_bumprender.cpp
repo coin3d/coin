@@ -452,7 +452,7 @@ struct soshape_bumprender::ProgramCache {
     }
     Ptr cache;
     try {
-      cache.reset(new ProgramCache);
+      cache = std::make_shared<ProgramCache>();
     }
     catch (const std::bad_alloc &) {
       return Ptr(); // No resource or callback has been published.
@@ -818,7 +818,8 @@ soshape_bumprender::scheduleRedraw(SoState * state, SoNode * root)
     ProgramCache::Redraws::iterator redraw = cache->redraws.find(root);
     if (redraw == cache->redraws.end()) {
       try {
-        ProgramCache::RedrawPtr candidate(new ProgramCache::RedrawSensor(cache->token));
+        ProgramCache::RedrawPtr candidate =
+          std::make_shared<ProgramCache::RedrawSensor>(cache->token);
         candidate->self = candidate; // weak lock cannot throw bad_weak_ptr.
         redraw = cache->redraws.insert(std::make_pair(root, candidate)).first;
       }
