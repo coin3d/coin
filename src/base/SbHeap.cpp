@@ -67,8 +67,9 @@
 
   \e set_index_func is used to set this index value, and will be
   called whenever the element is moved in the heap. It is called with -1
-  when an element is removed, extracted, or discarded by emptyHeap(). It
-  may be supplied without get_index_func when movement notifications are
+  when an element is removed, extracted, or discarded by emptyHeap() or
+  heap destruction. Elements must outlive the heap unless removed first.
+  It may be supplied without get_index_func when movement notifications are
   useful but indexed lookup is not.  */
 
 #include <Inventor/SbHeap.h>
@@ -117,7 +118,7 @@ SbHeap::SbHeap(const SbHeap & other)
 
 /*!
   Assignment operator. Like the copy constructor, the assigned heap is a
-  non-indexed snapshot. Elements removed from the previous destination are
+  non-indexed snapshot. Elements no longer present in the destination are
   invalidated through its old index setter after the replacement succeeds.
 */
 SbHeap &
@@ -135,17 +136,21 @@ SbHeap::operator=(const SbHeap & other)
 
   if (oldfuncs.set_index_func) {
     for (int i = 1; i < oldheap.getLength(); ++i) {
-      oldfuncs.set_index_func(oldheap[i], -1);
+      void * obj = oldheap[i];
+      if (this->heap.find(obj) < 0)
+        oldfuncs.set_index_func(obj, -1);
     }
   }
   return *this;
 }
 
 /*!
-  Destructor.
+  Destructor. Objects with index callbacks must outlive their heap so their
+  stored indices can be invalidated here.
 */
 SbHeap::~SbHeap(void)
 {
+  this->emptyHeap();
 }
 
 /*!
@@ -663,6 +668,27 @@ BOOST_AUTO_TEST_CASE(sbheap_empty_heap_invalidates_all_indices)
   }
 }
 
+BOOST_AUTO_TEST_CASE(sbheap_destruction_invalidates_indices)
+{
+  SbHeapTestItem storage[] = {
+    { 3.0f, -1, TRUE }, { 1.0f, -1, TRUE }
+  };
+  {
+    SbHeap heap(sbheap_test_functions(), 2);
+    heap.add(&storage[0]);
+    heap.add(&storage[1]);
+    BOOST_CHECK(storage[0].index >= 1);
+    BOOST_CHECK(storage[1].index >= 1);
+  }
+  BOOST_CHECK_EQUAL(storage[0].index, -1);
+  BOOST_CHECK_EQUAL(storage[1].index, -1);
+
+  SbHeap next(sbheap_test_functions(), 2);
+  next.add(&storage[0]);
+  next.add(&storage[1]);
+  BOOST_CHECK_EQUAL(next.size(), 2);
+}
+
 BOOST_AUTO_TEST_CASE(sbheap_handles_extreme_ordered_weights)
 {
   SbHeap heap(sbheap_test_functions(), 2);
@@ -696,10 +722,10 @@ BOOST_AUTO_TEST_CASE(sbheap_copy_constructor_detaches_index_callbacks)
   BOOST_STATIC_ASSERT(std::is_copy_constructible<SbHeap>::value);
   BOOST_STATIC_ASSERT(std::is_copy_assignable<SbHeap>::value);
 
-  SbHeap source(sbheap_test_functions(), 2);
   SbHeapTestItem storage[] = {
     { 3.0f, -1, TRUE }, { 1.0f, -1, TRUE }, { 2.0f, -1, TRUE }
   };
+  SbHeap source(sbheap_test_functions(), 2);
   for (size_t i = 0; i < sizeof(storage) / sizeof(storage[0]); ++i) {
     source.add(&storage[i]);
   }
@@ -718,18 +744,18 @@ BOOST_AUTO_TEST_CASE(sbheap_copy_constructor_detaches_index_callbacks)
 
 BOOST_AUTO_TEST_CASE(sbheap_assignment_detaches_and_invalidates_destination)
 {
-  SbHeap source(sbheap_test_functions(), 2);
   SbHeapTestItem sourceitems[] = {
     { 4.0f, -1, TRUE }, { 1.0f, -1, TRUE }, { 3.0f, -1, TRUE }
   };
+  SbHeapTestItem olditems[] = {
+    { 8.0f, -1, TRUE }, { 6.0f, -1, TRUE }
+  };
+  SbHeap source(sbheap_test_functions(), 2);
   for (size_t i = 0; i < sizeof(sourceitems) / sizeof(sourceitems[0]); ++i) {
     source.add(&sourceitems[i]);
   }
 
   SbHeap destination(sbheap_test_functions(), 2);
-  SbHeapTestItem olditems[] = {
-    { 8.0f, -1, TRUE }, { 6.0f, -1, TRUE }
-  };
   for (size_t i = 0; i < sizeof(olditems) / sizeof(olditems[0]); ++i) {
     destination.add(&olditems[i]);
   }
@@ -754,12 +780,12 @@ BOOST_AUTO_TEST_CASE(sbheap_assignment_detaches_and_invalidates_destination)
 
 BOOST_AUTO_TEST_CASE(sbheap_removed_objects_have_invalid_indices)
 {
-  SbHeap heap(sbheap_test_functions(), 2);
   SbHeapTestItem storage[] = {
     { 3.0f, -1, TRUE },
     { 1.0f, -1, TRUE },
     { 2.0f, -1, TRUE }
   };
+  SbHeap heap(sbheap_test_functions(), 2);
 
   heap.add(&storage[0]);
   heap.add(&storage[1]);
