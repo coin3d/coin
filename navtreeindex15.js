@@ -1,5 +1,7 @@
 var NAVTREEINDEX15 =
 {
+"classSoDecimationTypeElement.html#ab77cb535bf5eca102428ce829a5db59fad08f397c8732b723143b34cfbf3df246":[3,6,18,0,0],
+"classSoDecomposeMatrix.html":[3,7,11],
 "classSoDecomposeMatrix.html#a06db73c7fa565fc499615cc05166676e":[3,7,11,1],
 "classSoDecomposeMatrix.html#a181aa5ce78179323d129b697ae73d47b":[3,7,11,3],
 "classSoDecomposeMatrix.html#a54096e2f7a4f4aa80df51fd6be3b3ff5":[3,7,11,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX15 =
 "classSoDragger.html#afdfe9d11fcbde8e42fff713907f6c7a1a9afe09d041b239cbfda699703db89f2a":[3,5,2,0,0],
 "classSoDragger.html#afe9b767e1f69079a97b5b476a557c563":[3,5,2,41],
 "classSoDragger.html#affafdec3cf9f8d347549db728343a4fb":[3,5,2,42],
-"classSoDrawStyle.html":[3,15,23],
-"classSoDrawStyle.html#a1b8b6d8b32869103039fbf0bb5d20bf1":[3,15,23,7],
-"classSoDrawStyle.html#a24dc0b5c2d88c3f1d22c2415a9689e65":[3,15,23,8]
+"classSoDrawStyle.html":[3,15,23]
 };

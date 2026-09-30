@@ -1,5 +1,7 @@
 var NAVTREEINDEX39 =
 {
+"classSoTransformBoxDragger.html#a2f83c931ec3de0c670f1f7c9985e62d3":[3,5,18,0],
+"classSoTransformBoxDragger.html#a33b173d3dd35e1dcbf6064f49b39ae76":[3,5,18,11],
 "classSoTransformBoxDragger.html#a400029604aa1b57510b69afd59ef054a":[3,5,18,8],
 "classSoTransformBoxDragger.html#a408ce1fcdfe4d8f8243b9112150f2880":[3,5,18,6],
 "classSoTransformBoxDragger.html#a59c283b81f3751cc67ccc321d30bfdb3":[3,5,18,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX39 =
 "classSoTypeList.html#a7f5d6f49a1a47f7113b7ad6663ffcbe9":[3,11,30,7],
 "classSoTypeList.html#a9de58b3985afd2fcdf3b10e865a8cc08":[3,11,30,2],
 "classSoTypeList.html#ac397dd08d4a6a2c617f02ec1edae492b":[3,11,30,1],
-"classSoTypeList.html#ae6ea0c2a6293f7cfbe41f5d3da7bcd06":[3,11,30,5],
-"classSoUniformShaderParameter.html":[3,18,24],
-"classSoUniformShaderParameter.html#a0d78c2914a760803c68d988074948fab":[3,18,24,1]
+"classSoTypeList.html#ae6ea0c2a6293f7cfbe41f5d3da7bcd06":[3,11,30,5]
 };

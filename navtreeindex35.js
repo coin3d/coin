@@ -1,5 +1,7 @@
 var NAVTREEINDEX35 =
 {
+"classSoShaderParameterArray3f.html#ab20bbacd27d8013029e1555dd96637d6":[3,18,16,2],
+"classSoShaderParameterArray3i.html":[3,18,17],
 "classSoShaderParameterArray3i.html#a0bd613468615249fe1ddf2701e951598":[3,18,17,0],
 "classSoShaderParameterArray3i.html#a11ce512a29d4bb5b6d4ae752f81e59a9":[3,18,17,1],
 "classSoShaderParameterArray3i.html#a668ef12f3f6ef738952e0e6255818b6a":[3,18,17,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX35 =
 "classSoSimplifyAction.html#ad9593bac6cdd77c7eb89d9cc8e7527c1":[5,0,668,1],
 "classSoSoundElement.html":[3,6,94],
 "classSoSoundElement.html#a69ba6b416e27a40c89287f4d1a2dee61":[3,6,94,1],
-"classSoSoundElement.html#a8e73ec35503607e11cf9251cd870b220":[3,6,94,4],
-"classSoSoundElement.html#a919de2db6144947d6cf4a47356415745":[3,6,94,2],
-"classSoSoundElement.html#aa3c71a70155caac32669356f0ceb8d46":[3,6,94,0]
+"classSoSoundElement.html#a8e73ec35503607e11cf9251cd870b220":[3,6,94,4]
 };

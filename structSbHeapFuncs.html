@@ -162,7 +162,7 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>The <em>eval_func</em> member is a pointer to a function that should return a weight-value for a heap element. Smaller elements are extracted first from the heap. <br  />
+<p>The <em>eval_func</em> member is a pointer to a function that should return a weight-value for a heap element. Smaller elements are extracted first from the heap. The returned value must define a stable ordering and must not be NaN. <br  />
  </p>
 
 </div>
@@ -178,7 +178,7 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p><em>get_index_func</em> is a pointer to a function which should return the element's heap index. If you want to remove an element from the heap (other than the first element), or change the weight for a heap element, you must supply the two index functions. Each element must then store its heap index in its own data structures. <br  />
+<p><em>get_index_func</em> is a pointer to a function which should return the element's heap index. Supplying it makes removing an arbitrary element or changing its weight faster than the default linear lookup. It may only be supplied together with set_index_func. Each element must then store its heap index in its own data structures. An element not in a heap must use an index smaller than 1. <br  />
  </p>
 
 </div>
@@ -194,7 +194,7 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p><em>set_index_func</em> is used to set this index value, and will be called whenever the element is moved in the heap. <br  />
+<p><em>set_index_func</em> is used to set this index value, and will be called whenever the element is moved in the heap. It is called with -1 when an element is removed, extracted, or discarded by emptyHeap() or heap destruction. Elements must outlive the heap unless removed first. It may be supplied without get_index_func when movement notifications are useful but indexed lookup is not. <br  />
  </p>
 
 </div>
@@ -209,7 +209,7 @@ Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="structSbHeapFuncs.html">SbHeapFuncs</a></li>
-    <li class="footer">Generated on Tue Sep 29 2026 09:11:44 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Wed Sep 30 2026 11:04:43 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

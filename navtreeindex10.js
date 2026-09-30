@@ -1,5 +1,7 @@
 var NAVTREEINDEX10 =
 {
+"classScXMLEltReader.html":[3,21,14],
+"classScXMLEqualsOpExprDataObj.html":[5,0,123],
 "classScXMLEqualsOpExprDataObj.html#a6b6e162d26f30586a56d03d8d1f84838":[5,0,123,0],
 "classScXMLEvaluator.html":[3,21,15],
 "classScXMLEvaluator.html#a3f2a6a5c9ab8cb64cd1689d96126d650":[3,21,15,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX10 =
 "classSoAnnoText3CharOrientElement.html":[3,6,2],
 "classSoAnnoText3CharOrientElement.html#adc8b82948aafb5042500fd4bed7ce3c9":[3,6,2,1],
 "classSoAnnoText3CharOrientElement.html#afd0ba435beb4eda0bb9f1bd882134c8d":[3,6,2,0],
-"classSoAnnoText3FontSizeHintElement.html":[3,6,3],
-"classSoAnnoText3FontSizeHintElement.html#a04e5f4160cb56b4cc6227089cb624829":[3,6,3,2],
-"classSoAnnoText3FontSizeHintElement.html#a98f0d14bf9b70be20542b622b125d15a":[3,6,3,0]
+"classSoAnnoText3FontSizeHintElement.html":[3,6,3]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX17 =
 {
+"classSoExtSelection.html#a13f9500494e42d0edf20ad79c755b678afaf26176f5d277cd13f354477a654753":[3,15,26,1,0],
+"classSoExtSelection.html#a13f9500494e42d0edf20ad79c755b678afcd61eca81ee8badcb61f2a349b4c384":[3,15,26,1,3],
 "classSoExtSelection.html#a301800e1eb43e801b9806cdb5c9c05fd":[3,15,26,22],
 "classSoExtSelection.html#a312b1897793d9a7f78e4624d9a63e115":[3,15,26,26],
 "classSoExtSelection.html#a34786b10d242f155cea1ea023b98781d":[3,15,26,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX17 =
 "classSoFont.html#a6e05868c24cbaeeee3f8e2e89e024a5e":[3,15,29,10],
 "classSoFont.html#a7b95020fbcc5d861ba0cc7a5bc24c9bc":[3,15,29,9],
 "classSoFont.html#a8167d0d1d2cbf6f63fae8e2cffb94008":[3,15,29,5],
-"classSoFont.html#a8d2c7630d8020176d56802a9f336cdeb":[3,15,29,11],
-"classSoFont.html#a90c22eccdf0740a9adf98919c8848178":[3,15,29,2],
-"classSoFont.html#aa4cbe62cf7233f5e274e6bb4eeee20d5":[3,15,29,1]
+"classSoFont.html#a8d2c7630d8020176d56802a9f336cdeb":[3,15,29,11]
 };

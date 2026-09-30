@@ -1,5 +1,7 @@
 var NAVTREEINDEX20 =
 {
+"classSoGeoSeparator.html#aa7afd6511e8c03134f95854e246e4435":[3,15,35,10],
+"classSoGeoSeparator.html#ab4f5ad129c5973e297a1f13d0b1b3dfa":[3,15,35,6],
 "classSoGeoSeparator.html#ac9ad87951a90c57b2cd390807b952ed3":[3,15,35,11],
 "classSoGeoSeparator.html#ac9e1f6718ac64409c1fd3881eda0e93e":[3,15,35,4],
 "classSoGeoSeparator.html#ae4b1982ad9a8a1b97612ef0bbe19eb1d":[3,15,35,9],
@@ -247,7 +249,5 @@ var NAVTREEINDEX20 =
 "classSoIndexedLineSet.html#a26973a9f50540220f90561ba104b6c05":[3,15,39,3],
 "classSoIndexedLineSet.html#a2fc5b95581812a3690e847197893b6ba":[3,15,39,5],
 "classSoIndexedLineSet.html#aac23888ee2f43ab2cb0a3a4776f31aab":[3,15,39,2],
-"classSoIndexedLineSet.html#ab87dc43f1b88aac41d54e6b43ea4dab9":[3,15,39,6],
-"classSoIndexedLineSet.html#ac4d34638cb4669e8c6b9ff4dc94ca045":[3,15,39,7],
-"classSoIndexedLineSet.html#aec61d02f397b0aa35f7f932e3f73ebfc":[3,15,39,1]
+"classSoIndexedLineSet.html#ab87dc43f1b88aac41d54e6b43ea4dab9":[3,15,39,6]
 };

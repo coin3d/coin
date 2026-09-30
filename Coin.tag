@@ -4066,6 +4066,13 @@
       <type></type>
       <name>SbHeap</name>
       <anchorfile>classSbHeap.html</anchorfile>
+      <anchor>aa077fc3f331e01331f25a6f4af92e5f9</anchor>
+      <arglist>(const SbHeap &amp;heap)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>SbHeap</name>
+      <anchorfile>classSbHeap.html</anchorfile>
       <anchor>ac2992274d2b95a4fc4c9e596a43fa810</anchor>
       <arglist>(const SbHeapFuncs &amp;SbHeapFuncs, const int initsize=1024)</arglist>
     </member>
@@ -4117,6 +4124,13 @@
       <anchorfile>classSbHeap.html</anchorfile>
       <anchor>a48c0b4f7e527bb6dbe4139ab88c9e6ba</anchor>
       <arglist>(void *obj, int hpos=-1)</arglist>
+    </member>
+    <member kind="function">
+      <type>SbHeap &amp;</type>
+      <name>operator=</name>
+      <anchorfile>classSbHeap.html</anchorfile>
+      <anchor>a3b9ce3191dfa800ec6af420c1d7f7453</anchor>
+      <arglist>(const SbHeap &amp;heap)</arglist>
     </member>
     <member kind="function">
       <type>void *</type>

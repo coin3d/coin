@@ -1,5 +1,7 @@
 var NAVTREEINDEX41 =
 {
+"classSoVRMLDragSensor.html#a9b0079250164dc89df6de200ae5d3159":[5,0,779,10],
+"classSoVRMLDragSensor.html#ab1c5aa1d9c137442a015d589368ac446":[5,0,779,2],
 "classSoVRMLDragSensor.html#ab49cb0053310c39b49b3de11d514af93":[5,0,779,7],
 "classSoVRMLDragSensor.html#ab81ead7bfc709ab53c08a690f33099ff":[5,0,779,0],
 "classSoVRMLDragSensor.html#ac57f2580f6f6bb939683133fde27c478":[5,0,779,14],
@@ -247,7 +249,5 @@ var NAVTREEINDEX41 =
 "classSoVRMLMaterial.html#a0b314ac72919ebd93fb42ca6c550d86b":[3,23,26,12],
 "classSoVRMLMaterial.html#a163db289a2fb0035cba31b71040a1dfa":[3,23,26,9],
 "classSoVRMLMaterial.html#a23ed288fff8e4e1bde8fd232a05556f3":[3,23,26,0],
-"classSoVRMLMaterial.html#a2825d8a43ecda395e1bb2a9fde56bafb":[3,23,26,3],
-"classSoVRMLMaterial.html#a2e9fdaedf3c1d1b66e6a6e45ce04e005":[3,23,26,4],
-"classSoVRMLMaterial.html#a30e043072a799eb87e43781a55e3716d":[3,23,26,7]
+"classSoVRMLMaterial.html#a2825d8a43ecda395e1bb2a9fde56bafb":[3,23,26,3]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX30 =
 {
+"classSoPrimitiveVertexCache.html#a07945544b5c694532e604423d97ea05d":[3,3,6,1],
+"classSoPrimitiveVertexCache.html#a3a3aa7bd1159b04af70e5034ae924067":[3,3,6,0],
 "classSoPrimitiveVertexCache.html#a81984b231495979e682739650014e0ca":[3,3,6,3],
 "classSoPrimitiveVertexCache.html#aedcdb42a3fd8bfbbb03ab44765ebf58a":[3,3,6,2],
 "classSoProfile.html":[3,15,77],
@@ -247,7 +249,5 @@ var NAVTREEINDEX30 =
 "classSoRenderManager.html#a8be5c7e2b1af9dafa38be71be45e33b4":[5,0,539,56],
 "classSoRenderManager.html#a9e8d39ab12f70dc6cf3059751cd52376":[5,0,539,51],
 "classSoRenderManager.html#aa3297d6d24da46e0eaeb23f2ed57a064":[5,0,539,55],
-"classSoRenderManager.html#aa48569832076aa82cce0c243d7ec903f":[5,0,539,42],
-"classSoRenderManager.html#aa73c943c31d9d7950858fc2ef24ea45f":[5,0,539,1],
-"classSoRenderManager.html#aa73c943c31d9d7950858fc2ef24ea45fa68306b5c74257c54663ba03cd4d863de":[5,0,539,1,1]
+"classSoRenderManager.html#aa48569832076aa82cce0c243d7ec903f":[5,0,539,42]
 };
