@@ -149,6 +149,97 @@ void failure_cases() {
       CHECK(!r.ensurePrograms(glue, NULL, p)); CHECK(mock.deleted == failat); }
   }
 }
+void shared_program_cases() {
+  typedef CoinBumpTestRenderer Renderer;
+  typedef Renderer::ProgramCache Cache;
+  const cc_glglue * glue = testGlueInstance(1);
+  reset();
+  {
+    Renderer * a = new Renderer;
+    Renderer * b = new Renderer;
+    CHECK(a->programcache != b->programcache);
+    CHECK(a->programcache->token != b->programcache->token);
+    Renderer::spec_programidx pa, pb;
+    CHECK(a->ensurePrograms(glue, NULL, pa));
+    CHECK(b->ensurePrograms(glue, NULL, pb));
+    CHECK(mock.uploads == 3 && pa.fragment == pb.fragment && pa.dirlight == pb.dirlight);
+    Renderer::diffuse_programidx da, db;
+    CHECK(a->ensureDiffusePrograms(glue, NULL, da));
+    CHECK(b->ensureDiffusePrograms(glue, NULL, db));
+    CHECK(mock.uploads == 5 && da.dirlight == db.dirlight &&
+          da.normalrendering == db.normalrendering);
+    CHECK(Cache::sharedPrograms().entries.size() == 2);
+    delete a; BumpTestCacheContext::flush(1);
+    CHECK(mock.deleted == 0 && b->ensurePrograms(glue, NULL, pb));
+    delete b; BumpTestCacheContext::flush(1);
+    CHECK(mock.deleted == 5 && Cache::sharedPrograms().entries.empty());
+  }
+  reset(UPLOAD);
+  {
+    Renderer a, b;
+    Renderer::spec_programidx pa, pb;
+    CHECK(!a.ensurePrograms(glue, NULL, pa));
+    CHECK(mock.warnings == 1 && Cache::sharedPrograms().entries.empty());
+    CHECK(std::strcmp(a.programcache->contexts[1].specerror.message,
+                      "injected upload failure") == 0);
+    mock.failure = NONE;
+    CHECK(b.ensurePrograms(glue, NULL, pb));
+    CHECK(!a.ensurePrograms(glue, NULL, pa));
+    CHECK(mock.warnings == 1 && mock.uploads == 4);
+  }
+  BumpTestCacheContext::flush(1);
+  CHECK(mock.deleted == 4 && Cache::sharedPrograms().entries.empty());
+  reset(); mock.list = 5;
+  SoSeparator * root = new SoSeparator; root->ref();
+  {
+    Renderer a, b;
+    Renderer::spec_programidx pa, pb;
+    CHECK(!a.ensurePrograms(glue, NULL, pa));
+    CHECK(!b.ensurePrograms(glue, NULL, pb));
+    CHECK(BumpTestCacheContext::queue().size() == 2);
+    a.scheduleRedraw(NULL, root); b.scheduleRedraw(NULL, root);
+    CHECK(a.programcache->redraws[root] != b.programcache->redraws[root]);
+    mock.list = 0; BumpTestCacheContext::flush(1);
+    CHECK(mock.uploads == 3 && a.ensurePrograms(glue, NULL, pa) &&
+          b.ensurePrograms(glue, NULL, pb));
+    CHECK(pa.fragment == pb.fragment);
+    SoContextHandler::destructingContext(1);
+    CHECK(mock.deleted == 3 && Cache::sharedPrograms().entries.empty());
+    CHECK(a.ensurePrograms(glue, NULL, pa));
+    CHECK(mock.uploads == 6);
+  }
+  BumpTestCacheContext::flush(1);
+  CHECK(mock.deleted == 6 && Cache::sharedPrograms().entries.empty());
+  root->unref();
+  reset();
+  {
+    Renderer a, b;
+    Renderer::spec_programidx pa, pb;
+    std::atomic<bool> start(false);
+    std::thread first([&] { while (!start.load()) { }
+      CHECK(a.ensurePrograms(testGlueInstance(1), NULL, pa)); });
+    std::thread second([&] { while (!start.load()) { }
+      CHECK(b.ensurePrograms(testGlueInstance(1), NULL, pb)); });
+    start.store(true);
+    first.join(); second.join();
+    CHECK(mock.uploads == 3 && pa.fragment == pb.fragment);
+  }
+  BumpTestCacheContext::flush(1);
+  CHECK(mock.deleted == 3 && Cache::sharedPrograms().entries.empty());
+  reset(); mock.list = 5;
+  {
+    Renderer * first = new Renderer;
+    Renderer second;
+    Renderer::spec_programidx p;
+    CHECK(!first->ensurePrograms(glue, NULL, p));
+    CHECK(!second.ensurePrograms(glue, NULL, p));
+    delete first; // Its stale callback must not cancel the second owner.
+    mock.list = 0; BumpTestCacheContext::flush(1);
+    CHECK(second.ensurePrograms(glue, NULL, p) && mock.uploads == 3);
+  }
+  BumpTestCacheContext::flush(1);
+  CHECK(mock.deleted == 3 && Cache::sharedPrograms().entries.empty());
+}
 void deferred_cases() {
   reset(); mock.list = 5;
   CoinBumpTestRenderer * r = new CoinBumpTestRenderer;
@@ -448,7 +539,8 @@ void allocation_failure_cases() {
     CHECK(r.programcache->contexts[1].specstatus == Cache::FAILED);
     CHECK(r.programcache->contexts[1].spec.fragment == 0);
     CHECK(mock.bindings[std::make_pair(1, GL_FRAGMENT_PROGRAM_ARB)] == 91);
-    CHECK(failure.untouched());
+    // Pool metadata allocation fails first; the unshared upload still rolls back and reports fully.
+    CHECK(!failure.untouched());
   }
   // Context cleanup must not allocate while copying an unreported diagnostic.
   reset(); mock.deletions.reserve(16);
@@ -847,6 +939,7 @@ int main() {
   RUN_CASE(cold_registry_allocation_case);
   RUN_CASE(failure_cases); RUN_CASE(deferred_cases); RUN_CASE(stale_initializer_case);
   RUN_CASE(lifetime_cases); RUN_CASE(diffuse_and_context_cases);
+  RUN_CASE(shared_program_cases);
   RUN_CASE(error_handler_cases); RUN_CASE(redraw_lifetime_cases); RUN_CASE(multiple_root_redraw_case);
   RUN_CASE(queue_changed_lifetime_cases); RUN_CASE(concurrent_cases);
   RUN_CASE(allocation_failure_cases);
