@@ -169,26 +169,56 @@ SoPath::operator=(const SoPath & rhs)
 {
   if (this == &rhs) return *this;
 
-  // This must unregister the address of *this* before replacing its route.
-  // Copy-and-swap alone cannot do that: an external SoChildList stores the
-  // auditor object's identity, not just its swappable member state.
+  // An SoChildList stores this object's address. Stage capacity and new
+  // auditor registrations before replacing the route, so allocation failure
+  // leaves the current route and its registrations intact.
+  // Grow both destination lists before changing the route. SoBaseList does
+  // not offer a reserve operation, so append null placeholders and remove
+  // them without notifying; a failed growth leaves the old route intact.
+  const int oldlength = this->getFullLength();
+  const int newlength = rhs.getFullLength();
+  try {
+    while (this->nodes.getLength() < newlength) this->nodes.append(NULL);
+    this->indices.ensureCapacity(newlength);
+  }
+  catch (...) {
+    this->nodes.truncate(oldlength);
+    throw;
+  }
+  this->nodes.truncate(oldlength);
+
+  // Register the new route before removing the old one. If a child list
+  // cannot grow, remove only the registrations already added here; the
+  // destination and its original auditor registrations stay intact.
+  int registered = 0;
+  try {
+    if (rhs.isauditing) {
+      for (int i = 0; i < newlength; i++) {
+        SoNode * node = rhs.nodes[i];
+        SoChildList * cl = node ? node->getChildren() : NULL;
+        if (cl) cl->addPathAuditor(this);
+        registered++;
+      }
+    }
+  }
+  catch (...) {
+    for (int i = 0; i < registered; i++) {
+      SoNode * node = rhs.nodes[i];
+      SoChildList * cl = node ? node->getChildren() : NULL;
+      if (cl) cl->removePathAuditor(this);
+    }
+    throw;
+  }
+
   this->removePathAuditors(0);
+  // No list growth remains in these copies.
+  this->nodes = rhs.nodes;
+  this->indices = rhs.indices;
 
   this->firsthidden = rhs.firsthidden;
   this->firsthiddendirty = rhs.firsthiddendirty;
   this->isauditing = rhs.isauditing;
-  this->nodes = rhs.nodes;
-  this->indices = rhs.indices;
-
-  // Add ourself as an auditor to the children lists of the path.
-  if (this->isauditing) {
-    for (int i = 0; i < this->getFullLength(); i++) {
-      SoChildList * cl = this->nodes[i]->getChildren();
-      if (cl) cl->addPathAuditor(this);
-    }
-  }
-
-  if (isauditing) this->startNotify();
+  if (this->isauditing) this->startNotify();
 
   return *this;
 }

@@ -174,6 +174,16 @@ if(NOT WIN32)
     ${PROJECT_BINARY_DIR}/include
     ${COIN_TARGET_INCLUDE_DIRECTORIES})
   add_test(NAME SbPListGrowthFailure COMMAND CoinSbPListGrowthFailureTest)
+
+  add_executable(SoPathAssignmentAllocationFailureTest
+    reproducers/sopath-assignment-auditor-lifecycle/allocation_failure.cpp)
+  target_link_libraries(SoPathAssignmentAllocationFailureTest
+    Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(SoPathAssignmentAllocationFailureTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  add_test(NAME SoPathAssignmentAllocationFailure
+    COMMAND SoPathAssignmentAllocationFailureTest)
 endif()
 
 add_executable(SoPathChildAppendTest SoPathChildAppendTest.cpp)
