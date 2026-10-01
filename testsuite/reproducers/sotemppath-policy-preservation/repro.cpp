@@ -139,12 +139,49 @@ ordinary_empty_destination()
   return 0;
 }
 
+
+static int
+temporary_source_to_ordinary_destination()
+{
+  SoGroup * root = new SoGroup;
+  root->ref();
+  SoSeparator * child = new SoSeparator;
+  child->ref();
+  root->addChild(child);
+
+  SoTempPath source(2);
+  source.setHead(root);
+  source.append(child);
+  SoPath * destination = new SoPath;
+  destination->ref();
+  const int rootrefs = root->getRefCount();
+  const int childrefs = child->getRefCount();
+  destination->append(&source);
+  bool ok = destination->getLength() == 2 &&
+            destination->getNode(0) == root &&
+            destination->getNode(1) == child &&
+            root->getRefCount() == rootrefs + 1 &&
+            child->getRefCount() == childrefs + 1;
+
+  root->removeChild(0);
+  ok = ok && source.getLength() == 2 && destination->getLength() == 1;
+  destination->unref();
+  root->unref();
+  child->unref();
+  if (!ok) {
+    std::fprintf(stderr,
+                 "FAIL: ordinary destination copied temporary source policy\n");
+    return 1;
+  }
+  return 0;
+}
+
 int
 main(int argc, char ** argv)
 {
   if (argc != 2) {
     std::fprintf(stderr,
-                 "usage: %s nonempty-destination|empty-destination|ordinary-empty-destination\n",
+                 "usage: %s nonempty-destination|empty-destination|ordinary-empty-destination|temporary-source\n",
                  argv[0]);
     return 2;
   }
@@ -156,6 +193,8 @@ main(int argc, char ** argv)
     result = empty_destination();
   else if (std::strcmp(argv[1], "ordinary-empty-destination") == 0)
     result = ordinary_empty_destination();
+  else if (std::strcmp(argv[1], "temporary-source") == 0)
+    result = temporary_source_to_ordinary_destination();
   else
     std::fprintf(stderr, "unknown case: %s\n", argv[1]);
   SoDB::finish();

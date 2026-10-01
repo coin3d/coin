@@ -162,6 +162,8 @@ add_test(NAME SoTempPathPolicy_empty_destination
   COMMAND SoTempPathPolicyTest empty-destination)
 add_test(NAME SoTempPathPolicy_ordinary_empty_destination
   COMMAND SoTempPathPolicyTest ordinary-empty-destination)
+add_test(NAME SoTempPathPolicy_temporary_source
+  COMMAND SoTempPathPolicyTest temporary-source)
 
 # Process-isolated public behavior checks. Keeping each invalid access in its
 # own CTest process prevents one unsafe access from masking the remaining
@@ -236,6 +238,16 @@ if(NOT WIN32)
     ${COIN_TARGET_INCLUDE_DIRECTORIES})
   add_test(NAME SoPathAssignmentAllocationFailure
     COMMAND SoPathAssignmentAllocationFailureTest)
+
+  add_executable(SoTempPathPolicyAllocationFailureTest
+    reproducers/sotemppath-policy-preservation/allocation_failure.cpp)
+  target_link_libraries(SoTempPathPolicyAllocationFailureTest
+    Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(SoTempPathPolicyAllocationFailureTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  add_test(NAME SoTempPathPolicyAllocationFailure
+    COMMAND SoTempPathPolicyAllocationFailureTest)
 endif()
 
 add_executable(SoPathChildAppendTest SoPathChildAppendTest.cpp)
