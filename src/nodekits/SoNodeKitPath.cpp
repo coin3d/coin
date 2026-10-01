@@ -53,8 +53,10 @@
 #include <Inventor/SoNodeKitPath.h>
 
 #include <cstdlib>
+#include <vector>
 
 #include <Inventor/nodekits/SoBaseKit.h>
+#include <Inventor/misc/SoChildList.h>
 #include <Inventor/actions/SoSearchAction.h>
 
 #include "tidbitsp.h"
@@ -90,12 +92,40 @@ SoNodeKitPath::fromPath(const SoPath * path)
   if (path == NULL) return NULL;
 
   const int length = path->nodes.getLength();
+  std::vector<SoChildList *> registered;
+  registered.reserve(length);
   SoNodeKitPath * result = new SoNodeKitPath(length);
-  if (length > 0) {
-    result->SoPath::setHead(path->nodes[0]);
-    for (int i = 1; i < length; i++) {
-      result->SoPath::append(path->nodes[i], path->indices[i]);
+  try {
+    // Register auditors before copying nodes. A child list can allocate or
+    // throw; until registration is complete, the new path remains empty.
+    for (int i = 0; i < length; i++) {
+      SoNode * node = path->nodes[i];
+      SoChildList * children = node ? node->getChildren() : NULL;
+      if (children) {
+        children->addPathAuditor(result);
+        registered.push_back(children);
+      }
     }
+
+    // Both lists reserved length slots in the constructor.
+    for (int i = 0; i < length; i++) {
+      result->nodes.append(path->nodes[i]);
+      result->indices.append(path->indices[i]);
+    }
+    result->firsthidden = path->firsthidden;
+    result->firsthiddendirty = path->firsthiddendirty;
+  }
+  catch (...) {
+    for (std::vector<SoChildList *>::reverse_iterator it = registered.rbegin();
+         it != registered.rend(); ++it) {
+      (*it)->removePathAuditor(result);
+    }
+    // Registrations have been removed, including if a list copy failed.
+    // Avoid auditing a partially populated route during destruction.
+    result->isauditing = FALSE;
+    result->ref();
+    result->unref();
+    throw;
   }
   return result;
 }

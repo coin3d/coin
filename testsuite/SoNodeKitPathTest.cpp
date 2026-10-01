@@ -10,12 +10,27 @@
 #include <Inventor/nodes/SoTransform.h>
 
 #include <cstdio>
+#include <new>
 
 class FixtureKit : public SoBaseKit {
 public:
   FixtureKit() : SoBaseKit() {}
   ~FixtureKit() override {}
   void addFixtureChild(SoNode * node) { this->children->append(node); }
+};
+
+class ThrowingGroup : public SoSeparator {
+public:
+  ThrowingGroup() : failNextChildren(false) {}
+  ~ThrowingGroup() override {}
+  SoChildList * getChildren() const override {
+    if (this->failNextChildren) {
+      this->failNextChildren = false;
+      throw std::bad_alloc();
+    }
+    return SoSeparator::getChildren();
+  }
+  mutable bool failNextChildren;
 };
 
 class TestNodeKitPath : public SoNodeKitPath {
@@ -127,6 +142,41 @@ checkAppendBelowLogicalTail()
 }
 
 static void
+checkAppendPathAndPop()
+{
+  Route route;
+  TestNodeKitPath destination;
+  destination.setFixtureHead(route.rootkit);
+
+  SoPath * suffix = new SoPath(route.childkit);
+  suffix->ref();
+  suffix->append(route.leaf);
+  SoNodeKitPath * source = SoNodeKitPath::fromPath(suffix);
+  source->ref();
+  destination.append(source);
+  check(destination.getLength() == 2 &&
+        destination.getTail() == route.childkit &&
+        fullLength(&destination) == 4 &&
+        destination.fullPath().getTail() == route.leaf,
+        "appending a nodekit path lost its hidden bridge or suffix");
+
+  destination.pop();
+  check(destination.getLength() == 1 &&
+        destination.getTail() == route.rootkit &&
+        fullLength(&destination) == 2,
+        "pop did not truncate at the last projected nodekit");
+  destination.append(route.childkit);
+  check(destination.getLength() == 2 &&
+        destination.getTail() == route.childkit &&
+        fullLength(&destination) == 3 &&
+        fullLength(source) == 2,
+        "appending a child kit after pop changed the route or source");
+
+  source->unref();
+  suffix->unref();
+}
+
+static void
 checkFactoryType()
 {
   SoSeparatorKit * kit = new SoSeparatorKit;
@@ -180,6 +230,58 @@ checkFactoryTypeWithExtension()
 }
 
 static void
+checkMaterializationFailure()
+{
+  SoSeparator * head = new SoSeparator;
+  ThrowingGroup * child = new ThrowingGroup;
+  head->ref();
+  head->addChild(child);
+  SoPath * source = new SoPath(head);
+  source->ref();
+  source->append(child);
+  const int before = head->getRefCount();
+  child->failNextChildren = true;
+  bool caught = false;
+  try {
+    SoNodeKitPath * projected = SoNodeKitPath::fromPath(source);
+    projected->ref();
+    projected->unref();
+  }
+  catch (const std::bad_alloc &) { caught = true; }
+  check(caught && head->getRefCount() == before,
+        "fromPath leaked a partial copy after child lookup failed");
+  source->unref();
+  head->unref();
+}
+
+static void
+checkHeadIndexPreserved()
+{
+  SoSeparator * root = new SoSeparator;
+  root->ref();
+  root->addChild(new SoSeparator);
+  SoSeparatorKit * kit = new SoSeparatorKit;
+  root->addChild(kit);
+
+  SoPath * full = new SoPath(root);
+  full->ref();
+  full->append(1);
+  SoPath * suffix = full->copy(1);
+  suffix->ref();
+  SoNodeKitPath * projected = SoNodeKitPath::fromPath(suffix);
+  projected->ref();
+  check(suffix->getIndex(0) == 1 &&
+        static_cast<SoPath *>(projected)->getIndex(0) == 1 &&
+        projected->getHead() == kit,
+        "fromPath changed the head index of a copied suffix");
+
+  projected->unref();
+  suffix->unref();
+  full->unref();
+  root->unref();
+}
+
+static void
 checkTemporarySentinel()
 {
   SoSeparator * head = new SoSeparator;
@@ -205,9 +307,12 @@ main()
   SoNodeKit::init();
   checkProjectionAndOwnership();
   checkAppendBelowLogicalTail();
+  checkAppendPathAndPop();
   checkFactoryType();
   checkFactoryTypeWithExtension();
   checkTemporarySentinel();
+  checkHeadIndexPreserved();
+  checkMaterializationFailure();
   SoDB::finish();
   return failures == 0 ? 0 : 1;
 }
