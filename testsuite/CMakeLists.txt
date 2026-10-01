@@ -149,6 +149,13 @@ if (USE_PTHREAD)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
+add_executable(SoPathRangeTest SoPathRangeTest.cpp)
+target_link_libraries(SoPathRangeTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(SoPathRangeTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+add_test(NAME SoPathRange COMMAND SoPathRangeTest)
 # Process-isolated public behavior checks. Keeping each invalid access in its
 # own CTest process prevents one unsafe access from masking the remaining
 # boundary classes.
