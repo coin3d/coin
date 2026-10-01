@@ -314,6 +314,28 @@ checkTemporarySentinel()
 }
 
 static void
+checkCopiedPathTracksTreeEdits()
+{
+  Route route;
+  SoNodeKitPath * projected = SoNodeKitPath::fromPath(route.source);
+  projected->ref();
+  route.hidden->removeChild(0);
+  check(fullLength(projected) == 3 &&
+        projected->getLength() == 2 &&
+        projected->getTail() == route.rootkit &&
+        fullLength(route.source) == 3,
+        "copied path did not track a removed hidden child");
+
+  route.head->removeChild(0);
+  check(fullLength(projected) == 1 &&
+        projected->getLength() == 1 &&
+        projected->getTail() == route.head &&
+        fullLength(route.source) == 1,
+        "copied path retained stale nodes after a second tree edit");
+  projected->unref();
+}
+
+static void
 checkSearchFailureRestoresGlobalState()
 {
   ThrowingSearchKit * root = new ThrowingSearchKit;
@@ -368,6 +390,7 @@ main()
   checkHeadIndexPreserved();
   checkMaterializationFailure();
   checkSearchFailureRestoresGlobalState();
+  checkCopiedPathTracksTreeEdits();
   SoDB::finish();
   return failures == 0 ? 0 : 1;
 }
