@@ -161,6 +161,21 @@ foreach(assignment_case reassign self-assign copy-construct)
     COMMAND SoPathAssignmentAuditorTest ${assignment_case})
 endforeach()
 
+# Replacing operator new[] across a shared-library boundary is not portable
+# on Windows, so keep the deterministic allocation-failure test on platforms
+# where executable symbol interposition applies to the linked Coin library.
+if(NOT WIN32)
+  add_executable(CoinSbPListGrowthFailureTest
+    SbPListGrowthFailureTest.cpp)
+  target_link_libraries(CoinSbPListGrowthFailureTest
+    Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(CoinSbPListGrowthFailureTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  add_test(NAME SbPListGrowthFailure COMMAND CoinSbPListGrowthFailureTest)
+endif()
+
 add_executable(SoPathChildAppendTest SoPathChildAppendTest.cpp)
 target_link_libraries(SoPathChildAppendTest Coin ${COIN_TARGET_LINK_LIBRARIES})
 target_include_directories(SoPathChildAppendTest PRIVATE
