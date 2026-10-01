@@ -149,6 +149,18 @@ if (USE_PTHREAD)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
+add_executable(SoPathAuditorCallbackTest
+  reproducers/sopath-auditor-callback-validation/repro.cpp)
+target_link_libraries(SoPathAuditorCallbackTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(SoPathAuditorCallbackTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+foreach(callback_case empty foreign-parent negative-index null-replacement valid-callbacks)
+  add_test(NAME SoPathAuditorCallback_${callback_case}
+    COMMAND SoPathAuditorCallbackTest ${callback_case})
+endforeach()
+
 # Replacing operator new[] across a shared-library boundary is not portable
 # on Windows, so keep the deterministic allocation-failure test on platforms
 # where executable symbol interposition applies to the linked Coin library.
