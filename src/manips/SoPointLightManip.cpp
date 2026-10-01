@@ -69,6 +69,7 @@
 
 #include <Inventor/manips/SoPointLightManip.h>
 #include <Inventor/SoPath.h>
+#include "SoManipKitPath.h"
 
 #include <Inventor/draggers/SoPointLightDragger.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -199,7 +200,7 @@ SoPointLightManip::replaceNode(SoPath * path)
   }
   SoNode * tail = path->getTail();
   if (tail->isOfType(SoBaseKit::getClassTypeId())) {
-    SoBaseKit * kit = (SoBaseKit *) path->getTail();
+    SoBaseKit * kit = coin_lastKitInPath(path);
     SbString partname = kit->getPartString(path);
     if (partname != "") {
       SoPointLight * oldpart = (SoPointLight *) kit->getPart(partname, TRUE);

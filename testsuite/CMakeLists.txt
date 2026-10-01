@@ -159,6 +159,15 @@ if(HAVE_NODEKITS)
   add_test(NAME SoNodeKitPathBehavior COMMAND SoNodeKitPathTest)
 endif()
 
+if(HAVE_MANIPULATORS)
+  add_executable(SoManipNestedKitTest SoManipNestedKitTest.cpp)
+  target_link_libraries(SoManipNestedKitTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(SoManipNestedKitTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  add_test(NAME SoManipNestedKit COMMAND SoManipNestedKitTest)
+endif()
+
 add_executable(SoPathChildAppendTest SoPathChildAppendTest.cpp)
 target_link_libraries(SoPathChildAppendTest Coin ${COIN_TARGET_LINK_LIBRARIES})
 target_include_directories(SoPathChildAppendTest PRIVATE

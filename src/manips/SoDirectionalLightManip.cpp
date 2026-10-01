@@ -56,6 +56,7 @@
 
 #include <Inventor/manips/SoDirectionalLightManip.h>
 #include <Inventor/SoPath.h>
+#include "SoManipKitPath.h"
 
 #include <Inventor/draggers/SoDirectionalLightDragger.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -198,7 +199,7 @@ SoDirectionalLightManip::replaceNode(SoPath * path)
   }
   SoNode * tail = path->getTail();
   if (tail->isOfType(SoBaseKit::getClassTypeId())) {
-    SoBaseKit * kit = (SoBaseKit *) path->getTail();
+    SoBaseKit * kit = coin_lastKitInPath(path);
     SbString partname = kit->getPartString(path);
     if (partname != "") {
       SoDirectionalLight * oldpart = (SoDirectionalLight *) kit->getPart(partname, TRUE);
