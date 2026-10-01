@@ -1,5 +1,8 @@
 Unreleased:
 * bugfixes:
+  - Relink cc_dict entries during resize without reallocating entries or
+    triggering nested growth. If bucket allocation fails, retain the
+    current table and the newly inserted mapping so later growth can retry.
   - Validate SoPath truncation and copy ranges in all builds. Invalid
     truncation leaves the path unchanged, invalid copy ranges return NULL,
     and popping an empty path has no effect. Copying an empty range returns
