@@ -149,6 +149,18 @@ if (USE_PTHREAD)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
+add_executable(SoPathAssignmentAuditorTest
+  reproducers/sopath-assignment-auditor-lifecycle/repro.cpp)
+target_link_libraries(SoPathAssignmentAuditorTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(SoPathAssignmentAuditorTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+foreach(assignment_case reassign self-assign copy-construct)
+  add_test(NAME SoPathAssignmentAuditor_${assignment_case}
+    COMMAND SoPathAssignmentAuditorTest ${assignment_case})
+endforeach()
+
 add_executable(SoPathAuditorCallbackTest
   reproducers/sopath-auditor-callback-validation/repro.cpp)
 target_link_libraries(SoPathAuditorCallbackTest
@@ -174,6 +186,16 @@ if(NOT WIN32)
     ${PROJECT_BINARY_DIR}/include
     ${COIN_TARGET_INCLUDE_DIRECTORIES})
   add_test(NAME SbPListGrowthFailure COMMAND CoinSbPListGrowthFailureTest)
+
+  add_executable(SoPathAssignmentAllocationFailureTest
+    reproducers/sopath-assignment-auditor-lifecycle/allocation_failure.cpp)
+  target_link_libraries(SoPathAssignmentAllocationFailureTest
+    Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(SoPathAssignmentAllocationFailureTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  add_test(NAME SoPathAssignmentAllocationFailure
+    COMMAND SoPathAssignmentAllocationFailureTest)
 endif()
 
 add_executable(SoPathChildAppendTest SoPathChildAppendTest.cpp)
