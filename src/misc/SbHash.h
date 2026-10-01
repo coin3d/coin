@@ -182,9 +182,7 @@ class SbHash {
       this->index=0;
       setNextUsedBucket();
     }
-    iterator() {
-      this->elem = NULL;
-    }
+    iterator() : master(NULL), index(0), elem(NULL) {}
 
     inline void setNextUsedBucket() {
       for (; this->index < this->master->size; ++this->index) {
@@ -246,9 +244,7 @@ class SbHash {
       this->index=0;
       setNextUsedBucket();
     }
-    const_iterator() {
-      this->elem = NULL;
-    }
+    const_iterator() : master(NULL), index(0), elem(NULL) {}
 
     inline void setNextUsedBucket() {
       for (; this->index < this->master->size; ++this->index) {
@@ -324,12 +320,20 @@ class SbHash {
     this->elements = 0;
   }
 
-  iterator begin() const {
+  iterator begin() {
     return iterator(this);
   }
 
-  iterator end() const {
+  iterator end() {
     return iterator();
+  }
+
+  const_iterator begin() const {
+    return const_iterator(this);
+  }
+
+  const_iterator end() const {
+    return const_iterator();
   }
 
   const_iterator const_begin() const {

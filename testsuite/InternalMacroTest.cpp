@@ -44,6 +44,7 @@
 
 #include "CoinTest.h"
 #include "misc/SbHash.h"
+#include <type_traits>
 
 static_assert(sizeof(SbHash<int, int>) > 0, "private Coin type is unavailable");
 
@@ -91,4 +92,56 @@ BOOST_AUTO_TEST_CASE(SbHash_mutable_iterator_visits_entries)
   BOOST_CHECK_EQUAL(value, 21);
   BOOST_REQUIRE(hash.get(3, value));
   BOOST_CHECK_EQUAL(value, 31);
+}
+
+BOOST_AUTO_TEST_CASE(SbHash_mutable_iterator_skips_empty_buckets_and_chains)
+{
+  SbHash<unsigned int, int> hash(11, 100.0f); // Keep collision chains in place.
+  BOOST_REQUIRE(hash.put(1, 10));
+  BOOST_REQUIRE(hash.put(12, 20));
+  BOOST_REQUIRE(hash.put(23, 30));
+  BOOST_REQUIRE(hash.put(9, 40));
+
+  unsigned int seen = 0;
+  unsigned int count = 0;
+  SbHash<unsigned int, int>::iterator it = hash.begin();
+  for (; it != hash.end() && count < 5; ++it) {
+    const unsigned int bit = 1U << (it->key % 32);
+    BOOST_CHECK_EQUAL(seen & bit, 0U);
+    seen |= bit;
+    it->obj += 1;
+    ++count;
+  }
+  BOOST_CHECK(it == hash.end());
+  BOOST_CHECK_EQUAL(count, 4U);
+  BOOST_CHECK_EQUAL(seen, (1U << 1) | (1U << 12) |
+                          (1U << 23) | (1U << 9));
+
+  int value = 0;
+  BOOST_REQUIRE(hash.get(1, value));
+  BOOST_CHECK_EQUAL(value, 11);
+  BOOST_REQUIRE(hash.get(12, value));
+  BOOST_CHECK_EQUAL(value, 21);
+  BOOST_REQUIRE(hash.get(23, value));
+  BOOST_CHECK_EQUAL(value, 31);
+  BOOST_REQUIRE(hash.get(9, value));
+  BOOST_CHECK_EQUAL(value, 41);
+
+  const SbHash<unsigned int, int>::const_iterator converted(hash.end());
+  BOOST_CHECK(converted == hash.const_end());
+  hash.clear();
+  BOOST_CHECK(hash.begin() == hash.end());
+}
+
+BOOST_AUTO_TEST_CASE(SbHash_const_begin_end_are_read_only)
+{
+  SbHash<unsigned int, int> hash(11, 100.0f);
+  BOOST_REQUIRE(hash.put(1, 10));
+  const SbHash<unsigned int, int> & readonly = hash;
+  static_assert(std::is_same<decltype(readonly.begin()),
+                             SbHash<unsigned int, int>::const_iterator>::value,
+                "const SbHash must return const_iterator");
+  BOOST_CHECK(readonly.begin() != readonly.end());
+  BOOST_CHECK_EQUAL(readonly.begin()->obj, 10);
+  BOOST_CHECK(readonly.const_begin() == readonly.begin());
 }
