@@ -168,6 +168,81 @@ if(HAVE_MANIPULATORS)
   add_test(NAME SoManipNestedKit COMMAND SoManipNestedKitTest)
 endif()
 
+# Process-isolated public behavior checks. Keeping each invalid access in its
+# own CTest process prevents one unsafe access from masking the remaining
+# boundary classes.
+add_executable(SoPathLegacyAccessorBoundsTest
+  reproducers/sopath-legacy-accessor-bounds/repro.cpp)
+target_link_libraries(SoPathLegacyAccessorBoundsTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(SoPathLegacyAccessorBoundsTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+target_compile_definitions(SoPathLegacyAccessorBoundsTest PRIVATE
+  COIN_DEBUG=$<CONFIG:Debug>)
+
+set(SOPATH_LEGACY_ACCESSORS node node-tail index index-tail)
+foreach(accessor ${SOPATH_LEGACY_ACCESSORS})
+  add_test(NAME SoPathLegacyAccessorBounds_${accessor}
+    COMMAND SoPathLegacyAccessorBoundsTest ${accessor} all)
+  set_tests_properties(SoPathLegacyAccessorBounds_${accessor}
+    PROPERTIES LABELS sopath-legacy-accessor)
+endforeach()
+foreach(control valid visibility)
+  add_test(NAME SoPathLegacyAccessorBounds_${control}
+    COMMAND SoPathLegacyAccessorBoundsTest ${control})
+  set_tests_properties(SoPathLegacyAccessorBounds_${control}
+    PROPERTIES LABELS sopath-legacy-accessor)
+endforeach()
+
+add_executable(SoPathAssignmentAuditorTest
+  reproducers/sopath-assignment-auditor-lifecycle/repro.cpp)
+target_link_libraries(SoPathAssignmentAuditorTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(SoPathAssignmentAuditorTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+foreach(assignment_case reassign self-assign copy-construct)
+  add_test(NAME SoPathAssignmentAuditor_${assignment_case}
+    COMMAND SoPathAssignmentAuditorTest ${assignment_case})
+endforeach()
+
+add_executable(SoPathAuditorCallbackTest
+  reproducers/sopath-auditor-callback-validation/repro.cpp)
+target_link_libraries(SoPathAuditorCallbackTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(SoPathAuditorCallbackTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+foreach(callback_case empty foreign-parent negative-index null-replacement valid-callbacks)
+  add_test(NAME SoPathAuditorCallback_${callback_case}
+    COMMAND SoPathAuditorCallbackTest ${callback_case})
+endforeach()
+
+# Replacing operator new[] across a shared-library boundary is not portable
+# on Windows, so keep the deterministic allocation-failure test on platforms
+# where executable symbol interposition applies to the linked Coin library.
+if(NOT WIN32)
+  add_executable(CoinSbPListGrowthFailureTest
+    SbPListGrowthFailureTest.cpp)
+  target_link_libraries(CoinSbPListGrowthFailureTest
+    Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(CoinSbPListGrowthFailureTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  add_test(NAME SbPListGrowthFailure COMMAND CoinSbPListGrowthFailureTest)
+
+  add_executable(SoPathAssignmentAllocationFailureTest
+    reproducers/sopath-assignment-auditor-lifecycle/allocation_failure.cpp)
+  target_link_libraries(SoPathAssignmentAllocationFailureTest
+    Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(SoPathAssignmentAllocationFailureTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  add_test(NAME SoPathAssignmentAllocationFailure
+    COMMAND SoPathAssignmentAllocationFailureTest)
+endif()
+
 add_executable(SoPathChildAppendTest SoPathChildAppendTest.cpp)
 target_link_libraries(SoPathChildAppendTest Coin ${COIN_TARGET_LINK_LIBRARIES})
 target_include_directories(SoPathChildAppendTest PRIVATE
