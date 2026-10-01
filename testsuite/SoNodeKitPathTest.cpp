@@ -33,6 +33,19 @@ public:
   mutable bool failNextChildren;
 };
 
+class ThrowingSearchKit : public FixtureKit {
+public:
+  ThrowingSearchKit() : failNextSearch(false) {}
+  void search(SoSearchAction * action) override {
+    if (this->failNextSearch) {
+      this->failNextSearch = false;
+      throw std::bad_alloc();
+    }
+    FixtureKit::search(action);
+  }
+  bool failNextSearch;
+};
+
 class TestNodeKitPath : public SoNodeKitPath {
 public:
   TestNodeKitPath() : SoNodeKitPath(8) {}
@@ -300,6 +313,47 @@ checkTemporarySentinel()
   head->unref();
 }
 
+static void
+checkSearchFailureRestoresGlobalState()
+{
+  ThrowingSearchKit * root = new ThrowingSearchKit;
+  FixtureKit * child = new FixtureKit;
+  root->ref();
+  root->addFixtureChild(child);
+  TestNodeKitPath destination;
+  destination.setFixtureHead(root);
+  const SbBool before = SoBaseKit::isSearchingChildren();
+
+  root->failNextSearch = true;
+  bool caught = false;
+  try { destination.append(child); }
+  catch (const std::bad_alloc &) { caught = true; }
+  check(caught && SoBaseKit::isSearchingChildren() == before &&
+        fullLength(&destination) == 1,
+        "append(childKit) left global search state changed after an exception");
+
+  SoPath * sourcepath = new SoPath(child);
+  sourcepath->ref();
+  SoNodeKitPath * source = SoNodeKitPath::fromPath(sourcepath);
+  source->ref();
+  root->failNextSearch = true;
+  caught = false;
+  try { destination.append(source); }
+  catch (const std::bad_alloc &) { caught = true; }
+  check(caught && SoBaseKit::isSearchingChildren() == before &&
+        fullLength(&destination) == 1,
+        "append(path) left global search state changed after an exception");
+
+  destination.append(child);
+  check(destination.getTail() == child && fullLength(&destination) == 2 &&
+        SoBaseKit::isSearchingChildren() == before,
+        "a failed search prevented a later successful append");
+
+  source->unref();
+  sourcepath->unref();
+  root->unref();
+}
+
 int
 main()
 {
@@ -313,6 +367,7 @@ main()
   checkTemporarySentinel();
   checkHeadIndexPreserved();
   checkMaterializationFailure();
+  checkSearchFailureRestoresGlobalState();
   SoDB::finish();
   return failures == 0 ? 0 : 1;
 }

@@ -4,7 +4,8 @@ Unreleased:
     or their parts, including paths through nested nodekits. Ignore temporary
     null markers when projecting SoNodeKitPath routes, and preserve the
     head index when materializing a nodekit path from a suffix. Clean up
-    partial nodekit paths if materialization throws.
+    partial nodekit paths if materialization throws. Restore nodekit search
+    state if path append fails.
 * API additions:
   - Added SoPath::fullPath() as the preferred way to access the complete
     path, including hidden children. Code that previously downcast an

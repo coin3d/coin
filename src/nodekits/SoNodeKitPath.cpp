@@ -65,6 +65,23 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+namespace {
+class SearchChildrenGuard {
+public:
+  SearchChildrenGuard()
+    : previous(SoBaseKit::isSearchingChildren())
+  {
+    SoBaseKit::setSearchingChildren(TRUE);
+  }
+  ~SearchChildrenGuard()
+  {
+    SoBaseKit::setSearchingChildren(this->previous);
+  }
+private:
+  SbBool previous;
+};
+} // namespace
+
 SoSearchAction * SoNodeKitPath::searchAction;
 
 /*!
@@ -278,10 +295,10 @@ SoNodeKitPath::append(SoBaseKit * childKit)
   SoBaseKit * tail = static_cast<SoBaseKit *>(tailnode);
   SoSearchAction * sa = this->getSearchAction();
   sa->setNode(childKit);
-  const SbBool oldSearch = tail->isSearchingChildren();
-  tail->setSearchingChildren(TRUE);
-  sa->apply(tail);
-  tail->setSearchingChildren(oldSearch);
+  {
+    SearchChildrenGuard searchchildren;
+    sa->apply(tail);
+  }
 
   SoPath * path = sa->getPath();
   if (path == NULL) {
@@ -327,10 +344,10 @@ SoNodeKitPath::append(const SoNodeKitPath * fromPath)
   if (tail != sourcehead) {
     SoSearchAction * sa = this->getSearchAction();
     sa->setNode(sourcehead);
-    const SbBool oldSearch = tail->isSearchingChildren();
-    tail->setSearchingChildren(TRUE);
-    sa->apply(tail);
-    tail->setSearchingChildren(oldSearch);
+    {
+      SearchChildrenGuard searchchildren;
+      sa->apply(tail);
+    }
     bridge = sa->getPath();
     if (bridge == NULL) {
 #if COIN_DEBUG
