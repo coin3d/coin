@@ -175,6 +175,33 @@ foreach(control valid visibility)
     PROPERTIES LABELS sopath-legacy-accessor)
 endforeach()
 
+add_executable(SoPathAuditorCallbackTest
+  reproducers/sopath-auditor-callback-validation/repro.cpp)
+target_link_libraries(SoPathAuditorCallbackTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(SoPathAuditorCallbackTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+foreach(callback_case empty foreign-parent negative-index null-replacement valid-callbacks)
+  add_test(NAME SoPathAuditorCallback_${callback_case}
+    COMMAND SoPathAuditorCallbackTest ${callback_case})
+endforeach()
+
+# Replacing operator new[] across a shared-library boundary is not portable
+# on Windows, so keep the deterministic allocation-failure test on platforms
+# where executable symbol interposition applies to the linked Coin library.
+if(NOT WIN32)
+  add_executable(CoinSbPListGrowthFailureTest
+    SbPListGrowthFailureTest.cpp)
+  target_link_libraries(CoinSbPListGrowthFailureTest
+    Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(CoinSbPListGrowthFailureTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  add_test(NAME SbPListGrowthFailure COMMAND CoinSbPListGrowthFailureTest)
+endif()
+
 add_executable(SoPathChildAppendTest SoPathChildAppendTest.cpp)
 target_link_libraries(SoPathChildAppendTest Coin ${COIN_TARGET_LINK_LIBRARIES})
 target_include_directories(SoPathChildAppendTest PRIVATE
