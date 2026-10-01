@@ -150,4 +150,8 @@ BOOST_AUTO_TEST_CASE(SbHash_const_begin_end_are_read_only)
   const SbHash<unsigned int, int>::iterator writable = hash.begin();
   writable->obj = 11;
   BOOST_CHECK_EQUAL((*writable).obj, 11);
+  BOOST_CHECK(hash.begin() != readonly.end());
+  BOOST_CHECK(readonly.end() != hash.begin());
+  BOOST_CHECK(hash.end() == readonly.end());
+  BOOST_CHECK(readonly.end() == hash.end());
 }

@@ -234,6 +234,12 @@ class SbHash {
     bool operator!=(const const_iterator & rhs) const {
       return !((*this)==rhs);
     }
+    friend bool operator==(const iterator & lhs, const const_iterator & rhs) {
+      return lhs.operator->() == rhs.elem;
+    }
+    friend bool operator!=(const iterator & lhs, const const_iterator & rhs) {
+      return !(lhs == rhs);
+    }
     const_iterator & operator++() {
       setNext();
       return *this;
