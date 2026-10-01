@@ -160,10 +160,10 @@ class SbHash {
       this->index  = iter.index;
       this->elem  = iter.elem;
     }
-    SbHashEntry & operator*() {
+    SbHashEntry & operator*() const {
       return *this->elem;
     }
-    SbHashEntry * operator->() {
+    SbHashEntry * operator->() const {
       return this->elem;
     }
     bool operator==(const iterator & rhs) const {
@@ -222,10 +222,10 @@ class SbHash {
       this->index  = iter.index;
       this->elem  = iter.elem;
     }
-    const SbHashEntry & operator*() {
+    const SbHashEntry & operator*() const {
       return *this->elem;
     }
-    const SbHashEntry * operator->() {
+    const SbHashEntry * operator->() const {
       return this->elem;
     }
     bool operator==(const const_iterator & rhs) const {

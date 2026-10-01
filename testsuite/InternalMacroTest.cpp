@@ -144,4 +144,10 @@ BOOST_AUTO_TEST_CASE(SbHash_const_begin_end_are_read_only)
   BOOST_CHECK(readonly.begin() != readonly.end());
   BOOST_CHECK_EQUAL(readonly.begin()->obj, 10);
   BOOST_CHECK(readonly.const_begin() == readonly.begin());
+  const SbHash<unsigned int, int>::const_iterator first = readonly.begin();
+  BOOST_CHECK_EQUAL(first->obj, 10);
+  BOOST_CHECK_EQUAL((*first).key, 1U);
+  const SbHash<unsigned int, int>::iterator writable = hash.begin();
+  writable->obj = 11;
+  BOOST_CHECK_EQUAL((*writable).obj, 11);
 }
