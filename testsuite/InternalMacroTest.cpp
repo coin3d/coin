@@ -114,6 +114,17 @@ BOOST_AUTO_TEST_CASE(SbHash_mutable_iterator_skips_empty_buckets_and_chains)
   }
   BOOST_CHECK(it == hash.end());
   BOOST_CHECK_EQUAL(count, 4U);
+
+  SbHash<unsigned int, int>::iterator mutable_mid = hash.begin();
+  ++mutable_mid; // second entry of the collision chain
+  SbHash<unsigned int, int>::const_iterator readonly_mid(mutable_mid);
+  BOOST_CHECK(mutable_mid == readonly_mid);
+  while (mutable_mid != hash.end()) {
+    BOOST_CHECK_EQUAL(mutable_mid->key, readonly_mid->key);
+    ++mutable_mid;
+    ++readonly_mid;
+  }
+  BOOST_CHECK(readonly_mid == hash.const_end());
   BOOST_CHECK_EQUAL(seen, (1U << 1) | (1U << 12) |
                           (1U << 23) | (1U << 9));
 
@@ -131,6 +142,40 @@ BOOST_AUTO_TEST_CASE(SbHash_mutable_iterator_skips_empty_buckets_and_chains)
   BOOST_CHECK(converted == hash.const_end());
   hash.clear();
   BOOST_CHECK(hash.begin() == hash.end());
+}
+
+BOOST_AUTO_TEST_CASE(SbHash_iterators_survive_repeated_resizes)
+{
+  SbHash<unsigned int, int> hash(3);
+  for (unsigned int i = 0; i < 200; ++i) {
+    const unsigned int key = (i * 37U) % 257U;
+    BOOST_REQUIRE(hash.put(key, static_cast<int>(key + 1U)));
+  }
+
+  bool seen[257] = {};
+  unsigned int count = 0;
+  for (SbHash<unsigned int, int>::iterator it = hash.begin();
+       it != hash.end(); ++it) {
+    BOOST_REQUIRE(it->key < 257U);
+    BOOST_CHECK(!seen[it->key]);
+    seen[it->key] = true;
+    BOOST_CHECK_EQUAL(it->obj, static_cast<int>(it->key + 1U));
+    ++count;
+  }
+  BOOST_CHECK_EQUAL(count, 200U);
+
+  const SbHash<unsigned int, int> & readonly = hash;
+  bool seen_const[257] = {};
+  count = 0;
+  for (SbHash<unsigned int, int>::const_iterator it = readonly.begin();
+       it != readonly.end(); ++it) {
+    BOOST_REQUIRE(it->key < 257U);
+    BOOST_CHECK(seen[it->key]);
+    BOOST_CHECK(!seen_const[it->key]);
+    seen_const[it->key] = true;
+    ++count;
+  }
+  BOOST_CHECK_EQUAL(count, 200U);
 }
 
 BOOST_AUTO_TEST_CASE(SbHash_const_begin_end_are_read_only)
