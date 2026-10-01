@@ -93,7 +93,7 @@ static unsigned int hash(const unsigned char * str, int n)
   return hash;
 }
 
-unsigned int SbHashFunc(const SbString & key) {
+unsigned int SbHashFunc(const SbString & key) noexcept {
   const unsigned char * cKey = reinterpret_cast<const unsigned char *>(key.getString());
   return hash(cKey,key.getLength());
 }
