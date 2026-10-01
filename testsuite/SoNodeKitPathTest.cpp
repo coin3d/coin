@@ -1,6 +1,7 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/SoNodeKitPath.h>
 #include <Inventor/SoPath.h>
+#include <Inventor/misc/SoTempPath.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/nodekits/SoNodeKit.h>
@@ -178,6 +179,25 @@ checkFactoryTypeWithExtension()
   root->unref();
 }
 
+static void
+checkTemporarySentinel()
+{
+  SoSeparator * head = new SoSeparator;
+  head->ref();
+  SoTempPath source(2);
+  source.simpleAppend(head, -1);
+  source.simpleAppend(static_cast<SoNode *>(NULL), -1);
+
+  SoNodeKitPath * projected = SoNodeKitPath::fromPath(&source);
+  projected->ref();
+  check(projected->getLength() == 1 && projected->getTail() == head &&
+        projected->getNode(0) == head &&
+        projected->getNodeFromTail(0) == head,
+        "nodekit projection dereferenced a temporary null sentinel");
+  projected->unref();
+  head->unref();
+}
+
 int
 main()
 {
@@ -187,6 +207,7 @@ main()
   checkAppendBelowLogicalTail();
   checkFactoryType();
   checkFactoryTypeWithExtension();
+  checkTemporarySentinel();
   SoDB::finish();
   return failures == 0 ? 0 : 1;
 }

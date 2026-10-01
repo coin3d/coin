@@ -1,7 +1,8 @@
 Unreleased:
 * bugfixes:
   - Select the nearest nodekit in a complete path when replacing manipulators
-    or their parts, including paths through nested nodekits.
+    or their parts, including paths through nested nodekits. Ignore temporary
+    null markers when projecting SoNodeKitPath routes.
 * API additions:
   - Added SoPath::fullPath() as the preferred way to access the complete
     path, including hidden children. Code that previously downcast an

@@ -112,7 +112,8 @@ SoNodeKitPath::getLength(void) const
 
   int cnt = 1;
   for (int i = 1; i < n; i++) {
-    if (this->nodes[i]->isOfType(SoBaseKit::getClassTypeId())) cnt++;
+    if (this->nodes[i] != NULL &&
+        this->nodes[i]->isOfType(SoBaseKit::getClassTypeId())) cnt++;
   }
   return cnt;
 }
@@ -127,7 +128,8 @@ SoNodeKitPath::getTail(void) const
   if (n == 0) return NULL;
 
   for (int i = n - 1; i > 0; i--) {
-    if (this->nodes[i]->isOfType(SoBaseKit::getClassTypeId()))
+    if (this->nodes[i] != NULL &&
+        this->nodes[i]->isOfType(SoBaseKit::getClassTypeId()))
       return this->nodes[i];
   }
   return this->nodes[0];
@@ -151,7 +153,8 @@ SoNodeKitPath::getNode(const int idx) const
 
   int cnt = 1;
   for (int i = 1; i < n; i++) {
-    if (this->nodes[i]->isOfType(SoBaseKit::getClassTypeId())) {
+    if (this->nodes[i] != NULL &&
+        this->nodes[i]->isOfType(SoBaseKit::getClassTypeId())) {
       if (cnt++ == idx) return this->nodes[i];
     }
   }
@@ -195,7 +198,8 @@ SoNodeKitPath::truncate(const int length)
     int cnt = 1;
     const int n = this->nodes.getLength();
     for (int i = 1; i < n; i++) {
-      if (this->nodes[i]->isOfType(SoBaseKit::getClassTypeId()) &&
+      if (this->nodes[i] != NULL &&
+        this->nodes[i]->isOfType(SoBaseKit::getClassTypeId()) &&
           cnt++ == length) {
         SoPath::truncate(i);
         return;
@@ -232,7 +236,8 @@ SoNodeKitPath::append(SoBaseKit * childKit)
   }
 
   SoNode * tailnode = this->getTail();
-  if (!tailnode->isOfType(SoBaseKit::getClassTypeId())) {
+  if (tailnode == NULL ||
+      !tailnode->isOfType(SoBaseKit::getClassTypeId())) {
 #if COIN_DEBUG
     SoDebugError::postInfo("SoNodeKitPath::append",
                            "the logical tail is not a nodekit");
@@ -277,7 +282,8 @@ SoNodeKitPath::append(const SoNodeKitPath * fromPath)
   }
 
   SoNode * tailnode = this->getTail();
-  if (!tailnode->isOfType(SoBaseKit::getClassTypeId())) {
+  if (tailnode == NULL ||
+      !tailnode->isOfType(SoBaseKit::getClassTypeId())) {
 #if COIN_DEBUG
     SoDebugError::postInfo("SoNodeKitPath::append",
                            "the logical tail is not a nodekit");
