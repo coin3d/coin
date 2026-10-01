@@ -52,7 +52,8 @@ namespace {
 
 class SbHashStatsProbe : public SbHash<unsigned int, int> {
 public:
-  SbHashStatsProbe(unsigned int sizearg) : SbHash<unsigned int, int>(sizearg) { }
+  SbHashStatsProbe(unsigned int sizearg, float loadfactor = 0.0f)
+    : SbHash<unsigned int, int>(sizearg, loadfactor) { }
 
   void stats(int & bucketsUsed, int & buckets, int & elements,
              float & average, int & maximum)
@@ -243,6 +244,41 @@ BOOST_AUTO_TEST_CASE(SbHash_statistics_are_fractional_and_empty_safe)
   hash.clear();
   hash.stats(bucketsUsed, buckets, elements, average, maximum);
   BOOST_CHECK_EQUAL(buckets, 5);
+  BOOST_CHECK_EQUAL(bucketsUsed, 0);
+  BOOST_CHECK_EQUAL(elements, 0);
+  BOOST_CHECK_EQUAL(average, 0.0f);
+  BOOST_CHECK_EQUAL(maximum, 0);
+}
+
+BOOST_AUTO_TEST_CASE(SbHash_statistics_track_collision_chain_erasure)
+{
+  SbHashStatsProbe hash(11, 100.0f);
+  BOOST_REQUIRE(hash.put(1, 10));
+  BOOST_REQUIRE(hash.put(12, 20));
+  BOOST_REQUIRE(hash.put(23, 30));
+
+  int bucketsUsed = -1;
+  int buckets = -1;
+  int elements = -1;
+  int maximum = -1;
+  float average = -1.0f;
+  hash.stats(bucketsUsed, buckets, elements, average, maximum);
+  BOOST_CHECK_EQUAL(buckets, 11);
+  BOOST_CHECK_EQUAL(bucketsUsed, 1);
+  BOOST_CHECK_EQUAL(elements, 3);
+  BOOST_CHECK_EQUAL(average, 3.0f);
+  BOOST_CHECK_EQUAL(maximum, 3);
+
+  BOOST_CHECK_EQUAL(hash.erase(12), 1U);
+  hash.stats(bucketsUsed, buckets, elements, average, maximum);
+  BOOST_CHECK_EQUAL(bucketsUsed, 1);
+  BOOST_CHECK_EQUAL(elements, 2);
+  BOOST_CHECK_EQUAL(average, 2.0f);
+  BOOST_CHECK_EQUAL(maximum, 2);
+
+  BOOST_CHECK_EQUAL(hash.erase(1), 1U);
+  BOOST_CHECK_EQUAL(hash.erase(23), 1U);
+  hash.stats(bucketsUsed, buckets, elements, average, maximum);
   BOOST_CHECK_EQUAL(bucketsUsed, 0);
   BOOST_CHECK_EQUAL(elements, 0);
   BOOST_CHECK_EQUAL(average, 0.0f);
