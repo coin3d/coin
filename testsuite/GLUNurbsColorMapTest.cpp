@@ -38,7 +38,45 @@
 #include "config.h"
 #include "glue/GLUWrapper.h"
 
+#ifdef HAVE_CGL
+#include <OpenGL/OpenGL.h>
+#endif
+
 namespace {
+#ifdef HAVE_CGL
+// Apple's GLU needs a current context even when only tessellation callbacks
+// are requested. Keep that requirement local to this test and restore the
+// context that the rest of CoinTests had before it ran.
+class CurrentCGLContext {
+public:
+  CurrentCGLContext() : previous(CGLGetCurrentContext()), context(NULL),
+                        current(false) {
+    const CGLPixelFormatAttribute attributes[] = {
+      static_cast<CGLPixelFormatAttribute>(0)
+    };
+    CGLPixelFormatObj format = NULL;
+    GLint count = 0;
+    if (CGLChoosePixelFormat(attributes, &format, &count) == kCGLNoError && format) {
+      if (CGLCreateContext(format, NULL, &context) == kCGLNoError && context) {
+        current = CGLSetCurrentContext(context) == kCGLNoError;
+      }
+    }
+    if (format) CGLDestroyPixelFormat(format);
+  }
+  ~CurrentCGLContext() {
+    if (context) {
+      CGLSetCurrentContext(previous);
+      CGLDestroyContext(context);
+    }
+  }
+  bool isCurrent() const { return current; }
+private:
+  CGLContextObj previous;
+  CGLContextObj context;
+  bool current;
+};
+#endif
+
 struct ColorSamples {
   unsigned int count;
   bool hasInterpolatedCenter;
@@ -70,9 +108,15 @@ BOOST_AUTO_TEST_CASE(interpolatesControlColorsWithSurfaceBasis)
   if (!glu->available || !glu->versionMatchesAtLeast(1, 3, 0) ||
       !glu->gluNewNurbsRenderer || !glu->gluDeleteNurbsRenderer ||
       !glu->gluNurbsProperty || !glu->gluBeginSurface || !glu->gluEndSurface ||
-      !glu->gluNurbsSurface || !glu->gluNurbsCallback || !glu->gluNurbsCallbackData) {
+      !glu->gluNurbsSurface || !glu->gluNurbsCallback || !glu->gluNurbsCallbackData ||
+      !glu->gluLoadSamplingMatrices) {
     return;
   }
+
+#ifdef HAVE_CGL
+  CurrentCGLContext context;
+  BOOST_REQUIRE(context.isCurrent());
+#endif
 
   const GLfloat knots[] = {0.0f, 0.0f, 1.0f, 1.0f};
   const GLfloat points[] = {
@@ -87,6 +131,13 @@ BOOST_AUTO_TEST_CASE(interpolatesControlColorsWithSurfaceBasis)
   void *renderer = glu->gluNewNurbsRenderer();
   BOOST_REQUIRE(renderer != NULL);
 
+  // Sampling must not depend on the current context's default GL matrices.
+  const GLfloat identity[16] = {
+    1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+  };
+  const GLint viewport[4] = {0, 0, 64, 64};
+  glu->gluNurbsProperty(renderer, GLU_AUTO_LOAD_MATRIX, GL_FALSE);
+  glu->gluLoadSamplingMatrices(renderer, identity, identity, viewport);
   glu->gluNurbsProperty(renderer, GLU_NURBS_MODE, GLU_NURBS_TESSELLATOR);
   glu->gluNurbsProperty(renderer, GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
   glu->gluNurbsProperty(renderer, GLU_U_STEP, 8.0f);
