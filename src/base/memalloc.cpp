@@ -94,6 +94,18 @@ struct cc_memalloc {
   cc_memalloc_strategy_cb * strategy;
 };
 
+extern "C" {
+
+/* default strategy cb */
+static int
+default_strategy(const int numunits_allocated)
+{
+  if (numunits_allocated < 64) return 64;
+  return numunits_allocated;
+}
+
+} // extern "C"
+
 /*
  * allocate 'numbytes' bytes from 'memnode'. Returns NULL if
  * the memory node is full.
@@ -117,10 +129,14 @@ node_alloc(struct cc_memalloc_memnode * memnode, const unsigned int numbytes)
 static struct cc_memalloc_memnode *
 create_memnode(cc_memalloc * allocator)
 {
-  const int chunkmultiplier = allocator->strategy(allocator->num_allocated_units);
+  int chunkmultiplier = allocator->strategy(allocator->num_allocated_units);
+  const unsigned int maxmultiplier = UINT_MAX / allocator->chunksize;
+  if (allocator->strategy == default_strategy && chunkmultiplier > 0 &&
+      static_cast<unsigned int>(chunkmultiplier) > maxmultiplier) {
+    chunkmultiplier = 1;
+  }
   if (chunkmultiplier <= 0 ||
-      static_cast<unsigned int>(chunkmultiplier) >
-        UINT_MAX / allocator->chunksize) return NULL;
+      static_cast<unsigned int>(chunkmultiplier) > maxmultiplier) return NULL;
 
   const unsigned int numbytes =
     allocator->chunksize * static_cast<unsigned int>(chunkmultiplier);
@@ -160,13 +176,20 @@ alloc_from_memnode(cc_memalloc * allocator)
 }
 
 /*!
-  Construct a memory allocator. Each allocated unit will be \a unitsize
-  bytes.
+  Construct a memory allocator with an explicit unit alignment. Each unit
+  has at least \a unitsize bytes of usable storage.
 */
 cc_memalloc *
-cc_memalloc_construct(const unsigned int unitsize)
+cc_memalloc_construct_aligned(const unsigned int unitsize,
+                              const unsigned int unitalignment)
 {
-  const size_t alignment = alignof(cc_memalloc_free);
+  if (unitalignment == 0 ||
+      (unitalignment & (unitalignment - 1)) != 0 ||
+      unitalignment > alignof(std::max_align_t)) return NULL;
+
+  // A returned unit must also hold the freelist pointer when deallocated.
+  const size_t alignment = unitalignment < alignof(cc_memalloc_free) ?
+    alignof(cc_memalloc_free) : unitalignment;
   size_t chunksize = unitsize;
   if (chunksize < sizeof(cc_memalloc_free)) {
     chunksize = sizeof(cc_memalloc_free);
@@ -189,6 +212,16 @@ cc_memalloc_construct(const unsigned int unitsize)
   cc_memalloc_set_strategy(allocator, NULL); /* will insert default handler */
 
   return allocator;
+}
+
+/*!
+  Construct a memory allocator whose units have fundamental alignment.
+  Each unit has at least \a unitsize bytes of usable storage.
+*/
+cc_memalloc *
+cc_memalloc_construct(const unsigned int unitsize)
+{
+  return cc_memalloc_construct_aligned(unitsize, alignof(std::max_align_t));
 }
 
 /*!
@@ -251,18 +284,6 @@ cc_memalloc_clear(cc_memalloc * allocator)
   allocator->num_allocated_units = 0;
 }
 
-extern "C" {
-
-/* default strategy cb */
-static int
-default_strategy(const int numunits_allocated)
-{
-  if (numunits_allocated < 64) return 64;
-  return numunits_allocated;
-}
-
-} // extern "C"
-
 /*!
   Sets the allocator strategy callback. \c cb should be a function that
   returns the number of units to allocated in a block, based on the
@@ -271,7 +292,8 @@ default_strategy(const int numunits_allocated)
   The default strategy is to just return the number of units allocated
   (which will successively double the internal memory chunk sizes),
   unless the number of units allocated is less than 64, then 64 is
-  returned.
+  returned. If the block byte count would exceed UINT_MAX, the allocator
+  requests one unit instead.
 */
 void
 cc_memalloc_set_strategy(cc_memalloc * allocator, cc_memalloc_strategy_cb * cb)

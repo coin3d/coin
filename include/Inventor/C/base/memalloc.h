@@ -49,11 +49,17 @@ extern "C" {
 
 /* ********************************************************************** */
 
-  /* The allocator owns raw storage only. Construct returns NULL if the unit
-     size cannot be represented after pointer alignment or on allocation
-     failure. Units requiring alignment beyond malloc's guarantee are not
-     supported. Callers must synchronize concurrent access. */
+  /* The allocator owns raw storage only. Every unit has malloc-equivalent
+     fundamental alignment. Construct returns NULL if the aligned unit size
+     cannot be represented or on allocation failure. Over-aligned types are
+     not supported. Callers must synchronize concurrent access. */
   COIN_DLL_API cc_memalloc * cc_memalloc_construct(const unsigned int unitsize);
+  /* Use this when the stored type's alignment is known. Alignment must be a
+     nonzero power of two no greater than malloc's fundamental alignment.
+     Each unit is also aligned for the allocator's freelist pointer. Returns
+     NULL for invalid alignment, unrepresentable size, or allocation failure. */
+  COIN_DLL_API cc_memalloc * cc_memalloc_construct_aligned(
+    const unsigned int unitsize, const unsigned int alignment);
   /* Destruction and clear invalidate all outstanding unit pointers. */
   COIN_DLL_API void cc_memalloc_destruct(cc_memalloc * allocator);
   /* Returns NULL on allocation failure, including invalid growth strategy.
@@ -64,6 +70,8 @@ extern "C" {
   COIN_DLL_API void cc_memalloc_deallocate(cc_memalloc * allocator, void * ptr);
   /* Releases all blocks and resets the live-unit count. */
   COIN_DLL_API void cc_memalloc_clear(cc_memalloc * allocator);
+  /* NULL restores the default strategy, which falls back to a one-unit
+     block when its multiplier would overflow the block byte count. */
   COIN_DLL_API void cc_memalloc_set_strategy(cc_memalloc * allocator, cc_memalloc_strategy_cb * cb);
 
 /* ********************************************************************** */
