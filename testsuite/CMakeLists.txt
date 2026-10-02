@@ -149,6 +149,8 @@ if (USE_PTHREAD)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
+add_subdirectory(xml-c-api/c-headers)
+
 add_executable(SoPathRangeTest SoPathRangeTest.cpp)
 target_link_libraries(SoPathRangeTest Coin ${COIN_TARGET_LINK_LIBRARIES})
 target_include_directories(SoPathRangeTest PRIVATE
