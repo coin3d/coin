@@ -47,7 +47,7 @@ var NAVTREEINDEX46 =
 "group__coin__XML.html":[3,25],
 "group__coin__XML.html#ga2c3f2733691b7d1e60765c4c691433ee":[3,25,0],
 "group__coin__XML.html#ga80383244e73c1e8bebe041d60a04fc26":[3,25,3],
-"group__coin__XML.html#gaf233557263433cc126ab09e3d1f214da":[3,25,1],
+"group__coin__XML.html#ga9832dc0e3d3a8ca5893d08f4878277bd":[3,25,1],
 "group__coin__XML.html#gafe56d78ac5013d52bcde44c50832e003":[3,25,2],
 "group__coin__actions.html":[3,0],
 "group__coin__base.html":[3,1],

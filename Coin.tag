@@ -90502,8 +90502,8 @@
       <type>void</type>
       <name>cc_xml_doc::cc_xml_doc_get_filter_cb</name>
       <anchorfile>group__coin__XML.html</anchorfile>
-      <anchor>gaf233557263433cc126ab09e3d1f214da</anchor>
-      <arglist>(const cc_xml_doc *doc, cc_xml_filter_cb *&amp;cb, void *&amp;userdata)</arglist>
+      <anchor>ga9832dc0e3d3a8ca5893d08f4878277bd</anchor>
+      <arglist>(const cc_xml_doc *doc, cc_xml_filter_cb **cb, void **userdata)</arglist>
     </member>
     <member kind="function">
       <type>cc_xml_doc *</type>

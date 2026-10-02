@@ -190,10 +190,10 @@ $(function(){initNavTree('types_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="keyword">typedef</span>  cc_xml_ent              cc_xml_entity;</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">/* streaming parsing */</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="keyword">enum</span> cc_xml_filter_choice {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="keyword">typedef</span> <span class="keyword">enum</span> cc_xml_filter_choice {</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  KEEP,</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  DISCARD</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>};</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>} cc_xml_filter_choice;</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="keyword">typedef</span> cc_xml_filter_choice cc_xml_filter_cb(<span class="keywordtype">void</span> * userdata, cc_xml_doc * doc, cc_xml_elt * elt, <span class="keywordtype">int</span> pushing);</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
@@ -232,7 +232,7 @@ $(function(){initNavTree('types_8h_source.html',''); initResizable(); });
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_c926cf464acaebc2091d00c8a935648f.html">C</a></li><li class="navelem"><a class="el" href="dir_86db8f5a283247f455059497615f9584.html">XML</a></li><li class="navelem"><b>types.h</b></li>
-    <li class="footer">Generated on Fri Oct 2 2026 08:15:08 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Fri Oct 2 2026 08:22:35 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
