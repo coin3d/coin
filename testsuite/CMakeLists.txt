@@ -179,7 +179,8 @@ add_test(NAME CcDictAllocationFailures COMMAND CcDictResizeTest oom)
 add_test(NAME CcDictApplyRemoveCurrent COMMAND CcDictResizeTest apply)
 
 add_executable(CcListOomTest CcListOomTest.cpp)
-target_compile_definitions(CcListOomTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
+target_compile_definitions(CcListOomTest PRIVATE
+  COIN_INTERNAL HAVE_CONFIG_H COIN_BUILDING_COIN)
 target_include_directories(CcListOomTest PRIVATE
   ${PROJECT_SOURCE_DIR}/src ${PROJECT_SOURCE_DIR}/include
   ${PROJECT_BINARY_DIR}/src ${PROJECT_BINARY_DIR}/include)
