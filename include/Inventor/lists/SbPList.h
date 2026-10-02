@@ -72,7 +72,8 @@ protected:
   int getArraySize(void) const;
 
 private:
-  void expandlist(const int size) const; 
+  void expandindex(const int index) const;
+  void expandlist(const int size) const;
   void grow(const int size = -1);
 
   int itembuffersize;
@@ -130,7 +131,7 @@ SbPList::operator[](const int index) const
 #ifdef COIN_EXTRA_DEBUG
   assert(index >= 0);
 #endif // COIN_EXTRA_DEBUG
-  if (index >= this->getLength()) this->expandlist(index + 1);
+  if (index >= this->getLength()) this->expandindex(index);
   return this->itembuffer[index];
 }
 
