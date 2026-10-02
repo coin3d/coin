@@ -160,10 +160,10 @@ class SbHash {
       this->index  = iter.index;
       this->elem  = iter.elem;
     }
-    SbHashEntry & operator*() {
+    SbHashEntry & operator*() const {
       return *this->elem;
     }
-    SbHashEntry * operator->() {
+    SbHashEntry * operator->() const {
       return this->elem;
     }
     bool operator==(const iterator & rhs) const {
@@ -182,9 +182,7 @@ class SbHash {
       this->index=0;
       setNextUsedBucket();
     }
-    iterator() {
-      this->elem = NULL;
-    }
+    iterator() : master(NULL), index(0), elem(NULL) {}
 
     inline void setNextUsedBucket() {
       for (; this->index < this->master->size; ++this->index) {
@@ -206,7 +204,7 @@ class SbHash {
       setNextUsedBucket();
     }
 
-    SbHash<Key, Type> * master;
+    const SbHash<Key, Type> * master;
     unsigned int index;
     SbHashEntry * elem;
     friend class SbHash<Key, Type>;
@@ -224,10 +222,10 @@ class SbHash {
       this->index  = iter.index;
       this->elem  = iter.elem;
     }
-    const SbHashEntry & operator*() {
+    const SbHashEntry & operator*() const {
       return *this->elem;
     }
-    const SbHashEntry * operator->() {
+    const SbHashEntry * operator->() const {
       return this->elem;
     }
     bool operator==(const const_iterator & rhs) const {
@@ -235,6 +233,12 @@ class SbHash {
     }
     bool operator!=(const const_iterator & rhs) const {
       return !((*this)==rhs);
+    }
+    friend bool operator==(const iterator & lhs, const const_iterator & rhs) {
+      return lhs.operator->() == rhs.elem;
+    }
+    friend bool operator!=(const iterator & lhs, const const_iterator & rhs) {
+      return !(lhs == rhs);
     }
     const_iterator & operator++() {
       setNext();
@@ -246,9 +250,7 @@ class SbHash {
       this->index=0;
       setNextUsedBucket();
     }
-    const_iterator() {
-      this->elem = NULL;
-    }
+    const_iterator() : master(NULL), index(0), elem(NULL) {}
 
     inline void setNextUsedBucket() {
       for (; this->index < this->master->size; ++this->index) {
@@ -324,22 +326,20 @@ class SbHash {
     this->elements = 0;
   }
 
-  iterator begin() const {
-    iterator retVal;
-
-    retVal.master = this;
-    retVal.index=0;
-
-    return retVal;
+  iterator begin() {
+    return iterator(this);
   }
 
-  iterator end() const {
-    iterator retVal;
+  iterator end() {
+    return iterator();
+  }
 
-    retVal.master = this;
-    retVal.index = this->size;
+  const_iterator begin() const {
+    return const_iterator(this);
+  }
 
-    return retVal;
+  const_iterator end() const {
+    return const_iterator();
   }
 
   const_iterator const_begin() const {
