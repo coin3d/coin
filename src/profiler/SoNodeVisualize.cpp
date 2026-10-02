@@ -56,6 +56,7 @@
 #include <Inventor/annex/Profiler/nodes/SoProfilerStats.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/misc/SoChildList.h>
+#include <Inventor/misc/SoRefPtr.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoRotation.h>
@@ -132,9 +133,9 @@ namespace {
 #endif
     }
 
-    SoTexture2 * createTexture(const TextureImageData * data)
+    SoRefPtr<SoTexture2> createTexture(const TextureImageData * data)
     {
-      SoTexture2 * texnode = new SoTexture2;
+      SoRefPtr<SoTexture2> texnode(new SoTexture2);
       texnode->image.setValue(SbVec2s(data->width, data->height), data->numcomps, data->pixels);
       return texnode;
     }
@@ -151,9 +152,10 @@ namespace {
     {
       SoTexture2 * node = NULL;
       if (!this->nodemap.get(&data, node)) {
-        node = TextureDict::createTexture(&data);
-        node->ref();
+        SoRefPtr<SoTexture2> created = this->createTexture(&data);
+        node = created.get();
         this->nodemap.put(&data, node);
+        node->ref(); // The cache owns one reference after insertion succeeds.
       }
       return node;
     }
