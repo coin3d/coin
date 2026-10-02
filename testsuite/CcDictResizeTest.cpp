@@ -4,12 +4,17 @@
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
+#include <climits>
+#include <limits>
 #include "base/dict.h"
 #include "base/dictp.h"
 #include "tidbitsp.h"
 #include "coindefs.h"
 
 static bool failnext = false;
+static bool failmalloc = false;
+static bool failconstruct = false;
+static bool failallocate = false;
 static unsigned int allocations = 0;
 static unsigned int hashes = 0;
 
@@ -24,9 +29,45 @@ test_calloc(size_t count, size_t size)
   return std::calloc(count, size);
 }
 
+static void *
+test_malloc(size_t size)
+{
+  if (failmalloc) {
+    failmalloc = false;
+    return NULL;
+  }
+  return std::malloc(size);
+}
+
+static cc_memalloc *
+test_memalloc_construct(unsigned int size, unsigned int alignment)
+{
+  if (failconstruct) {
+    failconstruct = false;
+    return NULL;
+  }
+  return cc_memalloc_construct_aligned(size, alignment);
+}
+
+static void *
+test_memalloc_allocate(cc_memalloc * allocator)
+{
+  if (failallocate) {
+    failallocate = false;
+    return NULL;
+  }
+  return cc_memalloc_allocate(allocator);
+}
+
 #define calloc(count, size) test_calloc(count, size)
+#define malloc(size) test_malloc(size)
+#define cc_memalloc_construct_aligned(size, alignment) test_memalloc_construct(size, alignment)
+#define cc_memalloc_allocate(allocator) test_memalloc_allocate(allocator)
 #include "../src/base/dict.cpp"
 #undef calloc
+#undef malloc
+#undef cc_memalloc_construct_aligned
+#undef cc_memalloc_allocate
 
 #define CHECK(condition) do { if (!(condition)) { \
   std::fprintf(stderr, "line %d: %s\n", __LINE__, #condition); \
@@ -140,6 +181,94 @@ static bool failed_growth()
   return true;
 }
 
+static bool numeric_loadfactor()
+{
+  cc_dict * dict = cc_dict_construct(2, 1e10f);
+  CHECK(dict != NULL);
+  CHECK(dict->threshold == UINT_MAX);
+  dict_resize(dict, 37);
+  CHECK(dict->threshold == UINT_MAX);
+  cc_dict_destruct(dict);
+
+  const float invalid[] = {
+    std::numeric_limits<float>::quiet_NaN(),
+    std::numeric_limits<float>::infinity(),
+    -std::numeric_limits<float>::infinity()
+  };
+  for (unsigned int i = 0; i < 3; ++i) {
+    dict = cc_dict_construct(2, invalid[i]);
+    CHECK(dict != NULL);
+    CHECK(dict->loadfactor == 0.75f);
+    CHECK(dict->threshold == 1);
+    cc_dict_destruct(dict);
+  }
+  return true;
+}
+
+static bool allocation_failures()
+{
+  failmalloc = true;
+  CHECK(cc_dict_construct(2, 0.75f) == NULL);
+  CHECK(!failmalloc);
+  failnext = true;
+  CHECK(cc_dict_construct(2, 0.75f) == NULL);
+  CHECK(!failnext);
+  failconstruct = true;
+  CHECK(cc_dict_construct(2, 0.75f) == NULL);
+  CHECK(!failconstruct);
+
+  cc_dict * dict = cc_dict_construct(2, 0.75f);
+  CHECK(dict != NULL);
+  failallocate = true;
+  CHECK(cc_dict_try_put(dict, 1, dict) == CC_DICT_PUT_FAILED);
+  CHECK(!failallocate);
+  CHECK(cc_dict_get_num_elements(dict) == 0);
+  CHECK(find_entry(dict, 1) == NULL);
+  CHECK(cc_dict_try_put(dict, 1, dict) == CC_DICT_PUT_INSERTED);
+  CHECK(cc_dict_try_put(dict, 1, NULL) == CC_DICT_PUT_REPLACED);
+
+  cc_dict_hash_func * original = dict->hashfunc;
+  failnext = true;
+  cc_dict_set_hash_func(dict, mixed_hash);
+  CHECK(!failnext);
+  CHECK(dict->hashfunc == original);
+  CHECK(find_entry(dict, 1) != NULL);
+  cc_dict_destruct(dict);
+  return true;
+}
+
+struct ApplyRemoval {
+  cc_dict * dict;
+  unsigned int visits;
+  unsigned int seen;
+};
+
+static void
+remove_current(uintptr_t key, void *, void * closure)
+{
+  ApplyRemoval * state = static_cast<ApplyRemoval *>(closure);
+  state->visits++;
+  state->seen |= 1U << key;
+  cc_dict_remove(state->dict, key);
+}
+
+static bool apply_removes_current()
+{
+  cc_dict * dict = cc_dict_construct(17, 0.75f);
+  CHECK(dict != NULL);
+  cc_dict_set_hash_func(dict, collision_hash);
+  for (uintptr_t key = 0; key < 4; ++key) {
+    CHECK(cc_dict_put(dict, key, dict));
+  }
+  ApplyRemoval state = { dict, 0, 0 };
+  cc_dict_apply(dict, remove_current, &state);
+  CHECK(state.visits == 4);
+  CHECK(state.seen == 15);
+  CHECK(cc_dict_get_num_elements(dict) == 0);
+  cc_dict_destruct(dict);
+  return true;
+}
+
 int main(int argc, char ** argv)
 {
   if (argc != 2) return 2;
@@ -147,5 +276,11 @@ int main(int argc, char ** argv)
     return relink(mixed_hash) && relink(collision_hash) ? 0 : 1;
   if (std::strcmp(argv[1], "failure") == 0)
     return failed_growth() ? 0 : 1;
+  if (std::strcmp(argv[1], "numeric") == 0)
+    return numeric_loadfactor() ? 0 : 1;
+  if (std::strcmp(argv[1], "oom") == 0)
+    return allocation_failures() ? 0 : 1;
+  if (std::strcmp(argv[1], "apply") == 0)
+    return apply_removes_current() ? 0 : 1;
   return 2;
 }
