@@ -51,6 +51,10 @@
 #include <assert.h>
 #include <stddef.h> // NULL
 #include <string.h> // memset()
+#include <climits>
+#include <cmath>
+#include <cstdint>
+#include <new>
 
 #include <Inventor/lists/SbList.h>
 #include <Inventor/C/base/memalloc.h>
@@ -58,6 +62,7 @@
 #include "tidbitsp.h"
 #include "coindefs.h"
 #include "SbBasicP.h"
+#include "base/oomp.h"
 
 // *************************************************************************
 
@@ -133,6 +138,7 @@ class SbHash {
 
     void * operator new(size_t COIN_UNUSED_ARG(size), cc_memalloc * memhandler) {
       SbHashEntry * entry = static_cast<SbHashEntry *>(cc_memalloc_allocate(memhandler));
+      if (entry == NULL) coin_oom_abort("SbHashEntry::operator new");
       entry->memhandler = memhandler;
       return static_cast<void *>(entry);
     }
@@ -423,27 +429,32 @@ protected:
   void resize(unsigned int newsize) {
     /* we don't shrink the table */
     if (this->size >= newsize) return;
+    if (static_cast<size_t>(newsize) > SIZE_MAX / sizeof(SbHashEntry *)) return;
+
+    SbHashEntry ** buckets = new (std::nothrow) SbHashEntry * [newsize];
+    if (buckets == NULL) return;
+    memset(buckets, 0, static_cast<size_t>(newsize) * sizeof(SbHashEntry *));
 
     unsigned int oldsize = this->size;
     SbHashEntry ** oldbuckets = this->buckets;
-
-    this->size = newsize;
-    this->elements = 0;
-    this->threshold = static_cast<unsigned int> (newsize * this->loadfactor);
-    this->buckets = new SbHashEntry * [newsize];
-    memset(this->buckets, 0, this->size * sizeof(SbHashEntry *));
 
     /* Transfer all mappings */
     unsigned int i;
     for (i = 0; i < oldsize; i++) {
       SbHashEntry * entry = oldbuckets[i];
       while (entry) {
-        this->put(entry->key, entry->obj);
-        SbHashEntry * preventry = entry;
-        entry = entry->next;
-        delete preventry;
+        SbHashEntry * next = entry->next;
+        const unsigned int index = SbHashFunc(entry->key) % newsize;
+        entry->next = buckets[index];
+        buckets[index] = entry;
+        entry = next;
       }
     }
+    this->buckets = buckets;
+    this->size = newsize;
+    const double scaled = static_cast<double>(newsize) * this->loadfactor;
+    this->threshold = scaled >= UINT_MAX ? UINT_MAX :
+      static_cast<unsigned int>(scaled);
     delete [] oldbuckets;
   }
 
@@ -465,11 +476,12 @@ public:
     /* Key not already in the hash table; insert a new
      * entry as the first element in the bucket
      */
+    if (this->elements == UINT_MAX) coin_oom_abort("SbHash capacity");
     entry = new (this->memhandler) SbHashEntry(key, obj, this->memhandler);
     entry->next = this->buckets[i];
     this->buckets[i] = entry;
 
-    if (this->elements++ >= this->threshold) {
+    if (this->elements++ >= this->threshold && this->size < UINT_MAX) {
       this->resize(static_cast<unsigned int>( coin_geq_prime_number(this->size + 1)));
     }
     return TRUE;
@@ -509,15 +521,22 @@ public:
 
   void commonConstructor(unsigned int sizearg, float loadfactorarg)
   {
-    if (loadfactorarg <= 0.0f) { loadfactorarg = 0.75f; }
+    if (!std::isfinite(loadfactorarg) || loadfactorarg <= 0.0f)
+      loadfactorarg = 0.75f;
     unsigned int s = coin_geq_prime_number(sizearg);
     this->memhandler = cc_memalloc_construct_aligned(
       sizeof(SbHashEntry), alignof(SbHashEntry));
+    if (this->memhandler == NULL) coin_oom_abort("SbHash allocator");
     this->size = s;
     this->elements = 0;
-    this->threshold = static_cast<unsigned int> (s * loadfactorarg);
+    const double scaled = static_cast<double>(s) * loadfactorarg;
+    this->threshold = scaled >= UINT_MAX ? UINT_MAX :
+      static_cast<unsigned int>(scaled);
     this->loadfactor = loadfactorarg;
-    this->buckets = new SbHashEntry * [this->size];
+    if (static_cast<size_t>(this->size) > SIZE_MAX / sizeof(SbHashEntry *))
+      coin_oom_abort("SbHash bucket size");
+    this->buckets = new (std::nothrow) SbHashEntry * [this->size];
+    if (this->buckets == NULL) coin_oom_abort("SbHash buckets");
     memset(this->buckets, 0, this->size * sizeof(SbHashEntry *));
   }
 
