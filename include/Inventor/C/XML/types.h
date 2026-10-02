@@ -53,10 +53,10 @@ typedef  cc_xml_attr             cc_xml_attribute;
 typedef  cc_xml_ent              cc_xml_entity;
 
 /* streaming parsing */
-enum cc_xml_filter_choice {
+typedef enum cc_xml_filter_choice {
   KEEP,
   DISCARD
-};
+} cc_xml_filter_choice;
 
 typedef cc_xml_filter_choice cc_xml_filter_cb(void * userdata, cc_xml_doc * doc, cc_xml_elt * elt, int pushing);
 
