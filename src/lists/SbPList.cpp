@@ -42,6 +42,9 @@
 #include <Inventor/lists/SbPList.h>
 #include "lists/SoCallbackListP.h"
 
+#include <climits>
+#include <new>
+
 /*!
   \fn SbPList::SbPList(const int sizehint)
 
@@ -293,10 +296,19 @@ SbPList::operator==(const SbPList & l) const
   return TRUE;
 }
 
+// Validate an expanding subscript before converting it to a list size.
+void
+SbPList::expandindex(const int index) const
+{
+  if (index == INT_MAX) throw std::bad_alloc();
+  this->expandlist(index + 1);
+}
+
 // Expand list to the given size, filling in with NULL pointers.
 void
 SbPList::expandlist(const int size) const
 {
+  if (size < 0) throw std::bad_alloc();
   const int oldsize = this->getLength();
   SbPList * thisp = (SbPList *)this;
   thisp->expand(size);
@@ -307,14 +319,39 @@ SbPList::expandlist(const int size) const
 void
 SbPList::grow(const int size)
 {
+  int newsize;
   // Default behavior is to double array size.
-  if (size == -1) this->itembuffersize <<= 1;
+  if (size == -1) {
+    if (this->itembuffersize > INT_MAX / 2) throw std::bad_alloc();
+    newsize = this->itembuffersize * 2;
+  }
   else if (size <= this->itembuffersize) return;
-  else { this->itembuffersize = size; }
+  else { newsize = size; }
 
-  void ** newbuffer = new void*[this->itembuffersize];
+  void ** newbuffer = new void*[newsize];
   const int n = this->numitems;
   for (int i = 0; i < n; i++) newbuffer[i] = this->itembuffer[i];
   if (this->itembuffer != this->builtinbuffer) delete[] this->itembuffer;
   this->itembuffer = newbuffer;
+  this->itembuffersize = newsize;
 }
+
+#ifdef COIN_TEST_SUITE
+
+#include <climits>
+#include <new>
+
+BOOST_AUTO_TEST_CASE(maximum_subscript_preserves_list)
+{
+  int value = 42;
+  SbPList list;
+  list.append(&value);
+  void ** array = list.getArrayPtr();
+
+  BOOST_REQUIRE_THROW(list[INT_MAX], std::bad_alloc);
+  BOOST_CHECK_EQUAL(list.getLength(), 1);
+  BOOST_CHECK(list.getArrayPtr() == array);
+  BOOST_CHECK(list.get(0) == &value);
+}
+
+#endif // COIN_TEST_SUITE

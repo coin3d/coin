@@ -2,6 +2,11 @@ Unreleased:
 * Platform compatibility:
   - Windows 95, 98 and Me are no longer supported. Removed their native
     font workarounds and the deprecated GetVersionEx query (issue #136).
+* bugfixes:
+  - Validate SoPath truncation and copy ranges in all builds. Invalid
+    truncation leaves the path unchanged, invalid copy ranges return NULL,
+    and popping an empty path has no effect. Copying an empty range returns
+    an empty SoPath in both Debug and Release builds.
 * API additions:
   - Added SoPath::fullPath() as the preferred way to access the complete
     path, including hidden children. Code that previously downcast an

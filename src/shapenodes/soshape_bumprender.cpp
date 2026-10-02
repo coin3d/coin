@@ -33,6 +33,12 @@
 #include "shapenodes/soshape_bumprender.h"
 
 #include <cassert>
+#include <cstring>
+#include <limits>
+#include <map>
+#include <mutex>
+#include <new>
+#include <utility>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -40,7 +46,7 @@
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/SbMatrix.h>
-#include <Inventor/details/SoPointDetail.h>
+#include <Inventor/SbVec2f.h>
 #include <Inventor/elements/SoBumpMapElement.h>
 #include <Inventor/elements/SoBumpMapMatrixElement.h>
 #include <Inventor/elements/SoCacheElement.h>
@@ -53,13 +59,11 @@
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoMultiTextureMatrixElement.h>
-#include <Inventor/elements/SoProjectionMatrixElement.h>
-#include <Inventor/elements/SoMultiTextureMatrixElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/misc/SoContextHandler.h>
 #include <Inventor/misc/SoGLDriverDatabase.h>
 #include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoPointLight.h>
@@ -69,6 +73,9 @@
 // For coin_apply_normalization_cube_map().
 #include "glue/glp.h"
 #include "rendering/SoGL.h"
+#include "tidbitsp.h"
+#include "misc/SbHash.h" // Explicit legacy destructor specialization below.
+#include <Inventor/sensors/SoNodeSensor.h>
 
 // *************************************************************************
 
@@ -229,52 +236,552 @@ SbBool bumphack = TRUE;
 
 // *************************************************************************
 
-// Both of these are unused: the destructor's calls to them (via
-// applyToAll()) are commented out below, and have been since before
-// these were last touched -- see the FIXME there. Their own bodies
-// are also entirely #if 0'd out already. Gating the whole function on
-// the same #if 0, rather than deleting them, since they're clearly
-// meant to be finished later, not abandoned.
-#if 0
 static void
-soshape_bumprender_diffuseprogramdeletion(unsigned long COIN_UNUSED_ARG(key), void * COIN_UNUSED_ARG(value))
+soshape_bumprender_delete_programs(const cc_glglue * glue,
+                                   const GLuint * programs,
+                                   const int numprograms)
 {
-  // FIXME: cleanup routines not implemented yet (for no good
-  // reason, really). 20050524 mortene.
-  diffuse_programidx * pidx = (diffuse_programidx *) value;
-  /* FIXME: There are no pointlight program initialized for diffuse
-     rendering yet. Enable when implemented. (20040209 handegar) */
-  //pidx->glue->glDeleteProgramsARB(1, &pidx->pointlight);
-  cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->dirlight);
-  cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->normalrendering);
+  assert(numprograms <= 3);
+  GLuint validprograms[3];
+  int numvalid = 0;
+  for (int i = 0; i < numprograms; i++) {
+    if (programs[i] != 0) validprograms[numvalid++] = programs[i];
+  }
+  if (numvalid > 0) {
+    cc_glglue_glDeletePrograms(glue, (GLsizei) numvalid, validprograms);
+  }
 }
 
-static void
-soshape_bumprender_specularprogramdeletion(unsigned long COIN_UNUSED_ARG(key), void * COIN_UNUSED_ARG(value))
+struct soshape_bump_program_error {
+  soshape_bump_program_error() : description(NULL), stage(NULL), error(GL_NO_ERROR), position(-1) {
+    std::memset(this->message, 0, sizeof(this->message));
+  }
+  const char * description;
+  const char * stage;
+  GLenum error;
+  GLint position;
+  // Diagnostics must not allocate while rolling back or deleting GL objects.
+  enum { MESSAGE_CAPACITY = 512 };
+  char message[MESSAGE_CAPACITY];
+  void setMessage(const char * text) {
+    size_t i = 0;
+    while (i < MESSAGE_CAPACITY - 1 && text && text[i]) {
+      this->message[i] = text[i];
+      ++i;
+    }
+    this->message[i] = '\0';
+    if (text && text[i]) {
+      this->message[MESSAGE_CAPACITY - 4] = '.';
+      this->message[MESSAGE_CAPACITY - 3] = '.';
+      this->message[MESSAGE_CAPACITY - 2] = '.';
+    }
+  }
+  void report() const {
+    if (this->description) {
+      SoDebugError::postWarning("soshape_bumprender::ensurePrograms",
+                                "Error in %s during %s! (GL error: 0x%x, byte pos: %d) '%s'.\n",
+                                this->description, this->stage, (unsigned int) this->error,
+                                this->position, this->message);
+    }
+  }
+};
+
+static SbBool
+soshape_bumprender_load_program(const cc_glglue * glue,
+                                const GLenum target,
+                                const char * source,
+                                const char * description,
+                                GLuint & program,
+                                soshape_bump_program_error & failure)
 {
-  // FIXME: cleanup routines not implemented yet (for no good
-  // reason, really). 20050524 mortene.
-  spec_programidx * pidx = (spec_programidx *) value;
-  cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->pointlight);
-  cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->dirlight);
-  cc_glglue_glDeletePrograms(pidx->glue, 1, &pidx->fragment);
+  while (glGetError() != GL_NO_ERROR) { }
+  program = 0;
+  GLint previousprogram = 0;
+  cc_glglue_glGetProgramiv(glue, target, GL_PROGRAM_BINDING_ARB, &previousprogram);
+  GLenum err = glGetError();
+  const char * stage = "save binding";
+  GLint errorpos = -1;
+  GLint programlength = 0;
+  const GLubyte * errorstring = NULL;
+  if (err == GL_NO_ERROR) {
+    stage = "generate name";
+    cc_glglue_glGenPrograms(glue, 1, &program);
+    err = glGetError();
+    if (err == GL_NO_ERROR && program != 0) {
+      stage = "bind new program";
+      cc_glglue_glBindProgram(glue, target, program);
+      err = glGetError();
+      if (err == GL_NO_ERROR) {
+        stage = "upload";
+        cc_glglue_glProgramString(glue, target, GL_PROGRAM_FORMAT_ASCII_ARB,
+                                  (GLsizei) strlen(source), source);
+        err = glGetError();
+        if (err != GL_NO_ERROR) {
+          glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorpos);
+          errorstring = glGetString(GL_PROGRAM_ERROR_STRING_ARB);
+          (void) glGetError();
+        }
+        else {
+          stage = "query uploaded length";
+          cc_glglue_glGetProgramiv(glue, target, GL_PROGRAM_LENGTH_ARB, &programlength);
+          err = glGetError();
+        }
+      }
+      // Never upload after a failed bind. Restore only a binding obtained
+      // successfully; a failed save must not change the caller's GL state.
+      cc_glglue_glBindProgram(glue, target, (GLuint) previousprogram);
+      const GLenum restoreerr = glGetError();
+      if (err == GL_NO_ERROR && restoreerr != GL_NO_ERROR) {
+        stage = "restore binding";
+        err = restoreerr;
+      }
+    }
+  }
+  if (err != GL_NO_ERROR || program == 0 || programlength <= 0) {
+    failure.description = description; failure.stage = stage;
+    failure.error = err; failure.position = errorpos;
+    failure.setMessage((const char *) errorstring);
+    return FALSE;
+  }
+  return TRUE;
 }
-#endif // 0
+
+// A callback never points at a shape/renderer. It resolves a non-reused token
+// to shared resource state, so a copied callback remains safe after removal.
+// After the shape dies, this state owns its GL objects until a current-context
+// cleanup or context destruction drains them. All cache access is serialized.
+struct soshape_bumprender::ProgramCache {
+  enum InitStatus { EMPTY, PENDING, READY, FAILED };
+  struct Context {
+    Context() : specstatus(EMPTY), diffusestatus(EMPTY) {
+      spec.fragment = spec.dirlight = spec.pointlight = 0;
+      diffuse.dirlight = diffuse.pointlight = diffuse.normalrendering = 0;
+    }
+    InitStatus specstatus, diffusestatus;
+    spec_programidx spec;
+    diffuse_programidx diffuse;
+    soshape_bump_program_error specerror, diffuseerror;
+  };
+  typedef std::map<uint32_t, Context> Contexts;
+  typedef std::shared_ptr<ProgramCache> Ptr;
+  typedef std::map<uintptr_t, Ptr> Entries;
+  struct Registry {
+    Registry() : nexttoken(0), cleanupregistered(false), exhaustionreported(false) { }
+    std::mutex mutex;
+    Entries entries;
+    uintptr_t nexttoken;
+    bool cleanupregistered;
+    bool exhaustionreported;
+  };
+  struct RedrawSensor : SoNodeSensor {
+    explicit RedrawSensor(uintptr_t token) : SoNodeSensor(redraw_cb, (void *) token) {
+      // Never notify priority-zero viewers from inside display-list traversal.
+      this->setPriority(100);
+    }
+    void trigger() override {
+      // A notification handler may destroy the renderer. Keep its sensor alive
+      // until SoDataSensor::trigger() has finished its post-callback cleanup.
+      const std::shared_ptr<RedrawSensor> sensor = this->self.lock();
+      if (!sensor) return;
+      SoNodeSensor::trigger();
+    }
+    std::weak_ptr<RedrawSensor> self;
+  };
+  typedef std::shared_ptr<RedrawSensor> RedrawPtr;
+  typedef std::map<SoNode *, RedrawPtr> Redraws;
+  ProgramCache() : token(0), alive(true), contextallocationfailed(false) { }
+  std::mutex mutex;
+  uintptr_t token;
+  bool alive;
+  bool contextallocationfailed;
+  Contexts contexts;
+  Redraws redraws;
+
+  static void redraw_cb(void * closure, SoSensor * sensor) {
+    const Ptr cache = lookup((uintptr_t) closure);
+    if (!cache) return;
+    SoNode * root = NULL;
+    {
+      std::lock_guard<std::mutex> lock(cache->mutex);
+      SoNodeSensor * node = static_cast<SoNodeSensor *>(sensor);
+      if (cache->alive) root = node->getAttachedNode();
+      if (root) root->ref();
+      node->detach();
+    }
+    // Node deletion detaches the sensor. Keep a surviving root alive through
+    // user notification handlers, with no cache/render lock held.
+    if (root) {
+      // Release our reference even if an application notification throws.
+      // This only rolls back our ownership; it does not recover that handler.
+      struct Unref {
+        void operator()(SoNode * node) const { node->unref(); }
+      };
+      const std::unique_ptr<SoNode, Unref> reference(root);
+      root->touch();
+    }
+  }
+
+  static Registry & registry() {
+    static Registry reg;
+    return reg;
+  }
+  static Ptr create() {
+    Registry * registry;
+    try {
+      // An empty std::map may allocate a sentinel (notably with MSVC).
+      registry = &ProgramCache::registry();
+    }
+    catch (const std::bad_alloc &) {
+      return Ptr(); // Failed static initialization can retry on the next call.
+    }
+    Registry & reg = *registry;
+    std::unique_lock<std::mutex> lock(reg.mutex);
+    // The low bit is reserved for the deferred initialization's program kind.
+    if (reg.nexttoken >= (std::numeric_limits<uintptr_t>::max() >> 1)) {
+      // Keep exhausted tokens unavailable in release builds too. Error
+      // handlers may inspect the registry, so report after releasing its lock.
+      // Record the diagnostic first, preventing recursive/repeated warnings.
+      const bool report = !reg.exhaustionreported;
+      reg.exhaustionreported = true;
+      lock.unlock();
+      if (report) {
+        SoDebugError::postWarning("soshape_bumprender::ProgramCache::create",
+                                  "Bump program callback tokens exhausted; program cache unavailable.");
+      }
+      return Ptr();
+    }
+    Ptr cache;
+    try {
+      cache = std::make_shared<ProgramCache>();
+    }
+    catch (const std::bad_alloc &) {
+      return Ptr(); // No resource or callback has been published.
+    }
+    cache->token = ++reg.nexttoken;
+    // Registration belongs to Coin, not to our host-allocation guard. Do it
+    // before publishing an entry, so its exception cannot orphan our cache.
+    if (!reg.cleanupregistered) {
+      coin_atexit(cleanup_registry, CC_ATEXIT_NORMAL);
+      reg.cleanupregistered = true;
+    }
+    try {
+      reg.entries.insert(std::make_pair(cache->token, cache));
+    }
+    catch (const std::bad_alloc &) {
+      return Ptr(); // Never roll back/reuse the consumed callback token.
+    }
+    return cache;
+  }
+  static Ptr lookup(uintptr_t token) {
+    Registry & reg = registry();
+    std::lock_guard<std::mutex> lock(reg.mutex);
+    Entries::const_iterator it = reg.entries.find(token);
+    return it == reg.entries.end() ? Ptr() : it->second;
+  }
+  static void retire(const Ptr & cache) {
+    bool removed = false;
+    {
+      std::lock_guard<std::mutex> lock(cache->mutex);
+      if (cache->alive || !cache->contexts.empty()) return;
+      Registry & reg = registry();
+      std::lock_guard<std::mutex> registrylock(reg.mutex);
+      removed = reg.entries.erase(cache->token) != 0;
+    }
+    if (removed) {
+      SoContextHandler::removeContextDestructionCallback(context_destruction_cb,
+                                                         (void *) cache->token);
+    }
+  }
+  static void cleanup_registry() {
+    Registry & reg = registry();
+    uintptr_t lasttoken;
+    {
+      std::lock_guard<std::mutex> lock(reg.mutex);
+      lasttoken = reg.nexttoken;
+      reg.cleanupregistered = false;
+      // Do not reuse tokens or repeat exhaustion diagnostics after SoDB::init().
+    }
+    // Drain the old identities without constructing an allocating empty map.
+    // New registrations made by a reentrant provider have larger tokens and
+    // belong to the next cleanup registration, not to this snapshot.
+    for (;;) {
+      Ptr cache;
+      {
+        std::lock_guard<std::mutex> lock(reg.mutex);
+        Entries::iterator it = reg.entries.begin();
+        if (it == reg.entries.end() || it->first > lasttoken) break;
+        cache = it->second;
+        reg.entries.erase(it);
+      }
+      SoContextHandler::removeContextDestructionCallback(context_destruction_cb,
+                                                         (void *) cache->token);
+    }
+  }
+  // Caller holds mutex. The entry exists before allocating GL names, so
+  // publishing a successfully uploaded set cannot allocate host memory.
+  static void initialize(const cc_glglue * glue, Context & ctx, bool diffuse) {
+    if (diffuse) {
+      diffuse_programidx & p = ctx.diffuse;
+      if (soshape_bumprender_load_program(glue, GL_VERTEX_PROGRAM_ARB,
+                                         diffusebumpdirlightvpprogram,
+                                         "diffuse directional light vertex program", p.dirlight, ctx.diffuseerror) &&
+          soshape_bumprender_load_program(glue, GL_VERTEX_PROGRAM_ARB,
+                                         normalrenderingvpprogram,
+                                         "normal rendering vertex program", p.normalrendering, ctx.diffuseerror)) {
+        ctx.diffusestatus = READY;
+      }
+      else {
+        const GLuint ids[] = { p.dirlight, p.pointlight, p.normalrendering };
+        soshape_bumprender_delete_programs(glue, ids, 3);
+        p.dirlight = p.pointlight = p.normalrendering = 0;
+        ctx.diffusestatus = FAILED;
+      }
+    }
+    else {
+      spec_programidx & p = ctx.spec;
+      if (soshape_bumprender_load_program(glue, GL_FRAGMENT_PROGRAM_ARB,
+                                         bumpspecfpprogram, "fragment program", p.fragment, ctx.specerror) &&
+          soshape_bumprender_load_program(glue, GL_VERTEX_PROGRAM_ARB,
+                                         directionallightvpprogram,
+                                         "directional light vertex program", p.dirlight, ctx.specerror) &&
+          soshape_bumprender_load_program(glue, GL_VERTEX_PROGRAM_ARB,
+                                         pointlightvpprogram,
+                                         "point light vertex program", p.pointlight, ctx.specerror)) {
+        ctx.specstatus = READY;
+      }
+      else {
+        const GLuint ids[] = { p.fragment, p.dirlight, p.pointlight };
+        soshape_bumprender_delete_programs(glue, ids, 3);
+        p.fragment = p.dirlight = p.pointlight = 0;
+        ctx.specstatus = FAILED;
+      }
+    }
+  }
+  SbBool request(const cc_glglue * glue, SoState * state, uint32_t contextid,
+                 bool diffuse, spec_programidx * spec, diffuse_programidx * diff) {
+    soshape_bump_program_error failure;
+    std::unique_lock<std::mutex> lock(this->mutex);
+    if (!this->alive) return FALSE;
+    Contexts::iterator context = this->contexts.find(contextid);
+    if (context == this->contexts.end()) {
+      if (this->contextallocationfailed) return FALSE;
+      try {
+        context = this->contexts.insert(std::make_pair(contextid, Context())).first;
+      }
+      catch (const std::bad_alloc &) {
+        // No GL operation has started. Keep existing contexts usable, but
+        // refuse new metadata until a destruction notification allows retry.
+        // The scalar latch cannot itself allocate and suppresses retry storms.
+        this->contextallocationfailed = true;
+        failure.description = diffuse ? "diffuse program set" : "specular program set";
+        failure.stage = "allocate context metadata";
+        failure.error = GL_OUT_OF_MEMORY;
+        lock.unlock();
+        failure.report(); // External handler exceptions are not swallowed.
+        return FALSE;
+      }
+    }
+    Context & ctx = context->second;
+    InitStatus & status = diffuse ? ctx.diffusestatus : ctx.specstatus;
+    bool schedule = false;
+    if (status == EMPTY) {
+      GLint list = 0;
+      glGetIntegerv(GL_LIST_INDEX, &list);
+      if (list != 0) {
+        status = PENDING;
+        schedule = true;
+      }
+      else initialize(glue, ctx, diffuse);
+    }
+    const InitStatus result = status;
+    if (result == READY) {
+      if (spec) *spec = ctx.spec;
+      if (diff) *diff = ctx.diffuse;
+    }
+    if (result == FAILED) {
+      soshape_bump_program_error & cached = diffuse ? ctx.diffuseerror : ctx.specerror;
+      failure = cached;
+      cached.description = NULL; // Report at most once, on use by a renderer.
+    }
+    lock.unlock();
+    // Error handlers are user callbacks. Do not invoke them under our mutex,
+    // or from the scheduler (which also holds a lock during deferred uploads).
+    failure.report();
+    if (result == PENDING) {
+      // Queries are immediate in GL_COMPILE, but Bind/ProgramString are not.
+      // Invalidate the incomplete list and initialize before the next
+      // traversal opens a cache, including when renderCaching is forced ON.
+      SoCacheElement::invalidate(state);
+      SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
+      if (schedule) {
+        const uintptr_t closure = (this->token << 1) | (diffuse ? 1 : 0);
+        try {
+          SoGLCacheContextElement::scheduleDeleteCallback(contextid,
+                                                          initialize_program_cb,
+                                                          (void *) closure);
+        }
+        catch (const std::bad_alloc &) {
+          // No queued work may own this PENDING state. Fail this family closed
+          // until context destruction, just like an allocation/upload failure.
+          lock.lock();
+          Contexts::iterator it = this->contexts.find(contextid);
+          if (this->alive && it != this->contexts.end()) {
+            InitStatus & current = diffuse ? it->second.diffusestatus : it->second.specstatus;
+            if (current == PENDING) {
+              current = FAILED;
+              soshape_bump_program_error & cached = diffuse ? it->second.diffuseerror : it->second.specerror;
+              cached.description = diffuse ? "diffuse program set" : "specular program set";
+              cached.stage = "schedule initialization";
+              cached.error = GL_OUT_OF_MEMORY;
+              failure = cached;
+              cached.description = NULL;
+            }
+          }
+          lock.unlock();
+          failure.report();
+        }
+      }
+    }
+    return result == READY;
+  }
+};
 
 soshape_bumprender::soshape_bumprender(void)
+  : programcache(ProgramCache::create())
 {
-  this->diffuseprogramsinitialized = FALSE;
-  this->programsinitialized = FALSE;
+  if (!this->programcache) return;
+  try {
+    SoContextHandler::addContextDestructionCallback(context_destruction_cb,
+                                                     (void *) this->programcache->token);
+  }
+  catch (...) {
+    // Roll back our entry, not the provider's possibly partial registration.
+    // A retained callback can only look up the now-absent, non-reused token.
+    ProgramCache::Registry & reg = ProgramCache::registry();
+    std::lock_guard<std::mutex> lock(reg.mutex);
+    reg.entries.erase(this->programcache->token);
+    throw; // Provider failures are not reported as successful local recovery.
+  }
 }
 
 soshape_bumprender::~soshape_bumprender()
 {
+  const ProgramCache::Ptr cache = this->programcache;
+  if (!cache) return;
+  {
+    std::lock_guard<std::mutex> lock(cache->mutex);
+    cache->alive = false;
+    for (ProgramCache::Contexts::iterator it = cache->contexts.begin();
+         it != cache->contexts.end();) {
+      if (it->second.specstatus == ProgramCache::READY ||
+          it->second.diffusestatus == ProgramCache::READY) ++it;
+      else cache->contexts.erase(it++);
+    }
+  }
+  // Sensor queue changes can invoke application callbacks; never cancel under
+  // the cache mutex. Transfer one shared owner at a time: an empty temporary
+  // std::map is not allocation-free on all STL implementations.
+  for (;;) {
+    ProgramCache::RedrawPtr sensor;
+    {
+      std::lock_guard<std::mutex> lock(cache->mutex);
+      ProgramCache::Redraws::iterator it = cache->redraws.begin();
+      if (it == cache->redraws.end()) break;
+      sensor = it->second;
+      cache->redraws.erase(it);
+    }
+    // This sensor, and all sensors still owned by the cache, remain alive
+    // through any reentrant application queue-change handler.
+    if (sensor->isScheduled()) sensor->unschedule();
+    sensor->detach();
+  }
+  // Never take the scheduler's mutex while holding the cache mutex: cleanup
+  // invokes deferred callbacks under its own lock. Queued callbacks contain
+  // tokens, not program names or pointers to this dead renderer.
+  // Visit numeric keys, not iterators retained across reentrant callbacks, and
+  // do not allocate a temporary context list inside this noexcept destructor.
+  bool first = true;
+  uint32_t previous = 0;
+  for (;;) {
+    uint32_t contextid;
+    {
+      std::lock_guard<std::mutex> lock(cache->mutex);
+      ProgramCache::Contexts::const_iterator it = first ? cache->contexts.begin() :
+        cache->contexts.upper_bound(previous);
+      if (it == cache->contexts.end()) break;
+      contextid = it->first;
+    }
+    first = false;
+    previous = contextid;
+    try {
+      SoGLCacheContextElement::scheduleDeleteCallback(contextid, cleanup_program_cb,
+                                                      (void *) cache->token);
+    }
+    catch (const std::bad_alloc &) {
+      // The registry and existing destruction callback still own these names.
+      // Leave them there until this context is destroyed; never unwind here.
+    }
+  }
+  ProgramCache::retire(cache);
+}
 
-  // FIXME: Cannot delete programs just yet, as we dont know if the
-  // context was valid or not. We must wait for new functionality to be
-  // implemented for the context element code. (20040209 handegar)
-  //this->diffuseprogramdict.applyToAll(soshape_bumprender_diffuseprogramdeletion);
-  //this->specularprogramdict.applyToAll(soshape_bumprender_specularprogramdeletion);
+// Retained for the private ABI. New deletion callbacks use resource tokens.
+void
+soshape_bumprender::delete_program_cb(void * closure, uint32_t contextid)
+{
+  const GLuint program = (GLuint) ((uintptr_t) closure);
+  const cc_glglue * glue = cc_glglue_instance((int) contextid);
+  cc_glglue_glDeletePrograms(glue, 1, &program);
+}
+
+void
+soshape_bumprender::context_destruction_cb(uint32_t contextid, void * userdata)
+{
+  const ProgramCache::Ptr cache = ProgramCache::lookup((uintptr_t) userdata);
+  if (!cache) return;
+  ProgramCache::Context ctx;
+  {
+    std::lock_guard<std::mutex> lock(cache->mutex);
+    cache->contextallocationfailed = false;
+    ProgramCache::Contexts::iterator it = cache->contexts.find(contextid);
+    if (it == cache->contexts.end()) return;
+    ctx = it->second;
+    cache->contexts.erase(it);
+  }
+  // No renderer access, and no cache lock across GL/glue callbacks.
+  if (ctx.specstatus == ProgramCache::READY || ctx.diffusestatus == ProgramCache::READY) {
+    const cc_glglue * glue = cc_glglue_instance((int) contextid);
+    const GLuint spec[] = { ctx.spec.fragment, ctx.spec.dirlight, ctx.spec.pointlight };
+    const GLuint diffuse[] = { ctx.diffuse.dirlight, ctx.diffuse.pointlight, ctx.diffuse.normalrendering };
+    soshape_bumprender_delete_programs(glue, spec, 3);
+    soshape_bumprender_delete_programs(glue, diffuse, 3);
+  }
+  ProgramCache::retire(cache);
+}
+
+void
+soshape_bumprender::cleanup_program_cb(void * closure, uint32_t contextid)
+{
+  context_destruction_cb(contextid, closure);
+}
+
+void
+soshape_bumprender::initialize_program_cb(void * closure, uint32_t contextid)
+{
+  const uintptr_t encoded = (uintptr_t) closure;
+  const bool diffuse = (encoded & 1) != 0;
+  const ProgramCache::Ptr cache = ProgramCache::lookup(encoded >> 1);
+  if (!cache) return;
+  GLint list = 0;
+  glGetIntegerv(GL_LIST_INDEX, &list);
+  const cc_glglue * glue = list == 0 ? cc_glglue_instance((int) contextid) : NULL;
+  std::lock_guard<std::mutex> lock(cache->mutex);
+  ProgramCache::Contexts::iterator it = cache->contexts.find(contextid);
+  if (!cache->alive || it == cache->contexts.end()) return;
+  ProgramCache::InitStatus & status = diffuse ? it->second.diffusestatus : it->second.specstatus;
+  if (status != ProgramCache::PENDING) return;
+  if (list != 0) status = ProgramCache::EMPTY; // Retry scheduling, never upload in a list.
+  else ProgramCache::initialize(glue, it->second, diffuse);
 }
 
 // to avoid warnings from SbVec3f::normalize()
@@ -290,127 +797,102 @@ inline void NORMALIZE(SbVec3f &v)
 }
 
 void
-soshape_bumprender::initDiffusePrograms(const cc_glglue * glue, SoState * state)
+soshape_bumprender::scheduleRedraw(SoState * state, SoNode * root)
 {
-  const int contextid = SoGLCacheContextElement::get(state);
-  diffuse_programidx * old;
-  if (this->diffuseprogramdict.get(contextid, old)) {
-    this->diffusebumpdirlightvertexprogramid = old->dirlight;
-    this->normalrenderingvertexprogramid = old->normalrendering;
-  }
-  else {
-
-    cc_glglue_glGenPrograms(glue, 1, &this->diffusebumpdirlightvertexprogramid);
-    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, this->diffusebumpdirlightvertexprogramid);
-    cc_glglue_glProgramString(glue, GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                              (GLsizei)strlen(diffusebumpdirlightvpprogram),
-                              diffusebumpdirlightvpprogram);
-    GLint errorPos;
-    GLenum err = glGetError();
-
-    if (err != GL_NO_ERROR) {
-      glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
-      SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
-                                "Error in diffuse dirlight vertex program! (byte pos: %d) '%s'.\n",
-                                errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-
+  const ProgramCache::Ptr cache = this->programcache;
+  if (!cache) return;
+  ProgramCache::RedrawPtr sensor;
+  {
+    std::lock_guard<std::mutex> lock(cache->mutex);
+    for (ProgramCache::Redraws::iterator it = cache->redraws.begin(); it != cache->redraws.end();) {
+      if (!it->second->isScheduled() && !it->second->getAttachedNode()) cache->redraws.erase(it++);
+      else ++it;
     }
-
-    cc_glglue_glGenPrograms(glue, 1, &this->normalrenderingvertexprogramid);
-    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, this->normalrenderingvertexprogramid);
-    cc_glglue_glProgramString(glue, GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                              (GLsizei)strlen(normalrenderingvpprogram),
-                              normalrenderingvpprogram);
-    err = glGetError();
-
-    if (err != GL_NO_ERROR) {
-      glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
-      SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
-                                "Error in normal rendering vertex program! (byte pos: %d) '%s'.\n",
-                                errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-
+    ProgramCache::Contexts::const_iterator it =
+      cache->contexts.find((uint32_t) SoGLCacheContextElement::get(state));
+    if (!cache->alive || it == cache->contexts.end() ||
+        (it->second.specstatus != ProgramCache::PENDING &&
+         it->second.diffusestatus != ProgramCache::PENDING)) return;
+    // A shared shape may belong to multiple viewers. Notify every root, not
+    // just the most recently traversed one. Sensors do not keep roots alive.
+    ProgramCache::Redraws::iterator redraw = cache->redraws.find(root);
+    if (redraw == cache->redraws.end()) {
+      try {
+        ProgramCache::RedrawPtr candidate =
+          std::make_shared<ProgramCache::RedrawSensor>(cache->token);
+        candidate->self = candidate; // weak lock cannot throw bad_weak_ptr.
+        redraw = cache->redraws.insert(std::make_pair(root, candidate)).first;
+      }
+      catch (const std::bad_alloc &) {
+        // Best-effort redraw only: no empty entry, attachment or queued sensor
+        // remains. Deferred GL initialization still owns its separate callback;
+        // a later traversal can retry notification or use the validated set.
+        return;
+      }
     }
-
-    diffuse_programidx * newstruct = new diffuse_programidx;
-    newstruct->glue = glue; // Store the cc_glglue for later when class is to be destructed.
-    newstruct->dirlight = this->diffusebumpdirlightvertexprogramid;
-    newstruct->pointlight = 0; // Pointlight vertex program not implemented yet.
-    newstruct->normalrendering = this->normalrenderingvertexprogramid;
-
-    (void) this->diffuseprogramdict.put(contextid, newstruct);
-
+    sensor = redraw->second;
+    // These dependency operations are deliberately outside the allocation
+    // guard: their queues/auditors and application callbacks own their contract.
+    if (sensor->getAttachedNode() != root) {
+      sensor->detach();
+      sensor->attach(root);
+    }
   }
-
-  this->diffuseprogramsinitialized = TRUE;
+  sensor->schedule(); // notifyChanged() is an application callback.
+  bool alive;
+  {
+    std::lock_guard<std::mutex> lock(cache->mutex);
+    alive = cache->alive;
+  }
+  // Cancellation may have run reentrantly while the queue was changing.
+  if (!alive) {
+    if (sensor->isScheduled()) sensor->unschedule();
+    sensor->detach();
+  }
 }
 
+SbBool
+soshape_bumprender::ensureDiffusePrograms(const cc_glglue * glue,
+                                          SoState * state,
+                                          diffuse_programidx & programs)
+{
+  const ProgramCache::Ptr cache = this->programcache;
+  if (!cache) return FALSE;
+  return cache->request(glue, state, (uint32_t) SoGLCacheContextElement::get(state),
+                         true, NULL, &programs);
+}
+
+SbBool
+soshape_bumprender::ensurePrograms(const cc_glglue * glue,
+                                   SoState * state,
+                                   spec_programidx & programs)
+{
+  const ProgramCache::Ptr cache = this->programcache;
+  if (!cache) return FALSE;
+  return cache->request(glue, state, (uint32_t) SoGLCacheContextElement::get(state),
+                         false, &programs, NULL);
+}
+
+// These wrappers retain private symbols exported by earlier Coin releases.
+// Rendering uses the result-returning helpers above so failed program uploads
+// are never published or used.
 void
 soshape_bumprender::initPrograms(const cc_glglue * glue, SoState * state)
 {
-  const int contextid = SoGLCacheContextElement::get(state);
-  spec_programidx * old;
-  if (this->specularprogramdict.get(contextid, old)) {
-    this->fragmentprogramid = old->fragment;
-    this->dirlightvertexprogramid = old->dirlight;
-    this->pointlightvertexprogramid = old->pointlight;
-  }
-  else {
-    cc_glglue_glGenPrograms(glue, 1, &this->fragmentprogramid); // -- Fragment program
-    cc_glglue_glBindProgram(glue, GL_FRAGMENT_PROGRAM_ARB, this->fragmentprogramid);
-    cc_glglue_glProgramString(glue, GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                              (GLsizei)strlen(bumpspecfpprogram), bumpspecfpprogram);
-    // FIXME: Maybe a wrapper for catching fragment program errors
-    // should be a part of GLUE... (20031204 handegar)
-    GLint errorPos;
-    GLenum err = glGetError();
-    if (err != GL_NO_ERROR) {
-      glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
-      SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
-                                "Error in fragment program! (byte pos: %d) '%s'.\n",
-                                errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-
-    }
-
-    cc_glglue_glGenPrograms(glue, 1, &this->dirlightvertexprogramid); // -- Directional light program
-    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, this->dirlightvertexprogramid);
-    cc_glglue_glProgramString(glue, GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                              (GLsizei)strlen(directionallightvpprogram), directionallightvpprogram);
-
-    err = glGetError();
-    if (err != GL_NO_ERROR) {
-      glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
-      SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
-                                "Error in directional light vertex program! "
-                                "(byte pos: %d) '%s'.\n",
-                                errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-
-    }
-
-    cc_glglue_glGenPrograms(glue, 1, &this->pointlightvertexprogramid); // -- Point light program
-    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, this->pointlightvertexprogramid);
-    cc_glglue_glProgramString(glue, GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
-                              (GLsizei)strlen(pointlightvpprogram), pointlightvpprogram);
-
-    err = glGetError();
-    if (err != GL_NO_ERROR) {
-      glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
-      SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
-                                "Error in point light vertex program! (byte pos: %d) '%s'.\n",
-                                errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-
-    }
-
-    spec_programidx * newstruct = new spec_programidx;
-    newstruct->glue = glue; // Store the cc_glglue for later when class is to be destructed.
-    newstruct->fragment = this->fragmentprogramid;
-    newstruct->dirlight = this->dirlightvertexprogramid;
-    newstruct->pointlight = this->pointlightvertexprogramid;
-
-    (void) this->specularprogramdict.put(contextid, newstruct);
-  }
-
-  this->programsinitialized = TRUE;
+  spec_programidx programs;
+  (void) this->ensurePrograms(glue, state, programs);
 }
+
+void
+soshape_bumprender::initDiffusePrograms(const cc_glglue * glue, SoState * state)
+{
+  diffuse_programidx programs;
+  (void) this->ensureDiffusePrograms(glue, state, programs);
+}
+
+// Preserve the destructor symbol for the old private cache specialization.
+// The live cache stores values and does not incur the legacy allocation cost.
+template SbHash<int, soshape_bumprender::diffuse_programidx *>::~SbHash();
 
 void
 soshape_bumprender::renderBumpSpecular(SoState * state,
@@ -429,8 +911,8 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
   const SbColor spec = SoLazyElement::getSpecular(state);
   float shininess = SoLazyElement::getShininess(state);
 
-  if (!this->programsinitialized)
-    this->initPrograms(glue, state);
+  spec_programidx programs;
+  if (!this->ensurePrograms(glue, state, programs)) return;
 
   this->initLight(light, toobjectspace);
 
@@ -462,7 +944,7 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
 
   // FRAGMENT: Setting up spec. colour and shininess for the fragment program
   glEnable(GL_FRAGMENT_PROGRAM_ARB);
-  cc_glglue_glBindProgram(glue, GL_FRAGMENT_PROGRAM_ARB, fragmentprogramid);
+  cc_glglue_glBindProgram(glue, GL_FRAGMENT_PROGRAM_ARB, programs.fragment);
   cc_glglue_glProgramEnvParameter4f(glue, GL_FRAGMENT_PROGRAM_ARB, 0,
                                     spec[0], spec[1], spec[2], 1.0f);
 
@@ -470,7 +952,6 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
                                     shininess * 64, 0.0f, 0.0f, 1.0f);
 
   const SbViewVolume & vv = SoViewVolumeElement::get(state);
-  //const SbMatrix & vm = SoViewingMatrixElement::get(state);
 
   SbVec3f eyepos = vv.getProjectionPoint();
   SoModelMatrixElement::get(state).inverse().multVecMatrix(eyepos, eyepos);
@@ -478,10 +959,10 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
   // VERTEX: Setting up lightprograms
   glEnable(GL_VERTEX_PROGRAM_ARB);
   if (!this->ispointlight) {
-    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, dirlightvertexprogramid);
+    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, programs.dirlight);
   }
   else {
-    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, pointlightvertexprogramid);
+    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, programs.pointlight);
   }
 
   cc_glglue_glProgramEnvParameter4f(glue, GL_VERTEX_PROGRAM_ARB, 0,
@@ -607,12 +1088,12 @@ soshape_bumprender::renderBump(SoState * state,
   SbBool use_vertex_program = lastenabled <= 1 && SoGLDriverDatabase::isSupported(glue, SO_GL_ARB_VERTEX_PROGRAM);
   use_vertex_program = FALSE; // FIXME: disabled until vertex program
                               // for point lights is implemented
-  if (use_vertex_program) {
-    if (!this->diffuseprogramsinitialized) {
-      this->initDiffusePrograms(glue, state);
-    }
+  diffuse_programidx diffuseprograms;
+  if (use_vertex_program &&
+      !this->ensureDiffusePrograms(glue, state, diffuseprograms)) {
+    use_vertex_program = FALSE;
   }
-  else {
+  if (!use_vertex_program) {
     // need to calculate tsb coordinates manually
     this->calcTSBCoords(cache, light);
   }
@@ -686,7 +1167,8 @@ soshape_bumprender::renderBump(SoState * state,
   if (use_vertex_program) {
     glEnable(GL_VERTEX_PROGRAM_ARB);
     if (!this->ispointlight) {
-      cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, diffusebumpdirlightvertexprogramid);
+      cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB,
+                              diffuseprograms.dirlight);
     }
     else {
       assert(0);
@@ -746,12 +1228,15 @@ soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache *
   SbBool use_vertex_program = lastenabled <= 1 && SoGLDriverDatabase::isSupported(glue, SO_GL_ARB_VERTEX_PROGRAM);
   use_vertex_program = FALSE; // FIXME: disabled until vertex program
                               // for point lights is implemented
+  diffuse_programidx diffuseprograms;
+  if (use_vertex_program &&
+      !this->ensureDiffusePrograms(glue, state, diffuseprograms)) {
+    use_vertex_program = FALSE;
+  }
   if (use_vertex_program) {
-    if (!this->diffuseprogramsinitialized) {
-      this->initDiffusePrograms(glue, state);
-    }
     glEnable(GL_VERTEX_PROGRAM_ARB);
-    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB, normalrenderingvertexprogramid);
+    cc_glglue_glBindProgram(glue, GL_VERTEX_PROGRAM_ARB,
+                            diffuseprograms.normalrendering);
   }
 
   int arrays =
@@ -831,6 +1316,14 @@ soshape_bumprender::calcTSBCoords(const SoPrimitiveVertexCache * cache, SoLight 
   const SbVec3f * normals = cache->getNormalArray();
 
   this->cubemaplist.truncate(0);
+  // Reserve at the list's usual doubling threshold. Exact reservation would
+  // reallocate for every small increase in a changing vertex cache.
+  int capacity = 1;
+  while (capacity < numv) {
+    if (capacity > std::numeric_limits<int>::max() / 2) throw std::bad_alloc();
+    capacity *= 2;
+  }
+  this->cubemaplist.ensureCapacity(capacity);
   for (int i = 0; i < numv; i++) {
     SbVec3f sTangent = this->tangentlist[i*2];
     SbVec3f tTangent = this->tangentlist[i*2+1];
