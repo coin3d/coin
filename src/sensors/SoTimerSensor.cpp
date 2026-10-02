@@ -264,7 +264,16 @@ SoTimerSensor::trigger(void)
   this->istriggering = TRUE;
   // This will cause SoSceneManager to reschedule this timer after
   // the current queue has been processed.
-  SoDB::getSensorManager()->rescheduleTimer(this);
+  try {
+    SoDB::getSensorManager()->rescheduleTimer(this);
+  }
+  catch (...) {
+    // The timer has already left the active queue. If staging it for
+    // rescheduling fails, it must be available for an explicit retry.
+    this->istriggering = FALSE;
+    this->scheduled = FALSE;
+    throw;
+  }
 
   // don't call SoTimerQueueSensor::trigger() as it will clear
   // the scheduled flag.

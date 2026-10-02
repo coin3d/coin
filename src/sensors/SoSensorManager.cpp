@@ -354,7 +354,14 @@ SoSensorManager::insertDelaySensor(SoDelayQueueSensor * newentry)
   // strategy.
   if (newentry->getPriority() == 0) {
     LOCK_IMMEDIATE_QUEUE(this);
-    PRIVATE(this)->immediatequeue.append(newentry);
+    try {
+      PRIVATE(this)->immediatequeue.append(newentry);
+    }
+    catch (...) {
+      UNLOCK_IMMEDIATE_QUEUE(this);
+      throw;
+    }
+    newentry->scheduled = TRUE;
     UNLOCK_IMMEDIATE_QUEUE(this);
   }
   else {
@@ -369,7 +376,14 @@ SoSensorManager::insertDelaySensor(SoDelayQueueSensor * newentry)
           (delayqueue[pos]->getPriority() <= newsensorpriority)) {
       pos++;
     }
-    delayqueue.insert(newentry, pos);
+    try {
+      delayqueue.insert(newentry, pos);
+    }
+    catch (...) {
+      UNLOCK_DELAY_QUEUE(this);
+      throw;
+    }
+    newentry->scheduled = TRUE;
     UNLOCK_DELAY_QUEUE(this);
     if (!PRIVATE(this)->timeoutsensor->isScheduled() &&
         PRIVATE(this)->delaysensortimeout != SbTime::zero()) {
@@ -415,7 +429,14 @@ SoSensorManager::insertTimerSensor(SoTimerQueueSensor * newentry)
          (timerqueue[i]->getTriggerTime().getValue() <= newtime)) {
     i++;
   }
-  timerqueue.insert(newentry, i);
+  try {
+    timerqueue.insert(newentry, i);
+  }
+  catch (...) {
+    UNLOCK_TIMER_QUEUE(this);
+    throw;
+  }
+  newentry->scheduled = TRUE;
 
   UNLOCK_TIMER_QUEUE(this);
 
@@ -815,7 +836,13 @@ SoSensorManager::rescheduleTimer(SoTimerSensor * s)
   SoSensorManagerP::assertAlive(PRIVATE(this));
 
   LOCK_RESCHEDULE_LIST(this);
-  PRIVATE(this)->reschedulelist.append(s);
+  try {
+    PRIVATE(this)->reschedulelist.append(s);
+  }
+  catch (...) {
+    UNLOCK_RESCHEDULE_LIST(this);
+    throw;
+  }
   UNLOCK_RESCHEDULE_LIST(this);
 }
 

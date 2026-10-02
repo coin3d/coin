@@ -178,7 +178,6 @@ void
 SoDelayQueueSensor::schedule(void)
 {
   if (!this->scheduled) {
-    this->scheduled = TRUE;
     SoDB::getSensorManager()->insertDelaySensor(this);
   }
 }

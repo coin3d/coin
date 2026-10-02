@@ -198,7 +198,6 @@ SoTimerQueueSensor::schedule(void)
     return;
   }
 
-  this->scheduled = TRUE;
   SoDB::getSensorManager()->insertTimerSensor(this);
 }
 
