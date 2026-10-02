@@ -400,7 +400,7 @@ cc_xml_doc_set_filter_cb_x(cc_xml_doc * doc, cc_xml_filter_cb * cb, void * userd
 }
 
 /*!
-  \fn void cc_xml_doc_get_filter_cb(const cc_xml_doc * doc, cc_xml_filter_cb *& cb, void *& userdata)
+  \fn void cc_xml_doc_get_filter_cb(const cc_xml_doc * doc, cc_xml_filter_cb ** cb, void ** userdata)
 
   Returns the set filter callback in the \a cb arg and \a userdata arg.
 
@@ -409,10 +409,10 @@ cc_xml_doc_set_filter_cb_x(cc_xml_doc * doc, cc_xml_filter_cb * cb, void * userd
 */
 
 void
-cc_xml_doc_get_filter_cb(const cc_xml_doc * doc, cc_xml_filter_cb *& cb, void *& userdata)
+cc_xml_doc_get_filter_cb(const cc_xml_doc * doc, cc_xml_filter_cb ** cb, void ** userdata)
 {
-  cb = doc->filtercb;
-  userdata = doc->filtercbdata;
+  if (cb) *cb = doc->filtercb;
+  if (userdata) *userdata = doc->filtercbdata;
 }
 
 // *************************************************************************
@@ -687,14 +687,15 @@ cc_xml_doc_create_element_x(cc_xml_doc * doc, cc_xml_path * path)
 // *************************************************************************
 
 SbBool
-cc_xml_doc_write_to_buffer(const cc_xml_doc * doc, char *& buffer, size_t & bytes)
+cc_xml_doc_write_to_buffer(const cc_xml_doc * doc, char ** buffer, size_t * bytes)
 {
   assert(doc);
-  bytes = cc_xml_doc_calculate_size(doc);
-  buffer = new char [ bytes + 1 ];
+  if (buffer == NULL || bytes == NULL) return FALSE;
+  *bytes = cc_xml_doc_calculate_size(doc);
+  *buffer = new char [ *bytes + 1 ];
 
-  size_t bytesleft = bytes;
-  char * hereptr = buffer;
+  size_t bytesleft = *bytes;
+  char * hereptr = *buffer;
 
 // macro to advance buffer pointer and decrement bytesleft count
 #define ADVANCE_NUM_BYTES(len)          \
@@ -737,7 +738,7 @@ cc_xml_doc_write_to_buffer(const cc_xml_doc * doc, char *& buffer, size_t & byte
 #undef ADVANCE_STRING_LITERAL
 #undef ADVANCE_NUM_BYTES
 
-  buffer[bytes] = '\0';
+  (*buffer)[*bytes] = '\0';
 
   return TRUE;
 }
