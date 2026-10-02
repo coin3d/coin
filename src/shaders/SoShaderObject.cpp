@@ -105,6 +105,7 @@
 #include <Inventor/nodes/SoShaderObject.h>
 
 #include <cassert>
+#include <memory>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoSearchAction.h>
@@ -439,19 +440,21 @@ SoShaderObjectP::render(SoState * state)
       return;
     }
 
+    std::unique_ptr<SoGLShaderObject> newshader;
     switch (this->cachedSourceType) {
     case SoShaderObject::ARB_PROGRAM:
-      shaderobject = new SoGLARBShaderObject(cachecontext);
+      newshader.reset(new SoGLARBShaderObject(cachecontext));
       break;
     case SoShaderObject::CG_PROGRAM:
-      shaderobject = new SoGLCgShaderObject(cachecontext);
+      newshader.reset(new SoGLCgShaderObject(cachecontext));
       break;
     case SoShaderObject::GLSL_PROGRAM:
-      shaderobject = new SoGLSLShaderObject(cachecontext);
+      newshader.reset(new SoGLSLShaderObject(cachecontext));
       break;
     default:
       assert(FALSE && "This shouldn't happen!");
     }
+    shaderobject = newshader.get();
 
     if (this->owner->isOfType(SoVertexShader::getClassTypeId())) {
       shaderobject->setShaderType(SoGLShaderObject::VERTEX);
@@ -472,6 +475,7 @@ SoShaderObjectP::render(SoState * state)
 #endif
     shaderobject->load(this->cachedSourceProgram.getString());
     this->setGLShaderObject(shaderobject, cachecontext);
+    newshader.release(); // The context map owns the shader object now.
   }
   if (shaderobject) {
     shaderProgram->addShaderObject(shaderobject);

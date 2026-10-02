@@ -315,7 +315,13 @@ SoVBO::bindBuffer(uint32_t contextid)
                            this->datasize,
                            this->data,
                            this->usage);
-    this->vbohash.put(contextid, buffer);
+    try {
+      this->vbohash.put(contextid, buffer);
+    }
+    catch (...) {
+      cc_glglue_glDeleteBuffers(glue, 1, &buffer);
+      throw;
+    }
   }
   else {
     // buffer already exists, bind it

@@ -373,6 +373,7 @@
 #include <Inventor/elements/SoTextureUnitElement.h>
 
 #include <cassert>
+#include <memory>
 
 #include "nodes/SoSubNodeP.h"
 #include "misc/SbSmallMap.h"
@@ -425,16 +426,13 @@ class SoUniformShaderParameterP {
 public:
   SoUniformShaderParameterP() { }
   ~SoUniformShaderParameterP() {
-    SbList <uint32_t> keylist;
-    this->glparams.makeKeyList(keylist);
-    for (int i = 0; i < keylist.getLength(); i++) {
-      SoGLShaderParameter * param;
-      (void) this->glparams.get(keylist[i], param);
-      deleteGLParameter(param);
+    for (SbSmallMap<uint32_t, SoGLShaderParameter *>::const_iterator it =
+           this->glparams.const_begin(); it != this->glparams.const_end(); ++it) {
+      deleteGLParameter(it->obj);
     }
   }
-  static void deleteGLParameter(SoGLShaderParameter * COIN_UNUSED_ARG(param)) {
-    // FIXME: schedule for delete, pederb 2005-11-30
+  static void deleteGLParameter(SoGLShaderParameter * param) {
+    delete param;
   }
   // FIXME: add a cache context destruction callback, pederb 2005-11-30
   // Uniform parameters normally have resources in only a few GL contexts.
@@ -472,13 +470,15 @@ SoUniformShaderParameter::ensureParameter(SoGLShaderObject * shader)
   const uint32_t context = shader->getCacheContext();
   SoGLShaderParameter * param;
   if (!PRIVATE(this)->glparams.get(context, param)) {
-    param = shader->getNewParameter();
-    (void) PRIVATE(this)->glparams.put(context, param);
+    std::unique_ptr<SoGLShaderParameter> created(shader->getNewParameter());
+    (void) PRIVATE(this)->glparams.put(context, created.get());
+    param = created.release();
   }
   if (param->shaderType() != shader->shaderType()) {
+    std::unique_ptr<SoGLShaderParameter> replacement(shader->getNewParameter());
+    (void) PRIVATE(this)->glparams.put(context, replacement.get());
     SoUniformShaderParameterP::deleteGLParameter(param);
-    param = shader->getNewParameter();
-    (void) PRIVATE(this)->glparams.put(context, param);
+    param = replacement.release();
   }
 }
 
