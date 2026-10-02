@@ -168,6 +168,8 @@ if(HAVE_MANIPULATORS)
   add_test(NAME SoManipNestedKit COMMAND SoManipNestedKitTest)
 endif()
 
+add_subdirectory(xml-c-api/c-headers)
+
 add_executable(SoPathRangeTest SoPathRangeTest.cpp)
 target_link_libraries(SoPathRangeTest Coin ${COIN_TARGET_LINK_LIBRARIES})
 target_include_directories(SoPathRangeTest PRIVATE
