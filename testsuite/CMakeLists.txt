@@ -141,7 +141,7 @@ target_include_directories(CoinTests PRIVATE
 	${COIN_TARGET_INCLUDE_DIRECTORIES}
 )
 if(NOT WIN32)
-	target_sources(CoinTests PRIVATE GLUWrapperTest.cpp)
+	target_sources(CoinTests PRIVATE GLUWrapperTest.cpp GLUNurbsColorMapTest.cpp)
 	target_include_directories(CoinTests PRIVATE ${PROJECT_BINARY_DIR}/src)
 endif()
 if (USE_PTHREAD)
@@ -238,6 +238,40 @@ target_include_directories(SoPathChildAppendTest PRIVATE
   ${PROJECT_BINARY_DIR}/include
   ${COIN_TARGET_INCLUDE_DIRECTORIES})
 add_test(NAME SoPathChildAppend COMMAND SoPathChildAppendTest)
+
+# This render regression requires a real GLX display; enable it explicitly in
+# environments with X11 or run CTest under xvfb-run.
+option(COIN_TEST_NURBS_COLOR_GLX "Enable NURBS control-color GLX render tests" OFF)
+if(COIN_TEST_NURBS_COLOR_GLX)
+  find_package(X11 REQUIRED)
+  find_package(OpenGL REQUIRED)
+  add_executable(NurbsControlColorRenderTest
+    reproducers/nurbs-control-colors/repro.cpp)
+  target_include_directories(NurbsControlColorRenderTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${X11_INCLUDE_DIR} ${OPENGL_INCLUDE_DIR})
+  target_link_libraries(NurbsControlColorRenderTest
+    Coin ${X11_LIBRARIES} OpenGL::GL)
+  add_test(NAME NurbsControlColorRender
+    COMMAND NurbsControlColorRenderTest)
+  add_test(NAME IndexedNurbsControlColorRender
+    COMMAND NurbsControlColorRenderTest indexed)
+  set_tests_properties(NurbsControlColorRender IndexedNurbsControlColorRender
+    PROPERTIES TIMEOUT 30)
+  foreach(color_case rational rational-indexed cubic cubic-indexed
+      rational-cubic rational-cubic-indexed rational-nonuniform
+      rational-repeated rational-cubic-domain rational-cubic-alpha
+      rational-cubic-indexed-binding rational-cubic-screen
+      rational-cubic-medium rational-cubic-low overall rational-overall
+      rational-cubic-texture rational-cubic-indexed-texture
+      rational-cubic-domain-texture rational-cubic-trim
+      rational-cubic-nonclamped rational-material-alpha
+      rational-cubic-indexed-material-alpha)
+    add_test(NAME NurbsControlColor_${color_case}
+      COMMAND NurbsControlColorRenderTest ${color_case})
+    set_tests_properties(NurbsControlColor_${color_case} PROPERTIES TIMEOUT 30)
+  endforeach()
+endif()
 
 add_test(NAME CoinConfigCompatibility
   COMMAND ${CMAKE_COMMAND}
