@@ -1,4 +1,7 @@
 Unreleased:
+* Platform compatibility:
+  - Windows 95, 98 and Me are no longer supported. Removed their native
+    font workarounds and the deprecated GetVersionEx query (issue #136).
 * API additions:
   - Added SoPath::fullPath() as the preferred way to access the complete
     path, including hidden children. Code that previously downcast an

@@ -75,17 +75,17 @@ git log --follow -S 'coin_GetVersionEx' -- src/glue/win32api.cpp
 
 ## Validation
 
-`Win32FontApiTest.cpp` is a Windows-only CTest executable. It compiles the
-private GDI wrapper locally, then queries a memory DC with two stock fonts.
-It compares sizing and name retrieval against the native GDI API, verifies
-null termination and a canary beyond the requested buffer, restores the
-selected font and releases the DC. It requires no OpenGL context.
+`Win32FontApiTest.cpp` supplies Windows-only ANSI and Unicode CTest executables. They compile the
+private GDI wrapper locally, then query a memory DC with two stock fonts.
+They compare sizing and name retrieval against the native GDI API, verify
+null termination and a canary beyond the requested buffer, restore the
+selected font and release the DC. They require no OpenGL context.
 
 On Windows, with a configured test build:
 
 ```sh
-cmake --build build --target CoinWin32FontApiTest
-ctest --test-dir build -C Release -R '^Win32FontApi$' --output-on-failure
+cmake --build build --config Release --target CoinWin32FontApiTest CoinWin32FontApiTestUnicode
+ctest --test-dir build -C Release -R '^Win32FontApi(Unicode)?$' --output-on-failure
 ```
 
 Local validation on Linux used Zig 0.15.2 to generate Windows x64 COFF
@@ -106,10 +106,65 @@ All five object compilations passed. Object symbol inspection confirms that
 search finds no `GetVersionEx`, `VerifyVersionInfo`, `OSVERSIONINFO`, or Win9x
 flag in the three modified Windows files. `git diff --check` passed.
 
-Native GDI runtime execution and visual glyph extrusion validation were not
-performed in this Linux session. Windows is available through dual boot,
-but was not booted for this validation; Wine is not installed. The Windows
-CTest entry is available for that session and the existing Windows CI build.
+### Native Windows validation, October 2, 2026
+
+The published branch at `b268ff2387` was built on Windows 10 Pro x64,
+version 10.0.19045, using Visual Studio 2022 Build Tools 17.14,
+MSVC 19.44.35229.0, Windows SDK 10.0.26100.0 and CMake 3.31.6.
+The configuration was Release, shared Coin, tests enabled, and the legacy
+OpenGL renderer enabled.
+
+- All 11 CTest entries passed. The main CoinTests runner completed 348 tests
+  and 83,866 checks; the remaining entries included configuration compatibility,
+  profiler initialization, and the native ANSI and Unicode font API tests.
+- Both font API targets compile with MSVC `/we4996`. Temporarily restoring
+  the original Windows implementation from parent `dd559d4b60` made the ANSI
+  target fail with C4996 on `GetVersionExA`; restoring the correction made
+  both targets compile and pass again.
+- `visual.cpp` rendered extruded `SoText3` glyphs with Arial and Times New
+  Roman, including inner contours in `O`, `B` and `8`. FreeType was disabled
+  with `COIN_FORCE_FREETYPE_OFF=1`; diagnostic output confirmed native Win32
+  fonts were active. Images were inspected for filled holes and extrusion gaps.
+- The same build was rebuilt with the three original Windows files from
+  `dd559d4b60`, then with the corrected files. The before/after PPM images
+  were byte-identical for both fonts. Foreground counts were 25,173 pixels
+  for Arial and 19,292 pixels for Times New Roman in 1000 by 500 RGB images.
+
+SHA-256 of each matching before/after image:
+
+| Font | PPM SHA-256 |
+| --- | --- |
+| Arial | `8f4bd293a7ccb46516b5dea2103a3a7c6bb6e593e594281bf000fae33528a768` |
+| Times New Roman | `009d0a48a3ae692dcca1c3e9de353feb506198ce570c318eb05a26f84cdc25c7` |
+
+The corrected source and binaries were restored after comparison, and both
+native font tests passed again. This validates the retained behavior on the
+tested Windows 10 installation; Windows 9x and Windows 11 were not executed.
+
+### Reproduce the visual check
+
+Install the test build to a writable directory, then build this standalone
+consumer of the installed Coin package. In PowerShell, replace the installation
+path with your own:
+
+```powershell
+$coinInstall = 'C:/work/coin-install'
+cmake -S testsuite/reproducers/win32-font-version-query -B build/font-visual `
+  -G 'Visual Studio 17 2022' -A x64 "-DCMAKE_PREFIX_PATH=$coinInstall"
+cmake --build build/font-visual --config Release
+$env:PATH = "$coinInstall/bin;" + $env:PATH
+$env:COIN_FORCE_FREETYPE_OFF = '1'
+$env:COIN_FORCE_WIN32FONTS_OFF = '0'
+$env:COIN_DEBUG_FONTSUPPORT = '1'
+& ./build/font-visual/Release/issue136-visual.exe ./build/arial.ppm Arial
+& ./build/font-visual/Release/issue136-visual.exe ./build/times.ppm 'Times New Roman'
+Get-FileHash ./build/arial.ppm, ./build/times.ppm -Algorithm SHA256
+```
+
+The program uses only Coin and the platform OpenGL implementation, writes
+portable RGB PPM images, and rejects an empty render. It needs a Windows
+session capable of creating a WGL context. Exact hashes can vary across font
+versions, drivers and machines; compare before/after on the same environment.
 
 ## References
 
