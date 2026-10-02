@@ -42,14 +42,27 @@ extern "C" {
 #endif /* __cplusplus */
 
   typedef struct cc_memalloc cc_memalloc;
+  /* Called when the current block cannot supply another unit. The argument
+     includes the allocation being attempted. Return a positive block size
+     multiplier; invalid or overflowing results make allocation return NULL. */
   typedef int cc_memalloc_strategy_cb(const int numunits_allocated);
 
 /* ********************************************************************** */
-  
+
+  /* The allocator owns raw storage only. Construct returns NULL if the unit
+     size cannot be represented after pointer alignment or on allocation
+     failure. Units requiring alignment beyond malloc's guarantee are not
+     supported. Callers must synchronize concurrent access. */
   COIN_DLL_API cc_memalloc * cc_memalloc_construct(const unsigned int unitsize);
+  /* Destruction and clear invalidate all outstanding unit pointers. */
   COIN_DLL_API void cc_memalloc_destruct(cc_memalloc * allocator);
+  /* Returns NULL on allocation failure, including invalid growth strategy.
+     A failed call leaves existing units and the allocator usable. */
   COIN_DLL_API void * cc_memalloc_allocate(cc_memalloc * allocator);
+  /* ptr must be a live unit returned by this allocator. Null, duplicate,
+     foreign, interior, and invalidated pointers violate the contract. */
   COIN_DLL_API void cc_memalloc_deallocate(cc_memalloc * allocator, void * ptr);
+  /* Releases all blocks and resets the live-unit count. */
   COIN_DLL_API void cc_memalloc_clear(cc_memalloc * allocator);
   COIN_DLL_API void cc_memalloc_set_strategy(cc_memalloc * allocator, cc_memalloc_strategy_cb * cb);
 
