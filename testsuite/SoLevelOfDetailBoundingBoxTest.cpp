@@ -211,9 +211,9 @@ BOOST_AUTO_TEST_CASE(lod_bbox_camera_space_bypasses_cache) {
   BOOST_CHECK_EQUAL(scene.traversals, 3);
 }
 
-int main() {
+int main(int argc, char * argv[]) {
   SoDB::init();
-  const int result = CoinTest::run_all();
+  const int result = CoinTest::run_all(argc, argv);
   SoDB::finish();
   return result;
 }
