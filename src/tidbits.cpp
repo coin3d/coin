@@ -1082,10 +1082,10 @@ static std::atomic<SbBool> isexiting(FALSE);
 
 #ifdef COIN_THREADSAFE
 static std::mutex &
-coin_atexit_mutex(void)
+coin_tidbits_mutex(void)
 {
-  /* Registration can precede coin_init_tidbits(). The mutex must also
-     outlive each cleanup cycle so that waiters never use a freed mutex. */
+  /* Registration and standard stream access can precede coin_init_tidbits().
+     Keep this mutex alive across cleanup cycles for waiting threads. */
   static std::mutex mutex;
   return mutex;
 }
@@ -1145,7 +1145,7 @@ coin_atexit_cleanup(void)
 
 #ifdef COIN_THREADSAFE
   {
-    std::lock_guard<std::mutex> guard(coin_atexit_mutex());
+    std::lock_guard<std::mutex> guard(coin_tidbits_mutex());
     if (isexiting || !atexit_list) return;
     isexiting = TRUE;
   }
@@ -1185,7 +1185,7 @@ coin_atexit_cleanup(void)
 
 #ifdef COIN_THREADSAFE
   {
-    std::lock_guard<std::mutex> guard(coin_atexit_mutex());
+    std::lock_guard<std::mutex> guard(coin_tidbits_mutex());
     cc_list_destruct(atexit_list);
     atexit_list = NULL;
     isexiting = FALSE;
@@ -1224,7 +1224,7 @@ void
 coin_atexit_func(const char * name, coin_atexit_f * f, coin_atexit_priorities priority)
 {
 #ifdef COIN_THREADSAFE
-  std::lock_guard<std::mutex> guard(coin_atexit_mutex());
+  std::lock_guard<std::mutex> guard(coin_tidbits_mutex());
 #endif /* COIN_THREADSAFE */
 
   if (isexiting) {
@@ -1357,6 +1357,9 @@ static int coin_dup_stderr = -1;
 void
 free_std_fds(void)
 {
+#ifdef COIN_THREADSAFE
+  std::lock_guard<std::mutex> guard(coin_tidbits_mutex());
+#endif /* COIN_THREADSAFE */
   /* Close stdin/stdout/stderr */
   if (coin_stdin) {
     assert(coin_dup_stdin != -1);
@@ -1387,6 +1390,9 @@ free_std_fds(void)
 static FILE *
 coin_get_std_fd(FILE ** stream, int * savedfd, int fd, const char * mode)
 {
+#ifdef COIN_THREADSAFE
+  std::lock_guard<std::mutex> guard(coin_tidbits_mutex());
+#endif /* COIN_THREADSAFE */
   if (*stream == NULL) {
     const int duplicate = dup(fd);
     if (duplicate == -1) return NULL;
