@@ -75,28 +75,36 @@ dict_get_index(cc_dict * ht, uintptr_t key)
 static void
 dict_resize(cc_dict * ht, unsigned int newsize)
 {
-  cc_dict_entry ** oldbuckets = ht->buckets;
-  unsigned int oldsize = ht->size, i;
-
   /* Never shrink the table */
   if (ht->size >= newsize)
     return;
 
-  ht->size = newsize;
-  ht->elements = 0;
-  ht->threshold = (unsigned int) (newsize * ht->loadfactor);
-  ht->buckets = (cc_dict_entry **) calloc(newsize, sizeof(cc_dict_entry*));
+  /* Growth is optional: keep the current table, including the entry just
+     inserted by cc_dict_put(), if the new bucket array cannot be allocated. */
+  cc_dict_entry ** buckets = (cc_dict_entry **)
+    calloc(newsize, sizeof(cc_dict_entry *));
+  if (buckets == NULL) return;
 
-  /* Transfer all mappings */
-  for (i = 0; i < oldsize; i++) {
-    cc_dict_entry * he = oldbuckets[i];
-    while (he) {
-      cc_dict_entry * oldentry = he;
-      he = he->next;
-      cc_dict_put(ht, oldentry->key, oldentry->val);
-      cc_memalloc_deallocate(ht->memalloc, oldentry);
+  cc_dict_entry ** oldbuckets = ht->buckets;
+  const unsigned int oldsize = ht->size;
+
+  /* Relink existing entries directly. Their count and allocator ownership
+     do not change, and migration must not trigger another resize. */
+  for (unsigned int i = 0; i < oldsize; i++) {
+    cc_dict_entry * entry = oldbuckets[i];
+    while (entry != NULL) {
+      cc_dict_entry * next = entry->next;
+      const unsigned int idx =
+        (unsigned int) (ht->hashfunc(entry->key) % newsize);
+      entry->next = buckets[idx];
+      buckets[idx] = entry;
+      entry = next;
     }
   }
+
+  ht->buckets = buckets;
+  ht->size = newsize;
+  ht->threshold = (unsigned int) (newsize * ht->loadfactor);
   free(oldbuckets);
 }
 
@@ -189,6 +197,10 @@ cc_dict_clear(cc_dict * ht)
   key is already used by another element, the element value will be
   overwritten, and \e FALSE is returned. Otherwise a new element is
   created and \e TRUE is returned.
+
+  If allocation of a larger bucket array fails, the new entry remains
+  inserted in the current table and \e TRUE is still returned. A later
+  insertion may retry growth.
 
  */
 SbBool
