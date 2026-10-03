@@ -207,6 +207,14 @@ if(UNIX)
     ${COIN_TARGET_INCLUDE_DIRECTORIES})
   add_test(NAME CoinProfilerOutputFailure COMMAND CoinProfilerOutputFailureTest)
   set_tests_properties(CoinProfilerOutputFailure PROPERTIES SKIP_RETURN_CODE 77)
+
+  add_executable(CoinIOStdFdsFailureTest CoinIOStdFdsFailureTest.cpp)
+  target_link_libraries(CoinIOStdFdsFailureTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(CoinIOStdFdsFailureTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  add_test(NAME CoinIOStdFdsFailure COMMAND CoinIOStdFdsFailureTest)
+  set_tests_properties(CoinIOStdFdsFailure PROPERTIES SKIP_RETURN_CODE 77)
 endif()
 
 if(UNIX AND COIN_THREADSAFE)
