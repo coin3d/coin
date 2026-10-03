@@ -1384,34 +1384,40 @@ free_std_fds(void)
   }
 }
 
+static FILE *
+coin_get_std_fd(FILE ** stream, int * savedfd, int fd, const char * mode)
+{
+  if (*stream == NULL) {
+    const int duplicate = dup(fd);
+    if (duplicate == -1) return NULL;
+
+    FILE * opened = fdopen(fd, mode);
+    if (opened == NULL) {
+      close(duplicate);
+      return NULL;
+    }
+    *savedfd = duplicate;
+    *stream = opened;
+  }
+  return *stream;
+}
+
 FILE *
 coin_get_stdin(void)
 {
-  if ( ! coin_stdin ){
-    coin_dup_stdin = dup(STDIN_FILENO);
-    coin_stdin = fdopen(STDIN_FILENO, "r");
-  }
-  return coin_stdin;
+  return coin_get_std_fd(&coin_stdin, &coin_dup_stdin, STDIN_FILENO, "r");
 }
 
 FILE *
 coin_get_stdout(void)
 {
-  if ( ! coin_stdout ){
-    coin_dup_stdout = dup(STDOUT_FILENO);
-    coin_stdout = fdopen(STDOUT_FILENO, "w");
-  }
-  return coin_stdout;
+  return coin_get_std_fd(&coin_stdout, &coin_dup_stdout, STDOUT_FILENO, "w");
 }
 
 FILE *
 coin_get_stderr(void)
 {
-  if ( ! coin_stderr ){
-    coin_dup_stderr = dup(STDERR_FILENO);
-    coin_stderr = fdopen(STDERR_FILENO, "w");
-  }
-  return coin_stderr;
+  return coin_get_std_fd(&coin_stderr, &coin_dup_stderr, STDERR_FILENO, "w");
 }
 
 /**************************************************************************/
