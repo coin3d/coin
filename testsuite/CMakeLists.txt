@@ -215,6 +215,26 @@ if(UNIX)
     ${COIN_TARGET_INCLUDE_DIRECTORIES})
   add_test(NAME CoinIOStdFdsFailure COMMAND CoinIOStdFdsFailureTest)
   set_tests_properties(CoinIOStdFdsFailure PROPERTIES SKIP_RETURN_CODE 77)
+
+  add_executable(CoinVectorOutputStreamTest CoinVectorOutputStreamTest.cpp)
+  target_link_libraries(CoinVectorOutputStreamTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(CoinVectorOutputStreamTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  add_test(NAME CoinVectorOutputStream COMMAND CoinVectorOutputStreamTest)
+  set_tests_properties(CoinVectorOutputStream PROPERTIES SKIP_RETURN_CODE 77)
+
+  add_executable(CoinVectorizePSUnavailableOutputTest
+    CoinVectorizePSUnavailableOutputTest.cpp)
+  target_link_libraries(CoinVectorizePSUnavailableOutputTest
+    Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(CoinVectorizePSUnavailableOutputTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  add_test(NAME CoinVectorizePSUnavailableOutput
+    COMMAND CoinVectorizePSUnavailableOutputTest)
+  set_tests_properties(CoinVectorizePSUnavailableOutput
+    PROPERTIES SKIP_RETURN_CODE 77)
 endif()
 
 if(UNIX AND COIN_THREADSAFE)
