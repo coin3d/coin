@@ -117,6 +117,7 @@ SoNodeSensor::detach(void)
 {
   if (this->convict) this->convict->removeAuditor(this, SoNotRec::SENSOR);
   this->convict = NULL;
+  if (this->isScheduled()) this->unschedule();
 }
 
 /*!
