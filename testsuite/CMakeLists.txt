@@ -331,6 +331,8 @@ endforeach()
 add_library(CoinCHeapHeaderCompileTest OBJECT CHeapHeaderCompileTest.c)
 target_link_libraries(CoinCHeapHeaderCompileTest PRIVATE Coin)
 
+include(RegressionTests.cmake)
+
 include(CheckCoreGLHeaders.cmake)
 
 # Many warnings are generated from test macros on macOS with Xcode.

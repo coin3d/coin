@@ -55,6 +55,8 @@
 // doc?). Usage code example. 20011023 mortene.
 
 #include <Inventor/manips/SoDirectionalLightManip.h>
+#include <Inventor/SoPath.h>
+#include "SoManipKitPath.h"
 
 #include <Inventor/draggers/SoDirectionalLightDragger.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -68,7 +70,6 @@
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/SoNodeKitPath.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -198,7 +199,7 @@ SoDirectionalLightManip::replaceNode(SoPath * path)
   }
   SoNode * tail = path->getTail();
   if (tail->isOfType(SoBaseKit::getClassTypeId())) {
-    SoBaseKit * kit = (SoBaseKit *) ((SoNodeKitPath *)path)->getTail();
+    SoBaseKit * kit = coin_lastKitInPath(path);
     SbString partname = kit->getPartString(path);
     if (partname != "") {
       SoDirectionalLight * oldpart = (SoDirectionalLight *) kit->getPart(partname, TRUE);

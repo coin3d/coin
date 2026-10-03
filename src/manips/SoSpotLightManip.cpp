@@ -78,6 +78,8 @@
 */
 
 #include <Inventor/manips/SoSpotLightManip.h>
+#include <Inventor/SoPath.h>
+#include "SoManipKitPath.h"
 
 #include <Inventor/draggers/SoSpotLightDragger.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -91,7 +93,6 @@
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/SoNodeKitPath.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -217,7 +218,7 @@ SoSpotLightManip::replaceNode(SoPath * path)
   }
   SoNode *tail = path->getTail();
   if (tail->isOfType(SoBaseKit::getClassTypeId())) {
-    SoBaseKit *kit = (SoBaseKit*) ((SoNodeKitPath*)path)->getTail();
+    SoBaseKit *kit = coin_lastKitInPath(path);
     SbString partname = kit->getPartString(path);
     if (partname != "") {
       SoSpotLight *oldpart = (SoSpotLight*) kit->getPart(partname, TRUE);
