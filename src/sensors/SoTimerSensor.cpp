@@ -195,13 +195,13 @@ SoTimerSensor::schedule(void)
   SoDebugError::postInfo("SoTimerSensor::schedule", "");
 #endif // debug
 
-#if COIN_DEBUG
   if (this->isScheduled()) {
+#if COIN_DEBUG
     SoDebugError::postWarning("SoTimerSensor::schedule",
                               "was already scheduled!");
+#endif // COIN_DEBUG
     return;
   }
-#endif // COIN_DEBUG
 
   // need to handle the case where the callback has unscheduled
   // the timer, and then scheduled it again. Since we are
@@ -264,7 +264,16 @@ SoTimerSensor::trigger(void)
   this->istriggering = TRUE;
   // This will cause SoSceneManager to reschedule this timer after
   // the current queue has been processed.
-  SoDB::getSensorManager()->rescheduleTimer(this);
+  try {
+    SoDB::getSensorManager()->rescheduleTimer(this);
+  }
+  catch (...) {
+    // The timer has already left the active queue. If staging it for
+    // rescheduling fails, it must be available for an explicit retry.
+    this->istriggering = FALSE;
+    this->scheduled = FALSE;
+    throw;
+  }
 
   // don't call SoTimerQueueSensor::trigger() as it will clear
   // the scheduled flag.
