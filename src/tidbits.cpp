@@ -1141,6 +1141,7 @@ coin_atexit_cleanup(void)
   int i, n;
   tb_atexit_data * data;
   SbBool debug = FALSE;
+  FILE * debugoutput = NULL;
 
 #ifdef COIN_THREADSAFE
   {
@@ -1156,22 +1157,27 @@ coin_atexit_cleanup(void)
   /* A callback may indirectly ask for cleanup again. The outer call still
      owns the list and will finish processing it. */
   debug = coin_atexit_debug_enabled();
+  if (debug) debugoutput = coin_get_stdout();
 
   n = cc_list_get_length(atexit_list);
   qsort(cc_list_get_array(atexit_list), n, sizeof(void*), atexit_qsort_cb);
 
   for (i = n-1; i >= 0; i--) {
     data = (tb_atexit_data*) cc_list_get(atexit_list, i);
-    if (debug) {
+    if (debugoutput) {
       /* Can't use cc_debugerror_postinfo() here, since this will
           allocate static data that need to be cleaned up, resulting
           in a call to coin_atexit() while we are already exiting...
       */
-      fprintf(stdout, "coin_atexit_cleanup: invoking %s()\n", data->name);
+      fprintf(debugoutput, "coin_atexit_cleanup: invoking %s()\n", data->name);
     }
     data->func();
     free(data->name);
     free(data);
+  }
+
+  if (debugoutput) {
+    fprintf(debugoutput, "coin_atexit_cleanup: fini\n");
   }
 
   /* Close stdin/stdout/stderr if any of them have been opened */
@@ -1190,9 +1196,6 @@ coin_atexit_cleanup(void)
   isexiting = FALSE;
 #endif /* COIN_THREADSAFE */
 
-  if (debug) {
-    fprintf(stdout, "coin_atexit_cleanup: fini\n");
-  }
 }
 
 /*
