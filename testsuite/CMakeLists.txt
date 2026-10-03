@@ -111,6 +111,7 @@ add_executable(CoinTests
 	TestSuiteUtils.cpp
 	TestSuiteMisc.cpp
 	InternalMacroTest.cpp
+	InternalSmallMapTest.cpp
 	${COIN_TEST_SOURCES}
 )
 
@@ -128,8 +129,10 @@ if(WIN32 AND COIN_BUILD_SHARED_LIBS)
 		COMPILE_DEFINITIONS COIN_INTERNAL)
 endif()
 
-set_source_files_properties(InternalMacroTest.cpp PROPERTIES
+set_source_files_properties(InternalMacroTest.cpp InternalSmallMapTest.cpp PROPERTIES
 	COMPILE_DEFINITIONS COIN_INTERNAL)
+set_property(SOURCE InternalSmallMapTest.cpp APPEND PROPERTY
+	COMPILE_DEFINITIONS COIN_SMALLMAP_TESTING)
 set_target_properties(CoinTests PROPERTIES DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
 target_link_libraries(CoinTests Coin ${COIN_TARGET_LINK_LIBRARIES})
 target_include_directories(CoinTests PRIVATE
@@ -148,6 +151,23 @@ if (USE_PTHREAD)
 	target_link_libraries(CoinTests pthread)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
+
+# Keep this regression test in a fresh process: the unfixed implementation corrupts
+# SoTempPath's internal empty-list storage before ordinary assertions can
+# observe the violation.
+add_executable(SoTempPathReplaceTailTest
+  reproducers/sotemppath-empty-replace-tail/repro.cpp)
+target_link_libraries(SoTempPathReplaceTailTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(SoTempPathReplaceTailTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+add_test(NAME SoTempPathReplaceTail_valid_sentinel
+  COMMAND SoTempPathReplaceTailTest valid-sentinel)
+add_test(NAME SoTempPathReplaceTail_valid_replacement
+  COMMAND SoTempPathReplaceTailTest valid-replacement)
+add_test(NAME SoTempPathReplaceTail_empty_noop
+  COMMAND SoTempPathReplaceTailTest empty-noop)
 
 add_subdirectory(xml-c-api/c-headers)
 
@@ -311,6 +331,8 @@ endforeach()
 add_library(CoinCHeapHeaderCompileTest OBJECT CHeapHeaderCompileTest.c)
 target_link_libraries(CoinCHeapHeaderCompileTest PRIVATE Coin)
 
+include(RegressionTests.cmake)
+
 include(CheckCoreGLHeaders.cmake)
 
 # Many warnings are generated from test macros on macOS with Xcode.
@@ -320,26 +342,37 @@ if(DISABLE_WARNING_TAUTOLOGCOMPARE)
 	target_compile_options(CoinTests PUBLIC -Wno-tautological-compare)
 endif()
 
-# Compile the private wrapper in the test so no internal DLL export is needed.
-if(WIN32)
-  foreach(font_api_suffix "" Unicode)
-    set(font_api_target CoinWin32FontApiTest${font_api_suffix})
-    set(font_api_test Win32FontApi${font_api_suffix})
-    add_executable(${font_api_target} Win32FontApiTest.cpp
-      ${PROJECT_SOURCE_DIR}/src/glue/win32api.cpp)
-    target_compile_definitions(${font_api_target} PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
-    if(font_api_suffix STREQUAL "Unicode")
-      target_compile_definitions(${font_api_target} PRIVATE UNICODE _UNICODE)
-    endif()
-    if(MSVC)
-      # Reintroducing GetVersionEx must fail rather than emit C4996.
-      target_compile_options(${font_api_target} PRIVATE /we4996)
-    endif()
-    target_include_directories(${font_api_target} PRIVATE
-      ${PROJECT_SOURCE_DIR}/src ${PROJECT_BINARY_DIR}/src
-      ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include)
-    target_link_libraries(${font_api_target} Coin gdi32)
-    add_test(NAME ${font_api_test} COMMAND ${font_api_target})
-    set_tests_properties(${font_api_test} PROPERTIES LABELS "unit;windows" TIMEOUT 30)
+# These cases inspect the global queues and disable realTime. Keep each in
+# its own process to avoid changing the shared CoinTests sensor state.
+add_executable(CoinSensorSchedulingTest SensorSchedulingTest.cpp)
+target_link_libraries(CoinSensorSchedulingTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CoinSensorSchedulingTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+foreach(sensor_case alarm_cancel recurring_cancel alarm_reschedule
+                    timeout_change_cancel zero_repeat zero_nonidle nonzero_timeout
+                    node_detach delay_reentry delay_timeout_reentry timer_reentry
+                    delay_changed_exception timer_changed_exception
+                    delay_remove_reentry timer_remove_reentry
+                    timer_exception delay_exception timer_cancel_exception delay_deferred_exception
+                    absolute_deadline changed_during_dispatch immediate_notification)
+  add_test(NAME SensorScheduling_${sensor_case}
+    COMMAND CoinSensorSchedulingTest ${sensor_case})
+endforeach()
+
+# Linux executable interposition lets this test fail the fifth queue allocation.
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  add_executable(CoinSensorQueueAllocationFailureTest
+    SensorQueueAllocationFailureTest.cpp)
+  target_link_libraries(CoinSensorQueueAllocationFailureTest
+    Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(CoinSensorQueueAllocationFailureTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  foreach(sensor_case delay immediate timer recurring)
+    add_test(NAME SensorQueueAllocation_${sensor_case}
+      COMMAND CoinSensorQueueAllocationFailureTest ${sensor_case})
+    set_tests_properties(SensorQueueAllocation_${sensor_case}
+      PROPERTIES TIMEOUT 10)
   endforeach()
 endif()

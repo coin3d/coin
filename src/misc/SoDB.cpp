@@ -1060,7 +1060,9 @@ SoDB::getDelaySensorTimeout(void)
 
 /*!
   Returns a pointer to the global sensor manager. The sensor manager keeps
-  track of the sensor queues.
+  track of the sensor queues. Applications implementing their own event
+  loop should use its processing and pending-sensor methods; see
+  SoSensorManager for the integration sequence.
  */
 SoSensorManager *
 SoDB::getSensorManager(void)
@@ -1069,18 +1071,21 @@ SoDB::getSensorManager(void)
 }
 
 /*!
-  NOTE: THIS METHOD IS OBSOLETED. DON'T USE IT.
+  \deprecated Use the sensor manager to integrate with an event loop.
 
-  This is a wrapper around the POSIX \c select() call. It is provided
-  so you can do synchronous I/O while Coin continues to handle sensor
-  events, rendering, etc. The parameters are the same as for \c
-  select(), so check your system documentation on how to use them.
+  This method is an unimplemented compatibility stub. It
+  asserts in assertion-enabled builds and otherwise returns zero without
+  waiting for I/O or processing sensors.
 
-  The void* arguments must be valid pointers to fd_set
-  structures. We've changed this from the original SGI Inventor API to
-  avoid messing up the header file with system-specific includes.
+  Use SoDB::getSensorManager() to integrate sensor processing with the
+  application's event loop. GUI bindings normally provide this
+  integration. For a custom loop, process due sensors and limit the I/O
+  wait using SoSensorManager::isTimerSensorPending(), which returns an
+  absolute deadline. Blocking I/O in the loop still delays sensors and
+  rendering; use nonblocking I/O or deliver worker-thread results to the
+  event loop. See SoSensorManager for details.
 
-  NOTE: THIS METHOD IS OBSOLETED. DON'T USE IT.
+  \sa getSensorManager(), SoSensorManager::setChangedCallback()
 */
 int
 SoDB::doSelect(int COIN_UNUSED_ARG(nfds), void * COIN_UNUSED_ARG(readfds), void * COIN_UNUSED_ARG(writefds),
