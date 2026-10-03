@@ -34,14 +34,18 @@
 \**************************************************************************/
 
 #include <Inventor/C/basic.h>
+#ifdef __cplusplus
 #include <Inventor/SbString.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
   typedef int cc_heap_compare_cb(void * o1, void * o2);
+#ifdef __cplusplus
   typedef void cc_heap_print_cb(void * o, SbString& str);
+#endif
 
   typedef struct cc_heap cc_heap;
 
@@ -59,7 +63,9 @@ extern "C" {
   COIN_DLL_API int cc_heap_update(cc_heap * h, void * o);
   COIN_DLL_API unsigned int cc_heap_elements(cc_heap * h);
   COIN_DLL_API SbBool cc_heap_empty(cc_heap * h);
+#ifdef __cplusplus
   COIN_DLL_API void cc_heap_print(cc_heap * h, cc_heap_print_cb * printcb, SbString& str, SbBool printLeveled = FALSE);
+#endif
 
 /* ********************************************************************** */
 

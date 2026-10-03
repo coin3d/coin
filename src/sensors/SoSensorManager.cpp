@@ -70,6 +70,63 @@
   advise you to look at the implementation of said mechanisms in the
   So*-libraries which SIM provides.
 
+  \section sensors_event_loop Integrating sensors with an event loop
+
+  Coin does not run an event loop or perform I/O while the application is
+  blocked. GUI bindings normally integrate the queues with their toolkit's
+  event loop. Applications implementing their own loop can obtain the
+  manager through SoDB::getSensorManager(). The obsolete doSelect() methods
+  do not provide this integration.
+
+  Before waiting for I/O or window events, process due timers with
+  processTimerQueue() and immediate sensors with processImmediateQueue().
+  When the application has no other work ready, processDelayQueue(TRUE)
+  also processes idle sensors. Pass FALSE when processing delay sensors
+  during a busy period; this skips SoIdleSensor instances. The configured
+  delay timeout is implemented by a timer sensor and therefore requires
+  the application to keep processing the timer queue, even while I/O is
+  continuously ready. A zero delay timeout disables this fallback.
+
+  isTimerSensorPending() returns an absolute deadline in the time base of
+  SbTime::getTimeOfDay(). Convert it to a relative wait and clamp overdue
+  deadlines to zero:
+
+  \code
+  SbBool nextSensorWait(SoSensorManager * manager, SbTime & wait)
+  {
+    SbTime deadline;
+    if (!manager->isTimerSensorPending(deadline)) return FALSE;
+    wait = deadline - SbTime::getTimeOfDay();
+    if (wait < SbTime::zero()) wait = SbTime::zero();
+    return TRUE;
+  }
+  \endcode
+
+  If this returns TRUE, use the smaller of this wait and the application's
+  own timeout when waiting for events. If it returns FALSE, there is no
+  timer-imposed limit; the application may still have other pending work.
+  Recompute the deadline after dispatching events and processing sensors.
+  A pending delay sensor alone does not require repeated zero-duration
+  waits: an idle-only sensor can remain pending throughout a busy period.
+
+  setChangedCallback() can reprogram the event loop's timer or request a
+  wakeup when a queue changes. It is a synchronous callback, with a single
+  registration slot. Notifications are suppressed while sensor queues are
+  being processed, and insertion of an immediate sensor does not notify
+  it. Query the queues when installing the integration and after each
+  dispatch/processing pass; the callback alone is not a complete record
+  of pending work. Prefer deferring queue processing to the event loop
+  rather than running user sensor callbacks inside this notification.
+
+  Waiting for descriptor readiness must also allow the next sensor
+  deadline to wake the loop. After readiness, keep the actual I/O and
+  event handlers bounded, for example by using nonblocking I/O. A blocking
+  read or other long operation in the loop delays sensor callbacks and
+  rendering. Another option is to perform blocking I/O in a worker and
+  deliver its results to the thread running the event loop. Scene updates
+  and rendering still need the application's normal dispatch mechanism;
+  processing sensor queues does not itself implement a window system.
+
   Please note that before Coin 2.3.1, sensors with equal priority (or
   the same trigger time for SoTimerQueue sensors) were processed LIFO.
   This has now been changed to FIFO to be conformant to SGI Inventor.
@@ -297,16 +354,17 @@ SoSensorManager::insertDelaySensor(SoDelayQueueSensor * newentry)
   // strategy.
   if (newentry->getPriority() == 0) {
     LOCK_IMMEDIATE_QUEUE(this);
-    PRIVATE(this)->immediatequeue.append(newentry);
+    try {
+      PRIVATE(this)->immediatequeue.append(newentry);
+    }
+    catch (...) {
+      UNLOCK_IMMEDIATE_QUEUE(this);
+      throw;
+    }
+    newentry->scheduled = TRUE;
     UNLOCK_IMMEDIATE_QUEUE(this);
   }
   else {
-    if (!PRIVATE(this)->timeoutsensor->isScheduled() &&
-        PRIVATE(this)->delaysensortimeout != SbTime::zero()) {
-      PRIVATE(this)->timeoutsensor->setTimeFromNow(PRIVATE(this)->delaysensortimeout);
-      PRIVATE(this)->timeoutsensor->schedule();
-    }
-
     LOCK_DELAY_QUEUE(this);
     SbList <SoDelayQueueSensor *> & delayqueue = PRIVATE(this)->delayqueue;
 
@@ -318,8 +376,21 @@ SoSensorManager::insertDelaySensor(SoDelayQueueSensor * newentry)
           (delayqueue[pos]->getPriority() <= newsensorpriority)) {
       pos++;
     }
-    delayqueue.insert(newentry, pos);
+    try {
+      delayqueue.insert(newentry, pos);
+    }
+    catch (...) {
+      UNLOCK_DELAY_QUEUE(this);
+      throw;
+    }
+    newentry->scheduled = TRUE;
     UNLOCK_DELAY_QUEUE(this);
+    if (!PRIVATE(this)->timeoutsensor->isScheduled() &&
+        PRIVATE(this)->delaysensortimeout != SbTime::zero()) {
+      PRIVATE(this)->timeoutsensor->setTimeFromNow(PRIVATE(this)->delaysensortimeout);
+      PRIVATE(this)->timeoutsensor->schedule();
+    }
+
     this->notifyChanged();
   }
 
@@ -358,7 +429,14 @@ SoSensorManager::insertTimerSensor(SoTimerQueueSensor * newentry)
          (timerqueue[i]->getTriggerTime().getValue() <= newtime)) {
     i++;
   }
-  timerqueue.insert(newentry, i);
+  try {
+    timerqueue.insert(newentry, i);
+  }
+  catch (...) {
+    UNLOCK_TIMER_QUEUE(this);
+    throw;
+  }
+  newentry->scheduled = TRUE;
 
   UNLOCK_TIMER_QUEUE(this);
 
@@ -444,6 +522,10 @@ SoSensorManager::removeTimerSensor(SoTimerQueueSensor * entry)
 
 /*!
   Trigger all the timers which have expired.
+
+  If a sensor callback throws, recurring timers awaiting rescheduling are
+  restored before the exception is propagated. Timers canceled by the
+  callback remain canceled.
  */
 void
 SoSensorManager::processTimerQueue(void)
@@ -478,6 +560,20 @@ SoSensorManager::processTimerQueue(void)
   PRIVATE(this)->processingtimerqueue = TRUE;
   FlagReset fr(PRIVATE(this)->processingtimerqueue);
 
+  // Callback exceptions must not strand recurring timers outside the queue.
+  const auto restoreTimers = [this]() {
+    LOCK_RESCHEDULE_LIST(this);
+    int n = PRIVATE(this)->reschedulelist.getLength();
+    if (n) {
+      SbTime time = SbTime::getTimeOfDay();
+      for (int i = 0; i < n; i++) {
+        PRIVATE(this)->reschedulelist[i]->reschedule(time);
+      }
+      PRIVATE(this)->reschedulelist.truncate(0);
+    }
+    UNLOCK_RESCHEDULE_LIST(this);
+  };
+
   LOCK_TIMER_QUEUE(this);
 
   SbTime currenttime = SbTime::getTimeOfDay();
@@ -491,7 +587,13 @@ SoSensorManager::processTimerQueue(void)
     SoSensor * sensor = PRIVATE(this)->timerqueue[0];
     PRIVATE(this)->timerqueue.remove(0);
     UNLOCK_TIMER_QUEUE(this);
-    sensor->trigger();
+    try {
+      sensor->trigger();
+    }
+    catch (...) {
+      restoreTimers();
+      throw;
+    }
     LOCK_TIMER_QUEUE(this);
   }
 
@@ -503,16 +605,7 @@ SoSensorManager::processTimerQueue(void)
                          PRIVATE(this)->timerqueue.getLength());
 #endif // debug
 
-  LOCK_RESCHEDULE_LIST(this);
-  int n = PRIVATE(this)->reschedulelist.getLength();
-  if (n) {
-    SbTime time = SbTime::getTimeOfDay();
-    for (int i = 0; i < n; i++) {
-      PRIVATE(this)->reschedulelist[i]->reschedule(time);
-    }
-    PRIVATE(this)->reschedulelist.truncate(0);
-  }
-  UNLOCK_RESCHEDULE_LIST(this);
+  restoreTimers();
 
   PRIVATE(this)->processingtimerqueue = FALSE;
 
@@ -535,6 +628,9 @@ SoSensorManager::processTimerQueue(void)
   during processDelayQueue(), it is not processed until the next time
   this function is called. This is done to avoid an infinite loop
   while processing the sensors.
+
+  If a sensor callback throws, skipped idle sensors and sensors deferred
+  to the next pass are restored before the exception is propagated.
 
   A delay queue sensor with priority 0 is called an immediate sensor.
 
@@ -584,6 +680,33 @@ SoSensorManager::processDelayQueue(SbBool isidle)
   // again, etc...
   PRIVATE(this)->triggerdict.clear();
 
+  // Preserve skipped idle sensors and sensors deferred to the next pass,
+  // including when a user callback exits by throwing an exception.
+  const auto restoreDelays = [this]() {
+    // reinsert sensors that couldn't be triggered, either because it
+    // was an idle sensor, or because the sensor had already been
+    // triggered
+    for(
+        SbHash<SoDelayQueueSensor *, SoDelayQueueSensor *>::const_iterator iter =
+         PRIVATE(this)->reinsertdict.const_begin();
+        iter!=PRIVATE(this)->reinsertdict.const_end();
+        ++iter
+        ) {
+      this->insertDelaySensor(iter->obj);
+    }
+    PRIVATE(this)->reinsertdict.clear();
+
+    // If we still have pending sensors and the timeoutsensor
+    // isn't currently scheduled, schedule it.
+    if (PRIVATE(this)->delayqueue.getLength() &&
+        PRIVATE(this)->delaysensortimeout != SbTime::zero() &&
+        !PRIVATE(this)->timeoutsensor->isScheduled()) {
+      PRIVATE(this)->timeoutsensor->setTimeFromNow(PRIVATE(this)->delaysensortimeout);
+      PRIVATE(this)->timeoutsensor->schedule();
+    }
+
+  };
+
   LOCK_DELAY_QUEUE(this);
 
   // Sensors with higher priorities are triggered first.
@@ -608,7 +731,13 @@ SoSensorManager::processDelayQueue(SbBool isidle)
     else {
       // only trigger sensor once per processing loop
       if (PRIVATE(this)->triggerdict.put(sensor, sensor)) {
-        sensor->trigger();
+        try {
+          sensor->trigger();
+        }
+        catch (...) {
+          restoreDelays();
+          throw;
+        }
       }
       else {
         // Reuse the "reinsert" list to store the sensor. It will be
@@ -620,26 +749,8 @@ SoSensorManager::processDelayQueue(SbBool isidle)
   }
   UNLOCK_DELAY_QUEUE(this);
 
-  // reinsert sensors that couldn't be triggered, either because it
-  // was an idle sensor, or because the sensor had already been
-  // triggered
-  for(
-      SbHash<SoDelayQueueSensor *, SoDelayQueueSensor *>::const_iterator iter =
-       PRIVATE(this)->reinsertdict.const_begin();
-      iter!=PRIVATE(this)->reinsertdict.const_end();
-      ++iter
-      ) {
-    this->insertDelaySensor(iter->obj);
-  }
-  PRIVATE(this)->reinsertdict.clear();
+  restoreDelays();
   PRIVATE(this)->processingdelayqueue = FALSE;
-
-  // If we still have pending sensors and the timeoutsensor
-  // isn't currently scheduled, schedule it.
-  if (PRIVATE(this)->delayqueue.getLength() && !PRIVATE(this)->timeoutsensor->isScheduled()) {
-    PRIVATE(this)->timeoutsensor->setTimeFromNow(PRIVATE(this)->delaysensortimeout);
-    PRIVATE(this)->timeoutsensor->schedule();
-  }
 }
 
 /*!
@@ -725,7 +836,13 @@ SoSensorManager::rescheduleTimer(SoTimerSensor * s)
   SoSensorManagerP::assertAlive(PRIVATE(this));
 
   LOCK_RESCHEDULE_LIST(this);
-  PRIVATE(this)->reschedulelist.append(s);
+  try {
+    PRIVATE(this)->reschedulelist.append(s);
+  }
+  catch (...) {
+    UNLOCK_RESCHEDULE_LIST(this);
+    throw;
+  }
   UNLOCK_RESCHEDULE_LIST(this);
 }
 
@@ -766,8 +883,13 @@ SoSensorManager::isDelaySensorPending(void)
   Returns \c TRUE if at least one timer sensor is present in the
   queue, otherwise \c FALSE.
 
-  If sensors are pending, the time interval until the next one should
-  be triggered will be put in the \a tm variable.
+  If sensors are pending, \a tm receives the absolute trigger time of the
+  first sensor, in the same time base as SbTime::getTimeOfDay(). It is not
+  a relative interval. For an event-loop timeout, subtract the current
+  time and clamp a negative result to SbTime::zero(). If no timer is
+  pending, \a tm is left unchanged.
+
+  \sa processTimerQueue()
 */
 SbBool
 SoSensorManager::isTimerSensorPending(SbTime & tm)
@@ -816,10 +938,11 @@ SoSensorManager::setDelaySensorTimeout(const SbTime & t)
 
   PRIVATE(this)->delaysensortimeout = t;
 
-  if (t == SbTime::zero() && PRIVATE(this)->timeoutsensor->isScheduled()) {
+  // Replace the pending alarm rather than scheduling the same sensor twice.
+  if (PRIVATE(this)->timeoutsensor->isScheduled()) {
     PRIVATE(this)->timeoutsensor->unschedule();
   }
-  else if (PRIVATE(this)->delayqueue.getLength()) {
+  if (t != SbTime::zero() && PRIVATE(this)->delayqueue.getLength()) {
     PRIVATE(this)->timeoutsensor->setTimeFromNow(t);
     PRIVATE(this)->timeoutsensor->schedule();
   }
@@ -839,11 +962,27 @@ SoSensorManager::getDelaySensorTimeout(void)
 }
 
 /*!
-  For setting up a callback function to be invoked whenever any of the
-  sensor queues are changed.
+  Register the callback used to update the application's event-loop timer
+  or request a wakeup when sensor queues change. The callback is invoked
+  synchronously by queue operations; it is not an event loop.
 
-  This callback should typically be responsible for updating the
-  client-side mechanism which is used for processing the queues.
+  There is one callback slot. A new registration replaces the previous
+  callback and its data. Passing NULL disables the callback. Registering
+  does not invoke it for sensors already pending, so query the queues
+  when setting up the integration.
+
+  Notifications are suppressed during processTimerQueue(),
+  processDelayQueue() and processImmediateQueue(). Insertion of a delay
+  sensor with priority zero also does not notify the callback. Recompute
+  pending work after processing queues and dispatching application events.
+  The callback should normally arrange a later processing pass rather
+  than process queues itself.
+
+  Queue state is updated before the callback is invoked. If it throws,
+  the exception is propagated and the completed queue operation remains
+  in effect.
+
+  \sa isTimerSensorPending(), isDelaySensorPending()
 */
 void
 SoSensorManager::setChangedCallback(void (*func)(void *), void * data)
@@ -868,17 +1007,20 @@ SoSensorManager::notifyChanged(void)
 }
 
 /*!
-  NOTE: THIS METHOD IS OBSOLETED. DON'T USE IT.
+  \deprecated Use the sensor manager to integrate with an event loop.
 
-  This is a wrapper around the standard select(2) call, which will
-  make sure the sensor queues are updated while waiting for any action
-  to happen on the given file descriptors.
+  This method is an unimplemented compatibility stub. It
+  asserts in assertion-enabled builds and otherwise returns zero without
+  waiting for I/O or processing sensors.
 
-  The void* arguments must be valid pointers to fd_set
-  structures. We've changed this from the original SGI Inventor API to
-  avoid messing up the header file with system specific includes.
+  Integrate processTimerQueue(), processImmediateQueue() and
+  processDelayQueue() with the application's event loop. Use
+  isTimerSensorPending() to bound the I/O wait by the next absolute sensor
+  deadline, and setChangedCallback() to update the wait when queues change.
+  See the class documentation for the integration sequence and notification
+  limitations.
 
-  NOTE: THIS METHOD IS OBSOLETED. DON'T USE IT.
+  \sa SoDB::getSensorManager()
 */
 int
 SoSensorManager::doSelect(int COIN_UNUSED_ARG(nfds), void * COIN_UNUSED_ARG(readfds), void * COIN_UNUSED_ARG(writefds),
