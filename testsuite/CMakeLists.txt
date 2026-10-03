@@ -251,6 +251,7 @@ if(NOT WIN32)
     ${COIN_TARGET_INCLUDE_DIRECTORIES})
   add_test(NAME SoPathAssignmentAllocationFailure
     COMMAND SoPathAssignmentAllocationFailureTest)
+
 endif()
 
 add_executable(SoPathChildAppendTest SoPathChildAppendTest.cpp)
@@ -330,6 +331,8 @@ endforeach()
 
 add_library(CoinCHeapHeaderCompileTest OBJECT CHeapHeaderCompileTest.c)
 target_link_libraries(CoinCHeapHeaderCompileTest PRIVATE Coin)
+
+include(RegressionTests.cmake)
 
 include(CheckCoreGLHeaders.cmake)
 

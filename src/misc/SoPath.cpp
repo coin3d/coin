@@ -350,7 +350,51 @@ void
 SoPath::append(const SoPath * const frompath)
 {
   if (!this->getFullLength()) { // append to empty path
-    this->operator=(*frompath);
+    if (this == frompath) return;
+    const int length = frompath->getFullLength();
+
+    // Reserve both lists before changing the route. Null placeholders grow
+    // SoBaseList without acquiring node references.
+    try {
+      while (this->nodes.getLength() < length) this->nodes.append(NULL);
+      this->indices.ensureCapacity(length);
+    }
+    catch (...) {
+      this->nodes.truncate(0);
+      throw;
+    }
+    this->nodes.truncate(0);
+
+    // An auditor list may also allocate. Register the complete new route
+    // first, so failure can leave the destination empty and reusable.
+    int registered = 0;
+    try {
+      if (this->isauditing) {
+        for (int i = 0; i < length; i++) {
+          SoNode * const node = frompath->nodes[i];
+          SoChildList * const children = node ? node->getChildren() : NULL;
+          if (children) children->addPathAuditor(this);
+          registered++;
+        }
+      }
+    }
+    catch (...) {
+      for (int i = 0; i < registered; i++) {
+        SoNode * const node = frompath->nodes[i];
+        SoChildList * const children = node ? node->getChildren() : NULL;
+        if (children) children->removePathAuditor(this);
+      }
+      throw;
+    }
+
+    // Capacity and auditors are ready; these appends cannot grow either list.
+    for (int i = 0; i < length; i++) {
+      this->nodes.append(frompath->nodes[i]);
+      this->indices.append(frompath->indices[i]);
+    }
+    this->firsthidden = frompath->firsthidden;
+    this->firsthiddendirty = frompath->firsthiddendirty;
+    if (this->isauditing) this->startNotify();
     return;
   }
 
