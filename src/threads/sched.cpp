@@ -183,7 +183,8 @@ cc_sched_construct(int numthreads)
   sched->mutex = cc_mutex_construct();
  
   sched->itemheap = cc_heap_construct(64, sched_item_compare, TRUE);
-  sched->itemalloc = cc_memalloc_construct(sizeof(sched_item));
+  sched->itemalloc = cc_memalloc_construct_aligned(
+    sizeof(sched_item), alignof(sched_item));
   sched->schedid_dict = cc_dict_construct(64, 0.75f);
   sched->schedid_counter = 1;
   sched->iswaitingall = FALSE;

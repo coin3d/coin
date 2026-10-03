@@ -511,7 +511,8 @@ public:
   {
     if (loadfactorarg <= 0.0f) { loadfactorarg = 0.75f; }
     unsigned int s = coin_geq_prime_number(sizearg);
-    this->memhandler = cc_memalloc_construct(sizeof(SbHashEntry));
+    this->memhandler = cc_memalloc_construct_aligned(
+      sizeof(SbHashEntry), alignof(SbHashEntry));
     this->size = s;
     this->elements = 0;
     this->threshold = static_cast<unsigned int> (s * loadfactorarg);
