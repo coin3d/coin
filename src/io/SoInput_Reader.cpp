@@ -79,6 +79,12 @@ SoInput_Reader::~SoInput_Reader()
 {
 }
 
+SbBool
+SoInput_Reader::hasError(void) const
+{
+  return FALSE;
+}
+
 const SbString &
 SoInput_Reader::getFilename(void)
 {
@@ -228,6 +234,12 @@ SoInput_FileReader::readBuffer(char * buf, const size_t readlen)
   return fread(buf, 1, readlen, this->fp);
 }
 
+SbBool
+SoInput_FileReader::hasError(void) const
+{
+  return this->fp == NULL || ferror(this->fp) != 0;
+}
+
 const SbString &
 SoInput_FileReader::getFilename(void)
 {
@@ -287,6 +299,7 @@ SoInput_GZMemBufferReader::SoInput_GZMemBufferReader(const void * bufPointer, si
   // in the interface instead. 20050525 mortene.
   this->gzmfile = cc_gzm_open((uint8_t *)bufPointer, (uint32_t)bufSize);
   this->buf = bufPointer;
+  this->readerror = FALSE;
 }
 
 SoInput_GZMemBufferReader::~SoInput_GZMemBufferReader()
@@ -305,7 +318,18 @@ SoInput_GZMemBufferReader::readBuffer(char * buffer, const size_t readlen)
 {
   // FIXME: about the cast; see note about the call to cc_gzm_open()
   // above. 20050525 mortene.
-  return cc_gzm_read(this->gzmfile, buffer, (uint32_t)readlen);
+  const int result = cc_gzm_read(this->gzmfile, buffer, (uint32_t)readlen);
+  if (result < 0) {
+    this->readerror = TRUE;
+    return 0;
+  }
+  return (size_t)result;
+}
+
+SbBool
+SoInput_GZMemBufferReader::hasError(void) const
+{
+  return this->readerror;
 }
 
 //
@@ -316,6 +340,7 @@ SoInput_GZFileReader::SoInput_GZFileReader(const char * const filenamearg, void 
 {
   this->gzfp = fp;
   this->filename = filenamearg;
+  this->readerror = FALSE;
 }
 
 SoInput_GZFileReader::~SoInput_GZFileReader()
@@ -341,9 +366,18 @@ SoInput_GZFileReader::readBuffer(char * buf, const size_t readlen)
   // without checking that gzread() actually returns a signed
   // integer. We need to check for this and not just cast to size_t on
   // return
-  if (result < 0) result = 0; // EOF
+  if (result < 0) {
+    this->readerror = TRUE;
+    return 0;
+  }
 
   return (size_t) result;
+}
+
+SbBool
+SoInput_GZFileReader::hasError(void) const
+{
+  return this->readerror;
 }
 
 const SbString &
@@ -360,6 +394,7 @@ SoInput_BZ2FileReader::SoInput_BZ2FileReader(const char * const filenamearg, voi
 {
   this->bzfp = fp;
   this->filename = filenamearg;
+  this->readerror = FALSE;
 }
 
 SoInput_BZ2FileReader::~SoInput_BZ2FileReader()
@@ -388,6 +423,7 @@ SoInput_BZ2FileReader::readBuffer(char * buf, const size_t readlen)
                                  buf, (uint32_t)readlen);
   if ((bzerror != BZ_OK) && (bzerror != BZ_STREAM_END)) {
     ret = 0;
+    this->readerror = TRUE;
     cc_bzglue_BZ2_bzReadClose(&bzerror, this->bzfp);
     this->bzfp = NULL;
   }
@@ -395,8 +431,17 @@ SoInput_BZ2FileReader::readBuffer(char * buf, const size_t readlen)
   // without checking that bzRead() actually returns a signed
   // integer. We need to check for this and not just cast to size_t on
   // return.
-  if (ret < 0) ret = 0; // might not be necessary, but will catch other errors
+  if (ret < 0) {
+    this->readerror = TRUE;
+    ret = 0;
+  }
   return (size_t) ret;
+}
+
+SbBool
+SoInput_BZ2FileReader::hasError(void) const
+{
+  return this->readerror;
 }
 
 const SbString &

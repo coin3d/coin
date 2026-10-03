@@ -30,7 +30,7 @@ main(void)
   {
     SoInput input;
     char value = 0;
-    if (input.read(value)) result = 1;
+    if (input.read(value) || !input.hasReadError()) result = 1;
 
     SoOutput output;
     output.write('x');

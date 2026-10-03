@@ -216,6 +216,13 @@ if(UNIX)
   add_test(NAME CoinIOStdFdsFailure COMMAND CoinIOStdFdsFailureTest)
   set_tests_properties(CoinIOStdFdsFailure PROPERTIES SKIP_RETURN_CODE 77)
 
+  add_executable(CoinSoInputReadErrorTest CoinSoInputReadErrorTest.cpp)
+  target_link_libraries(CoinSoInputReadErrorTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(CoinSoInputReadErrorTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  add_test(NAME CoinSoInputReadError COMMAND CoinSoInputReadErrorTest)
+
   add_executable(CoinVectorOutputStreamTest CoinVectorOutputStreamTest.cpp)
   target_link_libraries(CoinVectorOutputStreamTest Coin ${COIN_TARGET_LINK_LIBRARIES})
   target_include_directories(CoinVectorOutputStreamTest PRIVATE
