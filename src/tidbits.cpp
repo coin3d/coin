@@ -1228,6 +1228,10 @@ coin_atexit_func(const char * name, coin_atexit_f * f, coin_atexit_priorities pr
     assert(!isexiting && "tried to attach an atexit function while exiting");
     std::abort();
   }
+  if (name == NULL || f == NULL) {
+    assert(name != NULL && f != NULL && "invalid atexit function");
+    std::abort();
+  }
 
   if (atexit_list == NULL) {
     atexit_list = cc_list_construct();

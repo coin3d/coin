@@ -501,7 +501,9 @@ void
 SoDB::finish(void)
 {
   coin_atexit_cleanup();
-  SoDBP::isinitialized = FALSE;
+  /* A cleanup callback may call finish() again. Leave the database usable
+     until the outer cleanup has finished running the remaining callbacks. */
+  if (!coin_is_exiting()) SoDBP::isinitialized = FALSE;
 }
 
 /*!

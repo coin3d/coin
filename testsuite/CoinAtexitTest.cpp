@@ -13,10 +13,12 @@
 static int calls[4];
 static int count = 0;
 static bool exiting_in_callback = false;
+static bool initialized_after_reentry = false;
 
 static void
 first_callback(void)
 {
+  initialized_after_reentry = SoDB::isInitialized() != FALSE;
   calls[count++] = 1;
 }
 
@@ -25,7 +27,7 @@ recursive_callback(void)
 {
   calls[count++] = 2;
   exiting_in_callback = coin_is_exiting() != FALSE;
-  coin_atexit_cleanup();
+  SoDB::finish();
 }
 
 static void
@@ -56,7 +58,7 @@ main(void)
   SoDB::finish();
 
   if (count != 3 || calls[0] != 3 || calls[1] != 2 || calls[2] != 1 ||
-      !exiting_in_callback || coin_is_exiting()) {
+      !exiting_in_callback || !initialized_after_reentry || coin_is_exiting()) {
     std::fprintf(stderr, "coin_atexit order or recursive cleanup failed\n");
     return 1;
   }
@@ -85,6 +87,22 @@ main(void)
   if (waitpid(child, &status, 0) != child ||
       !WIFSIGNALED(status) || WTERMSIG(status) != SIGABRT) {
     std::fprintf(stderr, "registration during cleanup did not abort\n");
+    return 1;
+  }
+
+  const pid_t null_child = fork();
+  if (null_child < 0) {
+    std::perror("fork");
+    return 1;
+  }
+  if (null_child == 0) {
+    SoDB::init();
+    cc_coin_atexit(NULL);
+    _exit(0);
+  }
+  if (waitpid(null_child, &status, 0) != null_child ||
+      !WIFSIGNALED(status) || WTERMSIG(status) != SIGABRT) {
+    std::fprintf(stderr, "null callback registration did not abort\n");
     return 1;
   }
 #endif
