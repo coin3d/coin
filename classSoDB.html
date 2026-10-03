@@ -493,10 +493,9 @@ TGS Inventor <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c33
   </tr>
 </table>
 </div><div class="memdoc">
-<p>NOTE: THIS METHOD IS OBSOLETED. DON'T USE IT.</p>
-<p>This is a wrapper around the POSIX <code>select()</code> call. It is provided so you can do synchronous I/O while Coin continues to handle sensor events, rendering, etc. The parameters are the same as for <code>select()</code>, so check your system documentation on how to use them.</p>
-<p>The void* arguments must be valid pointers to fd_set structures. We've changed this from the original SGI Inventor API to avoid messing up the header file with system-specific includes.</p>
-<p>NOTE: THIS METHOD IS OBSOLETED. DON'T USE IT. </p>
+<p>This method is an unimplemented compatibility stub. It asserts in assertion-enabled builds and otherwise returns zero without waiting for I/O or processing sensors.</p>
+<p>Use <a class="el" href="#aec3467618745683725f2b5f09f0e9ba4">SoDB::getSensorManager()</a> to integrate sensor processing with the application's event loop. GUI bindings normally provide this integration. For a custom loop, process due sensors and limit the I/O wait using <a class="el" href="classSoSensorManager.html#ae598bb762c7a417b8f4f45f7a13fc80f">SoSensorManager::isTimerSensorPending()</a>, which returns an absolute deadline. Blocking I/O in the loop still delays sensors and rendering; use nonblocking I/O or deliver worker-thread results to the event loop. See <a class="el" href="classSoSensorManager.html" title="The SoSensorManager class handles the sensor queues.">SoSensorManager</a> for details.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#aec3467618745683725f2b5f09f0e9ba4">getSensorManager()</a>, <a class="el" href="classSoSensorManager.html#a5039008fb24defa335d63723528bc915">SoSensorManager::setChangedCallback()</a> </dd></dl>
 
 </div>
 </div>
@@ -836,7 +835,7 @@ TGS Inventor <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c33
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Returns a pointer to the global sensor manager. The sensor manager keeps track of the sensor queues. </p>
+<p>Returns a pointer to the global sensor manager. The sensor manager keeps track of the sensor queues. Applications implementing their own event loop should use its processing and pending-sensor methods; see <a class="el" href="classSoSensorManager.html" title="The SoSensorManager class handles the sensor queues.">SoSensorManager</a> for the integration sequence. </p>
 
 </div>
 </div>
@@ -1560,7 +1559,7 @@ TGS Inventor <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c33
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoDB.html">SoDB</a></li>
-    <li class="footer">Generated on Sat Oct 3 2026 12:05:40 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sat Oct 3 2026 12:37:17 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

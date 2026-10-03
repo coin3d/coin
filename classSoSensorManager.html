@@ -189,6 +189,27 @@ Public Member Functions</h2></td></tr>
 <p>The <a class="el" href="classSoSensorManager.html" title="The SoSensorManager class handles the sensor queues.">SoSensorManager</a> provides methods for managing these queues, by insertion and removal of sensors, and processing (emptying) of the queues.</p>
 <p>The sensor mechanism is crucial in Coin for a number of important features, most notably automatic scheduling redraw upon changes, and for making it possible to set up animations in the scene graph which does <em>not</em> need any additional book-keeping from the application code.</p>
 <p><a class="el" href="classSoSensorManager.html" title="The SoSensorManager class handles the sensor queues.">SoSensorManager</a> should usually be considered as an internal class in the Coin API. It is only interesting for application programmers when <em>implementing</em> new window system specific libraries (like Kongsberg Oil &amp; Gas Technologies SoQt, SoXt, SoGtk, SoWin or Sc21) or wrappers. Then one has to set up code to empty the queues at the correct intervals. For detailed information on how to do that, we would advise you to look at the implementation of said mechanisms in the So*-libraries which SIM provides.</p>
+<h1><a class="anchor" id="sensors_event_loop"></a>
+Integrating sensors with an event loop</h1>
+<p>Coin does not run an event loop or perform I/O while the application is blocked. GUI bindings normally integrate the queues with their toolkit's event loop. Applications implementing their own loop can obtain the manager through <a class="el" href="classSoDB.html#aec3467618745683725f2b5f09f0e9ba4">SoDB::getSensorManager()</a>. The obsolete <a class="el" href="#a4733de33513041df15133146fe5910f0">doSelect()</a> methods do not provide this integration.</p>
+<p>Before waiting for I/O or window events, process due timers with <a class="el" href="#a3b5935cf5cdaeaf4825940260e5a142f">processTimerQueue()</a> and immediate sensors with <a class="el" href="#a1e6b511731fc72c3adb16f7f345d11d6">processImmediateQueue()</a>. When the application has no other work ready, processDelayQueue(TRUE) also processes idle sensors. Pass FALSE when processing delay sensors during a busy period; this skips <a class="el" href="classSoIdleSensor.html" title="The SoIdleSensor class is a sensor which will trigger as soon as the application is idle.">SoIdleSensor</a> instances. The configured delay timeout is implemented by a timer sensor and therefore requires the application to keep processing the timer queue, even while I/O is continuously ready. A zero delay timeout disables this fallback.</p>
+<p><a class="el" href="#ae598bb762c7a417b8f4f45f7a13fc80f">isTimerSensorPending()</a> returns an absolute deadline in the time base of <a class="el" href="classSbTime.html#a6a24da27d9ba83fc848b860f164d00fc">SbTime::getTimeOfDay()</a>. Convert it to a relative wait and clamp overdue deadlines to zero:</p>
+<div class="fragment"><div class="line">SbBool <a class="code hl_class" href="classSbList.html">nextSensorWait</a>(<a class="code hl_class" href="classSoSensorManager.html">SoSensorManager</a> * <a class="code hl_class" href="classSbList.html">manager</a>, <a class="code hl_class" href="classSbTime.html">SbTime</a> &amp; wait)</div>
+<div class="line">{</div>
+<div class="line">  <a class="code hl_class" href="classSbTime.html">SbTime</a> <a class="code hl_class" href="classSbList.html">deadline</a>;</div>
+<div class="line">  <span class="keywordflow">if</span> (!<a class="code hl_class" href="classSbList.html">manager</a>-&gt;isTimerSensorPending(<a class="code hl_class" href="classSbList.html">deadline</a>)) <span class="keywordflow">return</span> FALSE;</div>
+<div class="line">  wait = <a class="code hl_class" href="classSbList.html">deadline</a> - <a class="code hl_function" href="classSbTime.html#a6a24da27d9ba83fc848b860f164d00fc">SbTime::getTimeOfDay</a>();</div>
+<div class="line">  <span class="keywordflow">if</span> (wait &lt; <a class="code hl_function" href="classSbTime.html#aa43feadef19a055eb17bf244605f9972">SbTime::zero</a>()) wait = <a class="code hl_function" href="classSbTime.html#aa43feadef19a055eb17bf244605f9972">SbTime::zero</a>();</div>
+<div class="line">  <span class="keywordflow">return</span> TRUE;</div>
+<div class="line">}</div>
+<div class="ttc" id="aclassSbList_html"><div class="ttname"><a href="classSbList.html">SbList</a></div><div class="ttdoc">The SbList class is a template container class for lists.</div><div class="ttdef"><b>Definition</b> SbList.h:72</div></div>
+<div class="ttc" id="aclassSbTime_html"><div class="ttname"><a href="classSbTime.html">SbTime</a></div><div class="ttdoc">The SbTime class instances represents time values.</div><div class="ttdef"><b>Definition</b> SbTime.h:50</div></div>
+<div class="ttc" id="aclassSbTime_html_a6a24da27d9ba83fc848b860f164d00fc"><div class="ttname"><a href="classSbTime.html#a6a24da27d9ba83fc848b860f164d00fc">SbTime::getTimeOfDay</a></div><div class="ttdeci">static SbTime getTimeOfDay(void)</div><div class="ttdef"><b>Definition</b> SbTime.cpp:148</div></div>
+<div class="ttc" id="aclassSbTime_html_aa43feadef19a055eb17bf244605f9972"><div class="ttname"><a href="classSbTime.html#aa43feadef19a055eb17bf244605f9972">SbTime::zero</a></div><div class="ttdeci">static SbTime zero(void)</div><div class="ttdef"><b>Definition</b> SbTime.cpp:173</div></div>
+<div class="ttc" id="aclassSoSensorManager_html"><div class="ttname"><a href="classSoSensorManager.html">SoSensorManager</a></div><div class="ttdoc">The SoSensorManager class handles the sensor queues.</div><div class="ttdef"><b>Definition</b> SoSensorManager.h:43</div></div>
+</div><!-- fragment --><p>If this returns TRUE, use the smaller of this wait and the application's own timeout when waiting for events. If it returns FALSE, there is no timer-imposed limit; the application may still have other pending work. Recompute the deadline after dispatching events and processing sensors. A pending delay sensor alone does not require repeated zero-duration waits: an idle-only sensor can remain pending throughout a busy period.</p>
+<p><a class="el" href="#a5039008fb24defa335d63723528bc915">setChangedCallback()</a> can reprogram the event loop's timer or request a wakeup when a queue changes. It is a synchronous callback, with a single registration slot. Notifications are suppressed while sensor queues are being processed, and insertion of an immediate sensor does not notify it. Query the queues when installing the integration and after each dispatch/processing pass; the callback alone is not a complete record of pending work. Prefer deferring queue processing to the event loop rather than running user sensor callbacks inside this notification.</p>
+<p>Waiting for descriptor readiness must also allow the next sensor deadline to wake the loop. After readiness, keep the actual I/O and event handlers bounded, for example by using nonblocking I/O. A blocking read or other long operation in the loop delays sensor callbacks and rendering. Another option is to perform blocking I/O in a worker and deliver its results to the thread running the event loop. Scene updates and rendering still need the application's normal dispatch mechanism; processing sensor queues does not itself implement a window system.</p>
 <p>Please note that before Coin 2.3.1, sensors with equal priority (or the same trigger time for SoTimerQueue sensors) were processed LIFO. This has now been changed to FIFO to be conformant to SGI Inventor.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoSensor.html" title="The SoSensor class is the abstract base class for all sensors.">SoSensor</a> <a class="el" href="classSoTimerQueueSensor.html" title="The SoTimerQueueSensor class is the abstract base class for sensors triggering on certain timer event...">SoTimerQueueSensor</a> <a class="el" href="classSoDelayQueueSensor.html" title="The SoDelayQueueSensor class is the abstract base class for priority scheduled sensors.">SoDelayQueueSensor</a> </dd>
 <dd>
@@ -268,10 +289,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>NOTE: THIS METHOD IS OBSOLETED. DON'T USE IT.</p>
-<p>This is a wrapper around the standard select(2) call, which will make sure the sensor queues are updated while waiting for any action to happen on the given file descriptors.</p>
-<p>The void* arguments must be valid pointers to fd_set structures. We've changed this from the original SGI Inventor API to avoid messing up the header file with system specific includes.</p>
-<p>NOTE: THIS METHOD IS OBSOLETED. DON'T USE IT. </p>
+<p>This method is an unimplemented compatibility stub. It asserts in assertion-enabled builds and otherwise returns zero without waiting for I/O or processing sensors.</p>
+<p>Integrate <a class="el" href="#a3b5935cf5cdaeaf4825940260e5a142f">processTimerQueue()</a>, <a class="el" href="#a1e6b511731fc72c3adb16f7f345d11d6">processImmediateQueue()</a> and <a class="el" href="#aa077dc9dd11e12cad63016c60e4c9af7">processDelayQueue()</a> with the application's event loop. Use <a class="el" href="#ae598bb762c7a417b8f4f45f7a13fc80f">isTimerSensorPending()</a> to bound the I/O wait by the next absolute sensor deadline, and <a class="el" href="#a5039008fb24defa335d63723528bc915">setChangedCallback()</a> to update the wait when queues change. See the class documentation for the integration sequence and notification limitations.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoDB.html#aec3467618745683725f2b5f09f0e9ba4">SoDB::getSensorManager()</a> </dd></dl>
 
 </div>
 </div>
@@ -365,7 +385,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Returns <code>TRUE</code> if at least one timer sensor is present in the queue, otherwise <code>FALSE</code>.</p>
-<p>If sensors are pending, the time interval until the next one should be triggered will be put in the <em>tm</em> variable. </p>
+<p>If sensors are pending, <em>tm</em> receives the absolute trigger time of the first sensor, in the same time base as <a class="el" href="classSbTime.html#a6a24da27d9ba83fc848b860f164d00fc">SbTime::getTimeOfDay()</a>. It is not a relative interval. For an event-loop timeout, subtract the current time and clamp a negative result to <a class="el" href="classSbTime.html#aa43feadef19a055eb17bf244605f9972">SbTime::zero()</a>. If no timer is pending, <em>tm</em> is left unchanged.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a3b5935cf5cdaeaf4825940260e5a142f">processTimerQueue()</a> </dd></dl>
 
 </div>
 </div>
@@ -386,6 +407,7 @@ Public Member Functions</h2></td></tr>
 <p>Trigger all delay queue entries in priority order.</p>
 <p>The <em>isidle</em> flag indicates whether or not the processing happens because the application is idle or because the delay queue timeout was reached.</p>
 <p>A delay queue sensor with priority &gt; 0 can only be triggered once during a call to this function. If a delay sensor is rescheduled during <a class="el" href="#aa077dc9dd11e12cad63016c60e4c9af7">processDelayQueue()</a>, it is not processed until the next time this function is called. This is done to avoid an infinite loop while processing the sensors.</p>
+<p>If a sensor callback throws, skipped idle sensors and sensors deferred to the next pass are restored before the exception is propagated.</p>
 <p>A delay queue sensor with priority 0 is called an immediate sensor.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoDB.html#a4a40b27b0ed0cd4f3ee94f9b97c97894">SoDB::setDelaySensorTimeout()</a> </dd>
 <dd>
@@ -427,7 +449,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Trigger all the timers which have expired. </p>
+<p>Trigger all the timers which have expired.</p>
+<p>If a sensor callback throws, recurring timers awaiting rescheduling are restored before the exception is propagated. Timers canceled by the callback remain canceled. </p>
 
 </div>
 </div>
@@ -526,8 +549,11 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>For setting up a callback function to be invoked whenever any of the sensor queues are changed.</p>
-<p>This callback should typically be responsible for updating the client-side mechanism which is used for processing the queues. </p>
+<p>Register the callback used to update the application's event-loop timer or request a wakeup when sensor queues change. The callback is invoked synchronously by queue operations; it is not an event loop.</p>
+<p>There is one callback slot. A new registration replaces the previous callback and its data. Passing NULL disables the callback. Registering does not invoke it for sensors already pending, so query the queues when setting up the integration.</p>
+<p>Notifications are suppressed during <a class="el" href="#a3b5935cf5cdaeaf4825940260e5a142f">processTimerQueue()</a>, <a class="el" href="#aa077dc9dd11e12cad63016c60e4c9af7">processDelayQueue()</a> and <a class="el" href="#a1e6b511731fc72c3adb16f7f345d11d6">processImmediateQueue()</a>. Insertion of a delay sensor with priority zero also does not notify the callback. Recompute pending work after processing queues and dispatching application events. The callback should normally arrange a later processing pass rather than process queues itself.</p>
+<p>Queue state is updated before the callback is invoked. If it throws, the exception is propagated and the completed queue operation remains in effect.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#ae598bb762c7a417b8f4f45f7a13fc80f">isTimerSensorPending()</a>, <a class="el" href="#a23dad9c29887f3039ddc3f751af2e501">isDelaySensorPending()</a> </dd></dl>
 
 </div>
 </div>
@@ -562,7 +588,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoSensorManager.html">SoSensorManager</a></li>
-    <li class="footer">Generated on Sat Oct 3 2026 12:05:41 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sat Oct 3 2026 12:37:19 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

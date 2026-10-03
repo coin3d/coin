@@ -416,6 +416,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Put the sensor in the global delay queue. This means it will be triggered either when the CPU is idle, or when the specified delay queue timeout is reached.</p>
+<p>The scheduled state is updated before the sensor manager's changed callback is invoked. If that callback throws, the queue operation has already taken effect; <a class="el" href="#a07b6c7a457bae6a4f824c5b2f21c7425">isScheduled()</a> reflects the current queue state.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classSoDB.html#a4a40b27b0ed0cd4f3ee94f9b97c97894">SoDB::setDelaySensorTimeout()</a>, <a class="el" href="#aa459b0684d49daa70ed822d22160fae1">unschedule()</a>, <a class="el" href="#a07b6c7a457bae6a4f824c5b2f21c7425">isScheduled()</a> </dd></dl>
 
 <p>Implements <a class="el" href="classSoSensor.html#a99166cb15447e892c5dc1085e3621f39">SoSensor</a>.</p>
@@ -537,7 +538,7 @@ Protected Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoDelayQueueSensor.html">SoDelayQueueSensor</a></li>
-    <li class="footer">Generated on Sat Oct 3 2026 12:05:40 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sat Oct 3 2026 12:37:17 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

@@ -62438,6 +62438,7 @@
       <anchor>a017db6daa54156ec1a2f8198fb30d531</anchor>
       <arglist>(const SbTime &amp;t)</arglist>
     </member>
+    <docanchor file="classSoSensorManager.html" title="Integrating sensors with an event loop">sensors_event_loop</docanchor>
   </compound>
   <compound kind="class">
     <name>SoSeparator</name>

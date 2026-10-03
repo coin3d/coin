@@ -394,7 +394,8 @@ real time". That is, you <em>cannot</em> expect a timer to always trigger at the
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Put the sensor in the global timer queue.</p>
+<p>Put the sensor in the global timer queue. Repeated scheduling does not insert another queue entry.</p>
+<p>The scheduled state is updated before the sensor manager's changed callback is invoked. If that callback throws, the queue operation has already taken effect; <a class="el" href="#a777867fc1dd4d513c86ce117a4b0022b">isScheduled()</a> reflects the current queue state.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#afde246facb3dbd52aab69c8d71750a4c">unschedule()</a>, <a class="el" href="#a777867fc1dd4d513c86ce117a4b0022b">isScheduled()</a> </dd></dl>
 
 <p>Implements <a class="el" href="classSoSensor.html#a99166cb15447e892c5dc1085e3621f39">SoSensor</a>.</p>
@@ -523,7 +524,7 @@ real time". That is, you <em>cannot</em> expect a timer to always trigger at the
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoTimerQueueSensor.html">SoTimerQueueSensor</a></li>
-    <li class="footer">Generated on Sat Oct 3 2026 12:05:42 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sat Oct 3 2026 12:37:20 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
