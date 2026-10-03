@@ -178,13 +178,44 @@ cc_sched *
 cc_sched_construct(int numthreads)
 {
   cc_sched * sched = (cc_sched *) malloc(sizeof(cc_sched));
-  assert(sched);
+  if (sched == NULL) return NULL;
   sched->pool = cc_wpool_construct(numthreads);
+  if (sched->pool == NULL) {
+    free(sched);
+    return NULL;
+  }
   sched->mutex = cc_mutex_construct();
+  if (sched->mutex == NULL) {
+    cc_wpool_destruct(sched->pool);
+    free(sched);
+    return NULL;
+  }
  
   sched->itemheap = cc_heap_construct(64, sched_item_compare, TRUE);
-  sched->itemalloc = cc_memalloc_construct(sizeof(sched_item));
+  if (sched->itemheap == NULL) {
+    cc_mutex_destruct(sched->mutex);
+    cc_wpool_destruct(sched->pool);
+    free(sched);
+    return NULL;
+  }
+  sched->itemalloc = cc_memalloc_construct_aligned(
+    sizeof(sched_item), alignof(sched_item));
+  if (sched->itemalloc == NULL) {
+    cc_heap_destruct(sched->itemheap);
+    cc_mutex_destruct(sched->mutex);
+    cc_wpool_destruct(sched->pool);
+    free(sched);
+    return NULL;
+  }
   sched->schedid_dict = cc_dict_construct(64, 0.75f);
+  if (sched->schedid_dict == NULL) {
+    cc_memalloc_destruct(sched->itemalloc);
+    cc_heap_destruct(sched->itemheap);
+    cc_mutex_destruct(sched->mutex);
+    cc_wpool_destruct(sched->pool);
+    free(sched);
+    return NULL;
+  }
   sched->schedid_counter = 1;
   sched->iswaitingall = FALSE;
   sched->numallowed = -1; /* Unlimited */
@@ -254,24 +285,41 @@ cc_sched_schedule(cc_sched * sched,
 
   cc_mutex_lock(sched->mutex);
   item = (sched_item *)cc_memalloc_allocate(sched->itemalloc);
+  if (item == NULL) {
+    cc_mutex_unlock(sched->mutex);
+    return 0;
+  }
   
   item->workfunc = workfunc;
   item->closure = closure;
   item->priority = priority;
-  item->schedid = sched->schedid_counter++;
-  // avoid schedid == 0
-  if (item->schedid == 0) {
+  void * existing;
+  do {
     item->schedid = sched->schedid_counter++;
-  }
+  } while (item->schedid == 0 ||
+           cc_dict_get(sched->schedid_dict, item->schedid, &existing));
+  const uint32_t schedid = item->schedid;
+  const uintptr_t heapcount = cc_heap_elements(sched->itemheap);
   cc_heap_add(sched->itemheap, item);
-  cc_dict_put(sched->schedid_dict, item->schedid, item);
+  if (cc_heap_elements(sched->itemheap) == heapcount) {
+    cc_memalloc_deallocate(sched->itemalloc, item);
+    cc_mutex_unlock(sched->mutex);
+    return 0;
+  }
+  if (cc_dict_try_put(sched->schedid_dict, schedid, item) !=
+      CC_DICT_PUT_INSERTED) {
+    cc_heap_remove(sched->itemheap, item);
+    cc_memalloc_deallocate(sched->itemalloc, item);
+    cc_mutex_unlock(sched->mutex);
+    return 0;
+  }
   if (cc_dict_get_num_elements(sched->schedid_dict) == 1) {
     sched_try_trigger(sched);
   }
 
   cc_mutex_unlock(sched->mutex);
 
-  return item->schedid;
+  return schedid;
 }
 
 /*!
