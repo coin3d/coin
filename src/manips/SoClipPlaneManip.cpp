@@ -133,7 +133,6 @@
 
 #include <Inventor/manips/SoClipPlaneManip.h>
 #include <Inventor/SoPath.h>
-#include "SoManipKitPath.h"
 
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoCallbackAction.h>
@@ -347,7 +346,7 @@ SoClipPlaneManip::replaceNode(SoPath * path)
   }
   SoNode *tail = path->getTail();
   if (tail->isOfType(SoBaseKit::getClassTypeId())) {
-    SoBaseKit *kit = coin_lastKitInPath(path);
+    SoBaseKit *kit = static_cast<SoBaseKit *>(path->nodeKitPath().getTail());
     SbString partname = kit->getPartString(path);
     if (partname != "") {
       SoClipPlane *oldpart = (SoClipPlane*) kit->getPart(partname, TRUE);

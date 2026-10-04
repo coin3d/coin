@@ -50,7 +50,6 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/SoPath.h>
-#include "SoManipKitPath.h"
 #include <Inventor/nodes/SoGroup.h>
 
 /***************************************************************************/
@@ -125,7 +124,7 @@ _class_::replaceManip(SoPath * path, _parentclass_ * newone) const \
   this->transferFieldValues(this, newone); \
  \
   if (path->getTail()->isOfType(SoBaseKit::getClassTypeId())) { \
-    SoBaseKit * kit = coin_lastKitInPath(path); \
+    SoBaseKit * kit = static_cast<SoBaseKit *>(path->nodeKitPath().getTail()); \
     SbString partname = kit->getPartString(path); \
     if (partname == "" || !kit->setPart(partname, newone)) { \
       SoDebugError::postWarning("_class_::replaceManip", \

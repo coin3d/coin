@@ -46,9 +46,8 @@
   from the nodekit-specific accessors, while the complete route is retained.
 */
 
-// FIXME: We now need a "friend class SoNodeKitPath;" in the SoPath
-// definition -- could we do without it? That would clean up the
-// implementation a bit. 20020119 mortene.
+// FIXME: SoNodeKitPath still needs access to SoPath's private route for
+// materialization and mutation. 20020119 mortene.
 
 #include <Inventor/SoNodeKitPath.h>
 
@@ -83,6 +82,100 @@ private:
 } // namespace
 
 SoSearchAction * SoNodeKitPath::searchAction;
+
+/*!
+  \class SoNodeKitPathView SoPath.h Inventor/SoPath.h
+  \brief A borrowed, allocation-free nodekit projection of a SoPath.
+
+  The head is always included. Subsequent non-nodekit nodes are hidden.
+  The view reflects changes to its source path and must not outlive it.
+  In builds without nodekit support, the projection contains only the head.
+*/
+
+/*!
+  \fn SoNodeKitPathView SoPath::nodeKitPath(void) const
+  Returns a borrowed nodekit projection without copying the path or changing
+  reference counts. Use SoNodeKitPath::fromPath() when an independent,
+  mutable nodekit path is required.
+*/
+SoNodeKitPathView
+SoPath::nodeKitPath(void) const
+{
+  return SoNodeKitPathView(*this);
+}
+
+SoNodeKitPathView::SoNodeKitPathView(const SoPath & sourcepath)
+  : path(&sourcepath)
+{
+}
+
+/*!
+  Returns one plus the number of nodekits after the head. An empty source
+  path has length zero.
+*/
+int
+SoNodeKitPathView::getLength(void) const
+{
+  const int length = this->path->fullPath().getLength();
+  if (length == 0) return 0;
+
+  int count = 1;
+  for (int i = 1; i < length; ++i) {
+    SoNode * node = this->path->getNode(i);
+    if (node != NULL && node->isOfType(SoBaseKit::getClassTypeId())) ++count;
+  }
+  return count;
+}
+
+/*!
+  Returns the last nodekit in the complete route, or the head when there is
+  no later nodekit. Returns \c NULL for an empty source path.
+*/
+SoNode *
+SoNodeKitPathView::getTail(void) const
+{
+  const int length = this->path->fullPath().getLength();
+  if (length == 0) return NULL;
+
+  for (int i = length - 1; i > 0; --i) {
+    SoNode * node = this->path->getNode(i);
+    if (node != NULL && node->isOfType(SoBaseKit::getClassTypeId())) return node;
+  }
+  return this->path->getNode(0);
+}
+
+/*!
+  Returns projected node \a index, counting the head as zero. Returns
+  \c NULL for an invalid index.
+*/
+SoNode *
+SoNodeKitPathView::getNode(const int index) const
+{
+  const int length = this->path->fullPath().getLength();
+  if (index < 0 || length == 0) return NULL;
+  if (index == 0) return this->path->getNode(0);
+
+  int count = 1;
+  for (int i = 1; i < length; ++i) {
+    SoNode * node = this->path->getNode(i);
+    if (node != NULL && node->isOfType(SoBaseKit::getClassTypeId())) {
+      if (count++ == index) return node;
+    }
+  }
+  return NULL;
+}
+
+/*!
+  Returns projected node \a index from the logical tail. Returns \c NULL
+  for an invalid index.
+*/
+SoNode *
+SoNodeKitPathView::getNodeFromTail(const int index) const
+{
+  const int length = this->getLength();
+  if (index < 0 || index >= length) return NULL;
+  return this->getNode(length - index - 1);
+}
 
 /*!
   A constructor.
@@ -154,15 +247,7 @@ SoNodeKitPath::fromPath(const SoPath * path)
 int
 SoNodeKitPath::getLength(void) const
 {
-  const int n = this->nodes.getLength();
-  if (n == 0) return 0;
-
-  int cnt = 1;
-  for (int i = 1; i < n; i++) {
-    if (this->nodes[i] != NULL &&
-        this->nodes[i]->isOfType(SoBaseKit::getClassTypeId())) cnt++;
-  }
-  return cnt;
+  return this->nodeKitPath().getLength();
 }
 
 /*!
@@ -171,15 +256,7 @@ SoNodeKitPath::getLength(void) const
 SoNode *
 SoNodeKitPath::getTail(void) const
 {
-  const int n = this->nodes.getLength();
-  if (n == 0) return NULL;
-
-  for (int i = n - 1; i > 0; i--) {
-    if (this->nodes[i] != NULL &&
-        this->nodes[i]->isOfType(SoBaseKit::getClassTypeId()))
-      return this->nodes[i];
-  }
-  return this->nodes[0];
+  return this->nodeKitPath().getTail();
 }
 
 /*!
@@ -188,28 +265,12 @@ SoNodeKitPath::getTail(void) const
 SoNode *
 SoNodeKitPath::getNode(const int idx) const
 {
-  const int n = this->nodes.getLength();
-  if (idx < 0 || n == 0) {
-#if COIN_DEBUG
-    SoDebugError::postInfo("SoNodeKitPath::getNode",
-                           "index %d out of bounds", idx);
-#endif // COIN_DEBUG
-    return NULL;
-  }
-  if (idx == 0) return this->nodes[0];
-
-  int cnt = 1;
-  for (int i = 1; i < n; i++) {
-    if (this->nodes[i] != NULL &&
-        this->nodes[i]->isOfType(SoBaseKit::getClassTypeId())) {
-      if (cnt++ == idx) return this->nodes[i];
-    }
-  }
+  const SoNodeKitPathView view = this->nodeKitPath();
+  if (idx >= 0 && idx < view.getLength()) return view.getNode(idx);
 #if COIN_DEBUG
   SoDebugError::postInfo("SoNodeKitPath::getNode",
                          "index %d out of bounds", idx);
 #endif // COIN_DEBUG
-
   return NULL;
 }
 
@@ -219,8 +280,8 @@ SoNodeKitPath::getNode(const int idx) const
 SoNode *
 SoNodeKitPath::getNodeFromTail(const int idx) const
 {
-  const int length = this->getLength();
-  if (idx >= 0 && idx < length) return this->getNode(length - idx - 1);
+  const SoNodeKitPathView view = this->nodeKitPath();
+  if (idx >= 0 && idx < view.getLength()) return view.getNodeFromTail(idx);
 
 #if COIN_DEBUG
   SoDebugError::postInfo("SoNodeKitPath::getNodeFromTail",

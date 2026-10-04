@@ -55,7 +55,6 @@
 
 #include <Inventor/manips/SoTransformManip.h>
 #include <Inventor/SoPath.h>
-#include "SoManipKitPath.h"
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -242,7 +241,7 @@ SoTransformManip::replaceNode(SoPath * path)
   }
   SoNode *tail = path->getTail();
   if (tail->isOfType(SoBaseKit::getClassTypeId())) {
-    SoBaseKit *kit = coin_lastKitInPath(path);
+    SoBaseKit *kit = static_cast<SoBaseKit *>(path->nodeKitPath().getTail());
     SbString partname = kit->getPartString(path);
     if (partname != "") {  // FIXME: isn't this an assert condition? 20010909 mortene.
       SoTransform *oldpart = (SoTransform*) kit->getPart(partname, TRUE);

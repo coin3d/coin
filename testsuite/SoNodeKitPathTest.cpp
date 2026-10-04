@@ -102,6 +102,44 @@ struct Route {
 };
 
 static void
+checkBorrowedView()
+{
+  check(sizeof(SoNodeKitPathView) == sizeof(const SoPath *),
+        "nodekit view stores more than a borrowed path pointer");
+  SoPath * empty = new SoPath;
+  empty->ref();
+  const SoNodeKitPathView emptyview = empty->nodeKitPath();
+  check(emptyview.getLength() == 0 && emptyview.getTail() == NULL &&
+        emptyview.getNode(0) == NULL &&
+        emptyview.getNodeFromTail(0) == NULL,
+        "empty nodekit view was not empty");
+  empty->unref();
+
+  Route route;
+  const int refs = route.source->getRefCount();
+  const SoNodeKitPathView view = route.source->nodeKitPath();
+  check(route.source->getRefCount() == refs,
+        "creating a nodekit view changed the source reference count");
+  check(view.getLength() == 3 &&
+        view.getNode(0) == route.head &&
+        view.getNode(1) == route.rootkit &&
+        view.getNode(2) == route.childkit &&
+        view.getTail() == route.childkit &&
+        view.getNodeFromTail(0) == route.childkit &&
+        view.getNodeFromTail(2) == route.head,
+        "borrowed nodekit view lost the nested kit projection");
+  check(view.getNode(-1) == NULL && view.getNode(3) == NULL &&
+        view.getNodeFromTail(-1) == NULL &&
+        view.getNodeFromTail(3) == NULL,
+        "borrowed nodekit view accepted an invalid index");
+
+  route.source->pop();
+  route.source->pop();
+  check(view.getLength() == 2 && view.getTail() == route.rootkit,
+        "borrowed nodekit view did not reflect a source mutation");
+}
+
+static void
 checkProjectionAndOwnership()
 {
   check(SoNodeKitPath::fromPath(NULL) == NULL, "fromPath(NULL) was accepted");
@@ -303,6 +341,11 @@ checkTemporarySentinel()
   source.simpleAppend(head, -1);
   source.simpleAppend(static_cast<SoNode *>(NULL), -1);
 
+  const SoNodeKitPathView view = source.nodeKitPath();
+  check(view.getLength() == 1 && view.getTail() == head &&
+        view.getNode(0) == head && view.getNodeFromTail(0) == head,
+        "borrowed nodekit view dereferenced a temporary null sentinel");
+
   SoNodeKitPath * projected = SoNodeKitPath::fromPath(&source);
   projected->ref();
   check(projected->getLength() == 1 && projected->getTail() == head &&
@@ -381,6 +424,7 @@ main()
 {
   SoDB::init();
   SoNodeKit::init();
+  checkBorrowedView();
   checkProjectionAndOwnership();
   checkAppendBelowLogicalTail();
   checkAppendPathAndPop();
