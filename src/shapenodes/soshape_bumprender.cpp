@@ -452,7 +452,7 @@ struct soshape_bumprender::ProgramCache {
     }
     Ptr cache;
     try {
-      cache.reset(new ProgramCache);
+      cache = std::make_shared<ProgramCache>();
     }
     catch (const std::bad_alloc &) {
       return Ptr(); // No resource or callback has been published.
@@ -818,7 +818,8 @@ soshape_bumprender::scheduleRedraw(SoState * state, SoNode * root)
     ProgramCache::Redraws::iterator redraw = cache->redraws.find(root);
     if (redraw == cache->redraws.end()) {
       try {
-        ProgramCache::RedrawPtr candidate(new ProgramCache::RedrawSensor(cache->token));
+        ProgramCache::RedrawPtr candidate =
+          std::make_shared<ProgramCache::RedrawSensor>(cache->token);
         candidate->self = candidate; // weak lock cannot throw bad_weak_ptr.
         redraw = cache->redraws.insert(std::make_pair(root, candidate)).first;
       }
@@ -1315,6 +1316,14 @@ soshape_bumprender::calcTSBCoords(const SoPrimitiveVertexCache * cache, SoLight 
   const SbVec3f * normals = cache->getNormalArray();
 
   this->cubemaplist.truncate(0);
+  // Reserve at the list's usual doubling threshold. Exact reservation would
+  // reallocate for every small increase in a changing vertex cache.
+  int capacity = 1;
+  while (capacity < numv) {
+    if (capacity > std::numeric_limits<int>::max() / 2) throw std::bad_alloc();
+    capacity *= 2;
+  }
+  this->cubemaplist.ensureCapacity(capacity);
   for (int i = 0; i < numv; i++) {
     SbVec3f sTangent = this->tangentlist[i*2];
     SbVec3f tTangent = this->tangentlist[i*2+1];
