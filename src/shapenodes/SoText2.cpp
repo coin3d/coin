@@ -101,13 +101,19 @@
 #include "coindefs.h"
 
 #include <climits>
+#include <cmath>
 #include <cstring>
+#include <limits>
+#include <new>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <Inventor/SbBox2s.h>
+#include <Inventor/SbBox2i32.h>
+#include <Inventor/SbDPMatrix.h>
+#include <Inventor/SbDPViewVolume.h>
+#include <Inventor/SbVec2d.h>
 #include <Inventor/SbLine.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbString.h>
@@ -220,25 +226,25 @@ public:
   }
 
   SbBool getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
-                 SbVec3f & v2, SbVec3f & v3);
+                 SbVec3f & v2, SbVec3f & v3, SbBool visibleonly = TRUE);
   void flushGlyphCache();
   void buildGlyphCache(SoState * state);
   SbBool shouldBuildGlyphCache(SoState * state);
   void dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos, SbBool mono);
-  void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
+  void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center, SbBool visibleonly = TRUE);
   static void setRasterPos3f(GLfloat x, GLfloat y, GLfloat z);
 
 
   SbList <int> stringwidth;
   int maxwidth;
-  SbList< SbList<SbVec2s> > positions;
-  SbBox2s bbox;
+  SbList< SbList<SbVec2i32> > positions;
+  SbBox2i32 bbox;
 
   SoGlyphCache * cache;
   SoFieldSensor * spacingsensor;
   SoFieldSensor * stringsensor;
   unsigned char * pixel_buffer;
-  int pixel_buffer_size;
+  size_t pixel_buffer_size;
 
   static void sensor_cb(void * userdata, SoSensor * COIN_UNUSED_ARG(s)) {
     SoText2P * thisp = (SoText2P*) userdata;
@@ -344,13 +350,12 @@ SoText2::GLRender(SoGLRenderAction * action)
   PRIVATE(this)->buildGlyphCache(state);
   SoCacheElement::addCacheDependency(state, PRIVATE(this)->cache);
 
-  const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec();
-
   // Render only if bbox not outside cull planes.
   SbBox3f box;
   SbVec3f center;
   PRIVATE(this)->computeBBox(action, box, center);
-  if (!SoCullElement::cullTest(state, box, TRUE)) {
+  if (!box.isEmpty() && !SoCullElement::cullTest(state, box, TRUE)) {
+    const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec();
     SoMaterialBundle mb(action);
     mb.sendFirst();
     SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
@@ -364,9 +369,8 @@ SoText2::GLRender(SoGLRenderAction * action)
     nilpoint[0] = (nilpoint[0] + 1.0f) * 0.5f * vpsize[0];
     nilpoint[1] = (nilpoint[1] + 1.0f) * 0.5f * vpsize[1];
 
-    SbVec2s bbsize = PRIVATE(this)->bbox.getSize();
-    const SbVec2s& bbmin = PRIVATE(this)->bbox.getMin();
-    const SbVec2s& bbmax = PRIVATE(this)->bbox.getMax();
+    const SbVec2i32 bbmin = PRIVATE(this)->bbox.getMin();
+    const SbVec2i32 bbmax = PRIVATE(this)->bbox.getMax();
 
     float textscreenoffsetx = nilpoint[0]+bbmin[0];
     switch (this->justification.getValue()) {
@@ -390,10 +394,19 @@ SoText2::GLRender(SoGLRenderAction * action)
     glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
     glPixelStorei(GL_UNPACK_ALIGNMENT,1);
 
-    float fontsize = SoFontSizeElement::get(state);
-    int xpos = 0;
-    int ypos = 0;
-    int rasterx, rastery;
+    const double lineadvance = std::trunc(std::trunc(double(SoFontSizeElement::get(state))) *
+                                          double(this->spacing.getValue()));
+    int64_t xpos = 0;
+    int64_t ypos = 0;
+    int64_t rasterx, rastery;
+    const double originx = std::floor(double(textscreenoffsetx) + 0.5);
+    const double originy = std::floor(double(nilpoint[1]) + 0.5) + bbmin[1];
+    const int bufferx = int(SbClamp(originx, 0.0, double(vpsize[0])));
+    const int buffery = int(SbClamp(originy, 0.0, double(vpsize[1])));
+    const int bufferwidth = int(SbClamp(originx + double(bbmax[0]) - bbmin[0],
+                                      0.0, double(vpsize[0]))) - bufferx;
+    const int bufferheight = int(SbClamp(originy + double(bbmax[1]) - bbmin[1],
+                                       0.0, double(vpsize[1]))) - buffery;
     int ix=0, iy=0;
     int bitmappos[2];
     int bitmapsize[2];
@@ -418,6 +431,7 @@ SoText2::GLRender(SoGLRenderAction * action)
     glPushClientAttrib(GL_CLIENT_PIXEL_STORE_BIT);
 
     SbBool drawPixelBuffer = FALSE;
+    SbBool bufferfailed = FALSE;
 
     for (int i = 0; i < nrlines; i++) {
       SbString str = this->string[i];
@@ -459,61 +473,61 @@ SoText2::GLRender(SoGLRenderAction * action)
           cc_glyph2d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
         cc_glyph2d_getadvance(glyph, &advancex, &advancey);
 
-        rasterx = xpos + kerningx + bitmappos[0];
-        rastery = ypos + (bitmappos[1] - bitmapsize[1]);
+        rasterx = xpos + kerningx + int64_t(bitmappos[0]);
+        rastery = ypos + int64_t(bitmappos[1]) - bitmapsize[1];
 
         if (buffer) {
           if (cc_glyph2d_getmono(glyph)) {
-            SoText2P::setRasterPos3f((float)rasterx + textscreenoffsetx, (float)rastery + (int)nilpoint[1], -nilpoint[2]);
+            SoText2P::setRasterPos3f((float)rasterx + textscreenoffsetx, GLfloat(double(rastery) + std::trunc(double(nilpoint[1]))), -nilpoint[2]);
             glBitmap(ix,iy,0,0,0,0,(const GLubyte *)buffer);
           }
           else {
-            if (!drawPixelBuffer) {
-              int numpixels = bbsize[0] * bbsize[1];
-              if (numpixels > PRIVATE(this)->pixel_buffer_size) {
-                delete[] PRIVATE(this)->pixel_buffer;
-                PRIVATE(this)->pixel_buffer = new unsigned char[numpixels*4];
-                PRIVATE(this)->pixel_buffer_size = numpixels;
+            if (!drawPixelBuffer && !bufferfailed && bufferwidth > 0 && bufferheight > 0) {
+              const size_t width = size_t(bufferwidth);
+              const size_t height = size_t(bufferheight);
+              if (width > std::numeric_limits<size_t>::max() / 4 / height) {
+                bufferfailed = TRUE;
               }
-              memset(PRIVATE(this)->pixel_buffer, 0, numpixels * 4);
-              drawPixelBuffer = TRUE;
-            }
-
-            int memx = rasterx - bbmin[0];
-            int memy = bbsize[1] - (bbmax[1] - rastery - 1) - 1;
-
-            if (memx >= 0 && memx + bitmapsize[0] <= bbsize[0] &&
-                memy >= 0 && memy + bitmapsize[1] <= bbsize[1]) {
-
-              unsigned char * dst = PRIVATE(this)->pixel_buffer + (memy * bbsize[0] + memx) * 4;
-              const unsigned char * src = buffer;
-              int nextlineoffset = (bbsize[0] - bitmapsize[0]) * 4;
-
-              // Ouch. This must lead to pretty slow rendering
-              for (int y = 0; y < iy; y++) {
-                for (int x = 0; x < ix; x++) {
-                  *dst++ = red; *dst++ = green; *dst++ = blue;
-                  // alpha from the gray level pixel value, blended with current value (because glyph bitmaps can overlap)
-                  int srcval = *src;
-                  int oldval = *dst;
-                  *dst = ((oldval * (256 - srcval) + alpha * srcval) >> 8);
-                  src++; dst++;
+              else {
+                const size_t bytes = width * height * 4;
+                if (bytes > PRIVATE(this)->pixel_buffer_size) {
+                  unsigned char * replacement = new (std::nothrow) unsigned char[bytes];
+                  if (!replacement) bufferfailed = TRUE;
+                  else {
+                    delete[] PRIVATE(this)->pixel_buffer;
+                    PRIVATE(this)->pixel_buffer = replacement;
+                    PRIVATE(this)->pixel_buffer_size = bytes;
+                  }
                 }
-                dst += nextlineoffset;
+                if (!bufferfailed) {
+                  memset(PRIVATE(this)->pixel_buffer, 0, bytes);
+                  drawPixelBuffer = TRUE;
+                }
               }
-            } else {
-              static SbBool once = TRUE;
-              if (once) {
-                SoDebugError::post("SoText2::GLRender",
-                                   "Unable to copy glyph to memory buffer. Position [%d,%d], size [%d,%d], buffer size [%d,%d]",
-                                   memx, memy, bitmapsize[0], bitmapsize[1], bbsize[0], bbsize[1]);
-                once = FALSE;
+            }
+            if (drawPixelBuffer) {
+              const int64_t memx = int64_t(originx) + rasterx - bbmin[0] - bufferx;
+              const int64_t memy = int64_t(originy) + rastery - bbmin[1] - buffery;
+              const int64_t left = SbMax(int64_t(0), memx);
+              const int64_t bottom = SbMax(int64_t(0), memy);
+              const int64_t right = SbMin(int64_t(bufferwidth), memx + ix);
+              const int64_t top = SbMin(int64_t(bufferheight), memy + iy);
+              for (int64_t y = bottom; y < top && left < right; ++y) {
+                unsigned char * dst = PRIVATE(this)->pixel_buffer +
+                  (size_t(y) * size_t(bufferwidth) + size_t(left)) * 4;
+                const unsigned char * src = buffer + size_t(y - memy) * size_t(ix) + size_t(left - memx);
+                for (int64_t x = left; x < right; ++x) {
+                  *dst++ = red; *dst++ = green; *dst++ = blue;
+                  const int srcval = *src++;
+                  const int oldval = *dst;
+                  *dst++ = ((oldval * (256 - srcval) + alpha * srcval) >> 8);
+                }
               }
             }
           }
         }
 
-        xpos += (advancex + kerningx);
+        xpos += int64_t(advancex) + kerningx;
 
         if (prevglyph) {
           // should be safe to unref here. SoGlyphCache will have a
@@ -523,7 +537,7 @@ SoText2::GLRender(SoGLRenderAction * action)
         prevglyph = glyph;
       }
 
-      ypos -= (int)(((int) fontsize) * this->spacing.getValue());
+      ypos -= int64_t(lineadvance);
     }
 
     if (prevglyph) {
@@ -539,10 +553,8 @@ SoText2::GLRender(SoGLRenderAction * action)
       glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
       glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
 
-      rastery = (int)floor(nilpoint[1]+0.5) - bbsize[1] + bbmax[1];
-
-      SoText2P::setRasterPos3f((GLfloat)floor(textscreenoffsetx+0.5), (GLfloat)rastery, -nilpoint[2]);
-      glDrawPixels(bbsize[0], bbsize[1], GL_RGBA, GL_UNSIGNED_BYTE, (const GLubyte *)PRIVATE(this)->pixel_buffer);
+      SoText2P::setRasterPos3f(GLfloat(bufferx), GLfloat(buffery), -nilpoint[2]);
+      glDrawPixels(bufferwidth, bufferheight, GL_RGBA, GL_UNSIGNED_BYTE, (const GLubyte *)PRIVATE(this)->pixel_buffer);
     }
 
     // pop old state
@@ -574,7 +586,8 @@ void
 SoText2::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
   PRIVATE(this)->lock();
-  PRIVATE(this)->computeBBox(action, box, center);
+  // Bounds must include offscreen text so viewAll can find it.
+  PRIVATE(this)->computeBBox(action, box, center, FALSE);
   SoCacheElement::addCacheDependency(action->getState(), PRIVATE(this)->cache);
   PRIVATE(this)->unlock();
 }
@@ -630,9 +643,9 @@ SoText2::rayPick(SoRayPickAction * action)
     // find the character
     int charidx = -1;
     int strlength = this->string[stringidx].getLength();
-    short minx, miny, maxx, maxy;
+    int32_t minx, miny, maxx, maxy;
     PRIVATE(this)->bbox.getBounds(minx, miny, maxx, maxy);
-    float bbwidth = (float)(maxx - minx);
+    float bbwidth = float(double(maxx) - double(minx));
     float strleft = (bbwidth - PRIVATE(this)->stringwidth[stringidx]) / bbwidth;
     float strright = 1.0;
     switch (this->justification.getValue()) {
@@ -708,86 +721,128 @@ SoText2P::flushGlyphCache()
 //  Return FALSE if the quad is empty.
 SbBool
 SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
-                  SbVec3f & v2, SbVec3f & v3)
+                  SbVec3f & v2, SbVec3f & v3, SbBool visibleonly)
 {
   this->buildGlyphCache(state);
 
-  short xmin, ymin, xmax, ymax;
+  int32_t xmin, ymin, xmax, ymax;
   this->bbox.getBounds(xmin, ymin, xmax, ymax);
 
-  // FIXME: Why doesn't the SbBox2s have an 'isEmpty()' method as well?
-  // (20040308 handegar)
-  if (xmax < xmin) return FALSE;
+  if (this->bbox.isEmpty()) return FALSE;
 
-  SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
-  const SbMatrix & mat = SoModelMatrixElement::get(state);
-  mat.multVecMatrix(nilpoint, nilpoint);
-
-  const SbViewVolume &vv = SoViewVolumeElement::get(state);
-
-  SbVec3f screenpoint;
-  vv.projectToScreen(nilpoint, screenpoint);
-
-  const SbViewportRegion & vp = SoViewportRegionElement::get(state);
-  SbVec2s vpsize = vp.getViewportSizePixels();
-
-  SbVec2f n0, n1, n2, n3, center;
-  SbVec2s sp((short) (screenpoint[0] * vpsize[0]), (short)(screenpoint[1] * vpsize[1]));
-
-  n0 = SbVec2f(float(sp[0] + xmin)/float(vpsize[0]),
-               float(sp[1] + ymax)/float(vpsize[1]));
-  n1 = SbVec2f(float(sp[0] + xmax)/float(vpsize[0]),
-               float(sp[1] + ymax)/float(vpsize[1]));
-  n2 = SbVec2f(float(sp[0] + xmax)/float(vpsize[0]),
-               float(sp[1] + ymin)/float(vpsize[1]));
-  n3 = SbVec2f(float(sp[0] + xmin)/float(vpsize[0]),
-               float(sp[1] + ymin)/float(vpsize[1]));
-
-  float w = n1[0]-n0[0];
-  float halfw = w*0.5f;
-  switch (PUBLIC(this)->justification.getValue()) {
-  case SoText2::LEFT:
-    break;
-  case SoText2::RIGHT:
-    n0[0] -= w;
-    n1[0] -= w;
-    n2[0] -= w;
-    n3[0] -= w;
-    break;
-  case SoText2::CENTER:
-    n0[0] -= halfw;
-    n1[0] -= halfw;
-    n2[0] -= halfw;
-    n3[0] -= halfw;
-    break;
-  default:
-    assert(0 && "unknown alignment");
-    break;
+  const SbDPMatrix model(SoModelMatrixElement::get(state));
+  SbVec3d anchor;
+  model.multVecMatrix(SbVec3d(0.0, 0.0, 0.0), anchor);
+  const SbViewVolume & vv = SoViewVolumeElement::get(state);
+  const SbDPViewVolume & dpvv = vv.getDPViewVolume();
+  const SbVec2s vpsize = SoViewportRegionElement::get(state).getViewportSizePixels();
+  if (vpsize[0] <= 0 || vpsize[1] <= 0) return FALSE;
+  for (int axis = 0; axis < 3; ++axis) {
+    if (!std::isfinite(anchor[axis])) return FALSE;
   }
 
-  // get distance from nilpoint to camera plane
-  float dist = -vv.getPlane(0.0f).getDistance(nilpoint);
+  SbVec3d direction = dpvv.getProjectionDirection();
+  direction.normalize();
+  double distance = (anchor - dpvv.getProjectionPoint()).dot(direction);
+  const SbBool atcamera = dpvv.getProjectionType() == SbDPViewVolume::PERSPECTIVE && distance == 0.0;
+  SbVec3d screenpoint;
+  SbVec3d offset(0.0, 0.0, 0.0);
+  if (atcamera) {
+    // The projection is singular at the eye plane. Bounds still need a
+    // finite footprint there so viewAll can move the camera away from it.
+    // Drawing and picking retain the ordinary visibility contract.
+    if (visibleonly) return FALSE;
+    distance = std::fabs(dpvv.getNearDist());
+    if (!(distance > 0.0) || !std::isfinite(distance)) return FALSE;
+    screenpoint.setValue(0.5, 0.5, 0.0);
+    offset = anchor - dpvv.getPlanePoint(distance, SbVec2d(0.5, 0.5));
+  }
+  else dpvv.projectToScreen(anchor, screenpoint);
 
-  // find the four image points in the plane
-  v0 = vv.getPlanePoint(dist, n0);
-  v1 = vv.getPlanePoint(dist, n1);
-  v2 = vv.getPlanePoint(dist, n2);
-  v3 = vv.getPlanePoint(dist, n3);
-
-  // test if the quad is outside the view frustum, ignore it in that case
+  const double sx = screenpoint[0] * vpsize[0];
+  const double sy = screenpoint[1] * vpsize[1];
+  if (!std::isfinite(sx) || !std::isfinite(sy) || !std::isfinite(distance)) return FALSE;
+  const double px = std::trunc(sx);
+  const double py = std::trunc(sy);
+  double alignment = 0.0;
+  const double width = double(xmax) - xmin;
+  switch (PUBLIC(this)->justification.getValue()) {
+  case SoText2::LEFT: break;
+  case SoText2::RIGHT: alignment = width; break;
+  case SoText2::CENTER: alignment = width * 0.5; break;
+  default: assert(0 && "unknown alignment"); break;
+  }
+  const SbVec2d corners[4] = {
+    SbVec2d((px + xmin - alignment) / vpsize[0], (py + ymax) / vpsize[1]),
+    SbVec2d((px + xmax - alignment) / vpsize[0], (py + ymax) / vpsize[1]),
+    SbVec2d((px + xmax - alignment) / vpsize[0], (py + ymin) / vpsize[1]),
+    SbVec2d((px + xmin - alignment) / vpsize[0], (py + ymin) / vpsize[1])
+  };
+  SbVec3d points[4];
   SbBox3f testbox;
-  testbox.extendBy(v0);
-  testbox.extendBy(v1);
-  testbox.extendBy(v2);
-  testbox.extendBy(v3);
-  if (!vv.intersect(testbox)) return FALSE;
+  for (int i = 0; i < 4; ++i) {
+    points[i] = dpvv.getPlanePoint(distance, corners[i]) + offset;
+    SbVec3f point;
+    for (int axis = 0; axis < 3; ++axis) {
+      if (!std::isfinite(points[i][axis]) ||
+          std::fabs(points[i][axis]) > std::numeric_limits<float>::max()) return FALSE;
+      point[axis] = float(points[i][axis]);
+    }
+    testbox.extendBy(point);
+  }
+  if (visibleonly && !vv.intersect(testbox)) return FALSE;
 
-  // transform back to object space
-  SbMatrix inv = mat.inverse();
-  inv.multVecMatrix(v0, v0);
-  inv.multVecMatrix(v1, v1);
-  inv.multVecMatrix(v2, v2);
-  inv.multVecMatrix(v3, v3);
+  if (!visibleonly) {
+    // Preserve a conservative world footprint before the bounding-box action
+    // applies the float model matrix to the object-space bounds again.
+    for (int axis = 0; axis < 3; ++axis) {
+      double low = points[0][axis], high = low;
+      for (int i = 1; i < 4; ++i) {
+        low = SbMin(low, points[i][axis]);
+        high = SbMax(high, points[i][axis]);
+      }
+      if (high > low && float(low) == float(high)) {
+        const float value = float(low);
+        const float lower = std::nextafter(value, -std::numeric_limits<float>::infinity());
+        const float upper = std::nextafter(value, std::numeric_limits<float>::infinity());
+        if (!std::isfinite(lower) || !std::isfinite(upper)) return FALSE;
+        points[0][axis] = lower;
+        points[1][axis] = upper;
+      }
+    }
+  }
+
+  const SbDPMatrix inverse = model.inverse();
+  SbVec3f * output[4] = { &v0, &v1, &v2, &v3 };
+  for (int i = 0; i < 4; ++i) {
+    inverse.multVecMatrix(points[i], points[i]);
+    for (int axis = 0; axis < 3; ++axis) {
+      if (!std::isfinite(points[i][axis]) ||
+          std::fabs(points[i][axis]) > std::numeric_limits<float>::max()) return FALSE;
+      (*output[i])[axis] = float(points[i][axis]);
+    }
+  }
+  if (!visibleonly) {
+    // SbBox3f cannot represent a sub-ULP footprint at a large coordinate.
+    // Keep bounds conservative rather than collapsing a nonzero extent.
+    for (int axis = 0; axis < 3; ++axis) {
+      double low = points[0][axis], high = low;
+      SbBool collapsed = TRUE;
+      for (int i = 1; i < 4; ++i) {
+        low = SbMin(low, points[i][axis]);
+        high = SbMax(high, points[i][axis]);
+        collapsed = collapsed && (*output[i])[axis] == (*output[0])[axis];
+      }
+      if (collapsed && high > low) {
+        const float value = (*output[0])[axis];
+        const float lower = std::nextafter(value, -std::numeric_limits<float>::infinity());
+        const float upper = std::nextafter(value, std::numeric_limits<float>::infinity());
+        if (!std::isfinite(lower) || !std::isfinite(upper)) return FALSE;
+        (*output[0])[axis] = lower;
+        (*output[1])[axis] = upper;
+      }
+    }
+  }
 
   return TRUE;
 }
@@ -852,11 +907,24 @@ SoText2P::buildGlyphCache(SoState * state)
   this->cache = new SoGlyphCache(state);
   this->cache->ref();
   SoCacheElement::set(state, this->cache);
+  // Do not pass non-finite or out-of-range sizes to the font backend.
+  const double requestedsize = SoFontSizeElement::get(state);
+  if (!std::isfinite(requestedsize) || requestedsize <= 0.0 || requestedsize > INT_MAX) {
+    state->pop();
+    SoCacheElement::setInvalid(storedinvalid);
+    if (oldcache) oldcache->unref();
+    return;
+  }
   this->cache->readFontspec(state);
 
   float fontsize = SoFontSizeElement::get(state);
-  int ypos = 0;
-  int maxoverhang = INT_MIN;
+  const double spacing = PUBLIC(this)->spacing.getValue();
+  const double lineadvance = std::trunc(std::trunc(double(fontsize)) * spacing);
+  SbBool valid = std::isfinite(fontsize) && fontsize > 0.0f &&
+    double(fontsize) <= INT_MAX && std::isfinite(lineadvance) &&
+    std::fabs(lineadvance) <= INT_MAX;
+  int64_t ypos = 0;
+  int64_t maxoverhang = INT_MIN;
 
   const int nrlines = PUBLIC(this)->string.getNum();
 
@@ -864,13 +932,13 @@ SoText2P::buildGlyphCache(SoState * state)
 
   this->bbox.makeEmpty();
 
-  for (int i=0; i < nrlines; i++) {
+  for (int i=0; valid && i < nrlines; i++) {
     SbString str = PUBLIC(this)->string[i];
-    this->positions.append(SbList<SbVec2s>());
+    this->positions.append(SbList<SbVec2i32>());
 
-    SbBox2s linebbox;
-    int xpos = 0;
-    int actuallength = 0;
+    SbBox2i32 linebbox;
+    int64_t xpos = 0;
+    int64_t actuallength = 0;
     int kerningx = 0;
     int kerningy = 0;
     int advancex = 0;
@@ -906,41 +974,47 @@ SoText2P::buildGlyphCache(SoState * state)
         cc_glyph2d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
       cc_glyph2d_getadvance(glyph, &advancex, &advancey);
 
-      SbVec2s pos;
-      pos[0] = xpos + kerningx + bitmappos[0];
-      pos[1] = ypos + (bitmappos[1] - bitmapsize[1]);
-
+      const int64_t px = xpos + kerningx + int64_t(bitmappos[0]);
+      const int64_t py = ypos + int64_t(bitmappos[1]) - bitmapsize[1];
+      const int64_t nextx = xpos + int64_t(advancex) + kerningx;
+      valid = bitmapsize[0] >= 0 && bitmapsize[1] >= 0 &&
+        px >= INT32_MIN && px <= INT32_MAX &&
+        py >= INT32_MIN && py <= INT32_MAX &&
+        px + bitmapsize[0] <= INT32_MAX && py + bitmapsize[1] <= INT32_MAX &&
+        nextx >= 0 && nextx <= INT32_MAX;
+      if (!valid) break;
+      const SbVec2i32 pos = SbVec2i32(int32_t(px), int32_t(py));
       linebbox.extendBy(pos);
-      linebbox.extendBy(pos + SbVec2s(bitmapsize[0], bitmapsize[1]));
+      linebbox.extendBy(SbVec2i32(int32_t(px + bitmapsize[0]), int32_t(py + bitmapsize[1])));
       this->positions[i].append(pos);
-
-      actuallength += (advancex + kerningx);
-
-      xpos += (advancex + kerningx);
+      actuallength = nextx;
+      xpos = nextx;
       prevglyph = glyph;
     }
 
     this->bbox.extendBy(linebbox);
-    this->stringwidth.append(actuallength);
-    if (actuallength > this->maxwidth) this->maxwidth=actuallength;
+    this->stringwidth.append(int(actuallength));
+    if (actuallength > this->maxwidth) this->maxwidth=int(actuallength);
 
     // bitmap of last character can end before or beyond starting position of next character
     if (!linebbox.isEmpty())
     {
-      int overhang = linebbox.getMax()[0] - actuallength;
+      int64_t overhang = int64_t(linebbox.getMax()[0]) - actuallength;
       if (overhang > maxoverhang) maxoverhang = overhang;
     }
 
-    ypos -= (int)(((int)fontsize) * PUBLIC(this)->spacing.getValue());
+    if (valid) ypos -= int64_t(lineadvance);
   }
 
   // extent bbox to include maxoverhang at the maxwidth string
   // this is needed for right-aligned text which gets aligned at the maxwidth
   // position, because there can be other strings with bitmaps going beyond
-  if (maxoverhang > INT_MIN)
-  {
-    this->bbox.extendBy(SbVec2s(this->maxwidth + maxoverhang, this->bbox.getMax()[1]));
+  if (valid && maxoverhang > INT_MIN) {
+    const int64_t right = int64_t(this->maxwidth) + maxoverhang;
+    valid = right >= INT32_MIN && right <= INT32_MAX;
+    if (valid) this->bbox.extendBy(SbVec2i32(int32_t(right), this->bbox.getMax()[1]));
   }
+  if (!valid) this->flushGlyphCache();
 
   state->pop();
   SoCacheElement::setInvalid(storedinvalid);
@@ -949,12 +1023,12 @@ SoText2P::buildGlyphCache(SoState * state)
 }
 
 void
-SoText2P::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
+SoText2P::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center, SbBool visibleonly)
 {
   SbVec3f v0, v1, v2, v3;
   // this will cause a cache dependency on the view volume,
   // model matrix and viewport.
-  if (!this->getQuad(action->getState(), v0, v1, v2, v3)) {
+  if (!this->getQuad(action->getState(), v0, v1, v2, v3, visibleonly)) {
     return; // empty
   }
   box.makeEmpty();
