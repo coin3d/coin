@@ -141,11 +141,18 @@ int main(int argc, char **argv) {
     }
     for (float x : {1000.f, 1000000.f, 1000000000.f}) {
       Scene scene(12);
+      const auto reference = scene.bounds();
       scene.translation->translation.setValue(x, 0, 0);
       const auto box = scene.bounds();
+      // The font's left bearing may put the box entirely to the right of
+      // the anchor. Compare translated centers instead of requiring the
+      // anchor inside the bitmap box; allow one float ULP at large x.
+      const double ulp = double(std::nextafter(x, std::numeric_limits<float>::infinity())) - x;
+      const double tolerance = ulp + extent(reference, 0) * 0.01;
       check("large coordinates retain footprint",
-            finite(box) && extent(box, 0) > 0 && box.getMin()[0] <= x &&
-                box.getMax()[0] >= x);
+            finite(reference) && finite(box) && extent(box, 0) > 0 &&
+                std::fabs((double(box.getCenter()[0]) - x) -
+                          reference.getCenter()[0]) <= tolerance);
     }
     for (float spacing :
          {std::numeric_limits<float>::quiet_NaN(),

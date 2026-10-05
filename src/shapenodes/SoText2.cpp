@@ -111,6 +111,7 @@
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/SbBox2i32.h>
+#include <Inventor/SbBox2s.h>
 #include <Inventor/SbDPMatrix.h>
 #include <Inventor/SbDPViewVolume.h>
 #include <Inventor/SbVec2d.h>
@@ -218,6 +219,8 @@
   Default value is SoText2::LEFT.
 */
 
+struct SoText2Layout;
+
 class SoText2P {
 public:
   SoText2P(SoText2 * textnode) : maxwidth(0), master(textnode)
@@ -226,25 +229,31 @@ public:
   }
 
   SbBool getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
-                 SbVec3f & v2, SbVec3f & v3, SbBool visibleonly = TRUE);
+                 SbVec3f & v2, SbVec3f & v3);
+  SbBool getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
+                 SbVec3f & v2, SbVec3f & v3, SbBool visibleonly);
   void flushGlyphCache();
   void buildGlyphCache(SoState * state);
   SbBool shouldBuildGlyphCache(SoState * state);
   void dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos, SbBool mono);
-  void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center, SbBool visibleonly = TRUE);
+  void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
+  void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center, SbBool visibleonly);
+  SoText2Layout & layout();
   static void setRasterPos3f(GLfloat x, GLfloat y, GLfloat z);
 
 
   SbList <int> stringwidth;
   int maxwidth;
-  SbList< SbList<SbVec2i32> > positions;
-  SbBox2i32 bbox;
+  // Retain the original exported implementation layout. Extended storage
+  // lives in the derived allocation and does not change these ABI offsets.
+  SbList< SbList<SbVec2s> > positions;
+  SbBox2s bbox;
 
   SoGlyphCache * cache;
   SoFieldSensor * spacingsensor;
   SoFieldSensor * stringsensor;
   unsigned char * pixel_buffer;
-  size_t pixel_buffer_size;
+  int pixel_buffer_size;
 
   static void sensor_cb(void * userdata, SoSensor * COIN_UNUSED_ARG(s)) {
     SoText2P * thisp = (SoText2P*) userdata;
@@ -274,6 +283,31 @@ private:
   SoText2 * master;
 };
 
+struct SoText2Layout {
+  SoText2Layout() : pixel_buffer_size(0) { this->bbox.makeEmpty(); }
+  SbList< SbList<SbVec2i32> > positions;
+  SbBox2i32 bbox;
+  size_t pixel_buffer_size;
+};
+
+// SoText2P remains an ABI-compatible prefix. All allocations owned by this
+// translation unit use this nonvirtual extension and its complete destructor.
+class SoText2PExtended : public SoText2P {
+public:
+  explicit SoText2PExtended(SoText2 * node) : SoText2P(node) {}
+  SoText2Layout extended;
+};
+
+SoText2Layout &
+SoText2P::layout()
+{
+  return static_cast<SoText2PExtended *>(this)->extended;
+}
+
+// Preserve template symbols exported by the old nested short-position list.
+template void SbList< SbList<SbVec2s> >::grow(int);
+template SbList< SbList<SbVec2s> >::~SbList();
+
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->master)
 
@@ -286,7 +320,7 @@ SO_NODE_SOURCE(SoText2);
 */
 SoText2::SoText2(void)
 {
-  PRIVATE(this) = new SoText2P(this);
+  PRIVATE(this) = new SoText2PExtended(this);
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoText2);
 
@@ -308,6 +342,7 @@ SoText2::SoText2(void)
   PRIVATE(this)->cache = NULL;
   PRIVATE(this)->pixel_buffer = NULL;
   PRIVATE(this)->pixel_buffer_size = 0;
+  PRIVATE(this)->layout().pixel_buffer_size = 0;
 }
 
 /*!
@@ -321,7 +356,7 @@ SoText2::~SoText2()
   delete PRIVATE(this)->spacingsensor;
 
   PRIVATE(this)->flushGlyphCache();
-  delete PRIVATE(this);
+  delete static_cast<SoText2PExtended *>(PRIVATE(this));
 }
 
 /*!
@@ -369,8 +404,8 @@ SoText2::GLRender(SoGLRenderAction * action)
     nilpoint[0] = (nilpoint[0] + 1.0f) * 0.5f * vpsize[0];
     nilpoint[1] = (nilpoint[1] + 1.0f) * 0.5f * vpsize[1];
 
-    const SbVec2i32 bbmin = PRIVATE(this)->bbox.getMin();
-    const SbVec2i32 bbmax = PRIVATE(this)->bbox.getMax();
+    const SbVec2i32 bbmin = PRIVATE(this)->layout().bbox.getMin();
+    const SbVec2i32 bbmax = PRIVATE(this)->layout().bbox.getMax();
 
     float textscreenoffsetx = nilpoint[0]+bbmin[0];
     switch (this->justification.getValue()) {
@@ -490,13 +525,13 @@ SoText2::GLRender(SoGLRenderAction * action)
               }
               else {
                 const size_t bytes = width * height * 4;
-                if (bytes > PRIVATE(this)->pixel_buffer_size) {
+                if (bytes > PRIVATE(this)->layout().pixel_buffer_size) {
                   unsigned char * replacement = new (std::nothrow) unsigned char[bytes];
                   if (!replacement) bufferfailed = TRUE;
                   else {
                     delete[] PRIVATE(this)->pixel_buffer;
                     PRIVATE(this)->pixel_buffer = replacement;
-                    PRIVATE(this)->pixel_buffer_size = bytes;
+                    PRIVATE(this)->layout().pixel_buffer_size = bytes;
                   }
                 }
                 if (!bufferfailed) {
@@ -644,7 +679,7 @@ SoText2::rayPick(SoRayPickAction * action)
     int charidx = -1;
     int strlength = this->string[stringidx].getLength();
     int32_t minx, miny, maxx, maxy;
-    PRIVATE(this)->bbox.getBounds(minx, miny, maxx, maxy);
+    PRIVATE(this)->layout().bbox.getBounds(minx, miny, maxx, maxy);
     float bbwidth = float(double(maxx) - double(minx));
     float strleft = (bbwidth - PRIVATE(this)->stringwidth[stringidx]) / bbwidth;
     float strright = 1.0;
@@ -665,8 +700,8 @@ SoText2::rayPick(SoRayPickAction * action)
 
     float charleft, charright;
     for (i=0; i<strlength; i++) {
-      charleft = strleft + PRIVATE(this)->positions[stringidx][i][0] / bbwidth;
-      charright = (i==strlength-1 ? strright : strleft + (PRIVATE(this)->positions[stringidx][i+1][0] / bbwidth));
+      charleft = strleft + PRIVATE(this)->layout().positions[stringidx][i][0] / bbwidth;
+      charright = (i==strlength-1 ? strright : strleft + (PRIVATE(this)->layout().positions[stringidx][i+1][0] / bbwidth));
       if (hdist >= charleft && hdist <= charright) {
         charidx = i;
         i = strlength;
@@ -713,12 +748,19 @@ SoText2P::flushGlyphCache()
 {
   this->stringwidth.truncate(0);
   this->maxwidth=0;
-  this->positions.truncate(0);
-  this->bbox.makeEmpty();
+  this->layout().positions.truncate(0);
+  this->layout().bbox.makeEmpty();
 }
 
 // Calculates a quad around the text in 3D.
 //  Return FALSE if the quad is empty.
+SbBool
+SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
+                  SbVec3f & v2, SbVec3f & v3)
+{
+  return this->getQuad(state, v0, v1, v2, v3, TRUE);
+}
+
 SbBool
 SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
                   SbVec3f & v2, SbVec3f & v3, SbBool visibleonly)
@@ -726,9 +768,9 @@ SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
   this->buildGlyphCache(state);
 
   int32_t xmin, ymin, xmax, ymax;
-  this->bbox.getBounds(xmin, ymin, xmax, ymax);
+  this->layout().bbox.getBounds(xmin, ymin, xmax, ymax);
 
-  if (this->bbox.isEmpty()) return FALSE;
+  if (this->layout().bbox.isEmpty()) return FALSE;
 
   const SbDPMatrix model(SoModelMatrixElement::get(state));
   SbVec3d anchor;
@@ -930,11 +972,11 @@ SoText2P::buildGlyphCache(SoState * state)
 
   const cc_font_specification * fontspec = this->cache->getCachedFontspec();
 
-  this->bbox.makeEmpty();
+  this->layout().bbox.makeEmpty();
 
   for (int i=0; valid && i < nrlines; i++) {
     SbString str = PUBLIC(this)->string[i];
-    this->positions.append(SbList<SbVec2i32>());
+    this->layout().positions.append(SbList<SbVec2i32>());
 
     SbBox2i32 linebbox;
     int64_t xpos = 0;
@@ -986,13 +1028,13 @@ SoText2P::buildGlyphCache(SoState * state)
       const SbVec2i32 pos = SbVec2i32(int32_t(px), int32_t(py));
       linebbox.extendBy(pos);
       linebbox.extendBy(SbVec2i32(int32_t(px + bitmapsize[0]), int32_t(py + bitmapsize[1])));
-      this->positions[i].append(pos);
+      this->layout().positions[i].append(pos);
       actuallength = nextx;
       xpos = nextx;
       prevglyph = glyph;
     }
 
-    this->bbox.extendBy(linebbox);
+    this->layout().bbox.extendBy(linebbox);
     this->stringwidth.append(int(actuallength));
     if (actuallength > this->maxwidth) this->maxwidth=int(actuallength);
 
@@ -1012,7 +1054,7 @@ SoText2P::buildGlyphCache(SoState * state)
   if (valid && maxoverhang > INT_MIN) {
     const int64_t right = int64_t(this->maxwidth) + maxoverhang;
     valid = right >= INT32_MIN && right <= INT32_MAX;
-    if (valid) this->bbox.extendBy(SbVec2i32(int32_t(right), this->bbox.getMax()[1]));
+    if (valid) this->layout().bbox.extendBy(SbVec2i32(int32_t(right), this->layout().bbox.getMax()[1]));
   }
   if (!valid) this->flushGlyphCache();
 
@@ -1020,6 +1062,12 @@ SoText2P::buildGlyphCache(SoState * state)
   SoCacheElement::setInvalid(storedinvalid);
 
   if (oldcache) oldcache->unref();
+}
+
+void
+SoText2P::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
+{
+  this->computeBBox(action, box, center, TRUE);
 }
 
 void

@@ -68,3 +68,30 @@ No FreeCAD source or installed library was changed.
 
 General font-backend metric limits, UTF-8 picking, and removal of FreeCAD's
 existing bounding-box workaround are outside this change.
+
+## ABI compatibility
+
+The existing SoText2P getQuad/computeBBox signatures and original member layout
+are retained. New 32-bit positions/bounds and size_t buffer capacity live in a
+nonvirtual extension allocated and destroyed by SoText2. The old nested
+SbList<SbList<SbVec2s>> grow/destructor symbols remain explicitly instantiated.
+This matters even though SoText2P is internal: these implementation symbols are
+exported by libCoin and the ABI gate checks their continued availability.
+
+A RelWithDebInfo build compared with release v4.0.10 using the workflow's
+abidiff/header-directory options reports zero removed functions/symbols and no
+incompatible-change flag (exit 4, rather than the original exit 12). The report
+still includes additions and four indirect type differences in other areas
+already present before this PR. The workflow classifies the repaired result as
+allowed additions. No ABI suppression or workflow-policy change was made.
+
+All 81 CTest tests pass with GLX. An executable built before this repair also
+passes its 38 bounds/picking cases while loading the repaired library. Targeted
+SoText2 assertions/ASan/UBSan/float-cast-overflow builds pass 38 original bounds,
+45 extended bounds and 21 rendering cases; leak detection is disabled.
+
+The large-coordinate oracle compares translated centers against a reference
+using the same font, allowing float-ULP rounding. It no longer assumes that a
+bitmap box contains the pen anchor: positive left bearings are valid and
+caused the prior Windows bounds-test failure. Rendering requirements and all
+large-coordinate cases remain covered.
