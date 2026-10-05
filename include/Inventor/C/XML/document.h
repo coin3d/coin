@@ -47,7 +47,7 @@ COIN_DLL_API void cc_xml_doc_delete_x(cc_xml_doc * doc);
 
 /* parser configuration */
 COIN_DLL_API void cc_xml_doc_set_filter_cb_x(cc_xml_doc * doc, cc_xml_filter_cb * cb, void * userdata);
-COIN_DLL_API void cc_xml_doc_get_filter_cb(const cc_xml_doc * doc, cc_xml_filter_cb *& cb, void *& userdata);
+COIN_DLL_API void cc_xml_doc_get_filter_cb(const cc_xml_doc * doc, cc_xml_filter_cb ** cb, void ** userdata);
 
 /* document io */
 COIN_DLL_API SbBool cc_xml_doc_read_file_x(cc_xml_doc * doc, const char * path);
@@ -56,7 +56,7 @@ COIN_DLL_API SbBool cc_xml_doc_read_buffer_x(cc_xml_doc * doc, const char * buff
 COIN_DLL_API SbBool cc_xml_doc_parse_buffer_partial_x(cc_xml_doc * doc, const char * buffer, size_t buflen);
 COIN_DLL_API SbBool cc_xml_doc_parse_buffer_partial_done_x(cc_xml_doc * doc, const char * buffer, size_t buflen);
 
-COIN_DLL_API SbBool cc_xml_doc_write_to_buffer(const cc_xml_doc * doc, char *& buffer, size_t & bytes);
+COIN_DLL_API SbBool cc_xml_doc_write_to_buffer(const cc_xml_doc * doc, char ** buffer, size_t * bytes);
 COIN_DLL_API SbBool cc_xml_doc_write_to_file(const cc_xml_doc * doc, const char * path);
 
 COIN_DLL_API cc_xml_path * cc_xml_doc_diff(const cc_xml_doc * doc, const cc_xml_doc * other);
@@ -81,6 +81,18 @@ COIN_DLL_API cc_xml_elt *       cc_xml_doc_create_element_x(cc_xml_doc * doc, cc
 
 #ifdef __cplusplus
 } /* extern "C" */
+
+inline void
+cc_xml_doc_get_filter_cb(const cc_xml_doc * doc, cc_xml_filter_cb *& cb, void *& userdata)
+{
+  cc_xml_doc_get_filter_cb(doc, &cb, &userdata);
+}
+
+inline SbBool
+cc_xml_doc_write_to_buffer(const cc_xml_doc * doc, char *& buffer, size_t & bytes)
+{
+  return cc_xml_doc_write_to_buffer(doc, &buffer, &bytes);
+}
 #endif /* __cplusplus */
 
 #endif /* !COIN_XML_DOCUMENT_H */

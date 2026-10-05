@@ -111,6 +111,7 @@ add_executable(CoinTests
 	TestSuiteUtils.cpp
 	TestSuiteMisc.cpp
 	InternalMacroTest.cpp
+	InternalSmallMapTest.cpp
 	${COIN_TEST_SOURCES}
 )
 
@@ -130,8 +131,10 @@ if(WIN32 AND COIN_BUILD_SHARED_LIBS)
 		COMPILE_DEFINITIONS COIN_INTERNAL)
 endif()
 
-set_source_files_properties(InternalMacroTest.cpp PROPERTIES
+set_source_files_properties(InternalMacroTest.cpp InternalSmallMapTest.cpp PROPERTIES
 	COMPILE_DEFINITIONS COIN_INTERNAL)
+set_property(SOURCE InternalSmallMapTest.cpp APPEND PROPERTY
+	COMPILE_DEFINITIONS COIN_SMALLMAP_TESTING)
 set_target_properties(CoinTests PROPERTIES DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
 target_link_libraries(CoinTests Coin ${COIN_TARGET_LINK_LIBRARIES})
 target_include_directories(CoinTests PRIVATE
@@ -150,6 +153,107 @@ if (USE_PTHREAD)
 	target_link_libraries(CoinTests pthread)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
+
+# Keep this regression test in a fresh process: the unfixed implementation corrupts
+# SoTempPath's internal empty-list storage before ordinary assertions can
+# observe the violation.
+add_executable(SoTempPathReplaceTailTest
+  reproducers/sotemppath-empty-replace-tail/repro.cpp)
+target_link_libraries(SoTempPathReplaceTailTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(SoTempPathReplaceTailTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+add_test(NAME SoTempPathReplaceTail_valid_sentinel
+  COMMAND SoTempPathReplaceTailTest valid-sentinel)
+add_test(NAME SoTempPathReplaceTail_valid_replacement
+  COMMAND SoTempPathReplaceTailTest valid-replacement)
+add_test(NAME SoTempPathReplaceTail_empty_noop
+  COMMAND SoTempPathReplaceTailTest empty-noop)
+
+add_subdirectory(xml-c-api/c-headers)
+
+add_executable(SoPathRangeTest SoPathRangeTest.cpp)
+target_link_libraries(SoPathRangeTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(SoPathRangeTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+add_test(NAME SoPathRange COMMAND SoPathRangeTest)
+# Process-isolated public behavior checks. Keeping each invalid access in its
+# own CTest process prevents one unsafe access from masking the remaining
+# boundary classes.
+add_executable(SoPathLegacyAccessorBoundsTest
+  reproducers/sopath-legacy-accessor-bounds/repro.cpp)
+target_link_libraries(SoPathLegacyAccessorBoundsTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(SoPathLegacyAccessorBoundsTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+target_compile_definitions(SoPathLegacyAccessorBoundsTest PRIVATE
+  COIN_DEBUG=$<CONFIG:Debug>)
+
+set(SOPATH_LEGACY_ACCESSORS node node-tail index index-tail)
+foreach(accessor ${SOPATH_LEGACY_ACCESSORS})
+  add_test(NAME SoPathLegacyAccessorBounds_${accessor}
+    COMMAND SoPathLegacyAccessorBoundsTest ${accessor} all)
+  set_tests_properties(SoPathLegacyAccessorBounds_${accessor}
+    PROPERTIES LABELS sopath-legacy-accessor)
+endforeach()
+foreach(control valid visibility)
+  add_test(NAME SoPathLegacyAccessorBounds_${control}
+    COMMAND SoPathLegacyAccessorBoundsTest ${control})
+  set_tests_properties(SoPathLegacyAccessorBounds_${control}
+    PROPERTIES LABELS sopath-legacy-accessor)
+endforeach()
+
+add_executable(SoPathAssignmentAuditorTest
+  reproducers/sopath-assignment-auditor-lifecycle/repro.cpp)
+target_link_libraries(SoPathAssignmentAuditorTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(SoPathAssignmentAuditorTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+foreach(assignment_case reassign self-assign copy-construct)
+  add_test(NAME SoPathAssignmentAuditor_${assignment_case}
+    COMMAND SoPathAssignmentAuditorTest ${assignment_case})
+endforeach()
+
+add_executable(SoPathAuditorCallbackTest
+  reproducers/sopath-auditor-callback-validation/repro.cpp)
+target_link_libraries(SoPathAuditorCallbackTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(SoPathAuditorCallbackTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+foreach(callback_case empty foreign-parent negative-index null-replacement valid-callbacks)
+  add_test(NAME SoPathAuditorCallback_${callback_case}
+    COMMAND SoPathAuditorCallbackTest ${callback_case})
+endforeach()
+
+# Replacing operator new[] across a shared-library boundary is not portable
+# on Windows, so keep the deterministic allocation-failure test on platforms
+# where executable symbol interposition applies to the linked Coin library.
+if(NOT WIN32)
+  add_executable(CoinSbPListGrowthFailureTest
+    SbPListGrowthFailureTest.cpp)
+  target_link_libraries(CoinSbPListGrowthFailureTest
+    Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(CoinSbPListGrowthFailureTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  add_test(NAME SbPListGrowthFailure COMMAND CoinSbPListGrowthFailureTest)
+
+  add_executable(SoPathAssignmentAllocationFailureTest
+    reproducers/sopath-assignment-auditor-lifecycle/allocation_failure.cpp)
+  target_link_libraries(SoPathAssignmentAllocationFailureTest
+    Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(SoPathAssignmentAllocationFailureTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  add_test(NAME SoPathAssignmentAllocationFailure
+    COMMAND SoPathAssignmentAllocationFailureTest)
+endif()
 
 add_executable(SoPathChildAppendTest SoPathChildAppendTest.cpp)
 target_link_libraries(SoPathChildAppendTest Coin ${COIN_TARGET_LINK_LIBRARIES})
@@ -236,4 +340,39 @@ include(CheckCXXCompilerFlag)
 CHECK_CXX_COMPILER_FLAG(-Wtautological-compare DISABLE_WARNING_TAUTOLOGCOMPARE)
 if(DISABLE_WARNING_TAUTOLOGCOMPARE)
 	target_compile_options(CoinTests PUBLIC -Wno-tautological-compare)
+endif()
+
+# These cases inspect the global queues and disable realTime. Keep each in
+# its own process to avoid changing the shared CoinTests sensor state.
+add_executable(CoinSensorSchedulingTest SensorSchedulingTest.cpp)
+target_link_libraries(CoinSensorSchedulingTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CoinSensorSchedulingTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+foreach(sensor_case alarm_cancel recurring_cancel alarm_reschedule
+                    timeout_change_cancel zero_repeat zero_nonidle nonzero_timeout
+                    node_detach delay_reentry delay_timeout_reentry timer_reentry
+                    delay_changed_exception timer_changed_exception
+                    delay_remove_reentry timer_remove_reentry
+                    timer_exception delay_exception timer_cancel_exception delay_deferred_exception
+                    absolute_deadline changed_during_dispatch immediate_notification)
+  add_test(NAME SensorScheduling_${sensor_case}
+    COMMAND CoinSensorSchedulingTest ${sensor_case})
+endforeach()
+
+# Linux executable interposition lets this test fail the fifth queue allocation.
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  add_executable(CoinSensorQueueAllocationFailureTest
+    SensorQueueAllocationFailureTest.cpp)
+  target_link_libraries(CoinSensorQueueAllocationFailureTest
+    Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(CoinSensorQueueAllocationFailureTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  foreach(sensor_case delay immediate timer recurring)
+    add_test(NAME SensorQueueAllocation_${sensor_case}
+      COMMAND CoinSensorQueueAllocationFailureTest ${sensor_case})
+    set_tests_properties(SensorQueueAllocation_${sensor_case}
+      PROPERTIES TIMEOUT 10)
+  endforeach()
 endif()
