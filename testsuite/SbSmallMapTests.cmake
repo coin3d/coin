@@ -1,4 +1,5 @@
 add_executable(SbSmallMapFailureTest SbSmallMapFailureTest.cpp)
+target_link_libraries(SbSmallMapFailureTest PRIVATE Coin)
 target_compile_definitions(SbSmallMapFailureTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
 target_include_directories(SbSmallMapFailureTest PRIVATE
   ${PROJECT_SOURCE_DIR}/src ${PROJECT_SOURCE_DIR}/include
