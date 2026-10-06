@@ -513,7 +513,12 @@ SoText2::GLRender(SoGLRenderAction * action)
 
         if (buffer) {
           if (cc_glyph2d_getmono(glyph)) {
-            SoText2P::setRasterPos3f((float)rasterx + textscreenoffsetx, GLfloat(double(rastery) + std::trunc(double(nilpoint[1]))), -nilpoint[2]);
+            // Use the same rounded baseline as the RGBA buffer. Truncating a
+            // slightly negative projection shifts mono glyphs by one pixel at
+            // the bottom edge; include each bearing exactly once as well.
+            SoText2P::setRasterPos3f(GLfloat(originx + double(rasterx) - bbmin[0]),
+                                    GLfloat(originy + double(rastery) - bbmin[1]),
+                                    -nilpoint[2]);
             glBitmap(ix,iy,0,0,0,0,(const GLubyte *)buffer);
           }
           else {

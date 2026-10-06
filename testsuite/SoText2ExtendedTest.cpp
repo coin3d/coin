@@ -210,8 +210,11 @@ int main(int argc, char **argv) {
             }
           }
       }
-      check("partial glyph clipping matches translated pixels",
-            nonblack(actual) && actual == expected);
+      char label[128];
+      std::snprintf(label, sizeof(label),
+                    "partial glyph clipping matches translated pixels (%d,%d)",
+                    delta[0], delta[1]);
+      check(label, nonblack(actual) && actual == expected);
     }
     Scene reference(1, 100, 1, true), tall(1, 6000, 1, true);
     const auto first = reference.render(), second = tall.render();

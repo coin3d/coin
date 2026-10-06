@@ -186,3 +186,21 @@ source or ABI checker is changed by this CI correction.
 After the headless correction, local software-GLX runs pass **84/84** with
 legacy rendering enabled and **82/82** with it disabled, with no tests skipped.
 The standalone no-DISPLAY invocation returns 77 rather than crashing.
+
+
+### Monochrome clipping defect exposed by Xvfb
+
+The newly executed extended-rendering test found a real one-pixel mismatch at
+the bottom border when FreeType was unavailable. The mono path truncated a
+slightly negative projected baseline, while the RGBA path rounded to the
+nearest pixel. The unmodified pixel-translation oracle reproduces this at
+shift (0,-244) with COIN_FORCE_FREETYPE_OFF=1.
+
+Both paths now use the same precomputed rounded raster origin and account for
+each bearing once. The exact image comparison and original translation values
+are retained; failures identify the offending translation. An explicit builtin
+font CTest exercises the fallback path. After this repair **85/85** tests pass
+with legacy rendering enabled and **83/83** disabled, none skipped. All seven
+text/camera targets also pass targeted assertion-enabled ASan/UBSan, and the
+isolated ABI comparison against repaired #774 (both changed production units)
+returns **abidiff exit 0**.

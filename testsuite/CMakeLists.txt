@@ -409,3 +409,11 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   set_tests_properties(SoText2ViewAllNativeFont PROPERTIES
     ENVIRONMENT "COIN_VIEWALL_TEST_FONT=DejaVu Sans" SKIP_RETURN_CODE 77 TIMEOUT 60)
 endif()
+
+# Exercise the same clipping oracle when runtime FreeType is unavailable.
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  add_test(NAME SoText2ExtendedRenderingBuiltinFont
+    COMMAND CoinSoText2ExtendedTest --render)
+  set_tests_properties(SoText2ExtendedRenderingBuiltinFont PROPERTIES
+    ENVIRONMENT "COIN_FORCE_FREETYPE_OFF=1" SKIP_RETURN_CODE 77 TIMEOUT 30)
+endif()
