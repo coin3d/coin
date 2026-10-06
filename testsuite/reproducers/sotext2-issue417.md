@@ -95,3 +95,13 @@ using the same font, allowing float-ULP rounding. It no longer assumes that a
 bitmap box contains the pen anchor: positive left bearings are valid and
 caused the prior Windows bounds-test failure. Rendering requirements and all
 large-coordinate cases remain covered.
+
+
+## Multi-label viewAll refinement
+
+The initial single-label tests did not cover BUGS.txt item 219. SoCamera now
+checks final-camera bounds with a bounded private-camera solver, including
+pixel margins and a centering step for wide fixed-pixel labels. Three labels
+render completely after one public call. See `sotext2-viewall-contract.md` for
+historical failures, the chosen contract, implementation and final validation.
+This adds no public API and preserves the repaired SoText2P ABI layout.

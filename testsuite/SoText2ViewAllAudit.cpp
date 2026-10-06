@@ -33,7 +33,9 @@ int main(int argc,char **argv){
  int failures=0,cases=0;
  for(int ortho=0;ortho<2;++ortho)for(int fontsize: {10,24,96})for(float slack:{1.f,1.1f}){
   auto *root=new SoSeparator;root->ref();SoCamera *camera=ortho?static_cast<SoCamera *>(new SoOrthographicCamera):new SoPerspectiveCamera;
-  root->addChild(camera);auto *font=new SoFont;font->size=float(fontsize);root->addChild(font);
+  root->addChild(camera);auto *font=new SoFont;font->size=float(fontsize);
+  if(const char *name=std::getenv("COIN_VIEWALL_TEST_FONT"))font->name=name;
+  root->addChild(font);
   const char *labels[]={"XXX","YYY","ZZZ"};
   for(int j=0;j<3;++j){if(j){auto *t=new SoTranslation;t->translation.setValue(0,100,0);root->addChild(t);}
    auto *color=new SoBaseColor;color->rgb.setValue(j==0,j==1,j==2);root->addChild(color);
@@ -59,10 +61,20 @@ int main(int argc,char **argv){
    for(int j=0;j<3;++j){visible+=c.pixel[j]>0;complete+=c.pixel[j]==reference.pixel[j] && reference.pixel[j]>0;}
    auto pos=camera->position.getValue();
    std::printf("%s pass=%d visible=%d complete=%d pixels=%d,%d,%d reference=%d,%d,%d camera=(%.9g,%.9g,%.9g)\n",tag.c_str(),pass,visible,complete,c.pixel[0],c.pixel[1],c.pixel[2],reference.pixel[0],reference.pixel[1],reference.pixel[2],pos[0],pos[1],pos[2]);
-   if(pass==1){++cases;if(complete!=3)++failures;}
+   ++cases;if(complete!=3)++failures;
   }
   root->unref();
  }
- SoDB::finish();std::printf("single-call contract: %d cases, %d failures\n",cases,failures);
+ // A wide label that still fits: compare against a fully visible centered
+ // reference, then require LEFT alignment to fit in one public call.
+ for(int ortho=0;ortho<2;++ortho){auto *root=new SoSeparator;root->ref();SoCamera *c=ortho?static_cast<SoCamera *>(new SoOrthographicCamera):new SoPerspectiveCamera;root->addChild(c);
+  auto *font=new SoFont;font->name="DejaVu Sans";font->size=300;root->addChild(font);auto *color=new SoBaseColor;color->rgb.setValue(1,0,0);root->addChild(color);
+  auto *text=new SoText2;text->string="XXX";text->justification=SoText2::CENTER;root->addChild(text);SbViewportRegion vp(640,480);SoOffscreenRenderer r(vp);r.setComponents(SoOffscreenRenderer::RGB);
+  c->position.setValue(0,0,500);c->nearDistance=1;c->farDistance=1000;if(ortho)static_cast<SoOrthographicCamera *>(c)->height=500;
+  const Counts expected=render(root,r,640,480,"");text->justification=SoText2::LEFT;c->position.setValue(0,0,1);c->nearDistance=1;c->farDistance=10;if(ortho)static_cast<SoOrthographicCamera *>(c)->height=2;
+  c->viewAll(root,vp);const Counts actual=render(root,r,640,480,"");++cases;const bool ok=expected.pixel[0]>0 && actual.pixel[0]==expected.pixel[0];if(!ok)++failures;
+  std::printf("wide-label ortho=%d reference=%d actual=%d result=%s\n",ortho,expected.pixel[0],actual.pixel[0],ok?"PASS":"FAIL");root->unref();
+ }
+ SoDB::finish();std::printf("Text framing (first and repeated calls): %d cases, %d failures\n",cases,failures);
  return diagnostic?0:(failures?1:0);
 }

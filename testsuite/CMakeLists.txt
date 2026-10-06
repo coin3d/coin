@@ -390,9 +390,22 @@ add_test(NAME SoText2ExtendedBounds COMMAND CoinSoText2ExtendedTest)
 add_test(NAME SoText2ExtendedRendering COMMAND CoinSoText2ExtendedTest --render)
 set_tests_properties(SoText2ExtendedRendering PROPERTIES SKIP_RETURN_CODE 77 TIMEOUT 30)
 
-# Open #774 regression: this audit intentionally fails the one-call contract.
-# Keep it explicit until the framing policy is implemented and can enter CTest.
-add_executable(CoinSoText2ViewAllAudit EXCLUDE_FROM_ALL SoText2ViewAllAudit.cpp)
+# Three-label one-call framing regression, with pixel-coverage oracle.
+add_executable(CoinSoText2ViewAllAudit SoText2ViewAllAudit.cpp)
 target_link_libraries(CoinSoText2ViewAllAudit PRIVATE Coin)
 target_include_directories(CoinSoText2ViewAllAudit PRIVATE
   ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include)
+
+add_test(NAME SoText2ViewAllSingleCall COMMAND CoinSoText2ViewAllAudit)
+set_tests_properties(SoText2ViewAllSingleCall PROPERTIES SKIP_RETURN_CODE 77 TIMEOUT 60)
+add_executable(CoinSoCameraTextFitTest SoCameraTextFitTest.cpp)
+target_link_libraries(CoinSoCameraTextFitTest PRIVATE Coin)
+target_include_directories(CoinSoCameraTextFitTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include)
+add_test(NAME SoCameraTextFittingContract COMMAND CoinSoCameraTextFitTest)
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  add_test(NAME SoText2ViewAllNativeFont COMMAND CoinSoText2ViewAllAudit)
+  set_tests_properties(SoText2ViewAllNativeFont PROPERTIES
+    ENVIRONMENT "COIN_VIEWALL_TEST_FONT=DejaVu Sans" SKIP_RETURN_CODE 77 TIMEOUT 60)
+endif()
