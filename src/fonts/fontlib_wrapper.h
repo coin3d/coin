@@ -72,6 +72,7 @@ extern "C" {
   // Return an owned reference atomically; balance it with unref_font.
   int cc_flw_get_font_id_and_ref(const char *, unsigned int, float, float);
 
+  // Each glyph acquisition owns its storage until the matching done_glyph.
   unsigned int cc_flw_get_glyph(int font, unsigned int charidx);
   void cc_flw_done_glyph(int font, unsigned int glyphidx);
 

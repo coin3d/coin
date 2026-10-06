@@ -534,6 +534,7 @@ SoGlyph::unrefGlyph(SoGlyph *glyph)
     }
     assert(i < n);
     activeGlyphs->removeFast(i);
+    cc_flw_done_glyph(PRIVATE(glyph)->fontidx, PRIVATE(glyph)->glyphidx);
     cc_flw_unref_font(PRIVATE(glyph)->fontidx);
     delete glyph;
   }

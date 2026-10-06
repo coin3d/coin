@@ -841,20 +841,13 @@ cc_flwft_get_glyph(void * font, unsigned int charidx)
 void
 cc_flwft_get_vector_advance(void * font, int glyph, float *x, float *y)
 {
-  FT_Face face;
-  float tmp;
-
   assert(font);
-  face = (FT_Face)font;
-  if (cc_ftglue_FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT) != 0) {
-    assert(!"FT_Load_Glyph() unexpected failure, investigate");
-  }
-
-  tmp = face->glyph->advance.x * flwft_tessellator.vertex_scale;
-  x[0] = (tmp / 64.0f) / flwft_3dfontsize;
-  tmp = face->glyph->advance.y * flwft_tessellator.vertex_scale;
-  y[0] = (tmp / 64.0f) / flwft_3dfontsize;
-
+  FT_Face face = (FT_Face)font;
+  *x = *y = 0.0f;
+  if (cc_ftglue_FT_Set_Char_Size(face, 0, (flwft_3dfontsize<<6), 0, 0) != 0 ||
+      cc_ftglue_FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT) != 0) return;
+  *x = (face->glyph->advance.x / 64.0f) / flwft_3dfontsize;
+  *y = (face->glyph->advance.y / 64.0f) / flwft_3dfontsize;
 }
 
 void
@@ -870,6 +863,8 @@ cc_flwft_get_bitmap_kerning(void * font, int glyph1, int glyph2, int *x, int *y)
     error = cc_ftglue_FT_Get_Kerning(face, glyph1, glyph2, ft_kerning_default, &kerning);
     if (error) {
       cc_debugerror_post("cc_flwft_get_bitmap_kerning", "FT_Get_Kerning() => %d", error);
+      *x = *y = 0;
+      return;
     }
 
     *x = (int) (kerning.x / 64.0f);
@@ -891,10 +886,13 @@ cc_flwft_get_vector_kerning(void * font, int glyph1, int glyph2, float *x, float
 
   assert(font);
   face = (FT_Face)font;
+  *x = *y = 0.0f;
+  if (cc_ftglue_FT_Set_Char_Size(face, 0, (flwft_3dfontsize<<6), 0, 0) != 0) return;
   if (FT_HAS_KERNING(face)) {
     error = cc_ftglue_FT_Get_Kerning(face, glyph1, glyph2, ft_kerning_default, &kerning);
     if (error) {
       cc_debugerror_post("cc_flwft_get_vector_kerning", "FT_Get_Kerning() => %d", error);
+      return;
     }
     *x = (kerning.x / 64.0f) / flwft_3dfontsize;
     *y = (kerning.y / 64.0f) / flwft_3dfontsize;

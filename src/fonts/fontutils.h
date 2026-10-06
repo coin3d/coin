@@ -37,6 +37,7 @@
 #error this is a private header file
 #endif
 #include <cmath>
+#include <cstdint>
 
 inline float coin_font_normalize_angle(float angle)
 {
@@ -51,4 +52,8 @@ inline float coin_font_normalize_angle(float angle)
   return float(value);
 }
 
+inline unsigned int coin_font_default_character(uint32_t character, unsigned int maximum)
+{
+  return character <= maximum ? character : unsigned('?');
+}
 #endif
