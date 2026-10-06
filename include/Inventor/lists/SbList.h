@@ -36,7 +36,9 @@
 #include <cassert>
 #include <climits>
 #include <cstddef> // NULL definition
+#include <memory>
 #include <new>
+#include <stdexcept>
 #include <Inventor/SbBasic.h> // TRUE/FALSE
 
 // We usually implement inline functions below the class definition,
@@ -124,13 +126,7 @@ public:
       }
 
       if (newitembuffer != this->itembuffer) {
-        try {
-          for (int i = 0; i < items; i++) newitembuffer[i] = this->itembuffer[i];
-        }
-        catch (...) {
-          if (newitembuffer != this->builtinbuffer) delete[] newitembuffer;
-          throw;
-        }
+        for (int i = 0; i < items; i++) newitembuffer[i] = this->itembuffer[i];
       }
 
       if (this->itembuffer != this->builtinbuffer) delete[] this->itembuffer;

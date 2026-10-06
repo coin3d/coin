@@ -302,6 +302,450 @@
 
 #ifdef COIN_TEST_SUITE
 
+#include <climits>
+#include <stdexcept>
+#include <vector>
+
+// Directed characterization coverage for SbList's typed-value contract.
+// These tests intentionally precede the implementation changes they specify.
+
+class SbListTestAccess : public SbList<int> {
+public:
+  SbListTestAccess(const int sizehint = 4) : SbList<int>(sizehint) { }
+
+  int capacity(void) const { return this->getArraySize(); }
+  void resize(const int size) { this->expand(size); }
+};
+
+static void
+sblist_check_model(const SbListTestAccess & list,
+                   const std::vector<int> & model)
+{
+  BOOST_REQUIRE_EQUAL(list.getLength(), static_cast<int>(model.size()));
+  BOOST_CHECK(list.capacity() >= list.getLength());
+  for (size_t i = 0; i < model.size(); i++) {
+    BOOST_CHECK_EQUAL(list[static_cast<int>(i)], model[i]);
+  }
+}
+
+class SbListThrowingValue {
+public:
+  SbListThrowingValue(const int v = 0) : value(v) { ++livecount; }
+  SbListThrowingValue(const SbListThrowingValue & other)
+    : value(other.value) { ++livecount; }
+  ~SbListThrowingValue() { --livecount; }
+
+  SbListThrowingValue & operator=(const SbListThrowingValue & other) {
+    if (assignmentsbeforethrow == 0) {
+      throw std::runtime_error("injected SbList value assignment failure");
+    }
+    if (assignmentsbeforethrow > 0) --assignmentsbeforethrow;
+    this->value = other.value;
+    return *this;
+  }
+
+  bool operator==(const SbListThrowingValue & other) const {
+    return this->value == other.value;
+  }
+  bool operator!=(const SbListThrowingValue & other) const {
+    return !(*this == other);
+  }
+
+  static void throwAfter(const int assignments) {
+    assignmentsbeforethrow = assignments;
+  }
+  static void disableFailure(void) { assignmentsbeforethrow = -1; }
+  static int live(void) { return livecount; }
+
+  int value;
+
+private:
+  static int assignmentsbeforethrow;
+  static int livecount;
+};
+
+int SbListThrowingValue::assignmentsbeforethrow = -1;
+int SbListThrowingValue::livecount = 0;
+
+class SbListThrowingTestAccess : public SbList<SbListThrowingValue> {
+public:
+  using SbList<SbListThrowingValue>::operator=;
+  int capacity(void) const { return this->getArraySize(); }
+};
+
+BOOST_AUTO_TEST_CASE(default_storage_append_and_array_contract)
+{
+  SbListTestAccess list;
+  BOOST_CHECK_EQUAL(list.getLength(), 0);
+  BOOST_CHECK_EQUAL(list.capacity(), 4);
+  BOOST_CHECK(list.getArrayPtr(0) != NULL);
+
+  const int * initial = list.getArrayPtr();
+  for (int i = 0; i < 4; i++) {
+    list.append(i * 3);
+    BOOST_CHECK(list.getArrayPtr() == initial);
+  }
+  list.append(12);
+
+  BOOST_CHECK_EQUAL(list.getLength(), 5);
+  BOOST_CHECK_EQUAL(list.capacity(), 8);
+  BOOST_CHECK(list.getArrayPtr() != initial);
+  for (int i = 0; i < 5; i++) BOOST_CHECK_EQUAL(list[i], i * 3);
+}
+
+BOOST_AUTO_TEST_CASE(insert_find_and_removal_contracts)
+{
+  SbList<int> list;
+  list.append(10);
+  list.append(20);
+  list.append(20);
+  list.insert(15, 1);
+  list.insert(30, list.getLength());
+
+  BOOST_REQUIRE_EQUAL(list.getLength(), 5);
+  BOOST_CHECK_EQUAL(list.find(20), 2);
+  BOOST_CHECK_EQUAL(list.find(99), -1);
+
+  list.removeItem(20);
+  BOOST_CHECK_EQUAL(list[2], 20);
+  list.remove(1);
+  BOOST_CHECK_EQUAL(list[1], 20);
+  list.removeFast(0);
+
+  BOOST_REQUIRE_EQUAL(list.getLength(), 2);
+  BOOST_CHECK_EQUAL(list[0], 30);
+  BOOST_CHECK_EQUAL(list[1], 20);
+}
+
+BOOST_AUTO_TEST_CASE(remove_missing_item_is_a_noop)
+{
+  SbList<int> list;
+  list.append(10);
+  list.append(20);
+  list.removeItem(99);
+
+  BOOST_REQUIRE_EQUAL(list.getLength(), 2);
+  BOOST_CHECK_EQUAL(list[0], 10);
+  BOOST_CHECK_EQUAL(list[1], 20);
+
+  SbList<int> empty;
+  empty.removeItem(99);
+  BOOST_CHECK_EQUAL(empty.getLength(), 0);
+}
+
+BOOST_AUTO_TEST_CASE(copy_assignment_and_self_assignment_are_independent)
+{
+  SbList<int> original;
+  original.append(1);
+  original.append(2);
+
+  SbList<int> copy(original);
+  SbList<int> assigned;
+  assigned = original;
+  assigned = assigned;
+
+  original[0] = 9;
+  BOOST_CHECK_EQUAL(copy[0], 1);
+  BOOST_CHECK_EQUAL(assigned[0], 1);
+  BOOST_CHECK(copy == assigned);
+  BOOST_CHECK(copy != original);
+}
+
+BOOST_AUTO_TEST_CASE(size_hints_capacity_and_fit_contract)
+{
+  const int hints[] = { INT_MIN, -1, 0, 1, 4, 5, 9 };
+  const int capacities[] = { 4, 4, 4, 4, 4, 5, 9 };
+  for (size_t i = 0; i < sizeof(hints) / sizeof(hints[0]); i++) {
+    SbListTestAccess list(hints[i]);
+    BOOST_CHECK_EQUAL(list.getLength(), 0);
+    BOOST_CHECK_EQUAL(list.capacity(), capacities[i]);
+  }
+
+  SbListTestAccess list;
+  for (int i = 0; i < 9; i++) list.append(i);
+  BOOST_CHECK_EQUAL(list.capacity(), 16);
+  list.truncate(6, TRUE);
+  BOOST_CHECK_EQUAL(list.capacity(), 6);
+  list.truncate(3, TRUE);
+  BOOST_CHECK_EQUAL(list.capacity(), 4);
+  for (int i = 0; i < 3; i++) BOOST_CHECK_EQUAL(list[i], i);
+}
+
+BOOST_AUTO_TEST_CASE(ensure_capacity_reserves_without_changing_length)
+{
+  SbListTestAccess list;
+  list.append(7);
+  const int * initial = list.getArrayPtr();
+
+  list.ensureCapacity(3);
+  BOOST_CHECK(list.getArrayPtr() == initial);
+  list.ensureCapacity(17);
+
+  BOOST_CHECK_EQUAL(list.getLength(), 1);
+  BOOST_CHECK_EQUAL(list.capacity(), 17);
+  BOOST_CHECK_EQUAL(list[0], 7);
+}
+
+BOOST_AUTO_TEST_CASE(repeated_fit_and_regrow_cycles_preserve_values)
+{
+  SbListTestAccess list;
+  for (int round = 0; round < 8; round++) {
+    list.truncate(0, TRUE);
+    BOOST_CHECK_EQUAL(list.capacity(), 4);
+    for (int i = 0; i < 9; i++) list.append(i);
+    BOOST_CHECK_EQUAL(list.capacity(), 16);
+    list.truncate(5, TRUE);
+    BOOST_CHECK_EQUAL(list.capacity(), 5);
+    list.append(9);
+    BOOST_CHECK_EQUAL(list.capacity(), 10);
+    list.truncate(3, TRUE);
+    for (int i = 0; i < 3; i++) BOOST_CHECK_EQUAL(list[i], i);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(valid_operations_match_vector_model)
+{
+  SbListTestAccess list;
+  std::vector<int> model;
+  unsigned int randomstate = 0x51b1157U;
+
+  for (int step = 0; step < 4000; step++) {
+    randomstate = randomstate * 1664525U + 1013904223U;
+    unsigned int operation = (randomstate >> 16) % 9U;
+    const int value = static_cast<int>((randomstate >> 8) % 1000U);
+
+    if (model.empty()) operation = 0;
+    if (model.size() > 192 && (operation == 0 || operation == 1)) operation = 4;
+
+    switch (operation) {
+    case 0:
+      list.append(value);
+      model.push_back(value);
+      break;
+    case 1: {
+      const int index = static_cast<int>(randomstate % (model.size() + 1));
+      list.insert(value, index);
+      model.insert(model.begin() + index, value);
+      break;
+    }
+    case 2: {
+      const int index = static_cast<int>(randomstate % model.size());
+      list.remove(index);
+      model.erase(model.begin() + index);
+      break;
+    }
+    case 3: {
+      const int index = static_cast<int>(randomstate % model.size());
+      list.removeFast(index);
+      model[index] = model.back();
+      model.pop_back();
+      break;
+    }
+    case 4: {
+      const int length = static_cast<int>(randomstate % (model.size() + 1));
+      list.truncate(length, (randomstate >> 31) != 0);
+      model.resize(length);
+      break;
+    }
+    case 5: {
+      const int index = static_cast<int>(randomstate % model.size());
+      list[index] = value;
+      model[index] = value;
+      break;
+    }
+    case 6:
+      list.fit();
+      break;
+    case 7:
+      list.ensureCapacity(static_cast<int>(model.size()) + 13);
+      break;
+    case 8: {
+      SbList<int> copy(list);
+      SbList<int> assigned;
+      assigned = list;
+      BOOST_CHECK(copy == assigned);
+      BOOST_CHECK(copy == list);
+      break;
+    }
+    }
+
+    sblist_check_model(list, model);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(invalid_index_operations_throw_and_preserve_state)
+{
+  SbList<int> list;
+  list.append(10);
+  list.append(20);
+  const SbList<int> & constlist = list;
+
+  BOOST_REQUIRE_THROW(list[-1], std::out_of_range);
+  BOOST_REQUIRE_THROW(list[2], std::out_of_range);
+  BOOST_REQUIRE_THROW(constlist[-1], std::out_of_range);
+  BOOST_REQUIRE_THROW(constlist[2], std::out_of_range);
+  BOOST_REQUIRE_THROW(list.getArrayPtr(-1), std::out_of_range);
+  BOOST_REQUIRE_THROW(list.getArrayPtr(2), std::out_of_range);
+  BOOST_REQUIRE_THROW(list.insert(30, -1), std::out_of_range);
+  BOOST_REQUIRE_THROW(list.insert(30, 3), std::out_of_range);
+  BOOST_REQUIRE_THROW(list.remove(-1), std::out_of_range);
+  BOOST_REQUIRE_THROW(list.remove(2), std::out_of_range);
+  BOOST_REQUIRE_THROW(list.removeFast(-1), std::out_of_range);
+  BOOST_REQUIRE_THROW(list.removeFast(2), std::out_of_range);
+  BOOST_REQUIRE_THROW(list.truncate(-1), std::out_of_range);
+  BOOST_REQUIRE_THROW(list.truncate(3), std::out_of_range);
+
+  BOOST_REQUIRE_EQUAL(list.getLength(), 2);
+  BOOST_CHECK_EQUAL(list[0], 10);
+  BOOST_CHECK_EQUAL(list[1], 20);
+
+  SbList<int> empty;
+  BOOST_REQUIRE_THROW(empty.pop(), std::out_of_range);
+  BOOST_CHECK(empty.getArrayPtr(0) != NULL);
+
+  SbListTestAccess access;
+  BOOST_REQUIRE_THROW(access.resize(-1), std::out_of_range);
+  BOOST_CHECK_EQUAL(access.getLength(), 0);
+}
+
+BOOST_AUTO_TEST_CASE(growth_assignment_failure_preserves_storage_and_values)
+{
+  SbListThrowingTestAccess list;
+  for (int i = 0; i < 4; i++) list.append(SbListThrowingValue(i + 1));
+  const SbListThrowingValue * oldarray = list.getArrayPtr();
+  const int oldlive = SbListThrowingValue::live();
+
+  bool threw = false;
+  SbListThrowingValue::throwAfter(0);
+  try { list.append(SbListThrowingValue(5)); }
+  catch (const std::runtime_error &) { threw = true; }
+  SbListThrowingValue::disableFailure();
+
+  BOOST_REQUIRE(threw);
+  BOOST_CHECK_EQUAL(SbListThrowingValue::live(), oldlive);
+  BOOST_CHECK_EQUAL(list.getLength(), 4);
+  BOOST_CHECK_EQUAL(list.capacity(), 4);
+  BOOST_CHECK(list.getArrayPtr() == oldarray);
+  for (int i = 0; i < 4; i++) BOOST_CHECK_EQUAL(list[i].value, i + 1);
+}
+
+BOOST_AUTO_TEST_CASE(fit_assignment_failure_does_not_leak_or_publish_buffer)
+{
+  SbListThrowingTestAccess list;
+  for (int i = 0; i < 9; i++) list.append(SbListThrowingValue(i + 1));
+  list.truncate(6);
+  const SbListThrowingValue * oldarray = list.getArrayPtr();
+  const int oldlive = SbListThrowingValue::live();
+
+  bool threw = false;
+  SbListThrowingValue::throwAfter(0);
+  try { list.fit(); }
+  catch (const std::runtime_error &) { threw = true; }
+  SbListThrowingValue::disableFailure();
+
+  BOOST_REQUIRE(threw);
+  BOOST_CHECK_EQUAL(SbListThrowingValue::live(), oldlive);
+  BOOST_CHECK_EQUAL(list.getLength(), 6);
+  BOOST_CHECK_EQUAL(list.capacity(), 16);
+  BOOST_CHECK(list.getArrayPtr() == oldarray);
+  for (int i = 0; i < 6; i++) BOOST_CHECK_EQUAL(list[i].value, i + 1);
+}
+
+BOOST_AUTO_TEST_CASE(copy_constructor_assignment_failure_does_not_leak)
+{
+  SbList<SbListThrowingValue> source;
+  for (int i = 0; i < 5; i++) source.append(SbListThrowingValue(i + 1));
+  const int oldlive = SbListThrowingValue::live();
+
+  bool threw = false;
+  SbListThrowingValue::throwAfter(0);
+  try { SbList<SbListThrowingValue> copy(source); }
+  catch (const std::runtime_error &) { threw = true; }
+  SbListThrowingValue::disableFailure();
+
+  BOOST_REQUIRE(threw);
+  BOOST_CHECK_EQUAL(SbListThrowingValue::live(), oldlive);
+  BOOST_REQUIRE_EQUAL(source.getLength(), 5);
+  for (int i = 0; i < 5; i++) BOOST_CHECK_EQUAL(source[i].value, i + 1);
+}
+
+BOOST_AUTO_TEST_CASE(copy_reallocation_failure_preserves_destination)
+{
+  SbList<SbListThrowingValue> source;
+  for (int i = 0; i < 5; i++) source.append(SbListThrowingValue(i + 10));
+  SbListThrowingTestAccess destination;
+  destination.append(SbListThrowingValue(1));
+  destination.append(SbListThrowingValue(2));
+  const SbListThrowingValue * oldarray = destination.getArrayPtr();
+  const int oldlive = SbListThrowingValue::live();
+
+  bool threw = false;
+  SbListThrowingValue::throwAfter(2);
+  try { destination = source; }
+  catch (const std::runtime_error &) { threw = true; }
+  SbListThrowingValue::disableFailure();
+
+  BOOST_REQUIRE(threw);
+  BOOST_CHECK_EQUAL(SbListThrowingValue::live(), oldlive);
+  BOOST_CHECK_EQUAL(destination.getLength(), 2);
+  BOOST_CHECK_EQUAL(destination.capacity(), 4);
+  BOOST_CHECK(destination.getArrayPtr() == oldarray);
+  BOOST_CHECK_EQUAL(destination[0].value, 1);
+  BOOST_CHECK_EQUAL(destination[1].value, 2);
+}
+
+BOOST_AUTO_TEST_CASE(in_place_assignment_failures_keep_logical_length)
+{
+  {
+    SbList<SbListThrowingValue> list;
+    list.append(SbListThrowingValue(1));
+    list.append(SbListThrowingValue(2));
+
+    bool threw = false;
+    SbListThrowingValue::throwAfter(0);
+    try { list.append(SbListThrowingValue(3)); }
+    catch (const std::runtime_error &) { threw = true; }
+    SbListThrowingValue::disableFailure();
+
+    BOOST_REQUIRE(threw);
+    BOOST_REQUIRE_EQUAL(list.getLength(), 2);
+    BOOST_CHECK_EQUAL(list[0].value, 1);
+    BOOST_CHECK_EQUAL(list[1].value, 2);
+  }
+
+  {
+    SbList<SbListThrowingValue> list;
+    for (int i = 0; i < 3; i++) list.append(SbListThrowingValue(i + 1));
+
+    bool threw = false;
+    SbListThrowingValue::throwAfter(0);
+    try { list.remove(0); }
+    catch (const std::runtime_error &) { threw = true; }
+    SbListThrowingValue::disableFailure();
+
+    BOOST_REQUIRE(threw);
+    BOOST_REQUIRE_EQUAL(list.getLength(), 3);
+    for (int i = 0; i < 3; i++) BOOST_CHECK_EQUAL(list[i].value, i + 1);
+  }
+
+  {
+    SbList<SbListThrowingValue> list;
+    for (int i = 0; i < 3; i++) list.append(SbListThrowingValue(i + 1));
+
+    bool threw = false;
+    SbListThrowingValue::throwAfter(0);
+    try { list.removeFast(0); }
+    catch (const std::runtime_error &) { threw = true; }
+    SbListThrowingValue::disableFailure();
+
+    BOOST_REQUIRE(threw);
+    BOOST_REQUIRE_EQUAL(list.getLength(), 3);
+    for (int i = 0; i < 3; i++) BOOST_CHECK_EQUAL(list[i].value, i + 1);
+  }
+}
+
+
+
 #include <new>
 
 class SbListGrowthFailureValue {
