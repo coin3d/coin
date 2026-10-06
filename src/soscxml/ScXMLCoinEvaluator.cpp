@@ -145,14 +145,6 @@ ScXMLCoinEvaluator::setAtLocation(const char * location, ScXMLDataObj * obj)
     SbName varname(location + 10);
     const char * handle = varname.getString();
 
-    // already exists?
-    std::map<const char *, ScXMLDataObj *>::iterator it =
-      PRIVATE(this)->temporaries.find(handle);
-    if (it != PRIVATE(this)->temporaries.end()) {
-      delete it->second;
-      PRIVATE(this)->temporaries.erase(it); // erase it
-    }
-
     ScXMLConstantDataObj * cobj = NULL;
     if (obj->getTypeId().isDerivedFrom(ScXMLConstantDataObj::getClassTypeId())) {
       cobj = static_cast<ScXMLConstantDataObj *>(obj);
@@ -174,11 +166,22 @@ ScXMLCoinEvaluator::setAtLocation(const char * location, ScXMLDataObj * obj)
       }
       cobj = static_cast<ScXMLConstantDataObj *>(res);
     }
-    std::pair<const char *, ScXMLDataObj *> entry;
-    entry.first = handle;
     assert(cobj);
-    entry.second = cobj->clone();
-    PRIVATE(this)->temporaries.insert(entry);
+    // obj can be the value currently stored at this location. Clone it
+    // before replacing the old value, and retain ownership if insert throws.
+    std::unique_ptr<ScXMLDataObj> copy(cobj->clone());
+    std::map<const char *, ScXMLDataObj *>::iterator it =
+      PRIVATE(this)->temporaries.find(handle);
+    if (it != PRIVATE(this)->temporaries.end()) {
+      ScXMLDataObj * old = it->second;
+      it->second = copy.release();
+      delete old;
+    }
+    else {
+      PRIVATE(this)->temporaries.insert(
+        std::pair<const char *, ScXMLDataObj *>(handle, copy.get()));
+      copy.release();
+    }
     return TRUE;
   }
 
@@ -769,6 +772,29 @@ BOOST_AUTO_TEST_CASE(BasicExpressions)
   TestReturnValue<ScXMLBoolDataObj>("M_PI != M_LN2",TRUE,evaluator.get());
   TestReturnValue<ScXMLBoolDataObj>("M_PI == M_LN2",FALSE,evaluator.get());
   TestReturnValue<ScXMLBoolDataObj>("false && !false",FALSE,evaluator.get());
+}
+
+BOOST_AUTO_TEST_CASE(TemporaryReplacementFromStoredObject)
+{
+  ScXMLStateMachine sm;
+  ScXMLCoinEvaluator evaluator;
+  evaluator.setStateMachine(&sm);
+
+  ScXMLStringDataObj input("kept-value");
+  BOOST_REQUIRE(evaluator.setAtLocation("coin:temp.alias", &input));
+  ScXMLDataObj * previous = evaluator.locate("coin:temp.alias");
+  BOOST_REQUIRE(previous != NULL);
+  BOOST_REQUIRE(evaluator.setAtLocation("coin:temp.alias", previous));
+
+  ScXMLDataObj * replacement = evaluator.locate("coin:temp.alias");
+  BOOST_REQUIRE(replacement != NULL);
+  BOOST_REQUIRE(replacement->isOfType(ScXMLStringDataObj::getClassTypeId()));
+  BOOST_CHECK(strcmp(static_cast<ScXMLStringDataObj *>(replacement)->getString(),
+                     "kept-value") == 0);
+
+  evaluator.clearTemporaryVariables();
+  BOOST_CHECK(evaluator.locate("coin:temp.alias") == NULL);
+  evaluator.setStateMachine(NULL);
 }
 
 #endif // !COIN_TEST_SUITE
