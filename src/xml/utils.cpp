@@ -41,11 +41,36 @@
 #include <cctype>
 
 char *
+cc_xml_read_exact_file(FILE * file, size_t bytes)
+{
+  if ( bytes == static_cast<size_t>(-1) ) return NULL;
+  char * buffer = new char [ bytes + 1 ];
+  size_t pos = 0;
+  while ( pos != bytes ) {
+    const size_t count = fread(buffer + pos, 1, bytes - pos, file);
+    if ( count == 0 ) {
+      delete [] buffer;
+      return NULL;
+    }
+    pos += count;
+  }
+  if ( ferror(file) ) {
+    delete [] buffer;
+    return NULL;
+  }
+  buffer[bytes] = '\0';
+  return buffer;
+}
+
+char *
 cc_xml_load_file(const char * path)
 {
   FILE * fd = fopen(path, "rb");
   if ( !fd ) return NULL;
-  fseek(fd, 0, SEEK_END);
+  if ( fseek(fd, 0, SEEK_END) != 0 ) {
+    fclose(fd);
+    return NULL;
+  }
   const long filesize = ftell(fd);
   if ( filesize < 0 ) {
     // ftell() failed (e.g. fd does not support seeking) -- without
@@ -56,19 +81,17 @@ cc_xml_load_file(const char * path)
     return NULL;
   }
   const size_t bufsize = static_cast<size_t>(filesize);
-  fseek(fd, 0, SEEK_SET);
-  char * buffer = new char [ bufsize + 1 ];
-  size_t pos = 0, bytes;
-  while ( pos != bufsize ) {
-    bytes = fread(buffer + pos, 1, bufsize - pos, fd);
-    if ( bytes == 0 ) {
-      // fprintf(stderr, "fread() returned %d\n", bytes);
-    } else {
-      pos += bytes;
-    }
+  if ( fseek(fd, 0, SEEK_SET) != 0 ) {
+    fclose(fd);
+    return NULL;
   }
-  buffer[bufsize] = '\0';
-  fclose(fd); // close opened file
+  char * buffer = cc_xml_read_exact_file(fd, bufsize);
+  const int readerror = ferror(fd);
+  const int closeerror = fclose(fd);
+  if ( !buffer || readerror || closeerror != 0 ) {
+    delete [] buffer;
+    return NULL;
+  }
   return buffer;
 }
 

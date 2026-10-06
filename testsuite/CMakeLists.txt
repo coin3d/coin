@@ -173,6 +173,16 @@ add_test(NAME SoTempPathReplaceTail_empty_noop
 
 add_subdirectory(xml-c-api/c-headers)
 
+# Compile the private XML utility into its test so the function does not need
+# to become a public DLL symbol on Windows.
+add_executable(XmlLoadFileTest XmlLoadFileTest.cpp
+  ${PROJECT_SOURCE_DIR}/src/xml/utils.cpp)
+target_compile_definitions(XmlLoadFileTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
+target_include_directories(XmlLoadFileTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${PROJECT_SOURCE_DIR}/src ${PROJECT_BINARY_DIR}/src)
+add_test(NAME XmlLoadFileTest COMMAND XmlLoadFileTest)
+
 add_executable(SoPathRangeTest SoPathRangeTest.cpp)
 target_link_libraries(SoPathRangeTest Coin ${COIN_TARGET_LINK_LIBRARIES})
 target_include_directories(SoPathRangeTest PRIVATE
