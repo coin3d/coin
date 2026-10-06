@@ -28,6 +28,10 @@ static Counts render(SoSeparator *root,SoOffscreenRenderer &r,int w,int h,const 
  return c;
 }
 int main(int argc,char **argv){
+#if defined(__linux__)
+ const char *display=std::getenv("DISPLAY");
+ if(!display || !display[0]){std::fprintf(stderr,"GLX rendering needs an X display; use xvfb-run for headless testing.\n");return 77;}
+#endif
  SoDB::init();const std::string prefix=argc>1?argv[1]:"";
  const bool diagnostic=argc>2 && std::strcmp(argv[2],"--diagnostic")==0;const bool anchorpolicy=argc>3 && std::strcmp(argv[3],"--anchor-only")==0;
  int failures=0,cases=0;

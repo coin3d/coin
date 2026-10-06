@@ -166,3 +166,23 @@ above now provide regression coverage.
 
 Both panels use the same native 96-pixel font, viewport, labels and initial
 camera; each receives exactly one public viewAll call.
+
+
+## Headless Ubuntu CI correction (2026-10-06)
+
+The first remote Ubuntu run failed in the two new rendering targets because
+there was no DISPLAY; the GLX initialization path crashed before a normal
+render-failure result. Standalone Linux audit runs now return skip code 77
+before creating a renderer when DISPLAY is absent or empty. This is an
+unavailable-display condition, not a passing rendering check.
+
+Ubuntu CI now installs Xvfb/Xauth/Mesa and runs the complete CTest suite under
+Xvfb with software GLX. Consequently, the new single-call/native-font targets
+and the existing extended rendering target actually execute in both legacy
+renderer configurations. macOS/Windows CI behavior is unchanged. No production
+source or ABI checker is changed by this CI correction.
+
+
+After the headless correction, local software-GLX runs pass **84/84** with
+legacy rendering enabled and **82/82** with it disabled, with no tests skipped.
+The standalone no-DISPLAY invocation returns 77 rather than crashing.
