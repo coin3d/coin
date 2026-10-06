@@ -909,7 +909,46 @@ cc_xml_doc_handle_parse_warning(const cc_xml_doc * doc, const char * message)
 #include <Inventor/C/XML/parser.h>
 #include <Inventor/C/XML/path.h>
 
-BOOST_AUTO_TEST_CASE(bufread)
+namespace {
+
+bool
+xml_test_strings_equal(const char * lhs, const char * rhs)
+{
+  if (lhs == NULL || rhs == NULL) return lhs == rhs;
+  return strcmp(lhs, rhs) == 0;
+}
+
+bool
+xml_test_elements_equal(const cc_xml_elt * lhs, const cc_xml_elt * rhs)
+{
+  if (!xml_test_strings_equal(cc_xml_elt_get_type(lhs),
+                              cc_xml_elt_get_type(rhs))) return false;
+  if (!xml_test_strings_equal(cc_xml_elt_get_cdata(lhs),
+                              cc_xml_elt_get_cdata(rhs))) return false;
+
+  const int numattributes = cc_xml_elt_get_num_attributes(lhs);
+  if (numattributes != cc_xml_elt_get_num_attributes(rhs)) return false;
+  const cc_xml_attr ** attributes = cc_xml_elt_get_attributes(lhs);
+  for (int i = 0; i < numattributes; ++i) {
+    const char * name = cc_xml_attr_get_name(attributes[i]);
+    const cc_xml_attr * other = cc_xml_elt_get_attribute(rhs, name);
+    if (!other) return false;
+    if (!xml_test_strings_equal(cc_xml_attr_get_value(attributes[i]),
+                                cc_xml_attr_get_value(other))) return false;
+  }
+
+  const int numchildren = cc_xml_elt_get_num_children(lhs);
+  if (numchildren != cc_xml_elt_get_num_children(rhs)) return false;
+  for (int i = 0; i < numchildren; ++i) {
+    if (!xml_test_elements_equal(cc_xml_elt_get_child(lhs, i),
+                                 cc_xml_elt_get_child(rhs, i))) return false;
+  }
+  return true;
+}
+
+} // namespace
+
+BOOST_AUTO_TEST_CASE(buffer_round_trip_compares_real_dom)
 {
   const char * buffer =
 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n"
@@ -926,14 +965,61 @@ BOOST_AUTO_TEST_CASE(bufread)
     cc_xml_doc_write_to_buffer(doc1, bufptr, bytecount);
     buffer2.reset(bufptr);
   }
+  BOOST_REQUIRE(buffer2.get() != NULL);
+  const char * expected =
+"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+"<test value=\"one\" compact=\"\">\n"
+"  <b>hei</b>\n"
+"</test>\n";
+  BOOST_CHECK(bytecount == strlen(expected));
+  BOOST_CHECK(strcmp(buffer2.get(), expected) == 0);
 
   cc_xml_doc * doc2 = cc_xml_read_buffer(buffer2.get());
+  BOOST_REQUIRE(doc2 != NULL);
+  BOOST_REQUIRE(cc_xml_doc_get_root(doc1) != NULL);
+  BOOST_REQUIRE(cc_xml_doc_get_root(doc2) != NULL);
+  BOOST_CHECK(xml_test_elements_equal(cc_xml_doc_get_root(doc1),
+                                      cc_xml_doc_get_root(doc2)));
 
-  cc_xml_path * diffpath = cc_xml_doc_diff(doc1, doc2);
-  BOOST_CHECK_MESSAGE(diffpath == NULL, "document read->write->read DOM differences");
+  // Negative control: prove that the comparator observes a real DOM change.
+  cc_xml_elt_set_attribute_x(cc_xml_doc_get_root(doc2),
+    cc_xml_attr_new_from_data("value", "different"));
+  BOOST_CHECK(!xml_test_elements_equal(cc_xml_doc_get_root(doc1),
+                                       cc_xml_doc_get_root(doc2)));
+
+  // Child data and structure must also participate in the comparison.
+  cc_xml_elt_set_attribute_x(cc_xml_doc_get_root(doc2),
+    cc_xml_attr_new_from_data("value", "one"));
+  BOOST_CHECK(xml_test_elements_equal(cc_xml_doc_get_root(doc1),
+                                      cc_xml_doc_get_root(doc2)));
+  cc_xml_elt_set_cdata_x(cc_xml_elt_get_child(cc_xml_doc_get_root(doc2), 0),
+                         "changed");
+  BOOST_CHECK(!xml_test_elements_equal(cc_xml_doc_get_root(doc1),
+                                       cc_xml_doc_get_root(doc2)));
 
   cc_xml_doc_delete_x(doc1);
   cc_xml_doc_delete_x(doc2);
+}
+
+BOOST_AUTO_TEST_CASE(empty_cdata_child_serializes_without_null_dereference)
+{
+  cc_xml_doc * doc = cc_xml_doc_new();
+  cc_xml_elt * root = cc_xml_elt_new();
+  cc_xml_elt_set_type_x(root, "root");
+  cc_xml_doc_set_root_x(doc, root);
+  cc_xml_elt * child = cc_xml_elt_new();
+  cc_xml_elt_set_type_x(child, COIN_XML_CDATA_TYPE);
+  cc_xml_elt_add_child_x(root, child);
+
+  char * buffer = NULL;
+  size_t bytes = 0;
+  BOOST_REQUIRE(cc_xml_doc_write_to_buffer(doc, &buffer, &bytes));
+  BOOST_REQUIRE(buffer != NULL);
+  BOOST_CHECK(strcmp(buffer,
+                     "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                     "<root>\n  <cdata/>\n</root>\n") == 0);
+  delete [] buffer;
+  cc_xml_doc_delete_x(doc);
 }
 
 BOOST_AUTO_TEST_CASE(dom_attribute_ownership)

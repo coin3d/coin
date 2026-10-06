@@ -83,6 +83,8 @@ option(COIN_BUILD_TESTS "Build unit tests when ON (default), skips them when OFF
 option(COIN_BUILD_DOCUMENTATION "Build and install API documentation (requires Doxygen)." OFF)
 option(COIN_BUILD_AWESOME_DOCUMENTATION "Build and install API documentation in new modern style (requires Doxygen)." OFF)
 option(COIN_BUILD_EXAMPLES "Build examples when ON (default), skips them when OFF." OFF)
+option(COIN_ENABLE_SANITIZERS "Build Coin with AddressSanitizer and UndefinedBehaviorSanitizer." OFF)
+cmake_dependent_option(COIN_BUILD_FUZZERS "Build libFuzzer targets when ON." OFF "COIN_BUILD_TESTS" OFF)
 cmake_dependent_option(COIN_BUILD_INTERNAL_DOCUMENTATION "Document internal code not part of the API." OFF "COIN_BUILD_DOCUMENTATION" OFF)
 cmake_dependent_option(COIN_BUILD_DOCUMENTATION_MAN "Build Coin man pages." OFF "COIN_BUILD_DOCUMENTATION" OFF)
 cmake_dependent_option(COIN_BUILD_DOCUMENTATION_QTHELP "Build QtHelp documentation." OFF "COIN_BUILD_DOCUMENTATION" OFF)
@@ -113,6 +115,26 @@ option(COIN_VERBOSE "Add verbose debugging information during the configure proc
 option(COIN_STRICT_WARNINGS "Treat supported compiler warnings as errors." OFF)
 option(HAVE_MULTIPLE_VERSION "Forces versioned paths for includes and documentation when ON, usual behaviour otherwise." OFF)
 option(COIN_USE_CPACK "If enabled the cpack subrepo is mandatory" OFF)
+
+if(COIN_ENABLE_SANITIZERS OR COIN_BUILD_FUZZERS)
+  if(NOT (CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" AND
+          CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang"))
+    message(FATAL_ERROR
+      "COIN_ENABLE_SANITIZERS requires GCC or Clang for both C and C++")
+  endif()
+  set(COIN_SANITIZER_FLAGS
+    "-fsanitize=address,undefined -fno-omit-frame-pointer")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${COIN_SANITIZER_FLAGS}")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COIN_SANITIZER_FLAGS}")
+  set(CMAKE_EXE_LINKER_FLAGS
+    "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address,undefined")
+  set(CMAKE_SHARED_LINKER_FLAGS
+    "${CMAKE_SHARED_LINKER_FLAGS} -fsanitize=address,undefined")
+endif()
+
+if(COIN_BUILD_FUZZERS AND NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  message(FATAL_ERROR "COIN_BUILD_FUZZERS requires Clang and libFuzzer")
+endif()
 
 cmake_dependent_option(COIN_BUILD_MAC_FRAMEWORK "Build framework instead of dylib on Mac OS X when ON. Only valid if COIN_BUILD_SHARED_LIBS is ON." OFF "APPLE;NOT IOS;COIN_BUILD_SHARED_LIBS" OFF)
 cmake_dependent_option(COIN_BUILD_MAC_X11 "Build for X11 on Mac OS X when ON. Default is OFF." OFF "APPLE" OFF)
@@ -161,6 +183,8 @@ report_prepare(
   COIN_BUILD_SHARED_LIBS
   COIN_BUILD_TESTS
   COIN_BUILD_DOCUMENTATION
+  COIN_ENABLE_SANITIZERS
+  COIN_BUILD_FUZZERS
   COIN_BUILD_INTERNAL_DOCUMENTATION
   COIN_BUILD_DOCUMENTATION_MAN
   COIN_BUILD_DOCUMENTATION_QTHELP
