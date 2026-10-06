@@ -655,7 +655,7 @@ SoFullPathView::getIndexFromTail(const int index) const
 }
 
 // A build without nodekits has no SoBaseKit instances. Keep the public
-// borrowed-view API linkable; its projection consists only of the head.
+// borrowed-view API linkable with an empty projection.
 #ifndef HAVE_NODEKITS
 SoNodeKitPathView
 SoPath::nodeKitPath(void) const
@@ -671,25 +671,25 @@ SoNodeKitPathView::SoNodeKitPathView(const SoPath & sourcepath)
 int
 SoNodeKitPathView::getLength(void) const
 {
-  return this->path->fullPath().getLength() == 0 ? 0 : 1;
+  return 0;
 }
 
 SoNode *
 SoNodeKitPathView::getTail(void) const
 {
-  return this->path->fullPath().getLength() == 0 ? NULL : this->path->getNode(0);
+  return NULL;
 }
 
 SoNode *
-SoNodeKitPathView::getNode(const int index) const
+SoNodeKitPathView::getNode(const int) const
 {
-  return index == 0 ? this->getTail() : NULL;
+  return NULL;
 }
 
 SoNode *
-SoNodeKitPathView::getNodeFromTail(const int index) const
+SoNodeKitPathView::getNodeFromTail(const int) const
 {
-  return this->getNode(index);
+  return NULL;
 }
 #endif // !HAVE_NODEKITS
 

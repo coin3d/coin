@@ -42,12 +42,12 @@
 
   \ingroup coin_nodekits
 
-  The head is always visible. Later nodes that are not nodekits are hidden
-  from the nodekit-specific accessors, while the complete route is retained.
+  Only nodekits are visible through the nodekit-specific accessors, while
+  the complete route is retained.
 */
 
 // FIXME: SoNodeKitPath still needs access to SoPath's private route for
-// materialization and mutation. 20020119 mortene.
+// materialization and mutation. 20020119 mortene, 20261006 Dikluwe.
 
 #include <Inventor/SoNodeKitPath.h>
 
@@ -87,9 +87,10 @@ SoSearchAction * SoNodeKitPath::searchAction;
   \class SoNodeKitPathView SoPath.h Inventor/SoPath.h
   \brief A borrowed, allocation-free nodekit projection of a SoPath.
 
-  The head is always included. Subsequent non-nodekit nodes are hidden.
+  Only nodekits in the complete route are visible, including the head only
+  when it is a nodekit.
   The view reflects changes to its source path and must not outlive it.
-  In builds without nodekit support, the projection contains only the head.
+  In builds without nodekit support, the projection is empty.
 */
 
 /*!
@@ -110,17 +111,14 @@ SoNodeKitPathView::SoNodeKitPathView(const SoPath & sourcepath)
 }
 
 /*!
-  Returns one plus the number of nodekits after the head. An empty source
-  path has length zero.
+  Returns the number of nodekits in the complete route.
 */
 int
 SoNodeKitPathView::getLength(void) const
 {
   const int length = this->path->fullPath().getLength();
-  if (length == 0) return 0;
-
-  int count = 1;
-  for (int i = 1; i < length; ++i) {
+  int count = 0;
+  for (int i = 0; i < length; ++i) {
     SoNode * node = this->path->getNode(i);
     if (node != NULL && node->isOfType(SoBaseKit::getClassTypeId())) ++count;
   }
@@ -128,35 +126,31 @@ SoNodeKitPathView::getLength(void) const
 }
 
 /*!
-  Returns the last nodekit in the complete route, or the head when there is
-  no later nodekit. Returns \c NULL for an empty source path.
+  Returns the last nodekit in the complete route, or \c NULL when there is
+  no nodekit.
 */
 SoNode *
 SoNodeKitPathView::getTail(void) const
 {
   const int length = this->path->fullPath().getLength();
-  if (length == 0) return NULL;
-
-  for (int i = length - 1; i > 0; --i) {
+  for (int i = length - 1; i >= 0; --i) {
     SoNode * node = this->path->getNode(i);
     if (node != NULL && node->isOfType(SoBaseKit::getClassTypeId())) return node;
   }
-  return this->path->getNode(0);
+  return NULL;
 }
 
 /*!
-  Returns projected node \a index, counting the head as zero. Returns
-  \c NULL for an invalid index.
+  Returns nodekit number \a index, or \c NULL for an invalid index.
 */
 SoNode *
 SoNodeKitPathView::getNode(const int index) const
 {
   const int length = this->path->fullPath().getLength();
-  if (index < 0 || length == 0) return NULL;
-  if (index == 0) return this->path->getNode(0);
+  if (index < 0) return NULL;
 
-  int count = 1;
-  for (int i = 1; i < length; ++i) {
+  int count = 0;
+  for (int i = 0; i < length; ++i) {
     SoNode * node = this->path->getNode(i);
     if (node != NULL && node->isOfType(SoBaseKit::getClassTypeId())) {
       if (count++ == index) return node;
@@ -241,8 +235,7 @@ SoNodeKitPath::fromPath(const SoPath * path)
 }
 
 /*!
-  Returns the length of the nodekit projection. The head is always included;
-  later non-nodekit nodes are hidden.
+  Returns the number of nodekits in the complete route.
 */
 int
 SoNodeKitPath::getLength(void) const
@@ -298,14 +291,10 @@ SoNodeKitPath::truncate(const int length)
 {
   const int projectedlength = this->getLength();
   if (length == projectedlength) return;
-  if (length == 0) {
-    SoPath::truncate(0);
-    return;
-  }
-  if (length > 0 && length < projectedlength) {
-    int cnt = 1;
+  if (length >= 0 && length < projectedlength) {
+    int cnt = 0;
     const int n = this->nodes.getLength();
-    for (int i = 1; i < n; i++) {
+    for (int i = 0; i < n; i++) {
       if (this->nodes[i] != NULL &&
         this->nodes[i]->isOfType(SoBaseKit::getClassTypeId()) &&
           cnt++ == length) {

@@ -10,8 +10,9 @@ Unreleased:
     an empty SoPath in both Debug and Release builds.
 * API additions:
   - Add SoPath::nodeKitPath(), a borrowed view for inspecting the nodekit
-    projection without copying the path. Replace downcasts used only for
-    inspection with calls such as path->nodeKitPath().getTail(). Use the
+    projection without copying the path. The view contains only nodekits;
+    getTail() returns NULL when there are none. Replace downcasts used only
+    for inspection with calls such as path->nodeKitPath().getTail(). Use the
     new SoNodeKitPath::fromPath() when an independent, mutable path is
     required. See pull request #747.
   - Added SoPath::fullPath() as the preferred way to access the complete

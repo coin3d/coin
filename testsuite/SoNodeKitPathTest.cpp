@@ -120,23 +120,105 @@ checkBorrowedView()
   const SoNodeKitPathView view = route.source->nodeKitPath();
   check(route.source->getRefCount() == refs,
         "creating a nodekit view changed the source reference count");
-  check(view.getLength() == 3 &&
-        view.getNode(0) == route.head &&
-        view.getNode(1) == route.rootkit &&
-        view.getNode(2) == route.childkit &&
+  check(view.getLength() == 2 &&
+        view.getNode(0) == route.rootkit &&
+        view.getNode(1) == route.childkit &&
         view.getTail() == route.childkit &&
         view.getNodeFromTail(0) == route.childkit &&
-        view.getNodeFromTail(2) == route.head,
+        view.getNodeFromTail(1) == route.rootkit,
         "borrowed nodekit view lost the nested kit projection");
-  check(view.getNode(-1) == NULL && view.getNode(3) == NULL &&
+  check(view.getNode(-1) == NULL && view.getNode(2) == NULL &&
         view.getNodeFromTail(-1) == NULL &&
-        view.getNodeFromTail(3) == NULL,
+        view.getNodeFromTail(2) == NULL,
         "borrowed nodekit view accepted an invalid index");
 
   route.source->pop();
   route.source->pop();
-  check(view.getLength() == 2 && view.getTail() == route.rootkit,
+  check(view.getLength() == 1 && view.getTail() == route.rootkit,
         "borrowed nodekit view did not reflect a source mutation");
+}
+
+static void
+checkProjectionCase(SoPath * source, SoNode * const * expected, const int count)
+{
+  const SoNodeKitPathView view = source->nodeKitPath();
+  SoNodeKitPath * copy = SoNodeKitPath::fromPath(source);
+  check(copy != NULL, "nodekit projection copy was not created");
+  if (copy == NULL) return;
+  copy->ref();
+
+  const SoNode * tail = count == 0 ? NULL : expected[count - 1];
+  check(view.getLength() == count && view.getTail() == tail &&
+        copy->getLength() == count && copy->getTail() == tail,
+        "nodekit projection length or tail differs from the legacy contract");
+  for (int i = 0; i < count; ++i) {
+    check(view.getNode(i) == expected[i] && copy->getNode(i) == expected[i] &&
+          view.getNodeFromTail(i) == expected[count - i - 1] &&
+          copy->getNodeFromTail(i) == expected[count - i - 1],
+          "nodekit projection order differs from the legacy contract");
+  }
+  check(view.getNode(-1) == NULL && view.getNode(count) == NULL &&
+        view.getNodeFromTail(-1) == NULL &&
+        view.getNodeFromTail(count) == NULL &&
+        copy->getNode(-1) == NULL && copy->getNode(count) == NULL &&
+        copy->getNodeFromTail(-1) == NULL &&
+        copy->getNodeFromTail(count) == NULL,
+        "nodekit projection accepted an invalid index");
+  copy->unref();
+}
+
+static void
+checkProjectionBoundaries()
+{
+  SoPath * empty = new SoPath;
+  empty->ref();
+  checkProjectionCase(empty, NULL, 0);
+  empty->unref();
+
+  Route route;
+  SoNode * expected[2] = { route.rootkit, route.childkit };
+  checkProjectionCase(route.source, expected, 2);
+  route.source->pop(); // ordinary leaf
+  checkProjectionCase(route.source, expected, 2);
+  route.source->pop(); // child kit
+  checkProjectionCase(route.source, expected, 1);
+  route.source->pop(); // ordinary node between kits
+  checkProjectionCase(route.source, expected, 1);
+  route.source->pop(); // root kit
+  checkProjectionCase(route.source, NULL, 0); // ordinary head only
+
+  SoPath * kithead = new SoPath(route.rootkit);
+  kithead->ref();
+  checkProjectionCase(kithead, expected, 1);
+  kithead->unref();
+}
+
+static void
+checkMutationWithOrdinaryHead()
+{
+  Route route;
+  SoNodeKitPath * path = SoNodeKitPath::fromPath(route.source);
+  path->ref();
+  path->truncate(1);
+  check(path->getLength() == 1 && path->getTail() == route.rootkit &&
+        fullLength(path) == 3 && path->fullPath().getTail() == route.hidden,
+        "truncate(1) did not preserve the ordinary prefix and hidden bridge");
+  path->pop();
+  check(path->getLength() == 0 && path->getTail() == NULL &&
+        fullLength(path) == 1 && path->fullPath().getTail() == route.head,
+        "pop did not leave the ordinary prefix after the last kit");
+  path->pop();
+  check(fullLength(path) == 1,
+        "pop changed a path containing no nodekits");
+  path->unref();
+
+  path = SoNodeKitPath::fromPath(route.source);
+  path->ref();
+  path->truncate(0);
+  check(path->getLength() == 0 && fullLength(path) == 1 &&
+        path->fullPath().getTail() == route.head,
+        "truncate(0) removed the ordinary prefix");
+  path->unref();
 }
 
 static void
@@ -153,21 +235,20 @@ checkProjectionAndOwnership()
   check(dynamic_cast<SoNodeKitPath *>(static_cast<SoPath *>(projected)) == projected,
         "result is not a genuine SoNodeKitPath object");
   check(fullLength(projected) == 5, "full route was not preserved");
-  check(projected->getLength() == 3 &&
-        projected->getNode(0) == route.head &&
-        projected->getNode(1) == route.rootkit &&
-        projected->getNode(2) == route.childkit,
+  check(projected->getLength() == 2 &&
+        projected->getNode(0) == route.rootkit &&
+        projected->getNode(1) == route.childkit,
         "nodekit projection is incorrect");
-  check(projected->getNode(-1) == NULL && projected->getNode(3) == NULL,
+  check(projected->getNode(-1) == NULL && projected->getNode(2) == NULL,
         "nodekit accessor accepted an invalid index");
   check(projected->getNodeFromTail(0) == route.childkit &&
-        projected->getNodeFromTail(2) == route.head,
+        projected->getNodeFromTail(1) == route.rootkit,
         "reverse nodekit projection is incorrect");
 
   projected->truncate(projected->getLength());
   check(fullLength(projected) == 5, "truncate at current length changed the route");
   projected->pop();
-  check(projected->getLength() == 2 && projected->getTail() == route.rootkit,
+  check(projected->getLength() == 1 && projected->getTail() == route.rootkit,
         "pop did not remove one projected node");
   check(fullLength(route.source) == 5, "mutating the copy changed the source");
   projected->unref();
@@ -267,8 +348,8 @@ checkFactoryTypeWithExtension()
           "extended factory path is not a genuine SoNodeKitPath object");
     path->ref();
     const SoFullPathView complete = static_cast<SoPath *>(path)->fullPath();
-    check(path->getLength() == 2 &&
-          path->getNode(0) == root && path->getTail() == kit &&
+    check(path->getLength() == 1 &&
+          path->getNode(0) == kit && path->getTail() == kit &&
           complete.getLength() >= 3 &&
           complete.getNodeFromTail(complete.getLength() - 1) == root &&
           complete.getTail() == transform,
@@ -342,15 +423,15 @@ checkTemporarySentinel()
   source.simpleAppend(static_cast<SoNode *>(NULL), -1);
 
   const SoNodeKitPathView view = source.nodeKitPath();
-  check(view.getLength() == 1 && view.getTail() == head &&
-        view.getNode(0) == head && view.getNodeFromTail(0) == head,
+  check(view.getLength() == 0 && view.getTail() == NULL &&
+        view.getNode(0) == NULL && view.getNodeFromTail(0) == NULL,
         "borrowed nodekit view dereferenced a temporary null sentinel");
 
   SoNodeKitPath * projected = SoNodeKitPath::fromPath(&source);
   projected->ref();
-  check(projected->getLength() == 1 && projected->getTail() == head &&
-        projected->getNode(0) == head &&
-        projected->getNodeFromTail(0) == head,
+  check(projected->getLength() == 0 && projected->getTail() == NULL &&
+        projected->getNode(0) == NULL &&
+        projected->getNodeFromTail(0) == NULL,
         "nodekit projection dereferenced a temporary null sentinel");
   projected->unref();
   head->unref();
@@ -364,15 +445,15 @@ checkCopiedPathTracksTreeEdits()
   projected->ref();
   route.hidden->removeChild(0);
   check(fullLength(projected) == 3 &&
-        projected->getLength() == 2 &&
+        projected->getLength() == 1 &&
         projected->getTail() == route.rootkit &&
         fullLength(route.source) == 3,
         "copied path did not track a removed hidden child");
 
   route.head->removeChild(0);
   check(fullLength(projected) == 1 &&
-        projected->getLength() == 1 &&
-        projected->getTail() == route.head &&
+        projected->getLength() == 0 &&
+        projected->getTail() == NULL &&
         fullLength(route.source) == 1,
         "copied path retained stale nodes after a second tree edit");
   projected->unref();
@@ -425,6 +506,8 @@ main()
   SoDB::init();
   SoNodeKit::init();
   checkBorrowedView();
+  checkProjectionBoundaries();
+  checkMutationWithOrdinaryHead();
   checkProjectionAndOwnership();
   checkAppendBelowLogicalTail();
   checkAppendPathAndPop();
