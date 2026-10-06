@@ -55,6 +55,7 @@
 #include <cmath>
 #include <cstdint>
 #include <new>
+#include "primep.h"
 
 #include <Inventor/lists/SbList.h>
 #include <Inventor/C/base/memalloc.h>
@@ -317,9 +318,15 @@ class SbHash {
   SbHash(const SbHash & from)
   {
     this->commonConstructor(from.size, from.loadfactor);
-    this->operator=(from);
+    try { this->operator=(from); }
+    catch (...) {
+      this->releaseStorage();
+      throw;
+    }
   }
 
+  /* Assignment has the basic guarantee if a key/value copy throws: the
+     destination remains valid but may contain only part of the source. */
   SbHash & operator=(const SbHash & from)
   {
     if (this == &from) return *this;
@@ -537,8 +544,12 @@ public:
     entry->next = this->buckets[i];
     this->buckets[i] = entry;
 
+    /* Growth is optional: bucket allocation failure retains this successful
+       insertion. Relinking preserves entry addresses, but invalidates traversal
+       state; obtain fresh iterators after insertion. */
     if (this->elements++ >= this->threshold && this->size < UINT_MAX) {
-      this->resize(static_cast<unsigned int>( coin_geq_prime_number(this->size + 1)));
+      const unsigned long next = coin_growth_prime_at_least(this->size + 1UL);
+      if (next != 0) this->resize(static_cast<unsigned int>(next));
     }
     return TRUE;
   }
@@ -588,7 +599,8 @@ public:
   {
     if (!std::isfinite(loadfactorarg) || loadfactorarg <= 0.0f)
       loadfactorarg = 0.75f;
-    unsigned int s = coin_geq_prime_number(sizearg);
+    unsigned int s = static_cast<unsigned int>(coin_exact_prime_at_least(sizearg));
+    if (s == 0) coin_oom_abort("SbHash capacity");
     this->memhandler = NULL;
     this->size = s;
     this->elements = 0;

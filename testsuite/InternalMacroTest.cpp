@@ -365,7 +365,7 @@ BOOST_AUTO_TEST_CASE(SbHash_hashes_c_strings_without_an_SbString_temporary)
 
 BOOST_AUTO_TEST_CASE(SbHash_resize_relinks_entries_at_the_real_threshold)
 {
-  SbHashRelinkProbe hash(3);
+  SbHashRelinkProbe hash(5);
   SbHashCopyCounter one(1);
   SbHashCopyCounter two(2);
   SbHashCopyCounter three(3);
