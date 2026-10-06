@@ -49536,6 +49536,13 @@
       <anchor>aaa7b5e960e4c751a0e5a7c3c8f75c1fe</anchor>
       <arglist>(const int length)</arglist>
     </member>
+    <member kind="function" static="yes">
+      <type>static SoNodeKitPath *</type>
+      <name>fromPath</name>
+      <anchorfile>classSoNodeKitPath.html</anchorfile>
+      <anchor>ace9ac99707ae53768011f761b759f4cd</anchor>
+      <arglist>(const SoPath *path)</arglist>
+    </member>
     <member kind="function" protection="protected">
       <type></type>
       <name>SoNodeKitPath</name>
@@ -49552,10 +49559,49 @@
     </member>
     <member kind="friend">
       <type>friend int</type>
+      <name>operator!=</name>
+      <anchorfile>classSoNodeKitPath.html</anchorfile>
+      <anchor>a5d24e25fca99e56932e7e3b9a6b56851</anchor>
+      <arglist>(const SoNodeKitPath &amp;p1, const SoNodeKitPath &amp;p2)</arglist>
+    </member>
+    <member kind="friend">
+      <type>friend int</type>
       <name>operator==</name>
       <anchorfile>classSoNodeKitPath.html</anchorfile>
       <anchor>a8067b1878ec9a4848bb132f84b37c66f</anchor>
       <arglist>(const SoNodeKitPath &amp;p1, const SoNodeKitPath &amp;p2)</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>SoNodeKitPathView</name>
+    <filename>classSoNodeKitPathView.html</filename>
+    <member kind="function">
+      <type>int</type>
+      <name>getLength</name>
+      <anchorfile>classSoNodeKitPathView.html</anchorfile>
+      <anchor>a05aa0802b6aabb34378d4f851eff6351</anchor>
+      <arglist>(void) const</arglist>
+    </member>
+    <member kind="function">
+      <type>SoNode *</type>
+      <name>getNode</name>
+      <anchorfile>classSoNodeKitPathView.html</anchorfile>
+      <anchor>adb79bb48828e0acf129eb97391fab5f1</anchor>
+      <arglist>(const int index) const</arglist>
+    </member>
+    <member kind="function">
+      <type>SoNode *</type>
+      <name>getNodeFromTail</name>
+      <anchorfile>classSoNodeKitPathView.html</anchorfile>
+      <anchor>a7d9460c9c898a87a0ed0b16e4c876427</anchor>
+      <arglist>(const int index) const</arglist>
+    </member>
+    <member kind="function">
+      <type>SoNode *</type>
+      <name>getTail</name>
+      <anchorfile>classSoNodeKitPathView.html</anchorfile>
+      <anchor>ae3446a8f39c03641b28040860928ee4f</anchor>
+      <arglist>(void) const</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -53017,6 +53063,13 @@
       <anchorfile>classSoPath.html</anchorfile>
       <anchor>aa9b6748214f721d3962575406885ecfb</anchor>
       <arglist>(SoNotList *const l) const</arglist>
+    </member>
+    <member kind="function">
+      <type>SoNodeKitPathView</type>
+      <name>nodeKitPath</name>
+      <anchorfile>classSoPath.html</anchorfile>
+      <anchor>ab2bcfe7f9958ce1e1dd77ce136841cd7</anchor>
+      <arglist>(void) const</arglist>
     </member>
     <member kind="function">
       <type>SoPath &amp;</type>

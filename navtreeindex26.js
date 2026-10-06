@@ -248,6 +248,6 @@ var NAVTREEINDEX26 =
 "classSoNodeKitPath.html#a1c944ad83c395fb0cbb6c4248cbe663b":[3,14,8,3],
 "classSoNodeKitPath.html#a3649347d1c34cfa6e4628cf6518c562b":[3,14,8,7],
 "classSoNodeKitPath.html#a3862411124049ea324a11cfc0f9f866e":[3,14,8,4],
-"classSoNodeKitPath.html#a7aa8f4944b4ec1c996e59f95b10e5a11":[3,14,8,6],
-"classSoNodeKitPath.html#a7adb8e4c1290ff2080306754a437349c":[3,14,8,9]
+"classSoNodeKitPath.html#a5d24e25fca99e56932e7e3b9a6b56851":[3,14,8,12],
+"classSoNodeKitPath.html#a7aa8f4944b4ec1c996e59f95b10e5a11":[3,14,8,6]
 };

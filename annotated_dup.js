@@ -471,6 +471,7 @@ var annotated_dup =
     [ "SoNodeKitDetail", "classSoNodeKitDetail.html", "classSoNodeKitDetail" ],
     [ "SoNodeKitListPart", "classSoNodeKitListPart.html", "classSoNodeKitListPart" ],
     [ "SoNodeKitPath", "classSoNodeKitPath.html", "classSoNodeKitPath" ],
+    [ "SoNodeKitPathView", "classSoNodeKitPathView.html", "classSoNodeKitPathView" ],
     [ "SoNodeList", "classSoNodeList.html", "classSoNodeList" ],
     [ "SoNodeSensor", "classSoNodeSensor.html", "classSoNodeSensor" ],
     [ "SoNodeVisualize", "classSoNodeVisualize.html", "classSoNodeVisualize" ],

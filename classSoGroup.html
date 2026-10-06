@@ -592,7 +592,7 @@ SoGroup::getParent() method?" The answer to this is that nodes in the scene grap
 <div class="line">}</div>
 <div class="ttc" id="aclassSbList_html_a0eefe70ca4d6d829657e3e8f70f64595"><div class="ttname"><a href="classSbList.html#a0eefe70ca4d6d829657e3e8f70f64595">SbList::getLength</a></div><div class="ttdeci">int getLength(void) const</div><div class="ttdef"><b>Definition</b> SbList.h:176</div></div>
 <div class="ttc" id="aclassSoGroup_html"><div class="ttname"><a href="classSoGroup.html">SoGroup</a></div><div class="ttdoc">The SoGroup class is a node which managed other node instances.</div><div class="ttdef"><b>Definition</b> SoGroup.h:40</div></div>
-<div class="ttc" id="aclassSoPath_html"><div class="ttname"><a href="classSoPath.html">SoPath</a></div><div class="ttdoc">The SoPath class is a container class for traversal path descriptions.</div><div class="ttdef"><b>Definition</b> SoPath.h:69</div></div>
+<div class="ttc" id="aclassSoPath_html"><div class="ttname"><a href="classSoPath.html">SoPath</a></div><div class="ttdoc">The SoPath class is a container class for traversal path descriptions.</div><div class="ttdef"><b>Definition</b> SoPath.h:83</div></div>
 <div class="ttc" id="aclassSoSearchAction_html_a822473f6d7fe12d1ba4c9e46f76fa3fcab55630bc24816083e1d583f64ae4d925"><div class="ttname"><a href="classSoSearchAction.html#a822473f6d7fe12d1ba4c9e46f76fa3fcab55630bc24816083e1d583f64ae4d925">SoSearchAction::FIRST</a></div><div class="ttdeci">@ FIRST</div><div class="ttdef"><b>Definition</b> SoSearchAction.h:56</div></div>
 <div class="ttc" id="aclassSoSearchAction_html_adff37f4df968cc9475794d27378789d6"><div class="ttname"><a href="classSoSearchAction.html#adff37f4df968cc9475794d27378789d6">SoSearchAction::getPath</a></div><div class="ttdeci">SoPath * getPath(void) const</div><div class="ttdef"><b>Definition</b> SoSearchAction.cpp:357</div></div>
 </div><!-- fragment --><p>An important note about a potential problem using <a class="el" href="classSoGroup.html" title="The SoGroup class is a node which managed other node instances.">SoGroup</a> nodes which it is not common to stumble on, but which makes hard to find bugs when one does: you should not change the scene graph layout during any action traversal, as that is not allowed by the internal Coin code. I.e. do not use <a class="el" href="#a23e0a7aebf3ec75c40638cc360c0e5e6">addChild()</a>, <a class="el" href="#a08a8536e74a09043e820206cc1107c77">removeChild()</a>, <a class="el" href="#a0a87322279423aab116fe442626158b7">insertChild()</a> or <a class="el" href="#ad8ad1c3ce980cd622a9e6481dc567d0c">replaceChild()</a> from any callback that is triggered directly or indirectly from an action traversal. The most common way of getting hit by this error, would be something like the following (simplified) example:</p>
@@ -1739,7 +1739,7 @@ SoGroup::getParent() method?" The answer to this is that nodes in the scene grap
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoGroup.html">SoGroup</a></li>
-    <li class="footer">Generated on Sat Oct 3 2026 12:37:18 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Tue Oct 6 2026 23:32:02 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

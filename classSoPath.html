@@ -148,7 +148,7 @@ Inheritance diagram for SoPath:</div>
   <map id="SoPath_map" name="SoPath_map">
 <area href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies." alt="SoBase" shape="rect" coords="53,0,149,24"/>
 <area href="classSoFullPath.html" title="The SoFullPath class allows examination of hidden children in paths." alt="SoFullPath" shape="rect" coords="0,112,96,136"/>
-<area href="classSoNodeKitPath.html" title="The SoNodeKitPath class is a path that contains only nodekit nodes." alt="SoNodeKitPath" shape="rect" coords="106,112,202,136"/>
+<area href="classSoNodeKitPath.html" title="The SoNodeKitPath class presents the nodekit projection of a path." alt="SoNodeKitPath" shape="rect" coords="106,112,202,136"/>
 <area href="classSoTempPath.html" title="The SoTempPath class is used to store temporary paths." alt="SoTempPath" shape="rect" coords="0,168,96,192"/>
   </map>
 </div></div>
@@ -200,6 +200,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac2c8ab31aaece572afc70082e52f81cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9b6748214f721d3962575406885ecfb" id="r_aa9b6748214f721d3962575406885ecfb"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa9b6748214f721d3962575406885ecfb">isRelevantNotification</a> (<a class="el" href="classSoNotList.html">SoNotList</a> *<a class="el" href="classSbList.html">const</a> <a class="el" href="classSbList.html">l</a>) <a class="el" href="classSbList.html">const</a></td></tr>
 <tr class="separator:aa9b6748214f721d3962575406885ecfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2bcfe7f9958ce1e1dd77ce136841cd7" id="r_ab2bcfe7f9958ce1e1dd77ce136841cd7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoNodeKitPathView.html">SoNodeKitPathView</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab2bcfe7f9958ce1e1dd77ce136841cd7">nodeKitPath</a> (<a class="el" href="classSbList.html">void</a>) <a class="el" href="classSbList.html">const</a></td></tr>
+<tr class="separator:ab2bcfe7f9958ce1e1dd77ce136841cd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0098c2fc11f7d2e50e22937d414cb3d1" id="r_a0098c2fc11f7d2e50e22937d414cb3d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoPath.html">SoPath</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0098c2fc11f7d2e50e22937d414cb3d1">operator=</a> (<a class="el" href="classSbList.html">const</a> <a class="el" href="classSoPath.html">SoPath</a> &amp;rhs)</td></tr>
 <tr class="separator:a0098c2fc11f7d2e50e22937d414cb3d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa82bbd8566a5cddf2139d85402858b77" id="r_aa82bbd8566a5cddf2139d85402858b77"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbList.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa82bbd8566a5cddf2139d85402858b77">pop</a> (<a class="el" href="classSbList.html">void</a>)</td></tr>
@@ -889,6 +891,24 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="ab2bcfe7f9958ce1e1dd77ce136841cd7" name="ab2bcfe7f9958ce1e1dd77ce136841cd7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2bcfe7f9958ce1e1dd77ce136841cd7">&#9670;&#160;</a></span>nodeKitPath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoNodeKitPathView.html">SoNodeKitPathView</a> SoPath::nodeKitPath </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSbList.html">void</a></td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns a borrowed nodekit projection without copying the path or changing reference counts. Use <a class="el" href="classSoNodeKitPath.html#ace9ac99707ae53768011f761b759f4cd">SoNodeKitPath::fromPath()</a> when an independent, mutable nodekit path is required. </p>
+
+</div>
+</div>
 <a id="a0098c2fc11f7d2e50e22937d414cb3d1" name="a0098c2fc11f7d2e50e22937d414cb3d1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0098c2fc11f7d2e50e22937d414cb3d1">&#9670;&#160;</a></span>operator=()</h2>
 
@@ -1119,6 +1139,7 @@ Additional Inherited Members</h2></td></tr>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="SoPath_8h_source.html">SoPath.h</a></li>
 <li><b>SoPath.cpp</b></li>
+<li><b>SoNodeKitPath.cpp</b></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -1126,7 +1147,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoPath.html">SoPath</a></li>
-    <li class="footer">Generated on Sat Oct 3 2026 12:37:19 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Tue Oct 6 2026 23:32:03 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

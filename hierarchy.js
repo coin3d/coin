@@ -1085,6 +1085,7 @@ var hierarchy =
     [ "SoLockManager", "classSoLockManager.html", null ],
     [ "SoNodeKit", "classSoNodeKit.html", null ],
     [ "SoNodekitCatalog", "classSoNodekitCatalog.html", null ],
+    [ "SoNodeKitPathView", "classSoNodeKitPathView.html", null ],
     [ "SoNormalGenerator", "classSoNormalGenerator.html", null ],
     [ "SoNotList", "classSoNotList.html", null ],
     [ "SoNotRec", "classSoNotRec.html", null ],

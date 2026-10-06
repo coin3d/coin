@@ -12,5 +12,6 @@ var classSoNodeKitPath =
     [ "getTail", "classSoNodeKitPath.html#a7adb8e4c1290ff2080306754a437349c", null ],
     [ "pop", "classSoNodeKitPath.html#ae3218e321593b0f509f91e9ca2d8de56", null ],
     [ "truncate", "classSoNodeKitPath.html#aaa7b5e960e4c751a0e5a7c3c8f75c1fe", null ],
+    [ "operator!=", "classSoNodeKitPath.html#a5d24e25fca99e56932e7e3b9a6b56851", null ],
     [ "operator==", "classSoNodeKitPath.html#a8067b1878ec9a4848bb132f84b37c66f", null ]
 ];

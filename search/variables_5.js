@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['f_0',['f',['../classSoCalculator.html#aa47315dc25780b728d6bda6819dffa16',1,'SoCalculator']]],
-  ['f_1',['F',['../classSoCalculator.html#a670956d1280443971d637a6d4fb0ec6c',1,'SoCalculator']]],
+  ['f_0',['F',['../classSoCalculator.html#a670956d1280443971d637a6d4fb0ec6c',1,'SoCalculator']]],
+  ['f_1',['f',['../classSoCalculator.html#aa47315dc25780b728d6bda6819dffa16',1,'SoCalculator']]],
   ['facetype_2',['faceType',['../classSoShapeHints.html#a8472cabcb2457e13d74034a3b6b8810a',1,'SoShapeHints']]],
   ['factor_3',['factor',['../classSoPolygonOffset.html#a512aaa43ae3841a504a4b022e9f464e7',1,'SoPolygonOffset']]],
   ['factorq_4',['factorQ',['../classSoTextureCoordinateObject.html#abf4c2adb455c749b62c839d0bb802dd9',1,'SoTextureCoordinateObject']]],

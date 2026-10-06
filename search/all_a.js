@@ -178,7 +178,7 @@ var searchData=
   ['autooffset_175',['autoOffset',['../classSoVRMLDragSensor.html#a0ed66a1fc9b97c577b2d4be38cd1ac87',1,'SoVRMLDragSensor']]],
   ['avatarsize_176',['avatarSize',['../classSoVRMLNavigationInfo.html#aade12b9eb610fc44e14bff252e8acad8',1,'SoVRMLNavigationInfo']]],
   ['average_5fdimension_177',['AVERAGE_DIMENSION',['../classSoAntiSquish.html#acf81274786acabfd0ae29fb4153e2c58a2e648fb41745039fc744959548414ac4',1,'SoAntiSquish']]],
-  ['axis_178',['axis',['../classSoComposeRotation.html#a2ac1f3e7e63b34013c4d6d058a38f89e',1,'SoComposeRotation::axis'],['../classSoDecomposeRotation.html#aba5d52e7655c0e8bd6ec75f22f03b073',1,'SoDecomposeRotation::axis'],['../classSoRotationXYZ.html#a48ba83de70eb76dd5c759a9a46df405d',1,'SoRotationXYZ::axis']]],
-  ['axis_179',['Axis',['../classSoRotationXYZ.html#afe6a3f9d0f3a142fd2b57309107df652',1,'SoRotationXYZ']]],
+  ['axis_178',['Axis',['../classSoRotationXYZ.html#afe6a3f9d0f3a142fd2b57309107df652',1,'SoRotationXYZ']]],
+  ['axis_179',['axis',['../classSoComposeRotation.html#a2ac1f3e7e63b34013c4d6d058a38f89e',1,'SoComposeRotation::axis'],['../classSoDecomposeRotation.html#aba5d52e7655c0e8bd6ec75f22f03b073',1,'SoDecomposeRotation::axis'],['../classSoRotationXYZ.html#a48ba83de70eb76dd5c759a9a46df405d',1,'SoRotationXYZ::axis']]],
   ['axisofrotation_180',['axisOfRotation',['../classSoVRMLBillboard.html#a6eae673b28c15e326a3d69d073ab2824',1,'SoVRMLBillboard']]]
 ];

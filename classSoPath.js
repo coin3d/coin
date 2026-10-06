@@ -24,6 +24,7 @@ var classSoPath =
     [ "getTypeId", "classSoPath.html#a5648817ef3a6fc7a6c88e7961dc18099", null ],
     [ "insertIndex", "classSoPath.html#ac2c8ab31aaece572afc70082e52f81cd", null ],
     [ "isRelevantNotification", "classSoPath.html#aa9b6748214f721d3962575406885ecfb", null ],
+    [ "nodeKitPath", "classSoPath.html#ab2bcfe7f9958ce1e1dd77ce136841cd7", null ],
     [ "operator=", "classSoPath.html#a0098c2fc11f7d2e50e22937d414cb3d1", null ],
     [ "pop", "classSoPath.html#aa82bbd8566a5cddf2139d85402858b77", null ],
     [ "push", "classSoPath.html#a4df0becc437e8052b47b526b0c1b802c", null ],

@@ -1,5 +1,12 @@
 var NAVTREEINDEX33 =
 {
+"classSoSTLFileKit.html#a9117f9002f1bf4571b1d45194b49a270":[5,0,678,12],
+"classSoSTLFileKit.html#a9712233cb2a869199ec9db907af75583":[5,0,678,10],
+"classSoSTLFileKit.html#a9c443a6b71364ffccd941e998f3acea9":[5,0,678,7],
+"classSoSTLFileKit.html#ab52e916900583e8a96f94df327898964":[5,0,678,2],
+"classSoSTLFileKit.html#ad33958b93faf06cadef44e7ef3ddaa84":[5,0,678,11],
+"classSoSTLFileKit.html#ae4c36827d71fc0731baef747e5f80dd8":[5,0,678,4],
+"classSoScXMLDollyTarget.html":[3,13,0],
 "classSoScXMLDollyTarget.html#a38c9160cb3dbc80af2abdca9d51b3b8c":[3,13,0,1],
 "classSoScXMLDollyTarget.html#a5d2d959f72c712e4f590f6a5648fc768":[3,13,0,0],
 "classSoScXMLDollyTarget.html#aaaceedeccd153671662c844bb14c2774":[3,13,0,2],
@@ -222,7 +229,7 @@ var NAVTREEINDEX33 =
 "classSoSceneTextureCubeMap.html#ada91921ec94a28ba02eab9fa3735b8ea":[3,15,88,0],
 "classSoSceneTextureCubeMap.html#af95b4ecd4acefc52c0f96f3ff2ae13db":[3,15,88,8],
 "classSoSceneTextureCubeMap.html#afe5892a0adb4fb6ca0a88163d0adbbbd":[3,15,88,4],
-"classSoScriptEngine.html":[5,0,560],
+"classSoScriptEngine.html":[5,0,561],
 "classSoScrollingGraphKit.html":[3,26,8],
 "classSoScrollingGraphKit.html#a628d9407542d8158d7ec5716373f97a2":[3,26,8,0],
 "classSoScrollingGraphKit.html#aa688936df94b03be71edca2b7a31bc18":[3,26,8,1],
@@ -242,12 +249,5 @@ var NAVTREEINDEX33 =
 "classSoSearchAction.html#a7d0811fedf49edff6507c99b7deb9fb3":[3,0,16,10],
 "classSoSearchAction.html#a822473f6d7fe12d1ba4c9e46f76fa3fc":[3,0,16,0],
 "classSoSearchAction.html#a822473f6d7fe12d1ba4c9e46f76fa3fca7d55c38047224da90026bd22796d8744":[3,0,16,0,1],
-"classSoSearchAction.html#a822473f6d7fe12d1ba4c9e46f76fa3fcaa087a9af83186ff630cf92a27d3980a9":[3,0,16,0,2],
-"classSoSearchAction.html#a822473f6d7fe12d1ba4c9e46f76fa3fcab55630bc24816083e1d583f64ae4d925":[3,0,16,0,0],
-"classSoSearchAction.html#a82f470ac3a858c80abcba30deb61ea08":[3,0,16,1],
-"classSoSearchAction.html#a82f470ac3a858c80abcba30deb61ea08a3b36bf5d5c82eb65ebb5a2375e766fd0":[3,0,16,1,1],
-"classSoSearchAction.html#a82f470ac3a858c80abcba30deb61ea08a79fc89ff630114c8009c17d0526306ec":[3,0,16,1,0],
-"classSoSearchAction.html#a82f470ac3a858c80abcba30deb61ea08afcd2b126c4cbb18e4799af3a7ad6940f":[3,0,16,1,2],
-"classSoSearchAction.html#a89e481f720f0894135e2d7de907dd0df":[3,0,16,17],
-"classSoSearchAction.html#a913ee98e24a2344167ec3bc5e5a445ab":[3,0,16,19]
+"classSoSearchAction.html#a822473f6d7fe12d1ba4c9e46f76fa3fcaa087a9af83186ff630cf92a27d3980a9":[3,0,16,0,2]
 };
