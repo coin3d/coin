@@ -156,9 +156,13 @@ int main()
     action.setTransparencyType(SoGLRenderAction::WEIGHTED_BLEND);
     GLint beforefbo = 0, afterfbo = 0;
     glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT, &beforefbo);
+    const int beforetransparency = p.transparencycalls;
+    p.transparentfbo = -1;
     p.throwtransparency = true;
     expectFailure([&]() { action.apply(root); }, "transparent pass failure");
     p.throwtransparency = false;
+    check(p.transparencycalls > beforetransparency,
+          "weighted transparent pass was not exercised");
     glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT, &afterfbo);
     if (p.transparentfbo > 0) {
       check(afterfbo == beforefbo, "WBOIT framebuffer binding not restored");
