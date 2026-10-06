@@ -4,6 +4,7 @@
 #include <X11/Xlib.h>
 #include <GL/glx.h>
 #include <Inventor/SoDB.h>
+#include <Inventor/C/glue/gl.h>
 #include <Inventor/misc/SoContextHandler.h>
 #include "glue/glp.h"
 #ifdef __SANITIZE_ADDRESS__
@@ -46,8 +47,8 @@ static int cycle(Display * display,NativeContext & native,Probe & probe,int coun
   if (!current(display,native)) return 1;
   for (int i=0;i<count;++i) {
     Borrow borrow(probe.id); probe.glue=borrow.glue;
-    if (borrow.glue->versionmajor==43) return 2; // A reused ID must get fresh metadata.
-    const_cast<cc_glglue *>(borrow.glue)->versionmajor=43;
+    if (borrow.glue->version.major==43) return 2; // A reused ID must get fresh metadata.
+    const_cast<cc_glglue *>(borrow.glue)->version.major=43;
     SoContextHandler::destructingContext(probe.id);
     if (!probe.valid || !borrow.released()) return 3;
   }
