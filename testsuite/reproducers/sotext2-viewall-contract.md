@@ -96,8 +96,8 @@ COIN_GLX_PIXMAP_DIRECT_RENDERING=1 LIBGL_ALWAYS_SOFTWARE=1 \
 # An optional third argument --anchor-only selects the anchor-only comparison.
 ```
 
-Local rendering/log evidence is in `/tmp/coin-viewall-audit`. Production changes are confined to SoCamera.cpp; ABI and FreeCAD remain unchanged. No commits were pushed and no
-GitHub comments were posted. Keep #774 draft pending review and platform CI for the correction.
+Local rendering/log evidence is in `/tmp/coin-viewall-audit`. Production changes are confined to SoCamera.cpp; ABI and FreeCAD remain unchanged. The correction is prepared for the existing draft PR; no new issue comments
+are part of this change. Keep #774 draft pending review and platform CI for the correction.
 
 Sources:
 - https://github.com/coin3d/coin/blob/674e74267df863dbaf50416c477bc7f918a826d8/docs/BUGS.txt#L2326
