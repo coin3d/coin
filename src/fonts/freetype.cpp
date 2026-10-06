@@ -516,6 +516,14 @@ find_font_file(const char * fontname, unsigned int pixelsize)
     FcPattern * font_pattern = NULL;
     FcPattern * matched_pattern = NULL;
     FcResult result;
+    struct PatternCleanup {
+      FcPattern * & requested;
+      FcPattern * & matched;
+      ~PatternCleanup() {
+        if (matched) cc_fcglue_FcPatternDestroy(matched);
+        if (requested) cc_fcglue_FcPatternDestroy(requested);
+      }
+    } cleanup = {font_pattern, matched_pattern};
 
     /* parse the fontname string to create a fontconfig pattern instance */
     if (!(font_pattern = cc_fcglue_FcNameParse((const unsigned char*)fontname))) {
@@ -575,8 +583,6 @@ find_font_file(const char * fontname, unsigned int pixelsize)
 
     foundfile = cc_namemap_get_address((const char *)filename);
 
-    cc_fcglue_FcPatternDestroy(font_pattern);
-    cc_fcglue_FcPatternDestroy(matched_pattern);
 
     if (cc_font_debug()) {
       cc_debugerror_postinfo("find_font_file",
