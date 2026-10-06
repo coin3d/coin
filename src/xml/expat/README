@@ -14,3 +14,6 @@ the previous vendor import is no longer used.
 The upstream distribution has additional build machinery, tests, and tools
 which are not embedded here. To use a system Expat instead, configure Coin
 with USE_EXTERNAL_EXPAT=ON.
+
+Expat 2.9.0 requires C99. Upstream officially supports MSVC 2022 and newer;
+older Visual Studio versions need separate compatibility validation.
