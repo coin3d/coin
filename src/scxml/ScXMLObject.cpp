@@ -60,10 +60,6 @@
   \sa SoBase::getClassTypeId
 */
 
-#include <cstring>
-#include <cassert>
-#include <map>
-
 #include <Inventor/SbName.h>
 #include <Inventor/scxml/ScXML.h>
 
@@ -72,23 +68,7 @@
 // *************************************************************************
 
 class ScXMLObject::PImpl {
-public:
-  typedef std::map<const char *, char *> AttributeMap;
-  typedef std::pair<const char *, char *> AttributeEntry;
-  AttributeMap attributemap;
-
-  ~PImpl(void)
-  {
-    AttributeMap::iterator it = this->attributemap.begin();
-    while (it != this->attributemap.end()) {
-      delete [] it->second;
-      ++it;
-    }
-    this->attributemap.clear();
-  }
 };
-
-#define PRIVATE(obj) ((obj)->pimpl)
 
 SCXML_OBJECT_ABSTRACT_SOURCE(ScXMLObject);
 
@@ -159,5 +139,3 @@ ScXMLObject::registerInvokeClassType(const char * xmlns, const char * targettype
 {
   ScXMLP::registerInvokeClassType(xmlns, targettype, source, type);
 }
-
-#undef PRIVATE
