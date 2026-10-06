@@ -52,7 +52,13 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbString.h>
 
+// Match the Expat declarations to the library selected by CMake.
+#ifdef HAVE_EXPAT
+#include <expat.h>
+#else
+#define XML_STATIC 1
 #include "expat/expat.h"
+#endif
 #include "utils.h"
 #include "elementp.h"
 
