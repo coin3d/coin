@@ -340,6 +340,15 @@ private:
   SoActionReadLock(const SoActionReadLock &);
   SoActionReadLock & operator=(const SoActionReadLock &);
 };
+
+class SoActionProfilerPause {
+public:
+  SoActionProfilerPause() { SoProfiler::enable(FALSE); }
+  ~SoActionProfilerPause() { SoProfiler::enable(TRUE); }
+private:
+  SoActionProfilerPause(const SoActionProfilerPause &);
+  SoActionProfilerPause & operator=(const SoActionProfilerPause &);
+};
 }
 
 /*!
@@ -550,10 +559,9 @@ SoAction::apply(SoNode * root)
 
       SoNode * profileroverlay = SoActionP::getProfilerOverlay();
       if (profileroverlay) {
-        SoProfiler::enable(FALSE);
+        SoActionProfilerPause pause;
         this->beginTraversal(profileroverlay);
         this->endTraversal(profileroverlay);
-        SoProfiler::enable(TRUE);
       }
 
       // FIXME: if there was a hit on the overlay scene graph view and
@@ -592,9 +600,8 @@ SoAction::apply(SoNode * root)
         !this->isOfType(SoGLRenderAction::getClassTypeId())) {
       // update profiler stats node with the profiling data from the traversal
       SoNode * profilerstats = SoActionP::getProfilerStatsNode();
-      SoProfiler::enable(FALSE);
+      SoActionProfilerPause pause;
       this->traverse(profilerstats);
-      SoProfiler::enable(TRUE);
     }
 
     if (SoProfiler::isConsoleActive()) {
