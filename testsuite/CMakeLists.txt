@@ -177,6 +177,7 @@ add_subdirectory(xml-c-api/c-headers)
 # to become a public DLL symbol on Windows.
 add_executable(XmlLoadFileTest XmlLoadFileTest.cpp
   ${PROJECT_SOURCE_DIR}/src/xml/utils.cpp)
+target_link_libraries(XmlLoadFileTest PRIVATE Coin)
 target_compile_definitions(XmlLoadFileTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
 target_include_directories(XmlLoadFileTest PRIVATE
   ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
