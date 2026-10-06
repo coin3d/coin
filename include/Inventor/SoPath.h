@@ -65,6 +65,20 @@ private:
   const SoPath * path;
 };
 
+class COIN_DLL_API SoNodeKitPathView final {
+public:
+  int getLength(void) const;
+  SoNode * getTail(void) const;
+  SoNode * getNode(const int index) const;
+  SoNode * getNodeFromTail(const int index) const;
+
+private:
+  friend class SoPath;
+  explicit SoNodeKitPathView(const SoPath & sourcepath);
+
+  const SoPath * path;
+};
+
 
 class COIN_DLL_API SoPath : public SoBase {
   typedef SoBase inherited;
@@ -95,6 +109,7 @@ public:
   int getIndexFromTail(const int index) const;
   int getLength(void) const;
   SoFullPathView fullPath(void) const;
+  SoNodeKitPathView nodeKitPath(void) const;
   void truncate(const int length);
 
   int findFork(const SoPath * const path) const;

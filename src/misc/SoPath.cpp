@@ -92,6 +92,10 @@
 
 // *************************************************************************
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/SoPath.h>
 
 #include <Inventor/SoInput.h>
@@ -649,6 +653,45 @@ SoFullPathView::getIndexFromTail(const int index) const
   }
   return this->path->getIndex(length - index - 1);
 }
+
+// A build without nodekits has no SoBaseKit instances. Keep the public
+// borrowed-view API linkable with an empty projection.
+#ifndef HAVE_NODEKITS
+SoNodeKitPathView
+SoPath::nodeKitPath(void) const
+{
+  return SoNodeKitPathView(*this);
+}
+
+SoNodeKitPathView::SoNodeKitPathView(const SoPath & sourcepath)
+  : path(&sourcepath)
+{
+}
+
+int
+SoNodeKitPathView::getLength(void) const
+{
+  return 0;
+}
+
+SoNode *
+SoNodeKitPathView::getTail(void) const
+{
+  return NULL;
+}
+
+SoNode *
+SoNodeKitPathView::getNode(const int) const
+{
+  return NULL;
+}
+
+SoNode *
+SoNodeKitPathView::getNodeFromTail(const int) const
+{
+  return NULL;
+}
+#endif // !HAVE_NODEKITS
 
 /*!
   This method truncates the path to the given \a length (i.e. all
