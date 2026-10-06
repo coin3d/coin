@@ -429,4 +429,37 @@ BOOST_AUTO_TEST_CASE(callback_mutations_affect_only_later_invocations)
   selection->unref();
 }
 
+BOOST_AUTO_TEST_CASE(owned_callback_state_survives_copy_destruction_stress)
+{
+  SbString trace;
+  for (int i = 0; i < 128; i++) {
+    SoCallbackList survivor;
+    {
+      CallbackListTestSelection * selection = new CallbackListTestSelection;
+      selection->ref();
+      selection->addChangeCallback(callbacklist_typed, &trace);
+
+      SoCallbackList intermediate(selection->callbacks());
+      survivor = intermediate;
+      selection->unref();
+      intermediate.clearCallbacks();
+    }
+
+    survivor.invokeCallbacks(NULL);
+    survivor.clearCallbacks();
+
+    // Exercise registry-address reuse with a non-owning callback list. A
+    // stale side-table entry would dispatch the typed adapter instead of G.
+    SoCallbackList raw;
+    raw.addCallback(callbacklist_generic, &trace);
+    raw.invokeCallbacks(NULL);
+    raw.clearCallbacks();
+  }
+  BOOST_CHECK_EQUAL(trace.getLength(), 256);
+  for (int i = 0; i < 256; i += 2) {
+    BOOST_CHECK(trace[i] == 'T');
+    BOOST_CHECK(trace[i + 1] == 'G');
+  }
+}
+
 #endif // COIN_TEST_SUITE
