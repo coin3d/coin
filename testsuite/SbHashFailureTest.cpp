@@ -15,6 +15,10 @@ void * operator new[](std::size_t n) {
 }
 void operator delete[](void * p) noexcept { if (p) { --arrays; std::free(p); } }
 void operator delete[](void * p, std::size_t) noexcept { operator delete[](p); }
+void * operator new[](std::size_t n, const std::nothrow_t &) noexcept {
+  try { return operator new[](n); } catch (...) { return NULL; }
+}
+void operator delete[](void * p, const std::nothrow_t &) noexcept { operator delete[](p); }
 struct Value {
   static int live, remaining;
   int n;
@@ -96,6 +100,19 @@ int main() {
     try { keys.put(k,1); CHECK(false); } catch (const std::runtime_error &) { }
     CHECK(keys.getNumElements()==0);
     Key::fail=false; CHECK(keys.put(k,2));
+  }
+  {
+    char a[]="same", b[]="same";
+    SbHash<const char *,int> content; CHECK(content.put(a,1));
+    // Hashes bytes, but equality uses pointer identity (interned strings).
+    CHECK(SbHashFunc(static_cast<const char *>(a))==SbHashFunc(static_cast<const char *>(b)));
+    CHECK(!content.put(a,2) && content.put(b,3) && content.getNumElements()==2);
+    SbHash<char *,int> identity; CHECK(identity.put(a,1) && identity.put(b,2));
+    CHECK(identity.getNumElements()==2);
+    SbList<const char *> list; list.append("prefix"); content.makeKeyList(list);
+    CHECK(list.getLength()==3 && list[0][0]=='p');
+    SbHash<size_t,int> wide; const size_t key=static_cast<size_t>(1) << (sizeof(size_t)*8-1);
+    CHECK(wide.put(key,1) && wide.put(1,2) && wide.find(key)->obj==1);
   }
   // Deterministic mixed operations compared with an independent model.
   SbHash<unsigned int,int> hash(3); std::map<unsigned int,int> model;

@@ -268,7 +268,7 @@ BOOST_AUTO_TEST_CASE(SbHash_const_begin_end_are_read_only)
 
 BOOST_AUTO_TEST_CASE(SbHash_statistics_are_fractional_and_empty_safe)
 {
-  SbHashStatsProbe hash(3);
+  SbHashStatsProbe hash(5);
   int bucketsUsed = -1;
   int buckets = -1;
   int elements = -1;

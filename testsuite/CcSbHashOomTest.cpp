@@ -15,6 +15,10 @@ void * operator new[](std::size_t size) {
 }
 void operator delete[](void * p) noexcept { std::free(p); }
 void operator delete[](void * p, std::size_t) noexcept { std::free(p); }
+void * operator new[](std::size_t n, const std::nothrow_t &) noexcept {
+  try { return operator new[](n); } catch (...) { return NULL; }
+}
+void operator delete[](void * p, const std::nothrow_t &) noexcept { operator delete[](p); }
 
 #include <Inventor/C/base/memalloc.h>
 #include <Inventor/lists/SbList.h>
