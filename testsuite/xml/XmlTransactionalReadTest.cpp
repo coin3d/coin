@@ -130,6 +130,23 @@ main(void)
   REQUIRE(!cc_xml_doc_parse_buffer_partial_x(doc, "x", too_large), 80);
   REQUIRE(cc_xml_doc_get_root(doc) == committed, 81);
   REQUIRE(cc_xml_doc_get_current(doc) == committed, 82);
+  if (sizeof(size_t) > sizeof(unsigned int)) {
+    // A simple int overflow may already fail in Expat.  This value wraps
+    // to a valid short XML length on 64-bit targets, so the old cast could
+    // silently accept the wrong amount of input.
+    const size_t wrapped = static_cast<size_t>(UINT_MAX) + 1 +
+      std::strlen("<wrap/>");
+    REQUIRE(!cc_xml_doc_read_buffer_x(doc, "<wrap/>", wrapped), 83);
+    REQUIRE(cc_xml_doc_get_root(doc) == committed, 84);
+    REQUIRE(cc_xml_doc_parse_buffer_partial_x(doc, "<staged>",
+                                              std::strlen("<staged>")), 85);
+    const size_t wrapped_final = static_cast<size_t>(UINT_MAX) + 1 +
+      std::strlen("</staged>");
+    REQUIRE(!cc_xml_doc_parse_buffer_partial_done_x(doc, "</staged>",
+                                                     wrapped_final), 86);
+    REQUIRE(cc_xml_doc_get_root(doc) == committed, 87);
+    REQUIRE(cc_xml_doc_get_current(doc) == committed, 88);
+  }
 
   // Both successful and failed parsers must be reusable.
   REQUIRE(cc_xml_doc_read_buffer_x(doc, "<new/>", std::strlen("<new/>")), 15);
