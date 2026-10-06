@@ -1,6 +1,6 @@
 # Estudo de limites de recursos do XML do Coin
 
-Base desta branch: `codex/pr/cc-xml-parser-transactional` (`162dc998af31291fb2d861b0d6b1431acb1c18da`). Esta etapa define o que medir e onde impor limites; **não escolhe valores nem modifica o parser**. A guarda `size_t` → `int` já tem contribuição separada (`codex/pr/cc-xml-parse-length-guard`), mas ela cobre apenas o tamanho de uma chamada a `XML_Parse()`, não o total de chunks nem o DOM.
+Este documento nasceu na branch de estudo `codex/work/cc-xml-limits` sobre `codex/pr/cc-xml-parser-transactional`. A implementação candidata nesta branch parte de `codex/pr/cc-xml-parse-length-guard`; ela adiciona cotas configuráveis por documento, mas **não escolhe valores globais**. A guarda `size_t` → `int` cobre apenas o tamanho de uma chamada a `XML_Parse()`, não o total de chunks nem o DOM.
 
 ## Superfícies e custo
 
@@ -22,6 +22,14 @@ No caminho DTD experimental, a libxml2 mantém sua árvore, depois materializa o
 3. Garantir que um erro de limite interrompa o parser, devolva `FALSE` e preserve raiz/filename anteriores pelo rollback transacional; uma nova leitura ou sessão parcial começa com contadores zerados. Especificar como o cliente distingue limite, sintaxe e I/O sem depender de mensagens de debug.
 4. Aplicar o mesmo contrato a arquivo, buffer e chunks parciais. No DTD, incluir bytes externos e a representação expandida; verificar que a passagem libxml2 → Expat não relaxa nem duplica indevidamente o orçamento.
 5. Decidir se serialização recebe orçamento próprio para DOMs construídos pelo usuário. Ela não pode confiar nos contadores da leitura.
+
+## Contrato implementado na candidata atual
+
+`cc_xml_limits` é configurado em um documento ocioso; zero desativa uma cota. A API legada continua sem limites por padrão. O aplicativo deve fornecer os valores adequados ao seu perfil de confiança e tamanho de documento; os quatro exemplos SCXML abaixo não justificam um preset universal. As unidades são bytes XML recebidos no total da sessão, bytes emitidos pelo Expat em nomes de elementos/atributos, valores de atributos e character data, quantidade total de elementos, quantidade total de atributos e profundidade de elementos (raiz = 1). Não conta fechamento de tags nem atributos removidos por filtros novamente. A cota de elementos não conta nós CDATA, mas estes ficam indiretamente limitados quando a cota de bytes expandidos está ativa.
+
+A verificação ocorre antes de alocar cada elemento, atributo ou nó CDATA do DOM Coin; o excesso interrompe Expat, devolve `FALSE`, informa a primeira cota atingida em `cc_xml_doc_get_limit_hit()` e preserva a árvore anterior pelo rollback. A entrada por arquivo é acumulada entre leituras de 8 KiB; os dois caminhos de parsing parcial acumulam entre chunks. Uma nova sessão zera contadores e resultado. Alterar cotas durante uma sessão parcial é recusado. Aritmética é verificada antes de somar, inclusive quando a cota está desativada.
+
+Ainda não há cota para serialização de um DOM construído manualmente, nem para o estágio libxml2 da branch DTD experimental. Essa branch DTD não pode ser promovida a parser seguro de XML não confiável apenas com as cotas do Expat: expansão e alocação libxml2 ocorrem antes delas. Esses dois pontos exigem implementação e validação separadas antes do PR DTD.
 
 ## Evidência inicial e medições pendentes
 

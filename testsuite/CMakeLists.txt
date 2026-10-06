@@ -283,6 +283,19 @@ set_target_properties(CoinXmlTransactionalReadTest PROPERTIES
 add_test(NAME CoinXmlTransactionalRead COMMAND CoinXmlTransactionalReadTest)
 set_tests_properties(CoinXmlTransactionalRead PROPERTIES TIMEOUT 10)
 
+add_executable(CoinXmlLimitsTest xml/XmlLimitsTest.cpp)
+target_link_libraries(CoinXmlLimitsTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CoinXmlLimitsTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+target_compile_definitions(CoinXmlLimitsTest PRIVATE
+  COIN_XML_TEST_DIRECTORY="${COIN_XML_TRANSACTION_TEST_DIRECTORY}")
+set_target_properties(CoinXmlLimitsTest PROPERTIES
+  DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
+add_test(NAME CoinXmlLimits COMMAND CoinXmlLimitsTest)
+set_tests_properties(CoinXmlLimits PROPERTIES TIMEOUT 10)
+
 add_test(NAME CoinConfigCompatibility
   COMMAND ${CMAKE_COMMAND}
     -DCOIN_CONFIG_TEMPLATE=${PROJECT_SOURCE_DIR}/src/coin-config.cmake.in
