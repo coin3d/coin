@@ -29,6 +29,9 @@ struct Resource {
   ~Resource() { --live; }
 };
 int Resource::live;
+struct BoolProxy { explicit operator bool() const noexcept { return true; } };
+struct ProxyKey { unsigned int n; };
+inline BoolProxy operator==(const ProxyKey &,const ProxyKey &) noexcept { return BoolProxy(); }
 int main() {
   const int baseline=arrays;
   {
@@ -84,6 +87,15 @@ int main() {
     m.put(1,owner.get()); m.put(1,NULL); CHECK(Resource::live==1);
   }
   CHECK(Resource::live==0 && arrays==baseline);
+  {
+    Map empty; const int before=allocations; Map copied(empty);
+    CHECK(copied.getNumElements()==0 && allocations==before);
+    SbSmallMap<unsigned long long,int> wide;
+    CHECK(wide.put(1,1) && wide.put(1ULL<<63,2));
+    CHECK(wide.find(1ULL<<63)->obj==2 && wide.find(1)->obj==1);
+    SbSmallMap<ProxyKey,int> proxy; ProxyKey key={1}; CHECK(proxy.put(key,7));
+    CHECK(proxy.find(key)->obj==7);
+  }
   Map actual; std::map<unsigned int,int> expected;
   unsigned int rng=77;
   for (int i=0;i<20000;++i) {
