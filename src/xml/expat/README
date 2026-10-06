@@ -1,2 +1,16 @@
-This is a modified version of Expat 2.2.10.
-See project page at https://github.com/libexpat/libexpat
+This directory vendors Expat 2.9.0, released 2026-10-05.
+Source: https://github.com/libexpat/libexpat/releases/tag/R_2_9_0
+Source tarball: expat-2.9.0.tar.xz
+SHA-256: 1e6371862cc31999b368c3b89b49994f0677e1bab5f1b2b85ae3741f5d803051
+
+The .c and upstream .h files and COPYING come from that tarball's lib/
+directory and root, respectively. Coin's expat_config.h is the only
+downstream configuration file. It preserves Coin's previous feature profile:
+general entities on all platforms, DTD/namespace/context support on Windows,
+and /dev/urandom entropy on non-Windows platforms. Coin's CMakeLists.txt
+selects the required upstream source files. The obsolete loadlibrary.c from
+the previous vendor import is no longer used.
+
+The upstream distribution has additional build machinery, tests, and tools
+which are not embedded here. To use a system Expat instead, configure Coin
+with USE_EXTERNAL_EXPAT=ON.

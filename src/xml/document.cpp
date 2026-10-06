@@ -52,6 +52,10 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbString.h>
 
+/* Coin embeds Expat in its own library rather than linking an Expat DLL. */
+#ifndef HAVE_EXPAT
+#define XML_STATIC 1
+#endif
 #include "expat/expat.h"
 #include "utils.h"
 #include "elementp.h"

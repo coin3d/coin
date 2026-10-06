@@ -1,10 +1,16 @@
 # source files
 set(COIN_EXPAT_FILES
+	xcs.c
 	xmlparse.c
 	xmlrole.c
 	xmltok.c
-	loadlibrary.c
 )
+
+if(WIN32)
+	list(APPEND COIN_EXPAT_FILES random_rand_s.c)
+else()
+	list(APPEND COIN_EXPAT_FILES random_dev_urandom.c)
+endif()
 
 # build library
 if(COIN_BUILD_SINGLE_LIB)
