@@ -389,3 +389,10 @@ target_include_directories(CoinSoText2ExtendedTest PRIVATE
 add_test(NAME SoText2ExtendedBounds COMMAND CoinSoText2ExtendedTest)
 add_test(NAME SoText2ExtendedRendering COMMAND CoinSoText2ExtendedTest --render)
 set_tests_properties(SoText2ExtendedRendering PROPERTIES SKIP_RETURN_CODE 77 TIMEOUT 30)
+
+# Open #774 regression: this audit intentionally fails the one-call contract.
+# Keep it explicit until the framing policy is implemented and can enter CTest.
+add_executable(CoinSoText2ViewAllAudit EXCLUDE_FROM_ALL SoText2ViewAllAudit.cpp)
+target_link_libraries(CoinSoText2ViewAllAudit PRIVATE Coin)
+target_include_directories(CoinSoText2ViewAllAudit PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include)
