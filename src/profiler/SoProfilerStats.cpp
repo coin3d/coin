@@ -111,7 +111,7 @@ private:
 public:
   SoProfilerStatsP(void) : master(NULL) {
   }
-  ~SoProfilerStatsP(void) { }
+  ~SoProfilerStatsP(void) { this->clearProfilingData(); }
 
   void doAction(SoAction * action);
   void clearProfilingData(void);
@@ -509,3 +509,36 @@ SoProfilerStats::getProfilingData(SoType actiontype) const
 
 #undef PRIVATE
 #undef BY_TYPE
+
+#ifdef COIN_TEST_SUITE
+#include <Inventor/SbViewportRegion.h>
+#include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/annex/Profiler/SbProfilingData.h>
+#include <Inventor/annex/Profiler/SoProfiler.h>
+#include <Inventor/events/SoLocation2Event.h>
+#include <Inventor/nodes/SoSeparator.h>
+
+BOOST_AUTO_TEST_CASE(SoProfilerStats_releases_collected_action_data)
+{
+  const SbBool wasenabled = SoProfiler::isEnabled();
+  SoProfiler::init();
+  SoProfiler::enable(TRUE);
+
+  SoSeparator * root = new SoSeparator;
+  root->ref();
+  root->addChild(new SoSeparator);
+  SoProfilerStats * stats = new SoProfilerStats;
+  root->addChild(stats);
+
+  SoHandleEventAction action(SbViewportRegion(64, 64));
+  SoLocation2Event event;
+  action.setEvent(&event);
+  action.apply(root);
+
+  BOOST_CHECK(stats->getProfilingData(
+    SoHandleEventAction::getClassTypeId()).getNumNodeEntries() > 0);
+
+  root->unref();
+  SoProfiler::enable(wasenabled);
+}
+#endif // COIN_TEST_SUITE
