@@ -738,8 +738,9 @@ SoShaderObjectP::updateStateMatrixParameters(const uint32_t cachecontext, SoStat
 
   int i, cnt = this->owner->parameter.getNum();
   for (i= 0; i <cnt; i++) {
-    STATE_PARAM * param = (STATE_PARAM*)this->owner->parameter[i];
-    if (param->isOfType(STATE_PARAM::getClassTypeId())) {
+    SoNode * node = this->owner->parameter[i];
+    if (node != NULL && node->isOfType(STATE_PARAM::getClassTypeId())) {
+      STATE_PARAM * param = static_cast<STATE_PARAM *>(node);
       param->updateValue(state);
       param->updateParameter(shaderobject);
 	}

@@ -2,6 +2,9 @@
 #include <cstdlib>
 #include <memory>
 #include <new>
+#ifdef COIN_GL_MAP_LSAN_IGNORE_GLUE
+#include <sanitizer/lsan_interface.h>
+#endif
 #include <X11/Xlib.h>
 #include <GL/glx.h>
 #include <Inventor/SoDB.h>
@@ -19,6 +22,8 @@
 #include "glue/glp.h"
 #include "rendering/SoVBO.h"
 #include "shaders/SoGLSLShaderProgram.h"
+#include "shaders/SoGLShaderProgram.h"
+#include <Inventor/elements/SoGLShaderProgramElement.h>
 #include "shaders/SoGLShaderObject.h"
 #include "shaders/SoGLSLShaderParameter.h"
 #define CHECK(c) do { if (!(c)) { std::fprintf(stderr,"line %d: %s\n",__LINE__,#c); return 1; } } while (0)
@@ -30,6 +35,7 @@ struct Context {
   int buffers, programs, shaders, generated, createdprograms, createdshaders;
 };
 static Context * current;
+static int invalidDeletes;
 static void APIENTRY genBuffers(GLsizei n,GLuint * names) {
   current->gen(n,names); current->buffers+=n; current->generated+=n;
 }
@@ -45,6 +51,7 @@ static COIN_GLhandle APIENTRY createShader(GLenum kind) {
 static void APIENTRY deleteObject(COIN_GLhandle h) {
   if (glIsProgram(h)) --current->programs;
   else if (glIsShader(h)) --current->shaders;
+  else ++invalidDeletes;
   current->delobj(h);
 }
 static bool select(Display * display,Context & c) {
@@ -102,6 +109,12 @@ int main() {
     c.program=c.glue->glCreateProgramObjectARB; c.shader=c.glue->glCreateShaderObjectARB; c.delobj=c.glue->glDeleteObjectARB;
     c.glue->glGenBuffers=genBuffers; c.glue->glDeleteBuffers=deleteBuffers;
     c.glue->glCreateProgramObjectARB=createProgram; c.glue->glCreateShaderObjectARB=createShader; c.glue->glDeleteObjectARB=deleteObject;
+#ifdef COIN_GL_MAP_LSAN_IGNORE_GLUE
+    // The independent glue lifetime audit tracks these context records, which
+    // coin_glglue_destruct removes from its dictionary without freeing them.
+    // Ignore only these known records and their owned allocations, not maps.
+    __lsan_ignore_object(c.glue);
+#endif
   }
   XFree(visual);
   std::unique_ptr<SoVBO> vbo(new SoVBO);
@@ -150,8 +163,18 @@ int main() {
   CHECK(caught && uniform->getGLShaderParameter(fifth.id)==prior && CountParameter::live==5);
   mocks[4]->fail=false; uniform->ensureParameter(mocks[4].get());
   CHECK(uniform->getGLShaderParameter(fifth.id)->shaderType()==SoShader::ARB_SHADER && CountParameter::live==5);
-  caught=false; SbSmallMap<uint32_t,SoGLShaderObject *>::failNextAllocationForTesting();
-  try { render(root,fifth); } catch (const std::bad_alloc &) { caught=true; }
+  caught=false;
+  {
+    // Invoke the actual consumer with an initialized render state, so this fault
+    // does not exercise the independent exception-safety issue in SoAction::apply.
+    SoGLShaderProgram scratch;
+    SoGLRenderAction action(SbViewportRegion(64,64)); action.setCacheContext(fifth.id);
+    SoState * state=action.getState();
+    SoGLCacheContextElement::set(state,fifth.id,FALSE,FALSE);
+    SoGLShaderProgramElement::set(state,vertex,&scratch);
+    SbSmallMap<uint32_t,SoGLShaderObject *>::failNextAllocationForTesting();
+    try { vertex->render(state); } catch (const std::bad_alloc &) { caught=true; }
+  }
   CHECK(caught && fifth.shaders==0 && fifth.createdshaders==1);
   CHECK(render(root,fifth)); CHECK(fifth.shaders==2 && fifth.createdshaders==3);
   // Return to old contexts after real spills: no new resources, same pixel.
@@ -174,6 +197,7 @@ int main() {
     Context & c=contexts[i]; CHECK(select(display,c)); SoContextHandler::destructingContext(c.id);
     CHECK(c.buffers==0 && c.programs==0 && c.shaders==0);
   }
+  CHECK(invalidDeletes==0);
   for (int i=0;i<5;++i) mocks[i].reset();
   glXMakeCurrent(display,None,NULL);
   for (Context & c:contexts) { glXDestroyContext(display,c.glx); XDestroyWindow(display,c.window); XFreeColormap(display,c.colormap); }
