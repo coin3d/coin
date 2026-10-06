@@ -32,7 +32,7 @@
 
 /* OBSOLETE: the C data abstraction for a hash has been moved into
    dict.c and renamed to cc_dict. This code is present here just to be
-   backwards API and ABI compatible on the Coin 2.x releases. */
+   backwards API and ABI compatible with existing clients. */
 
 /* ********************************************************************** */
 
@@ -53,6 +53,7 @@
 #include <Inventor/C/errors/debugerror.h>
 
 #include "base/hashp.h"
+#include "primep.h"
 #include "base/oomp.h"
 #include "tidbitsp.h"
 #include "coindefs.h"
@@ -140,33 +141,71 @@ hash_threshold(unsigned int size, float loadfactor)
 }
 
 static void
-hash_resize(cc_hash * ht, unsigned int newsize)
+hash_rebuild(cc_hash * ht, unsigned int newsize, cc_hash_func * func)
 {
-  /* Never shrink the table */
-  if (ht->size >= newsize)
-    return;
-  if (static_cast<size_t>(newsize) > SIZE_MAX / sizeof(cc_hash_entry *))
+  if (static_cast<size_t>(newsize) > SIZE_MAX / sizeof(cc_hash_entry *) ||
+      static_cast<size_t>(ht->elements) > SIZE_MAX / sizeof(unsigned int))
     return;
 
   cc_hash_entry ** buckets = (cc_hash_entry **)
     calloc(newsize, sizeof(cc_hash_entry *));
   if (buckets == NULL) return;
 
-  cc_hash_entry ** oldbuckets = ht->buckets;
-  for (unsigned int i = 0; i < ht->size; ++i) {
-    cc_hash_entry * he = oldbuckets[i];
-    while (he) {
-      cc_hash_entry * next = he->next;
-      const unsigned int index = ht->hashfunc(he->key) % newsize;
-      he->next = buckets[index];
-      buckets[index] = he;
-      he = next;
+  // The default hash cannot throw. Custom hashes need a plan so a callback
+  // exception cannot leave the old bucket chains partly rewritten.
+  unsigned int * indices = NULL;
+  if (func != hash_default_hashfunc && ht->elements != 0) {
+    indices = (unsigned int *)
+      malloc(static_cast<size_t>(ht->elements) * sizeof(unsigned int));
+    if (indices == NULL) {
+      free(buckets);
+      return;
+    }
+    size_t count = 0;
+    try {
+      for (unsigned int i = 0; i < ht->size; ++i) {
+        for (cc_hash_entry * entry = ht->buckets[i]; entry != NULL;
+             entry = entry->next) {
+          indices[count++] = func(entry->key) % newsize;
+        }
+      }
+    }
+    catch (...) {
+      free(indices);
+      free(buckets);
+      throw;
     }
   }
+
+  size_t count = 0;
+  for (unsigned int i = 0; i < ht->size; ++i) {
+    cc_hash_entry * entry = ht->buckets[i];
+    while (entry != NULL) {
+      cc_hash_entry * next = entry->next;
+      const unsigned int index = indices != NULL ?
+        indices[count++] : entry->key % newsize;
+      entry->next = buckets[index];
+      buckets[index] = entry;
+      entry = next;
+    }
+  }
+  free(indices);
+
+  cc_hash_entry ** oldbuckets = ht->buckets;
   ht->buckets = buckets;
   ht->size = newsize;
   ht->threshold = hash_threshold(newsize, ht->loadfactor);
+  ht->hashfunc = func;
   free(oldbuckets);
+}
+
+static void
+hash_resize(cc_hash * ht, unsigned int newsize)
+{
+  /* Never shrink the table */
+  if (ht->size >= newsize)
+    return;
+  hash_rebuild(ht, newsize, ht->hashfunc);
 }
 
 /* ********************************************************************** */
@@ -187,21 +226,23 @@ hash_resize(cc_hash * ht, unsigned int newsize)
   or a non-finite value, the default value 0.75 will be used. A finite
   factor greater than one is accepted and its threshold saturates at
   UINT_MAX. Allocation failure terminates with an OOM diagnostic because
-  legacy SbDict callers require a valid hash table.
+  legacy SbDict callers require a valid hash table. A bucket request above
+  the largest representable prime is handled by the same diagnostic policy.
 */
 cc_hash *
 cc_hash_construct(unsigned int size, float loadfactor)
 {
-  unsigned int s;
+  const unsigned int s =
+    static_cast<unsigned int>(coin_exact_prime_at_least(size));
+  if (s == 0) coin_oom_abort("cc_hash_construct capacity");
+  if (static_cast<size_t>(s) > SIZE_MAX / sizeof(cc_hash_entry *))
+    coin_oom_abort("cc_hash_construct buckets");
+
   cc_hash * ht = (cc_hash *) malloc(sizeof(cc_hash));
   if (ht == NULL) coin_oom_abort("cc_hash_construct");
 
-  /* size should be a prime number */
-  s = (unsigned int) coin_geq_prime_number(size);
   if (!std::isfinite(loadfactor) || loadfactor <= 0.0f)
     loadfactor = 0.75f;
-  if (static_cast<size_t>(s) > SIZE_MAX / sizeof(cc_hash_entry *))
-    coin_oom_abort("cc_hash_construct buckets");
   
   ht->size = s;
   ht->elements = 0;
@@ -270,6 +311,12 @@ cc_hash_clear(cc_hash * ht)
   overwritten, and \e FALSE is returned. Otherwise a new element is
   created and \e TRUE is returned.
 
+  Entry allocation failure or element-count exhaustion terminates with a
+  diagnostic. Optional growth failure preserves the newly inserted key.
+  A custom hash exception propagates: during the initial lookup it leaves
+  the table unchanged; during optional growth the new key remains inserted
+  in the original, valid table.
+
  */
 SbBool
 cc_hash_put(cc_hash * ht, cc_hash_key key, void * val)
@@ -298,7 +345,7 @@ cc_hash_put(cc_hash * ht, cc_hash_key key, void * val)
   ht->buckets[i] = he;
 
   if (ht->elements++ >= ht->threshold && ht->size < UINT_MAX) {
-    hash_resize(ht, (unsigned int) coin_geq_prime_number(ht->size + 1));
+    hash_resize(ht, (unsigned int) coin_growth_prime_at_least(ht->size + 1));
   }
   return TRUE;
 }
@@ -368,16 +415,30 @@ cc_hash_get_num_elements(cc_hash * ht)
 
 /*!
   Set the hash func that is used to map key values into
-  a bucket index.
+  a bucket index. Passing NULL restores the default hash function.
+
+  Existing entries are reindexed when the function changes. If allocating
+  replacement storage fails, the current function and entries are unchanged.
+  A hash exception propagates without changing the previous function or links.
+  Hash callbacks must be stable and must not modify this table.
 */
 void
 cc_hash_set_hash_func(cc_hash * ht, cc_hash_func * func)
 {
-  ht->hashfunc = func;
+  assert(ht != NULL);
+  if (func == NULL) func = hash_default_hashfunc;
+  if (ht->hashfunc == func) return;
+  if (ht->elements == 0) {
+    ht->hashfunc = func;
+    return;
+  }
+
+  hash_rebuild(ht, ht->size, func);
 }
 
 /*!
-  Call \a func for for each element in the hash table.
+  Call \a func for each element in the hash table. The callback may remove
+  its current entry, but must not otherwise mutate or destroy the table.
 */
 void
 cc_hash_apply(cc_hash * ht, cc_hash_apply_func * func, void * closure)
@@ -387,8 +448,9 @@ cc_hash_apply(cc_hash * ht, cc_hash_apply_func * func, void * closure)
   for (i = 0; i < ht->size; i++) {
     elem = ht->buckets[i];
     while (elem) {
+      cc_hash_entry * next = elem->next;
       func(elem->key, elem->val, closure);
-      elem = elem->next;
+      elem = next;
     }
   }
 }
@@ -417,5 +479,72 @@ cc_hash_print_stat(cc_hash * ht)
                          "Used buckets %u of %u (%u elements), "
                          "avg chain length: %.2f, max chain length: %u\n",
                          used_buckets, ht->size, ht->elements,
-                         (float)ht->elements / used_buckets, max_chain_l);
+                         used_buckets > 0 ?
+                           (float)ht->elements / used_buckets : 0.0f,
+                         max_chain_l);
 }
+
+#ifdef COIN_TEST_SUITE
+#include <string>
+#include <Inventor/C/base/string.h>
+#include <Inventor/C/errors/debugerror.h>
+
+static void
+cchash_test_debugerror_cb(const cc_debugerror * error, void * closure)
+{
+  std::string * message = static_cast<std::string *>(closure);
+  const cc_string * debugstring = cc_error_get_debug_string(&error->super);
+  *message = cc_string_get_text(debugstring);
+}
+
+BOOST_AUTO_TEST_CASE(cchash_print_stat_handles_empty_hash)
+{
+  cc_hash * hash = cc_hash_construct(2, 0.75f);
+  BOOST_REQUIRE(hash != NULL);
+  std::string message;
+  cc_debugerror_cb * previouscallback = cc_debugerror_get_handler_callback();
+  void * previousdata = cc_debugerror_get_handler_data();
+  cc_debugerror_set_handler_callback(cchash_test_debugerror_cb, &message);
+  cc_hash_print_stat(hash);
+  cc_debugerror_set_handler_callback(previouscallback, previousdata);
+
+  BOOST_CHECK_MESSAGE(message.find("avg chain length: 0.00") !=
+                        std::string::npos,
+    "statistics for an empty hash did not report a zero average");
+  cc_hash_destruct(hash);
+}
+
+struct CcHashApplyMutationData {
+  cc_hash * hash;
+  unsigned int visits;
+};
+
+static cc_hash_key
+cchash_test_collision_hash(cc_hash_key)
+{
+  return 1;
+}
+
+static void
+cchash_test_remove_current_during_apply(cc_hash_key key, void *, void * closure)
+{
+  CcHashApplyMutationData * data =
+    static_cast<CcHashApplyMutationData *>(closure);
+  ++data->visits;
+  cc_hash_remove(data->hash, key);
+}
+
+BOOST_AUTO_TEST_CASE(cchash_apply_can_remove_current_entry)
+{
+  cc_hash * hash = cc_hash_construct(2, 1.0f);
+  BOOST_REQUIRE(hash != NULL);
+  cc_hash_set_hash_func(hash, cchash_test_collision_hash);
+  BOOST_CHECK(cc_hash_put(hash, 0, NULL));
+  BOOST_CHECK(cc_hash_put(hash, 2, NULL));
+  CcHashApplyMutationData data = { hash, 0 };
+  cc_hash_apply(hash, cchash_test_remove_current_during_apply, &data);
+  BOOST_CHECK_EQUAL(data.visits, 2u);
+  BOOST_CHECK_EQUAL(cc_hash_get_num_elements(hash), 0u);
+  cc_hash_destruct(hash);
+}
+#endif // COIN_TEST_SUITE
