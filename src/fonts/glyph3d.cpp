@@ -443,8 +443,8 @@ glyph3d_specmatch(const cc_font_specification * spec1,
   /* Reducing precision of the complexity variable. This is done to
      prevent the user from flooding the memory with generated glyphs
      which might be more or less identical */
-  c1 = spec1->complexity;
-  c2 = spec2->complexity;
+  c1 = coin_font_normalize_complexity(spec1->complexity);
+  c2 = coin_font_normalize_complexity(spec2->complexity);
   
   /* Clamp values to [0...1] */
   if (c1 > 1.0f) c1 = 1.0f;

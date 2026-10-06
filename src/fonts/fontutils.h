@@ -56,4 +56,15 @@ inline unsigned int coin_font_default_character(uint32_t character, unsigned int
 {
   return character <= maximum ? character : unsigned('?');
 }
+inline float coin_font_normalize_complexity(float complexity)
+{
+  if (!std::isfinite(complexity)) return 0.5f;
+  return complexity < 0 ? 0 : (complexity > 1 ? 1 : complexity);
+}
+
+inline int coin_font_tessellation_steps(float complexity)
+{
+  const int steps = int(16 * coin_font_normalize_complexity(complexity));
+  return steps > 0 ? steps : 1;
+}
 #endif

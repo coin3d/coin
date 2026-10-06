@@ -37,13 +37,14 @@
 #include <cctype>
 
 #include "glue/freetype.h"
+#include "fonts/fontutils.h"
 
 void
 cc_fontspec_construct(cc_font_specification * spec,
                       const char * name_style, float size, float complexity)
 {
   spec->size = size;
-  spec->complexity = complexity;
+  spec->complexity = coin_font_normalize_complexity(complexity);
   cc_string_construct(&spec->name);
   cc_string_construct(&spec->style);
 
@@ -78,7 +79,7 @@ cc_fontspec_copy(const cc_font_specification * from,
                  cc_font_specification * to)
 {
   to->size = from->size;
-  to->complexity = from->complexity;
+  to->complexity = coin_font_normalize_complexity(from->complexity);
 
   cc_string_construct(&to->name);
   cc_string_set_string(&to->name, &from->name);
