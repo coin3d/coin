@@ -63,25 +63,34 @@ typedef SbDictKeyType SbDictHashingFunc(const SbDictKeyType key);
 class COIN_DLL_API SbDict {
 public:
   SbDict(const int entries = 251);
+  /* Shallow entry copy; the custom hash function is not copied. */
   SbDict(const SbDict & from);
   ~SbDict();
 
+  /* Uses the default hash for a normal copy; self-assignment is a no-op. */
   SbDict & operator=(const SbDict & from);
 
   typedef uintptr_t Key;
 
+  /* No iteration order is promised. Callbacks may read and remove their
+     current entry, but must not otherwise mutate or destroy this dictionary. */
   void applyToAll(SbDictApplyFunc * rtn) const;
   void applyToAll(SbDictApplyDataFunc * rtn, void * data) const;
   void clear(void);
 
   SbBool enter(const Key key, void * const value);
   SbBool find(const Key key, void *& value) const;
+  /* Appends matching key/value pairs after the existing list contents.
+     An append exception restores the original contents and lengths. */
   void makePList(SbPList & keys, SbPList & values);
   SbBool remove(const Key key);
 
+  /* NULL restores the default hash. Rehash failure preserves the entries;
+     hash exceptions propagate. The function must be stable and non-mutating. */
   void setHashingFunction(SbDictHashingFunc * func);
 
 private:
+  // Historical opaque handle type retained; its backend is private.
   struct cc_hash * hashtable;
 
 };
