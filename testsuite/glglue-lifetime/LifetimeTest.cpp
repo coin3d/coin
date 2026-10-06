@@ -88,6 +88,13 @@ int main(int argc,char ** argv) {
     std::thread threadB([&] { resultB=cycle(display,native[1],b,16); });
     threadA.join(); threadB.join();
     CHECK(resultA==0 && resultB==0 && a.callbacks==48 && b.callbacks==16);
+    Probe high(0x80000001U),maximum(0xffffffffU);
+    SoContextHandler::addContextDestructionCallback(Probe::callback,&high);
+    SoContextHandler::addContextDestructionCallback(Probe::callback,&maximum);
+    CHECK(cycle(display,native[0],high,4)==0 && high.callbacks==4);
+    CHECK(cycle(display,native[0],maximum,4)==0 && maximum.callbacks==4);
+    SoContextHandler::removeContextDestructionCallback(Probe::callback,&high);
+    SoContextHandler::removeContextDestructionCallback(Probe::callback,&maximum);
     SoContextHandler::removeContextDestructionCallback(Probe::callback,&a);
     SoContextHandler::removeContextDestructionCallback(Probe::callback,&b);
     CHECK(current(display,native[0]));
@@ -97,6 +104,6 @@ int main(int argc,char ** argv) {
   glXMakeCurrent(display,None,NULL);
   for (NativeContext & n:native) { glXDestroyContext(display,n.context); XDestroyWindow(display,n.window); XFreeColormap(display,n.colormap); }
   XCloseDisplay(display);
-  std::puts(raw ? "Glue released without registered callbacks." : "Glue: callbacks, owned allocations, 64 generations, two threads and shutdown passed.");
+  std::puts(raw ? "Glue released without registered callbacks." : "Glue: callbacks, owned allocations, 72 generations, two threads and shutdown passed.");
   return 0;
 }

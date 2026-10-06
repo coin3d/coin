@@ -2208,7 +2208,7 @@ cc_glglue_instance(int contextid)
     coin_atexit((coin_atexit_f *)glglue_cleanup, CC_ATEXIT_NORMAL);
   }
 
-  found = cc_dict_get(gldict, (uintptr_t)contextid, &ptr);
+  found = cc_dict_get(gldict, (uintptr_t)(uint32_t)contextid, &ptr);
 
   if (!found) {
     GLenum glerr;
@@ -2244,7 +2244,7 @@ cc_glglue_instance(int contextid)
     gi->glextdict = cc_dict_construct(256, 0.75f);
 
     ptr = gi;
-    cc_dict_put(gldict, (uintptr_t)contextid, ptr);
+    cc_dict_put(gldict, (uintptr_t)(uint32_t)contextid, ptr);
 
     /*
        Make sure all GL errors are cleared before we do our assert
@@ -2478,7 +2478,7 @@ coin_glglue_destruct(uint32_t contextid)
   void * ptr;
   CC_SYNC_BEGIN(cc_glglue_instance);
   if (gldict) { // might happen if a context is destructed without using the cc_glglue interface
-    found = cc_dict_get(gldict, (uintptr_t)contextid, &ptr);
+    found = cc_dict_get(gldict, (uintptr_t)(uint32_t)contextid, &ptr);
     if (found) {
       cc_glglue * glue = (cc_glglue*) ptr;
       if (glue->normalizationcubemap) {
