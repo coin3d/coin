@@ -45,6 +45,7 @@
 
 #include "tidbitsp.h"
 #include "base/dictp.h"
+#include "primep.h"
 #include "coindefs.h"
 
 #ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
@@ -84,41 +85,70 @@ dict_threshold(const unsigned int size, const float loadfactor)
 }
 
 static void
-dict_resize(cc_dict * ht, unsigned int newsize)
+dict_rebuild(cc_dict * ht, unsigned int newsize, cc_dict_hash_func * func)
 {
-  /* Never shrink the table */
-  if (ht->size >= newsize)
-    return;
-  if (static_cast<size_t>(newsize) > SIZE_MAX / sizeof(cc_dict_entry *))
+  if (static_cast<size_t>(newsize) > SIZE_MAX / sizeof(cc_dict_entry *) ||
+      static_cast<size_t>(ht->elements) > SIZE_MAX / sizeof(unsigned int))
     return;
 
-  /* Growth is optional: keep the current table, including the entry just
-     inserted by cc_dict_put(), if the new bucket array cannot be allocated. */
   cc_dict_entry ** buckets = (cc_dict_entry **)
     calloc(newsize, sizeof(cc_dict_entry *));
   if (buckets == NULL) return;
 
-  cc_dict_entry ** oldbuckets = ht->buckets;
-  const unsigned int oldsize = ht->size;
+  // The default hash cannot throw. Compute custom hash destinations before
+  // changing links so an exception leaves the old table intact.
+  unsigned int * indices = NULL;
+  if (func != dict_default_hashfunc && ht->elements != 0) {
+    indices = (unsigned int *)
+      malloc(static_cast<size_t>(ht->elements) * sizeof(unsigned int));
+    if (indices == NULL) {
+      free(buckets);
+      return;
+    }
+    size_t count = 0;
+    try {
+      for (unsigned int i = 0; i < ht->size; ++i) {
+        for (cc_dict_entry * entry = ht->buckets[i]; entry != NULL;
+             entry = entry->next) {
+          indices[count++] = func(entry->key) % newsize;
+        }
+      }
+    }
+    catch (...) {
+      free(indices);
+      free(buckets);
+      throw;
+    }
+  }
 
-  /* Relink existing entries directly. Their count and allocator ownership
-     do not change, and migration must not trigger another resize. */
-  for (unsigned int i = 0; i < oldsize; i++) {
-    cc_dict_entry * entry = oldbuckets[i];
+  size_t count = 0;
+  for (unsigned int i = 0; i < ht->size; ++i) {
+    cc_dict_entry * entry = ht->buckets[i];
     while (entry != NULL) {
       cc_dict_entry * next = entry->next;
-      const unsigned int idx =
-        (unsigned int) (ht->hashfunc(entry->key) % newsize);
+      const unsigned int idx = indices != NULL ?
+        indices[count++] : entry->key % newsize;
       entry->next = buckets[idx];
       buckets[idx] = entry;
       entry = next;
     }
   }
+  free(indices);
 
+  cc_dict_entry ** oldbuckets = ht->buckets;
   ht->buckets = buckets;
   ht->size = newsize;
   ht->threshold = dict_threshold(newsize, ht->loadfactor);
+  ht->hashfunc = func;
   free(oldbuckets);
+}
+
+static void
+dict_resize(cc_dict * ht, unsigned int newsize)
+{
+  /* Never shrink the table. Growth is optional if allocation fails. */
+  if (ht->size >= newsize) return;
+  dict_rebuild(ht, newsize, ht->hashfunc);
 }
 
 /* ********************************************************************** */
@@ -140,12 +170,14 @@ dict_resize(cc_dict * ht, unsigned int newsize)
   factor greater than one is accepted; its threshold saturates at UINT_MAX.
 
   Returns NULL if the dictionary, buckets, or entry allocator cannot be
-  created.
+  created, or if no representable prime bucket count meets the request.
 */
 cc_dict *
 cc_dict_construct(unsigned int size, float loadfactor)
 {
-  const unsigned int s = (unsigned int) coin_geq_prime_number(size);
+  const unsigned int s =
+    static_cast<unsigned int>(coin_exact_prime_at_least(size));
+  if (s == 0) return NULL;
   if (!std::isfinite(loadfactor) || loadfactor <= 0.0f) loadfactor = 0.75f;
   if (static_cast<size_t>(s) > SIZE_MAX / sizeof(cc_dict_entry *))
     return NULL;
@@ -226,7 +258,10 @@ cc_dict_clear(cc_dict * ht)
   key, and CC_DICT_PUT_FAILED if an entry cannot be allocated.
 
   If allocation of a larger bucket array fails, the new entry remains
-  inserted in the current table. A later insertion may retry growth.
+  inserted in the current table. A later insertion may retry growth. If a
+  custom hash throws during optional growth, the exception propagates and
+  the new entry remains in the original, valid table. If it throws during
+  the initial lookup, no entry is inserted.
 
  */
 cc_dict_put_result
@@ -256,7 +291,7 @@ cc_dict_try_put(cc_dict * ht, uintptr_t key, void * val)
   ht->buckets[i] = he;
   
   if (ht->elements++ >= ht->threshold && ht->size < UINT_MAX) {
-    dict_resize(ht, (unsigned int) coin_geq_prime_number(ht->size + 1));
+    dict_resize(ht, (unsigned int) coin_growth_prime_at_least(ht->size + 1));
   }
   return CC_DICT_PUT_INSERTED;
 }
@@ -334,42 +369,26 @@ cc_dict_get_num_elements(cc_dict * ht)
   Set the hash func that is used to map key values into
   a bucket index.
 
-  \a func must not be NULL.
+  Passing NULL restores the default hash function.
 
   Existing entries are reindexed using the new function. The entries
-  themselves are preserved; only their bucket links are changed. If bucket
-  allocation fails, the original hash function and entries are unchanged.
+  themselves are preserved; only their bucket links are changed. If
+  replacement storage cannot be allocated, the original hash function and
+  entries are unchanged. If the hash function throws, the exception
+  propagates and the original function, buckets and links remain unchanged.
 */
 void
 cc_dict_set_hash_func(cc_dict * ht, cc_dict_hash_func * func)
 {
   assert(ht != NULL);
-  assert(func != NULL);
-  if (func == NULL) return;
+  if (func == NULL) func = dict_default_hashfunc;
   if (ht->hashfunc == func) return;
   if (ht->elements == 0) {
     ht->hashfunc = func;
     return;
   }
 
-  cc_dict_entry ** buckets = (cc_dict_entry **)
-    calloc(ht->size, sizeof(cc_dict_entry *));
-  if (buckets == NULL) return;
-
-  for (unsigned int i = 0; i < ht->size; ++i) {
-    cc_dict_entry * entry = ht->buckets[i];
-    while (entry != NULL) {
-      cc_dict_entry * next = entry->next;
-      const unsigned int idx = (unsigned int) (func(entry->key) % ht->size);
-      entry->next = buckets[idx];
-      buckets[idx] = entry;
-      entry = next;
-    }
-  }
-
-  free(ht->buckets);
-  ht->buckets = buckets;
-  ht->hashfunc = func;
+  dict_rebuild(ht, ht->size, func);
 }
 
 /*!

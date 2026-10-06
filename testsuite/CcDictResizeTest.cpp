@@ -6,6 +6,7 @@
 #include <cstring>
 #include <climits>
 #include <limits>
+#include <stdexcept>
 #include "base/dict.h"
 #include "base/dictp.h"
 #include "tidbitsp.h"
@@ -83,6 +84,15 @@ static uintptr_t collision_hash(uintptr_t)
 {
   ++hashes;
   return 1;
+}
+
+static unsigned int hash_calls_before_throw = 0;
+
+static uintptr_t throwing_hash(uintptr_t key)
+{
+  if (hash_calls_before_throw-- == 0)
+    throw std::runtime_error("hash failed");
+  return key;
 }
 
 static cc_dict_entry * find_entry(cc_dict * dict, uintptr_t key)
@@ -233,6 +243,11 @@ static bool allocation_failures()
   CHECK(!failnext);
   CHECK(dict->hashfunc == original);
   CHECK(find_entry(dict, 1) != NULL);
+  failmalloc = true;
+  cc_dict_set_hash_func(dict, mixed_hash);
+  CHECK(!failmalloc);
+  CHECK(dict->hashfunc == original);
+  CHECK(find_entry(dict, 1) != NULL);
   cc_dict_destruct(dict);
   return true;
 }
@@ -269,6 +284,144 @@ static bool apply_removes_current()
   return true;
 }
 
+static bool throwing_hash_preserves_state()
+{
+  cc_dict * dict = cc_dict_construct(17, 1.0f);
+  CHECK(dict != NULL);
+  CHECK(cc_dict_put(dict, 0, NULL));
+  CHECK(cc_dict_put(dict, 17, NULL));
+  cc_dict_entry ** originalbuckets = dict->buckets;
+  cc_dict_entry * first = find_entry(dict, 0);
+  cc_dict_entry * second = find_entry(dict, 17);
+  cc_dict_entry * firstnext = first->next;
+  cc_dict_entry * secondnext = second->next;
+  hash_calls_before_throw = 1;
+  try {
+    cc_dict_set_hash_func(dict, throwing_hash);
+    CHECK(false);
+  }
+  catch (const std::runtime_error &) { }
+  CHECK(dict->hashfunc == dict_default_hashfunc);
+  CHECK(dict->buckets == originalbuckets);
+  CHECK(find_entry(dict, 0) == first && first->next == firstnext);
+  CHECK(find_entry(dict, 17) == second && second->next == secondnext);
+  void * found = NULL;
+  CHECK(cc_dict_get(dict, 0, &found));
+  CHECK(cc_dict_get(dict, 17, &found));
+  cc_dict_set_hash_func(dict, collision_hash);
+  cc_dict_set_hash_func(dict, NULL);
+  CHECK(cc_dict_get(dict, 0, &found));
+  CHECK(cc_dict_get(dict, 17, &found));
+  cc_dict_destruct(dict);
+
+  dict = cc_dict_construct(2, 1.0f);
+  CHECK(dict != NULL);
+  cc_dict_set_hash_func(dict, throwing_hash);
+  hash_calls_before_throw = 10;
+  CHECK(cc_dict_put(dict, 0, NULL));
+  CHECK(cc_dict_put(dict, 2, NULL));
+  originalbuckets = dict->buckets;
+  hash_calls_before_throw = 2;
+  try {
+    cc_dict_put(dict, 4, NULL);
+    CHECK(false);
+  }
+  catch (const std::runtime_error &) { }
+  CHECK(cc_dict_get_num_elements(dict) == 3);
+  CHECK(dict->buckets == originalbuckets);
+  CHECK(dict->size == 2);
+  hash_calls_before_throw = 10;
+  CHECK(cc_dict_get(dict, 0, &found));
+  CHECK(cc_dict_get(dict, 2, &found));
+  CHECK(cc_dict_get(dict, 4, &found));
+  cc_dict_destruct(dict);
+  return true;
+}
+
+
+static bool capacity_boundaries()
+{
+  const unsigned long largest = 4294967291UL;
+  CHECK(coin_exact_prime_at_least(0) == 2);
+  CHECK(coin_exact_prime_at_least(3) == 3);
+  CHECK(coin_exact_prime_at_least(18) == 19);
+  CHECK(coin_exact_prime_at_least(largest - 1) == largest);
+  CHECK(coin_exact_prime_at_least(largest) == largest);
+  CHECK(coin_exact_prime_at_least(largest + 1) == 0);
+  CHECK(coin_exact_prime_at_least(ULONG_MAX) == 0);
+  CHECK(coin_growth_prime_at_least(18) == 37);
+  CHECK(coin_growth_prime_at_least(largest + 1) == 0);
+  const unsigned int before = allocations;
+  CHECK(cc_dict_construct(UINT_MAX, 0.75f) == NULL);
+  CHECK(allocations == before);
+
+  cc_dict * dict = cc_dict_construct(18, 0.75f);
+  CHECK(dict != NULL);
+  CHECK(dict->size == 19);
+  for (uintptr_t key = 0; key < 15; ++key)
+    CHECK(cc_dict_try_put(dict, key, dict) == CC_DICT_PUT_INSERTED);
+  CHECK(dict->size == 37);
+  // Exhaust the element counter synthetically without allocating UINT_MAX nodes.
+  dict->elements = UINT_MAX;
+  CHECK(cc_dict_try_put(dict, 99, dict) == CC_DICT_PUT_FAILED);
+  CHECK(find_entry(dict, 99) == NULL);
+  CHECK(cc_dict_try_put(dict, 0, NULL) == CC_DICT_PUT_REPLACED);
+  CHECK(dict->elements == UINT_MAX);
+  dict->elements = 15;
+  cc_dict_destruct(dict);
+
+  // A positive subnormal factor must remain valid with a zero threshold.
+  dict = cc_dict_construct(2, std::numeric_limits<float>::denorm_min());
+  CHECK(dict != NULL);
+  CHECK(dict->threshold == 0);
+  CHECK(cc_dict_try_put(dict, 0, NULL) == CC_DICT_PUT_INSERTED);
+  CHECK(dict->size == 5);
+  CHECK(cc_dict_try_put(dict, 1, NULL) == CC_DICT_PUT_INSERTED);
+  CHECK(dict->size == 11);
+  cc_dict_destruct(dict);
+  return true;
+}
+
+static bool rebuild_allocation_failures()
+{
+  cc_dict * dict = cc_dict_construct(17, 2.0f);
+  CHECK(dict != NULL);
+  for (uintptr_t key = 0; key < 8; ++key)
+    CHECK(cc_dict_try_put(dict, key, dict) == CC_DICT_PUT_INSERTED);
+  cc_dict_entry * entries[8];
+  for (uintptr_t key = 0; key < 8; ++key) entries[key] = find_entry(dict, key);
+  cc_dict_entry ** buckets = dict->buckets;
+  // Replacement buckets succeed; the custom-hash destination plan fails.
+  failmalloc = true;
+  cc_dict_set_hash_func(dict, collision_hash);
+  CHECK(!failmalloc);
+  CHECK(dict->hashfunc == dict_default_hashfunc);
+  CHECK(dict->buckets == buckets);
+  for (uintptr_t key = 0; key < 8; ++key) CHECK(find_entry(dict, key) == entries[key]);
+
+  cc_dict_set_hash_func(dict, collision_hash);
+  CHECK(dict->hashfunc == collision_hash);
+  buckets = dict->buckets;
+  failmalloc = true;
+  dict_resize(dict, 37);
+  CHECK(!failmalloc);
+  CHECK(dict->buckets == buckets && dict->size == 17);
+  for (uintptr_t key = 0; key < 8; ++key) CHECK(find_entry(dict, key) == entries[key]);
+  dict_resize(dict, 37);
+  CHECK(dict->size == 37);
+  for (uintptr_t key = 0; key < 8; ++key) CHECK(find_entry(dict, key) == entries[key]);
+  // Reset to the default hash does not need a custom-hash plan allocation.
+  cc_dict_set_hash_func(dict, NULL);
+  CHECK(dict->hashfunc == dict_default_hashfunc);
+  for (uintptr_t key = 0; key < 8; ++key) CHECK(find_entry(dict, key) == entries[key]);
+  cc_dict_clear(dict);
+  cc_dict_set_hash_func(dict, collision_hash);
+  cc_dict_set_hash_func(dict, NULL);
+  CHECK(dict->hashfunc == dict_default_hashfunc);
+  cc_dict_destruct(dict);
+  return true;
+}
+
 int main(int argc, char ** argv)
 {
   if (argc != 2) return 2;
@@ -282,5 +435,11 @@ int main(int argc, char ** argv)
     return allocation_failures() ? 0 : 1;
   if (std::strcmp(argv[1], "apply") == 0)
     return apply_removes_current() ? 0 : 1;
+  if (std::strcmp(argv[1], "exception") == 0)
+    return throwing_hash_preserves_state() ? 0 : 1;
+  if (std::strcmp(argv[1], "capacity") == 0)
+    return capacity_boundaries() ? 0 : 1;
+  if (std::strcmp(argv[1], "rebuild-oom") == 0)
+    return rebuild_allocation_failures() ? 0 : 1;
   return 2;
 }
