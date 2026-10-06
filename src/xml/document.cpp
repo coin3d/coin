@@ -615,9 +615,8 @@ cc_xml_doc_get_current(const cc_xml_doc * doc)
   Sets the root element for the document and transfers its ownership to the
   document.  The root must not have a parent.
 
-  If a different root was already set, it is released without being deleted.
-  Call cc_xml_doc_release_root_x() first when replacing a root so the ownership
-  transfer is explicit.
+  If a different root was already set, it is deleted.  Call
+  cc_xml_doc_release_root_x() first if the old tree must be retained.
 */
 
 void
@@ -625,8 +624,11 @@ cc_xml_doc_set_root_x(cc_xml_doc * doc, cc_xml_elt * root)
 {
   assert(doc);
   if (root && cc_xml_elt_get_parent(root)) return;
-  if (doc->root != root) doc->current = NULL;
+  if (doc->root == root) return;
+  cc_xml_elt * oldroot = doc->root;
   doc->root = root;
+  doc->current = NULL;
+  if (oldroot) cc_xml_elt_delete_x(oldroot);
 }
 
 /*!
@@ -1014,9 +1016,15 @@ BOOST_AUTO_TEST_CASE(dom_root_ownership)
   cc_xml_doc_delete_x(doc);
   cc_xml_elt_delete_x(released);
 
-  // A still-attached root is recursively deleted with its document.
+  // Replacing an attached root deletes the old tree; releasing preserves it.
   doc = cc_xml_doc_new();
-  cc_xml_doc_set_root_x(doc, cc_xml_elt_new());
+  root = cc_xml_elt_new();
+  cc_xml_doc_set_root_x(doc, root);
+  cc_xml_doc_set_current_x(doc, root);
+  cc_xml_elt * replacement = cc_xml_elt_new();
+  cc_xml_doc_set_root_x(doc, replacement);
+  BOOST_CHECK(cc_xml_doc_get_root(doc) == replacement);
+  BOOST_CHECK(cc_xml_doc_get_current(doc) == NULL);
   cc_xml_doc_delete_x(doc);
 }
 

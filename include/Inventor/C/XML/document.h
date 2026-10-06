@@ -73,8 +73,8 @@ COIN_DLL_API const char * cc_xml_doc_get_filename(const cc_xml_doc * doc);
    - set_root_x() transfers ownership of root to doc.
    - get_root() returns a borrowed pointer.
    - release_root_x() transfers ownership from doc to the caller.
-   Replacing a non-NULL root with set_root_x() releases the previous root
-   without deleting it.  Prefer release_root_x() before replacing it. */
+   Replacing a non-NULL root with set_root_x() deletes the previous tree.
+   Call release_root_x() first if the previous tree must be retained. */
 COIN_DLL_API cc_xml_elt *   cc_xml_doc_get_root(const cc_xml_doc * doc);
 COIN_DLL_API cc_xml_elt *   cc_xml_doc_release_root_x(cc_xml_doc * doc);
 COIN_DLL_API void           cc_xml_doc_set_current_x(cc_xml_doc * doc, cc_xml_elt * elt);
