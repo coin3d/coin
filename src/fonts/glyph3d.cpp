@@ -152,8 +152,7 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
 
   /* because this function is the entry point for glyph3d, the mutex
      is initialized here. */
-  if (glyph3d_fonthash_lock == NULL) 
-    cc_glyph3d_initialize();
+  cc_glyph3d_initialize();
   
   assert(spec);
 
@@ -166,8 +165,8 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
     for (i=0;i<cc_list_get_length(glyphlist);++i) {
       glyph = (cc_glyph3d *) cc_list_get(glyphlist, i);
       if (glyph3d_specmatch(spec, glyph->c.fontspec)) {
-        GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);
         glyph->c.refcount++;
+        GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);
         return glyph;
       }
     }    
@@ -207,7 +206,7 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
     cc_string_append_string(fonttoload, &spec->style);
   }
   
-  fontidx = cc_flw_get_font_id(cc_string_get_text(fonttoload), 
+  fontidx = cc_flw_get_font_id_and_ref(cc_string_get_text(fonttoload),
                                glyph3d_standardfontsize,
                                0.0f,
                                newspec->complexity);
@@ -215,7 +214,6 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
   cc_string_destruct(fonttoload);
   assert(fontidx >= 0);
 
-  cc_flw_ref_font(fontidx);
 
   glyphidx = cc_flw_get_glyph(fontidx, character);
 
@@ -275,7 +273,9 @@ finalize_glyph3d(cc_glyph * g)
 void 
 cc_glyph3d_unref(cc_glyph3d * glyph)
 {
+  GLYPH3D_MUTEX_LOCK(glyph3d_fonthash_lock);
   cc_glyph_unref(glyph3d_fonthash, &(glyph->c), finalize_glyph3d);
+  GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);
 }
 
 const float *
