@@ -156,15 +156,13 @@ public:
     (void) this->glshaderobjects.put(cachecontext, obj);
   }
   void deleteGLShaderObjects(void) {
-    SbList <uint32_t> keylist;
-    this->glshaderobjects.makeKeyList(keylist);
-    for (int i = 0; i < keylist.getLength(); i++) {
-      SoGLShaderObject * glshader = NULL;
-      (void) this->glshaderobjects.get(keylist[i], glshader);
-      SoGLCacheContextElement::scheduleDeleteCallback(glshader->getCacheContext(),
+    while (this->glshaderobjects.getNumElements() != 0) {
+      SoGLShaderObject * glshader = this->glshaderobjects.const_begin()->obj;
+      const uint32_t context = glshader->getCacheContext();
+      SoGLCacheContextElement::scheduleDeleteCallback(context,
                                                       really_delete_object, glshader);
+      this->glshaderobjects.erase(context);
     }
-    this->glshaderobjects.clear();
   }
   //
   // Callback from SoGLCacheContextElement
@@ -188,12 +186,9 @@ public:
   }
 
   void invalidateParameters(void) {
-    SbList <uint32_t> keylist;
-    this->glshaderobjects.makeKeyList(keylist);
-    for (int i = 0; i < keylist.getLength(); i++) {
-      SoGLShaderObject * glshader = NULL;
-      (void) this->glshaderobjects.get(keylist[i], glshader);
-      glshader->setParametersDirty(TRUE);
+    for (SbSmallMap<uint32_t, SoGLShaderObject *>::const_iterator it =
+           this->glshaderobjects.const_begin(); it != this->glshaderobjects.const_end(); ++it) {
+      it->obj->setParametersDirty(TRUE);
     }
   }
 
