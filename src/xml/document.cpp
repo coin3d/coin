@@ -41,6 +41,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <cassert>
+#include <climits>
 
 #include <memory>
 
@@ -585,7 +586,7 @@ SbBool
 cc_xml_doc_read_buffer_x(cc_xml_doc * doc, const char * buffer, size_t buflen)
 {
 #ifdef DEV_DEBUG
-  fprintf(stdout, "cc_xml_doc_read_buffer_x(%p, %d, %p)\n", doc, (int) buflen, buffer);
+  fprintf(stdout, "cc_xml_doc_read_buffer_x(%p, %zu, %p)\n", static_cast<void *>(doc), buflen, static_cast<const void *>(buffer));
 #endif // DEV_DEBUG
   cc_xml_doc_parse_abort_if_active_x(doc);
   return cc_xml_doc_parse_buffer_partial_done_x(doc, buffer, buflen);
@@ -611,6 +612,12 @@ cc_xml_doc_parse_buffer_partial_x(cc_xml_doc * doc, const char * buffer, size_t 
 #ifdef DEV_DEBUG
   fprintf(stdout, "cc_xml_doc_parse_buffer_partial_x()\n");
 #endif // DEV_DEBUG
+  // XML_Parse() takes an int; reject lengths that cannot be represented
+  // before creating or advancing the parser.
+  if (buflen > static_cast<size_t>(INT_MAX)) {
+    cc_xml_doc_parse_abort_if_active_x(doc);
+    return FALSE;
+  }
   if (doc->parsestate == CC_XML_DOC_PARSE_IDLE) {
     cc_xml_doc_parse_buffer_partial_init_x(doc);
   }
@@ -631,6 +638,10 @@ cc_xml_doc_parse_buffer_partial_done_x(cc_xml_doc * doc, const char * buffer, si
   fprintf(stdout, "cc_xml_doc_parse_buffer_partial_done_x()\n");
 #endif // DEV_DEBUG
   assert(doc);
+  if (buflen > static_cast<size_t>(INT_MAX)) {
+    cc_xml_doc_parse_abort_if_active_x(doc);
+    return FALSE;
+  }
   if (doc->parsestate == CC_XML_DOC_PARSE_IDLE) {
     cc_xml_doc_parse_buffer_partial_init_x(doc);
   }
