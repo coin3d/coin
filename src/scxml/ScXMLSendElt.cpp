@@ -444,3 +444,59 @@ ScXMLSendElt::execute(ScXMLStateMachine * statemachine) const
 }
 
 #undef PRIVATE
+
+#ifdef COIN_TEST_SUITE
+
+#include <Inventor/scxml/ScXMLEvent.h>
+#include <Inventor/scxml/ScXMLStateMachine.h>
+#include <cstring>
+
+namespace {
+
+class ScXMLSendNamelistTestMachine : public ScXMLStateMachine {
+public:
+  ScXMLSendNamelistTestMachine(void) : emptylookups(0) {}
+
+  const char * getVariable(const char * name) const override
+  {
+    if (name[0] == '\0') {
+      ++this->emptylookups;
+      return "unexpected";
+    }
+    if (strcmp(name, "alpha") == 0) return "A";
+    if (strcmp(name, "beta") == 0) return "B";
+    if (strcmp(name, "gamma") == 0) return "C";
+    return NULL;
+  }
+
+  mutable int emptylookups;
+};
+
+} // namespace
+
+BOOST_AUTO_TEST_CASE(scxml_send_namelist_ignores_empty_tokens)
+{
+  ScXMLSendElt send;
+  send.setEventAttribute("test.send");
+  send.setNameListAttribute(" alpha  beta gamma ");
+
+  ScXMLSendNamelistTestMachine machine;
+  ScXMLEvent * event = send.createEvent(&machine);
+  BOOST_REQUIRE(event != NULL);
+  BOOST_CHECK(machine.emptylookups == 0);
+
+  const char * alpha = event->getAssociation("alpha");
+  const char * beta = event->getAssociation("beta");
+  const char * gamma = event->getAssociation("gamma");
+  BOOST_REQUIRE(alpha != NULL);
+  BOOST_REQUIRE(beta != NULL);
+  BOOST_REQUIRE(gamma != NULL);
+  BOOST_CHECK(strcmp(alpha, "A") == 0);
+  BOOST_CHECK(strcmp(beta, "B") == 0);
+  BOOST_CHECK(strcmp(gamma, "C") == 0);
+  BOOST_CHECK(event->getAssociation("") == NULL);
+
+  delete event;
+}
+
+#endif // COIN_TEST_SUITE
