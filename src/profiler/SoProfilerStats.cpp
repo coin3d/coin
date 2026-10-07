@@ -33,6 +33,7 @@
 #include <Inventor/annex/Profiler/nodes/SoProfilerStats.h>
 
 #include <map>
+#include <memory>
 
 #include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
 #include <Inventor/annex/Profiler/SbProfilingData.h>
@@ -158,9 +159,9 @@ SoProfilerStatsP::doAction(SoAction * action)
   if (it != this->action_map.end()) {
     (*((*it).second)) += e->getProfilingData();
   } else {
-    SbProfilingData * data = new SbProfilingData(e->getProfilingData());
-    std::pair<int16_t, SbProfilingData *> entry(action->getTypeId().getKey(), data);
-    this->action_map.insert(entry);
+    std::unique_ptr<SbProfilingData> data(new SbProfilingData(e->getProfilingData()));
+    std::pair<int16_t, SbProfilingData *> entry(action->getTypeId().getKey(), data.get());
+    if (this->action_map.insert(entry).second) data.release();
   }
 
   this->updateNodeTypeTimingMap(e);
