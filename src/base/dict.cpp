@@ -33,6 +33,9 @@
 #include "base/dict.h"
 
 #include <cassert>
+#include <cmath>
+#include <climits>
+#include <cstdint>
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
@@ -42,6 +45,7 @@
 
 #include "tidbitsp.h"
 #include "base/dictp.h"
+#include "primep.h"
 #include "coindefs.h"
 
 #ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
@@ -72,32 +76,79 @@ dict_get_index(cc_dict * ht, uintptr_t key)
   return (unsigned int) (key % ht->size);
 }
 
+static unsigned int
+dict_threshold(const unsigned int size, const float loadfactor)
+{
+  const double scaled = static_cast<double>(size) * loadfactor;
+  if (scaled >= static_cast<double>(UINT_MAX)) return UINT_MAX;
+  return static_cast<unsigned int>(scaled);
+}
+
+static void
+dict_rebuild(cc_dict * ht, unsigned int newsize, cc_dict_hash_func * func)
+{
+  if (static_cast<size_t>(newsize) > SIZE_MAX / sizeof(cc_dict_entry *) ||
+      static_cast<size_t>(ht->elements) > SIZE_MAX / sizeof(unsigned int))
+    return;
+
+  cc_dict_entry ** buckets = (cc_dict_entry **)
+    calloc(newsize, sizeof(cc_dict_entry *));
+  if (buckets == NULL) return;
+
+  // The default hash cannot throw. Compute custom hash destinations before
+  // changing links so an exception leaves the old table intact.
+  unsigned int * indices = NULL;
+  if (func != dict_default_hashfunc && ht->elements != 0) {
+    indices = (unsigned int *)
+      malloc(static_cast<size_t>(ht->elements) * sizeof(unsigned int));
+    if (indices == NULL) {
+      free(buckets);
+      return;
+    }
+    size_t count = 0;
+    try {
+      for (unsigned int i = 0; i < ht->size; ++i) {
+        for (cc_dict_entry * entry = ht->buckets[i]; entry != NULL;
+             entry = entry->next) {
+          indices[count++] = func(entry->key) % newsize;
+        }
+      }
+    }
+    catch (...) {
+      free(indices);
+      free(buckets);
+      throw;
+    }
+  }
+
+  size_t count = 0;
+  for (unsigned int i = 0; i < ht->size; ++i) {
+    cc_dict_entry * entry = ht->buckets[i];
+    while (entry != NULL) {
+      cc_dict_entry * next = entry->next;
+      const unsigned int idx = indices != NULL ?
+        indices[count++] : entry->key % newsize;
+      entry->next = buckets[idx];
+      buckets[idx] = entry;
+      entry = next;
+    }
+  }
+  free(indices);
+
+  cc_dict_entry ** oldbuckets = ht->buckets;
+  ht->buckets = buckets;
+  ht->size = newsize;
+  ht->threshold = dict_threshold(newsize, ht->loadfactor);
+  ht->hashfunc = func;
+  free(oldbuckets);
+}
+
 static void
 dict_resize(cc_dict * ht, unsigned int newsize)
 {
-  cc_dict_entry ** oldbuckets = ht->buckets;
-  unsigned int oldsize = ht->size, i;
-
-  /* Never shrink the table */
-  if (ht->size >= newsize)
-    return;
-
-  ht->size = newsize;
-  ht->elements = 0;
-  ht->threshold = (unsigned int) (newsize * ht->loadfactor);
-  ht->buckets = (cc_dict_entry **) calloc(newsize, sizeof(cc_dict_entry*));
-
-  /* Transfer all mappings */
-  for (i = 0; i < oldsize; i++) {
-    cc_dict_entry * he = oldbuckets[i];
-    while (he) {
-      cc_dict_entry * oldentry = he;
-      he = he->next;
-      cc_dict_put(ht, oldentry->key, oldentry->val);
-      cc_memalloc_deallocate(ht->memalloc, oldentry);
-    }
-  }
-  free(oldbuckets);
+  /* Never shrink the table. Growth is optional if allocation fails. */
+  if (ht->size >= newsize) return;
+  dict_rebuild(ht, newsize, ht->hashfunc);
 }
 
 /* ********************************************************************** */
@@ -115,26 +166,44 @@ dict_resize(cc_dict * ht, unsigned int newsize)
   possible to specify a number bigger than 1, but then there will be
   greater chance of having many elements on the same bucket (linear
   search for an element). If you supply a number <= 0 for loadfactor,
-  the default value 0.75 will be used.
+  or a non-finite value, the default value 0.75 will be used. A finite
+  factor greater than one is accepted; its threshold saturates at UINT_MAX.
+
+  Returns NULL if the dictionary, buckets, or entry allocator cannot be
+  created, or if no representable prime bucket count meets the request.
 */
 cc_dict *
 cc_dict_construct(unsigned int size, float loadfactor)
 {
-  unsigned int s;
+  const unsigned int s =
+    static_cast<unsigned int>(coin_exact_prime_at_least(size));
+  if (s == 0) return NULL;
+  if (!std::isfinite(loadfactor) || loadfactor <= 0.0f) loadfactor = 0.75f;
+  if (static_cast<size_t>(s) > SIZE_MAX / sizeof(cc_dict_entry *))
+    return NULL;
+
   cc_dict * ht = (cc_dict *) malloc(sizeof(cc_dict));
-  
-  s = (unsigned int) coin_geq_prime_number(size);
-  if (loadfactor <= 0.0f) loadfactor = 0.75f;
+  if (ht == NULL) return NULL;
   
   ht->size = s;
   ht->elements = 0;
-  ht->threshold = (unsigned int) (s * loadfactor);
+  ht->threshold = dict_threshold(s, loadfactor);
   ht->loadfactor = loadfactor;
   ht->buckets = (cc_dict_entry **) calloc(s, sizeof(cc_dict_entry*));
+  if (ht->buckets == NULL) {
+    free(ht);
+    return NULL;
+  }
   ht->hashfunc = dict_default_hashfunc;
   /* we use a memory allocator to avoid an operating system malloc
      every time a new entry is needed */
-  ht->memalloc = cc_memalloc_construct(sizeof(cc_dict_entry));
+  ht->memalloc = cc_memalloc_construct_aligned(
+    sizeof(cc_dict_entry), alignof(cc_dict_entry));
+  if (ht->memalloc == NULL) {
+    free(ht->buckets);
+    free(ht);
+    return NULL;
+  }
   return ht;
 }
 
@@ -184,15 +253,19 @@ cc_dict_clear(cc_dict * ht)
 
 /*!
 
-  Insert a new element in the hash table \a ht. \a key is the key used
-  to identify the element, while \a val is the element value. If \a
-  key is already used by another element, the element value will be
-  overwritten, and \e FALSE is returned. Otherwise a new element is
-  created and \e TRUE is returned.
+  Insert or replace an element in the hash table \a ht. Returns
+  CC_DICT_PUT_INSERTED for a new key, CC_DICT_PUT_REPLACED for an existing
+  key, and CC_DICT_PUT_FAILED if an entry cannot be allocated.
+
+  If allocation of a larger bucket array fails, the new entry remains
+  inserted in the current table. A later insertion may retry growth. If a
+  custom hash throws during optional growth, the exception propagates and
+  the new entry remains in the original, valid table. If it throws during
+  the initial lookup, no entry is inserted.
 
  */
-SbBool
-cc_dict_put(cc_dict * ht, uintptr_t key, void * val)
+cc_dict_put_result
+cc_dict_try_put(cc_dict * ht, uintptr_t key, void * val)
 {
   unsigned int i = dict_get_index(ht, key);
   cc_dict_entry * he = ht->buckets[i];
@@ -201,7 +274,7 @@ cc_dict_put(cc_dict * ht, uintptr_t key, void * val)
     if (he->key == key) {
       /* Replace the old value */
       he->val = val;
-      return FALSE;
+      return CC_DICT_PUT_REPLACED;
     }
     he = he->next;
   }
@@ -209,16 +282,24 @@ cc_dict_put(cc_dict * ht, uintptr_t key, void * val)
   /* Key not already in the hash table; insert a new
    * entry as the first element in the bucket
    */
+  if (ht->elements == UINT_MAX) return CC_DICT_PUT_FAILED;
   he = (cc_dict_entry *) cc_memalloc_allocate(ht->memalloc);
+  if (he == NULL) return CC_DICT_PUT_FAILED;
   he->key = key;
   he->val = val;
   he->next = ht->buckets[i];
   ht->buckets[i] = he;
   
-  if (ht->elements++ >= ht->threshold) {
-    dict_resize(ht, (unsigned int) coin_geq_prime_number(ht->size + 1));
+  if (ht->elements++ >= ht->threshold && ht->size < UINT_MAX) {
+    dict_resize(ht, (unsigned int) coin_growth_prime_at_least(ht->size + 1));
   }
-  return TRUE;
+  return CC_DICT_PUT_INSERTED;
+}
+
+SbBool
+cc_dict_put(cc_dict * ht, uintptr_t key, void * val)
+{
+  return cc_dict_try_put(ht, key, val) == CC_DICT_PUT_INSERTED;
 }
 
 /*!
@@ -288,46 +369,31 @@ cc_dict_get_num_elements(cc_dict * ht)
   Set the hash func that is used to map key values into
   a bucket index.
 
-  \a func must not be NULL.
+  Passing NULL restores the default hash function.
 
   Existing entries are reindexed using the new function. The entries
-  themselves are preserved; only their bucket links are changed.
+  themselves are preserved; only their bucket links are changed. If
+  replacement storage cannot be allocated, the original hash function and
+  entries are unchanged. If the hash function throws, the exception
+  propagates and the original function, buckets and links remain unchanged.
 */
 void
 cc_dict_set_hash_func(cc_dict * ht, cc_dict_hash_func * func)
 {
   assert(ht != NULL);
-  assert(func != NULL);
-  if (func == NULL) return;
+  if (func == NULL) func = dict_default_hashfunc;
   if (ht->hashfunc == func) return;
   if (ht->elements == 0) {
     ht->hashfunc = func;
     return;
   }
 
-  cc_dict_entry ** buckets = (cc_dict_entry **)
-    calloc(ht->size, sizeof(cc_dict_entry *));
-  assert(buckets != NULL);
-  if (buckets == NULL) return;
-
-  for (unsigned int i = 0; i < ht->size; ++i) {
-    cc_dict_entry * entry = ht->buckets[i];
-    while (entry != NULL) {
-      cc_dict_entry * next = entry->next;
-      const unsigned int idx = (unsigned int) (func(entry->key) % ht->size);
-      entry->next = buckets[idx];
-      buckets[idx] = entry;
-      entry = next;
-    }
-  }
-
-  free(ht->buckets);
-  ht->buckets = buckets;
-  ht->hashfunc = func;
+  dict_rebuild(ht, ht->size, func);
 }
 
 /*!
-  Call \a func for for each element in the hash table.
+  Call \a func for each element in the hash table. The callback may remove
+  its current entry, but must not otherwise mutate or destroy this dictionary.
 */
 void
 cc_dict_apply(cc_dict * ht, cc_dict_apply_func * func, void * closure)
@@ -337,8 +403,9 @@ cc_dict_apply(cc_dict * ht, cc_dict_apply_func * func, void * closure)
   for (i = 0; i < ht->size; i++) {
     elem = ht->buckets[i];
     while (elem) {
+      cc_dict_entry * next = elem->next;
       func(elem->key, elem->val, closure);
-      elem = elem->next;
+      elem = next;
     }
   }
 }

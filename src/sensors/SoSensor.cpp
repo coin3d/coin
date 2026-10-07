@@ -111,7 +111,7 @@
   registering with SoSensor.
 */
 
-unsigned int SbHashFunc(const SoSensor * key) {
+unsigned int SbHashFunc(const SoSensor * key) noexcept {
   return SbHashFunc(reinterpret_cast<size_t>(key));
 }
 

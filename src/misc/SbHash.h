@@ -51,6 +51,10 @@
 #include <assert.h>
 #include <stddef.h> // NULL
 #include <string.h> // memset()
+#include <climits>
+#include <cmath>
+#include <cstdint>
+#include <new>
 
 #include <Inventor/lists/SbList.h>
 #include <Inventor/C/base/memalloc.h>
@@ -58,6 +62,7 @@
 #include "tidbitsp.h"
 #include "coindefs.h"
 #include "SbBasicP.h"
+#include "base/oomp.h"
 
 // *************************************************************************
 
@@ -73,7 +78,7 @@
 
 //Create an uint of an arbitrary length datatype
 template <class T>
-inline unsigned int toUint(T in) {
+inline unsigned int toUint(T in) noexcept {
   if (sizeof(T)>sizeof(unsigned int)) {
     T retVal=in;
     for (size_t i = sizeof(T)/sizeof(unsigned int)-1; i>0; i--) {
@@ -89,7 +94,7 @@ inline unsigned int toUint(T in) {
 #if !defined(_MSC_VER) || (_MSC_VER >= 1300) // 'long long' not in vc6
 #ifndef COIN_INTERNAL //Not available for internal use, as this is not
                     //available on all platforms.
-inline unsigned int SbHashFunc(unsigned long long key) { return toUint<unsigned long long>(key); }
+inline unsigned int SbHashFunc(unsigned long long key) noexcept { return toUint<unsigned long long>(key); }
 #endif //COIN_INTERNAL
 #endif
 
@@ -98,20 +103,37 @@ inline unsigned int SbHashFunc(unsigned long long key) { return toUint<unsigned 
  * where int is 32-bit and long and pointer are 64-bit. */
 /* FIXME: the following solution is a kludge. 20081001 tamer. */
 #if defined(_WIN64)
-inline unsigned int SbHashFunc(unsigned long long key) { return toUint<unsigned long long>(key); }
+inline unsigned int SbHashFunc(unsigned long long key) noexcept { return toUint<unsigned long long>(key); }
 #else
 //The identity hash function
-inline unsigned int SbHashFunc(unsigned int key) { return key; }
+inline unsigned int SbHashFunc(unsigned int key) noexcept { return key; }
 
 //Some implementation of other basetypes
-inline unsigned int SbHashFunc(int key) { return static_cast<unsigned int>(key); }
+inline unsigned int SbHashFunc(int key) noexcept { return static_cast<unsigned int>(key); }
 
-inline unsigned int SbHashFunc(unsigned long key) { return toUint<unsigned long>(key); }
+inline unsigned int SbHashFunc(unsigned long key) noexcept { return toUint<unsigned long>(key); }
 #endif
+
+// Preserve the historical content hash for interned C strings without
+// allocating an SbString temporary. Mutable character buffers are used as
+// pointer-identity keys by SoField and keep that distinct behavior.
+inline unsigned int SbHashFunc(const char * key) noexcept {
+  if (key == NULL) return 0;
+  const unsigned char * str = reinterpret_cast<const unsigned char *>(key);
+  unsigned long hash = 0;
+  while (*str) {
+    hash = (*str++) + (hash << 6) + (hash << 16) - hash;
+  }
+  return static_cast<unsigned int>(hash);
+}
+
+inline unsigned int SbHashFunc(char * key) noexcept {
+  return SbHashFunc(reinterpret_cast<size_t>(key));
+}
 
 //String has its own implementation
 class SbString;
-unsigned int SbHashFunc(const SbString & key);
+unsigned int SbHashFunc(const SbString & key) noexcept;
 
 /*
   Some implementations of pointers, all functions are per writing only reinterpret_casts to size_t
@@ -120,9 +142,9 @@ unsigned int SbHashFunc(const SbString & key);
 class SoBase;
 class SoOutput;
 class SoSensor;
-unsigned int SbHashFunc(const SoBase * key);
-unsigned int SbHashFunc(const SoOutput * key);
-unsigned int SbHashFunc(const SoSensor * key);
+unsigned int SbHashFunc(const SoBase * key) noexcept;
+unsigned int SbHashFunc(const SoOutput * key) noexcept;
+unsigned int SbHashFunc(const SoSensor * key) noexcept;
 
 template <class Key, class Type>
 class SbHash {
@@ -133,6 +155,7 @@ class SbHash {
 
     void * operator new(size_t COIN_UNUSED_ARG(size), cc_memalloc * memhandler) {
       SbHashEntry * entry = static_cast<SbHashEntry *>(cc_memalloc_allocate(memhandler));
+      if (entry == NULL) coin_oom_abort("SbHashEntry::operator new");
       entry->memhandler = memhandler;
       return static_cast<void *>(entry);
     }
@@ -415,36 +438,48 @@ class SbHash {
 
 
 protected:
-  unsigned int getIndex(const Key & key) const {
-    unsigned int idx = SbHashFunc(key);
-    return (idx % this->size);
+  unsigned int getIndex(const Key & key) const noexcept {
+    return this->getIndex(key, this->size);
+  }
+
+  unsigned int getNumBuckets(void) const noexcept {
+    return this->size;
+  }
+
+  unsigned int getResizeThreshold(void) const noexcept {
+    return this->threshold;
   }
 
   void resize(unsigned int newsize) {
     /* we don't shrink the table */
     if (this->size >= newsize) return;
+    if (static_cast<size_t>(newsize) > SIZE_MAX / sizeof(SbHashEntry *)) return;
 
-    unsigned int oldsize = this->size;
-    SbHashEntry ** oldbuckets = this->buckets;
+    SbHashEntry ** newbuckets = new (std::nothrow) SbHashEntry * [newsize];
+    if (newbuckets == NULL) return;
+    memset(newbuckets, 0, static_cast<size_t>(newsize) * sizeof(SbHashEntry *));
 
-    this->size = newsize;
-    this->elements = 0;
-    this->threshold = static_cast<unsigned int> (newsize * this->loadfactor);
-    this->buckets = new SbHashEntry * [newsize];
-    memset(this->buckets, 0, this->size * sizeof(SbHashEntry *));
-
-    /* Transfer all mappings */
+    /* Relink all mappings without copying keys or values. Allocation happens
+       before any existing node is touched, and hashing is required to be
+       non-throwing, so the table remains unchanged if allocation fails. */
     unsigned int i;
-    for (i = 0; i < oldsize; i++) {
-      SbHashEntry * entry = oldbuckets[i];
+    for (i = 0; i < this->size; i++) {
+      SbHashEntry * entry = this->buckets[i];
       while (entry) {
-        this->put(entry->key, entry->obj);
-        SbHashEntry * preventry = entry;
-        entry = entry->next;
-        delete preventry;
+        SbHashEntry * next = entry->next;
+        const unsigned int newindex = this->getIndex(entry->key, newsize);
+        entry->next = newbuckets[newindex];
+        newbuckets[newindex] = entry;
+        entry = next;
       }
     }
-    delete [] oldbuckets;
+
+    delete [] this->buckets;
+    this->buckets = newbuckets;
+    this->size = newsize;
+    const double scaled = static_cast<double>(newsize) * this->loadfactor;
+    this->threshold = scaled >= UINT_MAX ? UINT_MAX :
+      static_cast<unsigned int>(scaled);
   }
 
   //FIXME: Make this private when SbHash goes public: BFG 20090430
@@ -465,11 +500,12 @@ public:
     /* Key not already in the hash table; insert a new
      * entry as the first element in the bucket
      */
+    if (this->elements == UINT_MAX) coin_oom_abort("SbHash capacity");
     entry = new (this->memhandler) SbHashEntry(key, obj, this->memhandler);
     entry->next = this->buckets[i];
     this->buckets[i] = entry;
 
-    if (this->elements++ >= this->threshold) {
+    if (this->elements++ >= this->threshold && this->size < UINT_MAX) {
       this->resize(static_cast<unsigned int>( coin_geq_prime_number(this->size + 1)));
     }
     return TRUE;
@@ -491,6 +527,13 @@ public:
   }
 
  private:
+  static unsigned int getIndex(const Key & key, unsigned int bucketsize) noexcept
+  {
+    static_assert(noexcept(SbHashFunc(key)),
+                  "SbHashFunc(key) and implicit key conversions must be noexcept");
+    return SbHashFunc(key) % bucketsize;
+  }
+
   SbBool getP(const Key & key, Type *& obj) const
   {
     SbHashEntry * entry;
@@ -509,14 +552,22 @@ public:
 
   void commonConstructor(unsigned int sizearg, float loadfactorarg)
   {
-    if (loadfactorarg <= 0.0f) { loadfactorarg = 0.75f; }
+    if (!std::isfinite(loadfactorarg) || loadfactorarg <= 0.0f)
+      loadfactorarg = 0.75f;
     unsigned int s = coin_geq_prime_number(sizearg);
-    this->memhandler = cc_memalloc_construct(sizeof(SbHashEntry));
+    this->memhandler = cc_memalloc_construct_aligned(
+      sizeof(SbHashEntry), alignof(SbHashEntry));
+    if (this->memhandler == NULL) coin_oom_abort("SbHash allocator");
     this->size = s;
     this->elements = 0;
-    this->threshold = static_cast<unsigned int> (s * loadfactorarg);
+    const double scaled = static_cast<double>(s) * loadfactorarg;
+    this->threshold = scaled >= UINT_MAX ? UINT_MAX :
+      static_cast<unsigned int>(scaled);
     this->loadfactor = loadfactorarg;
-    this->buckets = new SbHashEntry * [this->size];
+    if (static_cast<size_t>(this->size) > SIZE_MAX / sizeof(SbHashEntry *))
+      coin_oom_abort("SbHash bucket size");
+    this->buckets = new (std::nothrow) SbHashEntry * [this->size];
+    if (this->buckets == NULL) coin_oom_abort("SbHash buckets");
     memset(this->buckets, 0, this->size * sizeof(SbHashEntry *));
   }
 
