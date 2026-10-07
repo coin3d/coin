@@ -172,6 +172,7 @@ add_test(NAME SoTempPathReplaceTail_empty_noop
   COMMAND SoTempPathReplaceTailTest empty-noop)
 
 add_subdirectory(xml-c-api/c-headers)
+add_subdirectory(xml-c-api/entity-abi)
 
 add_executable(SoPathRangeTest SoPathRangeTest.cpp)
 target_link_libraries(SoPathRangeTest Coin ${COIN_TARGET_LINK_LIBRARIES})
