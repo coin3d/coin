@@ -178,8 +178,11 @@ ScXMLCoinEvaluator::setAtLocation(const char * location, ScXMLDataObj * obj)
       delete old;
     }
     else {
-      PRIVATE(this)->temporaries.insert(
-        std::pair<const char *, ScXMLDataObj *>(handle, copy.get()));
+      // Keep the lvalue insert overload used by existing Coin binaries.
+      std::pair<const char *, ScXMLDataObj *> entry;
+      entry.first = handle;
+      entry.second = copy.get();
+      PRIVATE(this)->temporaries.insert(entry);
       copy.release();
     }
     return TRUE;
