@@ -283,7 +283,7 @@ set_tests_properties(CoinTestsFilterWildcard PROPERTIES
 add_test(NAME CoinTestsFilterSuite
   COMMAND CoinTests --run_test=SbList_TestSuite)
 set_tests_properties(CoinTestsFilterSuite PROPERTIES
-  PASS_REGULAR_EXPRESSION "\\[OK\\] 5 tests")
+  PASS_REGULAR_EXPRESSION "\\[OK\\] 19 tests")
 
 add_test(NAME CoinTestsFilterCombined
   COMMAND CoinTests
