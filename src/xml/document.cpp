@@ -878,7 +878,10 @@ cc_xml_doc_handle_parse_warning(const cc_xml_doc * doc, const char * message)
 
 #ifdef COIN_TEST_SUITE
 
+#include <cstring>
 #include <memory>
+#include <Inventor/C/XML/attribute.h>
+#include <Inventor/C/XML/element.h>
 #include <Inventor/C/XML/parser.h>
 #include <Inventor/C/XML/path.h>
 
@@ -907,6 +910,90 @@ BOOST_AUTO_TEST_CASE(bufread)
 
   cc_xml_doc_delete_x(doc1);
   cc_xml_doc_delete_x(doc2);
+}
+
+BOOST_AUTO_TEST_CASE(write_escapes_character_data_and_attributes)
+{
+  const char * attributevalue = "a&b<c>d\"e'f";
+  const char * characterdata = "x&y<z>q\"'";
+
+  cc_xml_doc * doc = cc_xml_doc_new();
+  cc_xml_elt * root = cc_xml_elt_new_from_data("root", NULL);
+  cc_xml_elt_set_attribute_x(
+    root, cc_xml_attr_new_from_data("value", attributevalue));
+  cc_xml_elt_set_cdata_x(root, characterdata);
+  cc_xml_doc_set_root_x(doc, root);
+
+  char * buffer = NULL;
+  size_t bytecount = 0;
+  BOOST_REQUIRE(cc_xml_doc_write_to_buffer(doc, buffer, bytecount));
+
+  const char * expected =
+    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+    "<root value=\"a&amp;b&lt;c&gt;d&quot;e&apos;f\">"
+    "x&amp;y&lt;z&gt;q\"'</root>\n";
+  BOOST_CHECK(strcmp(buffer, expected) == 0);
+  BOOST_CHECK(bytecount == strlen(expected));
+
+  cc_xml_doc * parsed = cc_xml_read_buffer(buffer);
+  BOOST_REQUIRE(parsed != NULL);
+  cc_xml_elt * parsedroot = cc_xml_doc_get_root(parsed);
+  cc_xml_attr * parsedattr = cc_xml_elt_get_attribute(parsedroot, "value");
+  BOOST_REQUIRE(parsedattr != NULL);
+  BOOST_CHECK(strcmp(cc_xml_attr_get_value(parsedattr), attributevalue) == 0);
+
+  char parseddata[32];
+  size_t parsedlength = 0;
+  const int numchildren = cc_xml_elt_get_num_children(parsedroot);
+  for (int i = 0; i < numchildren; ++i) {
+    cc_xml_elt * child = cc_xml_elt_get_child(parsedroot, i);
+    BOOST_REQUIRE(strcmp(cc_xml_elt_get_type(child),
+                         COIN_XML_CDATA_TYPE) == 0);
+    const char * childdata = cc_xml_elt_get_cdata(child);
+    const size_t childlength = strlen(childdata);
+    BOOST_REQUIRE(parsedlength + childlength < sizeof(parseddata));
+    memcpy(parseddata + parsedlength, childdata, childlength);
+    parsedlength += childlength;
+  }
+  parseddata[parsedlength] = '\0';
+  BOOST_CHECK(strcmp(parseddata, characterdata) == 0);
+
+  delete [] buffer;
+  cc_xml_doc_delete_x(parsed);
+  cc_xml_doc_delete_x(doc);
+}
+
+BOOST_AUTO_TEST_CASE(integer_format_round_trip)
+{
+  cc_xml_elt * number = cc_xml_elt_new_from_data(COIN_XML_CDATA_TYPE, NULL);
+
+  uint64_t uint64value = 0;
+  cc_xml_elt_set_uint64_x(number, UINT64_MAX);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_cdata(number),
+                     "18446744073709551615") == 0);
+  BOOST_CHECK(cc_xml_elt_get_uint64(number, &uint64value));
+  BOOST_CHECK(uint64value == UINT64_MAX);
+
+  int64_t int64value = 0;
+  cc_xml_elt_set_int64_x(number, INT64_MIN);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_cdata(number),
+                     "-9223372036854775808") == 0);
+  BOOST_CHECK(cc_xml_elt_get_int64(number, &int64value));
+  BOOST_CHECK(int64value == INT64_MIN);
+
+  uint32_t uint32value = 0;
+  cc_xml_elt_set_uint32_x(number, UINT32_MAX);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_cdata(number), "4294967295") == 0);
+  BOOST_CHECK(cc_xml_elt_get_uint32(number, &uint32value));
+  BOOST_CHECK(uint32value == UINT32_MAX);
+
+  int32_t int32value = 0;
+  cc_xml_elt_set_int32_x(number, INT32_MIN);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_cdata(number), "-2147483648") == 0);
+  BOOST_CHECK(cc_xml_elt_get_int32(number, &int32value));
+  BOOST_CHECK(int32value == INT32_MIN);
+
+  cc_xml_elt_delete_x(number);
 }
 
 #endif // !COIN_TEST_SUITE
