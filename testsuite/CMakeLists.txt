@@ -234,6 +234,18 @@ endforeach()
 # on Windows, so keep the deterministic allocation-failure test on platforms
 # where executable symbol interposition applies to the linked Coin library.
 if(NOT WIN32)
+  # The executable interposes on new[] to fail the SbPList copy and checks
+  # that cc_dynarray_duplicate releases its partially constructed destination.
+  add_executable(CoinDynarrayDuplicateFailureTest
+    CcDynarrayDuplicateFailureTest.cpp)
+  target_compile_definitions(CoinDynarrayDuplicateFailureTest PRIVATE COIN_INTERNAL)
+  target_link_libraries(CoinDynarrayDuplicateFailureTest
+    Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(CoinDynarrayDuplicateFailureTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${PROJECT_SOURCE_DIR}/src ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  add_test(NAME CcDynarrayDuplicateFailure COMMAND CoinDynarrayDuplicateFailureTest)
+
   add_executable(CoinSbPListGrowthFailureTest
     SbPListGrowthFailureTest.cpp)
   target_link_libraries(CoinSbPListGrowthFailureTest
