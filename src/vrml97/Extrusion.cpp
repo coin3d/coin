@@ -391,7 +391,7 @@ public:
   SbVec2f texcoord;
 
   // needed for SbHash
-  operator unsigned long(void) const {
+  operator unsigned long(void) const noexcept {
     unsigned long key = 0;
     // create an xor key based on coordinates, normal and texcoords
     const unsigned char * ptr = (const unsigned char *) this;
