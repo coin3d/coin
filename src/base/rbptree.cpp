@@ -43,6 +43,7 @@
 #include <cstddef>
 #include <cstdlib>
 #include <cstdio>
+#include <functional>
 
 #include <Inventor/C/base/string.h>
 #include <Inventor/C/errors/debugerror.h>
@@ -96,6 +97,13 @@ struct cc_rbptree_node {
 
 static cc_rbptree_node rbptree_sentinel;
 static SbBool rbptree_isinitialized = FALSE;
+
+// std::less provides a strict total order for unrelated object pointers.
+static bool
+rbptree_pointer_less(const void * lhs, const void * rhs)
+{
+  return std::less<const void *>()(lhs, rhs);
+}
 
 extern "C" {
 
@@ -223,7 +231,7 @@ rbptree_bintree_insert(cc_rbptree * t, cc_rbptree_node * z)
 
   while (x != nil) {
     y = x;
-    if (z->pointer < x->pointer) {
+    if (rbptree_pointer_less(z->pointer, x->pointer)) {
       x = x->left;
     }
     else {
@@ -235,7 +243,7 @@ rbptree_bintree_insert(cc_rbptree * t, cc_rbptree_node * z)
   if (y == nil) {
     t->root = z;
   }
-  else if (z->pointer < y->pointer) {
+  else if (rbptree_pointer_less(z->pointer, y->pointer)) {
     y->left = z;
   }
   else {
@@ -513,7 +521,7 @@ rbptree_find(cc_rbptree * t, void * pointer)
   nil = &rbptree_sentinel;
 
   while (x != nil && x->pointer != p) {
-    if (p < x->pointer) {
+    if (rbptree_pointer_less(p, x->pointer)) {
       x = x->left;
     }
     else {
