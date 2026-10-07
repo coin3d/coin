@@ -116,14 +116,14 @@ struct rbptree_snapshot {
       if (count > std::numeric_limits<size_t>::max() / sizeof(rbptree_entry)) {
         coin_oom_abort("cc_rbptree_traverse snapshot size");
       }
-      entries = static_cast<rbptree_entry *>(std::malloc(count * sizeof(rbptree_entry)));
+      entries = static_cast<rbptree_entry *>(malloc(count * sizeof(rbptree_entry)));
       if (entries == NULL) coin_oom_abort("cc_rbptree_traverse snapshot");
     }
   }
 
   ~rbptree_snapshot()
   {
-    if (entries != inlineentries) std::free(entries);
+    if (entries != inlineentries) free(entries);
   }
 
 private:
