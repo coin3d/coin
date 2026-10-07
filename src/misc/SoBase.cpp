@@ -848,9 +848,10 @@ SoBase::addAuditor(void * const auditor, const SoNotRec::Type type)
   \sa addAuditor()
 */
 void
-SoBase::removeAuditor(void * const auditor, const SoNotRec::Type COIN_UNUSED_ARG(type))
+SoBase::removeAuditor(void * const auditor, const SoNotRec::Type type)
 {
-  cc_rbptree_remove(&this->auditortree, auditor);
+  const uintptr_t val = (uintptr_t)type;
+  cc_rbptree_remove_with_data(&this->auditortree, auditor, (void *)val);
 }
 
 

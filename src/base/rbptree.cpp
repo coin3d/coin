@@ -42,6 +42,7 @@
 #include <cassert>
 #include <cstddef>
 #include <cstdlib>
+#include <functional>
 #include <cstdio>
 
 #include <Inventor/C/base/string.h>
@@ -523,6 +524,29 @@ rbptree_find(cc_rbptree * t, void * pointer)
   return x;
 }
 
+/* Find a specific pointer/data pair. Rotations can put equal pointers on
+   either side of a node, so both equal-key subtrees may need inspection. */
+static cc_rbptree_node *
+rbptree_find_with_data(cc_rbptree_node * x, const void * pointer, const void * data)
+{
+  cc_rbptree_node * nil = &rbptree_sentinel;
+  while (x != nil) {
+    if (x->pointer == pointer) {
+      if (x->data == data) return x;
+      cc_rbptree_node * found = rbptree_find_with_data(x->left, pointer, data);
+      if (found != nil) return found;
+      x = x->right;
+    }
+    else if (std::less<const void *>()(pointer, x->pointer)) {
+      x = x->left;
+    }
+    else {
+      x = x->right;
+    }
+  }
+  return nil;
+}
+
 
 static void
 rbptree_remove_inline(cc_rbptree * t, const int idx)
@@ -553,30 +577,40 @@ rbptree_remove_inline(cc_rbptree * t, const int idx)
  * Remove the (first) node with value \c p. Returns \e TRUE if \c p
  * is found and removed, \e FALSE otherwise.
  */
-SbBool
-cc_rbptree_remove(cc_rbptree * t, void * p)
+static SbBool
+rbptree_remove_impl(cc_rbptree * t, void * p, void * data, const SbBool matchdata)
 {
-  cc_rbptree_node *z, * nil;
-  nil = &rbptree_sentinel;
+  cc_rbptree_node * nil = &rbptree_sentinel;
 
   if (t->counter == 0) return FALSE;
-  if (t->inlinepointer[0] == p) {
+  if (t->inlinepointer[0] == p && (!matchdata || t->inlinedata[0] == data)) {
     rbptree_remove_inline(t, 0);
     return TRUE;
   }
-  if (t->counter > 1 && t->inlinepointer[1] == p) {
+  if (t->counter > 1 && t->inlinepointer[1] == p &&
+      (!matchdata || t->inlinedata[1] == data)) {
     rbptree_remove_inline(t, 1);
     return TRUE;
   }
 
-  z = rbptree_find(t, p);
-  if (z == nil) {
-    return FALSE;
-  }
-  assert(z->pointer == static_cast<char *>(p));
-  /* remove node from tree */
+  cc_rbptree_node * z = matchdata ? rbptree_find_with_data(t->root, p, data)
+                                 : rbptree_find(t, p);
+  if (z == nil) return FALSE;
   rbptree_remove_node(t, z);
   return TRUE;
+}
+
+SbBool
+cc_rbptree_remove(cc_rbptree * t, void * p)
+{
+  return rbptree_remove_impl(t, p, NULL, FALSE);
+}
+
+/*! Remove one entry matching both \a p and \a data. */
+SbBool
+cc_rbptree_remove_with_data(cc_rbptree * t, void * p, void * data)
+{
+  return rbptree_remove_impl(t, p, data, TRUE);
 }
 
 /*!
