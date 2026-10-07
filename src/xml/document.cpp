@@ -45,6 +45,7 @@
 #include <memory>
 
 #include <coindefs.h>
+#include <Inventor/C/base/string.h>
 #include <Inventor/C/XML/element.h>
 #include <Inventor/C/XML/attribute.h>
 #include <Inventor/C/XML/path.h>
@@ -130,6 +131,7 @@ struct cc_xml_doc {
   cc_xml_elt * current;
 
   SbList<cc_xml_elt *> parsestack;
+  cc_string pendingcdata;
 };
 
 // *************************************************************************
@@ -137,11 +139,15 @@ struct cc_xml_doc {
 
 namespace {
 
+void cc_xml_doc_flush_character_data_x(cc_xml_doc * doc);
+
 void
 cc_xml_doc_expat_element_start_handler_cb(void * userdata, const XML_Char * elementtype, const XML_Char ** attributes)
 {
   XML_Parser parser = static_cast<XML_Parser>(userdata);
   cc_xml_doc * doc = static_cast<cc_xml_doc *>(XML_GetUserData(parser));
+
+  cc_xml_doc_flush_character_data_x(doc);
 
   cc_xml_elt * elt = cc_xml_elt_new_from_data(elementtype, NULL);
   assert(elt);
@@ -176,6 +182,8 @@ cc_xml_doc_expat_element_end_handler_cb(void * userdata, const XML_Char * elemen
 {
   XML_Parser parser = static_cast<XML_Parser>(userdata);
   cc_xml_doc * doc = static_cast<cc_xml_doc *>(XML_GetUserData(parser));
+
+  cc_xml_doc_flush_character_data_x(doc);
 
   const int stackdepth = doc->parsestack.getLength();
   if (stackdepth == 0) {
@@ -235,6 +243,49 @@ cc_xml_is_all_whitespace_p(const char * strptr)
 }
 
 void
+cc_xml_doc_flush_character_data_x(cc_xml_doc * doc)
+{
+  assert(doc);
+
+  if (!cc_string_is(&doc->pendingcdata)) return;
+
+  const char * cdata = cc_string_get_text(&doc->pendingcdata);
+  if (cc_xml_is_all_whitespace_p(cdata)) {
+    cc_string_clear_no_free(&doc->pendingcdata);
+    return;
+  }
+
+  cc_xml_elt * elt = cc_xml_elt_new();
+  assert(elt);
+  cc_xml_elt_set_type_x(elt, COIN_XML_CDATA_TYPE);
+  cc_xml_elt_set_cdata_x(elt, cdata);
+  cc_string_clear_no_free(&doc->pendingcdata);
+
+  if (doc->parsestack.getLength() == 0) {
+    cc_xml_elt_delete_x(elt);
+    return;
+  }
+
+  cc_xml_elt * parent = doc->parsestack[doc->parsestack.getLength()-1];
+  cc_xml_elt_add_child_x(parent, elt);
+
+  if (doc->filtercb) {
+    doc->filtercb(doc->filtercbdata, doc, elt, TRUE);
+    switch (doc->filtercb(doc->filtercbdata, doc, elt, FALSE)) {
+    case KEEP:
+      break;
+    case DISCARD:
+      cc_xml_elt_remove_child_x(parent, elt);
+      cc_xml_elt_delete_x(elt);
+      break;
+    default:
+      assert(!"invalid filter choice returned from client code");
+      break;
+    }
+  }
+}
+
+void
 cc_xml_doc_expat_character_data_handler_cb(void * userdata, const XML_Char * cdata, int len)
 {
 #ifdef DEV_DEBUG
@@ -244,49 +295,12 @@ cc_xml_doc_expat_character_data_handler_cb(void * userdata, const XML_Char * cda
   XML_Parser parser = static_cast<XML_Parser>(userdata);
   cc_xml_doc * doc = static_cast<cc_xml_doc *>(XML_GetUserData(parser));
 
-  cc_xml_elt * elt = cc_xml_elt_new();
-  assert(elt);
-
-  // need a temporary buffer for the cdata to make a nullterminated string.
+  // Expat may report one logical text run through any number of callbacks,
+  // including callbacks split at input-buffer and entity boundaries.
   std::unique_ptr<char[]> buffer(new char [len + 1]);
   memcpy(buffer.get(), cdata, len);
   buffer[len] = '\0';
-  cc_xml_elt_set_type_x(elt, COIN_XML_CDATA_TYPE);
-  cc_xml_elt_set_cdata_x(elt, buffer.get());
-
-  if (cc_xml_is_all_whitespace_p(buffer.get())) {
-    cc_xml_elt_delete_x(elt);
-    return;
-  }
-
-  if (doc->parsestack.getLength() > 0) {
-    cc_xml_elt * parent = doc->parsestack[doc->parsestack.getLength()-1];
-    cc_xml_elt_add_child_x(parent, elt);
-  }
-
-  //FIXME 2008-06-11 BFG: Possible leak of elt.
-
-  if (doc->filtercb) {
-    doc->filtercb(doc->filtercbdata, doc, elt, TRUE);
-    cc_xml_filter_choice choice = doc->filtercb(doc->filtercbdata, doc, elt, FALSE);
-    switch (choice) {
-    case KEEP:
-      break;
-    case DISCARD:
-      {
-        if (doc->parsestack.getLength() > 0) {
-          cc_xml_elt * parent = doc->parsestack[doc->parsestack.getLength()-1];
-          cc_xml_elt_remove_child_x(parent, elt);
-          cc_xml_elt_delete_x(elt);
-          elt = NULL;
-        }
-      }
-      break;
-    default:
-      assert(!"invalid filter choice returned from client code");
-      break;
-    }
-  }
+  cc_string_append_text(&doc->pendingcdata, buffer.get());
 
 #ifdef DEV_DEBUG
   fprintf(stdout, "\nCDATA: '%s'\n", buffer.get());
@@ -294,11 +308,23 @@ cc_xml_doc_expat_character_data_handler_cb(void * userdata, const XML_Char * cda
 }
 
 void
-cc_xml_doc_expat_processing_instruction_handler_cb(void * COIN_UNUSED_ARG(userdata), const XML_Char * COIN_UNUSED_ARG(target), const XML_Char * COIN_UNUSED_ARG(pidata))
+cc_xml_doc_expat_processing_instruction_handler_cb(void * userdata, const XML_Char * COIN_UNUSED_ARG(target), const XML_Char * COIN_UNUSED_ARG(pidata))
 {
+  XML_Parser parser = static_cast<XML_Parser>(userdata);
+  cc_xml_doc * doc = static_cast<cc_xml_doc *>(XML_GetUserData(parser));
+  cc_xml_doc_flush_character_data_x(doc);
+
 #ifdef DEV_DEBUG
   fprintf(stdout, "received processing Instruction...\n");
 #endif // DEV_DEBUG
+}
+
+void
+cc_xml_doc_expat_comment_handler_cb(void * userdata, const XML_Char * COIN_UNUSED_ARG(data))
+{
+  XML_Parser parser = static_cast<XML_Parser>(userdata);
+  cc_xml_doc * doc = static_cast<cc_xml_doc *>(XML_GetUserData(parser));
+  cc_xml_doc_flush_character_data_x(doc);
 }
 
 
@@ -316,6 +342,7 @@ cc_xml_doc_create_parser_x(cc_xml_doc * doc)
   XML_SetCharacterDataHandler(doc->parser,
                               cc_xml_doc_expat_character_data_handler_cb);
   XML_SetProcessingInstructionHandler(doc->parser, cc_xml_doc_expat_processing_instruction_handler_cb);
+  XML_SetCommentHandler(doc->parser, cc_xml_doc_expat_comment_handler_cb);
 }
 
 void
@@ -324,6 +351,7 @@ cc_xml_doc_delete_parser_x(cc_xml_doc * doc)
   assert(doc && doc->parser);
   XML_ParserFree(doc->parser);
   doc->parser = NULL;
+  cc_string_clear_no_free(&doc->pendingcdata);
 }
 
 } // anonymous namespace
@@ -352,6 +380,7 @@ cc_xml_doc_new(void)
   doc->filename = NULL;
   doc->root = NULL;
   doc->current = NULL;
+  cc_string_construct(&doc->pendingcdata);
   return doc;
 }
 
@@ -373,6 +402,7 @@ cc_xml_doc_delete_x(cc_xml_doc * doc)
   delete [] doc->xmlencoding;
   delete [] doc->filename;
   if (doc->root) cc_xml_elt_delete_x(doc->root);
+  cc_string_clean(&doc->pendingcdata);
   delete doc;
 }
 
@@ -878,9 +908,36 @@ cc_xml_doc_handle_parse_warning(const cc_xml_doc * doc, const char * message)
 
 #ifdef COIN_TEST_SUITE
 
+#include <cstring>
 #include <memory>
+#include <Inventor/C/XML/element.h>
 #include <Inventor/C/XML/parser.h>
 #include <Inventor/C/XML/path.h>
+
+namespace {
+
+struct cdata_filter_state {
+  int pushes;
+  int pops;
+  const char * text;
+};
+
+cc_xml_filter_choice
+cdata_filter_cb(void * userdata, cc_xml_doc *, cc_xml_elt * elt, int pushing)
+{
+  cdata_filter_state * state = static_cast<cdata_filter_state *>(userdata);
+  if (strcmp(cc_xml_elt_get_type(elt), COIN_XML_CDATA_TYPE) == 0) {
+    if (pushing) {
+      ++state->pushes;
+      state->text = cc_xml_elt_get_cdata(elt);
+    } else {
+      ++state->pops;
+    }
+  }
+  return KEEP;
+}
+
+} // namespace
 
 BOOST_AUTO_TEST_CASE(bufread)
 {
@@ -907,6 +964,108 @@ BOOST_AUTO_TEST_CASE(bufread)
 
   cc_xml_doc_delete_x(doc1);
   cc_xml_doc_delete_x(doc2);
+}
+
+BOOST_AUTO_TEST_CASE(character_data_is_independent_of_input_chunks)
+{
+  const char * xml = "<root>  alpha &amp; beta  </root>";
+  const char * expected = "  alpha & beta  ";
+  const size_t xmllength = strlen(xml);
+
+  cc_xml_doc * whole = cc_xml_read_buffer(xml);
+  BOOST_REQUIRE(whole != NULL);
+  cc_xml_elt * wholeroot = cc_xml_doc_get_root(whole);
+  BOOST_REQUIRE(wholeroot != NULL);
+  BOOST_CHECK(cc_xml_elt_get_num_children(wholeroot) == 1);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_cdata(wholeroot), expected) == 0);
+
+  cc_xml_doc * chunked = cc_xml_doc_new();
+  for (size_t i = 0; i + 1 < xmllength; ++i) {
+    BOOST_REQUIRE(cc_xml_doc_parse_buffer_partial_x(chunked, xml + i, 1));
+  }
+  BOOST_REQUIRE(cc_xml_doc_parse_buffer_partial_done_x(
+    chunked, xml + xmllength - 1, 1));
+
+  cc_xml_elt * chunkedroot = cc_xml_doc_get_root(chunked);
+  BOOST_REQUIRE(chunkedroot != NULL);
+  BOOST_CHECK(cc_xml_elt_get_num_children(chunkedroot) == 1);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_cdata(chunkedroot), expected) == 0);
+
+  cc_xml_doc_delete_x(chunked);
+  cc_xml_doc_delete_x(whole);
+}
+
+BOOST_AUTO_TEST_CASE(character_data_does_not_cross_element_boundaries)
+{
+  cc_xml_doc * doc = cc_xml_read_buffer("<root>before<child/>after</root>");
+  BOOST_REQUIRE(doc != NULL);
+  cc_xml_elt * root = cc_xml_doc_get_root(doc);
+  BOOST_REQUIRE(root != NULL);
+  BOOST_REQUIRE(cc_xml_elt_get_num_children(root) == 3);
+
+  cc_xml_elt * before = cc_xml_elt_get_child(root, 0);
+  cc_xml_elt * child = cc_xml_elt_get_child(root, 1);
+  cc_xml_elt * after = cc_xml_elt_get_child(root, 2);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_type(before), COIN_XML_CDATA_TYPE) == 0);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_cdata(before), "before") == 0);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_type(child), "child") == 0);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_type(after), COIN_XML_CDATA_TYPE) == 0);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_cdata(after), "after") == 0);
+
+  cc_xml_doc_delete_x(doc);
+}
+
+BOOST_AUTO_TEST_CASE(formatting_whitespace_remains_ignored)
+{
+  cc_xml_doc * doc = cc_xml_read_buffer("<root>\n  <child/>\n</root>");
+  BOOST_REQUIRE(doc != NULL);
+  cc_xml_elt * root = cc_xml_doc_get_root(doc);
+  BOOST_REQUIRE(root != NULL);
+  BOOST_REQUIRE(cc_xml_elt_get_num_children(root) == 1);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_type(cc_xml_elt_get_child(root, 0)),
+                     "child") == 0);
+
+  cc_xml_doc_delete_x(doc);
+}
+
+BOOST_AUTO_TEST_CASE(character_data_filter_observes_coalesced_runs)
+{
+  const char * xml = "<root>a&amp;b</root>";
+  const size_t xmllength = strlen(xml);
+  cdata_filter_state state = { 0, 0, NULL };
+  cc_xml_doc * doc = cc_xml_doc_new();
+  cc_xml_doc_set_filter_cb_x(doc, cdata_filter_cb, &state);
+
+  for (size_t i = 0; i + 1 < xmllength; ++i) {
+    BOOST_REQUIRE(cc_xml_doc_parse_buffer_partial_x(doc, xml + i, 1));
+  }
+  BOOST_REQUIRE(cc_xml_doc_parse_buffer_partial_done_x(
+    doc, xml + xmllength - 1, 1));
+
+  BOOST_CHECK(state.pushes == 1);
+  BOOST_CHECK(state.pops == 1);
+  BOOST_REQUIRE(state.text != NULL);
+  BOOST_CHECK(strcmp(state.text, "a&b") == 0);
+
+  cc_xml_doc_delete_x(doc);
+}
+
+BOOST_AUTO_TEST_CASE(markup_remains_a_character_data_boundary)
+{
+  cc_xml_doc * doc = cc_xml_read_buffer(
+    "<root>one<?coin test?>two<!-- separator -->three</root>");
+  BOOST_REQUIRE(doc != NULL);
+  cc_xml_elt * root = cc_xml_doc_get_root(doc);
+  BOOST_REQUIRE(root != NULL);
+  BOOST_REQUIRE(cc_xml_elt_get_num_children(root) == 3);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_cdata(cc_xml_elt_get_child(root, 0)),
+                     "one") == 0);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_cdata(cc_xml_elt_get_child(root, 1)),
+                     "two") == 0);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_cdata(cc_xml_elt_get_child(root, 2)),
+                     "three") == 0);
+
+  cc_xml_doc_delete_x(doc);
 }
 
 #endif // !COIN_TEST_SUITE
