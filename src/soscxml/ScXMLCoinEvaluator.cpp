@@ -170,20 +170,19 @@ ScXMLCoinEvaluator::setAtLocation(const char * location, ScXMLDataObj * obj)
     // obj can be the value currently stored at this location. Clone it
     // before replacing the old value, and retain ownership if insert throws.
     std::unique_ptr<ScXMLDataObj> copy(cobj->clone());
-    std::map<const char *, ScXMLDataObj *>::iterator it =
-      PRIVATE(this)->temporaries.find(handle);
-    if (it != PRIVATE(this)->temporaries.end()) {
-      ScXMLDataObj * old = it->second;
-      it->second = copy.release();
-      delete old;
+    // Keep the lvalue insert overload used by existing Coin binaries.
+    std::pair<const char *, ScXMLDataObj *> entry;
+    entry.first = handle;
+    entry.second = copy.get();
+    std::pair<std::map<const char *, ScXMLDataObj *>::iterator, bool> inserted =
+      PRIVATE(this)->temporaries.insert(entry);
+    if (inserted.second) {
+      copy.release();
     }
     else {
-      // Keep the lvalue insert overload used by existing Coin binaries.
-      std::pair<const char *, ScXMLDataObj *> entry;
-      entry.first = handle;
-      entry.second = copy.get();
-      PRIVATE(this)->temporaries.insert(entry);
-      copy.release();
+      ScXMLDataObj * old = inserted.first->second;
+      inserted.first->second = copy.release();
+      delete old;
     }
     return TRUE;
   }
