@@ -251,6 +251,7 @@ if(NOT WIN32)
     ${COIN_TARGET_INCLUDE_DIRECTORIES})
   add_test(NAME SoPathAssignmentAllocationFailure
     COMMAND SoPathAssignmentAllocationFailureTest)
+
 endif()
 
 add_executable(SoPathChildAppendTest SoPathChildAppendTest.cpp)
