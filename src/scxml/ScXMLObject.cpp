@@ -70,6 +70,11 @@
 class ScXMLObject::PImpl {
 };
 
+// Keep the constructor instantiated as an exported weak symbol.  Existing
+// binaries can reference this SbPimplPtr specialization even though PImpl no
+// longer has any data members.
+template SbPimplPtr<ScXMLObject::PImpl>::SbPimplPtr(void);
+
 SCXML_OBJECT_ABSTRACT_SOURCE(ScXMLObject);
 
 
