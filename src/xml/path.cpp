@@ -73,9 +73,26 @@ path_node_new(const char * element, int idx)
 
 static
 path_node *
-path_node_clone(path_node * node)
+path_node_clone(const path_node * node)
 {
   return path_node_new(node->element, node->idx);
+}
+
+static
+path_node *
+path_node_clone_chain(const path_node * node, path_node ** tail)
+{
+  path_node * head = NULL;
+  path_node * currenttail = NULL;
+  while (node != NULL) {
+    path_node * clone = path_node_clone(node);
+    if (currenttail == NULL) head = clone;
+    else currenttail->next = clone;
+    currenttail = clone;
+    node = node->next;
+  }
+  if (tail != NULL) *tail = currenttail;
+  return head;
 }
 
 static
@@ -157,16 +174,9 @@ void
 cc_xml_path_copy_x(cc_xml_path * path, cc_xml_path * path2)
 {
   assert(path && path2);
-  cc_xml_path_clear_x(path);
-  path_node * p1node;
-  path_node * p1prev = NULL;
-  path_node * p2node = path2->head;
-  while ( p2node != NULL ) {
-    p1node = path_node_clone(p2node);
-    if ( p1prev == NULL ) path->head = p1node;
-    else p1prev->next = p1node;
-    p1prev = p1node;
-  }
+  path_node * head = path_node_clone_chain(path2->head, NULL);
+  path_node_delete_chain(path->head);
+  path->head = head;
 } // cc_xml_path_copy_x()
 
 void
@@ -201,7 +211,6 @@ cc_xml_path_get_length(const cc_xml_path * path)
   int len = 0;
   struct path_node * node = path->head;
   while ( node != NULL ) {
-    assert(len < 100);
     len++;
     node = node->next;
   }
@@ -272,20 +281,14 @@ void
 cc_xml_path_append_path_x(cc_xml_path * path, cc_xml_path * path2)
 {
   assert(path && path2);
-  struct path_node * p1node = path->head;
-  struct path_node * p1prev = NULL;
-  if ( p1node != NULL ) {
-    while ( p1node->next != NULL ) {
-      p1prev = p1node;
-      p1node = p1node->next;
-    }
-  }
-  struct path_node * p2node = path2->head;
-  while ( p2node != NULL ) {
-    p1node = path_node_clone(p2node);
-    if ( p1prev == NULL ) path->head = p1node;
-    else p1prev->next = p1node;
-    p1prev = p1node;
+  path_node * sourcehead = path_node_clone_chain(path2->head, NULL);
+  if (sourcehead == NULL) return;
+
+  path_node * tail = path->head;
+  if (tail == NULL) path->head = sourcehead;
+  else {
+    while (tail->next != NULL) tail = tail->next;
+    tail->next = sourcehead;
   }
 } // cc_xml_path_append_path_x()
 
@@ -302,19 +305,11 @@ void
 cc_xml_path_prepend_path_x(cc_xml_path * path, cc_xml_path * path2)
 {
   assert(path && path2);
-  struct path_node * p1node = NULL;
-  struct path_node * p1head = NULL;
-  struct path_node * p1tail = NULL;
-  struct path_node * p2node = path2->head;
-  while ( p2node != NULL ) {
-    p1tail = path_node_clone(p2node);
-    if ( p1head == NULL ) p1head = p1tail;
-    else p1node->next = p1tail;
-    p1node = p1tail;
-  }
-  if ( p1tail != NULL ) {
-    p1tail->next = path->head;
-    path->head = p1head;
+  path_node * sourcetail = NULL;
+  path_node * sourcehead = path_node_clone_chain(path2->head, &sourcetail);
+  if (sourcehead != NULL) {
+    sourcetail->next = path->head;
+    path->head = sourcehead;
   }
 } // cc_xml_path_prepend_path_x()
 
@@ -322,15 +317,22 @@ void
 cc_xml_path_truncate_x(cc_xml_path * path, int length)
 {
   assert(path);
-  int len = 0;
+  assert(length >= 0);
+  if (length <= 0) {
+    cc_xml_path_clear_x(path);
+    return;
+  }
+
+  int len = 1;
   struct path_node * node = path->head;
   while ( (node != NULL) && (len < length) ) {
     len++;
     node = node->next;
   }
-  if ( node ) {
-    path_node_delete_chain(node->next);
+  if ( node != NULL ) {
+    path_node * discarded = node->next;
     node->next = NULL;
+    path_node_delete_chain(discarded);
   }
 } // cc_xml_path_truncate_x()
 
@@ -360,3 +362,96 @@ cc_xml_path_dump(const cc_xml_path * path)
 }
 
 /* ********************************************************************** */
+
+#ifdef COIN_TEST_SUITE
+
+#include <cstring>
+
+BOOST_AUTO_TEST_CASE(cc_xml_path_copy_and_combine)
+{
+  cc_xml_path * source = cc_xml_path_new();
+  cc_xml_path_append_x(source, "a", 0);
+  cc_xml_path_append_x(source, "b", 1);
+
+  cc_xml_path * destination = cc_xml_path_new();
+  cc_xml_path_append_x(destination, "old", 2);
+  cc_xml_path_copy_x(destination, source);
+  BOOST_REQUIRE_EQUAL(cc_xml_path_get_length(destination), 2);
+  BOOST_CHECK_EQUAL(strcmp(cc_xml_path_get_type(destination, 0), "a"), 0);
+  BOOST_CHECK_EQUAL(cc_xml_path_get_index(destination, 1), 1);
+
+  cc_xml_path_copy_x(destination, destination);
+  BOOST_REQUIRE_EQUAL(cc_xml_path_get_length(destination), 2);
+  BOOST_CHECK_EQUAL(strcmp(cc_xml_path_get_type(destination, 1), "b"), 0);
+
+  cc_xml_path_append_path_x(destination, source);
+  BOOST_REQUIRE_EQUAL(cc_xml_path_get_length(destination), 4);
+  BOOST_CHECK_EQUAL(strcmp(cc_xml_path_get_type(destination, 2), "a"), 0);
+  BOOST_CHECK_EQUAL(strcmp(cc_xml_path_get_type(destination, 3), "b"), 0);
+  BOOST_CHECK_EQUAL(cc_xml_path_get_length(source), 2);
+
+  cc_xml_path_append_path_x(source, source);
+  BOOST_REQUIRE_EQUAL(cc_xml_path_get_length(source), 4);
+  BOOST_CHECK_EQUAL(strcmp(cc_xml_path_get_type(source, 2), "a"), 0);
+  BOOST_CHECK_EQUAL(strcmp(cc_xml_path_get_type(source, 3), "b"), 0);
+
+  cc_xml_path_prepend_path_x(destination, source);
+  BOOST_REQUIRE_EQUAL(cc_xml_path_get_length(destination), 8);
+  BOOST_CHECK_EQUAL(strcmp(cc_xml_path_get_type(destination, 0), "a"), 0);
+  BOOST_CHECK_EQUAL(strcmp(cc_xml_path_get_type(destination, 4), "a"), 0);
+
+  cc_xml_path_prepend_path_x(source, source);
+  BOOST_REQUIRE_EQUAL(cc_xml_path_get_length(source), 8);
+  BOOST_CHECK_EQUAL(strcmp(cc_xml_path_get_type(source, 4), "a"), 0);
+
+  cc_xml_path * empty = cc_xml_path_new();
+  cc_xml_path_append_path_x(destination, empty);
+  cc_xml_path_prepend_path_x(destination, empty);
+  BOOST_CHECK_EQUAL(cc_xml_path_get_length(destination), 8);
+
+  cc_xml_path_append_path_x(empty, source);
+  BOOST_CHECK_EQUAL(cc_xml_path_get_length(empty), 8);
+  cc_xml_path_clear_x(empty);
+  cc_xml_path_prepend_path_x(empty, source);
+  BOOST_CHECK_EQUAL(cc_xml_path_get_length(empty), 8);
+
+  cc_xml_path * blank = cc_xml_path_new();
+  cc_xml_path_copy_x(empty, blank);
+  BOOST_CHECK_EQUAL(cc_xml_path_get_length(empty), 0);
+
+  cc_xml_path_delete_x(blank);
+  cc_xml_path_delete_x(empty);
+  cc_xml_path_delete_x(destination);
+  cc_xml_path_delete_x(source);
+}
+
+BOOST_AUTO_TEST_CASE(cc_xml_path_truncate_exact_length)
+{
+  cc_xml_path * path = cc_xml_path_new();
+  for (int i = 0; i < 128; i++) {
+    cc_xml_path_append_x(path, "node", i);
+  }
+  BOOST_REQUIRE_EQUAL(cc_xml_path_get_length(path), 128);
+
+  cc_xml_path_truncate_x(path, 128);
+  BOOST_CHECK_EQUAL(cc_xml_path_get_length(path), 128);
+  cc_xml_path_truncate_x(path, 256);
+  BOOST_CHECK_EQUAL(cc_xml_path_get_length(path), 128);
+
+  cc_xml_path_truncate_x(path, 64);
+  BOOST_REQUIRE_EQUAL(cc_xml_path_get_length(path), 64);
+  BOOST_CHECK_EQUAL(cc_xml_path_get_index(path, 63), 63);
+
+  cc_xml_path_truncate_x(path, 1);
+  BOOST_REQUIRE_EQUAL(cc_xml_path_get_length(path), 1);
+  BOOST_CHECK_EQUAL(cc_xml_path_get_index(path, 0), 0);
+
+  cc_xml_path_truncate_x(path, 0);
+  BOOST_CHECK_EQUAL(cc_xml_path_get_length(path), 0);
+  cc_xml_path_truncate_x(path, 0);
+  BOOST_CHECK_EQUAL(cc_xml_path_get_length(path), 0);
+
+  cc_xml_path_delete_x(path);
+}
+
+#endif // COIN_TEST_SUITE
