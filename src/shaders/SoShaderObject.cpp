@@ -133,6 +133,10 @@
 
 // *************************************************************************
 
+// Keep the historical exported SbList<uint32_t> destructor available even
+// after the private GL-context map no longer uses this list type.
+template SbList<uint32_t>::~SbList();
+
 class SoShaderObjectP
 {
 public:
