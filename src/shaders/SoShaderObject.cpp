@@ -105,6 +105,7 @@
 #include <Inventor/nodes/SoShaderObject.h>
 
 #include <cassert>
+#include <memory>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoSearchAction.h>
@@ -124,13 +125,17 @@
 #include <Inventor/lists/SbStringList.h>
 
 #include "nodes/SoSubNodeP.h"
-#include "misc/SbHash.h"
+#include "misc/SbSmallMap.h"
 #include "shaders/SoGLARBShaderObject.h"
 #include "shaders/SoGLCgShaderObject.h"
 #include "shaders/SoGLSLShaderObject.h"
 #include "shaders/SoGLShaderProgram.h"
 
 // *************************************************************************
+
+// Keep the historical exported SbList<uint32_t> destructor available even
+// after the private GL-context map no longer uses this list type.
+template SbList<uint32_t>::~SbList();
 
 class SoShaderObjectP
 {
@@ -155,15 +160,13 @@ public:
     (void) this->glshaderobjects.put(cachecontext, obj);
   }
   void deleteGLShaderObjects(void) {
-    SbList <uint32_t> keylist;
-    this->glshaderobjects.makeKeyList(keylist);
-    for (int i = 0; i < keylist.getLength(); i++) {
-      SoGLShaderObject * glshader = NULL;
-      (void) this->glshaderobjects.get(keylist[i], glshader);
-      SoGLCacheContextElement::scheduleDeleteCallback(glshader->getCacheContext(),
+    while (this->glshaderobjects.getNumElements() != 0) {
+      SoGLShaderObject * glshader = this->glshaderobjects.const_begin()->obj;
+      const uint32_t context = glshader->getCacheContext();
+      SoGLCacheContextElement::scheduleDeleteCallback(context,
                                                       really_delete_object, glshader);
+      this->glshaderobjects.erase(context);
     }
-    this->glshaderobjects.clear();
   }
   //
   // Callback from SoGLCacheContextElement
@@ -187,12 +190,9 @@ public:
   }
 
   void invalidateParameters(void) {
-    SbList <uint32_t> keylist;
-    this->glshaderobjects.makeKeyList(keylist);
-    for (int i = 0; i < keylist.getLength(); i++) {
-      SoGLShaderObject * glshader = NULL;
-      (void) this->glshaderobjects.get(keylist[i], glshader);
-      glshader->setParametersDirty(TRUE);
+    for (SbSmallMap<uint32_t, SoGLShaderObject *>::const_iterator it =
+           this->glshaderobjects.const_begin(); it != this->glshaderobjects.const_end(); ++it) {
+      it->obj->setParametersDirty(TRUE);
     }
   }
 
@@ -214,7 +214,8 @@ private:
   static void sensorCB(void *data, SoSensor *);
 
   SbStringList searchdirectories;
-  SbHash<uint32_t, SoGLShaderObject *> glshaderobjects;
+  // Keep the common one- or two-context resource set inline.
+  SbSmallMap<uint32_t, SoGLShaderObject *> glshaderobjects;
 
   void checkType(void); // sets cachedSourceType
   void readSource(void); // sets cachedSourceProgram depending on sourceType
@@ -438,19 +439,21 @@ SoShaderObjectP::render(SoState * state)
       return;
     }
 
+    std::unique_ptr<SoGLShaderObject> newshader;
     switch (this->cachedSourceType) {
     case SoShaderObject::ARB_PROGRAM:
-      shaderobject = new SoGLARBShaderObject(cachecontext);
+      newshader.reset(new SoGLARBShaderObject(cachecontext));
       break;
     case SoShaderObject::CG_PROGRAM:
-      shaderobject = new SoGLCgShaderObject(cachecontext);
+      newshader.reset(new SoGLCgShaderObject(cachecontext));
       break;
     case SoShaderObject::GLSL_PROGRAM:
-      shaderobject = new SoGLSLShaderObject(cachecontext);
+      newshader.reset(new SoGLSLShaderObject(cachecontext));
       break;
     default:
       assert(FALSE && "This shouldn't happen!");
     }
+    shaderobject = newshader.get();
 
     if (this->owner->isOfType(SoVertexShader::getClassTypeId())) {
       shaderobject->setShaderType(SoGLShaderObject::VERTEX);
@@ -471,6 +474,7 @@ SoShaderObjectP::render(SoState * state)
 #endif
     shaderobject->load(this->cachedSourceProgram.getString());
     this->setGLShaderObject(shaderobject, cachecontext);
+    newshader.release(); // The context map owns the shader object now.
   }
   if (shaderobject) {
     shaderProgram->addShaderObject(shaderobject);
@@ -738,8 +742,9 @@ SoShaderObjectP::updateStateMatrixParameters(const uint32_t cachecontext, SoStat
 
   int i, cnt = this->owner->parameter.getNum();
   for (i= 0; i <cnt; i++) {
-    STATE_PARAM * param = (STATE_PARAM*)this->owner->parameter[i];
-    if (param->isOfType(STATE_PARAM::getClassTypeId())) {
+    SoNode * node = this->owner->parameter[i];
+    if (node != NULL && node->isOfType(STATE_PARAM::getClassTypeId())) {
+      STATE_PARAM * param = static_cast<STATE_PARAM *>(node);
       param->updateValue(state);
       param->updateParameter(shaderobject);
 	}

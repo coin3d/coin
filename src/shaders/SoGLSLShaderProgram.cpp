@@ -47,7 +47,6 @@
 // *************************************************************************
 
 SoGLSLShaderProgram::SoGLSLShaderProgram(void)
-  : programHandles(5)
 {
   this->isExecutable = FALSE;
   this->neededlinking = TRUE;
@@ -76,15 +75,14 @@ SoGLSLShaderProgram::deleteProgram(const cc_glglue * g)
 void
 SoGLSLShaderProgram::deletePrograms(void)
 {
-  SbList <uint32_t> keylist;
-  this->programHandles.makeKeyList(keylist);
-  for (int i = 0; i < keylist.getLength(); i++) {
-    COIN_GLhandle glhandle = 0;
-    (void) this->programHandles.get(keylist[i], glhandle);
-    uintptr_t tmp = (uintptr_t) glhandle;
-    SoGLCacheContextElement::scheduleDeleteCallback(keylist[i],
-                                                    really_delete_object, (void*) tmp);
-    this->programHandles.erase(keylist[i]);
+  while (this->programHandles.getNumElements() != 0) {
+    const SbSmallMap<uint32_t, COIN_GLhandle>::const_iterator it =
+      this->programHandles.const_begin();
+    const uint32_t context = it->key;
+    const uintptr_t handle = static_cast<uintptr_t>(it->obj);
+    SoGLCacheContextElement::scheduleDeleteCallback(context,
+                                                    really_delete_object, (void*) handle);
+    this->programHandles.erase(context);
   }
 }
 
@@ -217,7 +215,13 @@ SoGLSLShaderProgram::getProgramHandle(const cc_glglue * g, const SbBool create)
   COIN_GLhandle handle = 0;
   if (!this->programHandles.get(g->contextid, handle) && create) {
     handle = g->glCreateProgramObjectARB();
-    this->programHandles.put(g->contextid, handle);
+    try {
+      this->programHandles.put(g->contextid, handle);
+    }
+    catch (...) {
+      g->glDeleteObjectARB(handle);
+      throw;
+    }
   }
   return handle;
 }

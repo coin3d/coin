@@ -41,7 +41,7 @@
 
 #include <Inventor/lists/SbList.h>
 
-#include "misc/SbHash.h"
+#include "misc/SbSmallMap.h"
 #include "glue/glp.h"
 
 class SoGLSLShaderObject;
@@ -77,7 +77,8 @@ public:
 protected:
   SbList <int> programParameters;
   SbList <SoGLSLShaderObject *> shaderObjects;
-  SbHash<uint32_t, COIN_GLhandle> programHandles;
+  // Shader programs normally span only a small number of GL contexts.
+  SbSmallMap<uint32_t, COIN_GLhandle> programHandles;
 
   SbBool isExecutable;
   SbBool neededlinking;
