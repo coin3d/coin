@@ -39,6 +39,7 @@
 
 #include "tidbitsp.h"
 #include "base/dict.h"
+#include "base/oomp.h"
 #include "threads/syncp.h"
 #include "threads/mutexp.h"
 
@@ -59,6 +60,7 @@ sync_hash_cb(uintptr_t COIN_UNUSED_ARG(key), void * val, void * COIN_UNUSED_ARG(
 static void
 sync_cleanup(void)
 {
+  if (sync_hash_table == NULL) return;
   cc_dict_apply(sync_hash_table, sync_hash_cb, NULL);
   cc_dict_destruct(sync_hash_table);
   sync_hash_table = NULL;
@@ -74,8 +76,10 @@ cc_sync_init(void)
     /* the priority is set so to make this callback trigger late,
        after normal cleanup function which might still use a cc_sync
        instance */
-    coin_atexit((coin_atexit_f*) sync_cleanup, CC_ATEXIT_THREADING_SUBSYSTEM);
-    sync_hash_table = cc_dict_construct(256, 0.75f);    
+    sync_hash_table = cc_dict_construct(256, 0.75f);
+    if (sync_hash_table != NULL) {
+      coin_atexit((coin_atexit_f*) sync_cleanup, CC_ATEXIT_THREADING_SUBSYSTEM);
+    }
   }
 }
 
@@ -95,9 +99,14 @@ cc_sync_begin(void * id)
   if (sync_hash_table == NULL) {
     cc_sync_init();
   }
+  if (sync_hash_table == NULL) coin_oom_abort("cc_sync_begin dictionary");
   if (!cc_dict_get(sync_hash_table, (uintptr_t)id, &mutex)) {
     mutex = cc_mutex_construct();
-    (void) cc_dict_put(sync_hash_table, (uintptr_t)id, mutex);
+    if (mutex == NULL) coin_oom_abort("cc_sync_begin mutex");
+    if (cc_dict_try_put(sync_hash_table, (uintptr_t)id, mutex) !=
+        CC_DICT_PUT_INSERTED) {
+      coin_oom_abort("cc_sync_begin cache insertion");
+    }
   }
 
   cc_mutex_global_unlock();
@@ -130,6 +139,10 @@ cc_sync_free(void * id)
   cc_mutex_global_lock();
   if (sync_hash_table == NULL) {
     cc_sync_init();
+  }
+  if (sync_hash_table == NULL) {
+    cc_mutex_global_unlock();
+    return;
   }
   if (cc_dict_get(sync_hash_table, (uintptr_t)id, &mutex)) {
     cc_mutex_destruct((cc_mutex*) mutex);
