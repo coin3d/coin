@@ -882,12 +882,13 @@ SoBase::getAuditors(void) const
   if (iter!=SoBase::PImpl::auditordict->const_end()) {
     l = iter->obj;
     // empty list before copying in new values
-    for (int i = 0; i < l->getLength(); i++) {
-      l->remove(i);
+    for (int i = l->getLength(); i > 0; --i) {
+      l->remove(i - 1);
     }
   }
   else {
-    (*SoBase::PImpl::auditordict)[this] = new SoAuditorList;
+    l = new SoAuditorList;
+    (*SoBase::PImpl::auditordict)[this] = l;
   }
   cc_rbptree_traverse(&this->auditortree, (cc_rbptree_traversecb*)sobase_audlist_add, l);
 
