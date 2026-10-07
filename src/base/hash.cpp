@@ -42,6 +42,10 @@
 #include <Inventor/C/base/hash.h>
 
 #include <cassert>
+#include <cmath>
+#include <climits>
+#include <cstdint>
+#include <cstdlib>
 #include <cstdio>
 #include <cstring>
 
@@ -49,6 +53,7 @@
 #include <Inventor/C/errors/debugerror.h>
 
 #include "base/hashp.h"
+#include "base/oomp.h"
 #include "tidbitsp.h"
 #include "coindefs.h"
 
@@ -126,32 +131,41 @@ hash_get_index(cc_hash * ht, cc_hash_key key)
   Private function to resize the hash table.
 */
 
+static unsigned int
+hash_threshold(unsigned int size, float loadfactor)
+{
+  const double scaled = static_cast<double>(size) * loadfactor;
+  return scaled >= static_cast<double>(UINT_MAX) ? UINT_MAX :
+    static_cast<unsigned int>(scaled);
+}
+
 static void
 hash_resize(cc_hash * ht, unsigned int newsize)
 {
-  cc_hash_entry ** oldbuckets = ht->buckets;
-  unsigned int oldsize = ht->size, i;
-  cc_hash_entry * prev;
-
   /* Never shrink the table */
   if (ht->size >= newsize)
     return;
+  if (static_cast<size_t>(newsize) > SIZE_MAX / sizeof(cc_hash_entry *))
+    return;
 
-  ht->size = newsize;
-  ht->elements = 0;
-  ht->threshold = (unsigned int) (newsize * ht->loadfactor);
-  ht->buckets = (cc_hash_entry **) calloc(newsize, sizeof(cc_hash_entry*));
+  cc_hash_entry ** buckets = (cc_hash_entry **)
+    calloc(newsize, sizeof(cc_hash_entry *));
+  if (buckets == NULL) return;
 
-  /* Transfer all mappings */
-  for (i = 0; i < oldsize; i++) {
+  cc_hash_entry ** oldbuckets = ht->buckets;
+  for (unsigned int i = 0; i < ht->size; ++i) {
     cc_hash_entry * he = oldbuckets[i];
     while (he) {
-      cc_hash_put(ht, he->key, he->val);
-      prev = he;
-      he = he->next;
-      cc_memalloc_deallocate(ht->memalloc, prev);
+      cc_hash_entry * next = he->next;
+      const unsigned int index = ht->hashfunc(he->key) % newsize;
+      he->next = buckets[index];
+      buckets[index] = he;
+      he = next;
     }
   }
+  ht->buckets = buckets;
+  ht->size = newsize;
+  ht->threshold = hash_threshold(newsize, ht->loadfactor);
   free(oldbuckets);
 }
 
@@ -170,27 +184,37 @@ hash_resize(cc_hash * ht, unsigned int newsize)
   possible to specify a number bigger than 1, but then there will be
   greater chance of having many elements on the same bucket (linear
   search for an element). If you supply a number <= 0 for loadfactor,
-  the default value 0.75 will be used.
+  or a non-finite value, the default value 0.75 will be used. A finite
+  factor greater than one is accepted and its threshold saturates at
+  UINT_MAX. Allocation failure terminates with an OOM diagnostic because
+  legacy SbDict callers require a valid hash table.
 */
 cc_hash *
 cc_hash_construct(unsigned int size, float loadfactor)
 {
   unsigned int s;
   cc_hash * ht = (cc_hash *) malloc(sizeof(cc_hash));
+  if (ht == NULL) coin_oom_abort("cc_hash_construct");
 
   /* size should be a prime number */
   s = (unsigned int) coin_geq_prime_number(size);
-  if (loadfactor <= 0.0f) loadfactor = 0.75f;
+  if (!std::isfinite(loadfactor) || loadfactor <= 0.0f)
+    loadfactor = 0.75f;
+  if (static_cast<size_t>(s) > SIZE_MAX / sizeof(cc_hash_entry *))
+    coin_oom_abort("cc_hash_construct buckets");
   
   ht->size = s;
   ht->elements = 0;
-  ht->threshold = (unsigned int) (s * loadfactor);
+  ht->threshold = hash_threshold(s, loadfactor);
   ht->loadfactor = loadfactor;
   ht->buckets = (cc_hash_entry **) calloc(s, sizeof(cc_hash_entry*));
+  if (ht->buckets == NULL) coin_oom_abort("cc_hash_construct buckets");
   ht->hashfunc = hash_default_hashfunc;
   /* we use a memory allocator to avoid an operating system malloc
      every time a new entry is needed */
-  ht->memalloc = cc_memalloc_construct(sizeof(cc_hash_entry));
+  ht->memalloc = cc_memalloc_construct_aligned(
+    sizeof(cc_hash_entry), alignof(cc_hash_entry));
+  if (ht->memalloc == NULL) coin_oom_abort("cc_hash_construct allocator");
   return ht;
 }
 
@@ -265,13 +289,15 @@ cc_hash_put(cc_hash * ht, cc_hash_key key, void * val)
   /* Key not already in the hash table; insert a new
    * entry as the first element in the bucket
    */
+  if (ht->elements == UINT_MAX) coin_oom_abort("cc_hash_put capacity");
   he = (cc_hash_entry *) cc_memalloc_allocate(ht->memalloc);
+  if (he == NULL) coin_oom_abort("cc_hash_put");
   he->key = key;
   he->val = val;
   he->next = ht->buckets[i];
   ht->buckets[i] = he;
 
-  if (ht->elements++ >= ht->threshold) {
+  if (ht->elements++ >= ht->threshold && ht->size < UINT_MAX) {
     hash_resize(ht, (unsigned int) coin_geq_prime_number(ht->size + 1));
   }
   return TRUE;
