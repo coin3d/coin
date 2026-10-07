@@ -39,6 +39,8 @@
 #include <Inventor/C/base/string.h>
 
 #include "base/dict.h"
+#include "base/listp.h"
+#include "base/oomp.h"
 #include "threads/threadsutilp.h"
 #include "tidbitsp.h"
 #include "fonts/glyph2d.h"
@@ -104,15 +106,18 @@ static void
 cc_glyph2d_initialize()
 {
   CC_MUTEX_CONSTRUCT(glyph2d_fonthash_lock);
+#ifdef HAVE_THREADS
+  if (glyph2d_fonthash_lock == NULL) coin_oom_abort("cc_glyph2d mutex");
+#endif
   GLYPH2D_MUTEX_LOCK(glyph2d_fonthash_lock);
   
   if (glyph2d_initialized) {
     GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);
     return;
   }
-  glyph2d_initialized = TRUE;
-  
   glyph2d_fonthash = cc_dict_construct(15, 0.75);
+  if (glyph2d_fonthash == NULL) coin_oom_abort("cc_glyph2d dictionary");
+  glyph2d_initialized = TRUE;
 
   /* +1, so it happens before the underlying font abstraction layer
      cleans itself up: */
@@ -160,17 +165,21 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
     /* No glyphlist for this character is found. Create one and
        add it to the hashtable. */
     glyphlist = cc_list_construct();
-    cc_dict_put(glyph2d_fonthash, (uintptr_t)character, glyphlist);
+    if (glyphlist == NULL ||
+        cc_dict_try_put(glyph2d_fonthash, (uintptr_t)character, glyphlist) !=
+        CC_DICT_PUT_INSERTED)
+      coin_oom_abort("cc_glyph2d cache insertion");
   }
 
   assert(glyphlist);
 
   /* build a new glyph struct with bitmap */    
   glyph = (cc_glyph2d *) malloc(sizeof(cc_glyph2d));
+  if (glyph == NULL) coin_oom_abort("cc_glyph2d glyph");
   glyph->c.character = character;
   
   newspec = (cc_font_specification *) malloc(sizeof(cc_font_specification)); 
-  assert(newspec);
+  if (newspec == NULL) coin_oom_abort("cc_glyph2d font specification");
   cc_fontspec_copy(spec, newspec);
 
   glyph->c.fontspec = newspec;
@@ -178,6 +187,7 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
   /* FIXME: fonttoload variable should be allocated on the
      stack. 20030921 mortene. */
   fonttoload = cc_string_construct_new();
+  if (fonttoload == NULL) coin_oom_abort("cc_glyph2d font name");
   cc_string_set_text(fonttoload, cc_string_get_text(&spec->name));
   if (cc_string_length(&spec->style) > 0) {
     cc_string_append_text(fonttoload, " ");
@@ -231,7 +241,8 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
   glyph->c.refcount = 1;
   
   /* Store newly created glyph in the list for this character */
-  cc_list_append(glyphlist, glyph);
+  if (!cc_list_try_append(glyphlist, glyph))
+    coin_oom_abort("cc_glyph2d cache list");
   
   GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);
   return glyph;

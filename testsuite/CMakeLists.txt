@@ -116,15 +116,17 @@ add_executable(CoinTests
 )
 
 # Private Coin symbols are not exported from the Windows DLL. Compile the
-# dictionary implementation and the existing prime-number support directly
+# dictionary implementation, prime-number and SbHashFunc support directly
 # into CoinTests. Static builds resolve these symbols from the Coin archive.
 if(WIN32 AND COIN_BUILD_SHARED_LIBS)
 	target_sources(CoinTests PRIVATE
 		${PROJECT_SOURCE_DIR}/src/base/dict.cpp
-		CoinGeqPrimeNumberWin32TestSupport.cpp)
+		CoinGeqPrimeNumberWin32TestSupport.cpp
+		SbHashFuncSbStringWin32TestSupport.cpp)
 	set_source_files_properties(
 		${PROJECT_SOURCE_DIR}/src/base/dict.cpp
 		CoinGeqPrimeNumberWin32TestSupport.cpp
+		SbHashFuncSbStringWin32TestSupport.cpp
 		PROPERTIES
 		COMPILE_DEFINITIONS COIN_INTERNAL)
 endif()
