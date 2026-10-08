@@ -1,5 +1,9 @@
 Unreleased:
 * bugfixes:
+  - Reject shallow copies of SbStorage and SbTypedStorage at compile time:
+    the wrappers own their storage handle, so copying it causes double
+    destruction. Class layout is unchanged, but source code copying these
+    objects must be updated. A NULL cc_storage_apply_to_all callback is a no-op.
   - Make nodekit path factories return genuine SoNodeKitPath objects and
     remove undefined SoPath-to-SoNodeKitPath downcasts in manipulators.
     Handle temporary null entries in nodekit paths and restore nodekit
