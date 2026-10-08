@@ -78,6 +78,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoField.h>
+#include <Inventor/lists/SbPList.h>
 #include <Inventor/lists/SoBaseList.h>
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/misc/SoProto.h>
@@ -814,8 +815,10 @@ SoBase::notify(SoNotList * l)
 #endif // debug
 
   SoBase::PImpl::NotifyData notdata;
+  SbPList notified;
   notdata.list = l;
   notdata.thisp = this;
+  notdata.notified = &notified;
 
   cc_rbptree_traverse(&this->auditortree, (cc_rbptree_traversecb *)SoBase::PImpl::rbptree_notify_cb, &notdata);
 }
