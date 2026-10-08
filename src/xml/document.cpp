@@ -41,6 +41,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <cassert>
+#include <climits>
 
 #include <memory>
 
@@ -114,8 +115,14 @@
   \ingroup coin_XML
 */
 
+enum cc_xml_doc_parse_state {
+  CC_XML_DOC_PARSE_IDLE,
+  CC_XML_DOC_PARSE_ACTIVE
+};
+
 struct cc_xml_doc {
   XML_Parser parser;
+  cc_xml_doc_parse_state parsestate;
 
   cc_xml_filter_cb * filtercb;
   void * filtercbdata;
@@ -126,10 +133,21 @@ struct cc_xml_doc {
   char * xmlencoding;
 
   char * filename;
+  // The public root remains committed while callbacks build parserroot.
   cc_xml_elt * root;
+  cc_xml_elt * parserroot;
+  // Restored if a callback changes current before the parse fails.
+  cc_xml_elt * parserpreviouscurrent;
   cc_xml_elt * current;
 
   SbList<cc_xml_elt *> parsestack;
+
+  cc_xml_limits limits;
+  cc_xml_limit_hit limithit;
+  size_t inputbytes;
+  size_t expandedbytes;
+  size_t elements;
+  size_t attributes;
 };
 
 // *************************************************************************
@@ -137,11 +155,59 @@ struct cc_xml_doc {
 
 namespace {
 
+SbBool
+cc_xml_doc_limit_take_x(cc_xml_doc * doc, size_t amount, size_t maximum,
+                        size_t & used, cc_xml_limit_hit kind)
+{
+  if (amount > static_cast<size_t>(-1) - used ||
+      (maximum != 0 && (used > maximum || amount > maximum - used))) {
+    doc->limithit = kind;
+    return FALSE;
+  }
+  used += amount;
+  return TRUE;
+}
+
+SbBool
+cc_xml_doc_limit_element_start_x(cc_xml_doc * doc, const XML_Char * elementtype,
+                                 const XML_Char ** attributes)
+{
+  const size_t depth = static_cast<size_t>(doc->parsestack.getLength()) + 1;
+  if (doc->limits.depth != 0 && depth > doc->limits.depth) {
+    doc->limithit = CC_XML_LIMIT_DEPTH;
+    return FALSE;
+  }
+  if (!cc_xml_doc_limit_take_x(doc, 1, doc->limits.elements,
+                               doc->elements, CC_XML_LIMIT_ELEMENTS) ||
+      !cc_xml_doc_limit_take_x(doc, strlen(elementtype), doc->limits.expanded_bytes,
+                               doc->expandedbytes, CC_XML_LIMIT_EXPANDED_BYTES)) {
+    return FALSE;
+  }
+  if (attributes) {
+    for (size_t c = 0; attributes[c] != NULL; c += 2) {
+      if (!cc_xml_doc_limit_take_x(doc, 1, doc->limits.attributes,
+                                   doc->attributes, CC_XML_LIMIT_ATTRIBUTES) ||
+          !cc_xml_doc_limit_take_x(doc, strlen(attributes[c]), doc->limits.expanded_bytes,
+                                   doc->expandedbytes, CC_XML_LIMIT_EXPANDED_BYTES) ||
+          !cc_xml_doc_limit_take_x(doc, strlen(attributes[c+1]), doc->limits.expanded_bytes,
+                                   doc->expandedbytes, CC_XML_LIMIT_EXPANDED_BYTES)) {
+        return FALSE;
+      }
+    }
+  }
+  return TRUE;
+}
+
 void
 cc_xml_doc_expat_element_start_handler_cb(void * userdata, const XML_Char * elementtype, const XML_Char ** attributes)
 {
   XML_Parser parser = static_cast<XML_Parser>(userdata);
   cc_xml_doc * doc = static_cast<cc_xml_doc *>(XML_GetUserData(parser));
+
+  if (!cc_xml_doc_limit_element_start_x(doc, elementtype, attributes)) {
+    XML_StopParser(parser, XML_FALSE);
+    return;
+  }
 
   cc_xml_elt * elt = cc_xml_elt_new_from_data(elementtype, NULL);
   assert(elt);
@@ -149,7 +215,7 @@ cc_xml_doc_expat_element_start_handler_cb(void * userdata, const XML_Char * elem
   // FIXME: check if attribute values are automatically dequoted or not...
   // (dequote if not)
   if (attributes) {
-    for (int c = 0; attributes[c] != NULL; c += 2) {
+    for (size_t c = 0; attributes[c] != NULL; c += 2) {
       cc_xml_attr * attr = cc_xml_attr_new_from_data(attributes[c], attributes[c+1]);
       cc_xml_elt_set_attribute_x(elt, attr);
     }
@@ -160,8 +226,8 @@ cc_xml_doc_expat_element_start_handler_cb(void * userdata, const XML_Char * elem
     cc_xml_elt_add_child_x(parent, elt);
   }
 
-  if ((doc->parsestack.getLength() == 0) && (doc->root == NULL)) {
-    cc_xml_doc_set_root_x(doc, elt);
+  if ((doc->parsestack.getLength() == 0) && (doc->parserroot == NULL)) {
+    doc->parserroot = elt;
   }
 
   doc->parsestack.push(elt);
@@ -198,8 +264,8 @@ cc_xml_doc_expat_element_end_handler_cb(void * userdata, const XML_Char * elemen
           cc_xml_elt_remove_child_x(parent, topelt);
           cc_xml_elt_delete_x(topelt);
         } else {
-          if (topelt == doc->root) {
-            cc_xml_doc_set_root_x(doc, NULL);
+          if (topelt == doc->parserroot) {
+            doc->parserroot = NULL;
             cc_xml_elt_delete_x(topelt);
           } else {
             assert(!"invalid case - investigate");
@@ -243,6 +309,13 @@ cc_xml_doc_expat_character_data_handler_cb(void * userdata, const XML_Char * cda
 
   XML_Parser parser = static_cast<XML_Parser>(userdata);
   cc_xml_doc * doc = static_cast<cc_xml_doc *>(XML_GetUserData(parser));
+
+  if (!cc_xml_doc_limit_take_x(doc, static_cast<size_t>(len),
+                               doc->limits.expanded_bytes, doc->expandedbytes,
+                               CC_XML_LIMIT_EXPANDED_BYTES)) {
+    XML_StopParser(parser, XML_FALSE);
+    return;
+  }
 
   cc_xml_elt * elt = cc_xml_elt_new();
   assert(elt);
@@ -326,6 +399,66 @@ cc_xml_doc_delete_parser_x(cc_xml_doc * doc)
   doc->parser = NULL;
 }
 
+void
+cc_xml_doc_parse_begin_x(cc_xml_doc * doc)
+{
+  assert(doc);
+  assert(doc->parsestate == CC_XML_DOC_PARSE_IDLE);
+  assert(doc->parser == NULL);
+  assert(doc->parserroot == NULL);
+  doc->parsestack.truncate(0);
+  doc->limithit = CC_XML_LIMIT_NONE;
+  doc->inputbytes = 0;
+  doc->expandedbytes = 0;
+  doc->elements = 0;
+  doc->attributes = 0;
+  doc->parserpreviouscurrent = doc->current;
+  cc_xml_doc_create_parser_x(doc);
+  doc->parsestate = CC_XML_DOC_PARSE_ACTIVE;
+}
+
+void
+cc_xml_doc_parse_rollback_x(cc_xml_doc * doc)
+{
+  assert(doc);
+  assert(doc->parsestate == CC_XML_DOC_PARSE_ACTIVE);
+  if (doc->parser) cc_xml_doc_delete_parser_x(doc);
+  doc->parsestack.truncate(0);
+  if (doc->parserroot) {
+    cc_xml_elt_delete_x(doc->parserroot);
+    doc->parserroot = NULL;
+  }
+  doc->current = doc->parserpreviouscurrent;
+  doc->parserpreviouscurrent = NULL;
+  doc->parsestate = CC_XML_DOC_PARSE_IDLE;
+}
+
+void
+cc_xml_doc_parse_commit_x(cc_xml_doc * doc)
+{
+  assert(doc);
+  assert(doc->parsestate == CC_XML_DOC_PARSE_ACTIVE);
+  if (doc->parser) cc_xml_doc_delete_parser_x(doc);
+  doc->parsestack.truncate(0);
+
+  cc_xml_elt * oldroot = doc->root;
+  doc->root = doc->parserroot;
+  doc->parserroot = NULL;
+  doc->parserpreviouscurrent = NULL;
+  doc->current = NULL;
+  doc->parsestate = CC_XML_DOC_PARSE_IDLE;
+
+  if (oldroot) cc_xml_elt_delete_x(oldroot);
+}
+
+void
+cc_xml_doc_parse_abort_if_active_x(cc_xml_doc * doc)
+{
+  if (doc->parsestate == CC_XML_DOC_PARSE_ACTIVE) {
+    cc_xml_doc_parse_rollback_x(doc);
+  }
+}
+
 } // anonymous namespace
 
 // *************************************************************************
@@ -345,13 +478,22 @@ cc_xml_doc_new(void)
   cc_xml_doc * doc = new cc_xml_doc;
   assert(doc);
   doc->parser = NULL;
+  doc->parsestate = CC_XML_DOC_PARSE_IDLE;
   doc->xmlversion = NULL;
   doc->xmlencoding = NULL;
   doc->filtercb = NULL;
   doc->filtercbdata = NULL;
   doc->filename = NULL;
   doc->root = NULL;
+  doc->parserroot = NULL;
+  doc->parserpreviouscurrent = NULL;
   doc->current = NULL;
+  memset(&doc->limits, 0, sizeof(doc->limits));
+  doc->limithit = CC_XML_LIMIT_NONE;
+  doc->inputbytes = 0;
+  doc->expandedbytes = 0;
+  doc->elements = 0;
+  doc->attributes = 0;
   return doc;
 }
 
@@ -368,7 +510,9 @@ void
 cc_xml_doc_delete_x(cc_xml_doc * doc)
 {
   assert(doc);
+  cc_xml_doc_parse_abort_if_active_x(doc);
   if (doc->parser) { cc_xml_doc_delete_parser_x(doc); }
+  if (doc->parserroot) cc_xml_elt_delete_x(doc->parserroot);
   delete [] doc->xmlversion;
   delete [] doc->xmlencoding;
   delete [] doc->filename;
@@ -415,6 +559,29 @@ cc_xml_doc_get_filter_cb(const cc_xml_doc * doc, cc_xml_filter_cb ** cb, void **
   if (userdata) *userdata = doc->filtercbdata;
 }
 
+SbBool
+cc_xml_doc_set_limits_x(cc_xml_doc * doc, const cc_xml_limits * limits)
+{
+  assert(doc);
+  if (!limits || doc->parsestate != CC_XML_DOC_PARSE_IDLE) return FALSE;
+  doc->limits = *limits;
+  return TRUE;
+}
+
+void
+cc_xml_doc_get_limits(const cc_xml_doc * doc, cc_xml_limits * limits)
+{
+  assert(doc && limits);
+  *limits = doc->limits;
+}
+
+cc_xml_limit_hit
+cc_xml_doc_get_limit_hit(const cc_xml_doc * doc)
+{
+  assert(doc);
+  return doc->limithit;
+}
+
 // *************************************************************************
 
 /*!
@@ -436,28 +603,23 @@ cc_xml_read_file(const char * path) // parser.h convenience function
 /*!
   Reads a file into the cc_xml_doc object.
 
-  Deletes any old XML DOM the doc contains.
+  Replaces the old XML DOM only after the complete file has been parsed.
+  Read and parse failures leave the previous DOM and filename unchanged.
 */
 
 SbBool
 cc_xml_doc_read_file_x(cc_xml_doc * doc, const char * path)
 {
   assert(doc);
-  if (doc->root) {
-    cc_xml_elt_delete_x(doc->root);
-    doc->root = NULL;
-  }
-
-  if (!doc->parser) {
-    cc_xml_doc_create_parser_x(doc);
-  }
+  cc_xml_doc_parse_abort_if_active_x(doc);
+  doc->limithit = CC_XML_LIMIT_NONE;
 
   FILE * fp = fopen(path, "rb");
   if (!fp) {
-    // FIXME: error condition
-    cc_xml_doc_delete_parser_x(doc);
     return FALSE;
   }
+
+  cc_xml_doc_parse_begin_x(doc);
 
   // read in file in 8K chunks, buffers kept by expat
 
@@ -466,18 +628,42 @@ cc_xml_doc_read_file_x(cc_xml_doc * doc, const char * path)
 
   while (!final && !error) {
     void * buf = XML_GetBuffer(doc->parser, 8192);
-    assert(buf);
+    if (buf == NULL) {
+      error = TRUE;
+      break;
+    }
     int bytes = static_cast<int>(fread(buf, 1, 8192, fp));
+    if (ferror(fp)) {
+      error = TRUE;
+      break;
+    }
+    if (!cc_xml_doc_limit_take_x(doc, static_cast<size_t>(bytes),
+                                 doc->limits.input_bytes, doc->inputbytes,
+                                 CC_XML_LIMIT_INPUT_BYTES)) {
+      error = TRUE;
+      break;
+    }
     final = feof(fp);
     XML_Status status = XML_ParseBuffer(doc->parser, bytes, final);
-    if (status != XML_STATUS_OK) { cc_xml_doc_handle_parse_error(doc); }
+    if (status != XML_STATUS_OK) {
+      if (doc->limithit == CC_XML_LIMIT_NONE) cc_xml_doc_handle_parse_error(doc);
+      error = TRUE;
+    }
+    else if ((bytes == 0) && !final) {
+      error = TRUE;
+    }
   }
 
   fclose(fp);
 
-  cc_xml_doc_set_filename_x(doc, path);
+  if (error) {
+    cc_xml_doc_parse_rollback_x(doc);
+    return FALSE;
+  }
 
-  return !error;
+  cc_xml_doc_parse_commit_x(doc);
+  cc_xml_doc_set_filename_x(doc, path);
+  return TRUE;
 }
 
 cc_xml_doc *
@@ -503,9 +689,9 @@ SbBool
 cc_xml_doc_read_buffer_x(cc_xml_doc * doc, const char * buffer, size_t buflen)
 {
 #ifdef DEV_DEBUG
-  fprintf(stdout, "cc_xml_doc_read_buffer_x(%p, %d, %p)\n", doc, (int) buflen, buffer);
+  fprintf(stdout, "cc_xml_doc_read_buffer_x(%p, %zu, %p)\n", static_cast<void *>(doc), buflen, static_cast<const void *>(buffer));
 #endif // DEV_DEBUG
-  cc_xml_doc_parse_buffer_partial_init_x(doc);
+  cc_xml_doc_parse_abort_if_active_x(doc);
   return cc_xml_doc_parse_buffer_partial_done_x(doc, buffer, buflen);
 }
 
@@ -518,8 +704,7 @@ cc_xml_doc_parse_buffer_partial_init_x(cc_xml_doc * doc) // maybe expose and req
 #ifdef DEV_DEBUG
   fprintf(stdout, "cc_xml_doc_parse_buffer_partial_init_x()\n");
 #endif // DEV_DEBUG
-  assert(doc->parser == NULL);
-  cc_xml_doc_create_parser_x(doc);
+  cc_xml_doc_parse_begin_x(doc);
 }
 }
 
@@ -530,14 +715,26 @@ cc_xml_doc_parse_buffer_partial_x(cc_xml_doc * doc, const char * buffer, size_t 
 #ifdef DEV_DEBUG
   fprintf(stdout, "cc_xml_doc_parse_buffer_partial_x()\n");
 #endif // DEV_DEBUG
-  if (!doc->parser) {
+  // XML_Parse() takes an int; reject lengths that cannot be represented
+  // before creating or advancing the parser.
+  if (buflen > static_cast<size_t>(INT_MAX)) {
+    cc_xml_doc_parse_abort_if_active_x(doc);
+    return FALSE;
+  }
+  if (doc->parsestate == CC_XML_DOC_PARSE_IDLE) {
     cc_xml_doc_parse_buffer_partial_init_x(doc);
+  }
+
+  if (!cc_xml_doc_limit_take_x(doc, buflen, doc->limits.input_bytes,
+                               doc->inputbytes, CC_XML_LIMIT_INPUT_BYTES)) {
+    cc_xml_doc_parse_rollback_x(doc);
+    return FALSE;
   }
 
   XML_Status status = XML_Parse(doc->parser, buffer, static_cast<int>(buflen), FALSE);
   if (status != XML_STATUS_OK) {
-    cc_xml_doc_handle_parse_error(doc);
-    // FIXME: should delete_parser() be invoked here?
+    if (doc->limithit == CC_XML_LIMIT_NONE) cc_xml_doc_handle_parse_error(doc);
+    cc_xml_doc_parse_rollback_x(doc);
   }
 
   return (status == XML_STATUS_OK);
@@ -550,17 +747,28 @@ cc_xml_doc_parse_buffer_partial_done_x(cc_xml_doc * doc, const char * buffer, si
   fprintf(stdout, "cc_xml_doc_parse_buffer_partial_done_x()\n");
 #endif // DEV_DEBUG
   assert(doc);
-  if (!doc->parser) {
+  if (buflen > static_cast<size_t>(INT_MAX)) {
+    cc_xml_doc_parse_abort_if_active_x(doc);
+    return FALSE;
+  }
+  if (doc->parsestate == CC_XML_DOC_PARSE_IDLE) {
     cc_xml_doc_parse_buffer_partial_init_x(doc);
+  }
+  if (!cc_xml_doc_limit_take_x(doc, buflen, doc->limits.input_bytes,
+                               doc->inputbytes, CC_XML_LIMIT_INPUT_BYTES)) {
+    cc_xml_doc_parse_rollback_x(doc);
+    return FALSE;
   }
   XML_Status status = XML_Parse(doc->parser, buffer, static_cast<int>(buflen), TRUE);
 
   if (status != XML_STATUS_OK) {
-    cc_xml_doc_handle_parse_error(doc);
+    if (doc->limithit == CC_XML_LIMIT_NONE) cc_xml_doc_handle_parse_error(doc);
+    cc_xml_doc_parse_rollback_x(doc);
+    return FALSE;
   }
 
-  cc_xml_doc_delete_parser_x(doc);
-  return (status == XML_STATUS_OK);
+  cc_xml_doc_parse_commit_x(doc);
+  return TRUE;
 }
 
 // *************************************************************************

@@ -49,6 +49,29 @@ COIN_DLL_API void cc_xml_doc_delete_x(cc_xml_doc * doc);
 COIN_DLL_API void cc_xml_doc_set_filter_cb_x(cc_xml_doc * doc, cc_xml_filter_cb * cb, void * userdata);
 COIN_DLL_API void cc_xml_doc_get_filter_cb(const cc_xml_doc * doc, cc_xml_filter_cb ** cb, void ** userdata);
 
+/* Per-document opt-in parse limits. Zero disables the corresponding limit.
+   The legacy default remains unlimited. Counts restart with each parse. */
+typedef struct cc_xml_limits {
+  size_t input_bytes;
+  size_t expanded_bytes;
+  size_t elements;
+  size_t attributes;
+  size_t depth;
+} cc_xml_limits;
+
+typedef enum cc_xml_limit_hit {
+  CC_XML_LIMIT_NONE,
+  CC_XML_LIMIT_INPUT_BYTES,
+  CC_XML_LIMIT_EXPANDED_BYTES,
+  CC_XML_LIMIT_ELEMENTS,
+  CC_XML_LIMIT_ATTRIBUTES,
+  CC_XML_LIMIT_DEPTH
+} cc_xml_limit_hit;
+
+COIN_DLL_API SbBool cc_xml_doc_set_limits_x(cc_xml_doc * doc, const cc_xml_limits * limits);
+COIN_DLL_API void cc_xml_doc_get_limits(const cc_xml_doc * doc, cc_xml_limits * limits);
+COIN_DLL_API cc_xml_limit_hit cc_xml_doc_get_limit_hit(const cc_xml_doc * doc);
+
 /* document io */
 COIN_DLL_API SbBool cc_xml_doc_read_file_x(cc_xml_doc * doc, const char * path);
 COIN_DLL_API SbBool cc_xml_doc_read_buffer_x(cc_xml_doc * doc, const char * buffer, size_t buflen);
