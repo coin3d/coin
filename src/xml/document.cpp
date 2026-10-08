@@ -41,6 +41,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <cassert>
+#include <inttypes.h>
 
 #include <memory>
 
@@ -52,6 +53,10 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbString.h>
 
+/* Coin embeds Expat in its own library rather than linking an Expat DLL. */
+#ifndef HAVE_EXPAT
+#define XML_STATIC 1
+#endif
 #include "expat/expat.h"
 #include "utils.h"
 #include "elementp.h"
@@ -846,13 +851,20 @@ cc_xml_doc_handle_parse_error(const cc_xml_doc * doc)
   assert(doc);
   assert(doc->parser);
 
-  const int line = XML_GetCurrentLineNumber(doc->parser);
-  const int column = XML_GetCurrentColumnNumber(doc->parser);
+  // Expat 2.9 deprecates the width-dependent accessors. Keep the system
+  // Expat path compatible with older versions until its minimum is raised.
+#ifdef HAVE_EXPAT
+  const uint64_t line = XML_GetCurrentLineNumber(doc->parser);
+  const uint64_t column = XML_GetCurrentColumnNumber(doc->parser);
+#else
+  const uint64_t line = XML_GetCurrentLineNumber64(doc->parser);
+  const uint64_t column = XML_GetCurrentColumnNumber64(doc->parser);
+#endif
 
   const char * errormsg = XML_ErrorString(XML_GetErrorCode(doc->parser));
 
   SbString errorstr;
-  errorstr.sprintf("XML parse error, line %d, column %d: %s\n", line, column, errormsg);
+  errorstr.sprintf("XML parse error, line %" PRIu64 ", column %" PRIu64 ": %s\n", line, column, errormsg);
   fprintf(stderr, "%s", errorstr.getString());
 }
 
@@ -866,11 +878,16 @@ cc_xml_doc_handle_parse_warning(const cc_xml_doc * doc, const char * message)
   assert(doc->parser);
   assert(message);
 
-  const int line = XML_GetCurrentLineNumber(doc->parser);
-  const int column = XML_GetCurrentColumnNumber(doc->parser);
+#ifdef HAVE_EXPAT
+  const uint64_t line = XML_GetCurrentLineNumber(doc->parser);
+  const uint64_t column = XML_GetCurrentColumnNumber(doc->parser);
+#else
+  const uint64_t line = XML_GetCurrentLineNumber64(doc->parser);
+  const uint64_t column = XML_GetCurrentColumnNumber64(doc->parser);
+#endif
 
   SbString errorstr;
-  errorstr.sprintf("XML parse warning, line %d, column %d: %s\n", line, column, message);
+  errorstr.sprintf("XML parse warning, line %" PRIu64 ", column %" PRIu64 ": %s\n", line, column, message);
   fprintf(stderr, "%s", errorstr.getString());
 }
 
