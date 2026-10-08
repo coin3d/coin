@@ -226,4 +226,43 @@ BOOST_AUTO_TEST_CASE(cc_dynarray_rejects_invalid_mutations)
   cc_dynarray_destruct(array);
 }
 
+BOOST_AUTO_TEST_CASE(cc_dynarray_empty_and_valid_boundaries)
+{
+  int values[4] = { 0, 1, 2, 3 };
+  cc_dynarray * array = cc_dynarray_new();
+  BOOST_CHECK(cc_dynarray_get(array, 0) == NULL);
+  cc_dynarray_remove_idx(array, 0);
+  cc_dynarray_removefast(array, 0);
+  cc_dynarray_set(array, 0, &values[0]);
+  cc_dynarray_remove(array, &values[0]);
+  cc_dynarray_truncate(array, 1);
+  BOOST_CHECK_EQUAL(cc_dynarray_length(array), 0U);
+
+  cc_dynarray_insert(array, &values[0], 0);
+  cc_dynarray_insert(array, &values[2], 1); // insertion at length
+  cc_dynarray_insert(array, &values[1], 1); // insertion in the middle
+  BOOST_CHECK_EQUAL(cc_dynarray_length(array), 3U);
+  BOOST_CHECK_EQUAL(cc_dynarray_get(array, 0), &values[0]);
+  BOOST_CHECK_EQUAL(cc_dynarray_get(array, 1), &values[1]);
+  BOOST_CHECK_EQUAL(cc_dynarray_get(array, 2), &values[2]);
+  cc_dynarray_set(array, 2, &values[3]);
+  cc_dynarray_remove_idx(array, 1); // ordered removal
+  BOOST_CHECK_EQUAL(cc_dynarray_length(array), 2U);
+  BOOST_CHECK_EQUAL(cc_dynarray_get(array, 1), &values[3]);
+  cc_dynarray_append(array, &values[2]);
+  cc_dynarray_removefast(array, 0); // last item replaces the removed item
+  BOOST_CHECK_EQUAL(cc_dynarray_get(array, 0), &values[2]);
+  BOOST_CHECK_EQUAL(cc_dynarray_get(array, 1), &values[3]);
+  cc_dynarray_truncate(array, 2); // equal length is valid
+  BOOST_CHECK_EQUAL(cc_dynarray_length(array), 2U);
+  cc_dynarray_remove(array, &values[2]);
+  BOOST_CHECK_EQUAL(cc_dynarray_get(array, 0), &values[3]);
+  cc_dynarray_removefast(array, 0); // removal of the last item
+  BOOST_CHECK_EQUAL(cc_dynarray_length(array), 0U);
+  cc_dynarray_insert(array, &values[0], 0);
+  cc_dynarray_truncate(array, 0);
+  BOOST_CHECK_EQUAL(cc_dynarray_length(array), 0U);
+  cc_dynarray_destruct(array);
+}
+
 #endif // COIN_TEST_SUITE
