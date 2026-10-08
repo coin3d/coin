@@ -37,6 +37,8 @@
 #include <cassert>
 #include <cstddef> // NULL definition
 
+class SoCallbackListP;
+
 class COIN_DLL_API SbPList {
   enum { DEFAULTSIZE = 4 };
 
@@ -72,6 +74,7 @@ protected:
   int getArraySize(void) const;
 
 private:
+  friend class SoCallbackListP;
   void expandindex(const int index) const;
   void expandlist(const int size) const;
   void grow(const int size = -1);

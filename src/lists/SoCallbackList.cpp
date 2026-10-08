@@ -147,9 +147,101 @@ SoCallbackListP::copyData(const SbPList * source, const SbPList * destination)
     OwnedCallbacks sourceentries;
     const bool hassource = owners.lists.get(source, sourceentries);
     const bool hasdestination = owners.lists.get(destination, previous);
-    if (hassource) owners.lists.put(destination, sourceentries);
+    if (hassource && hasdestination) {
+      // The new snapshot is complete before changing the old entry.
+      owners.lists[destination].swap(sourceentries);
+    }
+    else if (hassource) {
+      try {
+        owners.lists.put(destination, sourceentries);
+      }
+      catch (...) {
+        // put() can insert before a later bucket resize throws.
+        owners.lists.erase(destination);
+        throw;
+      }
+    }
     else if (hasdestination) owners.lists.erase(destination);
     haveOwnedData.store(owners.lists.getNumElements() != 0);
+  }
+}
+
+void
+SoCallbackListP::swapData(const SbPList * lhs, const SbPList * rhs)
+{
+  if (lhs == rhs || !haveOwnedData.load()) return;
+  CallbackOwners & owners = callbackOwners();
+  std::lock_guard<std::mutex> lock(owners.mutex);
+  OwnedCallbacks ignored;
+  const bool haslhs = owners.lists.get(lhs, ignored);
+  const bool hasrhs = owners.lists.get(rhs, ignored);
+  if (!haslhs && !hasrhs) return;
+
+  // Materialize any missing key before changing either existing value.
+  // Roll it back if SbHash inserts and then fails while resizing.
+  const SbPList * missing = haslhs ? rhs : lhs;
+  if (!haslhs || !hasrhs) {
+    try {
+      owners.lists.put(missing, OwnedCallbacks());
+    }
+    catch (...) {
+      owners.lists.erase(missing);
+      throw;
+    }
+  }
+  owners.lists[lhs].swap(owners.lists[rhs]);
+  if (owners.lists[lhs].empty()) owners.lists.erase(lhs);
+  if (owners.lists[rhs].empty()) owners.lists.erase(rhs);
+  haveOwnedData.store(owners.lists.getNumElements() != 0);
+}
+
+void
+SoCallbackListP::swapLists(SbPList * lhs, SbPList * rhs)
+{
+  if (lhs == rhs) return;
+  const bool lhsbuiltin = lhs->itembuffer == lhs->builtinbuffer;
+  const bool rhsbuiltin = rhs->itembuffer == rhs->builtinbuffer;
+  if (!lhsbuiltin && !rhsbuiltin) {
+    int size = lhs->itembuffersize;
+    lhs->itembuffersize = rhs->itembuffersize;
+    rhs->itembuffersize = size;
+    int length = lhs->numitems;
+    lhs->numitems = rhs->numitems;
+    rhs->numitems = length;
+    void ** buffer = lhs->itembuffer;
+    lhs->itembuffer = rhs->itembuffer;
+    rhs->itembuffer = buffer;
+  }
+  else if (lhsbuiltin && rhsbuiltin) {
+    const int lhslength = lhs->numitems;
+    const int rhslength = rhs->numitems;
+    const int minitems = lhslength < rhslength ? lhslength : rhslength;
+    for (int i = 0; i < minitems; ++i) {
+      void * item = lhs->builtinbuffer[i];
+      lhs->builtinbuffer[i] = rhs->builtinbuffer[i];
+      rhs->builtinbuffer[i] = item;
+    }
+    for (int i = minitems; i < lhslength; ++i)
+      rhs->builtinbuffer[i] = lhs->builtinbuffer[i];
+    for (int i = minitems; i < rhslength; ++i)
+      lhs->builtinbuffer[i] = rhs->builtinbuffer[i];
+    lhs->numitems = rhslength;
+    rhs->numitems = lhslength;
+  }
+  else {
+    SbPList * dynamiclist = lhsbuiltin ? rhs : lhs;
+    SbPList * builtinlist = lhsbuiltin ? lhs : rhs;
+    for (int i = 0; i < builtinlist->numitems; ++i)
+      dynamiclist->builtinbuffer[i] = builtinlist->builtinbuffer[i];
+    void ** buffer = dynamiclist->itembuffer;
+    const int size = dynamiclist->itembuffersize;
+    const int length = dynamiclist->numitems;
+    dynamiclist->itembuffer = dynamiclist->builtinbuffer;
+    dynamiclist->itembuffersize = SbPList::DEFAULTSIZE;
+    dynamiclist->numitems = builtinlist->numitems;
+    builtinlist->itembuffer = buffer;
+    builtinlist->itembuffersize = size;
+    builtinlist->numitems = length;
   }
 }
 
@@ -223,11 +315,37 @@ SoCallbackList::SoCallbackList(void)
 }
 
 /*!
+  Copy constructor. Both callback arrays and their ownership registry are
+  committed only after the members have been fully constructed. Recompile
+  clients to use this out-of-line copy instead of the former implicit one.
+*/
+SoCallbackList::SoCallbackList(const SoCallbackList & list)
+{
+  this->funclist.copy(list.funclist);
+  this->datalist.copy(list.datalist);
+}
+
+/*!
   Destructor.
 */
 SoCallbackList::~SoCallbackList(void)
 {
   releaseOwners(&this->datalist);
+}
+
+/*!
+  Assignment keeps both operands intact if the replacement copy or registry
+  preparation throws. Existing clients need recompilation for this method.
+*/
+SoCallbackList &
+SoCallbackList::operator=(const SoCallbackList & list)
+{
+  if (this == &list) return *this;
+  SoCallbackList replacement(list);
+  SoCallbackListP::swapData(&this->datalist, &replacement.datalist);
+  SoCallbackListP::swapLists(&this->funclist, &replacement.funclist);
+  SoCallbackListP::swapLists(&this->datalist, &replacement.datalist);
+  return *this;
 }
 
 /*!
