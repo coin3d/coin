@@ -1,5 +1,11 @@
 Unreleased:
 * bugfixes:
+  - Document cc_rbptree ownership and reject shallow copies in C++.
+    The fields and C layout are unchanged. C++ clients must initialize
+    independent trees with cc_rbptree_init(); copying owned nodes is unsafe.
+    In C++20, positional aggregate initialization is also rejected; use
+    an empty initializer followed by cc_rbptree_init(). C clients must
+    follow the same ownership contract without compile-time enforcement.
   - Make nodekit path factories return genuine SoNodeKitPath objects and
     remove undefined SoPath-to-SoNodeKitPath downcasts in manipulators.
     Handle temporary null entries in nodekit paths and restore nodekit
