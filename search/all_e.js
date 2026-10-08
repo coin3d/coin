@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['e_0',['e',['../classSoCalculator.html#afdc2df292e3699506ac21beb4d34a8d8',1,'SoCalculator']]],
-  ['e_1',['E',['../classSoCalculator.html#a28491e70e17ab85cd83c672b09c72896',1,'SoCalculator']]],
+  ['e_0',['E',['../classSoCalculator.html#a28491e70e17ab85cd83c672b09c72896',1,'SoCalculator']]],
+  ['e_1',['e',['../classSoCalculator.html#afdc2df292e3699506ac21beb4d34a8d8',1,'SoCalculator']]],
   ['element_20classes_2',['Element Classes',['../group__coin__elements.html',1,'Element Classes'],['../group__coin__elements.html',1,'The Element Classes']]],
   ['emissive_3',['EMISSIVE',['../classSoLocateHighlight.html#af07c2e0d9cb1d88f6a025f573a858ee1a90c934c0202d5351b45725f0e2ac484c',1,'SoLocateHighlight']]],
   ['emissive_5fdiffuse_4',['EMISSIVE_DIFFUSE',['../classSoLocateHighlight.html#af07c2e0d9cb1d88f6a025f573a858ee1a52e67e528e74d278caed68e51b700c56',1,'SoLocateHighlight']]],

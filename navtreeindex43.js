@@ -1,7 +1,9 @@
 var NAVTREEINDEX43 =
 {
-"classSoVRMLSound.html#aa6974aef0559a8727b25d399dd78d5f3":[3,20,3,20],
+"classSoVRMLSound.html#a9f078df5cfede11fbdd68236a10e7b08":[3,20,3,9],
+"classSoVRMLSound.html#a9f078df5cfede11fbdd68236a10e7b08":[3,23,41,9],
 "classSoVRMLSound.html#aa6974aef0559a8727b25d399dd78d5f3":[3,23,41,20],
+"classSoVRMLSound.html#aa6974aef0559a8727b25d399dd78d5f3":[3,20,3,20],
 "classSoVRMLSound.html#aac5a9efd4b80a91c0864daa717689b73":[3,20,3,8],
 "classSoVRMLSound.html#aac5a9efd4b80a91c0864daa717689b73":[3,23,41,8],
 "classSoVRMLSphere.html":[3,23,42],
@@ -247,7 +249,5 @@ var NAVTREEINDEX43 =
 "classSoVRMLVertexShape.html#ad7f2aa82c7420b14572b654f35d38e8e":[5,0,827,13],
 "classSoVRMLVertexShape.html#ae840f9b64433ed85ef747cf4f9706745":[5,0,827,0],
 "classSoVRMLVertexShape.html#aedad4ad2668360229fc6a50b500101d8":[5,0,827,15],
-"classSoVRMLVertexShape.html#af44bfc4297c05bb27eb768515967c6bf":[5,0,827,16],
-"classSoVRMLViewpoint.html":[3,23,52],
-"classSoVRMLViewpoint.html#a4add4ec8a888ff30e3872cebd7b71231":[3,23,52,9]
+"classSoVRMLVertexShape.html#af44bfc4297c05bb27eb768515967c6bf":[5,0,827,16]
 };

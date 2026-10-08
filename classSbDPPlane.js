@@ -8,6 +8,7 @@ var classSbDPPlane =
     [ "getDistanceFromOrigin", "classSbDPPlane.html#a6f6165d0efa2cc9b13a7caf38393fe4f", null ],
     [ "getNormal", "classSbDPPlane.html#a7fd166ca1942bb3f2c29cef67667ed88", null ],
     [ "intersect", "classSbDPPlane.html#a50b32db557caf0663528ec50cb39d838", null ],
+    [ "intersect", "classSbDPPlane.html#aff71a5a19142b9194a1caeddff34cea2", null ],
     [ "intersect", "classSbDPPlane.html#a99cca71249e7bd73004ec924a62d2bf0", null ],
     [ "isInHalfSpace", "classSbDPPlane.html#ad22b7edb663cc2a0e6d067ee1c3b95c3", null ],
     [ "offset", "classSbDPPlane.html#a87d41a81065603b897e0f2c284ef6cdc", null ],

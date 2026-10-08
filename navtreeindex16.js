@@ -1,5 +1,7 @@
 var NAVTREEINDEX16 =
 {
+"classSoDragger.html#affafdec3cf9f8d347549db728343a4fb":[3,5,2,42],
+"classSoDrawStyle.html":[3,15,23],
 "classSoDrawStyle.html#a1b8b6d8b32869103039fbf0bb5d20bf1":[3,15,23,7],
 "classSoDrawStyle.html#a24dc0b5c2d88c3f1d22c2415a9689e65":[3,15,23,8],
 "classSoDrawStyle.html#a3b0600d615b90832391d992a4511cbb9":[3,15,23,6],
@@ -247,7 +249,5 @@ var NAVTREEINDEX16 =
 "classSoExtSelection.html#a05bb125c7b408ef062e9b3a5500025ba":[3,15,26,33],
 "classSoExtSelection.html#a06f6ee8dcd5dc69202fea3da448fc814":[3,15,26,6],
 "classSoExtSelection.html#a0c7fc734f6188de83eb1ccd60f3e3714":[3,15,26,19],
-"classSoExtSelection.html#a13f9500494e42d0edf20ad79c755b678":[3,15,26,1],
-"classSoExtSelection.html#a13f9500494e42d0edf20ad79c755b678a19531c7aca936365f13fb938ab3a27dc":[3,15,26,1,2],
-"classSoExtSelection.html#a13f9500494e42d0edf20ad79c755b678a74e7a4281a1e21de982e0871e5132786":[3,15,26,1,1]
+"classSoExtSelection.html#a13f9500494e42d0edf20ad79c755b678":[3,15,26,1]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX41 =
 {
+"classSoVRMLDirectionalLight.html#a54ad844c8068ec0399c40812c7500211":[3,23,14,3],
+"classSoVRMLDirectionalLight.html#a54c10b930a2f77e81716323970cacfd4":[3,23,14,5],
 "classSoVRMLDirectionalLight.html#a730050f7bdfd1becfb8f8cd6ba238f4b":[3,23,14,0],
 "classSoVRMLDragSensor.html":[5,0,780],
 "classSoVRMLDragSensor.html#a0a18a55f127d2329d48f71d075e40517":[5,0,780,6],
@@ -247,7 +249,5 @@ var NAVTREEINDEX41 =
 "classSoVRMLLight.html#a14aa5904cb22b6ee750853e65bf840d7":[5,0,794,2],
 "classSoVRMLLight.html#a1e7df9e0af2184d65a056db03590a65b":[5,0,794,1],
 "classSoVRMLLight.html#a380bdfc40dc32a584c5664a2749ade2c":[5,0,794,4],
-"classSoVRMLLight.html#a3e1e7c5cbfc6812e544a3a40b8f4b260":[5,0,794,5],
-"classSoVRMLLight.html#a68c506f553022ad7dd241b2e744b6208":[5,0,794,3],
-"classSoVRMLLight.html#a68f520116001f60b183da454c0ec9664":[5,0,794,7]
+"classSoVRMLLight.html#a3e1e7c5cbfc6812e544a3a40b8f4b260":[5,0,794,5]
 };

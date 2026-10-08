@@ -1,5 +1,7 @@
 var NAVTREEINDEX19 =
 {
+"classSoGLMultiTextureCoordinateElement_1_1GLUnitData.html":[3,6,43,0],
+"classSoGLMultiTextureEnabledElement.html":[3,6,44],
 "classSoGLMultiTextureEnabledElement.html#a601283e85e47e2f1eabcb4e38202ce08":[3,6,44,3],
 "classSoGLMultiTextureEnabledElement.html#a619a16106f6fae272a585f888578c9e2":[3,6,44,1],
 "classSoGLMultiTextureEnabledElement.html#a84e75b738348b60f634b467628f08e35":[3,6,44,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX19 =
 "classSoGeoSeparator.html#a17244f71fa17e4063a3cfaf256c9d2f7":[3,15,35,5],
 "classSoGeoSeparator.html#a30e3463d34baf52c218dc912fd1031b7":[3,15,35,7],
 "classSoGeoSeparator.html#a66af1d6b171f92497cd89a81dbdb7438":[3,15,35,12],
-"classSoGeoSeparator.html#a689944d8f3051f323b4ed8e7d3b82ee9":[3,15,35,2],
-"classSoGeoSeparator.html#a6ad8ac4cc0b3bdda4390c76692204281":[3,15,35,1],
-"classSoGeoSeparator.html#a9af275def5b89221d6cac884ea3426d2":[3,15,35,3]
+"classSoGeoSeparator.html#a689944d8f3051f323b4ed8e7d3b82ee9":[3,15,35,2]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX26 =
 {
+"classSoMatrixTransform.html#a107c595c54dbe1b3fbd7e88f852472fa":[3,15,59,7],
+"classSoMatrixTransform.html#a528414bdae6cee21514fc642ce8a2783":[3,15,59,11],
 "classSoMatrixTransform.html#a5d77725ad9247a7360438aba523b9e16":[3,15,59,1],
 "classSoMatrixTransform.html#a65f9382ef6ebe7e199056b28b7626730":[3,15,59,0],
 "classSoMatrixTransform.html#a75e404df79f2220fdfefc6a350884a26":[3,15,59,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX26 =
 "classSoNodeKitPath.html#a0f2b9d6aff34f7fec50b5aebe27fe554":[3,14,8,1],
 "classSoNodeKitPath.html#a1c944ad83c395fb0cbb6c4248cbe663b":[3,14,8,3],
 "classSoNodeKitPath.html#a3649347d1c34cfa6e4628cf6518c562b":[3,14,8,7],
-"classSoNodeKitPath.html#a3862411124049ea324a11cfc0f9f866e":[3,14,8,4],
-"classSoNodeKitPath.html#a5d24e25fca99e56932e7e3b9a6b56851":[3,14,8,12],
-"classSoNodeKitPath.html#a7aa8f4944b4ec1c996e59f95b10e5a11":[3,14,8,6]
+"classSoNodeKitPath.html#a3862411124049ea324a11cfc0f9f866e":[3,14,8,4]
 };

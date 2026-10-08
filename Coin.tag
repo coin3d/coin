@@ -3466,6 +3466,13 @@
       <type>SbBool</type>
       <name>intersect</name>
       <anchorfile>classSbDPPlane.html</anchorfile>
+      <anchor>aff71a5a19142b9194a1caeddff34cea2</anchor>
+      <arglist>(const SbDPPlane &amp;p1, const SbDPPlane &amp;p2, SbVec3d &amp;point) const</arglist>
+    </member>
+    <member kind="function">
+      <type>SbBool</type>
+      <name>intersect</name>
+      <anchorfile>classSbDPPlane.html</anchorfile>
       <anchor>a99cca71249e7bd73004ec924a62d2bf0</anchor>
       <arglist>(const SbDPPlane &amp;pl, SbDPLine &amp;line) const</arglist>
     </member>
@@ -5431,6 +5438,13 @@
       <anchorfile>classSbPlane.html</anchorfile>
       <anchor>a092d50c631e724272b159d9282bb13d0</anchor>
       <arglist>(const SbLine &amp;l, SbVec3f &amp;intersection) const</arglist>
+    </member>
+    <member kind="function">
+      <type>SbBool</type>
+      <name>intersect</name>
+      <anchorfile>classSbPlane.html</anchorfile>
+      <anchor>a575ca0b938882afbe9f01c6872a23e00</anchor>
+      <arglist>(const SbPlane &amp;p1, const SbPlane &amp;p2, SbVec3f &amp;point) const</arglist>
     </member>
     <member kind="function">
       <type>SbBool</type>

@@ -1,5 +1,7 @@
 var NAVTREEINDEX29 =
 {
+"classSoPath.html#af3afd770f54150a657bc74cce2b726f3":[3,11,21,11],
+"classSoPath.html#af5eb808c245d5d6f95b6a1ea8e0729d9":[3,11,21,6],
 "classSoPath.html#afb925263baf09f7c209443e06bf9e528":[3,11,21,33],
 "classSoPathList.html":[3,11,22],
 "classSoPathList.html#a0a7da1bdcc904d018b69ed4fb1edaca8":[3,11,22,9],
@@ -247,7 +249,5 @@ var NAVTREEINDEX29 =
 "classSoPrimitiveVertex.html#a6520a723b75e5b1b40728ee06b6cfaf2":[3,11,25,14],
 "classSoPrimitiveVertex.html#a7e79937870f2277e08353c938348bf4e":[3,11,25,0],
 "classSoPrimitiveVertex.html#a8aeec73929df581a885f1e93f9ccdb1b":[3,11,25,19],
-"classSoPrimitiveVertex.html#a8b13da6106766fef7579b3d40ed94a35":[3,11,25,10],
-"classSoPrimitiveVertex.html#a91267d261b5a425032701058ce8df733":[3,11,25,11],
-"classSoPrimitiveVertex.html#a95518bf3e7bc4141a3d6a38841a869df":[3,11,25,12]
+"classSoPrimitiveVertex.html#a8b13da6106766fef7579b3d40ed94a35":[3,11,25,10]
 };

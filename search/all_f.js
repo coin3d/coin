@@ -2,8 +2,8 @@ var searchData=
 [
   ['f_0',['F',['../classSoCalculator.html#a670956d1280443971d637a6d4fb0ec6c',1,'SoCalculator']]],
   ['f_1',['f',['../classSoCalculator.html#aa47315dc25780b728d6bda6819dffa16',1,'SoCalculator']]],
-  ['facetype_2',['faceType',['../classSoShapeHints.html#a8472cabcb2457e13d74034a3b6b8810a',1,'SoShapeHints']]],
-  ['facetype_3',['FaceType',['../classSoShapeHints.html#a19a3acc8d0e36b7fa2b43339e1a4b964',1,'SoShapeHints']]],
+  ['facetype_2',['FaceType',['../classSoShapeHints.html#a19a3acc8d0e36b7fa2b43339e1a4b964',1,'SoShapeHints']]],
+  ['facetype_3',['faceType',['../classSoShapeHints.html#a8472cabcb2457e13d74034a3b6b8810a',1,'SoShapeHints']]],
   ['factor_4',['factor',['../classSoPolygonOffset.html#a512aaa43ae3841a504a4b022e9f464e7',1,'SoPolygonOffset::factor'],['../classSbDPMatrix.html#abf2e53bbe1cfae3a6e6942b94c7fe23b',1,'SbDPMatrix::factor()'],['../classSbMatrix.html#a34d355d437c12b71cffcf6aca2deada8',1,'SbMatrix::factor()']]],
   ['factorq_5',['factorQ',['../classSoTextureCoordinateObject.html#abf4c2adb455c749b62c839d0bb802dd9',1,'SoTextureCoordinateObject']]],
   ['factorr_6',['factorR',['../classSoTextureCoordinateObject.html#a75851ee626f6bd820be62896816a1d60',1,'SoTextureCoordinateObject']]],

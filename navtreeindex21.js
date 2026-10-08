@@ -1,5 +1,7 @@
 var NAVTREEINDEX21 =
 {
+"classSoIndexedLineSet.html#aac23888ee2f43ab2cb0a3a4776f31aab":[3,15,39,2],
+"classSoIndexedLineSet.html#ab87dc43f1b88aac41d54e6b43ea4dab9":[3,15,39,6],
 "classSoIndexedLineSet.html#ac4d34638cb4669e8c6b9ff4dc94ca045":[3,15,39,7],
 "classSoIndexedLineSet.html#aec61d02f397b0aa35f7f932e3f73ebfc":[3,15,39,1],
 "classSoIndexedMarkerSet.html":[3,15,40],
@@ -247,7 +249,5 @@ var NAVTREEINDEX21 =
 "classSoInterpolateVec4f.html":[3,7,30],
 "classSoInterpolateVec4f.html#a09a936ea0f77af64740af6327405729a":[3,7,30,3],
 "classSoInterpolateVec4f.html#a2bf9d0754ea505ebbb53602f6d5a6127":[3,7,30,4],
-"classSoInterpolateVec4f.html#a944556649e44ddb7193495b13fdc5db4":[3,7,30,0],
-"classSoInterpolateVec4f.html#ae46fa4267a0ad8dc113a9849c947a3f5":[3,7,30,1],
-"classSoInterpolateVec4f.html#aee57603cd17d8da760731d469573eb42":[3,7,30,2]
+"classSoInterpolateVec4f.html#a944556649e44ddb7193495b13fdc5db4":[3,7,30,0]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX22 =
 {
+"classSoInterpolateVec4f.html#ae46fa4267a0ad8dc113a9849c947a3f5":[3,7,30,1],
+"classSoInterpolateVec4f.html#aee57603cd17d8da760731d469573eb42":[3,7,30,2],
 "classSoIntersectionDetectionAction.html":[3,0,11],
 "classSoIntersectionDetectionAction.html#a096abbbc2f19bbe9c94c8df5b61caa5c":[3,0,11,10],
 "classSoIntersectionDetectionAction.html#a0bc322a27ee88530c221618650464d4c":[3,0,11,8],
@@ -247,7 +249,5 @@ var NAVTREEINDEX22 =
 "classSoLightModel.html#a2d81ca7b2a8b90d5e2761fc3c0bea480":[3,15,50,1],
 "classSoLightModel.html#a50177588212c998d7a37deed8d1321ce":[3,15,50,0],
 "classSoLightModel.html#a50177588212c998d7a37deed8d1321cead8d5b79c998c02dab21af02d9e1ff8af":[3,15,50,0,1],
-"classSoLightModel.html#a50177588212c998d7a37deed8d1321ceadedbd26dc80d695f4123bae991f0615f":[3,15,50,0,0],
-"classSoLightModel.html#a621674cd10b7e791f833c02d74bc020a":[3,15,50,7],
-"classSoLightModel.html#a6fa4ebe215e5b9aa11757c2aeda6e3bb":[3,15,50,8]
+"classSoLightModel.html#a50177588212c998d7a37deed8d1321ceadedbd26dc80d695f4123bae991f0615f":[3,15,50,0,0]
 };
