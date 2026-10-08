@@ -43,6 +43,8 @@ public:
     { this->storage = cc_storage_construct_etc(size, constr, destr); }
   ~SbTypedStorage(void) { cc_storage_destruct(this->storage); }
 
+  // This object owns its cc_storage handle, rather than sharing ownership
+  // with another wrapper. A shallow copy would release the handle twice.
   SbTypedStorage(const SbTypedStorage &) = delete;
   SbTypedStorage & operator=(const SbTypedStorage &) = delete;
 
