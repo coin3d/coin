@@ -225,6 +225,15 @@ static int typedAdd(long failafter, bool mixed)
   Trigger * t = new Trigger;
   t->ref();
   if (mixed) addMixedPrefix(t, r);
+  if (!mixed && std::getenv("COIN_CALLBACK_WARM_HASH")) {
+    // Some integration bases deliberately abort on bucket OOM. Warm the
+    // registry before injection to exercise the throwing C++ allocations.
+    Trigger * warm = new Trigger;
+    warm->ref();
+    warm->addChangeCallback(typedCallback, &r[0]);
+    warm->removeChangeCallback(typedCallback, &r[0]);
+    warm->unref();
+  }
   bool threw = false;
   FailureInjection::arm(failafter);
   try { t->addChangeCallback(typedFailedCallback, &r[4]); }
