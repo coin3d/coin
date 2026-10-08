@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get -y update
-          sudo apt-get -y install freeglut3-dev
+          sudo apt-get -y install freeglut3-dev xvfb xauth libgl1-mesa-dri
       - name: Build and test
         run: .github/scripts/build-and-test.sh "${{ matrix.legacy_renderer.value }}"
       - name: Create Artifacts
