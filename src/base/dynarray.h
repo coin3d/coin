@@ -64,6 +64,10 @@ extern "C" {
 
   int cc_dynarray_find(const cc_dynarray * arr, void * item);
 
+  /* get() never grows the array and returns NULL for an invalid index.
+     set(), remove_idx() and removefast() ignore indices outside length().
+     insert() accepts indices up to length(); truncate() only shrinks.
+     Invalid insertion/truncation and removal of a missing item are no-ops. */
   void * cc_dynarray_get(const cc_dynarray * arr, unsigned int idx);
   void cc_dynarray_set(cc_dynarray * arr, unsigned int idx, void * item);
 
