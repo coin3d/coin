@@ -154,6 +154,14 @@ if (USE_PTHREAD)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
+# Exercise cleanup after the tree subsystem's normal-priority shutdown hook.
+add_executable(CcRbptreeCleanupTest CcRbptreeCleanupTest.cpp)
+target_link_libraries(CcRbptreeCleanupTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CcRbptreeCleanupTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+add_test(NAME CcRbptreeCleanupDuringShutdown COMMAND CcRbptreeCleanupTest)
+
 # Keep this regression test in a fresh process: the unfixed implementation corrupts
 # SoTempPath's internal empty-list storage before ordinary assertions can
 # observe the violation.

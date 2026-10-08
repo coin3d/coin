@@ -376,6 +376,17 @@ rbptree_remove_node(cc_rbptree * t, cc_rbptree_node * z)
   t->counter--;
 }
 
+static void
+rbptree_reset(cc_rbptree * t)
+{
+  t->root = &rbptree_sentinel;
+  t->counter = 0;
+  t->inlinepointer[0] = NULL;
+  t->inlinepointer[1] = NULL;
+  t->inlinedata[0] = NULL;
+  t->inlinedata[1] = NULL;
+}
+
 /*!
  * Initialize \c t. This is needed before making any operations
  * on the tree.
@@ -395,12 +406,7 @@ cc_rbptree_init(cc_rbptree * t)
   }
   CC_GLOBAL_UNLOCK;
 
-  t->root = &rbptree_sentinel;
-  t->counter = 0;
-  t->inlinepointer[0] = NULL;
-  t->inlinepointer[1] = NULL;
-  t->inlinedata[0] = NULL;
-  t->inlinedata[1] = NULL;
+  rbptree_reset(t);
 }
 
 /*
@@ -427,7 +433,9 @@ cc_rbptree_clean(cc_rbptree * t)
   if (t->root != &rbptree_sentinel) {
     rbptree_recursive_clean(t->root);
   }
-  cc_rbptree_init(t);
+  // Cleanup may run after the subsystem's shutdown hook. Reset only the
+  // local state; init() could register another hook while Coin is exiting.
+  rbptree_reset(t);
 }
 
 
