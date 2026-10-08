@@ -154,19 +154,52 @@ SoCallbackListP::copyData(const SbPList * source, const SbPList * destination)
 }
 
 void
+SoCallbackListP::reserveCallback(SoCallbackList * list)
+{
+  // Grow both arrays before either logical list changes length. A failed
+  // allocation may change capacity, but leaves the callback pairs intact.
+  const int numfuncs = list->funclist.getLength();
+  list->funclist.append(NULL);
+  list->funclist.truncate(numfuncs);
+
+  const int numdata = list->datalist.getLength();
+  list->datalist.append(NULL);
+  list->datalist.truncate(numdata);
+}
+
+void
 SoCallbackListP::addCallback(SoCallbackList * list, SoCallbackListCB * identity,
                              void * userdata, SoCallbackListCB * invoke,
                              void * context, void (*destroy)(void *))
 {
   OwnedCallback entry = { list->getNumCallbacks(), invoke,
                          std::shared_ptr<void>(context, destroy) };
+  reserveCallback(list);
   CallbackOwners & owners = callbackOwners();
   {
     std::lock_guard<std::mutex> lock(owners.mutex);
-    owners.lists[&list->datalist].push_back(entry);
-    haveOwnedData.store(true);
+    OwnedCallbacks staged;
+    const bool existing = owners.lists.get(&list->datalist, staged);
+    staged.push_back(entry);
+    if (existing) {
+      // The entry is known to exist, so operator[] does not allocate.
+      owners.lists[&list->datalist].swap(staged);
+    }
+    else {
+      try {
+        owners.lists.put(&list->datalist, staged);
+      }
+      catch (...) {
+        // SbHash::put may throw while resizing after it inserts the entry.
+        owners.lists.erase(&list->datalist);
+        throw;
+      }
+    }
   }
-  list->addCallback(identity, userdata);
+  // Both SbPLists have room; these appends cannot allocate.
+  list->funclist.append((void *) identity);
+  list->datalist.append(userdata);
+  haveOwnedData.store(true);
 }
 
 #if COIN_DEBUG
@@ -206,6 +239,7 @@ SoCallbackList::addCallback(SoCallbackListCB * f, void * userdata)
 {
   // FIXME: Shouldn't we check if the callback is already in the list?
   // 20050723 kyrah.
+  SoCallbackListP::reserveCallback(this);
   this->funclist.append((void*)f);
   this->datalist.append(userdata);
 }
