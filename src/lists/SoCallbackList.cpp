@@ -98,20 +98,19 @@ void releaseOwner(const SbPList * list, int index)
   CallbackOwners & owners = callbackOwners();
   {
     std::lock_guard<std::mutex> lock(owners.mutex);
-    OwnedCallbacks entries;
-    if (!owners.lists.get(list, entries)) return;
-    for (size_t i = 0; i < entries.size();) {
-      if (entries[i].index == index) {
-        removed = entries[i].data;
-        entries.erase(entries.begin() + i);
+    OwnedCallbacks * entries = NULL;
+    if (!owners.lists.getP(list, entries)) return;
+    for (size_t i = 0; i < entries->size();) {
+      if ((*entries)[i].index == index) {
+        removed.swap((*entries)[i].data);
+        entries->erase(entries->begin() + i);
       }
       else {
-        if (entries[i].index > index) --entries[i].index;
+        if ((*entries)[i].index > index) --(*entries)[i].index;
         ++i;
       }
     }
-    if (entries.empty()) owners.lists.erase(list);
-    else owners.lists.put(list, entries);
+    if (entries->empty()) owners.lists.erase(list);
     haveOwnedData.store(owners.lists.getNumElements() != 0);
   }
 }
@@ -123,7 +122,9 @@ void releaseOwners(const SbPList * list)
   CallbackOwners & owners = callbackOwners();
   {
     std::lock_guard<std::mutex> lock(owners.mutex);
-    if (!owners.lists.get(list, removed)) return;
+    OwnedCallbacks * entries = NULL;
+    if (!owners.lists.getP(list, entries)) return;
+    removed.swap(*entries);
     owners.lists.erase(list);
     haveOwnedData.store(owners.lists.getNumElements() != 0);
   }
@@ -146,10 +147,12 @@ SoCallbackListP::copyData(const SbPList * source, const SbPList * destination)
     std::lock_guard<std::mutex> lock(owners.mutex);
     OwnedCallbacks sourceentries;
     const bool hassource = owners.lists.get(source, sourceentries);
-    const bool hasdestination = owners.lists.get(destination, previous);
+    OwnedCallbacks * destinationentry = NULL;
+    const bool hasdestination = owners.lists.getP(destination, destinationentry);
     if (hassource && hasdestination) {
       // The new snapshot is complete before changing the old entry.
-      owners.lists[destination].swap(sourceentries);
+      previous.swap(*destinationentry);
+      destinationentry->swap(sourceentries);
     }
     else if (hassource) {
       try {
@@ -161,7 +164,10 @@ SoCallbackListP::copyData(const SbPList * source, const SbPList * destination)
         throw;
       }
     }
-    else if (hasdestination) owners.lists.erase(destination);
+    else if (hasdestination) {
+      previous.swap(*destinationentry);
+      owners.lists.erase(destination);
+    }
     haveOwnedData.store(owners.lists.getNumElements() != 0);
   }
 }
@@ -172,9 +178,10 @@ SoCallbackListP::swapData(const SbPList * lhs, const SbPList * rhs)
   if (lhs == rhs || !haveOwnedData.load()) return;
   CallbackOwners & owners = callbackOwners();
   std::lock_guard<std::mutex> lock(owners.mutex);
-  OwnedCallbacks ignored;
-  const bool haslhs = owners.lists.get(lhs, ignored);
-  const bool hasrhs = owners.lists.get(rhs, ignored);
+  OwnedCallbacks * lhsentry = NULL;
+  OwnedCallbacks * rhsentry = NULL;
+  const bool haslhs = owners.lists.getP(lhs, lhsentry);
+  const bool hasrhs = owners.lists.getP(rhs, rhsentry);
   if (!haslhs && !hasrhs) return;
 
   // Materialize any missing key before changing either existing value.
@@ -188,10 +195,13 @@ SoCallbackListP::swapData(const SbPList * lhs, const SbPList * rhs)
       owners.lists.erase(missing);
       throw;
     }
+    // Insertion can resize the table; refresh pointers before the swap.
+    owners.lists.getP(lhs, lhsentry);
+    owners.lists.getP(rhs, rhsentry);
   }
-  owners.lists[lhs].swap(owners.lists[rhs]);
-  if (owners.lists[lhs].empty()) owners.lists.erase(lhs);
-  if (owners.lists[rhs].empty()) owners.lists.erase(rhs);
+  lhsentry->swap(*rhsentry);
+  if (lhsentry->empty()) owners.lists.erase(lhs);
+  if (rhsentry->empty()) owners.lists.erase(rhs);
   haveOwnedData.store(owners.lists.getNumElements() != 0);
 }
 
