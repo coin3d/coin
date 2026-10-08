@@ -666,6 +666,35 @@ cc_rbptree_debug(const cc_rbptree * t)
 #define FILL_TIMES (50)
 #define FILL_COUNT (10000)
 
+static void
+rbptree_record_unrelated_pointer(void * pointer, void * data, void * closure)
+{
+  BOOST_CHECK_EQUAL(pointer, data);
+  static_cast<SbList<void *> *>(closure)->append(pointer);
+}
+
+BOOST_AUTO_TEST_CASE(rbptree_unrelated_pointer_lookup_and_remove)
+{
+  cc_rbptree tree;
+  cc_rbptree_init(&tree);
+  int * entries[6];
+  for (int i = 0; i < 6; ++i) {
+    entries[i] = new int(i);
+    cc_rbptree_insert(&tree, entries[i], entries[i]);
+  }
+
+  SbList<void *> visited;
+  cc_rbptree_traverse(&tree, rbptree_record_unrelated_pointer, &visited);
+  BOOST_CHECK_EQUAL(visited.getLength(), 6);
+  for (int i = 0; i < 6; ++i) {
+    BOOST_CHECK(visited.find(entries[i]) >= 0);
+    BOOST_CHECK(cc_rbptree_remove(&tree, entries[i]));
+    BOOST_CHECK_EQUAL(cc_rbptree_size(&tree), static_cast<uint32_t>(5 - i));
+  }
+  cc_rbptree_clean(&tree);
+  for (int i = 0; i < 6; ++i) delete entries[i];
+}
+
 BOOST_AUTO_TEST_CASE(rbptree_stress)
 {
   srand(123);
