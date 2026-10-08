@@ -661,6 +661,7 @@ cc_rbptree_debug(const cc_rbptree * t)
 #ifdef COIN_TEST_SUITE
 
 #include <cmath>
+#include <memory>
 #include <Inventor/lists/SbList.h>
 
 #define FILL_TIMES (50)
@@ -677,22 +678,29 @@ BOOST_AUTO_TEST_CASE(rbptree_unrelated_pointer_lookup_and_remove)
 {
   cc_rbptree tree;
   cc_rbptree_init(&tree);
-  int * entries[6];
+  std::unique_ptr<int> entries[6];
   for (int i = 0; i < 6; ++i) {
-    entries[i] = new int(i);
-    cc_rbptree_insert(&tree, entries[i], entries[i]);
+    entries[i].reset(new int(i));
+    cc_rbptree_insert(&tree, entries[i].get(), entries[i].get());
   }
 
   SbList<void *> visited;
   cc_rbptree_traverse(&tree, rbptree_record_unrelated_pointer, &visited);
   BOOST_CHECK_EQUAL(visited.getLength(), 6);
   for (int i = 0; i < 6; ++i) {
-    BOOST_CHECK(visited.find(entries[i]) >= 0);
-    BOOST_CHECK(cc_rbptree_remove(&tree, entries[i]));
+    BOOST_CHECK(visited.find(entries[i].get()) >= 0);
+  }
+  int absent;
+  BOOST_CHECK(!cc_rbptree_remove(&tree, &absent));
+  // Remove heap nodes before the inline entries, forcing binary-tree lookup
+  // instead of promoting the root into the inline slots on every removal.
+  const int removalorder[6] = { 5, 2, 4, 3, 1, 0 };
+  for (int i = 0; i < 6; ++i) {
+    BOOST_CHECK(cc_rbptree_remove(&tree, entries[removalorder[i]].get()));
     BOOST_CHECK_EQUAL(cc_rbptree_size(&tree), static_cast<uint32_t>(5 - i));
   }
+  BOOST_CHECK(!cc_rbptree_remove(&tree, &absent));
   cc_rbptree_clean(&tree);
-  for (int i = 0; i < 6; ++i) delete entries[i];
 }
 
 BOOST_AUTO_TEST_CASE(rbptree_stress)
