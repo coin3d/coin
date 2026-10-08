@@ -49,6 +49,10 @@ typedef struct cc_rbptree_node cc_rbptree_node;
    copy an initialized tree by assignment or memcpy: both copies would then
    own the same nodes. To build another tree, initialize it separately and
    insert its entries. The pointers and data stored in entries are borrowed. */
+/* For a future ABI-breaking interface revision, make this type opaque and
+   provide explicit create/destroy functions. SoBase's embedded tree would
+   need to migrate too. Add a clone function only with defined ownership
+   and allocation-failure behavior. */
 typedef struct cc_rbptree {
 #ifdef __cplusplus
   cc_rbptree() = default;
