@@ -421,4 +421,24 @@ BOOST_AUTO_TEST_CASE(sbname_accepts_exact_legacy_chunk_boundary)
   BOOST_CHECK(std::strcmp(name.getString(), text.c_str()) == 0);
 }
 
+BOOST_AUTO_TEST_CASE(sbname_preserves_addresses_across_large_chunks)
+{
+  const SbName shortname("retained-before-large-name-review");
+  const char * shortaddress = shortname.getString();
+  std::string text(65504, 'y'); // terminator exceeds the legacy chunk
+  const SbName boundary(text.c_str());
+  const char * boundaryaddress = boundary.getString();
+  const std::string largertext(140000, 'z');
+  const SbName larger(largertext.c_str());
+  const SbName trailing("retained-after-large-name-review");
+
+  BOOST_CHECK_EQUAL(boundary.getLength(), static_cast<int>(text.size()));
+  BOOST_CHECK_EQUAL(larger.getLength(), static_cast<int>(largertext.size()));
+  BOOST_CHECK(std::strcmp(boundaryaddress, text.c_str()) == 0);
+  BOOST_CHECK(std::strcmp(larger.getString(), largertext.c_str()) == 0);
+  BOOST_CHECK(SbName(text.c_str()).getString() == boundaryaddress);
+  BOOST_CHECK(SbName("retained-before-large-name-review").getString() == shortaddress);
+  BOOST_CHECK(std::strcmp(trailing.getString(), "retained-after-large-name-review") == 0);
+}
+
 #endif // COIN_TEST_SUITE
