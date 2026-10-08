@@ -669,10 +669,12 @@ rbptree_contains_pair(const cc_rbptree * t, const rbptree_entry & entry)
 }
 
 /*!
-  Traverse the entries present when the call begins. Entries removed by a
-  callback are skipped; entries inserted by a callback are left for a later
-  traversal. The snapshot prevents callbacks from invalidating tree nodes
-  still needed by this traversal.
+  Traverse a snapshot of the (pointer, data) pairs present when the call
+  begins. Before each callback, check whether that pair is still present;
+  distinct pairs inserted by callbacks are left for a later traversal.
+  Identical occurrences have no stable identity, so a removed occurrence
+  can still be visited if the same pair remains or is reinserted. The
+  snapshot prevents callbacks from invalidating nodes needed by traversal.
 */
 void
 cc_rbptree_traverse(const cc_rbptree * t, cc_rbptree_traversecb * func, void * closure)
