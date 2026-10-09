@@ -41,6 +41,9 @@
 extern "C" {
 #endif /* __cplusplus */
 
+/* Attributes returned by new(), new_from_data(), and clone() are owned by the
+   caller until transferred to an element with cc_xml_elt_set_attribute_x().
+   delete_x() must only be called while the attribute is caller-owned. */
 COIN_DLL_API cc_xml_attr * cc_xml_attr_new(void);
 COIN_DLL_API cc_xml_attr * cc_xml_attr_new_from_data(const char * name, const char * value);
 COIN_DLL_API cc_xml_attr * cc_xml_attr_clone(const cc_xml_attr * orig);

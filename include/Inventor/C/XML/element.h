@@ -43,6 +43,11 @@ extern "C" {
 
 /* ********************************************************************** */
 
+/* Elements returned by new(), new_from_data(), and clone() are caller-owned.
+   delete_x() recursively deletes attributes and children, so it must only be
+   called for an element currently owned by the caller.
+   new_from_data() takes ownership of every attribute in the NULL-terminated
+   attrs array; the array itself remains caller-owned. */
 COIN_DLL_API cc_xml_elt * cc_xml_elt_new(void);
 COIN_DLL_API cc_xml_elt * cc_xml_elt_new_from_data(const char * type, cc_xml_attr ** attrs);
 COIN_DLL_API cc_xml_elt * cc_xml_elt_clone(const cc_xml_elt * elt);
@@ -55,6 +60,11 @@ COIN_DLL_API void cc_xml_elt_set_cdata_x(cc_xml_elt * elt, const char * data);
 COIN_DLL_API const char * cc_xml_elt_get_cdata(const cc_xml_elt * elt);
 COIN_DLL_API const char * cc_xml_elt_get_data(const cc_xml_elt * elt);
 
+/* Attribute ownership:
+   - set_attribute_x() and set_attributes_x() transfer ownership to elt.
+   - get_attribute() and get_attributes() return borrowed pointers.
+   - remove_all_attributes_x() deletes all attributes owned by elt.
+   The attrs array passed to set_attributes_x() remains caller-owned. */
 COIN_DLL_API void cc_xml_elt_remove_all_attributes_x(cc_xml_elt * elt);
 COIN_DLL_API void cc_xml_elt_set_attribute_x(cc_xml_elt * elt, cc_xml_attr * attr);
 COIN_DLL_API void cc_xml_elt_set_attributes_x(cc_xml_elt * elt, cc_xml_attr ** attrs);
@@ -74,6 +84,14 @@ COIN_DLL_API cc_xml_path *   cc_xml_elt_get_path(const cc_xml_elt * elt);
 COIN_DLL_API cc_xml_elt *    cc_xml_elt_get_child_of_type(const cc_xml_elt * elt, const char * type, int idx);
 COIN_DLL_API cc_xml_elt *    cc_xml_elt_get_child_of_type_x(cc_xml_elt * elt, const char * type, int idx);
 
+/* Child ownership:
+   - add_child_x() and insert_child_x() transfer ownership on success.
+   - child getters return borrowed pointers.
+   - remove_child_x() releases ownership to the caller without deleting.
+   - replace_child_x() releases oldchild and takes ownership of newchild on
+     success; on failure ownership and tree structure are unchanged.
+   - set_parent_x() moves ownership from the current parent to the new parent;
+     passing NULL releases ownership to the caller. */
 COIN_DLL_API void           cc_xml_elt_set_parent_x(cc_xml_elt * elt, cc_xml_elt * parent);
 COIN_DLL_API void           cc_xml_elt_add_child_x(cc_xml_elt * elt, cc_xml_elt * child);
 COIN_DLL_API void           cc_xml_elt_remove_child_x(cc_xml_elt * elt, cc_xml_elt * child);
