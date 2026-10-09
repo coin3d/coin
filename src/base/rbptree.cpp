@@ -44,7 +44,6 @@
 #include <cstdlib>
 #include <functional>
 #include <cstdio>
-#include <functional>
 
 #include <Inventor/C/base/string.h>
 #include <Inventor/C/errors/debugerror.h>
@@ -545,7 +544,7 @@ rbptree_find_with_data(cc_rbptree_node * x, const void * pointer, const void * d
       if (found != nil) return found;
       x = x->right;
     }
-    else if (std::less<const void *>()(pointer, x->pointer)) {
+    else if (rbptree_pointer_less(pointer, x->pointer)) {
       x = x->left;
     }
     else {
@@ -614,7 +613,11 @@ cc_rbptree_remove(cc_rbptree * t, void * p)
   return rbptree_remove_impl(t, p, NULL, FALSE);
 }
 
-/*! Remove one entry matching both \a p and \a data. */
+/*!
+  Remove one entry matching both \a p and \a data. Returns TRUE when an
+  occurrence is removed, or FALSE without changing the tree if no pair
+  matches. Both arguments may be NULL; neither pointed-to object is freed.
+*/
 SbBool
 cc_rbptree_remove_with_data(cc_rbptree * t, void * p, void * data)
 {

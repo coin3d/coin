@@ -4,21 +4,20 @@
 
 #include <cstdio>
 
-int
-main()
+static int
+runTest()
 {
-  SoDB::init();
   SoGroup * node = new SoGroup;
   node->ref();
   int auditor = 0;
   node->addAuditor(&auditor, SoNotRec::PARENT);
-  node->addAuditor(&auditor, SoNotRec::SENSOR);
-  node->removeAuditor(&auditor, SoNotRec::SENSOR);
+  node->addAuditor(&auditor, SoNotRec::FIELD);
+  node->removeAuditor(&auditor, SoNotRec::FIELD);
 
   const SoAuditorList & remaining = node->getAuditors();
   const bool ok = remaining.getLength() == 1 &&
     remaining.find(&auditor, SoNotRec::PARENT) >= 0 &&
-    remaining.find(&auditor, SoNotRec::SENSOR) == -1;
+    remaining.find(&auditor, SoNotRec::FIELD) == -1;
 
   node->removeAuditor(&auditor, SoNotRec::PARENT);
   node->unref();
@@ -30,17 +29,17 @@ main()
   larger->addAuditor(&b, SoNotRec::PARENT);
   larger->addAuditor(&c, SoNotRec::PARENT);
   larger->addAuditor(&target, SoNotRec::PARENT);
-  larger->addAuditor(&target, SoNotRec::SENSOR);
+  larger->addAuditor(&target, SoNotRec::FIELD);
   larger->removeAuditor(&target, SoNotRec::ENGINE); // absent type leaves both entries
   const SoAuditorList & before = larger->getAuditors();
   const bool absent_type_preserved = before.getLength() == 5 &&
     before.find(&target, SoNotRec::PARENT) >= 0 &&
-    before.find(&target, SoNotRec::SENSOR) >= 0;
-  larger->removeAuditor(&target, SoNotRec::SENSOR);
+    before.find(&target, SoNotRec::FIELD) >= 0;
+  larger->removeAuditor(&target, SoNotRec::FIELD);
   const SoAuditorList & after = larger->getAuditors();
   const bool tree_type_preserved = after.getLength() == 4 &&
     after.find(&target, SoNotRec::PARENT) >= 0 &&
-    after.find(&target, SoNotRec::SENSOR) == -1;
+    after.find(&target, SoNotRec::FIELD) == -1;
   larger->removeAuditor(&target, SoNotRec::PARENT);
   larger->removeAuditor(&a, SoNotRec::PARENT);
   larger->removeAuditor(&b, SoNotRec::PARENT);
@@ -52,4 +51,13 @@ main()
     return 1;
   }
   return 0;
+}
+
+int
+main()
+{
+  SoDB::init();
+  const int result = runTest();
+  SoDB::finish();
+  return result;
 }
