@@ -361,6 +361,11 @@ SoInput_GZFileReader::readBuffer(char * buf, const size_t readlen)
   // FIXME: about the cast; see note about the call to cc_gzm_open()
   // above. 20050525 mortene.
   int result = cc_zlibglue_gzread(this->gzfp, buf, (uint32_t)readlen);
+  // gzread can return bytes, then zero, for a truncated stream. Its status
+  // distinguishes that from clean EOF (Z_OK=0, Z_STREAM_END=1).
+  int error = 0;
+  (void) cc_zlibglue_gzerror(this->gzfp, &error);
+  if (error != 0 && error != 1) this->readerror = TRUE;
 
   // the signature of this this function was changed to return size_t
   // without checking that gzread() actually returns a signed
@@ -421,9 +426,13 @@ SoInput_BZ2FileReader::readBuffer(char * buf, const size_t readlen)
   // above. 20050525 mortene.
   int ret = cc_bzglue_BZ2_bzRead(&bzerror, this->bzfp,
                                  buf, (uint32_t)readlen);
-  if ((bzerror != BZ_OK) && (bzerror != BZ_STREAM_END)) {
-    ret = 0;
-    this->readerror = TRUE;
+  if (bzerror != BZ_OK) {
+    if (bzerror != BZ_STREAM_END) {
+      ret = 0;
+      this->readerror = TRUE;
+    }
+    // Do not call bzRead again after STREAM_END: it reports a sequence
+    // error even when all compressed data was read successfully.
     cc_bzglue_BZ2_bzReadClose(&bzerror, this->bzfp);
     this->bzfp = NULL;
   }
