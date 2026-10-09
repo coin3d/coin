@@ -7,6 +7,8 @@ add_test(NAME SoBaseAuditorType COMMAND SoBaseAuditorTypeTest)
 
 # A C client must be able to link the public pointer/data removal function.
 add_executable(CcRbptreePairRemovalTest CcRbptreePairRemovalTest.c)
+# Keep the client source in C and use the C++ runtime when linking Coin.
+set_target_properties(CcRbptreePairRemovalTest PROPERTIES LINKER_LANGUAGE CXX)
 target_link_libraries(CcRbptreePairRemovalTest Coin ${COIN_TARGET_LINK_LIBRARIES})
 target_include_directories(CcRbptreePairRemovalTest PRIVATE
   ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
