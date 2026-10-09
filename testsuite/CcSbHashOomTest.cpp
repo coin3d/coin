@@ -69,7 +69,7 @@ static bool check_lazy_storage_and_resize()
     empty.makeKeyList(keys);
     int value = 0;
     if (empty.allocated() || allocator_constructions != 0 ||
-        empty.get(0, value) || empty.remove(0) ||
+        empty.get(0, value) || empty.erase(0) ||
         empty.begin() != empty.end() ||
         empty.find(0) != empty.const_end() || keys.getLength() != 0) return false;
     empty.clear();
