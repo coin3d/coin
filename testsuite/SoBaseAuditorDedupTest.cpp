@@ -15,14 +15,13 @@ static void notify_auditors(SoGroup * source) {
   list.append(&rec);
   list.setLastType(SoNotRec::CONTAINER);
   source->SoBase::notify(&list);
-  check(list.getLastRec()->getType() == SoNotRec::CONTAINER,
-        "notification modified the caller's record");
 }
 class CountingGroup : public SoGroup {
 public:
-  CountingGroup() : calls(0), source(NULL), victim(NULL), added(NULL), reenter(false), mutate(false), throwing(false) {}
-  void notify(SoNotList *) override {
+  CountingGroup() : calls(0), lasttype(SoNotRec::CONTAINER), source(NULL), victim(NULL), added(NULL), reenter(false), mutate(false), throwing(false) {}
+  void notify(SoNotList * list) override {
     ++calls;
+    lasttype = list->getLastRec()->getType();
     if (throwing) throw std::runtime_error("auditor failure");
     if (reenter) { reenter = false; notify_auditors(source); }
     if (mutate) {
@@ -32,6 +31,7 @@ public:
     }
   }
   int calls;
+  SoNotRec::Type lasttype;
   SoGroup * source;
   CountingGroup * victim;
   CountingGroup * added;
@@ -53,6 +53,8 @@ static void basic() {
   source->addAuditor(first, SoNotRec::CONTAINER);
   notify_auditors(source);
   check(first->calls == 3 && second->calls == 2, "mixed types notified the same pointer twice");
+  check(first->lasttype == SoNotRec::PARENT && second->lasttype == SoNotRec::PARENT,
+        "dispatch did not preserve the first registered notification type");
   source->unref(); first->unref(); second->unref();
 }
 static void reentrant() {
