@@ -1,3 +1,5 @@
+include(action-apply-exceptions/Tests.cmake)
+
 if(COIN_BUILD_LEGACY_GL_RENDERER)
   find_package(Threads REQUIRED)
   add_executable(CoinBumpProgramTest bumprender/FailureTest.cpp)
