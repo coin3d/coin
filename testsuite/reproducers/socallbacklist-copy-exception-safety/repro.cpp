@@ -44,6 +44,15 @@ void * operator new[](std::size_t n)
   if (void * p = std::malloc(n ? n : 1)) return p;
   throw std::bad_alloc();
 }
+
+// Keep nothrow allocations in the same replacement family as delete/free.
+void * operator new(std::size_t n, const std::nothrow_t &) noexcept
+{ try { return ::operator new(n); } catch (...) { return NULL; } }
+void * operator new[](std::size_t n, const std::nothrow_t &) noexcept
+{ try { return ::operator new[](n); } catch (...) { return NULL; } }
+void operator delete(void * p, const std::nothrow_t &) noexcept { std::free(p); }
+void operator delete[](void * p, const std::nothrow_t &) noexcept { std::free(p); }
+
 void operator delete(void * p) noexcept { std::free(p); }
 void operator delete[](void * p) noexcept { std::free(p); }
 #if __cplusplus >= 201402L
