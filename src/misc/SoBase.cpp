@@ -240,13 +240,17 @@ SoBase::~SoBase()
   // used to check that we are still alive.
   this->objdata.alive = (~ALIVE_PATTERN) & 0xf;
 
+  CC_MUTEX_LOCK(SoBase::PImpl::auditor_mutex);
   if (SoBase::PImpl::auditordict) {
-    //SoAuditorList * l;
-    if (SoBase::PImpl::auditordict->find(this)!=SoBase::PImpl::auditordict->const_end()) {
+    SbHash<const SoBase *, SoAuditorList *>::const_iterator iter =
+      SoBase::PImpl::auditordict->find(this);
+    if (iter != SoBase::PImpl::auditordict->const_end()) {
+      SoAuditorList * l = iter->obj;
       SoBase::PImpl::auditordict->erase(this);
-      //delete l;
+      delete l;
     }
   }
+  CC_MUTEX_UNLOCK(SoBase::PImpl::auditor_mutex);
   cc_rbptree_clean(&this->auditortree);
 
 #if COIN_DEBUG
@@ -863,6 +867,10 @@ sobase_audlist_add(void * pointer, void * type, void * closure)
 /*!
   Returns list of objects auditing this object.
 
+  The returned list is owned by Coin and is refreshed by subsequent calls
+  for this object. Do not use it after this object is destroyed or after
+  SoDB::finish().
+
   \sa addAuditor(), removeAuditor()
 */
 const SoAuditorList &
@@ -882,12 +890,13 @@ SoBase::getAuditors(void) const
   if (iter!=SoBase::PImpl::auditordict->const_end()) {
     l = iter->obj;
     // empty list before copying in new values
-    for (int i = 0; i < l->getLength(); i++) {
-      l->remove(i);
+    for (int i = l->getLength(); i > 0; --i) {
+      l->remove(i - 1);
     }
   }
   else {
-    (*SoBase::PImpl::auditordict)[this] = new SoAuditorList;
+    l = new SoAuditorList;
+    (*SoBase::PImpl::auditordict)[this] = l;
   }
   cc_rbptree_traverse(&this->auditortree, (cc_rbptree_traversecb*)sobase_audlist_add, l);
 
