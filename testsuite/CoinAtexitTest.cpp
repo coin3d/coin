@@ -1,8 +1,6 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/C/tidbits.h>
 
-#include "tidbitsp.h"
-
 #include <cstdio>
 #if !defined(_WIN32)
 #include <csignal>
@@ -12,7 +10,6 @@
 
 static int calls[4];
 static int count = 0;
-static bool exiting_in_callback = false;
 static bool initialized_after_reentry = false;
 
 static void
@@ -26,7 +23,6 @@ static void
 recursive_callback(void)
 {
   calls[count++] = 2;
-  exiting_in_callback = coin_is_exiting() != FALSE;
   SoDB::finish();
 }
 
@@ -58,7 +54,7 @@ main(void)
   SoDB::finish();
 
   if (count != 3 || calls[0] != 3 || calls[1] != 2 || calls[2] != 1 ||
-      !exiting_in_callback || !initialized_after_reentry || coin_is_exiting()) {
+      !initialized_after_reentry || SoDB::isInitialized()) {
     std::fprintf(stderr, "coin_atexit order or recursive cleanup failed\n");
     return 1;
   }
@@ -66,7 +62,7 @@ main(void)
   SoDB::init();
   cc_coin_atexit(second_round_callback);
   SoDB::finish();
-  if (count != 4 || calls[3] != 4 || coin_is_exiting()) {
+  if (count != 4 || calls[3] != 4 || SoDB::isInitialized()) {
     std::fprintf(stderr, "coin_atexit could not restart after cleanup\n");
     return 1;
   }
