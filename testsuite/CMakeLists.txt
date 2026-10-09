@@ -180,6 +180,37 @@ target_include_directories(SoPathRangeTest PRIVATE
   ${PROJECT_BINARY_DIR}/include
   ${COIN_TARGET_INCLUDE_DIRECTORIES})
 add_test(NAME SoPathRange COMMAND SoPathRangeTest)
+
+add_executable(CoinAtexitTest CoinAtexitTest.cpp)
+target_compile_definitions(CoinAtexitTest PRIVATE COIN_INTERNAL)
+target_link_libraries(CoinAtexitTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CoinAtexitTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${PROJECT_SOURCE_DIR}/src ${COIN_TARGET_INCLUDE_DIRECTORIES})
+add_test(NAME CoinAtexit COMMAND CoinAtexitTest)
+
+if(UNIX)
+  add_executable(CoinStdFdsFailureTest CoinStdFdsFailureTest.cpp)
+  target_compile_definitions(CoinStdFdsFailureTest PRIVATE COIN_INTERNAL)
+  target_link_libraries(CoinStdFdsFailureTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(CoinStdFdsFailureTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${PROJECT_SOURCE_DIR}/src ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  add_test(NAME CoinStdFdsFailure COMMAND CoinStdFdsFailureTest)
+  set_tests_properties(CoinStdFdsFailure PROPERTIES SKIP_RETURN_CODE 77)
+endif()
+
+if(UNIX AND COIN_THREADSAFE)
+  add_executable(CoinStdFdsConcurrentTest CoinStdFdsConcurrentTest.cpp)
+  target_compile_definitions(CoinStdFdsConcurrentTest PRIVATE COIN_INTERNAL)
+  target_link_libraries(CoinStdFdsConcurrentTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(CoinStdFdsConcurrentTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${PROJECT_SOURCE_DIR}/src ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  add_test(NAME CoinStdFdsConcurrent COMMAND CoinStdFdsConcurrentTest)
+  set_tests_properties(CoinStdFdsConcurrent PROPERTIES SKIP_RETURN_CODE 77)
+endif()
+
 # Process-isolated public behavior checks. Keeping each invalid access in its
 # own CTest process prevents one unsafe access from masking the remaining
 # boundary classes.
