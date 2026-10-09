@@ -814,12 +814,10 @@ SoBase::notify(SoNotList * l)
 #endif // debug
 
   SoBase::PImpl::NotifyData notdata;
-  notdata.cnt = cc_rbptree_size(&this->auditortree);
   notdata.list = l;
   notdata.thisp = this;
 
   cc_rbptree_traverse(&this->auditortree, (cc_rbptree_traversecb *)SoBase::PImpl::rbptree_notify_cb, &notdata);
-  assert(notdata.cnt == 0);
 }
 
 /*!
