@@ -580,10 +580,6 @@ rbptree_remove_inline(cc_rbptree * t, const int idx)
   }
 }
 
-/*!
- * Remove the (first) node with value \c p. Returns \e TRUE if \c p
- * is found and removed, \e FALSE otherwise.
- */
 static SbBool
 rbptree_remove_impl(cc_rbptree * t, void * p, void * data, const SbBool matchdata)
 {
@@ -607,6 +603,10 @@ rbptree_remove_impl(cc_rbptree * t, void * p, void * data, const SbBool matchdat
   return TRUE;
 }
 
+/*!
+ * Remove the (first) node with value \c p. Returns \e TRUE if \c p
+ * is found and removed, \e FALSE otherwise.
+ */
 SbBool
 cc_rbptree_remove(cc_rbptree * t, void * p)
 {
