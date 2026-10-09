@@ -101,10 +101,9 @@ public:
 
   // only needed for the callback from cc_rbptree_traverse
   struct NotifyData {
-    int cnt;
-    int total;
     SoNotList * list;
     SoBase * thisp;
+    SbPList * notified;
   };
 
 }; // SoBase::PImpl

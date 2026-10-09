@@ -43,11 +43,14 @@
 #include <cstddef>
 #include <cstdlib>
 #include <cstdio>
+#include <functional>
+#include <limits>
 
 #include <Inventor/C/base/string.h>
 #include <Inventor/C/errors/debugerror.h>
 
 #include "coindefs.h"
+#include "base/oomp.h"
 #include "tidbitsp.h"
 #include "threads/threadsutilp.h"
 
@@ -96,6 +99,44 @@ struct cc_rbptree_node {
 
 static cc_rbptree_node rbptree_sentinel;
 static SbBool rbptree_isinitialized = FALSE;
+
+struct rbptree_entry {
+  void * pointer;
+  void * data;
+};
+
+struct rbptree_snapshot {
+  static const size_t inlinecapacity = 16;
+  rbptree_entry inlineentries[inlinecapacity];
+  rbptree_entry * entries;
+
+  explicit rbptree_snapshot(const size_t count) : entries(inlineentries)
+  {
+    if (count > inlinecapacity) {
+      if (count > std::numeric_limits<size_t>::max() / sizeof(rbptree_entry)) {
+        coin_oom_abort("cc_rbptree_traverse snapshot size");
+      }
+      entries = static_cast<rbptree_entry *>(malloc(count * sizeof(rbptree_entry)));
+      if (entries == NULL) coin_oom_abort("cc_rbptree_traverse snapshot");
+    }
+  }
+
+  ~rbptree_snapshot()
+  {
+    if (entries != inlineentries) free(entries);
+  }
+
+private:
+  rbptree_snapshot(const rbptree_snapshot &);
+  rbptree_snapshot & operator=(const rbptree_snapshot &);
+};
+
+// std::less provides a strict total order for unrelated object pointers.
+static bool
+rbptree_pointer_less(const void * lhs, const void * rhs)
+{
+  return std::less<const void *>()(lhs, rhs);
+}
 
 extern "C" {
 
@@ -223,7 +264,7 @@ rbptree_bintree_insert(cc_rbptree * t, cc_rbptree_node * z)
 
   while (x != nil) {
     y = x;
-    if (z->pointer < x->pointer) {
+    if (rbptree_pointer_less(z->pointer, x->pointer)) {
       x = x->left;
     }
     else {
@@ -235,7 +276,7 @@ rbptree_bintree_insert(cc_rbptree * t, cc_rbptree_node * z)
   if (y == nil) {
     t->root = z;
   }
-  else if (z->pointer < y->pointer) {
+  else if (rbptree_pointer_less(z->pointer, y->pointer)) {
     y->left = z;
   }
   else {
@@ -513,7 +554,7 @@ rbptree_find(cc_rbptree * t, void * pointer)
   nil = &rbptree_sentinel;
 
   while (x != nil && x->pointer != p) {
-    if (p < x->pointer) {
+    if (rbptree_pointer_less(p, x->pointer)) {
       x = x->left;
     }
     else {
@@ -589,29 +630,76 @@ cc_rbptree_size(const cc_rbptree * t)
 }
 
 static void
-rbptree_rec_traverse(cc_rbptree_node * x, cc_rbptree_traversecb * func, void * closure)
+rbptree_collect_entries(cc_rbptree_node * x, rbptree_entry * entries,
+                        size_t & length)
 {
   cc_rbptree_node * nil = &rbptree_sentinel;
 
-  func(static_cast<void*>(x->pointer), x->data, closure);
-  if (x->left != nil) rbptree_rec_traverse(x->left, func, closure);
-  if (x->right != nil) rbptree_rec_traverse(x->right, func, closure);
+  entries[length].pointer = static_cast<void *>(x->pointer);
+  entries[length].data = x->data;
+  ++length;
+  if (x->left != nil) rbptree_collect_entries(x->left, entries, length);
+  if (x->right != nil) rbptree_collect_entries(x->right, entries, length);
+}
+
+static bool
+rbptree_contains_node_pair(const cc_rbptree_node * x,
+                           const rbptree_entry & entry)
+{
+  if (x == &rbptree_sentinel) return false;
+  if (rbptree_pointer_less(entry.pointer, x->pointer)) {
+    return rbptree_contains_node_pair(x->left, entry);
+  }
+  if (rbptree_pointer_less(x->pointer, entry.pointer)) {
+    return rbptree_contains_node_pair(x->right, entry);
+  }
+  return (x->data == entry.data) ||
+    rbptree_contains_node_pair(x->left, entry) ||
+    rbptree_contains_node_pair(x->right, entry);
+}
+
+static bool
+rbptree_contains_pair(const cc_rbptree * t, const rbptree_entry & entry)
+{
+  if (t->counter > 0 && t->inlinepointer[0] == entry.pointer &&
+      t->inlinedata[0] == entry.data) return true;
+  if (t->counter > 1 && t->inlinepointer[1] == entry.pointer &&
+      t->inlinedata[1] == entry.data) return true;
+  return rbptree_contains_node_pair(t->root, entry);
 }
 
 /*!
-  Traverse the tree \c t
+  Traverse a snapshot of the (pointer, data) pairs present when the call
+  begins. Before each callback, check whether that pair is still present;
+  distinct pairs inserted by callbacks are left for a later traversal.
+  Identical occurrences have no stable identity, so a removed occurrence
+  can still be visited if the same pair remains or is reinserted. The
+  snapshot prevents callbacks from invalidating nodes needed by traversal.
 */
 void
 cc_rbptree_traverse(const cc_rbptree * t, cc_rbptree_traversecb * func, void * closure)
 {
-  if (t->counter > 0) {
-    func(static_cast<void*>(t->inlinepointer[0]), t->inlinedata[0], closure);
-    if (t->counter > 1) {
-      func(static_cast<void*>(t->inlinepointer[1]), t->inlinedata[1], closure);
-    }
+  const size_t count = t->counter;
+  if (count == 0) return;
+
+  rbptree_snapshot snapshot(count);
+  size_t length = 0;
+  snapshot.entries[length].pointer = t->inlinepointer[0];
+  snapshot.entries[length++].data = t->inlinedata[0];
+  if (count > 1) {
+    snapshot.entries[length].pointer = t->inlinepointer[1];
+    snapshot.entries[length++].data = t->inlinedata[1];
   }
   if (t->root != &rbptree_sentinel) {
-    rbptree_rec_traverse(t->root, func, closure);
+    rbptree_collect_entries(t->root, snapshot.entries, length);
+  }
+  assert(length == count);
+
+  for (size_t i = 0; i < length; ++i) {
+    const rbptree_entry & entry = snapshot.entries[i];
+    if (rbptree_contains_pair(t, entry)) {
+      func(entry.pointer, entry.data, closure);
+    }
   }
 }
 
@@ -657,6 +745,78 @@ cc_rbptree_debug(const cc_rbptree * t)
 
 #define FILL_TIMES (50)
 #define FILL_COUNT (10000)
+
+struct rbptree_mutation_test_state {
+  cc_rbptree * tree;
+  void * other;
+  int visits;
+};
+
+static void
+rbptree_remove_current_cb(void * pointer, void *, void * closure)
+{
+  rbptree_mutation_test_state * state =
+    static_cast<rbptree_mutation_test_state *>(closure);
+  ++state->visits;
+  cc_rbptree_remove(state->tree, pointer);
+}
+
+static void
+rbptree_remove_other_cb(void *, void *, void * closure)
+{
+  rbptree_mutation_test_state * state =
+    static_cast<rbptree_mutation_test_state *>(closure);
+  if (state->visits++ == 0) cc_rbptree_remove(state->tree, state->other);
+}
+
+static void
+rbptree_clear_cb(void *, void *, void * closure)
+{
+  rbptree_mutation_test_state * state =
+    static_cast<rbptree_mutation_test_state *>(closure);
+  if (state->visits++ == 0) cc_rbptree_clean(state->tree);
+}
+
+static void
+rbptree_insert_cb(void *, void *, void * closure)
+{
+  rbptree_mutation_test_state * state =
+    static_cast<rbptree_mutation_test_state *>(closure);
+  if (state->visits++ == 0) cc_rbptree_insert(state->tree, state->other, NULL);
+}
+
+BOOST_AUTO_TEST_CASE(rbptree_traverse_survives_callback_mutation)
+{
+  int values[4] = { 0, 1, 2, 3 };
+  cc_rbptree tree;
+  cc_rbptree_init(&tree);
+  for (int i = 0; i < 4; ++i) cc_rbptree_insert(&tree, &values[i], NULL);
+
+  rbptree_mutation_test_state state = { &tree, NULL, 0 };
+  cc_rbptree_traverse(&tree, rbptree_remove_current_cb, &state);
+  BOOST_CHECK_EQUAL(state.visits, 4);
+  BOOST_CHECK_EQUAL(cc_rbptree_size(&tree), 0U);
+
+  for (int i = 0; i < 4; ++i) cc_rbptree_insert(&tree, &values[i], NULL);
+  state.other = &values[1];
+  state.visits = 0;
+  cc_rbptree_traverse(&tree, rbptree_remove_other_cb, &state);
+  BOOST_CHECK_EQUAL(state.visits, 3);
+  BOOST_CHECK_EQUAL(cc_rbptree_size(&tree), 3U);
+
+  state.visits = 0;
+  cc_rbptree_traverse(&tree, rbptree_clear_cb, &state);
+  BOOST_CHECK_EQUAL(state.visits, 1);
+  BOOST_CHECK_EQUAL(cc_rbptree_size(&tree), 0U);
+
+  for (int i = 0; i < 3; ++i) cc_rbptree_insert(&tree, &values[i], NULL);
+  state.other = &values[3];
+  state.visits = 0;
+  cc_rbptree_traverse(&tree, rbptree_insert_cb, &state);
+  BOOST_CHECK_EQUAL(state.visits, 3);
+  BOOST_CHECK_EQUAL(cc_rbptree_size(&tree), 4U);
+  cc_rbptree_clean(&tree);
+}
 
 BOOST_AUTO_TEST_CASE(rbptree_stress)
 {
