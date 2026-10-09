@@ -1507,8 +1507,8 @@ SoInput::readBinaryArray(double * d, int length)
 }
 
 /*!
-  Returns \c TRUE if we are at the end of the current stream, otherwise
-  \c FALSE.
+  Returns \c TRUE if the current stream has stopped. Use hasReadError()
+  to distinguish a read failure from ordinary end of file.
  */
 SbBool
 SoInput::eof(void) const
@@ -1516,6 +1516,19 @@ SoInput::eof(void) const
   SoInput_FileInfo * fi = this->getTopOfStack();
   if (!fi) return TRUE;
   return fi->isEndOfFile();
+}
+
+/*!
+  Returns TRUE if the current stream stopped because of a read failure.
+  After read() returns FALSE, use this to distinguish a failed stream from
+  ordinary end of file. The flag is reset when the current stream is replaced.
+*/
+SbBool
+SoInput::hasReadError(void) const
+{
+  if (this->filestack.getLength() == 0) return FALSE;
+  SoInput_FileInfo * fi = this->getTopOfStack();
+  return fi ? fi->hasReadError() : FALSE;
 }
 
 /*!
