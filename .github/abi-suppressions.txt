@@ -1,0 +1,26 @@
+# libabigail suppression rules for the ABI compatibility workflow.
+#
+# Replacing four private GL-context SbHash members with SbSmallMap stops the
+# compiler from emitting their destructors. Suppress only those exact Itanium
+# ABI symbols instead of all SbHash instantiations.
+
+[suppress_function]
+  symbol_name_regexp = ^_ZN6SbHashIjP16SoGLShaderObjectED[12]Ev$
+  label = Private SoGLShaderObject context-map destructor replaced by SbSmallMap; it is not part of Coin's public ABI.
+
+[suppress_function]
+  symbol_name_regexp = ^_ZN6SbHashIjmED[12]Ev$
+  label = Private shader program-handle context-map destructor replaced by SbSmallMap; it is not part of Coin's public ABI.
+
+[suppress_function]
+  symbol_name_regexp = ^_ZN6SbHashIjjED[12]Ev$
+  label = Private uniform-parameter context-map destructor replaced by SbSmallMap; it is not part of Coin's public ABI.
+
+# SoUniformShaderParameterP is defined only inside
+# src/shaders/SoShaderParameter.cpp. Changing its private map member can alter
+# whether its out-of-line destructor is emitted, but clients cannot name or use
+# the class.
+
+[suppress_function]
+  symbol_name_regexp = ^_ZN25SoUniformShaderParameterPD[12]Ev$
+  label = SoUniformShaderParameterP is a source-file-private implementation class; its destructor is not part of Coin's public ABI.

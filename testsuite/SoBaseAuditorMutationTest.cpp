@@ -43,6 +43,7 @@ main()
   first->unref();
   second->unref();
   third->unref();
+  SoDB::finish();
   if (!ok) std::fprintf(stderr, "detached auditor was notified again\n");
   return ok ? 0 : 1;
 }
