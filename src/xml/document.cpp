@@ -199,8 +199,9 @@ cc_xml_doc_expat_element_end_handler_cb(void * userdata, const XML_Char * elemen
           cc_xml_elt_delete_x(topelt);
         } else {
           if (topelt == doc->root) {
-            cc_xml_doc_set_root_x(doc, NULL);
-            cc_xml_elt_delete_x(topelt);
+            cc_xml_elt * root = cc_xml_doc_release_root_x(doc);
+            assert(root == topelt);
+            cc_xml_elt_delete_x(root);
           } else {
             assert(!"invalid case - investigate");
           }
@@ -444,8 +445,7 @@ cc_xml_doc_read_file_x(cc_xml_doc * doc, const char * path)
 {
   assert(doc);
   if (doc->root) {
-    cc_xml_elt_delete_x(doc->root);
-    doc->root = NULL;
+    cc_xml_elt_delete_x(cc_xml_doc_release_root_x(doc));
   }
 
   if (!doc->parser) {
@@ -612,19 +612,43 @@ cc_xml_doc_get_current(const cc_xml_doc * doc)
 }
 
 /*!
-  Sets the root element for the document.  Only useful when
-  constructing documents to be written.
+  Sets the root element for the document and transfers its ownership to the
+  document.  The root must not have a parent.
+
+  If a different root was already set, it is deleted.  Call
+  cc_xml_doc_release_root_x() first if the old tree must be retained.
 */
 
 void
 cc_xml_doc_set_root_x(cc_xml_doc * doc, cc_xml_elt * root)
 {
   assert(doc);
+  if (root && cc_xml_elt_get_parent(root)) return;
+  if (doc->root == root) return;
+  cc_xml_elt * oldroot = doc->root;
   doc->root = root;
+  doc->current = NULL;
+  if (oldroot) cc_xml_elt_delete_x(oldroot);
 }
 
 /*!
-  Returns the root element of the document.
+  Releases the document root and transfers its ownership to the caller.
+  Returns NULL if the document has no root.  The document's non-owning current
+  pointer is cleared as it may point into the released tree.
+*/
+
+cc_xml_elt *
+cc_xml_doc_release_root_x(cc_xml_doc * doc)
+{
+  assert(doc);
+  cc_xml_elt * root = doc->root;
+  doc->root = NULL;
+  doc->current = NULL;
+  return root;
+}
+
+/*!
+  Returns a borrowed pointer to the document root.
 */
 
 cc_xml_elt *
@@ -878,11 +902,53 @@ cc_xml_doc_handle_parse_warning(const cc_xml_doc * doc, const char * message)
 
 #ifdef COIN_TEST_SUITE
 
+#include <cstring>
 #include <memory>
+#include <Inventor/C/XML/attribute.h>
+#include <Inventor/C/XML/element.h>
 #include <Inventor/C/XML/parser.h>
 #include <Inventor/C/XML/path.h>
 
-BOOST_AUTO_TEST_CASE(bufread)
+namespace {
+
+bool
+xml_test_strings_equal(const char * lhs, const char * rhs)
+{
+  if (lhs == NULL || rhs == NULL) return lhs == rhs;
+  return strcmp(lhs, rhs) == 0;
+}
+
+bool
+xml_test_elements_equal(const cc_xml_elt * lhs, const cc_xml_elt * rhs)
+{
+  if (!xml_test_strings_equal(cc_xml_elt_get_type(lhs),
+                              cc_xml_elt_get_type(rhs))) return false;
+  if (!xml_test_strings_equal(cc_xml_elt_get_cdata(lhs),
+                              cc_xml_elt_get_cdata(rhs))) return false;
+
+  const int numattributes = cc_xml_elt_get_num_attributes(lhs);
+  if (numattributes != cc_xml_elt_get_num_attributes(rhs)) return false;
+  const cc_xml_attr ** attributes = cc_xml_elt_get_attributes(lhs);
+  for (int i = 0; i < numattributes; ++i) {
+    const char * name = cc_xml_attr_get_name(attributes[i]);
+    const cc_xml_attr * other = cc_xml_elt_get_attribute(rhs, name);
+    if (!other) return false;
+    if (!xml_test_strings_equal(cc_xml_attr_get_value(attributes[i]),
+                                cc_xml_attr_get_value(other))) return false;
+  }
+
+  const int numchildren = cc_xml_elt_get_num_children(lhs);
+  if (numchildren != cc_xml_elt_get_num_children(rhs)) return false;
+  for (int i = 0; i < numchildren; ++i) {
+    if (!xml_test_elements_equal(cc_xml_elt_get_child(lhs, i),
+                                 cc_xml_elt_get_child(rhs, i))) return false;
+  }
+  return true;
+}
+
+} // namespace
+
+BOOST_AUTO_TEST_CASE(buffer_round_trip_compares_real_dom)
 {
   const char * buffer =
 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n"
@@ -899,14 +965,153 @@ BOOST_AUTO_TEST_CASE(bufread)
     cc_xml_doc_write_to_buffer(doc1, bufptr, bytecount);
     buffer2.reset(bufptr);
   }
+  BOOST_REQUIRE(buffer2.get() != NULL);
+  const char * expected =
+"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+"<test value=\"one\" compact=\"\">\n"
+"  <b>hei</b>\n"
+"</test>\n";
+  BOOST_CHECK(bytecount == strlen(expected));
+  BOOST_CHECK(strcmp(buffer2.get(), expected) == 0);
 
   cc_xml_doc * doc2 = cc_xml_read_buffer(buffer2.get());
+  BOOST_REQUIRE(doc2 != NULL);
+  BOOST_REQUIRE(cc_xml_doc_get_root(doc1) != NULL);
+  BOOST_REQUIRE(cc_xml_doc_get_root(doc2) != NULL);
+  BOOST_CHECK(xml_test_elements_equal(cc_xml_doc_get_root(doc1),
+                                      cc_xml_doc_get_root(doc2)));
 
-  cc_xml_path * diffpath = cc_xml_doc_diff(doc1, doc2);
-  BOOST_CHECK_MESSAGE(diffpath == NULL, "document read->write->read DOM differences");
+  // Negative control: prove that the comparator observes a real DOM change.
+  cc_xml_elt_set_attribute_x(cc_xml_doc_get_root(doc2),
+    cc_xml_attr_new_from_data("value", "different"));
+  BOOST_CHECK(!xml_test_elements_equal(cc_xml_doc_get_root(doc1),
+                                       cc_xml_doc_get_root(doc2)));
+
+  // Child data and structure must also participate in the comparison.
+  cc_xml_elt_set_attribute_x(cc_xml_doc_get_root(doc2),
+    cc_xml_attr_new_from_data("value", "one"));
+  BOOST_CHECK(xml_test_elements_equal(cc_xml_doc_get_root(doc1),
+                                      cc_xml_doc_get_root(doc2)));
+  cc_xml_elt_set_cdata_x(cc_xml_elt_get_child(cc_xml_doc_get_root(doc2), 0),
+                         "changed");
+  BOOST_CHECK(!xml_test_elements_equal(cc_xml_doc_get_root(doc1),
+                                       cc_xml_doc_get_root(doc2)));
 
   cc_xml_doc_delete_x(doc1);
   cc_xml_doc_delete_x(doc2);
+}
+
+BOOST_AUTO_TEST_CASE(empty_cdata_child_serializes_without_null_dereference)
+{
+  cc_xml_doc * doc = cc_xml_doc_new();
+  cc_xml_elt * root = cc_xml_elt_new();
+  cc_xml_elt_set_type_x(root, "root");
+  cc_xml_doc_set_root_x(doc, root);
+  cc_xml_elt * child = cc_xml_elt_new();
+  cc_xml_elt_set_type_x(child, COIN_XML_CDATA_TYPE);
+  cc_xml_elt_add_child_x(root, child);
+
+  char * buffer = NULL;
+  size_t bytes = 0;
+  BOOST_REQUIRE(cc_xml_doc_write_to_buffer(doc, &buffer, &bytes));
+  BOOST_REQUIRE(buffer != NULL);
+  BOOST_CHECK(strcmp(buffer,
+                     "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                     "<root>\n  <cdata/>\n</root>\n") == 0);
+  delete [] buffer;
+  cc_xml_doc_delete_x(doc);
+}
+
+BOOST_AUTO_TEST_CASE(dom_attribute_ownership)
+{
+  cc_xml_elt * elt = cc_xml_elt_new();
+  cc_xml_attr * original = cc_xml_attr_new_from_data("key", "old");
+  cc_xml_elt_set_attribute_x(elt, original);
+
+  cc_xml_attr * replacement = cc_xml_attr_new_from_data("key", "new");
+  cc_xml_elt_set_attribute_x(elt, replacement);
+
+  BOOST_CHECK(cc_xml_elt_get_num_attributes(elt) == 1);
+  BOOST_CHECK(cc_xml_elt_get_attribute(elt, "key") == original);
+  BOOST_CHECK(strcmp(cc_xml_attr_get_value(original), "new") == 0);
+
+  cc_xml_elt_remove_all_attributes_x(elt);
+  BOOST_CHECK(cc_xml_elt_get_num_attributes(elt) == 0);
+  BOOST_CHECK(cc_xml_elt_get_attribute(elt, "key") == NULL);
+  cc_xml_elt_delete_x(elt);
+}
+
+BOOST_AUTO_TEST_CASE(dom_child_ownership)
+{
+  cc_xml_elt * parent = cc_xml_elt_new();
+  cc_xml_elt * oldchild = cc_xml_elt_new();
+  cc_xml_elt * otherparent = cc_xml_elt_new();
+  cc_xml_elt * newchild = cc_xml_elt_new();
+
+  cc_xml_elt_add_child_x(parent, oldchild);
+  cc_xml_elt_add_child_x(otherparent, newchild);
+
+  cc_xml_elt_set_parent_x(oldchild, otherparent);
+  BOOST_CHECK(cc_xml_elt_get_num_children(parent) == 0);
+  BOOST_CHECK(cc_xml_elt_get_parent(oldchild) == otherparent);
+  cc_xml_elt_set_parent_x(oldchild, parent);
+  BOOST_CHECK(cc_xml_elt_get_num_children(otherparent) == 1);
+  BOOST_CHECK(cc_xml_elt_get_parent(oldchild) == parent);
+  cc_xml_elt_set_parent_x(oldchild, NULL);
+  BOOST_CHECK(cc_xml_elt_get_num_children(parent) == 0);
+  BOOST_CHECK(cc_xml_elt_get_parent(oldchild) == NULL);
+  cc_xml_elt_add_child_x(parent, oldchild);
+
+  // Failure is transactional: neither child changes owners.
+  BOOST_CHECK(!cc_xml_elt_replace_child_x(parent, oldchild, newchild));
+  BOOST_CHECK(cc_xml_elt_get_parent(oldchild) == parent);
+  BOOST_CHECK(cc_xml_elt_get_parent(newchild) == otherparent);
+  BOOST_CHECK(cc_xml_elt_get_child(parent, 0) == oldchild);
+
+  cc_xml_elt_remove_child_x(otherparent, newchild);
+  BOOST_CHECK(cc_xml_elt_get_parent(newchild) == NULL);
+  BOOST_REQUIRE(cc_xml_elt_replace_child_x(parent, oldchild, newchild));
+  BOOST_CHECK(cc_xml_elt_get_parent(oldchild) == NULL);
+  BOOST_CHECK(cc_xml_elt_get_parent(newchild) == parent);
+  BOOST_CHECK(cc_xml_elt_get_child(parent, 0) == newchild);
+
+  // Adopting an ancestor would create a recursively owned cycle.
+  cc_xml_elt_add_child_x(newchild, parent);
+  BOOST_CHECK(cc_xml_elt_get_parent(parent) == NULL);
+  BOOST_CHECK(cc_xml_elt_get_num_children(newchild) == 0);
+
+  cc_xml_elt_delete_x(oldchild);
+  cc_xml_elt_delete_x(otherparent);
+  cc_xml_elt_delete_x(parent);
+}
+
+BOOST_AUTO_TEST_CASE(dom_root_ownership)
+{
+  cc_xml_doc * doc = cc_xml_doc_new();
+  cc_xml_elt * root = cc_xml_elt_new();
+  cc_xml_doc_set_root_x(doc, root);
+  cc_xml_doc_set_current_x(doc, root);
+  BOOST_CHECK(cc_xml_doc_get_root(doc) == root);
+
+  cc_xml_elt * released = cc_xml_doc_release_root_x(doc);
+  BOOST_CHECK(released == root);
+  BOOST_CHECK(cc_xml_doc_get_root(doc) == NULL);
+  BOOST_CHECK(cc_xml_doc_get_current(doc) == NULL);
+  BOOST_CHECK(cc_xml_doc_release_root_x(doc) == NULL);
+
+  cc_xml_doc_delete_x(doc);
+  cc_xml_elt_delete_x(released);
+
+  // Replacing an attached root deletes the old tree; releasing preserves it.
+  doc = cc_xml_doc_new();
+  root = cc_xml_elt_new();
+  cc_xml_doc_set_root_x(doc, root);
+  cc_xml_doc_set_current_x(doc, root);
+  cc_xml_elt * replacement = cc_xml_elt_new();
+  cc_xml_doc_set_root_x(doc, replacement);
+  BOOST_CHECK(cc_xml_doc_get_root(doc) == replacement);
+  BOOST_CHECK(cc_xml_doc_get_current(doc) == NULL);
+  cc_xml_doc_delete_x(doc);
 }
 
 #endif // !COIN_TEST_SUITE

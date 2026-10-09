@@ -264,6 +264,31 @@ target_include_directories(SoPathChildAppendTest PRIVATE
   ${COIN_TARGET_INCLUDE_DIRECTORIES})
 add_test(NAME SoPathChildAppend COMMAND SoPathChildAppendTest)
 
+if(COIN_BUILD_FUZZERS)
+  set(COIN_XML_FUZZ_CORPUS "${CMAKE_CURRENT_BINARY_DIR}/xml-fuzz-corpus")
+  file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/fuzz/corpus/"
+    DESTINATION "${COIN_XML_FUZZ_CORPUS}")
+  add_executable(CoinXmlDomFuzzer fuzz/xml-dom-fuzzer.cpp)
+  target_link_libraries(CoinXmlDomFuzzer
+    Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(CoinXmlDomFuzzer PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  target_compile_options(CoinXmlDomFuzzer PRIVATE -fsanitize=fuzzer)
+  set_property(TARGET CoinXmlDomFuzzer APPEND_STRING PROPERTY
+    LINK_FLAGS " -fsanitize=fuzzer,address,undefined")
+  add_test(NAME CoinXmlDomFuzzerSmoke
+    COMMAND CoinXmlDomFuzzer
+      -runs=100
+      -max_len=4096
+      -timeout=10
+      -rss_limit_mb=2048
+      -dict=${CMAKE_CURRENT_SOURCE_DIR}/fuzz/xml.dict
+      ${COIN_XML_FUZZ_CORPUS})
+  set_tests_properties(CoinXmlDomFuzzerSmoke PROPERTIES LABELS "fuzz")
+endif()
+
 add_test(NAME CoinConfigCompatibility
   COMMAND ${CMAKE_COMMAND}
     -DCOIN_CONFIG_TEMPLATE=${PROJECT_SOURCE_DIR}/src/coin-config.cmake.in
