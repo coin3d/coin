@@ -98,20 +98,19 @@ void releaseOwner(const SbPList * list, int index)
   CallbackOwners & owners = callbackOwners();
   {
     std::lock_guard<std::mutex> lock(owners.mutex);
-    OwnedCallbacks entries;
-    if (!owners.lists.get(list, entries)) return;
-    for (size_t i = 0; i < entries.size();) {
-      if (entries[i].index == index) {
-        removed = entries[i].data;
-        entries.erase(entries.begin() + i);
+    OwnedCallbacks * entries = NULL;
+    if (!owners.lists.getP(list, entries)) return;
+    for (size_t i = 0; i < entries->size();) {
+      if ((*entries)[i].index == index) {
+        removed.swap((*entries)[i].data);
+        entries->erase(entries->begin() + i);
       }
       else {
-        if (entries[i].index > index) --entries[i].index;
+        if ((*entries)[i].index > index) --(*entries)[i].index;
         ++i;
       }
     }
-    if (entries.empty()) owners.lists.erase(list);
-    else owners.lists.put(list, entries);
+    if (entries->empty()) owners.lists.erase(list);
     haveOwnedData.store(owners.lists.getNumElements() != 0);
   }
 }
@@ -123,7 +122,9 @@ void releaseOwners(const SbPList * list)
   CallbackOwners & owners = callbackOwners();
   {
     std::lock_guard<std::mutex> lock(owners.mutex);
-    if (!owners.lists.get(list, removed)) return;
+    OwnedCallbacks * entries = NULL;
+    if (!owners.lists.getP(list, entries)) return;
+    removed.swap(*entries);
     owners.lists.erase(list);
     haveOwnedData.store(owners.lists.getNumElements() != 0);
   }
@@ -146,11 +147,126 @@ SoCallbackListP::copyData(const SbPList * source, const SbPList * destination)
     std::lock_guard<std::mutex> lock(owners.mutex);
     OwnedCallbacks sourceentries;
     const bool hassource = owners.lists.get(source, sourceentries);
-    const bool hasdestination = owners.lists.get(destination, previous);
-    if (hassource) owners.lists.put(destination, sourceentries);
-    else if (hasdestination) owners.lists.erase(destination);
+    OwnedCallbacks * destinationentry = NULL;
+    const bool hasdestination = owners.lists.getP(destination, destinationentry);
+    if (hassource && hasdestination) {
+      // The new snapshot is complete before changing the old entry.
+      previous.swap(*destinationentry);
+      destinationentry->swap(sourceentries);
+    }
+    else if (hassource) {
+      try {
+        owners.lists.put(destination, sourceentries);
+      }
+      catch (...) {
+        // put() can insert before a later bucket resize throws.
+        owners.lists.erase(destination);
+        throw;
+      }
+    }
+    else if (hasdestination) {
+      previous.swap(*destinationentry);
+      owners.lists.erase(destination);
+    }
     haveOwnedData.store(owners.lists.getNumElements() != 0);
   }
+}
+
+void
+SoCallbackListP::swapData(const SbPList * lhs, const SbPList * rhs)
+{
+  if (lhs == rhs || !haveOwnedData.load()) return;
+  CallbackOwners & owners = callbackOwners();
+  std::lock_guard<std::mutex> lock(owners.mutex);
+  OwnedCallbacks * lhsentry = NULL;
+  OwnedCallbacks * rhsentry = NULL;
+  const bool haslhs = owners.lists.getP(lhs, lhsentry);
+  const bool hasrhs = owners.lists.getP(rhs, rhsentry);
+  if (!haslhs && !hasrhs) return;
+
+  // Materialize any missing key before changing either existing value.
+  // Roll it back if SbHash inserts and then fails while resizing.
+  const SbPList * missing = haslhs ? rhs : lhs;
+  if (!haslhs || !hasrhs) {
+    try {
+      owners.lists.put(missing, OwnedCallbacks());
+    }
+    catch (...) {
+      owners.lists.erase(missing);
+      throw;
+    }
+    // Insertion can resize the table; refresh pointers before the swap.
+    owners.lists.getP(lhs, lhsentry);
+    owners.lists.getP(rhs, rhsentry);
+  }
+  lhsentry->swap(*rhsentry);
+  if (lhsentry->empty()) owners.lists.erase(lhs);
+  if (rhsentry->empty()) owners.lists.erase(rhs);
+  haveOwnedData.store(owners.lists.getNumElements() != 0);
+}
+
+void
+SoCallbackListP::swapLists(SbPList * lhs, SbPList * rhs)
+{
+  if (lhs == rhs) return;
+  const bool lhsbuiltin = lhs->itembuffer == lhs->builtinbuffer;
+  const bool rhsbuiltin = rhs->itembuffer == rhs->builtinbuffer;
+  if (!lhsbuiltin && !rhsbuiltin) {
+    int size = lhs->itembuffersize;
+    lhs->itembuffersize = rhs->itembuffersize;
+    rhs->itembuffersize = size;
+    int length = lhs->numitems;
+    lhs->numitems = rhs->numitems;
+    rhs->numitems = length;
+    void ** buffer = lhs->itembuffer;
+    lhs->itembuffer = rhs->itembuffer;
+    rhs->itembuffer = buffer;
+  }
+  else if (lhsbuiltin && rhsbuiltin) {
+    const int lhslength = lhs->numitems;
+    const int rhslength = rhs->numitems;
+    const int minitems = lhslength < rhslength ? lhslength : rhslength;
+    for (int i = 0; i < minitems; ++i) {
+      void * item = lhs->builtinbuffer[i];
+      lhs->builtinbuffer[i] = rhs->builtinbuffer[i];
+      rhs->builtinbuffer[i] = item;
+    }
+    for (int i = minitems; i < lhslength; ++i)
+      rhs->builtinbuffer[i] = lhs->builtinbuffer[i];
+    for (int i = minitems; i < rhslength; ++i)
+      lhs->builtinbuffer[i] = rhs->builtinbuffer[i];
+    lhs->numitems = rhslength;
+    rhs->numitems = lhslength;
+  }
+  else {
+    SbPList * dynamiclist = lhsbuiltin ? rhs : lhs;
+    SbPList * builtinlist = lhsbuiltin ? lhs : rhs;
+    for (int i = 0; i < builtinlist->numitems; ++i)
+      dynamiclist->builtinbuffer[i] = builtinlist->builtinbuffer[i];
+    void ** buffer = dynamiclist->itembuffer;
+    const int size = dynamiclist->itembuffersize;
+    const int length = dynamiclist->numitems;
+    dynamiclist->itembuffer = dynamiclist->builtinbuffer;
+    dynamiclist->itembuffersize = SbPList::DEFAULTSIZE;
+    dynamiclist->numitems = builtinlist->numitems;
+    builtinlist->itembuffer = buffer;
+    builtinlist->itembuffersize = size;
+    builtinlist->numitems = length;
+  }
+}
+
+void
+SoCallbackListP::reserveCallback(SoCallbackList * list)
+{
+  // Grow both arrays before either logical list changes length. A failed
+  // allocation may change capacity, but leaves the callback pairs intact.
+  const int numfuncs = list->funclist.getLength();
+  list->funclist.append(NULL);
+  list->funclist.truncate(numfuncs);
+
+  const int numdata = list->datalist.getLength();
+  list->datalist.append(NULL);
+  list->datalist.truncate(numdata);
 }
 
 void
@@ -160,13 +276,32 @@ SoCallbackListP::addCallback(SoCallbackList * list, SoCallbackListCB * identity,
 {
   OwnedCallback entry = { list->getNumCallbacks(), invoke,
                          std::shared_ptr<void>(context, destroy) };
+  reserveCallback(list);
   CallbackOwners & owners = callbackOwners();
   {
     std::lock_guard<std::mutex> lock(owners.mutex);
-    owners.lists[&list->datalist].push_back(entry);
-    haveOwnedData.store(true);
+    OwnedCallbacks staged;
+    const bool existing = owners.lists.get(&list->datalist, staged);
+    staged.push_back(entry);
+    if (existing) {
+      // The entry is known to exist, so operator[] does not allocate.
+      owners.lists[&list->datalist].swap(staged);
+    }
+    else {
+      try {
+        owners.lists.put(&list->datalist, staged);
+      }
+      catch (...) {
+        // SbHash::put may throw while resizing after it inserts the entry.
+        owners.lists.erase(&list->datalist);
+        throw;
+      }
+    }
   }
-  list->addCallback(identity, userdata);
+  // Both SbPLists have room; these appends cannot allocate.
+  list->funclist.append((void *) identity);
+  list->datalist.append(userdata);
+  haveOwnedData.store(true);
 }
 
 #if COIN_DEBUG
@@ -190,11 +325,37 @@ SoCallbackList::SoCallbackList(void)
 }
 
 /*!
+  Copy constructor. Both callback arrays and their ownership registry are
+  committed only after the members have been fully constructed. Recompile
+  clients to use this out-of-line copy instead of the former implicit one.
+*/
+SoCallbackList::SoCallbackList(const SoCallbackList & list)
+{
+  this->funclist.copy(list.funclist);
+  this->datalist.copy(list.datalist);
+}
+
+/*!
   Destructor.
 */
 SoCallbackList::~SoCallbackList(void)
 {
   releaseOwners(&this->datalist);
+}
+
+/*!
+  Assignment keeps both operands intact if the replacement copy or registry
+  preparation throws. Existing clients need recompilation for this method.
+*/
+SoCallbackList &
+SoCallbackList::operator=(const SoCallbackList & list)
+{
+  if (this == &list) return *this;
+  SoCallbackList replacement(list);
+  SoCallbackListP::swapData(&this->datalist, &replacement.datalist);
+  SoCallbackListP::swapLists(&this->funclist, &replacement.funclist);
+  SoCallbackListP::swapLists(&this->datalist, &replacement.datalist);
+  return *this;
 }
 
 /*!
@@ -206,6 +367,7 @@ SoCallbackList::addCallback(SoCallbackListCB * f, void * userdata)
 {
   // FIXME: Shouldn't we check if the callback is already in the list?
   // 20050723 kyrah.
+  SoCallbackListP::reserveCallback(this);
   this->funclist.append((void*)f);
   this->datalist.append(userdata);
 }
