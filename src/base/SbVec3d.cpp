@@ -116,102 +116,26 @@
 */
 
 /*!
-  Constructs an SbVec3d instance by combining the three given planes.
-  None of the planes should be parallel to any of the other two, otherwise
-  a divide by zero error will occur.
+  Constructs an SbVec3d instance from the unique intersection point of the
+  three given planes.
+
+  If the planes do not define a numerically stable, finite point, the vector
+  is set to zero. Use SbDPPlane::intersect(const SbDPPlane &,
+  const SbDPPlane &, SbVec3d &) when failure must be distinguished from a
+  point at the origin.
 */
 
 SbVec3d::SbVec3d(const SbDPPlane & p0, const SbDPPlane & p1, const SbDPPlane & p2)
 {
-  SbVec3d n0 = p0.getNormal();
-  SbVec3d n1 = p1.getNormal();
-  SbVec3d n2 = p2.getNormal();
-
+  this->setValue(0.0, 0.0, 0.0);
+  if (!p0.intersect(p1, p2, *this)) {
 #if COIN_DEBUG
-  if (!((fabs(n0.dot(n1)) != 1.0) &&
-       (fabs(n0.dot(n2)) != 1.0) &&
-       (fabs(n1.dot(n2)) != 1.0)))
     SoDebugError::postWarning("SbVec3d::SbVec3d",
-                              "Two or more of the given planes are parallel"
-                              " => Can't create intersection point.");
+                              "The given planes do not define a unique, "
+                              "numerically stable intersection point. "
+                              "Using the zero vector instead.");
 #endif // COIN_DEBUG
-
-  // The equation for a point in a plane can be:
-  //
-  //                N dot (P - P0) = 0    , N is the plane's normal vectors,
-  //                                    P is the point and P0 is the "root
-  //                                    point" of the plane (i.e. the point
-  //                                    in the plane closest to the coordinate
-  //                                    system origin)
-  //
-  // Simplifying and substituting, we get this:
-  //
-  //                N dot P = d           , d is the distance from the origin to
-  //                                    the closest point on the plane
-  //
-  // Using this for all three given planes:
-  //                N0 dot P = d0
-  //                N1 dot P = d1
-  //                N2 dot P = d2
-  //
-  // Taking the dot products we get a set of linear equations:
-  //
-  //   n0x*px + n0y*py + n0z*pz = d0
-  //   n1x*px + n1y*py + n1z*pz = d1
-  //   n2x*px + n2y*py + n2z*pz = d2   , where [px, py, pz] are the unknowns.
-  //
-  // This can be solved by applying the Gauss elimination method. See
-  // for instance "Advanced Engineering Mathematics", Kreyszig, 6th edition,
-  // chapter 19.
-  //                                                        19980817 mortene.
-
-
-  // a is the input matrix, x is the solution vector, m is a matrix
-  // used for temporary storage.
-  double a[3][4], x[3], m[3][4];
-
-  a[0][0] = n0[0];
-  a[0][1] = n0[1];
-  a[0][2] = n0[2];
-  a[0][3] = p0.getDistanceFromOrigin();
-  a[1][0] = n1[0];
-  a[1][1] = n1[1];
-  a[1][2] = n1[2];
-  a[1][3] = p1.getDistanceFromOrigin();
-  a[2][0] = n2[0];
-  a[2][1] = n2[1];
-  a[2][2] = n2[2];
-  a[2][3] = p2.getDistanceFromOrigin();
-
-
-  int i, j;
-  const int n = 3; // Input matrix dimensions are n * (n+1).
-
-  for (int k=0; k < n-1; k++) {
-    j=k;
-
-    while (a[j][k] == 0.0f) j++;
-    if (j != k) for (i=0; i < n+1; i++) SbSwap(a[j][i], a[k][i]);
-
-    for (j = k+1; j < n; j++) {
-      m[j][k] = a[j][k]/a[k][k];
-
-      for (int p=k+1; p < n+1; p++) a[j][p] -= m[j][k]*a[k][p];
-    }
   }
-
-  // Back substitution.
-  x[n-1] = a[n-1][n]/a[n-1][n-1];
-  for (i=n-2; i >= 0; i--) {
-    double sum = 0.0;
-    for (j=i+1; j < n; j++) sum += a[i][j]*x[j];
-
-    x[i] = (a[i][n] - sum)/a[i][i];
-  }
-
-  this->vec[0] = x[0];
-  this->vec[1] = x[1];
-  this->vec[2] = x[2];
 }
 
 /*!
@@ -563,6 +487,8 @@ SbVec3d::print(FILE * COIN_UNUSED_ARG(fp)) const
 }
 
 #ifdef COIN_TEST_SUITE
+#include <Inventor/SbDPPlane.h>
+
 typedef SbVec3d ToTest;
 BOOST_AUTO_TEST_CASE(toString) {
   ToTest val(1.0/3,2,3);
@@ -579,6 +505,21 @@ BOOST_AUTO_TEST_CASE(fromString) {
   SbBool conversionOk = foo.fromString(test);
   BOOST_CHECK_MESSAGE(conversionOk && trueVal == foo,
                       std::string("Mismatch between ") +  foo.toString().getString() + " and control " + trueVal.toString().getString());
+}
+
+BOOST_AUTO_TEST_CASE(threePlaneConstructorUsesIntersectionOrZeroFallback) {
+  const SbVec3d expected(2.0, -3.0, 5.0);
+  const SbDPPlane xplane(SbVec3d(1.0, 0.0, 0.0), expected);
+  const SbDPPlane yplane(SbVec3d(0.0, 1.0, 0.0), expected);
+  const SbDPPlane zplane(SbVec3d(0.0, 0.0, 1.0), expected);
+  const SbVec3d unique(xplane, yplane, zplane);
+  BOOST_CHECK_MESSAGE(unique == expected,
+                      "Legacy constructor must use the unique intersection");
+
+  const SbDPPlane dependent(SbVec3d(1.0, 1.0, 0.0), expected);
+  const SbVec3d fallback(xplane, yplane, dependent);
+  BOOST_CHECK_MESSAGE(fallback == SbVec3d(0.0, 0.0, 0.0),
+                      "Legacy constructor must use zero on failure");
 }
 
 #endif //COIN_TEST_SUITE
