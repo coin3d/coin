@@ -1,3 +1,4 @@
+#include <Inventor/SoDB.h>
 #include <cstdio>
 #include <cstdlib>
 #include <csignal>
@@ -21,6 +22,7 @@ injected_malloc(size_t size)
 int
 main()
 {
+  SoDB::init();
   struct rlimit no_core = { 0, 0 };
   setrlimit(RLIMIT_CORE, &no_core);
 
@@ -43,5 +45,12 @@ main()
     std::fprintf(stderr, "expected SIGABRT when the third node allocation fails\n");
     return 4;
   }
-  return 0;
+  cc_rbptree tree;
+  cc_rbptree_init(&tree);
+  int values[3] = {};
+  for (int i=0;i<3;++i) cc_rbptree_insert(&tree,&values[i],NULL);
+  const bool ok = cc_rbptree_size(&tree)==3;
+  cc_rbptree_clean(&tree);
+  SoDB::finish();
+  return ok ? 0 : 5;
 }
