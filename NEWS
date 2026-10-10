@@ -1,4 +1,7 @@
 Unreleased:
+* Platform compatibility:
+  - Windows 95, 98 and Me are no longer supported. Removed their native
+    font workarounds and the deprecated GetVersionEx query (issue #136).
 * bugfixes:
   - Make nodekit path factories return genuine SoNodeKitPath objects and
     remove undefined SoPath-to-SoNodeKitPath downcasts in manipulators.
