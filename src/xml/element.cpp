@@ -621,7 +621,7 @@ cc_xml_elt_get_uint32(const cc_xml_elt * elt, uint32_t * value)
   const char * data = cc_xml_elt_get_data(elt);
   assert(value != NULL);
   if ( data == NULL ) return FALSE;
-  if ( sscanf(data, "%u", value) == 1 ) return TRUE; // FIXME: unsigned
+  if ( sscanf(data, "%" SCNu32, value) == 1 ) return TRUE;
   return FALSE;
 }
 
@@ -640,7 +640,7 @@ cc_xml_elt_get_int32(const cc_xml_elt * elt, int32_t * value)
   const char * data = cc_xml_elt_get_data(elt);
   assert(value != NULL);
   if ( data == NULL ) return FALSE;
-  if ( sscanf(data, "%d", value) == 1 ) return TRUE;
+  if ( sscanf(data, "%" SCNd32, value) == 1 ) return TRUE;
   return FALSE;
 }
 
@@ -730,7 +730,7 @@ cc_xml_elt_set_uint64_x(cc_xml_elt * elt, uint64_t value)
   }
   cc_string str;
   cc_string_construct(&str);
-  cc_string_sprintf(&str, "%lld", value); // FIXME: unsigned
+  cc_string_sprintf(&str, "%" PRIu64, value);
   cc_xml_elt_set_cdata_x(elt, cc_string_get_text(&str));
   cc_string_clean(&str);
 }
@@ -749,7 +749,7 @@ cc_xml_elt_set_int64_x(cc_xml_elt * elt, int64_t value)
   }
   cc_string str;
   cc_string_construct(&str);
-  cc_string_sprintf(&str, "%lld", value);
+  cc_string_sprintf(&str, "%" PRId64, value);
   cc_xml_elt_set_cdata_x(elt, cc_string_get_text(&str));
   cc_string_clean(&str);
 }
@@ -768,7 +768,7 @@ cc_xml_elt_set_uint32_x(cc_xml_elt * elt, uint32_t value)
   }
   cc_string str;
   cc_string_construct(&str);
-  cc_string_sprintf(&str, "%ld", value); // FIXME: unsigned
+  cc_string_sprintf(&str, "%" PRIu32, value);
   cc_xml_elt_set_cdata_x(elt, cc_string_get_text(&str));
   cc_string_clean(&str);
 }
@@ -787,7 +787,7 @@ cc_xml_elt_set_int32_x(cc_xml_elt * elt, int32_t value)
   }
   cc_string str;
   cc_string_construct(&str);
-  cc_string_sprintf(&str, "%ld", value);
+  cc_string_sprintf(&str, "%" PRId32, value);
   cc_xml_elt_set_cdata_x(elt, cc_string_get_text(&str));
   cc_string_clean(&str);
 }
@@ -1071,7 +1071,8 @@ cc_xml_elt_calculate_size(const cc_xml_elt * elt, int indent, int indentincremen
   // duplicate block - see cc_xml_elt_write_to_buffer()
   if (elt->type && strcmp(elt->type, COIN_XML_CDATA_TYPE) == 0) {
     // this is a leaf element character data container
-    ADVANCE_STRING(elt->cdata);
+    ADVANCE_NUM_BYTES(cc_xml_escape_calculate_size(elt->cdata,
+                                                    CC_XML_ESCAPE_TEXT));
   } else {
     ADVANCE_NUM_SPACES(indent);
     ADVANCE_STRING_LITERAL("<");
@@ -1090,7 +1091,8 @@ cc_xml_elt_calculate_size(const cc_xml_elt * elt, int indent, int indentincremen
     } else if ((numchildren == 1) &&
                (strcmp(cc_xml_elt_get_type(elt->children[0]), COIN_XML_CDATA_TYPE) == 0)) {
       ADVANCE_STRING_LITERAL(">");
-      ADVANCE_STRING(cc_xml_elt_get_cdata(elt->children[0]));
+      ADVANCE_NUM_BYTES(cc_xml_escape_calculate_size(
+        cc_xml_elt_get_cdata(elt->children[0]), CC_XML_ESCAPE_TEXT));
       ADVANCE_STRING_LITERAL("</");
       ADVANCE_STRING(elt->type);
       ADVANCE_STRING_LITERAL(">\n");
@@ -1146,6 +1148,12 @@ cc_xml_elt_write_to_buffer(const cc_xml_elt * elt, char * buffer, size_t bufsize
        strcpy(hereptr, str);                    \
        ADVANCE_NUM_BYTES(strlength); } while (0)
 
+// macro to XML-escape character data and advance pointers
+#define ADVANCE_ESCAPED_TEXT(str)                                      \
+  do { const size_t strlength = cc_xml_escape_write_to_buffer(         \
+         str, hereptr, bytesleft, CC_XML_ESCAPE_TEXT);                 \
+       ADVANCE_NUM_BYTES(strlength); } while (0)
+
 // macro to advance a number of blanks (indentation)
 #define ADVANCE_NUM_SPACES(num)                  \
   do { const size_t strlength = (num);              \
@@ -1156,7 +1164,7 @@ cc_xml_elt_write_to_buffer(const cc_xml_elt * elt, char * buffer, size_t bufsize
   // almost duplicate block - see cc_xml_elt_calculate_size()
   if (elt->type && strcmp(elt->type, COIN_XML_CDATA_TYPE) == 0) {
     // this is a leaf element character data container
-    ADVANCE_STRING(elt->cdata);
+    ADVANCE_ESCAPED_TEXT(elt->cdata);
   } else {
     ADVANCE_NUM_SPACES(indent);
     ADVANCE_STRING_LITERAL("<");
@@ -1175,7 +1183,7 @@ cc_xml_elt_write_to_buffer(const cc_xml_elt * elt, char * buffer, size_t bufsize
     } else if ((numchildren == 1) &&
                (strcmp(cc_xml_elt_get_type(elt->children[0]), COIN_XML_CDATA_TYPE) == 0)) {
       ADVANCE_STRING_LITERAL(">");
-      ADVANCE_STRING(cc_xml_elt_get_cdata(elt->children[0]));
+      ADVANCE_ESCAPED_TEXT(cc_xml_elt_get_cdata(elt->children[0]));
       ADVANCE_STRING_LITERAL("</");
       ADVANCE_STRING(elt->type);
       ADVANCE_STRING_LITERAL(">\n");
@@ -1193,6 +1201,7 @@ cc_xml_elt_write_to_buffer(const cc_xml_elt * elt, char * buffer, size_t bufsize
 
 #undef ADVANCE_NUM_BYTES
 #undef ADVANCE_NUM_SPACES
+#undef ADVANCE_ESCAPED_TEXT
 #undef ADVANCE_STRING
 #undef ADVANCE_STRING_LITERAL
 
