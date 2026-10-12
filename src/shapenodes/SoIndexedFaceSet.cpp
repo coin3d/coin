@@ -194,7 +194,6 @@
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 
 #include <cassert>
-#include <vector>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -240,6 +239,7 @@
 #include "threads/threadsutilp.h"
 #include "rendering/SoVertexArrayIndexer.h"
 #include "rendering/SoVBO.h"
+#include "shapenodes/SoVertexArrayTexCoordGuard.h"
 #include "rendering/SoGL.h"
 
 // *************************************************************************
@@ -468,19 +468,10 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
 
   SoMaterialBundle mb(action);
 
-  // The default mapping is a per-point function. For a single texture unit
-  // it can also be evaluated once per coordinate and supplied as an array.
-  // Keep arbitrary functions (which may depend on normals) on the usual path.
-  int lastenabled = -1;
-  const SbBool * enabledunits =
-    SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
-  const SbBool defaulttexcoords =
-    lastenabled == 0 && enabledunits && enabledunits[0] &&
-    SoMultiTextureEnabledElement::getMode(state, 0) ==
-      SoMultiTextureEnabledElement::TEXTURE2D &&
-    SoMultiTextureCoordinateElement::getType(state, 0) ==
-      SoMultiTextureCoordinateElement::DEFAULT;
+  const SbBool defaultmapping =
+    SoVertexArrayTexCoordGuard::isDefaultMapping(state);
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+  const SbBool defaulttexcoords = defaultmapping && !tb.needIndices();
   doTextures = tb.needCoordinates();
   SbBool sendNormals = !mb.isColorOnly() || tb.isFunction();
 
@@ -561,9 +552,10 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
   SbBool dova =
     SoVBO::shouldRenderAsVertexArrays(state, contextid, numindices) &&
     !convexcacheused && !normalCacheUsed &&
+    (!doTextures || SoVertexArrayTexCoordGuard::canUseArrays(state, defaulttexcoords)) &&
     ((nbind == OVERALL) || ((nbind == PER_VERTEX_INDEXED) && ((nindices == cindices) || (nindices == NULL)))) &&
     ((tbind == NONE && (!tb.needCoordinates() ||
-                        (defaulttexcoords && !tb.needIndices()))) ||
+                        defaulttexcoords)) ||
      ((tbind == PER_VERTEX_INDEXED) && ((tindices == cindices) || (tindices == NULL)))) &&
     ((mbind == NONE) || ((mbind == PER_VERTEX_INDEXED) && ((mindices == cindices) || (mindices == NULL)))) &&
     SoGLDriverDatabase::isSupported(sogl_glue_instance(state), SO_GL_VERTEX_ARRAY);
@@ -588,25 +580,8 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
     }
   }
   if (dova) {
-    std::vector<SbVec4f> generatedtexcoords;
-    SbBool pushedtexcoords = FALSE;
-    if (defaulttexcoords && doTextures) {
-      // The bundle installed the same default callback used by immediate
-      // rendering. Evaluate it before replacing the function on a pushed
-      // state so shaders reading gl_TexCoord retain their original values.
-      const SoMultiTextureCoordinateElement * texcoords =
-        SoMultiTextureCoordinateElement::getInstance(state);
-      const int count = coords->getNum();
-      generatedtexcoords.reserve(count);
-      const SbVec3f normal(0.0f, 0.0f, 1.0f);
-      for (int i = 0; i < count; ++i) {
-        generatedtexcoords.push_back(texcoords->get(0, coords->get3(i), normal));
-      }
-      state->push();
-      pushedtexcoords = TRUE;
-      SoMultiTextureCoordinateElement::set4(state, this, 0, count,
-                                            generatedtexcoords.data());
-    }
+    SoVertexArrayTexCoordGuard texcoordguard(state, this, coords,
+                                           defaulttexcoords && doTextures);
     SbBool dovbo = this->startVertexArray(action,
                                           coords,
                                           (nbind != OVERALL) ? normals : NULL,
@@ -661,7 +636,6 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
                             (nbind != OVERALL),
                             doTextures,
                             mbind != OVERALL);
-    if (pushedtexcoords) state->pop();
   }
   else {
     SoVertexAttributeBundle vab(action, TRUE);

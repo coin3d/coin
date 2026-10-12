@@ -42,6 +42,13 @@
 
   \ingroup coin_VRMLnodes
 
+  \par Texture coordinates
+  Default coordinates for a single 2D texture on texture unit 0 can be
+  supplied as a temporary vertex array when the shape's other bindings,
+  indices and caches allow array rendering. Texture-coordinate functions that require
+  per-vertex evaluation use a rendering path that supplies those values.
+  Explicit arrays and OpenGL texgen are also supported.
+
   \WEB3DCOPYRIGHT
 
   \verbatim
@@ -246,6 +253,7 @@
 #endif // HAVE_THREADS
 
 #include "rendering/SoVBO.h"
+#include "shapenodes/SoVertexArrayTexCoordGuard.h"
 #include "rendering/SoVertexArrayIndexer.h"
 #include "glue/glp.h"
 #include "rendering/SoGL.h"
@@ -469,7 +477,10 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
   SbBool doTextures;
   SbBool normalCacheUsed;
   SoMaterialBundle mb(action);
+  const SbBool defaultmapping =
+    SoVertexArrayTexCoordGuard::isDefaultMapping(state);
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+  const SbBool defaulttexcoords = defaultmapping && !tb.needIndices();
   doTextures = tb.needCoordinates();
 
   SbBool sendNormals = !mb.isColorOnly() || tb.isFunction();
@@ -540,8 +551,9 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
   SbBool dova = 
     SoVBO::shouldRenderAsVertexArrays(state, contextid, numindices) &&
     !convexcacheused && !normalCacheUsed &&
+    (!doTextures || SoVertexArrayTexCoordGuard::canUseArrays(state, defaulttexcoords)) &&
     ((nbind == OVERALL) || ((nbind == PER_VERTEX_INDEXED) && ((nindices == cindices) || (nindices == NULL)))) &&
-    ((tbind == NONE && !tb.needCoordinates()) || 
+    ((tbind == NONE && (!tb.needCoordinates() || defaulttexcoords)) ||
      ((tbind == PER_VERTEX_INDEXED) && ((tindices == cindices) || (tindices == NULL)))) &&
     ((mbind == NONE) || ((mbind == PER_VERTEX_INDEXED) && ((mindices == cindices) || (mindices == NULL)))) &&
     SoGLDriverDatabase::isSupported(sogl_glue_instance(state), SO_GL_VERTEX_ARRAY);
@@ -566,6 +578,8 @@ SoVRMLIndexedFaceSet::GLRender(SoGLRenderAction * action)
   }
   SbBool didrenderasvbo = FALSE;
   if (dova) {
+    SoVertexArrayTexCoordGuard texcoordguard(state, this, coords,
+                                           defaulttexcoords && doTextures);
     SbBool dovbo = this->startVertexArray(action,
                                           coords,
                                           (nbind != OVERALL) ? normals : NULL,
