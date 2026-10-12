@@ -1558,8 +1558,30 @@ SoShapeP::calibrateBBoxCache(void)
 }
 
 /*!
-  Convenience method that enables vertex arrays and/or VBOs
-  Returns \e TRUE if VBO is used.
+  Enables vertex arrays for a draw call, using VBOs when available.
+
+  \param action The active OpenGL render action.
+  \param coords Vertex positions, indexed by the subsequent draw call.
+  \param pervertexnormals Normal array, or \c NULL for an overall normal.
+  \param texpervertex Whether per-vertex texture coordinates are needed.
+  \param colorpervertex Whether per-vertex colors are needed.
+
+  \pre The caller has checked that the shape's bindings and indices can
+  use vertex arrays. Arrays and VBOs must cover every vertex referenced
+  by the draw call and remain valid until finishVertexArray().
+
+  When \a texpervertex is \e TRUE, each enabled texture unit must have
+  an explicit coordinate array unless OpenGL texgen supplies its coordinates.
+  A texture coordinate function alone does not provide an array. The caller
+  must evaluate a suitable function into an array or choose another rendering
+  path. Missing arrays produce a warning; this method does not select a
+  fallback or cancel the draw call.
+
+  \return \e TRUE if VBO rendering is used, or \e FALSE if vertex arrays
+  use CPU data. The return value is not a success or eligibility check.
+
+  Pair this call with finishVertexArray() after drawing, passing the returned
+  value and the same choices for normals, texture coordinates and colors.
 
   \sa finishVertexArray()
   \since Coin 3.0
@@ -1714,9 +1736,22 @@ SoShape::startVertexArray(SoGLRenderAction * action,
 }
 
 /*!
-  Should be called after rendering with vertex arrays. This method
-  will disable arrays and VBOs enabled in the startVertexArray()
-  function.
+  Disables the vertex arrays enabled by startVertexArray() after drawing.
+
+  \param action The same render action used by startVertexArray().
+  \param vbo The value returned by startVertexArray().
+  \param normpervertex Whether a non-NULL normal array was passed to
+  startVertexArray().
+  \param texpervertex The texture-coordinate choice passed to startVertexArray().
+  \param colorpervertex The color choice passed to startVertexArray().
+
+  Keep the coordinate elements, enabled texture units and their backing
+  arrays valid through this call. If temporary texture arrays were installed
+  on a pushed state, pop that state only after finishVertexArray().
+
+  This method unbinds the vertex VBO when used and disables the configured
+  client arrays. It does not restore arbitrary client-array state that was
+  active before startVertexArray().
 
   \sa startVertexArray()
   \since Coin 3.0

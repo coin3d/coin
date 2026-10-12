@@ -70,6 +70,17 @@
   a -1 wherever there is a -1 in the coordIndex field. This is done to
   make this node more easily readable for humans.
 
+  \par Rendering with texture coordinates
+  Vertex arrays and VBOs are used when the bindings, indices and caches
+  permit them. For a single 2D texture on texture unit 0, default texture
+  coordinates can be evaluated into a temporary array, preserving the
+  default mapping for shaders that read the texture coordinates. Enabling
+  a texture therefore does not by itself require immediate-mode rendering.
+  Texture-coordinate functions and other texture configurations may require
+  a different rendering path. Explicit texture coordinates
+  must have bindings and indices compatible with the coordinate array to
+  use the vertex-array path.
+
 
   A fairly common request when rendering facesets is how to display a
   set of faces with different colors on the backside versus the
