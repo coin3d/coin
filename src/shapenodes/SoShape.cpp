@@ -47,6 +47,8 @@
 
 #include <cstring>
 #include <cstdlib>
+#include <set>
+#include <utility>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -1632,6 +1634,21 @@ SoShape::startVertexArray(SoGLRenderAction * action,
     }
 
     for (int i = 0; i <= lastenabled; i++) {
+      // GL texgen needs no array. Other active texture units must have
+      // coordinates before a shape switches to vertex-array rendering.
+      if (enabledunits[i] && !mtelem->getNum(i) &&
+          mtelem->getType(i) != SoMultiTextureCoordinateElement::NONE) {
+        static std::set<std::pair<int16_t, int> > warned;
+        const std::pair<int16_t, int> key(this->getTypeId().getKey(), i);
+        PRIVATE(this)->lock();
+        const SbBool first = warned.insert(key).second;
+        PRIVATE(this)->unlock();
+        if (first) {
+          SoDebugError::postWarning("SoShape::startVertexArray",
+                                    "%s requested texture coordinates from vertex arrays for unit %d, but no coordinate array is available",
+                                    this->getTypeId().getName().getString(), i);
+        }
+      }
       if (enabledunits[i] && mtelem->getNum(i)) {
         int dim = mtelem->getDimension(i);
         const GLvoid * tptr;
