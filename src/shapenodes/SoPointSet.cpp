@@ -36,6 +36,13 @@
 
   \ingroup coin_nodes
 
+  \par Texture coordinates
+  Default coordinates for a single 2D texture on texture unit 0 can be
+  supplied as a temporary vertex array when the shape's other bindings,
+  indices and caches allow array rendering. Texture-coordinate functions that require
+  per-vertex evaluation use a rendering path that supplies those values.
+  Explicit arrays and OpenGL texgen are also supported.
+
   This node either uses the coordinates currently on the state
   (typically set up by a leading SoCoordinate3 node in the scene graph)
   or from a SoVertexProperty node attached to this node to render a
@@ -110,6 +117,7 @@
 #include "nodes/SoSubNodeP.h"
 #include "rendering/SoGL.h"
 #include "rendering/SoVBO.h"
+#include "shapenodes/SoVertexArrayTexCoordGuard.h"
 
 /*!
   \var SoSFInt32 SoPointSet::numPoints
@@ -215,7 +223,10 @@ SoPointSet::GLRender(SoGLRenderAction * action)
   const SoCoordinateElement * tmp;
   const SbVec3f * normals;
 
+  const SbBool defaultmapping =
+    SoVertexArrayTexCoordGuard::isDefaultMapping(state);
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+  const SbBool defaulttexcoords = defaultmapping && !tb.needIndices();
   SbBool doTextures = tb.needCoordinates();
   SoMaterialBundle mb(action);
   
@@ -255,7 +266,8 @@ SoPointSet::GLRender(SoGLRenderAction * action)
 
   SbBool dova = 
     SoVBO::shouldRenderAsVertexArrays(state, contextid, numpts) && 
-    SoGLDriverDatabase::isSupported(glue, SO_GL_VERTEX_ARRAY);
+    SoGLDriverDatabase::isSupported(glue, SO_GL_VERTEX_ARRAY) &&
+    (!doTextures || SoVertexArrayTexCoordGuard::canUseArrays(state, defaulttexcoords));
   
   if (dova && (mbind == PER_VERTEX)) {
     const SoGLVBOElement * vboelem = SoGLVBOElement::getInstance(state);
@@ -271,6 +283,8 @@ SoPointSet::GLRender(SoGLRenderAction * action)
   }
   SbBool didrenderasvbo = FALSE;
   if (dova) {
+    SoVertexArrayTexCoordGuard texcoordguard(state, this, coords,
+                                           defaulttexcoords && doTextures);
     SbBool vbo = this->startVertexArray(action,
                                         coords,
                                         (needNormals && (nbind != OVERALL)) ? normals : NULL,

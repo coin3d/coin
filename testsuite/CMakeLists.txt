@@ -26,6 +26,26 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
       set_tests_properties(BumpProgramGLX PROPERTIES SKIP_RETURN_CODE 77)
     endif()
   endif()
+
+  if(HAVE_VRML97 AND UNIX AND NOT APPLE AND HAVE_GLX)
+    add_executable(CoinTextureArrayTest reproducers/issue-722-texture-vbo/shapes.cpp)
+    target_include_directories(CoinTextureArrayTest PRIVATE
+      ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+      ${COIN_TARGET_INCLUDE_DIRECTORIES})
+    target_link_libraries(CoinTextureArrayTest Coin)
+    find_program(COIN_TEST_XVFB_RUN xvfb-run)
+    if(COIN_TEST_XVFB_RUN)
+      add_test(NAME TextureCoordinateArrayRendering
+        COMMAND ${COIN_TEST_XVFB_RUN} -a
+          ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/issue-722-texture-vbo/matrix.sh
+          $<TARGET_FILE:CoinTextureArrayTest>)
+    else()
+      add_test(NAME TextureCoordinateArrayRendering
+        COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/issue-722-texture-vbo/matrix.sh
+          $<TARGET_FILE:CoinTextureArrayTest>)
+    endif()
+    set_tests_properties(TextureCoordinateArrayRendering PROPERTIES SKIP_RETURN_CODE 77)
+  endif()
 endif()
 
 macro(create_testsuite input)
