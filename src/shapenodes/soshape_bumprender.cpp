@@ -559,7 +559,6 @@ struct soshape_bumprender::ProgramCache {
   }
   SbBool request(const cc_glglue * glue, SoState * state, uint32_t contextid,
                  bool diffuse, spec_programidx * spec, diffuse_programidx * diff) {
-    soshape_bump_program_error failure;
     std::unique_lock<std::mutex> lock(this->mutex);
     if (!this->alive) return FALSE;
     Contexts::iterator context = this->contexts.find(contextid);
@@ -573,6 +572,7 @@ struct soshape_bumprender::ProgramCache {
         // refuse new metadata until a destruction notification allows retry.
         // The scalar latch cannot itself allocate and suppresses retry storms.
         this->contextallocationfailed = true;
+        soshape_bump_program_error failure;
         failure.description = diffuse ? "diffuse program set" : "specular program set";
         failure.stage = "allocate context metadata";
         failure.error = GL_OUT_OF_MEMORY;
@@ -597,7 +597,9 @@ struct soshape_bumprender::ProgramCache {
     if (result == READY) {
       if (spec) *spec = ctx.spec;
       if (diff) *diff = ctx.diffuse;
+      return TRUE; // No diagnostic buffer is needed on the successful path.
     }
+    soshape_bump_program_error failure;
     if (result == FAILED) {
       soshape_bump_program_error & cached = diffuse ? ctx.diffuseerror : ctx.specerror;
       failure = cached;
@@ -642,7 +644,7 @@ struct soshape_bumprender::ProgramCache {
         }
       }
     }
-    return result == READY;
+    return FALSE;
   }
 };
 
