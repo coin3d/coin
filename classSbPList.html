@@ -398,7 +398,7 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Returns element at <em>index</em>. Does <em>not</em> expand array bounds if <em>index</em> is outside the list. </p>
+<p>Returns element at <em>index</em>. Does <em>not</em> expand array bounds if <em>index</em> is outside the list. Throws <code>std::out_of_range</code> for an invalid index. </p>
 
 </div>
 </div>
@@ -425,7 +425,8 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Returns pointer to a non-modifiable array of the lists elements. <em>start</em> specifies an index into the array.</p>
-<p>The caller is <em>not</em> responsible for freeing up the array, as it is just a pointer into the internal array used by the list. </p>
+<p>The caller is <em>not</em> responsible for freeing up the array, as it is just a pointer into the internal array used by the list.</p>
+<p>For an empty list, the default <em>start</em> of zero returns the internal empty array view. Other invalid start indices throw <code>std::out_of_range</code>. </p>
 
 </div>
 </div>
@@ -501,7 +502,7 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Insert <em>item</em> at index <em>insertbefore</em>.</p>
-<p><em>insertbefore</em> should not be larger than the current number of items in the list. </p>
+<p><em>insertbefore</em> may be equal to, but not larger than, the current number of items in the list. Throws <code>std::out_of_range</code> for an invalid index. </p>
 
 </div>
 </div>
@@ -590,7 +591,8 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Returns element at <em>index</em>.</p>
-<p>Will automatically expand the size of the internal array if <em>index</em> is outside the current bounds of the list. The values of any additional pointers are then set to <code>NULL</code>. </p>
+<p>Will automatically expand the size of the internal array if <em>index</em> is outside the current bounds of the list. The values of any additional pointers are then set to <code>NULL</code>.</p>
+<p>Throws <code>std::out_of_range</code> for a negative index. </p>
 
 </div>
 </div>
@@ -634,7 +636,7 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Remove the item at <em>index</em>, moving the last item into its place and truncating the list. </p>
+<p>Remove the item at <em>index</em>, moving the last item into its place and truncating the list. Throws <code>std::out_of_range</code> for an invalid index. </p>
 
 </div>
 </div>
@@ -682,7 +684,7 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Index operator to set element at <em>index</em>. Does <em>not</em> expand array bounds if <em>index</em> is outside the list. </p>
+<p>Index operator to set element at <em>index</em>. Does <em>not</em> expand array bounds if <em>index</em> is outside the list. Throws <code>std::out_of_range</code> for an invalid index. </p>
 
 </div>
 </div>
@@ -713,7 +715,8 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Shorten the list to contain <em>length</em> elements, removing items from <em>index</em> <em>length</em> and onwards.</p>
-<p>If <em>fit</em> is non-zero, will also shrink the internal size of the allocated array. Note that this is much less efficient than not re-fitting the array size. </p>
+<p>If <em>fit</em> is non-zero, will also shrink the internal size of the allocated array. Note that this is much less efficient than not re-fitting the array size.</p>
+<p>Throws <code>std::out_of_range</code> if <em>length</em> is negative or larger than the current list length. </p>
 
 </div>
 </div>
@@ -727,7 +730,7 @@ Protected Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSbPList.html">SbPList</a></li>
-    <li class="footer">Generated on Mon Oct 19 2026 19:56:13 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Mon Oct 19 2026 20:39:43 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

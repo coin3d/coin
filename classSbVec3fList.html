@@ -317,7 +317,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Insert <em>item</em> at index <em>insertbefore</em>.</p>
-<p><em>insertbefore</em> should not be larger than the current number of items in the list.  </p>
+<p><em>insertbefore</em> may be equal to, but not larger than, the current number of items in the list. Throws <code>std::out_of_range</code> for an invalid index.  </p>
 <p>Overloaded from parent to allocate a new <a class="el" href="classSbVec3f.html" title="The SbVec3f class is a 3 dimensional vector with floating point coordinates.">SbVec3f</a> instance when called.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbPList.html#af500b13baee20036c51b7746c9b046b0">SbPList::insert()</a> </dd></dl>
 
@@ -346,7 +346,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Returns element at <em>index</em>.</p>
-<p>Will automatically expand the size of the internal array if <em>index</em> is outside the current bounds of the list. The values of any additional pointers are then set to <code>NULL</code>.  </p>
+<p>Will automatically expand the size of the internal array if <em>index</em> is outside the current bounds of the list. The values of any additional pointers are then set to <code>NULL</code>.</p>
+<p>Throws <code>std::out_of_range</code> for a negative index.  </p>
 <p>Overloaded from parent to return an <a class="el" href="classSbVec3f.html" title="The SbVec3f class is a 3 dimensional vector with floating point coordinates.">SbVec3f</a> pointer.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbPList.html#a8f4ae28407482bca1ee8c6c7d67a1584">SbPList::operator[]()</a> </dd></dl>
 
@@ -362,7 +363,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSbVec3fList.html">SbVec3fList</a></li>
-    <li class="footer">Generated on Mon Oct 19 2026 19:56:14 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Mon Oct 19 2026 20:39:44 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

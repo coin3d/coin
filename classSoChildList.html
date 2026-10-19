@@ -511,7 +511,7 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Index operator to set element at <em>index</em>. Does <em>not</em> expand array bounds if <em>index</em> is outside the list.  </p>
+<p>Index operator to set element at <em>index</em>. Does <em>not</em> expand array bounds if <em>index</em> is outside the list. Throws <code>std::out_of_range</code> for an invalid index.  </p>
 <p>Overloaded from parent to handle notification.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbPList.html#a2594a4326065d15ec4bcb3104b4e74b6">SbPList::set()</a> </dd></dl>
 
@@ -649,7 +649,8 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Shorten the list to contain <em>length</em> elements, removing items from <em>index</em> <em>length</em> and onwards.</p>
-<p>If <em>fit</em> is non-zero, will also shrink the internal size of the allocated array. Note that this is much less efficient than not re-fitting the array size.  </p>
+<p>If <em>fit</em> is non-zero, will also shrink the internal size of the allocated array. Note that this is much less efficient than not re-fitting the array size.</p>
+<p>Throws <code>std::out_of_range</code> if <em>length</em> is negative or larger than the current list length.  </p>
 <p>Overloaded from parent to handle notification.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbPList.html#ac32c857e4308dd6b638275d90ea6fc60">SbPList::truncate()</a> </dd></dl>
 
@@ -665,7 +666,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoChildList.html">SoChildList</a></li>
-    <li class="footer">Generated on Mon Oct 19 2026 19:56:14 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Mon Oct 19 2026 20:39:44 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

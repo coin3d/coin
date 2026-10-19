@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['a_0',['A',['../classSoCalculator.html#a78b6958e185647f1efcf8dc37a39b461',1,'SoCalculator']]],
-  ['a_1',['a',['../classSoBoolOperation.html#a50798f4ca280a3be7e252903d5bfa373',1,'SoBoolOperation::a'],['../classSoCalculator.html#a8334a05f1d4ad8a76233ab1227613c26',1,'SoCalculator::a']]],
+  ['a_0',['a',['../classSoBoolOperation.html#a50798f4ca280a3be7e252903d5bfa373',1,'SoBoolOperation::a'],['../classSoCalculator.html#a8334a05f1d4ad8a76233ab1227613c26',1,'SoCalculator::a']]],
+  ['a_1',['A',['../classSoCalculator.html#a78b6958e185647f1efcf8dc37a39b461',1,'SoCalculator']]],
   ['active_2',['active',['../classSoPolygonOffsetElement.html#aba7e58faf78d658a96799446c94df995',1,'SoPolygonOffsetElement']]],
   ['addchildren_3',['addChildren',['../classSoVRMLParent.html#af4f153e36f9cd06bee689ced37b0f5d6',1,'SoVRMLParent']]],
   ['alpha_4',['alpha',['../classSoInterpolate.html#a64d875addb45655774a2f3d374644c6f',1,'SoInterpolate']]],

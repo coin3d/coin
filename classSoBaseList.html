@@ -450,7 +450,8 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Returns element at <em>index</em>.</p>
-<p>Will automatically expand the size of the internal array if <em>index</em> is outside the current bounds of the list. The values of any additional pointers are then set to <code>NULL</code>.  </p>
+<p>Will automatically expand the size of the internal array if <em>index</em> is outside the current bounds of the list. The values of any additional pointers are then set to <code>NULL</code>.</p>
+<p>Throws <code>std::out_of_range</code> for a negative index.  </p>
 <p>Overloaded from parent to return an <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a> pointer.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbPList.html#a8f4ae28407482bca1ee8c6c7d67a1584">SbPList::operator[]()</a> </dd></dl>
 
@@ -514,7 +515,7 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Index operator to set element at <em>index</em>. Does <em>not</em> expand array bounds if <em>index</em> is outside the list.  </p>
+<p>Index operator to set element at <em>index</em>. Does <em>not</em> expand array bounds if <em>index</em> is outside the list. Throws <code>std::out_of_range</code> for an invalid index.  </p>
 <p>Overloaded from parent to support reference counting on the <a class="el" href="classSoBase.html" title="The SoBase class is the top-level superclass for a number of class-hierarchies.">SoBase</a> object.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classSbPList.html#a2594a4326065d15ec4bcb3104b4e74b6">SbPList::set(const int idx, void * item)</a> </dd></dl>
 
@@ -550,7 +551,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoBaseList.html">SoBaseList</a></li>
-    <li class="footer">Generated on Mon Oct 19 2026 19:56:14 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Mon Oct 19 2026 20:39:44 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
