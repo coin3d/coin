@@ -178,36 +178,39 @@ $(function(){initNavTree('attribute_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#endif </span><span class="comment">/* __cplusplus */</span><span class="preprocessor"></span></div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>COIN_DLL_API cc_xml_attr * cc_xml_attr_new(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>COIN_DLL_API cc_xml_attr * cc_xml_attr_new_from_data(<span class="keyword">const</span> <span class="keywordtype">char</span> * name, <span class="keyword">const</span> <span class="keywordtype">char</span> * value);</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>COIN_DLL_API cc_xml_attr * cc_xml_attr_clone(<span class="keyword">const</span> cc_xml_attr * orig);</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_attr_delete_x(cc_xml_attr * attr);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_attr_set_name_x(cc_xml_attr * attr, <span class="keyword">const</span> <span class="keywordtype">char</span> * name);</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>COIN_DLL_API <span class="keyword">const</span> <span class="keywordtype">char</span> * cc_xml_attr_get_name(<span class="keyword">const</span> cc_xml_attr * attr);</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_attr_set_value_x(cc_xml_attr * attr, <span class="keyword">const</span> <span class="keywordtype">char</span> * value);</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>COIN_DLL_API <span class="keyword">const</span> <span class="keywordtype">char</span> * cc_xml_attr_get_value(<span class="keyword">const</span> cc_xml_attr * attr);</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment">/* TODO: type-specific/converting attribute accessors</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">COIN_DLL_API int cc_xml_attr_is_int32(const cc_xml_attr * attr);</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment">COIN_DLL_API int32_t cc_xml_attr_get_int32(const cc_xml_attr * attr);</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment">COIN_DLL_API void cc_xml_attr_set_int32_x(const cc_xml_attr * attr, int32_t intval);</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">*/</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>} <span class="comment">/* extern &quot;C&quot; */</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="preprocessor">#endif </span><span class="comment">/* __cplusplus */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment">/* ********************************************************************** */</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="preprocessor">#endif </span><span class="comment">/* !COIN_XML_ATTRIBUTE_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">/* Attributes returned by new(), new_from_data(), and clone() are owned by the</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">   caller until transferred to an element with cc_xml_elt_set_attribute_x().</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">   delete_x() must only be called while the attribute is caller-owned. */</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>COIN_DLL_API cc_xml_attr * cc_xml_attr_new(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>COIN_DLL_API cc_xml_attr * cc_xml_attr_new_from_data(<span class="keyword">const</span> <span class="keywordtype">char</span> * name, <span class="keyword">const</span> <span class="keywordtype">char</span> * value);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>COIN_DLL_API cc_xml_attr * cc_xml_attr_clone(<span class="keyword">const</span> cc_xml_attr * orig);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_attr_delete_x(cc_xml_attr * attr);</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_attr_set_name_x(cc_xml_attr * attr, <span class="keyword">const</span> <span class="keywordtype">char</span> * name);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>COIN_DLL_API <span class="keyword">const</span> <span class="keywordtype">char</span> * cc_xml_attr_get_name(<span class="keyword">const</span> cc_xml_attr * attr);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_attr_set_value_x(cc_xml_attr * attr, <span class="keyword">const</span> <span class="keywordtype">char</span> * value);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>COIN_DLL_API <span class="keyword">const</span> <span class="keywordtype">char</span> * cc_xml_attr_get_value(<span class="keyword">const</span> cc_xml_attr * attr);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment">/* TODO: type-specific/converting attribute accessors</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">COIN_DLL_API int cc_xml_attr_is_int32(const cc_xml_attr * attr);</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment">COIN_DLL_API int32_t cc_xml_attr_get_int32(const cc_xml_attr * attr);</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment">COIN_DLL_API void cc_xml_attr_set_int32_x(const cc_xml_attr * attr, int32_t intval);</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment">*/</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>} <span class="comment">/* extern &quot;C&quot; */</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">#endif </span><span class="comment">/* __cplusplus */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">/* ********************************************************************** */</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="preprocessor">#endif </span><span class="comment">/* !COIN_XML_ATTRIBUTE_H */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_c926cf464acaebc2091d00c8a935648f.html">C</a></li><li class="navelem"><a class="el" href="dir_86db8f5a283247f455059497615f9584.html">XML</a></li><li class="navelem"><b>attribute.h</b></li>
-    <li class="footer">Generated on Mon Oct 19 2026 21:57:12 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Mon Oct 19 2026 22:23:07 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

@@ -180,83 +180,101 @@ $(function(){initNavTree('element_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">/* ********************************************************************** */</span></div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>COIN_DLL_API cc_xml_elt * cc_xml_elt_new(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>COIN_DLL_API cc_xml_elt * cc_xml_elt_new_from_data(<span class="keyword">const</span> <span class="keywordtype">char</span> * type, cc_xml_attr ** attrs);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>COIN_DLL_API cc_xml_elt * cc_xml_elt_clone(<span class="keyword">const</span> cc_xml_elt * elt);</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_elt_delete_x(cc_xml_elt * elt);</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_elt_set_type_x(cc_xml_elt * elt, <span class="keyword">const</span> <span class="keywordtype">char</span> * type);</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>COIN_DLL_API <span class="keyword">const</span> <span class="keywordtype">char</span> * cc_xml_elt_get_type(<span class="keyword">const</span> cc_xml_elt * elt);</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_elt_set_cdata_x(cc_xml_elt * elt, <span class="keyword">const</span> <span class="keywordtype">char</span> * data);</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>COIN_DLL_API <span class="keyword">const</span> <span class="keywordtype">char</span> * cc_xml_elt_get_cdata(<span class="keyword">const</span> cc_xml_elt * elt);</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>COIN_DLL_API <span class="keyword">const</span> <span class="keywordtype">char</span> * cc_xml_elt_get_data(<span class="keyword">const</span> cc_xml_elt * elt);</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_elt_remove_all_attributes_x(cc_xml_elt * elt);</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_elt_set_attribute_x(cc_xml_elt * elt, cc_xml_attr * attr);</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_elt_set_attributes_x(cc_xml_elt * elt, cc_xml_attr ** attrs);</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>COIN_DLL_API cc_xml_attr * cc_xml_elt_get_attribute(<span class="keyword">const</span> cc_xml_elt * elt, <span class="keyword">const</span> <span class="keywordtype">char</span> * attrname);</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>COIN_DLL_API <span class="keywordtype">int</span> cc_xml_elt_get_num_attributes(<span class="keyword">const</span> cc_xml_elt * elt);</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>COIN_DLL_API <span class="keyword">const</span> cc_xml_attr ** cc_xml_elt_get_attributes(<span class="keyword">const</span> cc_xml_elt * elt);</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>COIN_DLL_API <span class="keywordtype">int</span>             cc_xml_elt_get_num_children(<span class="keyword">const</span> cc_xml_elt * elt);</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>COIN_DLL_API <span class="keywordtype">int</span>             cc_xml_elt_get_num_children_of_type(<span class="keyword">const</span> cc_xml_elt * elt, <span class="keyword">const</span> <span class="keywordtype">char</span> * type);</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>COIN_DLL_API cc_xml_elt *    cc_xml_elt_get_child(<span class="keyword">const</span> cc_xml_elt * elt, <span class="keywordtype">int</span> child);</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>COIN_DLL_API <span class="keywordtype">int</span>             cc_xml_elt_get_child_index(<span class="keyword">const</span> cc_xml_elt * elt, <span class="keyword">const</span> cc_xml_elt * child);</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>COIN_DLL_API <span class="keywordtype">int</span>             cc_xml_elt_get_child_type_index(<span class="keyword">const</span> cc_xml_elt * elt, <span class="keyword">const</span> cc_xml_elt * child);</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>COIN_DLL_API cc_xml_elt *    cc_xml_elt_get_parent(<span class="keyword">const</span> cc_xml_elt * elt);</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>COIN_DLL_API cc_xml_path *   cc_xml_elt_get_path(<span class="keyword">const</span> cc_xml_elt * elt);</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>COIN_DLL_API cc_xml_elt *    cc_xml_elt_get_child_of_type(<span class="keyword">const</span> cc_xml_elt * elt, <span class="keyword">const</span> <span class="keywordtype">char</span> * type, <span class="keywordtype">int</span> idx);</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>COIN_DLL_API cc_xml_elt *    cc_xml_elt_get_child_of_type_x(cc_xml_elt * elt, <span class="keyword">const</span> <span class="keywordtype">char</span> * type, <span class="keywordtype">int</span> idx);</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_set_parent_x(cc_xml_elt * elt, cc_xml_elt * parent);</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_add_child_x(cc_xml_elt * elt, cc_xml_elt * child);</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_remove_child_x(cc_xml_elt * elt, cc_xml_elt * child);</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_insert_child_x(cc_xml_elt * elt, cc_xml_elt * child, <span class="keywordtype">int</span> idx);</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>COIN_DLL_API <span class="keywordtype">int</span>            cc_xml_elt_replace_child_x(cc_xml_elt * elt, cc_xml_elt * oldchild, cc_xml_elt * newchild);</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>COIN_DLL_API <span class="keywordtype">int</span>            cc_xml_elt_get_boolean(<span class="keyword">const</span> cc_xml_elt * elt, <span class="keywordtype">int</span> * value);</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>COIN_DLL_API <span class="keywordtype">int</span>            cc_xml_elt_get_integer(<span class="keyword">const</span> cc_xml_elt * elt, <span class="keywordtype">int</span> * value);</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>COIN_DLL_API <span class="keywordtype">int</span>            cc_xml_elt_get_uint64(<span class="keyword">const</span> cc_xml_elt * elt, uint64_t * value);</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>COIN_DLL_API <span class="keywordtype">int</span>            cc_xml_elt_get_int64(<span class="keyword">const</span> cc_xml_elt * elt, int64_t * value);</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>COIN_DLL_API <span class="keywordtype">int</span>            cc_xml_elt_get_uint32(<span class="keyword">const</span> cc_xml_elt * elt, uint32_t * value);</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>COIN_DLL_API <span class="keywordtype">int</span>            cc_xml_elt_get_int32(<span class="keyword">const</span> cc_xml_elt * elt, int32_t * value);</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>COIN_DLL_API <span class="keywordtype">int</span>            cc_xml_elt_get_float(<span class="keyword">const</span> cc_xml_elt * elt, <span class="keywordtype">float</span> * value);</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>COIN_DLL_API <span class="keywordtype">int</span>            cc_xml_elt_get_double(<span class="keyword">const</span> cc_xml_elt * elt, <span class="keywordtype">double</span> * value);</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_set_boolean_x(cc_xml_elt * elt, <span class="keywordtype">int</span> value);</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_set_integer_x(cc_xml_elt * elt, <span class="keywordtype">int</span> value);</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_set_uint64_x(cc_xml_elt * elt, uint64_t value);</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_set_int64_x(cc_xml_elt * elt, int64_t value);</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_set_uint32_x(cc_xml_elt * elt, uint32_t value);</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_set_int32_x(cc_xml_elt * elt, int32_t value);</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_set_float_x(cc_xml_elt * elt, <span class="keywordtype">float</span> value);</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_set_double_x(cc_xml_elt * elt, <span class="keywordtype">double</span> value);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">/* Elements returned by new(), new_from_data(), and clone() are caller-owned.</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">   delete_x() recursively deletes attributes and children, so it must only be</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">   called for an element currently owned by the caller.</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">   new_from_data() takes ownership of every attribute in the NULL-terminated</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment">   attrs array; the array itself remains caller-owned. */</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>COIN_DLL_API cc_xml_elt * cc_xml_elt_new(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>COIN_DLL_API cc_xml_elt * cc_xml_elt_new_from_data(<span class="keyword">const</span> <span class="keywordtype">char</span> * type, cc_xml_attr ** attrs);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>COIN_DLL_API cc_xml_elt * cc_xml_elt_clone(<span class="keyword">const</span> cc_xml_elt * elt);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_elt_delete_x(cc_xml_elt * elt);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_elt_set_type_x(cc_xml_elt * elt, <span class="keyword">const</span> <span class="keywordtype">char</span> * type);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>COIN_DLL_API <span class="keyword">const</span> <span class="keywordtype">char</span> * cc_xml_elt_get_type(<span class="keyword">const</span> cc_xml_elt * elt);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_elt_set_cdata_x(cc_xml_elt * elt, <span class="keyword">const</span> <span class="keywordtype">char</span> * data);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>COIN_DLL_API <span class="keyword">const</span> <span class="keywordtype">char</span> * cc_xml_elt_get_cdata(<span class="keyword">const</span> cc_xml_elt * elt);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>COIN_DLL_API <span class="keyword">const</span> <span class="keywordtype">char</span> * cc_xml_elt_get_data(<span class="keyword">const</span> cc_xml_elt * elt);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment">/* Attribute ownership:</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment">   - set_attribute_x() and set_attributes_x() transfer ownership to elt.</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment">   - get_attribute() and get_attributes() return borrowed pointers.</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment">   - remove_all_attributes_x() deletes all attributes owned by elt.</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">   The attrs array passed to set_attributes_x() remains caller-owned. */</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_elt_remove_all_attributes_x(cc_xml_elt * elt);</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_elt_set_attribute_x(cc_xml_elt * elt, cc_xml_attr * attr);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_elt_set_attributes_x(cc_xml_elt * elt, cc_xml_attr ** attrs);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>COIN_DLL_API cc_xml_attr * cc_xml_elt_get_attribute(<span class="keyword">const</span> cc_xml_elt * elt, <span class="keyword">const</span> <span class="keywordtype">char</span> * attrname);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>COIN_DLL_API <span class="keywordtype">int</span> cc_xml_elt_get_num_attributes(<span class="keyword">const</span> cc_xml_elt * elt);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>COIN_DLL_API <span class="keyword">const</span> cc_xml_attr ** cc_xml_elt_get_attributes(<span class="keyword">const</span> cc_xml_elt * elt);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>COIN_DLL_API <span class="keywordtype">int</span>             cc_xml_elt_get_num_children(<span class="keyword">const</span> cc_xml_elt * elt);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>COIN_DLL_API <span class="keywordtype">int</span>             cc_xml_elt_get_num_children_of_type(<span class="keyword">const</span> cc_xml_elt * elt, <span class="keyword">const</span> <span class="keywordtype">char</span> * type);</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>COIN_DLL_API cc_xml_elt *    cc_xml_elt_get_child(<span class="keyword">const</span> cc_xml_elt * elt, <span class="keywordtype">int</span> child);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>COIN_DLL_API <span class="keywordtype">int</span>             cc_xml_elt_get_child_index(<span class="keyword">const</span> cc_xml_elt * elt, <span class="keyword">const</span> cc_xml_elt * child);</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>COIN_DLL_API <span class="keywordtype">int</span>             cc_xml_elt_get_child_type_index(<span class="keyword">const</span> cc_xml_elt * elt, <span class="keyword">const</span> cc_xml_elt * child);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>COIN_DLL_API cc_xml_elt *    cc_xml_elt_get_parent(<span class="keyword">const</span> cc_xml_elt * elt);</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>COIN_DLL_API cc_xml_path *   cc_xml_elt_get_path(<span class="keyword">const</span> cc_xml_elt * elt);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>COIN_DLL_API cc_xml_elt *    cc_xml_elt_get_child_of_type(<span class="keyword">const</span> cc_xml_elt * elt, <span class="keyword">const</span> <span class="keywordtype">char</span> * type, <span class="keywordtype">int</span> idx);</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>COIN_DLL_API cc_xml_elt *    cc_xml_elt_get_child_of_type_x(cc_xml_elt * elt, <span class="keyword">const</span> <span class="keywordtype">char</span> * type, <span class="keywordtype">int</span> idx);</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="comment">/* Child ownership:</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="comment">   - add_child_x() and insert_child_x() transfer ownership on success.</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment">   - child getters return borrowed pointers.</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="comment">   - remove_child_x() releases ownership to the caller without deleting.</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="comment">   - replace_child_x() releases oldchild and takes ownership of newchild on</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment">     success; on failure ownership and tree structure are unchanged.</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment">   - set_parent_x() moves ownership from the current parent to the new parent;</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="comment">     passing NULL releases ownership to the caller. */</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_set_parent_x(cc_xml_elt * elt, cc_xml_elt * parent);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_add_child_x(cc_xml_elt * elt, cc_xml_elt * child);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_remove_child_x(cc_xml_elt * elt, cc_xml_elt * child);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_insert_child_x(cc_xml_elt * elt, cc_xml_elt * child, <span class="keywordtype">int</span> idx);</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>COIN_DLL_API <span class="keywordtype">int</span>            cc_xml_elt_replace_child_x(cc_xml_elt * elt, cc_xml_elt * oldchild, cc_xml_elt * newchild);</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_strip_whitespace_x(cc_xml_elt * elt);</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>COIN_DLL_API cc_xml_elt *   cc_xml_elt_get_traversal_next(<span class="keyword">const</span> cc_xml_elt * root, cc_xml_elt * here);</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>COIN_DLL_API <span class="keyword">const</span> cc_xml_elt * cc_xml_elt_find(<span class="keyword">const</span> cc_xml_elt * root, <span class="keyword">const</span> cc_xml_path * path);</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>COIN_DLL_API <span class="keyword">const</span> cc_xml_elt * cc_xml_elt_find_next(<span class="keyword">const</span> cc_xml_elt * root, cc_xml_elt * from, cc_xml_path * path);</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>COIN_DLL_API cc_xml_elt * cc_xml_elt_create_x(cc_xml_elt * from, cc_xml_path * path);</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="comment">/* ********************************************************************** */</span></div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>} <span class="comment">/* extern &quot;C&quot; */</span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="preprocessor">#endif </span><span class="comment">/* __clusplus */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="preprocessor">#endif </span><span class="comment">/* !COIN_XML_ELEMENT_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>COIN_DLL_API <span class="keywordtype">int</span>            cc_xml_elt_get_boolean(<span class="keyword">const</span> cc_xml_elt * elt, <span class="keywordtype">int</span> * value);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>COIN_DLL_API <span class="keywordtype">int</span>            cc_xml_elt_get_integer(<span class="keyword">const</span> cc_xml_elt * elt, <span class="keywordtype">int</span> * value);</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>COIN_DLL_API <span class="keywordtype">int</span>            cc_xml_elt_get_uint64(<span class="keyword">const</span> cc_xml_elt * elt, uint64_t * value);</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>COIN_DLL_API <span class="keywordtype">int</span>            cc_xml_elt_get_int64(<span class="keyword">const</span> cc_xml_elt * elt, int64_t * value);</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>COIN_DLL_API <span class="keywordtype">int</span>            cc_xml_elt_get_uint32(<span class="keyword">const</span> cc_xml_elt * elt, uint32_t * value);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>COIN_DLL_API <span class="keywordtype">int</span>            cc_xml_elt_get_int32(<span class="keyword">const</span> cc_xml_elt * elt, int32_t * value);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>COIN_DLL_API <span class="keywordtype">int</span>            cc_xml_elt_get_float(<span class="keyword">const</span> cc_xml_elt * elt, <span class="keywordtype">float</span> * value);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>COIN_DLL_API <span class="keywordtype">int</span>            cc_xml_elt_get_double(<span class="keyword">const</span> cc_xml_elt * elt, <span class="keywordtype">double</span> * value);</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_set_boolean_x(cc_xml_elt * elt, <span class="keywordtype">int</span> value);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_set_integer_x(cc_xml_elt * elt, <span class="keywordtype">int</span> value);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_set_uint64_x(cc_xml_elt * elt, uint64_t value);</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_set_int64_x(cc_xml_elt * elt, int64_t value);</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_set_uint32_x(cc_xml_elt * elt, uint32_t value);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_set_int32_x(cc_xml_elt * elt, int32_t value);</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_set_float_x(cc_xml_elt * elt, <span class="keywordtype">float</span> value);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_set_double_x(cc_xml_elt * elt, <span class="keywordtype">double</span> value);</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_elt_strip_whitespace_x(cc_xml_elt * elt);</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>COIN_DLL_API cc_xml_elt *   cc_xml_elt_get_traversal_next(<span class="keyword">const</span> cc_xml_elt * root, cc_xml_elt * here);</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>COIN_DLL_API <span class="keyword">const</span> cc_xml_elt * cc_xml_elt_find(<span class="keyword">const</span> cc_xml_elt * root, <span class="keyword">const</span> cc_xml_path * path);</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>COIN_DLL_API <span class="keyword">const</span> cc_xml_elt * cc_xml_elt_find_next(<span class="keyword">const</span> cc_xml_elt * root, cc_xml_elt * from, cc_xml_path * path);</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>COIN_DLL_API cc_xml_elt * cc_xml_elt_create_x(cc_xml_elt * from, cc_xml_path * path);</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="comment">/* ********************************************************************** */</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>} <span class="comment">/* extern &quot;C&quot; */</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="preprocessor">#endif </span><span class="comment">/* __clusplus */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="preprocessor">#endif </span><span class="comment">/* !COIN_XML_ELEMENT_H */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_c926cf464acaebc2091d00c8a935648f.html">C</a></li><li class="navelem"><a class="el" href="dir_86db8f5a283247f455059497615f9584.html">XML</a></li><li class="navelem"><b>element.h</b></li>
-    <li class="footer">Generated on Mon Oct 19 2026 21:57:12 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Mon Oct 19 2026 22:23:07 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

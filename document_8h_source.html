@@ -178,68 +178,77 @@ $(function(){initNavTree('document_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#endif </span><span class="comment">/* __cplusplus */</span><span class="preprocessor"></span></div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">/* basic construction */</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="group__coin__XML.html#gafe56d78ac5013d52bcde44c50832e003">   45</a></span>COIN_DLL_API cc_xml_doc * cc_xml_doc_new(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="group__coin__XML.html#ga2c3f2733691b7d1e60765c4c691433ee">   46</a></span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_doc_delete_x(cc_xml_doc * doc);</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">/* parser configuration */</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="group__coin__XML.html#ga80383244e73c1e8bebe041d60a04fc26">   49</a></span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_doc_set_filter_cb_x(cc_xml_doc * doc, cc_xml_filter_cb * cb, <span class="keywordtype">void</span> * userdata);</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="group__coin__XML.html#ga9832dc0e3d3a8ca5893d08f4878277bd">   50</a></span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_doc_get_filter_cb(<span class="keyword">const</span> cc_xml_doc * doc, cc_xml_filter_cb ** cb, <span class="keywordtype">void</span> ** userdata);</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment">/* document io */</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>COIN_DLL_API SbBool cc_xml_doc_read_file_x(cc_xml_doc * doc, <span class="keyword">const</span> <span class="keywordtype">char</span> * path);</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>COIN_DLL_API SbBool cc_xml_doc_read_buffer_x(cc_xml_doc * doc, <span class="keyword">const</span> <span class="keywordtype">char</span> * buffer, <span class="keywordtype">size_t</span> buflen);</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>COIN_DLL_API SbBool cc_xml_doc_parse_buffer_partial_x(cc_xml_doc * doc, <span class="keyword">const</span> <span class="keywordtype">char</span> * buffer, <span class="keywordtype">size_t</span> buflen);</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>COIN_DLL_API SbBool cc_xml_doc_parse_buffer_partial_done_x(cc_xml_doc * doc, <span class="keyword">const</span> <span class="keywordtype">char</span> * buffer, <span class="keywordtype">size_t</span> buflen);</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>COIN_DLL_API SbBool cc_xml_doc_write_to_buffer(<span class="keyword">const</span> cc_xml_doc * doc, <span class="keywordtype">char</span> ** buffer, <span class="keywordtype">size_t</span> * bytes);</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>COIN_DLL_API SbBool cc_xml_doc_write_to_file(<span class="keyword">const</span> cc_xml_doc * doc, <span class="keyword">const</span> <span class="keywordtype">char</span> * path);</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>COIN_DLL_API cc_xml_path * cc_xml_doc_diff(<span class="keyword">const</span> cc_xml_doc * doc, <span class="keyword">const</span> cc_xml_doc * other);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">/* basic construction</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">   A document returned by new() is caller-owned.  delete_x() also deletes the</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">   root tree still owned by the document. */</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="group__coin__XML.html#gafe56d78ac5013d52bcde44c50832e003">   47</a></span>COIN_DLL_API cc_xml_doc * cc_xml_doc_new(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="group__coin__XML.html#ga2c3f2733691b7d1e60765c4c691433ee">   48</a></span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_doc_delete_x(cc_xml_doc * doc);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment">/* parser configuration */</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="group__coin__XML.html#ga80383244e73c1e8bebe041d60a04fc26">   51</a></span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_doc_set_filter_cb_x(cc_xml_doc * doc, cc_xml_filter_cb * cb, <span class="keywordtype">void</span> * userdata);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="group__coin__XML.html#ga9832dc0e3d3a8ca5893d08f4878277bd">   52</a></span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_doc_get_filter_cb(<span class="keyword">const</span> cc_xml_doc * doc, cc_xml_filter_cb ** cb, <span class="keywordtype">void</span> ** userdata);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment">/* document io */</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>COIN_DLL_API SbBool cc_xml_doc_read_file_x(cc_xml_doc * doc, <span class="keyword">const</span> <span class="keywordtype">char</span> * path);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>COIN_DLL_API SbBool cc_xml_doc_read_buffer_x(cc_xml_doc * doc, <span class="keyword">const</span> <span class="keywordtype">char</span> * buffer, <span class="keywordtype">size_t</span> buflen);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>COIN_DLL_API SbBool cc_xml_doc_parse_buffer_partial_x(cc_xml_doc * doc, <span class="keyword">const</span> <span class="keywordtype">char</span> * buffer, <span class="keywordtype">size_t</span> buflen);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>COIN_DLL_API SbBool cc_xml_doc_parse_buffer_partial_done_x(cc_xml_doc * doc, <span class="keyword">const</span> <span class="keywordtype">char</span> * buffer, <span class="keywordtype">size_t</span> buflen);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>COIN_DLL_API SbBool cc_xml_doc_write_to_buffer(<span class="keyword">const</span> cc_xml_doc * doc, <span class="keywordtype">char</span> ** buffer, <span class="keywordtype">size_t</span> * bytes);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>COIN_DLL_API SbBool cc_xml_doc_write_to_file(<span class="keyword">const</span> cc_xml_doc * doc, <span class="keyword">const</span> <span class="keywordtype">char</span> * path);</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="comment">/* document attributes */</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_doc_set_filename_x(cc_xml_doc * doc, <span class="keyword">const</span> <span class="keywordtype">char</span> * path);</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>COIN_DLL_API <span class="keyword">const</span> <span class="keywordtype">char</span> * cc_xml_doc_get_filename(<span class="keyword">const</span> cc_xml_doc * doc);</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment">/* misc... */</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>COIN_DLL_API cc_xml_path * cc_xml_doc_diff(<span class="keyword">const</span> cc_xml_doc * doc, <span class="keyword">const</span> cc_xml_doc * other);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment">/* document attributes */</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>COIN_DLL_API <span class="keywordtype">void</span> cc_xml_doc_set_filename_x(cc_xml_doc * doc, <span class="keyword">const</span> <span class="keywordtype">char</span> * path);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>COIN_DLL_API <span class="keyword">const</span> <span class="keywordtype">char</span> * cc_xml_doc_get_filename(<span class="keyword">const</span> cc_xml_doc * doc);</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>COIN_DLL_API cc_xml_elt *   cc_xml_doc_get_root(<span class="keyword">const</span> cc_xml_doc * doc);</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_doc_set_current_x(cc_xml_doc * doc, cc_xml_elt * elt);</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>COIN_DLL_API cc_xml_elt *   cc_xml_doc_get_current(<span class="keyword">const</span> cc_xml_doc * doc);</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_doc_strip_whitespace_x(cc_xml_doc * doc);</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_doc_set_root_x(cc_xml_doc * doc, cc_xml_elt * root);</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>COIN_DLL_API <span class="keyword">const</span> cc_xml_elt * cc_xml_doc_find_element(<span class="keyword">const</span> cc_xml_doc * doc, cc_xml_path * path);</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>COIN_DLL_API <span class="keyword">const</span> cc_xml_elt * cc_xml_doc_find_next_element(<span class="keyword">const</span> cc_xml_doc * doc, cc_xml_elt * elt, cc_xml_path * path);</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>COIN_DLL_API cc_xml_elt *       cc_xml_doc_create_element_x(cc_xml_doc * doc, cc_xml_path * path);</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>} <span class="comment">/* extern &quot;C&quot; */</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="keyword">inline</span> <span class="keywordtype">void</span></div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>cc_xml_doc_get_filter_cb(<span class="keyword">const</span> cc_xml_doc * doc, cc_xml_filter_cb *&amp; cb, <span class="keywordtype">void</span> *&amp; userdata)</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>{</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  cc_xml_doc_get_filter_cb(doc, &amp;cb, &amp;userdata);</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>}</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="comment">/* misc... */</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment">/* Root ownership:</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment">   - set_root_x() transfers ownership of root to doc.</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="comment">   - get_root() returns a borrowed pointer.</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="comment">   - release_root_x() transfers ownership from doc to the caller.</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="comment">   Replacing a non-NULL root with set_root_x() deletes the previous tree.</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="comment">   Call release_root_x() first if the previous tree must be retained. */</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>COIN_DLL_API cc_xml_elt *   cc_xml_doc_get_root(<span class="keyword">const</span> cc_xml_doc * doc);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>COIN_DLL_API cc_xml_elt *   cc_xml_doc_release_root_x(cc_xml_doc * doc);</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_doc_set_current_x(cc_xml_doc * doc, cc_xml_elt * elt);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>COIN_DLL_API cc_xml_elt *   cc_xml_doc_get_current(<span class="keyword">const</span> cc_xml_doc * doc);</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_doc_strip_whitespace_x(cc_xml_doc * doc);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>COIN_DLL_API <span class="keywordtype">void</span>           cc_xml_doc_set_root_x(cc_xml_doc * doc, cc_xml_elt * root);</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>COIN_DLL_API <span class="keyword">const</span> cc_xml_elt * cc_xml_doc_find_element(<span class="keyword">const</span> cc_xml_doc * doc, cc_xml_path * path);</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>COIN_DLL_API <span class="keyword">const</span> cc_xml_elt * cc_xml_doc_find_next_element(<span class="keyword">const</span> cc_xml_doc * doc, cc_xml_elt * elt, cc_xml_path * path);</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>COIN_DLL_API cc_xml_elt *       cc_xml_doc_create_element_x(cc_xml_doc * doc, cc_xml_path * path);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="keyword">inline</span> SbBool</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>cc_xml_doc_write_to_buffer(<span class="keyword">const</span> cc_xml_doc * doc, <span class="keywordtype">char</span> *&amp; buffer, <span class="keywordtype">size_t</span> &amp; bytes)</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>{</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="keywordflow">return</span> cc_xml_doc_write_to_buffer(doc, &amp;buffer, &amp;bytes);</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>}</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="preprocessor">#endif </span><span class="comment">/* __cplusplus */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="preprocessor">#endif </span><span class="comment">/* !COIN_XML_DOCUMENT_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>} <span class="comment">/* extern &quot;C&quot; */</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="keyword">inline</span> <span class="keywordtype">void</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>cc_xml_doc_get_filter_cb(<span class="keyword">const</span> cc_xml_doc * doc, cc_xml_filter_cb *&amp; cb, <span class="keywordtype">void</span> *&amp; userdata)</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>{</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  cc_xml_doc_get_filter_cb(doc, &amp;cb, &amp;userdata);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>}</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="keyword">inline</span> SbBool</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>cc_xml_doc_write_to_buffer(<span class="keyword">const</span> cc_xml_doc * doc, <span class="keywordtype">char</span> *&amp; buffer, <span class="keywordtype">size_t</span> &amp; bytes)</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>{</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <span class="keywordflow">return</span> cc_xml_doc_write_to_buffer(doc, &amp;buffer, &amp;bytes);</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>}</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="preprocessor">#endif </span><span class="comment">/* __cplusplus */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="preprocessor">#endif </span><span class="comment">/* !COIN_XML_DOCUMENT_H */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_c926cf464acaebc2091d00c8a935648f.html">C</a></li><li class="navelem"><a class="el" href="dir_86db8f5a283247f455059497615f9584.html">XML</a></li><li class="navelem"><b>document.h</b></li>
-    <li class="footer">Generated on Mon Oct 19 2026 21:57:12 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Mon Oct 19 2026 22:23:07 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
