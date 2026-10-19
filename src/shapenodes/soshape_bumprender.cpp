@@ -254,34 +254,60 @@ soshape_bumprender_delete_programs(const cc_glglue * glue,
 
 struct soshape_bump_program_error {
   soshape_bump_program_error() : description(NULL), stage(NULL), error(GL_NO_ERROR), position(-1) {
-    std::memset(this->message, 0, sizeof(this->message));
+    this->message[0] = '\0';
   }
   const char * description;
   const char * stage;
   GLenum error;
   GLint position;
-  // Diagnostics must not allocate while rolling back or deleting GL objects.
-  enum { MESSAGE_CAPACITY = 512 };
-  char message[MESSAGE_CAPACITY];
-  void setMessage(const char * text) {
+  // Most contexts never fail. Retain a short diagnostic inline and allocate
+  // the full driver message only after GL rollback has completed.
+  enum { MESSAGE_CAPACITY = 512, INLINE_CAPACITY = 64 };
+  struct LongMessage { char text[MESSAGE_CAPACITY]; };
+  std::shared_ptr<LongMessage> longmessage;
+  char message[INLINE_CAPACITY];
+  static bool copyMessage(char * destination, size_t capacity, const char * text) {
     size_t i = 0;
-    while (i < MESSAGE_CAPACITY - 1 && text && text[i]) {
-      this->message[i] = text[i];
+    while (i < capacity - 1 && text && text[i]) {
+      destination[i] = text[i];
       ++i;
     }
-    this->message[i] = '\0';
-    if (text && text[i]) {
-      this->message[MESSAGE_CAPACITY - 4] = '.';
-      this->message[MESSAGE_CAPACITY - 3] = '.';
-      this->message[MESSAGE_CAPACITY - 2] = '.';
+    destination[i] = '\0';
+    const bool truncated = text && text[i];
+    if (truncated) {
+      destination[capacity - 4] = '.';
+      destination[capacity - 3] = '.';
+      destination[capacity - 2] = '.';
     }
+    return truncated;
+  }
+  void setMessage(const char * text) {
+    this->longmessage.reset();
+    const bool truncated = copyMessage(this->message, INLINE_CAPACITY, text);
+    if (truncated) {
+      try {
+        std::shared_ptr<LongMessage> full = std::make_shared<LongMessage>();
+        copyMessage(full->text, MESSAGE_CAPACITY, text);
+        this->longmessage = full;
+      }
+      catch (const std::bad_alloc &) {
+        // Preserve the GL error and a bounded diagnostic under memory pressure.
+      }
+    }
+  }
+  const char * messageText() const {
+    return this->longmessage ? this->longmessage->text : this->message;
+  }
+  void clearMessage() {
+    this->longmessage.reset();
+    this->message[0] = '\0';
   }
   void report() const {
     if (this->description) {
       SoDebugError::postWarning("soshape_bumprender::ensurePrograms",
                                 "Error in %s during %s! (GL error: 0x%x, byte pos: %d) '%s'.\n",
                                 this->description, this->stage, (unsigned int) this->error,
-                                this->position, this->message);
+                                this->position, this->messageText());
     }
   }
 };
@@ -292,7 +318,8 @@ soshape_bumprender_load_program(const cc_glglue * glue,
                                 const char * source,
                                 const char * description,
                                 GLuint & program,
-                                soshape_bump_program_error & failure)
+                                soshape_bump_program_error & failure,
+                                char (&message)[soshape_bump_program_error::MESSAGE_CAPACITY])
 {
   while (glGetError() != GL_NO_ERROR) { }
   program = 0;
@@ -340,7 +367,8 @@ soshape_bumprender_load_program(const cc_glglue * glue,
   if (err != GL_NO_ERROR || program == 0 || programlength <= 0) {
     failure.description = description; failure.stage = stage;
     failure.error = err; failure.position = errorpos;
-    failure.setMessage((const char *) errorstring);
+    soshape_bump_program_error::copyMessage(message, sizeof(message),
+                                            (const char *) errorstring);
     return FALSE;
   }
   return TRUE;
@@ -520,14 +548,17 @@ struct soshape_bumprender::ProgramCache {
   // Caller holds mutex. The entry exists before allocating GL names, so
   // publishing a successfully uploaded set cannot allocate host memory.
   static void initialize(const cc_glglue * glue, Context & ctx, bool diffuse) {
+    // Capture the driver's text before GL cleanup, then store it after cleanup.
+    // No host allocation may interrupt rollback of generated program names.
+    char message[soshape_bump_program_error::MESSAGE_CAPACITY];
     if (diffuse) {
       diffuse_programidx & p = ctx.diffuse;
       if (soshape_bumprender_load_program(glue, GL_VERTEX_PROGRAM_ARB,
                                          diffusebumpdirlightvpprogram,
-                                         "diffuse directional light vertex program", p.dirlight, ctx.diffuseerror) &&
+                                         "diffuse directional light vertex program", p.dirlight, ctx.diffuseerror, message) &&
           soshape_bumprender_load_program(glue, GL_VERTEX_PROGRAM_ARB,
                                          normalrenderingvpprogram,
-                                         "normal rendering vertex program", p.normalrendering, ctx.diffuseerror)) {
+                                         "normal rendering vertex program", p.normalrendering, ctx.diffuseerror, message)) {
         ctx.diffusestatus = READY;
       }
       else {
@@ -535,18 +566,19 @@ struct soshape_bumprender::ProgramCache {
         soshape_bumprender_delete_programs(glue, ids, 3);
         p.dirlight = p.pointlight = p.normalrendering = 0;
         ctx.diffusestatus = FAILED;
+        ctx.diffuseerror.setMessage(message);
       }
     }
     else {
       spec_programidx & p = ctx.spec;
       if (soshape_bumprender_load_program(glue, GL_FRAGMENT_PROGRAM_ARB,
-                                         bumpspecfpprogram, "fragment program", p.fragment, ctx.specerror) &&
+                                         bumpspecfpprogram, "fragment program", p.fragment, ctx.specerror, message) &&
           soshape_bumprender_load_program(glue, GL_VERTEX_PROGRAM_ARB,
                                          directionallightvpprogram,
-                                         "directional light vertex program", p.dirlight, ctx.specerror) &&
+                                         "directional light vertex program", p.dirlight, ctx.specerror, message) &&
           soshape_bumprender_load_program(glue, GL_VERTEX_PROGRAM_ARB,
                                          pointlightvpprogram,
-                                         "point light vertex program", p.pointlight, ctx.specerror)) {
+                                         "point light vertex program", p.pointlight, ctx.specerror, message)) {
         ctx.specstatus = READY;
       }
       else {
@@ -554,6 +586,7 @@ struct soshape_bumprender::ProgramCache {
         soshape_bumprender_delete_programs(glue, ids, 3);
         p.fragment = p.dirlight = p.pointlight = 0;
         ctx.specstatus = FAILED;
+        ctx.specerror.setMessage(message);
       }
     }
   }
@@ -604,6 +637,7 @@ struct soshape_bumprender::ProgramCache {
       soshape_bump_program_error & cached = diffuse ? ctx.diffuseerror : ctx.specerror;
       failure = cached;
       cached.description = NULL; // Report at most once, on use by a renderer.
+      cached.clearMessage();
     }
     lock.unlock();
     // Error handlers are user callbacks. Do not invoke them under our mutex,
