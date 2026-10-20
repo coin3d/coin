@@ -37,6 +37,12 @@ is the term we use on the larger group of libraries that all fall
 under the same license as Coin.  Coin is the core of Coin3D.
 
 
+## Windows Compatibility
+
+Windows 95, 98 and Me are no longer supported. The native Windows font
+backend uses NT-family GDI behavior without querying the operating system
+version.
+
 ## Source Code and Binary Compatibility
 
 Coin is one of three Open Inventor implementations.  All
