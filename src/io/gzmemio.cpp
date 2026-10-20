@@ -356,7 +356,7 @@ cc_gzm_read (void * file, void * buf, uint32_t len)
 
   if (s == NULL || s->mode != 'r') return Z_STREAM_ERROR;
 
-  if (s->z_err == Z_DATA_ERROR || s->z_err == Z_ERRNO) return -1;
+  if (s->z_err < 0) return -1;
   if (s->z_err == Z_STREAM_END) return 0;  /* EOF */
 
   next_out = (uint8_t*)buf;
@@ -404,6 +404,10 @@ cc_gzm_read (void * file, void * buf, uint32_t len)
       s->stream.next_in = s->inbuf;
     }
     s->z_err = cc_zlibglue_inflate(&(s->stream), Z_NO_FLUSH);
+    if (s->z_eof && s->z_err != Z_STREAM_END) {
+      // The compressed stream must finish before its input runs out.
+      s->z_err = Z_DATA_ERROR;
+    }
 
     if (s->z_err == Z_STREAM_END) {
       /* Check CRC and original size */
@@ -414,6 +418,7 @@ cc_gzm_read (void * file, void * buf, uint32_t len)
         s->z_err = Z_DATA_ERROR;
       } else {
         (void)getInt32(s);
+        if (s->z_err == Z_DATA_ERROR) break; // missing length in the trailer
         /* The uncompressed length returned by above getint32_t() may
          * be different from s->stream.total_out) in case of
          * concatenated .gz files. Check for such files:

@@ -105,7 +105,7 @@ SoInputP::getTopOfStackPopOnEOF(void)
               // SoInput is closed
 
   // Pop the stack if end of current file
-  if (fi->isEndOfFile()) {
+  if (fi->isEndOfFile() && !fi->hasReadError()) {
     (void) owner->popFile(); // Only pops if more than one file is on
                              // the stack.
     fi = owner->getTopOfStack();
