@@ -51,6 +51,10 @@
 #include <assert.h>
 #include <stddef.h> // NULL
 #include <string.h> // memset()
+#include <climits>
+#include <cmath>
+#include <cstdint>
+#include <new>
 
 #include <Inventor/lists/SbList.h>
 #include <Inventor/C/base/memalloc.h>
@@ -58,6 +62,7 @@
 #include "tidbitsp.h"
 #include "coindefs.h"
 #include "SbBasicP.h"
+#include "base/oomp.h"
 
 // *************************************************************************
 
@@ -150,6 +155,7 @@ class SbHash {
 
     void * operator new(size_t COIN_UNUSED_ARG(size), cc_memalloc * memhandler) {
       SbHashEntry * entry = static_cast<SbHashEntry *>(cc_memalloc_allocate(memhandler));
+      if (entry == NULL) coin_oom_abort("SbHashEntry::operator new");
       entry->memhandler = memhandler;
       return static_cast<void *>(entry);
     }
@@ -478,9 +484,11 @@ protected:
   void resize(unsigned int newsize) {
     /* we don't shrink the table */
     if (this->size >= newsize) return;
+    if (static_cast<size_t>(newsize) > SIZE_MAX / sizeof(SbHashEntry *)) return;
 
-    SbHashEntry ** newbuckets = new SbHashEntry * [newsize];
-    memset(newbuckets, 0, newsize * sizeof(SbHashEntry *));
+    SbHashEntry ** newbuckets = new (std::nothrow) SbHashEntry * [newsize];
+    if (newbuckets == NULL) return;
+    memset(newbuckets, 0, static_cast<size_t>(newsize) * sizeof(SbHashEntry *));
 
     /* Relink all mappings without copying keys or values. Allocation happens
        before any existing node is touched, and hashing is required to be
@@ -500,7 +508,9 @@ protected:
     delete [] this->buckets;
     this->buckets = newbuckets;
     this->size = newsize;
-    this->threshold = static_cast<unsigned int> (newsize * this->loadfactor);
+    const double scaled = static_cast<double>(newsize) * this->loadfactor;
+    this->threshold = scaled >= UINT_MAX ? UINT_MAX :
+      static_cast<unsigned int>(scaled);
   }
 
   //FIXME: Make this private when SbHash goes public: BFG 20090430
@@ -522,11 +532,12 @@ public:
     /* Key not already in the hash table; insert a new
      * entry as the first element in the bucket
      */
+    if (this->elements == UINT_MAX) coin_oom_abort("SbHash capacity");
     entry = new (this->memhandler) SbHashEntry(key, obj, this->memhandler);
     entry->next = this->buckets[i];
     this->buckets[i] = entry;
 
-    if (this->elements++ >= this->threshold) {
+    if (this->elements++ >= this->threshold && this->size < UINT_MAX) {
       this->resize(static_cast<unsigned int>( coin_geq_prime_number(this->size + 1)));
     }
     return TRUE;
@@ -575,12 +586,15 @@ public:
 
   void commonConstructor(unsigned int sizearg, float loadfactorarg)
   {
-    if (loadfactorarg <= 0.0f) { loadfactorarg = 0.75f; }
+    if (!std::isfinite(loadfactorarg) || loadfactorarg <= 0.0f)
+      loadfactorarg = 0.75f;
     unsigned int s = coin_geq_prime_number(sizearg);
     this->memhandler = NULL;
     this->size = s;
     this->elements = 0;
-    this->threshold = static_cast<unsigned int> (s * loadfactorarg);
+    const double scaled = static_cast<double>(s) * loadfactorarg;
+    this->threshold = scaled >= UINT_MAX ? UINT_MAX :
+      static_cast<unsigned int>(scaled);
     this->loadfactor = loadfactorarg;
     this->buckets = NULL;
   }
@@ -590,9 +604,19 @@ public:
     if (this->buckets != NULL) return;
     assert(this->memhandler == NULL);
 
-    SbHashEntry ** newbuckets = new SbHashEntry * [this->size];
-    memset(newbuckets, 0, this->size * sizeof(SbHashEntry *));
-    cc_memalloc * newmemhandler = cc_memalloc_construct(sizeof(SbHashEntry));
+    // Keep empty hashes allocation-free; the first insertion needs both
+    // resources before it can publish usable storage.
+    if (static_cast<size_t>(this->size) > SIZE_MAX / sizeof(SbHashEntry *))
+      coin_oom_abort("SbHash bucket size");
+    SbHashEntry ** newbuckets = new (std::nothrow) SbHashEntry * [this->size];
+    if (newbuckets == NULL) coin_oom_abort("SbHash buckets");
+    memset(newbuckets, 0, static_cast<size_t>(this->size) * sizeof(SbHashEntry *));
+    cc_memalloc * newmemhandler = cc_memalloc_construct_aligned(
+      sizeof(SbHashEntry), alignof(SbHashEntry));
+    if (newmemhandler == NULL) {
+      delete [] newbuckets;
+      coin_oom_abort("SbHash allocator");
+    }
 
     this->buckets = newbuckets;
     this->memhandler = newmemhandler;
