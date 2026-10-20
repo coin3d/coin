@@ -110,13 +110,12 @@ cc_thread_construct(cc_thread_f * func, void * closure)
   int ok;
 
   thread = (cc_thread*) malloc(sizeof(cc_thread));
-  assert(thread != NULL);
+  if (thread == NULL) return NULL;
   thread->func = func;
   thread->closure = closure;
 
   ok = internal_init(thread);
   if (ok) return thread;
-  assert(0 && "unable to create thread");
   free(thread);
   return NULL;
 }
