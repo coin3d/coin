@@ -197,6 +197,8 @@ cc_storage_apply_to_all(cc_storage * storage,
                         cc_storage_apply_func * func, 
                         void * closure)
 {
+  if (func == NULL) return;
+
   /* need to set up a struct to use cc_dict_apply */
   cc_storage_hash_apply_data mydata;
   
@@ -330,3 +332,72 @@ cc_storage_thread_cleanup(unsigned long COIN_UNUSED_ARG(threadid))
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */
+
+#ifdef COIN_TEST_SUITE
+
+#include <Inventor/threads/SbStorage.h>
+#include <Inventor/threads/SbTypedStorage.h>
+
+#include <type_traits>
+
+static int storage_test_construct_count;
+static int storage_test_destruct_count;
+
+static void
+storage_test_construct(void * data)
+{
+  storage_test_construct_count++;
+  *static_cast<int *>(data) = 17;
+}
+
+static void
+storage_test_destruct(void * data)
+{
+  storage_test_destruct_count++;
+  *static_cast<int *>(data) = 0;
+}
+
+static void
+storage_test_apply(void * data, void * closure)
+{
+  BOOST_CHECK_EQUAL(*static_cast<int *>(data), 17);
+  (*static_cast<int *>(closure))++;
+}
+
+BOOST_AUTO_TEST_CASE(cc_storage_preserves_same_thread_value_and_lifecycle)
+{
+  storage_test_construct_count = 0;
+  storage_test_destruct_count = 0;
+
+  cc_storage * storage = cc_storage_construct_etc(sizeof(int),
+                                                   storage_test_construct,
+                                                   storage_test_destruct);
+  int * first = static_cast<int *>(cc_storage_get(storage));
+  int * second = static_cast<int *>(cc_storage_get(storage));
+
+  BOOST_REQUIRE(first != NULL);
+  BOOST_CHECK(first == second);
+  BOOST_CHECK_EQUAL(*first, 17);
+  BOOST_CHECK_EQUAL(storage_test_construct_count, 1);
+
+  int apply_count = 0;
+  cc_storage_apply_to_all(storage, storage_test_apply, &apply_count);
+  BOOST_CHECK_EQUAL(apply_count, 1);
+
+  cc_storage_apply_to_all(storage, NULL, &apply_count);
+  BOOST_CHECK_EQUAL(apply_count, 1);
+
+  cc_storage_destruct(storage);
+  BOOST_CHECK_EQUAL(storage_test_destruct_count, 1);
+}
+
+static_assert(!std::is_copy_constructible<SbStorage>::value,
+              "SbStorage must not copy its owning cc_storage pointer");
+static_assert(!std::is_copy_assignable<SbStorage>::value,
+              "SbStorage must not copy-assign its owning cc_storage pointer");
+static_assert(!std::is_copy_constructible<SbTypedStorage<int *> >::value,
+              "SbTypedStorage must not copy its owning cc_storage pointer");
+static_assert(!std::is_copy_assignable<SbTypedStorage<int *> >::value,
+              "SbTypedStorage must not copy-assign its owning cc_storage pointer");
+
+#endif // COIN_TEST_SUITE

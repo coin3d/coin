@@ -54,6 +54,7 @@ COIN_DLL_API cc_storage * cc_storage_construct_etc(unsigned int size,
 COIN_DLL_API void cc_storage_destruct(cc_storage * storage);
 
 COIN_DLL_API void * cc_storage_get(cc_storage * storage);
+/* A NULL callback leaves the storage unchanged. */
 COIN_DLL_API void cc_storage_apply_to_all(cc_storage * storage, 
                                           cc_storage_apply_func * func, 
                                           void * closure);
