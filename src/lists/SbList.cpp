@@ -247,6 +247,10 @@
   Returns a copy of item at \a index.
 
   Throws \c std::out_of_range for an invalid index.
+
+  For read-only iteration, validate the iteration range against getLength()
+  and use getArrayPtr() to avoid repeated bounds checks; keep the list unchanged
+  while using the returned array.
 */
 
 /*!
@@ -255,6 +259,10 @@
   Returns a reference to item at \a index.
 
   Throws \c std::out_of_range for an invalid index.
+
+  For read-only iteration, validate the iteration range against getLength()
+  and use getArrayPtr() to avoid repeated bounds checks; keep the list unchanged
+  while using the returned array.
 */
 
 /*!
