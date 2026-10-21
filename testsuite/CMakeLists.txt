@@ -1,3 +1,5 @@
+include(SbSmallMapTests.cmake)
+
 if(COIN_BUILD_LEGACY_GL_RENDERER)
   find_package(Threads REQUIRED)
   add_executable(CoinBumpProgramTest bumprender/FailureTest.cpp)
@@ -111,25 +113,30 @@ add_executable(CoinTests
 	TestSuiteUtils.cpp
 	TestSuiteMisc.cpp
 	InternalMacroTest.cpp
+	InternalSmallMapTest.cpp
 	${COIN_TEST_SOURCES}
 )
 
 # Private Coin symbols are not exported from the Windows DLL. Compile the
-# dictionary implementation and the existing prime-number support directly
+# dictionary implementation, prime-number and SbHashFunc support directly
 # into CoinTests. Static builds resolve these symbols from the Coin archive.
 if(WIN32 AND COIN_BUILD_SHARED_LIBS)
 	target_sources(CoinTests PRIVATE
 		${PROJECT_SOURCE_DIR}/src/base/dict.cpp
-		CoinGeqPrimeNumberWin32TestSupport.cpp)
+		CoinGeqPrimeNumberWin32TestSupport.cpp
+		SbHashFuncSbStringWin32TestSupport.cpp)
 	set_source_files_properties(
 		${PROJECT_SOURCE_DIR}/src/base/dict.cpp
 		CoinGeqPrimeNumberWin32TestSupport.cpp
+		SbHashFuncSbStringWin32TestSupport.cpp
 		PROPERTIES
 		COMPILE_DEFINITIONS COIN_INTERNAL)
 endif()
 
-set_source_files_properties(InternalMacroTest.cpp PROPERTIES
+set_source_files_properties(InternalMacroTest.cpp InternalSmallMapTest.cpp PROPERTIES
 	COMPILE_DEFINITIONS COIN_INTERNAL)
+set_property(SOURCE InternalSmallMapTest.cpp APPEND PROPERTY
+	COMPILE_DEFINITIONS COIN_SMALLMAP_TESTING)
 set_target_properties(CoinTests PROPERTIES DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
 target_link_libraries(CoinTests Coin ${COIN_TARGET_LINK_LIBRARIES})
 target_include_directories(CoinTests PRIVATE
@@ -149,22 +156,25 @@ if (USE_PTHREAD)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
-add_subdirectory(xml-c-api/c-headers)
-
-# Compile the production dictionary into an isolated executable so bucket
-# allocation failures can be injected without changing the library's API.
-add_executable(CcDictResizeTest CcDictResizeTest.cpp)
-target_compile_definitions(CcDictResizeTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
-target_link_libraries(CcDictResizeTest Coin ${COIN_TARGET_LINK_LIBRARIES})
-target_include_directories(CcDictResizeTest PRIVATE
-  ${PROJECT_SOURCE_DIR}/src ${PROJECT_SOURCE_DIR}/include
-  ${PROJECT_BINARY_DIR}/src ${PROJECT_BINARY_DIR}/include
+# Keep this regression test in a fresh process: the unfixed implementation corrupts
+# SoTempPath's internal empty-list storage before ordinary assertions can
+# observe the violation.
+add_executable(SoTempPathReplaceTailTest
+  reproducers/sotemppath-empty-replace-tail/repro.cpp)
+target_link_libraries(SoTempPathReplaceTailTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(SoTempPathReplaceTailTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
   ${COIN_TARGET_INCLUDE_DIRECTORIES})
-if(WIN32 AND COIN_BUILD_SHARED_LIBS)
-  target_sources(CcDictResizeTest PRIVATE CoinGeqPrimeNumberWin32TestSupport.cpp)
-endif()
-add_test(NAME CcDictResizeRelink COMMAND CcDictResizeTest relink)
-add_test(NAME CcDictResizeAllocationFailure COMMAND CcDictResizeTest failure)
+add_test(NAME SoTempPathReplaceTail_valid_sentinel
+  COMMAND SoTempPathReplaceTailTest valid-sentinel)
+add_test(NAME SoTempPathReplaceTail_valid_replacement
+  COMMAND SoTempPathReplaceTailTest valid-replacement)
+add_test(NAME SoTempPathReplaceTail_empty_noop
+  COMMAND SoTempPathReplaceTailTest empty-noop)
+
+add_subdirectory(xml-c-api/c-headers)
+add_subdirectory(xml-c-api/entity-abi)
 
 add_executable(SoPathRangeTest SoPathRangeTest.cpp)
 target_link_libraries(SoPathRangeTest Coin ${COIN_TARGET_LINK_LIBRARIES})
@@ -173,6 +183,15 @@ target_include_directories(SoPathRangeTest PRIVATE
   ${PROJECT_BINARY_DIR}/include
   ${COIN_TARGET_INCLUDE_DIRECTORIES})
 add_test(NAME SoPathRange COMMAND SoPathRangeTest)
+
+add_executable(CoinAtexitTest CoinAtexitTest.cpp)
+target_compile_definitions(CoinAtexitTest PRIVATE COIN_INTERNAL)
+target_link_libraries(CoinAtexitTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CoinAtexitTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${PROJECT_SOURCE_DIR}/src ${COIN_TARGET_INCLUDE_DIRECTORIES})
+add_test(NAME CoinAtexit COMMAND CoinAtexitTest)
+
 # Process-isolated public behavior checks. Keeping each invalid access in its
 # own CTest process prevents one unsafe access from masking the remaining
 # boundary classes.
@@ -246,6 +265,7 @@ if(NOT WIN32)
     ${COIN_TARGET_INCLUDE_DIRECTORIES})
   add_test(NAME SoPathAssignmentAllocationFailure
     COMMAND SoPathAssignmentAllocationFailureTest)
+
 endif()
 
 add_executable(SoPathChildAppendTest SoPathChildAppendTest.cpp)
@@ -255,6 +275,31 @@ target_include_directories(SoPathChildAppendTest PRIVATE
   ${PROJECT_BINARY_DIR}/include
   ${COIN_TARGET_INCLUDE_DIRECTORIES})
 add_test(NAME SoPathChildAppend COMMAND SoPathChildAppendTest)
+
+if(COIN_BUILD_FUZZERS)
+  set(COIN_XML_FUZZ_CORPUS "${CMAKE_CURRENT_BINARY_DIR}/xml-fuzz-corpus")
+  file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/fuzz/corpus/"
+    DESTINATION "${COIN_XML_FUZZ_CORPUS}")
+  add_executable(CoinXmlDomFuzzer fuzz/xml-dom-fuzzer.cpp)
+  target_link_libraries(CoinXmlDomFuzzer
+    Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(CoinXmlDomFuzzer PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  target_compile_options(CoinXmlDomFuzzer PRIVATE -fsanitize=fuzzer)
+  set_property(TARGET CoinXmlDomFuzzer APPEND_STRING PROPERTY
+    LINK_FLAGS " -fsanitize=fuzzer,address,undefined")
+  add_test(NAME CoinXmlDomFuzzerSmoke
+    COMMAND CoinXmlDomFuzzer
+      -runs=100
+      -max_len=4096
+      -timeout=10
+      -rss_limit_mb=2048
+      -dict=${CMAKE_CURRENT_SOURCE_DIR}/fuzz/xml.dict
+      ${COIN_XML_FUZZ_CORPUS})
+  set_tests_properties(CoinXmlDomFuzzerSmoke PROPERTIES LABELS "fuzz")
+endif()
 
 add_test(NAME CoinConfigCompatibility
   COMMAND ${CMAKE_COMMAND}
@@ -326,6 +371,8 @@ endforeach()
 add_library(CoinCHeapHeaderCompileTest OBJECT CHeapHeaderCompileTest.c)
 target_link_libraries(CoinCHeapHeaderCompileTest PRIVATE Coin)
 
+include(RegressionTests.cmake)
+
 include(CheckCoreGLHeaders.cmake)
 
 # Many warnings are generated from test macros on macOS with Xcode.
@@ -333,4 +380,39 @@ include(CheckCXXCompilerFlag)
 CHECK_CXX_COMPILER_FLAG(-Wtautological-compare DISABLE_WARNING_TAUTOLOGCOMPARE)
 if(DISABLE_WARNING_TAUTOLOGCOMPARE)
 	target_compile_options(CoinTests PUBLIC -Wno-tautological-compare)
+endif()
+
+# These cases inspect the global queues and disable realTime. Keep each in
+# its own process to avoid changing the shared CoinTests sensor state.
+add_executable(CoinSensorSchedulingTest SensorSchedulingTest.cpp)
+target_link_libraries(CoinSensorSchedulingTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CoinSensorSchedulingTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+foreach(sensor_case alarm_cancel recurring_cancel alarm_reschedule
+                    timeout_change_cancel zero_repeat zero_nonidle nonzero_timeout
+                    node_detach delay_reentry delay_timeout_reentry timer_reentry
+                    delay_changed_exception timer_changed_exception
+                    delay_remove_reentry timer_remove_reentry
+                    timer_exception delay_exception timer_cancel_exception delay_deferred_exception
+                    absolute_deadline changed_during_dispatch immediate_notification)
+  add_test(NAME SensorScheduling_${sensor_case}
+    COMMAND CoinSensorSchedulingTest ${sensor_case})
+endforeach()
+
+# Linux executable interposition lets this test fail the fifth queue allocation.
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  add_executable(CoinSensorQueueAllocationFailureTest
+    SensorQueueAllocationFailureTest.cpp)
+  target_link_libraries(CoinSensorQueueAllocationFailureTest
+    Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(CoinSensorQueueAllocationFailureTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  foreach(sensor_case delay immediate timer recurring)
+    add_test(NAME SensorQueueAllocation_${sensor_case}
+      COMMAND CoinSensorQueueAllocationFailureTest ${sensor_case})
+    set_tests_properties(SensorQueueAllocation_${sensor_case}
+      PROPERTIES TIMEOUT 10)
+  endforeach()
 endif()

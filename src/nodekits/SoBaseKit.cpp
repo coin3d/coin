@@ -525,6 +525,7 @@
 */
 
 #include <Inventor/nodekits/SoBaseKit.h>
+#include <Inventor/SoNodeKitPath.h>
 
 #include <cstdlib>
 #include <climits>
@@ -1793,7 +1794,7 @@ SoBaseKit::createPathToAnyPart(const SbName & partname, SbBool makeifneeded,
 {
   SoPath * path;
   if (pathtoextend) {
-    path = pathtoextend->copy();
+    path = SoNodeKitPath::fromPath(pathtoextend);
     path->ref();
     // pop off nodes beyond this kit node
     if (path->containsNode(this)) while (path->fullPath().getTail() != this && path->fullPath().getLength()) path->pop();
@@ -1811,7 +1812,9 @@ SoBaseKit::createPathToAnyPart(const SbName & partname, SbBool makeifneeded,
     }
   }
   else {
-    path = new SoPath(this);
+    SoNodeKitPath * nodekitpath = new SoNodeKitPath(4);
+    nodekitpath->SoPath::setHead(this);
+    path = nodekitpath;
     path->ref();
   }
 
@@ -1865,7 +1868,7 @@ SoBaseKit::createPathToAnyPart(const SbName & partname, SbBool makeifneeded,
         }
       }
       path->unrefNoDelete();
-      return (SoNodeKitPath *)path;
+      return static_cast<SoNodeKitPath *>(path);
     }
   }
   path->unref();
