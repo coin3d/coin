@@ -55,6 +55,7 @@
 #include <cmath>
 #include <cstdint>
 #include <new>
+#include <memory>
 #include "primep.h"
 
 #include <Inventor/lists/SbList.h>
@@ -617,14 +618,18 @@ public:
     assert(this->memhandler == NULL);
     if (static_cast<size_t>(this->size) > SIZE_MAX / sizeof(SbHashEntry *))
       coin_oom_abort("SbHash bucket size");
-    SbHashEntry ** newbuckets = new (std::nothrow) SbHashEntry * [this->size];
-    if (newbuckets == NULL) coin_oom_abort("SbHash buckets");
-    memset(newbuckets, 0, this->size * sizeof(SbHashEntry *));
+    std::unique_ptr<SbHashEntry *[]> newbuckets(
+      new (std::nothrow) SbHashEntry * [this->size]);
+    if (!newbuckets) coin_oom_abort("SbHash buckets");
+    memset(newbuckets.get(), 0, this->size * sizeof(SbHashEntry *));
     cc_memalloc * newmemhandler = cc_memalloc_construct_aligned(
       sizeof(SbHashEntry), alignof(SbHashEntry));
-    if (newmemhandler == NULL) coin_oom_abort("SbHash allocator");
+    if (newmemhandler == NULL) {
+      newbuckets.reset();
+      coin_oom_abort("SbHash allocator");
+    }
 
-    this->buckets = newbuckets;
+    this->buckets = newbuckets.release();
     this->memhandler = newmemhandler;
   }
 

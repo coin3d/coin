@@ -44,7 +44,16 @@ struct Key {
 };
 bool Key::fail;
 inline unsigned int SbHashFunc(const Key & k) noexcept { return k.n; }
+#include <Inventor/C/base/memalloc.h>
+static bool failpool;
+static cc_memalloc * injected_construct(unsigned int size, unsigned int alignment)
+{
+  if (failpool) { failpool = false; throw std::bad_alloc(); }
+  return cc_memalloc_construct_aligned(size, alignment);
+}
+#define cc_memalloc_construct_aligned(size, alignment) injected_construct(size, alignment)
 #include "misc/SbHash.h"
+#undef cc_memalloc_construct_aligned
 struct Probe : SbHash<unsigned int, int> {
   Probe(unsigned int n = 5, float f = 0) : SbHash<unsigned int, int>(n,f) { }
   unsigned int count() const { return getNumBuckets(); }
@@ -52,6 +61,18 @@ struct Probe : SbHash<unsigned int, int> {
 };
 #define CHECK(c) do { if (!(c)) return __LINE__; } while (0)
 int main() {
+  // Pool construction must not leak staged buckets or publish partial storage.
+  {
+    SbHash<unsigned int, int> hash;
+    const int baselinearrays = arrays;
+    failpool = true;
+    bool caught = false;
+    try { hash.put(1, 7); }
+    catch (const std::bad_alloc &) { caught = true; }
+    CHECK(caught && !failpool && arrays == baselinearrays);
+    CHECK(hash.getNumElements() == 0);
+    CHECK(hash.put(1, 7) && hash.find(1)->obj == 7);
+  }
   CHECK(Probe(0).count() == 2 && Probe(3).count() == 3);
   CHECK(Probe(4294967291U).count() == 4294967291U);
   CHECK(Probe(5, std::numeric_limits<float>::infinity()).limit() == 3);
