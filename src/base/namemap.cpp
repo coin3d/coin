@@ -43,7 +43,7 @@
 #ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
 using std::malloc;
 using std::free;
-using std::strncpy;
+using std::memcpy;
 using std::strlen;
 using std::strcmp;
 #endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
@@ -69,7 +69,7 @@ using std::strcmp;
 static const unsigned int NAME_TABLE_SIZE = 1999;
 
 struct NamemapMemChunk {
-  char mem[CHUNK_SIZE];
+  char * mem;
   char * curbyte;
   size_t bytesleft;
   struct NamemapMemChunk * next;
@@ -98,6 +98,7 @@ namemap_cleanup(void)
   struct NamemapMemChunk * chunkptr = headchunk;
   while (chunkptr) {
     struct NamemapMemChunk * next = chunkptr->next;
+    free(chunkptr->mem);
     free(chunkptr);
     chunkptr = next;
   }
@@ -138,28 +139,25 @@ find_string_address(const char * s)
 {
   size_t len = strlen(s) + 1;
 
-  /* FIXME: this is an unacceptable limitation. 20030608 mortene. */
-  assert(len < CHUNK_SIZE);
-
   if (headchunk == NULL || headchunk->bytesleft < len) {
     struct NamemapMemChunk * newchunk = static_cast<struct NamemapMemChunk *>(
       malloc(sizeof(struct NamemapMemChunk))
       );
 
+    const size_t capacity = len > CHUNK_SIZE ? len : CHUNK_SIZE;
+    newchunk->mem = static_cast<char *>(malloc(capacity));
     newchunk->curbyte = newchunk->mem;
-    newchunk->bytesleft = CHUNK_SIZE;
+    newchunk->bytesleft = capacity;
     newchunk->next = headchunk;
 
     headchunk = newchunk;
   }
 
-  size_t count = len < headchunk->bytesleft ? len : headchunk->bytesleft;
-  (void)strncpy(headchunk->curbyte, s, count);
-  headchunk->curbyte[count - 1] = '\0';
+  memcpy(headchunk->curbyte, s, len);
   s = headchunk->curbyte;
 
-  headchunk->curbyte += count;
-  headchunk->bytesleft -= count;
+  headchunk->curbyte += len;
+  headchunk->bytesleft -= len;
 
   return s;
 }
