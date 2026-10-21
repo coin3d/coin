@@ -417,21 +417,32 @@ void concurrent_cases() {
 void allocation_failure_cases() {
   typedef CoinBumpTestRenderer Renderer;
   typedef Renderer::ProgramCache Cache;
-  // Long driver text is bounded and copied without allocating host memory.
+  // Short errors stay inline. Long errors retain the original 512-byte
+  // bound when memory is available and degrade safely under memory pressure.
   char text[soshape_bump_program_error::MESSAGE_CAPACITY + 32];
   std::memset(text, 'x', sizeof(text)); text[sizeof(text) - 1] = '\0';
   {
-    BumpTestAllocation::Scope failure;
     soshape_bump_program_error error;
-    error.setMessage(NULL); CHECK(error.message[0] == '\0');
+    error.setMessage(NULL); CHECK(error.messageText()[0] == '\0');
+    error.setMessage("short driver error");
+    CHECK(std::strcmp(error.messageText(), "short driver error") == 0);
+    CHECK(!error.longmessage);
     error.setMessage(text);
-    CHECK(std::strlen(error.message) == soshape_bump_program_error::MESSAGE_CAPACITY - 1);
-    CHECK(std::strcmp(error.message + soshape_bump_program_error::MESSAGE_CAPACITY - 4, "...") == 0);
+    CHECK(error.longmessage);
+    CHECK(std::strlen(error.messageText()) == soshape_bump_program_error::MESSAGE_CAPACITY - 1);
+    CHECK(std::strcmp(error.messageText() + soshape_bump_program_error::MESSAGE_CAPACITY - 4, "...") == 0);
     text[soshape_bump_program_error::MESSAGE_CAPACITY - 1] = '\0';
     error.setMessage(text);
-    CHECK(error.message[soshape_bump_program_error::MESSAGE_CAPACITY - 2] == 'x');
-    error.setMessage(""); CHECK(error.message[0] == '\0');
-    CHECK(failure.untouched());
+    CHECK(error.messageText()[soshape_bump_program_error::MESSAGE_CAPACITY - 2] == 'x');
+    error.setMessage(""); CHECK(error.messageText()[0] == '\0');
+    CHECK(!error.longmessage);
+    text[soshape_bump_program_error::MESSAGE_CAPACITY - 1] = 'x';
+    BumpTestAllocation::Scope failure;
+    error.setMessage(text);
+    CHECK(!failure.untouched());
+    CHECK(!error.longmessage);
+    CHECK(std::strlen(error.messageText()) == soshape_bump_program_error::INLINE_CAPACITY - 1);
+    CHECK(std::strcmp(error.messageText() + soshape_bump_program_error::INLINE_CAPACITY - 4, "...") == 0);
   }
   // Diagnostic capture cannot interrupt rollback after an upload error.
   for (int longtext = 0; longtext < 2; ++longtext) {
@@ -448,7 +459,37 @@ void allocation_failure_cases() {
     CHECK(r.programcache->contexts[1].specstatus == Cache::FAILED);
     CHECK(r.programcache->contexts[1].spec.fragment == 0);
     CHECK(mock.bindings[std::make_pair(1, GL_FRAGMENT_PROGRAM_ARB)] == 91);
-    CHECK(failure.untouched());
+    CHECK(longtext ? !failure.untouched() : failure.untouched());
+  }
+  // A deferred upload may fail before any renderer can report its error.
+  // Preserve the full driver text until the next request; if allocation of
+  // that text fails after GL rollback, retain a bounded warning instead.
+  for (int failstorage = 0; failstorage < 2; ++failstorage) {
+    reset(UPLOAD); mock.deletions.reserve(16);
+    programErrorString = text;
+    Renderer r; Renderer::spec_programidx p;
+    mock.list = 5;
+    CHECK(!r.ensurePrograms(testGlueInstance(1), NULL, p));
+    CHECK(r.programcache->contexts[1].specstatus == Cache::PENDING);
+    mock.list = 0;
+    const uintptr_t closure = r.programcache->token << 1;
+    if (failstorage) {
+      BumpTestAllocation::Scope failure;
+      Renderer::initialize_program_cb((void *) closure, 1);
+      CHECK(!failure.untouched());
+    }
+    else Renderer::initialize_program_cb((void *) closure, 1);
+    const soshape_bump_program_error & stored = r.programcache->contexts[1].specerror;
+    CHECK(r.programcache->contexts[1].specstatus == Cache::FAILED);
+    CHECK(mock.deleted == 1 && mock.warnings == 0);
+    CHECK(std::strlen(stored.messageText()) ==
+          (failstorage ? soshape_bump_program_error::INLINE_CAPACITY :
+                         soshape_bump_program_error::MESSAGE_CAPACITY) - 1);
+    CHECK(bool(stored.longmessage) == !bool(failstorage));
+    CHECK(!r.ensurePrograms(testGlueInstance(1), NULL, p));
+    CHECK(mock.warnings == 1 && !r.programcache->contexts[1].specerror.longmessage);
+    BumpTestCacheContext::flush(1);
+    SoContextHandler::destructingContext(1);
   }
   // Context cleanup must not allocate while copying an unreported diagnostic.
   reset(); mock.deletions.reserve(16);
@@ -459,7 +500,7 @@ void allocation_failure_cases() {
     mock.list = 0; mock.failure = UPLOAD; mock.failupload = mock.uploads + 1;
     BumpTestCacheContext::flush(1);
     CHECK(r.programcache->contexts[1].diffusestatus == Cache::FAILED && mock.warnings == 0);
-    CHECK(std::strlen(r.programcache->contexts[1].diffuseerror.message) > 15);
+    CHECK(std::strlen(r.programcache->contexts[1].diffuseerror.messageText()) > 15);
     mock.failure = NONE;
     BumpTestAllocation::Scope failure;
     Renderer::context_destruction_cb(1, (void *) r.programcache->token);

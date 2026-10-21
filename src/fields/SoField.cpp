@@ -137,9 +137,9 @@
 #include "misc/SoConfigSettings.h"
 #include "threads/threadsutilp.h"
 #include "tidbitsp.h"
-inline unsigned int SbHashFunc(const void * key);
+inline unsigned int SbHashFunc(const void * key) noexcept;
 #include "misc/SbHash.h"
-inline unsigned int SbHashFunc(const void * key)
+inline unsigned int SbHashFunc(const void * key) noexcept
 {
   return SbHashFunc(reinterpret_cast<size_t>(key));
 }
