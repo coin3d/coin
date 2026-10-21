@@ -180,8 +180,8 @@ void shared_program_cases() {
     Renderer::spec_programidx pa, pb;
     CHECK(!a.ensurePrograms(glue, NULL, pa));
     CHECK(mock.warnings == 1 && Cache::sharedPrograms().entries.empty());
-    CHECK(std::strcmp(a.programcache->contexts[1].specerror.message,
-                      "injected upload failure") == 0);
+    // The diagnostic is released after its one permitted report.
+    CHECK(a.programcache->contexts[1].specerror.messageText()[0] == '\0');
     mock.failure = NONE;
     CHECK(b.ensurePrograms(glue, NULL, pb));
     CHECK(!a.ensurePrograms(glue, NULL, pa));
