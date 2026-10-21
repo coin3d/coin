@@ -54,6 +54,12 @@ struct cc_dynarray {
   SbPList plist;
 };
 
+static SbBool
+cc_dynarray_valid_index(const cc_dynarray * arr, unsigned int idx)
+{
+  return idx < static_cast<unsigned int>(arr->plist.getLength());
+}
+
 cc_dynarray *
 cc_dynarray_new(void)
 {
@@ -95,25 +101,32 @@ cc_dynarray_find(const cc_dynarray * arr, void * item)
 void
 cc_dynarray_insert(cc_dynarray * arr, void * item, unsigned int idx)
 {
-  arr->plist.insert(item, idx);
+  if (idx <= static_cast<unsigned int>(arr->plist.getLength())) {
+    arr->plist.insert(item, static_cast<int>(idx));
+  }
 }
 
 void
 cc_dynarray_remove(cc_dynarray * arr, void * item)
 {
-  arr->plist.removeItem(item);
+  const int idx = arr->plist.find(item);
+  if (idx >= 0) arr->plist.remove(idx);
 }
 
 void
 cc_dynarray_remove_idx(cc_dynarray * arr, unsigned int idx)
 {
-  arr->plist.remove(idx);
+  if (cc_dynarray_valid_index(arr, idx)) {
+    arr->plist.remove(static_cast<int>(idx));
+  }
 }
 
 void
 cc_dynarray_removefast(cc_dynarray * arr, unsigned int idx)
 {
-  arr->plist.removeFast(idx);
+  if (cc_dynarray_valid_index(arr, idx)) {
+    arr->plist.removeFast(static_cast<int>(idx));
+  }
 }
 
 unsigned int
@@ -125,7 +138,9 @@ cc_dynarray_length(const cc_dynarray * arr)
 void
 cc_dynarray_truncate(cc_dynarray * arr, unsigned int len)
 {
-  arr->plist.truncate(len);
+  if (len <= static_cast<unsigned int>(arr->plist.getLength())) {
+    arr->plist.truncate(static_cast<int>(len));
+  }
 }
 
 void **
@@ -137,7 +152,8 @@ cc_dynarray_get_arrayptr(const cc_dynarray * arr)
 void *
 cc_dynarray_get(const cc_dynarray * arr, unsigned int idx)
 {
-  return arr->plist[idx];
+  if (!cc_dynarray_valid_index(arr, idx)) return NULL;
+  return arr->plist.get(static_cast<int>(idx));
 }
 
 SbBool
@@ -149,5 +165,104 @@ cc_dynarray_eq(const cc_dynarray * arr1, const cc_dynarray * arr2)
 void
 cc_dynarray_set(cc_dynarray * arr, unsigned int idx, void * item)
 {
-  arr->plist.set(idx, item);
+  if (cc_dynarray_valid_index(arr, idx)) {
+    arr->plist.set(static_cast<int>(idx), item);
+  }
 }
+
+#ifdef COIN_TEST_SUITE
+
+#include <climits>
+
+extern "C" {
+  typedef struct cc_dynarray cc_dynarray;
+  cc_dynarray * cc_dynarray_new(void);
+  void cc_dynarray_destruct(cc_dynarray * arr);
+  unsigned int cc_dynarray_length(const cc_dynarray * arr);
+  void cc_dynarray_append(cc_dynarray * arr, void * item);
+  void cc_dynarray_insert(cc_dynarray * arr, void * item, unsigned int idx);
+  void * cc_dynarray_get(const cc_dynarray * arr, unsigned int idx);
+  void cc_dynarray_set(cc_dynarray * arr, unsigned int idx, void * item);
+  void cc_dynarray_remove(cc_dynarray * arr, void * item);
+  void cc_dynarray_remove_idx(cc_dynarray * arr, unsigned int idx);
+  void cc_dynarray_removefast(cc_dynarray * arr, unsigned int idx);
+  void cc_dynarray_truncate(cc_dynarray * arr, unsigned int len);
+}
+
+BOOST_AUTO_TEST_CASE(cc_dynarray_reads_do_not_expand)
+{
+  int value = 1;
+  cc_dynarray * array = cc_dynarray_new();
+  cc_dynarray_append(array, &value);
+
+  BOOST_CHECK(cc_dynarray_get(array, 1) == NULL);
+  BOOST_CHECK(cc_dynarray_get(array, UINT_MAX) == NULL);
+  BOOST_CHECK_EQUAL(cc_dynarray_length(array), 1U);
+  BOOST_CHECK_EQUAL(cc_dynarray_get(array, 0), &value);
+
+  cc_dynarray_destruct(array);
+}
+
+BOOST_AUTO_TEST_CASE(cc_dynarray_rejects_invalid_mutations)
+{
+  int first = 1;
+  int second = 2;
+  int missing = 3;
+  cc_dynarray * array = cc_dynarray_new();
+  cc_dynarray_append(array, &first);
+  cc_dynarray_append(array, &second);
+
+  cc_dynarray_insert(array, &missing, 3);
+  cc_dynarray_remove(array, &missing);
+  cc_dynarray_remove_idx(array, UINT_MAX);
+  cc_dynarray_removefast(array, 2);
+  cc_dynarray_set(array, UINT_MAX, &missing);
+  cc_dynarray_truncate(array, UINT_MAX);
+
+  BOOST_CHECK_EQUAL(cc_dynarray_length(array), 2U);
+  BOOST_CHECK_EQUAL(cc_dynarray_get(array, 0), &first);
+  BOOST_CHECK_EQUAL(cc_dynarray_get(array, 1), &second);
+
+  cc_dynarray_destruct(array);
+}
+
+BOOST_AUTO_TEST_CASE(cc_dynarray_empty_and_valid_boundaries)
+{
+  int values[4] = { 0, 1, 2, 3 };
+  cc_dynarray * array = cc_dynarray_new();
+  BOOST_CHECK(cc_dynarray_get(array, 0) == NULL);
+  cc_dynarray_remove_idx(array, 0);
+  cc_dynarray_removefast(array, 0);
+  cc_dynarray_set(array, 0, &values[0]);
+  cc_dynarray_remove(array, &values[0]);
+  cc_dynarray_truncate(array, 1);
+  BOOST_CHECK_EQUAL(cc_dynarray_length(array), 0U);
+
+  cc_dynarray_insert(array, &values[0], 0);
+  cc_dynarray_insert(array, &values[2], 1); // insertion at length
+  cc_dynarray_insert(array, &values[1], 1); // insertion in the middle
+  BOOST_CHECK_EQUAL(cc_dynarray_length(array), 3U);
+  BOOST_CHECK_EQUAL(cc_dynarray_get(array, 0), &values[0]);
+  BOOST_CHECK_EQUAL(cc_dynarray_get(array, 1), &values[1]);
+  BOOST_CHECK_EQUAL(cc_dynarray_get(array, 2), &values[2]);
+  cc_dynarray_set(array, 2, &values[3]);
+  cc_dynarray_remove_idx(array, 1); // ordered removal
+  BOOST_CHECK_EQUAL(cc_dynarray_length(array), 2U);
+  BOOST_CHECK_EQUAL(cc_dynarray_get(array, 1), &values[3]);
+  cc_dynarray_append(array, &values[2]);
+  cc_dynarray_removefast(array, 0); // last item replaces the removed item
+  BOOST_CHECK_EQUAL(cc_dynarray_get(array, 0), &values[2]);
+  BOOST_CHECK_EQUAL(cc_dynarray_get(array, 1), &values[3]);
+  cc_dynarray_truncate(array, 2); // equal length is valid
+  BOOST_CHECK_EQUAL(cc_dynarray_length(array), 2U);
+  cc_dynarray_remove(array, &values[2]);
+  BOOST_CHECK_EQUAL(cc_dynarray_get(array, 0), &values[3]);
+  cc_dynarray_removefast(array, 0); // removal of the last item
+  BOOST_CHECK_EQUAL(cc_dynarray_length(array), 0U);
+  cc_dynarray_insert(array, &values[0], 0);
+  cc_dynarray_truncate(array, 0);
+  BOOST_CHECK_EQUAL(cc_dynarray_length(array), 0U);
+  cc_dynarray_destruct(array);
+}
+
+#endif // COIN_TEST_SUITE
