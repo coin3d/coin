@@ -1,3 +1,5 @@
+include(SbSmallMapTests.cmake)
+
 if(COIN_BUILD_LEGACY_GL_RENDERER)
   find_package(Threads REQUIRED)
   add_executable(CoinBumpProgramTest bumprender/FailureTest.cpp)
@@ -172,6 +174,7 @@ add_test(NAME SoTempPathReplaceTail_empty_noop
   COMMAND SoTempPathReplaceTailTest empty-noop)
 
 add_subdirectory(xml-c-api/c-headers)
+add_subdirectory(xml-c-api/entity-abi)
 
 add_executable(SoPathRangeTest SoPathRangeTest.cpp)
 target_link_libraries(SoPathRangeTest Coin ${COIN_TARGET_LINK_LIBRARIES})
@@ -180,6 +183,15 @@ target_include_directories(SoPathRangeTest PRIVATE
   ${PROJECT_BINARY_DIR}/include
   ${COIN_TARGET_INCLUDE_DIRECTORIES})
 add_test(NAME SoPathRange COMMAND SoPathRangeTest)
+
+add_executable(CoinAtexitTest CoinAtexitTest.cpp)
+target_compile_definitions(CoinAtexitTest PRIVATE COIN_INTERNAL)
+target_link_libraries(CoinAtexitTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CoinAtexitTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${PROJECT_SOURCE_DIR}/src ${COIN_TARGET_INCLUDE_DIRECTORIES})
+add_test(NAME CoinAtexit COMMAND CoinAtexitTest)
+
 # Process-isolated public behavior checks. Keeping each invalid access in its
 # own CTest process prevents one unsafe access from masking the remaining
 # boundary classes.
@@ -253,6 +265,7 @@ if(NOT WIN32)
     ${COIN_TARGET_INCLUDE_DIRECTORIES})
   add_test(NAME SoPathAssignmentAllocationFailure
     COMMAND SoPathAssignmentAllocationFailureTest)
+
 endif()
 
 add_executable(SoPathChildAppendTest SoPathChildAppendTest.cpp)
@@ -262,6 +275,31 @@ target_include_directories(SoPathChildAppendTest PRIVATE
   ${PROJECT_BINARY_DIR}/include
   ${COIN_TARGET_INCLUDE_DIRECTORIES})
 add_test(NAME SoPathChildAppend COMMAND SoPathChildAppendTest)
+
+if(COIN_BUILD_FUZZERS)
+  set(COIN_XML_FUZZ_CORPUS "${CMAKE_CURRENT_BINARY_DIR}/xml-fuzz-corpus")
+  file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/fuzz/corpus/"
+    DESTINATION "${COIN_XML_FUZZ_CORPUS}")
+  add_executable(CoinXmlDomFuzzer fuzz/xml-dom-fuzzer.cpp)
+  target_link_libraries(CoinXmlDomFuzzer
+    Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(CoinXmlDomFuzzer PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  target_compile_options(CoinXmlDomFuzzer PRIVATE -fsanitize=fuzzer)
+  set_property(TARGET CoinXmlDomFuzzer APPEND_STRING PROPERTY
+    LINK_FLAGS " -fsanitize=fuzzer,address,undefined")
+  add_test(NAME CoinXmlDomFuzzerSmoke
+    COMMAND CoinXmlDomFuzzer
+      -runs=100
+      -max_len=4096
+      -timeout=10
+      -rss_limit_mb=2048
+      -dict=${CMAKE_CURRENT_SOURCE_DIR}/fuzz/xml.dict
+      ${COIN_XML_FUZZ_CORPUS})
+  set_tests_properties(CoinXmlDomFuzzerSmoke PROPERTIES LABELS "fuzz")
+endif()
 
 add_test(NAME CoinConfigCompatibility
   COMMAND ${CMAKE_COMMAND}

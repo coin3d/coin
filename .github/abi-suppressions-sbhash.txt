@@ -20,3 +20,13 @@
 [suppress_function]
   name_regexp = ^SbHash<
   label = SbHash is a private internal container (src/misc/SbHash.h: "must not be exposed in the Coin API"); its instantiated methods are implementation detail, not part of the public ABI.
+
+# Lazy SbHash storage means SoGLDriverDatabaseP::SoGLDriver no longer needs an
+# out-of-line default constructor. SoGLDriver is defined only in the private
+# implementation file src/rendering/SoGLDriverDatabase.cpp; these constructor
+# symbols therefore cannot be used by Coin clients. Match the exact Itanium ABI
+# symbols rather than suppressing the enclosing implementation class broadly.
+
+[suppress_function]
+  symbol_name_regexp = ^_ZN19SoGLDriverDatabaseP10SoGLDriverC[12]Ev$
+  label = SoGLDriverDatabaseP::SoGLDriver is a source-file-private implementation type; its compiler-emitted constructors are not part of Coin's public ABI.
