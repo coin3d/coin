@@ -89,7 +89,8 @@ dict_resize(cc_dict * ht, unsigned int newsize)
   const unsigned int oldsize = ht->size;
 
   /* Relink existing entries directly. Their count and allocator ownership
-     do not change, and migration must not trigger another resize. */
+     do not change, and migration must not trigger another resize. Hash
+     callbacks are required not to throw while links are being changed. */
   for (unsigned int i = 0; i < oldsize; i++) {
     cc_dict_entry * entry = oldbuckets[i];
     while (entry != NULL) {
@@ -200,7 +201,8 @@ cc_dict_clear(cc_dict * ht)
 
   If allocation of a larger bucket array fails, the new entry remains
   inserted in the current table and \e TRUE is still returned. A later
-  insertion may retry growth.
+  insertion may retry growth. This guarantee does not cover failure to
+  construct the dictionary or allocate the new entry itself.
 
  */
 SbBool
