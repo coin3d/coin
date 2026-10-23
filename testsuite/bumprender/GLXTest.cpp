@@ -183,6 +183,8 @@ int main() {
       CHECK(deferred.programcache->contexts[71].spec.fragment == 0);
       BumpTestCacheContext::flush(71);
       CHECK(deferred.ensurePrograms(gluea, NULL, p));
+      CHECK(p.fragment == pa.fragment && p.dirlight == pa.dirlight &&
+            p.pointlight == pa.pointlight);
       GLint binding = 0; getProgramiv(GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_BINDING_ARB, &binding);
       CHECK(binding == (prebound ? (GLint) pa.fragment : 0));
       getProgramiv(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_BINDING_ARB, &binding);
@@ -190,6 +192,11 @@ int main() {
       check_lengths(gluea, p); glDeleteLists(list, 1);
     }
     BumpTestCacheContext::flush(71);
+    // Both temporary renderers have released their references. The original
+    // renderer still owns the shared names in this GL context.
+    CHECK(isProgram(pa.fragment) && isProgram(pa.dirlight) &&
+          isProgram(pa.pointlight));
+    check_lengths(gluea, pa);
     b.current(72); const cc_glglue * glueb = cc_glglue_instance(72);
     CHECK(renderer->ensurePrograms(glueb, NULL, pb)); check_lengths(glueb, pb);
     a.current(71); CoinBumpTestRenderer::spec_programidx reused;
