@@ -44,7 +44,8 @@ extern "C" {
   typedef struct cc_memalloc cc_memalloc;
   /* Called when the current block cannot supply another unit. The argument
      includes the allocation being attempted. Return a positive block size
-     multiplier; invalid or overflowing results make allocation return NULL. */
+     multiplier; invalid or overflowing results make allocation return NULL.
+     The callback must not throw or reenter the same allocator. */
   typedef int cc_memalloc_strategy_cb(const int numunits_allocated);
 
 /* ********************************************************************** */
@@ -63,7 +64,9 @@ extern "C" {
   /* Destruction and clear invalidate all outstanding unit pointers. */
   COIN_DLL_API void cc_memalloc_destruct(cc_memalloc * allocator);
   /* Returns NULL on allocation failure, including invalid growth strategy.
-     A failed call leaves existing units and the allocator usable. */
+     A failed call leaves existing units and the allocator usable. Callers
+     must check the result before using it; this does not handle OOM in
+     higher-level containers automatically. */
   COIN_DLL_API void * cc_memalloc_allocate(cc_memalloc * allocator);
   /* ptr must be a live unit returned by this allocator. Null, duplicate,
      foreign, interior, and invalidated pointers violate the contract. */
