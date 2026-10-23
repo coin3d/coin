@@ -134,7 +134,8 @@ cc_dict_construct(unsigned int size, float loadfactor)
   ht->hashfunc = dict_default_hashfunc;
   /* we use a memory allocator to avoid an operating system malloc
      every time a new entry is needed */
-  ht->memalloc = cc_memalloc_construct(sizeof(cc_dict_entry));
+  ht->memalloc = cc_memalloc_construct_aligned(
+    sizeof(cc_dict_entry), alignof(cc_dict_entry));
   return ht;
 }
 
