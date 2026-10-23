@@ -121,6 +121,8 @@
 
   If allocating or copying the new storage throws, newly allocated storage is
   released. When reallocation is required, this list is left unchanged.
+  When the existing storage is reused, a throwing value assignment can change
+  elements already copied, but the original list length is retained.
  */
 
 /*!
@@ -141,7 +143,8 @@
   SbList objects within your application.
 
   If allocating or copying the compact storage throws, the original storage
-  remains active.
+  remains active. If the destination is the built-in buffer, a throwing value
+  assignment can change that inactive buffer without changing the active list.
  */
 
 /*!
@@ -210,6 +213,9 @@
 
  Throws \c std::out_of_range if \a length is negative or larger than the
  current list length.
+
+ If shrinking the allocated array throws, the requested shorter logical
+ length remains in effect and the previous storage remains active.
 */
 
 /*!
@@ -226,6 +232,7 @@
   Pops off the last element of the list and returns it.
 
   Throws \c std::out_of_range if the list is empty.
+  If copying the value from the list throws, its length remains unchanged.
 */
 
 /*!
@@ -238,7 +245,9 @@
   just a pointer into the internal array used by the list.
 
   For an empty list, the default \a start of zero returns the internal empty
-  array view. Other invalid start indices throw \c std::out_of_range.
+  array view; do not dereference it. Other invalid start indices throw
+  \c std::out_of_range. A returned pointer remains valid only while the list
+  is not changed by an operation that can replace its storage.
 */
 
 /*!
@@ -249,8 +258,8 @@
   Throws \c std::out_of_range for an invalid index.
 
   For read-only iteration, validate the iteration range against getLength()
-  and use getArrayPtr() to avoid repeated bounds checks; keep the list unchanged
-  while using the returned array.
+  and use getArrayPtr() to avoid repeated bounds checks. Read only indices
+  below the checked length, and keep the list unchanged while using the pointer.
 */
 
 /*!
@@ -261,8 +270,8 @@
   Throws \c std::out_of_range for an invalid index.
 
   For read-only iteration, validate the iteration range against getLength()
-  and use getArrayPtr() to avoid repeated bounds checks; keep the list unchanged
-  while using the returned array.
+  and use getArrayPtr() to avoid repeated bounds checks. Read only indices
+  below the checked length, and keep the list unchanged while using the pointer.
 */
 
 /*!
@@ -340,7 +349,13 @@ class SbListThrowingValue {
 public:
   SbListThrowingValue(const int v = 0) : value(v) { ++livecount; }
   SbListThrowingValue(const SbListThrowingValue & other)
-    : value(other.value) { ++livecount; }
+    : value(other.value) {
+    if (copiesbeforethrow == 0) {
+      throw std::runtime_error("injected SbList value copy failure");
+    }
+    if (copiesbeforethrow > 0) --copiesbeforethrow;
+    ++livecount;
+  }
   ~SbListThrowingValue() { --livecount; }
 
   SbListThrowingValue & operator=(const SbListThrowingValue & other) {
@@ -362,17 +377,23 @@ public:
   static void throwAfter(const int assignments) {
     assignmentsbeforethrow = assignments;
   }
-  static void disableFailure(void) { assignmentsbeforethrow = -1; }
+  static void throwOnCopyAfter(const int copies) { copiesbeforethrow = copies; }
+  static void disableFailure(void) {
+    assignmentsbeforethrow = -1;
+    copiesbeforethrow = -1;
+  }
   static int live(void) { return livecount; }
 
   int value;
 
 private:
   static int assignmentsbeforethrow;
+  static int copiesbeforethrow;
   static int livecount;
 };
 
 int SbListThrowingValue::assignmentsbeforethrow = -1;
+int SbListThrowingValue::copiesbeforethrow = -1;
 int SbListThrowingValue::livecount = 0;
 
 class SbListThrowingTestAccess : public SbList<SbListThrowingValue> {
@@ -594,6 +615,7 @@ BOOST_AUTO_TEST_CASE(invalid_index_operations_throw_and_preserve_state)
   BOOST_REQUIRE_THROW(constlist[2], std::out_of_range);
   BOOST_REQUIRE_THROW(list.getArrayPtr(-1), std::out_of_range);
   BOOST_REQUIRE_THROW(list.getArrayPtr(2), std::out_of_range);
+  BOOST_REQUIRE_THROW(list.getArrayPtr(INT_MAX), std::out_of_range);
   BOOST_REQUIRE_THROW(list.insert(30, -1), std::out_of_range);
   BOOST_REQUIRE_THROW(list.insert(30, 3), std::out_of_range);
   BOOST_REQUIRE_THROW(list.remove(-1), std::out_of_range);
@@ -602,6 +624,8 @@ BOOST_AUTO_TEST_CASE(invalid_index_operations_throw_and_preserve_state)
   BOOST_REQUIRE_THROW(list.removeFast(2), std::out_of_range);
   BOOST_REQUIRE_THROW(list.truncate(-1), std::out_of_range);
   BOOST_REQUIRE_THROW(list.truncate(3), std::out_of_range);
+  BOOST_REQUIRE_THROW(list.truncate(INT_MIN), std::out_of_range);
+  BOOST_REQUIRE_THROW(list.truncate(INT_MAX), std::out_of_range);
 
   BOOST_REQUIRE_EQUAL(list.getLength(), 2);
   BOOST_CHECK_EQUAL(list[0], 10);
@@ -613,7 +637,53 @@ BOOST_AUTO_TEST_CASE(invalid_index_operations_throw_and_preserve_state)
 
   SbListTestAccess access;
   BOOST_REQUIRE_THROW(access.resize(-1), std::out_of_range);
+  BOOST_REQUIRE_THROW(access.resize(INT_MIN), std::out_of_range);
   BOOST_CHECK_EQUAL(access.getLength(), 0);
+}
+
+BOOST_AUTO_TEST_CASE(pop_copy_failure_keeps_last_value_and_length)
+{
+  SbList<SbListThrowingValue> list;
+  list.append(SbListThrowingValue(7));
+  const int oldlive = SbListThrowingValue::live();
+
+  bool threw = false;
+  SbListThrowingValue::throwOnCopyAfter(0);
+  try { list.pop(); }
+  catch (const std::runtime_error &) { threw = true; }
+  SbListThrowingValue::disableFailure();
+
+  BOOST_REQUIRE(threw);
+  BOOST_CHECK_EQUAL(list.getLength(), 1);
+  BOOST_CHECK_EQUAL(list[0].value, 7);
+  BOOST_CHECK_EQUAL(SbListThrowingValue::live(), oldlive);
+}
+
+BOOST_AUTO_TEST_CASE(copy_in_place_failure_retains_length_and_storage)
+{
+  SbList<SbListThrowingValue> source;
+  source.append(SbListThrowingValue(10));
+  source.append(SbListThrowingValue(20));
+  SbList<SbListThrowingValue> destination;
+  destination.append(SbListThrowingValue(1));
+  destination.append(SbListThrowingValue(2));
+  destination.append(SbListThrowingValue(3));
+  const SbListThrowingValue * oldarray = destination.getArrayPtr();
+  const int oldlive = SbListThrowingValue::live();
+
+  bool threw = false;
+  SbListThrowingValue::throwAfter(1);
+  try { destination.copy(source); }
+  catch (const std::runtime_error &) { threw = true; }
+  SbListThrowingValue::disableFailure();
+
+  BOOST_REQUIRE(threw);
+  BOOST_CHECK_EQUAL(destination.getLength(), 3);
+  BOOST_CHECK(destination.getArrayPtr() == oldarray);
+  BOOST_CHECK_EQUAL(destination[0].value, 10);
+  BOOST_CHECK_EQUAL(destination[1].value, 2);
+  BOOST_CHECK_EQUAL(destination[2].value, 3);
+  BOOST_CHECK_EQUAL(SbListThrowingValue::live(), oldlive);
 }
 
 BOOST_AUTO_TEST_CASE(growth_assignment_failure_preserves_storage_and_values)
