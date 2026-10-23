@@ -13,7 +13,16 @@ the previous vendor import is no longer used.
 
 The upstream distribution has additional build machinery, tests, and tools
 which are not embedded here. To use a system Expat instead, configure Coin
-with USE_EXTERNAL_EXPAT=ON.
+with USE_EXTERNAL_EXPAT=ON and provide matching system headers and library.
+Configuration fails if they cannot be found; it does not silently fall back
+to the embedded copy. Coin uses the older Expat location API in this mode,
+so a system version predating 2.9.0 remains possible.
 
-Expat 2.9.0 requires C99. Upstream officially supports MSVC 2022 and newer;
-older Visual Studio versions need separate compatibility validation.
+The embedded Expat 2.9.0 uses C99 language features. Upstream officially
+supports MSVC 2022 and newer; its CMake emits a warning, not an error, for
+MSVC 2019. Coin does not impose MSVC 2022 as a minimum, but the embedded
+copy has not been validated with the MSVC 2019 compiler/toolset. MSVC has no
+C99 language mode, so Coin's C_STANDARD=99 target property does not itself
+prove compatibility. The current Windows CI uses MSVC 2022. Validate both
+Expat modes with the actual MSVC 2019 toolset before claiming that either
+build is compatible with it.
