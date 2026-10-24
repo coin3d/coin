@@ -235,7 +235,7 @@ static void validate(StreamShape * s, const std::vector<Primitive> & p) {
       const auto & a=t.vertices[0].data; const auto & b=t.vertices[1].data; const auto & c=t.vertices[2].data;
       area += std::abs((b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]))/2;
     }
-    check(std::abs(area-(s->convex?16:7)*s->sequences)<1e-6,"concave polygon area changed");
+    check(std::abs(area-(s->points().empty()?0:(s->convex?16:7)*s->sequences))<1e-6,"polygon area changed");
   }
 }
 static void count(StreamShape * s) {
