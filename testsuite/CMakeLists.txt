@@ -162,6 +162,25 @@ if (USE_PTHREAD)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
+if(HAVE_VRML97)
+  add_executable(SoVRMLTextLayoutPublicTest
+    SoVRMLTextLayoutPublicTest.cpp)
+  target_link_libraries(SoVRMLTextLayoutPublicTest
+    Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(SoVRMLTextLayoutPublicTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  foreach(text_case
+      directions minor-justify major-justify utf8-details
+      length-maxextent-size spacing bbox-raypick-cache empty-strings)
+    add_test(NAME SoVRMLText_${text_case}
+      COMMAND SoVRMLTextLayoutPublicTest ${text_case})
+    set_tests_properties(SoVRMLText_${text_case}
+      PROPERTIES LABELS vrml97-primitives)
+  endforeach()
+endif()
+
 # Keep this regression test in a fresh process: the unfixed implementation corrupts
 # SoTempPath's internal empty-list storage before ordinary assertions can
 # observe the violation.
