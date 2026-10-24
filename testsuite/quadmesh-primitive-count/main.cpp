@@ -63,7 +63,7 @@ SoQuadMesh * mesh(Scene & scene, int rows, int columns)
 
 struct Dimensions { int rows, columns, triangles; };
 
-void countDimensions()
+void countDimensions(bool limits)
 {
   // Literal expectations include both orientations and near-limit counts.
   const Dimensions cases[] = {
@@ -88,6 +88,9 @@ void countDimensions()
     action.apply(scene.root);
     expectCounts(action, 0, "default 1x1");
     for (const Dimensions & item : cases) {
+      const bool boundary = item.rows > 101 || item.columns > 101 ||
+                            item.rows == INT_MIN || item.columns == INT_MIN;
+      if (boundary != limits) continue;
       shape->verticesPerRow = item.rows;
       shape->verticesPerColumn = item.columns;
       std::ostringstream label;
@@ -178,7 +181,7 @@ void compareCallbacks()
   }
 }
 
-void accumulationAndReset()
+void accumulationAndReset(bool limits)
 {
   Scene scene;
   SoQuadMesh * first = mesh(scene, 3, 3); // 8 triangles
@@ -193,6 +196,13 @@ void accumulationAndReset()
     action.setCanApproximate(approximate ? TRUE : FALSE);
     first->verticesPerRow = 3;
     first->verticesPerColumn = 3;
+    if (limits) {
+      action.apply(large.root);
+      expectCounts(action, 2000000000, "representable large sum");
+      action.apply(scene.root);
+      expectCounts(action, 20, "reset after large graph");
+      continue;
+    }
     action.apply(scene.root);
     expectCounts(action, 20, "multiple meshes");
     first->verticesPerRow = 2;
@@ -206,12 +216,10 @@ void accumulationAndReset()
     expectCounts(action, 12, "one mesh becomes empty");
     action.apply(empty.root);
     expectCounts(action, 0, "reset on empty graph");
-    action.apply(large.root);
-    expectCounts(action, 2000000000, "representable large sum");
     first->verticesPerRow = 3;
     first->verticesPerColumn = 3;
     action.apply(scene.root);
-    expectCounts(action, 20, "reset after large graph");
+    expectCounts(action, 20, "reset after empty graph");
     action.apply(first);
     expectCounts(action, 8, "apply a single mesh after graph");
   }
@@ -250,13 +258,25 @@ void stateModes()
 }
 } // namespace
 
-int main()
+int main(int argc, char ** argv)
 {
+  const std::string mode = argc > 1 ? argv[1] : "all";
+  if (argc > 2 || (mode != "all" && mode != "dimensions" && mode != "limits" &&
+                   mode != "callbacks" && mode != "accumulation" && mode != "state")) {
+    std::cerr << "Usage: " << argv[0]
+              << " [all|dimensions|limits|callbacks|accumulation|state]\n";
+    return 2;
+  }
   SoDB::init();
-  countDimensions();
-  compareCallbacks();
-  accumulationAndReset();
-  stateModes();
+  if (mode == "all" || mode == "dimensions") countDimensions(false);
+  if (mode == "all" || mode == "limits") {
+    countDimensions(true);
+    accumulationAndReset(true);
+  }
+  if (mode == "all" || mode == "callbacks") compareCallbacks();
+  if (mode == "all" || mode == "accumulation") accumulationAndReset(false);
+  if (mode == "all" || mode == "state") stateModes();
+  SoDB::finish();
   if (failures) std::cerr << failures << " assertion(s) failed\n";
   else std::cout << "SoQuadMesh primitive counts passed\n";
   return failures ? 1 : 0;

@@ -8,4 +8,7 @@ target_compile_features(coin-quadmesh-primitive-count PRIVATE cxx_std_11)
 target_link_libraries(coin-quadmesh-primitive-count PRIVATE Coin::Coin)
 
 enable_testing()
-add_test(NAME quadmesh-primitive-count COMMAND coin-quadmesh-primitive-count)
+foreach(_mode dimensions limits callbacks accumulation state)
+  add_test(NAME quadmesh-primitive-count-${_mode}
+    COMMAND coin-quadmesh-primitive-count ${_mode})
+endforeach()
