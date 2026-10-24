@@ -587,7 +587,7 @@ SoVRMLScript::notify(SoNotList * l)
 {
   const SoField * f = l->getLastField();
 
-  if (!PRIVATE(this)->isreading && !PRIVATE(this)->isevaluating) {
+  if (f && !PRIVATE(this)->isreading && !PRIVATE(this)->isevaluating) {
     if (f == &this->mustEvaluate) {
       int pri = this->mustEvaluate.getValue() ? 0 : 
         SoDelayQueueSensor::getDefaultPriority();
