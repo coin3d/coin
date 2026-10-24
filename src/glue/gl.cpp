@@ -4925,7 +4925,7 @@ proxy_mipmap_2d(int width, int height,
     glTexImage2D(GL_PROXY_TEXTURE_2D, level, internalFormat, width,
                  height, 0, format, type,
                  NULL);
-    glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, 0,
+    glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, level,
                              GL_TEXTURE_WIDTH, &w);
     if (w == 0) return FALSE;
   }
@@ -4959,7 +4959,7 @@ proxy_mipmap_3d(const cc_glglue * glw, int width, int height, int depth,
     cc_glglue_glTexImage3D(glw, GL_PROXY_TEXTURE_3D, level, internalFormat,
                            width, height, depth, 0, format, type,
                            NULL);
-    glGetTexLevelParameteriv(GL_PROXY_TEXTURE_3D, 0,
+    glGetTexLevelParameteriv(GL_PROXY_TEXTURE_3D, level,
                              GL_TEXTURE_WIDTH, &w);
     if (w == 0) return FALSE;
   }
@@ -5009,6 +5009,7 @@ coin_glglue_is_texture_size_legal(const cc_glglue * glw,
                                   SbBool mipmap)
  {
   const glglue_texture_size_limits & limits = glglue_get_texture_size_limits();
+  if (xsize <= 0 || ysize <= 0 || zsize < 0) return FALSE;
 
   if (zsize == 0) { /* 2D textures */
     if (limits.texture2 > 0) {

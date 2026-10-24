@@ -133,6 +133,102 @@ legal3(const cc_glglue * glue, int width, int height, int depth)
     GL_RGBA8, GL_RGBA, GL_UNSIGNED_BYTE, FALSE);
 }
 
+SbBool
+legal2_mipmap(const cc_glglue * glue, int width, int height)
+{
+  return coin_glglue_is_texture_size_legal(glue, width, height, 0,
+    GL_RGBA8, GL_RGBA, GL_UNSIGNED_BYTE, TRUE);
+}
+
+SbBool
+legal3_mipmap(const cc_glglue * glue, int width, int height, int depth)
+{
+  return coin_glglue_is_texture_size_legal(glue, width, height, depth,
+    GL_RGBA8, GL_RGBA, GL_UNSIGNED_BYTE, TRUE);
+}
+
+void
+clear_gl_errors()
+{
+  while (glGetError() != GL_NO_ERROR) { }
+}
+
+int
+require_no_gl_error(int line)
+{
+  if (glGetError() != GL_NO_ERROR) return fail("glGetError() == GL_NO_ERROR", line);
+  return 0;
+}
+
+#define REQUIRE_NO_GL_ERROR() do { const int result = require_no_gl_error(__LINE__); if (result) return result; } while (0)
+
+int
+test_validation_mipmaps(const cc_glglue * glue, GLint physical2)
+{
+  REQUIRE(physical2 >= 8);
+  clear_gl_errors();
+
+  REQUIRE(legal2(glue, 1, 1));
+  REQUIRE_NO_GL_ERROR();
+
+  if (cc_glglue_has_2d_proxy_textures(glue)) {
+    REQUIRE(!legal2(glue, 0, 1));
+    REQUIRE_NO_GL_ERROR();
+    REQUIRE(!legal2(glue, 1, 0));
+    REQUIRE_NO_GL_ERROR();
+    REQUIRE(!legal2(glue, -1, 1));
+    REQUIRE_NO_GL_ERROR();
+    REQUIRE(!legal2(glue, 1, -1));
+    REQUIRE_NO_GL_ERROR();
+
+    REQUIRE(legal2_mipmap(glue, 8, 4));
+    REQUIRE_NO_GL_ERROR();
+    for (int level = 0, width = 8; level <= 3; ++level, width >>= 1) {
+      GLint actual = 0;
+      glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, level,
+                               GL_TEXTURE_WIDTH, &actual);
+      REQUIRE_NO_GL_ERROR();
+      REQUIRE(actual == width);
+    }
+  }
+
+  cc_glglue noproxy = *glue;
+  noproxy.vendor_is_intel = TRUE;
+  noproxy.max_texture_size = physical2;
+  REQUIRE(!legal2(&noproxy, 0, 1));
+  REQUIRE(!legal2(&noproxy, 1, 0));
+  REQUIRE(!legal2(&noproxy, -1, 1));
+  REQUIRE(!legal2(&noproxy, 1, -1));
+  REQUIRE(legal2(&noproxy, 1, 1));
+  REQUIRE_NO_GL_ERROR();
+
+  if (cc_glglue_has_3d_textures(glue)) {
+    GLint physical3 = 0;
+    glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE, &physical3);
+    REQUIRE_NO_GL_ERROR();
+    if (physical3 < 8) return 0;
+
+    REQUIRE(!legal3(glue, 0, 1, 1));
+    REQUIRE_NO_GL_ERROR();
+    REQUIRE(!legal3(glue, 1, 0, 1));
+    REQUIRE_NO_GL_ERROR();
+    REQUIRE(!legal3(glue, 1, 1, -1));
+    REQUIRE_NO_GL_ERROR();
+
+    REQUIRE(legal3_mipmap(glue, 8, 4, 2));
+    REQUIRE_NO_GL_ERROR();
+    for (int level = 0, width = 8; level <= 3; ++level, width >>= 1) {
+      GLint actual = 0;
+      glGetTexLevelParameteriv(GL_PROXY_TEXTURE_3D, level,
+                               GL_TEXTURE_WIDTH, &actual);
+      REQUIRE_NO_GL_ERROR();
+      REQUIRE(actual == width);
+    }
+  }
+
+  return 0;
+}
+
 const char *
 invalid_value(const char * scenario)
 {
@@ -285,6 +381,9 @@ main(int argc, char ** argv)
       glGetIntegerv(is3d ? GL_MAX_3D_TEXTURE_SIZE : GL_MAX_TEXTURE_SIZE,
                     &physical);
       if (glGetError() != GL_NO_ERROR || physical <= 0) result = 77;
+      else if (std::strcmp(scenario, "validation-mipmaps") == 0) {
+        result = test_validation_mipmaps(fixture.glue, physical);
+      }
       else result = is3d ? test3(scenario, fixture.glue, physical)
                          : test2(scenario, fixture.glue, physical);
     }

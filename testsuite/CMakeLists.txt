@@ -45,6 +45,7 @@ if(UNIX AND NOT APPLE AND HAVE_GLX)
       Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
 
     set(COIN_TEXTURE_LIMIT_CASES
+      validation-mipmaps
       no-cap-2d
       cap-2d
       proxy-bypass-2d
