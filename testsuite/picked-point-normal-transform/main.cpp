@@ -217,6 +217,12 @@ void run(const std::string & group) {
     }
   }
   else if (group == "hierarchy") {
+    // World identity isolates the dual conversion into intermediate object spaces.
+    {
+      const SbMatrix outer = scale(2, 3, 0.5f);
+      Scene cancelled(outer, identity, outer.inverse());
+      runScene(cancelled, true, false);
+    }
     Scene scene(shear(), rotation(), scale(-2,3,0.5f)); runScene(scene,true,false);
   }
   else if (group == "controls") {
