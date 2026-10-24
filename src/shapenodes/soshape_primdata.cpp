@@ -397,8 +397,11 @@ soshape_primdata::createPickDetail(void)
       detail->setNumPoints(4);
       detail->setPoint(0, &this->pointDetails[0]);
       detail->setPoint(1, &this->pointDetails[1]);
-      detail->setPoint(2, &this->pointDetails[2]);
-      detail->setPoint(3, &this->pointDetails[3]);
+      // QUAD_STRIP vertices arrive in pairs; store polygon perimeter order,
+      // matching the face detail passed to triangle callbacks.
+      const SbBool strip = this->shapetype == SoShape::QUAD_STRIP;
+      detail->setPoint(2, &this->pointDetails[strip ? 3 : 2]);
+      detail->setPoint(3, &this->pointDetails[strip ? 2 : 3]);
       return detail;
     }
   case SoShape::POINTS:
