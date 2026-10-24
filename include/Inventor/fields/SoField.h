@@ -158,6 +158,9 @@ protected:
 
 private:
 
+  friend class SoEngineOutput;
+  void recordConnectionSource(SoBase * source);
+
   enum FieldFlags {
     FLAG_TYPEMASK = 0x0007,  // need 3 bits for values [0-5]
     FLAG_ISDEFAULT = 0x0008,
