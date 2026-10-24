@@ -158,7 +158,8 @@ SoPickedPoint::getPoint() const
 }
 
 /*!
-  Returns the world space normal.
+  Returns the normalized world space normal, or the zero vector if the
+  object space normal is zero.
 */
 const SbVec3f &
 SoPickedPoint::getNormal() const
@@ -286,14 +287,18 @@ SoPickedPoint::getObjectPoint(const SoNode * const node) const
 /*!
   Returns the object space (specified by \a node) normal. If
   \a node equals NULL, the picked point object space will
-  be used.
+  be used. For NULL or the picked node, the original normal supplied to
+  setObjectNormal() is returned. For other nodes, the returned normal is
+  normalized, unless it is zero.
 */
 SbVec3f
 SoPickedPoint::getObjectNormal(const SoNode * const node) const
 {
   if (node && node != this->path->fullPath().getTail()) {
     SbVec3f ret;
-    this->getWorldToObject(node).multDirMatrix(this->normal, ret);
+    // Normals transform by the inverse transpose of the direction transform.
+    this->getObjectToWorld(node).transpose().multDirMatrix(this->normal, ret);
+    ret.normalize();
     return ret;
   }
   return this->objNormal;
@@ -321,7 +326,9 @@ void
 SoPickedPoint::setObjectNormal(const SbVec3f &normalref)
 {
   this->objNormal = normalref;
-  SoModelMatrixElement::get(this->state).multDirMatrix(normalref, this->normal);
+  // Preserve the supplied object normal; only the world normal is normalized.
+  SoModelMatrixElement::get(this->state).inverse().transpose().multDirMatrix(normalref, this->normal);
+  this->normal.normalize();
 }
 
 /*!
