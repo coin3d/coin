@@ -1146,7 +1146,11 @@ SoCallbackAction::invokePreCallbacks(const SoNode * const node)
 
   if (this->getWhatAppliedTo() == SoAction::PATH &&
       this->getPathAppliedTo()->getTail() == node && PRIVATE(this)->pretailcallback != NULL) {
+    const Response previous = PRIVATE(this)->response;
     PRIVATE(this)->response = PRIVATE(this)->pretailcallback->doNodeCallbacks(this, node);
+    if (PRIVATE(this)->response == CONTINUE && previous == PRUNE) {
+      PRIVATE(this)->response = PRUNE;
+    }
     if (PRIVATE(this)->response == SoCallbackAction::ABORT) {
       this->setTerminated(TRUE);
       return;
