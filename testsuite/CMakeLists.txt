@@ -31,6 +31,53 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
   endif()
 endif()
 
+if(UNIX AND NOT APPLE AND HAVE_GLX)
+  find_package(X11 QUIET)
+  if(X11_FOUND)
+    add_executable(CoinTextureSizeLimitTest TextureSizeLimitTest.cpp)
+    target_compile_definitions(CoinTextureSizeLimitTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
+    target_include_directories(CoinTextureSizeLimitTest PRIVATE
+      ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+      ${PROJECT_SOURCE_DIR}/src ${PROJECT_BINARY_DIR}/src
+      ${PROJECT_SOURCE_DIR}/include/Inventor/annex
+      ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+    target_link_libraries(CoinTextureSizeLimitTest
+      Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+
+    set(COIN_TEXTURE_LIMIT_CASES
+      no-cap-2d
+      cap-2d
+      proxy-bypass-2d
+      physical-2d
+      immutable-set-2d
+      immutable-unset-2d
+      empty-2d
+      zero-2d
+      negative-2d
+      junk-2d
+      suffix-2d
+      overflow-2d
+      no-cap-3d
+      cap-3d
+      proxy-bypass-3d
+      physical-3d
+      unsupported-3d
+      empty-3d
+      zero-3d
+      negative-3d
+      junk-3d
+      suffix-3d
+      overflow-3d)
+    foreach(texture_limit_case ${COIN_TEXTURE_LIMIT_CASES})
+      add_test(NAME TextureSizeLimit_${texture_limit_case}
+        COMMAND CoinTextureSizeLimitTest ${texture_limit_case})
+      set_tests_properties(TextureSizeLimit_${texture_limit_case} PROPERTIES
+        LABELS texture-size-limit
+        SKIP_RETURN_CODE 77)
+    endforeach()
+  endif()
+endif()
+
 macro(create_testsuite input)
 	get_filename_component(FLNAME "${input}" NAME_WE)
 	get_filename_component(FLPATH "${input}" PATH)
