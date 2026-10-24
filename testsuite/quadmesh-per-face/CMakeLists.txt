@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 3.15)
+project(CoinQuadMeshPerFace LANGUAGES CXX)
+find_package(Coin CONFIG REQUIRED)
+include(CTest)
+add_executable(coin-quadmesh-per-face QuadMeshPerFace.cpp)
+target_compile_features(coin-quadmesh-per-face PRIVATE cxx_std_11)
+target_link_libraries(coin-quadmesh-per-face PRIVATE Coin::Coin)
+foreach(mode defaults controls material normal combined aliases generated vertex-property empty)
+  foreach(action callback pick)
+    add_test(NAME quadmesh-${mode}-${action}
+      COMMAND coin-quadmesh-per-face ${mode} ${action})
+  endforeach()
+endforeach()
