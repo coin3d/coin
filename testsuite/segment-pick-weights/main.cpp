@@ -138,8 +138,10 @@ void customCase(const std::string & group, const SbVec3f & a, const SbVec3f & b,
   attributes(*hit, shape->first, shape->second, t, group);
   if (transformed && (group == "normal" || group == "all")) {
     SbVec3f worldnormal;
-    matrix.inverse().transpose().multDirMatrix(normalAt(shape->first, shape->second, t), worldnormal);
-    worldnormal.normalize(); close(hit->getNormal(), worldnormal, "world normal");
+    // Preserve the existing SoPickedPoint transform: model matrix direction,
+    // with no additional normalization of the world-space result.
+    matrix.multDirMatrix(normalAt(shape->first, shape->second, t), worldnormal);
+    close(hit->getNormal(), worldnormal, "existing world normal transform");
   }
   // Copies must keep the attributes after the ray action and original picked point die.
   std::unique_ptr<SoPickedPoint> copy(hit->copy()); hit.reset();
@@ -163,6 +165,7 @@ void controls() {
     for (float t : {0.0f, 0.25f, 0.5f, 0.75f, 1.0f})
       customCase("all", SbVec3f(0,0,0), SbVec3f(8,0,0), t, false, direct, true);
     customCase("all", SbVec3f(0,0,0), SbVec3f(8,0,0), 0.5f, false, direct);
+    customCase("all", SbVec3f(0,0,0), SbVec3f(8,0,0), 0.25f, false, direct, true, true);
     // Zero-length fallback remains first endpoint, without new divisions or NaNs.
     customCase("all", SbVec3f(2,3,4), SbVec3f(2,3,4), 0, false, direct);
     Scene scene; Segment * shape = new Segment; scene.root->addChild(shape);
