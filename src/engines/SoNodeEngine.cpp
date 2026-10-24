@@ -233,7 +233,14 @@ SoNodeEngine::notify(SoNotList * nl)
   // Avoid recursive notification calls.
   if (this->isNotifying()) return;
 
-  this->flags |= FLAG_ISNOTIFYING;
+  // Keep the reentry guard scoped even when user callbacks throw.
+  struct NotifyGuard {
+    explicit NotifyGuard(unsigned int & flags) : flags(flags) {
+      this->flags |= FLAG_ISNOTIFYING;
+    }
+    ~NotifyGuard() { this->flags &= ~FLAG_ISNOTIFYING; }
+    unsigned int & flags;
+  } guard(this->flags);
 
   // Call inputChanged() only if we're being notified through one of
   // the engine's fields (lastrec == CONTAINER, set in
@@ -256,7 +263,6 @@ SoNodeEngine::notify(SoNotList * nl)
   for (int i = 0; i < numoutputs; i++)
     outputs->getOutput(this, i)->touchSlaves(nl, this->isNotifyEnabled());
 
-  this->flags &= ~FLAG_ISNOTIFYING;
 
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoNodeEngine::notify", "%p - %s, done",
