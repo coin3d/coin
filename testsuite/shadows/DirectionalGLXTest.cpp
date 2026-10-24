@@ -120,16 +120,18 @@ Result render(const Options & o, bool requireProgram = true) {
     SoDirectionalLight * light = new SoDirectionalLight;
     light->intensity = 0; root->addChild(light);
   }
+  if (o.ordinary) {
+    SoDirectionalLight * light = new SoDirectionalLight;
+    light->direction.setValue(0, 0, o.reverse ? 1 : -1);
+    // Ordinary lights must already be in traversal state when the shadow
+    // group builds its shader; late ordinary-light discovery is separate work.
+    light->intensity = 0.7f; root->addChild(light);
+  }
   SoShadowGroup * group = new SoShadowGroup;
   group->quality = o.quality; group->precision = 0.2f;
   group->renderCaching = SoSeparator::OFF;
   group->epsilon = 0.00001f; group->threshold = 0.1f;
   root->addChild(group);
-  if (o.ordinary) {
-    SoDirectionalLight * light = new SoDirectionalLight;
-    light->direction.setValue(0, 0, o.reverse ? 1 : -1);
-    light->intensity = 0.7f; group->addChild(light);
-  }
   for (int i = 0; i < o.directional; ++i) {
     SoShadowDirectionalLight * light = new SoShadowDirectionalLight;
     light->direction.setValue(0, 0, o.reverse ? 1 : -1);
