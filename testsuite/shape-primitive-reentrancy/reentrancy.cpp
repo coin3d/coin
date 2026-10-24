@@ -119,7 +119,7 @@ SO_NODE_SOURCE(StreamShape);
 static void apply(SoAction & action, StreamShape * shape) {
   auto root=retain(new SoSeparator);
   SoShapeHints * hints=new SoShapeHints;
-  hints->faceType=SoShapeHints::UNKNOWN_FACE_TYPE;
+  hints->faceType=shape->convex ? SoShapeHints::CONVEX : SoShapeHints::UNKNOWN_FACE_TYPE;
   root->addChild(hints); root->addChild(shape);
   action.apply(root.get());
 }
@@ -241,10 +241,9 @@ static void validate(StreamShape * s, const std::vector<Primitive> & p) {
 static void count(StreamShape * s) {
   SoGetPrimitiveCountAction a; a.setCanApproximate(FALSE); apply(a,s);
   const bool line = s->type == SoShape::LINES || s->type == SoShape::LINE_STRIP;
-  // Compare generic count to its isolated behavior: historical segment weighting
-  // is deliberately outside this regression's contract.
   check(a.getTriangleCount() == (line || s->type == SoShape::POINTS ? 0 : expected(s)),"generic triangle count");
   check(a.getPointCount() == (s->type == SoShape::POINTS ? expected(s) : 0),"generic point count");
+  check(a.getLineCount() == (line ? expected(s) : 0),"generic line count");
 }
 static std::vector<double> counts(StreamShape * s) {
   SoGetPrimitiveCountAction a; a.setCanApproximate(FALSE); apply(a,s);
