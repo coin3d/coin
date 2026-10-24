@@ -361,9 +361,12 @@ void
 SoEngineOutput::prepareToWrite(void) const
 {
   SoEngineOutput * that = const_cast<SoEngineOutput *>(this);
+  int n = this->slaves.getLength();
+  // Finish allocating before changing any slave's notification flag.
+  // The following appends of SbBool cannot allocate or throw.
+  that->fieldnotiflist.ensureCapacity(n);
   that->fieldnotiflist.truncate(0);
 
-  int n = this->slaves.getLength();
   for (int i = 0; i < n; i++) {
     SoField * f = this->slaves[i];
     that->fieldnotiflist.append(f->isNotifyEnabled());
