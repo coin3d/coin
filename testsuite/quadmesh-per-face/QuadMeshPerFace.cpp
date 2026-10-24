@@ -168,7 +168,7 @@ void pointDetail(const Spec & s, const SoPointDetail & p, int r, int c) {
   require(corners(s,r,c).count(coord)!=0,"coordinate detail belongs to quad");
   equal(p.getMaterialIndex(),index(s,s.material,r,c,coord),"point material index");
   if (!s.generated) equal(p.getNormalIndex(),index(s,s.normal,r,c,coord),"point normal index");
-  equal(p.getTextureCoordIndex(),coord,"texture coordinate index");
+  equal(p.getTextureCoordIndex(),coord-s.start,"relative texture coordinate index");
 }
 void faceDetail(const Spec & s, const SoFaceDetail & detail, int r, int c) {
   equal(detail.getFaceIndex(),c,"faceIndex (column)");
@@ -205,9 +205,10 @@ struct Capture {
   std::vector<SavedDetail> saved;
   const SoNode * sibling = NULL;
   bool restored = false;
+  std::string error;
   explicit Capture(const Spec & spec) : s(spec),counts(std::max(0,s.w-1)*std::max(0,s.h-1),0) {}
 };
-SoCallbackAction::Response beforeShape(void * userdata, SoCallbackAction * action,
+SoCallbackAction::Response beforeShapeImpl(void * userdata, SoCallbackAction * action,
                                       const SoNode * node) {
   Capture & capture=*static_cast<Capture *>(userdata);
   if (node!=capture.sibling) return SoCallbackAction::CONTINUE;
@@ -224,7 +225,7 @@ SoCallbackAction::Response beforeShape(void * userdata, SoCallbackAction * actio
   capture.restored=true;
   return SoCallbackAction::CONTINUE;
 }
-void triangle(void * userdata, SoCallbackAction *, const SoPrimitiveVertex * a,
+void triangleImpl(void * userdata, SoCallbackAction *, const SoPrimitiveVertex * a,
               const SoPrimitiveVertex * b, const SoPrimitiveVertex * c) {
   Capture & capture=*static_cast<Capture *>(userdata);
   const Spec & s=capture.s;
@@ -242,7 +243,7 @@ void triangle(void * userdata, SoCallbackAction *, const SoPrimitiveVertex * a,
     equal(v[k]->getMaterialIndex(),index(s,s.material,row,col,coord),"vertex material index");
     normalValue(s,v[k]->getNormal(),index(s,s.normal,row,col,coord));
     const SbVec4f & t=v[k]->getTextureCoords();
-    require(close(t[0],uv(coord)[0])&&close(t[1],uv(coord)[1])&&close(t[2],0)&&close(t[3],1),"explicit callback UV");
+    require(close(t[0],uv(coord-s.start)[0])&&close(t[1],uv(coord-s.start)[1])&&close(t[2],0)&&close(t[3],1),"explicit callback UV");
     const SoDetail * raw=v[k]->getDetail();
     require(raw&&raw->isOfType(SoFaceDetail::getClassTypeId()),"callback SoFaceDetail");
     const SoFaceDetail & d=*static_cast<const SoFaceDetail *>(raw);
@@ -250,6 +251,22 @@ void triangle(void * userdata, SoCallbackAction *, const SoPrimitiveVertex * a,
     capture.saved.emplace_back(d,row,col);
   }
   equal(int(triangleCoords.size()),3,"three distinct triangle coordinates");
+}
+// Do not unwind through Coin traversal: let its temporary state close normally.
+SoCallbackAction::Response beforeShape(void * userdata, SoCallbackAction * action,
+                                      const SoNode * node) {
+  Capture & capture=*static_cast<Capture *>(userdata);
+  if (!capture.error.empty()) return SoCallbackAction::CONTINUE;
+  try { return beforeShapeImpl(userdata,action,node); }
+  catch (const std::exception & e) { capture.error=e.what(); }
+  return SoCallbackAction::CONTINUE;
+}
+void triangle(void * userdata, SoCallbackAction * action, const SoPrimitiveVertex * a,
+              const SoPrimitiveVertex * b, const SoPrimitiveVertex * c) {
+  Capture & capture=*static_cast<Capture *>(userdata);
+  if (!capture.error.empty()) return;
+  try { triangleImpl(userdata,action,a,b,c); }
+  catch (const std::exception & e) { capture.error=e.what(); }
 }
 void callbacks(Scene & scene,const Spec & s) {
   Capture capture(s);
@@ -260,6 +277,7 @@ void callbacks(Scene & scene,const Spec & s) {
     action.addTriangleCallback(SoQuadMesh::getClassTypeId(),triangle,&capture);
     action.apply(scene.root);
   }
+  if (!capture.error.empty()) throw std::runtime_error(capture.error);
   if (s.vp) require(capture.restored,"visited sibling after vertex property");
   for (int n:capture.counts) equal(n,2,"two callback triangles per quadrilateral");
   equal(int(capture.saved.size()),6*int(capture.counts.size()),"total callback vertices");
