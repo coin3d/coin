@@ -158,6 +158,18 @@ inline unsigned int SbHashFunc(const void * key) noexcept
 
 #endif // !COIN_THREADSAFE
 
+namespace {
+// Keep the recursive field mutex balanced on recursive returns and exceptions.
+class SoFieldEvaluationLock {
+public:
+  SoFieldEvaluationLock() { SOFIELD_RECLOCK; }
+  ~SoFieldEvaluationLock() { SOFIELD_RECUNLOCK; }
+private:
+  SoFieldEvaluationLock(const SoFieldEvaluationLock &);
+  SoFieldEvaluationLock & operator=(const SoFieldEvaluationLock &);
+};
+}
+
 static const int SOFIELD_GET_STACKBUFFER_SIZE = 1024;
 // need one static mutex for field_buffer in SoField::get(SbString &)
 static void * sofield_mutex = NULL;
@@ -2180,7 +2192,7 @@ SoField::evaluateField(void) const
   assert(this->storage != NULL);
 
   // lock _before_ testing FLAG_ISEVALUATING to be thread safe
-  SOFIELD_RECLOCK;
+  SoFieldEvaluationLock lock;
   // Recursive calls to SoField::evaluate() should _absolutely_ not
   // happen, as the state of the field variables might not be
   // consistent while evaluating.
@@ -2201,7 +2213,6 @@ SoField::evaluateField(void) const
                        "We strongly advise you to investigate and resolve "
                        "this issue before moving on.");
 #endif // COIN_DEBUG
-    SOFIELD_RECUNLOCK;
     return;
   }
 
@@ -2216,12 +2227,20 @@ SoField::evaluateField(void) const
   // pederb, 2002-10-04
   if (this->getStatus(FLAG_NEEDEVALUATION) && this->getStatus(FLAG_ENABLECONNECTS)) {
     that->setStatusBits(FLAG_ISEVALUATING);
-    this->evaluateConnection();
+    try {
+      this->evaluateConnection();
+    }
+    catch (...) {
+      // An override may have changed the value and cleared dirty before
+      // throwing. Leave the connection available for a later retry.
+      that->setDirty(TRUE);
+      that->clearStatusBits(FLAG_ISEVALUATING);
+      throw;
+    }
     that->clearStatusBits(FLAG_ISEVALUATING);
     // this will clear the NEEDEVALUATION flag
     that->setDirty(FALSE);
   }
-  SOFIELD_RECUNLOCK;
 }
 
 /*!
@@ -2516,7 +2535,13 @@ SoField::evaluateConnection(void) const
           // Copy data. Disable notification first since notification
           // has already been sent from the master.
           SbBool oldnotify = that->enableNotify(FALSE);
-          that->copyFrom(*master);
+          try {
+            that->copyFrom(*master);
+          }
+          catch (...) {
+            (void) that->enableNotify(oldnotify);
+            throw;
+          }
           (void) that->enableNotify(oldnotify);
         }
       }
