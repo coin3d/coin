@@ -229,14 +229,18 @@ BOOST_AUTO_TEST_CASE(inherited_quality_override_survives_separator)
   }
 }
 
-BOOST_AUTO_TEST_CASE(reused_action_observes_notifications_and_resets_overrides)
+BOOST_AUTO_TEST_CASE(reused_action_observes_notifications_with_separator_isolation)
 {
   ComplexityScene scene;
+  // SoGroup retains action state across apply() calls. A separator supplies
+  // the push/pop needed for independent traversals using the same action.
+  SoSeparator * isolated = new SoSeparator;
+  scene.root->addChild(isolated);
   CallbackComplexity * node = new CallbackComplexity;
   node->textureQuality = 0.25f;
   node->setOverride(TRUE);
-  scene.root->addChild(node);
-  mark(scene.root);
+  isolated->addChild(node);
+  mark(isolated);
   scene.run();
   BOOST_REQUIRE_EQUAL(scene.samples.size(), 1);
   BOOST_CHECK_EQUAL(scene.samples[0].quality, 0.25f);
