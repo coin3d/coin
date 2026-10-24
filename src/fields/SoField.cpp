@@ -1541,24 +1541,30 @@ SoField::notify(SoNotList * nlist)
   if (this->isNotifyEnabled()) {
     SoFieldContainer * cont = this->getContainer();
     this->setStatusBits(FLAG_ISNOTIFIED);
-    SoNotRec rec(createNotRec(cont));
-    nlist->append(&rec, this);
-    nlist->setLastType(SoNotRec::CONTAINER); // FIXME: Not sure about this. 20000304 mortene.
+    try {
+      SoNotRec rec(createNotRec(cont));
+      nlist->append(&rec, this);
+      nlist->setLastType(SoNotRec::CONTAINER); // FIXME: Not sure about this. 20000304 mortene.
 
 #if COIN_DEBUG
-    if (wLevel>=3)
-      SoDebugError::postInfo("SoField::notify",
-                             "field %p, list %p", this, nlist);
+      if (wLevel>=3)
+        SoDebugError::postInfo("SoField::notify",
+                               "field %p, list %p", this, nlist);
 #endif // COIN_DEBUG
 
-    if (this->hasExtendedStorage() && this->storage->auditors.getLength()) {
-      // need to copy list first if we're going to notify the auditors
-      SoNotList listcopy(*nlist);
-      if (cont) cont->notify(nlist);
-      this->notifyAuditors(&listcopy);
+      if (this->hasExtendedStorage() && this->storage->auditors.getLength()) {
+        // need to copy list first if we're going to notify the auditors
+        SoNotList listcopy(*nlist);
+        if (cont) cont->notify(nlist);
+        this->notifyAuditors(&listcopy);
+      }
+      else {
+        if (cont) cont->notify(nlist);
+      }
     }
-    else {
-      if (cont) cont->notify(nlist);
+    catch (...) {
+      this->clearStatusBits(FLAG_ISNOTIFIED);
+      throw;
     }
     this->clearStatusBits(FLAG_ISNOTIFIED);
   }
@@ -2550,7 +2556,13 @@ SoField::valueChanged(SbBool resetdefault)
   if (this->changeStatusBits(FLAG_READONLY, TRUE)) {
     this->setDirty(FALSE);
     if (resetdefault) this->setDefault(FALSE);
-    if (this->container) this->startNotify();
+    try {
+      if (this->container) this->startNotify();
+    }
+    catch (...) {
+      this->clearStatusBits(FLAG_READONLY);
+      throw;
+    }
     this->clearStatusBits(FLAG_READONLY);
   }
 }
