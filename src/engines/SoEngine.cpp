@@ -341,7 +341,7 @@ SoEngine::notify(SoNotList * nl)
 
   // Notify the slave fields connected to our engine outputs.
   const SoEngineOutputData * outputs = this->getOutputData();
-  int numoutputs = outputs->getNumOutputs();
+  int numoutputs = outputs ? outputs->getNumOutputs() : 0;
   for (int i = 0; i < numoutputs; i++)
     outputs->getOutput(this, i)->touchSlaves(nl, this->isNotifyEnabled());
 
