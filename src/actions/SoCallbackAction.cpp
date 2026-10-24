@@ -442,6 +442,7 @@ SoCallbackAction::commonConstructor(void)
   PRIVATE(this)->posttailcallback = NULL;
   PRIVATE(this)->viewportset = FALSE;
   PRIVATE(this)->callbackall = FALSE;
+  PRIVATE(this)->currentnode = NULL;
 }
 
 /*!
@@ -1175,6 +1176,7 @@ SoCallbackAction::invokePreCallbacks(const SoNode * const node)
 void
 SoCallbackAction::invokePostCallbacks(const SoNode * const node)
 {
+  PRIVATE(this)->currentnode = const_cast<SoNode *>(node);
   // reset response if previous node was pruned
   if (PRIVATE(this)->response == PRUNE) PRIVATE(this)->response = CONTINUE;
 
@@ -1290,6 +1292,15 @@ SoCallbackAction::setCurrentNode(SoNode * const node)
 void
 SoCallbackAction::beginTraversal(SoNode * node)
 {
+  // SoAction restores its application metadata after a nested apply(). Keep
+  // this action's current-node context scoped to that application as well.
+  struct RestoreCurrentNode {
+    RestoreCurrentNode(SoNode *& current) : current(current), saved(current) {}
+    ~RestoreCurrentNode() { this->current = this->saved; }
+    SoNode *& current;
+    SoNode * saved;
+  } restorecurrent(PRIVATE(this)->currentnode);
+
   PRIVATE(this)->response = SoCallbackAction::CONTINUE;
   // we set the viewport region element here. This element is not enabled
   // for SoCallbackAction in Inventor, bu we think it should be.
