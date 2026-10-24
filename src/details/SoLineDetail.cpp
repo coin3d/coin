@@ -103,8 +103,9 @@ SoLineDetail::getPoint1(void) const
 }
 
 /*!
-  Returns the index of this line within the lineset node it is part
-  of.
+  Returns the index of the polyline containing this segment within the
+  line set. Each declared polyline has an index, including empty or
+  single-vertex polylines.
  */
 int
 SoLineDetail::getLineIndex(void) const
@@ -113,8 +114,9 @@ SoLineDetail::getLineIndex(void) const
 }
 
 /*!
-  Returns the index of this line within the complex shape node it is
-  part of.
+  Returns the index of this segment within the shape. Segments are
+  numbered consecutively across all polylines; the index does not restart
+  at each polyline. Empty and single-vertex polylines add no segments.
  */
 int
 SoLineDetail::getPartIndex(void) const
