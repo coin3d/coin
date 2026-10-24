@@ -279,13 +279,24 @@ SoNodeEngine::evaluateWrapper(void)
   const SoEngineOutputData * outputs = this->getOutputData();
   if (outputs == NULL) return;
 
-  int i, n = outputs->getNumOutputs();
-  for (i = 0; i < n; i++) {
-    outputs->getOutput(this, i)->prepareToWrite();
+  int prepared = 0;
+  const int n = outputs->getNumOutputs();
+  try {
+    for (; prepared < n; prepared++) {
+      outputs->getOutput(this, prepared)->prepareToWrite();
+    }
+    this->evaluate();
   }
-  this->evaluate();
-  for (i = 0; i < n; i++) {
-    outputs->getOutput(this, i)->doneWriting();
+  catch (...) {
+    // Outputs may share a slave, so unwind notification flags in
+    // the reverse order of preparation, just like nested scopes.
+    while (prepared > 0) {
+      outputs->getOutput(this, --prepared)->doneWriting();
+    }
+    throw;
+  }
+  while (prepared > 0) {
+    outputs->getOutput(this, --prepared)->doneWriting();
   }
 }
 
