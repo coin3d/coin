@@ -21,6 +21,7 @@
 #include <iostream>
 #include <memory>
 #include <stdexcept>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -40,6 +41,26 @@ struct Face {
   bool operator==(const Face & f) const {
     return face == f.face && part == f.part && points == f.points;
   }
+};
+static std::string describe(const Face & f) {
+  std::ostringstream out;
+  out << "face=" << f.face << " part=" << f.part << " points=";
+  for (const Point & p : f.points)
+    out << '(' << p.coordinate << ',' << p.normal << ',' << p.material << ',' << p.texture << ')';
+  return out.str();
+}
+struct UnrefScene {
+  void operator()(SoSeparator * root) const { root->unref(); }
+};
+typedef std::unique_ptr<SoSeparator, UnrefScene> SceneOwner;
+static SceneOwner makeScene() {
+  SoSeparator * root = new SoSeparator;
+  root->ref();
+  return SceneOwner(root);
+}
+struct DatabaseScope {
+  DatabaseScope() { SoDB::init(); }
+  ~DatabaseScope() { SoDB::finish(); }
 };
 static Face readFace(const SoDetail * detail) {
   require(detail && detail->isOfType(SoFaceDetail::getClassTypeId()), "missing SoFaceDetail");
@@ -146,7 +167,8 @@ static std::unique_ptr<SoPickedPoint> pick(SoNode * root, const SbVec3f & p) {
   require(action.getPickedPointList().getLength() == 1, "interior ray should hit exactly one triangle");
   return std::unique_ptr<SoPickedPoint>(action.getPickedPoint()->copy());
 }
-static void checkHits(SoSeparator * root, const std::vector<Triangle> & triangles) {
+static void checkHits(SceneOwner & scene, const std::vector<Triangle> & triangles) {
+  SoSeparator * root = scene.get();
   std::vector<std::unique_ptr<SoPickedPoint> > retained;
   std::vector<std::unique_ptr<SoDetail> > faces;
   std::vector<Face> expected;
@@ -155,8 +177,8 @@ static void checkHits(SoSeparator * root, const std::vector<Triangle> & triangle
     const SbVec3f p = tri.p[0]*0.23f + tri.p[1]*0.31f + tri.p[2]*0.46f;
     std::unique_ptr<SoPickedPoint> pp = pick(root, p);
     const Face got = readFace(pp->getDetail());
-    require(got == tri.detail, "picked polygon point sequence differs from callback (face " +
-            std::to_string(tri.detail.face) + ", part " + std::to_string(tri.detail.part) + ")");
+    require(got == tri.detail, "picked polygon point sequence differs from callback: got " +
+            describe(got) + "; expected " + describe(tri.detail));
     require((pp->getPoint() - p).length() < 1e-4f, "hit location changed");
     require((pp->getNormal() - SbVec3f(0,0,1)).length() < 1e-4f, "hit normal changed");
     require(pp->isOnGeometry(), "hit must be on geometry");
@@ -171,7 +193,7 @@ static void checkHits(SoSeparator * root, const std::vector<Triangle> & triangle
   // Saved details must survive more traversals, removal of the scene's reference,
   // and destruction of all actions. PickedPoint itself keeps its path alive.
   callbacks(root);
-  root->unref();
+  scene.reset();
   for (size_t i = 0; i < retained.size(); ++i) {
     require(readFace(retained[i]->getDetail()) == expected[i], "picked point copy was aliased");
     std::unique_ptr<SoPickedPoint> copy(retained[i]->copy());
@@ -183,7 +205,8 @@ static void checkHits(SoSeparator * root, const std::vector<Triangle> & triangle
     require(readFace(faces[i].get()) == expected[i], "face detail copy did not outlive scene");
 }
 static void generic(SoShape::TriangleShape mode) {
-  SoSeparator * root = new SoSeparator; root->ref();
+  SceneOwner scene = makeScene();
+  SoSeparator * root = scene.get();
   StripProbe * shape = new StripProbe; shape->mode = mode; root->addChild(shape);
   const std::vector<Triangle> tris = callbacks(root);
   require(tris.size() == 12, "generic shape triangulation count changed");
@@ -203,7 +226,7 @@ static void generic(SoShape::TriangleShape mode) {
     }
     require(tris[i].detail == expected, "generic callback perimeter, indices, or face metadata changed");
   }
-  checkHits(root, tris);
+  checkHits(scene, tris);
 }
 static void detailCopy() {
   std::unique_ptr<SoDetail> copy;
@@ -223,7 +246,8 @@ static void detailCopy() {
   require(readFace(copy.get()) == expected, "SoFaceDetail::copy depends on destroyed source");
 }
 static void mesh(int width, int height, int start, bool vp, bool pervertex) {
-  SoSeparator * root = new SoSeparator; root->ref();
+  SceneOwner scene = makeScene();
+  SoSeparator * root = scene.get();
   std::vector<SbVec3f> coordinates(start, SbVec3f(-100,-100,0));
   std::vector<SbVec3f> normals(width*height, SbVec3f(0,0,1));
   std::vector<SbColor> colors(width*height);
@@ -280,12 +304,12 @@ static void mesh(int width, int height, int start, bool vp, bool pervertex) {
       require(f.points[j].material == (pervertex ? indices[j] : 0), "mesh material index changed");
     }
   }
-  checkHits(root, tris);
+  checkHits(scene, tris);
 }
 int main(int argc, char ** argv) {
   try {
     require(argc == 2, "provide scenario name");
-    SoDB::init(); StripProbe::initClass();
+    DatabaseScope database; StripProbe::initClass();
     const std::string scenario(argv[1]);
     if (scenario == "generic-strip") generic(SoShape::QUAD_STRIP);
     else if (scenario == "generic-quads") generic(SoShape::QUADS);
@@ -299,7 +323,6 @@ int main(int argc, char ** argv) {
             mesh(d[0], d[1], start, scenario == "mesh-vertex-property", pervertex);
     }
     else throw std::runtime_error("unknown scenario: " + scenario);
-    SoDB::finish();
     return EXIT_SUCCESS;
   }
   catch (const std::exception & error) {
