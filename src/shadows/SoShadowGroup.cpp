@@ -1451,6 +1451,7 @@ SoShadowGroupP::setVertexShader(SoState * state)
   SbBool dirlight = FALSE;
   SbBool pointlight = FALSE;
   SbBool spotlight = FALSE;
+  SbBool dirspot = FALSE;
   SbString str;
 
   gen.addMainStatement("vec4 ecPosition = gl_ModelViewMatrix * gl_Vertex;\n"
@@ -1517,6 +1518,12 @@ SoShadowGroupP::setVertexShader(SoState * state)
         dirlight = TRUE;
         addDirectionalLight(gen, cache->lightid);
       }
+      else if (static_cast<SoSpotLight *>(cache->light)->dropOffRate.getValue() < 0.0f) {
+        // Negative drop-off changes the shadow light's illumination only;
+        // its perspective shadow map and radial VSM distance stay unchanged.
+        dirspot = TRUE;
+        addDirSpotLight(gen, cache->lightid);
+      }
       else {
         spotlight = TRUE;
         addSpotLight(gen, cache->lightid);
@@ -1532,6 +1539,7 @@ SoShadowGroupP::setVertexShader(SoState * state)
   // Shadow lights can require these functions even without ordinary lights.
   if (dirlight) gen.addNamedFunction(SbName("lights/DirectionalLight"), FALSE);
   if (spotlight) gen.addNamedFunction(SbName("lights/SpotLight"), FALSE);
+  if (dirspot) gen.addNamedFunction(SbName("lights/DirSpotLight"), FALSE);
   int32_t fogType = this->getFog(state);
 
   switch (fogType) {
