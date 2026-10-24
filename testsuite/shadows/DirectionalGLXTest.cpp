@@ -95,14 +95,14 @@ struct Options {
   // Optional spot fixtures shared with the negative-drop-off regression suite.
   float drop, cutoff, spotIntensity, diffuse, specular, shininess;
   SbVec3f normal, spotDirection, attenuation;
-  bool baseSpot, regularSpot, inheritedSpot, shallowMap, notifyDrop;
+  bool baseSpot, regularSpot, inheritedSpot, shallowMap, notifyDrop, explicitSpotRange;
   float initialDrop;
   Options(float q) : quality(q), directional(1), spots(0), inherited(0), textures(0),
     blocker(false), ordinary(false), reverse(false), offset(0), cameraDistance(8),
     drop(0), cutoff(0.75f), spotIntensity(-1), diffuse(1), specular(0), shininess(0.2f),
     normal(0,0,1), spotDirection(0,0,-1), attenuation(0,0,1),
     baseSpot(false), regularSpot(false), inheritedSpot(false), shallowMap(false),
-    notifyDrop(false), initialDrop(0) {}
+    notifyDrop(false), explicitSpotRange(false), initialDrop(0) {}
 };
 SoSeparator * mapScene(bool blocker, float offset) {
   SoSeparator * scene = new SoSeparator;
@@ -182,7 +182,7 @@ Result render(const Options & o, bool requireProgram = true) {
     if (!o.baseSpot) {
       SoShadowSpotLight * shadow = static_cast<SoShadowSpotLight *>(light);
       shadow->shadowMapScene = o.shallowMap ? radialScene(o.blocker, o.offset) : mapScene(o.blocker, o.offset);
-      if (o.shallowMap) { shadow->nearDistance = 0.1f; shadow->farDistance = 12; }
+      if (o.shallowMap || o.explicitSpotRange) { shadow->nearDistance = 0.1f; shadow->farDistance = 12; }
     }
     spotnodes.push_back(light);
     group->addChild(light);

@@ -5,7 +5,7 @@
 namespace {
 Options negative(float q) {
   Options o(q); o.directional = 0; o.spots = 1; o.drop = -1;
-  o.spotIntensity = 0.7f;
+  o.spotIntensity = 0.7f; o.explicitSpotRange = true;
   return o;
 }
 void nearValue(double value, double expected, double tolerance, const char * message) {
@@ -24,10 +24,12 @@ void stages(const Result & r, float q, bool hasNegative) {
 void diffuseOracle(float q) {
   Options o = negative(q); o.cutoff = 0.25f;
   label = "negative diffuse outside regular cone"; Result r = render(o); stages(r,q,true);
-  // At x=+/-3 the angle from the light position is atan(3/6) > .25.
-  // Negative drop-off still illuminates these points with n dot -direction=1.
+  // The cone's z=0 radius is 6*tan(.25)=1.532. Each 5x5 patch
+  // centered at (+/-1.3,1.3) lies OUTSIDE that circle but INSIDE the
+  // perspective map's square [-1.532,+1.532]^2. This isolates absence
+  // of cone attenuation without asserting anything about texture borders.
   for (int side = -1; side <= 1; side += 2)
-    nearValue(r.patch(side*3.0f),255*.7,5,"negative light has no spot cone or positional diffuse falloff");
+    nearValue(r.patch(side*1.3f,1.3f),255*.7,5,"negative light has no spot cone or positional diffuse falloff");
   label = "negative oblique normal and light direction";
   o.cutoff = 0.75f; o.normal.setValue(.6f,0,.8f); o.spotDirection.setValue(.3f,0,-std::sqrt(.91f));
   r = render(o);
@@ -48,8 +50,8 @@ void signs(float q) {
     label = "drop sign including signed zero and immediate neighbors";
     Options o = negative(q); o.cutoff = .25f; o.drop = drops[i];
     Result r = render(o); stages(r,q,i<2);
-    if (i<2) nearValue(r.patch(3),255*.7,5,"every finite strictly negative drop selects legacy directional spot");
-    else check(r.patch(3)<5,"zero, negative zero and positive drop retain the regular spot cone");
+    if (i<2) nearValue(r.patch(1.3f,1.3f),255*.7,5,"every finite strictly negative drop selects legacy directional spot");
+    else check(r.patch(1.3f,1.3f)<5,"zero, negative zero and positive drop retain the regular spot cone");
   }
   // Same node, same group and action: exercise notify in both directions.
   for (int i = 0; i < 2; ++i) {
@@ -57,12 +59,16 @@ void signs(float q) {
     Options o = negative(q); o.cutoff=.25f; o.notifyDrop=true;
     o.initialDrop = i ? -1 : 0; o.drop = i ? 0 : -1;
     Result r = render(o); stages(r,q,!i);
-    if (i) check(r.patch(3)<5,"notify negative to zero restores cone");
-    else nearValue(r.patch(3),255*.7,5,"notify zero to negative removes cone");
+    if (i) check(r.patch(1.3f,1.3f)<5,"notify negative to zero restores cone");
+    else nearValue(r.patch(1.3f,1.3f),255*.7,5,"notify zero to negative removes cone");
   }
 }
 void radial(float q) {
-  Options o = negative(q); o.shallowMap=true;
+  Options o = negative(q); o.shallowMap=true; o.cutoff=.5f;
+  // Spot VSM uses farDistance/cos(2*cutoff). With .5 radians and
+  // farDistance=12 the effective range is ~22.2, so epsilon=1e-5 has
+  // distance sigma ~.070. The .27 radial depth separation below is
+  // well above that floor. All samples lie inside this spot frustum.
   label = "radial spot receiver with its plane in producer";
   Result clear=render(o);
   nearValue(clear.patch(2.4f),255*.7,8,"off-axis plane must not shadow itself");
@@ -75,6 +81,8 @@ void radial(float q) {
   // of that radial caster and incorrectly loses this shadow.
   check(blocked.patch(-2.4f)+65 < clear.patch(-2.4f),
         "off-axis shallow occluder is shadowed using radial receiver depth");
+  std::printf("  radial clear=%.2f blocked=%.2f lit=%.2f\n",
+              clear.patch(-2.4f),blocked.patch(-2.4f),blocked.patch(2.4f));
   nearValue(blocked.patch(2.4f),clear.patch(2.4f),8,
             "geometrically unoccluded point rejects planar producer with radial receiver");
   // Central projection, rather than parallel -direction rays, displaces the
@@ -85,6 +93,7 @@ void radial(float q) {
   o.shallowMap=false; Result perspective=render(o);
   check(perspective.patch(-2.65f)+55 < perspective.patch(1.5f),
         "negative lighting keeps the perspective spot shadow-camera footprint");
+  std::printf("  perspective footprint=%.2f lit=%.2f\n",perspective.patch(-2.65f),perspective.patch(1.5f));
   label = "radial spot translated and deep eye";
   o.shallowMap=true; o.offset=11; o.cameraDistance=17; Result moved=render(o);
   check(moved.patch(-2.4f)+65<moved.patch(2.4f),"radial occlusion survives world and eye translation");
@@ -116,14 +125,14 @@ void mixed(float q) {
     Result r=render(o); stages(r,q,true);
     // The regular shadow spot and inherited ordinary spot are outside their
     // cones here. Only directional (.35) plus negative (.2) contribute.
-    nearValue(r.patch(3),255*(.35+.2),7,"light indices preserve negative and directional contributions only");
+    nearValue(r.patch(1.3f,1.3f),255*(.35+.2),7,"light indices preserve negative and directional contributions only");
   }
   label="ordinary inherited negative spot remains regular";
   Options inherited(q); inherited.directional=0; inherited.spots=1;
   inherited.spotIntensity=0; inherited.inheritedSpot=true;
   inherited.cutoff=.25f;
   Result r=render(inherited); stages(r,q,false);
-  check(r.patch(3)<5,"ordinary inherited negative spot does not acquire shadow-only extension");
+  check(r.patch(1.3f,1.3f)<5,"ordinary inherited negative spot does not acquire shadow-only extension");
   label="base SoSpotLight subclass path";
   Options base=negative(q); base.baseSpot=true; Result b=render(base);
   nearValue(b.patch(1.5f),255*.7,10,"base SoSpotLight supports negative drop inside shadow group");
@@ -137,7 +146,7 @@ void negativeBoundaries() {
     label="negative effective float quality boundary";
     Options o=negative(qs[i]); o.cutoff=.25f;
     rs.push_back(render(o)); stages(rs.back(),qs[i],true);
-    nearValue(rs.back().patch(3),255*.7,5,"negative mode remains illuminated at quality boundaries");
+    nearValue(rs.back().patch(1.3f,1.3f),255*.7,5,"negative mode remains illuminated at quality boundaries");
   }
   const int branch[]={0,0,4,4,4,4,4,8,8};
   for(int i=0;i<9;++i)
