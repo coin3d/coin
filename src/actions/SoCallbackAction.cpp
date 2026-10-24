@@ -541,6 +541,9 @@ SoCallbackAction::addPostCallback(const SoType type, SoCallbackActionCB * cb,
 /*!
   Set a function \a cb to call before the tail of a path is
   traversed. \a cb will be called with \a userdata.
+
+  Tail callbacks are invoked only for a single SoPath application, at the
+  end of the full path including hidden children.
  */
 void
 SoCallbackAction::addPreTailCallback(SoCallbackActionCB * cb, void * userdata)
@@ -554,6 +557,9 @@ SoCallbackAction::addPreTailCallback(SoCallbackActionCB * cb, void * userdata)
 /*!
   Set a function \a cb to call after the tail of a path has been
   traversed. \a cb will be called with \a userdata.
+
+  Tail callbacks are invoked only for a single SoPath application, at the
+  end of the full path including hidden children.
  */
 void
 SoCallbackAction::addPostTailCallback(SoCallbackActionCB * cb, void * userdata)
@@ -1145,7 +1151,8 @@ SoCallbackAction::invokePreCallbacks(const SoNode * const node)
   }
 
   if (this->getWhatAppliedTo() == SoAction::PATH &&
-      this->getPathAppliedTo()->getTail() == node && PRIVATE(this)->pretailcallback != NULL) {
+      PRIVATE(this)->pretailcallback != NULL &&
+      *this->getPathAppliedTo() == *this->getCurPath()) {
     const Response previous = PRIVATE(this)->response;
     PRIVATE(this)->response = PRIVATE(this)->pretailcallback->doNodeCallbacks(this, node);
     if (PRIVATE(this)->response == CONTINUE && previous == PRUNE) {
@@ -1181,7 +1188,8 @@ SoCallbackAction::invokePostCallbacks(const SoNode * const node)
   }
 
   if (this->getWhatAppliedTo() == SoAction::PATH &&
-      this->getPathAppliedTo()->getTail() == node && PRIVATE(this)->posttailcallback) {
+      PRIVATE(this)->posttailcallback != NULL &&
+      *this->getPathAppliedTo() == *this->getCurPath()) {
     PRIVATE(this)->response = PRIVATE(this)->posttailcallback->doNodeCallbacks(this, node);
     if (PRIVATE(this)->response == SoCallbackAction::ABORT) {
       this->setTerminated(TRUE);
