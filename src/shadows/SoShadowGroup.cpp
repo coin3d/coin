@@ -2163,6 +2163,15 @@ void
 SoShadowGroupP::GLRender(SoGLRenderAction * action, const SbBool inpath)
 {
   SoState * state = action->getState();
+
+  // In an ancestor's map this group is only a caster subtree. Starting
+  // another shadow pass here would replace the ancestor's VSM program.
+  if (SoShapeStyleElement::get(state)->getFlags() & SoShapeStyleElement::SHADOWMAP) {
+    if (inpath) PUBLIC(this)->SoSeparator::GLRenderInPath(action);
+    else PUBLIC(this)->SoSeparator::GLRenderBelowPath(action);
+    return;
+  }
+
   const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
 
   // FIXME: should store results in a "context -> supported" map.  -mortene.
@@ -2195,9 +2204,7 @@ SoShadowGroupP::GLRender(SoGLRenderAction * action, const SbBool inpath)
   }
 
   SoShadowStyleElement::set(state, PUBLIC(this), SoShadowStyleElement::CASTS_SHADOW_AND_SHADOWED);
-  SoShapeStyleElement::setShadowMapRendering(state, TRUE);
   this->updateShadowLights(action);
-  SoShapeStyleElement::setShadowMapRendering(state, FALSE);
 
   if (!this->vertexshadercache || !this->vertexshadercache->isValid(state)) {
     this->setVertexShader(state);
@@ -2211,7 +2218,7 @@ SoShadowGroupP::GLRender(SoGLRenderAction * action, const SbBool inpath)
   SoShapeStyleElement::setShadowsRendering(state, TRUE);
   if (inpath) PUBLIC(this)->SoSeparator::GLRenderInPath(action);
   else PUBLIC(this)->SoSeparator::GLRenderBelowPath(action);
-  SoShapeStyleElement::setShadowsRendering(state, FALSE);
+  // Restore the enclosing group's flags and shader enable state together.
   state->pop();
 }
 
@@ -2347,6 +2354,9 @@ SoShadowLightCache::shadowmap_glcallback(void * COIN_UNUSED_ARG(closure), SoActi
 {
   if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
     SoState * state = action->getState();
+    // Mark the action that actually traverses the map, after any RTT state
+    // reset (the pbuffer path can use a different action from the receiver).
+    SoShapeStyleElement::setShadowMapRendering(state, TRUE);
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
     SoTextureQualityElement::set(state, 0.0f);
     SoMaterialBindingElement::set(state, NULL, SoMaterialBindingElement::OVERALL);
