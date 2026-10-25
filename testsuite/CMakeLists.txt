@@ -117,6 +117,7 @@ add_executable(CoinTests
 	TestSuiteMisc.cpp
 	InternalMacroTest.cpp
 	InternalSmallMapTest.cpp
+	Texture2OverrideTest.cpp
 	${COIN_TEST_SOURCES}
 )
 
@@ -451,4 +452,22 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     set_tests_properties(SensorQueueAllocation_${sensor_case}
       PROPERTIES TIMEOUT 10)
   endforeach()
+endif()
+
+# Exercise the real GLRender path when a GLX context can be created at runtime.
+# The CPU callback/rayPick cases above remain available on every platform.
+if(COIN_BUILD_LEGACY_GL_RENDERER AND UNIX AND NOT APPLE)
+  find_package(X11 QUIET)
+  if(X11_FOUND AND HAVE_GLX)
+    add_executable(CoinTexture2OverrideGLXTest Texture2OverrideGLXTest.cpp)
+    target_include_directories(CoinTexture2OverrideGLXTest PRIVATE
+      ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+      ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+    target_link_libraries(CoinTexture2OverrideGLXTest
+      Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+    add_test(NAME Texture2OverrideGLX COMMAND CoinTexture2OverrideGLXTest)
+    set_tests_properties(Texture2OverrideGLX PROPERTIES SKIP_RETURN_CODE 77)
+  else()
+    message(STATUS "Texture2 GLRender test unavailable: GLX or X11 development files missing")
+  endif()
 endif()
