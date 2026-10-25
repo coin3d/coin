@@ -120,7 +120,14 @@ struct CacheFixture {
     if(variant=="nodekit") {
       check(!SoBaseKit::isSearchingChildren(),"nodekit test starts with default hidden search children");
       SoWrapperKit * kit=new SoWrapperKit; kit->renderCaching=mode; parent->addChild(kit);
-      check(kit->setPart("contents",shadow),"nodekit accepts ShadowGroup as hidden contents");
+      // Keep the hidden group unreachable by rendering while the ancestors
+      // warm their caches. An active group could invalidate those caches
+      // itself and mask a structural search that misses nodekit children.
+      SoSeparator * contents=new SoSeparator; contents->renderCaching=mode;
+      cacheMarker(contents,probe,true);
+      sw=new SoSwitch; sw->whichChild=SO_SWITCH_NONE; contents->addChild(sw);
+      sw->addChild(shadow); active=false;
+      check(kit->setPart("contents",contents),"nodekit accepts hidden contents with initially inactive shadow branch");
       check(!SoBaseKit::isSearchingChildren(),"constructing hidden shadow leaves search semantics unchanged");
     } else
 #endif
