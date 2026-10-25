@@ -51,6 +51,19 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
         set_tests_properties(ShadowNegativeSpotGLX_${shadow_case} PROPERTIES
           SKIP_RETURN_CODE 77 LABELS "shadows;native-gl" TIMEOUT 120)
       endforeach()
+      add_executable(CoinShadowClippingGLXTest shadows/ClippingGLXTest.cpp)
+      target_include_directories(CoinShadowClippingGLXTest PRIVATE
+        ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+        ${PROJECT_SOURCE_DIR}/include/Inventor/annex
+        ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+      target_link_libraries(CoinShadowClippingGLXTest
+        Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+      foreach(shadow_case directional-custom spot-custom directional-normal spot-normal)
+        add_test(NAME ShadowClippingGLX_${shadow_case}
+          COMMAND CoinShadowClippingGLXTest ${shadow_case})
+        set_tests_properties(ShadowClippingGLX_${shadow_case} PROPERTIES
+          SKIP_RETURN_CODE 77 LABELS "shadows;native-gl;clipping" TIMEOUT 120)
+      endforeach()
       add_test(NAME BumpProgramGLX COMMAND CoinBumpGLXTest)
       set_tests_properties(BumpProgramGLX PROPERTIES SKIP_RETURN_CODE 77)
     endif()
