@@ -11,11 +11,13 @@ struct Observation;
 struct Probe { Observation * owner; int kind; int expectedStyle; };
 struct Observation {
   SoGLRenderAction * visible;
-  std::map<SoAction *, GLint> moments;
+  typedef std::pair<SoAction *, GLint> PassKey;
+  std::map<PassKey, GLint> moments;
+  GLint outputFramebuffer;
   int visits, maps, leaves, visibleLeaves, styleVisits;
   GLint visibleProgram;
   unsigned visibleFlags;
-  Observation() : visible(NULL) { reset(); }
+  Observation() : visible(NULL), outputFramebuffer(0) { reset(); }
   void reset() { moments.clear(); visits=maps=leaves=visibleLeaves=styleVisits=0; visibleProgram=0; visibleFlags=0; }
 };
 void observe(void * data, SoAction * action) {
@@ -27,10 +29,15 @@ void observe(void * data, SoAction * action) {
     std::fprintf(stderr,"FAIL [%s]: more than 256 actual producer/visible callbacks; nested map production is recursive\n",label.c_str());
     std::exit(1);
   }
-  if (p.kind==4 && action!=o.visible)
+  // SoSceneTexture2 can reuse the visible action while switching its
+  // traversal node. Identify the producer by its physical render target;
+  // SHADOWMAP itself is the behavior under test, never the pass oracle.
+  GLint framebuffer=0; glGetIntegerv(GL_FRAMEBUFFER_BINDING,&framebuffer);
+  const bool map=framebuffer!=o.outputFramebuffer;
+  const Observation::PassKey pass(action,framebuffer);
+  if (p.kind==4 && map)
     SoShapeStyleElement::setShadowsRendering(action->getState(),TRUE);
   const unsigned flags=SoShapeStyleElement::get(action->getState())->getFlags();
-  const bool map=action!=o.visible;
   if (p.kind==2)
     check(SoShadowStyleElement::get(action->getState())==p.expectedStyle,
           "style node updates its element in visible and map traversal");
@@ -38,11 +45,11 @@ void observe(void * data, SoAction * action) {
   if (map) {
     ++o.maps;
     check((flags & SoShapeStyleElement::SHADOWMAP)!=0,"actual RTT traversal carries SHADOWMAP");
-    if (p.kind==0) o.moments[action]=program;
+    if (p.kind==0) o.moments[pass]=program;
     if (p.kind==1 || p.kind==2 || p.kind==5) {
       ++o.leaves;
       check(program!=0,"map geometry keeps an enabled VSM GLSL program");
-      const std::map<SoAction *, GLint>::const_iterator it=o.moments.find(action);
+      const std::map<Observation::PassKey, GLint>::const_iterator it=o.moments.find(pass);
       if (it!=o.moments.end())
         check(program==it->second,"nested groups/styles preserve the ancestor's actual VSM program");
     }
@@ -190,6 +197,7 @@ struct NestedFixture {
   ~NestedFixture() { if(path) path->unref(); root->unref(); }
   Result frame() {
     observed.reset(); result=Result();
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING,&observed.outputFramebuffer);
     SoErrorCB * old=SoDebugError::getHandlerCallback(); void * data=SoDebugError::getHandlerData();
     SoDebugError::setHandlerCallback(error,&result);
     glEnable(GL_DEPTH_TEST); glDepthMask(GL_TRUE); glDepthFunc(GL_LEQUAL);
