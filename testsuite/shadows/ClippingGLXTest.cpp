@@ -38,7 +38,7 @@ struct ClipFixture {
     camera->height = 8; camera->nearDistance = 1; camera->farDistance = 40;
     root->addChild(camera);
     SoEnvironment * env = new SoEnvironment; env->ambientIntensity = 0;
-    env->attenuation.setValue(1,0,0); root->addChild(env);
+    env->attenuation.setValue(0,0,1); root->addChild(env);
     SoShadowGroup * group = new SoShadowGroup;
     group->quality = quality; group->precision = .2f;
     group->epsilon = .00001f; group->threshold = .1f;
