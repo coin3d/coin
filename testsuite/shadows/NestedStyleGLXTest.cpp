@@ -203,7 +203,7 @@ struct NestedFixture {
       path->append(root->findChild(outer)); path->append(outer->getNumChildren()-1); }
   }
   ~NestedFixture() { if(path) path->unref(); root->unref(); }
-  Result frame() {
+  Result frame(bool requireMap=true) {
     observed.reset(); result=Result();
     glGetIntegerv(GL_FRAMEBUFFER_BINDING,&observed.outputFramebuffer);
     SoErrorCB * old=SoDebugError::getHandlerCallback(); void * data=SoDebugError::getHandlerData();
@@ -215,8 +215,12 @@ struct NestedFixture {
     glReadPixels(0,0,size,size,GL_RGB,GL_UNSIGNED_BYTE,&result.image[0]);
     SoDebugError::setHandlerCallback(old,data);
     check(result.errors==0,"no compilation/link errors");
-    check(observed.maps>0 && observed.leaves>0 && observed.styleVisits>0,
-          "actual map pass visits nested geometry and every style probe");
+    // A warm frame may reuse an unchanged spot map. Dirty/cold frames must
+    // prove real producer traversal; if any map is traversed, validate its
+    // geometry/style probes even on a warm frame. Counters reset every frame.
+    if(requireMap || observed.maps>0)
+      check(observed.maps>0 && observed.leaves>0 && observed.styleVisits>0,
+            "actual map pass visits nested geometry and every style probe");
     check(glGetError()==GL_NO_ERROR,"GL rendering/readback succeeds");
     return result;
   }
@@ -232,7 +236,7 @@ void nestedCase(bool spot,bool custom,float q,int depth,bool active,bool wrapper
   double casting[4]={};
   for(int style=0;style<4;++style) {
     f.casterStyle->style=style;
-    const Result cold=f.frame(); const Result warm=f.frame();
+    const Result cold=f.frame(); const Result warm=f.frame(false);
     casting[style]=f.left(warm);
     check(f.lit(warm)>60,"unoccluded receiver proves geometry and lighting");
     check(std::fabs(f.left(cold)-f.left(warm))<14,"cold/warm frames retain caster result");
