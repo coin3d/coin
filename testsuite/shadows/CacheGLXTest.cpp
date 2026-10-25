@@ -8,6 +8,7 @@
 #include <Inventor/misc/SoChildList.h>
 #ifdef SHADOW_CACHE_HAVE_NODEKITS
 #include <Inventor/nodekits/SoWrapperKit.h>
+#include <Inventor/nodekits/SoNodeKit.h>
 #endif
 
 namespace {
@@ -118,7 +119,7 @@ struct CacheFixture {
 #ifdef SHADOW_CACHE_HAVE_NODEKITS
     if(variant=="nodekit") {
       check(!SoBaseKit::isSearchingChildren(),"nodekit test starts with default hidden search children");
-      SoWrapperKit * kit=new SoWrapperKit; parent->addChild(kit);
+      SoWrapperKit * kit=new SoWrapperKit; kit->renderCaching=mode; parent->addChild(kit);
       check(kit->setPart("contents",shadow),"nodekit accepts ShadowGroup as hidden contents");
       check(!SoBaseKit::isSearchingChildren(),"constructing hidden shadow leaves search semantics unchanged");
     } else
@@ -249,7 +250,11 @@ int main(int argc,char ** argv) {
   XSetWindowAttributes attr={}; attr.colormap=colormap;
   Window window=XCreateWindow(display,RootWindow(display,visual->screen),0,0,size,size,0,visual->depth,InputOutput,visual->visual,CWColormap,&attr);
   if(!glXMakeCurrent(display,window,context)) return 77;
-  SoDB::init(); DerivedShadow::initClass(); ReentrantSeparator::initClass();
+  SoDB::init();
+#ifdef SHADOW_CACHE_HAVE_NODEKITS
+  SoNodeKit::init();
+#endif
+  DerivedShadow::initClass(); ReentrantSeparator::initClass();
   if(!glGetString(GL_SHADING_LANGUAGE_VERSION)||!SoShadowGroup::isSupported()) return 77;
   const std::string mode=argc>1?argv[1]:"barriers";
   if(mode=="plain") { plainCache(SoSeparator::ON); plainCache(SoSeparator::AUTO); }
