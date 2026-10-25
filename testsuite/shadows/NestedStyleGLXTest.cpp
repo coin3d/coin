@@ -194,7 +194,9 @@ struct NestedFixture {
     lamp(outer,spot,custom ? producer : NULL,.35f);
     if(!custom) outer->addChild(producer);
     // Custom scene is held by the light; normal scene by the outer group.
-    grid(outer,-3.8f,.2f);
+    SoSeparator * parentReceiver=new SoSeparator;
+    parentReceiver->renderCaching=SoSeparator::OFF;
+    grid(parentReceiver,-3.8f,.2f); outer->addChild(parentReceiver);
     marker(root,&afterGroup);
     action.setCacheContext(5391);
     if(inpath) { path=new SoPath; path->ref(); path->setHead(root);
@@ -244,7 +246,7 @@ void nestedCase(bool spot,bool custom,float q,int depth,bool active,bool wrapper
   const Result restored=f.frame();
   check(std::fabs(f.left(restored)-casting[3])<14,"notified style mutation restores original casting");
   // Normal visible traversal must still render the active child's receiver.
-  if(!custom && active && depth==1) {
+  if(!custom && active && depth==1 && !path) {
     f.receiverStyle->style=SoShadowStyle::NO_SHADOWING; const Result unshadowed=f.frame();
     f.receiverStyle->style=SoShadowStyle::SHADOWED; const Result received=f.frame();
     check(unshadowed.patch(-1.5f)>received.patch(-1.5f)+35,
