@@ -2045,7 +2045,11 @@ SoShadowLightCache::createVSMProgram(void)
   SbBool dirlight = this->light->isOfType(SoDirectionalLight::getClassTypeId());
 
   vgen.addDeclaration("varying vec3 light_vec;", FALSE);
+  // User clip planes use the light pass's eye coordinates, also in a
+  // light-owned shadowMapScene. SO_GL_GLSL_CLIP_VERTEX_HW is a hardware
+  // performance heuristic, not a GLSL 1.20 clipping availability test.
   vgen.addMainStatement("light_vec = (gl_ModelViewMatrix * gl_Vertex).xyz;\n"
+                        "gl_ClipVertex = gl_ModelViewMatrix * gl_Vertex;\n"
                         "gl_Position = ftransform();");
 
   vshader->sourceProgram = vgen.getShaderProgram();
