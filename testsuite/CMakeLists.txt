@@ -27,6 +27,35 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
       target_link_libraries(CoinBumpGLXTest Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
       add_test(NAME BumpProgramGLX COMMAND CoinBumpGLXTest)
       set_tests_properties(BumpProgramGLX PROPERTIES SKIP_RETURN_CODE 77)
+
+
+      add_executable(CoinGLImageUploadTargetTest glimage/UploadTargetGLXTest.cpp)
+      target_include_directories(CoinGLImageUploadTargetTest PRIVATE
+        ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+        ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+      target_link_libraries(CoinGLImageUploadTargetTest
+        Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+      foreach(upload_case
+          direct-2d-disabled direct-2d-mode2d direct-2d-mode3d
+          direct-2d-modecube direct-2d-moderect
+          direct-3d-disabled direct-3d-mode2d direct-3d-mode3d
+          direct-3d-modecube direct-3d-moderect
+          direct-3d-depth1-disabled direct-3d-depth1-mode2d
+          direct-3d-depth1-mode3d
+          direct-2d-mode3d-mipmap direct-3d-disabled-mipmap
+          direct-3d-mode2d-mipmap direct-3d-mode3d-mipmap
+          direct-2d-mode3d-eager direct-3d-disabled-eager
+          direct-2d-rectangle-mode3d
+          transition-depth1 transition-cubic transition-cubic-mipmap
+          unit1-zero2d-depth1 unit1-disabled-depth1
+          unit1-zero2d-cubic unit1-disabled-cubic
+          unit1-zero2d-cubic-mipmap unit1-disabled-cubic-mipmap)
+        add_test(NAME GLImageUploadTarget_${upload_case}
+          COMMAND CoinGLImageUploadTargetTest ${upload_case})
+        set_tests_properties(GLImageUploadTarget_${upload_case} PROPERTIES
+          SKIP_RETURN_CODE 77 LABELS "glimage;glx" TIMEOUT 30
+          ENVIRONMENT "COIN_GLERROR_DEBUGGING=0;COIN_TEX2_LINEAR_LIMIT=0.2;COIN_TEX2_MIPMAP_LIMIT=0.5;COIN_TEX2_LINEAR_MIPMAP_LIMIT=0.8")
+      endforeach()
     endif()
   endif()
 endif()
