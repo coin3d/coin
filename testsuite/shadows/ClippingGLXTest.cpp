@@ -18,6 +18,24 @@ void quad(SoSeparator * scene, float x0, float y0, float x1, float y1, float z) 
   c->point.setValues(0,4,p); scene->addChild(c);
   SoFaceSet * f = new SoFaceSet; f->numVertices = 4; scene->addChild(f);
 }
+void receiverGrid(SoSeparator * scene, float offset) {
+  // Low-quality spot lighting is evaluated at vertices. A single giant
+  // quad puts all four vertices outside the cone, despite lit interior rays.
+  // Tessellate the receiver, leaving each clipped caster one bbox-crossing face.
+  const int divisions = 24;
+  std::vector<SbVec3f> points;
+  std::vector<int32_t> counts(divisions*divisions,4);
+  for (int y=0;y<divisions;++y) for (int x=0;x<divisions;++x) {
+    const float x0=-3.8f+7.6f*x/divisions, x1=-3.8f+7.6f*(x+1)/divisions;
+    const float y0=-3.8f+7.6f*y/divisions, y1=-3.8f+7.6f*(y+1)/divisions;
+    points.push_back(SbVec3f(offset+x0,y0,0)); points.push_back(SbVec3f(offset+x1,y0,0));
+    points.push_back(SbVec3f(offset+x1,y1,0)); points.push_back(SbVec3f(offset+x0,y1,0));
+  }
+  SoCoordinate3 * c = new SoCoordinate3;
+  c->point.setValues(0,int(points.size()),&points[0]); scene->addChild(c);
+  SoFaceSet * face = new SoFaceSet;
+  face->numVertices.setValues(0,int(counts.size()),&counts[0]); scene->addChild(face);
+}
 struct ClipFixture {
   bool spot;
   float offset;
@@ -90,7 +108,7 @@ struct ClipFixture {
     SoCallback * rx = new SoCallback; rx->setCallback(inspect,&receiver); group->addChild(rx);
     // Receiver is outside the clipped Separator, remains visible everywhere,
     // and is also an ordinary caster in the normal-traversal test.
-    quad(group,offset-3.8f,-3.8f,offset+3.8f,3.8f,0);
+    receiverGrid(group,offset);
     action.setCacheContext(5391);
   }
   ~ClipFixture() { root->unref(); }
@@ -98,6 +116,10 @@ struct ClipFixture {
     receiver = Result(); producer = Result();
     SoErrorCB * old = SoDebugError::getHandlerCallback(); void * data = SoDebugError::getHandlerData();
     SoDebugError::setHandlerCallback(error,&receiver);
+    // Supply the depth state normally established by a viewer. The native
+    // FBO path inherits it; a bare new GLX context starts with depth disabled.
+    // Without this, the normal scene's last receiver overwrites caster moments.
+    glEnable(GL_DEPTH_TEST); glDepthMask(GL_TRUE); glDepthFunc(GL_LEQUAL);
     glViewport(0,0,size,size); glClearColor(0,0,0,0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     action.apply(root); glFinish(); glPixelStorei(GL_PACK_ALIGNMENT,1);
