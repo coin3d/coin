@@ -67,7 +67,13 @@ void observe(void * data, SoAction * action) {
       check((flags & SoShapeStyleElement::SHADOWS)==(o.visibleFlags & SoShapeStyleElement::SHADOWS),
             "child restores parent SHADOWS state");
     }
-    if (p.kind==1) { ++o.visibleLeaves; check(program!=0,"active child keeps its visible receiver program"); }
+    if (p.kind==1) {
+      ++o.visibleLeaves;
+      const bool receives=(SoShadowStyleElement::get(action->getState()) &
+                           SoShadowStyleElement::SHADOWED)!=0;
+      check(receives ? program!=0 : program==0,
+            "visible receiver program follows SHADOWED independently of casting");
+    }
     if (p.kind==3) {
       check(program==0,"program is restored after the outer shadow group");
       check(!(flags & SoShapeStyleElement::SHADOWS),"SHADOWS is restored after the outer group");
