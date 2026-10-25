@@ -452,3 +452,5 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
       PROPERTIES TIMEOUT 10)
   endforeach()
 endif()
+
+include(texture3/Tests.cmake)
