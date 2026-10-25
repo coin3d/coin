@@ -17,6 +17,15 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
   if(UNIX AND NOT APPLE)
     find_package(X11 QUIET)
     if(X11_FOUND AND HAVE_GLX)
+      add_executable(CoinSoGLImageMipmapGLXTest SoGLImageMipmapGLXTest.cpp)
+      target_include_directories(CoinSoGLImageMipmapGLXTest PRIVATE
+        ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+        ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+      target_link_libraries(CoinSoGLImageMipmapGLXTest
+        Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+      add_test(NAME SoGLImageMipmapGLX COMMAND CoinSoGLImageMipmapGLXTest)
+      set_tests_properties(SoGLImageMipmapGLX PROPERTIES SKIP_RETURN_CODE 77 TIMEOUT 60)
+
       add_executable(CoinBumpGLXTest bumprender/GLXTest.cpp)
       target_compile_definitions(CoinBumpGLXTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
       target_include_directories(CoinBumpGLXTest PRIVATE
