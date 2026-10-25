@@ -77,6 +77,22 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
         set_tests_properties(ShadowNestedStyleGLX_${shadow_case} PROPERTIES
           SKIP_RETURN_CODE 77 LABELS "shadows;native-gl;nested;style" TIMEOUT 120)
       endforeach()
+      add_executable(CoinShadowCacheGLXTest shadows/CacheGLXTest.cpp)
+      target_include_directories(CoinShadowCacheGLXTest PRIVATE
+        ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+        ${PROJECT_SOURCE_DIR}/include/Inventor/annex
+        ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+      target_link_libraries(CoinShadowCacheGLXTest
+        Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+      if(HAVE_NODEKITS)
+        target_compile_definitions(CoinShadowCacheGLXTest PRIVATE SHADOW_CACHE_HAVE_NODEKITS)
+      endif()
+      foreach(shadow_case barriers structure plain)
+        add_test(NAME ShadowCacheGLX_${shadow_case}
+          COMMAND CoinShadowCacheGLXTest ${shadow_case})
+        set_tests_properties(ShadowCacheGLX_${shadow_case} PROPERTIES
+          SKIP_RETURN_CODE 77 LABELS "shadows;native-gl;cache" TIMEOUT 180)
+      endforeach()
       add_test(NAME BumpProgramGLX COMMAND CoinBumpGLXTest)
       set_tests_properties(BumpProgramGLX PROPERTIES SKIP_RETURN_CODE 77)
     endif()
