@@ -2164,6 +2164,14 @@ SoShadowGroupP::GLRender(SoGLRenderAction * action, const SbBool inpath)
 {
   SoState * state = action->getState();
 
+  // Separators detect this group structurally before opening a render list.
+  // Also prevent publication by other cache owners which traverse the group.
+  // Invalidation alone cannot make an already open GL_COMPILE execute FBO
+  // commands immediately; enclosing custom cache nodes have that obligation.
+  SoCacheElement::invalidate(state);
+  SoGLCacheContextElement::shouldAutoCache(state,
+                                         SoGLCacheContextElement::DONT_AUTO_CACHE);
+
   // In an ancestor's map this group is only a caster subtree. Starting
   // another shadow pass here would replace the ancestor's VSM program.
   if (SoShapeStyleElement::get(state)->getFlags() & SoShapeStyleElement::SHADOWMAP) {
