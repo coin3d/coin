@@ -276,6 +276,7 @@
 #include "glue/khronos/GL/wglext.h"
 #endif
 #include "glue/glp.h"
+#include "glue/pbuffer_limits.h"
 #include "glue/dlp.h"
 #include "glue/gl_agl.h"
 #include "glue/gl_cgl.h"
@@ -4645,8 +4646,6 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
        20040713 mortene. */
 #endif
     if (ok) {
-      int modulo = 0;
-
       if (coin_glglue_debug()) {
         cc_debugerror_postinfo("cc_glglue_context_max_dimensions",
                                "pbuffer max dimensions, "
@@ -4654,14 +4653,7 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
                                pbufmax[0], pbufmax[1], pbufmax[2]);
       }
 
-      *width = cc_min(*width, pbufmax[0]);
-      *height = cc_min(*height, pbufmax[1]);
-
-      while ((*width * *height) > pbufmax[2]) {
-        if (modulo % 2) { *width /= 2; }
-        else { *height /= 2; }
-        modulo++;
-      }
+      coin_glglue_clamp_pbuffer_dimensions(*width, *height, pbufmax);
     }
   }
 
