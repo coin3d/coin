@@ -1,3 +1,8 @@
+# This regression test exercises limit handling without an OpenGL display.
+add_executable(CoinPbufferLimitsTest PbufferLimitsTest.cpp)
+target_include_directories(CoinPbufferLimitsTest PRIVATE ${PROJECT_SOURCE_DIR}/src)
+add_test(NAME PbufferLimits COMMAND CoinPbufferLimitsTest)
+
 include(SbSmallMapTests.cmake)
 
 if(COIN_BUILD_LEGACY_GL_RENDERER)
