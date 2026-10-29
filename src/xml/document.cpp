@@ -1122,7 +1122,7 @@ BOOST_AUTO_TEST_CASE(dom_root_ownership)
 
 BOOST_AUTO_TEST_CASE(write_escapes_character_data_and_attributes)
 {
-  const char * attributevalue = "a&b<c>d\"e'f";
+  const char * attributevalue = "a&b<c>d\"e'f\t\n\r";
   const char * characterdata = "x&y<z>q\"'";
 
   cc_xml_doc * doc = cc_xml_doc_new();
@@ -1138,7 +1138,7 @@ BOOST_AUTO_TEST_CASE(write_escapes_character_data_and_attributes)
 
   const char * expected =
     "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-    "<root value=\"a&amp;b&lt;c&gt;d&quot;e&apos;f\">"
+    "<root value=\"a&amp;b&lt;c&gt;d&quot;e&apos;f&#x9;&#xA;&#xD;\">"
     "x&amp;y&lt;z&gt;q\"'</root>\n";
   BOOST_CHECK(strcmp(buffer, expected) == 0);
   BOOST_CHECK(bytecount == strlen(expected));
@@ -1168,6 +1168,26 @@ BOOST_AUTO_TEST_CASE(write_escapes_character_data_and_attributes)
 
   delete [] buffer;
   cc_xml_doc_delete_x(parsed);
+  cc_xml_doc_delete_x(doc);
+}
+
+BOOST_AUTO_TEST_CASE(write_escapes_text_carriage_return)
+{
+  cc_xml_doc * doc = cc_xml_doc_new();
+  cc_xml_elt * root = cc_xml_elt_new_from_data("root", NULL);
+  cc_xml_elt_set_cdata_x(root, "a\rb");
+  cc_xml_doc_set_root_x(doc, root);
+
+  char * buffer = NULL;
+  size_t bytecount = 0;
+  BOOST_REQUIRE(cc_xml_doc_write_to_buffer(doc, buffer, bytecount));
+  const char * expected =
+    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+    "<root>a&#xD;b</root>\n";
+  BOOST_CHECK(strcmp(buffer, expected) == 0);
+  BOOST_CHECK(bytecount == strlen(expected));
+
+  delete [] buffer;
   cc_xml_doc_delete_x(doc);
 }
 

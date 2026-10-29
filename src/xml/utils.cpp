@@ -113,6 +113,9 @@ cc_xml_escape_sequence(char character, enum cc_xml_escape_mode mode)
   case '>': return "&gt;";
   case '"': return mode == CC_XML_ESCAPE_ATTRIBUTE ? "&quot;" : NULL;
   case '\'': return mode == CC_XML_ESCAPE_ATTRIBUTE ? "&apos;" : NULL;
+  case '\t': return mode == CC_XML_ESCAPE_ATTRIBUTE ? "&#x9;" : NULL;
+  case '\n': return mode == CC_XML_ESCAPE_ATTRIBUTE ? "&#xA;" : NULL;
+  case '\r': return "&#xD;";
   default: return NULL;
   }
 }
