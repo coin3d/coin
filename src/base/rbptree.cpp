@@ -42,6 +42,7 @@
 #include <cassert>
 #include <cstddef>
 #include <cstdlib>
+#include <functional>
 #include <cstdio>
 
 #include <Inventor/C/base/string.h>
@@ -96,6 +97,13 @@ struct cc_rbptree_node {
 
 static cc_rbptree_node rbptree_sentinel;
 static SbBool rbptree_isinitialized = FALSE;
+
+// std::less provides a strict total order for unrelated object pointers.
+static bool
+rbptree_pointer_less(const void * lhs, const void * rhs)
+{
+  return std::less<const void *>()(lhs, rhs);
+}
 
 extern "C" {
 
@@ -223,7 +231,7 @@ rbptree_bintree_insert(cc_rbptree * t, cc_rbptree_node * z)
 
   while (x != nil) {
     y = x;
-    if (z->pointer < x->pointer) {
+    if (rbptree_pointer_less(z->pointer, x->pointer)) {
       x = x->left;
     }
     else {
@@ -235,7 +243,7 @@ rbptree_bintree_insert(cc_rbptree * t, cc_rbptree_node * z)
   if (y == nil) {
     t->root = z;
   }
-  else if (z->pointer < y->pointer) {
+  else if (rbptree_pointer_less(z->pointer, y->pointer)) {
     y->left = z;
   }
   else {
@@ -513,7 +521,7 @@ rbptree_find(cc_rbptree * t, void * pointer)
   nil = &rbptree_sentinel;
 
   while (x != nil && x->pointer != p) {
-    if (p < x->pointer) {
+    if (rbptree_pointer_less(p, x->pointer)) {
       x = x->left;
     }
     else {
@@ -521,6 +529,29 @@ rbptree_find(cc_rbptree * t, void * pointer)
     }
   }
   return x;
+}
+
+/* Find a specific pointer/data pair. Rotations can put equal pointers on
+   either side of a node, so both equal-key subtrees may need inspection. */
+static cc_rbptree_node *
+rbptree_find_with_data(cc_rbptree_node * x, const void * pointer, const void * data)
+{
+  cc_rbptree_node * nil = &rbptree_sentinel;
+  while (x != nil) {
+    if (x->pointer == pointer) {
+      if (x->data == data) return x;
+      cc_rbptree_node * found = rbptree_find_with_data(x->left, pointer, data);
+      if (found != nil) return found;
+      x = x->right;
+    }
+    else if (rbptree_pointer_less(pointer, x->pointer)) {
+      x = x->left;
+    }
+    else {
+      x = x->right;
+    }
+  }
+  return nil;
 }
 
 
@@ -549,6 +580,29 @@ rbptree_remove_inline(cc_rbptree * t, const int idx)
   }
 }
 
+static SbBool
+rbptree_remove_impl(cc_rbptree * t, void * p, void * data, const SbBool matchdata)
+{
+  cc_rbptree_node * nil = &rbptree_sentinel;
+
+  if (t->counter == 0) return FALSE;
+  if (t->inlinepointer[0] == p && (!matchdata || t->inlinedata[0] == data)) {
+    rbptree_remove_inline(t, 0);
+    return TRUE;
+  }
+  if (t->counter > 1 && t->inlinepointer[1] == p &&
+      (!matchdata || t->inlinedata[1] == data)) {
+    rbptree_remove_inline(t, 1);
+    return TRUE;
+  }
+
+  cc_rbptree_node * z = matchdata ? rbptree_find_with_data(t->root, p, data)
+                                 : rbptree_find(t, p);
+  if (z == nil) return FALSE;
+  rbptree_remove_node(t, z);
+  return TRUE;
+}
+
 /*!
  * Remove the (first) node with value \c p. Returns \e TRUE if \c p
  * is found and removed, \e FALSE otherwise.
@@ -556,27 +610,18 @@ rbptree_remove_inline(cc_rbptree * t, const int idx)
 SbBool
 cc_rbptree_remove(cc_rbptree * t, void * p)
 {
-  cc_rbptree_node *z, * nil;
-  nil = &rbptree_sentinel;
+  return rbptree_remove_impl(t, p, NULL, FALSE);
+}
 
-  if (t->counter == 0) return FALSE;
-  if (t->inlinepointer[0] == p) {
-    rbptree_remove_inline(t, 0);
-    return TRUE;
-  }
-  if (t->counter > 1 && t->inlinepointer[1] == p) {
-    rbptree_remove_inline(t, 1);
-    return TRUE;
-  }
-
-  z = rbptree_find(t, p);
-  if (z == nil) {
-    return FALSE;
-  }
-  assert(z->pointer == static_cast<char *>(p));
-  /* remove node from tree */
-  rbptree_remove_node(t, z);
-  return TRUE;
+/*!
+  Remove one entry matching both \a p and \a data. Returns TRUE when an
+  occurrence is removed, or FALSE without changing the tree if no pair
+  matches. Both arguments may be NULL; neither pointed-to object is freed.
+*/
+SbBool
+cc_rbptree_remove_with_data(cc_rbptree * t, void * p, void * data)
+{
+  return rbptree_remove_impl(t, p, data, TRUE);
 }
 
 /*!
@@ -653,10 +698,47 @@ cc_rbptree_debug(const cc_rbptree * t)
 #ifdef COIN_TEST_SUITE
 
 #include <cmath>
+#include <memory>
 #include <Inventor/lists/SbList.h>
 
 #define FILL_TIMES (50)
 #define FILL_COUNT (10000)
+
+static void
+rbptree_record_unrelated_pointer(void * pointer, void * data, void * closure)
+{
+  BOOST_CHECK_EQUAL(pointer, data);
+  static_cast<SbList<void *> *>(closure)->append(pointer);
+}
+
+BOOST_AUTO_TEST_CASE(rbptree_unrelated_pointer_lookup_and_remove)
+{
+  cc_rbptree tree;
+  cc_rbptree_init(&tree);
+  std::unique_ptr<int> entries[6];
+  for (int i = 0; i < 6; ++i) {
+    entries[i].reset(new int(i));
+    cc_rbptree_insert(&tree, entries[i].get(), entries[i].get());
+  }
+
+  SbList<void *> visited;
+  cc_rbptree_traverse(&tree, rbptree_record_unrelated_pointer, &visited);
+  BOOST_CHECK_EQUAL(visited.getLength(), 6);
+  for (int i = 0; i < 6; ++i) {
+    BOOST_CHECK(visited.find(entries[i].get()) >= 0);
+  }
+  int absent;
+  BOOST_CHECK(!cc_rbptree_remove(&tree, &absent));
+  // Remove heap nodes before the inline entries, forcing binary-tree lookup
+  // instead of promoting the root into the inline slots on every removal.
+  const int removalorder[6] = { 5, 2, 4, 3, 1, 0 };
+  for (int i = 0; i < 6; ++i) {
+    BOOST_CHECK(cc_rbptree_remove(&tree, entries[removalorder[i]].get()));
+    BOOST_CHECK_EQUAL(cc_rbptree_size(&tree), static_cast<uint32_t>(5 - i));
+  }
+  BOOST_CHECK(!cc_rbptree_remove(&tree, &absent));
+  cc_rbptree_clean(&tree);
+}
 
 BOOST_AUTO_TEST_CASE(rbptree_stress)
 {

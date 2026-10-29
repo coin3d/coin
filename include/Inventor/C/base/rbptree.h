@@ -58,6 +58,7 @@ COIN_DLL_API void cc_rbptree_clean(cc_rbptree * t);
 
 COIN_DLL_API void cc_rbptree_insert(cc_rbptree * t, void * p, void * data);
 COIN_DLL_API SbBool cc_rbptree_remove(cc_rbptree * t, void * p);
+COIN_DLL_API SbBool cc_rbptree_remove_with_data(cc_rbptree * t, void * p, void * data);
 COIN_DLL_API uint32_t cc_rbptree_size(const cc_rbptree * t);
 
 /* traverse all elements */
