@@ -52,10 +52,6 @@
 #include "tidbitsp.h"
 #include "coindefs.h"
 
-#ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
-using std::memset;
-#endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
-
 #undef COIN_ALLOW_CC_HASH
 
 /* ********************************************************************** */
@@ -190,7 +186,8 @@ cc_hash_construct(unsigned int size, float loadfactor)
   ht->hashfunc = hash_default_hashfunc;
   /* we use a memory allocator to avoid an operating system malloc
      every time a new entry is needed */
-  ht->memalloc = cc_memalloc_construct(sizeof(cc_hash_entry));
+  ht->memalloc = cc_memalloc_construct_aligned(
+    sizeof(cc_hash_entry), alignof(cc_hash_entry));
   return ht;
 }
 

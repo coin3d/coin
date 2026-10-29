@@ -52,6 +52,7 @@ set(COIN_ELEMENTS_FILES
 	SoOverrideElement.cpp
 	SoPickRayElement.cpp
 	SoPickStyleElement.cpp
+	SoPickLayerElement.cpp
 	SoPointSizeElement.cpp
 	SoPolygonOffsetElement.cpp
 	SoProfileCoordinateElement.cpp

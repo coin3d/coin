@@ -209,7 +209,7 @@ SoMFEnum::write1Value(SoOutput * out, int idx) const
   enumeration string.
 */
 void
-SoMFEnum::setValue(const SbName name)
+SoMFEnum::setValue(const SbName& name)
 {
   int val;
   if (this->findEnumValue(name, val)) {
@@ -228,7 +228,7 @@ SoMFEnum::setValue(const SbName name)
   by \a name.
 */
 void
-SoMFEnum::set1Value(const int idx, const SbName name)
+SoMFEnum::set1Value(const int idx, const SbName& name)
 {
   int val;
   if(this->findEnumValue(name, val)) {

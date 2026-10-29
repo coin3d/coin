@@ -324,7 +324,7 @@ SoSFEnum::setValue(int newvalue)
   Set the value of this field by specifying an enumeration string value.
 */
 void
-SoSFEnum::setValue(const SbName name)
+SoSFEnum::setValue(const SbName& name)
 {
   int val;
   if (this->findEnumValue(name, val)) {

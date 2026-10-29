@@ -517,49 +517,6 @@ SoInput_FileInfo::readUnsignedIntegerString()
   return TRUE;
 }
 
-/* This implementation is retained for the deprecated buffer-based API. */
-#if defined(_MSC_VER)
-#pragma warning(push)
-#pragma warning(disable: 4996)
-#elif defined(__GNUC__) || defined(__clang__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-#endif
-
-/*!
-  \deprecated Will not be available in Coin 5 due to absence of bounds checking.
- */
-SbBool
-SoInput_FileInfo::readUnsignedIntegerString(char * str)
-{
-  assert(!this->isBinary());
-  int minSize = 1;
-  char * s = str;
-
-  if (this->readChar(s, '0')) {
-    if (this->readChar(s + 1, 'x')) {
-      s += 2 + this->readHexDigits(s + 2);
-      minSize = 3;
-    }
-    else
-      s += 1 + this->readDigits(s + 1);
-  }
-  else
-    s += this->readDigits(s);
-
-  if (s - str < minSize)
-    return FALSE;
-
-  *s = '\0';
-  return TRUE;
-}
-
-#if defined(_MSC_VER)
-#pragma warning(pop)
-#elif defined(__GNUC__) || defined(__clang__)
-#pragma GCC diagnostic pop
-#endif
-
 SbBool
 SoInput_FileInfo::readUnsignedInteger(uint32_t & l)
 {
@@ -746,28 +703,7 @@ SoInput_FileInfo::readDigits()
       break;
     }
   }
-  const int offset = readString.getLength() - oldLength;
-  return offset;
-}
-
-/*!
-  \deprecated Will not be available in Coin 5 due to absence of bounds checking.
- */
-int
-SoInput_FileInfo::readDigits(char * str)
-{
-  assert(!this->isBinary());
-  char c, * s = str;
-
-  while (this->get(c)) {
-    if (isdigit(c))
-      *s++ = c;
-    else {
-      this->putBack(c);
-      break;
-    }
-  }
-  const ptrdiff_t offset = s - str;
+  const ptrdiff_t offset = readString.length() - oldLength;
   return (int)offset;
 }
 
@@ -786,26 +722,6 @@ SoInput_FileInfo::readHexDigits()
       break;
     }
   }
-  const int offset = readString.getLength() - oldLength;
-  return offset;
-}
-
-/*!
-  \deprecated Will not be available in Coin 5 due to absence of bounds checking.
- */
-int
-SoInput_FileInfo::readHexDigits(char * str)
-{
-  assert(!this->isBinary());
-  char c, * s = str;
-  while (this->get(c)) {
-
-    if (isxdigit(c)) *s++ = c;
-    else {
-      this->putBack(c);
-      break;
-    }
-  }
-  const ptrdiff_t offset = s - str;
+  const ptrdiff_t offset = readString.length() - oldLength;
   return (int)offset;
 }

@@ -49,10 +49,6 @@
 #include "fonts/defaultfonts.h"
 #include "coindefs.h"
 
-#ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
-using namespace std;
-#endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
-
 /* ********************************************************************** */
 
 static SbBool glyph3d_specmatch(const cc_font_specification * spec1, 

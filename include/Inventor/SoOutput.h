@@ -118,9 +118,9 @@ public:
   int findReference(const SoBase * base) const;
   void setReference(const SoBase * base, int refid);
 
-  void addDEFNode(SbName name);
-  SbBool lookupDEFNode(SbName name);
-  void removeDEFNode(SbName name);
+  void addDEFNode(const SbName & name);
+  SbBool lookupDEFNode(const SbName & name);
+  void removeDEFNode(const SbName & name);
 
   void pushProto(SoProto * proto);
   SoProto * getCurrentProto(void) const;

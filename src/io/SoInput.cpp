@@ -860,23 +860,6 @@ SoInput::getASCIIFile(char & c)
 }
 
 /*!
-  Reads an unsigned integer in hexadecimal format from the current stream.
-  Note that no error checking is done to see if it actually is a hex
-  format value.
-
-  A number in hexadecimal format must have the "0x" prefix.
-
-  Returns \c FALSE if end of file is encountered.
-
-  \deprecated Use readUnsignedInteger instead.
-*/
-SbBool
-SoInput::readHex(uint32_t & l)
-{
-  return this->readUnsignedInteger(l);
-}
-
-/*!
   Skips whitespace and reads next character in input stream.
   Returns \c FALSE if encountering end of file.
 */
@@ -2238,67 +2221,6 @@ SoInput::readReal(double & d)
   if (!fi) return FALSE;
   return fi->readReal(d);
 }
-
-/* The public compatibility wrappers below intentionally call the deprecated
-   buffer-based private helpers. Keep their warning suppression local. */
-#if defined(_MSC_VER)
-#pragma warning(push)
-#pragma warning(disable: 4996)
-#elif defined(__GNUC__) || defined(__clang__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-#endif
-
-/*!
-  Reads a set of bytes from the stream making up an unsigned integer and
-  puts them at \a str.
-
-  Returns \c FALSE if no string representing an unsigned integer could be
-  read.
-
-  \deprecated Will not be available in Coin 5 due to absence of bounds checking.
- */
-SbBool
-SoInput::readUnsignedIntegerString(char * str)
-{
-  SoInput_FileInfo * fi = PRIVATE(this)->getTopOfStackPopOnEOF();
-  if (!fi) return FALSE;
-  return fi->readUnsignedIntegerString(str);
-}
-
-/*!
-  Read decimal base digits from the current input stream into \a str and
-  returns the number of characters read.
-
-  \deprecated Will not be available in Coin 5 due to absence of bounds checking.
-  */
-int
-SoInput::readDigits(char * str)
-{
-  SoInput_FileInfo * fi = PRIVATE(this)->getTopOfStackPopOnEOF();
-  if (!fi) return FALSE;
-  return fi->readDigits(str);
-}
-
-/*!
-  Read hexadecimal base digits from the current input stream into \a str and
-  returns the number of characters read.
-
-  \deprecated Will not be available in Coin 5 due to absence of bounds checking.
- */
-int
-SoInput::readHexDigits(char * str)
-{
-  SoInput_FileInfo * fi = PRIVATE(this)->getTopOfStackPopOnEOF();
-  if (!fi) return FALSE;
-  return fi->readHexDigits(str);
-}
-
-#if defined(_MSC_VER)
-#pragma warning(pop)
-#elif defined(__GNUC__) || defined(__clang__)
-#pragma GCC diagnostic pop
-#endif
 
 /*!
   Reads the next character in stream and compares it to \a charToRead.

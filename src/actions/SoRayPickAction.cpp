@@ -130,6 +130,7 @@
 #include <Inventor/actions/SoRayPickAction.h>
 
 #include <cfloat>
+#include <cstdint>
 
 #include <Inventor/SbLine.h>
 #include <Inventor/SoPickedPoint.h>
@@ -139,6 +140,7 @@
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoPickRayElement.h>
 #include <Inventor/elements/SoPickStyleElement.h>
+#include <Inventor/elements/SoPickLayerElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
@@ -169,7 +171,7 @@
 
 class SoRayPickActionP {
 public:
-  SoRayPickActionP(void) : owner(NULL) { }
+  SoRayPickActionP(void) : pickstylelayer(0), owner(NULL) { }
 
   // Hidden private methods.
 
@@ -209,6 +211,11 @@ public:
 
   SoPickedPointList pickedpointlist;
   SbList <double> ppdistance;
+  SbList <int32_t> pplayer;
+
+  // the pick layer for the shape currently being intersected (set in
+  // setPickStyleFlags); on-top picks ignore this and always sort frontmost
+  int32_t pickstylelayer;
 
   unsigned int flags;
   SbBool objectspacevalid; // FIXME: why not a flag?
@@ -437,24 +444,36 @@ SoRayPickAction::getPickedPointList(void) const
   if (!PRIVATE(this)->isFlagSet(SoRayPickActionP::PPLIST_IS_SORTED) && n > 1) {
     SoPickedPoint ** pparray = reinterpret_cast<SoPickedPoint **>(PRIVATE(this)->pickedpointlist.getArrayPtr());
     double * darray = const_cast<double*>(PRIVATE(this)->ppdistance.getArrayPtr());
+    int32_t * larray = const_cast<int32_t*>(PRIVATE(this)->pplayer.getArrayPtr());
 
     int i, j, distance;
     SoPickedPoint * pptmp;
     double dtmp;
+    int32_t ltmp;
+
+    // a point sorts in front of another when it is in a higher layer, or in the
+    // same layer but closer; on-top picks carry the maximum layer and thus stay
+    // frontmost regardless of depth
+    auto sortsBefore = [](int32_t layerA, double distA, int32_t layerB, double distB) {
+      return layerA > layerB || (layerA == layerB && distA < distB);
+    };
 
     // shell sort algorithm (O(nlog(n))
     for (distance = 1; distance <= n/9; distance = 3*distance + 1) ;
     for (; distance > 0; distance /= 3) {
       for (i = distance; i < n; i++) {
         dtmp = darray[i];
+        ltmp = larray[i];
         pptmp = pparray[i];
         j = i;
-        while (j >= distance && darray[j-distance] > dtmp) {
+        while (j >= distance && sortsBefore(ltmp, dtmp, larray[j-distance], darray[j-distance])) {
           darray[j] = darray[j-distance];
+          larray[j] = larray[j-distance];
           pparray[j] = pparray[j-distance];
           j -= distance;
         }
         darray[j] = dtmp;
+        larray[j] = ltmp;
         pparray[j] = pptmp;
       }
     }
@@ -1018,13 +1037,22 @@ SoRayPickAction::addIntersection(const SbVec3f & objectspacepoint_in, SbBool fro
   PRIVATE(this)->obj2world.multVecMatrix(objectspacepoint, worldpoint);
   double dist = PRIVATE(this)->isFlagSet(SoRayPickActionP::PUSH_PICK_TO_FRONT) ?
     0.0 : PRIVATE(this)->nearplane.getDistance(worldpoint);
+  // on-top picks ignore their layer and always sort frontmost
+  int32_t layer = PRIVATE(this)->isFlagSet(SoRayPickActionP::PUSH_PICK_TO_FRONT) ?
+    INT32_MAX : PRIVATE(this)->pickstylelayer;
 
   if (!PRIVATE(this)->isFlagSet(SoRayPickActionP::PICK_ALL) && PRIVATE(this)->pickedpointlist.getLength()) {
-    // got to test if new candidate is closer than old one
-    if (dist >= PRIVATE(this)->ppdistance[0]) return NULL; // farther
+    // got to test if new candidate sorts in front of the old one: higher layer
+    // wins, and within a layer the closer point wins
+    const int32_t prevlayer = PRIVATE(this)->pplayer[0];
+    const double prevdist = PRIVATE(this)->ppdistance[0];
+    if (layer < prevlayer || (layer == prevlayer && dist >= prevdist)) {
+      return NULL; // behind
+    }
     // remove old point
     PRIVATE(this)->pickedpointlist.truncate(0);
     PRIVATE(this)->ppdistance.truncate(0);
+    PRIVATE(this)->pplayer.truncate(0);
   }
 
   // create the new picked point
@@ -1032,6 +1060,7 @@ SoRayPickAction::addIntersection(const SbVec3f & objectspacepoint_in, SbBool fro
                                          this->state, objectspacepoint_in);
   PRIVATE(this)->pickedpointlist.append(pp);
   PRIVATE(this)->ppdistance.append(dist);
+  PRIVATE(this)->pplayer.append(layer);
   PRIVATE(this)->clearFlag(SoRayPickActionP::PPLIST_IS_SORTED);
   return pp;
 }
@@ -1091,6 +1120,7 @@ SoRayPickActionP::cleanupPickedPoints(void)
 {
   this->pickedpointlist.truncate(0); // this will delete all SoPickedPoint instances in the list
   this->ppdistance.truncate(0);
+  this->pplayer.truncate(0);
   this->clearFlag(PPLIST_IS_SORTED);
 }
 
@@ -1153,7 +1183,10 @@ void
 SoRayPickActionP::setPickStyleFlags(SoState * state)
 {
   assert(state->isElementEnabled(SoPickStyleElement::getClassStackIndex()));
+  assert(state->isElementEnabled(SoPickLayerElement::getClassStackIndex()));
   assert(state->isElementEnabled(SoShapeHintsElement::getClassStackIndex()));
+
+  this->pickstylelayer = SoPickLayerElement::get(state);
 
   SoPickStyleElement::Style style = SoPickStyleElement::get(state);
   SoShapeHintsElement::ShapeType type = SoShapeHintsElement::getShapeType(state);

@@ -69,13 +69,6 @@
 
 #include "coindefs.h"
 
-#ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
-using std::strncmp;
-using std::strcmp;
-using std::strcpy;
-using std::strlen;
-#endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
-
 // *************************************************************************
 
 class ScXMLDocument::PImpl {

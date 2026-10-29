@@ -59,7 +59,7 @@ public:
   SoNode * getNode(void) const;
   void setType(const SoType type, const SbBool chkderived = TRUE);
   SoType getType(SbBool & chkderived) const;
-  void setName(const SbName name);
+  void setName(const SbName& name);
   SbName getName(void) const;
   void setFind(const int what);
   int getFind(void) const;

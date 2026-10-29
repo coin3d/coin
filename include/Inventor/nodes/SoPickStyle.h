@@ -35,6 +35,7 @@
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFEnum.h>
+#include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/elements/SoPickStyleElement.h>
 
 class COIN_DLL_API SoPickStyle : public SoNode {
@@ -56,6 +57,7 @@ public:
   };
 
   SoSFEnum style;
+  SoSFInt32 layer;
 
   void doAction(SoAction * action) override;
   void callback(SoCallbackAction * action) override;

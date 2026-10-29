@@ -79,10 +79,6 @@
 #include "SbBasicP.h"
 #include "coindefs.h"
 
-#ifndef COIN_WORKAROUND_NO_USING_STD_FUNCS
-using std::strstr;
-#endif // !COIN_WORKAROUND_NO_USING_STD_FUNCS
-
 /*!
   \var SoMField * SoSelectOne::input
   The multivalue input field which we will select a single value from

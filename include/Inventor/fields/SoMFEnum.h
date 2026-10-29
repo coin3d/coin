@@ -44,8 +44,8 @@ class COIN_DLL_API SoMFEnum : public SoMField {
 public:
   static void initClass(void);
 
-  void setValue(const SbName name);
-  void set1Value(const int idx, const SbName name);
+  void setValue(const SbName& name);
+  void set1Value(const int idx, const SbName& name);
   void setEnums(const int num, const int * const values,
                 const SbName * const names);
 

@@ -165,7 +165,7 @@ private:
 
   void getSurroundScaleMatrices(SbMatrix &matrix, SbMatrix &inv);
   SbVec3f getDraggerCenter();
-  SbVec3f calcCtrlOffset(const SbVec3f startpt);
+  SbVec3f calcCtrlOffset(const SbVec3f & startpt);
 
 private:
   SbLazyPimplPtr<SoHandleBoxDraggerP> pimpl;
