@@ -5,6 +5,10 @@ set(invalid_cases
   remove-negative remove-end remove-fast-negative remove-fast-end
   truncate-negative truncate-past-end truncate-fit-negative truncate-fit-past-end
   remove-missing pop-empty)
+set(null_handles
+  null-clone null-destruct null-append null-find null-insert null-remove
+  null-remove-item null-remove-fast null-fit null-truncate null-truncate-fit
+  null-get-length null-get-array null-get null-push null-pop)
 
 foreach(mode IN ITEMS plain_assert plain_ndebug extra_assert extra_ndebug)
   execute_process(COMMAND "${${mode}}" valid
@@ -12,7 +16,11 @@ foreach(mode IN ITEMS plain_assert plain_ndebug extra_assert extra_ndebug)
   if(NOT "${result}" STREQUAL "0")
     message(FATAL_ERROR "${mode}: valid operations failed (${result}): ${out}${err}")
   endif()
-  foreach(scenario IN LISTS invalid_cases)
+  set(cases ${invalid_cases})
+  if(mode STREQUAL "extra_assert")
+    list(APPEND cases ${null_handles})
+  endif()
+  foreach(scenario IN LISTS cases)
     execute_process(COMMAND "${${mode}}" ${scenario}
       RESULT_VARIABLE result OUTPUT_VARIABLE out ERROR_VARIABLE err TIMEOUT 5)
     if(mode STREQUAL "extra_assert")
@@ -28,4 +36,4 @@ foreach(mode IN ITEMS plain_assert plain_ndebug extra_assert extra_ndebug)
     endif()
   endforeach()
 endforeach()
-message(STATUS "cc_list: 4 valid-operation runs, 42 guarded invalid runs, 14 expected assertion aborts")
+message(STATUS "cc_list: 4 valid-operation runs, 42 guarded invalid runs, 30 expected assertion aborts (14 bounds + 16 NULL handles)")

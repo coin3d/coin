@@ -46,6 +46,20 @@ main(int argc, char ** argv)
   void ** storage = cc_list_get_array(list);
 
   if (std::strcmp(scenario, "valid") == 0) {
+    // NULL is a valid stored item; only the list handle must be non-NULL.
+    cc_list_append(list, NULL);
+    CHECK(cc_list_find(list, NULL) == 2);
+    CHECK(cc_list_get(list, 2) == NULL);
+    cc_list * nullcopy = cc_list_clone(list);
+    CHECK(nullcopy != NULL);
+    CHECK(cc_list_pop(nullcopy) == NULL);
+    CHECK(cc_list_get_length(nullcopy) == 2);
+    cc_list_destruct(nullcopy);
+    CHECK(cc_list_pop(list) == NULL);
+    CHECK(cc_list_get_length(list) == 2);
+    cc_list_insert(list, NULL, 0);
+    cc_list_remove_item(list, NULL);
+    CHECK(cc_list_get_length(list) == 2);
     cc_list_insert(list, &values[2], 0);
     cc_list_insert(list, &values[3], 3);
     CHECK(cc_list_get_length(list) == 4);
@@ -71,6 +85,31 @@ main(int argc, char ** argv)
     CHECK(cc_list_get_length(list) == 7);
     cc_list_destruct(copy);
     cc_list_destruct(list);
+    return 0;
+  }
+
+  // Invalid handles are diagnosed only in extra-debug/assertion mode.
+  // The other modes do not promise that NULL list handles are usable.
+  if (std::strncmp(scenario, "null-", 5) == 0) {
+    cc_list_destruct(list);
+    if (std::strcmp(scenario, "null-clone") == 0) cc_list_clone(NULL);
+    else if (std::strcmp(scenario, "null-destruct") == 0) cc_list_destruct(NULL);
+    else if (std::strcmp(scenario, "null-append") == 0) cc_list_append(NULL, NULL);
+    else if (std::strcmp(scenario, "null-find") == 0) cc_list_find(NULL, NULL);
+    else if (std::strcmp(scenario, "null-insert") == 0) cc_list_insert(NULL, NULL, 0);
+    else if (std::strcmp(scenario, "null-remove") == 0) cc_list_remove(NULL, 0);
+    else if (std::strcmp(scenario, "null-remove-item") == 0) cc_list_remove_item(NULL, NULL);
+    else if (std::strcmp(scenario, "null-remove-fast") == 0) cc_list_remove_fast(NULL, 0);
+    else if (std::strcmp(scenario, "null-fit") == 0) cc_list_fit(NULL);
+    else if (std::strcmp(scenario, "null-truncate") == 0) cc_list_truncate(NULL, 0);
+    else if (std::strcmp(scenario, "null-truncate-fit") == 0) cc_list_truncate_fit(NULL, 0);
+    else if (std::strcmp(scenario, "null-get-length") == 0) cc_list_get_length(NULL);
+    else if (std::strcmp(scenario, "null-get-array") == 0) cc_list_get_array(NULL);
+    else if (std::strcmp(scenario, "null-get") == 0) cc_list_get(NULL, 0);
+    else if (std::strcmp(scenario, "null-push") == 0) cc_list_push(NULL, NULL);
+    else if (std::strcmp(scenario, "null-pop") == 0) cc_list_pop(NULL);
+    else CHECK(false);
+    // Returning normally would mean that the expected diagnostic was lost.
     return 0;
   }
 
