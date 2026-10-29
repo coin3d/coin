@@ -78,8 +78,8 @@ public:
   SbBool hasTransparency(void) const;
 
 private:
-  virtual SbBool readValue(SoInput * in);
-  virtual void writeValue(SoOutput * out) const;
+  SbBool readValue(SoInput * in) override;
+  void writeValue(SoOutput * out) const override;
 
   class SoSFImageP * pimpl;
 };

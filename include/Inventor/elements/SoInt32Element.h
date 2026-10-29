@@ -46,12 +46,12 @@ protected:
   virtual ~SoInt32Element();
 
 public: // constructor / destructor / etc.
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
 
-  virtual SbBool matches(const SoElement * element) const;
-  virtual SoElement * copyMatchInfo(void) const;
+  SbBool matches(const SoElement * element) const override;
+  SoElement * copyMatchInfo(void) const override;
 
-  virtual void print(FILE * file) const;
+  void print(FILE * file) const override;
 
   static  void set(const int index, SoState * const state,
                     SoNode * const node, const int32_t value);

@@ -70,19 +70,19 @@ public:
   SoSFEnum colorization;
 
   static SbBool identify(const char * filename);
-  virtual SbBool canReadFile(const char * filename = NULL) const;
-  virtual SbBool readFile(const char * filename);
+  SbBool canReadFile(const char * filename = NULL) const override;
+  SbBool readFile(const char * filename) override;
 
-  virtual SbBool canWriteFile(const char * filename = NULL) const;
-  virtual SbBool writeFile(const char * filename);
+  SbBool canWriteFile(const char * filename = NULL) const override;
+  SbBool writeFile(const char * filename) override;
 
 
   SbBool canReadScene(void) const;
   SbBool readScene(SoNode * scene);
-  virtual SoSeparator *convert();
+  SoSeparator *convert() override;
 
 protected:
-  virtual ~SoSTLFileKit(void);
+  ~SoSTLFileKit(void) override;
 
   void reset(void);
   SbBool addFacet(const SbVec3f & v1, const SbVec3f & v2, const SbVec3f & v3,

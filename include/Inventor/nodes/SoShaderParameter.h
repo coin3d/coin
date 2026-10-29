@@ -125,7 +125,7 @@ public:
 
   SoINTERNAL public:
   static void initClass();
-  virtual void updateParameter(SoGLShaderObject *shaderObject);
+  void updateParameter(SoGLShaderObject *shaderObject) override;
 
 protected:
   virtual ~SoShaderParameter1f();
@@ -145,7 +145,7 @@ public:
 
   SoINTERNAL public:
   static void initClass();
-  virtual void updateParameter(SoGLShaderObject *shaderObject);
+  void updateParameter(SoGLShaderObject *shaderObject) override;
 
 protected:
   virtual ~SoShaderParameter1i();
@@ -165,7 +165,7 @@ public:
 
   SoINTERNAL public:
   static void initClass();
-  virtual void updateParameter(SoGLShaderObject *shaderObject);
+  void updateParameter(SoGLShaderObject *shaderObject) override;
 
 protected:
   virtual ~SoShaderParameter2f();
@@ -185,7 +185,7 @@ public:
 
   SoINTERNAL public:
   static void initClass();
-  virtual void updateParameter(SoGLShaderObject *shaderObject);
+  void updateParameter(SoGLShaderObject *shaderObject) override;
 
 protected:
   virtual ~SoShaderParameter2i();
@@ -206,7 +206,7 @@ public:
 
   SoINTERNAL public:
   static void initClass();
-  virtual void updateParameter(SoGLShaderObject *shaderObject);
+  void updateParameter(SoGLShaderObject *shaderObject) override;
 
 protected:
   virtual ~SoShaderParameter3f();
@@ -227,7 +227,7 @@ public:
 
   SoINTERNAL public:
   static void initClass();
-  virtual void updateParameter(SoGLShaderObject *shaderObject);
+  void updateParameter(SoGLShaderObject *shaderObject) override;
 
 protected:
   virtual ~SoShaderParameter3i();
@@ -248,7 +248,7 @@ public:
 
   SoINTERNAL public:
   static void initClass();
-  virtual void updateParameter(SoGLShaderObject *shaderObject);
+  void updateParameter(SoGLShaderObject *shaderObject) override;
 
 protected:
   virtual ~SoShaderParameter4f();
@@ -269,7 +269,7 @@ public:
 
   SoINTERNAL public:
   static void initClass();
-  virtual void updateParameter(SoGLShaderObject *shaderObject);
+  void updateParameter(SoGLShaderObject *shaderObject) override;
 
 protected:
   virtual ~SoShaderParameter4i();
@@ -290,7 +290,7 @@ public:
 
   SoINTERNAL public:
   static void initClass();
-  virtual void updateParameter(SoGLShaderObject *shaderObject);
+  void updateParameter(SoGLShaderObject *shaderObject) override;
 
 protected:
   virtual ~SoShaderParameterArray1f();
@@ -311,7 +311,7 @@ public:
 
   SoINTERNAL public:
   static void initClass();
-  virtual void updateParameter(SoGLShaderObject *shaderObject);
+  void updateParameter(SoGLShaderObject *shaderObject) override;
 
 protected:
   virtual ~SoShaderParameterArray1i();
@@ -332,7 +332,7 @@ public:
 
   SoINTERNAL public:
   static void initClass();
-  virtual void updateParameter(SoGLShaderObject *shaderObject);
+  void updateParameter(SoGLShaderObject *shaderObject) override;
 
 protected:
   virtual ~SoShaderParameterArray2f();
@@ -352,7 +352,7 @@ public:
 
   SoINTERNAL public:
   static void initClass();
-  virtual void updateParameter(SoGLShaderObject *shaderObject);
+  void updateParameter(SoGLShaderObject *shaderObject) override;
 
 protected:
   virtual ~SoShaderParameterArray2i();
@@ -373,7 +373,7 @@ public:
 
   SoINTERNAL public:
   static void initClass();
-  virtual void updateParameter(SoGLShaderObject *shaderObject);
+  void updateParameter(SoGLShaderObject *shaderObject) override;
 
 protected:
   virtual ~SoShaderParameterArray3f();
@@ -394,7 +394,7 @@ public:
 
   SoINTERNAL public:
   static void initClass();
-  virtual void updateParameter(SoGLShaderObject *shaderObject);
+  void updateParameter(SoGLShaderObject *shaderObject) override;
 
 protected:
   virtual ~SoShaderParameterArray3i();
@@ -415,7 +415,7 @@ public:
 
   SoINTERNAL public:
   static void initClass();
-  virtual void updateParameter(SoGLShaderObject *shaderObject);
+  void updateParameter(SoGLShaderObject *shaderObject) override;
 
 protected:
   virtual ~SoShaderParameterArray4f();
@@ -437,7 +437,7 @@ public:
 
   SoINTERNAL public:
   static void initClass();
-  virtual void updateParameter(SoGLShaderObject *shaderObject);
+  void updateParameter(SoGLShaderObject *shaderObject) override;
 
 protected:
   virtual ~SoShaderParameterArray4i();
@@ -458,7 +458,7 @@ public:
 
   SoINTERNAL public:
   static void initClass();
-  virtual void updateParameter(SoGLShaderObject *shaderObject);
+  void updateParameter(SoGLShaderObject *shaderObject) override;
 
 protected:
   virtual ~SoShaderParameterMatrix();
@@ -479,7 +479,7 @@ public:
 
   SoINTERNAL public:
   static void initClass();
-  virtual void updateParameter(SoGLShaderObject *shaderObject);
+  void updateParameter(SoGLShaderObject *shaderObject) override;
 
 protected:
   virtual ~SoShaderParameterMatrixArray();
@@ -516,7 +516,7 @@ public:
   virtual ~SoShaderStateMatrixParameter();
 
   static void initClass(void);
-  virtual void updateParameter(SoGLShaderObject *shaderObject);
+  void updateParameter(SoGLShaderObject *shaderObject) override;
   virtual void updateValue(SoState *state);
 
 protected:

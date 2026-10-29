@@ -54,13 +54,13 @@ public:
   virtual void setSchemaAttribute(const char * schema);
   virtual const char * getSchemaAttribute(void) const { return this->schema; }
 
-  virtual SbBool handleXMLAttributes(void);
+  SbBool handleXMLAttributes(void) override;
 
-  virtual void copyContents(const ScXMLElt * rhs);
+  void copyContents(const ScXMLElt * rhs) override;
 
-  virtual const ScXMLElt * search(const char * attrname, const char * attrvalue) const;
+  const ScXMLElt * search(const char * attrname, const char * attrvalue) const override;
 
-  virtual void execute(ScXMLStateMachine * statemachine) const;
+  void execute(ScXMLStateMachine * statemachine) const override;
 
 protected:
   char * location;

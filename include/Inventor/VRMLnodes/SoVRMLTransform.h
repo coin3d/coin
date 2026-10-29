@@ -69,18 +69,18 @@ public:
 
   void recenter(const SbVec3f & newcenter);
 
-  virtual void doAction(SoAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-  virtual void getMatrix(SoGetMatrixAction * action);
-  virtual void rayPick(SoRayPickAction * action);
-  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-  virtual void audioRender(SoAudioRenderAction * action);
+  void doAction(SoAction * action) override;
+  void callback(SoCallbackAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
+  void getMatrix(SoGetMatrixAction * action) override;
+  void rayPick(SoRayPickAction * action) override;
+  void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
+  void audioRender(SoAudioRenderAction * action) override;
 
-  virtual void GLRenderBelowPath(SoGLRenderAction * action);
-  virtual void GLRenderInPath(SoGLRenderAction * action);
+  void GLRenderBelowPath(SoGLRenderAction * action) override;
+  void GLRenderInPath(SoGLRenderAction * action) override;
 
-  virtual void notify(SoNotList * list);
+  void notify(SoNotList * list) override;
 
 protected:
   virtual ~SoVRMLTransform();

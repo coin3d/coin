@@ -44,25 +44,25 @@ class COIN_DLL_API SoGLBigImage : public SoGLImage {
 public:
 
   SoGLBigImage();
-  virtual void unref(SoState * state = NULL);
+  void unref(SoState * state = NULL) override;
 
   static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const ;
+  SoType getTypeId(void) const override;
 
-  virtual void setData(const SbImage * image,
+  void setData(const SbImage * image,
                        const Wrap wraps = REPEAT,
                        const Wrap wrapt = REPEAT,
                        const float quality = 0.5f,
                        const int border = 0,
-                       SoState * createinstate = NULL);
+                       SoState * createinstate = NULL) override;
 
-  virtual void setData(const SbImage * image,
+  void setData(const SbImage * image,
                        const Wrap wraps,
                        const Wrap wrapt,
                        const Wrap wrapr,
                        const float quality = 0.5f,
                        const int border = 0,
-                       SoState * createinstate = NULL);
+                       SoState * createinstate = NULL) override;
 
   int initSubImages(const SbVec2s & subimagesize) const;
   void handleSubImage(const int idx, SbVec2f & start, SbVec2f & end,
@@ -74,11 +74,11 @@ public:
 
   // will return NULL to avoid that SoGLTextureImageElement will
   // update the texture state.
-  virtual SoGLDisplayList * getGLDisplayList(SoState * state);
+  SoGLDisplayList * getGLDisplayList(SoState * state) override;
 
 
 protected:
-  virtual void unrefOldDL(SoState * state, const uint32_t maxage);
+  void unrefOldDL(SoState * state, const uint32_t maxage) override;
 
 public:
   static void initClass(void);

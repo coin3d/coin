@@ -48,13 +48,13 @@ public:
 
   SoSFRotation rotation;
 
-  virtual void doAction(SoAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-  virtual void getMatrix(SoGetMatrixAction * action);
-  virtual void pick(SoPickAction * action);
-  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
+  void doAction(SoAction * action) override;
+  void GLRender(SoGLRenderAction * action) override;
+  void callback(SoCallbackAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
+  void getMatrix(SoGetMatrixAction * action) override;
+  void pick(SoPickAction * action) override;
+  void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
 
 protected:
   virtual ~SoRotation();

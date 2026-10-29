@@ -43,10 +43,10 @@ class COIN_DLL_API SbPlaneProjector : public SbProjector {
 public:
   SbPlaneProjector(const SbBool orient = FALSE);
   SbPlaneProjector(const SbPlane & plane, const SbBool orient = FALSE);
-  virtual SbProjector * copy(void) const;
+  SbProjector * copy(void) const override;
 
-  virtual SbVec3f project(const SbVec2f & point);
-  virtual SbBool tryProject(const SbVec2f & point, const float epsilon, SbVec3f & result);
+  SbVec3f project(const SbVec2f & point) override;
+  SbBool tryProject(const SbVec2f & point, const float epsilon, SbVec3f & result) override;
 
   void setPlane(const SbPlane & plane);
   const SbPlane & getPlane(void) const;

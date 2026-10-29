@@ -52,7 +52,7 @@ public:
   SoSFFloat dropOffRate;
   SoSFFloat cutOffAngle;
 
-  virtual void GLRender(SoGLRenderAction * action);
+  void GLRender(SoGLRenderAction * action) override;
 
 protected:
   virtual ~SoSpotLight();

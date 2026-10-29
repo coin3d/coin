@@ -59,24 +59,24 @@ public:
   SbBool replaceNode(SoPath * p);
   SbBool replaceManip(SoPath * p, SoTransform * newone) const;
 
-  virtual void doAction(SoAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-  virtual void getMatrix(SoGetMatrixAction * action);
-  virtual void handleEvent(SoHandleEventAction * action);
-  virtual void pick(SoPickAction * action);
-  virtual void search(SoSearchAction * action);
+  void doAction(SoAction * action) override;
+  void callback(SoCallbackAction * action) override;
+  void GLRender(SoGLRenderAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
+  void getMatrix(SoGetMatrixAction * action) override;
+  void handleEvent(SoHandleEventAction * action) override;
+  void pick(SoPickAction * action) override;
+  void search(SoSearchAction * action) override;
 
-  virtual SoChildList * getChildren(void) const;
+  SoChildList * getChildren(void) const override;
 
 protected:
   virtual ~SoTransformManip(void);
 
   void setDragger(SoDragger * newdragger);
 
-  virtual void copyContents(const SoFieldContainer * fromfc,
-                            SbBool copyconnections);
+  void copyContents(const SoFieldContainer * fromfc,
+                            SbBool copyconnections) override;
 
   static void transferFieldValues(const SoTransform * from, SoTransform * to);
   static void valueChangedCB(void * f, SoDragger * d);

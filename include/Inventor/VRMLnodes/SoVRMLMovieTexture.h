@@ -67,7 +67,7 @@ public:
   SoSFColor blendColor;
   SoSFBool scaleTexCoord;
 
-  virtual void GLRender( SoGLRenderAction * action );
+  void GLRender( SoGLRenderAction * action ) override;
 
 protected:
   virtual ~SoVRMLMovieTexture();

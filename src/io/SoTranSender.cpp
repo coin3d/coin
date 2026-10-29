@@ -38,6 +38,7 @@
 
 SoTranSender::SoTranSender(SoOutput * COIN_UNUSED_ARG(output))
 {
+  this->pimpl = NULL;
   COIN_STUB();
 }
 

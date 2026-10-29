@@ -100,8 +100,14 @@ SoBumpMapCoordinateElement::set(SoState * state,
                                 const int32_t numcoords,
                                 const SbVec2f * coords)
 {
-  SoBumpMapCoordinateElement * elem = coin_assert_cast<SoBumpMapCoordinateElement *>
+  SoBumpMapCoordinateElement * elem = coin_safe_cast<SoBumpMapCoordinateElement *>
     (SoReplacedElement::getElement(state, classStackIndex, node));
+  if (!elem) {
+    SoDebugError::post("SoBumpMapCoordinateElement::set",
+                       "SoBumpMapCoordinateElement not enabled for this action -- "
+                       "missing SO_ENABLE()?");
+    return;
+  }
   elem->coords = coords;
   elem->numcoords = numcoords;
 }

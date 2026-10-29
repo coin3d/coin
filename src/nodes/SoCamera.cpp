@@ -434,7 +434,7 @@ SoCamera::getViewVolume(const SbViewportRegion & vp,
                         SbViewportRegion & resultvp, 
                         const SbMatrix & mm) const
 {
-  float aspectratio = resultvp.getViewportAspectRatio();
+  const float aspectratio = vp.getViewportAspectRatio();
   int vpm = this->viewportMapping.getValue();  
   SbBool adjustvp = FALSE;
   resultvp = vp;
@@ -465,7 +465,6 @@ SoCamera::getViewVolume(const SbViewportRegion & vp,
   if (adjustvp) {
     float cameraratio = this->aspectRatio.getValue();
     if (aspectratio != cameraratio) {
-      SbViewportRegion oldvp = resultvp;
       if (aspectratio < cameraratio) {
         resultvp.scaleHeight(aspectratio/cameraratio);
       }
@@ -1185,3 +1184,101 @@ SoCamera::lookAt(const SbVec3f & dir, const SbVec3f & up)
 
   this->orientation.setValue(SbRotation(rot));
 }
+
+#ifdef COIN_TEST_SUITE
+
+#include <Inventor/nodes/SoOrthographicCamera.h>
+#include <Inventor/nodes/SoPerspectiveCamera.h>
+
+namespace {
+
+void
+check_view_volumes_equal(const SbViewVolume & first,
+                         const SbViewVolume & second)
+{
+  BOOST_CHECK(first.getProjectionType() == second.getProjectionType());
+  BOOST_CHECK(first.getProjectionPoint() == second.getProjectionPoint());
+  BOOST_CHECK(first.getProjectionDirection() == second.getProjectionDirection());
+  BOOST_CHECK_MESSAGE(floatEquals(first.getNearDist(), second.getNearDist(), 16),
+                      "view volume near distances differ");
+  BOOST_CHECK_MESSAGE(floatEquals(first.getWidth(), second.getWidth(), 16),
+                      "view volume widths differ");
+  BOOST_CHECK_MESSAGE(floatEquals(first.getHeight(), second.getHeight(), 16),
+                      "view volume heights differ");
+  BOOST_CHECK_MESSAGE(floatEquals(first.getDepth(), second.getDepth(), 16),
+                      "view volume depths differ");
+}
+
+void
+check_adjust_camera(SoCamera * camera, const SbViewportRegion & inputvp)
+{
+  camera->viewportMapping = SoCamera::ADJUST_CAMERA;
+
+  SbViewportRegion result1(100, 100);
+  SbViewportRegion result2(200, 1000);
+  const SbViewVolume vv1 = camera->getViewVolume(inputvp, result1);
+  const SbViewVolume vv2 = camera->getViewVolume(inputvp, result2);
+
+  check_view_volumes_equal(vv1, vv2);
+  BOOST_CHECK(result1 == inputvp);
+  BOOST_CHECK(result2 == inputvp);
+
+  SbViewVolume expected = camera->getViewVolume(inputvp.getViewportAspectRatio());
+  if (inputvp.getViewportAspectRatio() < 1.0f) {
+    expected.scale(1.0f / inputvp.getViewportAspectRatio());
+  }
+  check_view_volumes_equal(vv1, expected);
+}
+
+void
+check_crop_viewport(SoCamera * camera, const SbViewportRegion & inputvp)
+{
+  camera->viewportMapping = SoCamera::CROP_VIEWPORT_NO_FRAME;
+
+  SbViewportRegion result1(100, 100);
+  SbViewportRegion result2(200, 1000);
+  const SbViewVolume vv1 = camera->getViewVolume(inputvp, result1);
+  const SbViewVolume vv2 = camera->getViewVolume(inputvp, result2);
+
+  check_view_volumes_equal(vv1, vv2);
+  BOOST_CHECK(result1 == result2);
+
+  SbViewportRegion expected = inputvp;
+  const float aspectratio = inputvp.getViewportAspectRatio();
+  const float cameraratio = camera->aspectRatio.getValue();
+  if (aspectratio != cameraratio) {
+    if (aspectratio < cameraratio) {
+      expected.scaleHeight(aspectratio / cameraratio);
+    }
+    else {
+      expected.scaleWidth(cameraratio / aspectratio);
+    }
+  }
+  BOOST_CHECK(result1 == expected);
+}
+
+template <typename CameraType>
+void
+check_camera_view_volume(void)
+{
+  CameraType * camera = new CameraType;
+  camera->ref();
+  camera->aspectRatio = 1.0f;
+
+  check_adjust_camera(camera, SbViewportRegion(1000, 200));
+  check_adjust_camera(camera, SbViewportRegion(200, 1000));
+  check_crop_viewport(camera, SbViewportRegion(1000, 200));
+  check_crop_viewport(camera, SbViewportRegion(200, 1000));
+
+  camera->unref();
+}
+
+} // namespace
+
+BOOST_AUTO_TEST_CASE(getViewVolume_uses_input_viewport)
+{
+  check_camera_view_volume<SoPerspectiveCamera>();
+  check_camera_view_volume<SoOrthographicCamera>();
+}
+
+#endif // COIN_TEST_SUITE

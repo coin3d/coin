@@ -45,12 +45,12 @@ protected:
   virtual ~SoGLPolygonOffsetElement();
 
 public:
-  virtual void init(SoState * state);
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state, const SoElement * prevTopElement);
+  void init(SoState * state) override;
+  void push(SoState * state) override;
+  void pop(SoState * state, const SoElement * prevTopElement) override;
 
 protected:
-  virtual void setElt(float factor, float units, Style styles, SbBool on);
+  void setElt(float factor, float units, Style styles, SbBool on) override;
 
 private:
 

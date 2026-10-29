@@ -51,18 +51,18 @@ public:
   static void initClass(void);
   SoIndexedFaceSet(void);
 
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
+  void GLRender(SoGLRenderAction * action) override;
+  void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
 
-  virtual SbBool generateDefaultNormals(SoState * state,
-                                        SoNormalBundle * bundle);
-  virtual SbBool generateDefaultNormals(SoState * state,
-                                        SoNormalCache * cache);
+  SbBool generateDefaultNormals(SoState * state,
+                                SoNormalBundle * bundle) override;
+  SbBool generateDefaultNormals(SoState * state,
+                                SoNormalCache * cache) override;
 
 protected:
   virtual ~SoIndexedFaceSet();
 
-  virtual void generatePrimitives(SoAction * action);
+  void generatePrimitives(SoAction * action) override;
 
 private:
   enum Binding {
@@ -80,7 +80,7 @@ private:
                         const SbBool normalsfromcache);
   Binding findMaterialBinding(SoState * const state) const;
   Binding findNormalBinding(SoState * const state) const;
-  virtual void notify(SoNotList * list);
+  void notify(SoNotList * list) override;
 
   SoIndexedFaceSetP * pimpl;
 };

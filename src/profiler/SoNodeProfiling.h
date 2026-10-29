@@ -73,12 +73,11 @@ public:
     SoState * state = action->getState();
     SoProfilerElement * profilerelt = SoProfilerElement::get(state);
     SbProfilingData & data = profilerelt->getProfilingData();
-    const SoFullPath * fullpath =
-      static_cast<const SoFullPath *>(action->getCurPath());
-    this->entryindex = data.getIndex(fullpath, TRUE);
+    const SoPath * path = action->getCurPath();
+    this->entryindex = data.getIndex(path, TRUE);
     assert(this->entryindex != -1);
     size_t managedmem = 0, unmanagedmem = 0;
-    fullpath->getTail()->getFieldsMemorySize(managedmem, unmanagedmem);
+    path->fullPath().getTail()->getFieldsMemorySize(managedmem, unmanagedmem);
     data.setNodeFootprint(this->entryindex,
                           SbProfilingData::MEMORY_SIZE, managedmem);
     data.setNodeFootprint(this->entryindex,
@@ -114,11 +113,11 @@ public:
     assert(adjusted.getValue() >= 0.0);
     data.setNodeTiming(this->entryindex, adjusted);
 #if 0 // DEBUG
-    const SoFullPath * fullpath = (const SoFullPath *)action->getCurPath();
+    const SoPath * path = action->getCurPath();
     SoDebugError::postInfo("Profiling",
                            "%20s (%d): duration %g, offset %g, adjusted %g",
-                           fullpath->getTail()->getTypeId().getName().getString(),
-                           fullpath->getLength(),
+                           path->fullPath().getTail()->getTypeId().getName().getString(),
+                           path->fullPath().getLength(),
                            duration.getValue(), childrenoffset.getValue(),
                            adjusted.getValue());
 #endif

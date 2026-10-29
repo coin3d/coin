@@ -46,7 +46,7 @@
 #define SCXML_OBJECT_HEADER(classname)                          \
 public:                                                         \
   static SoType getClassTypeId(void);                           \
-  virtual SoType getTypeId(void) const;                         \
+  SoType getTypeId(void) const override;                 \
   static void * createInstance(void);                           \
 private:                                                        \
   static SoType classTypeId;
@@ -56,7 +56,7 @@ private:                                                        \
 #define SCXML_OBJECT_ABSTRACT_HEADER(classname)                 \
 public:                                                         \
   static SoType getClassTypeId(void);                           \
-  virtual SoType getTypeId(void) const = 0;                     \
+  SoType getTypeId(void) const override = 0;                     \
 private:                                                        \
   static SoType classTypeId;
 

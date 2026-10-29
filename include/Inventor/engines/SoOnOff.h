@@ -58,8 +58,8 @@ protected:
   virtual ~SoOnOff(void);
 
 private:
-  virtual void evaluate(void);
-  virtual void inputChanged(SoField * which);
+  void evaluate(void) override;
+  void inputChanged(SoField * which) override;
 
   SbBool state;
 };

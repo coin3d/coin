@@ -187,7 +187,9 @@ static void cleanup_func(void)
 // rather placed static in a thunk in the DLL/.so. Needs to fetch a
 // value that cannot have been compiled in. 20050506 mortene.
 
+#if COIN_DEBUG
 static uint32_t a_static_variable = 0xdeadbeef;
+#endif // COIN_DEBUG
 
 // *************************************************************************
 
@@ -322,6 +324,12 @@ SoDB::init(void)
   // even if COIN_PROFILER is not set, as we use its classStackIndex
   // when checking if its present on the state stack.)
   SoProfilerElement::initClass();
+
+  // Read the startup setting before SoAction::initClass() selects its
+  // enabled elements. Error reporting is already initialized for parser
+  // diagnostics; the full profiler initialization must wait for nodes and
+  // actions and for SoDBP::isinitialized below. Parse only once.
+  SoProfilerP::parseCoinProfilerVariable();
 
   ScXML::initClasses();
 
@@ -462,7 +470,6 @@ SoDB::init(void)
   // CoinStaticObjectInDLL.cpp.  Logically, it should not be flagged
   // before after initialization is done, but subsystems invoked from
   // these methods needs to know that Coin is already initialized.
-  SoProfilerP::parseCoinProfilerVariable();
   if (SoProfiler::isEnabled()) {
     SoProfiler::init();
   }
@@ -494,7 +501,9 @@ void
 SoDB::finish(void)
 {
   coin_atexit_cleanup();
-  SoDBP::isinitialized = FALSE;
+  /* A cleanup callback may call finish() again. Leave the database usable
+     until the outer cleanup has finished running the remaining callbacks. */
+  if (!coin_is_exiting()) SoDBP::isinitialized = FALSE;
 }
 
 /*!
@@ -955,9 +964,23 @@ SoDB::renameGlobalField(const SbName & from, const SbName & to)
   }
 #endif // COIN_DEBUG
 
+  // Renaming a field to its own current name is a no-op -- and must be
+  // handled as one: otherwise, "old" below (found by looking up "to")
+  // would be this very same gf, and unref()'ing it out from under
+  // ourselves before the gf->setName(to) call further down would be a
+  // use-after-free.
+  if (from == to) return;
+
   if (to == "") { // Empty string is a special case, remove field.
     assert(gf->getRefCount() == 1);
-    SoGlobalField::removeGlobalFieldContainer(gf);
+    // SoGlobalField::removeGlobalFieldContainer(gf) would only remove gf
+    // from the internal list without dropping its refcount (see that
+    // method's own doc comment vs. SoGlobalField::initClass(), which sets
+    // up the list with addReferences(FALSE) precisely so it does *not*
+    // do that) -- so it would leak gf here. unref() triggers the actual
+    // deletion, and ~SoGlobalField() removes the container from the list
+    // itself, same fix as SoDBP::removeRealTimeFieldCB() (Coin issue #73).
+    gf->unref();
     return;
   }
 
@@ -965,7 +988,7 @@ SoDB::renameGlobalField(const SbName & from, const SbName & to)
   SoGlobalField * old = SoGlobalField::getGlobalFieldContainer(to);
   if (old) {
     assert(old->getRefCount() == 1);
-    SoGlobalField::removeGlobalFieldContainer(old);
+    old->unref(); // see comment above
   }
 
   gf->setName(to);
@@ -1039,7 +1062,9 @@ SoDB::getDelaySensorTimeout(void)
 
 /*!
   Returns a pointer to the global sensor manager. The sensor manager keeps
-  track of the sensor queues.
+  track of the sensor queues. Applications implementing their own event
+  loop should use its processing and pending-sensor methods; see
+  SoSensorManager for the integration sequence.
  */
 SoSensorManager *
 SoDB::getSensorManager(void)
@@ -1048,18 +1073,21 @@ SoDB::getSensorManager(void)
 }
 
 /*!
-  NOTE: THIS METHOD IS OBSOLETED. DON'T USE IT.
+  \deprecated Use the sensor manager to integrate with an event loop.
 
-  This is a wrapper around the POSIX \c select() call. It is provided
-  so you can do synchronous I/O while Coin continues to handle sensor
-  events, rendering, etc. The parameters are the same as for \c
-  select(), so check your system documentation on how to use them.
+  This method is an unimplemented compatibility stub. It
+  asserts in assertion-enabled builds and otherwise returns zero without
+  waiting for I/O or processing sensors.
 
-  The void* arguments must be valid pointers to fd_set
-  structures. We've changed this from the original SGI Inventor API to
-  avoid messing up the header file with system-specific includes.
+  Use SoDB::getSensorManager() to integrate sensor processing with the
+  application's event loop. GUI bindings normally provide this
+  integration. For a custom loop, process due sensors and limit the I/O
+  wait using SoSensorManager::isTimerSensorPending(), which returns an
+  absolute deadline. Blocking I/O in the loop still delays sensors and
+  rendering; use nonblocking I/O or deliver worker-thread results to the
+  event loop. See SoSensorManager for details.
 
-  NOTE: THIS METHOD IS OBSOLETED. DON'T USE IT.
+  \sa getSensorManager(), SoSensorManager::setChangedCallback()
 */
 int
 SoDB::doSelect(int COIN_UNUSED_ARG(nfds), void * COIN_UNUSED_ARG(readfds), void * COIN_UNUSED_ARG(writefds),
@@ -1242,7 +1270,9 @@ SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
     return NULL;
   }
 
+#if COIN_DEBUG
   const int stackdepth = in->filestack.getLength();
+#endif // COIN_DEBUG
 
   SoGroup * root = (SoGroup *)grouptype.createInstance();
   SoNode * topnode;
@@ -1406,7 +1436,7 @@ SoDB::removeProgressCallback(ProgressCallbackType * func, void * userdata)
 
 /*!
   Returns \c TRUE if this is a thread safe version of Coin
-  (i.e. it was configured and built with --enable-threadsafe).
+  (i.e. it was configured and built with -DCOIN_THREADSAFE=ON).
 */
 SbBool
 SoDB::isMultiThread(void)
@@ -1620,11 +1650,13 @@ SoDB::createRoute(SoNode * fromnode, const char * eventout,
       }
     }
 
-    SbBool ok;
-    if (from) ok = to->connectFrom(from, notnotify, append);
-    else ok = to->connectFrom(output, notnotify, append);
     // Both known possible failure points are caught above.
-    assert(ok && "unexpected connection error");
+    if (from) {
+      if (!to->connectFrom(from, notnotify, append)) assert(!"unexpected connection error");
+    }
+    else {
+      if (!to->connectFrom(output, notnotify, append)) assert(!"unexpected connection error");
+    }
   }
 #if COIN_DEBUG
   else {
@@ -1719,7 +1751,7 @@ BOOST_AUTO_TEST_CASE(globalRealTimeField)
 
 // Do-nothing error handler for ignoring read errors while testing.
 static void
-readErrorHandler(const SoError * error, void * data)
+readErrorHandler(const SoError *, void *)
 {
 }
 

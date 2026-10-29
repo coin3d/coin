@@ -53,7 +53,7 @@
 class ScXMLParamEltReader : public ScXMLEltReader {
 public:
   ScXMLParamEltReader(void);
-  virtual ScXMLElt * read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm);
+  ScXMLElt * read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm) override;
 };
 
 ScXMLParamEltReader::ScXMLParamEltReader(void)
@@ -162,7 +162,8 @@ void
 ScXMLParamElt::copyContents(const ScXMLElt * rhs)
 {
   inherited::copyContents(rhs);
-  const ScXMLParamElt * orig = coin_assert_cast<const ScXMLParamElt *>(rhs);
+  const ScXMLParamElt * orig = coin_safe_cast<const ScXMLParamElt *>(rhs);
+  if (orig == NULL) return;
   this->setNameAttribute(orig->getNameAttribute());
   this->setExprAttribute(orig->getExprAttribute());
 }

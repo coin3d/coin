@@ -5,22 +5,22 @@
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer.
- * 
+ *
  * Redistributions in binary form must reproduce the above copyright
  * notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- * 
+ *
  * Neither the name of the copyright holder nor the names of its
  * contributors may be used to endorse or promote products derived from
  * this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -42,11 +42,26 @@
 /* This define is at least needed before inclusion of the header files
    that are part of NVidia's Linux drivers v41.91. Without it, none of
    the extension and OpenGL 1.1+ function prototypes will be set up. */
+#ifndef GL_GLEXT_PROTOTYPES
 #define GL_GLEXT_PROTOTYPES 1
+#endif
 
-@SIM_INCLUDE_WINDOWS_H@
-@SIM_INCLUDE_GL_H@
-@SIM_INCLUDE_GLU_H@
-@SIM_INCLUDE_GLEXT_H@
+#if defined(COIN_BUILDING_COIN) && defined(_WIN32)
+#  include <windows.h>
+#  include <GL/gl.h>
+#  include "glue/khronos/GL/glext.h"
+
+#else
+# if defined(_WIN32)
+#  include <windows.h>
+#  include <GL/gl.h>
+# elif defined(__APPLE__)
+#  include <OpenGL/gl.h>
+#  include <OpenGL/glext.h>
+# else
+#  include <GL/gl.h>
+#  include <GL/glext.h>
+# endif
+#endif
 
 #endif /* ! COIN_GLHEADERS_H */

@@ -52,14 +52,14 @@ protected:
   SoVRMLIndexedLine(void);
   virtual ~SoVRMLIndexedLine();
 
-  virtual void computeBBox(SoAction * action,
-                           SbBox3f & box, SbVec3f & center);
+  void computeBBox(SoAction * action,
+                   SbBox3f & box, SbVec3f & center) override;
   
-  int getNumVerts( int startCoord );
-  void setupIndices( int numFaces );
+  int getNumVerts(int startCoord);
+  void setupIndices(int numFaces);
   const int32_t * getColorIndices(void);
 
-  virtual void notify( SoNotList * list );
+  void notify(SoNotList * list) override;
 
 }; // class SoVRMLIndexedLine
 

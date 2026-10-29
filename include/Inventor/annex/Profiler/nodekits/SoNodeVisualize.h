@@ -77,7 +77,7 @@ public:
   unsigned int nodeNumChildren();
   bool isAlternating() const;
 
-  virtual void handleEvent(SoHandleEventAction * action);
+  void handleEvent(SoHandleEventAction * action) override;
 
   void traverse(SoProfilerStats * stats);
 

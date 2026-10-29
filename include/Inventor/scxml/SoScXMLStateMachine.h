@@ -65,7 +65,7 @@ public:
 
   virtual SbBool processSoEvent(const SoEvent * event);
 
-  virtual const char * getVariable(const char * key) const;
+  const char * getVariable(const char * key) const override;
 
 private:
   SoScXMLStateMachine(const SoScXMLStateMachine & rhs); // N/A

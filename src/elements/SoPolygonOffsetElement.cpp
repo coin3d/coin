@@ -43,6 +43,8 @@
 
 #include "SbBasicP.h"
 
+#include <Inventor/errors/SoDebugError.h>
+
 #include <cassert>
 
 /*!
@@ -135,10 +137,18 @@ SoPolygonOffsetElement::get(SoState * state, float & factor, float & units,
                             Style & styles, SbBool & on)
 {
   const SoPolygonOffsetElement * elem =
-    coin_assert_cast<const SoPolygonOffsetElement *>
+    coin_safe_cast<const SoPolygonOffsetElement *>
     (
      SoElement::getConstElement(state, classStackIndex)
      );
+
+  if (!elem) {
+    SoDebugError::post("SoPolygonOffsetElement::get",
+                       "SoPolygonOffsetElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning default values.");
+    SoPolygonOffsetElement::getDefault(factor, units, styles, on);
+    return;
+  }
 
   factor = elem->offsetfactor;
   units = elem->offsetunits;

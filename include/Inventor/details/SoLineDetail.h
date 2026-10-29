@@ -45,7 +45,7 @@ public:
   virtual ~SoLineDetail();
 
   static void initClass(void);
-  virtual SoDetail * copy(void) const;
+  SoDetail * copy(void) const override;
 
   const SoPointDetail * getPoint0(void) const;
   const SoPointDetail * getPoint1(void) const;

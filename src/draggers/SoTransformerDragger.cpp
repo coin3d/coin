@@ -909,9 +909,6 @@ SoTransformerDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 
 // Convenience method used to call setDefault on similar fields.
 //
-// Note: keep the function name prefix to avoid name clashes with
-// other dragger .cpp files for "--enable-compact" builds.
-//
 // FIXME: should collect these methods in a common method visible to
 // all draggers implementing the exact same functionality. 20010826 mortene.
 static void
@@ -1851,14 +1848,13 @@ SoTransformerDragger::updateAntiSquishList(void)
 
     SoPathList &pl = sa.getPaths();
     for (int i = 0; i < pl.getLength(); i++) {
-      SoFullPath * path = reclassify_cast<SoFullPath *>(pl[i]);
-      SoNode * tail = path->getTail();
+      SoNode * tail = pl[i]->fullPath().getTail();
       int j, n = this->antiSquishList.getLength();
       for (j = 0; j < n; j++) {
         if (this->antiSquishList[j] == tail) break;
       }
       if (j == n)
-        this->antiSquishList.append(path->getTail());
+        this->antiSquishList.append(tail);
     }
   }
   int n = this->antiSquishList.getLength();
@@ -2222,7 +2218,7 @@ SoTransformerDragger::setDynamicRotatorSwitches(const SoEvent *event)
 
 static
 SoCallbackAction::Response
-register_cb(void * data, SoCallbackAction * action, const SoNode * node)
+register_cb(void * data, SoCallbackAction *, const SoNode * node)
 {
   assert(data);
   SbDict * dict = static_cast<SbDict *>(data);
@@ -2232,7 +2228,7 @@ register_cb(void * data, SoCallbackAction * action, const SoNode * node)
 
 static
 void
-ensure_unique_cb(uintptr_t entry, void * value, void * data)
+ensure_unique_cb(uintptr_t entry, void *, void * data)
 {
   SbDict * copydict = static_cast<SbDict *>(data);
   void * val = NULL;

@@ -49,15 +49,15 @@ public:
 
   SoMFUInt32 orderedRGBA;
 
-  virtual void doAction(SoAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void callback(SoCallbackAction * action);
+  void doAction(SoAction * action) override;
+  void GLRender(SoGLRenderAction * action) override;
+  void callback(SoCallbackAction * action) override;
 
   SbBool isTransparent(void);
 
 protected:
   virtual ~SoPackedColor();
-  virtual void notify(SoNotList *list);
+  void notify(SoNotList *list) override;
 
 private:
   SoPackedColorP * pimpl;

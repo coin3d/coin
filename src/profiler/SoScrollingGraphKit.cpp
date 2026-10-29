@@ -307,7 +307,7 @@ SoScrollingGraphKitP::getGraph(int idx)
   for (int i = 0; i < keys.getLength(); ++i) {
     Graph * graph = NULL;
     this->graphs.get(keys[i], graph);
-    if (graph->index == idx) return graph;
+    if (graph && graph->index == idx) return graph;
   }
   assert(!"serious problem - did not find graph index data");
   return NULL;

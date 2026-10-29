@@ -47,10 +47,10 @@ public:
 
   SoMFVec2f point;
 
-  virtual void doAction(SoAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void pick(SoPickAction * action);
+  void doAction(SoAction * action) override;
+  void GLRender(SoGLRenderAction * action) override;
+  void callback(SoCallbackAction * action) override;
+  void pick(SoPickAction * action) override;
 
 protected:
   virtual ~SoBumpMapCoordinate();

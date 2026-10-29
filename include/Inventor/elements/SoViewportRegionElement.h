@@ -46,15 +46,15 @@ protected:
   virtual ~SoViewportRegionElement();
 
 public:
-  virtual void init(SoState * state);
-  virtual SbBool matches(const SoElement * element) const;
-  virtual SoElement *copyMatchInfo() const;
+  void init(SoState * state) override;
+  SbBool matches(const SoElement * element) const override;
+  SoElement *copyMatchInfo() const override;
 
   static void set(SoState * const state,
                   const SbViewportRegion & viewportRegion);
   static const SbViewportRegion &get(SoState * const state);
 
-  virtual void print(FILE * file) const;
+  void print(FILE * file) const override;
 
 protected:
   virtual void setElt(const SbViewportRegion & viewportRegion);

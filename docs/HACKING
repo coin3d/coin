@@ -8,173 +8,40 @@ hints and tips for you.
 1 The Bleeding Edge
 ===================
 
-First of all, you should make sure you are building from the latest
-sources from the Mercurial repository you want to work with. This is
-done by using the Mercurial for staying in sync with the sourcecode
-repository we at Kongsberg Oil & Gas Technologies are using. Follow
-the instructions on the webpages at
-<URL:http://www.coin3d.org/doc/mercurial_access>.
+Get the latest sources from the Git repository before starting work:
 
-Be aware that Coin has three source repositories. "Coin" is the head
-development repository which is unstable and may contain unportable
-code and break binary compatibility from time to time. "Coin-1" is the
-repository that contains the code for the latest Coin-1.* release.
-"Coin-2" is the repository we release the Coin 2.* releases from and
-will always contain stable code that does not break upwards binary
-compatibility. You can hack on either, but for your application
-development efforts' sake you might want to follow Coin-2.
+  $ git clone https://github.com/coin3d/coin.git
+  $ cd coin
+  $ git switch master
+  $ git pull --ff-only
 
-If you are not familiar with Mercurial, check out the Mercurial
-homepages at <URL:http://mercurial.selenic.com/> and specifically the
-Mercurial documentation in the available online book at
-<URL:http://hgbook.red-bean.com/>.
+Use a topic branch for changes and keep the checkout synchronized with
+the upstream repository. Stable releases are identified by Git tags.
 
 
 2 Surviving a Large C++ Project
 ===============================
 
-The main problem all large C or C++ projects bump into sooner or later
-is that the turn-around time for doing compile, link and run gets too
-long for development to be efficient. When we're talking re-linking of
-library files of >30MB (with debug information), its gonna get painful
-to do rapid incremental bugfixing / testing cycles.
+The project uses CMake and requires an out-of-source build. A typical
+development build is:
 
-So I'm going to explain now how we at SIM have (more or less
-fundamentally) solved this problem for our core Coin library. First of
-all: use a "UNIX-like" system. MSWindows systems are no good for
-working with the kind of setup we have, we do all new development on
-UNIX systems (mostly Linux and SGI IRIX) and so the build process have
-been tuned for these platforms.
+  $ cmake -S . -B build -G Ninja \
+      -DCOIN_BUILD_TESTS=ON -DCOIN_BUILD_DOCUMENTATION=OFF
+  $ cmake --build build --parallel
+  $ ctest --test-dir build --output-on-failure
 
-A typical set-up session for me for doing Coin development on a virgin
-machine looks like this (I'm using SoXt as the GUI library for
-demonstration purposes):
+Use a separate build directory for each configuration. CMake supports
+Ninja, Makefiles, Xcode, and Visual Studio generators; use
+`cmake --build` so the workflow does not depend on a particular backend.
 
-  $ cd $HOME
-  $ mkdir code
-  $ cd code
-  $ hg clone http://hg.sim.no/simage/default simage
-  [Mercurial doing its thing]
-  $ hg clone http://hg.sim.no/Coin/default Coin
-  [Mercurial doing its thing]
-  $ hg clone http://hg.sim.no/SoXt/default SoXt
-  [Mercurial doing its thing]
-
-        Note: you might want to work with a particular branch from
-        Mercurial, if so use the "branches" instead of "default"
-        repository above.
-
-        Note2: if you have already checked out the sources at an
-        earlier point in time, you just ``cd'' to the sourcecode
-        directories and do
-
-        $ hg pull -u
-
-        instead of the full checkout.
-
-
-  $ export WORKDIR=<somewhere on a local disc>
-  $ mkdir compile install
-  $ cd $WORKDIR/compile
-  $ mkdir simage Coin SoXt
-
-  $ cd $WORKDIR/compile/simage
-  $ $HOME/code/simage/configure --prefix=$WORKDIR/install
-  [configure running]
-  $ make install
-  [build should complete quickly]
-
-  $ cd $WORKDIR/compile/Coin
-  $ $HOME/code/Coin/configure --prefix=$WORKDIR/install --enable-hacking
-  [configure running]
-
-        Note the "--enable-hacking" option to configure. This is the
-        brilliant part. What happens with this option is that instead
-        of making one monolithic libCoin.so file, the Coin library
-        will be linked into many shared libraries, one for each
-        subdirectory under $WORKDIR/compile/Coin/src/. The brilliance of
-        this little trick will be explained later in the walk-through.
-
-        Note for Mac OS X users: --enable-hacking requires Mac OS
-        version 10.3 or higher. It also works with the Mac OS X
-        framework build, however note that you'll need to set your
-        DYLD_LIBRARY_PATH to include Inventor.framework/Libraries.
-        Universal Binaries are not supported.
-
-  $ make install
-
-        Building will take quite some time, go for a coffee.
-
-        The build process should complete without any compiler
-        warnings or errors -- if you see any, please notify us.
-
-        Shared library files for all sub-dirs in the Coin sourcecode
-        tree should now have been installed in $WORKDIR/install, along
-        with a top-level libCoin.so file.
-
-        Now, Libtool's .la-scheme for storing information about
-        installed libraries doesn't work too well when trying to build
-        further Libtool-based libraries or executables with the
-        "hacking enabled" Coin sub-library files. But we don't really
-        lose anything important without the .la-files, so we just
-        remove them:
-
-  $ cd $WORKDIR/install/lib
-  $ rm lib*LINKHACK*.la
-
-        Next step is to configure and build an interface library which
-        "connects" Coin with an underlying native 2D GUI toolkit. We
-        use SoXt in the example walk-through, but you can also use
-        SoQt (for TrollTech's Qt), SoGtk (for gtk+) or SoWin (for
-        interfacing against "pure" Win32 API under MSWindows).
-
-  $ cd $WORKDIR/compile/SoXt
-  $ $HOME/code/SoXt/configure --prefix=$WORKDIR/install
-  [configure running]
-  $ make install
-  [build shouldn't take long]
-
-Ok, that's it. You should now have libsimage, libCoin and libSoXt
-built and installed under $WORKDIR/install/lib/.
-
-If you go look in the $WORKDIR/install/lib/ directory, you will see a
-bunch of files named lib**something**LINKHACK.so. For each of the
-"submodules" in Coin where you will be working, you should now remove
-the relevant .so-files and instead symlink them directly from the
-build directory. I.e., if you are going to work with the node classes,
-execute the following:
-
-  $ cd $WORKDIR/install/lib
-  $ ls -c1 *nodesLINKHACK*
-  libnodesLINKHACK.la*
-  libnodesLINKHACK.so@
-  libnodesLINKHACK.so.0@
-  libnodesLINKHACK.so.0.0.0*
-  $ rm libnodesLINKHACK.so.0.0.0
-  $ ln -s $WORKDIR/compile/Coin/src/nodes/.libs/libnodesLINKHACK.so.0.0.0 libnodesLINKHACK.so.0.0.0
-
-(The other two .so-files are just symlinks to the .so.0.0.0 file, so
-we don't need to do anything about those.)
-
-You should now be able to do development with very short compile &
-link turn-around cycles on the classes in the $HOME/code/Coin/nodes/
-directory. Each time you have made a change to the sourcecode, just
-
-  $ cd $WORKDIR/compile/Coin/src/nodes
-  $ make
-
-Only the relevant .cpp will now be re-compiled and only the
-libnodesLINKHACK.so sub-library will be re-linked. And the
-libnodesLINKHACK.so in the install directory which client applications
-are using is a symlink pointing to the one in your build directory, so
-no re-installation need to happen.
-
+For faster iteration, rebuild only the relevant target or use a smaller
+parallel build.
 
 One caveat emptor: if any of the class-definitions change in a non-ABI
 compatible way in any of the corresponding .h files, you need to
 recompile and relink _all_ sourcecode depending on this class, not
-just the class itself. Or core dumps will happen. (See footnote 1 at
-the end of this document for an explanation of the term "ABI".)
+just the class itself. (See footnote 1 at the end of this document for
+an explanation of the term "ABI".)
 
 There are many, many ways to break ABI compatibility in C++:
 
@@ -187,15 +54,6 @@ There are many, many ways to break ABI compatibility in C++:
   ...etc. See footnote 1 at the end of this document for more
   discussion on the issue. Anyway, as long as you're only changing the
   .cpp files, you should be home free.
-
-
-Right after we implemented this scheme, there was an article called
-"Pseudo-Incremental Linking For C/C++" in the Dr Dobb's Journal. The
-article is available at
-
-    <URL:http://www.ddj.com/articles/1999/9910/9910d/9910d.htm>
-
-and explains the principles applied fairly well.
 
 
 3 Debugging Tricks
@@ -257,18 +115,6 @@ and explains the principles applied fairly well.
 4 Misc Configurations
 =====================
 
-* Mercurial
-
-  In order to allow the storage of your Mercurial password with the
-  standard Mercurial command line client in a convenient but secure
-  fashion have a look at the Keyring Extension:
-
-  http://mercurial.selenic.com/wiki/KeyringExtension
-
-  As the default on Mercurial is to prompt you for a password it is
-  somewhat safe apart from the regular caveats to check in outside of
-  your trusted workstation.
-
 * emacs
 
   To enable C++ mode for the template *.in source files, add this to
@@ -309,16 +155,22 @@ and explains the principles applied fairly well.
   HAVE_CONFIG_H
 
     This define should always be defined, but if it isn't, then the
-    config.h header will not be included.  Lots of features will then be
-    disabled.  Lots of files will probably not even compile since we do
-    not test this case.  Anyways, this case is usually the case when
-    someone tries building the library without using the Autoconf setup.
+    config.h header will not be included. Lots of features will then be
+    disabled. Lots of files will probably not even compile. CMake
+    generates this header as part of every supported build.
 
   COIN_INTERNAL
 
-    This is a define that is set when the Coin library is being compiled.
-    Setting it when compiling things outside the Coin library is a
-    mistake.
+    Enables access to private Coin implementation interfaces. Coin library
+    sources define it, and selected internal tests may define it while still
+    linking to Coin as ordinary consumers.
+
+  COIN_BUILDING_COIN
+
+    Marks code that is actually being compiled into the Coin library. It
+    controls ABI-sensitive behavior such as Windows symbol export and
+    autolinking. COIN_BUILDING_COIN implies COIN_INTERNAL, but COIN_INTERNAL
+    does not imply COIN_BUILDING_COIN.
 
   COIN_DEBUG
 
@@ -355,79 +207,38 @@ and explains the principles applied fairly well.
 
   * If new source files were introduced:
 
-        * Add them to the Mercurial repository.
+        * Add them to the Git repository.
 
-        * Add the header and any generated doc files for the class to
-          build/coin.spec.in (for RPM generation).
-
-        * Add the source files to docs/coin.doxygen.in (for
-          documentation generation).
+        * Add the source files to the corresponding CMakeLists.txt file
+          so they are included in the CMake build.
 
         * If we are a subtype of SoBase, update the correct files for
           initializing the class (i.e. src/nodes/SoNode.cpp).
 
-        * Add the source files to the corresponding all.cpp file.
-
         * Add the header file to the corresponding common include file
           (i.e. include/Inventor/nodes/SoNodes.h)
 
-        * Add the source files to the Makefile.am file in the source
-          file directory (for building).
+        * If the class is public, add the header to the appropriate
+          CMake installation list.
 
-        * If the class is public, add the header file to
-          src/Makefile.am or any of src/*/Makefile.am (for
-          installation).
-
-        * Remember to rerun bootstrap when changing any
-          Makefile.am. See below.
+        * Configure and build an out-of-source CMake tree before
+          committing the change.
 
 
 
-8 Bootstrapping
-===============
+8 CMake Configuration
+=====================
 
-"Bootstrapping" is the process of making or updating the
-program-generated files of the Coin library (and other SIM modules),
-typically those used for configuration and building.
+CMake generates configuration headers and build files in the build
+directory. Reconfigure after changing CMake options or build inputs:
 
-Bootstrapping needs to at least be done when changes or additions are
-done on configure.ac, or any of its dependencies (like the *.m4 files
-mentioned below), or to any of the Makefile.am files. Bootstrapping
-will run the GNU Autotools; Autoconf, Automake and Libtool, which will
-use the aforementioned configure.ac, *.m4 files and Makefile.am files
-to make shell scripts and "true" Makefile-files for configuration and
-build.
+  $ cmake -S . -B build -G Ninja
+  $ cmake --build build --parallel
 
-To be able to bootstrap the Coin repository (or any other SIM code
-repository), you need to check out the "simacros" modules from Coin's
-Mercurial main repository. Then, in a UNIX shell, ''cd'' to the base
-directory of the Coin module (where the source code for Coin is
-located) and run ''<simacrosdir>/bin/bootstrap''.
+Generated files belong in the build directory and should not be added
+to the source tree. Run the tests before committing:
 
-Note that bootstrapping before committing changes to
-Autotools-generated files should _always_ happen on the internal
-valhalla.trh.sim.no server. There are several reasons for this:
-
-  - When trying to trace down bugs related to the configure and / or
-    the build process, it helps a _lot_ to only have to do this for
-    one particular version of Autoconf / Automake / Libtool.
-
-  - Sometimes we have to patch up one or more of the Autotools. Doing
-    this in a centralized manner on valhalla.trh.sim.no is of course
-    time-saving, and not prone to sync'ing errors.
-
-  - We don't want to have _heaps_ of differences in bootstrapped,
-    generated files for each commit -- which we would get if we all
-    used slightly different versions of the Autotools.
-
-Note that it can be a bit of a hassle to *always* bootstrap on
-valhalla.trh.sim.no, and that is not necessary either. What we advice
-when valhalla.trh.sim.no is somewhat out of reach is: install
-Autoconf, Automake and Libtool on your local development
-box. Bootstrap locally when developing. When done, commit all changes
-_except_ files generated by Autoconf, Automake and Libtool. Then ssh
-into valhalla.trh.sim.no, bootstrap, then commit the freshly
-bootstrapped, generated files.
+  $ ctest --test-dir build --output-on-failure
 
 
 9 How To Backport Development-Branch Extensions to Coin-2
@@ -487,24 +298,6 @@ A few points about include files.
   a design problem on your behalf, which you should fix sooner, rather
   than later...
 
-=======================================================================
-XXX FIXME: complete doc. XXX
-
-* Building Coin for development (UNIX)
-        - solutions applied in Coin
-                o make install-data
-                o make *-am
-
-* Differences, MSWin
-
-* Build hacking, bootstrap/Autoconf/Automake/Libtool
-
-* Submitting patches
-        - technical walk-through
-        - legal aspects
-
-==============================================================================
-
 Library versioning
 ==================
 
@@ -551,123 +344,38 @@ When making releases, we follow these rules:
     COIN_MINOR_VERSION unchanged,
     COIN_MICRO_VERSION += 1.
 
-==
-
-The following text pertains to the versioning that is set up in
-configure.ac, with regard to Libtool library versioning:
-
-Note that our MAJOR.MINOR.MICRO versioning scheme differs somewhat from
-the idea of library versioning applied by Libtool. According to Libtool,
-libraries should be versioned according to a CURRENT.AGE.REVISION scheme.
-Here CURRENT is supposed to be increased by 1 each time the API changes,
-and AGE increased by 1 along with CURRENT each time the API changes in a
-way which keeps the ABI backwards compatible. If compatibility is broken,
-AGE is set to 0 (while CURRENT is still increased by 1). The REVISION
-number has the same semantics as our MICRO number.
-
-To cooperate in a painless way with Libtool, we choose to "convert" our
-MAJOR.MINOR.MICRO scheme to Libtool's idea of versioning like this:
-
-* Libtool's CURRENT number is increased when the MAJOR or MINOR number is
-  changed.  If development and releases were done in a linear fashion, we
-  would just have to increase CURRENT by one when the above happens, but
-  since we intend to continue to support Coin 1.* after the release of
-  Coin 2.* we have had to make up a different scheme.  What we have done is
-  to reserve room for 20 minor releases between each major release.  This
-  should hopefully be more than enough.  With this premise, we can calculate
-  CURRENT with the formula MAJOR * 20 + MINOR.  This will ensure that
-  CURRENT for 2.0 will be greater than CURRENT for 1.3 (and 1.17 for that
-  matter).
-
-  Note that this scheme has the "strange" (it's actually completely natural)
-  effect that Coin 1.0 will be found as /usr/local/lib/libCoin.so.20.*
-  (for Linux) and Coin 2.0 will be libCoin.so.40.*.
-
-* Libtool's AGE number is the number of previous CURRENT version numbers
-  that the library is binary compatible with.  This should always be the same
-  number as MINOR is - when we make a new release with a new MAJOR number
-  and 0 as MINOR number, ABI compatibility *will* be broken.
-
-* Libtool's REVISION number is the number of the release with the exact same
-  API/ABI as the previous release.  This is typical for patch-releases
-  where some implementation bugs are fixed without touching anything in the
-  library API.  In other words, when we up the MICRO number.  This means
-  REVISION = MICRO.
+The version values are maintained in the top-level CMakeLists.txt and
+propagated to generated headers, package metadata, and library names.
+Keep the CMake project version and the ABI versioning rules above in
+sync when preparing a release.
 
 ==============================================================================
 
-Mercurial maintenance
+Branching and Releases
 ======================
 
-New "Coin-MAJOR" repositories will be branched off the head "Coin"
-repository. "Branching" in this context means to clone the "default/"
-subdirectory to the "Coin/" directory through the standard
-Mercurial "clone" command.
+Create topic branches from the current development branch and merge
+them through the project review process. Release commits update the
+version values in CMakeLists.txt and should be tested with a clean
+out-of-source build and the test suite.
 
-When this happens, the Coin repository should be tagged with the
-symbolic name "coin-MAJOR.MINOR".
+Tag releases with a versioned Git tag, for example:
 
-All releases will be made from the Coin-MAJOR.MINOR repositories.
-When a new release is made from one of those, the sources will be
-tagged with the symbolic name "Coin-MAJOR.MINOR.MICRO". This was
-forgotten for the Coin-1.0.0 release, but for MAJOR.0.0 releases this
-is not very important as it will coincide with the initial import of
-the repository.
+  $ git tag -a Coin-4.0.10 -m "Coin 4.0.10"
 
-Releases made from Coin-MAJOR repositories will be in sequence. When
-the MINOR version number is increased, no more releases of the MINOR -
-1 branch will be made.
-
-
-Making Releases
-===============
-
-Make sure to consult Coin/docs/RELEASE.txt for detailed and up2date
-release procedures.
-
-When a new release is to be made, configure.ac must be updated with
-new version information. Make sure COIN_BETA is set to [] (empty), and
-the release version number is set up. Run bootstrap and check that
-"make distcheck" works. Commit the changes with a message about
-setting the version number to MAJOR.MINOR.MICRO.
-
-Add a Mercurial tag on the new version number.
-
-  $ hg tag Coin-MAJOR.MINOR.MICRO \
-      -m "Tagging the MAJOR.MINOR.MICRO release of the 'Coin' project."
-
-Edit configure.ac again and increase micro (unless a new minor will be
-the next release) and set COIN_BETA to [a]. Rerun bootstrap, and
-commit the new setup with a message about setting the version number
-again.
-
-These two version-increment commits should happen without getting any
-unrelated commits in between them so there won't be multiple states of
-the Mercurial repository with a release version number.
-
-Then go back to the tag (hg update -rCoin-MAJOR.MINOR.MICRO) and
-prepare the release.
-
-Source release tarballs are created with:
-
-  $ hg archive -tzip Coin-MAJOR.MINOR.MICRO.zip
-  $ hg archive -ttgz Coin-MAJOR.MINOR.MICRO.tar.gz
-
-Binary releases are created from the source release tarball combining
-the respective the buildbot output from the binary snapshot directory.
+Source archives can be produced from a tagged commit with Git or CPack.
+Use the CMake packaging configuration when binary installers are
+required; the former platform-specific packaging scripts are no longer
+part of the source tree.
 
 
 Correcting Erroneous Log Messages
 =================================
 
-Sometimes commits ends up with incorrect log messages due to the
-committer being a bit too trigger-happy. The following Mercurial book
-chapter describes how to achieve that:
-
-  http://hgbook.red-bean.com/read/finding-and-fixing-mistakes.html
-
-Do this instead of reversing and reapplying, or other round-about and
-confusing techniques...
+Sometimes commits end up with incorrect log messages. Correct the
+message with `git commit --amend` before sharing the commit, or use a
+new corrective commit once the branch has been published. Avoid
+rewriting shared history.
 
 
 ==============================================================================

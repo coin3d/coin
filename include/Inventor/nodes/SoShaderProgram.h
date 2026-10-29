@@ -60,8 +60,8 @@ public:
                          void * closure);
 
 SoEXTENDER public:
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void search(SoSearchAction * action);
+  void GLRender(SoGLRenderAction * action) override;
+  void search(SoSearchAction * action) override;
   void render(SoState * state);
 
 SoINTERNAL public:

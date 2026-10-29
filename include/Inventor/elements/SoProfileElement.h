@@ -54,8 +54,8 @@ public:
     ADD_TO_CURRENT
   };
 
-  virtual void init(SoState * state);
-  virtual void push(SoState * state);
+  void init(SoState * state) override;
+  void push(SoState * state) override;
   static void add(SoState * const state, SoProfile * const profile);
   static const SoNodeList & get(SoState * const state);
 

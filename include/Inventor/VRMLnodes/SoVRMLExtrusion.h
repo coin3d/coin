@@ -61,22 +61,22 @@ public:
   SoSFBool solid;
   SoMFVec3f spine;
 
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-  virtual void computeBBox(SoAction * action,
-                           SbBox3f & bbox, SbVec3f & center);
+  void GLRender(SoGLRenderAction * action) override;
+  void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
+  void computeBBox(SoAction * action,
+                   SbBox3f & bbox, SbVec3f & center) override;
 
 protected:
   virtual ~SoVRMLExtrusion();
 
-  virtual void notify(SoNotList * list);
-  virtual void generatePrimitives( SoAction * action );
+  void notify(SoNotList * list) override;
+  void generatePrimitives( SoAction * action ) override;
 
-  virtual SoDetail * createTriangleDetail(SoRayPickAction * action,
-                                          const SoPrimitiveVertex * v1,
-                                          const SoPrimitiveVertex * v2,
-                                          const SoPrimitiveVertex * v3,
-                                          SoPickedPoint * pp);
+  SoDetail * createTriangleDetail(SoRayPickAction * action,
+                                  const SoPrimitiveVertex * v1,
+                                  const SoPrimitiveVertex * v2,
+                                  const SoPrimitiveVertex * v3,
+                                  SoPickedPoint * pp) override;
 private:
   void updateCache(void);
   class SoVRMLExtrusionP * pimpl;

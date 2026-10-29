@@ -64,7 +64,7 @@ public:
 protected:
   virtual ~SoShapeKit();
 
-  virtual void setDefaultOnNonWritingFields(void);
+  void setDefaultOnNonWritingFields(void) override;
 };
 
 #endif // !COIN_SOSHAPEKIT_H

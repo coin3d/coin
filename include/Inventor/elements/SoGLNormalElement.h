@@ -45,7 +45,7 @@ protected:
   virtual ~SoGLNormalElement();
 
 public:
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
   void send(const int index) const;
 
 };

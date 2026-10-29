@@ -50,7 +50,7 @@ public:
   virtual ~SoNodeKitDetail();
 
   static void initClass(void);
-  virtual SoDetail * copy(void) const;
+  SoDetail * copy(void) const override;
 
   void setNodeKit(SoBaseKit * kit);
   SoBaseKit * getNodeKit(void) const;

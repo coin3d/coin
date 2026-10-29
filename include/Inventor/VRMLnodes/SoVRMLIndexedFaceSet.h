@@ -58,16 +58,16 @@ public:
   SoSFBool convex;
   SoSFFloat creaseAngle;
 
-  virtual void GLRender( SoGLRenderAction * action );
-  virtual void getPrimitiveCount( SoGetPrimitiveCountAction * action );
+  void GLRender( SoGLRenderAction * action ) override;
+  void getPrimitiveCount( SoGetPrimitiveCountAction * action ) override;
 
-  virtual SbBool generateDefaultNormals(SoState * s, SoNormalBundle * nb );
-  virtual SbBool generateDefaultNormals(SoState * state, SoNormalCache * nc);
+  SbBool generateDefaultNormals(SoState * s, SoNormalBundle * nb ) override;
+  SbBool generateDefaultNormals(SoState * state, SoNormalCache * nc) override;
 
 protected:
   virtual ~SoVRMLIndexedFaceSet();
 
-  virtual void generatePrimitives( SoAction * action );
+  void generatePrimitives( SoAction * action ) override;
 
 
 private:
@@ -84,7 +84,7 @@ private:
   Binding findMaterialBinding(SoState * state) const;
   Binding findNormalBinding(SoState * state) const;
 
-  virtual void notify(SoNotList * list);
+  void notify(SoNotList * list) override;
   
   SbBool useConvexCache(SoAction * action, 
                         const SbVec3f * normals, 

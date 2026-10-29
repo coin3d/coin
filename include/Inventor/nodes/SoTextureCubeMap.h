@@ -80,18 +80,18 @@ public:
   SoSFEnum model;
   SoSFColor blendColor;
 
-  virtual void doAction(SoAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void rayPick(SoRayPickAction * action);
+  void doAction(SoAction * action) override;
+  void GLRender(SoGLRenderAction * action) override;
+  void callback(SoCallbackAction * action) override;
+  void rayPick(SoRayPickAction * action) override;
 
   static SbBool readImage(const SbString & fname, int & w, int & h, int & nc,
                           unsigned char *& bytes);
 protected:
   virtual ~SoTextureCubeMap();
 
-  virtual SbBool readInstance(SoInput * in, unsigned short flags);
-  virtual void notify(SoNotList * list);
+  SbBool readInstance(SoInput * in, unsigned short flags) override;
+  void notify(SoNotList * list) override;
   int getReadStatus(void);
   void setReadStatus(int s);
 

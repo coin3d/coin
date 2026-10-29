@@ -46,14 +46,14 @@ class COIN_DLL_API SoMFEngine : public SoMField {
 public:
   static void initClass(void);
 
-  virtual void fixCopy(SbBool copyconnections);
-  virtual SbBool referencesCopy(void) const;
+  void fixCopy(SbBool copyconnections) override;
+  SbBool referencesCopy(void) const override;
 
-  virtual void deleteValues(int start, int num = -1);
-  virtual void insertSpace(int start, int num);
+  void deleteValues(int start, int num = -1) override;
+  void insertSpace(int start, int num) override;
 
 private:
-  virtual void countWriteRefs(SoOutput * out) const;
+  void countWriteRefs(SoOutput * out) const override;
 };
 
 #endif // !COIN_SOMFENGINE_H

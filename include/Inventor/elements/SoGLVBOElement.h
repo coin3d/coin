@@ -59,11 +59,11 @@ class COIN_DLL_API SoGLVBOElement : public SoElement {
   static const SoGLVBOElement * getInstance(SoState * state);
 
  public:
-  virtual void init(SoState *state);
-  virtual void push(SoState *state);
-  virtual void pop(SoState *state, const SoElement * prevtopelement);
-  virtual SbBool matches(const SoElement * elt) const;
-  virtual SoElement * copyMatchInfo(void) const;
+  void init(SoState *state) override;
+  void push(SoState *state) override;
+  void pop(SoState *state, const SoElement * prevtopelement) override;
+  SbBool matches(const SoElement * elt) const override;
+  SoElement * copyMatchInfo(void) const override;
 
   SoVBO * getVertexVBO(void) const;
   SoVBO * getNormalVBO(void) const;

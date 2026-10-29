@@ -52,11 +52,11 @@ class COIN_DLL_API SoSFEngine : public SoSField {
 public:
   static void initClass(void);
 
-  virtual void fixCopy(SbBool copyconnections);
-  virtual SbBool referencesCopy(void) const;
+  void fixCopy(SbBool copyconnections) override;
+  SbBool referencesCopy(void) const override;
 
 private:
-  virtual void countWriteRefs(SoOutput * out) const;
+  void countWriteRefs(SoOutput * out) const override;
 
   // For accessing the readValue() and writeValue() methods.
   friend class SoMFEngine;

@@ -62,8 +62,8 @@ public:
 
 protected:
   virtual ~SoJackDragger(void);
-  virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
-  virtual void setDefaultOnNonWritingFields(void);
+  SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE) override;
+  void setDefaultOnNonWritingFields(void) override;
 
   static void invalidateSurroundScaleCB(void * f, SoDragger * d);
   static void fieldSensorCB(void * f, SoSensor * s);

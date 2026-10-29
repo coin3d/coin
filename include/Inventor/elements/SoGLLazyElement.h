@@ -51,9 +51,9 @@ protected:
   ~SoGLLazyElement();
 public:
 
-  virtual void init(SoState *state);
-  virtual void push(SoState *state);
-  virtual void pop(SoState *state, const SoElement * prevtopelement);
+  void init(SoState *state) override;
+  void push(SoState *state) override;
+  void pop(SoState *state, const SoElement * prevtopelement) override;
 
   static void sendAllMaterial(SoState * state);
   static void sendNoMaterial(SoState * state);
@@ -99,38 +99,38 @@ public:
     uint32_t reserved[4];
   };
 
-  virtual void setDiffuseElt(SoNode*,  int32_t numcolors,
-                             const SbColor * colors, SoColorPacker * packer);
-  virtual void setPackedElt(SoNode * node, int32_t numcolors,
-                            const uint32_t * colors, const SbBool packedtransparency);
-  virtual void setColorIndexElt(SoNode * node, int32_t numindices,
-                                const int32_t * indices);
-  virtual void setTranspElt(SoNode * node, int32_t numtransp,
-                            const float * transp, SoColorPacker * packer);
+  void setDiffuseElt(SoNode*, int32_t numcolors,
+                     const SbColor * colors, SoColorPacker * packer) override;
+  void setPackedElt(SoNode * node, int32_t numcolors,
+                    const uint32_t * colors, const SbBool packedtransparency) override;
+  void setColorIndexElt(SoNode * node, int32_t numindices,
+                        const int32_t * indices) override;
+  void setTranspElt(SoNode * node, int32_t numtransp,
+                    const float * transp, SoColorPacker * packer) override;
 
-  virtual void setTranspTypeElt(int32_t type);
-  virtual void setAmbientElt(const SbColor* color);
-  virtual void setEmissiveElt(const SbColor* color);
-  virtual void setSpecularElt(const SbColor* color);
-  virtual void setShininessElt(float value);
-  virtual void setColorMaterialElt(SbBool value);
-  virtual void enableBlendingElt(int sfactor, int dfactor, int alpha_sfactor, int alpha_dfactor);
-  virtual void disableBlendingElt(void);
-  virtual void setLightModelElt(SoState *state, int32_t model);
-  virtual void setMaterialElt(SoNode * node, uint32_t bitmask,
-                              SoColorPacker * packer,
-                              const SbColor * diffuse, const int numdiffuse,
-                              const float * transp, const int numtransp,
-                              const SbColor & ambient,
-                              const SbColor & emissive,
-                              const SbColor & specular,
-                              const float shininess,
-                              const SbBool istransparent);
-  virtual void setVertexOrderingElt(VertexOrdering ordering);
-  virtual void setBackfaceCullingElt(SbBool onoff);
-  virtual void setTwosideLightingElt(SbBool onoff);
-  virtual void setShadeModelElt(SbBool flatshading);
-  virtual void setAlphaTestElt(int func, float value);
+  void setTranspTypeElt(int32_t type) override;
+  void setAmbientElt(const SbColor* color) override;
+  void setEmissiveElt(const SbColor* color) override;
+  void setSpecularElt(const SbColor* color) override;
+  void setShininessElt(float value) override;
+  void setColorMaterialElt(SbBool value) override;
+  void enableBlendingElt(int sfactor, int dfactor, int alpha_sfactor, int alpha_dfactor) override;
+  void disableBlendingElt(void) override;
+  void setLightModelElt(SoState *state, int32_t model) override;
+  void setMaterialElt(SoNode * node, uint32_t bitmask,
+                      SoColorPacker * packer,
+                      const SbColor * diffuse, const int numdiffuse,
+                      const float * transp, const int numtransp,
+                      const SbColor & ambient,
+                      const SbColor & emissive,
+                      const SbColor & specular,
+                      const float shininess,
+                      const SbBool istransparent) override;
+  void setVertexOrderingElt(VertexOrdering ordering) override;
+  void setBackfaceCullingElt(SbBool onoff) override;
+  void setTwosideLightingElt(SbBool onoff) override;
+  void setShadeModelElt(SbBool flatshading) override;
+  void setAlphaTestElt(int func, float value) override;
 
   static void beginCaching(SoState * state,
                            SoGLLazyElement::GLState * prestate,
@@ -147,8 +147,8 @@ public:
   void updateColorVBO(SoVBO * vbo);
 
 protected:
-  virtual void lazyDidSet(uint32_t mask);
-  virtual void lazyDidntSet(uint32_t mask);
+  void lazyDidSet(uint32_t mask) override;
+  void lazyDidntSet(uint32_t mask) override;
 
 private:
   void sendPackedDiffuse(const uint32_t diffuse) const;
@@ -185,7 +185,7 @@ private:
   mutable const uint32_t * packedpointer;
   uint32_t transpmask;
   SoState * state;
-  SoGLLazyElementP * pimpl; // for future use
+  SoGLLazyElementP * pimpl; // holds a stack of saved caching scopes, see beginCaching()/endCaching()
 };
 
 #endif // !COIN_SOGLLAZYELEMENT_H

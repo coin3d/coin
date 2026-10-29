@@ -88,8 +88,8 @@ public:
 
   SoMFInt32 markerIndex;
 
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
+  void GLRender(SoGLRenderAction * action) override;
+  void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
 
   static int getNumDefinedMarkers(void);
   static void addMarker(int idx, const SbVec2s & size,

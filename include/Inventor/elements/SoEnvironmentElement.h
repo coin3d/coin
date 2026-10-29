@@ -54,7 +54,7 @@ public:
     SMOKE
   };
 
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
 
   static  void set(SoState * const state, SoNode * const node,
                    const float ambientIntensity, const SbColor & ambientColor,
@@ -79,7 +79,7 @@ public:
                          int32_t & fogType, SbColor & fogColor,
                          float & fogVisibility, float & fogNear);
 
-  virtual void print(FILE * file) const;
+  void print(FILE * file) const override;
 
 protected:
 

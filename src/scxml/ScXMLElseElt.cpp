@@ -53,7 +53,7 @@
 class ScXMLElseEltReader : public ScXMLEltReader {
 public:
   ScXMLElseEltReader(void);
-  virtual ScXMLElt * read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm);
+  ScXMLElt * read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm) override;
 };
 
 ScXMLElseEltReader::ScXMLElseEltReader(void)

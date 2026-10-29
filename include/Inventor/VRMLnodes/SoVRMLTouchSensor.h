@@ -56,13 +56,13 @@ public:
   SoSFBool isOver;
   SoSFTime touchTime;
 
-  virtual SbBool affectsState(void) const;
-  virtual void handleEvent(SoHandleEventAction * action);
+  SbBool affectsState(void) const override;
+  void handleEvent(SoHandleEventAction * action) override;
 
 protected:
   virtual ~SoVRMLTouchSensor();
 
-  virtual void notify(SoNotList * list);
+  void notify(SoNotList * list) override;
 
 private:
   SbBool isactive;

@@ -88,7 +88,7 @@ static unsigned int hash(const unsigned char * str, int n)
   return hash;
 }
 
-unsigned int SbHashFunc(const SbString & key) {
+unsigned int SbHashFunc(const SbString & key) noexcept {
   const unsigned char * cKey = reinterpret_cast<const unsigned char *>(key.getString());
   return hash(cKey,key.getLength());
 }
@@ -209,7 +209,7 @@ SbString::upper() const
   debug version of library, method does nothing in an optimized build.
 */
 void
-SbString::print(std::FILE * fp) const
+SbString::print(std::FILE * COIN_UNUSED_ARG(fp)) const
 {
 #if COIN_DEBUG
   std::fputs(this->getString(),fp);
@@ -543,11 +543,6 @@ SbString::print(std::FILE * fp) const
 
 #ifdef COIN_TEST_SUITE
 #include <Inventor/SbString.h>
-
-static void * createInstance(void)
-{
-  return (void *)0x1234;
-}
 
 BOOST_AUTO_TEST_CASE(testAddition)
 {

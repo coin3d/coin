@@ -61,11 +61,11 @@ public:
   SoPSVectorOutput * getPSOutput(void) const;
 
 protected:
-  virtual void printHeader(void) const;
-  virtual void printFooter(void) const;
-  virtual void printBackground(void) const;
-  virtual void printItem(const SoVectorizeItem * item) const;
-  virtual void printViewport(void) const;
+  void printHeader(void) const override;
+  void printFooter(void) const override;
+  void printBackground(void) const override;
+  void printItem(const SoVectorizeItem * item) const override;
+  void printViewport(void) const override;
 
 private:
   SoVectorizePSActionP * pimpl;

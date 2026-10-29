@@ -55,7 +55,7 @@ public:
   SoSFFloat visibilityRange;
   SoSFColor color;
 
-  virtual void GLRender( SoGLRenderAction * action );
+  void GLRender( SoGLRenderAction * action ) override;
 
 protected:
   SoSFBool set_bind;

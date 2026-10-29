@@ -56,7 +56,7 @@ protected:
   virtual ~SoVRMLColorInterpolator();
 
 private:
-  virtual void evaluate(void);
+  void evaluate(void) override;
 }; // class SoVRMLColorInterpolator
 
 #endif // ! COIN_SOVRMLCOLORINTERPOLATOR_H

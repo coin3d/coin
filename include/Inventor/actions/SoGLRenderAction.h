@@ -65,7 +65,9 @@ public:
     // The remaining are Coin extensions to the common Inventor API
     SORTED_OBJECT_SORTED_TRIANGLE_ADD,
     SORTED_OBJECT_SORTED_TRIANGLE_BLEND,
-    NONE, SORTED_LAYERS_BLEND
+    NONE, SORTED_LAYERS_BLEND,
+    // Coin extension: order-independent weighted-blended transparency (WBOIT)
+    WEIGHTED_BLEND
   };
 
   enum TransparentDelayedObjectRenderType {
@@ -117,7 +119,7 @@ public:
   void setRenderingIsRemote(SbBool isremote);
   SbBool getRenderingIsRemote(void) const;
 
-  virtual void invalidateState(void);
+  void invalidateState(void) override;
 
   void addPreRenderCallback(SoGLPreRenderCB * func, void * userdata);
   void removePreRenderCallback(SoGLPreRenderCB * func, void * userdata);
@@ -137,8 +139,8 @@ public:
 
 protected:
   friend class SoGLRenderActionP; // calls beginTraversal
-  virtual void beginTraversal(SoNode * node);
-  virtual void endTraversal(SoNode * node);
+  void beginTraversal(SoNode * node) override;
+  void endTraversal(SoNode * node) override;
 
 private:
   SbPimplPtr<SoGLRenderActionP> pimpl;

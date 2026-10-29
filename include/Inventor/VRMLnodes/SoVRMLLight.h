@@ -52,7 +52,7 @@ public:
   SoSFColor color;
   SoSFFloat ambientIntensity;
 
-  virtual void GLRender(SoGLRenderAction * action);
+  void GLRender(SoGLRenderAction * action) override;
 
 protected:
   SoVRMLLight(void);

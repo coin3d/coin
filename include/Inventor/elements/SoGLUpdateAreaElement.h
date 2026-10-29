@@ -47,13 +47,12 @@ protected:
   virtual ~SoGLUpdateAreaElement();
 
 public:
-  virtual void init(SoState * state);
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state,
-                   const SoElement * prevTopElement);
+  void init(SoState * state) override;
+  void push(SoState * state) override;
+  void pop(SoState * state, const SoElement * prevTopElement) override;
 
-  virtual SbBool matches(const SoElement * element) const;
-  virtual SoElement * copyMatchInfo() const;
+  SbBool matches(const SoElement * element) const override;
+  SoElement * copyMatchInfo() const override;
 
   static void set(SoState * const state, const SbVec2f & origin,
                    const SbVec2f & size);

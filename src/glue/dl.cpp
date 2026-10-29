@@ -154,10 +154,10 @@
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/dl.h>
 #include <Inventor/C/tidbits.h>
-#include <Inventor/system/gl.h> /* for glGetString */
 #include <Inventor/SbString.h>
 
 #include "glue/dlp.h"
+#include "glue/gl-core.h" /* for glGetString */
 #include "tidbitsp.h"
 
 #ifndef MAXPATHLEN
@@ -710,10 +710,10 @@ cc_dl_open(const char * filename)
 #elif defined (HAVE_DLD_LIB)
 
   /* FIXME: there is a good reason to try to use shn_load() *first*,
-     then dlopen() on HP-UX: according to a discussion on the libtool
-     mailinglist, dlopen() for HP-UX was buggy in an official release,
+     then dlopen() on HP-UX: according to a discussion on the HP-UX
+     development mailing list, dlopen() for HP-UX was buggy in an official release,
      needing a patch to function properly. This would take some
-     changes to the configure checks (we cut off further checking if
+     changes to the platform checks (we cut off further checking if
      libdl is found), and any code that depends on _either_
      HAVE_DL_LIB _or_ HAVE_DLD_LIB being defined, but not both at the
      same time.  20010626 mortene. */
@@ -776,7 +776,7 @@ cc_dl_open(const char * filename)
 #ifdef HAVE_WINDLL_RUNTIME_BINDING
       char libpath[512];
       DWORD retval = GetModuleFileName((HINSTANCE) h->nativehnd, libpath, sizeof(libpath));
-      assert(retval > 0 && "GetModuleFileName() failed");
+      if (retval == 0) assert(!"GetModuleFileName() failed");
       libpath[sizeof(libpath) - 1] = 0;
       cc_debugerror_postinfo("cc_dl_open", "Opened library '%s'", libpath);
 #elif defined (HAVE_DL_LIB) || defined (HAVE_DLD_LIB)
@@ -1002,17 +1002,8 @@ cc_dl_coin_handle(void)
     /* (instead of "cc_dl_open", we could use any other function in
        the public API) */
 
-    if (func == NULL) {
-      /* in case we're using the --enable-linkhack dev hack */
-      cc_libhandle gluehnd = cc_dl_open("libglueLINKHACK" DYNAMIC_LIBRARY_EXTENSION);
-      if (gluehnd) {
-        func = cc_dl_sym(gluehnd, "cc_dl_open");
-        cc_dl_close(gluehnd);
-      }
-    }
-
     if (func) {
-      if (func == cc_dl_open) { return hnd; }
+      if (func == (void *)cc_dl_open) { return hnd; }
 
       if (cc_dl_debugging()) {
         cc_debugerror_post("cc_dl_coin_handle",
@@ -1056,7 +1047,7 @@ cc_dl_opengl_handle(void)
     void * func = cc_dl_sym(hnd, "glGetString");
 
     if (func) {
-      if (func == glGetString) { return hnd; }
+      if (func == (void *)glGetString) { return hnd; }
 
       if (cc_dl_debugging()) {
         cc_debugerror_post("cc_dl_opengl_handle",

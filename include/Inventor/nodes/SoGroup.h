@@ -59,35 +59,35 @@ public:
   virtual void replaceChild(int index, SoNode * newchild);
   virtual void replaceChild(SoNode * oldchild, SoNode * newchild);
 
-  virtual void doAction(SoAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-  virtual void getMatrix(SoGetMatrixAction * action);
-  virtual void handleEvent(SoHandleEventAction * action);
-  virtual void pick(SoPickAction * action);
-  virtual void search(SoSearchAction * action);
-  virtual void write(SoWriteAction * action);
-  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-  virtual void audioRender(SoAudioRenderAction * action);
-  virtual SoChildList * getChildren(void) const;
-  virtual void addWriteReference(SoOutput * out, SbBool isfromfield = FALSE);
+  void doAction(SoAction * action) override;
+  void GLRender(SoGLRenderAction * action) override;
+  void callback(SoCallbackAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
+  void getMatrix(SoGetMatrixAction * action) override;
+  void handleEvent(SoHandleEventAction * action) override;
+  void pick(SoPickAction * action) override;
+  void search(SoSearchAction * action) override;
+  void write(SoWriteAction * action) override;
+  void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
+  void audioRender(SoAudioRenderAction * action) override;
+  SoChildList * getChildren(void) const override;
+  void addWriteReference(SoOutput * out, SbBool isfromfield = FALSE) override;
 
 protected:
   virtual ~SoGroup();
 
-  virtual SbBool readInstance(SoInput * in, unsigned short flags);
+  SbBool readInstance(SoInput * in, unsigned short flags) override;
   virtual SbBool readChildren(SoInput * in);
 
-  virtual void copyContents(const SoFieldContainer * from,
-			    SbBool copyconnections);
+  void copyContents(const SoFieldContainer * from,
+                    SbBool copyconnections) override;
 
-  virtual SoNotRec createNotRec(void);
+  SoNotRec createNotRec(void) override;
 
   void setOperation(const SoNotRec::OperationType opType = SoNotRec::UNSPECIFIED,
-		    const SoNode * cc = NULL,
-		    const SoNode * pc = NULL,
-		    const int ci = -1);
+                    const SoNode * cc = NULL,
+                    const SoNode * pc = NULL,
+                    const int ci = -1);
 
   SoChildList * children;
 

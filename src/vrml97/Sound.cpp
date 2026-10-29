@@ -137,7 +137,7 @@
 
   Between the two ellipsoids, there shall be a linear attenuation ramp
   in loudness, from 0 dB at the minimum ellipsoid to -20 dB at the
-  maximum ellipsoid: attenuation = -20 × (d' / d") where d' is the
+  maximum ellipsoid: attenuation = -20 * (d' / d") where d' is the
   distance along the location-to-viewer vector, measured from the
   transformed minimum ellipsoid boundary to the viewer, and d" is the
   distance along the location-to-viewer vector from the transformed
@@ -512,8 +512,8 @@ SoVRMLSound::SoVRMLSound(void)
     SoDebugError::postWarning("SoVRMLSound::SoVRMLSound",
       "You are using a SoVRMLSound node, but this version of Coin was built "
       "without sound support. If you'd like to have sound support in Coin, "
-      "please reconfigure and rebuild the Coin library without specifying "
-      "--disable-sound or --disable-vrml on the configure command line.");
+      "please reconfigure and rebuild the Coin library with "
+      "-DHAVE_SOUND=ON and -DHAVE_VRML97=ON.");
     warningprintedonce = TRUE;
   }
 #endif // !HAVE_SOUND

@@ -50,22 +50,22 @@ public:
   SoSFNode coord;
   SoSFNode color;
 
-  virtual void doAction(SoAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void pick(SoPickAction * action);
-  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
+  void doAction(SoAction * action) override;
+  void GLRender(SoGLRenderAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
+  void callback(SoCallbackAction * action) override;
+  void pick(SoPickAction * action) override;
+  void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
 
-  virtual void notify(SoNotList * list);
+  void notify(SoNotList * list) override;
 
 protected:
   SoVRMLVertexPoint(void);
   virtual ~SoVRMLVertexPoint();
 
-  virtual SbBool shouldGLRender(SoGLRenderAction * action);
-  virtual void computeBBox(SoAction * action, SbBox3f & box,
-                           SbVec3f & center);
+  SbBool shouldGLRender(SoGLRenderAction * action) override;
+  void computeBBox(SoAction * action, SbBox3f & box,
+                   SbVec3f & center) override;
 }; // class SoVRMLVertexPoint
 
 #endif // ! COIN_SOVRMLVERTEXPOINT_H

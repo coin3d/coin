@@ -48,9 +48,9 @@ public:
   SoToVRML2Action(void);
   virtual ~SoToVRML2Action(void);
 
-  virtual void apply(SoNode * node);
-  virtual void apply(SoPath * path);
-  virtual void apply(const SoPathList & pathlist, SbBool obeysrules = FALSE);
+  void apply(SoNode * node) override;
+  void apply(SoPath * path) override;
+  void apply(const SoPathList & pathlist, SbBool obeysrules = FALSE) override;
   
   class SoVRMLGroup * getVRML2SceneGraph(void) const;
 
@@ -64,7 +64,7 @@ public:
   SbBool doReuseGeometryNodes(void) const;
 
 protected:
-  virtual void beginTraversal(SoNode * node);
+  void beginTraversal(SoNode * node) override;
 
 private:
   SbPimplPtr<SoToVRML2ActionP> pimpl;

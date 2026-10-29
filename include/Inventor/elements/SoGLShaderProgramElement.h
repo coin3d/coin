@@ -45,18 +45,18 @@ class COIN_DLL_API SoGLShaderProgramElement : public SoReplacedElement {
   SO_ELEMENT_HEADER(SoGLShaderProgramElement);
 
 public:
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
 
   static void enable(SoState * const state, const SbBool onoff);
   static void set(SoState *const state, SoNode *const node,
                           SoGLShaderProgram * program);
   static SoGLShaderProgram * get(SoState * state);
 
-  virtual void push(SoState *);
-  virtual void pop(SoState * state, const SoElement *prevTopElement);
+  void push(SoState *) override;
+  void pop(SoState * state, const SoElement *prevTopElement) override;
 
-  virtual SbBool matches(const SoElement * element) const;
-  virtual SoElement * copyMatchInfo() const;
+  SbBool matches(const SoElement * element) const override;
+  SoElement * copyMatchInfo() const override;
 
 SoINTERNAL public:
   static void initClass(void);

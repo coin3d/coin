@@ -53,6 +53,7 @@
 #endif /* HAVE_SYS_TYPES_H */
 
 #ifdef HAVE_FONTCONFIG
+#define FONTCONFIGGLUE_ASSUME_FONTCONFIG 1
 #include <fontconfig/fontconfig.h>
 #endif
 
@@ -173,8 +174,8 @@ fcglue_init(void)
 #ifdef FONTCONFIG_RUNTIME_LINKING
     {
       int idx;
-      /* FIXME: should we get the system shared library name from an
-         Autoconf check? 20000930 mortene. */
+      /* FIXME: should we get the system shared library name from a
+         build-configuration check? 20000930 mortene. */
       const char * possiblelibnames[] = {
         NULL, /* is set below */
         "fontconfig", "libfontconfig", "libfontconfig.so",
@@ -352,8 +353,8 @@ ftglue_init(void)
 #ifdef FREETYPE_RUNTIME_LINKING
     {
       int idx;
-      /* FIXME: should we get the system shared library name from an
-         Autoconf check? 20000930 mortene. */
+      /* FIXME: should we get the system shared library name from a
+         build-configuration check? 20000930 mortene. */
       const char * possiblelibnames[] = {
         NULL, /* is set below */
         "freetype", "libfreetype", "libfreetype.so",
@@ -449,10 +450,10 @@ cc_ftglue_FT_Library_Version(void * library, int * major, int * minor, int * pat
 void 
 cc_ftglue_FT_Done_FreeType(void * library)
 {
-  FT_Error err;
   assert(freetype_instance && freetype_instance->available);
-  err = freetype_instance->FT_Done_FreeType(library);
-  assert(err == 0 && "something bad happened at FreeType exit");
+  if (freetype_instance->FT_Done_FreeType(library) != 0) {
+    assert(!"something bad happened at FreeType exit");
+  }
 }
 
 FT_Error 

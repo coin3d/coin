@@ -758,7 +758,7 @@ soproto_find_node(SoNode * root, SbName name, SoSearchAction & sa)
   SoNode * ret = NULL;
 
   if (sa.getPath()) {
-    ret = ((SoFullPath*)sa.getPath())->getTail();
+    ret = sa.getPath()->fullPath().getTail();
   }
   sa.reset();
   return ret;
@@ -898,11 +898,13 @@ SoProto::createInstanceRoot(SoProtoInstance * inst) const
           }
         }
 
-        SbBool ok;
-        if (from) ok = to->connectFrom(from, notnotify, append);
-        else ok = to->connectFrom(output, notnotify, append);
         // Both known possible failure points are caught above.
-        assert(ok && "unexpected connection error");
+        if (from) {
+          if (!to->connectFrom(from, notnotify, append)) assert(!"unexpected connection error");
+        }
+        else {
+          if (!to->connectFrom(output, notnotify, append)) assert(!"unexpected connection error");
+        }
 
       }
     }

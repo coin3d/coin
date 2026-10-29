@@ -192,6 +192,7 @@
 
 #include "rendering/SoGL.h"
 #include "nodes/SoSubNodeP.h"
+#include "coindefs.h"
 
 /*!
   \var SoSFInt32 SoQuadMesh::verticesPerColumn
@@ -317,7 +318,7 @@ static float precalculateWeight(int i)
   double p = sqrt(p2);
   return float(p / (1.0 + p));
 }
-static float qmeshGetWeight(float value)
+static float qmeshGetWeight(float COIN_UNUSED_ARG(value))
 {
 #if defined(HAVE_ILOGB)
   int exponent = ilogb(value) + (QUADMESH_WEIGHTS_NR / 2);
@@ -479,7 +480,13 @@ namespace { namespace SoGL { namespace QuadMesh {
       SbVec4f ccd4;
       SbVec4f sum234d4,sum134d4,sum124d4,sum123d4;
       SbVec4f vec1d4,vec2d4,vec3d4,vec4d4;
-      float s1,s2,s3,s4;
+      /* Only set on the is3d path below; the else branch (4D
+         coordinates) has its own assert(!"4d coordinates handling
+         unimplemented yet") a few lines down and leaves these unset,
+         yet w1..w4 use them unconditionally right after. Initialized
+         only to avoid reading garbage on that already-documented,
+         not-currently-implemented path. */
+      float s1=0.0f,s2=0.0f,s3=0.0f,s4=0.0f;
       float w1,w2,w3,w4;
       const SbVec3f *n1,*n2,*n3,*n4;
       SbVec3f nc;
@@ -572,14 +579,14 @@ namespace { namespace SoGL { namespace QuadMesh {
                 SbPlane p1(*c1d3,*c2d3,*c4d3);
                 SbPlane p2(*c1d3,*c4d3,*c3d3);
                 SbVec3f n = p1.getNormal() + p2.getNormal();
-                SbBool quadok = qmeshNormalize(n, n1->sqrLength() + n2->sqrLength() +
-                                               n3->sqrLength() + n4->sqrLength());
+                if (!qmeshNormalize(n, n1->sqrLength() + n2->sqrLength() +
+                                    n3->sqrLength() + n4->sqrLength())) {
 #if COIN_DEBUG
-                if ( !quadok )
                   SoDebugError::postWarning("SoQuadMesh::GLRender",
                                             "Can not compute normal because of "
                                             "wrong quad coordinates.");
 #endif // COIN_DEBUG
+                }
               } else {
                 // FIXME
               }
@@ -808,7 +815,7 @@ SoQuadMesh::initClass(void)
   }
 
 #define SOGL_QUADMESH_GLRENDER_RESOLVE_ARG2(normalbinding, materialbinding, texturing, args) \
-  switch (materialbinding) {                                            \
+  switch ((SoGL::QuadMesh::AttributeBinding)materialbinding) {          \
   case SoGL::QuadMesh::OVERALL:                                         \
     SOGL_QUADMESH_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::QuadMesh::OVERALL, texturing, args); \
     break;                                                              \
@@ -827,7 +834,7 @@ SoQuadMesh::initClass(void)
   }
 
 #define SOGL_QUADMESH_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, texturing, args) \
-  switch (normalbinding) {                                              \
+  switch ((SoGL::QuadMesh::AttributeBinding)normalbinding) {            \
   case SoGL::QuadMesh::OVERALL:                                         \
     SOGL_QUADMESH_GLRENDER_RESOLVE_ARG2(SoGL::QuadMesh::OVERALL, materialbinding, texturing, args); \
     break;                                                              \

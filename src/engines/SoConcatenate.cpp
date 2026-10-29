@@ -257,8 +257,8 @@ SoConcatenate::copyContents(const SoFieldContainer * from,
                             SbBool copyconnections)
 {
   const SoConcatenate * concatenatesrc =
-    coin_assert_cast<const SoConcatenate *>(from);
-  if (concatenatesrc->input[0]) { this->initialize(concatenatesrc->input[0]->getTypeId()); }
+    coin_safe_cast<const SoConcatenate *>(from);
+  if (concatenatesrc && concatenatesrc->input[0]) { this->initialize(concatenatesrc->input[0]->getTypeId()); }
   inherited::copyContents(from, copyconnections);
 }
 

@@ -46,7 +46,7 @@ protected:
   virtual ~SoProjectionMatrixElement();
 
 public:
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
 
   static void set(SoState * const state, SoNode * const node,
                   const SbMatrix & matrix);

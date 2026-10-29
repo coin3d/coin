@@ -46,7 +46,7 @@ protected:
   virtual ~SoListenerDopplerElement();
 
 public:
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
   static void setDopplerVelocity(SoState * const state, SoNode * const node,
                                  const SbVec3f & velocity);
   static void setDopplerFactor(SoState * const state, SoNode * const node,
@@ -55,7 +55,7 @@ public:
   static const SbVec3f & getDopplerVelocity(SoState * const state);
   static float getDopplerFactor(SoState * const state);
 
-  virtual void print(FILE * file) const;
+  void print(FILE * file) const override;
 
 protected:
   SbVec3f dopplerVelocity;

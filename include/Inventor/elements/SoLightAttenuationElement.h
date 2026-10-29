@@ -46,17 +46,17 @@ protected:
   virtual ~SoLightAttenuationElement();
 
 public:
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
 
   static void set(SoState * const state, SoNode * const node,
                   const SbVec3f & lightAttenuation);
   static const SbVec3f &get(SoState * const state);
   static const SbVec3f & getDefault();
 
-  virtual SbBool matches(const SoElement * element) const;
-  virtual SoElement * copyMatchInfo(void) const;
+  SbBool matches(const SoElement * element) const override;
+  SoElement * copyMatchInfo(void) const override;
 
-  virtual void print(FILE * file) const;
+  void print(FILE * file) const override;
 
 protected:
   SbVec3f lightAttenuation;

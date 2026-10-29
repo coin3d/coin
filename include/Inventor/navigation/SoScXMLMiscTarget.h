@@ -59,7 +59,7 @@ protected:
   SoScXMLMiscTarget(void);
   virtual ~SoScXMLMiscTarget(void);
 
-  virtual SbBool processOneEvent(const ScXMLEvent * event);
+  SbBool processOneEvent(const ScXMLEvent * event) override;
 
 private:
   class PImpl;

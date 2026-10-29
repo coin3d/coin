@@ -49,7 +49,7 @@ public:
     RENDER3D_PRINT_VECTOR, RENDER3D_PRINT_RASTER, RENDER2D_PRINT_RASTER
   };
 
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
   static void set(SoState * const state, const RenderPrintType hint);
   static RenderPrintType get(SoState * const state);
   static RenderPrintType getDefault(void);

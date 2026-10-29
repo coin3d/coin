@@ -45,17 +45,15 @@ protected:
   virtual ~SoGLViewingMatrixElement();
 
 public:
-  virtual void init(SoState * state);
-
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state,
-                   const SoElement * prevTopElement);
+  void init(SoState * state) override;
+  void push(SoState * state) override;
+  void pop(SoState * state, const SoElement * prevTopElement) override;
 
   static SbUniqueId getNodeId(SoState * const state);
   static SbMatrix getResetMatrix(SoState * state);
 
 protected:
-  virtual void setElt(const SbMatrix & matrix);
+  void setElt(const SbMatrix & matrix) override;
 
 private:
   SoState * state;

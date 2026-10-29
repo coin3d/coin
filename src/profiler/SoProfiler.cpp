@@ -37,7 +37,8 @@
   <h2>Enabling profiling in Coin</h2>
 
   To enable profiling in Coin, use the environment variable \ref
-  COIN_PROFILER.  When profiling is enabled, Coin will gather
+  COIN_PROFILER before calling SoDB::init(). When profiling is enabled,
+  Coin will gather
   profiling data during every scene graph traversal by any action.
 
   <h2>Enabling the default profiling display</h2>

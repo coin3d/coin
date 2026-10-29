@@ -49,7 +49,7 @@
 
 /***************************************************************************/
 
-/* Block of defines set up by the configure script. Protected with the
+/* Block of defines set up by the CMake configuration. Protected with the
    #ifndef wrapper in case config.h was already included -- so we
    don't confuse the compiler to think we redefine already #define'd
    constants. */
@@ -70,10 +70,6 @@
   installing this as a cross-platform header file (i.e.: you
   shouldn't).
 */
-
-/* FIXME: isn't it likely that the HAVE_*_H defines below could crash
-   with defines in application code in a project using Autoconf
-   configure?  20010711 mortene. */
 
 /* The <inttypes.h> header file. */
 #cmakedefine HAVE_INTTYPES_H 1
@@ -98,7 +94,7 @@
 #cmakedefine HAVE_INTPTR_T 1
 #cmakedefine HAVE_UINTPTR_T 1
 
-/* The type which the configure script found to match the given
+/* The type which the CMake configuration found to match the given
    bitwidth. */
 #cmakedefine COIN_INT8_T @COIN_INT8_T@
 #cmakedefine COIN_UINT8_T @COIN_UINT8_T@
@@ -114,10 +110,6 @@
 #endif /* (end wrapper) ! COIN_CONFIGURE_BUILD */
 
 
-/* The header files should be listed in the same order as they are in
-   the SIM_AC_DEFINE_BYTESIZE_TYPES detection macro. This is the same
-   order as the one Autoconf (currently upcoming 2.51) is using for its
-   standard includes.  20010711 larsa */
 #ifdef HAVE_INTTYPES_H
 #include <inttypes.h>
 #else

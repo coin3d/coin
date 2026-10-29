@@ -63,11 +63,11 @@ public:
   virtual void setSrcAttribute(const char * src);
   const char * getSrcAttribute(void) const { return this->src; }
 
-  virtual SbBool handleXMLAttributes(void);
+  SbBool handleXMLAttributes(void) override;
 
-  virtual void copyContents(const ScXMLElt * rhs);
+  void copyContents(const ScXMLElt * rhs) override;
 
-  virtual const ScXMLElt * search(const char * attrname, const char * attrvalue) const;
+  const ScXMLElt * search(const char * attrname, const char * attrvalue) const override;
 
   // children...
   virtual void setOnEntry(ScXMLOnEntryElt * onentry);

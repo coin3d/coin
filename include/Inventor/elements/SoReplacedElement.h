@@ -46,14 +46,14 @@ protected:
   virtual ~SoReplacedElement();
 
 public:
-  virtual void init(SoState * state);
-  virtual SbBool matches(const SoElement * element) const;
+  void init(SoState * state) override;
+  SbBool matches(const SoElement * element) const override;
 
-  virtual SoElement * copyMatchInfo() const;
+  SoElement * copyMatchInfo() const override;
 
   SbUniqueId getNodeId() const;
 
-  virtual void print(FILE * file) const;
+  void print(FILE * file) const override;
 
 protected:
   static  SoElement * getElement(SoState * const state,

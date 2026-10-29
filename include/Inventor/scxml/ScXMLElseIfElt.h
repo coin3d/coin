@@ -51,11 +51,11 @@ public:
   virtual void setCondAttribute(const char * cond);
   virtual const char * getCondAttribute(void) const { return this->cond; }
 
-  virtual SbBool handleXMLAttributes(void);
+  SbBool handleXMLAttributes(void) override;
 
-  virtual void copyContents(const ScXMLElt * rhs);
+  void copyContents(const ScXMLElt * rhs) override;
 
-  virtual const ScXMLElt * search(const char * attrname, const char * attrvalue) const;
+  const ScXMLElt * search(const char * attrname, const char * attrvalue) const override;
 
 protected:
   char * cond;

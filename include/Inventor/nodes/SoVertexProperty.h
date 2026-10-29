@@ -72,16 +72,16 @@ public:
   SoSFEnum materialBinding;
   SoMFInt32 textureUnit;
 
-  virtual void doAction(SoAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void pick(SoPickAction * action);
-  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
+  void doAction(SoAction * action) override;
+  void GLRender(SoGLRenderAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
+  void callback(SoCallbackAction * action) override;
+  void pick(SoPickAction * action) override;
+  void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
 
 protected:
   virtual ~SoVertexProperty();
-  virtual void notify(SoNotList *list);
+  void notify(SoNotList *list) override;
 
 private:
   void updateVertex(SoState * state, SbBool glrender, SbBool vbo);

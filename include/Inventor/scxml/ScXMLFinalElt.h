@@ -56,9 +56,9 @@ public:
   virtual void setOnExit(ScXMLOnExitElt * onexit);
   virtual ScXMLOnExitElt * getOnExit(void) const;
 
-  virtual void copyContents(const ScXMLElt * rhs);
+  void copyContents(const ScXMLElt * rhs) override;
 
-  virtual const ScXMLElt * search(const char * attrname, const char * attrvalue) const;
+  const ScXMLElt * search(const char * attrname, const char * attrvalue) const override;
 
 private:
   ScXMLFinalElt(const ScXMLFinalElt & rhs); // N/A

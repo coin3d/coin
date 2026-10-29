@@ -58,7 +58,7 @@
 
 #define SO_ACTION_HEADER(_classname_) \
 public: \
-  virtual SoType getTypeId(void) const; \
+  SoType getTypeId(void) const override; \
   static SoType getClassTypeId(void); \
   /*! \COININTERNAL */ \
   static void addMethod(const SoType type, SoActionMethod method); \
@@ -66,7 +66,7 @@ public: \
   static void enableElement(const SoType type, const int stackindex); \
  \
 protected: \
-  virtual const SoEnabledElementsList & getEnabledElements(void) const; \
+  const SoEnabledElementsList & getEnabledElements(void) const override; \
   /* These two methods are not available in the original OIV API. */ \
   /* They have been added as a work-around for Win32 DLL headaches. */ \
   /* See further explanation below. 20000808 mortene. */ \

@@ -62,7 +62,7 @@ public:
   SoNode * getTriggerGroupChild(void) const;
   SoNode * getTriggerReplacedGroupChild(void) const;
 
-  virtual void trigger(void);
+  void trigger(void) override;
   virtual void notify(SoNotList * l);
   virtual void dyingReference(void) = 0;
 

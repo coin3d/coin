@@ -42,15 +42,15 @@ class COIN_DLL_API SoGLDepthBufferElement : public SoDepthBufferElement {
 public:
   static void initClass(void);
 
-  virtual void init(SoState * state);
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state, const SoElement * prevTopElement);
+  void init(SoState * state) override;
+  void push(SoState * state) override;
+  void pop(SoState * state, const SoElement * prevTopElement) override;
 
 protected:
   virtual ~SoGLDepthBufferElement();
 
-  virtual void setElt(SbBool test, SbBool write,
-                      DepthWriteFunction function, SbVec2f range);
+  void setElt(SbBool test, SbBool write,
+              DepthWriteFunction function, SbVec2f range) override;
 
 private:
   void updategl(void) const;

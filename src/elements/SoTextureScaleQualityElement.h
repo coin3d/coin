@@ -50,7 +50,7 @@ protected:
   virtual ~SoTextureScaleQualityElement();
 
 public:
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
   static void set(SoState * state, SoNode * node, const float quality);
   static float get(SoState * state);
   static float getDefault(void);

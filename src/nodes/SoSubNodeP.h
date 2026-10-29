@@ -58,7 +58,7 @@
       SoType::createType(_parentclass_::getClassTypeId(), \
                          _classname_, \
                          _createfunc_, \
-                         SoNode::getNextActionMethodIndex()); \
+                         (uint16_t)SoNode::getNextActionMethodIndex()); \
     SoNode::incNextActionMethodIndex(); \
  \
     /* Store parent's fielddata pointer for later use in the constructor. */ \

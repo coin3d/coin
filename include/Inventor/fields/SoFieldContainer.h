@@ -71,11 +71,11 @@ public:
   SbBool set(const char * fielddata, SoInput * input);
   void get(SbString & fielddata, SoOutput * out);
 
-  virtual void notify(SoNotList * l);
+  void notify(SoNotList * l) override;
 
   virtual SbBool validateNewFieldValue(SoField * field, void * newval);
 
-  virtual void addWriteReference(SoOutput * out, SbBool isfromfield = FALSE);
+  void addWriteReference(SoOutput * out, SbBool isfromfield = FALSE) override;
   virtual void writeInstance(SoOutput * out);
 
   SbBool getIsBuiltIn(void) const;
@@ -102,7 +102,7 @@ protected:
   SoFieldContainer(void);
   virtual ~SoFieldContainer();
 
-  virtual SbBool readInstance(SoInput * in, unsigned short flags);
+  SbBool readInstance(SoInput * in, unsigned short flags) override;
   SbBool isBuiltIn;
 
 private:

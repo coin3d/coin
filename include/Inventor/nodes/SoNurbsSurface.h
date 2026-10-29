@@ -58,21 +58,21 @@ public:
   SoMFFloat sKnotVector;
   SoMFFloat tKnotVector;
 
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void rayPick(SoRayPickAction * action);
-  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
+  void GLRender(SoGLRenderAction * action) override;
+  void rayPick(SoRayPickAction * action) override;
+  void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
   void sendPrimitive(SoAction *,  SoPrimitiveVertex *);
 
 protected:
   virtual ~SoNurbsSurface();
 
-  virtual void generatePrimitives(SoAction * action);
-  virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
+  void generatePrimitives(SoAction * action) override;
+  void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center) override;
   SoDetail * createTriangleDetail(SoRayPickAction * action,
                                   const SoPrimitiveVertex * v1,
                                   const SoPrimitiveVertex * v2,
                                   const SoPrimitiveVertex * v3,
-                                  SoPickedPoint * pp);
+                                  SoPickedPoint * pp) override;
 private:
   class SoNurbsSurfaceP * pimpl;
   friend class SoNurbsSurfaceP;

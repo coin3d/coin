@@ -55,7 +55,7 @@ public:
   
   SoSFEnum style;
 
-  virtual void GLRender(SoGLRenderAction * action);
+  void GLRender(SoGLRenderAction * action) override;
 
 protected:
   virtual ~SoShadowStyle();

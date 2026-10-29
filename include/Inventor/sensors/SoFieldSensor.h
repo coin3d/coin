@@ -47,11 +47,11 @@ public:
   void detach(void);
   SoField * getAttachedField(void) const;
 
-  virtual void trigger(void);
+  void trigger(void) override;
 
 private:
-  virtual void notify(SoNotList * l);
-  virtual void dyingReference(void);
+  void notify(SoNotList * l) override;
+  void dyingReference(void) override;
 
   SoField * convict;
 };

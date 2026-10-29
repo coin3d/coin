@@ -48,7 +48,7 @@ public:
 
   SoSFVec3f direction;
 
-  virtual void GLRender( SoGLRenderAction * action );
+  void GLRender( SoGLRenderAction * action ) override;
 
 protected:
   virtual ~SoVRMLDirectionalLight();

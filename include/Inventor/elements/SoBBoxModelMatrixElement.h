@@ -47,9 +47,9 @@ protected:
   virtual ~SoBBoxModelMatrixElement();
 
 public:
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
 
-  virtual void push(SoState * state);
+  void push(SoState * state) override;
 
   static  void reset(SoState * const state, SoNode * const node);
   static  void pushMatrix(SoState * const state, SbMatrix & matrix,
@@ -58,16 +58,16 @@ public:
                          const SbMatrix & localmatrix);
 
 protected:
-  virtual void makeEltIdentity(void);
-  virtual void setElt(const SbMatrix & matrix);
-  virtual void multElt(const SbMatrix & matrix);
-  virtual void translateEltBy(const SbVec3f & translation);
-  virtual void rotateEltBy(const SbRotation & translation);
-  virtual void scaleEltBy(const SbVec3f & scaleFactor);
+  void makeEltIdentity(void) override;
+  void setElt(const SbMatrix & matrix) override;
+  void multElt(const SbMatrix & matrix) override;
+  void translateEltBy(const SbVec3f & translation) override;
+  void rotateEltBy(const SbRotation & translation) override;
+  void scaleEltBy(const SbVec3f & scaleFactor) override;
 
 // the following two functions should not be called - only for debug usage
-  virtual SbMatrix pushMatrixElt();
-  virtual void popMatrixElt(const SbMatrix & matrix);
+  SbMatrix pushMatrixElt() override;
+  void popMatrixElt(const SbMatrix & matrix) override;
 
 private:
   SoLocalBBoxMatrixElement *getLocal();

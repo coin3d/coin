@@ -57,14 +57,14 @@ public:
   SoMFFloat shininess;
   SoMFFloat transparency;
 
-  virtual void doAction(SoAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void callback(SoCallbackAction * action);
+  void doAction(SoAction * action) override;
+  void GLRender(SoGLRenderAction * action) override;
+  void callback(SoCallbackAction * action) override;
 
 protected:
   virtual ~SoMaterial();
 
-  virtual void notify(SoNotList * list);
+  void notify(SoNotList * list) override;
 
 private:
   int getMaterialType(void);

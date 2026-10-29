@@ -64,12 +64,12 @@ public:
     FACE_TYPE_AS_IS
   };
 
-  virtual void init(SoState * state);
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state, const SoElement * prevtopelement);
+  void init(SoState * state) override;
+  void push(SoState * state) override;
+  void pop(SoState * state, const SoElement * prevtopelement) override;
 
-  virtual SbBool matches(const SoElement * element) const;
-  virtual SoElement *copyMatchInfo(void) const;
+  SbBool matches(const SoElement * element) const override;
+  SoElement *copyMatchInfo(void) const override;
 
   static void set(SoState * const state, SoNode * const node,
                   const VertexOrdering vertexOrdering,
@@ -88,7 +88,7 @@ public:
   static ShapeType getDefaultShapeType();
   static FaceType getDefaultFaceType();
 
-  virtual void print(FILE * file) const;
+  void print(FILE * file) const override;
 
 protected:
   void updateLazyElement(SoState * state);

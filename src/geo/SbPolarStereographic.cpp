@@ -120,7 +120,6 @@ SbPolarStereographic::unproject(const double easting,
   double a = this->ellipsoid.getA();
   double e = this->ellipsoid.getE();
 
-  SbGeoAngle phiF = this->ellipsoid.getLatStdParallel();
   SbGeoAngle lambda0 = this->ellipsoid.getLongOrigin();
 
   double e2 = e * e;

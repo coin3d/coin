@@ -72,7 +72,7 @@ protected:
   virtual void allocValues(int num);
 #endif // DOXYGEN_SKIP_THIS
 
-  virtual SoNotRec createNotRec(SoBase * container);
+  SoNotRec createNotRec(SoBase * container) override;
 
   void setChangedIndex(const int chgidx);
   void setChangedIndices(const int chgidx = -1, const int numchgind = 0);
@@ -84,9 +84,9 @@ protected:
 private:
   virtual void deleteAllValues(void) = 0;
   virtual void copyValue(int to, int from) = 0;
-  virtual SbBool readValue(SoInput * in);
+  SbBool readValue(SoInput * in) override;
   virtual SbBool read1Value(SoInput * in, int idx) = 0;
-  virtual void writeValue(SoOutput * out) const;
+  void writeValue(SoOutput * out) const override;
   virtual void write1Value(SoOutput * out, int idx) const = 0;
   virtual SbBool readBinaryValues(SoInput * in, int num);
   virtual void writeBinaryValues(SoOutput * out) const;

@@ -82,15 +82,15 @@ public:
                                      SbBool fillargs = TRUE);
   SbBool isPathSurrogateInMySubgraph(const SoPath *path);
   static void setSwitchValue(SoNode *node, const int newVal);
-  virtual SbBool setPart(const SbName & partname, SoNode * from);
+  SbBool setPart(const SbName & partname, SoNode * from) override;
 
 protected:
   virtual ~SoInteractionKit();
-  virtual void copyContents(const SoFieldContainer *fromFC,
-                            SbBool copyConnections);
+  void copyContents(const SoFieldContainer *fromFC,
+                    SbBool copyConnections) override;
 
-  virtual SbBool setPart(const int partNum, SoNode *node);
-  virtual SbBool readInstance(SoInput *in, unsigned short flags);
+  SbBool setPart(const int partNum, SoNode *node) override;
+  SbBool readInstance(SoInput *in, unsigned short flags) override;
   static void readDefaultParts(const char *fileName,
                                const char defaultBuffer[],
                                int defBufSize);
@@ -106,8 +106,8 @@ protected:
                              SoPath *path,
                              SbBool leafcheck = FALSE,
                              SbBool publiccheck = FALSE);
-  virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
-  virtual void setDefaultOnNonWritingFields();
+  SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE) override;
+  void setDefaultOnNonWritingFields() override;
 
   SoFieldSensor *fieldSensor;
   static void fieldSensorCB(void *, SoSensor *);

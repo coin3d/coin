@@ -63,8 +63,8 @@ public:
 
 protected:
   virtual ~SoDirectionalLightDragger(void);
-  virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
-  virtual void setDefaultOnNonWritingFields(void);
+  SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE) override;
+  void setDefaultOnNonWritingFields(void) override;
 
   static void fieldSensorCB(void * f, SoSensor * s);
   static void valueChangedCB(void * f, SoDragger * d);

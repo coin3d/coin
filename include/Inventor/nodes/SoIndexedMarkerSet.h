@@ -50,7 +50,7 @@ public:
 
   SoMFInt32 markerIndex;
 
-  virtual void GLRender(SoGLRenderAction * action);
+  void GLRender(SoGLRenderAction * action) override;
 
 protected:
   virtual ~SoIndexedMarkerSet();

@@ -54,12 +54,12 @@ public:
   SoSFInt32 unit;
   SoSFEnum mappingMethod;
 
-  virtual void doAction(SoAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void pick(SoPickAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-  virtual void getMatrix(SoGetMatrixAction * action);
+  void doAction(SoAction * action) override;
+  void callback(SoCallbackAction * action) override;
+  void GLRender(SoGLRenderAction * action) override;
+  void pick(SoPickAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
+  void getMatrix(SoGetMatrixAction * action) override;
 
   static uint32_t getMaxTextureUnit(void);
 protected:

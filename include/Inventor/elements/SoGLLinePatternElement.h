@@ -45,14 +45,13 @@ protected:
   virtual ~SoGLLinePatternElement();
 
 public:
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
 
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state,
-                   const SoElement * prevTopElement);
+  void push(SoState * state) override;
+  void pop(SoState * state, const SoElement * prevTopElement) override;
 
 protected:
-  virtual void setElt(int32_t pattern);
+  void setElt(int32_t pattern) override;
 
 private:
   void updategl();

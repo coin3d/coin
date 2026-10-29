@@ -57,18 +57,18 @@ public:
 
   SoSFNode vertexProperty;
 
-  virtual void notify(SoNotList * nl);
+  void notify(SoNotList * nl) override;
   virtual SbBool generateDefaultNormals(SoState * state,
                                         SoNormalBundle * bundle);
   virtual SbBool generateDefaultNormals(SoState * state,
                                         SoNormalCache * cache);
-  virtual void write(SoWriteAction * action);
+  void write(SoWriteAction * action) override;
 
 protected:
   SoVertexShape(void);
   virtual ~SoVertexShape();
 
-  virtual SbBool shouldGLRender(SoGLRenderAction * action);
+  SbBool shouldGLRender(SoGLRenderAction * action) override;
 
   void setNormalCache(SoState * const state,
                       const int num, const SbVec3f * normals);

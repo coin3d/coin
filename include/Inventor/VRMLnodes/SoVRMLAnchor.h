@@ -62,7 +62,7 @@ public:
 
   static void setFetchURLCallBack(SoVRMLAnchorCB *, void * closure);
 
-  virtual void handleEvent(SoHandleEventAction * action);
+  void handleEvent(SoHandleEventAction * action) override;
 
 protected:
   virtual ~SoVRMLAnchor();

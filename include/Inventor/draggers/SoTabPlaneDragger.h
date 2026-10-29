@@ -78,10 +78,10 @@ public:
 protected:
   virtual ~SoTabPlaneDragger(void);
 
-  virtual void GLRender(SoGLRenderAction * action);
+  void GLRender(SoGLRenderAction * action) override;
 
-  virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
-  virtual void setDefaultOnNonWritingFields(void);
+  SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE) override;
+  void setDefaultOnNonWritingFields(void) override;
 
   void reallyAdjustScaleTabSize(SoGLRenderAction * action);
 

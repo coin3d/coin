@@ -45,6 +45,7 @@ extern "C" {
 #endif /* __cplusplus */
 
   typedef struct cc_dict cc_dict;
+  /* Hash callbacks must not throw; resizing relinks entries in place. */
   typedef uintptr_t cc_dict_hash_func(const uintptr_t key);
   typedef void cc_dict_apply_func(uintptr_t key, void * val, void * closure);
 
@@ -59,6 +60,8 @@ extern "C" {
 
   unsigned int cc_dict_get_num_elements(cc_dict * ht);
 
+  /* func must not be NULL. Existing entries are reindexed when the hash
+     function is changed. */
   void cc_dict_set_hash_func(cc_dict * ht, cc_dict_hash_func * func);
   void cc_dict_print_stat(cc_dict * ht);
 

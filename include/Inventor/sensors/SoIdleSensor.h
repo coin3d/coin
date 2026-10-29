@@ -44,7 +44,7 @@ public:
   virtual ~SoIdleSensor(void);
 
 private:
-  virtual SbBool isIdleOnly(void) const;
+  SbBool isIdleOnly(void) const override;
 };
 
 #endif // !COIN_SOIDLESENSOR_H

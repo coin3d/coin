@@ -45,6 +45,8 @@
 */
 
 #include <Inventor/annex/Profiler/SbProfilingData.h>
+
+#include <Inventor/SoFullPath.h>
 #include "coindefs.h"
 
 #include <algorithm> // std::reverse
@@ -53,7 +55,7 @@
 #include <vector>
 
 #include <Inventor/SbName.h>
-#include <Inventor/SoFullPath.h>
+#include <Inventor/SoPath.h>
 #include <Inventor/nodes/SoNode.h>
 
 // *************************************************************************
@@ -486,13 +488,13 @@ SbProfilingData::getActionDuration(void) const
  */
 
 SbBool
-SbProfilingData::isPathMatch(const SoFullPath * fullpath, int pathlen, int idx)
+SbProfilingData::isPathMatch(const SoPath * path, int pathlen, int idx)
 {
-  assert(pathlen > 0 && pathlen <= fullpath->getLength());
+  assert(pathlen > 0 && pathlen <= path->fullPath().getLength());
   while (pathlen > 0 && idx != -1) {
     SbProfilingNodeKey node =
-      static_cast<SbProfilingNodeKey>(fullpath->getNode(pathlen-1));
-    int childidx = fullpath->getIndex(pathlen-1);
+      static_cast<SbProfilingNodeKey>(path->getNode(pathlen-1));
+    int childidx = path->getIndex(pathlen-1);
     if (PRIVATE(this)->nodeData[idx].node != node) return FALSE;
     if (PRIVATE(this)->nodeData[idx].childidx != childidx) return FALSE;
     idx = PRIVATE(this)->nodeData[idx].parentidx;
@@ -502,27 +504,37 @@ SbProfilingData::isPathMatch(const SoFullPath * fullpath, int pathlen, int idx)
   return FALSE;
 }
 
+// Keep the pre-4.0.11 private symbol available to already-linked clients.
+// The pointer is only converted back to its SoPath base and is never used to
+// dispatch a SoFullPath member on an object that might be a plain SoPath.
+SbBool
+SbProfilingData::isPathMatch(const SoFullPath * path, int pathlen, int idx)
+{
+  return this->isPathMatch(static_cast<const SoPath *>(path), pathlen, idx);
+}
+
 // *************************************************************************
 
 /*!
   Return the index of the tail node in the path.
-  If node is not registered, add it and return that index.
+  If the path is not registered, return -1 unless create is TRUE.
+  With create set to TRUE, register the path and return its index.
+  Entries distinguish child indices and ancestors, including shared nodes.
 */
 
 int
 SbProfilingData::getIndex(const SoPath * path, SbBool create)
 {
-  const SoFullPath * fullpath = static_cast<const SoFullPath *>(path);
   if ((PRIVATE(this)->lastPathIndex != -1) &&
-      isPathMatch(fullpath, fullpath->getLength(),
+      isPathMatch(path, path->fullPath().getLength(),
                   PRIVATE(this)->lastPathIndex)) {
     return PRIVATE(this)->lastPathIndex;
   }
   int idx = -1;
   if (create) {
-    idx =  this->getIndexCreate(fullpath, fullpath->getLength());
+    idx =  this->getIndexCreate(path, path->fullPath().getLength());
   } else {
-    idx = this->getIndexNoCreate(fullpath, fullpath->getLength());
+    idx = this->getIndexNoCreate(path, path->fullPath().getLength());
   }
   if (idx != -1) { PRIVATE(this)->lastPathIndex = idx; }
   return idx;
@@ -546,7 +558,7 @@ SbProfilingData::getParentIndex(int idx) const
  */
 
 int
-SbProfilingData::getIndexCreate(const SoFullPath * fullpath, int COIN_UNUSED_ARG(pathlen))
+SbProfilingData::getIndexCreate(const SoPath * path, int COIN_UNUSED_ARG(pathlen))
 {
 
   std::vector<int> lastentrypathindexes;
@@ -560,12 +572,12 @@ SbProfilingData::getIndexCreate(const SoFullPath * fullpath, int COIN_UNUSED_ARG
   int samelength = 0;
   if (lastentrypathindexes.size() > 0) {
     const int pathlength =
-      SbMin(fullpath->getLength(), (int) lastentrypathindexes.size());
+      SbMin(path->fullPath().getLength(), (int) lastentrypathindexes.size());
     while (samelength < pathlength) {
       if ((PRIVATE(this)->nodeData[lastentrypathindexes[samelength]].node !=
-           static_cast<SbProfilingNodeKey>(fullpath->getNode(samelength))) ||
+           static_cast<SbProfilingNodeKey>(path->getNode(samelength))) ||
           (PRIVATE(this)->nodeData[lastentrypathindexes[samelength]].childidx !=
-           fullpath->getIndex(samelength))) {
+           path->getIndex(samelength))) {
         break;
       }
       ++samelength;
@@ -577,7 +589,7 @@ SbProfilingData::getIndexCreate(const SoFullPath * fullpath, int COIN_UNUSED_ARG
     // this is rooted in a new root - add it
 
     SbNodeProfilingData data;
-    SoNode * rootnode = fullpath->getNode(0);
+    SoNode * rootnode = path->getNode(0);
     assert(rootnode != NULL);
     data.node = static_cast<SbProfilingNodeKey>(rootnode);
     data.nodetype = static_cast<SbProfilingNodeTypeKey>(rootnode->getTypeId().getKey());
@@ -592,12 +604,18 @@ SbProfilingData::getIndexCreate(const SoFullPath * fullpath, int COIN_UNUSED_ARG
   int pos = samelength;
   idx = lastentrypathindexes[pos-1];
   ++pos;
-  while (pos <= fullpath->getLength()) {
-    idx = this->getIndexForwardCreate(fullpath, pos, idx);
+  while (pos <= path->fullPath().getLength()) {
+    idx = this->getIndexForwardCreate(path, pos, idx);
     ++pos;
   }
 
   return idx;
+}
+
+int
+SbProfilingData::getIndexCreate(const SoFullPath * path, int pathlen)
+{
+  return this->getIndexCreate(static_cast<const SoPath *>(path), pathlen);
 }
 
 /*
@@ -608,8 +626,6 @@ SbProfilingData::getIndexCreate(const SoFullPath * fullpath, int COIN_UNUSED_ARG
 int
 SbProfilingData::getIndexNoCreate(const SoPath * path, int COIN_UNUSED_ARG(pathlen)) const
 {
-  const SoFullPath * fullpath = static_cast<const SoFullPath *>(path);
-
   std::vector<int> lastentrypathindexes;
   int idx = (int)PRIVATE(this)->nodeData.size() - 1;
   while (idx != -1) {
@@ -624,12 +640,12 @@ SbProfilingData::getIndexNoCreate(const SoPath * path, int COIN_UNUSED_ARG(pathl
   int samelength = 0;
   if (lastentrypathindexes.size() > 0) {
     const int pathlength =
-      SbMin(fullpath->getLength(), (int) lastentrypathindexes.size());
+      SbMin(path->fullPath().getLength(), (int) lastentrypathindexes.size());
     while (samelength < pathlength) {
       if ((PRIVATE(this)->nodeData[lastentrypathindexes[samelength]].node !=
-           static_cast<SbProfilingNodeKey>(fullpath->getNode(samelength))) ||
+           static_cast<SbProfilingNodeKey>(path->getNode(samelength))) ||
           (PRIVATE(this)->nodeData[lastentrypathindexes[samelength]].childidx !=
-           fullpath->getIndex(samelength))) {
+           path->getIndex(samelength))) {
         break;
       }
       ++samelength;
@@ -644,8 +660,8 @@ SbProfilingData::getIndexNoCreate(const SoPath * path, int COIN_UNUSED_ARG(pathl
   int pos = samelength;
   idx = lastentrypathindexes[pos-1];
   ++pos;
-  while (pos < fullpath->getLength() && idx != -1) {
-    idx = this->getIndexForwardNoCreate(fullpath, pos, idx);
+  while (pos <= path->fullPath().getLength() && idx != -1) {
+    idx = this->getIndexForwardNoCreate(path, pos, idx);
     ++pos;
   }
 
@@ -664,25 +680,24 @@ SbProfilingData::getIndexNoCreate(const SoPath * path, int COIN_UNUSED_ARG(pathl
  */
 
 int
-SbProfilingData::getIndexForwardCreate(const SoFullPath * fullpath, int pathlen, int parentidx)
+SbProfilingData::getIndexForwardCreate(const SoPath * path, int pathlen, int parentidx)
 {
   assert(parentidx != -1); // illegal usage
   assert(parentidx < static_cast<int>(PRIVATE(this)->nodeData.size()));
   assert(pathlen > 1);
 
-  SbProfilingNodeKey parent =
-    static_cast<SbProfilingNodeKey>(fullpath->getNode(pathlen - 2));
-  int pidx = fullpath->getIndex(pathlen - 2);
-  SoNode * tailnode = fullpath->getNode(pathlen - 1);
+  SoNode * tailnode = path->getNode(pathlen - 1);
   SbProfilingNodeKey tail = static_cast<SbProfilingNodeKey>(tailnode);
-  int tidx = fullpath->getIndex(pathlen - 1);
+  int tidx = path->getIndex(pathlen - 1);
 
-  assert(parent == PRIVATE(this)->nodeData[parentidx].node);
-  assert(pidx == PRIVATE(this)->nodeData[parentidx].childidx);
+  assert(static_cast<SbProfilingNodeKey>(path->getNode(pathlen - 2)) ==
+         PRIVATE(this)->nodeData[parentidx].node);
+  assert(path->getIndex(pathlen - 2) == PRIVATE(this)->nodeData[parentidx].childidx);
 
   const int nodedatacount = (int)PRIVATE(this)->nodeData.size();
   for (int idx = parentidx + 1; idx < nodedatacount; ++idx) {
-    if ((PRIVATE(this)->nodeData[idx].node == tail) &&
+    if ((PRIVATE(this)->nodeData[idx].parentidx == parentidx) &&
+        (PRIVATE(this)->nodeData[idx].node == tail) &&
         (PRIVATE(this)->nodeData[idx].childidx == tidx)) { // found it!
       return idx;
     }
@@ -700,34 +715,49 @@ SbProfilingData::getIndexForwardCreate(const SoFullPath * fullpath, int pathlen,
   return (int)PRIVATE(this)->nodeData.size() - 1;
 }
 
+int
+SbProfilingData::getIndexForwardCreate(const SoFullPath * path, int pathlen,
+                                       int parentidx)
+{
+  return this->getIndexForwardCreate(static_cast<const SoPath *>(path),
+                                     pathlen, parentidx);
+}
+
 /*
  *
  */
 
 int
-SbProfilingData::getIndexForwardNoCreate(const SoFullPath * fullpath, int pathlen, int parentidx) const
+SbProfilingData::getIndexForwardNoCreate(const SoPath * path, int pathlen, int parentidx) const
 {
   assert(parentidx != -1); // illegal usage
   assert(pathlen > 1);
 
-  SbProfilingNodeKey parent =
-    static_cast<SbProfilingNodeKey>(fullpath->getNode(pathlen - 2));
-  int pidx = fullpath->getIndex(pathlen - 2);
   SbProfilingNodeKey tail =
-    static_cast<SbProfilingNodeKey>(fullpath->getNode(pathlen - 1));
-  int tidx = fullpath->getIndex(pathlen - 1);
+    static_cast<SbProfilingNodeKey>(path->getNode(pathlen - 1));
+  int tidx = path->getIndex(pathlen - 1);
 
-  assert(parent == PRIVATE(this)->nodeData[parentidx].node);
-  assert(pidx == PRIVATE(this)->nodeData[parentidx].childidx);
+  assert(static_cast<SbProfilingNodeKey>(path->getNode(pathlen - 2)) ==
+         PRIVATE(this)->nodeData[parentidx].node);
+  assert(path->getIndex(pathlen - 2) == PRIVATE(this)->nodeData[parentidx].childidx);
 
   const int nodedatacount = (int)PRIVATE(this)->nodeData.size();
   for (int idx = parentidx + 1; idx < nodedatacount; ++idx) {
-    if ((PRIVATE(this)->nodeData[idx].node == tail) &&
+    if ((PRIVATE(this)->nodeData[idx].parentidx == parentidx) &&
+        (PRIVATE(this)->nodeData[idx].node == tail) &&
         (PRIVATE(this)->nodeData[idx].childidx == tidx)) { // found it!
       return idx;
     }
   }
   return -1;
+}
+
+int
+SbProfilingData::getIndexForwardNoCreate(const SoFullPath * path, int pathlen,
+                                         int parentidx) const
+{
+  return this->getIndexForwardNoCreate(static_cast<const SoPath *>(path),
+                                       pathlen, parentidx);
 }
 
 // *************************************************************************
@@ -891,8 +921,7 @@ SbProfilingData::preOffsetNodeTiming(int idx, SbTime timing)
 SbTime
 SbProfilingData::getNodeTiming(const SoPath * path, unsigned int flags) const
 {
-  const SoFullPath * fullpath = static_cast<const SoFullPath *>(path);
-  int idx = this->getIndexNoCreate(fullpath, fullpath->getLength());
+  int idx = this->getIndexNoCreate(path, path->fullPath().getLength());
   return this->getNodeTiming(idx, flags);
 }
 
@@ -917,10 +946,9 @@ void
 SbProfilingData::setNodeFootprint(const SoPath * path, FootprintType footprinttype, size_t footprint)
 {
   assert(path);
-  assert(static_cast<const SoFullPath *>(path)->getLength() > 0);
+  assert(path->fullPath().getLength() > 0);
 
-  const SoFullPath * fullpath = static_cast<const SoFullPath *>(path);
-  const int idx = this->getIndexCreate(fullpath, fullpath->getLength());
+  const int idx = this->getIndexCreate(path, path->fullPath().getLength());
   assert(idx >= 0 && idx < static_cast<int>(PRIVATE(this)->nodeData.size()));
 
   this->setNodeFootprint(idx, footprinttype, footprint);
@@ -952,8 +980,7 @@ SbProfilingData::setNodeFootprint(int idx, FootprintType footprinttype, size_t f
 size_t
 SbProfilingData::getNodeFootprint(const SoPath * path, FootprintType footprinttype, unsigned int flags) const
 {
-  const SoFullPath * fullpath = static_cast<const SoFullPath *>(path);
-  const int idx = this->getIndexNoCreate(fullpath, fullpath->getLength());
+  const int idx = this->getIndexNoCreate(path, path->fullPath().getLength());
   if (idx == -1) return 0;
 
   return this->getNodeFootprint(idx, footprinttype, flags);
@@ -990,10 +1017,9 @@ void
 SbProfilingData::setNodeFlag(const SoPath * path, NodeFlag flag, SbBool on)
 {
   assert(path);
-  assert(static_cast<const SoFullPath *>(path)->getLength() > 0);
+  assert(path->fullPath().getLength() > 0);
 
-  const SoFullPath * fullpath = static_cast<const SoFullPath *>(path);
-  const int idx = this->getIndexCreate(fullpath, fullpath->getLength());
+  const int idx = this->getIndexCreate(path, path->fullPath().getLength());
   assert(idx >= 0 && idx < static_cast<int>(PRIVATE(this)->nodeData.size()));
   this->setNodeFlag(idx, flag, on);
 }
@@ -1024,8 +1050,7 @@ SbProfilingData::setNodeFlag(int idx, NodeFlag flag, SbBool on)
 SbBool
 SbProfilingData::getNodeFlag(const SoPath * path, NodeFlag flag) const
 {
-  const SoFullPath * fullpath = static_cast<const SoFullPath *>(path);
-  const int idx = this->getIndexNoCreate(fullpath, fullpath->getLength());
+  const int idx = this->getIndexNoCreate(path, path->fullPath().getLength());
   if (idx == -1) return 0;
   return this->getNodeFlag(idx, flag);
 }
@@ -1258,3 +1283,110 @@ SbProfilingData::operator != (const SbProfilingData & rhs) const
 // *************************************************************************
 
 #undef PRIVATE
+
+#ifdef COIN_TEST_SUITE
+
+#include <Inventor/SoPath.h>
+#include <Inventor/misc/SoTempPath.h>
+#include <Inventor/nodes/SoSeparator.h>
+
+BOOST_AUTO_TEST_CASE(path_lookup_reaches_tail_without_creating_entries)
+{
+  SoSeparator * root = new SoSeparator;
+  root->ref();
+  SoSeparator * branch = new SoSeparator;
+  root->addChild(branch);
+  SoSeparator * leaf = new SoSeparator;
+  // The same node at different child indices represents distinct paths.
+  branch->addChild(leaf);
+  branch->addChild(leaf);
+  branch->addChild(new SoSeparator);
+  {
+    // Plain SoPath instances exercise the full-path accessors used by the
+    // profiler without relying on the historical SoFullPath downcast.
+    SoPath * first = new SoPath(root);
+    SoPath * second = new SoPath(root);
+    SoPath * missing = new SoPath(root);
+    SoPath * prefix = new SoPath(root);
+    first->ref(); second->ref(); missing->ref(); prefix->ref();
+    first->append(0); first->append(0);
+    second->append(0); second->append(1);
+    missing->append(0); missing->append(2);
+    prefix->append(0);
+    SbProfilingData data;
+    BOOST_CHECK_EQUAL(data.getIndex(first), -1);
+    BOOST_CHECK_EQUAL(data.getNumNodeEntries(), 0);
+    const int firstidx = data.getIndex(first, TRUE);
+    const int secondidx = data.getIndex(second, TRUE);
+    BOOST_REQUIRE(firstidx >= 0 && secondidx >= 0 && firstidx != secondidx);
+    const int parentidx = data.getParentIndex(firstidx);
+    BOOST_CHECK_EQUAL(data.getParentIndex(secondidx), parentidx);
+    data.setNodeTiming(firstidx, SbTime(1.5));
+    data.setNodeTiming(parentidx, SbTime(9.0));
+    data.setNodeFootprint(firstidx, SbProfilingData::MEMORY_SIZE, 4096);
+    data.setNodeFootprint(parentidx, SbProfilingData::MEMORY_SIZE, 128);
+    data.setNodeFlag(firstidx, SbProfilingData::GL_CACHED_FLAG, TRUE);
+    const int count = data.getNumNodeEntries();
+
+    // The last cached path is second, so first must take the lookup path.
+    BOOST_CHECK_EQUAL(data.getIndex(first), firstidx);
+    BOOST_CHECK_EQUAL(data.getNodeTiming(first).getValue(), 1.5);
+    BOOST_CHECK_EQUAL(data.getNodeFootprint(first, SbProfilingData::MEMORY_SIZE), 4096);
+    BOOST_CHECK(data.getNodeFlag(first, SbProfilingData::GL_CACHED_FLAG));
+    BOOST_CHECK_EQUAL(data.getIndex(missing), -1);
+    BOOST_CHECK_EQUAL(data.getNodeTiming(missing).getValue(), 0.0);
+    BOOST_CHECK_EQUAL(data.getNodeFootprint(missing, SbProfilingData::MEMORY_SIZE), 0);
+    BOOST_CHECK(!data.getNodeFlag(missing, SbProfilingData::GL_CACHED_FLAG));
+    BOOST_CHECK_EQUAL(data.getIndex(prefix), parentidx);
+    BOOST_CHECK_EQUAL(data.getIndex(second), secondidx);
+    BOOST_CHECK_EQUAL(data.getIndex(first), firstidx);
+    BOOST_CHECK_EQUAL(data.getNumNodeEntries(), count);
+    first->unref(); second->unref(); missing->unref(); prefix->unref();
+  }
+  root->unref();
+}
+
+BOOST_AUTO_TEST_CASE(path_lookup_distinguishes_parents_of_shared_nodes)
+{
+  SoSeparator * root = new SoSeparator;
+  root->ref();
+  SoSeparator * left = new SoSeparator;
+  SoSeparator * right = new SoSeparator;
+  SoSeparator * shared = new SoSeparator;
+  root->addChild(left);
+  root->addChild(right);
+  left->addChild(shared);
+  right->addChild(shared);
+  {
+    SoTempPath leftparent(2), leftpath(3), rightpath(3);
+    leftparent.setHead(root); leftparent.append(0);
+    leftpath.setHead(root); leftpath.append(0); leftpath.append(0);
+    rightpath.setHead(root); rightpath.append(1); rightpath.append(0);
+    SbProfilingData data;
+    const int parentidx = data.getIndex(&leftparent, TRUE);
+    const int rightidx = data.getIndex(&rightpath, TRUE);
+    data.setNodeTiming(rightidx, SbTime(2.5));
+    data.setNodeFootprint(rightidx, SbProfilingData::MEMORY_SIZE, 512);
+    data.setNodeFlag(rightidx, SbProfilingData::GL_CACHED_FLAG, TRUE);
+    const int count = data.getNumNodeEntries();
+
+    // left->shared was never registered, even though right->shared was.
+    BOOST_CHECK_EQUAL(data.getIndex(&leftpath), -1);
+    BOOST_CHECK_EQUAL(data.getNodeTiming(&leftpath).getValue(), 0.0);
+    BOOST_CHECK_EQUAL(data.getNodeFootprint(&leftpath, SbProfilingData::MEMORY_SIZE), 0);
+    BOOST_CHECK(!data.getNodeFlag(&leftpath, SbProfilingData::GL_CACHED_FLAG));
+    BOOST_CHECK_EQUAL(data.getNumNodeEntries(), count);
+    // Reset the fast-path cache before testing creation independently.
+    data.getIndex(&rightpath);
+    const int leftidx = data.getIndex(&leftpath, TRUE);
+    BOOST_CHECK(leftidx != rightidx);
+    BOOST_CHECK_EQUAL(data.getParentIndex(leftidx), parentidx);
+    BOOST_CHECK_EQUAL(data.getNumNodeEntries(), count + 1);
+    data.setNodeTiming(leftidx, SbTime(1.5));
+    BOOST_CHECK_EQUAL(data.getNodeTiming(&rightpath).getValue(), 2.5);
+    BOOST_CHECK_EQUAL(data.getNodeTiming(&leftpath).getValue(), 1.5);
+  }
+  root->unref();
+}
+
+#endif // COIN_TEST_SUITE

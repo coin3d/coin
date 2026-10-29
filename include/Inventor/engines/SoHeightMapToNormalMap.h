@@ -56,8 +56,8 @@ public:
   static void convert(const unsigned char * srcptr, SbVec2s size, int nc, SbImage & dst_out);
 
 protected:
-  virtual void inputChanged(SoField * which);
-  virtual void evaluate(void);
+  void inputChanged(SoField * which) override;
+  void evaluate(void) override;
 
 }; // SoHeightMapToNormalMap
 

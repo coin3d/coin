@@ -110,10 +110,10 @@ public:
     CCW
   };
 
-  virtual void init(SoState *state);
-  virtual void push(SoState *state);
-  virtual SbBool matches(const SoElement *) const;
-  virtual SoElement *copyMatchInfo(void) const;
+  void init(SoState *state) override;
+  void push(SoState *state) override;
+  SbBool matches(const SoElement *) const override;
+  SoElement *copyMatchInfo(void) const override;
 
   static void setToDefault(SoState * state);
   static void setDiffuse(SoState * state, SoNode * node, int32_t numcolors,

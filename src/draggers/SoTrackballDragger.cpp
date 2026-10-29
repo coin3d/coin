@@ -474,9 +474,6 @@ SoTrackballDragger::setAnimationEnabled(SbBool newval)
 
 // Invalidate surround scale node, if it exists.
 //
-// Note: keep the function name prefix to avoid name clashes with
-// other dragger .cpp files for "--enable-compact" builds.
-//
 // FIXME: should collect these methods in a common method visible to
 // all draggers implementing the exact same functionality. 20010826 mortene.
 static void

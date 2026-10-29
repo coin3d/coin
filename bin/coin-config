@@ -8,7 +8,6 @@
 #   Morten Eriksen <mortene@coin3d.org>
 #
 # Ideas for Improvements:
-# - obsolete src/data/draggerDefaults/iv2h.sh by integration
 # - make builds with subdir-based source files work properly
 # - enable builds with source<->object file timestamp comparisons
 #   (--make instead of --build?)
@@ -280,4 +279,3 @@ EOF
 done
 
 exit 0
-

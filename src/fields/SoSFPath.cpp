@@ -57,9 +57,7 @@
 
 */
 
-// Type-specific define to be able to do #ifdef tests on type.  (Note:
-// used to check the header file wrapper define, but that doesn't work
-// with --enable-compact build.)
+// Type-specific define to be able to do #ifdef tests on type.
 #define COIN_INTERNAL_SOSFPATH
 
 #include <Inventor/fields/SoSFPath.h>
@@ -215,20 +213,18 @@ SoSFPath::writeValue(SoOutput * out) const
   // NB: This code is common for SoSFNode, SoSFPath and SoSFEngine.
   // That's why we check the base type before writing.
   SoBase * base = this->getValue();
-  if (base) {
-    if (base->isOfType(SoNode::getClassTypeId())) {
-      coin_assert_cast<SoNode *>(base)->writeInstance(out);
-    }
-    else if (base->isOfType(SoPath::getClassTypeId())) {
-      SoWriteAction wa(out);
-      wa.continueToApply(coin_assert_cast<SoPath *>(base));
-    }
-    else if (base->isOfType(SoEngine::getClassTypeId())) {
-      coin_assert_cast<SoEngine *>(base)->writeInstance(out);
-    }
-    else {
-      assert(0 && "strange internal error");
-    }
+  if (SoNode * node = coin_safe_cast<SoNode *>(base)) {
+    node->writeInstance(out);
+  }
+  else if (SoPath * path = coin_safe_cast<SoPath *>(base)) {
+    SoWriteAction wa(out);
+    wa.continueToApply(path);
+  }
+  else if (SoEngine * engine = coin_safe_cast<SoEngine *>(base)) {
+    engine->writeInstance(out);
+  }
+  else if (base) {
+    assert(0 && "strange internal error");
   }
   else {
     // This actually works for both ASCII and binary formats.
@@ -252,15 +248,15 @@ SoSFPath::countWriteRefs(SoOutput * out) const
   // NB: This code is common for SoSFNode, SoSFPath and SoSFEngine.
   // That's why we check the base type before writing/counting
 
-  if (base->isOfType(SoNode::getClassTypeId())) {
-    coin_assert_cast<SoNode *>(base)->writeInstance(out);
+  if (SoNode * node = coin_safe_cast<SoNode *>(base)) {
+    node->writeInstance(out);
   }
-  else if (base->isOfType(SoEngine::getClassTypeId())) {
-    coin_assert_cast<SoEngine *>(base)->addWriteReference(out);
+  else if (SoEngine * engine = coin_safe_cast<SoEngine *>(base)) {
+    engine->addWriteReference(out);
   }
-  else if (base->isOfType(SoPath::getClassTypeId())) {
+  else if (SoPath * path = coin_safe_cast<SoPath *>(base)) {
     SoWriteAction wa(out);
-    wa.continueToApply(coin_assert_cast<SoPath *>(base));
+    wa.continueToApply(path);
   }
 }
 

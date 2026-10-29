@@ -49,9 +49,9 @@ public:
   ScXMLInitialElt(void);
   virtual ~ScXMLInitialElt(void);
 
-  virtual void copyContents(const ScXMLElt * rhs);
+  void copyContents(const ScXMLElt * rhs) override;
 
-  virtual const ScXMLElt * search(const char * attrname, const char * attrvalue) const;
+  const ScXMLElt * search(const char * attrname, const char * attrvalue) const override;
 
   // transition
   virtual void setTransition(ScXMLTransitionElt * transition);

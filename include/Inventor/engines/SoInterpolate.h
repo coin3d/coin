@@ -67,7 +67,7 @@ protected:
   protected: \
     virtual ~_class_(); \
   private: \
-    virtual void evaluate()
+    void evaluate() override
 
 
 #define PRIVATE_SO_INTERPOLATE_CONSTRUCTOR(_class_, _type_, _valtype_, _default0_, _default1_) \

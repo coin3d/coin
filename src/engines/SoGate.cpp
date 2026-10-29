@@ -291,7 +291,7 @@ SoGate::writeInstance(SoOutput * out)
 void
 SoGate::copyContents(const SoFieldContainer * from, SbBool copyconnections)
 {
-  const SoGate * gatesrc = coin_assert_cast<const SoGate *>(from);
-  if (gatesrc->input) { this->initialize(gatesrc->input->getTypeId()); }
+  const SoGate * gatesrc = coin_safe_cast<const SoGate *>(from);
+  if (gatesrc && gatesrc->input) { this->initialize(gatesrc->input->getTypeId()); }
   inherited::copyContents(from, copyconnections);
 }

@@ -64,7 +64,7 @@ public:
   SoSFEnum outputType;
   SoSFInt32 maxEmit;
 
-  virtual void GLRender(SoGLRenderAction * action);
+  void GLRender(SoGLRenderAction * action) override;
 
   static SbBool isSupported(SourceType sourceType);
 

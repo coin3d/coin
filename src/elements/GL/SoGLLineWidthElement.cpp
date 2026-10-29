@@ -82,7 +82,14 @@
 float SoGLLineWidthElement::sizerange[2] = { RANGE_NOT_CHECKED, -1.0f};
 
 
-SO_ELEMENT_SOURCE(SoGLLineWidthElement);
+SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoGLLineWidthElement);
+
+SoGLLineWidthElement::SoGLLineWidthElement(void)
+{
+  this->setTypeId(SoGLLineWidthElement::classTypeId);
+  this->setStackIndex(SoGLLineWidthElement::classStackIndex);
+  this->state = NULL;
+}
 
 /*!
   \copydetails SoElement::initClass(void)

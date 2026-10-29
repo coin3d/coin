@@ -45,13 +45,12 @@ protected:
   virtual ~SoGLViewportRegionElement();
 
 public:
-  virtual void init(SoState * state);
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state,
-                   const SoElement * prevTopElement);
+  void init(SoState * state) override;
+  void push(SoState * state) override;
+  void pop(SoState * state, const SoElement * prevTopElement) override;
 
 protected:
-  virtual void setElt(const SbViewportRegion & viewportRegion);
+  void setElt(const SbViewportRegion & viewportRegion) override;
 
 private:
   SbBool initialized;

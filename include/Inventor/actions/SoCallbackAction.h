@@ -176,14 +176,14 @@ public:
 
   SbBool shouldGeneratePrimitives(const SoShape * shape) const;
 
-  virtual SoNode * getCurPathTail(void);
+  SoNode * getCurPathTail(void) override;
   void setCurrentNode(SoNode * const node);
 
   void setCallbackAll(SbBool callbackall);
   SbBool isCallbackAll(void) const;
 
 protected:
-  virtual void beginTraversal(SoNode * node);
+  void beginTraversal(SoNode * node) override;
 
 private:
   void commonConstructor(void);

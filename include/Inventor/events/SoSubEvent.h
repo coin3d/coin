@@ -47,7 +47,7 @@ private: \
   static void * createInstance(void); \
 public: \
   static SoType getClassTypeId(void); \
-  virtual SoType getTypeId(void) const
+  SoType getTypeId(void) const override
 
 #define SO_EVENT_ABSTRACT_HEADER() \
 private: \

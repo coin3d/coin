@@ -259,6 +259,7 @@
 #include <Inventor/SoPickedPoint.h>
 
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/lists/SbList.h>
 
 #include "coindefs.h" // COIN_OBSOLETED
 #include "tidbitsp.h"
@@ -269,7 +270,7 @@
 class SoDraggerCache {
 public:
   SoDraggerCache(SoDragger * parent) :
-    path(reclassify_cast<SoFullPath *>(new SoPath(4))),
+    path(new SoPath(4)),
     dragger(parent),
     matrixAction(new SoGetMatrixAction(dragger->getViewportRegion())),
     draggerToWorld(SbMatrix::identity()),
@@ -290,7 +291,7 @@ public:
     this->worldToDragger = this->matrixAction->getInverse();
   }
 
-  void update(const SoFullPath * newpath, const int draggeridx) {
+  void update(const SoPath * newpath, const int draggeridx) {
     this->path->setHead(newpath->getHead());
     for (int i = 1; i <= draggeridx; i++) {
       this->path->append(newpath->getIndex(i));
@@ -302,11 +303,45 @@ public:
     this->path->truncate(0);
   }
 
-  SoFullPath * path;
+  SoPath * path;
   SoDragger * dragger; // pointer to cache owner
   SoGetMatrixAction * matrixAction; // avoid reallocating this action each frame
   SbMatrix draggerToWorld;
   SbMatrix worldToDragger;
+};
+
+// Store and invoke dragger callbacks with their declared function type.
+// Snapshots preserve registration order and allow callbacks to change the
+// list during dispatch without changing the current invocation.
+class SoDraggerCBList {
+public:
+  void add(SoDraggerCB * func, void * data) {
+    this->funcs.append(func);
+    this->datas.append(data);
+  }
+  void remove(SoDraggerCB * func, void * data) {
+    for (int i = this->funcs.getLength() - 1; i >= 0; i--) {
+      if (this->funcs[i] == func && this->datas[i] == data) {
+        this->funcs.remove(i);
+        this->datas.remove(i);
+        return;
+      }
+    }
+#if COIN_DEBUG
+    SoDebugError::post("SoDragger::removeCallback",
+                       "Tried to remove non-existent callback function.");
+#endif // COIN_DEBUG
+  }
+  void invoke(SoDragger * dragger) {
+    SbList<SoDraggerCB *> funcscopy(this->funcs);
+    SbList<void *> datascopy(this->datas);
+    for (int i = 0; i < funcscopy.getLength(); i++) {
+      funcscopy[i](datascopy[i], dragger);
+    }
+  }
+private:
+  SbList<SoDraggerCB *> funcs;
+  SbList<void *> datas;
 };
 
 class SoDraggerP {
@@ -321,11 +356,11 @@ public:
   SoDraggerCache * draggercache;
   SbBool didmousemove;
 
-  SoCallbackList startCB;
-  SoCallbackList motionCB;
-  SoCallbackList finishCB;
-  SoCallbackList valueChangedCB;
-  SoCallbackList otherEventCB;
+  SoDraggerCBList startCB;
+  SoDraggerCBList motionCB;
+  SoDraggerCBList finishCB;
+  SoDraggerCBList valueChangedCB;
+  SoDraggerCBList otherEventCB;
   SbMatrix startmotionmatrix;
   SbVec3f startingpoint;
   SbViewVolume viewvolume;
@@ -613,7 +648,7 @@ SoDragger::getProjectorEpsilon(void) const
 void
 SoDragger::addStartCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->startCB.addCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
+  PRIVATE(this)->startCB.add(func, data);
 }
 
 /*!
@@ -624,7 +659,7 @@ SoDragger::addStartCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::removeStartCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->startCB.removeCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
+  PRIVATE(this)->startCB.remove(func, data);
 }
 
 /*!
@@ -634,7 +669,7 @@ SoDragger::removeStartCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::addMotionCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->motionCB.addCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
+  PRIVATE(this)->motionCB.add(func, data);
 }
 
 /*!
@@ -645,7 +680,7 @@ SoDragger::addMotionCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::removeMotionCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->motionCB.removeCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
+  PRIVATE(this)->motionCB.remove(func, data);
 }
 
 /*!
@@ -654,7 +689,7 @@ SoDragger::removeMotionCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::addFinishCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->finishCB.addCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
+  PRIVATE(this)->finishCB.add(func, data);
 }
 
 /*!
@@ -665,7 +700,7 @@ SoDragger::addFinishCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::removeFinishCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->finishCB.removeCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
+  PRIVATE(this)->finishCB.remove(func, data);
 }
 
 /*!
@@ -677,7 +712,7 @@ SoDragger::removeFinishCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::addValueChangedCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->valueChangedCB.addCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
+  PRIVATE(this)->valueChangedCB.add(func, data);
 }
 
 /*!
@@ -688,7 +723,7 @@ SoDragger::addValueChangedCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::removeValueChangedCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->valueChangedCB.removeCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
+  PRIVATE(this)->valueChangedCB.remove(func, data);
 }
 
 /*!
@@ -746,7 +781,7 @@ SoDragger::getMotionMatrix(void)
 void
 SoDragger::addOtherEventCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->otherEventCB.addCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
+  PRIVATE(this)->otherEventCB.add(func, data);
 }
 
 /*!
@@ -757,7 +792,7 @@ SoDragger::addOtherEventCallback(SoDraggerCB * func, void * data)
 void
 SoDragger::removeOtherEventCallback(SoDraggerCB * func, void * data)
 {
-  PRIVATE(this)->otherEventCB.removeCallback(reinterpret_cast<SoCallbackListCB *>(func), data);
+  PRIVATE(this)->otherEventCB.remove(func, data);
 }
 
 /*!
@@ -879,7 +914,7 @@ SoDragger::getPartToLocalMatrix(const SbName & partname, SbMatrix & parttolocalm
   SoPath * pathtothis = this->createPathToThis();
   assert(pathtothis);
   pathtothis->ref();
-  SoPath * path = reclassify_cast<SoPath *>(this->createPathToAnyPart(partname, FALSE, FALSE, FALSE, pathtothis));
+  SoPath * path = this->createPathToAnyPart(partname, FALSE, FALSE, FALSE, pathtothis);
   assert(path);
   pathtothis->unref();
 
@@ -964,7 +999,7 @@ void
 SoDragger::valueChanged(void)
 {
   if (PRIVATE(this)->valuechangedcbenabled) {
-    PRIVATE(this)->valueChangedCB.invokeCallbacks(this);
+    PRIVATE(this)->valueChangedCB.invoke(this);
   }
 }
 
@@ -1018,8 +1053,7 @@ SoDragger::createPathToThis(void)
 {
   assert(PRIVATE(this)->draggercache);
   assert(PRIVATE(this)->draggercache->path);
-  SoPath * orgpath = reclassify_cast<SoPath *>(PRIVATE(this)->draggercache->path);
-  return new SoPath(*orgpath);
+  return new SoPath(*PRIVATE(this)->draggercache->path);
 }
 
 /*!
@@ -1576,14 +1610,11 @@ SoDragger::shouldGrabBasedOnSurrogate(const SoPath * pickpath, const SoPath * su
 {
   if (!pickpath->containsPath(surrogatepath)) return FALSE;
 
-  const SoFullPath * pick = reclassify_cast<const SoFullPath *>(pickpath);
-  const SoFullPath * surr = reclassify_cast<const SoFullPath *>(surrogatepath);
-
-  SoNode * tail = surr->getTail();
+  SoNode * tail = surrogatepath->fullPath().getTail();
   SoType draggertype = SoDragger::getClassTypeId();
 
-  for (int i = pick->getLength()-1; i >= 0; i--) {
-    SoNode * node = pick->getNode(i);
+  for (int i = pickpath->fullPath().getLength()-1; i >= 0; i--) {
+    SoNode * node = pickpath->getNode(i);
     if (node == tail) return TRUE;
     if (node->isOfType(draggertype))
       return FALSE;
@@ -1657,7 +1688,7 @@ SoDragger::handleEvent(SoHandleEventAction * action)
     const SoPickedPoint * pp = this->getPickedPointForStart(action);
     if (pp && this->isPicked(pp->getPath())) {
       this->eventHandled(event, action);
-      PRIVATE(this)->otherEventCB.invokeCallbacks(this);
+      PRIVATE(this)->otherEventCB.invoke(this);
     }
   }
   else if (SO_MOUSE_PRESS_EVENT(event, BUTTON1)) {
@@ -1709,7 +1740,7 @@ SoDragger::handleEvent(SoHandleEventAction * action)
       PRIVATE(this)->startlocaterpos = event->getPosition();
       PRIVATE(this)->isgrabbing = FALSE;
       this->saveStartParameters();
-      PRIVATE(this)->startCB.invokeCallbacks(this);
+      PRIVATE(this)->startCB.invoke(this);
     }
   }
   else if (this->isActive.getValue() && SO_MOUSE_RELEASE_EVENT(event, BUTTON1)) {
@@ -1736,13 +1767,13 @@ SoDragger::handleEvent(SoHandleEventAction * action)
       PRIVATE(this)->surrogatepath = NULL;
     }
 
-    PRIVATE(this)->finishCB.invokeCallbacks(this);
+    PRIVATE(this)->finishCB.invoke(this);
     PRIVATE(this)->draggercache->truncatePath();
   }
   else if (this->isActive.getValue() && event->isOfType(SoLocation2Event::getClassTypeId())) {
     this->eventHandled(event, action);
     PRIVATE(this)->didmousemove = TRUE;
-    PRIVATE(this)->motionCB.invokeCallbacks(this);
+    PRIVATE(this)->motionCB.invoke(this);
     if (!PRIVATE(this)->isgrabbing) {
       this->grabEventsSetup();
       PRIVATE(this)->isgrabbing = TRUE;
@@ -1751,7 +1782,7 @@ SoDragger::handleEvent(SoHandleEventAction * action)
   else if (this->isActive.getValue()) {
     PRIVATE(this)->eventaction = action;
     PRIVATE(this)->currentevent = event;
-    PRIVATE(this)->otherEventCB.invokeCallbacks(this);
+    PRIVATE(this)->otherEventCB.invoke(this);
   }
   if (!action->isHandled())
     inherited::handleEvent(action);
@@ -1884,7 +1915,7 @@ SoDragger::childStartCB(void * data, SoDragger * child)
   child->setProjectorEpsilon(thisp->getProjectorEpsilon());
   thisp->saveStartParameters();
   thisp->setActiveChildDragger(child);
-  PRIVATE(thisp)->startCB.invokeCallbacks(thisp);
+  PRIVATE(thisp)->startCB.invoke(thisp);
   thisp->unref();
 }
 
@@ -1895,7 +1926,7 @@ void
 SoDragger::childMotionCB(void * data, SoDragger * COIN_UNUSED_ARG(child))
 {
   SoDragger * thisp = static_cast<SoDragger *>(data);
-  PRIVATE(thisp)->motionCB.invokeCallbacks(thisp);
+  PRIVATE(thisp)->motionCB.invoke(thisp);
 }
 
 /*!
@@ -1907,7 +1938,7 @@ SoDragger::childFinishCB(void * data, SoDragger * COIN_UNUSED_ARG(child))
   SoDragger * thisp = static_cast<SoDragger *>(data);
 
   thisp->ref();
-  PRIVATE(thisp)->finishCB.invokeCallbacks(thisp);
+  PRIVATE(thisp)->finishCB.invoke(thisp);
   thisp->setActiveChildDragger(NULL);
   if (PRIVATE(thisp)->draggercache) PRIVATE(thisp)->draggercache->truncatePath();
   thisp->unref();
@@ -1922,7 +1953,7 @@ SoDragger::childOtherEventCB(void * data, SoDragger * child)
   SoDragger * thisp = static_cast<SoDragger *>(data);
   PRIVATE(thisp)->currentevent = child->pimpl->currentevent;
   PRIVATE(thisp)->eventaction = child->pimpl->eventaction;
-  PRIVATE(thisp)->otherEventCB.invokeCallbacks(thisp);
+  PRIVATE(thisp)->otherEventCB.invoke(thisp);
 }
 
 // Returns whether path goes through this node (dragger is picked).
@@ -1930,17 +1961,15 @@ SbBool
 SoDragger::isPicked(SoPath * path)
 {
   // last dragger in path must be this one
-  SoFullPath * fullpath = reclassify_cast<SoFullPath *>(path);
-
-  int i = fullpath->findNode(this);
+  int i = path->findNode(this);
   if (i < 0) return FALSE;
 
   // if this is a composite dragger, the path will go through this
   // dragger, but it should not be regarded as picked if a child
   // dragger is picked.
-  int n = fullpath->getLength();
+  int n = path->fullPath().getLength();
   for (++i; i < n; i++) {
-    SoNode * node = fullpath->getNode(i);
+    SoNode * node = path->getNode(i);
     if (node->isOfType(SoDragger::getClassTypeId())) return FALSE;
   }
   return TRUE;
@@ -1962,7 +1991,7 @@ SoDragger::updateDraggerCache(const SoPath * path)
 {
   if (PRIVATE(this)->draggercache == NULL)
     PRIVATE(this)->draggercache = new SoDraggerCache(this);
-  if (path) PRIVATE(this)->draggercache->update(reclassify_cast<const SoFullPath *>(path), path->findNode(this));
+  if (path) PRIVATE(this)->draggercache->update(path, path->findNode(this));
   else PRIVATE(this)->draggercache->updateMatrix();
 }
 

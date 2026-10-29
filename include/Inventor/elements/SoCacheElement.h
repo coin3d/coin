@@ -47,17 +47,17 @@ protected:
   virtual ~SoCacheElement();
 
 public:
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
 
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state, const SoElement * prevTopElement);
+  void push(SoState * state) override;
+  void pop(SoState * state, const SoElement * prevTopElement) override;
 
   static void set(SoState * const state, SoCache * const cache);
   SoCache * getCache(void) const;
   static SbBool anyOpen(SoState * const state);
   static void invalidate(SoState * const state);
-  virtual SbBool matches(const SoElement * element) const;
-  virtual SoElement * copyMatchInfo(void) const;
+  SbBool matches(const SoElement * element) const override;
+  SoElement * copyMatchInfo(void) const override;
   SoCacheElement * getNextCacheElement(void) const;
 
   static void addElement(SoState * const state,

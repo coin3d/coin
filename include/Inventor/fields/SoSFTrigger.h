@@ -53,13 +53,13 @@ public:
   int operator==(const SoSFTrigger & trigger) const;
   int operator!=(const SoSFTrigger & trigger) const;
 
-  virtual void startNotify(void);
-  virtual void notify(SoNotList * l);
-  virtual void touch(void);
+  void startNotify(void) override;
+  void notify(SoNotList * l) override;
+  void touch(void) override;
 
 private:
-  virtual SbBool readValue(SoInput * in);
-  virtual void writeValue(SoOutput * out) const;
+  SbBool readValue(SoInput * in) override;
+  void writeValue(SoOutput * out) const override;
 };
 
 #endif // !COIN_SOSFTRIGGER_H

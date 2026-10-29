@@ -63,6 +63,7 @@ class SbVec2f;
 #define SOGL_NEED_TEXCOORDS      0x20
 #define SOGL_NEED_3DTEXCOORDS    0x40
 #define SOGL_NEED_MULTITEXCOORDS 0x80 // internal
+#define SOGL_NEED_CUBEMAPTEXCOORDS 0x100
 
 // Convenience function for access to OpenGL wrapper from an SoState
 // pointer.

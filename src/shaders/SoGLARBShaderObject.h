@@ -49,11 +49,11 @@ class SoGLARBShaderObject : public SoGLShaderObject
 {
   friend class SoGLARBShaderParameter;
 public:
-  virtual SbBool isLoaded(void) const;
-  virtual void load(const char *sourceString);
-  virtual void unload(void);
-  virtual SoShader::Type shaderType(void) const;
-  virtual SoGLShaderParameter* getNewParameter(void) const;
+  SbBool isLoaded(void) const override;
+  void load(const char *sourceString) override;
+  void unload(void) override;
+  SoShader::Type shaderType(void) const override;
+  SoGLShaderParameter* getNewParameter(void) const override;
 
   void enable(void);
   void disable(void);

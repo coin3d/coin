@@ -769,6 +769,9 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
                                                  SoLazyElement::LIGHT_MODEL_MASK|
                                                  SoLazyElement::BLENDING_MASK);
 
+      // Pending programs are initialized at the next current-context traversal.
+      // Queue notification after this traversal, even for priority-zero viewers.
+      PRIVATE(this)->bumprender->scheduleRedraw(state, action->getCurPath()->getHead());
       return FALSE;
     }
   }

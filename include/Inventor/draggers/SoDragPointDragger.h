@@ -95,8 +95,8 @@ public:
 
 protected:
   virtual ~SoDragPointDragger(void);
-  virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
-  virtual void setDefaultOnNonWritingFields(void);
+  SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE) override;
+  void setDefaultOnNonWritingFields(void) override;
 
   void dragStart(void);
   void drag(void);

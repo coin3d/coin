@@ -66,9 +66,9 @@ protected:
   virtual ~SoOneShot(void);
 
 private:
-  virtual void evaluate(void);
-  virtual void inputChanged(SoField * which);
-  virtual void writeInstance(SoOutput * out);
+  void evaluate(void) override;
+  void inputChanged(SoField * which) override;
+  void writeInstance(SoOutput * out) override;
 
   SbTime holdduration;
   float holdramp;

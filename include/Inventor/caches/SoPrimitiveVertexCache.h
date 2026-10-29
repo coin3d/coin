@@ -58,7 +58,7 @@ public:
     ALL = (NORMAL|TEXCOORD|COLOR)
   };
 
-  virtual SbBool isValid(const SoState * state) const;
+  SbBool isValid(const SoState * state) const override;
   void close(SoState * state);
 
   void renderTriangles(SoState * state, const int arrays = ALL) const;

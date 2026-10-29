@@ -86,24 +86,24 @@ public:
   SbBool set(const char * namevaluepairliststring);
   SbBool set(const char * partnamestring, const char * parameterstring);
 
-  virtual void doAction(SoAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-  virtual void getMatrix(SoGetMatrixAction * action);
-  virtual void handleEvent(SoHandleEventAction * action);
-  virtual void rayPick(SoRayPickAction * action);
-  virtual void search(SoSearchAction * action);
-  virtual void write(SoWriteAction * action);
-  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
+  void doAction(SoAction * action) override;
+  void callback(SoCallbackAction * action) override;
+  void GLRender(SoGLRenderAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
+  void getMatrix(SoGetMatrixAction * action) override;
+  void handleEvent(SoHandleEventAction * action) override;
+  void rayPick(SoRayPickAction * action) override;
+  void search(SoSearchAction * action) override;
+  void write(SoWriteAction * action) override;
+  void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
 
-  virtual SoChildList * getChildren(void) const;
+  SoChildList * getChildren(void) const override;
 
   void printDiagram(void);
   void printSubDiagram(const SbName & rootname, int level);
   void printTable(void);
 
-  virtual void addWriteReference(SoOutput * out, SbBool isfromfield = FALSE);
+  void addWriteReference(SoOutput * out, SbBool isfromfield = FALSE) override;
   SbBool forceChildDrivenWriteRefs(SoOutput * out);
 
   static SbBool isSearchingChildren(void);
@@ -114,9 +114,9 @@ protected:
 
   static const SoNodekitCatalog ** getClassNodekitCatalogPtr(void);
 
-  virtual SoNode * addToCopyDict(void) const;
-  virtual void copyContents(const SoFieldContainer * fromfc,
-                            SbBool copyconnections);
+  SoNode * addToCopyDict(void) const override;
+  void copyContents(const SoFieldContainer * fromfc,
+                    SbBool copyconnections) override;
 
   SoGroup * getContainerNode(const SbName & listname,
                              SbBool makeifneeded = TRUE);
@@ -138,7 +138,7 @@ protected:
 
   void catalogError(void);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
-  virtual SbBool readInstance(SoInput * in, unsigned short flags);
+  SbBool readInstance(SoInput * in, unsigned short flags) override;
   virtual void setDefaultOnNonWritingFields(void);
   void countMyFields(SoOutput * out);
 

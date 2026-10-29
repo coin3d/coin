@@ -144,8 +144,8 @@
 
   - COIN_FORCE_AGL: set to "1" to prefer using the old AGL bindings over CGL.
     Note that AGL is not available on 64-bit systems. The AGL code is not
-    compiled into Coin by default, but must be enabled at configure-time using
-    --enable-agl in addition to using the environment variable.
+    compiled into Coin by default; enable it with -DCOIN_BUILD_MAC_AGL=ON
+    in addition to using the environment variable.
 */
 
 
@@ -190,11 +190,11 @@
 
 // *************************************************************************
 
-/* The configure script should protect against more than one of
+/* The build configuration should protect against more than one of
    (HAVE_WGL), (HAVE_EGL or HAVE_GLX) and (HAVE_AGL or HAVE_CGL) being defined at the same time, but
    we set up this little trip-wire in addition, just in case someone
    is either fiddling manually with config.h, or in case a change is
-   made which breaks this protection in the configure script. */
+   made which breaks this protection in the build configuration. */
 
 #if defined(HAVE_WGL)
 #  define GRAPHICS_API_WGL_COUNT 1
@@ -239,6 +239,8 @@
 #include <cstring>
 #include <climits> /* SHRT_MAX */
 
+#include <Inventor/C/glue/gl.h>
+
 #ifdef HAVE_AGL
 #include <AGL/agl.h>
 #endif /* HAVE_AGL */
@@ -260,8 +262,6 @@
 #include <EGL/eglext.h>
 #endif /* HAVE_EGL */
 
-#include <Inventor/C/glue/gl.h>
-
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/dl.h>
 #include <Inventor/C/tidbits.h>
@@ -271,6 +271,10 @@
 #include "tidbitsp.h"
 #include "base/dict.h"
 #include "base/namemap.h"
+#ifdef HAVE_WGL
+#include <windows.h>
+#include "glue/khronos/GL/wglext.h"
+#endif
 #include "glue/glp.h"
 #include "glue/dlp.h"
 #include "glue/gl_agl.h"
@@ -294,115 +298,12 @@ static cc_list * gl_instance_created_cblist = NULL;
 static int COIN_MAXIMUM_TEXTURE2_SIZE = -1;
 static int COIN_MAXIMUM_TEXTURE3_SIZE = -1;
 static cc_glglue_offscreen_cb_functions* offscreen_cb = NULL;
+#if defined(HAVE_AGL)
 static int COIN_USE_AGL = -1;
+#endif
 static int COIN_USE_EGL = -1;
 
 /* ********************************************************************** */
-
-/* Sanity checks for enum extension value assumed to be equal to the
- * final / "proper" / standard OpenGL enum values. (If not, we could
- * end up with hard-to-find bugs because of mismatches with the
- * compiled values versus the runtime values.)
- *
- * This doesn't really _fix_ anything, it is just meant as an aid to
- * smoke out platforms where we're getting unexpected enum values.
- */
-
-#ifdef GL_CLAMP_TO_EDGE_EXT
-#if GL_CLAMP_TO_EDGE != GL_CLAMP_TO_EDGE_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_CLAMP_TO_EDGE_EXT */
-
-#ifdef GL_CLAMP_TO_EDGE_SGIS
-#if GL_CLAMP_TO_EDGE != GL_CLAMP_TO_EDGE_SGIS
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_CLAMP_TO_EDGE_SGIS */
-
-#ifdef GL_MAX_3D_TEXTURE_SIZE_EXT
-#if GL_MAX_3D_TEXTURE_SIZE != GL_MAX_3D_TEXTURE_SIZE_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_MAX_3D_TEXTURE_SIZE_EXT */
-
-#ifdef GL_PACK_IMAGE_HEIGHT_EXT
-#if GL_PACK_IMAGE_HEIGHT != GL_PACK_IMAGE_HEIGHT_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_PACK_IMAGE_HEIGHT_EXT */
-
-#ifdef GL_PACK_SKIP_IMAGES_EXT
-#if GL_PACK_SKIP_IMAGES != GL_PACK_SKIP_IMAGES_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_PACK_SKIP_IMAGES_EXT */
-
-#ifdef GL_PROXY_TEXTURE_2D_EXT
-#if GL_PROXY_TEXTURE_2D != GL_PROXY_TEXTURE_2D_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_PROXY_TEXTURE_2D_EXT */
-
-#ifdef GL_PROXY_TEXTURE_3D_EXT
-#if GL_PROXY_TEXTURE_3D != GL_PROXY_TEXTURE_3D_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_PROXY_TEXTURE_3D_EXT */
-
-#ifdef GL_TEXTURE_3D_EXT
-#if GL_TEXTURE_3D != GL_TEXTURE_3D_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_TEXTURE_3D_EXT */
-
-#ifdef GL_TEXTURE_DEPTH_EXT
-#if GL_TEXTURE_DEPTH != GL_TEXTURE_DEPTH_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_TEXTURE_DEPTH_EXT */
-
-#ifdef GL_TEXTURE_WRAP_R_EXT
-#if GL_TEXTURE_WRAP_R != GL_TEXTURE_WRAP_R_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_TEXTURE_WRAP_R_EXT */
-
-#ifdef GL_UNPACK_IMAGE_HEIGHT_EXT
-#if GL_UNPACK_IMAGE_HEIGHT != GL_UNPACK_IMAGE_HEIGHT_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_UNPACK_IMAGE_HEIGHT_EXT */
-
-#ifdef GL_UNPACK_SKIP_IMAGES_EXT
-#if GL_UNPACK_SKIP_IMAGES != GL_UNPACK_SKIP_IMAGES_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_UNPACK_SKIP_IMAGES_EXT */
-
-#ifdef GL_FUNC_ADD_EXT
-#if GL_FUNC_ADD != GL_FUNC_ADD_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_FUNC_ADD_EXT */
-
-#ifdef GL_MIN_EXT
-#if GL_MIN != GL_MIN_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_MIN_EXT */
-
-#ifdef GL_MAX_EXT
-#if GL_MAX != GL_MAX_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_MAX_EXT */
-
-#ifdef GL_COLOR_TABLE_WIDTH_EXT
-#if GL_COLOR_TABLE_WIDTH != GL_COLOR_TABLE_WIDTH_EXT
-#error dangerous enum mismatch
-#endif /* cmp */
-#endif /* GL_COLOR_TABLE_WIDTH_EXT */
 
 /* ********************************************************************** */
 
@@ -634,10 +535,25 @@ returnpoint:
    actual cc_glglue instances. */
 static cc_dict * gldict = NULL;
 
+static char *
+glglue_strdup(const char * string)
+{
+  if (!string) return NULL;
+  const size_t length = strlen(string) + 1;
+  char * copy = (char *)malloc(length);
+  assert(copy && "could not copy OpenGL string");
+  if (copy) memcpy(copy, string, length);
+  return copy;
+}
+
 static void
 free_glglue_instance(uintptr_t COIN_UNUSED_ARG(key), void * value, void * COIN_UNUSED_ARG(closure))
 {
   cc_glglue * glue = (cc_glglue*) value;
+  free(glue->versionstr);
+  free(glue->vendorstr);
+  free(glue->rendererstr);
+  free(glue->extensionsstr);
   cc_dict_destruct(glue->glextdict);
   free(value);
 }
@@ -2311,8 +2227,7 @@ cc_glglue_instance(int contextid)
       chk = coin_getenv("COIN_GL_NO_CURRENT_CONTEXT_CHECK") ? 0 : 1;
     }
     if (chk) {
-      const void * current_ctx = coin_gl_current_context();
-      assert(current_ctx && "Must have a current GL context when instantiating cc_glglue!! (Note: if you are using an old Mesa GL version, set the environment variable COIN_GL_NO_CURRENT_CONTEXT_CHECK to get around what may be a Mesa bug.)");
+      if (!coin_gl_current_context()) assert(!"Must have a current GL context when instantiating cc_glglue!! (Note: if you are using an old Mesa GL version, set the environment variable COIN_GL_NO_CURRENT_CONTEXT_CHECK to get around what may be a Mesa bug.)");
     }
 
     /* FIXME: this is not free'd until app exit, which is bad because
@@ -2356,9 +2271,10 @@ cc_glglue_instance(int contextid)
     /* NB: if you are getting a crash here, it's because an attempt at
      * setting up a cc_glglue instance was made when there is no
      * current OpenGL context. */
-    gi->versionstr = (const char *)glGetString(GL_VERSION);
-    assert(gi->versionstr && "could not call glGetString() -- no current GL context?");
+    const char * versionstr = (const char *)glGetString(GL_VERSION);
+    assert(versionstr && "could not call glGetString() -- no current GL context?");
     assert(glGetError() == GL_NO_ERROR && "GL error when calling glGetString() -- no current GL context?");
+    gi->versionstr = glglue_strdup(versionstr);
 
     glglue_set_glVersion(gi);
 
@@ -2377,7 +2293,7 @@ cc_glglue_instance(int contextid)
     }
 #endif
 
-    gi->vendorstr = (const char *)glGetString(GL_VENDOR);
+    gi->vendorstr = glglue_strdup((const char *)glGetString(GL_VENDOR));
     gi->vendor_is_SGI = strcmp((const char *)gi->vendorstr, "SGI") == 0;
     gi->vendor_is_nvidia = strcmp((const char*)gi->vendorstr, "NVIDIA Corporation") == 0;
     gi->vendor_is_intel =
@@ -2393,8 +2309,8 @@ cc_glglue_instance(int contextid)
       if (env) gi->nvidia_color_per_face_bug = 0;
     }
 
-    gi->rendererstr = (const char *)glGetString(GL_RENDERER);
-    gi->extensionsstr = (const char *)glGetString(GL_EXTENSIONS);
+    gi->rendererstr = glglue_strdup((const char *)glGetString(GL_RENDERER));
+    gi->extensionsstr = glglue_strdup((const char *)glGetString(GL_EXTENSIONS));
 
     /* Randall O'Reilly reports that the above call is deprecated from OpenGL 3.0
        onwards and may, particularly on some Linux systems, return NULL.

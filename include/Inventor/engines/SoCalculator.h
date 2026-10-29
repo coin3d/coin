@@ -64,10 +64,10 @@ public:
 protected:
   virtual ~SoCalculator(void);
 
-  virtual void inputChanged(SoField * which);
+  void inputChanged(SoField * which) override;
 
 private:
-  virtual void evaluate(void);
+  void evaluate(void) override;
 
   static void readfieldcb(const char *name, float *data, void *cbdata);
   static void writefieldcb(const char *name, float *data, int comp, void *cbdata);

@@ -46,10 +46,10 @@ public:
                            const float edgetol = 0.9f,
                            const SbBool orienttoeye = TRUE);
 
-  virtual SbProjector * copy(void) const;
-  virtual SbVec3f project(const SbVec2f & point);
-  virtual SbRotation getRotation(const SbVec3f & point1,
-                                 const SbVec3f & point2);
+  SbProjector * copy(void) const override;
+  SbVec3f project(const SbVec2f & point) override;
+  SbRotation getRotation(const SbVec3f & point1,
+                         const SbVec3f & point2) override;
   void setTolerance(const float edgetol);
   float getTolerance(void) const;
   void setRadialFactor(const float rad = 0.0f);

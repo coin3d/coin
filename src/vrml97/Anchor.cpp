@@ -218,6 +218,7 @@ SoVRMLAnchor::initClass(void) // static
 */
 SoVRMLAnchor::SoVRMLAnchor(void)
 {
+  this->pimpl = NULL;
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLAnchor);
 
   SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(url);

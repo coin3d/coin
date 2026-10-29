@@ -72,7 +72,7 @@ public:
   static void initClass(void);
   SoCenterballDragger(void);
 
-  virtual void saveStartParameters(void);
+  void saveStartParameters(void) override;
 
   SoSFRotation rotation;
   SoSFVec3f center;
@@ -81,16 +81,16 @@ protected:
   virtual ~SoCenterballDragger(void);
   void transferCenterDraggerMotion(SoDragger * childdragger);
   void setSwitches(SoDragger * activechild);
-  virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
-  virtual void setDefaultOnNonWritingFields(void);
+  SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE) override;
+  void setDefaultOnNonWritingFields(void) override;
 
   static void fieldSensorCB(void * f, SoSensor * s);
   static void valueChangedCB(void * f, SoDragger * d);
   static void kidStartCB(void * f, SoDragger * d);
   static void kidFinishCB(void * f, SoDragger * d);
 
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-  virtual void getMatrix(SoGetMatrixAction * action);
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
+  void getMatrix(SoGetMatrixAction * action) override;
 
   SoFieldSensor * rotFieldSensor;
   SoFieldSensor * centerFieldSensor;

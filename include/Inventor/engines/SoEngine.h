@@ -58,13 +58,13 @@ public:
   static int getByName(const SbName & name, SoEngineList & el);
 
   SbBool isNotifying(void) const;
-  virtual void notify(SoNotList * nl);
+  void notify(SoNotList * nl) override;
 
   SoEngine * copy(void) const;
-  virtual SoFieldContainer * copyThroughConnection(void) const;
+  SoFieldContainer * copyThroughConnection(void) const override;
   SbBool shouldCopy(void) const;
 
-  virtual void writeInstance(SoOutput * out);
+  void writeInstance(SoOutput * out) override;
 
 
 protected:
@@ -72,7 +72,7 @@ protected:
   virtual ~SoEngine(void);
   virtual void evaluate(void) = 0;
 
-  virtual SbBool readInstance(SoInput * in, unsigned short flags);
+  SbBool readInstance(SoInput * in, unsigned short flags) override;
   virtual void inputChanged(SoField * which);
 
   static const SoFieldData ** getInputDataPtr(void);
@@ -81,7 +81,7 @@ protected:
   void writeOutputTypes(SoOutput * out);
 
 private:
-  virtual void destroy(void); // overrides SoBase::destroy()
+  void destroy(void) override; // overrides SoBase::destroy()
 
   static SoType classTypeId;
 

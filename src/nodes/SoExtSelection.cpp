@@ -44,7 +44,7 @@
   complex, due to its non-trivial functionality. To see an \e
   extensive usage example of the SoExtSelection node, we advise you to
   go look at the "extselection" example application in the "nodes/"
-  directory of the SoGuiExamples Mercurial repository. Further information and
+  directory of the SoGuiExamples Git repository. Further information and
   links for downloading and building this module should be available at <a
   href="https://github.com/coin3d/soguiexamples">github.com/coin3d/soguiexamples</a>.
 
@@ -1233,9 +1233,6 @@ SoExtSelection::GLRenderBelowPath(SoGLRenderAction * action)
 
   if (action->isRenderingDelayedPaths()) {
 
-    SbViewportRegion vp = SoViewportRegionElement::get(state);
-    SbVec2s vpo = vp.getViewportOriginPixels();
-    SbVec2s vps = vp.getViewportSizePixels();
     this->draw(action);
   }
   // render this path after all other (delayed)
@@ -1533,12 +1530,14 @@ SoExtSelectionP::testShape(SoCallbackAction * action, const SoShape * shape)
 
   SbBool full = FALSE;
   switch (PUBLIC(this)->lassoPolicy.getValue()) {
-  case SoExtSelection::FULL_BBOX: /* fall through intended */
+  case SoExtSelection::FULL_BBOX:
     full = TRUE;
+    /*FALLTHROUGH*/
   case SoExtSelection::PART_BBOX:
     return testBBox(action, projmatrix, shape, rectbbox, full);
-  case SoExtSelection::FULL: /* fall through intended */
+  case SoExtSelection::FULL:
     full = TRUE;
+    /*FALLTHROUGH*/
   case SoExtSelection::PART:
     return testPrimitives(action, projmatrix, shape, rectbbox, full);
   default:

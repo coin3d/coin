@@ -50,7 +50,7 @@
 #define PRIVATE_ENGINE_TYPESYSTEM_HEADER( ) \
 public: \
   static SoType getClassTypeId(void); \
-  virtual SoType getTypeId(void) const; \
+  SoType getTypeId(void) const override; \
 private: \
   static SoType classTypeId
 
@@ -60,8 +60,8 @@ protected: \
   static const SoFieldData ** getInputDataPtr(void); \
   static const SoEngineOutputData ** getOutputDataPtr(void); \
 public: \
-  virtual const SoFieldData * getFieldData(void) const; \
-  virtual const SoEngineOutputData * getOutputData(void) const; \
+  const SoFieldData * getFieldData(void) const override; \
+  const SoEngineOutputData * getOutputData(void) const override; \
 private: \
   static unsigned int classinstances; \
   static SoFieldData * inputdata; \
@@ -282,7 +282,7 @@ _class_::createInstance(void) \
 #define SO_COMPOSE__HEADER(_name_) \
   SO_ENGINE_HEADER(_name_); \
   private: \
-    virtual void evaluate(); \
+    void evaluate() override; \
   protected: \
     virtual ~_name_();\
   public: \

@@ -79,7 +79,7 @@ public:
 protected:
   virtual ~SoEventCallback();
 
-  virtual void handleEvent(SoHandleEventAction * action);
+  void handleEvent(SoHandleEventAction * action) override;
 
 private:
 

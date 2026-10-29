@@ -58,7 +58,7 @@
 class ScXMLAnchorEltReader : public ScXMLEltReader {
 public:
   ScXMLAnchorEltReader(void);
-  virtual ScXMLElt * read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm);
+  ScXMLElt * read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm) override;
 };
 
 ScXMLAnchorEltReader::ScXMLAnchorEltReader(void)

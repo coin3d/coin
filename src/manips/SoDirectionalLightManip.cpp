@@ -55,6 +55,7 @@
 // doc?). Usage code example. 20011023 mortene.
 
 #include <Inventor/manips/SoDirectionalLightManip.h>
+#include <Inventor/SoPath.h>
 
 #include <Inventor/draggers/SoDirectionalLightDragger.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -68,7 +69,6 @@
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/SoNodeKitPath.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -188,8 +188,7 @@ SoDirectionalLightManip::getDragger(void)
 SbBool
 SoDirectionalLightManip::replaceNode(SoPath * path)
 {
-  SoFullPath * fullpath = (SoFullPath *)path;
-  SoNode * fulltail = fullpath->getTail();
+  SoNode * fulltail = path->fullPath().getTail();
   if (!fulltail->isOfType(SoDirectionalLight::getClassTypeId())) {
 #if COIN_DEBUG
     SoDebugError::post("SoDirectionalLightManip::replaceNode",
@@ -199,7 +198,7 @@ SoDirectionalLightManip::replaceNode(SoPath * path)
   }
   SoNode * tail = path->getTail();
   if (tail->isOfType(SoBaseKit::getClassTypeId())) {
-    SoBaseKit * kit = (SoBaseKit *) ((SoNodeKitPath *)path)->getTail();
+    SoBaseKit * kit = static_cast<SoBaseKit *>(path->nodeKitPath().getTail());
     SbString partname = kit->getPartString(path);
     if (partname != "") {
       SoDirectionalLight * oldpart = (SoDirectionalLight *) kit->getPart(partname, TRUE);
@@ -216,14 +215,14 @@ SoDirectionalLightManip::replaceNode(SoPath * path)
       }
     }
   }
-  if (fullpath->getLength() < 2) {
+  if (path->fullPath().getLength() < 2) {
 #if COIN_DEBUG
     SoDebugError::post("SoDirectionalLightManip::replaceNode",
                        "Path is too short");
 #endif // debug
     return FALSE;
   }
-  SoNode * parent = fullpath->getNodeFromTail(1);
+  SoNode * parent = path->fullPath().getNodeFromTail(1);
   if (!parent->isOfType(SoGroup::getClassTypeId())) {
 #if COIN_DEBUG
     SoDebugError::post("SoDirectionalLightManip::replaceNode",

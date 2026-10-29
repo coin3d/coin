@@ -115,6 +115,7 @@ public:
     dldata(const dldata & org)
       : dlist(org.dlist),
         age(org.age) { }
+    dldata & operator=(const dldata & org) = default;
     SoGLDisplayList * dlist;
     uint32_t age;
   };
@@ -320,6 +321,8 @@ SoGLCubeMapImage::getGLDisplayList(SoState * state)
 
       dl->open(state);
 
+      glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
       for (int i = 0; i < 6; i++) {
         const SbImage * img = &PRIVATE(this)->image[i];
         if (img->hasData()) {
@@ -342,6 +345,8 @@ SoGLCubeMapImage::getGLDisplayList(SoState * state)
 
         }
       }
+
+      glPixelStorei(GL_UNPACK_ALIGNMENT, 4); // restore default value
 
       // FIXME: make it possible to configure filter and mipmap on/off
       glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

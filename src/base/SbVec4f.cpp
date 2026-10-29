@@ -46,6 +46,8 @@
 
 #include "tidbitsp.h" // coin_debug_normalize()
 
+#include "coindefs.h"
+
 /*!
   \class SbVec4f SbVec4f.h Inventor/SbVec4f.h
   \brief The SbVec4f class is a 4 dimensional vector with floating point coordinates.
@@ -413,7 +415,7 @@ SbVec4f::setValue(const SbVec4i32 & v)
   debug version of library, method does nothing in an optimized build.
  */
 void
-SbVec4f::print(FILE * fp) const
+SbVec4f::print(FILE * COIN_UNUSED_ARG(fp)) const
 {
 #if COIN_DEBUG
   fprintf( fp, "<%f, %f, %f, %f>", this->vec[0], this->vec[1], this->vec[2],

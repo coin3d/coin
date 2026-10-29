@@ -61,10 +61,10 @@ public:
                                         void * closure);
   void allowPrequalifyFile(SbBool enable);
 
-  virtual void doAction(SoAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void rayPick(SoRayPickAction * action);
+  void doAction(SoAction * action) override;
+  void GLRender(SoGLRenderAction * action) override;
+  void callback(SoCallbackAction * action) override;
+  void rayPick(SoRayPickAction * action) override;
 
   void setImage(const SbImage & image);
   const SbImage * getImage(void) const;
@@ -74,7 +74,7 @@ public:
 protected:
   virtual ~SoVRMLImageTexture();
 
-  virtual SbBool readInstance(SoInput * in, unsigned short flags);
+  SbBool readInstance(SoInput * in, unsigned short flags) override;
   int getReadStatus(void) const;
   void setReadStatus(int status);
 

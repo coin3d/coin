@@ -390,7 +390,7 @@ SoLineSet::initClass(void)
   }
 
 #define SOGL_LINESET_GLRENDER_RESOLVE_ARG2(normalbinding, materialbinding, texturing, args) \
-  switch (materialbinding) {                                            \
+  switch ((SoGL::LineSet::AttributeBinding)materialbinding) {           \
   case SoGL::LineSet::OVERALL:                                          \
     SOGL_LINESET_GLRENDER_RESOLVE_ARG3(normalbinding, SoGL::LineSet::OVERALL, texturing, args); \
     break;                                                              \
@@ -409,7 +409,7 @@ SoLineSet::initClass(void)
   }
 
 #define SOGL_LINESET_GLRENDER_RESOLVE_ARG1(normalbinding, materialbinding, texturing, args) \
-  switch (normalbinding) {                                              \
+  switch ((SoGL::LineSet::AttributeBinding)normalbinding) {             \
   case SoGL::LineSet::OVERALL:                                          \
     SOGL_LINESET_GLRENDER_RESOLVE_ARG2(SoGL::LineSet::OVERALL, materialbinding, texturing, args); \
     break;                                                              \

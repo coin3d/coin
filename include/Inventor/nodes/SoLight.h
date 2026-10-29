@@ -50,7 +50,7 @@ public:
   SoSFFloat intensity;
   SoSFColor color;
 
-  virtual void callback(SoCallbackAction * action);
+  void callback(SoCallbackAction * action) override;
 
 protected:
   SoLight(void);

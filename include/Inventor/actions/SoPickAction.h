@@ -58,7 +58,7 @@ protected:
   SoPickAction(const SbViewportRegion & viewportregion);
   virtual ~SoPickAction(void);
 
-  virtual void beginTraversal(SoNode * node);
+  void beginTraversal(SoNode * node) override;
 
   SbViewportRegion vpRegion;
 

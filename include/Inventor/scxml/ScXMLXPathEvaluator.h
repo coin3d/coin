@@ -47,10 +47,10 @@ public:
   ScXMLXPathEvaluator(void);
   virtual ~ScXMLXPathEvaluator(void);
 
-  virtual ScXMLDataObj * evaluate(const char * expression) const;
+  ScXMLDataObj * evaluate(const char * expression) const override;
 
-  virtual SbBool setAtLocation(const char * location, ScXMLDataObj * obj);
-  virtual ScXMLDataObj * locate(const char * location) const;
+  SbBool setAtLocation(const char * location, ScXMLDataObj * obj) override;
+  ScXMLDataObj * locate(const char * location) const override;
 
 private:
   class PImpl;

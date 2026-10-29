@@ -63,7 +63,7 @@ public:
   SbMatrix & getTextureInverse(void);
 
 protected:
-  virtual void beginTraversal(SoNode * node);
+  void beginTraversal(SoNode * node) override;
 
 private:
   SbMatrix matrix, invmatrix;

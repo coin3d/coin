@@ -785,6 +785,19 @@ SoVRMLIndexedFaceSet::generatePrimitives(SoAction * action)
     nbind = PER_VERTEX_INDEXED;
     nindices = cindices;
   }
+  // PER_FACE_INDEXED has no coordIndex-sharing fallback the way PER_VERTEX
+  // does above -- the material/normal index binding comes purely from the
+  // state (independent of whether this node's own materialIndex/
+  // normalIndex field actually has values), so mindices/nindices can
+  // still be NULL here even though mbind/nbind ask for indexed access
+  // further down. Downgrade to the non-indexed PER_FACE binding instead
+  // of dereferencing a NULL index pointer.
+  if (mbind == PER_FACE_INDEXED && mindices == NULL) {
+    mbind = PER_FACE;
+  }
+  if (nbind == PER_FACE_INDEXED && nindices == NULL) {
+    nbind = PER_FACE;
+  }
 
   SoTextureCoordinateBundle tb(action, FALSE, FALSE);
   doTextures = tb.needCoordinates();

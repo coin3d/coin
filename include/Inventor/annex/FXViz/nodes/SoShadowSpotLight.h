@@ -48,7 +48,7 @@ public:
   static void initClass(void);
   SoShadowSpotLight(void);
 
-  virtual void GLRender(SoGLRenderAction * action);
+  void GLRender(SoGLRenderAction * action) override;
 
   SoSFNode shadowMapScene;
   SoSFFloat nearDistance;

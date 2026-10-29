@@ -46,14 +46,14 @@ protected:
   virtual ~SoListenerPositionElement();
 
 public:
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
   static void set(SoState * const state, SoNode * const node,
                   const SbVec3f & position, SbBool setbylistener);
 
   static const SbVec3f & get(SoState * const state);
   static SbBool isSetByListener(SoState * const state);
 
-  virtual void print(FILE * file) const;
+  void print(FILE * file) const override;
 
 protected:
   SbVec3f position;

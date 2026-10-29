@@ -135,6 +135,10 @@
 
 // *************************************************************************
 
+#define GLCACHE_DEBUG 0 // set to 1 to debug caching
+
+// *************************************************************************
+
 // when doing threadsafe rendering, each thread needs its own
 // glcachelist
 typedef struct {

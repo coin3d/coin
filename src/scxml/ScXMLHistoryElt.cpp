@@ -61,7 +61,7 @@
 class ScXMLHistoryEltReader : public ScXMLEltReader {
 public:
   ScXMLHistoryEltReader(void);
-  virtual ScXMLElt * read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm);
+  ScXMLElt * read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm) override;
 };
 
 ScXMLHistoryEltReader::ScXMLHistoryEltReader(void)

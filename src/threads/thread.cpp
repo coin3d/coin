@@ -129,10 +129,10 @@ cc_thread_construct(cc_thread_f * func, void * closure)
 void
 cc_thread_destruct(cc_thread * thread)
 {
-  int ok;
   assert(thread != NULL);
-  ok = internal_clean(thread);
-  assert(ok == CC_OK);
+  if (internal_clean(thread) != CC_OK) {
+    assert(!"thread cleanup failed");
+  }
   free(thread);
 }
 
@@ -281,15 +281,9 @@ cc_thread_init(void)
   is a small overhead involved which would make rendering (very)
   slightly slower on single-threaded invocations.
 
-  To get a Coin library built with thread-safe rendering, one must
-  actively reconfigure Coin and build a special, local version. For
-  configure-based builds (UNIX and UNIX-like systems, or with Cygwin
-  on Microsoft Windows) this is done with the option
-  "--enable-threadsafe" to Autoconf configure. To change the
-  configuration and rebuild with Visual Studio, you will need to
-  change the preprocessor directive COIN_THREADSAFE to defined in the
-  file src/setup.h located in the same folder as you found your
-  solution file.</li>
+  To get a Coin library built with thread-safe rendering, configure Coin
+  with \\c -DCOIN_THREADSAFE=ON and rebuild it. This option applies to all
+  supported CMake generators.</li>
 
   </ul>
 
@@ -389,4 +383,3 @@ cc_thread_init(void)
 */
 
 /* ********************************************************************** */
-

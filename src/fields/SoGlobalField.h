@@ -47,15 +47,15 @@ public:
 
   static void initClass(void);
   static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
+  SoType getTypeId(void) const override;
 
   SoField * getGlobalField(void) const;
-  virtual const SoFieldData * getFieldData(void) const;
+  const SoFieldData * getFieldData(void) const override;
 
-  virtual void setName(const SbName & newname);
+  void setName(const SbName & newname) override;
 
-  virtual void addWriteReference(SoOutput * out, SbBool isfromfield = FALSE);
-  virtual void writeInstance(SoOutput * out);
+  void addWriteReference(SoOutput * out, SbBool isfromfield = FALSE) override;
+  void writeInstance(SoOutput * out) override;
 
   static SoGlobalField * getGlobalFieldContainer(const SbName & name);
   static void addGlobalFieldContainer(SoGlobalField * fieldcontainer);
@@ -65,7 +65,7 @@ public:
 protected:
   ~SoGlobalField();
 
-  virtual SbBool readInstance(SoInput * in, unsigned short flags);
+  SbBool readInstance(SoInput * in, unsigned short flags) override;
 
 private:
   static void * createInstance(void);

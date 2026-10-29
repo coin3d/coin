@@ -57,7 +57,7 @@
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/SbBox3f.h>
-#include <Inventor/SoFullPath.h>
+#include <Inventor/SoPath.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
@@ -101,8 +101,10 @@ so_texcoordcylinder_destruct_data(void * COIN_UNUSED_ARG(closure))
 class SoTextureCoordinateCylinderP {
 
 public:
-  SoTextureCoordinateCylinderP(SoTextureCoordinateCylinder * texturenode) 
-    : master(texturenode) { }
+  SoTextureCoordinateCylinderP(SoTextureCoordinateCylinder * texturenode)
+  {
+    this->master = texturenode;
+  }
   
   SbVec4f calculateTextureCoordinate(const SbVec3f & point, const SbVec3f & n);
   
@@ -179,8 +181,8 @@ textureCoordinateCylinderCallback(void * userdata,
   so_texcoordcylinder_data * data = pimpl->so_texcoord_get_data();
  
   SoState * state = data->currentstate;
-  SoFullPath * path = (SoFullPath *) state->getAction()->getCurPath();
-  SoNode * node = path->getTail();
+  const SoPath * path = state->getAction()->getCurPath();
+  SoNode * node = path->fullPath().getTail();
 
   if (!node->isOfType(SoShape::getClassTypeId())) {
     // FIXME: A better way to handle this? (20040122 handegar)

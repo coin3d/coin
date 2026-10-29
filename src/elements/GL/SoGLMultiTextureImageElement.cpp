@@ -294,7 +294,7 @@ SoGLMultiTextureImageElement::hasTransparency(SoState * state)
   const SoGLMultiTextureImageElement * elem = (const SoGLMultiTextureImageElement*)
     getConstElement(state, classStackIndex);
   
-  for (int i = 0; i <= PRIVATE(elem)->unitdata.getLength(); i++) {
+  for (int i = 0; i < PRIVATE(elem)->unitdata.getLength(); i++) {
     if (elem->hasTransparency(i)) return TRUE;
   }
   return FALSE;

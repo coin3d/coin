@@ -54,7 +54,7 @@ public:
   static void setFetchExternProtoCallback(SoFetchExternProtoCB * cb,
                                           void * closure);
 
-  virtual SoType getTypeId(void) const;
+  SoType getTypeId(void) const override;
   static SoType getClassTypeId(void);
 
   static SoProto * findProto(const SbName & name);
@@ -76,13 +76,13 @@ public:
 
   SbName getProtoName(void) const;
 
-  virtual SbBool readInstance(SoInput * input, unsigned short flags);
-  virtual void write(SoWriteAction * action);
+  SbBool readInstance(SoInput * input, unsigned short flags) override;
+  void write(SoWriteAction * action) override;
 
 protected:
 
   virtual ~SoProto();
-  virtual void destroy(void);
+  void destroy(void) override;
 
 private:
   SbBool writeInterface(SoOutput * out);

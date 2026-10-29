@@ -66,11 +66,11 @@ public:
   virtual void setInitialAttribute(const char * initial);
   const char * getInitialAttribute(void) const { return this->initial; }
 
-  virtual SbBool handleXMLAttributes(void);
+  SbBool handleXMLAttributes(void) override;
 
-  virtual void copyContents(const ScXMLElt * rhs);
+  void copyContents(const ScXMLElt * rhs) override;
 
-  virtual const ScXMLElt * search(const char * attrname, const char * attrvalue) const;
+  const ScXMLElt * search(const char * attrname, const char * attrvalue) const override;
 
   // children...
   virtual void setOnEntry(ScXMLOnEntryElt * onentry);

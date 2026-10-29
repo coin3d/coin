@@ -75,7 +75,7 @@ SoGLProjectionMatrixElement::~SoGLProjectionMatrixElement(void)
 
 void
 SoGLProjectionMatrixElement::pop(SoState * COIN_UNUSED_ARG(state),
-                                 const SoElement * prevTopElement)
+                                 const SoElement * COIN_UNUSED_ARG(prevTopElement))
 {
   this->capture(state);
   this->updategl();

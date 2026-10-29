@@ -45,7 +45,7 @@ public:
   virtual ~SoConeDetail();
 
   static void initClass(void);
-  virtual SoDetail * copy(void) const;
+  SoDetail * copy(void) const override;
 
   void setPart(const int part);
   int getPart(void) const;

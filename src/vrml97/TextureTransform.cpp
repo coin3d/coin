@@ -92,7 +92,7 @@
   intermediate transformation matrices, 
   
   \verbatim
-  Tc' = -C × S × R × C × T × Tc
+  Tc' = -C * S * R * C * T * Tc
   \endverbatim
 
   Note that this transformation order is the reverse of the Transform

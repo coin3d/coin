@@ -53,7 +53,7 @@ public:
 
   virtual void setUpIdentifier(void);
 
-  virtual void copyContents(const ScXMLEvent * rhs);
+  void copyContents(const ScXMLEvent * rhs) override;
 
 private:
   const SoEvent * soeventptr;

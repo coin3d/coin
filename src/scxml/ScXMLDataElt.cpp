@@ -81,7 +81,7 @@
 class ScXMLDataEltReader : public ScXMLEltReader {
 public:
   ScXMLDataEltReader(void);
-  virtual ScXMLElt * read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm);
+  ScXMLElt * read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm) override;
 };
 
 ScXMLDataEltReader::ScXMLDataEltReader(void)
@@ -203,7 +203,8 @@ void
 ScXMLDataElt::copyContents(const ScXMLElt * rhs)
 {
   inherited::copyContents(rhs);
-  const ScXMLDataElt * orig = coin_assert_cast<const ScXMLDataElt *>(rhs);
+  const ScXMLDataElt * orig = coin_safe_cast<const ScXMLDataElt *>(rhs);
+  if (orig == NULL) return;
   this->setIDAttribute(orig->getIDAttribute());
   this->setSrcAttribute(orig->getSrcAttribute());
   this->setExprAttribute(orig->getExprAttribute());

@@ -64,7 +64,7 @@ protected:
   virtual ~SoTriggerAny(void);
 
 private:
-  virtual void evaluate(void);
+  void evaluate(void) override;
 };
 
 #endif // !COIN_SOTRIGGERANY_H

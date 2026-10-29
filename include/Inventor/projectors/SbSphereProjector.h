@@ -52,7 +52,7 @@ public:
   void setFront(const SbBool infront);
   SbBool isFront(void) const;
   SbBool isPointInFront(const SbVec3f & point) const;
-  virtual void setWorkingSpace(const SbMatrix & space);
+  void setWorkingSpace(const SbMatrix & space) override;
 
 protected:
   SbSphereProjector(const SbBool orienttoeye);

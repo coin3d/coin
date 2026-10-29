@@ -54,8 +54,8 @@
 // *************************************************************************
 
 #include <Inventor/manips/SoTransformManip.h>
+#include <Inventor/SoPath.h>
 
-#include <Inventor/SoNodeKitPath.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -230,8 +230,7 @@ SoTransformManip::getDragger(void)
 SbBool
 SoTransformManip::replaceNode(SoPath * path)
 {
-  SoFullPath *fullpath = (SoFullPath*)path;
-  SoNode *fulltail = fullpath->getTail();
+  SoNode *fulltail = path->fullPath().getTail();
   if (!fulltail->isOfType(SoTransform::getClassTypeId())) {
 #if COIN_DEBUG
     SoDebugError::post("SoTransformManip::replaceNode",
@@ -242,7 +241,7 @@ SoTransformManip::replaceNode(SoPath * path)
   }
   SoNode *tail = path->getTail();
   if (tail->isOfType(SoBaseKit::getClassTypeId())) {
-    SoBaseKit *kit = (SoBaseKit*) ((SoNodeKitPath*)path)->getTail();
+    SoBaseKit *kit = static_cast<SoBaseKit *>(path->nodeKitPath().getTail());
     SbString partname = kit->getPartString(path);
     if (partname != "") {  // FIXME: isn't this an assert condition? 20010909 mortene.
       SoTransform *oldpart = (SoTransform*) kit->getPart(partname, TRUE);
@@ -263,14 +262,14 @@ SoTransformManip::replaceNode(SoPath * path)
   // This will happen if the path contains nothing but the single
   // SoTransform node (i.e., the node is root, head and tail of the
   // path).
-  if (fullpath->getLength() < 2) {
+  if (path->fullPath().getLength() < 2) {
 #if COIN_DEBUG
     SoDebugError::post("SoTransformManip::replaceNode", "Path is too short");
 #endif // COIN_DEBUG
     return FALSE;
   }
 
-  SoNode *parent = fullpath->getNodeFromTail(1);
+  SoNode *parent = path->fullPath().getNodeFromTail(1);
   // This could at least happen if the parent of the SoTransform is an
   // user-extension node that is "SoGroup-like", but does not actually
   // inherit SoGroup.  Would be an immensely silly thing to do, but

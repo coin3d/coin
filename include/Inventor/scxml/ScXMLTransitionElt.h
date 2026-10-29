@@ -63,11 +63,11 @@ public:
   virtual void setAnchorAttribute(const char * anchor);
   const char * getAnchorAttribute(void) const { return this->anchor; }
 
-  virtual SbBool handleXMLAttributes(void);
+  SbBool handleXMLAttributes(void) override;
 
-  virtual void copyContents(const ScXMLElt * rhs);
+  void copyContents(const ScXMLElt * rhs) override;
 
-  virtual const ScXMLElt * search(const char * attrname, const char * attrvalue) const;
+  const ScXMLElt * search(const char * attrname, const char * attrvalue) const override;
 
   // predicates
   SbBool isConditionLess(void) const;

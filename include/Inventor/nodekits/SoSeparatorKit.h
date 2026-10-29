@@ -68,8 +68,8 @@ public:
 
 protected:
   virtual ~SoSeparatorKit();
-  virtual void setDefaultOnNonWritingFields(void);
-  virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
+  void setDefaultOnNonWritingFields(void) override;
+  SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE) override;
 
 private:
   class SoSeparatorKitP * pimpl;

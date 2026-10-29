@@ -64,11 +64,11 @@ public:
   virtual void setSrcExprAttribute(const char * id);
   const char * getSrcExprAttribute(void) const { return this->srcexpr; }
 
-  virtual SbBool handleXMLAttributes(void);
+  SbBool handleXMLAttributes(void) override;
 
-  virtual void copyContents(const ScXMLElt * rhs);
+  void copyContents(const ScXMLElt * rhs) override;
 
-  virtual const ScXMLElt * search(const char * attrname, const char * attrvalue) const;
+  const ScXMLElt * search(const char * attrname, const char * attrvalue) const override;
 
   virtual int getNumParams(void) const;
   virtual ScXMLParamElt * getParam(int idx) const;

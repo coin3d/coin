@@ -49,15 +49,15 @@ class COIN_DLL_API SoMFPath : public SoMField {
 public:
   static void initClass(void);
 
-  virtual void notify(SoNotList * l);
-  virtual void fixCopy(SbBool copyconnections);
-  virtual SbBool referencesCopy(void) const;
+  void notify(SoNotList * l) override;
+  void fixCopy(SbBool copyconnections) override;
+  SbBool referencesCopy(void) const override;
 
-  virtual void deleteValues(int start, int num = -1);
-  virtual void insertSpace(int start, int num);
+  void deleteValues(int start, int num = -1) override;
+  void insertSpace(int start, int num) override;
 
 private:
-  virtual void countWriteRefs(SoOutput * out) const;
+  void countWriteRefs(SoOutput * out) const override;
 
   SbList<SoNode *> pathheads;
 };

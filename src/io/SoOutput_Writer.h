@@ -84,10 +84,10 @@ public:
   SoOutput_FileWriter(FILE * fp, const SbBool shouldclose);
   virtual ~SoOutput_FileWriter();
 
-  virtual size_t bytesInBuf(void);
-  virtual WriterType getType(void) const;
-  virtual size_t write(const char * buf, size_t numbytes, const SbBool binary);
-  virtual FILE * getFilePointer(void);
+  size_t bytesInBuf(void) override;
+  WriterType getType(void) const override;
+  size_t write(const char * buf, size_t numbytes, const SbBool binary) override;
+  FILE * getFilePointer(void) override;
 
 public:
   FILE * fp;
@@ -103,9 +103,9 @@ public:
                            size_t offset);
   virtual ~SoOutput_MemBufferWriter();
 
-  virtual size_t bytesInBuf(void);
-  virtual WriterType getType(void) const;
-  virtual size_t write(const char * buf, size_t numbytes, const SbBool binary);
+  size_t bytesInBuf(void) override;
+  WriterType getType(void) const override;
+  size_t write(const char * buf, size_t numbytes, const SbBool binary) override;
 
 public:
 
@@ -124,9 +124,9 @@ public:
   SoOutput_GZFileWriter(FILE * fp, const SbBool shouldclose, const float level);
   virtual ~SoOutput_GZFileWriter();
 
-  virtual size_t bytesInBuf(void);
-  virtual WriterType getType(void) const;
-  virtual size_t write(const char * buf, size_t numbytes, const SbBool binary);
+  size_t bytesInBuf(void) override;
+  WriterType getType(void) const override;
+  size_t write(const char * buf, size_t numbytes, const SbBool binary) override;
 
 public:
   void * gzfp;
@@ -137,9 +137,9 @@ public:
   SoOutput_BZ2FileWriter(FILE * fp, const SbBool shouldclose, const float level);
   virtual ~SoOutput_BZ2FileWriter();
 
-  virtual size_t bytesInBuf(void);
-  virtual WriterType getType(void) const;
-  virtual size_t write(const char * buf, size_t numbytes, const SbBool binary);
+  size_t bytesInBuf(void) override;
+  WriterType getType(void) const override;
+  size_t write(const char * buf, size_t numbytes, const SbBool binary) override;
 
 public:
   void * bzfp;

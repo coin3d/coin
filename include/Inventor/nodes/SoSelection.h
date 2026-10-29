@@ -106,7 +106,7 @@ protected:
   void removePath(const int which);
   int findPath(const SoPath *path) const;
 
-  virtual void handleEvent(SoHandleEventAction * action);
+  void handleEvent(SoHandleEventAction * action) override;
 
 protected: // unfortunately only protected in OIV
 

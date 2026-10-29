@@ -58,7 +58,7 @@ protected:
   virtual ~SoTransformVec3f(void);
 
 private:
-  virtual void evaluate(void);
+  void evaluate(void) override;
 };
 
 #endif // !COIN_SOTRANSFORMVEC3F_H

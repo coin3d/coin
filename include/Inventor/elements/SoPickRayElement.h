@@ -46,10 +46,10 @@ protected:
   virtual ~SoPickRayElement();
 
 public:
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
 
-  virtual SbBool matches(const SoElement * element) const;
-  virtual SoElement *copyMatchInfo() const;
+  SbBool matches(const SoElement * element) const override;
+  SoElement *copyMatchInfo() const override;
 
   static void set(SoState * const state, const SbViewVolume & volume);
   static const SbViewVolume &get(SoState * const state);

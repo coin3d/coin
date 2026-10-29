@@ -61,7 +61,7 @@
 class ScXMLFinalEltReader : public ScXMLEltReader {
 public:
   ScXMLFinalEltReader(void);
-  virtual ScXMLElt * read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm);
+  ScXMLElt * read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm) override;
 
 };
 
@@ -212,7 +212,8 @@ void
 ScXMLFinalElt::copyContents(const ScXMLElt * rhs)
 {
   inherited::copyContents(rhs);
-  const ScXMLFinalElt * orig = coin_assert_cast<const ScXMLFinalElt *>(rhs);
+  const ScXMLFinalElt * orig = coin_safe_cast<const ScXMLFinalElt *>(rhs);
+  if (orig == NULL) return;
   if (orig->getOnEntry()) {
     ScXMLOnEntryElt * onentry =
       coin_assert_cast<ScXMLOnEntryElt *>(orig->getOnEntry()->clone());

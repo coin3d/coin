@@ -43,7 +43,7 @@
 
 #define SO_DETAIL_HEADER(_class_) \
 public: \
-  virtual SoType getTypeId(void) const; \
+  SoType getTypeId(void) const override; \
   static SoType getClassTypeId(void); \
 private: \
   static SoType classTypeId; \

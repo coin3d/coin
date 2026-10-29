@@ -140,9 +140,9 @@
     SbDict namedict;
 
     for (int i = 0; i < pl.getLength(); i++) {
-      SoFullPath * p = (SoFullPath*) pl[i];
-      if (p->getTail()->isOfType(SoVRMLImageTexture::getClassTypeId())) {
-        SoVRMLImageTexture * tex = (SoVRMLImageTexture*) p->getTail();
+      SoPath * p = pl[i];
+      if (p->fullPath().getTail()->isOfType(SoVRMLImageTexture::getClassTypeId())) {
+        SoVRMLImageTexture * tex = (SoVRMLImageTexture*) p->fullPath().getTail();
         if (tex->url.getNum()) {
           // FIXME: we only check the first name here. Should really check all of them
           SbName name = tex->url[0].getString();
@@ -152,7 +152,7 @@
             (void) namedict.enter(key, tex);
           }
           else if (tmp != (void*) tex) {
-            SoNode * parent = p->getNodeFromTail(1);
+            SoNode * parent = p->fullPath().getNodeFromTail(1);
             if (parent->isOfType(SoVRMLAppearance::getClassTypeId())) {
               ((SoVRMLAppearance*)parent)->texture = (SoNode*) tmp;
             }
@@ -732,7 +732,7 @@ SoVRMLImageTexture::oneshot_readimage_cb(void * closure, SoSensor * sensor)
 // called (from SbImage) when image data is needed.
 //
 SbBool
-SoVRMLImageTexture::image_read_cb(const SbString & filename, SbImage * image, void * closure)
+SoVRMLImageTexture::image_read_cb(const SbString & filename, SbImage * COIN_UNUSED_ARG(image), void * closure)
 {
   SoVRMLImageTexture * thisp = (SoVRMLImageTexture*) closure;
   assert(&PRIVATE(thisp)->image == image);

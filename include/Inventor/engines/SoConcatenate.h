@@ -57,15 +57,15 @@ private:
   SoConcatenate(void);
   virtual ~SoConcatenate(void);
 
-  virtual void evaluate(void);
+  void evaluate(void) override;
 
-  virtual SbBool readInstance(SoInput * in, unsigned short flags);
-  virtual void writeInstance(SoOutput * out);
+  SbBool readInstance(SoInput * in, unsigned short flags) override;
+  void writeInstance(SoOutput * out) override;
 
   void initialize(const SoType inputfieldtype);
 
-  virtual void copyContents(const SoFieldContainer * from,
-                            SbBool copyconnections);
+  void copyContents(const SoFieldContainer * from,
+                            SbBool copyconnections) override;
 
   // SoConcatenate instances uses a dynamic set of inputs and outputs,
   // as they are not common for all instances of the class (like for

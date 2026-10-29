@@ -57,7 +57,7 @@ public:
   void continueToApply(SoPath * path);
 
 protected:
-  virtual void beginTraversal(SoNode * node);
+  void beginTraversal(SoNode * node) override;
   virtual SbBool shouldCompactPathLists(void) const;
 
 private:

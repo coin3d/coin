@@ -71,7 +71,7 @@ public:
     CLAMP_TO_BORDER = 0x812D
   };
 
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
   static void setDefault(SoState * const state, SoNode * const node, const int unit = 0);
   
   static void set(SoState * const state, SoNode * const node,
@@ -128,9 +128,9 @@ public:
   static const unsigned char * getDefault(SbVec2s & size, int & numComponents);
   static const unsigned char * getDefault(SbVec3s & size, int & numComponents);
 
-  virtual void push(SoState * state);
-  virtual SbBool matches(const SoElement * elem) const;
-  SoElement * copyMatchInfo(void) const;
+  void push(SoState * state) override;
+  SbBool matches(const SoElement * elem) const override;
+  SoElement * copyMatchInfo(void) const override;
 
   virtual void setElt(const int unit,
                       const SbUniqueId nodeid,
@@ -156,6 +156,7 @@ public:
   public:
     UnitData();
     UnitData(const UnitData & org);
+    UnitData & operator=(const UnitData & org) = default;
     SbUniqueId nodeid;
     SbVec3s size;
     int numComponents;

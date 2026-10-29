@@ -47,7 +47,7 @@ protected:
 public:
   static SbBool isColorIndexMode(SoState * state);
 
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
 
   static void set(SoState * const state, SoNode * const node,
                   const int32_t numindices, const int32_t * const indices);

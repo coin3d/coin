@@ -69,7 +69,7 @@
 class ScXMLIfEltReader : public ScXMLEltReader {
 public:
   ScXMLIfEltReader(void);
-  virtual ScXMLElt * read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm);
+  ScXMLElt * read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm) override;
 };
 
 ScXMLIfEltReader::ScXMLIfEltReader(void)
@@ -351,7 +351,8 @@ void
 ScXMLIfElt::copyContents(const ScXMLElt * rhs)
 {
   inherited::copyContents(rhs);
-  const ScXMLIfElt * orig = coin_assert_cast<const ScXMLIfElt *>(rhs);
+  const ScXMLIfElt * orig = coin_safe_cast<const ScXMLIfElt *>(rhs);
+  if (orig == NULL) return;
   this->setCondAttribute(orig->getCondAttribute());
 
   int c = 0, i = 0;

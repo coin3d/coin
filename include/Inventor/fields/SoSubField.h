@@ -64,17 +64,17 @@ private: \
 public: \
   static void * createInstance(void); \
   static SoType getClassTypeId(void); \
-  virtual SoType getTypeId(void) const; \
+  SoType getTypeId(void) const override; \
  \
-  virtual void copyFrom(const SoField & field); \
+  void copyFrom(const SoField & field) override; \
   const _class_ & operator=(const _class_ & field); \
-  virtual SbBool isSame(const SoField & field) const
+  SbBool isSame(const SoField & field) const override
 
 
 #define PRIVATE_SFIELD_IO_HEADER() \
 private: \
-  virtual SbBool readValue(SoInput * in); \
-  virtual void writeValue(SoOutput * out) const
+  SbBool readValue(SoInput * in) override; \
+  void writeValue(SoOutput * out) const override
 
 
 #define SO_SFIELD_VALUE_HEADER(_class_, _valtype_, _valref_) \
@@ -232,20 +232,20 @@ _class_::operator=(const _class_ & field) \
 
 #define PRIVATE_MFIELD_IO_HEADER() \
 private: \
-  virtual SbBool read1Value(SoInput * in, int idx); \
-  virtual void write1Value(SoOutput * out, int idx) const
+  SbBool read1Value(SoInput * in, int idx) override; \
+  void write1Value(SoOutput * out, int idx) const override
 
 
 
 #define SO_MFIELD_VALUE_HEADER(_class_, _valtype_, _valref_) \
   PRIVATE_MFIELD_IO_HEADER(); \
 protected: \
-  virtual void deleteAllValues(void); \
-  virtual void copyValue(int to, int from); \
-  virtual int fieldSizeof(void) const; \
-  virtual void * valuesPtr(void); \
-  virtual void setValuesPtr(void * ptr); \
-  virtual void allocValues(int num); \
+  void deleteAllValues(void) override; \
+  void copyValue(int to, int from) override; \
+  int fieldSizeof(void) const override; \
+  void * valuesPtr(void) override; \
+  void setValuesPtr(void * ptr) override; \
+  void allocValues(int num) override; \
  \
   _valtype_ * values; \
 public: \
@@ -376,7 +376,7 @@ _class_::setValues(const int start, const int numarg, const _valtype_ * newvals)
   else if (start+numarg > this->num) this->num = start+numarg; \
  \
   for (int i=0; i < numarg; i++) \
-    this->values[i+start] = static_cast<const _valtype_>(newvals[i]); \
+    this->values[i+start] = static_cast<_valtype_>(newvals[i]); \
   this->setChangedIndices(start, numarg); \
   this->valueChanged(); \
   this->setChangedIndices(); \

@@ -49,6 +49,8 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include "coindefs.h"
+
 /*!
   The default constructor will make a cylinder of radius 1, center axis
   going through origo in the parallel direction of the positive y-axis.
@@ -180,7 +182,7 @@ SbCylinder::intersect(const SbLine& l, SbVec3f& enter, SbVec3f& exit) const
   // be written as
   //                     Qc = Pc + x*U0 + y*U1 + z*U2
   //
-  // The points on the cylinder is then those matching x²+y²=r².
+  // The points on the cylinder is then those matching x^2+y^2=r^2.
   //
   // For the ray, we project it into the coordinate system by
   // rewriting the line equation   Qr = Pr + t*Dr  as
@@ -189,13 +191,13 @@ SbCylinder::intersect(const SbLine& l, SbVec3f& enter, SbVec3f& exit) const
   //
   // The intersection is then determined by
   //
-  //    (x0 + t*x1)² + (y0 + t*y1)² = r²
+  //    (x0 + t*x1)^2 + (y0 + t*y1)^2 = r^2
   //
-  // => (x1²+y1²)*t² + 2*(x0*x1+y0*y1)*t + (x1²+y1²-r²) = 0
+  // => (x1^2+y1^2)*t^2 + 2*(x0*x1+y0*y1)*t + (x1^2+y1^2-r^2) = 0
   //
   // Which can be solved by:
-  // t = (-b ± sqrt(b² - 4ac))/2a, a = x1² + y1², b = 2*(x0*x1+y0*y1),
-  //                               c = (x1²+y1²-r²),
+  // t = (-b +/- sqrt(b^2 - 4ac))/2a, a = x1^2 + y1^2, b = 2*(x0*x1+y0*y1),
+  //                               c = (x1^2+y1^2-r^2),
   //
   // ...
   //                                                        19980824 mortene.
@@ -262,7 +264,7 @@ SbCylinder::intersect(const SbLine& l, SbVec3f& enter, SbVec3f& exit) const
   debug version of library, method does nothing in an optimized build.
  */
 void
-SbCylinder::print(FILE * fp) const
+SbCylinder::print(FILE * COIN_UNUSED_ARG(fp)) const
 {
 #if COIN_DEBUG
   fprintf( fp, "axis: " );

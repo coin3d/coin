@@ -579,7 +579,7 @@ SoInteractionKit::setAnyPartAsDefault(const SbName & partname,
   if (node) {
     return this->setAnyPartAsDefault(partname, node, anypart, onlyifdefault);
   }
-  else if (COIN_DEBUG && 1) { // debug
+  else if (COIN_DEBUG) { // debug
     SoDebugError::postInfo("SoInteractionKit::setAnyPartAsDefault",
                            "nodename %s not found", nodename.getString());
 

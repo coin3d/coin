@@ -61,11 +61,11 @@ public:
 protected:
   virtual ~SoElapsedTime(void);
 
-  virtual void writeInstance(SoOutput * out);
+  void writeInstance(SoOutput * out) override;
 
 private:
-  virtual void evaluate(void);
-  virtual void inputChanged(SoField * which);
+  void evaluate(void) override;
+  void inputChanged(SoField * which) override;
 
   SbTime pausetime, lasttime, currtime;
   enum {RUNNING, STOPPED, PAUSED} status;

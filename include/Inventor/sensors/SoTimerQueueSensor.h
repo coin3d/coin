@@ -45,17 +45,19 @@ public:
   virtual ~SoTimerQueueSensor(void);
 
   const SbTime & getTriggerTime(void) const;
-  virtual void schedule(void);
-  virtual void unschedule(void);
-  virtual SbBool isScheduled(void) const;
-  virtual void trigger(void);
+  void schedule(void) override;
+  void unschedule(void) override;
+  SbBool isScheduled(void) const override;
+  void trigger(void) override;
 
 protected:
   void setTriggerTime(const SbTime & time);
   SbBool scheduled;
 
+  friend class SoSensorManager;
+
 private:
-  virtual SbBool isBefore(const SoSensor * s) const;
+  SbBool isBefore(const SoSensor * s) const override;
   SbTime triggertime;
 };
 

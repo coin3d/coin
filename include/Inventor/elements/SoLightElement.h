@@ -50,8 +50,8 @@ protected:
   virtual ~SoLightElement();
 
 public:
-  virtual void init(SoState * state);
-  virtual void push(SoState * state);
+  void init(SoState * state) override;
+  void push(SoState * state) override;
   static  void add(SoState * const state, SoLight * const light,
                    const SbMatrix & matrix);
   static  const SoNodeList & getLights(SoState * const state);

@@ -61,21 +61,21 @@ public:
   SoSFEnum justification;
   SoMFFloat width;
 
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
+  void GLRender(SoGLRenderAction * action) override;
+  void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
 
 protected:
   virtual ~SoAsciiText();
 
-  virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
-  virtual void generatePrimitives(SoAction *);
+  void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center) override;
+  void generatePrimitives(SoAction *) override;
 
   virtual SoDetail * createTriangleDetail(SoRayPickAction * action,
                                           const SoPrimitiveVertex * v1,
                                           const SoPrimitiveVertex * v2,
                                           const SoPrimitiveVertex * v3,
-                                          SoPickedPoint * pp);
-  virtual void notify(SoNotList * list);
+                                          SoPickedPoint * pp) override;
+  void notify(SoNotList * list) override;
   
 private:
   class SoAsciiTextP * pimpl;

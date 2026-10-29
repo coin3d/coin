@@ -57,16 +57,16 @@ public:
   SoSFBool recalcAlways;
 
   void recalc(void);
-  virtual void doAction(SoAction * action);
+  void doAction(SoAction * action) override;
 
 protected:
   virtual ~SoAntiSquish();
 
-  virtual void callback(SoCallbackAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-  virtual void getMatrix(SoGetMatrixAction * action);
-  virtual void pick(SoPickAction * action);
+  void callback(SoCallbackAction * action) override;
+  void GLRender(SoGLRenderAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
+  void getMatrix(SoGetMatrixAction * action) override;
+  void pick(SoPickAction * action) override;
 
   SbMatrix getUnsquishingMatrix(const SbMatrix & squishedmatrix,
                                 const SbBool calcinverse,

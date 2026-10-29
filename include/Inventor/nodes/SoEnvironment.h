@@ -56,8 +56,8 @@ public:
     SMOKE = SoEnvironmentElement::SMOKE
   };
 
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void callback(SoCallbackAction * action);
+  void GLRender(SoGLRenderAction * action) override;
+  void callback(SoCallbackAction * action) override;
 
   SoSFFloat ambientIntensity;
   SoSFColor ambientColor;

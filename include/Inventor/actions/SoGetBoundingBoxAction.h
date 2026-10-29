@@ -85,7 +85,7 @@ public:
   void resetCenter(void);
 
 protected:
-  virtual void beginTraversal(SoNode * node);
+  void beginTraversal(SoNode * node) override;
 
 private:
   enum { CENTER_SET = 0x1, CAMERA_SPACE = 0x2, RESET_BEFORE= 0x4 };

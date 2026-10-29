@@ -48,9 +48,9 @@ public:
   ScXMLScriptElt(void);
   virtual ~ScXMLScriptElt(void);
 
-  virtual void copyContents(const ScXMLElt * rhs);
+  void copyContents(const ScXMLElt * rhs) override;
 
-  virtual void execute(ScXMLStateMachine * statemachine) const;
+  void execute(ScXMLStateMachine * statemachine) const override;
 
 private:
   ScXMLScriptElt(const ScXMLScriptElt & rhs); // N/A

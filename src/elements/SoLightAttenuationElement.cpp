@@ -146,7 +146,7 @@ SoLightAttenuationElement::copyMatchInfo() const
 void
 SoLightAttenuationElement::print(FILE * file) const
 {
-  fprintf(file, "SoLightAttenuationElement[%p]: attenuation = ", this);
+  fprintf(file, "SoLightAttenuationElement[%p]: attenuation = ", (void *)this);
   fprintf(file, "<%f, %f, %f>\n",
            this->lightAttenuation[0],
            this->lightAttenuation[1],

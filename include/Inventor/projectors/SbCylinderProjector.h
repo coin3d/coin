@@ -40,7 +40,7 @@ class COIN_DLL_API SbCylinderProjector : public SbProjector {
   typedef SbProjector inherited;
 
 public:
-  virtual SbVec3f project(const SbVec2f & point) = 0;
+  SbVec3f project(const SbVec2f & point) override = 0;
   SbVec3f projectAndGetRotation(const SbVec2f & point, SbRotation & rot);
   virtual SbRotation getRotation(const SbVec3f & point1,
                                  const SbVec3f & point2) = 0;
@@ -51,7 +51,7 @@ public:
   void setFront(const SbBool infront);
   SbBool isFront(void) const;
   SbBool isPointInFront(const SbVec3f & point) const;
-  virtual void setWorkingSpace(const SbMatrix & space);
+  void setWorkingSpace(const SbMatrix & space) override;
 
 protected:
   SbCylinderProjector(const SbBool orienttoeye);

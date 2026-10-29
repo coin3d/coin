@@ -55,12 +55,12 @@ public:
   SoGLSLShaderObject(const uint32_t cachecontext);
   virtual ~SoGLSLShaderObject();
 
-  virtual SoShader::Type shaderType(void) const;
-  virtual SoGLShaderParameter* getNewParameter(void) const;
+  SoShader::Type shaderType(void) const override;
+  SoGLShaderParameter* getNewParameter(void) const override;
 
-  virtual SbBool isLoaded(void) const;
-  virtual void load(const char * sourceString);
-  virtual void unload(void);
+  SbBool isLoaded(void) const override;
+  void load(const char * sourceString) override;
+  void unload(void) override;
 
   void attach(COIN_GLhandle programHandle);
   void detach(void);
@@ -70,7 +70,7 @@ public:
   static SbBool didOpenGLErrorOccur(const SbString & source);
   static void printInfoLog(const cc_glglue * g, COIN_GLhandle handle, int objType);
 
-  virtual void updateCoinParameter(SoState * state, const SbName & name, SoShaderParameter * param, const int value);
+  void updateCoinParameter(SoState * state, const SbName & name, SoShaderParameter * param, const int value) override;
 
 private:
   COIN_GLhandle programHandle;

@@ -62,7 +62,7 @@ public:
   SoMFNode choice;
   SoSFInt32 whichChoice;
 
-  virtual SbBool affectsState(void) const;
+  SbBool affectsState(void) const override;
 
   void addChoice(SoNode * choice);
   void insertChoice(SoNode * choice, int idx);
@@ -75,35 +75,35 @@ public:
   void replaceChoice(int idx, SoNode * choice);
   void replaceChoice(SoNode * old, SoNode * choice);
 
-  virtual void doAction(SoAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void pick(SoPickAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-  virtual void handleEvent(SoHandleEventAction * action);
-  virtual void getMatrix(SoGetMatrixAction * action);
-  virtual void search(SoSearchAction * action);
-  virtual void write(SoWriteAction * action);
-  virtual void audioRender(SoAudioRenderAction * action);
+  void doAction(SoAction * action) override;
+  void callback(SoCallbackAction * action) override;
+  void GLRender(SoGLRenderAction * action) override;
+  void pick(SoPickAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
+  void handleEvent(SoHandleEventAction * action) override;
+  void getMatrix(SoGetMatrixAction * action) override;
+  void search(SoSearchAction * action) override;
+  void write(SoWriteAction * action) override;
+  void audioRender(SoAudioRenderAction * action) override;
 
-  void addChild(SoNode * child);
-  void insertChild(SoNode * child, int idx);
-  SoNode * getChild(int idx) const;
-  int findChild(const SoNode * child) const;
-  int getNumChildren(void) const;
-  void removeChild(int idx);
-  void removeChild(SoNode * child);
-  void removeAllChildren(void);
-  void replaceChild(int idx, SoNode * node);
-  void replaceChild(SoNode * old, SoNode * node);
-  virtual SoChildList * getChildren(void) const;
+  void addChild(SoNode * child) override;
+  void insertChild(SoNode * child, int idx) override;
+  SoNode * getChild(int idx) const override;
+  int findChild(const SoNode * child) const override;
+  int getNumChildren(void) const override;
+  void removeChild(int idx) override;
+  void removeChild(SoNode * child) override;
+  void removeAllChildren(void) override;
+  void replaceChild(int idx, SoNode * node) override;
+  void replaceChild(SoNode * old, SoNode * node) override;
+  SoChildList * getChildren(void) const override;
 
 protected:
   virtual ~SoVRMLSwitch(void);
 
-  virtual void notify(SoNotList * list);
-  virtual SbBool readInstance(SoInput * in, unsigned short flags);
-  virtual void copyContents(const SoFieldContainer * from, SbBool copyConn);
+  void notify(SoNotList * list) override;
+  SbBool readInstance(SoInput * in, unsigned short flags) override;
+  void copyContents(const SoFieldContainer * from, SbBool copyConn) override;
 
 private:
   void commonConstructor(void);

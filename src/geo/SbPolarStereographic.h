@@ -43,15 +43,15 @@ public:
   SbPolarStereographic(const SbGeoEllipsoid & e,
                        double FE = 0.0, double FN = 0.0);
 
-  virtual void project(const SbGeoAngle & phi,
+  void project(const SbGeoAngle & phi,
                        const SbGeoAngle & lambda,
                        double * easting,
-                       double * northing) const;
+                       double * northing) const override;
 
-  virtual void unproject(const double easting,
+  void unproject(const double easting,
                          const double northing,
                          SbGeoAngle * phi,
-                         SbGeoAngle * lambda) const;
+                         SbGeoAngle * lambda) const override;
 
 private:
 

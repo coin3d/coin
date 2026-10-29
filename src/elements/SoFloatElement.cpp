@@ -85,7 +85,9 @@ SoFloatElement::matches(const SoElement * element) const
 {
   assert(element);
   if (getTypeId() != element->getTypeId()) { return FALSE; }
-  if (this->data != (coin_assert_cast<const SoFloatElement *>(element)->data)) {
+  const SoFloatElement * elem = coin_assert_cast<const SoFloatElement *>(element);
+  COIN_ASSUME(elem != NULL);
+  if (this->data != elem->data) {
     return FALSE;
   }
   return TRUE;
@@ -111,7 +113,7 @@ void
 SoFloatElement::print(FILE * file) const
 {
   (void)fprintf(file, "%s[%p]: data = %f\n",
-                this->getTypeId().getName().getString(), this, this->data);
+                this->getTypeId().getName().getString(), (void *)this, this->data);
 }
 
 /*!

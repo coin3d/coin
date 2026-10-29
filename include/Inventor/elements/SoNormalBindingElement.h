@@ -58,7 +58,7 @@ public:
     NONE = OVERALL
   }; // enum Binding
 
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
   static  void set(SoState * const state, SoNode * const node,
                      const Binding binding);
   static  void set(SoState * const state, const Binding binding);

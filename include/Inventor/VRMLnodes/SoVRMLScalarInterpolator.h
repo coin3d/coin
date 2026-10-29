@@ -54,7 +54,7 @@ protected:
   virtual ~SoVRMLScalarInterpolator();
 
 private:
-  virtual void evaluate(void);
+  void evaluate(void) override;
 
 }; // class SoVRMLScalarInterpolator
 

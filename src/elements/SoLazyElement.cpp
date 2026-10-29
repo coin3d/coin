@@ -122,7 +122,14 @@ get_transp_node_id(SoNode * node, const int numtransp,
 }
 
 
-SO_ELEMENT_SOURCE(SoLazyElement);
+SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoLazyElement);
+
+SoLazyElement::SoLazyElement(void)
+{
+  this->setTypeId(SoLazyElement::classTypeId);
+  this->setStackIndex(SoLazyElement::classStackIndex);
+  this->pimpl = NULL;
+}
 
 /*!
   \copydetails SoElement::initClass(void)
@@ -199,6 +206,7 @@ SoLazyElement::push(SoState *state)
 {
   inherited::push(state);
   const SoLazyElement * prev = coin_assert_cast<const SoLazyElement *>(this->getNextInStack());
+  COIN_ASSUME(prev != NULL);
   this->coinstate = prev->coinstate;
 }
 

@@ -59,7 +59,7 @@
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/SbBox3f.h>
-#include <Inventor/SoFullPath.h>
+#include <Inventor/SoPath.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
@@ -108,7 +108,9 @@ class SoTextureCoordinateCubeP {
 
 public:
   SoTextureCoordinateCubeP(SoTextureCoordinateCube * texturenode)
-    : master(texturenode) { }
+  {
+    this->master = texturenode;
+  }
 
   SbVec4f calculateTextureCoordinate(const SbVec3f & point, const SbVec3f & n);
 
@@ -179,8 +181,8 @@ textureCoordinateCubeCallback(void * userdata,
   so_texcoordcube_data * data = pimpl->so_texcoord_get_data();
 
   SoState * state = data->currentstate;
-  SoFullPath * path = (SoFullPath *) state->getAction()->getCurPath();
-  SoNode * node = path->getTail();
+  const SoPath * path = state->getAction()->getCurPath();
+  SoNode * node = path->fullPath().getTail();
 
 
   if (!node->isOfType(SoShape::getClassTypeId())) {

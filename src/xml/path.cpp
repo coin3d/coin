@@ -79,17 +79,6 @@ path_node_clone(path_node * node)
 }
 
 static
-path_node *
-path_node_delete(path_node * node)
-{
-  path_node * next;
-  next = node->next;
-  delete[] node->element;
-  delete node;
-  return next;
-}
-
-static
 void
 path_node_delete_chain(path_node * head)
 {
@@ -347,7 +336,7 @@ cc_xml_path_truncate_x(cc_xml_path * path, int length)
 
 /* ********************************************************************** */
 
-void
+COIN_DLL_API void
 cc_xml_path_dump(cc_xml_path * path)
 {
   assert(path);
@@ -362,6 +351,12 @@ cc_xml_path_dump(cc_xml_path * path)
     node = node->next;
   }
   fprintf(stderr, "\n");
+}
+
+void
+cc_xml_path_dump(const cc_xml_path * path)
+{
+  cc_xml_path_dump(const_cast<cc_xml_path *>(path));
 }
 
 /* ********************************************************************** */

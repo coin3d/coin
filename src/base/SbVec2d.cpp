@@ -59,6 +59,8 @@
 
 #include "tidbitsp.h" // coin_debug_normalize()
 
+#include "coindefs.h"
+
 // *************************************************************************
 
 /*!
@@ -390,7 +392,7 @@ SbVec2d::setValue(const SbVec2i32 & v)
 */
 
 void
-SbVec2d::print(FILE * fp) const
+SbVec2d::print(FILE * COIN_UNUSED_ARG(fp)) const
 {
 #if COIN_DEBUG
   fprintf( fp, "<%f, %f>", this->vec[0], this->vec[1] );

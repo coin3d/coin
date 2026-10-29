@@ -49,20 +49,20 @@ public:
 public:
   SoMFInt32 numVertices;
 
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
+  void GLRender(SoGLRenderAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
+  void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
 
 protected:
   virtual ~SoLineSet();
 
-  virtual void generatePrimitives(SoAction * action);
-  virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
+  void generatePrimitives(SoAction * action) override;
+  void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center) override;
 
 private:
-  virtual SbBool generateDefaultNormals(SoState *, SoNormalCache * nc);
-  virtual SbBool generateDefaultNormals(SoState * state,
-                                        SoNormalBundle * bundle);
+  SbBool generateDefaultNormals(SoState *, SoNormalCache * nc) override;
+  SbBool generateDefaultNormals(SoState * state,
+                                SoNormalBundle * bundle) override;
 
   enum Binding {
     OVERALL = 0,

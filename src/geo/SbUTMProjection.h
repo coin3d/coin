@@ -44,20 +44,20 @@ public:
                   const SbGeoEllipsoid & e,
                   double FE = 0.0, double FN = 0.0);
 
-  virtual SbBool isUTMProjection(void) const;
+  SbBool isUTMProjection(void) const override;
 
   void setUTMZone(const int utmzone);
   int getUTMZone(void) const;
 
-  virtual void project(const SbGeoAngle & phi,
+  void project(const SbGeoAngle & phi,
                        const SbGeoAngle & lambda,
                        double * easting,
-                       double * northing) const;
+                       double * northing) const override;
 
-  virtual void unproject(const double easting,
+  void unproject(const double easting,
                          const double northing,
                          SbGeoAngle * phi,
-                         SbGeoAngle * lambda) const;
+                         SbGeoAngle * lambda) const override;
 
 private:
   int forcedutmzone;

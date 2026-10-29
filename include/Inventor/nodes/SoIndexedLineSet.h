@@ -51,19 +51,19 @@ public:
   static void initClass(void);
   SoIndexedLineSet(void);
 
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
+  void GLRender(SoGLRenderAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
+  void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
 
 protected:
   virtual ~SoIndexedLineSet();
-  virtual void notify(SoNotList * list);
+  void notify(SoNotList * list) override;
 
 private:
-  virtual void generatePrimitives(SoAction * action);
+  void generatePrimitives(SoAction * action) override;
 
-  virtual SbBool generateDefaultNormals(SoState * state, SoNormalBundle * bundle);
-  virtual SbBool generateDefaultNormals(SoState * state, SoNormalCache * nc);
+  SbBool generateDefaultNormals(SoState * state, SoNormalBundle * bundle) override;
+  SbBool generateDefaultNormals(SoState * state, SoNormalCache * nc) override;
 
   enum Binding {
     OVERALL = 0,

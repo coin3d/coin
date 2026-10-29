@@ -53,18 +53,18 @@ public:
   SoSFInt32 numNodesUpToReset;
 
   void invalidate(void);
-  virtual void doAction(SoAction * action);
+  void doAction(SoAction * action) override;
   void setDoingTranslations(const SbBool val);
   SbBool isDoingTranslations(void);
 
 protected:
   virtual ~SoSurroundScale();
 
-  virtual void callback(SoCallbackAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-  virtual void getMatrix(SoGetMatrixAction * action);
-  virtual void pick(SoPickAction * action);
+  void callback(SoCallbackAction * action) override;
+  void GLRender(SoGLRenderAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
+  void getMatrix(SoGetMatrixAction * action) override;
+  void pick(SoPickAction * action) override;
   void updateMySurroundParams(SoAction * action, const SbMatrix & inv);
   void setIgnoreInBbox(const SbBool val);
   SbBool isIgnoreInBbox(void);

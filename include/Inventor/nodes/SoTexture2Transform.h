@@ -53,11 +53,11 @@ public:
   SoSFVec2f scaleFactor;
   SoSFVec2f center;
 
-  virtual void doAction(SoAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void getMatrix(SoGetMatrixAction * action);
-  virtual void pick(SoPickAction * action);
+  void doAction(SoAction * action) override;
+  void callback(SoCallbackAction * action) override;
+  void GLRender(SoGLRenderAction * action) override;
+  void getMatrix(SoGetMatrixAction * action) override;
+  void pick(SoPickAction * action) override;
 
 protected:
   virtual ~SoTexture2Transform();

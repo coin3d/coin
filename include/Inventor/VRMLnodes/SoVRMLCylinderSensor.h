@@ -55,9 +55,9 @@ public:
 
 protected:
 
-  virtual SbBool dragStart(void);
-  virtual void drag(void);
-  virtual void dragFinish(void);
+  SbBool dragStart(void) override;
+  void drag(void) override;
+  void dragFinish(void) override;
 
   virtual ~SoVRMLCylinderSensor();
 

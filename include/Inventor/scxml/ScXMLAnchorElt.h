@@ -54,11 +54,11 @@ public:
   virtual void setSnapshotAttribute(const char * snapshot);
   const char * getSnapshotAttribute(void) const { return this->snapshot; }
 
-  virtual SbBool handleXMLAttributes(void);
+  SbBool handleXMLAttributes(void) override;
 
-  virtual void copyContents(const ScXMLElt * rhs);
+  void copyContents(const ScXMLElt * rhs) override;
 
-  virtual const ScXMLElt * search(const char * attrname, const char * attrvalue) const;
+  const ScXMLElt * search(const char * attrname, const char * attrvalue) const override;
 
 protected:
   char * type;

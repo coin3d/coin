@@ -61,7 +61,7 @@ public:
 
 protected:
   virtual ~SoScaleUniformDragger(void);
-  virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
+  SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE) override;
 
   static void startCB(void * f, SoDragger * d);
   static void motionCB(void * f, SoDragger * d);

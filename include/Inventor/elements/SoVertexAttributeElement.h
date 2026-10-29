@@ -48,9 +48,9 @@ class COIN_DLL_API SoVertexAttributeElement : public SoAccumulatedElement {
 
 public:
   static void initClass(void);
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
 
-  virtual void push(SoState * state);
+  void push(SoState * state) override;
   static void add(SoState * const state, SoVertexAttributeData * attribdata);
                   
   static const SoVertexAttributeElement * getInstance(SoState * const state);

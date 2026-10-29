@@ -97,7 +97,7 @@ public:
 protected:
   virtual ~SoProfilerTopEngine(void);
 
-  virtual void evaluate(void);
+  void evaluate(void) override;
 
 private:
   SbPimplPtr<SoProfilerTopEngineP> pimpl;

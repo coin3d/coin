@@ -64,7 +64,7 @@ public:
   SoSFEnum function;
   SoSFVec2f range;
 
-  virtual void GLRender(SoGLRenderAction * action);
+  void GLRender(SoGLRenderAction * action) override;
 
 protected:
   virtual ~SoDepthBuffer();

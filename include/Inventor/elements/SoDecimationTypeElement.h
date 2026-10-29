@@ -47,7 +47,7 @@ protected:
 public:
   enum Type { AUTOMATIC, HIGHEST, LOWEST, PERCENTAGE };
 
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
 
   static  void set(SoState * const state, const Type type);
   static  void set(SoState * const state, SoNode * const node, const Type type);

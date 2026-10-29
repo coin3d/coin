@@ -54,16 +54,16 @@ public:
   virtual const SoEngineOutputData * getOutputData(void) const = 0;
 
   SbBool isNotifying(void) const;
-  virtual void notify(SoNotList * nl);
+  void notify(SoNotList * nl) override;
 
-  virtual void writeInstance(SoOutput * out);
+  void writeInstance(SoOutput * out) override;
 
 protected:
   SoNodeEngine(void);
   virtual ~SoNodeEngine(void);
   virtual void evaluate(void) = 0;
 
-  virtual SbBool readInstance(SoInput * in, unsigned short flags);
+  SbBool readInstance(SoInput * in, unsigned short flags) override;
   virtual void inputChanged(SoField * which);
 
   static const SoFieldData ** getFieldDataPtr(void);
@@ -72,7 +72,7 @@ protected:
   void writeOutputTypes(SoOutput * out);
 
 private:
-  virtual void destroy(void); // overrides SoBase::destroy()
+  void destroy(void) override; // overrides SoBase::destroy()
 
   static SoType classTypeId;
   unsigned int flags;

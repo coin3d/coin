@@ -47,7 +47,7 @@ public:
   void setTimeFromNow(const SbTime & reltime);
   const SbTime & getTime(void) const;
 
-  virtual void schedule(void);
+  void schedule(void) override;
 
 private:
   SbTime alarm;

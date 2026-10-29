@@ -113,7 +113,7 @@ public:
   void setEnabledModulesList(const SbList<const char *> & modulenames);
 
 protected:
-  virtual SbBool processOneEvent(const ScXMLEvent * event);
+  SbBool processOneEvent(const ScXMLEvent * event) override;
 
 private:
   ScXMLStateMachine(const ScXMLStateMachine & rhs); // N/A

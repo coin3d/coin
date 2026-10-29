@@ -66,11 +66,11 @@ public:
 protected:
   virtual ~SoTimeCounter(void);
 
-  virtual void inputChanged(SoField * which);
-  virtual void writeInstance(SoOutput * out);
+  void inputChanged(SoField * which) override;
+  void writeInstance(SoOutput * out) override;
 
 private:
-  virtual void evaluate(void);
+  void evaluate(void) override;
   void calcStarttime(short value);
 
   SbBool ispaused;

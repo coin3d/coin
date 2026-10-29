@@ -46,7 +46,7 @@ protected:
   virtual ~SoViewingMatrixElement();
 
 public:
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
   static  void set(SoState * const state, SoNode * const node,
                    const SbMatrix & ViewingMatrix);
   static  const SbMatrix &get(SoState * const state);

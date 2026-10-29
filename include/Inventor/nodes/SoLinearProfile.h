@@ -45,11 +45,11 @@ public:
   static void initClass(void);
   SoLinearProfile(void);
 
-  virtual void getTrimCurve(SoState * state, int32_t & numpoints,
-                            float *& points, int & floatspervec,
-                            int32_t & numknots, float *& knotvector);
-  virtual void getVertices(SoState * state, int32_t & numvertices,
-                           SbVec2f *& vertices);
+  void getTrimCurve(SoState * state, int32_t & numpoints,
+                    float *& points, int & floatspervec,
+                    int32_t & numknots, float *& knotvector) override;
+  void getVertices(SoState * state, int32_t & numvertices,
+                   SbVec2f *& vertices) override;
 
 protected:
   virtual ~SoLinearProfile();

@@ -70,8 +70,8 @@ public:
 
 protected:
   virtual ~SoSpotLightDragger(void);
-  virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
-  virtual void setDefaultOnNonWritingFields(void);
+  SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE) override;
+  void setDefaultOnNonWritingFields(void) override;
 
   static void startCB(void * f, SoDragger * d);
   static void motionCB(void * f, SoDragger * d);

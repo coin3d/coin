@@ -54,7 +54,7 @@ public:
 protected:
   virtual ~SoVRMLNormalInterpolator();
 private:
-  virtual void evaluate(void);
+  void evaluate(void) override;
 
   class SoVRMLNormalInterpolatorP * pimpl;
 };

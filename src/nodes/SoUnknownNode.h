@@ -54,7 +54,7 @@ class SoUnknownNode : public SoNode {
 
   PRIVATE_NODE_TYPESYSTEM_HEADER();
 protected:
-  virtual const SoFieldData * getFieldData(void) const;
+  const SoFieldData * getFieldData(void) const override;
 private:
   SoFieldData * classfielddata;
   static void * createInstance(void);
@@ -67,22 +67,22 @@ public:
   SoUnknownNode(void);
 
   void setNodeClassName(const SbName & name);
-  virtual SoChildList * getChildren(void) const;
+  SoChildList * getChildren(void) const override;
 
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-  virtual void pick(SoPickAction * action);
-  virtual void search(SoSearchAction * action);
-  virtual void write(SoWriteAction * action);
+  void GLRender(SoGLRenderAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
+  void pick(SoPickAction * action) override;
+  void search(SoSearchAction * action) override;
+  void write(SoWriteAction * action) override;
 
 protected:
   virtual ~SoUnknownNode();
 
-  virtual SbBool readInstance(SoInput * in, unsigned short flags);
-  virtual const char * getFileFormatName(void) const;
-  virtual SoNode * addToCopyDict(void) const;
-  virtual void copyContents(const SoFieldContainer * from,
-                            SbBool copyconnections);
+  SbBool readInstance(SoInput * in, unsigned short flags) override;
+  const char * getFileFormatName(void) const override;
+  SoNode * addToCopyDict(void) const override;
+  void copyContents(const SoFieldContainer * from,
+                            SbBool copyconnections) override;
 
 private:
   

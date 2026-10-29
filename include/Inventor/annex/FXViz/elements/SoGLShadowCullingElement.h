@@ -51,16 +51,16 @@ public:
     NO_CULLING
   };
 
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
   
   static void set(SoState * const state, SoNode * const node,
                   const int mode);
   static int get(SoState * const state);
   static int getDefault(void);
 
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state, const SoElement * prevTopElement);
-  virtual void setElt(int32_t value);
+  void push(SoState * state) override;
+  void pop(SoState * state, const SoElement * prevTopElement) override;
+  void setElt(int32_t value) override;
 
 private:
   void updateGL(int32_t oldvalue, int32_t value);

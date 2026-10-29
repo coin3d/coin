@@ -50,7 +50,7 @@
 #define PRIVATE_KIT_HEADER(_kitclass_) \
 public: \
   static const SoNodekitCatalog * getClassNodekitCatalog(void); \
-  virtual const SoNodekitCatalog * getNodekitCatalog(void) const; \
+  const SoNodekitCatalog * getNodekitCatalog(void) const override; \
  \
 protected: \
   static const SoNodekitCatalog ** getClassNodekitCatalogPtr(void); \

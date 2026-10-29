@@ -46,7 +46,38 @@
 class SoWriteAction;
 class SoNotList;
 class SoInput;
+class SoNode;
 class SoPathList;
+class SoPath;
+
+
+class COIN_DLL_API SoFullPathView final {
+public:
+  int getLength(void) const;
+  SoNode * getTail(void) const;
+  SoNode * getNodeFromTail(const int index) const;
+  int getIndexFromTail(const int index) const;
+
+private:
+  friend class SoPath;
+  explicit SoFullPathView(const SoPath & sourcepath);
+
+  const SoPath * path;
+};
+
+class COIN_DLL_API SoNodeKitPathView final {
+public:
+  int getLength(void) const;
+  SoNode * getTail(void) const;
+  SoNode * getNode(const int index) const;
+  SoNode * getNodeFromTail(const int index) const;
+
+private:
+  friend class SoPath;
+  explicit SoNodeKitPathView(const SoPath & sourcepath);
+
+  const SoPath * path;
+};
 
 
 class COIN_DLL_API SoPath : public SoBase {
@@ -62,7 +93,7 @@ public:
   SoPath & operator=(const SoPath & rhs);
 
   static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
+  SoType getTypeId(void) const override;
 
   void setHead(SoNode * const head);
   SoNode * getHead(void) const;
@@ -77,6 +108,8 @@ public:
   int getIndex(const int index) const;
   int getIndexFromTail(const int index) const;
   int getLength(void) const;
+  SoFullPathView fullPath(void) const;
+  SoNodeKitPathView nodeKitPath(void) const;
   void truncate(const int length);
 
   int findFork(const SoPath * const path) const;
@@ -108,8 +141,9 @@ private:
   static void * createInstance(void);
   void append(SoNode * const node, const int index);
   int getFullLength(void) const;
+  void removePathAuditors(const int startindex);
   void truncate(const int length, const SbBool donotify);
-  virtual SbBool readInstance(SoInput * in, unsigned short flags);
+  SbBool readInstance(SoInput * in, unsigned short flags) override;
   void setFirstHidden(void);
 
   SoNodeList nodes;
@@ -119,6 +153,7 @@ private:
   SbBool firsthiddendirty;
   static SoType classTypeId;
 
+  friend class SoFullPathView;
   friend class SoFullPath;
   friend class SoNodeKitPath;
   friend class SoAction;

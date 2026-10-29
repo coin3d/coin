@@ -59,18 +59,18 @@ public:
   SoSFTime enterTime;
   SoSFTime exitTime;
 
-  virtual SbBool affectsState(void) const;
+  SbBool affectsState(void) const override;
 
-  virtual void doAction(SoAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void rayPick(SoRayPickAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+  void doAction(SoAction * action) override;
+  void GLRender(SoGLRenderAction * action) override;
+  void callback(SoCallbackAction * action) override;
+  void rayPick(SoRayPickAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
 
 protected:
   virtual ~SoVRMLProximitySensor();
 
-  virtual void notify(SoNotList * list);
+  void notify(SoNotList * list) override;
 
 private:
 };

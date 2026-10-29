@@ -64,7 +64,7 @@ protected:
   static const SbName & MISS(void);
   static const SbName & DONE(void);
 
-  virtual SbBool processOneEvent(const ScXMLEvent * event);
+  SbBool processOneEvent(const ScXMLEvent * event) override;
 
 private:
   SoSearchAction * searchaction;

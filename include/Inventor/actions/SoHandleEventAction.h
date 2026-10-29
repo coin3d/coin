@@ -71,7 +71,7 @@ public:
   const SoPickedPointList & getPickedPointList(void);
 
 protected:
-  virtual void beginTraversal(SoNode * node);
+  void beginTraversal(SoNode * node) override;
 
 private:
   SbPimplPtr<SoHandleEventActionP> pimpl;

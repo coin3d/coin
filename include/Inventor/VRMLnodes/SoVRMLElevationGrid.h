@@ -70,17 +70,17 @@ public:
   SoSFBool colorPerVertex;
   SoSFBool normalPerVertex;
 
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void rayPick(SoRayPickAction * action);
-  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
+  void GLRender(SoGLRenderAction * action) override;
+  void rayPick(SoRayPickAction * action) override;
+  void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
 
 protected:
   virtual ~SoVRMLElevationGrid(void);
 
-  virtual void notify(SoNotList * list);
-  virtual void generatePrimitives( SoAction * action );
-  virtual void computeBBox(SoAction * action, SbBox3f & bbox,
-                           SbVec3f & center);
+  void notify(SoNotList * list) override;
+  void generatePrimitives( SoAction * action ) override;
+  void computeBBox(SoAction * action, SbBox3f & bbox,
+                   SbVec3f & center) override;
 
 private:
   friend class SoVRMLElevationGridP;

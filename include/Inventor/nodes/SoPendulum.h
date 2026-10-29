@@ -57,13 +57,13 @@ public:
   SoSFFloat speed;
   SoSFBool on;
 
-  virtual void write(SoWriteAction * action);
+  void write(SoWriteAction * action) override;
 
 protected:
   virtual ~SoPendulum();
 
 private:
-  virtual SoNode * copy(SbBool copyconnections = FALSE) const;
+  SoNode * copy(SbBool copyconnections = FALSE) const override;
   void deconnectInternalEngine(void);
   void reconnectInternalEngine(void);
 

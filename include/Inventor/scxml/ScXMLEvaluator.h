@@ -121,8 +121,8 @@ public:
   void setString(const char * value);
   const char * getString(void) const { return this->value; }
 
-  virtual ScXMLDataObj * clone(void) const;
-  virtual void convertToString(SbString & str) const;
+  ScXMLDataObj * clone(void) const override;
+  void convertToString(SbString & str) const override;
 
 private:
   char * value;
@@ -146,8 +146,8 @@ public:
   void setReal(double value);
   double getReal(void) const { return this->value; }
 
-  virtual ScXMLDataObj * clone(void) const;
-  virtual void convertToString(SbString & str) const;
+  ScXMLDataObj * clone(void) const override;
+  void convertToString(SbString & str) const override;
 
 private:
   double value;
@@ -171,8 +171,8 @@ public:
   void setBool(SbBool value);
   SbBool getBool(void) const { return this->value; }
 
-  virtual ScXMLDataObj * clone(void) const;
-  virtual void convertToString(SbString & str) const;
+  ScXMLDataObj * clone(void) const override;
+  void convertToString(SbString & str) const override;
 
 private:
   SbBool value;
@@ -196,8 +196,8 @@ public:
   void setSbValue(const char * value);
   const char * getSbValue(void) const { return this->value; }
 
-  virtual ScXMLDataObj * clone(void) const;
-  virtual void convertToString(SbString & str) const;
+  ScXMLDataObj * clone(void) const override;
+  void convertToString(SbString & str) const override;
 
 private:
   char * value;
@@ -257,7 +257,7 @@ public:
   void setReference(const char * reference);
   const char * getReference(void) const { return this->reference; }
 
-  virtual SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj *& pointer) const;
+  SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj *& pointer) const override;
 
 private:
   char * reference;
@@ -287,7 +287,7 @@ public:
   const ScXMLDataObj * getRHS(void) const { return this->rhs; }
 
 protected:
-  virtual SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj *& pointer) const;
+  SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj *& pointer) const override;
 
 private:
   ScXMLDataObj * lhs, * rhs;
@@ -314,7 +314,7 @@ public:
   const ScXMLDataObj * getRHS(void) const { return this->rhs; }
 
 protected:
-  virtual SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj *& pointer) const;
+  SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj *& pointer) const override;
 
 private:
   ScXMLDataObj * lhs, * rhs;
@@ -339,7 +339,7 @@ public:
   const ScXMLDataObj * getRHS(void) const { return this->rhs; }
 
 protected:
-  virtual SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj *& pointer) const;
+  SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj *& pointer) const override;
 
 private:
   ScXMLDataObj * rhs;
@@ -366,7 +366,7 @@ public:
   const ScXMLDataObj * getRHS(void) const { return this->rhs; }
 
 protected:
-  virtual SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj *& pointer) const;
+  SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj *& pointer) const override;
 
 private:
   ScXMLDataObj * lhs, * rhs;
@@ -396,7 +396,7 @@ public:
   const ScXMLDataObj * getRHS(void) const { return this->rhs; }
 
 protected:
-  virtual SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj *& pointer) const;
+  SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj *& pointer) const override;
 
 private:
   ScXMLDataObj * lhs, * rhs;
@@ -423,7 +423,7 @@ public:
   const ScXMLDataObj * getRHS(void) const { return this->rhs; }
 
 protected:
-  virtual SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj *& pointer) const;
+  SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj *& pointer) const override;
 
 private:
   ScXMLDataObj * lhs, * rhs;
@@ -450,7 +450,7 @@ public:
   const ScXMLDataObj * getRHS(void) const { return this->rhs; }
 
 protected:
-  virtual SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj *& pointer) const;
+  SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj *& pointer) const override;
 
 private:
   ScXMLDataObj * lhs, * rhs;
@@ -477,7 +477,7 @@ public:
   const ScXMLDataObj * getRHS(void) const { return this->rhs; }
 
 protected:
-  virtual SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj *& pointer) const;
+  SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj *& pointer) const override;
 
 private:
   ScXMLDataObj * lhs, * rhs;
@@ -502,7 +502,7 @@ public:
   const ScXMLDataObj * getRHS(void) const { return this->rhs; }
 
 protected:
-  virtual SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj *& pointer) const;
+  SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj *& pointer) const override;
 
 private:
   ScXMLDataObj * rhs;

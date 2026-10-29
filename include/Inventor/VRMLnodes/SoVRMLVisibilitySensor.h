@@ -56,7 +56,7 @@ public:
   SoSFTime exitTime;
   SoSFBool isActive;
 
-  virtual void GLRender( SoGLRenderAction * action );
+  void GLRender( SoGLRenderAction * action ) override;
 
 protected:
   virtual ~SoVRMLVisibilitySensor();

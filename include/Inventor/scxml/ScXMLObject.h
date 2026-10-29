@@ -39,7 +39,11 @@
 #include <Inventor/scxml/ScXMLSubObject.h>
 
 class COIN_DLL_API ScXMLObject {
-  SCXML_OBJECT_ABSTRACT_HEADER(ScXMLObject)
+public:
+  static SoType getClassTypeId(void);
+  virtual SoType getTypeId(void) const = 0;
+private:
+  static SoType classTypeId;
 
 public:
   static void initClass(void);

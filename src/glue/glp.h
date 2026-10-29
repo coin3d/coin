@@ -834,16 +834,16 @@ struct cc_glglue {
   /* glGetStringi - part of replacement for obsolete glGetString(GL_EXTENSIONS) in OpenGL 3.0 */
   COIN_PFNGLGETSTRINGIPROC glGetStringi;
 
-  const char * versionstr;
-  const char * vendorstr;
+  char * versionstr;
+  char * vendorstr;
   SbBool vendor_is_SGI;
   SbBool vendor_is_nvidia;
   SbBool vendor_is_intel;
   SbBool vendor_is_ati;
   SbBool vendor_is_3dlabs;
   SbBool nvidia_color_per_face_bug;
-  const char * rendererstr;
-  const char * extensionsstr;
+  char * rendererstr;
+  char * extensionsstr;
   int maxtextureunits;
   struct cc_glxglue glx;
   float max_anisotropy;

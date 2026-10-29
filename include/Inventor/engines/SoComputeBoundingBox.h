@@ -66,7 +66,7 @@ protected:
   virtual ~SoComputeBoundingBox(void);
 
 private:
-  virtual void evaluate(void);
+  void evaluate(void) override;
   SoGetBoundingBoxAction * bboxaction;
 };
 

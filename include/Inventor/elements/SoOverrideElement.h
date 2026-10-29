@@ -75,12 +75,12 @@ public:
     NORMAL_BINDING    = 0x00800000
   };
   
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
 
-  virtual void push(SoState * state);
+  void push(SoState * state) override;
 
-  virtual SbBool matches(const SoElement * element) const;
-  virtual SoElement * copyMatchInfo(void) const;
+  SbBool matches(const SoElement * element) const override;
+  SoElement * copyMatchInfo(void) const override;
 
   static uint32_t getFlags(SoState * const state) {
     return (static_cast<const SoOverrideElement*>(getConstElement(state, classStackIndex)))->flags;
@@ -184,7 +184,7 @@ public:
                                        SoNode * const node,
                                        const SbBool override);
 
-  virtual void print(FILE * file) const;
+  void print(FILE * file) const override;
 
 private:
 

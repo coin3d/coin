@@ -58,9 +58,9 @@ public:
   virtual void removeExecutable(ScXMLExecutableElt * executable);
   virtual void clearAllExecutables(void);
 
-  virtual void copyContents(const ScXMLElt * rhs);
+  void copyContents(const ScXMLElt * rhs) override;
 
-  virtual const ScXMLElt * search(const char * attrname, const char * attrvalue) const;
+  const ScXMLElt * search(const char * attrname, const char * attrvalue) const override;
 
   virtual void execute(ScXMLStateMachine * statemachine) const;
 

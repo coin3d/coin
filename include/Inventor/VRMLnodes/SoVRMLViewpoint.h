@@ -59,7 +59,7 @@ public:
   SoSFString description;
   SoSFBool jump;
 
-  virtual void GLRender(SoGLRenderAction * action);
+  void GLRender(SoGLRenderAction * action) override;
 
 protected:
   virtual ~SoVRMLViewpoint();

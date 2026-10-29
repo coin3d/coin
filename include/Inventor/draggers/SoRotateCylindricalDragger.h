@@ -64,10 +64,10 @@ public:
 
 protected:
   virtual ~SoRotateCylindricalDragger(void);
-  virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
+  SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE) override;
 
   virtual void copyContents(const SoFieldContainer * fromfc,
-                            SbBool copyconnections);
+                            SbBool copyconnections) override;
 
   static void startCB(void * f, SoDragger * d);
   static void motionCB(void * f, SoDragger * d);

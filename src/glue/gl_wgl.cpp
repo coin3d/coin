@@ -46,6 +46,11 @@
 #include <Inventor/C/glue/dl.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 
+#ifdef HAVE_WGL
+#include <windows.h>
+#include "glue/khronos/GL/wglext.h"
+#endif
+
 #include "glue/glp.h"
 #include "glue/dlp.h"
 
@@ -802,7 +807,11 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
   }
 
   {
-    GLint pixformat;
+    /* Always set inside the loop below by wglChoosePixelFormat() before
+       context->hpbuffer (checked further down) can become non-NULL.
+       Initialized only because the compiler can't see that guarantee
+       across the loop's several continue/break paths. */
+    GLint pixformat = 0;
     unsigned int numFormats;
     const float fAttribList[] = { 0 };
 

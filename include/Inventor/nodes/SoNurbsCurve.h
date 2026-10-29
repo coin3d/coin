@@ -52,21 +52,21 @@ public:
   SoSFInt32 numControlPoints;
   SoMFFloat knotVector;
 
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void rayPick(SoRayPickAction * action);
-  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+  void GLRender(SoGLRenderAction * action) override;
+  void rayPick(SoRayPickAction * action) override;
+  void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
   void sendPrimitive(SoAction *,  SoPrimitiveVertex *);
 
 protected:
   virtual ~SoNurbsCurve();
 
-  virtual void generatePrimitives(SoAction * action);
-  virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
-  virtual SoDetail * createLineSegmentDetail(SoRayPickAction * action,
-                                             const SoPrimitiveVertex * v1,
-                                             const SoPrimitiveVertex * v2,
-                                             SoPickedPoint * pp);
+  void generatePrimitives(SoAction * action) override;
+  void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center) override;
+  SoDetail * createLineSegmentDetail(SoRayPickAction * action,
+                                     const SoPrimitiveVertex * v1,
+                                     const SoPrimitiveVertex * v2,
+                                     SoPickedPoint * pp) override;
 private:
   class SoNurbsCurveP * pimpl;
   friend class SoNurbsCurveP;

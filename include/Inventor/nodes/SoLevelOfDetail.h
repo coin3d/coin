@@ -52,14 +52,14 @@ public:
 
   SoMFFloat screenArea;
 
-  virtual void doAction(SoAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void rayPick(SoRayPickAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-  virtual void audioRender(SoAudioRenderAction * action);
+  void doAction(SoAction * action) override;
+  void callback(SoCallbackAction * action) override;
+  void GLRender(SoGLRenderAction * action) override;
+  void rayPick(SoRayPickAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
+  void audioRender(SoAudioRenderAction * action) override;
 
-  virtual void notify(SoNotList * nl);
+  void notify(SoNotList * nl) override;
 
 protected:
   virtual ~SoLevelOfDetail();

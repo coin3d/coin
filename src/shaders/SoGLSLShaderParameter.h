@@ -51,30 +51,30 @@
 class SoGLSLShaderParameter : public SoGLShaderParameter
 {
 public: // satisfy SoGLShaderParameter protocol interface
-  virtual SoShader::Type shaderType(void) const;
+  SoShader::Type shaderType(void) const override;
 
-  virtual void set1f(const SoGLShaderObject * shader, const float value, const char * name, const int id);
-  virtual void set2f(const SoGLShaderObject * shader, const float * value, const char * name, const int id);
-  virtual void set3f(const SoGLShaderObject * shader, const float * value, const char * name, const int id);
-  virtual void set4f(const SoGLShaderObject * shader, const float * value, const char * name, const int id);
+  void set1f(const SoGLShaderObject * shader, const float value, const char * name, const int id) override;
+  void set2f(const SoGLShaderObject * shader, const float * value, const char * name, const int id) override;
+  void set3f(const SoGLShaderObject * shader, const float * value, const char * name, const int id) override;
+  void set4f(const SoGLShaderObject * shader, const float * value, const char * name, const int id) override;
 
-  virtual void set1fv(const SoGLShaderObject * shader, const int num, const float* value, const char* name, const int id);
-  virtual void set2fv(const SoGLShaderObject * shader, const int num, const float* value, const char* name, const int id);
-  virtual void set3fv(const SoGLShaderObject * shader, const int num, const float* value, const char* name, const int id);
-  virtual void set4fv(const SoGLShaderObject * shader, const int num, const float* value, const char* name, const int id);
+  void set1fv(const SoGLShaderObject * shader, const int num, const float* value, const char* name, const int id) override;
+  void set2fv(const SoGLShaderObject * shader, const int num, const float* value, const char* name, const int id) override;
+  void set3fv(const SoGLShaderObject * shader, const int num, const float* value, const char* name, const int id) override;
+  void set4fv(const SoGLShaderObject * shader, const int num, const float* value, const char* name, const int id) override;
 
-  virtual void setMatrix(const SoGLShaderObject * shader, const float * value, const char * name, const int id);
-  virtual void setMatrixArray(const SoGLShaderObject * shader, const int num, const float * value, const char * name, const int id);
+  void setMatrix(const SoGLShaderObject * shader, const float * value, const char * name, const int id) override;
+  void setMatrixArray(const SoGLShaderObject * shader, const int num, const float * value, const char * name, const int id) override;
 
-  virtual void set1i(const SoGLShaderObject * shader, const int32_t value, const char * name, const int id);
-  virtual void set2i(const SoGLShaderObject * shader, const int32_t * value, const char * name, const int id);
-  virtual void set3i(const SoGLShaderObject * shader, const int32_t * value, const char * name, const int id);
-  virtual void set4i(const SoGLShaderObject * shader, const int32_t * value, const char * name, const int id);
+  void set1i(const SoGLShaderObject * shader, const int32_t value, const char * name, const int id) override;
+  void set2i(const SoGLShaderObject * shader, const int32_t * value, const char * name, const int id) override;
+  void set3i(const SoGLShaderObject * shader, const int32_t * value, const char * name, const int id) override;
+  void set4i(const SoGLShaderObject * shader, const int32_t * value, const char * name, const int id) override;
 
-  virtual void set1iv(const SoGLShaderObject * shader, const int num, const int32_t * value, const char * name, const int id);
-  virtual void set2iv(const SoGLShaderObject * shader, const int num, const int32_t * value, const char * name, const int id);
-  virtual void set3iv(const SoGLShaderObject * shader, const int num, const int32_t * value, const char * name, const int id);
-  virtual void set4iv(const SoGLShaderObject * shader, const int num, const int32_t * value, const char * name, const int id);
+  void set1iv(const SoGLShaderObject * shader, const int num, const int32_t * value, const char * name, const int id) override;
+  void set2iv(const SoGLShaderObject * shader, const int num, const int32_t * value, const char * name, const int id) override;
+  void set3iv(const SoGLShaderObject * shader, const int num, const int32_t * value, const char * name, const int id) override;
+  void set4iv(const SoGLShaderObject * shader, const int num, const int32_t * value, const char * name, const int id) override;
 
 public:
   SoGLSLShaderParameter(void);

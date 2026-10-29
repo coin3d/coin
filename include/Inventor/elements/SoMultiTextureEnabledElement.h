@@ -56,7 +56,7 @@ public:
     TEXTURE3D
   };
 
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
   static void set(SoState * state, 
                   SoNode * node,
                   const int unit,
@@ -65,9 +65,9 @@ public:
   static SbBool get(SoState * state, const int unit = 0);
   virtual void setElt(const int unit, const int mode);
 
-  virtual void push(SoState * state);
-  virtual SbBool matches(const SoElement * elem) const;
-  SoElement * copyMatchInfo(void) const;
+  void push(SoState * state) override;
+  SbBool matches(const SoElement * elem) const override;
+  SoElement * copyMatchInfo(void) const override;
 
   static const SbBool * getEnabledUnits(SoState * state,
                                         int & lastenabled);

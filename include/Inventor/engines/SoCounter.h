@@ -61,8 +61,8 @@ protected:
   virtual ~SoCounter(void);
 
 private:
-  virtual void evaluate(void);
-  virtual void inputChanged(SoField * which);
+  void evaluate(void) override;
+  void inputChanged(SoField * which) override;
 
   int numsteps;
   short value;

@@ -49,18 +49,18 @@ public:
   SoSFInt32 verticesPerColumn;
   SoSFInt32 verticesPerRow;
 
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
+  void GLRender(SoGLRenderAction * action) override;
+  void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
 
-  virtual SbBool generateDefaultNormals(SoState * state, SoNormalBundle * nb);
+  SbBool generateDefaultNormals(SoState * state, SoNormalBundle * nb) override;
 
 protected:
   virtual ~SoQuadMesh();
 
-  virtual void generatePrimitives(SoAction * action);
-  virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
+  void generatePrimitives(SoAction * action) override;
+  void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center) override;
 
-  virtual SbBool generateDefaultNormals(SoState *, SoNormalCache *);
+  SbBool generateDefaultNormals(SoState *, SoNormalCache *) override;
 
 private:
   enum Binding {

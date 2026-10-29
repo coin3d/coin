@@ -55,13 +55,13 @@ public:
   SoSFVec3d geoCoords;
   SoMFString geoSystem;
 
-  virtual void callback(SoCallbackAction * action);
-  virtual void GLRenderBelowPath(SoGLRenderAction * action);
-  virtual void GLRenderInPath(SoGLRenderAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-  virtual void getMatrix(SoGetMatrixAction * action);
-  virtual void rayPick(SoRayPickAction * action);
-  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
+  void callback(SoCallbackAction * action) override;
+  void GLRenderBelowPath(SoGLRenderAction * action) override;
+  void GLRenderInPath(SoGLRenderAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
+  void getMatrix(SoGetMatrixAction * action) override;
+  void rayPick(SoRayPickAction * action) override;
+  void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
 
 protected:
   virtual ~SoGeoSeparator(void);

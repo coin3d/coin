@@ -213,8 +213,8 @@ cgglue_init(void)
 #ifdef CGLIB_RUNTIME_LINKING
     {
       int idx;
-      /* FIXME: should we get the system shared library name from an
-         Autoconf check? 20000930 mortene. */
+      /* FIXME: should we get the system shared library name from a
+         build-configuration check? 20000930 mortene. */
       const char * possiblelibnames[] = {
         NULL, /* is set below */
         "CgGL", "libCgGL", "libCgGL.so",

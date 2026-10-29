@@ -18,14 +18,15 @@ namespace {
   {
     return sizeof(VALID_OPTIONS)/sizeof(VALID_OPTIONS[0]);
   }
-  const char COIN [] = "COIN";
 
+#if COIN_DEBUG && 0
   SbBool isValidOption(const SbString & option)
   {
     size_t i;
     for (i = 0; i<options_size() && option != VALID_OPTIONS[i]; ++i) {}
     return (i!=options_size());
   }
+#endif // COIN_DEBUG && 0
 
   const SbString INVALID_SETTING("");
 };
@@ -79,6 +80,7 @@ SoConfigSettings::reinitialize()
   //disabling this for now. Write a configure test for this in the
   //future. BFG 20091013
 #if COIN_DEBUG && 0
+  const char COIN [] = "COIN";
   for (char ** test = environ; *test != NULL; ++test) {
     char * first = strchr(*test,'=');
     if (first) {

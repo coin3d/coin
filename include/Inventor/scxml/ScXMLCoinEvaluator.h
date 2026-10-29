@@ -47,14 +47,14 @@ public:
   ScXMLCoinEvaluator(void);
   virtual ~ScXMLCoinEvaluator(void);
 
-  virtual void setStateMachine(ScXMLStateMachine *sm);
+  void setStateMachine(ScXMLStateMachine *sm) override;
 
-  virtual ScXMLDataObj * evaluate(const char * expression) const;
+  ScXMLDataObj * evaluate(const char * expression) const override;
 
-  virtual SbBool setAtLocation(const char * location, ScXMLDataObj * obj);
-  virtual ScXMLDataObj * locate(const char * location) const;
+  SbBool setAtLocation(const char * location, ScXMLDataObj * obj) override;
+  ScXMLDataObj * locate(const char * location) const override;
 
-  virtual void clearTemporaryVariables(void);
+  void clearTemporaryVariables(void) override;
   void dumpTemporaries(void);
 
 private:
@@ -71,7 +71,7 @@ public:
   static void cleanClass(void);
 
 protected:
-  virtual SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj * & pointer) const;
+  SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj * & pointer) const override;
 
 };
 
@@ -83,7 +83,7 @@ public:
   static void cleanClass(void);
 
 protected:
-  virtual SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj * & pointer) const;
+  SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj * & pointer) const override;
 
 };
 
@@ -97,7 +97,7 @@ public:
   static ScXMLDataObj * createFor(ScXMLDataObj * lhs, ScXMLDataObj * rhs);
 
 protected:
-  virtual SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj * & pointer) const;
+  SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj * & pointer) const override;
 
 };
 
@@ -109,7 +109,7 @@ public:
   static void cleanClass(void);
 
 protected:
-  virtual SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj * & pointer) const;
+  SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj * & pointer) const override;
 
 };
 
@@ -121,7 +121,7 @@ public:
   static void cleanClass(void);
 
 protected:
-  virtual SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj * & pointer) const;
+  SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj * & pointer) const override;
 
 };
 
@@ -142,7 +142,7 @@ public:
   ScXMLDataObj * getExpr(void) const { return this->expr; }
 
 protected:
-  virtual SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj * & pointer) const;
+  SbBool evaluateNow(ScXMLStateMachine * sm, ScXMLDataObj * & pointer) const override;
 
   ScXMLDataObj * expr;
 

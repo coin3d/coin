@@ -155,7 +155,7 @@ public:
   SoRenderManagerRootSensor(SoSensorCB * func, void * data) : inherited(func, data) { }
   virtual ~SoRenderManagerRootSensor() { }
 
-  virtual void notify(SoNotList * l);
+  void notify(SoNotList * l) override;
   static SbBool debug(void);
 
 private:

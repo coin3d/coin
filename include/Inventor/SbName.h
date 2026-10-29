@@ -43,6 +43,7 @@ public:
   SbName(const char * namestring);
   SbName(const SbString & str);
   SbName(const SbName & name);
+  SbName & operator=(const SbName & name) = default;
   ~SbName();
 
   const char * getString(void) const;

@@ -45,11 +45,10 @@ protected:
   virtual ~SoGLShapeHintsElement();
 
 public:
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
 
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state,
-                   const SoElement * prevTopElement);
+  void push(SoState * state) override;
+  void pop(SoState * state, const SoElement * prevTopElement) override;
 
   static void forceSend(SoState * const state, const SbBool twoside);
   static void forceSend(SoState * const state,
@@ -58,8 +57,8 @@ public:
                         const SbBool cull, const SbBool twoside);
 
 protected:
-  virtual void setElt(VertexOrdering vertexOrdering,
-                      ShapeType shapeType, FaceType faceType);
+  void setElt(VertexOrdering vertexOrdering,
+              ShapeType shapeType, FaceType faceType) override;
 private:
   SoState * state;
 };

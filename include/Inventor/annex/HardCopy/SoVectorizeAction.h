@@ -76,9 +76,9 @@ public:
     A10
   };
 
-  virtual void apply(SoNode * node);
-  virtual void apply(SoPath * path);
-  virtual void apply(const SoPathList & pathlist, SbBool obeysrules = FALSE);
+  void apply(SoNode * node) override;
+  void apply(SoPath * path) override;
+  void apply(const SoPathList & pathlist, SbBool obeysrules = FALSE) override;
   
   void beginStandardPage(const PageSize & pagesize, const float border = 10.0f);
   

@@ -70,7 +70,7 @@ protected:
   // sent events
   static const SbName & TRIGGER_SPIN(void);
 
-  virtual SbBool processOneEvent(const ScXMLEvent * event);
+  SbBool processOneEvent(const ScXMLEvent * event) override;
 
 private:
   class PImpl;

@@ -56,7 +56,7 @@ protected:
   SoIndexedShape(void);
   virtual ~SoIndexedShape();
 
-  virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
+  void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center) override;
   int getNumVerts(const int startCoord);
   void setupIndices(const int numParts, const int numFaces,
                     const SbBool needNormals, const SbBool needTexCoords);

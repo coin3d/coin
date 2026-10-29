@@ -63,15 +63,15 @@ public:
   SbBool areIndexArraysMatched(void) const;
   SoSimplifier * getSimplifier(void) const;
 
-  virtual void apply(SoNode * root);
-  virtual void apply(SoPath * path);
-  virtual void apply(const SoPathList & pathlist, SbBool obeysrules = FALSE);
+  void apply(SoNode * root) override;
+  void apply(SoPath * path) override;
+  void apply(const SoPathList & pathlist, SbBool obeysrules = FALSE) override;
 
   static void startReport(const char * msg);
   static void finishReport(void);
 
 protected:
-  virtual void beginTraversal(SoNode * node);
+  void beginTraversal(SoNode * node) override;
 
 private:
   SbPimplPtr<SoReorganizeActionP> pimpl;

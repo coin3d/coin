@@ -57,7 +57,7 @@ protected:
   virtual ~SoVRMLPositionInterpolator();
 
 private:
-  virtual void evaluate(void);
+  void evaluate(void) override;
 
 }; // class SoVRMLPositionInterpolator
 

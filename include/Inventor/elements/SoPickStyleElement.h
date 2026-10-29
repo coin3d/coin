@@ -54,7 +54,7 @@ public:
     SHAPE_FRONTFACES
   };
 
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
   static void set(SoState * const state, SoNode * const node,
                   const int32_t style);
   static void set(SoState * const state, const Style style);

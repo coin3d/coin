@@ -35,24 +35,17 @@ and get compilation to work that way.
 Only public parts of the API can be tested in this test-suite because
 it is built separately outside Coin and then linked with Coin.
 
-When a new cpp-file gets its first test-case, the test-suite does not
-are discovered by the CMake-based testsuite extractor (`testsuite/CMakeLists.txt`)
-and compiled into the `CoinTests` executable.
-The thing that doesn't get updated automatically is the *list* of
-files that actually contain test-case code, which you must trigger
-manual updating of by running "make makefile-update" as mentioned above.
+When a new cpp-file gets its first test-case, reconfigure the CMake build
+so the testsuite extractor can discover it and regenerate the test source.
 
-Run the tests by running "make testsuite-run" in the top-level directory,
-or by running "make" in the testsuite directory (after building Coin, of 
-course).
+Run the tests with:
 
-If the test-suite crashes (as opposed to just reporting errors),
-running "make verbose" might be helpful to figure out exactly which
-test-case is the one that causes the problem, or "make debug" to make
-the testsuite run in gdb so you end up in the debugger when the
-testsuite crashes.  This works only on platforms that use gcc and gdb
-as the compiler/debugger suite (Linux, OS X, unixes...) and is not
-supported on Windows for now.
+  cmake -S . -B build -DCOIN_BUILD_TESTS=ON
+  cmake --build build --parallel
+  ctest --test-dir build --output-on-failure
+
+For verbose output, use `ctest --test-dir build --output-on-failure -V`.
+To debug a crash, run the generated `CoinTests` executable under a debugger.
 
 That's it.
 

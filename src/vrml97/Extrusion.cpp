@@ -140,14 +140,14 @@
   cross-product:
 
   \verbatim
-  Z = (spine[i+1] - spine[i]) × (spine[i-1] - spine[i])
+  Z = cross(spine[i+1] - spine[i], spine[i-1] - spine[i])
   \endverbatim
 
   \li If the spine curve is closed: The SCP for the first and last
   points is the same and is found by taking the following cross- product:
 
   \verbatim
-  Z = (spine[1] - spine[0]) × (spine[n-2] - spine[0])
+  Z = cross(spine[1] - spine[0], spine[n-2] - spine[0])
   \endverbatim
 
   \li If the spine curve is not closed: The Z-axis used for the first
@@ -391,7 +391,7 @@ public:
   SbVec2f texcoord;
 
   // needed for SbHash
-  operator unsigned long(void) const {
+  operator unsigned long(void) const noexcept {
     unsigned long key = 0;
     // create an xor key based on coordinates, normal and texcoords
     const unsigned char * ptr = (const unsigned char *) this;

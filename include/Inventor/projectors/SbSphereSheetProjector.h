@@ -43,10 +43,10 @@ public:
   SbSphereSheetProjector(const SbBool orienttoeye = TRUE);
   SbSphereSheetProjector(const SbSphere & sph, const SbBool orienttoeye = TRUE);
 
-  virtual SbProjector * copy(void) const;
-  virtual SbVec3f project(const SbVec2f & point);
-  virtual SbRotation getRotation(const SbVec3f & point1,
-                                 const SbVec3f & point2);
+  SbProjector * copy(void) const override;
+  SbVec3f project(const SbVec2f & point) override;
+  SbRotation getRotation(const SbVec3f & point1,
+                                 const SbVec3f & point2) override;
 
 protected:
   void setupPlane(void);

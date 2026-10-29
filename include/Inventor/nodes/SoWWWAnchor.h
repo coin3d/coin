@@ -66,14 +66,14 @@ public:
   void setFullURLName(const SbString & url);
   const SbString & getFullURLName(void);
 
-  virtual void handleEvent(SoHandleEventAction * action);
+  void handleEvent(SoHandleEventAction * action) override;
 
   static void setFetchURLCallBack(SoWWWAnchorCB * f, void * userData);
   static void setHighlightURLCallBack(SoWWWAnchorCB * f, void * userData);
 
 protected:
   virtual ~SoWWWAnchor();
-  virtual void redrawHighlighted(SoAction * act, SbBool isNowHighlighting);
+  void redrawHighlighted(SoAction * act, SbBool isNowHighlighting) override;
 
 private:
   SoWWWAnchorP * pimpl;

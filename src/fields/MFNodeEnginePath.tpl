@@ -16,14 +16,15 @@
 
 */
 
-// Type-specific define to be able to do #ifdef tests on type.  (Note:
-// used to check the header file wrapper define, but that doesn't work
-// with --enable-compact build.)
+// Type-specific define to be able to do #ifdef tests on type.
 #define COIN_INTERNAL_SOMF_TYPENAME_
 
 #include <Inventor/fields/SoMF_Typename_.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/fields/SoSF_Typename_.h>
+
+#include "SbBasicP.h"
+
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/SoPath.h>
@@ -294,20 +295,18 @@ SoMF_Typename_::write1Value(SoOutput * out, int idx) const
   // NB: This code is common for SoMFNode, SoMFPath and SoMFEngine.
   // That's why we check for the base type before writing.
 
-  SoBase * base = (SoBase*) this->values[idx];
-  if (base) {
-    if (base->isOfType(SoNode::getClassTypeId())) {
-      ((SoNode*)base)->writeInstance(out);
-    }
-    else if (base->isOfType(SoPath::getClassTypeId())) {
-      SoWriteAction wa(out);
-      wa.continueToApply((SoPath*)base);
-    }
-    else if (base->isOfType(SoEngine::getClassTypeId())) {
-      ((SoEngine*)base)->writeInstance(out);
-    }
+  SoBase * base = this->values[idx];
+  if (SoNode * node = coin_safe_cast<SoNode *>(base)) {
+    node->writeInstance(out);
   }
-  else {
+  else if (SoPath * path = coin_safe_cast<SoPath *>(base)) {
+    SoWriteAction wa(out);
+    wa.continueToApply(path);
+  }
+  else if (SoEngine * engine = coin_safe_cast<SoEngine *>(base)) {
+    engine->writeInstance(out);
+  }
+  else if (base == NULL) {
     out->write("NULL");
   }
 }
@@ -324,20 +323,18 @@ SoMF_Typename_::countWriteRefs(SoOutput * out) const
 
   for (int i = 0; i < this->getNum(); i++) {
     SoBase * base = this->values[i];
-    if (base) {
-      // NB: This code is common for SoMFNode, SoMFPath and SoMFEngine.
-      // That's why we check the base type before writing/counting
+    // NB: This code is common for SoMFNode, SoMFPath and SoMFEngine.
+    // That's why we check the base type before writing/counting
 
-      if (base->isOfType(SoNode::getClassTypeId())) {
-        ((SoNode*)base)->writeInstance(out);
-      }
-      else if (base->isOfType(SoEngine::getClassTypeId())) {
-        ((SoEngine*)base)->addWriteReference(out);
-      }
-      else if (base->isOfType(SoPath::getClassTypeId())) {
-        SoWriteAction wa(out);
-        wa.continueToApply((SoPath*)base);
-      }
+    if (SoNode * node = coin_safe_cast<SoNode *>(base)) {
+      node->writeInstance(out);
+    }
+    else if (SoEngine * engine = coin_safe_cast<SoEngine *>(base)) {
+      engine->addWriteReference(out);
+    }
+    else if (SoPath * path = coin_safe_cast<SoPath *>(base)) {
+      SoWriteAction wa(out);
+      wa.continueToApply(path);
     }
   }
 }

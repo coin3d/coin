@@ -47,7 +47,7 @@ protected:
   virtual ~SoCoordinateElement();
 
 public:
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
   static void set3(SoState * const state, SoNode * const node,
                    const int32_t numCoords, const SbVec3f * const coords);
   static void set4(SoState * const state, SoNode * const node,
@@ -65,7 +65,7 @@ public:
   static SbVec4f getDefault4();
 
 
-  virtual void print(FILE * file) const;
+  void print(FILE * file) const override;
 
 protected:
   int32_t numCoords;

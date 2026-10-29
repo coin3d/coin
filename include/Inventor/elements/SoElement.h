@@ -123,6 +123,18 @@ inline const SoElement *
 SoElement::getConstElement(SoState * const state,
                            const int stackIndex)
 {
+  // SoState::getConstElement() assert()s (Debug builds) or returns a
+  // dangling/NULL pointer (Release builds, where isElementEnabled() is
+  // never checked) if stackIndex isn't enabled for the current action --
+  // it is a fast, unchecked primitive by design (see its own doc
+  // comment). This method's own documented contract, unlike that one, is
+  // "if no instance can be returned, NULL is returned", which the many
+  // callers throughout the codebase that cast this method's result and
+  // then null-check it (rather than calling isElementEnabled() up front
+  // themselves) rely on. Check first, so both build types honor that
+  // contract identically instead of Debug aborting and Release calling
+  // capture() through a NULL element.
+  if (!state->isElementEnabled(stackIndex)) return NULL;
   const SoElement * element = state->getConstElement(stackIndex);
   element->capture(state);
   return element;

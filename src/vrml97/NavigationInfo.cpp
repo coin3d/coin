@@ -276,6 +276,7 @@ SoVRMLNavigationInfo::initClass(void) // static
 */
 SoVRMLNavigationInfo::SoVRMLNavigationInfo(void)
 {
+  this->pimpl = NULL;
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLNavigationInfo);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(type, ("WALK"));

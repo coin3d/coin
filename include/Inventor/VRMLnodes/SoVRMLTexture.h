@@ -48,7 +48,7 @@ public:
   SoSFBool repeatS;
   SoSFBool repeatT;
 
-  virtual void GLRender( SoGLRenderAction * action );
+  void GLRender( SoGLRenderAction * action ) override;
 
 protected:
   SoVRMLTexture(void);

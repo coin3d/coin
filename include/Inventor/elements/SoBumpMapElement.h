@@ -49,7 +49,7 @@ protected:
   virtual ~SoBumpMapElement();
 
 public:
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
   static void set(SoState * state, SoNode * node,
                   SoGLImage * image);
   

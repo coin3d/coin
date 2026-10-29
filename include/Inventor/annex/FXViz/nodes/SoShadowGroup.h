@@ -74,10 +74,10 @@ public:
   SoSFFloat epsilon;
   SoSFFloat threshold;
 
-  virtual void GLRenderBelowPath(SoGLRenderAction * action);
-  virtual void GLRenderInPath(SoGLRenderAction * action);
+  void GLRenderBelowPath(SoGLRenderAction * action) override;
+  void GLRenderInPath(SoGLRenderAction * action) override;
 
-  virtual void notify(SoNotList * nl);
+  void notify(SoNotList * nl) override;
 
   void enableSubgraphSearchOnNotify(const SbBool onoff);
 

@@ -57,7 +57,7 @@ public:
   static void * getHandlerData(void);
 
   static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
+  SoType getTypeId(void) const override;
 
   SoDebugError::Severity getSeverity(void) const;
 
@@ -68,7 +68,7 @@ public:
   static void initClass(void);
 
 protected:
-  virtual SoErrorCBPtr getHandler(void * & data) const;
+  SoErrorCBPtr getHandler(void * & data) const override;
 
 private:
   static void callbackForwarder(const struct cc_debugerror * error, void * data);

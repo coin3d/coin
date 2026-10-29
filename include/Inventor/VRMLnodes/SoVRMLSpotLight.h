@@ -54,7 +54,7 @@ public:
   SoSFFloat radius;
   SoSFVec3f attenuation;
 
-  virtual void GLRender( SoGLRenderAction * action );
+  void GLRender( SoGLRenderAction * action ) override;
 
 protected:
   virtual ~SoVRMLSpotLight();

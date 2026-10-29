@@ -131,7 +131,7 @@
 class ScXMLSendEltReader : public ScXMLEltReader {
 public:
   ScXMLSendEltReader(void);
-  virtual ScXMLElt * read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm);
+  ScXMLElt * read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm) override;
 };
 
 ScXMLSendEltReader::ScXMLSendEltReader(void)
@@ -296,7 +296,8 @@ void
 ScXMLSendElt::copyContents(const ScXMLElt * rhs)
 {
   inherited::copyContents(rhs);
-  const ScXMLSendElt * orig = coin_assert_cast<const ScXMLSendElt *>(rhs);
+  const ScXMLSendElt * orig = coin_safe_cast<const ScXMLSendElt *>(rhs);
+  if (orig == NULL) return;
   this->setEventAttribute(orig->getEventAttribute());
   this->setTargetAttribute(orig->getTargetAttribute());
   this->setTargetTypeAttribute(orig->getTargetTypeAttribute());

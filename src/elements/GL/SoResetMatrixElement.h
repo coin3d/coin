@@ -48,14 +48,14 @@ protected:
   virtual ~SoResetMatrixElement();
 
 public:
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
   static void set(SoState * const state, const SbMatrix & m);
   static const SbMatrix  & get(SoState * state);
 
 protected:
   virtual void setElt(const SbMatrix & matrix);
-  virtual SbBool matches(const SoElement * element) const;
-  virtual SoElement * copyMatchInfo(void) const;
+  SbBool matches(const SoElement * element) const override;
+  SoElement * copyMatchInfo(void) const override;
 
 private:
   SbMatrix matrix;

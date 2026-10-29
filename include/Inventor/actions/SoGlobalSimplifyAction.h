@@ -54,7 +54,7 @@ public:
   virtual ~SoGlobalSimplifyAction(void);
 
 protected:
-  virtual void beginTraversal(SoNode * node);
+  void beginTraversal(SoNode * node) override;
 
 private:
   SbLazyPimplPtr<SoGlobalSimplifyActionP> pimpl;

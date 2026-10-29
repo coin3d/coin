@@ -69,7 +69,7 @@ protected:
   virtual ~SoBoolOperation(void);
 
 private:
-  virtual void evaluate();
+  void evaluate() override;
 };
 
 #endif // !COIN_SOBOOLOPERATION_H

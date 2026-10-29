@@ -46,7 +46,7 @@ protected:
   virtual ~SoBumpMapCoordinateElement();
 
 public:
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
   static void set(SoState * state, SoNode * node,
                   const int32_t numcoords, const SbVec2f * coords);
   

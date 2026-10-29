@@ -49,7 +49,7 @@ public:
     ANNOTATION, FIT_TEXT_VECTOR
   };
 
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
   static void set(SoState * const state, const FontSizeHint hint);
   static FontSizeHint get(SoState * const state);
   static FontSizeHint getDefault(void);

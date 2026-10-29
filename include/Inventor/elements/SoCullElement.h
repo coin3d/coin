@@ -50,8 +50,8 @@ protected:
 
 public:
 
-  virtual void init(SoState * state);
-  virtual void push(SoState * state);
+  void init(SoState * state) override;
+  void push(SoState * state) override;
   
   static void setViewVolume(SoState * state, const SbViewVolume & vv);
   static void addPlane(SoState * state, const SbPlane & newplane);
@@ -59,8 +59,8 @@ public:
   static SbBool cullTest(SoState * state, const SbBox3f & box, const SbBool transform = TRUE);
   static SbBool completelyInside(SoState * state);
 
-  virtual SbBool matches(const SoElement * elt) const;
-  virtual SoElement * copyMatchInfo(void) const;
+  SbBool matches(const SoElement * elt) const override;
+  SoElement * copyMatchInfo(void) const override;
 
 private:
 

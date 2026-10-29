@@ -596,7 +596,7 @@ void
 SoElement::print(FILE * file) const
 {
   (void)fprintf(file, "%s[%p]\n",
-                this->getTypeId().getName().getString(), this);
+                this->getTypeId().getName().getString(), (void *)this);
 }
 
 /*!

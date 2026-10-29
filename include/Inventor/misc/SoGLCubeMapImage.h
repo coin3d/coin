@@ -42,10 +42,10 @@ class COIN_DLL_API SoGLCubeMapImage : public SoGLImage {
 public:
 
   SoGLCubeMapImage();
-  virtual void unref(SoState * state = NULL);
+  void unref(SoState * state = NULL) override;
 
   static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const ;
+  SoType getTypeId(void) const  override;
 
   enum Target {
     NEGATIVE_X = 0,
@@ -61,22 +61,22 @@ public:
                        const SbVec2s & size,
                        const int numcomponents);
   
-  virtual void setData(const SbImage * image,
+  void setData(const SbImage * image,
                        const Wrap wraps = REPEAT,
                        const Wrap wrapt = REPEAT,
                        const float quality = 0.5f,
                        const int border = 0,
-                       SoState * createinstate = NULL);
+                       SoState * createinstate = NULL) override;
 
-  virtual void setData(const SbImage * image,
+  void setData(const SbImage * image,
                        const Wrap wraps,
                        const Wrap wrapt,
                        const Wrap wrapr,
                        const float quality = 0.5f,
                        const int border = 0,
-                       SoState * createinstate = NULL);
+                       SoState * createinstate = NULL) override;
 
-  virtual SoGLDisplayList * getGLDisplayList(SoState * state);
+  SoGLDisplayList * getGLDisplayList(SoState * state) override;
 
 
  public:

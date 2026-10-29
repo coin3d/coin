@@ -48,8 +48,8 @@ protected:
   virtual ~SoMultiTextureMatrixElement();
 
 public:
-  virtual void init(SoState * state);
-  virtual void push(SoState * state);
+  void init(SoState * state) override;
+  void push(SoState * state) override;
   static void set(SoState * const state, SoNode * const node,
                   const int unit,
                   const SbMatrix & matrix);
@@ -62,6 +62,7 @@ public:
   public:
     UnitData() : textureMatrix(SbMatrix::identity()) {}
     UnitData(const UnitData & org) : textureMatrix(org.textureMatrix) {}
+    UnitData & operator=(const UnitData & org) = default;
     SbMatrix textureMatrix;
   };
 

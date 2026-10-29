@@ -7,9 +7,8 @@ library from source and install it on their system.
 It does not contain any information about installing binary distributions of
 Coin.
 
-We encourage you to use the CMake build configuration in favor of Autotools as
-all development efforts are directed to this path.  The Autotools build system
-is still maintained but at a significantly lower priority.
+Coin uses the CMake build configuration for configuration, building, and
+installation.
 
 The Build Environment
 =====================
@@ -107,7 +106,7 @@ Linux
 1. Get the sources using Git clone command
 
 2. Configure the build
-   If you just want a standard installation (or regenerate the Makefiles using
+   If you just want a standard installation (or reconfigure the build using
    cached options).
    You may omit the generator, then the default generator for the platform is used.
    CMake will create the build directory if it does not exist.
@@ -232,7 +231,7 @@ macOS
 1. Get the sources using Git clone command
 
 2. Configure the build
-   If you just want a standard installation (or regenerate the Makefiles using
+   If you just want a standard installation (or reconfigure the build using
    cached options).
    You may omit the generator, then the default generator for the platform is used.
    CMake will create the build directory if it does not exist.

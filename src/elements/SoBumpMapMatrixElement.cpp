@@ -43,6 +43,7 @@
 #include <Inventor/elements/SoBumpMapMatrixElement.h>
 #include "coindefs.h" // COIN_OBSOLETED()
 #include "SbBasicP.h"
+#include <Inventor/errors/SoDebugError.h>
 
 /*!
   \fn SoBumpMapMatrixElement::bumpMapMatrix
@@ -187,10 +188,17 @@ SoBumpMapMatrixElement::scaleBy(SoState * const state,
 const SbMatrix &
 SoBumpMapMatrixElement::get(SoState * const state)
 {
-  const SoBumpMapMatrixElement * elem = coin_assert_cast<const SoBumpMapMatrixElement *>
+  const SoBumpMapMatrixElement * elem = coin_safe_cast<const SoBumpMapMatrixElement *>
     (
      SoElement::getConstElement(state, classStackIndex)
      );
+  if (!elem) {
+    SoDebugError::post("SoBumpMapMatrixElement::get",
+                       "SoBumpMapMatrixElement not enabled for this action -- "
+                       "missing SO_ENABLE()? Returning identity matrix.");
+    static const SbMatrix identity(SbMatrix::identity());
+    return identity;
+  }
   return elem->getElt();
 }
 

@@ -53,7 +53,7 @@ protected:
   virtual ~SoProfileCoordinateElement();
 
 public:
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
   static void set2(SoState * const state, SoNode * const node,
                    const int32_t numCoords, const SbVec2f * const coords);
   static void set3(SoState * const state, SoNode * const node,

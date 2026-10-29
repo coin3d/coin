@@ -48,18 +48,18 @@ public:
 
   SoMFMatrix matrix;
 
-  virtual SbBool affectsState(void) const;
+  SbBool affectsState(void) const override;
 
-  virtual void doAction(SoAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void pick(SoPickAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-  virtual void handleEvent(SoHandleEventAction * action);
-  virtual void getMatrix(SoGetMatrixAction * action);
-  virtual void search(SoSearchAction * action);
-  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-  virtual void audioRender(SoAudioRenderAction * action);
+  void doAction(SoAction * action) override;
+  void callback(SoCallbackAction * action) override;
+  void GLRender(SoGLRenderAction * action) override;
+  void pick(SoPickAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
+  void handleEvent(SoHandleEventAction * action) override;
+  void getMatrix(SoGetMatrixAction * action) override;
+  void search(SoSearchAction * action) override;
+  void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
+  void audioRender(SoAudioRenderAction * action) override;
 
 protected:
   virtual ~SoMultipleCopy();

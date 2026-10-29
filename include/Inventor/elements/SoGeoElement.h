@@ -49,7 +49,7 @@ protected:
 
 public:
 
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
   
   static void set(SoState * const state, SoGeoOrigin * origin);
   static SoGeoOrigin * get(SoState * const state);

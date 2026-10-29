@@ -313,7 +313,7 @@ SoVectorizePSAction::printHeader(void) const
     fputs("% rotate to LANDSCAPE orientation\n", file);
     fprintf(file, "%g %g translate\n", porg[0] + psize[0], porg[1] + psize[1]);
     fprintf(file, "90 rotate\n");
-    fprintf(file, "%g %g translate\n\n", -(psize[1]+porg[1]), -(psize[0]+porg[1]));
+    fprintf(file, "%g %g translate\n\n", -(psize[1]+porg[1]), -(psize[0]+porg[0]));
   }
 
   // used for gouraud shading workaround

@@ -41,7 +41,7 @@
 protected: \
   static const SoEngineOutputData ** getOutputDataPtr(void); \
 public: \
-  virtual const SoEngineOutputData * getOutputData(void) const; \
+  const SoEngineOutputData * getOutputData(void) const override; \
 private: \
   static void atexit_cleanupnodeengine(void); \
   static SoEngineOutputData * outputdata; \
@@ -120,7 +120,7 @@ _class_::createInstance(void) \
       SoType::createType(_parentclass_::getClassTypeId(), \
                          _classname_, \
                          _createfunc_, \
-                         SoNode::getNextActionMethodIndex()); \
+                         (uint16_t)SoNode::getNextActionMethodIndex()); \
     SoNode::incNextActionMethodIndex(); \
  \
     /* Store parent's fielddata pointer for later use in the constructor. */ \

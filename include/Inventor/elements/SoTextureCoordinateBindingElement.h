@@ -51,7 +51,7 @@ public:
     PER_VERTEX_INDEXED = 3
   };
 
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
 
   static void set(SoState * const state, SoNode * const node,
                   const Binding binding);

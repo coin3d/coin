@@ -48,7 +48,7 @@ public:
   ScXMLFinalizeElt(void);
   virtual ~ScXMLFinalizeElt(void);
 
-  virtual void copyContents(const ScXMLElt * rhs);
+  void copyContents(const ScXMLElt * rhs) override;
 
 private:
   ScXMLFinalizeElt(const ScXMLFinalizeElt & rhs); // N/A

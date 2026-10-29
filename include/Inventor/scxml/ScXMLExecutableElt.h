@@ -50,7 +50,7 @@ public:
   ScXMLExecutableElt(void);
   virtual ~ScXMLExecutableElt(void);
 
-  virtual void copyContents(const ScXMLElt * rhs);
+  void copyContents(const ScXMLElt * rhs) override;
 
   virtual void execute(ScXMLStateMachine * statemachine) const;
 

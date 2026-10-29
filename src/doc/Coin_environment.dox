@@ -68,6 +68,9 @@
 /*!
   \var EnvironmentVariable COIN_PROFILER
 
+  Set this variable before calling SoDB::init(). It is read during
+  initialization, before the action classes select their enabled elements.
+
   This variable should be a set of profiler settings keywords,
   separated by ":" characters.
 
@@ -1594,7 +1597,7 @@ EnvironmentVariable WINDIR;
   If this environment variable is set to a value &gt; 0, prefer using the
   old AGL bindings over CGL.  Note that AGL is not available on 64-bit
   systems.  The AGL code is not compiled into Coin by default, but must be
-  enabled at configure-time using --enable-agl in addition to using this
+  enabled at CMake configure time using -DCOIN_BUILD_MAC_AGL=ON in addition to using this
   environment variable.
 
   \ingroup coin_envvars
@@ -1857,4 +1860,3 @@ EnvironmentVariable WINDIR;
   \%WINDIR\%/Fonts is always searched for fonts on Windows.
   \ingroup coin_envvars
 */
-

@@ -73,6 +73,7 @@ SoBBoxModelMatrixElement::init(SoState * stateptr)
 
 //! FIXME: write doc.
 #include "SbBasicP.h"
+#include "coindefs.h"
 void
 SoBBoxModelMatrixElement::push(SoState * stateptr)
 {
@@ -80,6 +81,7 @@ SoBBoxModelMatrixElement::push(SoState * stateptr)
 
   const SoBBoxModelMatrixElement * const prev =
     coin_assert_cast<const SoBBoxModelMatrixElement *>(this->getNextInStack());
+  COIN_ASSUME(prev != NULL);
   this->state = prev->state;
 }
 

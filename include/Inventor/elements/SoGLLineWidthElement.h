@@ -45,14 +45,13 @@ protected:
   virtual ~SoGLLineWidthElement();
 
 public:
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
 
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state,
-                   const SoElement * prevTopElement);
+  void push(SoState * state) override;
+  void pop(SoState * state, const SoElement * prevTopElement) override;
 
 protected:
-  virtual void setElt(float width);
+  void setElt(float width) override;
 
 private:
   SoState * state;

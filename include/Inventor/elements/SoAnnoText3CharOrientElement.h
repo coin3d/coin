@@ -45,7 +45,7 @@ protected:
   virtual ~SoAnnoText3CharOrientElement();
 
 public:
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
   static void set(SoState * const state, SbBool isOriented);
   static SbBool get(SoState * state);
   static SbBool getDefault(void);

@@ -224,7 +224,7 @@ sopick_pick_cylinder(const float r,
     // branch.  20000103 mortene.
     //
     // FIXME: should a) make sure this is known to the GCC
-    // maintainers, b) have an autoconf check to test for this exact
+    // maintainers, b) have a build check to test for this exact
     // bug. 19991230 mortene.
     SbCylinder cyl(SbLine(SbVec3f(0.0f, 0.0f, 0.0f), SbVec3f(0.0f, 1.0f, 0.0f)), r);
 #else // GCC 2.95 work-around.

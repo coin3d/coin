@@ -88,9 +88,9 @@ public:
   void addVisitationCallback(SoType type, SoIntersectionVisitationCB * cb, void * closure);
   void removeVisitationCallback(SoType type, SoIntersectionVisitationCB * cb, void * closure);
 
-  virtual void apply(SoNode * node);
-  virtual void apply(SoPath * path);
-  virtual void apply(const SoPathList & paths, SbBool obeysRules = FALSE);
+  void apply(SoNode * node) override;
+  void apply(SoPath * path) override;
+  void apply(const SoPathList & paths, SbBool obeysRules = FALSE) override;
 
   virtual void setFilterCallback(SoIntersectionFilterCB * cb, void * closure = NULL);
   virtual void addIntersectionCallback(SoIntersectionCB * cb, void * closure  = NULL);

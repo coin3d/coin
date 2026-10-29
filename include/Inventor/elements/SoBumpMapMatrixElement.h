@@ -46,8 +46,8 @@ protected:
   virtual ~SoBumpMapMatrixElement();
 
 public:
-  virtual void init(SoState * state);
-  virtual void push(SoState * state);
+  void init(SoState * state) override;
+  void push(SoState * state) override;
   static void makeIdentity(SoState * const state, SoNode * const node);
 
   static void set(SoState * const state, SoNode * const node,

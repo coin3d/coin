@@ -43,10 +43,10 @@ class COIN_DLL_API SbLineProjector : public SbProjector {
 
 public:
   SbLineProjector(void);
-  virtual SbProjector * copy(void) const;
+  SbProjector * copy(void) const override;
 
-  virtual SbVec3f project(const SbVec2f & point);
-  virtual SbBool tryProject(const SbVec2f & point, const float epsilon, SbVec3f & result);
+  SbVec3f project(const SbVec2f & point) override;
+  SbBool tryProject(const SbVec2f & point, const float epsilon, SbVec3f & result) override;
 
   void setLine(const SbLine & line);
   const SbLine & getLine(void) const;

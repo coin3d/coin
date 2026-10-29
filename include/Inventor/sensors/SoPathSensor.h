@@ -59,11 +59,11 @@ public:
   SoPath * getAttachedPath(void) const;
 
 protected:
-  virtual void notify(SoNotList * l);
+  void notify(SoNotList * l) override;
 
 private:
   void commonConstructor(void);
-  virtual void dyingReference(void);
+  void dyingReference(void) override;
 
   SoPathSensorP * pimpl;
 };

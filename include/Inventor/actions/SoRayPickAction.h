@@ -91,7 +91,7 @@ public:
   void reset(void);
 
 protected:
-  virtual void beginTraversal(SoNode * node);
+  void beginTraversal(SoNode * node) override;
 
 private:
   SbPimplPtr<SoRayPickActionP> pimpl;

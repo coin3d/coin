@@ -113,18 +113,17 @@ public:
   virtual void grabEventsSetup(void);
   virtual void grabEventsCleanup(void);
 
-  virtual void startNotify(void);
-  virtual void notify(SoNotList * l);
+  void startNotify(void) override;
+  void notify(SoNotList * l) override;
 
   SbUniqueId getNodeId(void) const;
   virtual SoChildList * getChildren(void) const;
 
-  virtual void writeInstance(SoOutput * out);
+  void writeInstance(SoOutput * out) override;
   virtual SoNode * addToCopyDict(void) const;
-  virtual void copyContents(const SoFieldContainer * from,
-                            SbBool copyconnections);
-  virtual SoFieldContainer * copyThroughConnection(void) const;
-
+  void copyContents(const SoFieldContainer * from,
+                    SbBool copyconnections) override;
+  SoFieldContainer * copyThroughConnection(void) const override;
 
   static SoType getClassTypeId(void);
   static SoNode * getByName(const SbName & name);
@@ -152,7 +151,7 @@ protected:
   SoNode(void);
   virtual ~SoNode();
 
-  virtual SbBool readInstance(SoInput * in, unsigned short flags);
+  SbBool readInstance(SoInput * in, unsigned short flags) override;
 
   static const SoFieldData ** getFieldDataPtr(void);
 

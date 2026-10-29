@@ -3,6 +3,7 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -12,6 +13,7 @@ namespace CoinTest {
 struct AbortTestCase { };
 
 struct TestCase {
+  const char * suite;
   const char * name;
   void (*fn)(void);
   const char * file;
@@ -43,9 +45,10 @@ inline Context *& current_context(void)
 }
 
 struct Registrar {
-  Registrar(const char * name, void (*fn)(void), const char * file, int line)
+  Registrar(const char * suite, const char * name,
+            void (*fn)(void), const char * file, int line)
   {
-    registry().push_back(TestCase{name, fn, file, line});
+    registry().push_back(TestCase{suite, name, fn, file, line});
   }
 };
 
@@ -100,14 +103,122 @@ inline void check_equal(const A & a, const B & b,
   }
 }
 
-inline int run_all(void)
+inline bool wildcard_match(const char * pattern, const char * value)
+{
+  const char * star = NULL;
+  const char * retry = NULL;
+  while (*value) {
+    if (*pattern == '?' || *pattern == *value) {
+      ++pattern;
+      ++value;
+    }
+    else if (*pattern == '*') {
+      star = pattern++;
+      retry = value;
+    }
+    else if (star) {
+      pattern = star + 1;
+      value = ++retry;
+    }
+    else return false;
+  }
+  while (*pattern == '*') ++pattern;
+  return *pattern == '\0';
+}
+
+inline bool filter_match(const char * filter, const char * fullname)
+{
+  while (*filter) {
+    const char * filterend = filter;
+    while (*filterend && *filterend != ':') ++filterend;
+
+    if (*filter == '+') ++filter;
+
+    const char * slash = NULL;
+    for (const char * p = filter; p != filterend; ++p) {
+      if (*p == '/') slash = p;
+    }
+
+    const size_t prefixlength = slash ? static_cast<size_t>(slash - filter + 1) : 0;
+    const char * item = slash ? slash + 1 : filter;
+    while (item != filterend) {
+      const char * itemend = item;
+      while (itemend != filterend && *itemend != ',') ++itemend;
+      const size_t itemlength = static_cast<size_t>(itemend - item);
+      char pattern[2048];
+      if (itemlength == 0 || prefixlength + itemlength >= sizeof(pattern)) return false;
+      if (prefixlength) std::memcpy(pattern, filter, prefixlength);
+      std::memcpy(pattern + prefixlength, item, itemlength);
+      pattern[prefixlength + itemlength] = '\0';
+      if (wildcard_match(pattern, fullname)) return true;
+      item = itemend;
+      if (item != filterend) ++item;
+    }
+
+    filter = filterend;
+    if (*filter == ':') ++filter;
+  }
+  return false;
+}
+
+inline bool selected(const char * suite, const char * name,
+                     const std::vector<const char *> & filters)
+{
+  char fullname[2048];
+  size_t length = 0;
+  for (const char * p = suite; *p; ++p) {
+    if (length + 1 >= sizeof(fullname)) return false;
+    fullname[length++] = *p;
+  }
+  if (length) {
+    if (length + 1 >= sizeof(fullname)) return false;
+    fullname[length++] = '/';
+  }
+  for (const char * p = name; *p; ++p) {
+    if (length + 1 >= sizeof(fullname)) return false;
+    fullname[length++] = *p;
+  }
+  fullname[length] = '\0';
+
+  for (size_t i = 0; i < filters.size(); ++i) {
+    if (filter_match(filters[i], fullname)) return true;
+    if (suite[0] && filter_match(filters[i], suite)) return true;
+  }
+  return false;
+}
+
+inline int run_all(int argc, char * argv[])
 {
   const std::vector<TestCase> & tests = registry();
+  std::vector<const char *> filters;
+  for (int i = 1; i < argc; ++i) {
+    const char prefix[] = "--run_test=";
+    if (std::strncmp(argv[i], prefix, sizeof(prefix) - 1) == 0) {
+      const char * filter = argv[i] + sizeof(prefix) - 1;
+      if (!filter[0]) {
+        std::fprintf(stderr, "[FAIL] --run_test requires a non-empty filter\n");
+        return 1;
+      }
+      filters.push_back(filter);
+    }
+    else if (std::strcmp(argv[i], "--run_test") == 0 ||
+             std::strcmp(argv[i], "-t") == 0) {
+      if (i + 1 >= argc || !argv[i + 1][0]) {
+        std::fprintf(stderr, "[FAIL] %s requires a non-empty filter\n", argv[i]);
+        return 1;
+      }
+      filters.push_back(argv[++i]);
+    }
+  }
+
   int failedtests = 0;
   int totalchecks = 0;
+  size_t selectedtests = 0;
 
   for (size_t i = 0; i < tests.size(); ++i) {
     const TestCase & tc = tests[i];
+    if (!filters.empty() && !selected(tc.suite, tc.name, filters)) continue;
+    ++selectedtests;
 
     Context ctx;
     current_context() = &ctx;
@@ -127,7 +238,8 @@ inline int run_all(void)
 
     if (ctx.failed) {
       failedtests += 1;
-      std::fprintf(stderr, "[FAIL] %s (%s:%d)\n", tc.name, tc.file, tc.line);
+      std::fprintf(stderr, "[FAIL] %s%s%s (%s:%d)\n",
+                   tc.suite, tc.suite[0] ? "/" : "", tc.name, tc.file, tc.line);
       for (size_t f = 0; f < ctx.failures.size(); ++f) {
         const Failure & fail = ctx.failures[f];
         std::fprintf(stderr, "  %s:%d: %s\n", fail.file, fail.line, fail.message.c_str());
@@ -135,12 +247,17 @@ inline int run_all(void)
     }
   }
 
+  if (selectedtests == 0 && !filters.empty()) {
+    std::fprintf(stderr, "[FAIL] no tests matched the requested filters\n");
+    return 1;
+  }
+
   if (failedtests == 0) {
-    std::fprintf(stderr, "[OK] %zu tests, %d checks\n", tests.size(), totalchecks);
+    std::fprintf(stderr, "[OK] %zu tests, %d checks\n", selectedtests, totalchecks);
     return 0;
   }
 
-  std::fprintf(stderr, "[FAIL] %d/%zu tests failed, %d checks\n", failedtests, tests.size(), totalchecks);
+  std::fprintf(stderr, "[FAIL] %d/%zu tests failed, %d checks\n", failedtests, selectedtests, totalchecks);
   return 1;
 }
 
@@ -150,19 +267,25 @@ inline int run_all(void)
 // Minimal Boost.Test compatibility macros used by Coin's testsuite extractor
 // ---------------------------------------------------------------------------
 
+static const char coin_test_suite_name[] = "";
+
 #define BOOST_TEST_NO_LIB 1
 
 #define COIN_TEST_CONCAT_INNER(a, b) a##b
 #define COIN_TEST_CONCAT(a, b) COIN_TEST_CONCAT_INNER(a, b)
 
-#define BOOST_AUTO_TEST_SUITE(name) namespace name { enum { coin_testsuite_dummy = 0 };
+#define BOOST_AUTO_TEST_SUITE(name)                                           \
+  namespace name {                                                           \
+  static const char coin_test_suite_name[] = #name;                          \
+  enum { coin_testsuite_dummy = 0 };
 #define BOOST_AUTO_TEST_SUITE_END() }
 #define BOOST_AUTO_TEST_CASE_EXPECTED_FAILURES(name, n) /* no-op */
 
 #define BOOST_AUTO_TEST_CASE(name)                                            \
   static void COIN_TEST_CONCAT(coin_test_fn_, __LINE__)(void);                \
   static ::CoinTest::Registrar COIN_TEST_CONCAT(coin_test_reg_, __LINE__)(    \
-    #name, &COIN_TEST_CONCAT(coin_test_fn_, __LINE__), __FILE__, __LINE__);  \
+    coin_test_suite_name, #name, &COIN_TEST_CONCAT(coin_test_fn_, __LINE__),  \
+    __FILE__, __LINE__);                                                      \
   static void COIN_TEST_CONCAT(coin_test_fn_, __LINE__)(void)
 
 #define BOOST_CHECK_MESSAGE(cond, msg) \

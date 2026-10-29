@@ -45,14 +45,14 @@ public:
   static void * getHandlerData(void);
 
   static SoType getClassTypeId(void);
-  virtual SoType getTypeId(void) const;
+  SoType getTypeId(void) const override;
 
   static void post(const char * const whatWasAllocated);
 
   static void initClass(void);
 
 protected:
-  virtual SoErrorCBPtr getHandler(void * & data) const;
+  SoErrorCBPtr getHandler(void * & data) const override;
 
 private:
   static SoType classTypeId;

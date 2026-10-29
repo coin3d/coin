@@ -89,7 +89,7 @@
 class ScXMLAssignEltReader : public ScXMLEltReader {
 public:
   ScXMLAssignEltReader(void);
-  virtual ScXMLElt * read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm);
+  ScXMLElt * read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm) override;
 };
 
 ScXMLAssignEltReader::ScXMLAssignEltReader(void)
@@ -220,7 +220,8 @@ void
 ScXMLAssignElt::copyContents(const ScXMLElt * rhs)
 {
   inherited::copyContents(rhs);
-  const ScXMLAssignElt * orig = coin_assert_cast<const ScXMLAssignElt *>(rhs);
+  const ScXMLAssignElt * orig = coin_safe_cast<const ScXMLAssignElt *>(rhs);
+  if (orig == NULL) return;
   this->setLocationAttribute(orig->getLocationAttribute());
   this->setDataIDAttribute(orig->getDataIDAttribute());
   this->setExprAttribute(orig->getExprAttribute());

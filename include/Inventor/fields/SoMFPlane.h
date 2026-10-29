@@ -46,7 +46,7 @@ public:
   static void initClass(void);
 
 private:
-  virtual int getNumValuesPerLine(void) const;
+  int getNumValuesPerLine(void) const override;
 };
 
 #endif // !COIN_SOMFPLANE_H

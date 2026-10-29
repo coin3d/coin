@@ -54,7 +54,7 @@ public:
     DEFAULT = PER_VERTEX_INDEXED
   }; // enum Binding
 
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
 
   static  void set(SoState * const state, SoNode * const node,
                    const Binding binding);

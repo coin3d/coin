@@ -67,7 +67,7 @@
 #define PRIVATE_NODE_TYPESYSTEM_HEADER( ) \
 public: \
   static SoType getClassTypeId(void); \
-  virtual SoType getTypeId(void) const; \
+  SoType getTypeId(void) const override; \
 private: \
   static SoType classTypeId
 
@@ -76,7 +76,7 @@ private: \
   PRIVATE_NODE_TYPESYSTEM_HEADER(); \
 protected: \
   static const SoFieldData ** getFieldDataPtr(void); \
-  virtual const SoFieldData * getFieldData(void) const; \
+  const SoFieldData * getFieldData(void) const override; \
 private: \
   static void atexit_cleanup(void); \
   static const SoFieldData ** parentFieldData; \

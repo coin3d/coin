@@ -68,8 +68,8 @@ public:
 
   static void initClass(void);
 
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void search(SoSearchAction * action);
+  void GLRender(SoGLRenderAction * action) override;
+  void search(SoSearchAction * action) override;
   void render(SoState * state);
 
   void updateParameters(SoState * state);
@@ -80,7 +80,7 @@ public:
 protected:
   SoShaderObject(void);
   virtual ~SoShaderObject();
-  virtual SbBool readInstance(SoInput * in, unsigned short flags);
+  SbBool readInstance(SoInput * in, unsigned short flags) override;
 
 private:
   class SoShaderObjectP * pimpl;

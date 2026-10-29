@@ -84,11 +84,11 @@ public:
   SoInput_FileReader(const char * const filename, FILE * filepointer);
   virtual ~SoInput_FileReader();
 
-  virtual ReaderType getType(void) const;
-  virtual size_t readBuffer(char * buf, const size_t readlen);
+  ReaderType getType(void) const override;
+  size_t readBuffer(char * buf, const size_t readlen) override;
 
-  virtual const SbString & getFilename(void);
-  virtual FILE * getFilePointer(void);
+  const SbString & getFilename(void) override;
+  FILE * getFilePointer(void) override;
 
 public:
   SbString filename;
@@ -101,8 +101,8 @@ public:
   SoInput_MemBufferReader(const void * bufPointer, size_t bufSize);
   virtual ~SoInput_MemBufferReader();
 
-  virtual ReaderType getType(void) const;
-  virtual size_t readBuffer(char * buf, const size_t readlen);
+  ReaderType getType(void) const override;
+  size_t readBuffer(char * buf, const size_t readlen) override;
 
 public:
   char * buf;
@@ -115,8 +115,8 @@ public:
   SoInput_GZMemBufferReader(const void * bufPointer, size_t bufSize);
   virtual ~SoInput_GZMemBufferReader();
 
-  virtual ReaderType getType(void) const;
-  virtual size_t readBuffer(char * buf, const size_t readlen);
+  ReaderType getType(void) const override;
+  size_t readBuffer(char * buf, const size_t readlen) override;
 
 public:
   void * gzmfile;
@@ -129,10 +129,10 @@ public:
   SoInput_GZFileReader(const char * const filename, void * fp);
   virtual ~SoInput_GZFileReader();
 
-  virtual ReaderType getType(void) const;
-  virtual size_t readBuffer(char * buf, const size_t readlen);
+  ReaderType getType(void) const override;
+  size_t readBuffer(char * buf, const size_t readlen) override;
 
-  virtual const SbString & getFilename(void);
+  const SbString & getFilename(void) override;
 
 public:
   void * gzfp;
@@ -144,10 +144,10 @@ public:
   SoInput_BZ2FileReader(const char * const filename, void * fp);
   virtual ~SoInput_BZ2FileReader();
 
-  virtual ReaderType getType(void) const;
-  virtual size_t readBuffer(char * buf, const size_t readlen);
+  ReaderType getType(void) const override;
+  size_t readBuffer(char * buf, const size_t readlen) override;
 
-  virtual const SbString & getFilename(void);
+  const SbString & getFilename(void) override;
 
 public:
   void * bzfp;

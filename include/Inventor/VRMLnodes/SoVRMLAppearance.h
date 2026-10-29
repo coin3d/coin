@@ -53,14 +53,14 @@ public:
   SoSFNode texture;
   SoSFNode textureTransform;
   
-  virtual void doAction(SoAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void search(SoSearchAction * action);
+  void doAction(SoAction * action) override;
+  void callback(SoCallbackAction * action) override;
+  void GLRender(SoGLRenderAction * action) override;
+  void search(SoSearchAction * action) override;
 
-  virtual SoChildList * getChildren(void) const;
-  virtual void notify(SoNotList * list);
-  virtual void copyContents(const SoFieldContainer * from, SbBool copyConn);
+  SoChildList * getChildren(void) const override;
+  void notify(SoNotList * list) override;
+  void copyContents(const SoFieldContainer * from, SbBool copyConn) override;
 
 protected:
   virtual ~SoVRMLAppearance();

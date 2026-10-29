@@ -54,7 +54,7 @@ public:
   static void callAudioRender(SoAction *action, SoNode *node);
 
 protected:
-  virtual void beginTraversal(SoNode *node);
+  void beginTraversal(SoNode *node) override;
 
 private:
   SbLazyPimplPtr<SoAudioRenderActionP> pimpl;

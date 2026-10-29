@@ -40,13 +40,12 @@
 
 // *************************************************************************
 
+#include <Inventor/VRMLnodes/SoVRMLScript.h>
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-// FIXME: is this really necessary? Coin/src/Makefile.am stops
-// traversal into src/vrml97/, so it seems
-// superfluous. Investigate. 20050526 mortene.
 #ifdef HAVE_VRML97
 
 // *************************************************************************
@@ -56,6 +55,14 @@
   \brief The SoVRMLScript class is used to control the scene using scripts.
 
   \ingroup coin_VRMLnodes
+
+  \note The node itself, and its fields, work regardless of scripting
+  language support. Actually executing a "javascript:"/"vrmlscript:"
+  url, however, goes through the deprecated SoJavaScriptEngine (see
+  its class documentation), which cannot load or run any SpiderMonkey
+  release currently being maintained. On any such system, url
+  evaluation silently fails (spidermonkey()->available is FALSE) --
+  it does not crash, but no script code in this node will run.
 
   \WEB3DCOPYRIGHT
 
@@ -154,7 +161,6 @@
 
 // *************************************************************************
 
-#include <Inventor/VRMLnodes/SoVRMLScript.h>
 #include "coindefs.h"
 
 #include <cassert>
@@ -380,6 +386,9 @@ SoVRMLScript::~SoVRMLScript()
         f != &this->mustEvaluate) delete f;
   }
   delete this->fielddata;
+  // Built-in field members are destroyed after this body and may query
+  // getFieldData() through debug tracing. Do not leave a dangling pointer.
+  this->fielddata = NULL;
 }
 
 // *************************************************************************
@@ -586,8 +595,7 @@ SoVRMLScript::notify(SoNotList * l)
     }
     else {
       SbName name;
-      SbBool ok = this->getFieldName(f, name);
-      assert(ok);
+      if (!this->getFieldName(f, name)) assert(false);
 
       // We silently ignore events for non-eventIn fields
       // FIXME: This will happen when we get a fieldnotification from a
@@ -996,3 +1004,29 @@ SoVRMLScriptP::executeFunctions(void)
 #undef PUBLIC
 
 #endif // HAVE_VRML97
+
+#ifdef COIN_TEST_SUITE
+
+#include <Inventor/SoType.h>
+#include <Inventor/nodes/SoNode.h>
+#include <Inventor/fields/SoMFString.h>
+
+// To exercise the original dangling-pointer read, compile the library with
+// COIN_DEBUG_EXTRA=1 and run with COIN_WARNING_LEVEL=3 under ASan/UBSan.
+// Use runtime type lookup so builds without VRML97 can still link CoinTests.
+BOOST_AUTO_TEST_CASE(script_member_destruction)
+{
+  const SoType type = SoType::fromName("VRMLScript");
+  if (type == SoType::badType()) return; // VRML97 disabled.
+  SoNode * script = static_cast<SoNode *>(type.createInstance());
+  BOOST_REQUIRE_MESSAGE(script != NULL, "could not create VRML Script");
+  script->ref();
+  SoField * field = script->getField("url");
+  BOOST_REQUIRE_MESSAGE(field && field->isOfType(SoMFString::getClassTypeId()),
+                        "Script must expose its built-in MFString url field");
+  SoMFString * url = static_cast<SoMFString *>(field);
+  url->set1Value(0, "");
+  script->unref(); // Implicit url destruction must not read freed field data.
+}
+
+#endif // COIN_TEST_SUITE

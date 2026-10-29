@@ -154,6 +154,17 @@
 #define COIN_UNUSED_ARG(x) x
 #endif
 
+/* For a function that is deliberately never called (e.g. one that
+   only exists so its body gets compiled, for compile-time checks, or
+   one kept around on purpose for later use) -- silences
+   -Wunused-function without hiding a genuine dead-code case
+   elsewhere. */
+#ifdef __GNUC__
+#define COIN_UNUSED_FUNC __attribute__((__unused__))
+#else
+#define COIN_UNUSED_FUNC
+#endif
+
 
 /* COIN_CT_ASSERT() - a macro for doing compile-time asserting */
 #define COIN_CT_ASSERT(expr) \
@@ -181,6 +192,8 @@ static void inline COIN_CONCAT(compile_only_before_nofunction,__LINE__) () { \
 
 #ifdef _MSC_VER
 #define COIN_MSVC _MSC_VER
+#else
+#define COIN_MSVC 0
 #endif /* _MSC_VER */
 
 #define COIN_MSVC_6_0_VERSION 1200
@@ -205,6 +218,18 @@ static void inline COIN_CONCAT(compile_only_before_nofunction,__LINE__) () { \
 #define unlikely(cond)    (cond)
 #endif /* !unlikely */
 #endif /* !HAVE___BUILTIN_EXPECT */
+
+#ifdef HAVE___BUILTIN_UNREACHABLE
+/* tells the compiler cond is always true; UB if it is not, so only
+   use for invariants enforced elsewhere (e.g. by construction) */
+#ifndef COIN_ASSUME
+#define COIN_ASSUME(cond) do { if (!(cond)) { __builtin_unreachable(); } } while (0)
+#endif /* !COIN_ASSUME */
+#else /* !HAVE___BUILTIN_UNREACHABLE */
+#ifndef COIN_ASSUME
+#define COIN_ASSUME(cond) ((void)0)
+#endif /* !COIN_ASSUME */
+#endif /* !HAVE___BUILTIN_UNREACHABLE */
 
 #ifdef COIN_DEBUG_CHECK_THREAD
 

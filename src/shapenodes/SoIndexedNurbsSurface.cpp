@@ -368,7 +368,7 @@ SoIndexedNurbsSurfaceP::doNurbs(SoAction * action, const SbBool glrender)
     this->nurbsrenderer = GLUWrapper()->gluNewNurbsRenderer();
 
     if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_BEGIN_DATA, (gluNurbsCallback_cb_t)SoNurbsP<SoIndexedNurbsSurface>::tessBegin);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_BEGIN_DATA, (gluNurbsCallback_cb_t)(void (*)(void))SoNurbsP<SoIndexedNurbsSurface>::tessBegin);
       GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_TEXTURE_COORD_DATA, (gluNurbsCallback_cb_t)SoNurbsP<SoIndexedNurbsSurface>::tessTexCoord);
       GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_NORMAL_DATA,  (gluNurbsCallback_cb_t)SoNurbsP<SoIndexedNurbsSurface>::tessNormal);
       GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_VERTEX_DATA,  (gluNurbsCallback_cb_t)SoNurbsP<SoIndexedNurbsSurface>::tessVertex);

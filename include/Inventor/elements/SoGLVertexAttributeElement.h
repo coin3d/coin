@@ -45,7 +45,7 @@ class COIN_DLL_API SoGLVertexAttributeElement : public SoVertexAttributeElement 
 
 public:
   static void initClass(void);
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
 
   void enableVBO(SoGLRenderAction * action) const;
   void disableVBO(SoGLRenderAction * action) const;
@@ -54,7 +54,7 @@ public:
 
 protected:
   virtual ~SoGLVertexAttributeElement();
-  virtual void addElt(SoVertexAttributeData * attribdata);
+  void addElt(SoVertexAttributeData * attribdata) override;
 };
 
 #endif // COIN_SOGLVERTEXATTRIBUTEELEMENT_H

@@ -56,7 +56,7 @@ protected:
   virtual ~SoVRMLOrientationInterpolator(void);
 
 private:
-  virtual void evaluate(void);
+  void evaluate(void) override;
 
 }; // class SoVRMLOrientationInterpolator
 

@@ -46,14 +46,14 @@ protected:
   virtual ~SoListenerOrientationElement();
 
 public:
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
   static void set(SoState * const state, SoNode * const node,
                   const SbRotation & orientation, SbBool setbylistener);
 
   static const SbRotation & get(SoState * const state);
   static SbBool isSetByListener(SoState * const state);
 
-  virtual void print(FILE * file) const;
+  void print(FILE * file) const override;
 
 protected:
   SbRotation orientation;

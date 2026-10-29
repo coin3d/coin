@@ -56,7 +56,7 @@
 class ScXMLLogEltReader : public ScXMLEltReader {
 public:
   ScXMLLogEltReader(void);
-  virtual ScXMLElt * read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm);
+  ScXMLElt * read(ScXMLElt * container, cc_xml_elt * xmlelt, ScXMLDocument * doc, ScXMLStateMachine * sm) override;
 };
 
 ScXMLLogEltReader::ScXMLLogEltReader(void)
@@ -176,7 +176,8 @@ void
 ScXMLLogElt::copyContents(const ScXMLElt * rhs)
 {
   inherited::copyContents(rhs);
-  const ScXMLLogElt * orig = coin_assert_cast<const ScXMLLogElt *>(rhs);
+  const ScXMLLogElt * orig = coin_safe_cast<const ScXMLLogElt *>(rhs);
+  if (orig == NULL) return;
   this->setLabelAttribute(orig->getLabelAttribute());
   this->setExprAttribute(orig->getExprAttribute());
   this->setLevelAttribute(orig->getLevelAttribute());

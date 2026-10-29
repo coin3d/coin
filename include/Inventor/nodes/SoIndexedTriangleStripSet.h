@@ -51,15 +51,15 @@ public:
   static void initClass(void);
   SoIndexedTriangleStripSet(void);
 
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-  virtual SbBool generateDefaultNormals(SoState * state, SoNormalBundle * nb);
+  void GLRender(SoGLRenderAction * action) override;
+  void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
+  SbBool generateDefaultNormals(SoState * state, SoNormalBundle * nb) override;
 
 protected:
   virtual ~SoIndexedTriangleStripSet();
 
-  virtual SbBool generateDefaultNormals(SoState * state, SoNormalCache * nc);
-  virtual void generatePrimitives(SoAction * action);
+  SbBool generateDefaultNormals(SoState * state, SoNormalCache * nc) override;
+  void generatePrimitives(SoAction * action) override;
 
 private:
   enum Binding {

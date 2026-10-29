@@ -45,6 +45,8 @@
 #include <cassert>
 #include <ctime>
 
+#include "coindefs.h"
+
 
 /*!
   Initialize list.
@@ -199,7 +201,7 @@ SoNotList::getTimeStamp(void) const
   if compiled with debug information on.
 */
 void
-SoNotList::print(FILE * const file) const
+SoNotList::print(FILE * const COIN_UNUSED_ARG(file)) const
 {
 #if COIN_DEBUG
   (void)fprintf(file, "SoNotList: %p\n", this);

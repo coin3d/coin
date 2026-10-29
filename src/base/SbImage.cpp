@@ -478,7 +478,10 @@ SbImage::readFile(const SbString & filename,
       if (cbdata.cb(filename, this, cbdata.closure)) return TRUE;
     }
     if (!simage_wrapper()->available) {
-      return FALSE;
+        SoDebugError::postWarning("SbImage::readFile",
+                                  "The simage library is not available, "
+                                  "cannot import any images from disk.");
+        return FALSE;
     }
   }
 
@@ -722,7 +725,7 @@ BOOST_AUTO_TEST_CASE(copyConstruct)
 {
   unsigned char buf [4];
 
-  for (int i=0;i<sizeof(buf); ++i) {
+  for (size_t i=0;i<sizeof(buf); ++i) {
     buf[i]=i;
   }
 

@@ -50,19 +50,19 @@ public:
   SoSFNode color;
   SoSFBool colorPerVertex;
 
-  virtual void doAction(SoAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void pick(SoPickAction * action);
+  void doAction(SoAction * action) override;
+  void GLRender(SoGLRenderAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
+  void callback(SoCallbackAction * action) override;
+  void pick(SoPickAction * action) override;
 
-  virtual void notify(SoNotList * list);
+  void notify(SoNotList * list) override;
 
 protected:
   SoVRMLVertexLine(void);
   virtual ~SoVRMLVertexLine();
 
-  virtual SbBool shouldGLRender(SoGLRenderAction * action);
+  SbBool shouldGLRender(SoGLRenderAction * action) override;
 
 }; // class SoVRMLVertexLine
 

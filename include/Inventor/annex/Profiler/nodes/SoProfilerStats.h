@@ -77,25 +77,25 @@ public:
   //  SoMFNode handlingNode;
   //  SoMFTime handlingTimePerNode;
 
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void handleEvent(SoHandleEventAction * action);
-  virtual void rayPick(SoRayPickAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-  virtual void audioRender(SoAudioRenderAction * action);
+  void GLRender(SoGLRenderAction * action) override;
+  void handleEvent(SoHandleEventAction * action) override;
+  void rayPick(SoRayPickAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
+  void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
+  void audioRender(SoAudioRenderAction * action) override;
 
-  virtual void callback(SoCallbackAction * action);
-  virtual void getMatrix(SoGetMatrixAction * action);
-  virtual void pick(SoPickAction * action);
-  virtual void search(SoSearchAction * action);
-  virtual void write(SoWriteAction * action);
+  void callback(SoCallbackAction * action) override;
+  void getMatrix(SoGetMatrixAction * action) override;
+  void pick(SoPickAction * action) override;
+  void search(SoSearchAction * action) override;
+  void write(SoWriteAction * action) override;
 
   const SbProfilingData & getProfilingData(SoType actiontype) const;
 
 protected:
   virtual ~SoProfilerStats();
 
-  virtual void notify (SoNotList *l);
+  void notify (SoNotList *l) override;
 
 private:
   SbPimplPtr<class SoProfilerStatsP> pimpl;

@@ -81,7 +81,7 @@ SoAmbientColorElement::~SoAmbientColorElement()
 
 void
 SoAmbientColorElement::set(SoState * const state, SoNode * const COIN_UNUSED_ARG(node),
-                           const int32_t numcolors,
+                           const int32_t COIN_UNUSED_ARG(numcolors),
                            const SbColor * const colors)
 {
   SoLazyElement::setAmbient(state, colors);
@@ -105,7 +105,7 @@ SoAmbientColorElement::getNum(void) const
 //! FIXME: write doc.
 
 const SbColor &
-SoAmbientColorElement::get(const int index) const
+SoAmbientColorElement::get(const int COIN_UNUSED_ARG(index)) const
 {
   assert(index == 0);
   return SoLazyElement::getAmbient(this->state);

@@ -54,7 +54,7 @@ public:
   virtual ~SoShapeSimplifyAction(void);
 
 protected:
-  virtual void beginTraversal(SoNode * node);
+  void beginTraversal(SoNode * node) override;
 
 private:
   SbLazyPimplPtr<SoShapeSimplifyActionP> pimpl;

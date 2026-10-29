@@ -49,9 +49,8 @@
 #include <Inventor/manips/SoClipPlaneManip.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodekits/SoBaseKit.h>
-#include <Inventor/SoNodeKitPath.h>
+#include <Inventor/SoPath.h>
 #include <Inventor/nodes/SoGroup.h>
-#include <Inventor/SoFullPath.h>
 
 /***************************************************************************/
 
@@ -107,8 +106,7 @@
 SbBool \
 _class_::replaceManip(SoPath * path, _parentclass_ * newone) const \
 { \
-  SoFullPath * fullpath = (SoFullPath *) path; \
-  SoNode * fulltail = fullpath->getTail(); \
+  SoNode * fulltail = path->fullPath().getTail(); \
  \
   if (fulltail != (SoNode *)this) { \
     SoDebugError::post("_class_::replaceManip", \
@@ -126,7 +124,7 @@ _class_::replaceManip(SoPath * path, _parentclass_ * newone) const \
   this->transferFieldValues(this, newone); \
  \
   if (path->getTail()->isOfType(SoBaseKit::getClassTypeId())) { \
-    SoBaseKit * kit = (SoBaseKit *) ((SoNodeKitPath *)path)->getTail(); \
+    SoBaseKit * kit = static_cast<SoBaseKit *>(path->nodeKitPath().getTail()); \
     SbString partname = kit->getPartString(path); \
     if (partname == "" || !kit->setPart(partname, newone)) { \
       SoDebugError::postWarning("_class_::replaceManip", \
@@ -141,7 +139,7 @@ _class_::replaceManip(SoPath * path, _parentclass_ * newone) const \
     } \
   } \
   else { \
-    if (fullpath->getLength() < 2) { \
+    if (path->fullPath().getLength() < 2) { \
       SoDebugError::post("_class_::replaceManip", "path is too short"); \
       if (constructed) { \
         newone->ref(); \
@@ -150,7 +148,7 @@ _class_::replaceManip(SoPath * path, _parentclass_ * newone) const \
       return FALSE; \
     } \
  \
-    SoNode * parent = fullpath->getNodeFromTail(1); \
+    SoNode * parent = path->fullPath().getNodeFromTail(1); \
  \
     if (!parent->isOfType(SoGroup::getClassTypeId())) { \
       SoDebugError::post("_class_::replaceNode", \

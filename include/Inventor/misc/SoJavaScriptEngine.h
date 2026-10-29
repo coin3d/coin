@@ -55,17 +55,17 @@ public:
   SoJavaScriptEngine();
   virtual ~SoJavaScriptEngine();
 
-  virtual SbBool executeScript(const SbName & name, 
-                               const SbString & script) const;
-  virtual SbBool executeFile(const SbName & filename) const;
-  virtual SbBool executeFunction(const SbName &name, int argc, 
+  SbBool executeScript(const SbName & name,
+                               const SbString & script) const override;
+  SbBool executeFile(const SbName & filename) const override;
+  SbBool executeFunction(const SbName &name, int argc,
                                  const SoField * argv, 
-                                 SoField * rval = NULL) const;
+                                 SoField * rval = NULL) const override;
 
-  virtual SbBool setScriptField(const SbName & name, const SoField * f) const;
-  virtual SbBool unsetScriptField(const SbName & name) const;
-  virtual SbBool getScriptField(const SbName & name, SoField * f) const;
-  virtual SbBool hasScriptField(const SbName & name) const;
+  SbBool setScriptField(const SbName & name, const SoField * f) const override;
+  SbBool unsetScriptField(const SbName & name) const override;
+  SbBool getScriptField(const SbName & name, SoField * f) const override;
+  SbBool hasScriptField(const SbName & name) const override;
 
   // Everything under here is javascript specific
 

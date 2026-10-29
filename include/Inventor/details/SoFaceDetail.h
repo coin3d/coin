@@ -45,7 +45,7 @@ public:
   virtual ~SoFaceDetail();
 
   static void initClass(void);
-  virtual SoDetail * copy(void) const;
+  SoDetail * copy(void) const override;
 
   int getNumPoints(void) const;
   const SoPointDetail * getPoint(const int idx) const;

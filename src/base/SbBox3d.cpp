@@ -56,6 +56,8 @@
 #include <Inventor/SbDPMatrix.h>
 #include <Inventor/errors/SoDebugError.h>
 
+#include "coindefs.h"
+
 // *************************************************************************
 
 /*!
@@ -457,7 +459,7 @@ SbBox3d::transform(const SbDPMatrix & matrix)
   debug version of library, method does nothing in an optimized build.
  */
 void
-SbBox3d::print(FILE * fp) const
+SbBox3d::print(FILE * COIN_UNUSED_ARG(fp)) const
 {
 #if COIN_DEBUG
   SbVec3d minv, maxv;

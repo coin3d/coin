@@ -49,8 +49,30 @@
   the first node in the path that doesn't inherit SoGroup, and
   getLength() returns the number of nodes down to this node.
 
-  If you need the actual path length, or the actual tail node, you
-  need to cast the path to SoFullPath.
+  If you need the actual path length or tail node, including hidden
+  children, use fullPath() to obtain a SoFullPathView.
+*/
+
+/*!
+  \class SoFullPathView SoPath.h Inventor/SoPath.h
+  \brief The SoFullPathView class provides safe access to a complete SoPath.
+
+  \ingroup coin_general
+
+  SoFullPathView is a non-owning view over a SoPath. It provides the
+  alternate path operations whose SoPath equivalents stop at hidden
+  children. The source SoPath must outlive the view.
+
+  Obtain a view through SoPath::fullPath(). The view reflects subsequent
+  changes to the source path and does not allocate or alter reference counts.
+*/
+
+/*!
+  \fn SoFullPathView SoPath::fullPath(void) const
+
+  Returns a non-owning view of the complete path, including hidden children.
+
+  The returned view must not outlive this SoPath.
 */
 
 // *************************************************************************
@@ -70,6 +92,10 @@
 
 // *************************************************************************
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/SoPath.h>
 
 #include <Inventor/SoInput.h>
@@ -88,16 +114,13 @@
 // *************************************************************************
 
 #if COIN_DEBUG && 0 // Convenience function for dumping the SoPath during debugging.
-#include <Inventor/SoFullPath.h>
-
 static void
 sopath_dump(SoPath * p)
 {
-  SoFullPath * path = (SoFullPath *)p;
-
-  (void)fprintf(stderr, "(path %p, len %d)  ", path, path->getLength());
-  for (int i=0; i < path->getLength(); i++) {
-    SoNode * n = path->getNodeFromTail(i);
+  const SoFullPathView fullpath = p->fullPath();
+  (void)fprintf(stderr, "(path %p, len %d)  ", p, fullpath.getLength());
+  for (int i=0; i < fullpath.getLength(); i++) {
+    SoNode * n = fullpath.getNodeFromTail(i);
     (void)fprintf(stderr, "%p (%s), ",
                   n, n->getTypeId().getName().getString());
   }
@@ -135,7 +158,8 @@ SoPath::SoPath(SoNode * const head)
   Copy constructor. Not part of the original Open Inventor API.
 */
 SoPath::SoPath(const SoPath & rhs)
-  : inherited(), nodes(rhs.getFullLength()), indices(rhs.getFullLength())
+  : inherited(), nodes(rhs.getFullLength()), indices(rhs.getFullLength()),
+    isauditing(FALSE), firsthidden(-1), firsthiddendirty(FALSE)
 {
   this->operator=(rhs);
 }
@@ -147,21 +171,58 @@ SoPath::SoPath(const SoPath & rhs)
 SoPath &
 SoPath::operator=(const SoPath & rhs)
 {
-  this->firsthidden = rhs.firsthidden;
-  this->firsthiddendirty = rhs.firsthiddendirty;
-  this->isauditing = rhs.isauditing;
+  if (this == &rhs) return *this;
+
+  // An SoChildList stores this object's address. Stage capacity and new
+  // auditor registrations before replacing the route, so allocation failure
+  // leaves the current route and its registrations intact.
+  // Grow both destination lists before changing the route. SoBaseList does
+  // not offer a reserve operation, so append null placeholders and remove
+  // them without notifying; a failed growth leaves the old route intact.
+  const int oldlength = this->getFullLength();
+  const int newlength = rhs.getFullLength();
+  try {
+    while (this->nodes.getLength() < newlength) this->nodes.append(NULL);
+    this->indices.ensureCapacity(newlength);
+  }
+  catch (...) {
+    this->nodes.truncate(oldlength);
+    throw;
+  }
+  this->nodes.truncate(oldlength);
+
+  // Register the new route before removing the old one. If a child list
+  // cannot grow, remove only the registrations already added here; the
+  // destination and its original auditor registrations stay intact.
+  int registered = 0;
+  try {
+    if (rhs.isauditing) {
+      for (int i = 0; i < newlength; i++) {
+        SoNode * node = rhs.nodes[i];
+        SoChildList * cl = node ? node->getChildren() : NULL;
+        if (cl) cl->addPathAuditor(this);
+        registered++;
+      }
+    }
+  }
+  catch (...) {
+    for (int i = 0; i < registered; i++) {
+      SoNode * node = rhs.nodes[i];
+      SoChildList * cl = node ? node->getChildren() : NULL;
+      if (cl) cl->removePathAuditor(this);
+    }
+    throw;
+  }
+
+  this->removePathAuditors(0);
+  // No list growth remains in these copies.
   this->nodes = rhs.nodes;
   this->indices = rhs.indices;
 
-  // Add ourself as an auditor to the children lists of the path.
-  if (this->isauditing) {
-    for (int i = 0; i < this->getFullLength(); i++) {
-      SoChildList * cl = this->nodes[i]->getChildren();
-      if (cl) cl->addPathAuditor(this);
-    }
-  }
-
-  if (isauditing) this->startNotify();
+  this->firsthidden = rhs.firsthidden;
+  this->firsthiddendirty = rhs.firsthiddendirty;
+  this->isauditing = rhs.isauditing;
+  if (this->isauditing) this->startNotify();
 
   return *this;
 }
@@ -210,27 +271,31 @@ SoPath::getHead(void) const
 void
 SoPath::append(const int childindex)
 {
-#if COIN_DEBUG
   if (this->getFullLength() == 0) {
+#if COIN_DEBUG
     SoDebugError::post("SoPath::append",
                        "SoPath was empty.\n");
+#endif // COIN_DEBUG
     return;
   }
-#endif // COIN_DEBUG
 
   SoChildList * children =
     this->nodes[this->getFullLength() - 1]->getChildren();
-#ifdef COIN_EXTRA_DEBUG
-  assert(children);
-#endif // COIN_EXTRA_DEBUG
-
+  if (children == NULL) {
 #if COIN_DEBUG
-  if (childindex >= children->getLength()) {
-    SoDebugError::post("SoPath::append", "childindex (%d) out of bounds",
-                       childindex);
+    SoDebugError::post("SoPath::append",
+                       "The current tail of the SoPath has no children.");
+#endif // COIN_DEBUG
     return;
   }
+
+  if (childindex < 0 || childindex >= children->getLength()) {
+#if COIN_DEBUG
+    SoDebugError::post("SoPath::append", "childindex (%d) out of bounds",
+                       childindex);
 #endif // debug
+    return;
+  }
 
   SoNode * node = (*children)[childindex];
   this->append(node, childindex);
@@ -254,27 +319,27 @@ SoPath::append(SoNode * const node)
   SoNode * tail = this->nodes[full_length - 1];
   const SoChildList * children = tail->getChildren();
 
-#if COIN_DEBUG
   if (!children) {
+#if COIN_DEBUG
     SoDebugError::post("SoPath::append",
                        "The current tail of the SoPath, of type %s, does "
                        "not have any children, so append()'ing new elements "
                        "is bogus!",
                        tail->getTypeId().getName().getString());
+#endif // COIN_DEBUG
     return;
   }
-#endif // COIN_DEBUG
 
   const int idx = children->find(node);
-#if COIN_DEBUG
   if (idx < 0) {
+#if COIN_DEBUG
     SoDebugError::post("SoPath::append",
                        "The current tail of the SoPath does not have the "
                        "input argument node as a child, so append()'ing "
                        "it is bogus!");
+#endif // COIN_DEBUG
     return;
   }
-#endif // COIN_DEBUG
 
   this->append(node, idx);
 }
@@ -289,7 +354,51 @@ void
 SoPath::append(const SoPath * const frompath)
 {
   if (!this->getFullLength()) { // append to empty path
-    this->operator=(*frompath);
+    if (this == frompath) return;
+    const int length = frompath->getFullLength();
+
+    // Reserve both lists before changing the route. Null placeholders grow
+    // SoBaseList without acquiring node references.
+    try {
+      while (this->nodes.getLength() < length) this->nodes.append(NULL);
+      this->indices.ensureCapacity(length);
+    }
+    catch (...) {
+      this->nodes.truncate(0);
+      throw;
+    }
+    this->nodes.truncate(0);
+
+    // An auditor list may also allocate. Register the complete new route
+    // first, so failure can leave the destination empty and reusable.
+    int registered = 0;
+    try {
+      if (this->isauditing) {
+        for (int i = 0; i < length; i++) {
+          SoNode * const node = frompath->nodes[i];
+          SoChildList * const children = node ? node->getChildren() : NULL;
+          if (children) children->addPathAuditor(this);
+          registered++;
+        }
+      }
+    }
+    catch (...) {
+      for (int i = 0; i < registered; i++) {
+        SoNode * const node = frompath->nodes[i];
+        SoChildList * const children = node ? node->getChildren() : NULL;
+        if (children) children->removePathAuditor(this);
+      }
+      throw;
+    }
+
+    // Capacity and auditors are ready; these appends cannot grow either list.
+    for (int i = 0; i < length; i++) {
+      this->nodes.append(frompath->nodes[i]);
+      this->indices.append(frompath->indices[i]);
+    }
+    this->firsthidden = frompath->firsthidden;
+    this->firsthiddendirty = frompath->firsthiddendirty;
+    if (this->isauditing) this->startNotify();
     return;
   }
 
@@ -298,6 +407,17 @@ SoPath::append(const SoPath * const frompath)
 
   SoNode * const head = frompath->getHead();
   SoNode * const tail = this->nodes[this->getFullLength() - 1];
+  SoChildList * tailchildren = tail->getChildren();
+
+  if (tailchildren == NULL || tailchildren->getLength() == 0) {
+#if COIN_DEBUG
+    SoDebugError::post("SoPath::append",
+                       "The tail of this SoPath has no children node ('%s').\n",
+                       tail->getTypeId().getName().getString());
+#endif // COIN_DEBUG
+    return;
+  }
+
   if (head == tail) { // easy
     const int length = frompath->getFullLength();
     for (int i = 1; i < length; i++) {
@@ -311,17 +431,6 @@ SoPath::append(const SoPath * const frompath)
     return;
   }
   // head of frompath must be child
-
-  SoChildList * tailchildren = tail->getChildren();
-
-#if COIN_DEBUG
-  if (tailchildren == NULL) {
-    SoDebugError::post("SoPath::append",
-                       "The tail of this SoPath has no children node ('%s').\n",
-                       tail->getTypeId().getName().getString());
-    return;
-  }
-#endif // COIN_DEBUG
 
   const int kids = tailchildren->getLength();
   for (int kid = 0; kid < kids; kid++) {
@@ -395,14 +504,7 @@ SoPath::append(SoNode * const node, const int index)
   inheriting SoGroup) when finding the tail.
 
   If you want to find the real tail node (also below node kits and
-  VRML nodes with hidden children), you have to use
-  SoFullPath::getTail(). You don't have to create an SoFullPath
-  instance to do this, just cast the SoPath instance to SoFullPath
-  before getting the tail node:
-
-  \code
-  SoNode * tail = static_cast<SoFullPath*>(path)->getTail();
-  \endcode
+  VRML nodes with hidden children), use fullPath().getTail() instead.
 */
 SoNode *
 SoPath::getTail(void) const
@@ -436,13 +538,13 @@ SoPath::getTail(void) const
 SoNode *
 SoPath::getNode(const int index) const
 {
-#if COIN_DEBUG
   if (index < 0 || index >= this->getFullLength()) {
+#if COIN_DEBUG
     SoDebugError::post("SoPath::getNode", "index %d is out of bounds.",
                        index);
+#endif // COIN_DEBUG
     return NULL;
   }
-#endif // COIN_DEBUG
   return this->nodes[index];
 }
 
@@ -453,13 +555,13 @@ SoPath::getNode(const int index) const
 SoNode *
 SoPath::getNodeFromTail(const int index) const
 {
-#if COIN_DEBUG
   if (index < 0 || index >= this->getLength()) {
+#if COIN_DEBUG
     SoDebugError::post("SoPath::getNodeFromTail",
                        "index %d is out of bounds.", index);
+#endif // COIN_DEBUG
     return NULL;
   }
-#endif // COIN_DEBUG
   return this->nodes[this->getLength() - index - 1];
 }
 
@@ -470,13 +572,13 @@ SoPath::getNodeFromTail(const int index) const
 int
 SoPath::getIndex(const int index) const
 {
-#if COIN_DEBUG
   if (index < 0 || index >= this->getFullLength()) {
+#if COIN_DEBUG
     SoDebugError::post("SoPath::getIndex", "index %d is out of bounds.",
                        index);
+#endif // COIN_DEBUG
     return -1;
   }
-#endif // COIN_DEBUG
 
   return this->indices[index];
 }
@@ -489,13 +591,13 @@ SoPath::getIndex(const int index) const
 int
 SoPath::getIndexFromTail(const int index) const
 {
-#if COIN_DEBUG
   if (index < 0 || index >= this->getLength()) {
+#if COIN_DEBUG
     SoDebugError::post("SoPath::getIndexFromTail",
                        "index %d is out of bounds.", index);
+#endif // COIN_DEBUG
     return -1;
   }
-#endif // COIN_DEBUG
   return this->indices[this->getLength() - index - 1];
 }
 
@@ -504,8 +606,7 @@ SoPath::getIndexFromTail(const int index) const
   "visible" nodes are counted, i.e. hidden nodes of e.g. nodekits are
   not included.
 
-  If you need the actual path length, you need to cast your path to
-  SoFullPath and use SoFullPath::getLength().
+  If you need the actual path length, use fullPath().getLength() instead.
 */
 int
 SoPath::getLength(void) const
@@ -522,6 +623,120 @@ SoPath::getLength(void) const
   return this->nodes.getLength();
 }
 
+SoFullPathView
+SoPath::fullPath(void) const
+{
+  return SoFullPathView(*this);
+}
+
+SoFullPathView::SoFullPathView(const SoPath & sourcepath)
+  : path(&sourcepath)
+{
+}
+
+/*!
+  Returns the number of nodes in the complete path, including hidden
+  children. An empty path has length zero.
+*/
+int
+SoFullPathView::getLength(void) const
+{
+  return this->path->getFullLength();
+}
+
+/*!
+  Returns the actual tail node, including hidden children. Returns \c NULL
+  when the path is empty.
+*/
+SoNode *
+SoFullPathView::getTail(void) const
+{
+  const int length = this->getLength();
+  if (length == 0) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SoFullPathView::getTail", "empty path!");
+#endif // COIN_DEBUG
+    return NULL;
+  }
+  return this->path->getNode(length - 1);
+}
+
+/*!
+  Returns the node positioned \a index nodes from the actual tail, counting
+  hidden children. Returns \c NULL if \a index is outside the complete path.
+*/
+SoNode *
+SoFullPathView::getNodeFromTail(const int index) const
+{
+  const int length = this->getLength();
+  if (index < 0 || index >= length) {
+#if COIN_DEBUG
+    SoDebugError::post("SoFullPathView::getNodeFromTail",
+                       "index %d is out of bounds.", index);
+#endif // COIN_DEBUG
+    return NULL;
+  }
+  return this->path->getNode(length - index - 1);
+}
+
+/*!
+  Returns the child index positioned \a index nodes from the actual tail,
+  counting hidden children. Returns -1 if \a index is outside the complete
+  path.
+*/
+int
+SoFullPathView::getIndexFromTail(const int index) const
+{
+  const int length = this->getLength();
+  if (index < 0 || index >= length) {
+#if COIN_DEBUG
+    SoDebugError::post("SoFullPathView::getIndexFromTail",
+                       "index %d is out of bounds.", index);
+#endif // COIN_DEBUG
+    return -1;
+  }
+  return this->path->getIndex(length - index - 1);
+}
+
+// A build without nodekits has no SoBaseKit instances. Keep the public
+// borrowed-view API linkable with an empty projection.
+#ifndef HAVE_NODEKITS
+SoNodeKitPathView
+SoPath::nodeKitPath(void) const
+{
+  return SoNodeKitPathView(*this);
+}
+
+SoNodeKitPathView::SoNodeKitPathView(const SoPath & sourcepath)
+  : path(&sourcepath)
+{
+}
+
+int
+SoNodeKitPathView::getLength(void) const
+{
+  return 0;
+}
+
+SoNode *
+SoNodeKitPathView::getTail(void) const
+{
+  return NULL;
+}
+
+SoNode *
+SoNodeKitPathView::getNode(const int) const
+{
+  return NULL;
+}
+
+SoNode *
+SoNodeKitPathView::getNodeFromTail(const int) const
+{
+  return NULL;
+}
+#endif // !HAVE_NODEKITS
+
 /*!
   This method truncates the path to the given \a length (i.e. all
   nodes in the path list from index \a length and onwards will be
@@ -533,12 +748,44 @@ SoPath::truncate(const int length)
   this->truncate(length, TRUE);
 }
 
+// Remove ourself as an auditor from the selected suffix of the route.
+void
+SoPath::removePathAuditors(const int startindex)
+{
+  assert(startindex >= 0 && startindex <= this->getFullLength());
+  if (!this->isauditing) return;
+
+  for (int i = startindex; i < this->getFullLength(); i++) {
+    SoNode * node = this->nodes[i];
+    if (node == NULL) continue;
+    SoChildList * cl = node->getChildren();
+#if COIN_DEBUG && 0 // debug
+    if (cl) {
+      SoDebugError::postInfo("SoPath::removePathAuditors",
+                             "nodes[%d]=%p childlist=%p "
+                             "removePathAuditor(%p)",
+                             i, static_cast<void *>(this->nodes[i]),
+                             static_cast<void *>(cl),
+                             static_cast<void *>(this));
+    }
+#endif // debug
+    if (cl) cl->removePathAuditor(this);
+  }
+}
+
 // This method truncates the path to the given length.
 void
 SoPath::truncate(const int length, const SbBool donotify)
 {
-  assert((length >= 0) && (length <= this->getFullLength()) &&
-         "invalid truncation length");
+  const int fulllength = this->getFullLength();
+  if (length < 0 || length > fulllength) {
+#if COIN_DEBUG
+    SoDebugError::post("SoPath::truncate",
+                       "length %d is out of bounds [0, %d].",
+                       length, fulllength);
+#endif // COIN_DEBUG
+    return;
+  }
 
 #if COIN_DEBUG
   // Don't run this alive test if the node list is not referencing.
@@ -556,9 +803,8 @@ SoPath::truncate(const int length, const SbBool donotify)
     // at unrelated locations.
     //
     // mortene -- the paranoid android.
-    SoFullPath * fp = (SoFullPath *)this;
-    for (int l = 0; l < fp->getLength(); l++) {
-      SoNode * n = fp->getNode(l);
+    for (int l = 0; l < this->getFullLength(); l++) {
+      SoNode * n = this->getNode(l);
       // FIXME: are there actually conditions where we can "legally" get
       // a NULL pointer here? Or would that be an indication of an
       // internal error? 20020928 mortene.
@@ -567,24 +813,7 @@ SoPath::truncate(const int length, const SbBool donotify)
   }
 #endif // COIN_DEBUG
 
-
-  // Remove ourself as an auditor to the nodes' children lists.
-  if (this->isauditing) {
-    for (int i = length; i < this->getFullLength(); i++) {
-      SoNode* node = this->nodes[i];
-      if (node == nullptr) continue;
-      SoChildList * cl = node->getChildren();
-#if COIN_DEBUG && 0 // debug
-      if (cl) {
-        SoDebugError::postInfo("SoPath::truncate",
-                               "nodes[%d]=%p childlist=%p "
-                               "removePathAuditor(%p)",
-                               i, this->nodes[i], cl, this);
-      }
-#endif // debug
-      if (cl) cl->removePathAuditor(this);
-    }
-  }
+  this->removePathAuditors(length);
 
   this->nodes.truncate(length);
   this->indices.truncate(length);
@@ -712,25 +941,37 @@ operator!=(const SoPath & lhs, const SoPath & rhs)
 SoPath *
 SoPath::copy(const int startfromnodeindex, int numnodes) const
 {
-#if COIN_DEBUG
+  const int fulllength = this->getFullLength();
+
   if (startfromnodeindex < 0 ||
-      startfromnodeindex >= this->getFullLength()) {
+      startfromnodeindex > fulllength) {
+#if COIN_DEBUG
     SoDebugError::post("SoPath::copy",
                        "startfromnodeindex was out of bounds with %d.",
                        startfromnodeindex);
+#endif // COIN_DEBUG
     return NULL;
   }
-#endif // COIN_DEBUG
-  if (numnodes == 0) numnodes = this->getFullLength() - startfromnodeindex;
 
+  if (numnodes < 0) {
 #if COIN_DEBUG
-  if (numnodes <= 0 ||
-      (startfromnodeindex + numnodes) > this->getFullLength()) {
     SoDebugError::post("SoPath::copy", "numnodes has invalid value %d",
                        numnodes);
+#endif // COIN_DEBUG
     return NULL;
   }
+
+  const int remaining = fulllength - startfromnodeindex;
+  if (numnodes == 0) {
+    numnodes = remaining;
+  }
+  else if (numnodes > remaining) {
+#if COIN_DEBUG
+    SoDebugError::post("SoPath::copy", "numnodes has invalid value %d",
+                       numnodes);
 #endif // COIN_DEBUG
+    return NULL;
+  }
 
   SoPath * newpath = new SoPath(numnodes);
   // Note: it is not by oversight that we're not copying the
@@ -796,12 +1037,26 @@ SoPath::insertIndex(SoNode * const parent, const int newindex)
   sopath_dump(this);
 #endif // debug
 
-  if (parent == this->nodes[this->getFullLength() - 1]) return;
+  if (newindex < 0) {
+#if COIN_DEBUG
+    SoDebugError::post("SoPath::insertIndex",
+                       "newindex was negative (%d)", newindex);
+#endif // COIN_DEBUG
+    return;
+  }
+
+  const int length = this->getFullLength();
+  if (length == 0 || parent == this->nodes[length - 1]) return;
 
   int pos = this->findNode(parent);
-#ifdef COIN_EXTRA_DEBUG
-  assert(pos != -1); // shouldn't be notified if parent is not in path
-#endif // COIN_EXTRA_DEBUG
+  if (pos < 0 || pos >= length - 1) {
+#if COIN_DEBUG
+    SoDebugError::post("SoPath::insertIndex",
+                       "parent %p is not an audited non-tail path node",
+                       (void *) parent);
+#endif // COIN_DEBUG
+    return;
+  }
   pos++;
 
   if (newindex <= this->indices[pos]) this->indices[pos]++;
@@ -828,20 +1083,26 @@ SoPath::removeIndex(SoNode * const parent, const int oldindex)
   sopath_dump(this);
 #endif // debug
 
-  if (parent == this->nodes[this->getFullLength() - 1]) return;
-
-  int pos = this->findNode(parent);
+  if (oldindex < 0) {
 #if COIN_DEBUG
-  // shouldn't be notified if parent is not in path
-  if (!(pos >= 0 && pos < this->getFullLength()-1)) {
     SoDebugError::post("SoPath::removeIndex",
-                       "failure: pos==%d (len=%d), parent=%p (%s)",
-                       pos, this->getFullLength(),
-                       parent,
-                       parent->getTypeId().getName().getString());
+                       "oldindex was negative (%d)", oldindex);
+#endif // COIN_DEBUG
     return;
   }
+
+  const int length = this->getFullLength();
+  if (length == 0 || parent == this->nodes[length - 1]) return;
+
+  int pos = this->findNode(parent);
+  if (pos < 0 || pos >= length - 1) {
+#if COIN_DEBUG
+    SoDebugError::post("SoPath::removeIndex",
+                       "parent %p is not an audited non-tail path node",
+                       (void *) parent);
 #endif // COIN_DEBUG
+    return;
+  }
   pos++;
 
   if (oldindex < this->indices[pos]) this->indices[pos]--;
@@ -866,12 +1127,27 @@ SoPath::replaceIndex(SoNode * const parent, const int index,
 
 #endif // debug
 
-  if (parent == this->nodes[this->getFullLength() - 1]) return;
+  if (index < 0 || newchild == NULL) {
+#if COIN_DEBUG
+    SoDebugError::post("SoPath::replaceIndex",
+                       "invalid index (%d) or null replacement (%p)",
+                       index, (void *) newchild);
+#endif // COIN_DEBUG
+    return;
+  }
+
+  const int length = this->getFullLength();
+  if (length == 0 || parent == this->nodes[length - 1]) return;
 
   int pos = this->findNode(parent);
-#ifdef COIN_EXTRA_DEBUG
-  assert(pos != -1); // shouldn't be notified if parent is not in path
-#endif // COIN_EXTRA_DEBUG
+  if (pos < 0 || pos >= length - 1) {
+#if COIN_DEBUG
+    SoDebugError::post("SoPath::replaceIndex",
+                       "parent %p is not an audited non-tail path node",
+                       (void *) parent);
+#endif // COIN_DEBUG
+    return;
+  }
   pos++;
 
   if (index == this->indices[pos]) {
@@ -1199,3 +1475,131 @@ SoPath::setFirstHidden(void)
 
   this->firsthiddendirty = FALSE;
 }
+
+
+#ifdef COIN_TEST_SUITE
+
+#include <Inventor/misc/SoChildList.h>
+#include <Inventor/misc/SoTempPath.h>
+#include <Inventor/nodes/SoGroup.h>
+
+// A non-group node with children exercises hidden paths without requiring
+// the optional nodekit or VRML97 subsystems.
+class SoPathTestHiddenNode : public SoNode {
+public:
+  SoPathTestHiddenNode() : children(this) {}
+  SoType getTypeId() const override { return SoNode::getClassTypeId(); }
+  SoChildList * getChildren() const override {
+    return const_cast<SoChildList *>(&this->children);
+  }
+private:
+  SoChildList children;
+};
+
+BOOST_AUTO_TEST_CASE(full_path_hidden_children)
+{
+  SoGroup * root = new SoGroup;
+  root->ref();
+  SoPathTestHiddenNode * hidden = new SoPathTestHiddenNode;
+  root->addChild(new SoGroup);
+  root->addChild(hidden);
+  SoGroup * leaf = new SoGroup;
+  // Repeated child pointers make the edge index significant.
+  hidden->getChildren()->append(leaf);
+  hidden->getChildren()->append(leaf);
+  hidden->getChildren()->append(leaf);
+
+  SoPath * path = new SoPath(root);
+  path->ref();
+  path->append(1);
+  path->append(2);
+
+  BOOST_CHECK_EQUAL(path->getLength(), 2);
+  BOOST_CHECK(path->getTail() == hidden);
+  BOOST_CHECK_EQUAL(path->getIndexFromTail(0), 1);
+  const SoFullPathView fullpath = path->fullPath();
+  BOOST_CHECK_EQUAL(fullpath.getLength(), 3);
+  BOOST_CHECK(fullpath.getTail() == leaf);
+  SoNode * expectednodes[] = { leaf, hidden, root };
+  const int expectedindices[] = { 2, 1, 0 };
+  for (int i = 0; i < 3; ++i) {
+    BOOST_CHECK(fullpath.getNodeFromTail(i) == expectednodes[i]);
+    BOOST_CHECK_EQUAL(fullpath.getIndexFromTail(i), expectedindices[i]);
+  }
+
+  SoPath * copy = path->copy();
+  copy->ref();
+  const SoFullPathView fullcopy = copy->fullPath();
+  copy->pop();
+  BOOST_CHECK_EQUAL(fullcopy.getLength(), 2);
+  BOOST_CHECK(fullcopy.getTail() == hidden);
+  BOOST_CHECK_EQUAL(fullpath.getLength(), 3);
+  copy->pop();
+  BOOST_CHECK(fullcopy.getTail() == root);
+  copy->pop();
+  BOOST_CHECK_EQUAL(fullcopy.getLength(), 0);
+  BOOST_CHECK_EQUAL(copy->getLength(), 0);
+  BOOST_CHECK(fullcopy.getTail() == NULL);
+  copy->unref();
+  path->unref();
+  root->unref();
+}
+
+BOOST_AUTO_TEST_CASE(full_path_accessors_on_real_subclass)
+{
+  SoGroup * root = new SoGroup;
+  root->ref();
+  SoGroup * leaf = new SoGroup;
+  root->addChild(new SoGroup);
+  root->addChild(leaf);
+  {
+    // SoTempPath genuinely inherits SoFullPath; no downcast is needed.
+    SoTempPath path(2);
+    path.setHead(root);
+    path.append(1);
+    const SoFullPathView fullpath = path.fullPath();
+    BOOST_CHECK_EQUAL(fullpath.getLength(), 2);
+    BOOST_CHECK(fullpath.getTail() == leaf);
+    BOOST_CHECK(fullpath.getNodeFromTail(0) == leaf);
+    BOOST_CHECK(fullpath.getNodeFromTail(1) == root);
+    BOOST_CHECK_EQUAL(fullpath.getIndexFromTail(0), 1);
+    BOOST_CHECK_EQUAL(fullpath.getIndexFromTail(1), 0);
+
+    // The genuine SoFullPath interface remains available for SoTempPath.
+    BOOST_CHECK_EQUAL(path.getLength(), 2);
+    BOOST_CHECK(path.getTail() == leaf);
+    BOOST_CHECK(path.getNodeFromTail(0) == leaf);
+    BOOST_CHECK(path.getNodeFromTail(1) == root);
+    BOOST_CHECK_EQUAL(path.getIndexFromTail(0), 1);
+    BOOST_CHECK_EQUAL(path.getIndexFromTail(1), 0);
+    path.pop();
+    BOOST_CHECK_EQUAL(path.getLength(), 1);
+    BOOST_CHECK(path.getTail() == root);
+  }
+  root->unref();
+}
+
+BOOST_AUTO_TEST_CASE(full_path_view_rejects_invalid_indices)
+{
+  SoGroup * root = new SoGroup;
+  root->ref();
+  root->addChild(new SoGroup);
+
+  SoPath * path = new SoPath(root);
+  path->ref();
+  path->append(0);
+
+  const SoFullPathView fullpath = path->fullPath();
+  BOOST_CHECK(fullpath.getNodeFromTail(-1) == NULL);
+  BOOST_CHECK(fullpath.getNodeFromTail(2) == NULL);
+  BOOST_CHECK_EQUAL(fullpath.getIndexFromTail(-1), -1);
+  BOOST_CHECK_EQUAL(fullpath.getIndexFromTail(2), -1);
+
+  BOOST_CHECK_EQUAL(fullpath.getLength(), 2);
+  BOOST_CHECK(fullpath.getTail() == root->getChild(0));
+
+  path->unref();
+  root->unref();
+}
+
+#endif // COIN_TEST_SUITE

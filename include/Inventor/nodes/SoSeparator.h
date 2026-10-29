@@ -60,32 +60,32 @@ public:
   SoSFEnum renderCulling;
   SoSFEnum pickCulling;
 
-  virtual void doAction(SoAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void GLRenderBelowPath(SoGLRenderAction * action);
-  virtual void GLRenderInPath(SoGLRenderAction * action);
-  virtual void GLRenderOffPath(SoGLRenderAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-  virtual void getMatrix(SoGetMatrixAction * action);
-  virtual void handleEvent(SoHandleEventAction * action);
-  virtual void rayPick(SoRayPickAction * action);
-  virtual void search(SoSearchAction * action);
-  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-  virtual void audioRender(SoAudioRenderAction * action);
+  void doAction(SoAction * action) override;
+  void GLRender(SoGLRenderAction * action) override;
+  void GLRenderBelowPath(SoGLRenderAction * action) override;
+  void GLRenderInPath(SoGLRenderAction * action) override;
+  void GLRenderOffPath(SoGLRenderAction * action) override;
+  void callback(SoCallbackAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
+  void getMatrix(SoGetMatrixAction * action) override;
+  void handleEvent(SoHandleEventAction * action) override;
+  void rayPick(SoRayPickAction * action) override;
+  void search(SoSearchAction * action) override;
+  void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
+  void audioRender(SoAudioRenderAction * action) override;
 
-  virtual void notify(SoNotList * nl);
+  void notify(SoNotList * nl) override;
 
   static void setNumRenderCaches(const int howmany);
   static int getNumRenderCaches(void);
-  virtual SbBool affectsState(void) const;
+  SbBool affectsState(void) const override;
 
 protected:
   virtual ~SoSeparator();
 
   virtual SbBool cullTest(SoState * state);
   virtual SbBool cullTest(SoGLRenderAction * action, int & cullresults);
-  virtual SbBool readInstance(SoInput * in, unsigned short flags);
+  SbBool readInstance(SoInput * in, unsigned short flags) override;
 
 private:
   void commonConstructor(void);

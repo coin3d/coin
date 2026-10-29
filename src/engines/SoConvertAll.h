@@ -55,9 +55,9 @@ public:
 
 protected:
   virtual ~SoConvertAll(void);
-  virtual void evaluate(void);
-  virtual SoField * getInput(SoType type);
-  virtual SoEngineOutput * getOutput(SoType type);
+  void evaluate(void) override;
+  SoField * getInput(SoType type) override;
+  SoEngineOutput * getOutput(SoType type) override;
 
 private:
   typedef void converter_func(SoField * from, SoField * to);

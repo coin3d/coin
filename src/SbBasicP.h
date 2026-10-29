@@ -155,19 +155,6 @@ To coin_assert_cast(ScXMLObject * ptr) { return coin_internal_assert_cast<To>(pt
 template<typename To>
 To coin_assert_cast(const ScXMLObject * ptr) { return coin_internal_assert_cast<To>(ptr); }
 
-//FIXME Should we remove this? - BFG 20080801
-//Strictly for internal use, until we know exactly how to handle these
-template <typename To>
-To
-reclassify_cast(SoPath * ptr) {
-  return reinterpret_cast<To>(ptr);
-}
-template <typename To>
-To
-reclassify_cast(const SoPath * ptr) {
-  return reinterpret_cast<To>(ptr);
-}
-
 //NOTE What we are doing here is strictly not supported by the C++
 //standard. So we need to do some duck and dive between different
 //compilers. BFG 20080814

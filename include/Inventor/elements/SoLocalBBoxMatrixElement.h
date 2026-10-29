@@ -45,9 +45,9 @@ protected:
   virtual ~SoLocalBBoxMatrixElement();
 
 public:
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
 
-  virtual void push(SoState * state);
+  void push(SoState * state) override;
 
   static void makeIdentity(SoState * const state);
 
@@ -66,8 +66,8 @@ public:
 
   static const SbMatrix & get(SoState * const state);
 
-  virtual SbBool matches(const SoElement * element) const;
-  virtual SoElement * copyMatchInfo(void) const;
+  SbBool matches(const SoElement * element) const override;
+  SoElement * copyMatchInfo(void) const override;
 
 protected:
   SbMatrix localMatrix;

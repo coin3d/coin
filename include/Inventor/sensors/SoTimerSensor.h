@@ -48,12 +48,12 @@ public:
   void setInterval(const SbTime & interval);
   const SbTime & getInterval(void) const;
 
-  virtual void schedule(void);
-  virtual void unschedule(void);
+  void schedule(void) override;
+  void unschedule(void) override;
   void reschedule(const SbTime & schedtime);
 
 private:
-  virtual void trigger(void);
+  void trigger(void) override;
 
   SbTime base, interval;
   SbBool setbasetime;

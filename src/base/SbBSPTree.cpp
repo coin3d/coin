@@ -270,7 +270,13 @@ coin_bspnode::split()
 
   this->dimension = dim; // set the dimension
 
-  float mid = (box.getMin()[dim] + box.getMax()[dim]) / 2.0f;
+  // Also read from in the #if COIN_DEBUG block further down (which
+  // is independent of BSP_SORTED_SPLIT), so it needs declaring
+  // whenever either condition holds.
+#if COIN_DEBUG || defined(BSP_SORTED_SPLIT)
+  const float mid = (box.getMin()[dim] + box.getMax()[dim]) / 2.0f;
+#endif
+
 #ifdef BSP_SORTED_SPLIT
   this->sort(); // sort vertices on ascending dimension values
 

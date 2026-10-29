@@ -45,7 +45,7 @@ protected:
   virtual ~SoSoundElement();
 
 public:
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
   static void set(SoState * const state, SoNode * const node,
                   SbBool scenegraphhassoundnode, 
                   SbBool soundnodeisplaying,
@@ -63,10 +63,10 @@ public:
                                             SbBool flag);
   static SbBool isPartOfActiveSceneGraph(SoState * const state);
 
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state, const SoElement * prevTopElement);
+  void push(SoState * state) override;
+  void pop(SoState * state, const SoElement * prevTopElement) override;
 
-  virtual void print(FILE * file) const;
+  void print(FILE * file) const override;
 
 protected:
   void setDefaultValues();

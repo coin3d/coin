@@ -57,7 +57,7 @@ public:
   SoSFFloat visibilityLimit;
   SoSFBool headlight;
 
-  virtual void GLRender( SoGLRenderAction * action );
+  void GLRender( SoGLRenderAction * action ) override;
 
 protected:
   virtual ~SoVRMLNavigationInfo();

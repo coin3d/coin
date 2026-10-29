@@ -48,15 +48,15 @@ public:
 
   SoOrthographicCamera * getCastCamera(void) const;
 
-  virtual void setZoomValue(float zoomvalue, SbBool limit = FALSE);
-  virtual void adjustZoomValue(float diffvalue, SbBool limit = TRUE); // diffvalue=0.0 is identity
-  virtual void adjustZoom(float factor, SbBool limit = TRUE); // factor=1.0 is identity
+  void setZoomValue(float zoomvalue, SbBool limit = FALSE) override;
+  void adjustZoomValue(float diffvalue, SbBool limit = TRUE) override; // diffvalue=0.0 is identity
+  void adjustZoom(float factor, SbBool limit = TRUE) override; // factor=1.0 is identity
 
   virtual float getZoomFactor(void) const;
 
-  virtual void setZoomValueByDolly(float zoomvalue, SbBool limit = FALSE);
-  virtual void adjustZoomByDollyDistance(float distance, SbBool limit = TRUE); // distance=0.0 is identity
-  virtual void adjustZoomByDolly(float factor, SbBool limit = TRUE); // factor=1.0 is identity
+  void setZoomValueByDolly(float zoomvalue, SbBool limit = FALSE) override;
+  void adjustZoomByDollyDistance(float distance, SbBool limit = TRUE) override; // distance=0.0 is identity
+  void adjustZoomByDolly(float factor, SbBool limit = TRUE) override; // factor=1.0 is identity
 
   virtual float getZoomByDollyFactor(void) const;
 
@@ -68,15 +68,15 @@ public:
 
   SoPerspectiveCamera * getCastCamera(void) const;
 
-  virtual void setZoomValue(float zoomvalue, SbBool limit = FALSE);
-  virtual void adjustZoomValue(float diffvalue, SbBool limit = TRUE); // diffvalue=0.0 is identity
-  virtual void adjustZoom(float factor, SbBool limit = TRUE); // factor=1.0 is identity
+  void setZoomValue(float zoomvalue, SbBool limit = FALSE) override;
+  void adjustZoomValue(float diffvalue, SbBool limit = TRUE) override; // diffvalue=0.0 is identity
+  void adjustZoom(float factor, SbBool limit = TRUE) override; // factor=1.0 is identity
 
   virtual float getZoomFactor(void) const;
 
-  virtual void setZoomValueByDolly(float zoomvalue, SbBool limit = FALSE);
-  virtual void adjustZoomByDollyDistance(float distance, SbBool limit = TRUE); // distance=0.0 is identity
-  virtual void adjustZoomByDolly(float factor, SbBool limit = TRUE); // factor=1.0 is identity
+  void setZoomValueByDolly(float zoomvalue, SbBool limit = FALSE) override;
+  void adjustZoomByDollyDistance(float distance, SbBool limit = TRUE) override; // distance=0.0 is identity
+  void adjustZoomByDolly(float factor, SbBool limit = TRUE) override; // factor=1.0 is identity
 
   virtual float getZoomByDollyFactor(void) const;
 
@@ -88,15 +88,15 @@ public:
 
   SoFrustumCamera * getCastCamera(void) const;
 
-  virtual void setZoomValue(float zoomvalue, SbBool limit = FALSE);
-  virtual void adjustZoomValue(float diffvalue, SbBool limit = TRUE); // diffvalue=0.0 is identity
-  virtual void adjustZoom(float factor, SbBool limit = TRUE); // factor=1.0 is identity
+  void setZoomValue(float zoomvalue, SbBool limit = FALSE) override;
+  void adjustZoomValue(float diffvalue, SbBool limit = TRUE) override; // diffvalue=0.0 is identity
+  void adjustZoom(float factor, SbBool limit = TRUE) override; // factor=1.0 is identity
 
   virtual float getZoomFactor(void) const;
 
-  virtual void setZoomValueByDolly(float zoomvalue, SbBool limit = FALSE);
-  virtual void adjustZoomByDollyDistance(float distance, SbBool limit = TRUE); // distance=0.0 is identity
-  virtual void adjustZoomByDolly(float factor, SbBool limit = TRUE); // factor=1.0 is identity
+  void setZoomValueByDolly(float zoomvalue, SbBool limit = FALSE) override;
+  void adjustZoomByDollyDistance(float distance, SbBool limit = TRUE) override; // distance=0.0 is identity
+  void adjustZoomByDolly(float factor, SbBool limit = TRUE) override; // factor=1.0 is identity
 
   virtual float getZoomByDollyFactor(void) const;
 

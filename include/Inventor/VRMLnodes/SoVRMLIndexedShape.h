@@ -54,9 +54,9 @@ protected:
   SoVRMLIndexedShape(void);
   virtual ~SoVRMLIndexedShape();
 
-  virtual void notify(SoNotList * list);
+  void notify(SoNotList * list) override;
   virtual void computeBBox(SoAction * action,
-                           SbBox3f & box, SbVec3f & center);
+                           SbBox3f & box, SbVec3f & center) override;
 
   SbBool getVertexData(SoState * state,
                        const SoCoordinateElement *& coords,

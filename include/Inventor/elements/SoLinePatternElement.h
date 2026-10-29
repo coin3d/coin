@@ -50,7 +50,7 @@ public:
     CONTINUOUS = 0xFFFF
   };
 
-  virtual void init(SoState * state);
+  void init(SoState * state) override;
 
   static  void set(SoState * const state, SoNode * const node,
                    const int32_t pattern, const int32_t factor = 1);

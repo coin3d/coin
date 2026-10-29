@@ -78,6 +78,7 @@
 */
 
 #include <Inventor/manips/SoSpotLightManip.h>
+#include <Inventor/SoPath.h>
 
 #include <Inventor/draggers/SoSpotLightDragger.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -91,7 +92,6 @@
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/SoNodeKitPath.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -207,8 +207,7 @@ SoSpotLightManip::getDragger(void)
 SbBool
 SoSpotLightManip::replaceNode(SoPath * path)
 {
-  SoFullPath *fullpath = (SoFullPath*)path;
-  SoNode *fulltail = fullpath->getTail();
+  SoNode *fulltail = path->fullPath().getTail();
   if (!fulltail->isOfType(SoSpotLight::getClassTypeId())) {
 #if COIN_DEBUG
     SoDebugError::post("SoSpotLightManip::replaceNode",
@@ -218,7 +217,7 @@ SoSpotLightManip::replaceNode(SoPath * path)
   }
   SoNode *tail = path->getTail();
   if (tail->isOfType(SoBaseKit::getClassTypeId())) {
-    SoBaseKit *kit = (SoBaseKit*) ((SoNodeKitPath*)path)->getTail();
+    SoBaseKit *kit = static_cast<SoBaseKit *>(path->nodeKitPath().getTail());
     SbString partname = kit->getPartString(path);
     if (partname != "") {
       SoSpotLight *oldpart = (SoSpotLight*) kit->getPart(partname, TRUE);
@@ -235,14 +234,14 @@ SoSpotLightManip::replaceNode(SoPath * path)
       }
     }
   }
-  if (fullpath->getLength() < 2) {
+  if (path->fullPath().getLength() < 2) {
 #if COIN_DEBUG
     SoDebugError::post("SoSpotLightManip::replaceNode",
                        "Path is too short");
 #endif // debug
     return FALSE;
   }
-  SoNode *parent = fullpath->getNodeFromTail(1);
+  SoNode *parent = path->fullPath().getNodeFromTail(1);
   if (!parent->isOfType(SoGroup::getClassTypeId())) {
 #if COIN_DEBUG
     SoDebugError::post("SoSpotLightManip::replaceNode",

@@ -48,7 +48,7 @@ public:
   ScXMLElseElt(void);
   virtual ~ScXMLElseElt(void);
 
-  virtual void copyContents(const ScXMLElt * rhs);
+  void copyContents(const ScXMLElt * rhs) override;
 
 private:
   ScXMLElseElt(const ScXMLElseElt & rhs); // N/A

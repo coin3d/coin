@@ -46,12 +46,12 @@ public:
   static void initClass(void);
   SoVRMLPointSet(void);
 
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+  void GLRender(SoGLRenderAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
 
 protected:
   virtual ~SoVRMLPointSet();
-  virtual void generatePrimitives(SoAction * action);
+  void generatePrimitives(SoAction * action) override;
 }; // class SoVRMLPointSet
 
 #endif // ! COIN_SOVRMLPOINTSET_H

@@ -89,24 +89,24 @@ public:
   static void setReadAsSoFile(SbBool enable);
   static SbBool getReadAsSoFile(void);
 
-  virtual void doAction(SoAction * action);
-  virtual void callback(SoCallbackAction * action);
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-  virtual void getMatrix(SoGetMatrixAction * action);
-  virtual void handleEvent(SoHandleEventAction * action);
-  virtual void search(SoSearchAction * action);
-  virtual void pick(SoPickAction * action);
-  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-  virtual SoChildList * getChildren(void) const;
+  void doAction(SoAction * action) override;
+  void callback(SoCallbackAction * action) override;
+  void GLRender(SoGLRenderAction * action) override;
+  void getBoundingBox(SoGetBoundingBoxAction * action) override;
+  void getMatrix(SoGetMatrixAction * action) override;
+  void handleEvent(SoHandleEventAction * action) override;
+  void search(SoSearchAction * action) override;
+  void pick(SoPickAction * action) override;
+  void getPrimitiveCount(SoGetPrimitiveCountAction * action) override;
+  SoChildList * getChildren(void) const override;
 
 protected:
   virtual ~SoVRMLInline();
 
 private:
   virtual void addBoundingBoxChild(SbVec3f center, SbVec3f size);
-  virtual SbBool readInstance(SoInput * in, unsigned short flags);
-  virtual void copyContents(const SoFieldContainer * from, SbBool copyconn);
+  SbBool readInstance(SoInput * in, unsigned short flags) override;
+  void copyContents(const SoFieldContainer * from, SbBool copyconn) override;
   virtual SbBool readLocalFile(SoInput * in);
 
   static void urlFieldModified(void * userdata, SoSensor * sensor);
