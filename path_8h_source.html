@@ -197,24 +197,25 @@ $(function(){initNavTree('path_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>COIN_DLL_API <span class="keywordtype">void</span>          cc_xml_path_append_path_x(cc_xml_path * path, cc_xml_path * path2);</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>COIN_DLL_API <span class="keywordtype">void</span>          cc_xml_path_prepend_x(cc_xml_path * path, <span class="keyword">const</span> <span class="keywordtype">char</span> * elt, <span class="keywordtype">int</span> idx);</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>COIN_DLL_API <span class="keywordtype">void</span>          cc_xml_path_prepend_path_x(cc_xml_path * path, cc_xml_path * path2);</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>COIN_DLL_API <span class="keywordtype">void</span>          cc_xml_path_truncate_x(cc_xml_path * path, <span class="keywordtype">int</span> length);</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>COIN_DLL_API <span class="keywordtype">void</span>          cc_xml_path_dump(<span class="keyword">const</span> cc_xml_path * path);</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>} <span class="comment">/* extern &quot;C&quot; */</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="preprocessor">#endif </span><span class="comment">/* __cplusplus */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="comment">/* ********************************************************************** */</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="preprocessor">#endif </span><span class="comment">/* !COIN_XML_PATH_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="comment">/* Retains at most the first length nodes. A length of zero clears the path. */</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>COIN_DLL_API <span class="keywordtype">void</span>          cc_xml_path_truncate_x(cc_xml_path * path, <span class="keywordtype">int</span> length);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>COIN_DLL_API <span class="keywordtype">void</span>          cc_xml_path_dump(<span class="keyword">const</span> cc_xml_path * path);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>} <span class="comment">/* extern &quot;C&quot; */</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">#endif </span><span class="comment">/* __cplusplus */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment">/* ********************************************************************** */</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="preprocessor">#endif </span><span class="comment">/* !COIN_XML_PATH_H */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_c926cf464acaebc2091d00c8a935648f.html">C</a></li><li class="navelem"><a class="el" href="dir_86db8f5a283247f455059497615f9584.html">XML</a></li><li class="navelem"><b>path.h</b></li>
-    <li class="footer">Generated on Thu Oct 29 2026 19:47:57 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Thu Oct 29 2026 20:35:50 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
