@@ -703,7 +703,7 @@ SoInput_FileInfo::readDigits()
       break;
     }
   }
-  const ptrdiff_t offset = readString.length() - oldLength;
+  const ptrdiff_t offset = readString.getLength() - oldLength;
   return (int)offset;
 }
 
@@ -722,6 +722,6 @@ SoInput_FileInfo::readHexDigits()
       break;
     }
   }
-  const ptrdiff_t offset = readString.length() - oldLength;
+  const ptrdiff_t offset = readString.getLength() - oldLength;
   return (int)offset;
 }
