@@ -179,31 +179,55 @@ $(function(){initNavTree('memalloc_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#endif </span><span class="comment">/* __cplusplus */</span><span class="preprocessor"></span></div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keyword">typedef</span> <span class="keyword">struct </span>cc_memalloc cc_memalloc;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keyword">typedef</span> <span class="keywordtype">int</span> cc_memalloc_strategy_cb(<span class="keyword">const</span> <span class="keywordtype">int</span> numunits_allocated);</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">/* ********************************************************************** */</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  COIN_DLL_API cc_memalloc * cc_memalloc_construct(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> unitsize);</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_memalloc_destruct(cc_memalloc * allocator);</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  COIN_DLL_API <span class="keywordtype">void</span> * cc_memalloc_allocate(cc_memalloc * allocator);</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_memalloc_deallocate(cc_memalloc * allocator, <span class="keywordtype">void</span> * ptr);</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_memalloc_clear(cc_memalloc * allocator);</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_memalloc_set_strategy(cc_memalloc * allocator, cc_memalloc_strategy_cb * cb);</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment">/* ********************************************************************** */</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>} <span class="comment">/* extern &quot;C&quot; */</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">#endif </span><span class="comment">/* __cplusplus */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="preprocessor">#endif </span><span class="comment">/* ! CC_MEMALLOC_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="comment">/* Called when the current block cannot supply another unit. The argument</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">     includes the allocation being attempted. Return a positive block size</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">     multiplier; invalid or overflowing results make allocation return NULL.</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">     The callback must not throw or reenter the same allocator. */</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keyword">typedef</span> <span class="keywordtype">int</span> cc_memalloc_strategy_cb(<span class="keyword">const</span> <span class="keywordtype">int</span> numunits_allocated);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment">/* ********************************************************************** */</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="comment">/* The allocator owns raw storage only. Every unit has malloc-equivalent</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment">     fundamental alignment. Construct returns NULL if the aligned unit size</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">     cannot be represented or on allocation failure. Over-aligned types are</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment">     not supported. Callers must synchronize concurrent access. */</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  COIN_DLL_API cc_memalloc * cc_memalloc_construct(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> unitsize);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="comment">/* Use this when the stored type&#39;s alignment is known. Alignment must be a</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment">     nonzero power of two no greater than malloc&#39;s fundamental alignment.</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment">     Each unit is also aligned for the allocator&#39;s freelist pointer. Returns</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment">     NULL for invalid alignment, unrepresentable size, or allocation failure. */</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  COIN_DLL_API cc_memalloc * cc_memalloc_construct_aligned(</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> unitsize, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> alignment);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="comment">/* Destruction and clear invalidate all outstanding unit pointers. */</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_memalloc_destruct(cc_memalloc * allocator);</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="comment">/* Returns NULL on allocation failure, including invalid growth strategy.</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">     A failed call leaves existing units and the allocator usable. Callers</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment">     must check the result before using it; this does not handle OOM in</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="comment">     higher-level containers automatically. */</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  COIN_DLL_API <span class="keywordtype">void</span> * cc_memalloc_allocate(cc_memalloc * allocator);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="comment">/* ptr must be a live unit returned by this allocator. Null, duplicate,</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment">     foreign, interior, and invalidated pointers violate the contract. */</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_memalloc_deallocate(cc_memalloc * allocator, <span class="keywordtype">void</span> * ptr);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="comment">/* Releases all blocks and resets the live-unit count. */</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_memalloc_clear(cc_memalloc * allocator);</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="comment">/* NULL restores the default strategy, which falls back to a one-unit</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="comment">     block when its multiplier would overflow the block byte count. */</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_memalloc_set_strategy(cc_memalloc * allocator, cc_memalloc_strategy_cb * cb);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="comment">/* ********************************************************************** */</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>} <span class="comment">/* extern &quot;C&quot; */</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="preprocessor">#endif </span><span class="comment">/* __cplusplus */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="preprocessor">#endif </span><span class="comment">/* ! CC_MEMALLOC_H */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_c926cf464acaebc2091d00c8a935648f.html">C</a></li><li class="navelem"><a class="el" href="dir_7a50db6ab5259f91fa54d5ee03ce5859.html">base</a></li><li class="navelem"><b>memalloc.h</b></li>
-    <li class="footer">Generated on Thu Oct 29 2026 18:11:23 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Thu Oct 29 2026 18:29:31 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
