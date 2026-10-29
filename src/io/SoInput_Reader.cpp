@@ -98,6 +98,9 @@ SoInput_Reader::getFilePointer(void)
 SoInput_Reader *
 SoInput_Reader::createReader(FILE * fp, const SbString & fullname)
 {
+  if (fp == NULL) {
+    return new SoInput_FileReader(fullname.getString(), NULL);
+  }
   SoInput_Reader * reader = NULL;
   SbBool trycompression = FALSE;
 
@@ -221,6 +224,7 @@ SoInput_FileReader::getType(void) const
 size_t
 SoInput_FileReader::readBuffer(char * buf, const size_t readlen)
 {
+  if (this->fp == NULL) return 0;
   return fread(buf, 1, readlen, this->fp);
 }
 
