@@ -1,3 +1,4 @@
+include(cc-list/Tests.cmake)
 include(SbSmallMapTests.cmake)
 
 if(COIN_BUILD_LEGACY_GL_RENDERER)

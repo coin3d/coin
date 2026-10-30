@@ -104,6 +104,9 @@ cc_list_construct_sized(int size)
 cc_list * 
 cc_list_clone(cc_list * list)
 {
+#ifdef COIN_EXTRA_DEBUG
+  assert(list != NULL);
+#endif /* COIN_EXTRA_DEBUG */
   int i;
   cc_list * cloned = cc_list_construct_sized(list->numitems);
 
@@ -117,6 +120,9 @@ cc_list_clone(cc_list * list)
 void
 cc_list_destruct(cc_list * list)
 {
+#ifdef COIN_EXTRA_DEBUG
+  assert(list != NULL);
+#endif /* COIN_EXTRA_DEBUG */
   if (list->itembuffer != list->builtinbuffer) {
     free(list->itembuffer);
   }
@@ -126,6 +132,9 @@ cc_list_destruct(cc_list * list)
 void
 cc_list_append(cc_list * list, void * item)
 {
+#ifdef COIN_EXTRA_DEBUG
+  assert(list != NULL);
+#endif /* COIN_EXTRA_DEBUG */
   if (list->numitems == list->itembuffersize) {
     list_grow(list);
   }
@@ -135,6 +144,9 @@ cc_list_append(cc_list * list, void * item)
 int
 cc_list_find(cc_list * list, void * item)
 {
+#ifdef COIN_EXTRA_DEBUG
+  assert(list != NULL);
+#endif /* COIN_EXTRA_DEBUG */
   int i, n = list->numitems;
   for (i = 0; i < n; i++) {
     if (list->itembuffer[i] == item) return i;
@@ -145,10 +157,14 @@ cc_list_find(cc_list * list, void * item)
 void
 cc_list_insert(cc_list * list, void * item, int insertbefore)
 {
+#ifdef COIN_EXTRA_DEBUG
+  assert(list != NULL);
+#endif /* COIN_EXTRA_DEBUG */
   int i;
 #ifdef COIN_EXTRA_DEBUG
   assert(insertbefore >= 0 && insertbefore <= list->numitems);
 #endif /* COIN_EXTRA_DEBUG */
+  if (insertbefore < 0 || insertbefore > list->numitems) return;
   if (list->numitems == list->itembuffersize) {
     list_grow(list);
   }  
@@ -162,10 +178,14 @@ cc_list_insert(cc_list * list, void * item, int insertbefore)
 void
 cc_list_remove(cc_list * list, int index)
 {
+#ifdef COIN_EXTRA_DEBUG
+  assert(list != NULL);
+#endif /* COIN_EXTRA_DEBUG */
   int i;
 #ifdef COIN_EXTRA_DEBUG
   assert(index >= 0 && index < list->numitems);
 #endif /* COIN_EXTRA_DEBUG */
+  if (index < 0 || index >= list->numitems) return;
   list->numitems--;
   for (i = index; i < list->numitems; i++) {
     list->itembuffer[i] = list->itembuffer[i + 1];
@@ -175,19 +195,24 @@ cc_list_remove(cc_list * list, int index)
 void
 cc_list_remove_item(cc_list * list, void * item)
 {
+#ifdef COIN_EXTRA_DEBUG
+  assert(list != NULL);
+#endif /* COIN_EXTRA_DEBUG */
   int idx = cc_list_find(list, item);
 #ifdef COIN_EXTRA_DEBUG
   assert(idx != -1);
 #endif /* COIN_EXTRA_DEBUG */
-  cc_list_remove(list, idx);
+  if (idx >= 0) cc_list_remove(list, idx);
 }
 
 void
 cc_list_remove_fast(cc_list * list, int index)
 {
 #ifdef COIN_EXTRA_DEBUG
+  assert(list != NULL);
   assert(index >= 0 && index < list->numitems);
 #endif /* COIN_EXTRA_DEBUG */
+  if (index < 0 || index >= list->numitems) return;
   list->itembuffer[index] = list->itembuffer[--list->numitems];
 }
 
@@ -195,6 +220,9 @@ cc_list_remove_fast(cc_list * list, int index)
 void
 cc_list_fit(cc_list * list)
 {
+#ifdef COIN_EXTRA_DEBUG
+  assert(list != NULL);
+#endif /* COIN_EXTRA_DEBUG */
   int i;
   int items = list->numitems;
   
@@ -220,8 +248,10 @@ void
 cc_list_truncate(cc_list * list, int length)
 {
 #ifdef COIN_EXTRA_DEBUG
-  assert(length <= list->numitems);
+  assert(list != NULL);
+  assert(length >= 0 && length <= list->numitems);
 #endif /* COIN_EXTRA_DEBUG */
+  if (length < 0 || length > list->numitems) return;
   list->numitems = length;
 }
 
@@ -229,8 +259,10 @@ void
 cc_list_truncate_fit(cc_list * list, int length)
 {
 #ifdef COIN_EXTRA_DEBUG
-  assert(length <= list->numitems);
+  assert(list != NULL);
+  assert(length >= 0 && length <= list->numitems);
 #endif /* COIN_EXTRA_DEBUG */
+  if (length < 0 || length > list->numitems) return;
   list->numitems = length;
   cc_list_fit(list);
 }
@@ -238,12 +270,18 @@ cc_list_truncate_fit(cc_list * list, int length)
 int
 cc_list_get_length(cc_list * list)
 {
+#ifdef COIN_EXTRA_DEBUG
+  assert(list != NULL);
+#endif /* COIN_EXTRA_DEBUG */
   return list->numitems;
 }
 
 void **
 cc_list_get_array(cc_list * list)
 {
+#ifdef COIN_EXTRA_DEBUG
+  assert(list != NULL);
+#endif /* COIN_EXTRA_DEBUG */
   return list->itembuffer;
 }
 
@@ -251,14 +289,19 @@ void *
 cc_list_get(cc_list * list, int itempos)
 {
 #ifdef COIN_EXTRA_DEBUG
-  assert(itempos < list->numitems);
+  assert(list != NULL);
+  assert(itempos >= 0 && itempos < list->numitems);
 #endif /* COIN_EXTRA_DEBUG */
+  if (itempos < 0 || itempos >= list->numitems) return NULL;
   return list->itembuffer[itempos];
 }
 
 void
 cc_list_push(cc_list * list, void * item)
 {
+#ifdef COIN_EXTRA_DEBUG
+  assert(list != NULL);
+#endif /* COIN_EXTRA_DEBUG */
   cc_list_append(list, item);
 }
 
@@ -266,11 +309,59 @@ void *
 cc_list_pop(cc_list * list)
 {
 #ifdef COIN_EXTRA_DEBUG
+  assert(list != NULL);
   assert(list->numitems > 0);
 #endif /* COIN_EXTRA_DEBUG */
+  if (list->numitems == 0) return NULL;
   return list->itembuffer[--list->numitems];
 }
 
 #undef CC_LIST_DEFAULT_SIZE
 
 /* ********************************************************************** */
+
+#ifdef COIN_TEST_SUITE
+
+// Extra-debug builds diagnose these precondition violations with assertions.
+// The subprocess tests exercise that configuration separately.
+#if !defined(COIN_EXTRA_DEBUG) || defined(NDEBUG)
+BOOST_AUTO_TEST_CASE(cc_list_rejects_invalid_indices)
+{
+  int first = 1;
+  int second = 2;
+  int missing = 3;
+  cc_list * list = cc_list_construct();
+
+  cc_list_append(list, &first);
+  cc_list_append(list, &second);
+
+  cc_list_remove_item(list, &missing);
+  cc_list_remove(list, -1);
+  cc_list_remove_fast(list, 2);
+  cc_list_insert(list, &missing, -1);
+  cc_list_insert(list, &missing, 3);
+  cc_list_truncate(list, -1);
+  cc_list_truncate(list, 3);
+  cc_list_truncate_fit(list, -1);
+  cc_list_truncate_fit(list, 3);
+
+  BOOST_CHECK_EQUAL(cc_list_get_length(list), 2);
+  BOOST_CHECK_EQUAL(cc_list_get(list, 0), &first);
+  BOOST_CHECK_EQUAL(cc_list_get(list, 1), &second);
+  BOOST_CHECK(cc_list_get(list, -1) == NULL);
+  BOOST_CHECK(cc_list_get(list, 2) == NULL);
+
+  cc_list_destruct(list);
+}
+
+BOOST_AUTO_TEST_CASE(cc_list_empty_pop_is_safe)
+{
+  cc_list * list = cc_list_construct();
+  BOOST_CHECK(cc_list_pop(list) == NULL);
+  BOOST_CHECK_EQUAL(cc_list_get_length(list), 0);
+  cc_list_destruct(list);
+}
+
+#endif // !COIN_EXTRA_DEBUG || NDEBUG
+
+#endif // COIN_TEST_SUITE
