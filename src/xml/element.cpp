@@ -138,12 +138,7 @@ cc_xml_elt_delete_x(cc_xml_elt * elt)
   delete [] elt->type;
   delete [] elt->data;
   delete [] elt->cdata;
-  if (elt->attributes.getLength() > 0) {
-    const int num = elt->attributes.getLength();
-    for (int i = 0; i < num; ++i) {
-      cc_xml_attr_delete_x(elt->attributes[i]);
-    }
-  }
+  cc_xml_elt_remove_all_attributes_x(elt);
   if (elt->children.getLength() > 0) {
     const int num = elt->children.getLength();
     for (int i = 0; i < num; ++i) {
@@ -257,26 +252,44 @@ void
 cc_xml_elt_remove_all_attributes_x(cc_xml_elt * elt)
 {
   assert(elt);
-  if (elt->attributes.getLength()) {
-    // FIXME: implement proper action
+  const int num = elt->attributes.getLength();
+  for (int i = 0; i < num; ++i) {
+    cc_xml_attr_delete_x(elt->attributes[i]);
   }
+  elt->attributes.truncate(0);
 }
 
+/*!
+  Transfers ownership of \a attr to \a elt.  If an attribute with the same
+  name already exists, its identity is preserved, its value is updated, and
+  the newly supplied attribute is deleted.
+*/
 void
 cc_xml_elt_set_attribute_x(cc_xml_elt * elt, cc_xml_attr * attr)
 {
+  assert(elt);
+  assert(attr);
+  assert(cc_xml_attr_get_name(attr));
   cc_xml_attr * shadowed = cc_xml_elt_get_attribute(elt, cc_xml_attr_get_name(attr));
   if (shadowed) {
-    cc_xml_attr_set_value_x(shadowed, cc_xml_attr_get_value(attr));
-    // FIXME: free attr, or replace shadowed by attr and free shadowed?
+    if (shadowed != attr) {
+      cc_xml_attr_set_value_x(shadowed, cc_xml_attr_get_value(attr));
+      cc_xml_attr_delete_x(attr);
+    }
   } else {
     elt->attributes.append(attr);
   }
 }
 
+/*!
+  Transfers ownership of each NULL-terminated attribute pointer in \a attrs
+  to \a elt.  The pointer array itself remains owned by the caller.
+*/
 void
 cc_xml_elt_set_attributes_x(cc_xml_elt * elt, cc_xml_attr ** attrs)
 {
+  assert(elt);
+  if (!attrs) return;
   for (int c = 0; attrs[c] != NULL; ++c) {
     cc_xml_elt_set_attribute_x(elt, attrs[c]);
   }
@@ -449,31 +462,70 @@ cc_xml_elt_get_child_of_type_x(cc_xml_elt * elt, const char * type, int idx)
 
 // *************************************************************************
 
+namespace {
+
+SbBool
+cc_xml_elt_adoption_creates_cycle(const cc_xml_elt * elt,
+                                  const cc_xml_elt * child)
+{
+  const cc_xml_elt * ancestor = elt;
+  while (ancestor) {
+    if (ancestor == child) return TRUE;
+    ancestor = ancestor->parent;
+  }
+  return FALSE;
+}
+
+SbBool
+cc_xml_elt_can_adopt_child(const cc_xml_elt * elt, const cc_xml_elt * child)
+{
+  if (child->parent != NULL) return FALSE;
+  if (cc_xml_elt_adoption_creates_cycle(elt, child)) return FALSE;
+  return TRUE;
+}
+
+} // anonymous namespace
+
+/*!
+  Moves ownership of \a elt from its current parent to \a parent.  Passing
+  NULL releases the element to the caller.  An operation that would create a
+  cycle leaves the tree unchanged.
+*/
 void
 cc_xml_elt_set_parent_x(cc_xml_elt * elt, cc_xml_elt * parent)
 {
   assert(elt);
-  elt->parent = parent;
+  if (elt->parent == parent) return;
+  if (parent && cc_xml_elt_adoption_creates_cycle(parent, elt)) return;
+
+  if (elt->parent) {
+    cc_xml_elt_remove_child_x(elt->parent, elt);
+  }
+  if (parent) {
+    cc_xml_elt_add_child_x(parent, elt);
+  }
 }
 
+/*!
+  Transfers ownership of \a child to \a elt.  A child that already has a
+  parent, or whose adoption would create a cycle, remains caller-owned and is
+  not added.
+*/
 void
 cc_xml_elt_add_child_x(cc_xml_elt * elt, cc_xml_elt * child)
 {
   assert(elt);
   assert(child);
-  if (child->parent != NULL) {
-    // FIXME: ERROR - element already a child of another element
-    return;
-  }
+  if (!cc_xml_elt_can_adopt_child(elt, child)) return;
 
   //int numchildren = cc_xml_elt_get_num_children(elt);
   elt->children.append(child);
   child->parent = elt;
 }
 
-/*!  This function will not free the child being removed.  Giving a
-  nonexistent child to this function is a programming error and will
-  result in an assert.
+/*!  Releases ownership of \a child to the caller without deleting it.
+  Giving a nonexistent child to this function is a programming error and
+  will result in an assert.
 */
 
 void
@@ -497,10 +549,7 @@ cc_xml_elt_insert_child_x(cc_xml_elt * elt, cc_xml_elt * child, int idx)
 {
   assert(elt);
   assert(child);
-  if (child->parent != NULL) {
-    // FIXME: error, child already a child of another element
-    return;
-  }
+  if (!cc_xml_elt_can_adopt_child(elt, child)) return;
   assert(idx >= 0 && idx <= elt->children.getLength());
   elt->children.insert(child, idx);
   child->parent = elt;
@@ -510,8 +559,20 @@ int
 cc_xml_elt_replace_child_x(cc_xml_elt * elt, cc_xml_elt * oldchild, cc_xml_elt * newchild)
 {
   assert(elt);
-  int idx = cc_xml_elt_get_child_index(elt, oldchild);
-  if ( idx == -1 ) return FALSE;
+  assert(oldchild);
+  assert(newchild);
+
+  int idx = -1;
+  for (int i = 0; i < elt->children.getLength(); ++i) {
+    if (elt->children[i] == oldchild) {
+      idx = i;
+      break;
+    }
+  }
+  if (idx == -1) return FALSE;
+  if (oldchild == newchild) return TRUE;
+  if (!cc_xml_elt_can_adopt_child(elt, newchild)) return FALSE;
+
   cc_xml_elt_remove_child_x(elt, oldchild);
   cc_xml_elt_insert_child_x(elt, newchild, idx);
   return TRUE;
@@ -1069,7 +1130,7 @@ cc_xml_elt_calculate_size(const cc_xml_elt * elt, int indent, int indentincremen
   do { bytes += strlen(str); } while (0)
 
   // duplicate block - see cc_xml_elt_write_to_buffer()
-  if (elt->type && strcmp(elt->type, COIN_XML_CDATA_TYPE) == 0) {
+  if (elt->type && strcmp(elt->type, COIN_XML_CDATA_TYPE) == 0 && elt->cdata) {
     // this is a leaf element character data container
     ADVANCE_STRING(elt->cdata);
   } else {
@@ -1088,7 +1149,8 @@ cc_xml_elt_calculate_size(const cc_xml_elt * elt, int indent, int indentincremen
     if (numchildren == 0) { // close element directly
       ADVANCE_STRING_LITERAL("/>\n");
     } else if ((numchildren == 1) &&
-               (strcmp(cc_xml_elt_get_type(elt->children[0]), COIN_XML_CDATA_TYPE) == 0)) {
+               (strcmp(cc_xml_elt_get_type(elt->children[0]), COIN_XML_CDATA_TYPE) == 0) &&
+               cc_xml_elt_get_cdata(elt->children[0])) {
       ADVANCE_STRING_LITERAL(">");
       ADVANCE_STRING(cc_xml_elt_get_cdata(elt->children[0]));
       ADVANCE_STRING_LITERAL("</");
@@ -1154,7 +1216,7 @@ cc_xml_elt_write_to_buffer(const cc_xml_elt * elt, char * buffer, size_t bufsize
 
   // ***********************************************************************
   // almost duplicate block - see cc_xml_elt_calculate_size()
-  if (elt->type && strcmp(elt->type, COIN_XML_CDATA_TYPE) == 0) {
+  if (elt->type && strcmp(elt->type, COIN_XML_CDATA_TYPE) == 0 && elt->cdata) {
     // this is a leaf element character data container
     ADVANCE_STRING(elt->cdata);
   } else {
@@ -1173,7 +1235,8 @@ cc_xml_elt_write_to_buffer(const cc_xml_elt * elt, char * buffer, size_t bufsize
     if (numchildren == 0) { // close element directly
       ADVANCE_STRING_LITERAL("/>\n");
     } else if ((numchildren == 1) &&
-               (strcmp(cc_xml_elt_get_type(elt->children[0]), COIN_XML_CDATA_TYPE) == 0)) {
+               (strcmp(cc_xml_elt_get_type(elt->children[0]), COIN_XML_CDATA_TYPE) == 0) &&
+               cc_xml_elt_get_cdata(elt->children[0])) {
       ADVANCE_STRING_LITERAL(">");
       ADVANCE_STRING(cc_xml_elt_get_cdata(elt->children[0]));
       ADVANCE_STRING_LITERAL("</");
