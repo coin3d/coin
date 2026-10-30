@@ -20,9 +20,11 @@ so a system version predating 2.9.0 remains possible.
 
 The embedded Expat 2.9.0 uses C99 language features. Upstream officially
 supports MSVC 2022 and newer; its CMake emits a warning, not an error, for
-MSVC 2019. Coin does not impose MSVC 2022 as a minimum, but the embedded
-copy has not been validated with the MSVC 2019 compiler/toolset. MSVC has no
-C99 language mode, so Coin's C_STANDARD=99 target property does not itself
-prove compatibility. The current Windows CI uses MSVC 2022. Validate both
-Expat modes with the actual MSVC 2019 toolset before claiming that either
-build is compatible with it.
+MSVC 2019. Coin does not impose MSVC 2022 as a minimum. Windows x64 builds
+have been validated with the MSVC 2019 v142 toolset (compiler 19.29.30159.0),
+hosted by Visual Studio 2022 Build Tools: embedded Expat 2.9.0 in a static
+Release/single-library build and external Expat 2.6.1 in a DLL Debug/split
+build. This does not cover earlier MSVC 2019 compiler releases or change
+upstream's support policy. MSVC has no C99 language mode, so Coin's
+C_STANDARD=99 target property does not itself prove compatibility. The
+current Windows CI uses MSVC 2022.
