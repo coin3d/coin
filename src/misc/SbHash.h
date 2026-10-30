@@ -592,7 +592,8 @@ public:
 
     SbHashEntry ** newbuckets = new SbHashEntry * [this->size];
     memset(newbuckets, 0, this->size * sizeof(SbHashEntry *));
-    cc_memalloc * newmemhandler = cc_memalloc_construct(sizeof(SbHashEntry));
+    cc_memalloc * newmemhandler = cc_memalloc_construct_aligned(
+      sizeof(SbHashEntry), alignof(SbHashEntry));
 
     this->buckets = newbuckets;
     this->memhandler = newmemhandler;

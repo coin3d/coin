@@ -171,6 +171,13 @@ set(ADDITIONAL_HDRS ${PROJECT_SOURCE_DIR}/include/SoWinEnterScope.h ${PROJECT_SO
 set(COIN_GLELEMENTS_OBJECTS $<TARGET_OBJECTS:glelements>)
 
 # Create the library target
+# Source properties are scoped to the directory that owns the target.
+# The single-library target owns document.cpp here; the object target owns it
+# in src/xml. Propagate the selected external Expat mode to this source.
+if(HAVE_EXPAT AND COIN_BUILD_SINGLE_LIB)
+  set_property(SOURCE xml/document.cpp APPEND PROPERTY
+    COMPILE_DEFINITIONS HAVE_EXPAT=1)
+endif()
 if(COIN_BUILD_SINGLE_LIB)
   add_library(${PROJECT_NAME} ${COIN_LIBRARY_TYPE} ${COIN_SOURCE} ${COMMON_HDRS} ${ADDITIONAL_HDRS} ${COMMON_RESOURCES})
   if(NOT HAVE_EXPAT)
