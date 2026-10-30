@@ -51,12 +51,404 @@
 #include <Inventor/SbDPLine.h>
 #include <Inventor/SbDPMatrix.h>
 #include <cfloat>
+#include <cmath>
+#include <limits>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
 #include "coindefs.h"
+
+struct coin_sbdpplane_data {
+  SbVec3d normal;
+  double distance;
+};
+
+static SbBool
+coin_sbdpplane_less(const coin_sbdpplane_data & lhs,
+                    const coin_sbdpplane_data & rhs)
+{
+  for (int i = 0; i < 3; ++i) {
+    if (lhs.normal[i] < rhs.normal[i]) return TRUE;
+    if (lhs.normal[i] > rhs.normal[i]) return FALSE;
+  }
+  return lhs.distance < rhs.distance;
+}
+
+static void
+coin_sbdpplane_sort(coin_sbdpplane_data planes[3])
+{
+  for (int i = 1; i < 3; ++i) {
+    const coin_sbdpplane_data current = planes[i];
+    int j = i;
+    while (j > 0 && coin_sbdpplane_less(current, planes[j - 1])) {
+      planes[j] = planes[j - 1];
+      --j;
+    }
+    planes[j] = current;
+  }
+}
+
+struct coin_sbdpplane_scaled {
+  double fraction;
+  int exponent;
+};
+
+static coin_sbdpplane_scaled
+coin_sbdpplane_scaled_product(const double lhs, const double rhs)
+{
+  if (lhs == 0.0 || rhs == 0.0) {
+    const coin_sbdpplane_scaled zero = { 0.0, 0 };
+    return zero;
+  }
+
+  int lhsexponent;
+  int rhsexponent;
+  int adjustment;
+  const double lhsfraction = std::frexp(lhs, &lhsexponent);
+  const double rhsfraction = std::frexp(rhs, &rhsexponent);
+  const double product = lhsfraction * rhsfraction;
+  const coin_sbdpplane_scaled result = {
+    std::frexp(product, &adjustment),
+    lhsexponent + rhsexponent + adjustment
+  };
+  return result;
+}
+
+static coin_sbdpplane_scaled
+coin_sbdpplane_scaled_add(coin_sbdpplane_scaled lhs,
+                          coin_sbdpplane_scaled rhs)
+{
+  if (lhs.fraction == 0.0) return rhs;
+  if (rhs.fraction == 0.0) return lhs;
+  if (lhs.exponent < rhs.exponent) {
+    const coin_sbdpplane_scaled tmp = lhs;
+    lhs = rhs;
+    rhs = tmp;
+  }
+
+  const double fraction = lhs.fraction +
+                          std::ldexp(rhs.fraction,
+                                     rhs.exponent - lhs.exponent);
+  if (fraction == 0.0) {
+    const coin_sbdpplane_scaled zero = { 0.0, 0 };
+    return zero;
+  }
+
+  int adjustment;
+  const coin_sbdpplane_scaled result = {
+    std::frexp(fraction, &adjustment),
+    lhs.exponent + adjustment
+  };
+  return result;
+}
+
+static SbBool
+coin_sbdpplane_scaled_magnitude_greater(
+  const coin_sbdpplane_scaled & lhs,
+  const coin_sbdpplane_scaled & rhs)
+{
+  if (lhs.fraction == 0.0) return FALSE;
+  if (rhs.fraction == 0.0) return TRUE;
+  if (lhs.exponent != rhs.exponent) return lhs.exponent > rhs.exponent;
+  return std::fabs(lhs.fraction) > std::fabs(rhs.fraction);
+}
+
+static coin_sbdpplane_scaled
+coin_sbdpplane_scaled_add3(const coin_sbdpplane_scaled values[3])
+{
+  int positive = -1;
+  int negative = -1;
+  for (int i = 0; i < 3; ++i) {
+    if (values[i].fraction > 0.0 &&
+        (positive == -1 ||
+         coin_sbdpplane_scaled_magnitude_greater(values[i],
+                                                 values[positive]))) {
+      positive = i;
+    }
+    else if (values[i].fraction < 0.0 &&
+             (negative == -1 ||
+              coin_sbdpplane_scaled_magnitude_greater(values[i],
+                                                      values[negative]))) {
+      negative = i;
+    }
+  }
+
+  // Combine the largest opposite-sign terms first. This lets a small third
+  // term survive when the large terms cancel.
+  if (positive != -1 && negative != -1) {
+    const int remaining = 3 - positive - negative;
+    return coin_sbdpplane_scaled_add(
+      coin_sbdpplane_scaled_add(values[positive], values[negative]),
+      values[remaining]);
+  }
+
+  int order[3] = { 0, 1, 2 };
+  for (int i = 1; i < 3; ++i) {
+    const int current = order[i];
+    int j = i;
+    while (j > 0 &&
+           coin_sbdpplane_scaled_magnitude_greater(values[order[j - 1]],
+                                                   values[current])) {
+      order[j] = order[j - 1];
+      --j;
+    }
+    order[j] = current;
+  }
+  return coin_sbdpplane_scaled_add(
+    coin_sbdpplane_scaled_add(values[order[0]], values[order[1]]),
+    values[order[2]]);
+}
+
+static coin_sbdpplane_scaled
+coin_sbdpplane_scaled_divide(coin_sbdpplane_scaled value,
+                             const double divisor)
+{
+  if (value.fraction == 0.0) return value;
+
+  int divisorexponent;
+  int adjustment;
+  const double divisorfraction = std::frexp(divisor, &divisorexponent);
+  const double quotient = value.fraction / divisorfraction;
+  value.fraction = std::frexp(quotient, &adjustment);
+  value.exponent += adjustment - divisorexponent;
+  return value;
+}
+
+static SbBool
+coin_sbdpplane_direct_product(const double lhs, const double rhs,
+                              double & result)
+{
+  if (!std::isfinite(lhs) || !std::isfinite(rhs)) return FALSE;
+  if (lhs == 0.0 || rhs == 0.0) {
+    result = 0.0;
+    return TRUE;
+  }
+
+  const double abslhs = std::fabs(lhs);
+  const double absrhs = std::fabs(rhs);
+  if (abslhs > DBL_MAX / absrhs || abslhs < DBL_MIN / absrhs) {
+    return FALSE;
+  }
+
+  const double product = lhs * rhs;
+  if (!std::isfinite(product) || product == 0.0 ||
+      std::fpclassify(product) == FP_SUBNORMAL) {
+    return FALSE;
+  }
+  result = product;
+  return TRUE;
+}
+
+static SbBool
+coin_sbdpplane_direct_add(const double lhs, const double rhs,
+                          double & result)
+{
+  if (!std::isfinite(lhs) || !std::isfinite(rhs)) return FALSE;
+  if (lhs == 0.0) {
+    result = rhs == 0.0 ? 0.0 : rhs;
+    return TRUE;
+  }
+  if (rhs == 0.0) {
+    result = lhs;
+    return TRUE;
+  }
+  if ((lhs > 0.0 && rhs > 0.0 && lhs > DBL_MAX - rhs) ||
+      (lhs < 0.0 && rhs < 0.0 && lhs < -DBL_MAX - rhs)) {
+    return FALSE;
+  }
+
+  const double sum = lhs + rhs;
+  if (!std::isfinite(sum) || std::fpclassify(sum) == FP_SUBNORMAL) {
+    return FALSE;
+  }
+  if (sum == 0.0) {
+    if (lhs != -rhs) return FALSE;
+    result = 0.0;
+    return TRUE;
+  }
+  result = sum;
+  return TRUE;
+}
+
+static void
+coin_sbdpplane_two_sum(const double lhs, const double rhs,
+                       double & sum, double & error)
+{
+  sum = lhs + rhs;
+  const double rhsvirtual = sum - lhs;
+  const double lhsvirtual = sum - rhsvirtual;
+  error = (lhs - lhsvirtual) + (rhs - rhsvirtual);
+}
+
+static SbBool
+coin_sbdpplane_magnitude_sum_exceeds_max(const double values[3],
+                                         const SbBool positive)
+{
+  double expansion[4] = { DBL_MAX, 0.0, 0.0, 0.0 };
+  int expansionlength = 1;
+  for (int valueidx = 0; valueidx < 3; ++valueidx) {
+    if ((positive && values[valueidx] <= 0.0) ||
+        (!positive && values[valueidx] >= 0.0)) {
+      continue;
+    }
+
+    double next[4];
+    int nextlength = 0;
+    double accumulator = -std::fabs(values[valueidx]);
+    for (int i = 0; i < expansionlength; ++i) {
+      double sum;
+      double error;
+      coin_sbdpplane_two_sum(accumulator, expansion[i], sum, error);
+      if (error != 0.0) next[nextlength++] = error;
+      accumulator = sum;
+    }
+    if (accumulator != 0.0 || nextlength == 0) {
+      next[nextlength++] = accumulator;
+    }
+    expansionlength = nextlength;
+    for (int i = 0; i < expansionlength; ++i) expansion[i] = next[i];
+
+    for (int i = expansionlength - 1; i >= 0; --i) {
+      if (expansion[i] < 0.0) return TRUE;
+      if (expansion[i] > 0.0) break;
+    }
+  }
+  return FALSE;
+}
+
+static SbBool
+coin_sbdpplane_direct_add3(const double values[3], double & result)
+{
+  int positive = -1;
+  int negative = -1;
+  SbBool positiveneedscheck = FALSE;
+  SbBool negativeneedscheck = FALSE;
+  for (int i = 0; i < 3; ++i) {
+    const double magnitude = std::fabs(values[i]);
+    if (values[i] > 0.0) {
+      if (magnitude > DBL_MAX * 0.25) positiveneedscheck = TRUE;
+      if (positive == -1 ||
+          magnitude > std::fabs(values[positive])) {
+        positive = i;
+      }
+    }
+    else if (values[i] < 0.0) {
+      if (magnitude > DBL_MAX * 0.25) negativeneedscheck = TRUE;
+      if (negative == -1 ||
+          magnitude > std::fabs(values[negative])) {
+        negative = i;
+      }
+    }
+  }
+
+  if ((positiveneedscheck &&
+       coin_sbdpplane_magnitude_sum_exceeds_max(values, TRUE)) ||
+      (negativeneedscheck &&
+       coin_sbdpplane_magnitude_sum_exceeds_max(values, FALSE))) {
+    return FALSE;
+  }
+
+  double partial;
+  if (positive != -1 && negative != -1) {
+    const int remaining = 3 - positive - negative;
+    return coin_sbdpplane_direct_add(values[positive], values[negative],
+                                     partial) &&
+           coin_sbdpplane_direct_add(partial, values[remaining], result);
+  }
+
+  int order[3] = { 0, 1, 2 };
+  for (int i = 1; i < 3; ++i) {
+    const int current = order[i];
+    int j = i;
+    while (j > 0 &&
+           std::fabs(values[order[j - 1]]) > std::fabs(values[current])) {
+      order[j] = order[j - 1];
+      --j;
+    }
+    order[j] = current;
+  }
+  return coin_sbdpplane_direct_add(values[order[0]], values[order[1]],
+                                   partial) &&
+         coin_sbdpplane_direct_add(partial, values[order[2]], result);
+}
+
+static SbBool
+coin_sbdpplane_direct_divide(const double numerator,
+                             const double denominator,
+                             double & result)
+{
+  if (!std::isfinite(numerator) || !std::isfinite(denominator) ||
+      denominator == 0.0) {
+    return FALSE;
+  }
+  if (numerator == 0.0) {
+    result = 0.0;
+    return TRUE;
+  }
+
+  const double absnumerator = std::fabs(numerator);
+  const double absdenominator = std::fabs(denominator);
+  if ((absdenominator < 1.0 &&
+       absnumerator > DBL_MAX * absdenominator) ||
+      (absdenominator > 1.0 &&
+       absnumerator < DBL_MIN * absdenominator)) {
+    return FALSE;
+  }
+
+  const double quotient = numerator / denominator;
+  if (!std::isfinite(quotient) || quotient == 0.0 ||
+      std::fpclassify(quotient) == FP_SUBNORMAL) {
+    return FALSE;
+  }
+  result = quotient;
+  return TRUE;
+}
+
+static SbBool
+coin_sbdpplane_direct_coordinate(const double distances[3],
+                                 const SbVec3d cofactors[3],
+                                 const int component,
+                                 const double determinant,
+                                 double & result)
+{
+  double terms[3];
+  for (int i = 0; i < 3; ++i) {
+    if (!coin_sbdpplane_direct_product(distances[i],
+                                       cofactors[i][component], terms[i])) {
+      return FALSE;
+    }
+  }
+
+  double numerator;
+  return coin_sbdpplane_direct_add3(terms, numerator) &&
+         coin_sbdpplane_direct_divide(numerator, determinant, result);
+}
+
+static SbBool
+coin_sbdpplane_scaled_coordinate(const double distances[3],
+                                 const SbVec3d cofactors[3],
+                                 const int component,
+                                 const double determinant,
+                                 double & result)
+{
+  coin_sbdpplane_scaled terms[3];
+  for (int i = 0; i < 3; ++i) {
+    terms[i] = coin_sbdpplane_scaled_product(distances[i],
+                                             cofactors[i][component]);
+  }
+
+  const coin_sbdpplane_scaled numerator =
+    coin_sbdpplane_scaled_add3(terms);
+  const coin_sbdpplane_scaled coordinate =
+    coin_sbdpplane_scaled_divide(numerator, determinant);
+  const double value = std::ldexp(coordinate.fraction,
+                                  coordinate.exponent);
+  if (!std::isfinite(value)) return FALSE;
+  result = value == 0.0 ? 0.0 : value;
+  return TRUE;
+}
 
 
 /*!
@@ -344,6 +736,106 @@ SbDPPlane::intersect(const SbDPPlane & pl, SbDPLine & line) const
 }
 
 /*!
+  Intersect this plane with \a p1 and \a p2, and return the unique
+  intersection point in \a point. Returns \c FALSE when the three planes do
+  not define a numerically stable, finite point.
+
+  A system is considered numerically stable when both its absolute normalized
+  scalar triple product and its infinity-norm reciprocal-condition estimate
+  are strictly greater than the square root of the double-precision machine
+  epsilon. Coordinates use a direct fixed-size Cramer path when its products,
+  sums and division are safe, and otherwise use a scaled accumulator fallback.
+
+  The \a point argument is left unchanged when this method returns \c FALSE.
+
+  \COIN_FUNCTION_EXTENSION
+*/
+SbBool
+SbDPPlane::intersect(const SbDPPlane & p1, const SbDPPlane & p2,
+                     SbVec3d & point) const
+{
+  coin_sbdpplane_data planes[3] = {
+    { this->normal, this->distance },
+    { p1.normal, p1.distance },
+    { p2.normal, p2.distance }
+  };
+  for (int i = 0; i < 3; ++i) {
+    if (!std::isfinite(planes[i].distance)) return FALSE;
+    for (int component = 0; component < 3; ++component) {
+      if (!std::isfinite(planes[i].normal[component])) return FALSE;
+    }
+  }
+  coin_sbdpplane_sort(planes);
+
+  const SbVec3d & n0 = planes[0].normal;
+  const SbVec3d & n1 = planes[1].normal;
+  const SbVec3d & n2 = planes[2].normal;
+  const SbVec3d c12 = n1.cross(n2);
+  const SbVec3d c20 = n2.cross(n0);
+  const SbVec3d c01 = n0.cross(n1);
+  const double determinant = n0.dot(c12);
+  const double normalproduct = n0.length() * n1.length() * n2.length();
+  const double determinantlimit = std::sqrt(DBL_EPSILON);
+
+  if (!std::isfinite(determinant) || !std::isfinite(normalproduct) ||
+      normalproduct == 0.0 ||
+      std::fabs(determinant) <= determinantlimit * normalproduct) {
+    return FALSE;
+  }
+
+  const SbVec3d cofactors[3] = { c12, c20, c01 };
+  double matrixnorm = 0.0;
+  double adjugatenorm = 0.0;
+  for (int i = 0; i < 3; ++i) {
+    const double rowsum = std::fabs(planes[i].normal[0]) +
+                          std::fabs(planes[i].normal[1]) +
+                          std::fabs(planes[i].normal[2]);
+    if (!std::isfinite(rowsum)) return FALSE;
+    if (rowsum > matrixnorm) matrixnorm = rowsum;
+  }
+  for (int component = 0; component < 3; ++component) {
+    double columnsum = 0.0;
+    for (int i = 0; i < 3; ++i) {
+      if (!std::isfinite(cofactors[i][component])) return FALSE;
+      columnsum += std::fabs(cofactors[i][component]);
+    }
+    if (!std::isfinite(columnsum)) return FALSE;
+    if (columnsum > adjugatenorm) adjugatenorm = columnsum;
+  }
+
+  const double conditiondenominator = matrixnorm * adjugatenorm;
+  if (!std::isfinite(conditiondenominator) ||
+      conditiondenominator == 0.0) {
+    return FALSE;
+  }
+  const double reciprocalcondition =
+    std::fabs(determinant) / conditiondenominator;
+  if (!std::isfinite(reciprocalcondition) ||
+      reciprocalcondition <= determinantlimit) {
+    return FALSE;
+  }
+
+  const double distances[3] = {
+    planes[0].distance, planes[1].distance, planes[2].distance
+  };
+
+  SbVec3d result(0.0, 0.0, 0.0);
+  for (int component = 0; component < 3; ++component) {
+    double coordinate;
+    if (!coin_sbdpplane_direct_coordinate(distances, cofactors, component,
+                                          determinant, coordinate) &&
+        !coin_sbdpplane_scaled_coordinate(distances, cofactors, component,
+                                          determinant, coordinate)) {
+      return FALSE;
+    }
+    result[component] = coordinate == 0.0 ? 0.0 : coordinate;
+  }
+
+  point = result;
+  return TRUE;
+}
+
+/*!
   \relates SbDPPlane
 
   Check the two given planes for equality.
@@ -390,6 +882,7 @@ SbDPPlane::print(FILE * COIN_UNUSED_ARG(fp)) const
 #include <cfloat>
 #include <algorithm>
 #include <cmath>
+#include <limits>
 
 using namespace SIM::Coin::TestSuite;
 
@@ -436,6 +929,303 @@ BOOST_AUTO_TEST_CASE(signCorrect)
   SbVec3d vec(21, 0, 3);
 
   check_compare(intersect,vec, "SbDPPlane SignCorrect", .1f);
+}
+
+BOOST_AUTO_TEST_CASE(intersectThreePlanesUniquePointAndPermutations)
+{
+  const SbVec3d expected(2.0, -3.0, 5.0);
+  const SbDPPlane planes[3] = {
+    SbDPPlane(SbVec3d(1.0, 2.0, 3.0), expected),
+    SbDPPlane(SbVec3d(-2.0, 1.0, 4.0), expected),
+    SbDPPlane(SbVec3d(3.0, -1.0, 2.0), expected)
+  };
+  const int permutations[6][3] = {
+    { 0, 1, 2 }, { 0, 2, 1 }, { 1, 0, 2 },
+    { 1, 2, 0 }, { 2, 0, 1 }, { 2, 1, 0 }
+  };
+
+  for (int i = 0; i < 6; ++i) {
+    SbVec3d result(123.0, -456.0, 789.0);
+    const SbBool ok = planes[permutations[i][0]].intersect(
+      planes[permutations[i][1]], planes[permutations[i][2]], result);
+    BOOST_CHECK_MESSAGE(ok == TRUE,
+                        "Three non-singular planes must have a unique point");
+    BOOST_CHECK_MESSAGE((result - expected).sqrLength() <= 1.0e-26,
+                        "Plane permutation changed the intersection point");
+  }
+}
+
+BOOST_AUTO_TEST_CASE(intersectThreePlanesFailurePreservesOutput)
+{
+  const SbDPPlane p0(SbVec3d(1.0, 0.0, 0.0), 1.0);
+  const SbDPPlane p1(SbVec3d(0.0, 1.0, 0.0), 2.0);
+  const SbDPPlane p2(SbVec3d(1.0, 1.0, 0.0), 3.0);
+  const SbVec3d sentinel(123.0, -456.0, 789.0);
+  SbVec3d result = sentinel;
+
+  BOOST_CHECK_MESSAGE(p0.intersect(p1, p2, result) == FALSE,
+                      "A rank-deficient system must not produce a point");
+  BOOST_CHECK_MESSAGE(result == sentinel,
+                      "A failed intersection must preserve the output");
+
+  const double maximum = std::numeric_limits<double>::max();
+  const SbDPPlane huge0(SbVec3d(1.0, 0.0, 0.0), maximum);
+  const SbDPPlane huge1(SbVec3d(0.0, 1.0, 0.0), maximum);
+  const SbDPPlane huge2(SbVec3d(1.0, 0.0, 1.0e-7), -maximum);
+  result = sentinel;
+  BOOST_CHECK_MESSAGE(huge0.intersect(huge1, huge2, result) == FALSE,
+                      "A non-finite double point must be rejected");
+  BOOST_CHECK_MESSAGE(result == sentinel,
+                      "Overflow failure must preserve the output");
+
+  const SbDPPlane infinite(SbVec3d(0.0, 0.0, 1.0),
+                           std::numeric_limits<double>::infinity());
+  result = sentinel;
+  BOOST_CHECK_MESSAGE(p0.intersect(p1, infinite, result) == FALSE,
+                      "A non-finite plane distance must be rejected");
+  BOOST_CHECK_MESSAGE(result == sentinel,
+                      "Non-finite input failure must preserve the output");
+}
+
+BOOST_AUTO_TEST_CASE(intersectThreePlanesRejectsNearSingularDoubleSystem)
+{
+  const SbVec3d expected(2.0, -3.0, 5.0);
+  const SbDPPlane p0(SbVec3d(1.0, 0.0, 0.0), expected);
+  const SbDPPlane p1(SbVec3d(0.0, 1.0, 0.0), expected);
+  const SbDPPlane p2(SbVec3d(1.0, 1.0, 1.0e-16), expected);
+  const SbVec3d sentinel(123.0, -456.0, 789.0);
+  SbVec3d result = sentinel;
+
+  BOOST_CHECK_MESSAGE(p0.intersect(p1, p2, result) == FALSE,
+                      "An ill-conditioned double system must be rejected");
+  BOOST_CHECK_MESSAGE(result == sentinel,
+                      "Near-singular failure must preserve the output");
+}
+
+BOOST_AUTO_TEST_CASE(intersectThreePlanesConditioningBoundary)
+{
+  const double limit = std::sqrt(DBL_EPSILON);
+  const SbVec3d expected(2.0, -3.0, 5.0);
+  const SbDPPlane xplane(SbVec3d(1.0, 0.0, 0.0), expected);
+  const SbDPPlane yplane(SbVec3d(0.0, 1.0, 0.0), expected);
+  const double stablez = 4.0 * limit;
+  const SbDPPlane stable(SbVec3d(std::sqrt(1.0 - stablez * stablez),
+                                 0.0, stablez), expected);
+  const SbDPPlane planes[3] = { xplane, yplane, stable };
+  const int permutations[6][3] = {
+    { 0, 1, 2 }, { 0, 2, 1 }, { 1, 0, 2 },
+    { 1, 2, 0 }, { 2, 0, 1 }, { 2, 1, 0 }
+  };
+
+  for (int i = 0; i < 6; ++i) {
+    SbVec3d result(123.0, -456.0, 789.0);
+    BOOST_CHECK_MESSAGE(
+      planes[permutations[i][0]].intersect(
+        planes[permutations[i][1]], planes[permutations[i][2]], result) == TRUE,
+      "A system above the double conditioning limit must be accepted");
+    BOOST_CHECK_MESSAGE(result.equals(expected, 1.0e-12),
+                        "A plane permutation changed the stable result");
+  }
+
+  const double unstablez = 0.5 * limit;
+  const SbDPPlane unstable(SbVec3d(std::sqrt(1.0 - unstablez * unstablez),
+                                   0.0, unstablez), expected);
+  const SbVec3d sentinel(123.0, -456.0, 789.0);
+  SbVec3d result = sentinel;
+  BOOST_CHECK_MESSAGE(xplane.intersect(yplane, unstable, result) == FALSE,
+                      "A system below the double conditioning limit must fail");
+  BOOST_CHECK_MESSAGE(result == sentinel,
+                      "Conditioning failure must preserve the output");
+}
+
+BOOST_AUTO_TEST_CASE(intersectThreePlanesAvoidsIntermediateOverflow)
+{
+  const double invsqrt2 = 1.0 / std::sqrt(2.0);
+  const double invsqrt3 = 1.0 / std::sqrt(3.0);
+  const double invsqrt6 = 1.0 / std::sqrt(6.0);
+  const SbVec3d normals[3] = {
+    SbVec3d(invsqrt2, invsqrt2, 0.0),
+    SbVec3d(invsqrt6, -invsqrt6, 2.0 * invsqrt6),
+    SbVec3d(invsqrt3, -invsqrt3, -invsqrt3)
+  };
+  const double scale = 0.9 * std::numeric_limits<double>::max();
+  const double distances[3] = { scale, scale, -0.5 * scale };
+  const SbDPPlane planes[3] = {
+    SbDPPlane(normals[0], distances[0]),
+    SbDPPlane(normals[1], distances[1]),
+    SbDPPlane(normals[2], distances[2])
+  };
+  const SbVec3d expectedscaled = planes[0].getNormal() +
+                                 planes[1].getNormal() -
+                                 0.5 * planes[2].getNormal();
+  const int permutations[6][3] = {
+    { 0, 1, 2 }, { 0, 2, 1 }, { 1, 0, 2 },
+    { 1, 2, 0 }, { 2, 0, 1 }, { 2, 1, 0 }
+  };
+
+  for (int i = 0; i < 6; ++i) {
+    SbVec3d result(123.0, -456.0, 789.0);
+    BOOST_CHECK_MESSAGE(
+      planes[permutations[i][0]].intersect(
+        planes[permutations[i][1]], planes[permutations[i][2]], result) == TRUE,
+      "A finite point must survive intermediate Cramer scaling");
+    BOOST_CHECK_MESSAGE((result / scale).equals(expectedscaled, 1.0e-28),
+                        "Scaled Cramer result differs from the finite point");
+  }
+}
+
+BOOST_AUTO_TEST_CASE(intersectThreePlanesExtremePermutationInvariance)
+{
+  const double distance = 0.8 * std::numeric_limits<double>::max();
+  const SbDPPlane planes[3] = {
+    SbDPPlane(SbVec3d(2.0, 1.0, -2.0), distance),
+    SbDPPlane(SbVec3d(2.0, -2.0, 1.0), distance),
+    SbDPPlane(SbVec3d(-1.0, -2.0, -2.0), distance)
+  };
+  const int permutations[6][3] = {
+    { 0, 1, 2 }, { 0, 2, 1 }, { 1, 0, 2 },
+    { 1, 2, 0 }, { 2, 0, 1 }, { 2, 1, 0 }
+  };
+  SbVec3d reference;
+
+  for (int i = 0; i < 6; ++i) {
+    SbVec3d result(123.0, -456.0, 789.0);
+    BOOST_CHECK_MESSAGE(
+      planes[permutations[i][0]].intersect(
+        planes[permutations[i][1]], planes[permutations[i][2]], result) == TRUE,
+      "A finite point near DBL_MAX must not depend on plane order");
+    if (i == 0) reference = result;
+    else {
+      BOOST_CHECK_MESSAGE(result == reference,
+                          "Canonical plane ordering must give one result");
+    }
+  }
+}
+
+BOOST_AUTO_TEST_CASE(intersectThreePlanesPreservesWideDynamicRange)
+{
+  const double maximum = std::numeric_limits<double>::max();
+  const double minimum = std::numeric_limits<double>::min();
+  const SbDPPlane xplane(SbVec3d(1.0, 0.0, 0.0), maximum);
+  const SbDPPlane yplane(SbVec3d(0.0, 1.0, 0.0), minimum);
+  const SbDPPlane zplane(SbVec3d(0.0, 0.0, 1.0), 1.0);
+  SbVec3d result(123.0, -456.0, 789.0);
+
+  BOOST_CHECK_MESSAGE(xplane.intersect(yplane, zplane, result) == TRUE,
+                      "A finite point with a wide dynamic range must succeed");
+  BOOST_CHECK_MESSAGE(result == SbVec3d(maximum, minimum, 1.0),
+                      "The solver must not discard a small finite coordinate");
+}
+
+BOOST_AUTO_TEST_CASE(intersectThreePlanesRecoversSubnormalNumerator)
+{
+  if (std::numeric_limits<double>::has_denorm != std::denorm_present) return;
+  volatile double subnormalprobe =
+    std::numeric_limits<double>::denorm_min();
+  if (subnormalprobe == 0.0) return;
+
+  const double minimum = std::numeric_limits<double>::min();
+  const double xcoefficient = 8.0e-8;
+  const double ycoefficient = -1.0e-16;
+  const double zcoefficient =
+    std::sqrt(1.0 - xcoefficient * xcoefficient -
+              ycoefficient * ycoefficient);
+  const SbDPPlane planes[3] = {
+    SbDPPlane(SbVec3d(0.0, 1.0, 0.0), minimum),
+    SbDPPlane(SbVec3d(0.0, 0.0, 1.0), 0.0),
+    SbDPPlane(SbVec3d(xcoefficient, ycoefficient, zcoefficient), 0.0)
+  };
+  const double expectedx = minimum *
+                           (-ycoefficient / xcoefficient);
+  const double tolerance =
+    8.0 * std::numeric_limits<double>::denorm_min();
+  const int permutations[6][3] = {
+    { 0, 1, 2 }, { 0, 2, 1 }, { 1, 0, 2 },
+    { 1, 2, 0 }, { 2, 0, 1 }, { 2, 1, 0 }
+  };
+
+  for (int i = 0; i < 6; ++i) {
+    SbVec3d result(123.0, -456.0, 789.0);
+    BOOST_CHECK_MESSAGE(
+      planes[permutations[i][0]].intersect(
+        planes[permutations[i][1]], planes[permutations[i][2]], result) == TRUE,
+      "A representable subnormal coordinate must be recovered");
+    BOOST_CHECK_MESSAGE(result[0] != 0.0,
+                        "The subnormal coordinate must not be rounded to zero");
+    BOOST_CHECK_MESSAGE(std::fabs(result[0] - expectedx) <= tolerance,
+                        "The recovered subnormal coordinate is inaccurate");
+    BOOST_CHECK_MESSAGE(result[1] == minimum && result[2] == 0.0,
+                        "Recovering a subnormal must preserve other coordinates");
+  }
+}
+
+BOOST_AUTO_TEST_CASE(intersectThreePlanesAvoidsProductOverflow)
+{
+  const double maximum = std::numeric_limits<double>::max();
+  const double e = 0.00018279049925094723;
+  const double f = 0.0001827904983780623;
+  const SbDPPlane planes[3] = {
+    SbDPPlane(SbVec3d(0.0, 0.0, 1.0), maximum),
+    SbDPPlane(SbVec3d(1.0, e, 0.0), 0.0),
+    SbDPPlane(SbVec3d(-f, 1.0, 0.0), 0.0)
+  };
+  const int permutations[6][3] = {
+    { 0, 1, 2 }, { 0, 2, 1 }, { 1, 0, 2 },
+    { 1, 2, 0 }, { 2, 0, 1 }, { 2, 1, 0 }
+  };
+
+  for (int i = 0; i < 6; ++i) {
+    SbVec3d result(123.0, -456.0, 789.0);
+    BOOST_CHECK_MESSAGE(
+      planes[permutations[i][0]].intersect(
+        planes[permutations[i][1]], planes[permutations[i][2]], result) == TRUE,
+      "A finite quotient must survive numerator product overflow");
+    BOOST_CHECK_MESSAGE((result / maximum).equals(
+                          SbVec3d(0.0, 0.0, 1.0), 1.0e-30),
+                        "Product reordering changed the finite point");
+  }
+}
+
+BOOST_AUTO_TEST_CASE(intersectThreePlanesCancelsOutOfRangeProducts)
+{
+  const double maximum = std::numeric_limits<double>::max();
+  const double e = 0.00018279049925094723;
+  const double f = 0.0001827904983780623;
+  const SbDPPlane planes[3] = {
+    SbDPPlane(SbVec3d(3.0e-8, 0.0, 1.0), maximum),
+    SbDPPlane(SbVec3d(1.0, e, 0.0), 0.1 * maximum),
+    SbDPPlane(SbVec3d(-f, 1.0, 0.0), 0.0)
+  };
+  const SbVec3d expectedscaled(0.099999998329381709,
+                               1.8279049532433082e-05,
+                               0.99999999700000053);
+  const int permutations[6][3] = {
+    { 0, 1, 2 }, { 0, 2, 1 }, { 1, 0, 2 },
+    { 1, 2, 0 }, { 2, 0, 1 }, { 2, 1, 0 }
+  };
+
+  for (int i = 0; i < 6; ++i) {
+    SbVec3d result(123.0, -456.0, 789.0);
+    BOOST_CHECK_MESSAGE(
+      planes[permutations[i][0]].intersect(
+        planes[permutations[i][1]], planes[permutations[i][2]], result) == TRUE,
+      "Out-of-range terms must cancel before conversion to double");
+    BOOST_CHECK_MESSAGE((result / maximum).equals(expectedscaled, 1.0e-28),
+                        "Scaled accumulation changed the finite point");
+  }
+}
+
+BOOST_AUTO_TEST_CASE(intersectThreePlanesCanReturnTheOrigin)
+{
+  const SbDPPlane xplane(SbVec3d(1.0, 0.0, 0.0), 0.0);
+  const SbDPPlane yplane(SbVec3d(0.0, 1.0, 0.0), 0.0);
+  const SbDPPlane zplane(SbVec3d(0.0, 0.0, 1.0), 0.0);
+  SbVec3d result(123.0, -456.0, 789.0);
+
+  BOOST_CHECK_MESSAGE(xplane.intersect(yplane, zplane, result) == TRUE,
+                      "A valid intersection at the origin must succeed");
+  BOOST_CHECK_MESSAGE(result == SbVec3d(0.0, 0.0, 0.0),
+                      "The origin intersection must be returned exactly");
 }
 
 BOOST_AUTO_TEST_CASE(equalityToFloatPlane)
