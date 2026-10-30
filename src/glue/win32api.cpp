@@ -124,27 +124,6 @@ exitfunc:
 
 /* ********************************************************************** */
 
-static void WINAPI
-coin_GetVersionEx(LPOSVERSIONINFO osvi) 
-{
-  BOOL r;
-
-  /* Disallow attempts at using the extended OSVERSIONINFOEX struct
-     (with service pack info etc.), to simplify errorhandling.
-
-     If we later want to use GetVersionEx() with OSVERSIONINFOEX, make
-     a new, separate wrapper function ("GetVersionExEx()"?). */
-  assert(osvi->dwOSVersionInfoSize == sizeof(OSVERSIONINFO));
-
-  r = GetVersionEx(osvi);
-  if (!r) {
-    cc_win32_print_error("coin_GetVersionEx", "GetVersionEx()", GetLastError());
-    assert(FALSE && "unexpected GetVersionEx() failure");
-  }
-}
-
-/* ********************************************************************** */
-
 static int WINAPI
 coin_GetTextFace(HDC hdc, /* handle to device context */
                  int nCount, /* length of buffer receiving typeface name */
@@ -152,39 +131,6 @@ coin_GetTextFace(HDC hdc, /* handle to device context */
 {
   int copied = GetTextFace(hdc, nCount, lpFaceName);
 
-  if (copied == 0 && lpFaceName == NULL) {    
-    /* Due to a well known bug in Win95/98/ME, GetTextFace(-,-,NULL)
-       will return size=0. Our workaround is to just return a number
-       assumed large enough for the length of the font name string. */
-
-    OSVERSIONINFO osvi;
-
-    ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
-    osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);  
-
-    /* NOTE: We could have used the 'VerifyVersionInfo()' function,
-       but this is not supported on Win95/98/ME. */
-    coin_GetVersionEx(&osvi);
-
-    if (osvi.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS) {          
-      /* Return a number assumed large enough to hold any font name
-         string. The string will be zero terminated, so name-lengths
-         below 1024 will be OK. If size >= 1024, the system will crop
-         the string. */
-
-      /* FIXME: this could be handled a little better: we should
-         provide an additional wrapper around coin_GetTextFace() which
-         checks whether or not the return value indicates if the
-         string was cropped -- and if so, call again with a larger
-         buffer until the string is not cropped.  20031114 mortene. */
-
-      copied = 1024;
-    }
-  }
-
-  /* If 0 is returned, and we're *not* on a platform with a known
-     buggy GetTextFace() implementation, there is an unexpected
-     error. */
   if (copied == 0) {
     cc_string apicall;
     DWORD err = GetLastError();
@@ -266,7 +212,6 @@ cc_win32(void)
     /* set up all function pointers */
     instance.GetTextFace = coin_GetTextFace;
     instance.LocalFree = coin_LocalFree;
-    instance.GetVersionEx = coin_GetVersionEx;
     instance.SelectObject = coin_SelectObject;
     instance.GetObject = coin_GetObject;
   }

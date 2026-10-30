@@ -146,11 +146,6 @@ typedef struct flww32_tessellator_t {
 } flww32_tessellator_t;
 
 static flww32_tessellator_t flww32_tessellator;
-/* A static flag indicating whether we are running an old version of
-   windows or not. This is important when tessellating the glyphs due
-   to different behaviour between 95/98/Me and newer versions. */
-static SbBool flww32_win9598Me = FALSE;
-
 struct cc_flww32_globals_s {
   /* Offscreen device context for connecting to fonts. */
   HDC devctx;
@@ -210,7 +205,6 @@ font_enum_proc(ENUMLOGFONTEX * logicalfont, NEWTEXTMETRICEX * physicalfont,
 SbBool
 cc_flww32_initialize(void)
 {
-  OSVERSIONINFO osvi;
   UINT previous;
 
   cc_flww32_globals.devctx = CreateDC("DISPLAY", NULL, NULL, NULL);
@@ -249,14 +243,6 @@ cc_flww32_initialize(void)
   flww32_tessellator.faceindexlist = NULL;
   flww32_tessellator.edgeindexlist = NULL;
   flww32_tessellator.malloclist = NULL;
-
-  /* Are we running Windows 95/98/Me? */
-  ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
-  osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-  cc_win32()->GetVersionEx(&osvi);
-
-  if (osvi.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS)
-    flww32_win9598Me = TRUE;
 
   return TRUE;
 }
@@ -657,9 +643,7 @@ cc_flww32_get_font_name(void * font, cc_string * str)
 
   cc_string_set_text(str, s);
 
-  /* FIXME: this should be handled better. See FIXME about making an
-     additional wrapper around GetTextFaceW() to catch string cropping,
-     in win32api.c's coin_GetTextFace(). 20031114 mortene. */
+  /* Diagnose a font name that did not fit the queried buffer. */
   if (newsize == size) {
     /* The returned fontname length is longer than expected. This
        means that the system has cropped the string. Requested font
@@ -720,11 +704,6 @@ cc_flww32_get_vector_advance(void * font, int glyph, float * x, float * y)
   GLYPHMETRICS gm;
   static const int disable_utf8 = (coin_getenv("COIN_DISABLE_UTF8") != NULL);
 
-  /* NOTE: Do not make this matrix 'static'. It seems like Win95/98/ME
-     fails if the idmatrix is static. Newer versions seems to not mind
-     though.  handegar. */
-  /* FIXME: this should be investigated in more detail -- how the heck
-     can it make a difference whether or not it's static? 20031118 mortene. */
   const MAT2 identitymatrix = { { 0, 1 }, { 0, 0 },
                                 { 0, 0 }, { 0, 1 } };
   DWORD ret;
@@ -852,11 +831,6 @@ cc_flww32_get_bitmap(void * font, int glyph)
   GLYPHMETRICS gm;
   static const int disable_utf8 = (coin_getenv("COIN_DISABLE_UTF8") != NULL);
 
-  /* NOTE: Do not make this matrix 'static'. It seems like Win95/98/ME
-     fails if the idmatrix is static. Newer versions seems to not mind
-     though. */
-  /* FIXME: this should be investigated in more detail -- how the heck
-     can it make a difference whether or not it's static? 20031118 mortene. */
   const MAT2 identitymatrix = { { 0, 1 }, { 0, 0 },
                                 { 0, 0 }, { 0, 1 } };
   DWORD ret;
@@ -1057,16 +1031,6 @@ flww32_getVerticesFromPath(HDC hdc)
 
       /* Close the contour? */
       if (p_types[i] & PT_CLOSEFIGURE) {
-        if (flww32_win9598Me) {
-          /* If the current OS is Windows95/98/Me, the last vertex
-            must be added before closing the figure-path. If the OS is
-            a newer version (i.e. XP/2000/NT), adding the last vertex
-            will lead to a 'gap' which looks quite ugly when
-            extruded. The 'flww32_win9598Me' is a static SbBool
-            initialized once in 'flww32_initialize()'. */
-          flww32_addTessVertex(p_points[i].x, p_points[i].y);
-        }
-
         flww32_addTessVertex(p_points[lastmoveto].x, p_points[lastmoveto].y);
       }
       else {

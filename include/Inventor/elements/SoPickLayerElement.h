@@ -45,7 +45,7 @@ protected:
   virtual ~SoPickLayerElement();
 
 public:
-  virtual void init(SoState * state);
+  virtual void init(SoState * state) override;
   static void set(SoState * const state, SoNode * const node,
                   const int32_t layer);
   static void set(SoState * const state, const int32_t layer);

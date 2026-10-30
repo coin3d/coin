@@ -1,4 +1,7 @@
 Unreleased:
+* Platform compatibility:
+  - Windows 95, 98 and Me are no longer supported. Removed their native
+    font workarounds and the deprecated GetVersionEx query (issue #136).
 * bugfixes:
   - Relink cc_dict entries during resize without reallocating entries or
     triggering nested growth. If bucket allocation fails, retain the
