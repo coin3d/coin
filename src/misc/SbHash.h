@@ -556,6 +556,9 @@ public:
     return SbHashFunc(key) % bucketsize;
   }
 
+ public:
+  // Internal users may inspect an existing value without copying or allocating.
+  // In particular, cleanup paths must not throw while destroying a list.
   SbBool getP(const Key & key, Type *& obj) const
   {
     if (this->elements == 0) return FALSE;
@@ -572,6 +575,7 @@ public:
     return FALSE;
   }
 
+ private:
 
   void commonConstructor(unsigned int sizearg, float loadfactorarg)
   {
