@@ -66,6 +66,9 @@ inline void bumpTestNormalizationCubeMap(const cc_glglue *) { CHECK(false); }
 // Adapt external context/platform dependencies, but keep the production cache
 // and upload logic unchanged; no cache logic is copied into this adapter.
 #define soshape_bumprender CoinBumpTestRenderer
+// The included implementation also defines this global. Keep the fixture's
+// copy separate from Coin's copy when linking against the static library.
+#define bumphack coinBumpTestHack
 #define private public
 #include "shapenodes/soshape_bumprender.h"
 #undef private
