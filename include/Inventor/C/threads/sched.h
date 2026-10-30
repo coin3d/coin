@@ -54,11 +54,15 @@ typedef void cc_sched_f(void * closure);
 
 /* ********************************************************************** */
 
+  /* Returns NULL if scheduler storage or a required dependency cannot be
+     constructed. */
   COIN_DLL_API cc_sched * cc_sched_construct(int numthreads);
   COIN_DLL_API void cc_sched_destruct(cc_sched * sched);
   COIN_DLL_API void cc_sched_set_num_threads(cc_sched * sched, int num);
   COIN_DLL_API int cc_sched_get_num_threads(cc_sched * sched);
 
+  /* Nonzero identifies an accepted job. Zero reports resource failure;
+     the failed job is not queued. */
   COIN_DLL_API uint32_t cc_sched_schedule(cc_sched * sched, 
                                           cc_sched_f * workfunc, 
                                           void * closure,

@@ -270,8 +270,9 @@ cc_sched_get_num_threads(cc_sched * sched)
   argument when a thread becomes available. larger \a priority values will
   be scheduled first.
 
-  Returns a schedid that can be used to unschedule the job. schedid is
-  guaranteed to be != 0.
+  Returns a nonzero schedid that can be used to unschedule an accepted job.
+  Returns zero if the item or its heap/dictionary index cannot be allocated;
+  that job is not queued and a later call may retry.
 
   Note that jobs are automatically unscheduled when triggered, just before
   calling the work function.

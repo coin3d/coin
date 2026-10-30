@@ -61,7 +61,9 @@ extern "C" {
   void cc_dict_clear(cc_dict * ht);
 
   /* Distinguishes resource failure, replacement, and new insertion. On
-     failure the dictionary and the previous value remain unchanged. */
+     failure the dictionary and the previous value remain unchanged.
+     Optional bucket-growth failure still reports INSERTED: the entry is
+     accessible in the original table and a later insertion can retry growth. */
   cc_dict_put_result cc_dict_try_put(cc_dict * ht, uintptr_t key, void * val);
   /* Legacy return: TRUE for insertion, FALSE for replacement or failure.
      Use cc_dict_try_put() when failure must be distinguished. */
