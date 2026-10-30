@@ -109,6 +109,11 @@ public:
 
 SbHash<const char *, SoType> * SoForeignFileKitP::fileexts = NULL;
 
+// Keep the specialization emitted by older Coin builds.  SbHash::resize()
+// no longer calls put(), so optimization can otherwise remove this symbol
+// even though binaries linked against earlier releases may still need it.
+template SbBool SbHash<const char *, SoType>::put(const char * const &, const SoType &);
+
 SO_KIT_ABSTRACT_SOURCE(SoForeignFileKit);
 
 static void
