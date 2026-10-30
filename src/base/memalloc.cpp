@@ -304,6 +304,7 @@ cc_memalloc_set_strategy(cc_memalloc * allocator, cc_memalloc_strategy_cb * cb)
 
 #ifdef COIN_TEST_SUITE
 
+// This block is extracted into a separate test translation unit.
 #include <cstdint>
 #include <climits>
 
