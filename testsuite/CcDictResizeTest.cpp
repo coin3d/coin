@@ -144,9 +144,10 @@ static bool relink(cc_dict_hash_func * hash)
   return true;
 }
 
-static bool failed_growth()
+static bool failed_growth(cc_dict_hash_func * hash)
 {
   cc_dict * dict = cc_dict_construct(2, 0.75f);
+  if (hash != NULL) cc_dict_set_hash_func(dict, hash);
   int values[3] = { 10, 20, 30 };
   CHECK(cc_dict_put(dict, 0, &values[0]));
   cc_dict_entry ** buckets = dict->buckets;
@@ -166,6 +167,8 @@ static bool failed_growth()
   CHECK(find_entry(dict, 0) == first);
   cc_dict_entry * second = find_entry(dict, 1);
   CHECK(second != NULL);
+  if (hash != NULL)
+    CHECK(dict_get_index(dict, 0) == dict_get_index(dict, 1));
   for (unsigned int i = 0; i < 2; ++i) {
     void * value = NULL;
     CHECK(cc_dict_get(dict, i, &value));
@@ -428,7 +431,7 @@ int main(int argc, char ** argv)
   if (std::strcmp(argv[1], "relink") == 0)
     return relink(mixed_hash) && relink(collision_hash) ? 0 : 1;
   if (std::strcmp(argv[1], "failure") == 0)
-    return failed_growth() ? 0 : 1;
+    return failed_growth(NULL) && failed_growth(collision_hash) ? 0 : 1;
   if (std::strcmp(argv[1], "numeric") == 0)
     return numeric_loadfactor() ? 0 : 1;
   if (std::strcmp(argv[1], "oom") == 0)
