@@ -39,6 +39,22 @@
   It is very similar to the SoNurbsSurface class, but control points
   can be specified using indices.
 
+  With PER_VERTEX or PER_VERTEX_INDEXED material binding, diffuse colors and
+  transparencies are interpolated over the surface using the same NURBS basis
+  and knot vectors as the geometry. This allows material values at the control points to define a
+  smooth color field over the rendered surface. For SoIndexedNurbsSurface,
+  control point indices also select the corresponding material values.
+
+  The control points generally do not lie on the rendered surface. Therefore,
+  control-point colors are evaluated by the NURBS basis; they are not colors
+  assigned to visible vertices. The interpolation is performed during OpenGL
+  rendering. For rational surfaces specified with Coordinate4, material
+  values use the geometry's weights and the same rational normalization.
+  This requires GLU 1.3; older GLU versions use the overall material for
+  rational surfaces. Colored surfaces are sampled in parameter space with
+  a density controlled by SoComplexity to represent the color field even
+  when the geometry is planar.
+
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
     IndexedNurbsSurface {
