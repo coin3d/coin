@@ -24,3 +24,47 @@
 [suppress_function]
   symbol_name_regexp = ^_ZN25SoUniformShaderParameterPD[12]Ev$
   label = SoUniformShaderParameterP is a source-file-private implementation class; its destructor is not part of Coin's public ABI.
+
+# The XML C-header conversion changed two output parameters from C++ references
+# to their pointer equivalents under C linkage.  The exported C symbol and the
+# calling convention are unchanged, and the public C++ inline overloads retain
+# the legacy reference source API.  libabigail nevertheless reports the DWARF
+# spelling change as an ABI modification.
+# Limit these rules to subtype changes so removal of either public symbol
+# is still reported. The same restriction applies to the residual reports.
+
+[suppress_function]
+  change_kind = function-subtype-change
+  symbol_name_regexp = ^cc_xml_doc_get_filter_cb$
+  label = C symbol and calling convention are unchanged; the C++ reference API is preserved by an inline bridge over equivalent pointer outputs.
+
+[suppress_function]
+  change_kind = function-subtype-change
+  symbol_name_regexp = ^cc_xml_doc_write_to_buffer$
+  label = C symbol and calling convention are unchanged; the C++ reference API is preserved by an inline bridge over equivalent pointer outputs.
+
+# After the existing type suppressions are applied, libabigail 2.4 still
+# counts these two functions as changed even though its own details say that
+# size, members, and member functions are unchanged.  Limit the workaround to
+# the exact private adapter and template destructor instances seen in the
+# v4.0.10-to-master comparison.
+
+[suppress_function]
+  change_kind = function-subtype-change
+  symbol_name_regexp = ^_ZN19CoinVrmlJsMFHandlerI9SoMFColor9SoSFColorXadL_ZN10CoinVrmlJs7MFColorEEEE11field2jsvalEPvPK7SoFieldPl$
+  label = Source-file-private JavaScript adapter; libabigail reports only already-filtered indirect SoField changes.
+
+[suppress_function]
+  change_kind = function-subtype-change
+  name_regexp = ^CoinVrmlJsMFHandler<SoMFColor, SoSFColor,.*>::field2jsval
+  label = Source-file-private JavaScript adapter; match the type-change report by its demangled function name.
+
+[suppress_function]
+  change_kind = function-subtype-change
+  symbol_name_regexp = ^_ZN6SbListIP6SoNodeED[12]Ev$
+  label = Compiler-emitted template destructor; libabigail reports only already-filtered indirect SbList changes with unchanged size and members.
+
+[suppress_function]
+  change_kind = function-subtype-change
+  name_regexp = ^SbList<SoNode\*>::~SbList
+  label = Match only the SbList<SoNode*> destructor type-change report after all underlying changes have already been filtered.
