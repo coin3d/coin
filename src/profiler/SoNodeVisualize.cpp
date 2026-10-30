@@ -47,8 +47,7 @@
 
 #include <Inventor/annex/Profiler/nodekits/SoNodeVisualize.h>
 
-#include <map>
-#include <string>
+#include "misc/SbSmallMap.h"
 
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
@@ -57,6 +56,7 @@
 #include <Inventor/annex/Profiler/nodes/SoProfilerStats.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/misc/SoChildList.h>
+#include <Inventor/misc/SoRefPtr.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoRotation.h>
@@ -127,47 +127,43 @@ namespace {
       //This code should only be called from a static context, so we
       //cannot do any unreffing of Coin-nodes
 
-      assert(this->nodemap.size()==0);
+      assert(this->nodemap.getNumElements() == 0);
 #if 0
       clear();
 #endif
     }
 
-    SoTexture2 * createTexture(const TextureImageData * data)
+    SoRefPtr<SoTexture2> createTexture(const TextureImageData * data)
     {
-      SoTexture2 * texnode = new SoTexture2;
+      SoRefPtr<SoTexture2> texnode(new SoTexture2);
       texnode->image.setValue(SbVec2s(data->width, data->height), data->numcomps, data->pixels);
       return texnode;
     }
 
     void clear() {
-      std::map<const TextureImageData *, SoTexture2 *>::iterator it, end;
-      for (it = this->nodemap.begin(), end = this->nodemap.end();
-           it != end; ++it) {
-        it->second->unref();
-        it->second = NULL;
+      for (TextureMap::const_iterator it = this->nodemap.const_begin();
+           it != this->nodemap.const_end(); ++it) {
+        it->obj->unref();
       }
       this->nodemap.clear();
     }
 
     SoTexture2 * operator[](const TextureImageData & data)
     {
-      std::map<const TextureImageData *, SoTexture2 *>::iterator e;
-      e = this->nodemap.find(&data);
-      if (e == this->nodemap.end()) {
-        // not found, create
-        SoTexture2 * node = TextureDict::createTexture(&data);
-        node->ref();
-        this->nodemap[&data] = node;
-        return node;
-      } else {
-        return e->second;
+      SoTexture2 * node = NULL;
+      if (!this->nodemap.get(&data, node)) {
+        SoRefPtr<SoTexture2> created = this->createTexture(&data);
+        node = created.get();
+        this->nodemap.put(&data, node);
+        node->ref(); // The cache owns one reference after insertion succeeds.
       }
+      return node;
     }
 
 
   private:
-    std::map<const TextureImageData *, SoTexture2 *> nodemap;
+    typedef SbSmallMap<const TextureImageData *, SoTexture2 *> TextureMap;
+    TextureMap nodemap;
   };
 }
 
@@ -762,6 +758,68 @@ SoNodeVisualize::getChildGeometry() {
   assert(childgeometry);
   return childgeometry;
 }
+
+#ifdef COIN_TEST_SUITE
+
+#include <Inventor/nodekits/SoWrapperKit.h>
+#include <Inventor/nodes/SoCube.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/nodes/SoTranslation.h>
+
+class TestableNodeVisualize : public SoNodeVisualize {
+public:
+  TestableNodeVisualize(void) : SoNodeVisualize() { }
+  ~TestableNodeVisualize() override { }
+
+  SoNode * getCachedTexture(void) {
+    return this->getAnyPart("texture", FALSE);
+  }
+};
+
+BOOST_AUTO_TEST_CASE(SoNodeVisualize_handles_all_six_cached_textures)
+{
+  SoNodeVisualize::initClass();
+  SoNodeVisualize::cleanClass();
+
+  SoNode * sources[] = {
+    new SoMaterial,
+    new SoCube,
+    new SoSeparator,
+    new SoWrapperKit,
+    new SoSwitch,
+    new SoTranslation
+  };
+  const int numtypes = sizeof(sources) / sizeof(sources[0]);
+  SoNode * textures[numtypes];
+
+  for (int i = 0; i < numtypes; ++i) {
+    sources[i]->ref();
+    TestableNodeVisualize * first = new TestableNodeVisualize;
+    first->ref();
+    first->visualize(sources[i]);
+
+    TestableNodeVisualize * second = new TestableNodeVisualize;
+    second->ref();
+    second->visualize(sources[i]);
+    BOOST_CHECK(first != second);
+
+    textures[i] = first->getCachedTexture();
+    BOOST_REQUIRE(textures[i] != NULL);
+    BOOST_CHECK_EQUAL(second->getCachedTexture(), textures[i]);
+    for (int previous = 0; previous < i; ++previous) {
+      BOOST_CHECK(textures[i] != textures[previous]);
+    }
+
+    second->unref();
+    first->unref();
+    sources[i]->unref();
+  }
+
+  SoNodeVisualize::cleanClass();
+}
+
+#endif // COIN_TEST_SUITE
 
 #ifdef CACHING
 #undef CACHING

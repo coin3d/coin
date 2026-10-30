@@ -58,6 +58,8 @@ public:
 protected:
   SbBool scheduled;
 
+  friend class SoSensorManager;
+
 private:
   SbBool isBefore(const SoSensor * s) const override;
   uint32_t priority;

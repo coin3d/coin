@@ -149,6 +149,97 @@ void failure_cases() {
       CHECK(!r.ensurePrograms(glue, NULL, p)); CHECK(mock.deleted == failat); }
   }
 }
+void shared_program_cases() {
+  typedef CoinBumpTestRenderer Renderer;
+  typedef Renderer::ProgramCache Cache;
+  const cc_glglue * glue = testGlueInstance(1);
+  reset();
+  {
+    Renderer * a = new Renderer;
+    Renderer * b = new Renderer;
+    CHECK(a->programcache != b->programcache);
+    CHECK(a->programcache->token != b->programcache->token);
+    Renderer::spec_programidx pa, pb;
+    CHECK(a->ensurePrograms(glue, NULL, pa));
+    CHECK(b->ensurePrograms(glue, NULL, pb));
+    CHECK(mock.uploads == 3 && pa.fragment == pb.fragment && pa.dirlight == pb.dirlight);
+    Renderer::diffuse_programidx da, db;
+    CHECK(a->ensureDiffusePrograms(glue, NULL, da));
+    CHECK(b->ensureDiffusePrograms(glue, NULL, db));
+    CHECK(mock.uploads == 5 && da.dirlight == db.dirlight &&
+          da.normalrendering == db.normalrendering);
+    CHECK(Cache::sharedPrograms().entries.size() == 2);
+    delete a; BumpTestCacheContext::flush(1);
+    CHECK(mock.deleted == 0 && b->ensurePrograms(glue, NULL, pb));
+    delete b; BumpTestCacheContext::flush(1);
+    CHECK(mock.deleted == 5 && Cache::sharedPrograms().entries.empty());
+  }
+  reset(UPLOAD);
+  {
+    Renderer a, b;
+    Renderer::spec_programidx pa, pb;
+    CHECK(!a.ensurePrograms(glue, NULL, pa));
+    CHECK(mock.warnings == 1 && Cache::sharedPrograms().entries.empty());
+    // The diagnostic is released after its one permitted report.
+    CHECK(a.programcache->contexts[1].specerror.messageText()[0] == '\0');
+    mock.failure = NONE;
+    CHECK(b.ensurePrograms(glue, NULL, pb));
+    CHECK(!a.ensurePrograms(glue, NULL, pa));
+    CHECK(mock.warnings == 1 && mock.uploads == 4);
+  }
+  BumpTestCacheContext::flush(1);
+  CHECK(mock.deleted == 4 && Cache::sharedPrograms().entries.empty());
+  reset(); mock.list = 5;
+  SoSeparator * root = new SoSeparator; root->ref();
+  {
+    Renderer a, b;
+    Renderer::spec_programidx pa, pb;
+    CHECK(!a.ensurePrograms(glue, NULL, pa));
+    CHECK(!b.ensurePrograms(glue, NULL, pb));
+    CHECK(BumpTestCacheContext::queue().size() == 2);
+    a.scheduleRedraw(NULL, root); b.scheduleRedraw(NULL, root);
+    CHECK(a.programcache->redraws[root] != b.programcache->redraws[root]);
+    mock.list = 0; BumpTestCacheContext::flush(1);
+    CHECK(mock.uploads == 3 && a.ensurePrograms(glue, NULL, pa) &&
+          b.ensurePrograms(glue, NULL, pb));
+    CHECK(pa.fragment == pb.fragment);
+    SoContextHandler::destructingContext(1);
+    CHECK(mock.deleted == 3 && Cache::sharedPrograms().entries.empty());
+    CHECK(a.ensurePrograms(glue, NULL, pa));
+    CHECK(mock.uploads == 6);
+  }
+  BumpTestCacheContext::flush(1);
+  CHECK(mock.deleted == 6 && Cache::sharedPrograms().entries.empty());
+  root->unref();
+  reset();
+  {
+    Renderer a, b;
+    Renderer::spec_programidx pa, pb;
+    std::atomic<bool> start(false);
+    std::thread first([&] { while (!start.load()) { }
+      CHECK(a.ensurePrograms(testGlueInstance(1), NULL, pa)); });
+    std::thread second([&] { while (!start.load()) { }
+      CHECK(b.ensurePrograms(testGlueInstance(1), NULL, pb)); });
+    start.store(true);
+    first.join(); second.join();
+    CHECK(mock.uploads == 3 && pa.fragment == pb.fragment);
+  }
+  BumpTestCacheContext::flush(1);
+  CHECK(mock.deleted == 3 && Cache::sharedPrograms().entries.empty());
+  reset(); mock.list = 5;
+  {
+    Renderer * first = new Renderer;
+    Renderer second;
+    Renderer::spec_programidx p;
+    CHECK(!first->ensurePrograms(glue, NULL, p));
+    CHECK(!second.ensurePrograms(glue, NULL, p));
+    delete first; // Its stale callback must not cancel the second owner.
+    mock.list = 0; BumpTestCacheContext::flush(1);
+    CHECK(second.ensurePrograms(glue, NULL, p) && mock.uploads == 3);
+  }
+  BumpTestCacheContext::flush(1);
+  CHECK(mock.deleted == 3 && Cache::sharedPrograms().entries.empty());
+}
 void deferred_cases() {
   reset(); mock.list = 5;
   CoinBumpTestRenderer * r = new CoinBumpTestRenderer;
@@ -417,21 +508,32 @@ void concurrent_cases() {
 void allocation_failure_cases() {
   typedef CoinBumpTestRenderer Renderer;
   typedef Renderer::ProgramCache Cache;
-  // Long driver text is bounded and copied without allocating host memory.
+  // Short errors stay inline. Long errors retain the original 512-byte
+  // bound when memory is available and degrade safely under memory pressure.
   char text[soshape_bump_program_error::MESSAGE_CAPACITY + 32];
   std::memset(text, 'x', sizeof(text)); text[sizeof(text) - 1] = '\0';
   {
-    BumpTestAllocation::Scope failure;
     soshape_bump_program_error error;
-    error.setMessage(NULL); CHECK(error.message[0] == '\0');
+    error.setMessage(NULL); CHECK(error.messageText()[0] == '\0');
+    error.setMessage("short driver error");
+    CHECK(std::strcmp(error.messageText(), "short driver error") == 0);
+    CHECK(!error.longmessage);
     error.setMessage(text);
-    CHECK(std::strlen(error.message) == soshape_bump_program_error::MESSAGE_CAPACITY - 1);
-    CHECK(std::strcmp(error.message + soshape_bump_program_error::MESSAGE_CAPACITY - 4, "...") == 0);
+    CHECK(error.longmessage);
+    CHECK(std::strlen(error.messageText()) == soshape_bump_program_error::MESSAGE_CAPACITY - 1);
+    CHECK(std::strcmp(error.messageText() + soshape_bump_program_error::MESSAGE_CAPACITY - 4, "...") == 0);
     text[soshape_bump_program_error::MESSAGE_CAPACITY - 1] = '\0';
     error.setMessage(text);
-    CHECK(error.message[soshape_bump_program_error::MESSAGE_CAPACITY - 2] == 'x');
-    error.setMessage(""); CHECK(error.message[0] == '\0');
-    CHECK(failure.untouched());
+    CHECK(error.messageText()[soshape_bump_program_error::MESSAGE_CAPACITY - 2] == 'x');
+    error.setMessage(""); CHECK(error.messageText()[0] == '\0');
+    CHECK(!error.longmessage);
+    text[soshape_bump_program_error::MESSAGE_CAPACITY - 1] = 'x';
+    BumpTestAllocation::Scope failure;
+    error.setMessage(text);
+    CHECK(!failure.untouched());
+    CHECK(!error.longmessage);
+    CHECK(std::strlen(error.messageText()) == soshape_bump_program_error::INLINE_CAPACITY - 1);
+    CHECK(std::strcmp(error.messageText() + soshape_bump_program_error::INLINE_CAPACITY - 4, "...") == 0);
   }
   // Diagnostic capture cannot interrupt rollback after an upload error.
   for (int longtext = 0; longtext < 2; ++longtext) {
@@ -448,7 +550,39 @@ void allocation_failure_cases() {
     CHECK(r.programcache->contexts[1].specstatus == Cache::FAILED);
     CHECK(r.programcache->contexts[1].spec.fragment == 0);
     CHECK(mock.bindings[std::make_pair(1, GL_FRAGMENT_PROGRAM_ARB)] == 91);
-    CHECK(failure.untouched());
+    // Pool metadata allocation fails first; the unshared upload still rolls back and reports fully.
+    CHECK(!failure.untouched());
+  }
+  // A deferred upload may fail before any renderer can report its error.
+  // Preserve the full driver text until the next request; if allocation of
+  // that text fails after GL rollback, retain a bounded warning instead.
+  for (int failstorage = 0; failstorage < 2; ++failstorage) {
+    reset(UPLOAD); mock.deletions.reserve(16);
+    programErrorString = text;
+    Renderer r; Renderer::spec_programidx p;
+    mock.list = 5;
+    CHECK(!r.ensurePrograms(testGlueInstance(1), NULL, p));
+    CHECK(r.programcache->contexts[1].specstatus == Cache::PENDING);
+    mock.list = 0;
+    const uintptr_t closure = r.programcache->token << 1;
+    if (failstorage) {
+      // Let the shared-pool map node allocate, then fail diagnostic storage.
+      BumpTestAllocation::Scope failure(1);
+      Renderer::initialize_program_cb((void *) closure, 1);
+      CHECK(!failure.untouched());
+    }
+    else Renderer::initialize_program_cb((void *) closure, 1);
+    const soshape_bump_program_error & stored = r.programcache->contexts[1].specerror;
+    CHECK(r.programcache->contexts[1].specstatus == Cache::FAILED);
+    CHECK(mock.deleted == 1 && mock.warnings == 0);
+    CHECK(std::strlen(stored.messageText()) ==
+          (failstorage ? soshape_bump_program_error::INLINE_CAPACITY :
+                         soshape_bump_program_error::MESSAGE_CAPACITY) - 1);
+    CHECK(bool(stored.longmessage) == !bool(failstorage));
+    CHECK(!r.ensurePrograms(testGlueInstance(1), NULL, p));
+    CHECK(mock.warnings == 1 && !r.programcache->contexts[1].specerror.longmessage);
+    BumpTestCacheContext::flush(1);
+    SoContextHandler::destructingContext(1);
   }
   // Context cleanup must not allocate while copying an unreported diagnostic.
   reset(); mock.deletions.reserve(16);
@@ -459,7 +593,7 @@ void allocation_failure_cases() {
     mock.list = 0; mock.failure = UPLOAD; mock.failupload = mock.uploads + 1;
     BumpTestCacheContext::flush(1);
     CHECK(r.programcache->contexts[1].diffusestatus == Cache::FAILED && mock.warnings == 0);
-    CHECK(std::strlen(r.programcache->contexts[1].diffuseerror.message) > 15);
+    CHECK(std::strlen(r.programcache->contexts[1].diffuseerror.messageText()) > 15);
     mock.failure = NONE;
     BumpTestAllocation::Scope failure;
     Renderer::context_destruction_cb(1, (void *) r.programcache->token);
@@ -549,7 +683,7 @@ void owned_allocation_cases() {
   {
     BumpTestAllocation::Count count;
     const Cache::Ptr probe = Cache::create();
-    CHECK(probe && count.total() >= 3);
+    CHECK(probe && count.total() >= 2);
     CHECK(count.total() <= (std::size_t) std::numeric_limits<int>::max());
     cacheallocations = (int) count.total();
     CHECK(Cache::registry().entries.erase(probe->token) == 1);
@@ -645,10 +779,10 @@ void owned_allocation_cases() {
   {
     Cache::Redraws prepared; // Construct container infrastructure before counting.
     BumpTestAllocation::Count count;
-    const Cache::RedrawPtr sensor(new Cache::RedrawSensor(0));
+    const Cache::RedrawPtr sensor = std::make_shared<Cache::RedrawSensor>(0);
     sensor->self = sensor;
     prepared.insert(std::make_pair(static_cast<SoNode *>(NULL), sensor));
-    CHECK(count.total() >= 3);
+    CHECK(count.total() >= 2);
     CHECK(count.total() <= (std::size_t) std::numeric_limits<int>::max());
     sensorallocations = (int) count.total();
   }
@@ -847,6 +981,7 @@ int main() {
   RUN_CASE(cold_registry_allocation_case);
   RUN_CASE(failure_cases); RUN_CASE(deferred_cases); RUN_CASE(stale_initializer_case);
   RUN_CASE(lifetime_cases); RUN_CASE(diffuse_and_context_cases);
+  RUN_CASE(shared_program_cases);
   RUN_CASE(error_handler_cases); RUN_CASE(redraw_lifetime_cases); RUN_CASE(multiple_root_redraw_case);
   RUN_CASE(queue_changed_lifetime_cases); RUN_CASE(concurrent_cases);
   RUN_CASE(allocation_failure_cases);

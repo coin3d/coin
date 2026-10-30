@@ -42,6 +42,10 @@
 
 #include <Inventor/misc/SoTempPath.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 /*!
   Constructor.
 */
@@ -77,6 +81,14 @@ SoTempPath::simpleAppend(SoNode * const node, const int index)
 void 
 SoTempPath::replaceTail(SoNode * const node, const int index)
 {
+  if (this->nodes.getLength() == 0) {
+#if COIN_DEBUG
+    SoDebugError::post("SoTempPath::replaceTail",
+                       "cannot replace the tail of an empty path");
+#endif // COIN_DEBUG
+    return;
+  }
+
   // this will make SoPath rescan the path for hidden children the
   // next time getLength() is called.
   this->firsthiddendirty = TRUE;

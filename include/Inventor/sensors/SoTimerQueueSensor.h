@@ -54,6 +54,8 @@ protected:
   void setTriggerTime(const SbTime & time);
   SbBool scheduled;
 
+  friend class SoSensorManager;
+
 private:
   SbBool isBefore(const SoSensor * s) const override;
   SbTime triggertime;
