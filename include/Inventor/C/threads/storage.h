@@ -47,12 +47,16 @@ extern "C" {
 /* ********************************************************************** */
 typedef void cc_storage_f(void * closure);
 typedef void cc_storage_apply_func(void * dataptr, void * closure);
+/* Constructors return NULL if storage or a required dependency cannot be
+   allocated. Callbacks must not throw or reenter the same storage object. */
 COIN_DLL_API cc_storage * cc_storage_construct(unsigned int size);
 COIN_DLL_API cc_storage * cc_storage_construct_etc(unsigned int size, 
                                                    cc_storage_f * constructor,
                                                    cc_storage_f * destructor);
 COIN_DLL_API void cc_storage_destruct(cc_storage * storage);
 
+/* Returns NULL if the thread's block or dictionary entry cannot be allocated.
+   A constructed block is destroyed before rollback; later calls may retry. */
 COIN_DLL_API void * cc_storage_get(cc_storage * storage);
 COIN_DLL_API void cc_storage_apply_to_all(cc_storage * storage, 
                                           cc_storage_apply_func * func, 
