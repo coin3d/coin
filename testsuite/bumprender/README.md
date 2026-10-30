@@ -5,6 +5,11 @@ implementation under a distinct private class name and adapts only GL calls and
 context/state bookkeeping. Successful registrations and destruction use the
 real `SoContextHandler` dispatcher; a wrapper injects registration failures
 before entering that provider.
+Coverage also checks that distinct renderers share only validated specular
+and diffuse GL programs, retain separate callback identities and diagnostics,
+release names after the last owner, and handle concurrent and deferred
+initialization. Both redraw sensor allocation variants are exercised in the
+local study.
 Coverage includes each upload stage, partial rollback, failure caching and
 context-id reuse, pending initialization cancellation, diffuse/specular sets,
 both resource destruction orders, stale callback snapshots, concurrent cache

@@ -60,6 +60,8 @@ public:
   void print(FILE * file) const;
 
   SbBool intersect(const SbPlane & pl, SbLine & line) const;
+  SbBool intersect(const SbPlane & p1, const SbPlane & p2,
+                   SbVec3f & point) const;
 
 private:
   SbVec3f normal;
