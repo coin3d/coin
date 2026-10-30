@@ -1,9 +1,9 @@
 Unreleased:
 * bugfixes:
-  - Reject shallow copies of SbStorage and SbTypedStorage at compile time:
-    the wrappers own their storage handle, so copying it causes double
-    destruction. Class layout is unchanged, but source code copying these
-    objects must be updated. A NULL cc_storage_apply_to_all callback is a no-op.
+  - Document that SbStorage and SbTypedStorage own their storage handle and
+    must not be shallow-copied. Their historical implicit special members are
+    retained for C++ ABI compatibility. A NULL cc_storage_apply_to_all callback
+    is a no-op.
   - Relink cc_dict entries during resize without reallocating entries or
     triggering nested growth. If bucket allocation fails, retain the
     current table and the newly inserted mapping so later growth can retry.

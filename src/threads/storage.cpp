@@ -340,6 +340,18 @@ cc_storage_thread_cleanup(unsigned long COIN_UNUSED_ARG(threadid))
 
 #include <type_traits>
 
+// These operations remain available only because removing the compiler-
+// generated special members changes the established C++ ABI. Their presence
+// does not make shallow copying safe; see the ownership warning in the headers.
+static_assert(std::is_copy_constructible<SbStorage>::value,
+              "SbStorage must retain its historical C++ ABI");
+static_assert(std::is_copy_assignable<SbStorage>::value,
+              "SbStorage must retain its historical C++ ABI");
+static_assert(std::is_copy_constructible<SbTypedStorage<int *> >::value,
+              "SbTypedStorage must retain its historical C++ ABI");
+static_assert(std::is_copy_assignable<SbTypedStorage<int *> >::value,
+              "SbTypedStorage must retain its historical C++ ABI");
+
 static int storage_test_construct_count;
 static int storage_test_destruct_count;
 
@@ -390,14 +402,5 @@ BOOST_AUTO_TEST_CASE(cc_storage_preserves_same_thread_value_and_lifecycle)
   cc_storage_destruct(storage);
   BOOST_CHECK_EQUAL(storage_test_destruct_count, 1);
 }
-
-static_assert(!std::is_copy_constructible<SbStorage>::value,
-              "SbStorage must not copy its owning cc_storage pointer");
-static_assert(!std::is_copy_assignable<SbStorage>::value,
-              "SbStorage must not copy-assign its owning cc_storage pointer");
-static_assert(!std::is_copy_constructible<SbTypedStorage<int *> >::value,
-              "SbTypedStorage must not copy its owning cc_storage pointer");
-static_assert(!std::is_copy_assignable<SbTypedStorage<int *> >::value,
-              "SbTypedStorage must not copy-assign its owning cc_storage pointer");
 
 #endif // COIN_TEST_SUITE
