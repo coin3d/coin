@@ -45,6 +45,7 @@ extern "C" {
 #endif /* __cplusplus */
 
   typedef struct cc_dict cc_dict;
+  /* Hash callbacks must not throw; resizing relinks entries in place. */
   typedef uintptr_t cc_dict_hash_func(const uintptr_t key);
   typedef void cc_dict_apply_func(uintptr_t key, void * val, void * closure);
 

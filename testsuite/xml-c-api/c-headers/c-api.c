@@ -1,6 +1,7 @@
 #include <string.h>
 
 #include <Inventor/C/XML/document.h>
+#include <Inventor/C/XML/element.h>
 #include <Inventor/C/XML/path.h>
 
 #ifdef __cplusplus
@@ -26,6 +27,9 @@ main(void)
   void * userdata = NULL;
   cc_xml_path * path;
   const cc_xml_path * constpath;
+  cc_xml_elt * root;
+  cc_xml_elt * replacement;
+  cc_xml_elt * released;
   SbBool (*write_to_buffer)(const cc_xml_doc *, char **, size_t *);
 
   if (doc == NULL) return 1;
@@ -55,6 +59,19 @@ main(void)
   if (cc_xml_path_get_length(path) != 1) return 7;
   if (strcmp(cc_xml_path_get_type(path, 0), "root") != 0) return 8;
   if (cc_xml_path_get_index(path, 0) != 0) return 9;
+
+  root = cc_xml_elt_new();
+  replacement = cc_xml_elt_new();
+  if (root == NULL || replacement == NULL) return 10;
+  cc_xml_elt_set_type_x(root, "old");
+  cc_xml_elt_set_type_x(replacement, "new");
+  cc_xml_doc_set_root_x(doc, root);
+  if (cc_xml_doc_get_root(doc) != root) return 11;
+  cc_xml_doc_set_root_x(doc, replacement);
+  if (cc_xml_doc_get_root(doc) != replacement) return 12;
+  released = cc_xml_doc_release_root_x(doc);
+  if (released != replacement || cc_xml_doc_get_root(doc) != NULL) return 13;
+  cc_xml_elt_delete_x(released);
 
   constpath = path;
   cc_xml_path_dump(constpath);
