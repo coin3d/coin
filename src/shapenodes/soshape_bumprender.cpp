@@ -381,16 +381,37 @@ soshape_bumprender_load_program(const cc_glglue * glue,
 struct soshape_bumprender::ProgramCache {
   enum InitStatus { EMPTY, PENDING, READY, FAILED };
   struct Context {
-    Context() : specstatus(EMPTY), diffusestatus(EMPTY) {
+    Context() : specstatus(EMPTY), diffusestatus(EMPTY), specpooled(false), diffusepooled(false) {
       spec.fragment = spec.dirlight = spec.pointlight = 0;
       diffuse.dirlight = diffuse.pointlight = diffuse.normalrendering = 0;
     }
     InitStatus specstatus, diffusestatus;
+    bool specpooled, diffusepooled;
     spec_programidx spec;
     diffuse_programidx diffuse;
     soshape_bump_program_error specerror, diffuseerror;
   };
   typedef std::map<uint32_t, Context> Contexts;
+  // Only validated GL program names are shared. Renderer metadata and errors
+  // remain in Context, with their original callback and sensor ownership.
+  struct SharedPrograms {
+    struct Entry {
+      Entry() : references(0) {
+        spec.fragment = spec.dirlight = spec.pointlight = 0;
+        diffuse.dirlight = diffuse.pointlight = diffuse.normalrendering = 0;
+      }
+      size_t references;
+      spec_programidx spec;
+      diffuse_programidx diffuse;
+    };
+    typedef std::pair<uint32_t, bool> Key; // context id, diffuse family
+    std::mutex mutex;
+    std::map<Key, Entry> entries;
+  };
+  static SharedPrograms & sharedPrograms() {
+    static SharedPrograms pool;
+    return pool;
+  }
   typedef std::shared_ptr<ProgramCache> Ptr;
   typedef std::map<uintptr_t, Ptr> Entries;
   struct Registry {
@@ -547,7 +568,7 @@ struct soshape_bumprender::ProgramCache {
   }
   // Caller holds mutex. The entry exists before allocating GL names, so
   // publishing a successfully uploaded set cannot allocate host memory.
-  static void initialize(const cc_glglue * glue, Context & ctx, bool diffuse) {
+  static void initializeUnshared(const cc_glglue * glue, Context & ctx, bool diffuse) {
     // Capture the driver's text before GL cleanup, then store it after cleanup.
     // No host allocation may interrupt rollback of generated program names.
     char message[soshape_bump_program_error::MESSAGE_CAPACITY];
@@ -590,6 +611,84 @@ struct soshape_bumprender::ProgramCache {
       }
     }
   }
+  static void initialize(const cc_glglue * glue, Context & ctx,
+                         bool diffuse, uint32_t contextid) {
+    SharedPrograms * pool;
+    try { pool = &sharedPrograms(); }
+    catch (const std::bad_alloc &) {
+      initializeUnshared(glue, ctx, diffuse);
+      return;
+    }
+    std::unique_lock<std::mutex> lock(pool->mutex);
+    const SharedPrograms::Key key(contextid, diffuse);
+    std::map<SharedPrograms::Key, SharedPrograms::Entry>::iterator it = pool->entries.find(key);
+    if (it != pool->entries.end()) {
+      ++it->second.references;
+      if (diffuse) {
+        ctx.diffuse = it->second.diffuse;
+        ctx.diffusestatus = READY;
+        ctx.diffusepooled = true;
+      }
+      else {
+        ctx.spec = it->second.spec;
+        ctx.specstatus = READY;
+        ctx.specpooled = true;
+      }
+      return;
+    }
+    try { it = pool->entries.insert(std::make_pair(key, SharedPrograms::Entry())).first; }
+    catch (const std::bad_alloc &) {
+      lock.unlock();
+      initializeUnshared(glue, ctx, diffuse);
+      return;
+    }
+    // Serialize only this first upload; the map node already exists, so
+    // publishing the validated names cannot allocate after GL operations.
+    try { initializeUnshared(glue, ctx, diffuse); }
+    catch (...) { pool->entries.erase(it); throw; }
+    if ((diffuse ? ctx.diffusestatus : ctx.specstatus) == READY) {
+      it->second.references = 1;
+      if (diffuse) { it->second.diffuse = ctx.diffuse; ctx.diffusepooled = true; }
+      else { it->second.spec = ctx.spec; ctx.specpooled = true; }
+    }
+    else pool->entries.erase(it); // Do not share a failure or its diagnostic.
+  }
+
+  static void release(const cc_glglue * glue, uint32_t contextid,
+                      bool diffuse, const Context & ctx) {
+    const bool pooled = diffuse ? ctx.diffusepooled : ctx.specpooled;
+    if (!pooled) {
+      if (diffuse) {
+        const GLuint ids[] = { ctx.diffuse.dirlight, ctx.diffuse.pointlight, ctx.diffuse.normalrendering };
+        soshape_bumprender_delete_programs(glue, ids, 3);
+      }
+      else {
+        const GLuint ids[] = { ctx.spec.fragment, ctx.spec.dirlight, ctx.spec.pointlight };
+        soshape_bumprender_delete_programs(glue, ids, 3);
+      }
+      return;
+    }
+    SharedPrograms & pool = sharedPrograms();
+    std::unique_lock<std::mutex> lock(pool.mutex);
+    const SharedPrograms::Key key(contextid, diffuse);
+    std::map<SharedPrograms::Key, SharedPrograms::Entry>::iterator it = pool.entries.find(key);
+    // A stale cleanup callback may outlive the last owner of this context.
+    if (it == pool.entries.end() || it->second.references == 0) return;
+    if (--it->second.references != 0) return;
+    const spec_programidx spec = it->second.spec;
+    const diffuse_programidx diff = it->second.diffuse;
+    pool.entries.erase(it);
+    lock.unlock();
+    if (diffuse) {
+      const GLuint ids[] = { diff.dirlight, diff.pointlight, diff.normalrendering };
+      soshape_bumprender_delete_programs(glue, ids, 3);
+    }
+    else {
+      const GLuint ids[] = { spec.fragment, spec.dirlight, spec.pointlight };
+      soshape_bumprender_delete_programs(glue, ids, 3);
+    }
+  }
+
   SbBool request(const cc_glglue * glue, SoState * state, uint32_t contextid,
                  bool diffuse, spec_programidx * spec, diffuse_programidx * diff) {
     std::unique_lock<std::mutex> lock(this->mutex);
@@ -624,7 +723,7 @@ struct soshape_bumprender::ProgramCache {
         status = PENDING;
         schedule = true;
       }
-      else initialize(glue, ctx, diffuse);
+      else initialize(glue, ctx, diffuse, contextid);
     }
     const InitStatus result = status;
     if (result == READY) {
@@ -787,10 +886,8 @@ soshape_bumprender::context_destruction_cb(uint32_t contextid, void * userdata)
   // No renderer access, and no cache lock across GL/glue callbacks.
   if (ctx.specstatus == ProgramCache::READY || ctx.diffusestatus == ProgramCache::READY) {
     const cc_glglue * glue = cc_glglue_instance((int) contextid);
-    const GLuint spec[] = { ctx.spec.fragment, ctx.spec.dirlight, ctx.spec.pointlight };
-    const GLuint diffuse[] = { ctx.diffuse.dirlight, ctx.diffuse.pointlight, ctx.diffuse.normalrendering };
-    soshape_bumprender_delete_programs(glue, spec, 3);
-    soshape_bumprender_delete_programs(glue, diffuse, 3);
+    if (ctx.specstatus == ProgramCache::READY) ProgramCache::release(glue, contextid, false, ctx);
+    if (ctx.diffusestatus == ProgramCache::READY) ProgramCache::release(glue, contextid, true, ctx);
   }
   ProgramCache::retire(cache);
 }
@@ -817,7 +914,7 @@ soshape_bumprender::initialize_program_cb(void * closure, uint32_t contextid)
   ProgramCache::InitStatus & status = diffuse ? it->second.diffusestatus : it->second.specstatus;
   if (status != ProgramCache::PENDING) return;
   if (list != 0) status = ProgramCache::EMPTY; // Retry scheduling, never upload in a list.
-  else ProgramCache::initialize(glue, it->second, diffuse);
+  else ProgramCache::initialize(glue, it->second, diffuse, contextid);
 }
 
 // to avoid warnings from SbVec3f::normalize()
