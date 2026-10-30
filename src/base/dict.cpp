@@ -102,7 +102,8 @@ dict_resize(cc_dict * ht, unsigned int newsize)
   const unsigned int oldsize = ht->size;
 
   /* Relink existing entries directly. Their count and allocator ownership
-     do not change, and migration must not trigger another resize. */
+     do not change, and migration must not trigger another resize. Hash
+     callbacks are required not to throw while links are being changed. */
   for (unsigned int i = 0; i < oldsize; i++) {
     cc_dict_entry * entry = oldbuckets[i];
     while (entry != NULL) {
