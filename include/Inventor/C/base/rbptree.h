@@ -54,11 +54,6 @@ typedef struct cc_rbptree_node cc_rbptree_node;
    need to migrate too. Add a clone function only with defined ownership
    and allocation-failure behavior. */
 typedef struct cc_rbptree {
-#ifdef __cplusplus
-  cc_rbptree() = default;
-  cc_rbptree(const cc_rbptree &) = delete;
-  cc_rbptree & operator=(const cc_rbptree &) = delete;
-#endif
   cc_rbptree_node * root;
   
   /* store two items inline to avoid allocating memory for small tree */
