@@ -1899,9 +1899,22 @@ SoGLRenderActionP::isDirectRendering(const SoState * state) const
 void
 SoGLRenderActionP::render(SoNode * node)
 {
+  const SbBool storedrendering = this->isrendering;
+  const SbBool storedoverlay = this->isrenderingoverlay;
+  const SbBool storedtransparency = this->transparencyrender;
+  const SbBool storeddelayed = this->delayedpathrender;
+  const SbBool storedbackfaces = this->renderingtranspbackfaces;
+  const SbBool storedwboit = this->wboitactive;
+  const int storedpass = this->currentpass;
+  SoState * state = NULL;
+  int storeddepth = 0;
+  SbBool profilerpaused = FALSE;
+
+  try {
   this->isrendering = TRUE;
 
-  SoState * state = this->action->getState();
+  state = this->action->getState();
+  storeddepth = state->getDepth();
   state->push();
 
   SoShapeStyleElement::setTransparencyType(state,
@@ -1960,8 +1973,10 @@ SoGLRenderActionP::render(SoNode * node)
       if (profileroverlay) {
         this->isrenderingoverlay = TRUE;
         SoProfiler::enable(FALSE);
+        profilerpaused = TRUE;
         this->renderSingle(profileroverlay);
         SoProfiler::enable(TRUE);
+        profilerpaused = FALSE;
         this->isrenderingoverlay = FALSE;
       }
     } else {
@@ -1976,7 +1991,24 @@ SoGLRenderActionP::render(SoNode * node)
   }
 
   state->pop();
-  this->isrendering = FALSE;
+  this->isrendering = storedrendering;
+  }
+  catch (...) {
+    if (profilerpaused) SoProfiler::enable(TRUE);
+    while (state && state->getDepth() > storeddepth) state->pop();
+    this->sorttranspobjpaths.truncate(0);
+    this->transpobjpaths.truncate(0);
+    this->sorttranspobjdistances.truncate(0);
+    this->delayedpaths.truncate(0);
+    this->currentpass = storedpass;
+    this->transparencyrender = storedtransparency;
+    this->delayedpathrender = storeddelayed;
+    this->renderingtranspbackfaces = storedbackfaces;
+    this->wboitactive = storedwboit;
+    this->isrenderingoverlay = storedoverlay;
+    this->isrendering = storedrendering;
+    throw;
+  }
 }
 
 //
@@ -2104,6 +2136,7 @@ SoGLRenderActionP::renderSingle(SoNode * node)
     }
     this->wboitactive = usewboit;
 
+    try {
     // All paths in the sorttranspobjpaths should be sorted
     // back-to-front and rendered
     this->doPathSort();
@@ -2146,6 +2179,20 @@ SoGLRenderActionP::renderSingle(SoNode * node)
     // --- WBOIT: composite accum/revealage back over the opaque image ---
     if (usewboit) {
       this->endWeightedBlendPass(wbglue, wboit_savedfbo);
+    }
+    }
+    catch (...) {
+      if (usewboit) {
+        wbglue->glUseProgramObjectARB(0);
+        wbglue->glBindFramebuffer(GL_FRAMEBUFFER_EXT, (GLuint) wboit_savedfbo);
+        if (wboit_savedfbo != 0) {
+          const GLenum one = GL_COLOR_ATTACHMENT0_EXT;
+          this->wboitDrawBuffers(1, &one);
+        }
+        glDepthMask(GL_TRUE);
+      }
+      this->wboitactive = FALSE;
+      throw;
     }
     this->wboitactive = FALSE;
 

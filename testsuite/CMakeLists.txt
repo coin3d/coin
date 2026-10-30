@@ -1,3 +1,5 @@
+include(action-apply-exceptions/Tests.cmake)
+include(gl-render-exceptions/Tests.cmake)
 include(SbSmallMapTests.cmake)
 
 if(COIN_BUILD_LEGACY_GL_RENDERER)
