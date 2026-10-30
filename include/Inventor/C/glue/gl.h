@@ -63,7 +63,13 @@ typedef struct cc_glglue cc_glglue;
    context. ***/
 
 /*
-  Returns the glue instance for the given context ID.
+  Returns a borrowed glue instance for the given context ID. The OpenGL
+  context must be current. The pointer remains valid through the context
+  destruction callbacks, and becomes invalid when
+  SoContextHandler::destructingContext() returns, or at Coin shutdown.
+  Do not retain or dereference it after that point. Callers must serialize
+  context destruction with every use of pointers borrowed for that context.
+  A reused ID must be acquired again for the new context.
 
   The context ID can be any number chosen to match the current OpenGL
   context in a _unique_ manner (this is important!).

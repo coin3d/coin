@@ -169,6 +169,7 @@ SoContextHandler::destructingContext(uint32_t contextid)
   CC_MUTEX_LOCK(socontexthandler_mutex);
   if (socontexthandler_hashlist == NULL) {
     CC_MUTEX_UNLOCK(socontexthandler_mutex);
+    coin_glglue_destruct(contextid);
     return;
   }
 
