@@ -146,7 +146,7 @@
         if (tex->url.getNum()) {
           // FIXME: we only check the first name here. Should really check all of them
           SbName name = tex->url[0].getString();
-          unsigned long key = (unsigned long) ((void*) name.getString());
+          SbDict::Key key = reinterpret_cast<SbDict::Key>(name.getString());
           void * tmp;
           if (!namedict.find(key, tmp)) {
             (void) namedict.enter(key, tex);

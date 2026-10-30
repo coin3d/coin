@@ -50,6 +50,7 @@
 #include <Inventor/C/errors/debugerror.h>
 
 #include "base/dict.h"
+#include "base/oomp.h"
 #include "base/dynarray.h"
 #include "fonts/freetype.h"
 #include "fonts/win32.h"
@@ -414,6 +415,9 @@ flw_initialize(void)
 {
   /* CC_MUTEX_CONSTRUCT uses a global mutex to be thread safe */
   CC_MUTEX_CONSTRUCT(flw_global_lock);
+#ifdef HAVE_THREADS
+  if (flw_global_lock == NULL) coin_oom_abort("font library mutex");
+#endif
   FLW_MUTEX_LOCK(flw_global_lock);
 
   if (initialized) {
@@ -574,10 +578,12 @@ cc_flw_get_font_id(const char * fontname, unsigned int sizey,
   }
 
   fs = (struct cc_flw_font *)malloc(sizeof(struct cc_flw_font));
+  if (fs == NULL) coin_oom_abort("cc_flw_get_font_id");
   fs->nativefonthandle = font;
   fs->defaultfont = font ? FALSE : TRUE;
   fs->complexity = complexity;
   fs->glyphdict = cc_dict_construct(256, 0.7f);
+  if (fs->glyphdict == NULL) coin_oom_abort("cc_flw_get_font_id glyph cache");
   fs->fontindex = flw_global_font_index++;
   fs->refcount = 0;
   fs->requestname = cc_string_construct_new();
@@ -655,6 +661,7 @@ cc_flw_get_glyph(int font, unsigned int character)
   if (gs == NULL) {
 
     gs = (struct cc_flw_glyph *)malloc(sizeof(struct cc_flw_glyph));
+    if (gs == NULL) coin_oom_abort("cc_flw_get_glyph");
     gs->character = character;
     gs->bitmap = NULL;
     gs->vector = NULL;
@@ -663,9 +670,9 @@ cc_flw_get_glyph(int font, unsigned int character)
     gs->nativeglyphidx = character;
     gs->fromdefaultfont = TRUE;
 
-    if (!cc_dict_put(fs->glyphdict, character, gs)) {
-      assert(0 && "glyph already exists");
-    }
+    if (cc_dict_try_put(fs->glyphdict, character, gs) !=
+        CC_DICT_PUT_INSERTED)
+      coin_oom_abort("cc_flw_get_glyph cache insertion");
 
     if (!fs->defaultfont) {
       if (using_win32api()) { glyph = cc_flww32_get_glyph(fs->nativefonthandle, character); }
