@@ -796,12 +796,13 @@ cc_xml_doc_write_to_file(const cc_xml_doc * doc, const char * path)
     fp = stdout;
   else
     fp = fopen(path, "wb");
-  assert(fp != NULL);
-  fwrite(buffer.get(), 1, bufsize, fp);
-  if (strcmp(path, "-") != 0)
-    fclose(fp);
+  if (!fp) return FALSE;
 
-  return TRUE;
+  const size_t written = fwrite(buffer.get(), 1, bufsize, fp);
+  const int writeerror = ferror(fp);
+  const int closeerror = fp == stdout ? fflush(fp) : fclose(fp);
+
+  return written == bufsize && !writeerror && closeerror == 0;
 }
 
 // *************************************************************************
@@ -910,6 +911,7 @@ cc_xml_doc_handle_parse_warning(const cc_xml_doc * doc, const char * message)
 
 #include <cstring>
 #include <memory>
+#include <stdio.h>
 #include <Inventor/C/XML/attribute.h>
 #include <Inventor/C/XML/element.h>
 #include <Inventor/C/XML/parser.h>
@@ -1005,6 +1007,23 @@ BOOST_AUTO_TEST_CASE(buffer_round_trip_compares_real_dom)
 
   cc_xml_doc_delete_x(doc1);
   cc_xml_doc_delete_x(doc2);
+}
+
+BOOST_AUTO_TEST_CASE(write_to_file_reports_io_errors)
+{
+  cc_xml_doc * doc = cc_xml_doc_new();
+  BOOST_REQUIRE(doc != NULL);
+
+  const char * output = "coin_xml_doc_write_file_fixture.xml";
+  BOOST_CHECK(cc_xml_doc_write_to_file(doc, output) == TRUE);
+  remove(output);
+
+  BOOST_CHECK(cc_xml_doc_write_to_file(doc, ".") == FALSE);
+#if defined(__linux__)
+  BOOST_CHECK(cc_xml_doc_write_to_file(doc, "/dev/full") == FALSE);
+#endif
+
+  cc_xml_doc_delete_x(doc);
 }
 
 BOOST_AUTO_TEST_CASE(empty_cdata_child_serializes_without_null_dereference)
