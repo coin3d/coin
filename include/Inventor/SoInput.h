@@ -117,6 +117,7 @@ public:
   virtual SbBool readBinaryArray(float * f, int length);
   virtual SbBool readBinaryArray(double * d, int length);
   virtual SbBool eof(void) const;
+  SbBool hasReadError(void) const;
 
   SbBool isFileVRML1(void);
   SbBool isFileVRML2(void);

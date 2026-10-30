@@ -139,6 +139,7 @@ bzglue_init(void)
       const char * possiblelibnames[] = {
         NULL, /* is set below */ 
         "bz2", "libbz2", "libbz2.so",
+        "libbz2.so.1.0", "libbz2.so.1",
         "libbz2.dylib", 
         NULL
       };
