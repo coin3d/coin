@@ -40,7 +40,7 @@
 #include <Inventor/system/gl.h>
 #include <Inventor/C/glue/gl.h>
 
-#include "misc/SbHash.h"
+#include "misc/SbSmallMap.h"
 
 class SoState;
 
@@ -82,7 +82,9 @@ class SoVBO {
   SbUniqueId dataid;
   SbBool didalloc;
 
-  SbHash<uint32_t, GLuint> vbohash;
+  // VBOs normally have resources in only one or two active GL contexts.
+  // Keep that common case inline instead of allocating hash-table storage.
+  SbSmallMap<uint32_t, GLuint> vbohash;
 };
 
 #endif // COIN_VERTEXARRAYINDEXER_H
