@@ -6,6 +6,16 @@ target_include_directories(CcDictConsumersTest PRIVATE
   ${PROJECT_SOURCE_DIR}/src ${PROJECT_SOURCE_DIR}/include
   ${PROJECT_BINARY_DIR}/src ${PROJECT_BINARY_DIR}/include
   ${COIN_TARGET_INCLUDE_DIRECTORIES})
+if(WIN32)
+  # Linking Coin propagates its application-side DLL definition. This target
+  # compiles copies of library sources, so COIN_BUILDING_COIN must control
+  # their declarations without COIN_DLL / COIN_NOT_DLL from the link interface.
+  if(MSVC)
+    target_compile_options(CcDictConsumersTest PRIVATE /UCOIN_DLL /UCOIN_NOT_DLL)
+  else()
+    target_compile_options(CcDictConsumersTest PRIVATE -UCOIN_DLL -UCOIN_NOT_DLL)
+  endif()
+endif()
 if(WIN32 AND COIN_BUILD_SHARED_LIBS)
   target_sources(CcDictConsumersTest PRIVATE CoinGeqPrimeNumberWin32TestSupport.cpp)
 endif()
