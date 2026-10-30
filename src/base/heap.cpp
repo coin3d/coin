@@ -159,13 +159,11 @@ static void
 heap_rebuild(cc_heap * h)
 {
   if (h->support_remove) {
-    cc_dict_clear(h->hash);
-    h->duplicates = 0;
+    /* Every distinct pointer is already indexed. Reindex in place so an
+       allocation failure cannot leave the heap without its lookup entries. */
     for (uintptr_t i = 0; i < h->elements; ++i) {
-      if (!cc_dict_put(h->hash, reinterpret_cast<uintptr_t>(h->array[i]),
-                       reinterpret_cast<void *>(i))) {
-        ++h->duplicates;
-      }
+      cc_dict_put(h->hash, reinterpret_cast<uintptr_t>(h->array[i]),
+                  reinterpret_cast<void *>(i));
     }
   }
 
@@ -239,6 +237,11 @@ cc_heap_construct(unsigned int size,
   h->hash = NULL;
   if (support_remove) {
     h->hash = cc_dict_construct(size, 0.0f);
+    if (h->hash == NULL) {
+      free(h->array);
+      free(h);
+      return NULL;
+    }
   }
   return h;
 }
@@ -280,14 +283,18 @@ cc_heap_add(cc_heap * h, void * o)
     if (!heap_resize(h, newsize)) return;
   }
 
-  uintptr_t i = h->elements++;
-  h->array[i] = o;
+  uintptr_t i = h->elements;
   if (h->support_remove) {
-    if (!cc_dict_put(h->hash, reinterpret_cast<uintptr_t>(h->array[i]),
-                     reinterpret_cast<void*>(i))) {
+    const cc_dict_put_result result = cc_dict_try_put(
+      h->hash, reinterpret_cast<uintptr_t>(o), reinterpret_cast<void*>(i));
+    if (result == CC_DICT_PUT_FAILED) return;
+    if (result == CC_DICT_PUT_REPLACED) {
       ++h->duplicates;
     }
   }
+
+  h->array[i] = o;
+  ++h->elements;
 
   heap_heapify_up(h, i);
 }
