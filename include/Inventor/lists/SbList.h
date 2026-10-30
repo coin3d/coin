@@ -36,7 +36,9 @@
 #include <cassert>
 #include <climits>
 #include <cstddef> // NULL definition
+#include <memory>
 #include <new>
+#include <stdexcept>
 #include <Inventor/SbBasic.h> // TRUE/FALSE
 
 // We usually implement inline functions below the class definition,
@@ -94,8 +96,17 @@ public:
   void copy(const SbList<Type> & l) {
     if (this == &l) return;
     const int n = l.numitems;
-    this->expand(n);
-    for (int i = 0; i < n; i++) this->itembuffer[i] = l.itembuffer[i];
+    if (n > this->itembuffersize) {
+      std::unique_ptr<Type[]> newbuffer(new Type[n]);
+      for (int i = 0; i < n; i++) newbuffer[i] = l.itembuffer[i];
+      if (this->itembuffer != this->builtinbuffer) delete[] this->itembuffer;
+      this->itembuffer = newbuffer.release();
+      this->itembuffersize = n;
+    }
+    else {
+      for (int i = 0; i < n; i++) this->itembuffer[i] = l.itembuffer[i];
+    }
+    this->numitems = n;
   }
 
   SbList <Type> & operator=(const SbList<Type> & l) {
@@ -108,27 +119,28 @@ public:
 
     if (items < this->itembuffersize) {
       Type * newitembuffer = this->builtinbuffer;
-      if (items > DEFAULTSIZE) newitembuffer = new Type[items];
+      std::unique_ptr<Type[]> allocatedbuffer;
+      if (items > DEFAULTSIZE) {
+        allocatedbuffer.reset(new Type[items]);
+        newitembuffer = allocatedbuffer.get();
+      }
 
       if (newitembuffer != this->itembuffer) {
-        try {
-          for (int i = 0; i < items; i++) newitembuffer[i] = this->itembuffer[i];
-        }
-        catch (...) {
-          if (newitembuffer != this->builtinbuffer) delete[] newitembuffer;
-          throw;
-        }
+        for (int i = 0; i < items; i++) newitembuffer[i] = this->itembuffer[i];
       }
 
       if (this->itembuffer != this->builtinbuffer) delete[] this->itembuffer;
-      this->itembuffer = newitembuffer;
+      this->itembuffer = allocatedbuffer.get() != NULL
+        ? allocatedbuffer.release()
+        : newitembuffer;
       this->itembuffersize = items > DEFAULTSIZE ? items : DEFAULTSIZE;
     }
   }
 
   void append(const Type item) {
     if (this->numitems == this->itembuffersize) this->grow();
-    this->itembuffer[this->numitems++] = item;
+    this->itembuffer[this->numitems] = item;
+    this->numitems++;
   }
 
   int find(const Type item) const {
@@ -138,9 +150,9 @@ public:
   }
 
   void insert(const Type item, const int insertbefore) {
-#ifdef COIN_EXTRA_DEBUG
-    assert(insertbefore >= 0 && insertbefore <= this->numitems);
-#endif // COIN_EXTRA_DEBUG
+    if (insertbefore < 0 || insertbefore > this->numitems) {
+      SbList<Type>::invalidIndex("SbList::insert(): index out of range");
+    }
     if (this->numitems == this->itembuffersize) this->grow();
 
     for (int i = this->numitems; i > insertbefore; i--)
@@ -158,19 +170,22 @@ public:
   }
 
   void remove(const int index) {
-#ifdef COIN_EXTRA_DEBUG
-    assert(index >= 0 && index < this->numitems);
-#endif // COIN_EXTRA_DEBUG
-    this->numitems--;
-    for (int i = index; i < this->numitems; i++)
+    if (index < 0 || index >= this->numitems) {
+      SbList<Type>::invalidIndex("SbList::remove(): index out of range");
+    }
+    const int newlength = this->numitems - 1;
+    for (int i = index; i < newlength; i++)
       this->itembuffer[i] = this->itembuffer[i + 1];
+    this->numitems = newlength;
   }
 
   void removeFast(const int index) {
-#ifdef COIN_EXTRA_DEBUG
-    assert(index >= 0 && index < this->numitems);
-#endif // COIN_EXTRA_DEBUG
-    this->itembuffer[index] = this->itembuffer[--this->numitems];
+    if (index < 0 || index >= this->numitems) {
+      SbList<Type>::invalidIndex("SbList::removeFast(): index out of range");
+    }
+    const int newlength = this->numitems - 1;
+    this->itembuffer[index] = this->itembuffer[newlength];
+    this->numitems = newlength;
   }
 
   int getLength(void) const {
@@ -178,9 +193,9 @@ public:
   }
 
   void truncate(const int length, const int dofit = 0) {
-#ifdef COIN_EXTRA_DEBUG
-    assert(length <= this->numitems);
-#endif // COIN_EXTRA_DEBUG
+    if (length < 0 || length > this->numitems) {
+      SbList<Type>::invalidIndex("SbList::truncate(): length out of range");
+    }
     this->numitems = length;
     if (dofit) this->fit();
   }
@@ -190,27 +205,32 @@ public:
   }
 
   Type pop(void) {
-#ifdef COIN_EXTRA_DEBUG
-    assert(this->numitems > 0);
-#endif // COIN_EXTRA_DEBUG
-    return this->itembuffer[--this->numitems];
+    if (this->numitems == 0) {
+      SbList<Type>::invalidIndex("SbList::pop(): empty list");
+    }
+    Type item(this->itembuffer[this->numitems - 1]);
+    this->numitems--;
+    return item;
   }
 
   const Type * getArrayPtr(const int start = 0) const {
+    if (start < 0 || (this->numitems == 0 ? start != 0 : start >= this->numitems)) {
+      SbList<Type>::invalidIndex("SbList::getArrayPtr(): index out of range");
+    }
     return &this->itembuffer[start];
   }
 
   Type operator[](const int index) const {
-#ifdef COIN_EXTRA_DEBUG
-    assert(index >= 0 && index < this->numitems);
-#endif // COIN_EXTRA_DEBUG
+    if (index < 0 || index >= this->numitems) {
+      SbList<Type>::invalidIndex("SbList::operator[](): index out of range");
+    }
     return this->itembuffer[index];
   }
 
   Type & operator[](const int index) {
-#ifdef COIN_EXTRA_DEBUG
-    assert(index >= 0 && index < this->numitems);
-#endif // COIN_EXTRA_DEBUG
+    if (index < 0 || index >= this->numitems) {
+      SbList<Type>::invalidIndex("SbList::operator[](): index out of range");
+    }
     return this->itembuffer[index];
   }
 
@@ -236,6 +256,9 @@ public:
 protected:
 
   void expand(const int size) {
+    if (size < 0) {
+      SbList<Type>::invalidIndex("SbList::expand(): size out of range");
+    }
     this->grow(size);
     this->numitems = size;
   }
@@ -245,6 +268,10 @@ protected:
   }
 
 private:
+  static void invalidIndex(const char * operation) {
+    throw std::out_of_range(operation);
+  }
+
   void grow(const int size = -1) {
     // Default growth doubles the current capacity. Check before the
     // multiplication to avoid signed overflow.
