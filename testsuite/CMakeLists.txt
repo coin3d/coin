@@ -55,6 +55,13 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
           $<TARGET_FILE:CoinTextureArrayTest>)
     endif()
     set_tests_properties(TextureCoordinateArrayRendering PROPERTIES SKIP_RETURN_CODE 77)
+
+    add_executable(CoinSharedCoordinateBenchmark EXCLUDE_FROM_ALL
+      reproducers/issue-833-shared-coordinates/benchmark.cpp)
+    target_include_directories(CoinSharedCoordinateBenchmark PRIVATE
+      ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+      ${COIN_TARGET_INCLUDE_DIRECTORIES})
+    target_link_libraries(CoinSharedCoordinateBenchmark Coin OpenGL::GL)
   endif()
 endif()
 
