@@ -276,7 +276,7 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   const SbBool defaultmapping =
     SoVertexArrayTexCoordGuard::isDefaultMapping(state);
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
-  const SbBool defaulttexcoords = defaultmapping && !tb.needIndices();
+  SbBool defaulttexcoords = defaultmapping && !tb.needIndices();
   doTextures = tb.needCoordinates();
   SbBool sendNormals = !mb.isColorOnly() || tb.isFunction();
 
@@ -326,6 +326,10 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   SbBool drawPoints =
     SoDrawStyleElement::get(state) == SoDrawStyleElement::POINTS;
 
+  if (defaulttexcoords &&
+      !SoVertexArrayTexCoordGuard::isAffordable(coords->getNum(), numindices)) {
+    defaulttexcoords = FALSE;
+  }
   const uint32_t contextid = action->getCacheContext();
   SoGLLazyElement * lelem = NULL;
 

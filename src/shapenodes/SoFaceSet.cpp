@@ -537,7 +537,7 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
     const SbBool defaultmapping =
       SoVertexArrayTexCoordGuard::isDefaultMapping(state);
     SoTextureCoordinateBundle tb(action, TRUE, FALSE);
-    const SbBool defaulttexcoords = defaultmapping && !tb.needIndices();
+    SbBool defaulttexcoords = defaultmapping && !tb.needIndices();
     doTextures = tb.needCoordinates();
 
     SbBool needNormals = !mb.isColorOnly() || tb.isFunction();
@@ -586,6 +586,15 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
 
     const uint32_t contextid = action->getCacheContext();
     int numcoords = coords ? coords->getNum() : 0;
+    if (defaulttexcoords) {
+      std::int64_t used = 0;
+      for (int f = 0; f < this->numVertices.getNum(); ++f) {
+        const int32_t nv = this->numVertices[f];
+        if (nv < 0) { used = std::int64_t(numcoords) - idx; break; }
+        used += nv;
+      }
+      defaulttexcoords = SoVertexArrayTexCoordGuard::isAffordable(numcoords, used);
+    }
     SoGLLazyElement* lelem = NULL;
     // check if we can render things using glDrawArrays
     SbBool dova =
