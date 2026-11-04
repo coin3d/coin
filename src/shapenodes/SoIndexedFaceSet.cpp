@@ -471,7 +471,7 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
   const SbBool defaultmapping =
     SoVertexArrayTexCoordGuard::isDefaultMapping(state);
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
-  const SbBool defaulttexcoords = defaultmapping && !tb.needIndices();
+  SbBool defaulttexcoords = defaultmapping && !tb.needIndices();
   doTextures = tb.needCoordinates();
   SbBool sendNormals = !mb.isColorOnly() || tb.isFunction();
 
@@ -547,6 +547,10 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
           cc_glglue_has_vertex_array(sogl_glue_instance(state)));
 #endif
 
+  if (defaulttexcoords &&
+      !SoVertexArrayTexCoordGuard::isAffordable(coords->getNum(), numindices)) {
+    defaulttexcoords = FALSE;
+  }
   const uint32_t contextid = action->getCacheContext();
   SoGLLazyElement * lelem = NULL;
   SbBool dova =

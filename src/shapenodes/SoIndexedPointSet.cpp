@@ -258,7 +258,7 @@ SoIndexedPointSet::GLRender(SoGLRenderAction * action)
   const SbBool defaultmapping =
     SoVertexArrayTexCoordGuard::isDefaultMapping(state);
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
-  const SbBool defaulttexcoords = defaultmapping && !tb.needIndices();
+  SbBool defaulttexcoords = defaultmapping && !tb.needIndices();
 
   const SbVec3f * normals;
   int numindices;
@@ -331,6 +331,10 @@ SoIndexedPointSet::GLRender(SoGLRenderAction * action)
   mb.sendFirst(); // always do this, even if mbind != OVERALL
 
   const cc_glglue * glue = sogl_glue_instance(state);
+  if (defaulttexcoords &&
+      !SoVertexArrayTexCoordGuard::isAffordable(coords->getNum(), numindices)) {
+    defaulttexcoords = FALSE;
+  }
   const uint32_t contextid = action->getCacheContext();
 
   SbBool dova =

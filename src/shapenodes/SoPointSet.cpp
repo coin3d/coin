@@ -226,7 +226,7 @@ SoPointSet::GLRender(SoGLRenderAction * action)
   const SbBool defaultmapping =
     SoVertexArrayTexCoordGuard::isDefaultMapping(state);
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
-  const SbBool defaulttexcoords = defaultmapping && !tb.needIndices();
+  SbBool defaulttexcoords = defaultmapping && !tb.needIndices();
   SbBool doTextures = tb.needCoordinates();
   SoMaterialBundle mb(action);
   
@@ -262,6 +262,10 @@ SoPointSet::GLRender(SoGLRenderAction * action)
   if (numpts < 0) numpts = coords->getNum() - idx;
   
   const cc_glglue * glue = sogl_glue_instance(state);
+  if (defaulttexcoords &&
+      !SoVertexArrayTexCoordGuard::isAffordable(coords->getNum(), numpts)) {
+    defaulttexcoords = FALSE;
+  }
   const uint32_t contextid = action->getCacheContext();
 
   SbBool dova = 

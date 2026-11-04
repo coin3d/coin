@@ -37,6 +37,8 @@
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/misc/SoState.h>
+#include <cstddef>
+#include <cstdint>
 #include <vector>
 
 /*!
@@ -55,6 +57,19 @@
 */
 class SoVertexArrayTexCoordGuard {
 public:
+  /*! Returns whether materializing the complete coordinate element has a
+      bounded cost relative to the vertices submitted by this draw. */
+  static SbBool isAffordable(int numcoords, std::int64_t numreferenced)
+  {
+    static const std::size_t maxTemporaryBytes =
+      std::size_t(32) * 1024 * 1024;
+    const std::size_t maxcoords = maxTemporaryBytes / sizeof(SbVec4f);
+    // Equivalent to numcoords <= 2*numreferenced + 64 without multiplying.
+    return numcoords >= 0 && numreferenced >= 0 &&
+      std::size_t(numcoords) <= maxcoords &&
+      (numcoords <= 64 || numreferenced >= (std::int64_t(numcoords) - 64 + 1) / 2);
+  }
+
   static SbBool isDefaultMapping(SoState * state)
   {
     int lastenabled = -1;
