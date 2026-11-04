@@ -187,15 +187,7 @@ public:
     }
   }
 
-  void invalidateParameters(void) {
-    SbList <uint32_t> keylist;
-    this->glshaderobjects.makeKeyList(keylist);
-    for (int i = 0; i < keylist.getLength(); i++) {
-      SoGLShaderObject * glshader = NULL;
-      (void) this->glshaderobjects.get(keylist[i], glshader);
-      glshader->setParametersDirty(TRUE);
-    }
-  }
+  void invalidateParameters(void);
 
   SoShaderObject * owner;
   SoShaderObject::SourceType cachedSourceType;
@@ -389,6 +381,19 @@ SoShaderObjectP::~SoShaderObjectP()
   SbStringList empty;
   this->setSearchDirectories(empty);
   delete this->sensor;
+}
+
+// Keep an out-of-line definition for the exported entry point.
+void
+SoShaderObjectP::invalidateParameters(void)
+{
+  SbList <uint32_t> keylist;
+  this->glshaderobjects.makeKeyList(keylist);
+  for (int i = 0; i < keylist.getLength(); i++) {
+    SoGLShaderObject * glshader = NULL;
+    (void) this->glshaderobjects.get(keylist[i], glshader);
+    glshader->setParametersDirty(TRUE);
+  }
 }
 
 void
