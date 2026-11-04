@@ -1,5 +1,13 @@
 include(SbSmallMapTests.cmake)
 
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND COIN_BUILD_SHARED_LIBS AND CMAKE_NM)
+  add_test(NAME LegacyExportedSymbols
+    COMMAND ${CMAKE_COMMAND}
+      "-DNM=${CMAKE_NM}"
+      "-DLIBRARY=$<TARGET_FILE:Coin>"
+      -P ${CMAKE_CURRENT_SOURCE_DIR}/CheckLegacyExportedSymbols.cmake)
+endif()
+
 if(COIN_BUILD_LEGACY_GL_RENDERER)
   find_package(Threads REQUIRED)
   add_executable(CoinTextureArrayBudgetTest
