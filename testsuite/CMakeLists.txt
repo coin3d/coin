@@ -3,6 +3,16 @@ include(SbSmallMapTests.cmake)
 
 if(COIN_BUILD_LEGACY_GL_RENDERER)
   find_package(Threads REQUIRED)
+  add_executable(CoinTextureArrayBudgetTest
+    reproducers/issue-833-shared-coordinates/budget.cpp)
+  target_compile_definitions(CoinTextureArrayBudgetTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
+  target_include_directories(CoinTextureArrayBudgetTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${PROJECT_SOURCE_DIR}/src ${PROJECT_BINARY_DIR}/src
+    ${PROJECT_SOURCE_DIR}/include/Inventor/annex ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  target_link_libraries(CoinTextureArrayBudgetTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+  add_test(NAME TextureCoordinateArrayBudget COMMAND CoinTextureArrayBudgetTest)
+
   add_executable(CoinBumpProgramTest bumprender/FailureTest.cpp)
   target_compile_definitions(CoinBumpProgramTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
   target_include_directories(CoinBumpProgramTest PRIVATE
