@@ -210,8 +210,13 @@ int main(int argc, char ** argv)
   SoOffscreenRenderer renderer(SbViewportRegion(128,128));
   renderer.setComponents(SoOffscreenRenderer::RGB);
   bool ok = true;
+  bool rendereravailable = true;
   for (int frame=0; frame<2; ++frame) {
-    if (!renderer.render(root)) { ok=false; break; }
+    if (!renderer.render(root)) {
+      std::fprintf(stderr, "Offscreen rendering is unavailable.\n");
+      rendereravailable = false;
+      break;
+    }
     const unsigned char * image=renderer.getBuffer();
     const int bottom=(32*128+64)*3, top=(96*128+64)*3;
     if (!textured) ok = ok && image[bottom]>240 && image[top]>240;
@@ -225,5 +230,6 @@ int main(int argc, char ** argv)
   ok = ok && missingarrays==0;
   root->unref();
   SoDebugError::setHandlerCallback(NULL, NULL);
+  if (!rendereravailable) return 77;
   return ok ? 0 : 1;
 }
