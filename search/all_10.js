@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['g_0',['g',['../classSoCalculator.html#a402abec5696b8ab6098a4996d428de5f',1,'SoCalculator']]],
-  ['g_1',['G',['../classSoCalculator.html#a4e10c288d19f6753905a9a6ea6e36797',1,'SoCalculator']]],
+  ['g_0',['G',['../classSoCalculator.html#a4e10c288d19f6753905a9a6ea6e36797',1,'SoCalculator']]],
+  ['g_1',['g',['../classSoCalculator.html#a402abec5696b8ab6098a4996d428de5f',1,'SoCalculator']]],
   ['gain_2',['gain',['../classSoListener.html#a5d306e0699c5517b11d9ec7867b26aef',1,'SoListener']]],
   ['generate_3',['generate',['../classSoProfilingReportGenerator.html#ae893e60273707681569f65e97797baed',1,'SoProfilingReportGenerator::generate()'],['../classSoNormalBundle.html#af723c14d943bb54a74ab84b961f8ed6d',1,'SoNormalBundle::generate()'],['../classSoConvexDataCache.html#aae1c67df118df25e3535ebb6892ca86c',1,'SoConvexDataCache::generate()'],['../classSoTextureCoordinateCache.html#ad7eb3ff6737b46aae8e123fc20e73478',1,'SoTextureCoordinateCache::generate()'],['../classSoNormalGenerator.html#ab26d17c59c008e9d77228512e5b894c3',1,'SoNormalGenerator::generate()']]],
   ['generateandreadlocknormalcache_4',['generateAndReadLockNormalCache',['../classSoVRMLVertexShape.html#a5d18b31ca5a3c5a1758c0bb45b756f6f',1,'SoVRMLVertexShape::generateAndReadLockNormalCache()'],['../classSoVertexShape.html#a32374ed7072ea5ac7fa76ee7e267f69d',1,'SoVertexShape::generateAndReadLockNormalCache()']]],

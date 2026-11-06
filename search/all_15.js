@@ -2,8 +2,8 @@ var searchData=
 [
   ['label_0',['label',['../classSoLabel.html#af863e4baf5a826b22798f29769ccb180',1,'SoLabel']]],
   ['lasso_1',['LASSO',['../classSoExtSelection.html#af25d467dbc3d587bec603c89eace192fa33cfba6bacddaace46aa5ff853b1bd84',1,'SoExtSelection']]],
-  ['lassomode_2',['lassoMode',['../classSoExtSelection.html#a3f1be9f9f9e2500f16ba9526682af7a8',1,'SoExtSelection']]],
-  ['lassomode_3',['LassoMode',['../classSoExtSelection.html#ab3301b66803468221a9c6eb51e342210',1,'SoExtSelection']]],
+  ['lassomode_2',['LassoMode',['../classSoExtSelection.html#ab3301b66803468221a9c6eb51e342210',1,'SoExtSelection']]],
+  ['lassomode_3',['lassoMode',['../classSoExtSelection.html#a3f1be9f9f9e2500f16ba9526682af7a8',1,'SoExtSelection']]],
   ['lassopolicy_4',['lassoPolicy',['../classSoExtSelection.html#a05bb125c7b408ef062e9b3a5500025ba',1,'SoExtSelection']]],
   ['lassopolicy_5',['LassoPolicy',['../classSoExtSelection.html#a13f9500494e42d0edf20ad79c755b678',1,'SoExtSelection']]],
   ['lassotype_6',['LassoType',['../classSoExtSelection.html#af25d467dbc3d587bec603c89eace192f',1,'SoExtSelection']]],
