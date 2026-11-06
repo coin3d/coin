@@ -191,38 +191,42 @@ $(function(){initNavTree('sched_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">/* ********************************************************************** */</span></div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  COIN_DLL_API cc_sched * cc_sched_construct(<span class="keywordtype">int</span> numthreads);</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_sched_destruct(cc_sched * sched);</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_sched_set_num_threads(cc_sched * sched, <span class="keywordtype">int</span> num);</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  COIN_DLL_API <span class="keywordtype">int</span> cc_sched_get_num_threads(cc_sched * sched);</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  COIN_DLL_API uint32_t cc_sched_schedule(cc_sched * sched, </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                                          cc_sched_f * workfunc, </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                                          <span class="keywordtype">void</span> * closure,</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>                                          <span class="keywordtype">float</span> priority);</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  COIN_DLL_API SbBool cc_sched_unschedule(cc_sched * sched, </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>                                          uint32_t schedid); </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_sched_wait_all(cc_sched * sched);</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  COIN_DLL_API <span class="keywordtype">int</span> cc_sched_get_num_remaining(cc_sched * sched);</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_sched_set_num_allowed(cc_sched * sched, <span class="keywordtype">int</span> num);</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_sched_change_priority(cc_sched * sched, </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>                                             uint32_t schedid, </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>                                             <span class="keywordtype">float</span> priority);</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="comment">/* ********************************************************************** */</span></div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>} <span class="comment">/* extern &quot;C&quot; */</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="preprocessor">#endif </span><span class="comment">/* __cplusplus */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="comment">/* Returns NULL if scheduler storage or a required dependency cannot be</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">     constructed. */</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  COIN_DLL_API cc_sched * cc_sched_construct(<span class="keywordtype">int</span> numthreads);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_sched_destruct(cc_sched * sched);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_sched_set_num_threads(cc_sched * sched, <span class="keywordtype">int</span> num);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  COIN_DLL_API <span class="keywordtype">int</span> cc_sched_get_num_threads(cc_sched * sched);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="comment">/* Nonzero identifies an accepted job. Zero reports resource failure;</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment">     the failed job is not queued. */</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  COIN_DLL_API uint32_t cc_sched_schedule(cc_sched * sched, </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>                                          cc_sched_f * workfunc, </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>                                          <span class="keywordtype">void</span> * closure,</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>                                          <span class="keywordtype">float</span> priority);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  COIN_DLL_API SbBool cc_sched_unschedule(cc_sched * sched, </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>                                          uint32_t schedid); </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_sched_wait_all(cc_sched * sched);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  COIN_DLL_API <span class="keywordtype">int</span> cc_sched_get_num_remaining(cc_sched * sched);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_sched_set_num_allowed(cc_sched * sched, <span class="keywordtype">int</span> num);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  COIN_DLL_API <span class="keywordtype">void</span> cc_sched_change_priority(cc_sched * sched, </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>                                             uint32_t schedid, </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>                                             <span class="keywordtype">float</span> priority);</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="comment">/* ********************************************************************** */</span></div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">#endif </span><span class="comment">/* ! CC_SCHED_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>} <span class="comment">/* extern &quot;C&quot; */</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="preprocessor">#endif </span><span class="comment">/* __cplusplus */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="preprocessor">#endif </span><span class="comment">/* ! CC_SCHED_H */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_c926cf464acaebc2091d00c8a935648f.html">C</a></li><li class="navelem"><a class="el" href="dir_b7bb16c11722e2c1eb4bf76dbb6d1b35.html">threads</a></li><li class="navelem"><b>sched.h</b></li>
-    <li class="footer">Generated on Thu Oct 29 2026 20:35:49 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Fri Nov 6 2026 14:37:27 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
