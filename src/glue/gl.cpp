@@ -270,6 +270,7 @@
 #include "coindefs.h"
 #include "tidbitsp.h"
 #include "base/dict.h"
+#include "base/oomp.h"
 #include "base/namemap.h"
 #ifdef HAVE_WGL
 #include <windows.h>
@@ -541,7 +542,6 @@ glglue_strdup(const char * string)
   if (!string) return NULL;
   const size_t length = strlen(string) + 1;
   char * copy = (char *)malloc(length);
-  assert(copy && "could not copy OpenGL string");
   if (copy) memcpy(copy, string, length);
   return copy;
 }
@@ -717,6 +717,8 @@ coin_glglue_extension_available(const char * extensions, const char * ext)
   assert((ext[0] != '\0') && "empty string");
   assert((strchr(ext, ' ') == NULL) && "extension name can't have spaces");
 
+  if (extensions == NULL) return FALSE;
+
   start = extensions;
   extlen = strlen(ext);
 
@@ -751,12 +753,12 @@ cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
   const uintptr_t key = (uintptr_t)cc_namemap_get_address(extension);
 
   void * result = NULL;
-  if (cc_dict_get(wrapper->glextdict, key, &result)) {
+  if (wrapper->glextdict && cc_dict_get(wrapper->glextdict, key, &result)) {
     return result != NULL;
   }
   result = coin_glglue_extension_available(wrapper->extensionsstr, extension) ?
     (void*) 1 : NULL;
-  cc_dict_put(wrapper->glextdict, key, result);
+  if (wrapper->glextdict) (void) cc_dict_try_put(wrapper->glextdict, key, result);
 
   return result != NULL;
 }
@@ -2204,6 +2206,7 @@ cc_glglue_instance(int contextid)
 
   if (!gldict) {  /* First invocation, do initializations. */
     gldict = cc_dict_construct(16, 0.75f);
+    if (gldict == NULL) coin_oom_abort("cc_glglue_instance dictionary");
     coin_atexit((coin_atexit_f *)glglue_cleanup, CC_ATEXIT_NORMAL);
   }
 
@@ -2237,17 +2240,20 @@ cc_glglue_instance(int contextid)
        hook into SoContextHandler and kill off an instance when a GL
        context is taken out. 20051104 mortene. */
     gi = (cc_glglue*)malloc(sizeof(cc_glglue));
+    if (gi == NULL) coin_oom_abort("cc_glglue_instance");
     /* clear to set all pointers and variables to NULL or 0 */
     memset(gi, 0, sizeof(cc_glglue));
-    /* FIXME: handle out-of-memory on malloc(). 20000928 mortene. */
 
     gi->contextid = (uint32_t) contextid;
 
     /* create dict that makes a quick lookup for GL extensions */
     gi->glextdict = cc_dict_construct(256, 0.75f);
+    if (gi->glextdict == NULL) coin_oom_abort("cc_glglue_instance extensions");
 
     ptr = gi;
-    cc_dict_put(gldict, (uintptr_t)contextid, ptr);
+    if (cc_dict_try_put(gldict, (uintptr_t)contextid, ptr) !=
+        CC_DICT_PUT_INSERTED)
+      coin_oom_abort("cc_glglue_instance cache insertion");
 
     /*
        Make sure all GL errors are cleared before we do our assert
@@ -2275,6 +2281,7 @@ cc_glglue_instance(int contextid)
     assert(versionstr && "could not call glGetString() -- no current GL context?");
     assert(glGetError() == GL_NO_ERROR && "GL error when calling glGetString() -- no current GL context?");
     gi->versionstr = glglue_strdup(versionstr);
+    if (gi->versionstr == NULL) coin_oom_abort("cc_glglue_instance version");
 
     glglue_set_glVersion(gi);
 
@@ -2294,6 +2301,7 @@ cc_glglue_instance(int contextid)
 #endif
 
     gi->vendorstr = glglue_strdup((const char *)glGetString(GL_VENDOR));
+    if (gi->vendorstr == NULL) coin_oom_abort("cc_glglue_instance vendor");
     gi->vendor_is_SGI = strcmp((const char *)gi->vendorstr, "SGI") == 0;
     gi->vendor_is_nvidia = strcmp((const char*)gi->vendorstr, "NVIDIA Corporation") == 0;
     gi->vendor_is_intel =
@@ -2310,6 +2318,7 @@ cc_glglue_instance(int contextid)
     }
 
     gi->rendererstr = glglue_strdup((const char *)glGetString(GL_RENDERER));
+    if (gi->rendererstr == NULL) coin_oom_abort("cc_glglue_instance renderer");
     gi->extensionsstr = glglue_strdup((const char *)glGetString(GL_EXTENSIONS));
 
     /* Randall O'Reilly reports that the above call is deprecated from OpenGL 3.0
@@ -2326,22 +2335,38 @@ cc_glglue_instance(int contextid)
         GLint num_strings = 0;
         glGetIntegerv(GL_NUM_EXTENSIONS, &num_strings);
         if (num_strings > 0) {
-          int buffer_size = 1024;
-          char *ext_strings_buffer = (char *)malloc(buffer_size * sizeof (char));
-          int buffer_pos = 0;
+          size_t buffer_size = 1024;
+          char *ext_strings_buffer = (char *)malloc(buffer_size);
+          size_t buffer_pos = 0;
           for (int i_string = 0 ; i_string < num_strings ; i_string++) {
             const char * extension_string = (char *)glGetStringi (GL_EXTENSIONS, i_string);
-            int extension_string_length = (int)strlen(extension_string);
-            if (buffer_pos + extension_string_length + 1 > buffer_size) {
-              buffer_size += 1024;
-              ext_strings_buffer = (char *)realloc(ext_strings_buffer, buffer_size * sizeof (char));
+            if (ext_strings_buffer == NULL || extension_string == NULL) break;
+            const size_t extension_string_length = strlen(extension_string);
+            if (extension_string_length > SIZE_MAX - buffer_pos - 2) {
+              free(ext_strings_buffer);
+              ext_strings_buffer = NULL;
+              break;
             }
-            strcpy(ext_strings_buffer + buffer_pos, extension_string);
+            const size_t needed = buffer_pos + extension_string_length + 2;
+            if (needed > buffer_size) {
+              char * enlarged = (char *)realloc(ext_strings_buffer, needed);
+              if (enlarged == NULL) {
+                free(ext_strings_buffer);
+                ext_strings_buffer = NULL;
+                break;
+              }
+              ext_strings_buffer = enlarged;
+              buffer_size = needed;
+            }
+            memcpy(ext_strings_buffer + buffer_pos, extension_string,
+                   extension_string_length);
             buffer_pos += extension_string_length;
-            ext_strings_buffer[buffer_pos++] = ' '; // Space separated, overwrites NULL.
+            ext_strings_buffer[buffer_pos++] = ' ';
           }
-          ext_strings_buffer[++buffer_pos] = '\0';  // NULL terminate.
-          gi->extensionsstr = ext_strings_buffer;   // Handing over ownership, don't free here.
+          if (ext_strings_buffer != NULL) {
+            ext_strings_buffer[buffer_pos] = '\0';
+            gi->extensionsstr = ext_strings_buffer;
+          }
         } else {
           cc_debugerror_postwarning ("cc_glglue_instance",
                                      "glGetIntegerv(GL_NUM_EXTENSIONS) did not return a value, "
@@ -2410,7 +2435,7 @@ cc_glglue_instance(int contextid)
                              gi->rendererstr);
       cc_debugerror_postinfo("cc_glglue_instance",
                              "glGetString(GL_EXTENSIONS)=='%s'",
-                             gi->extensionsstr);
+                             gi->extensionsstr ? gi->extensionsstr : "");
 
       cc_debugerror_postinfo("cc_glglue_instance",
                              "Rendering is %sdirect.",

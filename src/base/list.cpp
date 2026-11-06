@@ -33,10 +33,14 @@
 #include <Inventor/C/base/list.h>
 
 #include <cassert>
+#include <climits>
 #include <cstddef>
+#include <cstdint>
 #include <cstdlib>
 
 #include "coindefs.h"
+#include "base/listp.h"
+#include "base/oomp.h"
 
 #define CC_LIST_DEFAULT_SIZE 4
 
@@ -58,14 +62,18 @@ struct cc_list {
 
 /* ********************************************************************** */
 
-static void 
+static SbBool
 list_grow(cc_list * list) 
 {
   int i, n;
   void ** newbuffer;
-  list->itembuffersize <<= 1;
+  if (list->itembuffersize > INT_MAX / 2 ||
+      static_cast<size_t>(list->itembuffersize * 2) > SIZE_MAX / sizeof(void *))
+    return FALSE;
+  const int newsize = list->itembuffersize * 2;
 
-  newbuffer = static_cast<void**>(malloc(list->itembuffersize*sizeof(void*)));
+  newbuffer = static_cast<void**>(malloc(static_cast<size_t>(newsize) * sizeof(void*)));
+  if (newbuffer == NULL) return FALSE;
   
   n = list->numitems;
   for (i = 0; i < n; i++) newbuffer[i] = list->itembuffer[i];
@@ -73,6 +81,8 @@ list_grow(cc_list * list)
     free(list->itembuffer);
   }
   list->itembuffer = newbuffer;
+  list->itembuffersize = newsize;
+  return TRUE;
 }
 
 /* ********************************************************************** */
@@ -87,10 +97,17 @@ cc_list *
 cc_list_construct_sized(int size)
 {
   cc_list * list = static_cast<cc_list*>(malloc(sizeof(cc_list)));
-  assert(list);
+  if (list == NULL) return NULL;
   if (size > CC_LIST_DEFAULT_SIZE) {
+    if (static_cast<size_t>(size) > SIZE_MAX / sizeof(void *)) {
+      free(list);
+      return NULL;
+    }
     list->itembuffer = static_cast<void**>(malloc(sizeof(void*)*size));
-    assert(list->itembuffer);
+    if (list->itembuffer == NULL) {
+      free(list);
+      return NULL;
+    }
     list->itembuffersize = size;
   }
   else {
@@ -106,6 +123,7 @@ cc_list_clone(cc_list * list)
 {
   int i;
   cc_list * cloned = cc_list_construct_sized(list->numitems);
+  if (cloned == NULL) return NULL;
 
   for (i = 0; i < list->numitems; i++) {
     cloned->itembuffer[i] = list->itembuffer[i];
@@ -126,10 +144,34 @@ cc_list_destruct(cc_list * list)
 void
 cc_list_append(cc_list * list, void * item)
 {
-  if (list->numitems == list->itembuffersize) {
-    list_grow(list);
-  }
+  if (list->numitems == list->itembuffersize && !list_grow(list))
+    coin_oom_abort("cc_list_append");
   list->itembuffer[list->numitems++] = item;
+}
+
+SbBool
+cc_list_try_append(cc_list * list, void * item)
+{
+  if (list->numitems == list->itembuffersize && !list_grow(list)) return FALSE;
+  list->itembuffer[list->numitems++] = item;
+  return TRUE;
+}
+
+SbBool
+cc_list_try_reserve(cc_list * list, int capacity)
+{
+  if (capacity < 0) return FALSE;
+  if (capacity <= list->itembuffersize) return TRUE;
+  if (static_cast<size_t>(capacity) > SIZE_MAX / sizeof(void *))
+    return FALSE;
+  void ** buffer = static_cast<void **>(
+    malloc(static_cast<size_t>(capacity) * sizeof(void *)));
+  if (buffer == NULL) return FALSE;
+  for (int i = 0; i < list->numitems; ++i) buffer[i] = list->itembuffer[i];
+  if (list->itembuffer != list->builtinbuffer) free(list->itembuffer);
+  list->itembuffer = buffer;
+  list->itembuffersize = capacity;
+  return TRUE;
 }
 
 int
@@ -150,7 +192,7 @@ cc_list_insert(cc_list * list, void * item, int insertbefore)
   assert(insertbefore >= 0 && insertbefore <= list->numitems);
 #endif /* COIN_EXTRA_DEBUG */
   if (list->numitems == list->itembuffersize) {
-    list_grow(list);
+    if (!list_grow(list)) coin_oom_abort("cc_list_insert");
   }  
   for (i = list->numitems; i > insertbefore; i--) {
     list->itembuffer[i] = list->itembuffer[i-1];
@@ -201,6 +243,7 @@ cc_list_fit(cc_list * list)
   if (items < list->itembuffersize) {
     void ** newitembuffer = list->builtinbuffer;
     if (items > CC_LIST_DEFAULT_SIZE) newitembuffer = static_cast<void**>(malloc(sizeof(void*)*items));
+    if (newitembuffer == NULL) return;
     
     if (newitembuffer != list->itembuffer) {
       for (i = 0; i < items; i++) {
