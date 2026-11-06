@@ -1018,7 +1018,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line">  }</div>
 <div class="line">}</div>
 <div class="ttc" id="aclassSoAction_html"><div class="ttname"><a href="classSoAction.html">SoAction</a></div><div class="ttdoc">The SoAction class is the base class for all traversal actions.</div><div class="ttdef"><b>Definition</b> SoAction.h:77</div></div>
-<div class="ttc" id="aclassSoAction_html_a5478020eea5f2b7d4e183e16d29d6611"><div class="ttname"><a href="classSoAction.html#a5478020eea5f2b7d4e183e16d29d6611">SoAction::isOfType</a></div><div class="ttdeci">virtual SbBool isOfType(SoType type) const</div><div class="ttdef"><b>Definition</b> SoAction.cpp:449</div></div>
+<div class="ttc" id="aclassSoAction_html_a5478020eea5f2b7d4e183e16d29d6611"><div class="ttname"><a href="classSoAction.html#a5478020eea5f2b7d4e183e16d29d6611">SoAction::isOfType</a></div><div class="ttdeci">virtual SbBool isOfType(SoType type) const</div><div class="ttdef"><b>Definition</b> SoAction.cpp:469</div></div>
 <div class="ttc" id="aclassSoGLRenderAction_html_a11dd3e4dd03768f4379df273eec26be4"><div class="ttname"><a href="classSoGLRenderAction.html#a11dd3e4dd03768f4379df273eec26be4">SoGLRenderAction::getClassTypeId</a></div><div class="ttdeci">static SoType getClassTypeId(void)</div><div class="ttdef"><b>Definition</b> SoGLRenderAction.cpp:786</div></div>
 </div><!-- fragment --><p>Please note that <a class="el" href="classSoCallback.html" title="The SoCallback class is a node type which provides a means of setting callback hooks in the scene gra...">SoCallback</a> nodes under a Separator might be included in a cache. Cached nodes are not traversed, and you'll not receive any callbacks. If you want to make sure that your callback is called every time the scene graph is rendered, you must invalidate the render cache in your callback:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code hl_class" href="classSbList.html">mycallback</a>(<span class="keywordtype">void</span> * userdata, <a class="code hl_class" href="classSoAction.html">SoAction</a> * action)</div>
@@ -1027,7 +1027,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line">    <a class="code hl_function" href="classSoCacheElement.html#ae5bb362708736eee685119d0601970e6">SoCacheElement::invalidate</a>(action-&gt;<a class="code hl_function" href="classSoAction.html#a477a09961787e99a9621bb07e79c922c">getState</a>());</div>
 <div class="line">  }</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassSoAction_html_a477a09961787e99a9621bb07e79c922c"><div class="ttname"><a href="classSoAction.html#a477a09961787e99a9621bb07e79c922c">SoAction::getState</a></div><div class="ttdeci">SoState * getState(void) const</div><div class="ttdef"><b>Definition</b> SoAction.cpp:1084</div></div>
+<div class="ttc" id="aclassSoAction_html_a477a09961787e99a9621bb07e79c922c"><div class="ttname"><a href="classSoAction.html#a477a09961787e99a9621bb07e79c922c">SoAction::getState</a></div><div class="ttdeci">SoState * getState(void) const</div><div class="ttdef"><b>Definition</b> SoAction.cpp:1145</div></div>
 <div class="ttc" id="aclassSoCacheElement_html_ae5bb362708736eee685119d0601970e6"><div class="ttname"><a href="classSoCacheElement.html#ae5bb362708736eee685119d0601970e6">SoCacheElement::invalidate</a></div><div class="ttdeci">static void invalidate(SoState *const state)</div><div class="ttdef"><b>Definition</b> SoCacheElement.cpp:205</div></div>
 </div><!-- fragment --><p>If you want to invalidate all caches (for instance also the bounding box cache), you can do this in your callback:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> <a class="code hl_class" href="classSbList.html">mycallback</a>(<span class="keywordtype">void</span> * userdata, <a class="code hl_class" href="classSoAction.html">SoAction</a> * action)</div>
@@ -1082,7 +1082,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoCallback.html">SoCallback</a></li>
-    <li class="footer">Generated on Fri Nov 6 2026 18:48:35 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Fri Nov 6 2026 22:33:54 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
