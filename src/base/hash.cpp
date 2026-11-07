@@ -319,7 +319,7 @@ cc_hash_clear(cc_hash * ht)
 
  */
 SbBool
-cc_hash_put(cc_hash * ht, cc_hash_key key, void * val)
+cc_hash_put(cc_hash * ht, cc_hash_key key, void * val) noexcept(false)
 {
   unsigned int i = hash_get_index(ht, key);
   cc_hash_entry * he = ht->buckets[i];
@@ -358,7 +358,7 @@ cc_hash_put(cc_hash * ht, cc_hash_key key, void * val)
 
 */
 SbBool
-cc_hash_get(cc_hash * ht, cc_hash_key key, void ** val)
+cc_hash_get(cc_hash * ht, cc_hash_key key, void ** val) noexcept(false)
 {
   cc_hash_entry * he;
   unsigned int i = hash_get_index(ht, key);
@@ -378,7 +378,7 @@ cc_hash_get(cc_hash * ht, cc_hash_key key, void ** val)
   TRUE if found, FALSE otherwise.
 */
 SbBool
-cc_hash_remove(cc_hash * ht, cc_hash_key key)
+cc_hash_remove(cc_hash * ht, cc_hash_key key) noexcept(false)
 {
   cc_hash_entry * he, *next, * prev;
   unsigned int i = hash_get_index(ht, key);
@@ -423,7 +423,7 @@ cc_hash_get_num_elements(cc_hash * ht)
   Hash callbacks must be stable and must not modify this table.
 */
 void
-cc_hash_set_hash_func(cc_hash * ht, cc_hash_func * func)
+cc_hash_set_hash_func(cc_hash * ht, cc_hash_func * func) noexcept(false)
 {
   assert(ht != NULL);
   if (func == NULL) func = hash_default_hashfunc;
@@ -441,7 +441,7 @@ cc_hash_set_hash_func(cc_hash * ht, cc_hash_func * func)
   its current entry, but must not otherwise mutate or destroy the table.
 */
 void
-cc_hash_apply(cc_hash * ht, cc_hash_apply_func * func, void * closure)
+cc_hash_apply(cc_hash * ht, cc_hash_apply_func * func, void * closure) noexcept(false)
 {
   unsigned int i;
   cc_hash_entry * elem;

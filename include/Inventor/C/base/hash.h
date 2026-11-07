@@ -43,6 +43,14 @@
 #error prefer cc_dict over cc_hash for internal code
 #endif /* COIN_INTERNAL */
 
+/* MSVC /EHsc otherwise assumes extern C calls cannot throw. Keep C and
+   pre-C++11 declarations usable while making the C++ callback contract explicit. */
+#if defined(__cplusplus) && (__cplusplus >= 201103L || (defined(_MSC_VER) && _MSC_VER >= 1900))
+#define COIN_HASH_MAY_THROW noexcept(false)
+#else
+#define COIN_HASH_MAY_THROW
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -64,12 +72,12 @@ extern "C" {
      returning FALSE. Optional growth failure preserves the inserted key.
      A C++ hash exception propagates; if thrown during optional growth, the
      newly inserted key remains in the original, valid table. */
-  COIN_DLL_API SbBool cc_hash_put(cc_hash * ht, cc_hash_key key, void * val);
-  COIN_DLL_API SbBool cc_hash_get(cc_hash * ht, cc_hash_key key, void ** val);
-  COIN_DLL_API SbBool cc_hash_remove(cc_hash * ht, cc_hash_key key);
+  COIN_DLL_API SbBool cc_hash_put(cc_hash * ht, cc_hash_key key, void * val) COIN_HASH_MAY_THROW;
+  COIN_DLL_API SbBool cc_hash_get(cc_hash * ht, cc_hash_key key, void ** val) COIN_HASH_MAY_THROW;
+  COIN_DLL_API SbBool cc_hash_remove(cc_hash * ht, cc_hash_key key) COIN_HASH_MAY_THROW;
   /* The callback may remove the entry currently being visited. It must not
      otherwise mutate or destroy the table during this traversal. */
-  COIN_DLL_API void cc_hash_apply(cc_hash * ht, cc_hash_apply_func * func, void * closure);
+  COIN_DLL_API void cc_hash_apply(cc_hash * ht, cc_hash_apply_func * func, void * closure) COIN_HASH_MAY_THROW;
 
   COIN_DLL_API unsigned int cc_hash_get_num_elements(cc_hash * ht);
 
@@ -77,7 +85,7 @@ extern "C" {
      Allocation failure or a C++ hash exception preserves the previous function
      and entries; exceptions propagate. Hash callbacks must be stable and must
      not modify the table. */
-  COIN_DLL_API void cc_hash_set_hash_func(cc_hash * ht, cc_hash_func * func);
+  COIN_DLL_API void cc_hash_set_hash_func(cc_hash * ht, cc_hash_func * func) COIN_HASH_MAY_THROW;
   COIN_DLL_API void cc_hash_print_stat(cc_hash * ht);
 
 /* ********************************************************************** */
@@ -85,5 +93,7 @@ extern "C" {
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */
+
+#undef COIN_HASH_MAY_THROW
 
 #endif /* ! CC_HASH_H */
