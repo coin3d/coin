@@ -1,3 +1,6 @@
+include(action-apply-exceptions/Tests.cmake)
+include(SbSmallMapTests.cmake)
+
 if(COIN_BUILD_LEGACY_GL_RENDERER)
   find_package(Threads REQUIRED)
   add_executable(CoinBumpProgramTest bumprender/FailureTest.cpp)
@@ -172,6 +175,7 @@ add_test(NAME SoTempPathReplaceTail_empty_noop
   COMMAND SoTempPathReplaceTailTest empty-noop)
 
 add_subdirectory(xml-c-api/c-headers)
+add_subdirectory(xml-c-api/entity-abi)
 
 add_executable(SoPathRangeTest SoPathRangeTest.cpp)
 target_link_libraries(SoPathRangeTest Coin ${COIN_TARGET_LINK_LIBRARIES})
@@ -339,6 +343,50 @@ target_include_directories(SoPathChildAppendTest PRIVATE
   ${COIN_TARGET_INCLUDE_DIRECTORIES})
 add_test(NAME SoPathChildAppend COMMAND SoPathChildAppendTest)
 
+set(COIN_XML_TRANSACTION_TEST_DIRECTORY
+  "${CMAKE_CURRENT_BINARY_DIR}/xml-transactional-read")
+file(MAKE_DIRECTORY "${COIN_XML_TRANSACTION_TEST_DIRECTORY}")
+
+add_executable(CoinXmlTransactionalReadTest
+  xml/XmlTransactionalReadTest.cpp)
+target_link_libraries(CoinXmlTransactionalReadTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CoinXmlTransactionalReadTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+target_compile_definitions(CoinXmlTransactionalReadTest PRIVATE
+  COIN_XML_TEST_DIRECTORY="${COIN_XML_TRANSACTION_TEST_DIRECTORY}")
+set_target_properties(CoinXmlTransactionalReadTest PROPERTIES
+  DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
+add_test(NAME CoinXmlTransactionalRead COMMAND CoinXmlTransactionalReadTest)
+set_tests_properties(CoinXmlTransactionalRead PROPERTIES TIMEOUT 10)
+
+if(COIN_BUILD_FUZZERS)
+  set(COIN_XML_FUZZ_CORPUS "${CMAKE_CURRENT_BINARY_DIR}/xml-fuzz-corpus")
+  file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/fuzz/corpus/"
+    DESTINATION "${COIN_XML_FUZZ_CORPUS}")
+  add_executable(CoinXmlDomFuzzer fuzz/xml-dom-fuzzer.cpp)
+  target_link_libraries(CoinXmlDomFuzzer
+    Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(CoinXmlDomFuzzer PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  target_compile_options(CoinXmlDomFuzzer PRIVATE -fsanitize=fuzzer)
+  set_property(TARGET CoinXmlDomFuzzer APPEND_STRING PROPERTY
+    LINK_FLAGS " -fsanitize=fuzzer,address,undefined")
+  add_test(NAME CoinXmlDomFuzzerSmoke
+    COMMAND CoinXmlDomFuzzer
+      -runs=100
+      -max_len=4096
+      -timeout=10
+      -rss_limit_mb=2048
+      -dict=${CMAKE_CURRENT_SOURCE_DIR}/fuzz/xml.dict
+      ${COIN_XML_FUZZ_CORPUS})
+  set_tests_properties(CoinXmlDomFuzzerSmoke PROPERTIES LABELS "fuzz")
+endif()
+
 add_test(NAME CoinConfigCompatibility
   COMMAND ${CMAKE_COMMAND}
     -DCOIN_CONFIG_TEMPLATE=${PROJECT_SOURCE_DIR}/src/coin-config.cmake.in
@@ -358,7 +406,7 @@ set_tests_properties(CoinTestsFilterWildcard PROPERTIES
 add_test(NAME CoinTestsFilterSuite
   COMMAND CoinTests --run_test=SbList_TestSuite)
 set_tests_properties(CoinTestsFilterSuite PROPERTIES
-  PASS_REGULAR_EXPRESSION "\\[OK\\] 5 tests")
+  PASS_REGULAR_EXPRESSION "\\[OK\\] 21 tests")
 
 add_test(NAME CoinTestsFilterCombined
   COMMAND CoinTests
