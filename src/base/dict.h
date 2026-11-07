@@ -45,7 +45,8 @@ extern "C" {
 #endif /* __cplusplus */
 
   typedef struct cc_dict cc_dict;
-  /* Hash callbacks must not throw; resizing relinks entries in place. */
+  /* Hash callbacks must be stable and must not modify the dictionary.
+     Exceptions propagate; rebuilds preserve existing buckets and links. */
   typedef uintptr_t cc_dict_hash_func(const uintptr_t key);
   typedef void cc_dict_apply_func(uintptr_t key, void * val, void * closure);
   typedef enum cc_dict_put_result {
@@ -54,8 +55,9 @@ extern "C" {
     CC_DICT_PUT_INSERTED = 1
   } cc_dict_put_result;
 
-  /* Returns NULL on allocation failure. Non-finite or nonpositive load
-     factors use 0.75; finite positive factors above one are accepted. */
+  /* Returns NULL on allocation failure or an unrepresentable bucket count.
+     Non-finite or nonpositive load factors use 0.75; finite positive factors
+     above one are accepted. */
   cc_dict * cc_dict_construct(unsigned int size, float loadfactor);
   void cc_dict_destruct(cc_dict * ht);
   void cc_dict_clear(cc_dict * ht);
@@ -63,7 +65,9 @@ extern "C" {
   /* Distinguishes resource failure, replacement, and new insertion. On
      failure the dictionary and the previous value remain unchanged.
      Optional bucket-growth failure still reports INSERTED: the entry is
-     accessible in the original table and a later insertion can retry growth. */
+     accessible in the original table and a later insertion can retry growth.
+     A custom hash exception propagates; during optional growth the newly
+     inserted key also remains accessible in the original table. */
   cc_dict_put_result cc_dict_try_put(cc_dict * ht, uintptr_t key, void * val);
   /* Legacy return: TRUE for insertion, FALSE for replacement or failure.
      Use cc_dict_try_put() when failure must be distinguished. */
@@ -76,8 +80,9 @@ extern "C" {
 
   unsigned int cc_dict_get_num_elements(cc_dict * ht);
 
-  /* func must not be NULL. Existing entries are reindexed when the hash
-     function is changed. On allocation failure, the old hash stays active. */
+  /* NULL restores the default hash function. Existing entries are reindexed
+     when the hash function changes. On allocation failure, the old hash stays
+     active. A hash exception propagates without changing buckets or links. */
   void cc_dict_set_hash_func(cc_dict * ht, cc_dict_hash_func * func);
   void cc_dict_print_stat(cc_dict * ht);
 
