@@ -1,4 +1,4 @@
-#include <Inventor/SoDB.h>
+#include "TriangleSnapshotTestDatabase.h"
 #include <Inventor/SoTriangleSnapshot.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoAction.h>
@@ -30,7 +30,7 @@ protected:
 
 int run()
 {
-  SoDB::init();
+  SnapshotTestDatabase database;
   auto * root = new SoSeparator;
   root->ref();
   const SbViewportRegion viewport(64,64);

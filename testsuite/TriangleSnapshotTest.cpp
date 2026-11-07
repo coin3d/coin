@@ -1,4 +1,4 @@
-#include <Inventor/SoDB.h>
+#include "TriangleSnapshotTestDatabase.h"
 #include <Inventor/SoTriangleSnapshot.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoFaceSet.h>
@@ -52,7 +52,7 @@ bool check(const SoTriangleSnapshot & snapshot)
 
 int main()
 {
-  SoDB::init();
+  SnapshotTestDatabase database;
   bool destroyed = false;
   bool rootDestroyed = false;
   auto * root = new TrackedRoot(rootDestroyed);

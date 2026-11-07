@@ -44,7 +44,22 @@ void * operator new[](std::size_t size) { return ::operator new(size); }
 void operator delete[](void * pointer) noexcept { ::operator delete(pointer); }
 void operator delete[](void * pointer, std::size_t) noexcept { ::operator delete(pointer); }
 
-#include <Inventor/SoDB.h>
+// Keep nothrow allocations in the same allocator family as the throwing
+// replacements. Otherwise ASan can supply new[] while this test supplies free.
+void * operator new(std::size_t size, const std::nothrow_t &) noexcept
+{
+  try { return ::operator new(size); }
+  catch (const std::bad_alloc &) { return nullptr; }
+}
+void * operator new[](std::size_t size, const std::nothrow_t &) noexcept
+{
+  try { return ::operator new[](size); }
+  catch (const std::bad_alloc &) { return nullptr; }
+}
+void operator delete(void * pointer, const std::nothrow_t &) noexcept { ::operator delete(pointer); }
+void operator delete[](void * pointer, const std::nothrow_t &) noexcept { ::operator delete[](pointer); }
+
+#include "TriangleSnapshotTestDatabase.h"
 #include <Inventor/SoTriangleSnapshot.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoAction.h>
@@ -97,7 +112,7 @@ int main(int argc, char ** argv)
   const bool storageLimit = std::strcmp(argv[1],"storage-limit") == 0;
   const bool limited = triangleLimit || storageLimit;
   const int injection = data || stack || limited ? -1 : std::atoi(argv[1]);
-  SoDB::init();
+  SnapshotTestDatabase database;
   auto * root = new SoSeparator;
   root->ref();
   bool arm = false;

@@ -1,4 +1,4 @@
-#include <Inventor/SoDB.h>
+#include "TriangleSnapshotTestDatabase.h"
 #include <Inventor/SoTriangleSnapshot.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoAction.h>
@@ -47,7 +47,7 @@ void abortAction(void *, SoAction * action)
 int main(int argc, char ** argv)
 {
   if (argc != 2) return 10;
-  SoDB::init();
+  SnapshotTestDatabase database;
   const std::string mode = argv[1];
   auto * root = new SoSeparator;
   root->ref();
