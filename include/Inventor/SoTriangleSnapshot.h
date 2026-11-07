@@ -23,6 +23,8 @@ class SoNode;
   Each emitting shape visit must keep a single model matrix. A matrix change
   within that visit or an aborted traversal throws std::runtime_error.
   Constructor failure publishes no snapshot. Allocation failures propagate.
+  Allocation failures in capture callbacks are deferred until the emitting
+  shape returns, allowing primitive-generation cleanup before traversal stops.
   Accessors throw std::out_of_range for indices at or beyond the count.
   Returned references belong to this snapshot and expire with it.
   Const access may run concurrently; construction traversals follow Coin
