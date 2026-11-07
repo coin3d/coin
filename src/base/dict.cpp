@@ -265,7 +265,7 @@ cc_dict_clear(cc_dict * ht)
 
  */
 cc_dict_put_result
-cc_dict_try_put(cc_dict * ht, uintptr_t key, void * val)
+cc_dict_try_put(cc_dict * ht, uintptr_t key, void * val) noexcept(false)
 {
   unsigned int i = dict_get_index(ht, key);
   cc_dict_entry * he = ht->buckets[i];
@@ -297,7 +297,7 @@ cc_dict_try_put(cc_dict * ht, uintptr_t key, void * val)
 }
 
 SbBool
-cc_dict_put(cc_dict * ht, uintptr_t key, void * val)
+cc_dict_put(cc_dict * ht, uintptr_t key, void * val) noexcept(false)
 {
   return cc_dict_try_put(ht, key, val) == CC_DICT_PUT_INSERTED;
 }
@@ -310,7 +310,7 @@ cc_dict_put(cc_dict * ht, uintptr_t key, void * val)
 
 */
 SbBool
-cc_dict_get(cc_dict * ht, uintptr_t key, void ** val)
+cc_dict_get(cc_dict * ht, uintptr_t key, void ** val) noexcept(false)
 {
   cc_dict_entry * he;
   unsigned int i = dict_get_index(ht, key);
@@ -330,7 +330,7 @@ cc_dict_get(cc_dict * ht, uintptr_t key, void ** val)
   TRUE if found, FALSE otherwise.
 */
 SbBool
-cc_dict_remove(cc_dict * ht, uintptr_t key)
+cc_dict_remove(cc_dict * ht, uintptr_t key) noexcept(false)
 {
   cc_dict_entry * he, *next, * prev;
   unsigned int i = dict_get_index(ht, key);
@@ -378,7 +378,7 @@ cc_dict_get_num_elements(cc_dict * ht)
   propagates and the original function, buckets and links remain unchanged.
 */
 void
-cc_dict_set_hash_func(cc_dict * ht, cc_dict_hash_func * func)
+cc_dict_set_hash_func(cc_dict * ht, cc_dict_hash_func * func) noexcept(false)
 {
   assert(ht != NULL);
   if (func == NULL) func = dict_default_hashfunc;
@@ -396,7 +396,7 @@ cc_dict_set_hash_func(cc_dict * ht, cc_dict_hash_func * func)
   its current entry, but must not otherwise mutate or destroy this dictionary.
 */
 void
-cc_dict_apply(cc_dict * ht, cc_dict_apply_func * func, void * closure)
+cc_dict_apply(cc_dict * ht, cc_dict_apply_func * func, void * closure) noexcept(false)
 {
   unsigned int i;
   cc_dict_entry * elem;

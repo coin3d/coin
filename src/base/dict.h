@@ -40,6 +40,14 @@
 #include <stdlib.h>
 #include <Inventor/C/basic.h>
 
+/* Override MSVC /EHsc's implicit no-throw assumption for C-linkage calls
+   that invoke C++ callbacks. The C declarations remain unchanged. */
+#if defined(__cplusplus) && (__cplusplus >= 201103L || (defined(_MSC_VER) && _MSC_VER >= 1900))
+#define COIN_DICT_MAY_THROW noexcept(false)
+#else
+#define COIN_DICT_MAY_THROW
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -68,22 +76,22 @@ extern "C" {
      accessible in the original table and a later insertion can retry growth.
      A custom hash exception propagates; during optional growth the newly
      inserted key also remains accessible in the original table. */
-  cc_dict_put_result cc_dict_try_put(cc_dict * ht, uintptr_t key, void * val);
+  cc_dict_put_result cc_dict_try_put(cc_dict * ht, uintptr_t key, void * val) COIN_DICT_MAY_THROW;
   /* Legacy return: TRUE for insertion, FALSE for replacement or failure.
      Use cc_dict_try_put() when failure must be distinguished. */
-  SbBool cc_dict_put(cc_dict * ht, uintptr_t key, void * val);
-  SbBool cc_dict_get(cc_dict * ht, uintptr_t key, void ** val);
-  SbBool cc_dict_remove(cc_dict * ht, uintptr_t key);
+  SbBool cc_dict_put(cc_dict * ht, uintptr_t key, void * val) COIN_DICT_MAY_THROW;
+  SbBool cc_dict_get(cc_dict * ht, uintptr_t key, void ** val) COIN_DICT_MAY_THROW;
+  SbBool cc_dict_remove(cc_dict * ht, uintptr_t key) COIN_DICT_MAY_THROW;
   /* The callback may remove its current entry. It must not otherwise change
      this dictionary, including insertion, clear, rehash, or destruction. */
-  void cc_dict_apply(cc_dict * ht, cc_dict_apply_func * func, void * closure);
+  void cc_dict_apply(cc_dict * ht, cc_dict_apply_func * func, void * closure) COIN_DICT_MAY_THROW;
 
   unsigned int cc_dict_get_num_elements(cc_dict * ht);
 
   /* NULL restores the default hash function. Existing entries are reindexed
      when the hash function changes. On allocation failure, the old hash stays
      active. A hash exception propagates without changing buckets or links. */
-  void cc_dict_set_hash_func(cc_dict * ht, cc_dict_hash_func * func);
+  void cc_dict_set_hash_func(cc_dict * ht, cc_dict_hash_func * func) COIN_DICT_MAY_THROW;
   void cc_dict_print_stat(cc_dict * ht);
 
 /* ********************************************************************** */
@@ -91,5 +99,7 @@ extern "C" {
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */
+
+#undef COIN_DICT_MAY_THROW
 
 #endif /* ! CC_DICT_H */
