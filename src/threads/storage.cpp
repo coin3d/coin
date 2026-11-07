@@ -88,12 +88,22 @@ cc_storage_init(unsigned int size, void (*constructor)(void *),
                 void (*destructor)(void *)) 
 {
   cc_storage * storage = (cc_storage *) malloc(sizeof(cc_storage));
+  if (storage == NULL) return NULL;
   storage->size = size;
   storage->constructor = constructor;
   storage->destructor = destructor;
   storage->dict = cc_dict_construct(8, 0.75f);
+  if (storage->dict == NULL) {
+    free(storage);
+    return NULL;
+  }
 #ifdef HAVE_THREADS
   storage->mutex = cc_mutex_construct();
+  if (storage->mutex == NULL) {
+    cc_dict_destruct(storage->dict);
+    free(storage);
+    return NULL;
+  }
 #endif /* HAVE_THREADS */
 
   return storage;
@@ -163,10 +173,15 @@ cc_storage_get(cc_storage * storage)
 
   if (!cc_dict_get(storage->dict, threadid, &val)) {
     val = malloc(storage->size);
-    if (storage->constructor) {
+    if (val != NULL && storage->constructor) {
       storage->constructor(val);
     }
-    (void) cc_dict_put(storage->dict, threadid, val);
+    if (val != NULL &&
+        cc_dict_try_put(storage->dict, threadid, val) != CC_DICT_PUT_INSERTED) {
+      if (storage->destructor) storage->destructor(val);
+      free(val);
+      val = NULL;
+    }
   }
 
 #ifdef HAVE_THREADS

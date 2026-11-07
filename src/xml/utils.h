@@ -46,6 +46,18 @@ char * cc_xml_strndup(const char * string, size_t len);
 char * cc_xml_strdup(const char * string);
 int cc_xml_strieq(const char * s1, const char * s2);
 
+enum cc_xml_escape_mode {
+  CC_XML_ESCAPE_TEXT,
+  CC_XML_ESCAPE_ATTRIBUTE
+};
+
+size_t cc_xml_escape_calculate_size(const char * string,
+                                    enum cc_xml_escape_mode mode);
+size_t cc_xml_escape_write_to_buffer(const char * string,
+                                     char * buffer,
+                                     size_t bufsize,
+                                     enum cc_xml_escape_mode mode);
+
 /* ********************************************************************** */
 
 #ifdef __cplusplus

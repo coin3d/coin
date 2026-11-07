@@ -48,6 +48,7 @@ internal_init(cc_thread * thread)
   if (status != 0) {
     if (COIN_DEBUG)
       cc_debugerror_post("internal_init", "pthread_create() error: %d\n", status);
+    pthread_attr_destroy(&(thread->pthread.threadattrs));
     return CC_ERROR;
   }
   return CC_OK;
