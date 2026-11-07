@@ -45,7 +45,8 @@ extern "C" {
 #endif /* __cplusplus */
 
   typedef struct cc_dict cc_dict;
-  /* Hash callbacks must not throw; resizing relinks entries in place. */
+  /* Hash callbacks must be stable and must not modify the dictionary.
+     Exceptions propagate; rebuilds preserve existing buckets and links. */
   typedef uintptr_t cc_dict_hash_func(const uintptr_t key);
   typedef void cc_dict_apply_func(uintptr_t key, void * val, void * closure);
   typedef enum cc_dict_put_result {
@@ -62,9 +63,11 @@ extern "C" {
   void cc_dict_clear(cc_dict * ht);
 
   /* Distinguishes resource failure, replacement, and new insertion. On
-     failure the dictionary and the previous value remain unchanged. Optional
-     growth failure preserves the newly inserted key. A custom hash exception
-     propagates; during growth it also preserves the inserted key. */
+     failure the dictionary and the previous value remain unchanged.
+     Optional bucket-growth failure still reports INSERTED: the entry is
+     accessible in the original table and a later insertion can retry growth.
+     A custom hash exception propagates; during optional growth the newly
+     inserted key also remains accessible in the original table. */
   cc_dict_put_result cc_dict_try_put(cc_dict * ht, uintptr_t key, void * val);
   /* Legacy return: TRUE for insertion, FALSE for replacement or failure.
      Use cc_dict_try_put() when failure must be distinguished. */
