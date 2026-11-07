@@ -58,6 +58,7 @@ COIN_DLL_API void cc_storage_destruct(cc_storage * storage);
 /* Returns NULL if the thread's block or dictionary entry cannot be allocated.
    A constructed block is destroyed before rollback; later calls may retry. */
 COIN_DLL_API void * cc_storage_get(cc_storage * storage);
+/* A NULL callback leaves the storage unchanged. */
 COIN_DLL_API void cc_storage_apply_to_all(cc_storage * storage, 
                                           cc_storage_apply_func * func, 
                                           void * closure);
