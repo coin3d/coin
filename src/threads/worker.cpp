@@ -105,7 +105,7 @@ worker_thread_entry(void * data)
 
 /*
  * called to start thread. Assumes worker->mutex is locked by caller */
-static void 
+static SbBool
 worker_start_thread(cc_worker * worker)
 {
   if (!worker->threadisrunning) {
@@ -114,6 +114,11 @@ worker_start_thread(cc_worker * worker)
        mutex and beginmutex  to synchronize */
     cc_mutex_unlock(worker->mutex);
     worker->thread = cc_thread_construct(worker_thread_entry, worker);
+    if (worker->thread == NULL) {
+      cc_mutex_lock(worker->mutex);
+      cc_mutex_unlock(worker->beginmutex);
+      return FALSE;
+    }
     
     /* Wait for thread to get to the main loop. The new thread will
      have worker->mutex locked when this signal arrives */
@@ -125,6 +130,7 @@ worker_start_thread(cc_worker * worker)
     worker->threadisrunning = 1;
     cc_mutex_unlock(worker->beginmutex);
   }
+  return TRUE;
 }
 
 /*
@@ -154,12 +160,31 @@ cc_worker *
 cc_worker_construct(void)
 {
   cc_worker * worker = (cc_worker*) malloc(sizeof(cc_worker));
-  assert(worker);
+  if (worker == NULL) return NULL;
 
   worker->mutex = cc_mutex_construct();
+  if (worker->mutex == NULL) { free(worker); return NULL; }
   worker->cond = cc_condvar_construct();
+  if (worker->cond == NULL) {
+    cc_mutex_destruct(worker->mutex);
+    free(worker);
+    return NULL;
+  }
   worker->begincond = cc_condvar_construct();
+  if (worker->begincond == NULL) {
+    cc_condvar_destruct(worker->cond);
+    cc_mutex_destruct(worker->mutex);
+    free(worker);
+    return NULL;
+  }
   worker->beginmutex = cc_mutex_construct();
+  if (worker->beginmutex == NULL) {
+    cc_condvar_destruct(worker->begincond);
+    cc_condvar_destruct(worker->cond);
+    cc_mutex_destruct(worker->mutex);
+    free(worker);
+    return NULL;
+  }
   worker->thread = NULL; /* delay creating thread */
   worker->threadisrunning = FALSE;
   worker->shutdown = FALSE;
@@ -201,7 +226,12 @@ cc_worker_start(cc_worker * worker, cc_worker_f * workfunc, void * closure)
   worker->workclosure = closure;
 
   if (!worker->threadisrunning) {
-    worker_start_thread(worker);
+    if (!worker_start_thread(worker)) {
+      worker->workfunc = NULL;
+      worker->workclosure = NULL;
+      cc_mutex_unlock(worker->mutex);
+      return FALSE;
+    }
   }
   
   /* We now know that thread is waiting for a signal */

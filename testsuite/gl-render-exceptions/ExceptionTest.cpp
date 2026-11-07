@@ -12,10 +12,13 @@
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoSeparator.h>
 
+#include <atomic>
+#include <chrono>
 #include <cstdio>
 #include <cstdlib>
 #include <stdexcept>
 #include <string>
+#include <thread>
 
 #ifndef GL_FRAMEBUFFER_BINDING_EXT
 #define GL_FRAMEBUFFER_BINDING_EXT 0x8CA6
@@ -25,6 +28,31 @@ namespace {
 void check(bool ok, const char * what)
 {
   if (!ok) { std::fprintf(stderr, "%s\n", what); std::abort(); }
+}
+
+void checkRestored(SoGLRenderAction & action, SoSeparator * root,
+                   int depth, int refs)
+{
+  check(root->getRefCount() == refs, "render root/path reference leaked");
+  check(action.getState()->getDepth() == depth, "render state depth changed");
+  check(!action.isRenderingTranspPaths(), "transparent pass flag remained active");
+  check(!action.isRenderingDelayedPaths(), "delayed pass flag remained active");
+  check(action.getNodeAppliedTo() == NULL, "render target not restored");
+
+  // A writer on another thread detects a read lock leaked by nested apply().
+  std::atomic<bool> done(false);
+  std::thread writer([&done]() {
+    SoDB::writelock();
+    SoDB::writeunlock();
+    done.store(true);
+  });
+  const auto deadline = std::chrono::steady_clock::now() +
+                        std::chrono::seconds(3);
+  while (!done.load() && std::chrono::steady_clock::now() < deadline) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+  }
+  check(done.load(), "SoDB read lock remained held after render");
+  writer.join();
 }
 
 struct Probe {
@@ -125,16 +153,17 @@ int main()
     p.throwpre = true;
     expectFailure([&]() { action.apply(root); }, "pre-render failure");
     p.throwpre = false;
-    check(root->getRefCount() == refs, "pre-render root reference leaked");
-    check(action.getState()->getDepth() == depth, "pre-render state depth changed");
+    checkRestored(action, root, depth, refs);
     action.apply(root);
+    checkRestored(action, root, depth, refs);
     check(p.precalls == 2, "pre-render callback was skipped after failure");
 
     p.throwscene = true;
     expectFailure([&]() { action.apply(root); }, "scene failure");
     p.throwscene = false;
-    check(action.getState()->getDepth() == depth, "scene state depth changed");
+    checkRestored(action, root, depth, refs);
     action.apply(root);
+    checkRestored(action, root, depth, refs);
     check(p.precalls == 4, "scene failure left rendering flag active");
 
     action.setTransparencyType(SoGLRenderAction::DELAYED_BLEND);
@@ -142,16 +171,18 @@ int main()
     expectFailure([&]() { action.apply(root); }, "transparent pass failure");
     p.throwtransparency = false;
     check(p.transparencycalls > 0, "transparent pass was not exercised");
-    check(!action.isRenderingTranspPaths(), "transparent pass flag remained active");
+    checkRestored(action, root, depth, refs);
     action.apply(root);
+    checkRestored(action, root, depth, refs);
 
     p.delaycube = true;
     p.throwdelayed = true;
     expectFailure([&]() { action.apply(root); }, "delayed pass failure");
     p.throwdelayed = false;
     check(p.delayedcalls > 0, "delayed pass was not exercised");
-    check(!action.isRenderingDelayedPaths(), "delayed pass flag remained active");
+    checkRestored(action, root, depth, refs);
     action.apply(root);
+    checkRestored(action, root, depth, refs);
 
     action.setTransparencyType(SoGLRenderAction::WEIGHTED_BLEND);
     GLint beforefbo = 0, afterfbo = 0;
@@ -163,11 +194,20 @@ int main()
     p.throwtransparency = false;
     check(p.transparencycalls > beforetransparency,
           "weighted transparent pass was not exercised");
+    checkRestored(action, root, depth, refs);
     glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT, &afterfbo);
     if (p.transparentfbo > 0) {
       check(afterfbo == beforefbo, "WBOIT framebuffer binding not restored");
     }
+    const int recoverytransparency = p.transparencycalls;
     action.apply(root);
+    check(p.transparencycalls > recoverytransparency,
+          "transparent pass did not run during recovery");
+    checkRestored(action, root, depth, refs);
+    std::printf("GLRenderExceptions: pre-render, scene, transparent and delayed "
+                "exceptions recovered; references and locks released; "
+                "weighted framebuffer %s.\n",
+                p.transparentfbo > 0 ? "exercised" : "unavailable (fallback)");
     root->unref();
     SoContextHandler::destructingContext(919);
   }

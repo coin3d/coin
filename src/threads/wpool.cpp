@@ -53,6 +53,8 @@
 #include <Inventor/C/errors/debugerror.h>
 
 #include "threads/wpoolp.h"
+#include "base/listp.h"
+#include "base/oomp.h"
 
 /* ********************************************************************** */
 
@@ -115,16 +117,22 @@ wpool_wait(cc_wpool * pool, int num)
   pool->iswaiting = FALSE;
 }
 
-static void
+static SbBool
 wpool_add_workers(cc_wpool * pool, int num)
 {
   int i;
   cc_worker * worker;
   for (i = 0; i < num; i++) {
     worker = cc_worker_construct();
+    if (worker == NULL) return FALSE;
     cc_worker_set_idle_callback(worker, wpool_idle_cb, pool);
-    cc_list_append(pool->idlepool, worker);
+    if (!cc_list_try_append(pool->idlepool, worker)) {
+      cc_worker_destruct(worker);
+      return FALSE;
+    }
+    ++pool->numworkers;
   }
+  return TRUE;
 }
 
 static cc_worker *
@@ -143,21 +151,47 @@ wpool_get_idle_worker(cc_wpool * pool)
 /* public api */
 
 /*!
-  Construct worker pool.
+  Construct worker pool. Returns NULL if a component or worker cannot be
+  allocated. A failed construction releases components created so far.
 */
 cc_wpool *
 cc_wpool_construct(int numworkers)
 {
+  if (numworkers < 0) return NULL;
   cc_wpool * pool = (cc_wpool*) malloc(sizeof(cc_wpool));
+  if (pool == NULL) return NULL;
 
   pool->mutex = cc_mutex_construct();
+  if (pool->mutex == NULL) { free(pool); return NULL; }
   pool->waitcond = cc_condvar_construct();
+  if (pool->waitcond == NULL) {
+    cc_mutex_destruct(pool->mutex);
+    free(pool);
+    return NULL;
+  }
   pool->idlepool = cc_list_construct();
+  if (pool->idlepool == NULL) {
+    cc_condvar_destruct(pool->waitcond);
+    cc_mutex_destruct(pool->mutex);
+    free(pool);
+    return NULL;
+  }
   pool->busypool = cc_list_construct();
+  if (pool->busypool == NULL) {
+    cc_list_destruct(pool->idlepool);
+    cc_condvar_destruct(pool->waitcond);
+    cc_mutex_destruct(pool->mutex);
+    free(pool);
+    return NULL;
+  }
   pool->iswaiting = FALSE;
   pool->numworkers = 0;
 
   cc_wpool_set_num_workers(pool, numworkers);
+  if (pool->numworkers != numworkers) {
+    cc_wpool_destruct(pool);
+    return NULL;
+  }
   return pool;
 }
 
@@ -203,6 +237,7 @@ cc_wpool_get_num_workers(cc_wpool * pool)
 void
 cc_wpool_set_num_workers(cc_wpool * pool, int newnum)
 {
+  if (newnum < 0) return;
   if (newnum == pool->numworkers) return;
 
   cc_wpool_wait_all(pool);
@@ -211,7 +246,9 @@ cc_wpool_set_num_workers(cc_wpool * pool, int newnum)
    * are guaranteed to be idle */
 
   if (newnum > pool->numworkers) {
-    wpool_add_workers(pool, newnum - pool->numworkers);
+    if (!cc_list_try_reserve(pool->idlepool, newnum) ||
+        !cc_list_try_reserve(pool->busypool, newnum)) return;
+    if (!wpool_add_workers(pool, newnum - pool->numworkers)) return;
   }
   else {
     int i, n = pool->numworkers - newnum;
@@ -219,7 +256,7 @@ cc_wpool_set_num_workers(cc_wpool * pool, int newnum)
       cc_worker_destruct((cc_worker*) cc_list_pop(pool->idlepool));
     }
   }
-  pool->numworkers = newnum;
+  if (newnum < pool->numworkers) pool->numworkers = newnum;
 }
 
 /*!
@@ -310,7 +347,8 @@ cc_wpool_start_worker(cc_wpool * pool, cc_wpool_f * workfunc, void * closure)
   cc_worker * worker = wpool_get_idle_worker(pool);
   assert(worker);
   if (worker) {
-    cc_worker_start(worker, workfunc, closure);
+    if (!cc_worker_start(worker, workfunc, closure))
+      coin_oom_abort("cc_wpool_start_worker thread");
   }
 }
 
