@@ -308,8 +308,6 @@ static bool hash_change_failure()
   CHECK(dict->hashfunc == original);
   CHECK(find_entry(dict, 1) == first && first->val == NULL);
   CHECK(find_entry(dict, 2) == second && second->val == dict);
-  CHECK(find_entry(dict, 1) == first && first->val == NULL);
-  CHECK(find_entry(dict, 2) == second && second->val == dict);
   cc_dict_set_hash_func(dict, mixed_hash);
   CHECK(dict->hashfunc == mixed_hash);
   CHECK(find_entry(dict, 1) == first && first->val == NULL);
@@ -417,11 +415,21 @@ static bool throwing_hash_preserves_state()
   CHECK(cc_dict_get_num_elements(dict) == 3);
   CHECK(dict->buckets == originalbuckets);
   CHECK(dict->size == 2);
+  hash_calls_before_throw = 0;
+  try {
+    cc_dict_try_put(dict, 6, dict);
+    CHECK(false);
+  }
+  catch (const std::runtime_error &) { }
+  CHECK(cc_dict_get_num_elements(dict) == 3);
+  CHECK(dict->buckets == originalbuckets);
   hash_calls_before_throw = 10;
+  CHECK(!cc_dict_get(dict, 6, &found));
   CHECK(cc_dict_get(dict, 0, &found));
   CHECK(cc_dict_get(dict, 2, &found));
   CHECK(cc_dict_get(dict, 4, &found));
   cc_dict_destruct(dict);
+  CHECK(live_allocations == 0);
   return true;
 }
 
@@ -466,6 +474,7 @@ static bool capacity_boundaries()
   CHECK(cc_dict_try_put(dict, 1, NULL) == CC_DICT_PUT_INSERTED);
   CHECK(dict->size == 11);
   cc_dict_destruct(dict);
+  CHECK(live_allocations == 0);
   return true;
 }
 
@@ -506,6 +515,7 @@ static bool rebuild_allocation_failures()
   cc_dict_set_hash_func(dict, NULL);
   CHECK(dict->hashfunc == dict_default_hashfunc);
   cc_dict_destruct(dict);
+  CHECK(live_allocations == 0);
   return true;
 }
 
