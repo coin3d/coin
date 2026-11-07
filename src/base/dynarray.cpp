@@ -63,9 +63,7 @@ cc_dynarray_new(void)
 cc_dynarray *
 cc_dynarray_duplicate(const cc_dynarray * src)
 {
-  cc_dynarray * p = cc_dynarray_new();
-  p->plist = src->plist;
-  return p;
+  return new cc_dynarray(*src);
 }
 
 void
