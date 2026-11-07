@@ -1,3 +1,10 @@
+add_executable(CoinTriangleSnapshotContractTest TriangleSnapshotContractTest.cpp)
+target_link_libraries(CoinTriangleSnapshotContractTest PRIVATE Coin)
+foreach(case transform abort material bounds)
+  add_test(NAME TriangleSnapshotContract_${case} COMMAND CoinTriangleSnapshotContractTest ${case})
+  set_tests_properties(TriangleSnapshotContract_${case} PROPERTIES TIMEOUT 20)
+endforeach()
+
 find_package(Threads REQUIRED)
 add_executable(CoinTriangleSnapshotTest TriangleSnapshotTest.cpp)
 target_link_libraries(CoinTriangleSnapshotTest PRIVATE Coin Threads::Threads)

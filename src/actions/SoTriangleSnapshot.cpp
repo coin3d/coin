@@ -20,6 +20,7 @@ struct Capture {
   // A shape can itself traverse other shapes. Restore its occurrence on exit.
   std::vector<std::size_t> stack;
   bool invalidMaterial;
+  bool changingMatrix;
   static std::size_t unseen() { return static_cast<std::size_t>(-1); }
 
   static SoCallbackAction::Response enter(void * closure, SoCallbackAction *, const SoNode *)
@@ -38,11 +39,15 @@ struct Capture {
                    const SoPrimitiveVertex * b, const SoPrimitiveVertex * c)
   {
     Capture & capture = *static_cast<Capture *>(closure);
-    if (capture.invalidMaterial) return;
+    if (capture.invalidMaterial || capture.changingMatrix) return;
     std::size_t & occurrence = capture.stack.back();
     if (occurrence == unseen()) {
       occurrence = capture.matrices.size();
       capture.matrices.push_back(action->getModelMatrix());
+    }
+    if (capture.matrices[occurrence] != action->getModelMatrix()) {
+      capture.changingMatrix = true;
+      return;
     }
     SoTriangleSnapshot::Triangle triangle;
     triangle.occurrence = occurrence;
@@ -69,7 +74,7 @@ struct Capture {
 SoTriangleSnapshot::SoTriangleSnapshot(SoNode & root, const SbViewportRegion & viewport)
 {
   std::unique_ptr<Data> result(new Data);
-  Capture capture = {result->matrices, result->triangles, {}, false};
+  Capture capture = {result->matrices, result->triangles, {}, false, false};
   SoCallbackAction action(viewport);
   const SoType shape = SoShape::getClassTypeId();
   action.addPreCallback(shape, Capture::enter, &capture);
@@ -78,6 +83,10 @@ SoTriangleSnapshot::SoTriangleSnapshot(SoNode & root, const SbViewportRegion & v
   action.apply(&root);
   if (capture.invalidMaterial)
     throw std::out_of_range("triangle material index outside current diffuse array");
+  if (capture.changingMatrix)
+    throw std::runtime_error("model matrix changed within a shape occurrence");
+  if (action.hasTerminated())
+    throw std::runtime_error("triangle snapshot traversal was aborted");
   this->data = result.release();
 }
 

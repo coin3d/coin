@@ -20,7 +20,14 @@ class SoNode;
   this traversal. Storage grows with the number of emitted triangles.
   Shared shapes can emit different geometry or materials on
   different visits. An invalid diffuse material index throws std::out_of_range.
-  Accessors require an index less than the corresponding count.
+  Each emitting shape visit must keep a single model matrix. A matrix change
+  within that visit or an aborted traversal throws std::runtime_error.
+  Constructor failure publishes no snapshot. Allocation failures propagate.
+  Accessors throw std::out_of_range for indices at or beyond the count.
+  Returned references belong to this snapshot and expire with it.
+  Const access may run concurrently; construction traversals follow Coin
+  threading rules. Occurrence indices cannot identify a later traversal.
+  Empty traversals have zero triangles and zero occurrences.
   Lines, points, textures and application details are omitted.
 */
 class COIN_DLL_API SoTriangleSnapshot {
