@@ -43,6 +43,8 @@
 
 #include "tidbitsp.h"
 #include "base/dict.h"
+#include "base/listp.h"
+#include "base/oomp.h"
 #include "threads/threadsutilp.h"
 #include "fonts/fontlib_wrapper.h"
 #include "fonts/glyph.h"
@@ -117,15 +119,18 @@ static void
 cc_glyph3d_initialize()
 {
   CC_MUTEX_CONSTRUCT(glyph3d_fonthash_lock);
+#ifdef HAVE_THREADS
+  if (glyph3d_fonthash_lock == NULL) coin_oom_abort("cc_glyph3d mutex");
+#endif
   GLYPH3D_MUTEX_LOCK(glyph3d_fonthash_lock);
   
   if (glyph3d_initialized) {
     GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);
     return;
   }
-  glyph3d_initialized = TRUE;
-  
   glyph3d_fonthash = cc_dict_construct(15, 0.75);
+  if (glyph3d_fonthash == NULL) coin_oom_abort("cc_glyph3d dictionary");
+  glyph3d_initialized = TRUE;
 
   /* +1, so it happens before the underlying font abstraction layer
      cleans itself up: */
@@ -170,20 +175,24 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
     /* No glyphlist for this character is found. Create one and
        add it to the hashtable. */
     glyphlist = cc_list_construct();
-    cc_dict_put(glyph3d_fonthash, (uintptr_t)character, glyphlist);
+    if (glyphlist == NULL ||
+        cc_dict_try_put(glyph3d_fonthash, (uintptr_t)character, glyphlist) !=
+        CC_DICT_PUT_INSERTED)
+      coin_oom_abort("cc_glyph3d cache insertion");
   }
 
   assert(glyphlist);
 
   /* build a new glyph struct */
   glyph = (cc_glyph3d *) malloc(sizeof(cc_glyph3d));
+  if (glyph == NULL) coin_oom_abort("cc_glyph3d glyph");
 
   glyph->c.character = character;
   glyph->c.refcount = 1;
 
 
   newspec = (cc_font_specification *) malloc(sizeof(cc_font_specification));
-  assert(newspec);
+  if (newspec == NULL) coin_oom_abort("cc_glyph3d font specification");
   cc_fontspec_copy(spec, newspec);
 
   glyph->c.fontspec = newspec;
@@ -191,6 +200,7 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
   /* FIXME: fonttoload variable should be allocated on the
      stack. 20030921 mortene. */
   fonttoload = cc_string_construct_new();
+  if (fonttoload == NULL) coin_oom_abort("cc_glyph3d font name");
   cc_string_set_text(fonttoload, cc_string_get_text(&spec->name));
   if (cc_string_length(&spec->style) > 0) {
     cc_string_append_text(fonttoload, " ");
@@ -224,6 +234,7 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
   /* FIXME: this should be moved to fontlib_wrapper.c. 20050623 mortene. */
   if (glyph->vectorglyph == NULL) {
     glyph->vectorglyph = (struct cc_font_vector_glyph *) malloc(sizeof(struct cc_font_vector_glyph));
+    if (glyph->vectorglyph == NULL) coin_oom_abort("cc_glyph3d fallback glyph");
     glyph->didallocvectorglyph = TRUE;
 
     if (character <= 32 || character >= 127) {
@@ -247,7 +258,8 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
   glyph->width = glyph->bbox[2] - glyph->bbox[0];
 
   /* Store newly created glyph in the list for this character */
-  cc_list_append(glyphlist, glyph);
+  if (!cc_list_try_append(glyphlist, glyph))
+    coin_oom_abort("cc_glyph3d cache list");
 
   GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);
   return glyph;
