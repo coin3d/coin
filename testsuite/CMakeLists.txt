@@ -1,3 +1,8 @@
+add_executable(CoinTriangleSnapshotNestedTest TriangleSnapshotNestedTest.cpp)
+target_link_libraries(CoinTriangleSnapshotNestedTest PRIVATE Coin)
+add_test(NAME TriangleSnapshotNested COMMAND CoinTriangleSnapshotNestedTest)
+set_tests_properties(TriangleSnapshotNested PROPERTIES TIMEOUT 20)
+
 add_executable(CoinTriangleSnapshotContractTest TriangleSnapshotContractTest.cpp)
 target_link_libraries(CoinTriangleSnapshotContractTest PRIVATE Coin)
 foreach(case transform abort material bounds)
