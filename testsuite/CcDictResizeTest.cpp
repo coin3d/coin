@@ -12,6 +12,14 @@
 #include "tidbitsp.h"
 #include "coindefs.h"
 
+// Under /EHsc the unannotated C-linkage declarations are assumed not to throw.
+static_assert(!noexcept(cc_dict_try_put(NULL, 0, NULL)), "try_put must propagate hash exceptions");
+static_assert(!noexcept(cc_dict_put(NULL, 0, NULL)), "put must propagate hash exceptions");
+static_assert(!noexcept(cc_dict_get(NULL, 0, NULL)), "get must propagate hash exceptions");
+static_assert(!noexcept(cc_dict_remove(NULL, 0)), "remove must propagate hash exceptions");
+static_assert(!noexcept(cc_dict_set_hash_func(NULL, NULL)), "rehash must propagate hash exceptions");
+static_assert(!noexcept(cc_dict_apply(NULL, NULL, NULL)), "apply must propagate callback exceptions");
+
 static bool failnext = false;
 static bool failmalloc = false;
 static bool failconstruct = false;
