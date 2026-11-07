@@ -65,7 +65,7 @@ jobs:
 
   macos-build:
     name: macOS · legacy renderer ${{ matrix.legacy_renderer.label }}
-    runs-on: macos-15
+    runs-on: macos-14
     strategy:
       fail-fast: false
       matrix:
