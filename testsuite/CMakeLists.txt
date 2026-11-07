@@ -1,8 +1,26 @@
 include(action-apply-exceptions/Tests.cmake)
 include(SbSmallMapTests.cmake)
 
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND COIN_BUILD_SHARED_LIBS AND CMAKE_NM)
+  add_test(NAME LegacyExportedSymbols
+    COMMAND ${CMAKE_COMMAND}
+      "-DNM=${CMAKE_NM}"
+      "-DLIBRARY=$<TARGET_FILE:Coin>"
+      -P ${CMAKE_CURRENT_SOURCE_DIR}/CheckLegacyExportedSymbols.cmake)
+endif()
+
 if(COIN_BUILD_LEGACY_GL_RENDERER)
   find_package(Threads REQUIRED)
+  add_executable(CoinTextureArrayBudgetTest
+    reproducers/issue-833-shared-coordinates/budget.cpp)
+  target_compile_definitions(CoinTextureArrayBudgetTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
+  target_include_directories(CoinTextureArrayBudgetTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${PROJECT_SOURCE_DIR}/src ${PROJECT_BINARY_DIR}/src
+    ${PROJECT_SOURCE_DIR}/include/Inventor/annex ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  target_link_libraries(CoinTextureArrayBudgetTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+  add_test(NAME TextureCoordinateArrayBudget COMMAND CoinTextureArrayBudgetTest)
+
   add_executable(CoinBumpProgramTest bumprender/FailureTest.cpp)
   target_compile_definitions(CoinBumpProgramTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
   target_include_directories(CoinBumpProgramTest PRIVATE
@@ -26,6 +44,33 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
       add_test(NAME BumpProgramGLX COMMAND CoinBumpGLXTest)
       set_tests_properties(BumpProgramGLX PROPERTIES SKIP_RETURN_CODE 77)
     endif()
+  endif()
+
+  if(HAVE_VRML97 AND UNIX AND NOT APPLE AND HAVE_GLX)
+    add_executable(CoinTextureArrayTest reproducers/issue-722-texture-vbo/shapes.cpp)
+    target_include_directories(CoinTextureArrayTest PRIVATE
+      ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+      ${COIN_TARGET_INCLUDE_DIRECTORIES})
+    target_link_libraries(CoinTextureArrayTest Coin)
+    find_program(COIN_TEST_XVFB_RUN xvfb-run)
+    if(COIN_TEST_XVFB_RUN)
+      add_test(NAME TextureCoordinateArrayRendering
+        COMMAND ${COIN_TEST_XVFB_RUN} -a
+          ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/issue-722-texture-vbo/matrix.sh
+          $<TARGET_FILE:CoinTextureArrayTest>)
+    else()
+      add_test(NAME TextureCoordinateArrayRendering
+        COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/issue-722-texture-vbo/matrix.sh
+          $<TARGET_FILE:CoinTextureArrayTest>)
+    endif()
+    set_tests_properties(TextureCoordinateArrayRendering PROPERTIES SKIP_RETURN_CODE 77)
+
+    add_executable(CoinSharedCoordinateBenchmark EXCLUDE_FROM_ALL
+      reproducers/issue-833-shared-coordinates/benchmark.cpp)
+    target_include_directories(CoinSharedCoordinateBenchmark PRIVATE
+      ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+      ${COIN_TARGET_INCLUDE_DIRECTORIES})
+    target_link_libraries(CoinSharedCoordinateBenchmark Coin OpenGL::GL)
   endif()
 endif()
 
