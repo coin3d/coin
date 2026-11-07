@@ -45,6 +45,7 @@
 #include <memory>
 
 #include <coindefs.h>
+#include <Inventor/C/base/string.h>
 #include <Inventor/C/XML/element.h>
 #include <Inventor/C/XML/attribute.h>
 #include <Inventor/C/XML/path.h>
@@ -120,8 +121,14 @@
   \ingroup coin_XML
 */
 
+enum cc_xml_doc_parse_state {
+  CC_XML_DOC_PARSE_IDLE,
+  CC_XML_DOC_PARSE_ACTIVE
+};
+
 struct cc_xml_doc {
   XML_Parser parser;
+  cc_xml_doc_parse_state parsestate;
 
   cc_xml_filter_cb * filtercb;
   void * filtercbdata;
@@ -132,10 +139,15 @@ struct cc_xml_doc {
   char * xmlencoding;
 
   char * filename;
+  // The public root remains committed while callbacks build parserroot.
   cc_xml_elt * root;
+  cc_xml_elt * parserroot;
+  // Restored if a callback changes current before the parse fails.
+  cc_xml_elt * parserpreviouscurrent;
   cc_xml_elt * current;
 
   SbList<cc_xml_elt *> parsestack;
+  cc_string pendingcdata;
 };
 
 // *************************************************************************
@@ -143,11 +155,15 @@ struct cc_xml_doc {
 
 namespace {
 
+void cc_xml_doc_flush_character_data_x(cc_xml_doc * doc);
+
 void
 cc_xml_doc_expat_element_start_handler_cb(void * userdata, const XML_Char * elementtype, const XML_Char ** attributes)
 {
   XML_Parser parser = static_cast<XML_Parser>(userdata);
   cc_xml_doc * doc = static_cast<cc_xml_doc *>(XML_GetUserData(parser));
+
+  cc_xml_doc_flush_character_data_x(doc);
 
   cc_xml_elt * elt = cc_xml_elt_new_from_data(elementtype, NULL);
   assert(elt);
@@ -166,8 +182,8 @@ cc_xml_doc_expat_element_start_handler_cb(void * userdata, const XML_Char * elem
     cc_xml_elt_add_child_x(parent, elt);
   }
 
-  if ((doc->parsestack.getLength() == 0) && (doc->root == NULL)) {
-    cc_xml_doc_set_root_x(doc, elt);
+  if ((doc->parsestack.getLength() == 0) && (doc->parserroot == NULL)) {
+    doc->parserroot = elt;
   }
 
   doc->parsestack.push(elt);
@@ -182,6 +198,8 @@ cc_xml_doc_expat_element_end_handler_cb(void * userdata, const XML_Char * elemen
 {
   XML_Parser parser = static_cast<XML_Parser>(userdata);
   cc_xml_doc * doc = static_cast<cc_xml_doc *>(XML_GetUserData(parser));
+
+  cc_xml_doc_flush_character_data_x(doc);
 
   const int stackdepth = doc->parsestack.getLength();
   if (stackdepth == 0) {
@@ -204,10 +222,9 @@ cc_xml_doc_expat_element_end_handler_cb(void * userdata, const XML_Char * elemen
           cc_xml_elt_remove_child_x(parent, topelt);
           cc_xml_elt_delete_x(topelt);
         } else {
-          if (topelt == doc->root) {
-            cc_xml_elt * root = cc_xml_doc_release_root_x(doc);
-            assert(root == topelt);
-            cc_xml_elt_delete_x(root);
+          if (topelt == doc->parserroot) {
+            doc->parserroot = NULL;
+            cc_xml_elt_delete_x(topelt);
           } else {
             assert(!"invalid case - investigate");
           }
@@ -242,6 +259,49 @@ cc_xml_is_all_whitespace_p(const char * strptr)
 }
 
 void
+cc_xml_doc_flush_character_data_x(cc_xml_doc * doc)
+{
+  assert(doc);
+
+  if (!cc_string_is(&doc->pendingcdata)) return;
+
+  const char * cdata = cc_string_get_text(&doc->pendingcdata);
+  if (cc_xml_is_all_whitespace_p(cdata)) {
+    cc_string_clear_no_free(&doc->pendingcdata);
+    return;
+  }
+
+  cc_xml_elt * elt = cc_xml_elt_new();
+  assert(elt);
+  cc_xml_elt_set_type_x(elt, COIN_XML_CDATA_TYPE);
+  cc_xml_elt_set_cdata_x(elt, cdata);
+  cc_string_clear_no_free(&doc->pendingcdata);
+
+  if (doc->parsestack.getLength() == 0) {
+    cc_xml_elt_delete_x(elt);
+    return;
+  }
+
+  cc_xml_elt * parent = doc->parsestack[doc->parsestack.getLength()-1];
+  cc_xml_elt_add_child_x(parent, elt);
+
+  if (doc->filtercb) {
+    doc->filtercb(doc->filtercbdata, doc, elt, TRUE);
+    switch (doc->filtercb(doc->filtercbdata, doc, elt, FALSE)) {
+    case KEEP:
+      break;
+    case DISCARD:
+      cc_xml_elt_remove_child_x(parent, elt);
+      cc_xml_elt_delete_x(elt);
+      break;
+    default:
+      assert(!"invalid filter choice returned from client code");
+      break;
+    }
+  }
+}
+
+void
 cc_xml_doc_expat_character_data_handler_cb(void * userdata, const XML_Char * cdata, int len)
 {
 #ifdef DEV_DEBUG
@@ -251,49 +311,12 @@ cc_xml_doc_expat_character_data_handler_cb(void * userdata, const XML_Char * cda
   XML_Parser parser = static_cast<XML_Parser>(userdata);
   cc_xml_doc * doc = static_cast<cc_xml_doc *>(XML_GetUserData(parser));
 
-  cc_xml_elt * elt = cc_xml_elt_new();
-  assert(elt);
-
-  // need a temporary buffer for the cdata to make a nullterminated string.
+  // Expat may report one logical text run through any number of callbacks,
+  // including callbacks split at input-buffer and entity boundaries.
   std::unique_ptr<char[]> buffer(new char [len + 1]);
   memcpy(buffer.get(), cdata, len);
   buffer[len] = '\0';
-  cc_xml_elt_set_type_x(elt, COIN_XML_CDATA_TYPE);
-  cc_xml_elt_set_cdata_x(elt, buffer.get());
-
-  if (cc_xml_is_all_whitespace_p(buffer.get())) {
-    cc_xml_elt_delete_x(elt);
-    return;
-  }
-
-  if (doc->parsestack.getLength() > 0) {
-    cc_xml_elt * parent = doc->parsestack[doc->parsestack.getLength()-1];
-    cc_xml_elt_add_child_x(parent, elt);
-  }
-
-  //FIXME 2008-06-11 BFG: Possible leak of elt.
-
-  if (doc->filtercb) {
-    doc->filtercb(doc->filtercbdata, doc, elt, TRUE);
-    cc_xml_filter_choice choice = doc->filtercb(doc->filtercbdata, doc, elt, FALSE);
-    switch (choice) {
-    case KEEP:
-      break;
-    case DISCARD:
-      {
-        if (doc->parsestack.getLength() > 0) {
-          cc_xml_elt * parent = doc->parsestack[doc->parsestack.getLength()-1];
-          cc_xml_elt_remove_child_x(parent, elt);
-          cc_xml_elt_delete_x(elt);
-          elt = NULL;
-        }
-      }
-      break;
-    default:
-      assert(!"invalid filter choice returned from client code");
-      break;
-    }
-  }
+  cc_string_append_text(&doc->pendingcdata, buffer.get());
 
 #ifdef DEV_DEBUG
   fprintf(stdout, "\nCDATA: '%s'\n", buffer.get());
@@ -301,11 +324,23 @@ cc_xml_doc_expat_character_data_handler_cb(void * userdata, const XML_Char * cda
 }
 
 void
-cc_xml_doc_expat_processing_instruction_handler_cb(void * COIN_UNUSED_ARG(userdata), const XML_Char * COIN_UNUSED_ARG(target), const XML_Char * COIN_UNUSED_ARG(pidata))
+cc_xml_doc_expat_processing_instruction_handler_cb(void * userdata, const XML_Char * COIN_UNUSED_ARG(target), const XML_Char * COIN_UNUSED_ARG(pidata))
 {
+  XML_Parser parser = static_cast<XML_Parser>(userdata);
+  cc_xml_doc * doc = static_cast<cc_xml_doc *>(XML_GetUserData(parser));
+  cc_xml_doc_flush_character_data_x(doc);
+
 #ifdef DEV_DEBUG
   fprintf(stdout, "received processing Instruction...\n");
 #endif // DEV_DEBUG
+}
+
+void
+cc_xml_doc_expat_comment_handler_cb(void * userdata, const XML_Char * COIN_UNUSED_ARG(data))
+{
+  XML_Parser parser = static_cast<XML_Parser>(userdata);
+  cc_xml_doc * doc = static_cast<cc_xml_doc *>(XML_GetUserData(parser));
+  cc_xml_doc_flush_character_data_x(doc);
 }
 
 
@@ -323,6 +358,7 @@ cc_xml_doc_create_parser_x(cc_xml_doc * doc)
   XML_SetCharacterDataHandler(doc->parser,
                               cc_xml_doc_expat_character_data_handler_cb);
   XML_SetProcessingInstructionHandler(doc->parser, cc_xml_doc_expat_processing_instruction_handler_cb);
+  XML_SetCommentHandler(doc->parser, cc_xml_doc_expat_comment_handler_cb);
 }
 
 void
@@ -331,6 +367,62 @@ cc_xml_doc_delete_parser_x(cc_xml_doc * doc)
   assert(doc && doc->parser);
   XML_ParserFree(doc->parser);
   doc->parser = NULL;
+  cc_string_clear_no_free(&doc->pendingcdata);
+}
+
+void
+cc_xml_doc_parse_begin_x(cc_xml_doc * doc)
+{
+  assert(doc);
+  assert(doc->parsestate == CC_XML_DOC_PARSE_IDLE);
+  assert(doc->parser == NULL);
+  assert(doc->parserroot == NULL);
+  doc->parsestack.truncate(0);
+  doc->parserpreviouscurrent = doc->current;
+  cc_xml_doc_create_parser_x(doc);
+  doc->parsestate = CC_XML_DOC_PARSE_ACTIVE;
+}
+
+void
+cc_xml_doc_parse_rollback_x(cc_xml_doc * doc)
+{
+  assert(doc);
+  assert(doc->parsestate == CC_XML_DOC_PARSE_ACTIVE);
+  if (doc->parser) cc_xml_doc_delete_parser_x(doc);
+  doc->parsestack.truncate(0);
+  if (doc->parserroot) {
+    cc_xml_elt_delete_x(doc->parserroot);
+    doc->parserroot = NULL;
+  }
+  doc->current = doc->parserpreviouscurrent;
+  doc->parserpreviouscurrent = NULL;
+  doc->parsestate = CC_XML_DOC_PARSE_IDLE;
+}
+
+void
+cc_xml_doc_parse_commit_x(cc_xml_doc * doc)
+{
+  assert(doc);
+  assert(doc->parsestate == CC_XML_DOC_PARSE_ACTIVE);
+  if (doc->parser) cc_xml_doc_delete_parser_x(doc);
+  doc->parsestack.truncate(0);
+
+  cc_xml_elt * oldroot = doc->root;
+  doc->root = doc->parserroot;
+  doc->parserroot = NULL;
+  doc->parserpreviouscurrent = NULL;
+  doc->current = NULL;
+  doc->parsestate = CC_XML_DOC_PARSE_IDLE;
+
+  if (oldroot) cc_xml_elt_delete_x(oldroot);
+}
+
+void
+cc_xml_doc_parse_abort_if_active_x(cc_xml_doc * doc)
+{
+  if (doc->parsestate == CC_XML_DOC_PARSE_ACTIVE) {
+    cc_xml_doc_parse_rollback_x(doc);
+  }
 }
 
 } // anonymous namespace
@@ -352,13 +444,17 @@ cc_xml_doc_new(void)
   cc_xml_doc * doc = new cc_xml_doc;
   assert(doc);
   doc->parser = NULL;
+  doc->parsestate = CC_XML_DOC_PARSE_IDLE;
   doc->xmlversion = NULL;
   doc->xmlencoding = NULL;
   doc->filtercb = NULL;
   doc->filtercbdata = NULL;
   doc->filename = NULL;
   doc->root = NULL;
+  doc->parserroot = NULL;
+  doc->parserpreviouscurrent = NULL;
   doc->current = NULL;
+  cc_string_construct(&doc->pendingcdata);
   return doc;
 }
 
@@ -375,11 +471,14 @@ void
 cc_xml_doc_delete_x(cc_xml_doc * doc)
 {
   assert(doc);
+  cc_xml_doc_parse_abort_if_active_x(doc);
   if (doc->parser) { cc_xml_doc_delete_parser_x(doc); }
+  if (doc->parserroot) cc_xml_elt_delete_x(doc->parserroot);
   delete [] doc->xmlversion;
   delete [] doc->xmlencoding;
   delete [] doc->filename;
   if (doc->root) cc_xml_elt_delete_x(doc->root);
+  cc_string_clean(&doc->pendingcdata);
   delete doc;
 }
 
@@ -443,27 +542,22 @@ cc_xml_read_file(const char * path) // parser.h convenience function
 /*!
   Reads a file into the cc_xml_doc object.
 
-  Deletes any old XML DOM the doc contains.
+  Replaces the old XML DOM only after the complete file has been parsed.
+  Read and parse failures leave the previous DOM and filename unchanged.
 */
 
 SbBool
 cc_xml_doc_read_file_x(cc_xml_doc * doc, const char * path)
 {
   assert(doc);
-  if (doc->root) {
-    cc_xml_elt_delete_x(cc_xml_doc_release_root_x(doc));
-  }
-
-  if (!doc->parser) {
-    cc_xml_doc_create_parser_x(doc);
-  }
+  cc_xml_doc_parse_abort_if_active_x(doc);
 
   FILE * fp = fopen(path, "rb");
   if (!fp) {
-    // FIXME: error condition
-    cc_xml_doc_delete_parser_x(doc);
     return FALSE;
   }
+
+  cc_xml_doc_parse_begin_x(doc);
 
   // read in file in 8K chunks, buffers kept by expat
 
@@ -472,18 +566,36 @@ cc_xml_doc_read_file_x(cc_xml_doc * doc, const char * path)
 
   while (!final && !error) {
     void * buf = XML_GetBuffer(doc->parser, 8192);
-    assert(buf);
+    if (buf == NULL) {
+      error = TRUE;
+      break;
+    }
     int bytes = static_cast<int>(fread(buf, 1, 8192, fp));
+    if (ferror(fp)) {
+      error = TRUE;
+      break;
+    }
     final = feof(fp);
     XML_Status status = XML_ParseBuffer(doc->parser, bytes, final);
-    if (status != XML_STATUS_OK) { cc_xml_doc_handle_parse_error(doc); }
+    if (status != XML_STATUS_OK) {
+      cc_xml_doc_handle_parse_error(doc);
+      error = TRUE;
+    }
+    else if ((bytes == 0) && !final) {
+      error = TRUE;
+    }
   }
 
   fclose(fp);
 
-  cc_xml_doc_set_filename_x(doc, path);
+  if (error) {
+    cc_xml_doc_parse_rollback_x(doc);
+    return FALSE;
+  }
 
-  return !error;
+  cc_xml_doc_parse_commit_x(doc);
+  cc_xml_doc_set_filename_x(doc, path);
+  return TRUE;
 }
 
 cc_xml_doc *
@@ -511,7 +623,7 @@ cc_xml_doc_read_buffer_x(cc_xml_doc * doc, const char * buffer, size_t buflen)
 #ifdef DEV_DEBUG
   fprintf(stdout, "cc_xml_doc_read_buffer_x(%p, %d, %p)\n", doc, (int) buflen, buffer);
 #endif // DEV_DEBUG
-  cc_xml_doc_parse_buffer_partial_init_x(doc);
+  cc_xml_doc_parse_abort_if_active_x(doc);
   return cc_xml_doc_parse_buffer_partial_done_x(doc, buffer, buflen);
 }
 
@@ -524,8 +636,7 @@ cc_xml_doc_parse_buffer_partial_init_x(cc_xml_doc * doc) // maybe expose and req
 #ifdef DEV_DEBUG
   fprintf(stdout, "cc_xml_doc_parse_buffer_partial_init_x()\n");
 #endif // DEV_DEBUG
-  assert(doc->parser == NULL);
-  cc_xml_doc_create_parser_x(doc);
+  cc_xml_doc_parse_begin_x(doc);
 }
 }
 
@@ -536,14 +647,14 @@ cc_xml_doc_parse_buffer_partial_x(cc_xml_doc * doc, const char * buffer, size_t 
 #ifdef DEV_DEBUG
   fprintf(stdout, "cc_xml_doc_parse_buffer_partial_x()\n");
 #endif // DEV_DEBUG
-  if (!doc->parser) {
+  if (doc->parsestate == CC_XML_DOC_PARSE_IDLE) {
     cc_xml_doc_parse_buffer_partial_init_x(doc);
   }
 
   XML_Status status = XML_Parse(doc->parser, buffer, static_cast<int>(buflen), FALSE);
   if (status != XML_STATUS_OK) {
     cc_xml_doc_handle_parse_error(doc);
-    // FIXME: should delete_parser() be invoked here?
+    cc_xml_doc_parse_rollback_x(doc);
   }
 
   return (status == XML_STATUS_OK);
@@ -556,17 +667,19 @@ cc_xml_doc_parse_buffer_partial_done_x(cc_xml_doc * doc, const char * buffer, si
   fprintf(stdout, "cc_xml_doc_parse_buffer_partial_done_x()\n");
 #endif // DEV_DEBUG
   assert(doc);
-  if (!doc->parser) {
+  if (doc->parsestate == CC_XML_DOC_PARSE_IDLE) {
     cc_xml_doc_parse_buffer_partial_init_x(doc);
   }
   XML_Status status = XML_Parse(doc->parser, buffer, static_cast<int>(buflen), TRUE);
 
   if (status != XML_STATUS_OK) {
     cc_xml_doc_handle_parse_error(doc);
+    cc_xml_doc_parse_rollback_x(doc);
+    return FALSE;
   }
 
-  cc_xml_doc_delete_parser_x(doc);
-  return (status == XML_STATUS_OK);
+  cc_xml_doc_parse_commit_x(doc);
+  return TRUE;
 }
 
 // *************************************************************************
@@ -917,6 +1030,27 @@ cc_xml_doc_handle_parse_warning(const cc_xml_doc * doc, const char * message)
 
 namespace {
 
+struct cdata_filter_state {
+  int pushes;
+  int pops;
+  const char * text;
+};
+
+cc_xml_filter_choice
+cdata_filter_cb(void * userdata, cc_xml_doc *, cc_xml_elt * elt, int pushing)
+{
+  cdata_filter_state * state = static_cast<cdata_filter_state *>(userdata);
+  if (strcmp(cc_xml_elt_get_type(elt), COIN_XML_CDATA_TYPE) == 0) {
+    if (pushing) {
+      ++state->pushes;
+      state->text = cc_xml_elt_get_cdata(elt);
+    } else {
+      ++state->pops;
+    }
+  }
+  return KEEP;
+}
+
 bool
 xml_test_strings_equal(const char * lhs, const char * rhs)
 {
@@ -1005,6 +1139,108 @@ BOOST_AUTO_TEST_CASE(buffer_round_trip_compares_real_dom)
 
   cc_xml_doc_delete_x(doc1);
   cc_xml_doc_delete_x(doc2);
+}
+
+BOOST_AUTO_TEST_CASE(character_data_is_independent_of_input_chunks)
+{
+  const char * xml = "<root>  alpha &amp; beta  </root>";
+  const char * expected = "  alpha & beta  ";
+  const size_t xmllength = strlen(xml);
+
+  cc_xml_doc * whole = cc_xml_read_buffer(xml);
+  BOOST_REQUIRE(whole != NULL);
+  cc_xml_elt * wholeroot = cc_xml_doc_get_root(whole);
+  BOOST_REQUIRE(wholeroot != NULL);
+  BOOST_CHECK(cc_xml_elt_get_num_children(wholeroot) == 1);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_cdata(wholeroot), expected) == 0);
+
+  cc_xml_doc * chunked = cc_xml_doc_new();
+  for (size_t i = 0; i + 1 < xmllength; ++i) {
+    BOOST_REQUIRE(cc_xml_doc_parse_buffer_partial_x(chunked, xml + i, 1));
+  }
+  BOOST_REQUIRE(cc_xml_doc_parse_buffer_partial_done_x(
+    chunked, xml + xmllength - 1, 1));
+
+  cc_xml_elt * chunkedroot = cc_xml_doc_get_root(chunked);
+  BOOST_REQUIRE(chunkedroot != NULL);
+  BOOST_CHECK(cc_xml_elt_get_num_children(chunkedroot) == 1);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_cdata(chunkedroot), expected) == 0);
+
+  cc_xml_doc_delete_x(chunked);
+  cc_xml_doc_delete_x(whole);
+}
+
+BOOST_AUTO_TEST_CASE(character_data_does_not_cross_element_boundaries)
+{
+  cc_xml_doc * doc = cc_xml_read_buffer("<root>before<child/>after</root>");
+  BOOST_REQUIRE(doc != NULL);
+  cc_xml_elt * root = cc_xml_doc_get_root(doc);
+  BOOST_REQUIRE(root != NULL);
+  BOOST_REQUIRE(cc_xml_elt_get_num_children(root) == 3);
+
+  cc_xml_elt * before = cc_xml_elt_get_child(root, 0);
+  cc_xml_elt * child = cc_xml_elt_get_child(root, 1);
+  cc_xml_elt * after = cc_xml_elt_get_child(root, 2);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_type(before), COIN_XML_CDATA_TYPE) == 0);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_cdata(before), "before") == 0);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_type(child), "child") == 0);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_type(after), COIN_XML_CDATA_TYPE) == 0);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_cdata(after), "after") == 0);
+
+  cc_xml_doc_delete_x(doc);
+}
+
+BOOST_AUTO_TEST_CASE(formatting_whitespace_remains_ignored)
+{
+  cc_xml_doc * doc = cc_xml_read_buffer("<root>\n  <child/>\n</root>");
+  BOOST_REQUIRE(doc != NULL);
+  cc_xml_elt * root = cc_xml_doc_get_root(doc);
+  BOOST_REQUIRE(root != NULL);
+  BOOST_REQUIRE(cc_xml_elt_get_num_children(root) == 1);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_type(cc_xml_elt_get_child(root, 0)),
+                     "child") == 0);
+
+  cc_xml_doc_delete_x(doc);
+}
+
+BOOST_AUTO_TEST_CASE(character_data_filter_observes_coalesced_runs)
+{
+  const char * xml = "<root>a&amp;b</root>";
+  const size_t xmllength = strlen(xml);
+  cdata_filter_state state = { 0, 0, NULL };
+  cc_xml_doc * doc = cc_xml_doc_new();
+  cc_xml_doc_set_filter_cb_x(doc, cdata_filter_cb, &state);
+
+  for (size_t i = 0; i + 1 < xmllength; ++i) {
+    BOOST_REQUIRE(cc_xml_doc_parse_buffer_partial_x(doc, xml + i, 1));
+  }
+  BOOST_REQUIRE(cc_xml_doc_parse_buffer_partial_done_x(
+    doc, xml + xmllength - 1, 1));
+
+  BOOST_CHECK(state.pushes == 1);
+  BOOST_CHECK(state.pops == 1);
+  BOOST_REQUIRE(state.text != NULL);
+  BOOST_CHECK(strcmp(state.text, "a&b") == 0);
+
+  cc_xml_doc_delete_x(doc);
+}
+
+BOOST_AUTO_TEST_CASE(markup_remains_a_character_data_boundary)
+{
+  cc_xml_doc * doc = cc_xml_read_buffer(
+    "<root>one<?coin test?>two<!-- separator -->three</root>");
+  BOOST_REQUIRE(doc != NULL);
+  cc_xml_elt * root = cc_xml_doc_get_root(doc);
+  BOOST_REQUIRE(root != NULL);
+  BOOST_REQUIRE(cc_xml_elt_get_num_children(root) == 3);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_cdata(cc_xml_elt_get_child(root, 0)),
+                     "one") == 0);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_cdata(cc_xml_elt_get_child(root, 1)),
+                     "two") == 0);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_cdata(cc_xml_elt_get_child(root, 2)),
+                     "three") == 0);
+
+  cc_xml_doc_delete_x(doc);
 }
 
 BOOST_AUTO_TEST_CASE(empty_cdata_child_serializes_without_null_dereference)
@@ -1118,6 +1354,110 @@ BOOST_AUTO_TEST_CASE(dom_root_ownership)
   BOOST_CHECK(cc_xml_doc_get_root(doc) == replacement);
   BOOST_CHECK(cc_xml_doc_get_current(doc) == NULL);
   cc_xml_doc_delete_x(doc);
+}
+
+BOOST_AUTO_TEST_CASE(write_escapes_character_data_and_attributes)
+{
+  const char * attributevalue = "a&b<c>d\"e'f\t\n\r";
+  const char * characterdata = "x&y<z>q\"'";
+
+  cc_xml_doc * doc = cc_xml_doc_new();
+  cc_xml_elt * root = cc_xml_elt_new_from_data("root", NULL);
+  cc_xml_elt_set_attribute_x(
+    root, cc_xml_attr_new_from_data("value", attributevalue));
+  cc_xml_elt_set_cdata_x(root, characterdata);
+  cc_xml_doc_set_root_x(doc, root);
+
+  char * buffer = NULL;
+  size_t bytecount = 0;
+  BOOST_REQUIRE(cc_xml_doc_write_to_buffer(doc, buffer, bytecount));
+
+  const char * expected =
+    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+    "<root value=\"a&amp;b&lt;c&gt;d&quot;e&apos;f&#x9;&#xA;&#xD;\">"
+    "x&amp;y&lt;z&gt;q\"'</root>\n";
+  BOOST_CHECK(strcmp(buffer, expected) == 0);
+  BOOST_CHECK(bytecount == strlen(expected));
+
+  cc_xml_doc * parsed = cc_xml_read_buffer(buffer);
+  BOOST_REQUIRE(parsed != NULL);
+  cc_xml_elt * parsedroot = cc_xml_doc_get_root(parsed);
+  cc_xml_attr * parsedattr = cc_xml_elt_get_attribute(parsedroot, "value");
+  BOOST_REQUIRE(parsedattr != NULL);
+  BOOST_CHECK(strcmp(cc_xml_attr_get_value(parsedattr), attributevalue) == 0);
+
+  char parseddata[32];
+  size_t parsedlength = 0;
+  const int numchildren = cc_xml_elt_get_num_children(parsedroot);
+  for (int i = 0; i < numchildren; ++i) {
+    cc_xml_elt * child = cc_xml_elt_get_child(parsedroot, i);
+    BOOST_REQUIRE(strcmp(cc_xml_elt_get_type(child),
+                         COIN_XML_CDATA_TYPE) == 0);
+    const char * childdata = cc_xml_elt_get_cdata(child);
+    const size_t childlength = strlen(childdata);
+    BOOST_REQUIRE(parsedlength + childlength < sizeof(parseddata));
+    memcpy(parseddata + parsedlength, childdata, childlength);
+    parsedlength += childlength;
+  }
+  parseddata[parsedlength] = '\0';
+  BOOST_CHECK(strcmp(parseddata, characterdata) == 0);
+
+  delete [] buffer;
+  cc_xml_doc_delete_x(parsed);
+  cc_xml_doc_delete_x(doc);
+}
+
+BOOST_AUTO_TEST_CASE(write_escapes_text_carriage_return)
+{
+  cc_xml_doc * doc = cc_xml_doc_new();
+  cc_xml_elt * root = cc_xml_elt_new_from_data("root", NULL);
+  cc_xml_elt_set_cdata_x(root, "a\rb");
+  cc_xml_doc_set_root_x(doc, root);
+
+  char * buffer = NULL;
+  size_t bytecount = 0;
+  BOOST_REQUIRE(cc_xml_doc_write_to_buffer(doc, buffer, bytecount));
+  const char * expected =
+    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+    "<root>a&#xD;b</root>\n";
+  BOOST_CHECK(strcmp(buffer, expected) == 0);
+  BOOST_CHECK(bytecount == strlen(expected));
+
+  delete [] buffer;
+  cc_xml_doc_delete_x(doc);
+}
+
+BOOST_AUTO_TEST_CASE(integer_format_round_trip)
+{
+  cc_xml_elt * number = cc_xml_elt_new_from_data(COIN_XML_CDATA_TYPE, NULL);
+
+  uint64_t uint64value = 0;
+  cc_xml_elt_set_uint64_x(number, UINT64_MAX);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_cdata(number),
+                     "18446744073709551615") == 0);
+  BOOST_CHECK(cc_xml_elt_get_uint64(number, &uint64value));
+  BOOST_CHECK(uint64value == UINT64_MAX);
+
+  int64_t int64value = 0;
+  cc_xml_elt_set_int64_x(number, INT64_MIN);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_cdata(number),
+                     "-9223372036854775808") == 0);
+  BOOST_CHECK(cc_xml_elt_get_int64(number, &int64value));
+  BOOST_CHECK(int64value == INT64_MIN);
+
+  uint32_t uint32value = 0;
+  cc_xml_elt_set_uint32_x(number, UINT32_MAX);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_cdata(number), "4294967295") == 0);
+  BOOST_CHECK(cc_xml_elt_get_uint32(number, &uint32value));
+  BOOST_CHECK(uint32value == UINT32_MAX);
+
+  int32_t int32value = 0;
+  cc_xml_elt_set_int32_x(number, INT32_MIN);
+  BOOST_CHECK(strcmp(cc_xml_elt_get_cdata(number), "-2147483648") == 0);
+  BOOST_CHECK(cc_xml_elt_get_int32(number, &int32value));
+  BOOST_CHECK(int32value == INT32_MIN);
+
+  cc_xml_elt_delete_x(number);
 }
 
 #endif // !COIN_TEST_SUITE

@@ -269,8 +269,11 @@ void cc_heap_clear(cc_heap * h)
 }
 
 /*!
-  Add the element \a o to the heap \a h. If the internal storage cannot grow,
-  the heap is left unchanged.
+  Add the element \a o to the heap \a h. If the array cannot grow or its
+  dictionary index entry cannot be allocated, the element is not added and
+  the existing elements are preserved. The void API does not report failure;
+  callers that need to detect it can compare cc_heap_elements() before and
+  after this call while controlling access to the heap.
 */
 void
 cc_heap_add(cc_heap * h, void * o)
