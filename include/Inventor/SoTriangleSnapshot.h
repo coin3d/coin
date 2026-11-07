@@ -44,11 +44,25 @@ public:
     Vertex vertices[3];
   };
 
+  struct Limits {
+    std::size_t maxTriangles;
+    // Peak requested bytes for Data and matrix, triangle and occurrence-stack
+    // buffers, including old and new buffers during reallocation. Excludes
+    // allocator metadata, the source graph and Coin's traversal allocations.
+    std::size_t maxStorageBytes;
+  };
+
+  // Compatibility overload with no caller-specified storage or triangle cap.
   SoTriangleSnapshot(SoNode & root, const SbViewportRegion & viewport);
+  // Exceeding either inclusive cap throws std::length_error after producer
+  // cleanup. Zero triangles admits empty captures; zero storage rejects all.
+  SoTriangleSnapshot(SoNode & root, const SbViewportRegion & viewport, const Limits & limits);
   ~SoTriangleSnapshot();
 
   std::size_t getNumOccurrences() const;
   std::size_t getNumTriangles() const;
+  // High-water mark under the same accounting used by Limits::maxStorageBytes.
+  std::size_t getPeakStorageBytes() const;
   const SbMatrix & getModelMatrix(std::size_t occurrence) const;
   const Triangle & getTriangle(std::size_t index) const;
 

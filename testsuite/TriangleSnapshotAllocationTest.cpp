@@ -52,6 +52,8 @@ void operator delete[](void * pointer, std::size_t) noexcept { ::operator delete
 #include <Inventor/nodes/SoCallback.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <cstring>
+#include <limits>
+#include <stdexcept>
 
 namespace {
 void armStack(void * closure, SoAction *)
@@ -91,7 +93,10 @@ int main(int argc, char ** argv)
   if (argc != 2) return 10;
   const bool data = std::strcmp(argv[1],"data") == 0;
   const bool stack = std::strcmp(argv[1],"stack") == 0;
-  const int injection = data || stack ? -1 : std::atoi(argv[1]);
+  const bool triangleLimit = std::strcmp(argv[1],"triangle-limit") == 0;
+  const bool storageLimit = std::strcmp(argv[1],"storage-limit") == 0;
+  const bool limited = triangleLimit || storageLimit;
+  const int injection = data || stack || limited ? -1 : std::atoi(argv[1]);
   SoDB::init();
   auto * root = new SoSeparator;
   root->ref();
@@ -102,15 +107,21 @@ int main(int argc, char ** argv)
   auto * shape = new AllocationShape;
   root->addChild(shape);
   // Initialize Coin's persistent lazy caches before accounting for a capture.
-  { SoTriangleSnapshot warm(*root, SbViewportRegion(64,64)); }
+  std::size_t peak = 0;
+  { SoTriangleSnapshot warm(*root, SbViewportRegion(64,64)); peak = warm.getPeakStorageBytes(); }
   shape->completed = false;
   shape->injection = injection;
   arm = stack;
   track = true;
   if (data) failAfter = 0;
   bool caught = false;
-  try { SoTriangleSnapshot snapshot(*root, SbViewportRegion(64,64)); }
-  catch (const std::bad_alloc &) { caught = true; }
+  const std::size_t unlimited = std::numeric_limits<std::size_t>::max();
+  try {
+    SoTriangleSnapshot snapshot(*root, SbViewportRegion(64,64),
+      {triangleLimit ? 1 : unlimited, storageLimit ? peak-1 : unlimited});
+  }
+  catch (const std::bad_alloc &) { caught = !limited; }
+  catch (const std::length_error &) { caught = limited; }
   failAfter = -1;
   track = false;
   arm = false;
@@ -119,7 +130,7 @@ int main(int argc, char ** argv)
     injection == 0 ? sizeof(SbMatrix) :
     injection == 1 ? sizeof(SoTriangleSnapshot::Triangle) :
                      2 * sizeof(SoTriangleSnapshot::Triangle);
-  const bool site = data || failedSize == expectedSize;
+  const bool site = data || limited || failedSize == expectedSize;
   const bool references = root->getRefCount() == 1 && shape->getRefCount() == 1;
   const bool completed = shape->completed;
   const int resources = shape->producerResources;
@@ -136,6 +147,6 @@ int main(int argc, char ** argv)
   root->unref();
   std::printf("caught=%d failures=%d failed_bytes=%zu capture_live=%d final_live=%d producer_resources=%d completed=%d recovered=%d\n",
               int(caught),failures,failedSize,leaked,live,resources,int(completed),int(recovered));
-  return site && references && caught && failures == 1 && leaked == 0 && live == 0 &&
+  return site && references && caught && failures == (limited ? 0 : 1) && leaked == 0 && live == 0 &&
          resources == 0 && (data || stack || completed) && recovered ? 0 : 1;
 }
