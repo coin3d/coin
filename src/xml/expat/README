@@ -1,2 +1,30 @@
-This is a modified version of Expat 2.2.10.
-See project page at https://github.com/libexpat/libexpat
+This directory vendors Expat 2.9.0, released 2026-10-05.
+Source: https://github.com/libexpat/libexpat/releases/tag/R_2_9_0
+Source tarball: expat-2.9.0.tar.xz
+SHA-256: 1e6371862cc31999b368c3b89b49994f0677e1bab5f1b2b85ae3741f5d803051
+
+The .c and upstream .h files and COPYING come from that tarball's lib/
+directory and root, respectively. Coin's expat_config.h is the only
+downstream configuration file. It preserves Coin's previous feature profile:
+general entities on all platforms, DTD/namespace/context support on Windows,
+and /dev/urandom entropy on non-Windows platforms. Coin's CMakeLists.txt
+selects the required upstream source files. The obsolete loadlibrary.c from
+the previous vendor import is no longer used.
+
+The upstream distribution has additional build machinery, tests, and tools
+which are not embedded here. To use a system Expat instead, configure Coin
+with USE_EXTERNAL_EXPAT=ON and provide matching system headers and library.
+Configuration fails if they cannot be found; it does not silently fall back
+to the embedded copy. Coin uses the older Expat location API in this mode,
+so a system version predating 2.9.0 remains possible.
+
+The embedded Expat 2.9.0 uses C99 language features. Upstream officially
+supports MSVC 2022 and newer; its CMake emits a warning, not an error, for
+MSVC 2019. Coin does not impose MSVC 2022 as a minimum. Windows x64 builds
+have been validated with the MSVC 2019 v142 toolset (compiler 19.29.30159.0),
+hosted by Visual Studio 2022 Build Tools: embedded Expat 2.9.0 in a static
+Release/single-library build and external Expat 2.6.1 in a DLL Debug/split
+build. This does not cover earlier MSVC 2019 compiler releases or change
+upstream's support policy. MSVC has no C99 language mode, so Coin's
+C_STANDARD=99 target property does not itself prove compatibility. The
+current Windows CI uses MSVC 2022.
