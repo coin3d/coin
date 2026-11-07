@@ -1,8 +1,12 @@
+find_package(Threads REQUIRED)
+add_executable(CoinTriangleSnapshotTest TriangleSnapshotTest.cpp)
+target_link_libraries(CoinTriangleSnapshotTest PRIVATE Coin Threads::Threads)
+add_test(NAME TriangleSnapshotLifetime COMMAND CoinTriangleSnapshotTest)
+
 include(action-apply-exceptions/Tests.cmake)
 include(SbSmallMapTests.cmake)
 
 if(COIN_BUILD_LEGACY_GL_RENDERER)
-  find_package(Threads REQUIRED)
   add_executable(CoinBumpProgramTest bumprender/FailureTest.cpp)
   target_compile_definitions(CoinBumpProgramTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
   target_include_directories(CoinBumpProgramTest PRIVATE
