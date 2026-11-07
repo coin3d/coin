@@ -65,7 +65,7 @@ jobs:
 
   macos-build:
     name: macOS · legacy renderer ${{ matrix.legacy_renderer.label }}
-    runs-on: macos-14
+    runs-on: macos-15
     strategy:
       fail-fast: false
       matrix:
@@ -81,6 +81,11 @@ jobs:
           submodules: recursive
       - name: Build and test
         run: .github/scripts/build-and-test.sh "${{ matrix.legacy_renderer.value }}"
+      - name: Verify native CGL lifetime tests
+        if: matrix.legacy_renderer.value == 'ON'
+        run: >-
+          ctest --test-dir cmake_build_dir -C Release
+          -R '^GLGlueLifetime(NoCallbacks)?$' -V --no-tests=error
       - name: Create Artifacts
         uses: actions/upload-artifact@v7
         with:
