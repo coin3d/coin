@@ -44,7 +44,10 @@ typedef void SoCallbackListCB(void * userdata, void * callbackdata);
 class COIN_DLL_API SoCallbackList {
 public:
   SoCallbackList(void);
+  SoCallbackList(const SoCallbackList & list);
   ~SoCallbackList();
+
+  SoCallbackList & operator=(const SoCallbackList & list);
 
   void addCallback(SoCallbackListCB * f, void * userData = NULL);
   void removeCallback(SoCallbackListCB * f, void * userdata = NULL);
