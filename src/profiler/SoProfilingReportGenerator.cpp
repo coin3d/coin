@@ -1455,7 +1455,8 @@ SoProfilingReportGeneratorP::printGfxMemKilobytes(const SbProfilingData & data, 
 SoProfilingReportGenerator::CallbackResponse
 SoProfilingReportGenerator::stdoutCB(void * COIN_UNUSED_ARG(userdata), int COIN_UNUSED_ARG(entryidx), const char * text)
 {
-  fprintf(coin_get_stdout(), "%s\n", text);
+  FILE * output = coin_get_stdout();
+  if (output == NULL || fprintf(output, "%s\n", text) < 0) return STOP;
   return CONTINUE;
 }
 
@@ -1467,6 +1468,7 @@ SoProfilingReportGenerator::stdoutCB(void * COIN_UNUSED_ARG(userdata), int COIN_
 SoProfilingReportGenerator::CallbackResponse
 SoProfilingReportGenerator::stderrCB(void * COIN_UNUSED_ARG(userdata), int COIN_UNUSED_ARG(entryidx), const char * text)
 {
-  fprintf(coin_get_stderr(), "%s\n", text);
+  FILE * output = coin_get_stderr();
+  if (output == NULL || fprintf(output, "%s\n", text) < 0) return STOP;
   return CONTINUE;
 }
