@@ -53,7 +53,11 @@ public:
   PImpl(void) { }
   ~PImpl(void)
   {
-    // FIXME: delete strings in associations map (values only)
+    std::map<const char *, const char *>::iterator it = this->associations.begin();
+    while (it != this->associations.end()) {
+      delete [] it->second;
+      ++it;
+    }
   }
 
   std::map<const char *, const char *> associations;
@@ -173,3 +177,36 @@ ScXMLEvent::copyContents(const ScXMLEvent * rhs)
 }
 
 #undef PRIVATE
+
+#ifdef COIN_TEST_SUITE
+
+BOOST_AUTO_TEST_CASE(scxml_event_association_replacement_owns_values)
+{
+  ScXMLEvent event;
+  event.setAssociation("key", "prefix-value");
+  event.setAssociation("key", event.getAssociation("key"));
+  BOOST_CHECK(strcmp(event.getAssociation("key"), "prefix-value") == 0);
+  event.setAssociation("key", event.getAssociation("key") + 7);
+  BOOST_CHECK(strcmp(event.getAssociation("key"), "value") == 0);
+  BOOST_CHECK(event.getNumAssociations() == 1);
+  event.setAssociation("key", "");
+  BOOST_CHECK(strcmp(event.getAssociation("key"), "") == 0);
+}
+
+BOOST_AUTO_TEST_CASE(scxml_event_association_clone_owns_values)
+{
+  ScXMLEvent * copy = NULL;
+  {
+    ScXMLEvent original;
+    original.setAssociation("first", "one");
+    original.setAssociation("second", "two");
+    copy = original.clone();
+  }
+  BOOST_REQUIRE(copy != NULL);
+  BOOST_CHECK(strcmp(copy->getAssociation("first"), "one") == 0);
+  BOOST_CHECK(strcmp(copy->getAssociation("second"), "two") == 0);
+  BOOST_CHECK(copy->getNumAssociations() == 2);
+  delete copy;
+}
+
+#endif // COIN_TEST_SUITE
