@@ -268,7 +268,7 @@ BOOST_AUTO_TEST_CASE(SbHash_const_begin_end_are_read_only)
 
 BOOST_AUTO_TEST_CASE(SbHash_statistics_are_fractional_and_empty_safe)
 {
-  SbHashStatsProbe hash(3);
+  SbHashStatsProbe hash(5);
   int bucketsUsed = -1;
   int buckets = -1;
   int elements = -1;
@@ -365,7 +365,7 @@ BOOST_AUTO_TEST_CASE(SbHash_hashes_c_strings_without_an_SbString_temporary)
 
 BOOST_AUTO_TEST_CASE(SbHash_resize_relinks_entries_at_the_real_threshold)
 {
-  SbHashRelinkProbe hash(3);
+  SbHashRelinkProbe hash(5);
   SbHashCopyCounter one(1);
   SbHashCopyCounter two(2);
   SbHashCopyCounter three(3);
