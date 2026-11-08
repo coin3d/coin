@@ -47,7 +47,6 @@
 // *************************************************************************
 
 SoGLSLShaderProgram::SoGLSLShaderProgram(void)
-  : programHandles(5)
 {
   this->isExecutable = FALSE;
   this->neededlinking = TRUE;
@@ -217,7 +216,13 @@ SoGLSLShaderProgram::getProgramHandle(const cc_glglue * g, const SbBool create)
   COIN_GLhandle handle = 0;
   if (!this->programHandles.get(g->contextid, handle) && create) {
     handle = g->glCreateProgramObjectARB();
-    this->programHandles.put(g->contextid, handle);
+    try {
+      this->programHandles.put(g->contextid, handle);
+    }
+    catch (...) {
+      g->glDeleteObjectARB(handle);
+      throw;
+    }
   }
   return handle;
 }

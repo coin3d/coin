@@ -89,7 +89,7 @@ class SoGLDriverDatabaseP {
     SbName feature;
 
     // needed for SbHash
-    operator unsigned long(void) const {
+    operator unsigned long(void) const noexcept {
       unsigned long bitmask = (unsigned long) ((uintptr_t) this->feature.getString());
       bitmask ^= contextid;
       return bitmask;

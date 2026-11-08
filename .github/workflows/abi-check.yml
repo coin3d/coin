@@ -204,10 +204,16 @@ jobs:
         run: |
           set +e
 
+          # Keep independent PR suppressions in separate files. The base file
+          # is created when this branch is tested without other ABI PRs.
+          cat "$GITHUB_WORKSPACE/abi-pr/.github/abi-suppressions-sbhash.txt" >> \
+            "$GITHUB_WORKSPACE/abi-pr/.github/abi-suppressions.txt"
+
           abidiff \
             --no-show-locs \
             --headers-dir1 "$GITHUB_WORKSPACE/install-abi-baseline/include" \
             --headers-dir2 "$GITHUB_WORKSPACE/install-abi-pr/include" \
+            --suppressions "$GITHUB_WORKSPACE/abi-pr/.github/abi-suppressions.txt" \
             "${{ steps.baseline.outputs.library }}" \
             "${{ steps.pr.outputs.library }}" \
             > abi-report.txt 2>&1

@@ -180,7 +180,7 @@ SoType SoBase::classTypeId STATIC_SOTYPE_INIT;
 // <mortene@sim.no>
 #define ALIVE_PATTERN 0xd
 
-unsigned int SbHashFunc(const SoBase * key) {
+unsigned int SbHashFunc(const SoBase * key) noexcept {
   return SbHashFunc(reinterpret_cast<size_t>(key));
 }
 

@@ -59,6 +59,7 @@
 #include <Inventor/C/errors/debugerror.h>
 
 #include "threads/condvarp.h"
+#include "base/oomp.h"
 
 /* ********************************************************************** */
 #ifdef USE_PTHREAD
@@ -77,7 +78,7 @@ void
 cc_condvar_struct_init(cc_condvar * condvar_struct)
 {
   if (internal_condvar_struct_init(condvar_struct) != CC_OK) {
-    assert(!"condvar struct init failed");
+    coin_oom_abort("cc_condvar_struct_init");
   }
 }
 
@@ -102,7 +103,7 @@ cc_condvar_construct(void)
 {
   cc_condvar * condvar;
   condvar = (cc_condvar *) malloc(sizeof(cc_condvar));
-  assert(condvar != NULL);
+  if (condvar == NULL) return NULL;
   cc_condvar_struct_init(condvar);
   return condvar;
 }
@@ -167,4 +168,3 @@ cc_condvar_wake_all(cc_condvar * condvar)
     assert(!"condvar wake_all failed");
   }
 }
-

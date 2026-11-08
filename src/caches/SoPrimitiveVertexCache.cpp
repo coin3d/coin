@@ -135,7 +135,7 @@ public:
     int texcoordidx;
 
     // needed for SbHash
-    operator unsigned long(void) const;
+    operator unsigned long(void) const noexcept;
 
     // needed, since if we don't add this the unsigned long operator
     // will be used when comparing two vertices.
@@ -896,7 +896,7 @@ SoPrimitiveVertexCache::depthSortTriangles(SoState * state)
   }
 }
 
-SoPrimitiveVertexCacheP::Vertex::operator unsigned long(void) const
+SoPrimitiveVertexCacheP::Vertex::operator unsigned long(void) const noexcept
 {
   unsigned long key = 0;
   // create an xor key based on coordinates, normal and texcoords
