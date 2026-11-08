@@ -1,5 +1,9 @@
 Unreleased:
 * bugfixes:
+  - Document that SbStorage and SbTypedStorage own their storage handle and
+    must not be shallow-copied. Their historical implicit special members are
+    retained for C++ ABI compatibility. A NULL cc_storage_apply_to_all callback
+    is a no-op.
   - Handle allocation failures in dictionary and allocator consumers,
     including the legacy hash, worker pool, synchronizer, GL cache and font
     caches. Preserve mappings when hash-table bucket growth fails.
