@@ -33,8 +33,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/* This interface is OBSOLETE -- please do not use it in your
-   application code, as it will be removed from Coin 3 and onwards. */
+/* This interface is obsolete and retained for compatibility. Please do not
+   use it in new application code. */
 
 #include <stdlib.h>
 #include <Inventor/C/basic.h>
@@ -42,6 +42,14 @@
 #if defined(COIN_INTERNAL) && !defined(COIN_ALLOW_CC_HASH)
 #error prefer cc_dict over cc_hash for internal code
 #endif /* COIN_INTERNAL */
+
+/* MSVC /EHsc otherwise assumes extern C calls cannot throw. Keep C and
+   pre-C++11 declarations usable while making the C++ callback contract explicit. */
+#if defined(__cplusplus) && (__cplusplus >= 201103L || (defined(_MSC_VER) && _MSC_VER >= 1900))
+#define COIN_HASH_MAY_THROW noexcept(false)
+#else
+#define COIN_HASH_MAY_THROW
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -52,18 +60,32 @@ extern "C" {
   typedef cc_hash_key cc_hash_func(const cc_hash_key key);
   typedef void cc_hash_apply_func(cc_hash_key key, void * val, void * closure);
 
+  /* Allocation failure or an unrepresentable bucket request aborts with a
+     diagnostic. Non-finite/nonpositive load factors use 0.75; finite positive
+     factors above one are accepted and the growth threshold saturates. */
   COIN_DLL_API cc_hash * cc_hash_construct(unsigned int size, float loadfactor);
   COIN_DLL_API void cc_hash_destruct(cc_hash * ht);
   COIN_DLL_API void cc_hash_clear(cc_hash * ht);
 
-  COIN_DLL_API SbBool cc_hash_put(cc_hash * ht, cc_hash_key key, void * val);
-  COIN_DLL_API SbBool cc_hash_get(cc_hash * ht, cc_hash_key key, void ** val);
-  COIN_DLL_API SbBool cc_hash_remove(cc_hash * ht, cc_hash_key key);
-  COIN_DLL_API void cc_hash_apply(cc_hash * ht, cc_hash_apply_func * func, void * closure);
+  /* TRUE means inserted; FALSE means an existing value was replaced.
+     Entry allocation failure or element-count exhaustion aborts rather than
+     returning FALSE. Optional growth failure preserves the inserted key.
+     A C++ hash exception propagates; if thrown during optional growth, the
+     newly inserted key remains in the original, valid table. */
+  COIN_DLL_API SbBool cc_hash_put(cc_hash * ht, cc_hash_key key, void * val) COIN_HASH_MAY_THROW;
+  COIN_DLL_API SbBool cc_hash_get(cc_hash * ht, cc_hash_key key, void ** val) COIN_HASH_MAY_THROW;
+  COIN_DLL_API SbBool cc_hash_remove(cc_hash * ht, cc_hash_key key) COIN_HASH_MAY_THROW;
+  /* The callback may remove the entry currently being visited. It must not
+     otherwise mutate or destroy the table during this traversal. */
+  COIN_DLL_API void cc_hash_apply(cc_hash * ht, cc_hash_apply_func * func, void * closure) COIN_HASH_MAY_THROW;
 
   COIN_DLL_API unsigned int cc_hash_get_num_elements(cc_hash * ht);
 
-  COIN_DLL_API void cc_hash_set_hash_func(cc_hash * ht, cc_hash_func * func);
+  /* Reindexes existing entries. NULL restores the default hash function.
+     Allocation failure or a C++ hash exception preserves the previous function
+     and entries; exceptions propagate. Hash callbacks must be stable and must
+     not modify the table. */
+  COIN_DLL_API void cc_hash_set_hash_func(cc_hash * ht, cc_hash_func * func) COIN_HASH_MAY_THROW;
   COIN_DLL_API void cc_hash_print_stat(cc_hash * ht);
 
 /* ********************************************************************** */
@@ -71,5 +93,7 @@ extern "C" {
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */
+
+#undef COIN_HASH_MAY_THROW
 
 #endif /* ! CC_HASH_H */

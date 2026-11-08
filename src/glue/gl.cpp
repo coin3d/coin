@@ -555,6 +555,7 @@ free_glglue_instance(uintptr_t COIN_UNUSED_ARG(key), void * value, void * COIN_U
   free(glue->rendererstr);
   free(glue->extensionsstr);
   cc_dict_destruct(glue->glextdict);
+  if (glue->dl_handle) cc_dl_close(glue->dl_handle);
   free(value);
 }
 
@@ -2210,7 +2211,7 @@ cc_glglue_instance(int contextid)
     coin_atexit((coin_atexit_f *)glglue_cleanup, CC_ATEXIT_NORMAL);
   }
 
-  found = cc_dict_get(gldict, (uintptr_t)contextid, &ptr);
+  found = cc_dict_get(gldict, (uintptr_t)(uint32_t)contextid, &ptr);
 
   if (!found) {
     GLenum glerr;
@@ -2233,12 +2234,8 @@ cc_glglue_instance(int contextid)
       if (!coin_gl_current_context()) assert(!"Must have a current GL context when instantiating cc_glglue!! (Note: if you are using an old Mesa GL version, set the environment variable COIN_GL_NO_CURRENT_CONTEXT_CHECK to get around what may be a Mesa bug.)");
     }
 
-    /* FIXME: this is not free'd until app exit, which is bad because
-       it opens a small window of possibility for errors; the value of
-       id/key inputs could in principle be reused, so we'd get an old,
-       invalid instance instead of creating a new one. Should rather
-       hook into SoContextHandler and kill off an instance when a GL
-       context is taken out. 20051104 mortene. */
+    /* Borrowed by callers until context destruction. SoContextHandler runs
+       resource-owner callbacks before removing and freeing this instance. */
     gi = (cc_glglue*)malloc(sizeof(cc_glglue));
     if (gi == NULL) coin_oom_abort("cc_glglue_instance");
     /* clear to set all pointers and variables to NULL or 0 */
@@ -2251,7 +2248,7 @@ cc_glglue_instance(int contextid)
     if (gi->glextdict == NULL) coin_oom_abort("cc_glglue_instance extensions");
 
     ptr = gi;
-    if (cc_dict_try_put(gldict, (uintptr_t)contextid, ptr) !=
+    if (cc_dict_try_put(gldict, (uintptr_t)(uint32_t)contextid, ptr) !=
         CC_DICT_PUT_INSERTED)
       coin_oom_abort("cc_glglue_instance cache insertion");
 
@@ -2506,7 +2503,7 @@ coin_glglue_destruct(uint32_t contextid)
   void * ptr;
   CC_SYNC_BEGIN(cc_glglue_instance);
   if (gldict) { // might happen if a context is destructed without using the cc_glglue interface
-    found = cc_dict_get(gldict, (uintptr_t)contextid, &ptr);
+    found = cc_dict_get(gldict, (uintptr_t)(uint32_t)contextid, &ptr);
     if (found) {
       cc_glglue * glue = (cc_glglue*) ptr;
       if (glue->normalizationcubemap) {
@@ -2514,9 +2511,7 @@ coin_glglue_destruct(uint32_t contextid)
       }
       (void)cc_dict_remove(gldict, (uintptr_t)contextid);
 
-      if (glue->dl_handle) {
-        cc_dl_close(glue->dl_handle);
-      }
+      free_glglue_instance((uintptr_t) contextid, glue, NULL);
     }
   }
   CC_SYNC_END(cc_glglue_instance);
