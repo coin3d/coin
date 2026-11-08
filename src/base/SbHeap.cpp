@@ -379,7 +379,10 @@ SbHeap::newWeightAt(void *obj, const int hpos)
 }
 
 /*!
-  Builds heap out of randomly ordered data-structure.
+  Builds heap out of randomly ordered data-structure. The progress callback is
+  sampled every 32 parent nodes. If it returns FALSE, rebuilding stops and
+  the heap may remain unordered; call buildHeap() again before relying on its
+  ordering.
 */
 SbBool
 SbHeap::buildHeap(SbBool (*progresscb)(float percentage, void *data),

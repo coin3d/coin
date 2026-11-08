@@ -72,6 +72,7 @@ protected:
   int getArraySize(void) const;
 
 private:
+  static void invalidIndex(const char * operation);
   void expandindex(const int index) const;
   void expandlist(const int size) const;
   void grow(const int size = -1);
@@ -94,9 +95,9 @@ SbPList::append(void * item)
 inline void 
 SbPList::removeFast(const int index) 
 {
-#ifdef COIN_EXTRA_DEBUG
-  assert(index >= 0 && index < this->numitems);
-#endif // COIN_EXTRA_DEBUG
+  if (index < 0 || index >= this->numitems) {
+    SbPList::invalidIndex("SbPList::removeFast(): index out of range");
+  }
   this->itembuffer[index] = this->itembuffer[--this->numitems];
 }
 
@@ -109,9 +110,9 @@ SbPList::getLength(void) const
 inline void 
 SbPList::truncate(const int length, const int dofit) 
 {
-#ifdef COIN_EXTRA_DEBUG
-  assert(length <= this->numitems);
-#endif // COIN_EXTRA_DEBUG
+  if (length < 0 || length > this->numitems) {
+    SbPList::invalidIndex("SbPList::truncate(): length out of range");
+  }
   this->numitems = length;
   if (dofit) this->fit();
 }
@@ -119,18 +120,18 @@ SbPList::truncate(const int length, const int dofit)
 inline void ** 
 SbPList::getArrayPtr(const int start) const 
 {
-#ifdef COIN_EXTRA_DEBUG
-  assert(start >= 0 && start < this->numitems);
-#endif // COIN_EXTRA_DEBUG
+  if (start < 0 || (this->numitems == 0 ? start != 0 : start >= this->numitems)) {
+    SbPList::invalidIndex("SbPList::getArrayPtr(): index out of range");
+  }
   return &this->itembuffer[start];
 }
 
 inline void *& 
 SbPList::operator[](const int index) const 
 {
-#ifdef COIN_EXTRA_DEBUG
-  assert(index >= 0);
-#endif // COIN_EXTRA_DEBUG
+  if (index < 0) {
+    SbPList::invalidIndex("SbPList::operator[](): index out of range");
+  }
   if (index >= this->getLength()) this->expandindex(index);
   return this->itembuffer[index];
 }
@@ -143,13 +144,19 @@ SbPList::operator!=(const SbPList & l) const
 
 inline void * 
 SbPList::get(const int index) const 
-{ 
+{
+  if (index < 0 || index >= this->numitems) {
+    SbPList::invalidIndex("SbPList::get(): index out of range");
+  }
   return this->itembuffer[index]; 
 }
 
 inline void 
 SbPList::set(const int index, void * item) 
-{ 
+{
+  if (index < 0 || index >= this->numitems) {
+    SbPList::invalidIndex("SbPList::set(): index out of range");
+  }
   this->itembuffer[index] = item; 
 }
 
