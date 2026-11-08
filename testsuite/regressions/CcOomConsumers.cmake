@@ -52,3 +52,12 @@ if(NOT WIN32)
     ${COIN_TARGET_INCLUDE_DIRECTORIES})
   add_test(NAME CcSbHashOom COMMAND CcSbHashOomTest)
 endif()
+
+add_executable(SbHashFailureTest SbHashFailureTest.cpp)
+target_compile_definitions(SbHashFailureTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
+target_link_libraries(SbHashFailureTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(SbHashFailureTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/src ${PROJECT_SOURCE_DIR}/include
+  ${PROJECT_BINARY_DIR}/src ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+add_test(NAME SbHashFailure COMMAND SbHashFailureTest)
