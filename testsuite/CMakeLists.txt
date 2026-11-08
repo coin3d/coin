@@ -1,8 +1,8 @@
-include(gl-context-maps/Tests.cmake)
 include(glglue-lifetime/Tests.cmake)
 include(action-apply-exceptions/Tests.cmake)
 include(gl-render-exceptions/Tests.cmake)
 include(SbSmallMapTests.cmake)
+include(gl-context-maps/Tests.cmake)
 
 if(COIN_BUILD_LEGACY_GL_RENDERER)
   find_package(Threads REQUIRED)
