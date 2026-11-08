@@ -1,4 +1,6 @@
+include(glglue-lifetime/Tests.cmake)
 include(action-apply-exceptions/Tests.cmake)
+include(gl-render-exceptions/Tests.cmake)
 include(SbSmallMapTests.cmake)
 
 if(COIN_BUILD_LEGACY_GL_RENDERER)
@@ -119,15 +121,18 @@ add_executable(CoinTests
 )
 
 # Private Coin symbols are not exported from the Windows DLL. Compile the
-# dictionary implementation, prime-number and SbHashFunc support directly
-# into CoinTests. Static builds resolve these symbols from the Coin archive.
+# dictionary and dynamic-array implementations, prime-number and SbHashFunc
+# support directly into CoinTests. Static builds resolve these symbols from
+# the Coin archive.
 if(WIN32 AND COIN_BUILD_SHARED_LIBS)
 	target_sources(CoinTests PRIVATE
 		${PROJECT_SOURCE_DIR}/src/base/dict.cpp
+		${PROJECT_SOURCE_DIR}/src/base/dynarray.cpp
 		CoinGeqPrimeNumberWin32TestSupport.cpp
 		SbHashFuncSbStringWin32TestSupport.cpp)
 	set_source_files_properties(
 		${PROJECT_SOURCE_DIR}/src/base/dict.cpp
+		${PROJECT_SOURCE_DIR}/src/base/dynarray.cpp
 		CoinGeqPrimeNumberWin32TestSupport.cpp
 		SbHashFuncSbStringWin32TestSupport.cpp
 		PROPERTIES
@@ -176,6 +181,17 @@ add_test(NAME SoTempPathReplaceTail_empty_noop
 
 add_subdirectory(xml-c-api/c-headers)
 add_subdirectory(xml-c-api/entity-abi)
+
+# Compile the private XML utility into its test so the function does not need
+# to become a public DLL symbol on Windows.
+add_executable(XmlLoadFileTest XmlLoadFileTest.cpp
+  ${PROJECT_SOURCE_DIR}/src/xml/utils.cpp)
+target_link_libraries(XmlLoadFileTest PRIVATE Coin)
+target_compile_definitions(XmlLoadFileTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
+target_include_directories(XmlLoadFileTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${PROJECT_SOURCE_DIR}/src ${PROJECT_BINARY_DIR}/src)
+add_test(NAME XmlLoadFileTest COMMAND XmlLoadFileTest)
 
 add_executable(SoPathRangeTest SoPathRangeTest.cpp)
 target_link_libraries(SoPathRangeTest Coin ${COIN_TARGET_LINK_LIBRARIES})
