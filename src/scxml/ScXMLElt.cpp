@@ -60,6 +60,7 @@
 #include <cstring>
 #include <cassert>
 #include <map>
+#include <memory>
 
 #include <Inventor/SbName.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -152,23 +153,27 @@ ScXMLElt::setXMLAttribute(const char * attribute, const char * value)
   const SbName attrname(attribute); // uniqify on string pointer
   PImpl::AttributeMap::iterator it =
     PRIVATE(this)->attributemap.find(attrname.getString());
-  if (it == PRIVATE(this)->attributemap.end()) {
-    if (value) {
-      char * valuedup = new char [ strlen(value) + 1 ];
-      strcpy(valuedup, value);
-      PRIVATE(this)->attributemap.insert(
-        PImpl::AttributeEntry(attrname.getString(), valuedup));
-    }
-  } else {
-    delete [] it->second;
-    it->second = NULL;
-    if (!value) {
+  if (!value) {
+    if (it != PRIVATE(this)->attributemap.end()) {
+      delete [] it->second;
       PRIVATE(this)->attributemap.erase(it);
-    } else {
-      it->second = new char [ strlen(value) + 1 ];
-      strcpy(it->second, value);
     }
+    return;
   }
+
+  // The caller may pass the current value, or a substring of it.
+  std::unique_ptr<char[]> valuedup(new char [strlen(value) + 1]);
+  strcpy(valuedup.get(), value);
+  if (it == PRIVATE(this)->attributemap.end()) {
+    PRIVATE(this)->attributemap.insert(
+      PImpl::AttributeEntry(attrname.getString(), valuedup.get()));
+  }
+  else {
+    char * oldvalue = it->second;
+    it->second = valuedup.get();
+    delete [] oldvalue;
+  }
+  valuedup.release();
 }
 
 /*!
@@ -270,3 +275,28 @@ ScXMLElt::isContainedIn(const ScXMLElt * element) const
 }
 
 #undef PRIVATE
+
+#ifdef COIN_TEST_SUITE
+#include <Inventor/scxml/ScXMLStateElt.h>
+
+BOOST_AUTO_TEST_CASE(scxml_attribute_alias_replacement)
+{
+  ScXMLStateElt element;
+  element.setXMLAttribute("custom", "prefix-value");
+  const char * oldvalue = element.getXMLAttribute("custom");
+  BOOST_REQUIRE(oldvalue != NULL);
+  element.setXMLAttribute("custom", oldvalue);
+  BOOST_REQUIRE(element.getXMLAttribute("custom") != NULL);
+  BOOST_CHECK_EQUAL(std::strcmp(element.getXMLAttribute("custom"), "prefix-value"), 0);
+
+  oldvalue = element.getXMLAttribute("custom");
+  element.setXMLAttribute("custom", oldvalue + 7);
+  BOOST_REQUIRE(element.getXMLAttribute("custom") != NULL);
+  BOOST_CHECK_EQUAL(std::strcmp(element.getXMLAttribute("custom"), "value"), 0);
+
+  element.setXMLAttribute("custom", NULL);
+  BOOST_CHECK(element.getXMLAttribute("custom") == NULL);
+  element.setXMLAttribute("custom", NULL);
+  BOOST_CHECK(element.getXMLAttribute("custom") == NULL);
+}
+#endif // COIN_TEST_SUITE
