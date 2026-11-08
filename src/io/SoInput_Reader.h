@@ -62,8 +62,9 @@ public:
   virtual ReaderType getType(void) const = 0;
 
   // must be overloaded to read data. Should return number of bytes
-  // read or 0 if eof
+  // read or 0 if the stream ended or failed; hasError() distinguishes them
   virtual size_t readBuffer(char * buf, const size_t readlen) = 0;
+  virtual SbBool hasError(void) const;
 
   // should be overloaded to return filename. Default method returns
   // an empty string.
@@ -86,6 +87,7 @@ public:
 
   ReaderType getType(void) const override;
   size_t readBuffer(char * buf, const size_t readlen) override;
+  SbBool hasError(void) const override;
 
   const SbString & getFilename(void) override;
   FILE * getFilePointer(void) override;
@@ -117,10 +119,12 @@ public:
 
   ReaderType getType(void) const override;
   size_t readBuffer(char * buf, const size_t readlen) override;
+  SbBool hasError(void) const override;
 
 public:
   void * gzmfile;
   const void * buf;
+  SbBool readerror;
 };
 
 
@@ -131,12 +135,14 @@ public:
 
   ReaderType getType(void) const override;
   size_t readBuffer(char * buf, const size_t readlen) override;
+  SbBool hasError(void) const override;
 
   const SbString & getFilename(void) override;
 
 public:
   void * gzfp;
   SbString filename;
+  SbBool readerror;
 };
 
 class SoInput_BZ2FileReader : public SoInput_Reader {
@@ -146,12 +152,14 @@ public:
 
   ReaderType getType(void) const override;
   size_t readBuffer(char * buf, const size_t readlen) override;
+  SbBool hasError(void) const override;
 
   const SbString & getFilename(void) override;
 
 public:
   void * bzfp;
   SbString filename;
+  SbBool readerror;
 };
 
 #endif // COIN_SOINPUT_READER_H

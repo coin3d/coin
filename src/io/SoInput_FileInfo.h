@@ -145,6 +145,9 @@ public:
   SbBool isEndOfFile(void) const {
     return this->eof;
   }
+  SbBool hasReadError(void) const {
+    return this->readerror;
+  }
   void applyPostCallback(SoInput * soinput) {
     if (this->postfunc) this->postfunc(this->userdata, soinput);
   }
@@ -238,7 +241,7 @@ private:
   SbList<char> backbuffer; // Used as a stack (SbList provides push() and pop()).
   int lastputback; // The last character put back into the stream.
   int lastchar; // Last read character.
-  SbBool headerisread, eof;
+  SbBool headerisread, eof, readerror;
   SbBool vrml1file;
   SbBool vrml2file;
 
@@ -265,6 +268,7 @@ private:
   int threadreadidx;
   int threadbufidx;
   SbBool threadeof;
+  SbBool threadreaderror;
 #endif // HAVE_THREADS && SOINPUT_ASYNC_IO
 };
 

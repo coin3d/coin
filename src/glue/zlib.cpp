@@ -108,6 +108,7 @@ typedef off_t (*cc_zlibglue_gzseek_t)(void * fp, off_t offset, int whence);
 typedef int (*cc_zlibglue_gzrewind_t)(void * fp);
 typedef off_t (*cc_zlibglue_gztell_t)(void * fp);
 typedef int (*cc_zlibglue_gzeof_t)(void * fp);
+typedef const char * (*cc_zlibglue_gzerror_t)(void * fp, int * error);
 typedef int (*cc_zlibglue_gzclose_t)(void * fp);
 typedef int (*cc_zlibglue_crc32_t)(unsigned long crc, const char * buf, unsigned int len);
 
@@ -131,6 +132,7 @@ typedef struct {
   cc_zlibglue_gzrewind_t gzrewind;
   cc_zlibglue_gztell_t gztell;
   cc_zlibglue_gzeof_t gzeof;
+  cc_zlibglue_gzerror_t gzerror;
   cc_zlibglue_gzclose_t gzclose;
   cc_zlibglue_crc32_t crc32;
 } cc_zlibglue_t;
@@ -266,6 +268,7 @@ zlibglue_init(void)
         ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzrewind_t, gzrewind);
         ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gztell_t, gztell);
         ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzeof_t, gzeof);
+        ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzerror_t, gzerror);
         ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzclose_t, gzclose);
         ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_crc32_t, crc32);
         
@@ -417,6 +420,13 @@ cc_zlibglue_gzeof(void * fp)
 {
   zlibglue_init();
   return zlib_instance->gzeof(fp);
+}
+
+const char *
+cc_zlibglue_gzerror(void * fp, int * error)
+{
+  zlibglue_init();
+  return zlib_instance->gzerror(fp, error);
 }
 
 int 

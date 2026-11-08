@@ -74,6 +74,7 @@ off_t cc_zlibglue_gzseek(void * fp, off_t offset, int whence);
 int cc_zlibglue_gzrewind(void * fp);
 off_t cc_zlibglue_gztell(void * fp);
 int cc_zlibglue_gzeof(void * fp);
+const char * cc_zlibglue_gzerror(void * fp, int * error);
 int cc_zlibglue_gzclose(void * fp);
 int cc_zlibglue_crc32(unsigned long crc, const char * buf, unsigned int len);
 
