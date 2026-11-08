@@ -386,3 +386,59 @@ SbName::empty(void) // static
   }
   return *emptyname;
 }
+
+#ifdef COIN_TEST_SUITE
+
+#include <cstring>
+#include <string>
+
+BOOST_AUTO_TEST_CASE(sbname_preserves_and_interns_long_names)
+{
+  std::string firsttext(70000, 'a');
+  std::string secondtext(firsttext);
+  secondtext[secondtext.size() - 1] = 'b';
+
+  SbName first(firsttext.c_str());
+  SbName firstagain(firsttext.c_str());
+  SbName second(secondtext.c_str());
+
+  BOOST_CHECK_EQUAL(first.getLength(),
+                    static_cast<int>(firsttext.size()));
+  BOOST_CHECK_EQUAL(second.getLength(),
+                    static_cast<int>(secondtext.size()));
+  BOOST_CHECK(std::strcmp(first.getString(), firsttext.c_str()) == 0);
+  BOOST_CHECK(std::strcmp(second.getString(), secondtext.c_str()) == 0);
+  BOOST_CHECK(first == firstagain);
+  BOOST_CHECK(first.getString() == firstagain.getString());
+  BOOST_CHECK(first != second);
+}
+
+BOOST_AUTO_TEST_CASE(sbname_accepts_exact_legacy_chunk_boundary)
+{
+  std::string text(65503, 'x');
+  SbName name(text.c_str());
+  BOOST_CHECK_EQUAL(name.getLength(), static_cast<int>(text.size()));
+  BOOST_CHECK(std::strcmp(name.getString(), text.c_str()) == 0);
+}
+
+BOOST_AUTO_TEST_CASE(sbname_preserves_addresses_across_large_chunks)
+{
+  const SbName shortname("retained-before-large-name-review");
+  const char * shortaddress = shortname.getString();
+  std::string text(65504, 'y'); // terminator exceeds the legacy chunk
+  const SbName boundary(text.c_str());
+  const char * boundaryaddress = boundary.getString();
+  const std::string largertext(140000, 'z');
+  const SbName larger(largertext.c_str());
+  const SbName trailing("retained-after-large-name-review");
+
+  BOOST_CHECK_EQUAL(boundary.getLength(), static_cast<int>(text.size()));
+  BOOST_CHECK_EQUAL(larger.getLength(), static_cast<int>(largertext.size()));
+  BOOST_CHECK(std::strcmp(boundaryaddress, text.c_str()) == 0);
+  BOOST_CHECK(std::strcmp(larger.getString(), largertext.c_str()) == 0);
+  BOOST_CHECK(SbName(text.c_str()).getString() == boundaryaddress);
+  BOOST_CHECK(SbName("retained-before-large-name-review").getString() == shortaddress);
+  BOOST_CHECK(std::strcmp(trailing.getString(), "retained-after-large-name-review") == 0);
+}
+
+#endif // COIN_TEST_SUITE
