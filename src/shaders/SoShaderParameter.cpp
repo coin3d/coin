@@ -374,6 +374,7 @@
 
 #include <cassert>
 #include <memory>
+#include <Inventor/misc/SoContextHandler.h>
 
 #include "nodes/SoSubNodeP.h"
 #include "misc/SbSmallMap.h"
@@ -424,8 +425,11 @@ SoShaderParameter::~SoShaderParameter()
 
 class SoUniformShaderParameterP {
 public:
-  SoUniformShaderParameterP() { }
+  SoUniformShaderParameterP() {
+    SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
+  }
   ~SoUniformShaderParameterP() {
+    SoContextHandler::removeContextDestructionCallback(context_destruction_cb, this);
     for (SbSmallMap<uint32_t, SoGLShaderParameter *>::const_iterator it =
            this->glparams.const_begin(); it != this->glparams.const_end(); ++it) {
       deleteGLParameter(it->obj);
@@ -434,7 +438,14 @@ public:
   static void deleteGLParameter(SoGLShaderParameter * param) {
     delete param;
   }
-  // FIXME: add a cache context destruction callback, pederb 2005-11-30
+  static void context_destruction_cb(uint32_t context, void * userdata) {
+    SoUniformShaderParameterP * self = static_cast<SoUniformShaderParameterP *>(userdata);
+    SoGLShaderParameter * param = NULL;
+    if (self->glparams.get(context, param)) {
+      self->glparams.erase(context);
+      deleteGLParameter(param);
+    }
+  }
   // Uniform parameters normally have resources in only a few GL contexts.
   SbSmallMap<uint32_t, SoGLShaderParameter *> glparams;
 };
