@@ -196,22 +196,16 @@ void
 SoBase::PImpl::rbptree_notify_cb(void * auditor, void * type, void * closure)
 {
   NotifyData * data = static_cast<NotifyData *>(closure);
-  data->cnt--;
+  if (data->notified->find(auditor) >= 0) return;
+  data->notified->append(auditor);
 
   // MSVC7 on 64-bit Windows wants to go through this type when
   // casting from void*.
   const uintptr_t tmptype = (uintptr_t)type;
-
-  if (data->cnt == 0) {
-    data->thisp->doNotify(data->list, auditor, (SoNotRec::Type) tmptype);
-  }
-  else {
-    assert(data->cnt > 0);
-    // use a copy of 'l', since the notification list might change
-    // when auditors are notified
-    SoNotList listcopy(data->list);
-    data->thisp->doNotify(&listcopy, auditor, (SoNotRec::Type) tmptype);
-  }
+  // A callback can remove another auditor, so the last delivered callback
+  // cannot be identified from the tree size sampled before traversal.
+  SoNotList listcopy(data->list);
+  data->thisp->doNotify(&listcopy, auditor, (SoNotRec::Type) tmptype);
 }
 
 // Reads the name of a reference after a "USE" keyword and finds the
