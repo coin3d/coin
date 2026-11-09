@@ -508,6 +508,10 @@ static const char *
 find_font_file(const char * fontname, unsigned int pixelsize)
 {
   const char * foundfile = NULL;
+  struct stat pathinfo;
+  if (stat(fontname, &pathinfo) == 0 && !S_ISDIR(pathinfo.st_mode)) {
+    return cc_namemap_get_address(fontname);
+  }
 
   /* use fontconfig to locate fonts if available */
   if (cc_fcglue_available()) {
