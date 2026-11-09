@@ -311,11 +311,16 @@ cc_fcglue_FcPatternAddDouble(FcPattern *p, const char *object, double d)
 int
 cc_fcglue_available(void)
 {
-  const char * env;
-  
-  if (!((env = coin_getenv("COIN_FORCE_FONTCONFIG_OFF")) && (atoi(env) > 0))) {
-    fcglue_init();
-  }
+  const char * env = coin_getenv("COIN_FORCE_FONTCONFIG_OFF");
+  if (env && atoi(env) > 0) return 0;
+
+#if defined(__APPLE__) || defined(_WIN32)
+  const char * force = coin_getenv("COIN_FORCE_FONTCONFIG_ON");
+  const char * libname = coin_getenv("COIN_FONTCONFIG_LIBNAME");
+  if (!(force && atoi(force) > 0) && !(libname && libname[0])) return 0;
+#endif
+
+  fcglue_init();
   return fontconfig_instance && fontconfig_instance->available;
 }
 
