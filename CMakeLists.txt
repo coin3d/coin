@@ -661,7 +661,8 @@ elseif(APPLE)
   configure_file(version.plist.in version.plist)
   set(HAVE_GZDOPEN)
 
-  list(APPEND COIN_TARGET_LINK_LIBRARIES "-framework CoreFoundation" "-framework CoreGraphics")
+  list(APPEND COIN_TARGET_LINK_LIBRARIES
+    "-framework CoreFoundation" "-framework CoreGraphics" "-framework CoreText")
 
   set(COIN_MAC_FRAMEWORK ${COIN_BUILD_MAC_FRAMEWORK})
   set(COIN_MAC_FRAMEWORK_NAME "Inventor")

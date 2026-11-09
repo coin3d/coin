@@ -54,6 +54,7 @@
 #include "glue/GLUWrapper.h"
 
 #include "fonts/freetype.h"
+#include "fonts/coretext.h"
 
 /* ************************************************************************* */
 
@@ -505,7 +506,7 @@ cc_flwft_exit(void)
 }
 
 static const char *
-find_font_file(const char * fontname, unsigned int pixelsize)
+find_font_file(const char * fontname, unsigned int pixelsize, long * faceindex)
 {
   const char * foundfile = NULL;
   struct stat pathinfo;
@@ -588,6 +589,16 @@ find_font_file(const char * fontname, unsigned int pixelsize)
     }
   }
   else {
+#ifdef __APPLE__
+    cc_string filename;
+    cc_string_construct(&filename);
+    const SbBool resolved = cc_flwct_find_file(fontname, pixelsize, library,
+                                              &filename, faceindex);
+    if (resolved) foundfile = cc_namemap_get_address(cc_string_get_text(&filename));
+    cc_string_clean(&filename);
+    if (resolved) return foundfile;
+#endif
+
     struct stat buf;
     cc_string str;
     unsigned int i, j, n;
@@ -656,10 +667,11 @@ cc_flwft_get_font(const char * fontname, unsigned int pixelsize)
 {
   FT_Face face;
   FT_Error error;
-  const char * fontfilename = find_font_file(fontname, pixelsize);
+  long faceindex = 0;
+  const char * fontfilename = find_font_file(fontname, pixelsize, &faceindex);
   static const int disable_utf8 = (coin_getenv("COIN_DISABLE_UTF8") != NULL);
 
-  error = cc_ftglue_FT_New_Face(library, fontfilename ? fontfilename : fontname, 0, &face);
+  error = cc_ftglue_FT_New_Face(library, fontfilename ? fontfilename : fontname, faceindex, &face);
 
   if (error) {
     if (cc_font_debug()) {
