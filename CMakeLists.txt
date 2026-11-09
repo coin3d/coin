@@ -332,7 +332,7 @@ if(Threads_FOUND)
 endif()
 
 if(USE_EXTERNAL_EXPAT)
-  find_package(EXPAT)
+  find_package(EXPAT REQUIRED)
   if(EXPAT_FOUND)
     set(HAVE_EXPAT 1)
     list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${EXPAT_INCLUDE_DIRS})
