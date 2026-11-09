@@ -36,111 +36,119 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#include "glue/GLUWrapper.h"
+#ifdef __APPLE__
+#include <CoreText/CoreText.h>
+#include <cstring>
+#include <vector>
 
-/* ************************************************************************* */
+#include "glue/freetype.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
-/* ************************************************************************* */
-
-#ifdef HAVE_CORETEXT
-
-/* ************************************************************************* */
-
-#include <ApplicationServices/ApplicationServices.h>
-
-/* ************************************************************************* */
-
-SbBool
-cc_flwct_initialize(void)
+static SbBool
+copy_utf8(CFStringRef source, cc_string * target)
 {
+  if (!source) return FALSE;
+
+  const CFIndex size = CFStringGetMaximumSizeForEncoding(
+    CFStringGetLength(source), kCFStringEncodingUTF8);
+  if (size < 0) return FALSE;
+
+  std::vector<char> buffer(size + 1);
+  if (!CFStringGetCString(source, &buffer[0], buffer.size(), kCFStringEncodingUTF8)) {
+    return FALSE;
+  }
+
+  cc_string_set_text(target, &buffer[0]);
   return TRUE;
 }
 
-void
-cc_flwct_exit(void)
-{}
-
-void *
-cc_flwct_get_font(const char * fontname, unsigned int pixelsize)
+static CTFontRef
+create_font(const char * fontname, unsigned int pixelsize)
 {
-  return NULL;
+  CFStringRef name = CFStringCreateWithCString(NULL, fontname, kCFStringEncodingUTF8);
+  if (!name) return NULL;
+
+  const CFRange colon = CFStringFind(name, CFSTR(":"), 0);
+  if (colon.location == kCFNotFound) {
+    CTFontRef font = CTFontCreateWithName(name, pixelsize, NULL);
+    CFRelease(name);
+    return font;
+  }
+
+  // Coin uses family:style; CoreText expects separate descriptor attributes.
+  CFStringRef family = CFStringCreateWithSubstring(NULL, name,
+    CFRangeMake(0, colon.location));
+  CFStringRef style = CFStringCreateWithSubstring(NULL, name,
+    CFRangeMake(colon.location + 1, CFStringGetLength(name) - colon.location - 1));
+  CFRelease(name);
+  if (!family || !style) {
+    if (family) CFRelease(family);
+    if (style) CFRelease(style);
+    return NULL;
+  }
+
+  const void * keys[] = { kCTFontFamilyNameAttribute, kCTFontStyleNameAttribute };
+  const void * values[] = { family, style };
+  CFDictionaryRef attributes = CFDictionaryCreate(NULL, keys, values, 2,
+    &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+  CFRelease(family);
+  CFRelease(style);
+  if (!attributes) return NULL;
+
+  CTFontDescriptorRef descriptor = CTFontDescriptorCreateWithAttributes(attributes);
+  CFRelease(attributes);
+  if (!descriptor) return NULL;
+
+  CTFontRef font = CTFontCreateWithFontDescriptor(descriptor, pixelsize, NULL);
+  CFRelease(descriptor);
+  return font;
 }
 
-void
-cc_flwct_get_font_name(void * font, cc_string * str)
-{}
-
-void
-cc_flwct_done_font(void * font)
+SbBool
+cc_flwct_find_file(const char * fontname, unsigned int pixelsize,
+                   void * library, cc_string * filename, long * faceindex)
 {
-  CFRelease((CTFontRef)font);
+  CTFontRef font = create_font(fontname, pixelsize);
+  if (!font) return FALSE;
+
+  CFTypeRef location = CTFontCopyAttribute(font, kCTFontURLAttribute);
+  CFStringRef postscript = CTFontCopyPostScriptName(font);
+  CFRelease(font);
+  if (!location || CFGetTypeID(location) != CFURLGetTypeID() || !postscript) {
+    if (location) CFRelease(location);
+    if (postscript) CFRelease(postscript);
+    return FALSE;
+  }
+
+  CFStringRef path = CFURLCopyFileSystemPath((CFURLRef)location, kCFURLPOSIXPathStyle);
+  CFRelease(location);
+  cc_string name;
+  cc_string_construct(&name);
+  const SbBool converted = copy_utf8(path, filename) && copy_utf8(postscript, &name);
+  if (path) CFRelease(path);
+  CFRelease(postscript);
+  if (!converted) {
+    cc_string_clean(&name);
+    return FALSE;
+  }
+
+  // Descriptor order need not match a collection's FreeType face indices.
+  SbBool found = FALSE;
+  long count = 1;
+  for (long index = 0; index < count; ++index) {
+    FT_Face face;
+    if (cc_ftglue_FT_New_Face(library, cc_string_get_text(filename), index, &face)) break;
+
+    count = face->num_faces;
+    const char * candidate = cc_ftglue_FT_Get_Postscript_Name(face);
+    found = candidate && std::strcmp(candidate, cc_string_get_text(&name)) == 0;
+    cc_ftglue_FT_Done_Face(face);
+    if (!found) continue;
+
+    *faceindex = index;
+    break;
+  }
+
+  cc_string_clean(&name);
+  return found;
 }
-
-int
-cc_flwct_get_num_charmaps(void * font)
-{
-  return 0;
-}
-
-const char *
-cc_flwct_get_charmap_name(void * font, int charmap)
-{
-  return "UNICODE";
-}
-
-void
-cc_flwct_set_charmap(void * font, int charmap)
-{}
-
-void
-cc_flwct_set_char_size(void * font, int height)
-{}
-
-void
-cc_flwct_set_font_rotation(void * font, float angle)
-{}
-
-int
-cc_flwct_get_glyph(void * font, unsigned int charidx)
-{
-  return 0;
-}
-
-void
-cc_flwct_get_vector_advance(void * font, int glyph, float * x, float * y)
-{}
-
-void
-cc_flwct_get_bitmap_kerning(void * font, int glyph1, int glyph2, int *x, int *y)
-{}
-
-
-void
-cc_flwct_get_vector_kerning(void * font, int glyph1, int glyph2, float *x, float *y)
-{}
-
-void
-cc_flwct_done_glyph(void * font, int glyph)
-{}
-
-struct cc_font_bitmap *
-cc_flwct_get_bitmap(void * font, unsigned int glyph)
-{
-  return NULL;
-}
-
-struct cc_font_vector_glyph *
-cc_flwct_get_vector_glyph(void * font, unsigned int glyphindex, float complexity)
-{
-  return NULL;
-}
-
-#endif /* HAVE_CORETEXT */
-
-#ifdef __cplusplus
-} /* extern "C" */
-#endif /* __cplusplus */
+#endif /* __APPLE__ */

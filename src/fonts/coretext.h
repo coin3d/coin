@@ -33,13 +33,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*
-  Here is the glue between the FLW and Core Text.
-
-  See
-  http://developer.apple.com/mac/library/documentation/Carbon/Conceptual/CoreText_Programming/
-  for more information on Core Text Programming.
-*/
+/* Resolve CoreText font names to files and FreeType collection indices. */
 
 /* ********************************************************************** */
 
@@ -56,28 +50,8 @@
 extern "C" {
 #endif
 
-  SbBool cc_flwct_initialize(void);
-  void cc_flwct_exit(void);
-
-  void * cc_flwct_get_font(const char * fontname, unsigned int pixelsize);
-  void cc_flwct_get_font_name(void * font, cc_string * str);
-  void cc_flwct_done_font(void * font);
-
-  int cc_flwct_get_num_charmaps(void * font);
-  const char * cc_flwct_get_charmap_name(void * font, int charmap);
-  void cc_flwct_set_charmap(void * font, int charmap);
-
-  void cc_flwct_set_char_size(void * font, int height);
-  void cc_flwct_set_font_rotation(void * font, float angle);
-
-  int cc_flwct_get_glyph(void * font, unsigned int charidx);
-  void cc_flwct_get_vector_advance(void * font, int glyph, float * x, float * y);
-  void cc_flwct_get_bitmap_kerning(void * font, int glyph1, int glyph2, int * x, int * y);
-  void cc_flwct_get_vector_kerning(void * font, int glyph1, int glyph2, float * x, float * y);
-  void cc_flwct_done_glyph(void * font, int glyph);
-
-  struct cc_font_bitmap * cc_flwct_get_bitmap(void * font, unsigned int glyph);
-  struct cc_font_vector_glyph * cc_flwct_get_vector_glyph(void * font, unsigned int glyph, float complexity);
+  SbBool cc_flwct_find_file(const char * fontname, unsigned int pixelsize,
+                           void * library, cc_string * filename, long * faceindex);
 
 #ifdef __cplusplus
 }
