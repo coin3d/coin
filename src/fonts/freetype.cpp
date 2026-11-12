@@ -358,6 +358,8 @@ static const char * const fontfilenames[] = {
 
 /* ************************************************************************* */
 
+static void clean_fontmap_hash(uintptr_t key, void * val, void * closure);
+
 SbBool
 cc_flwft_initialize(void)
 {
@@ -392,6 +394,11 @@ cc_flwft_initialize(void)
 
   /* Set up hash of font name to array of file name mappings. */
   cc_flwft_globals.fontname2filename = cc_dict_construct(50, 0.75);
+  if (cc_flwft_globals.fontname2filename == NULL) {
+    cc_ftglue_FT_Done_FreeType(library);
+    library = NULL;
+    return FALSE;
+  }
   {
     unsigned int i = 0;
     while (i < sizeof(fontfilenames) / sizeof(fontfilenames[0])) {
@@ -406,7 +413,17 @@ cc_flwft_initialize(void)
       }
       else {
         array = cc_dynarray_new();
-        if (!cc_dict_put(cc_flwft_globals.fontname2filename, key, array)) assert(!"cc_dict_put failed");
+        if (cc_dict_try_put(cc_flwft_globals.fontname2filename, key, array) !=
+            CC_DICT_PUT_INSERTED) {
+          cc_dynarray_destruct(array);
+          cc_dict_apply(cc_flwft_globals.fontname2filename,
+                        clean_fontmap_hash, NULL);
+          cc_dict_destruct(cc_flwft_globals.fontname2filename);
+          cc_flwft_globals.fontname2filename = NULL;
+          cc_ftglue_FT_Done_FreeType(library);
+          library = NULL;
+          return FALSE;
+        }
       }
 
       while (fontfilenames[++i] != NULL) {

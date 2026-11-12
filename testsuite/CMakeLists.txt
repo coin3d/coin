@@ -3,6 +3,9 @@ add_executable(CoinPbufferLimitsTest PbufferLimitsTest.cpp)
 target_include_directories(CoinPbufferLimitsTest PRIVATE ${PROJECT_SOURCE_DIR}/src)
 add_test(NAME PbufferLimits COMMAND CoinPbufferLimitsTest)
 
+include(glglue-lifetime/Tests.cmake)
+include(action-apply-exceptions/Tests.cmake)
+include(gl-render-exceptions/Tests.cmake)
 include(SbSmallMapTests.cmake)
 
 if(COIN_BUILD_LEGACY_GL_RENDERER)
@@ -123,15 +126,18 @@ add_executable(CoinTests
 )
 
 # Private Coin symbols are not exported from the Windows DLL. Compile the
-# dictionary implementation, prime-number and SbHashFunc support directly
-# into CoinTests. Static builds resolve these symbols from the Coin archive.
+# dictionary and dynamic-array implementations, prime-number and SbHashFunc
+# support directly into CoinTests. Static builds resolve these symbols from
+# the Coin archive.
 if(WIN32 AND COIN_BUILD_SHARED_LIBS)
 	target_sources(CoinTests PRIVATE
 		${PROJECT_SOURCE_DIR}/src/base/dict.cpp
+		${PROJECT_SOURCE_DIR}/src/base/dynarray.cpp
 		CoinGeqPrimeNumberWin32TestSupport.cpp
 		SbHashFuncSbStringWin32TestSupport.cpp)
 	set_source_files_properties(
 		${PROJECT_SOURCE_DIR}/src/base/dict.cpp
+		${PROJECT_SOURCE_DIR}/src/base/dynarray.cpp
 		CoinGeqPrimeNumberWin32TestSupport.cpp
 		SbHashFuncSbStringWin32TestSupport.cpp
 		PROPERTIES
@@ -180,6 +186,17 @@ add_test(NAME SoTempPathReplaceTail_empty_noop
 
 add_subdirectory(xml-c-api/c-headers)
 add_subdirectory(xml-c-api/entity-abi)
+
+# Compile the private XML utility into its test so the function does not need
+# to become a public DLL symbol on Windows.
+add_executable(XmlLoadFileTest XmlLoadFileTest.cpp
+  ${PROJECT_SOURCE_DIR}/src/xml/utils.cpp)
+target_link_libraries(XmlLoadFileTest PRIVATE Coin)
+target_compile_definitions(XmlLoadFileTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
+target_include_directories(XmlLoadFileTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${PROJECT_SOURCE_DIR}/src ${PROJECT_BINARY_DIR}/src)
+add_test(NAME XmlLoadFileTest COMMAND XmlLoadFileTest)
 
 add_executable(SoPathRangeTest SoPathRangeTest.cpp)
 target_link_libraries(SoPathRangeTest Coin ${COIN_TARGET_LINK_LIBRARIES})
@@ -281,6 +298,25 @@ target_include_directories(SoPathChildAppendTest PRIVATE
   ${COIN_TARGET_INCLUDE_DIRECTORIES})
 add_test(NAME SoPathChildAppend COMMAND SoPathChildAppendTest)
 
+set(COIN_XML_TRANSACTION_TEST_DIRECTORY
+  "${CMAKE_CURRENT_BINARY_DIR}/xml-transactional-read")
+file(MAKE_DIRECTORY "${COIN_XML_TRANSACTION_TEST_DIRECTORY}")
+
+add_executable(CoinXmlTransactionalReadTest
+  xml/XmlTransactionalReadTest.cpp)
+target_link_libraries(CoinXmlTransactionalReadTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CoinXmlTransactionalReadTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+target_compile_definitions(CoinXmlTransactionalReadTest PRIVATE
+  COIN_XML_TEST_DIRECTORY="${COIN_XML_TRANSACTION_TEST_DIRECTORY}")
+set_target_properties(CoinXmlTransactionalReadTest PROPERTIES
+  DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
+add_test(NAME CoinXmlTransactionalRead COMMAND CoinXmlTransactionalReadTest)
+set_tests_properties(CoinXmlTransactionalRead PROPERTIES TIMEOUT 10)
+
 if(COIN_BUILD_FUZZERS)
   set(COIN_XML_FUZZ_CORPUS "${CMAKE_CURRENT_BINARY_DIR}/xml-fuzz-corpus")
   file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/fuzz/corpus/"
@@ -325,7 +361,7 @@ set_tests_properties(CoinTestsFilterWildcard PROPERTIES
 add_test(NAME CoinTestsFilterSuite
   COMMAND CoinTests --run_test=SbList_TestSuite)
 set_tests_properties(CoinTestsFilterSuite PROPERTIES
-  PASS_REGULAR_EXPRESSION "\\[OK\\] 5 tests")
+  PASS_REGULAR_EXPRESSION "\\[OK\\] 21 tests")
 
 add_test(NAME CoinTestsFilterCombined
   COMMAND CoinTests
