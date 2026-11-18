@@ -79,8 +79,10 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+#include <Inventor/C/glue/gl.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
@@ -163,6 +165,11 @@ SoTextureCoordinateNormalMap::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
   int unit = SoTextureUnitElement::get(state);
+
+  const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
+  int maxunits = cc_glglue_max_texture_units(glue);
+  if (unit < 0 || unit >= maxunits) return;
+
   SoMultiTextureCoordinateElement::setFunction(action->getState(), this,
                                                unit,
                                                generate,

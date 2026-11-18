@@ -192,7 +192,7 @@ SoTextureCoordinateEnvironment::GLRender(SoGLRenderAction * action)
   int unit = SoTextureUnitElement::get(state);
   const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
   int maxunits = cc_glglue_max_texture_units(glue);
-  if (unit < maxunits) {
+  if (unit >= 0 && unit < maxunits) {
     SoMultiTextureCoordinateElement::setFunction(action->getState(), this,
                                                  unit,
                                                  generate,
