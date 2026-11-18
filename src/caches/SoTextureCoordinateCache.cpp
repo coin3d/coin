@@ -41,6 +41,27 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbVec2f.h>
+#include <cmath>
+#include <cfloat>
+
+namespace {
+float coin_cache_ratio(float point, float minimum, float size,
+                       double extent, bool finitebox)
+{
+  const float numerator = point-minimum;
+  const float legacy = numerator/size;
+  if (finitebox && std::isfinite(point) &&
+      (!std::isfinite(size) || !std::isfinite(numerator))) {
+    // A finite Float size is part of the historical mapping: do not
+    // recompute it more accurately just because the numerator overflowed.
+    const double denominator = std::isfinite(size) ? double(size) : extent;
+    const double result = (double(point)-minimum)/denominator;
+    if (std::isfinite(result) && std::fabs(result) <= FLT_MAX) return float(result);
+  }
+  return legacy;
+}
+}
+
 
 #ifndef DOXYGEN_SKIP_THIS
 
@@ -85,6 +106,7 @@ SoTextureCoordinateCache::generate(const SbBox3f & bbox,
   // (kintel 20020203)
   float sizes[3];
   float minvalues[3];
+  double ordering[3];
   int   offsets[3];
 
   bbox.getSize(sizes[0], sizes[1], sizes[2]);
@@ -95,18 +117,32 @@ SoTextureCoordinateCache::generate(const SbBox3f & bbox,
   offsets[1] = 1;
   offsets[2] = 2;
 
+  bool finitebox = !bbox.isEmpty();
+  for (int i = 0; i < 3; ++i) {
+    if (!std::isfinite(bbox.getMin()[i]) || !std::isfinite(bbox.getMax()[i]) ||
+        bbox.getMax()[i] < bbox.getMin()[i]) finitebox = false;
+  }
+  for (int i = 0; i < 3; ++i) {
+    ordering[i] = sizes[i];
+    if (finitebox && !std::isfinite(sizes[i]))
+      ordering[i] = double(bbox.getMax()[i])-bbox.getMin()[i];
+  }
+
   // bubblesort :-)
-  if (sizes[0] < sizes[1]) {
+  if (ordering[0] < ordering[1]) {
+    SbSwap(ordering[0], ordering[1]);
     SbSwap(sizes[0], sizes[1]);
     SbSwap(minvalues[0], minvalues[1]);
     SbSwap(offsets[0], offsets[1]);
   }
-  if (sizes[1] < sizes[2]) {
+  if (ordering[1] < ordering[2]) {
+    SbSwap(ordering[1], ordering[2]);
     SbSwap(sizes[1], sizes[2]);
     SbSwap(minvalues[1], minvalues[2]);
     SbSwap(offsets[1], offsets[2]);
   }
-  if (sizes[0] < sizes[1]) {
+  if (ordering[0] < ordering[1]) {
+    SbSwap(ordering[0], ordering[1]);
     SbSwap(sizes[0], sizes[1]);
     SbSwap(minvalues[0], minvalues[1]);
     SbSwap(offsets[0], offsets[1]);
@@ -114,12 +150,10 @@ SoTextureCoordinateCache::generate(const SbBox3f & bbox,
 
   float s, t;
   for (int i = 0; i < numvertices; i++) {
-    s = vertices[i][offsets[0]];
-    t = vertices[i][offsets[1]];
-    s -= minvalues[0];
-    t -= minvalues[1];
-    s /= sizes[0];
-    t /= sizes[1];
+    s = coin_cache_ratio(vertices[i][offsets[0]], minvalues[0], sizes[0],
+                         ordering[0], finitebox);
+    t = coin_cache_ratio(vertices[i][offsets[1]], minvalues[1], sizes[1],
+                         ordering[1], finitebox);
     // expand list array as needed
     if (i >= PRIVATE(this)->texCoords.getLength()) PRIVATE(this)->texCoords.append(SbVec2f());
     PRIVATE(this)->texCoords[i].setValue(s, t);
