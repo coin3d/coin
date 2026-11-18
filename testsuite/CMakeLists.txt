@@ -452,3 +452,23 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
       PROPERTIES TIMEOUT 10)
   endforeach()
 endif()
+
+# These legacy GL traversal tests use Coin's compatibility context directly
+# and do not depend on the optional CoinRender library.
+if(COIN_BUILD_LEGACY_GL_RENDERER AND UNIX AND NOT APPLE AND HAVE_GLX)
+  find_package(X11 QUIET)
+  if(X11_FOUND)
+    add_executable(CoinTextureCoordinateTransitionTest TextureCoordinateTransitionTest.cpp)
+    target_include_directories(CoinTextureCoordinateTransitionTest PRIVATE
+      ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+      ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+    target_link_libraries(CoinTextureCoordinateTransitionTest
+      Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+    foreach(texture_case cpu default cube cylinder sphere limit)
+      add_test(NAME TextureCoordinateTransition_${texture_case}
+        COMMAND CoinTextureCoordinateTransitionTest ${texture_case})
+      set_tests_properties(TextureCoordinateTransition_${texture_case}
+        PROPERTIES SKIP_RETURN_CODE 77 LABELS texture-coordinates)
+    endforeach()
+  endif()
+endif()
