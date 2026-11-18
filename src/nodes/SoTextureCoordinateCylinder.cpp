@@ -247,7 +247,7 @@ SoTextureCoordinateCylinderP::calculateTextureCoordinate(const SbVec3f & point, 
     if (n[maxi] > 0.0f) tc[1] = 1.0f - tc[1];        
   }
   else {
-    tc = SbVec4f((float) (atan2(point[0], point[2]) * (1.0/(2.0*M_PI)) + 0.5), 
+    tc = SbVec4f(coin_texture_longitude((float) (atan2(point[0], point[2]) * (1.0/(2.0*M_PI)) + 0.5), point[0], point[2]),
                  coin_texture_box_ratio(point[1], bmin[1], bmax[1]),
                  0.0f, 1.0f);
   }

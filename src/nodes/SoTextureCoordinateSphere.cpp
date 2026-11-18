@@ -50,6 +50,7 @@
 
 #include <Inventor/nodes/SoTextureCoordinateSphere.h>
 #include "coindefs.h"
+#include "nodes/SoTextureCoordinateMathP.h"
 #include <cmath>
 
 #ifdef HAVE_CONFIG_H
@@ -230,7 +231,7 @@ SoTextureCoordinateSphereP::calculateTextureCoordinate(const SbVec3f & point, co
     radial = std::hypot(double(point[0]), double(point[2]));
     latitude = (float) (atan2(point[1], radial) * (1.0/M_PI) + 0.5);
   }
-  SbVec4f tc((float) (atan2(point[0], point[2]) * (1.0/(2.0*M_PI)) + 0.5),
+  SbVec4f tc(coin_texture_longitude((float) (atan2(point[0], point[2]) * (1.0/(2.0*M_PI)) + 0.5), point[0], point[2]),
              latitude,
              0.0f, 1.0f);
 
