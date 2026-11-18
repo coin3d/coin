@@ -378,6 +378,10 @@ SoVRMLTextP::buildLayout(const cc_font_specification * fontspec,
   const float minorstep = this->textspacing * this->textsize;
   float blockmin = 0.0f;
   float blockmax = 0.0f;
+  float firstlinemin = 0.0f;
+  float firstlinemax = 0.0f;
+  float lastlinemin = 0.0f;
+  float lastlinemax = 0.0f;
   SbBool firstbound = TRUE;
 
   for (int i = 0; i < n; i++) {
@@ -438,6 +442,14 @@ SoVRMLTextP::buildLayout(const cc_font_specification * fontspec,
       blockmin = SbMin(blockmin, linemin);
       blockmax = SbMax(blockmax, linemax);
     }
+    if (i == 0) {
+      firstlinemin = linemin;
+      firstlinemax = linemax;
+    }
+    if (i == n - 1) {
+      lastlinemin = linemin;
+      lastlinemax = linemax;
+    }
   }
 
   float minoroffset = 0.0f;
@@ -445,13 +457,13 @@ SoVRMLTextP::buildLayout(const cc_font_specification * fontspec,
   case FIRST:
     break;
   case BEGIN:
-    minoroffset = minorsign > 0.0f ? -blockmin : -blockmax;
+    minoroffset = minorsign > 0.0f ? -firstlinemin : -firstlinemax;
     break;
   case MIDDLE:
     minoroffset = -(blockmin + blockmax) * 0.5f;
     break;
   case END:
-    minoroffset = minorsign > 0.0f ? -blockmax : -blockmin;
+    minoroffset = minorsign > 0.0f ? -lastlinemax : -lastlinemin;
     break;
   }
   for (int i = 0; i < n; i++) {

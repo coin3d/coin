@@ -192,17 +192,19 @@ void checkMinorTranslations(const SbBool horizontal,
                             const SbBool toptobottom,
                             const int axis)
 {
-  std::vector<SbString> lines(2, SbString("A"));
+  std::vector<SbString> lines;
+  lines.push_back(SbString("g"));
+  lines.push_back(SbString("A"));
   Capture begin = configuredCapture(lines, horizontal, lefttoright, toptobottom,
-                                    "BEGIN", "BEGIN");
+                                    "BEGIN", "BEGIN", 1.0f, 0.0f);
   Capture middle = configuredCapture(lines, horizontal, lefttoright, toptobottom,
-                                     "BEGIN", "MIDDLE");
+                                     "BEGIN", "MIDDLE", 1.0f, 0.0f);
   Capture end = configuredCapture(lines, horizontal, lefttoright, toptobottom,
-                                  "BEGIN", "END");
+                                  "BEGIN", "END", 1.0f, 0.0f);
 
-  const SbBox3f beginbounds = bounds(begin);
+  const SbBox3f beginbounds = bounds(begin, 0);
   const SbBox3f middlebounds = bounds(middle);
-  const SbBox3f endbounds = bounds(end);
+  const SbBox3f endbounds = bounds(end, 1);
   const float direction = horizontal ? (toptobottom ? -1.0f : 1.0f) :
                                        (lefttoright ? 1.0f : -1.0f);
   CHECK(near(direction > 0.0f ? beginbounds.getMin()[axis] :
