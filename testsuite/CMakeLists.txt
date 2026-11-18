@@ -472,3 +472,25 @@ if(COIN_BUILD_LEGACY_GL_RENDERER AND UNIX AND NOT APPLE AND HAVE_GLX)
     endforeach()
   endif()
 endif()
+
+if(COIN_BUILD_LEGACY_GL_RENDERER AND UNIX AND NOT APPLE AND HAVE_GLX)
+  find_package(X11 QUIET)
+  if(X11_FOUND)
+    add_executable(CoinTextureCoordinate3VBOTest TextureCoordinate3VBOTest.cpp)
+    target_compile_definitions(CoinTextureCoordinate3VBOTest PRIVATE COIN_INTERNAL)
+    target_include_directories(CoinTextureCoordinate3VBOTest PRIVATE
+      ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+      ${PROJECT_SOURCE_DIR}/src ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+    target_link_libraries(CoinTextureCoordinate3VBOTest
+      Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+    foreach(vbo_case lifecycle separator disabled invalid-negative invalid-limit invalid-above)
+      add_test(NAME TextureCoordinate3VBO_${vbo_case}
+        COMMAND CoinTextureCoordinate3VBOTest ${vbo_case})
+      set_tests_properties(TextureCoordinate3VBO_${vbo_case} PROPERTIES
+        SKIP_RETURN_CODE 77 LABELS texture-coordinates TIMEOUT 30
+        ENVIRONMENT "COIN_VBO=1;COIN_VERTEX_ARRAYS=1")
+    endforeach()
+    set_tests_properties(TextureCoordinate3VBO_disabled PROPERTIES
+      ENVIRONMENT "COIN_VBO=0;COIN_VERTEX_ARRAYS=1")
+  endif()
+endif()
