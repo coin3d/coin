@@ -39,7 +39,12 @@
   The texture specifying the environment will be mapped around the 
   scene graph below this node using a sphere. The texture will be mapped
   onto the scene graph taking camera position into account. This will
-  lead to an object reflecting its environment.
+  lead to an object reflecting its environment. CPU-generated coordinates
+  use the same eye-space reflection and sphere projection as GL_SPHERE_MAP.
+  The incident direction runs from the eye to the surface point; normals
+  use the inverse transpose of the model-view transformation. For zero
+  normals or a point at the eye, CPU generation retains the historical
+  normal-based calculation.
 
   Here is a scene graph example showing how environment mapping can be
   applied to an object:
@@ -70,8 +75,6 @@
 // FIXME: Can this somehow relate to 3D textures? (kintel 20020203)
 
 #include <Inventor/nodes/SoTextureCoordinateEnvironment.h>
-
-#include <cstdlib>
 #include <cfloat>
 
 #ifdef HAVE_CONFIG_H
@@ -87,24 +90,8 @@
 #include <Inventor/system/gl.h>
 #include <Inventor/C/glue/gl.h>
 
-#include "tidbitsp.h"
 #include "nodes/SoSubNodeP.h"
-
-// *************************************************************************
-
-class SoTextureCoordinateEnvironmentP {
-public:
-  static SbVec4f * dummy_texcoords;
-  static void cleanup_func(void);
-};
-
-SbVec4f * SoTextureCoordinateEnvironmentP::dummy_texcoords = NULL;
-
-void
-SoTextureCoordinateEnvironmentP::cleanup_func(void)
-{
-  delete SoTextureCoordinateEnvironmentP::dummy_texcoords;
-}
+#include "nodes/SoTextureCoordinateReflectionP.h"
 
 // *************************************************************************
 
@@ -133,44 +120,41 @@ void
 SoTextureCoordinateEnvironment::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateEnvironment, SO_FROM_INVENTOR_1);
-
-  SoTextureCoordinateEnvironmentP::dummy_texcoords = new SbVec4f(0.0f, 0.0f, 0.0f, 1.0f);
-  coin_atexit((coin_atexit_f *)SoTextureCoordinateEnvironmentP::cleanup_func, CC_ATEXIT_NORMAL);
 }
 
 // generates texture coordinates for GLRender, callback and pick actions
 const SbVec4f &
-SoTextureCoordinateEnvironment::generate(void *userdata,
-                                         const SbVec3f & /* p */,
-                                         const SbVec3f &n)
+SoTextureCoordinateEnvironment::generate(void * userdata,
+                                         const SbVec3f & p,
+                                         const SbVec3f & n)
 {
-  //
-  // from formula in the Red Book
-  //
+  double reflection[3];
+  const bool legacy = coin_texture_reflection(static_cast<SoState *>(userdata),
+                                               p, n, reflection);
 
-  SoState *state = (SoState*)userdata;
-  SbVec3f wn; // normal in world (eye) coordinates
-  SoModelMatrixElement::get(state).multDirMatrix(n, wn);
-  SbVec3f u = n;
-
-  u.normalize();
-  wn.normalize();
-
-  // reflection vector
-  SbVec3f r = u - SbVec3f(2.0f*wn[0]*wn[0]*u[0],
-                          2.0f*wn[1]*wn[1]*u[1],
-                          2.0f*wn[2]*wn[2]*u[2]);
-  r.normalize();
-
-  float tmp = 1.0f + r[2];
-  float m = 2.0f * (float)sqrt(r[0]*r[0] + r[1]*r[1] + tmp*tmp);
-
-  // in case an empty normal was supplied
-  if (fabs(m) <= FLT_EPSILON) m = 1.0f;
-
-  (*SoTextureCoordinateEnvironmentP::dummy_texcoords)[0] = r[0] / m + 0.5f;
-  (*SoTextureCoordinateEnvironmentP::dummy_texcoords)[1] = r[1] / m + 0.5f;
-  return *SoTextureCoordinateEnvironmentP::dummy_texcoords;
+  // The element API returns a reference. Keep result storage local to each
+  // traversal thread without changing the public node's layout.
+  static thread_local SbVec4f texcoords;
+  if (legacy) {
+    SbVec3f r;
+    r.setValue(float(reflection[0]), float(reflection[1]), float(reflection[2]));
+    const float tmp = 1.0f + r[2];
+    float m = 2.0f * (float)sqrt(r[0]*r[0] + r[1]*r[1] + tmp*tmp);
+    if (fabs(m) <= FLT_EPSILON) m = 1.0f;
+    texcoords.setValue(r[0]/m + 0.5f, r[1]/m + 0.5f, 0.0f, 1.0f);
+    return texcoords;
+  }
+  const double z = reflection[2] + 1.0;
+  const double m = 2.0 * std::hypot(std::hypot(reflection[0], reflection[1]), z);
+  // Only the exact pole is undefined. Nearby points retain their direction.
+  if (m == 0.0) {
+    texcoords.setValue(0.5f, 0.5f, 0.0f, 1.0f);
+  }
+  else {
+    texcoords.setValue(float(reflection[0]/m + 0.5),
+                       float(reflection[1]/m + 0.5), 0.0f, 1.0f);
+  }
+  return texcoords;
 }
 
 // doc from parent
