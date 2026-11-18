@@ -90,8 +90,25 @@
 #include <Inventor/system/gl.h>
 #include <Inventor/C/glue/gl.h>
 
+#include "tidbitsp.h"
 #include "nodes/SoSubNodeP.h"
 #include "nodes/SoTextureCoordinateReflectionP.h"
+
+// *************************************************************************
+
+class SoTextureCoordinateEnvironmentP {
+public:
+  static SbVec4f * dummy_texcoords;
+  static void cleanup_func(void);
+};
+
+SbVec4f * SoTextureCoordinateEnvironmentP::dummy_texcoords = NULL;
+
+void
+SoTextureCoordinateEnvironmentP::cleanup_func(void)
+{
+  delete SoTextureCoordinateEnvironmentP::dummy_texcoords;
+}
 
 // *************************************************************************
 
@@ -120,6 +137,9 @@ void
 SoTextureCoordinateEnvironment::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateEnvironment, SO_FROM_INVENTOR_1);
+
+  SoTextureCoordinateEnvironmentP::dummy_texcoords = new SbVec4f(0.0f, 0.0f, 0.0f, 1.0f);
+  coin_atexit((coin_atexit_f *)SoTextureCoordinateEnvironmentP::cleanup_func, CC_ATEXIT_NORMAL);
 }
 
 // generates texture coordinates for GLRender, callback and pick actions
