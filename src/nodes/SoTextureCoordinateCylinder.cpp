@@ -50,6 +50,7 @@
 
 #include <Inventor/nodes/SoTextureCoordinateCylinder.h>
 #include "coindefs.h"
+#include "nodes/SoTextureCoordinateMathP.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -240,20 +241,14 @@ SoTextureCoordinateCylinderP::calculateTextureCoordinate(const SbVec3f & point, 
     // FIXME: A nicer solution might be to calculate the angle between
     // the origo<->point and the origo<->bboxcorner before deciding whether this
     // is the cylinder top/bottom or not. (20040127 handegar)
-    float d0 = bmax[2] - bmin[2];
-    float d1 = bmax[0] - bmin[0];    
-    if (d0 == 0.0f) d0 = 1.0f;
-    if (d1 == 0.0f) d1 = 1.0f;
-    tc = SbVec4f((point[0] - bmin[0]) / d1,
-                 (point[2] - bmin[2]) / d0, 
+    tc = SbVec4f(coin_texture_box_ratio(point[0], bmin[0], bmax[0]),
+                 coin_texture_box_ratio(point[2], bmin[2], bmax[2]),
                  0.0f, 1.0f);
     if (n[maxi] > 0.0f) tc[1] = 1.0f - tc[1];        
   }
   else {
-    float d = bmax[1] - bmin[1];
-    if (d == 0.0f) d = 1.0f;
     tc = SbVec4f((float) (atan2(point[0], point[2]) * (1.0/(2.0*M_PI)) + 0.5), 
-                 (point[1] - bmin[1]) / d, 
+                 coin_texture_box_ratio(point[1], bmin[1], bmax[1]),
                  0.0f, 1.0f);
   }
 

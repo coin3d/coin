@@ -112,6 +112,7 @@ set(COIN_NODES_FILES
 set(COIN_NODES_INTERNAL_FILES
 	SoSoundElementHelper.h
 	SoSubNodeP.h
+	SoTextureCoordinateMathP.h
 	SoTextureCoordinateNormalMapP.h
 	SoTextureCoordinateReflectionP.h
 	SoUnknownNode.h

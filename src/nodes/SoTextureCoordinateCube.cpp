@@ -52,6 +52,7 @@
 
 #include <Inventor/nodes/SoTextureCoordinateCube.h>
 #include "coindefs.h"
+#include "nodes/SoTextureCoordinateMathP.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -78,6 +79,8 @@
 
 typedef struct {
   SbVec3f origo;
+  bool widebox;
+  double widecenter[3], widesize;
   SbBox3f boundingbox;
   SoNode * currentshape;
   SoState * currentstate;
@@ -89,6 +92,7 @@ so_texcoordcube_construct_data(void * closure)
 {
   so_texcoordcube_data * data = (so_texcoordcube_data *) closure;
   data->currentshape = NULL;
+  data->widebox = false;
   data->currentstate = NULL;
   data->origo = SbVec3f(0,0,0);
 }
@@ -211,8 +215,23 @@ textureCoordinateCubeCallback(void * userdata,
     data->boundingbox.getSize(sx, sy, sz);
     if (sy > sx) sx = sy;
     if (sz > sx) sx = sz;
+    const SbBox3f originalbox = data->boundingbox;
     sx *= 0.5f;
     const SbVec3f c = data->origo;
+    data->widebox = !std::isfinite(sx);
+    for (int i = 0; i < 3; ++i) {
+      if (!std::isfinite(c[i]) || !std::isfinite(c[i]-sx) ||
+          !std::isfinite(c[i]+sx)) data->widebox = true;
+    }
+    if (data->widebox) {
+      data->widesize = 0.0;
+      for (int i = 0; i < 3; ++i) {
+        const double lo = originalbox.getMin()[i], hi = originalbox.getMax()[i];
+        if (!std::isfinite(lo) || !std::isfinite(hi) || hi < lo) data->widebox = false;
+        data->widecenter[i] = (lo+hi)*0.5;
+        if (hi-lo > data->widesize) data->widesize = hi-lo;
+      }
+    }
     data->boundingbox.setBounds(c[0] - sx, c[1] - sx, c[2] - sx,
                                 c[0] + sx, c[1] + sx, c[2] + sx);
   }
@@ -241,14 +260,18 @@ SoTextureCoordinateCubeP::calculateTextureCoordinate(const SbVec3f & point, cons
 
   const SbVec3f bmax = data->boundingbox.getMax();
   const SbVec3f bmin = data->boundingbox.getMin();
-  float d0 = bmax[i0] - bmin[i0];
-  float d1 = bmax[i1] - bmin[i1];
-
-  if (d0 == 0.0f) d0 = 1.0f;
-  if (d1 == 0.0f) d1 = 1.0f;
-
-  float s = (point[i0] - bmin[i0]) / d0;
-  float t = (point[i1] - bmin[i1]) / d1;
+  float s = coin_texture_box_ratio(point[i0], bmin[i0], bmax[i0]);
+  float t = coin_texture_box_ratio(point[i1], bmin[i1], bmax[i1]);
+  if (data->widebox && data->widesize > 0.0) {
+    const int axes[2] = { i0, i1 };
+    float * values[2] = { &s, &t };
+    for (int i = 0; i < 2; ++i) {
+      if (std::isfinite(point[axes[i]])) {
+        const double recovered = (double(point[axes[i]])-data->widecenter[axes[i]]) / data->widesize + 0.5;
+        if (std::isfinite(recovered) && std::fabs(recovered) <= FLT_MAX) *values[i] = float(recovered);
+      }
+    }
+  }
 
   SbVec4f tc(s, t, 0.0f, 1.0f);
   switch (maxi) { // Flip textures according to projected cube-side
