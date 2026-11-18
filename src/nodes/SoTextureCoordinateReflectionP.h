@@ -34,6 +34,7 @@
 #define COIN_SOTEXTURECOORDINATEREFLECTIONP_H
 
 #include <cmath>
+#include "nodes/SoTextureCoordinateMathP.h"
 
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbVec3f.h>
@@ -61,9 +62,20 @@ coin_reflection_transform_point(const SbMatrix & matrix, double point[3])
 {
   double result[3];
   for (int i = 0; i < 3; i++) {
-    result[i] = point[0]*double(matrix[0][i]) +
-                point[1]*double(matrix[1][i]) +
-                point[2]*double(matrix[2][i]) + double(matrix[3][i]);
+    const double terms[4] = { point[0]*double(matrix[0][i]),
+      point[1]*double(matrix[1][i]), point[2]*double(matrix[2][i]),
+      double(matrix[3][i]) };
+    result[i] = terms[0] + terms[1] + terms[2] + terms[3];
+    if (result[i] == 0.0) {
+      bool finite = std::isfinite(point[0]) && std::isfinite(point[1]) && std::isfinite(point[2]);
+      for (int row = 0; row < 4; ++row)
+        for (int column = 0; column < 4; ++column)
+          if (!std::isfinite(matrix[row][column])) finite = false;
+      if (finite) {
+        const double recovered = coin_texture_sum(terms, 4);
+        if (std::isfinite(recovered) && recovered != 0.0) result[i] = recovered;
+      }
+    }
   }
   for (int i = 0; i < 3; i++) point[i] = result[i];
 }
