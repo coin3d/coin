@@ -35,6 +35,39 @@
 #include <cmath>
 #include <cfloat>
 namespace {
+// A short compensated sum is needed only after a result loses its range
+// or collapses exactly to zero. It does not replace finite nonzero sums.
+inline double coin_texture_sum(const double * terms, int count)
+{
+  double sum = 0.0, correction = 0.0;
+  for (int i = 0; i < count; ++i) {
+    const double next = sum + terms[i];
+    correction += std::fabs(sum) >= std::fabs(terms[i]) ?
+      (sum-next)+terms[i] : (terms[i]-next)+sum;
+    sum = next;
+  }
+  return sum+correction;
+}
+
+inline float coin_texture_dot(float legacy, const float * a, const float * b, int count)
+{
+  bool recover = legacy == 0.0f || !std::isfinite(legacy);
+  for (int i = 0; i < count; ++i) {
+    if (!std::isfinite(a[i]) || !std::isfinite(b[i])) return legacy;
+    const float product = a[i]*b[i];
+    if (!std::isfinite(product) ||
+        (product == 0.0f && a[i] != 0.0f && b[i] != 0.0f)) recover = true;
+  }
+  if (!recover) return legacy;
+  double terms[4];
+  for (int i = 0; i < count; ++i) terms[i] = double(a[i])*b[i];
+  const double result = coin_texture_sum(terms, count);
+  if (std::isfinite(result) && std::fabs(result) <= FLT_MAX &&
+      ((result != 0.0 && float(result) != 0.0f) ||
+       (result == 0.0 && !std::isfinite(legacy)))) return float(result);
+  return legacy;
+}
+
 inline float coin_texture_box_ratio(float point, float minimum, float maximum)
 {
   float size = maximum - minimum;
