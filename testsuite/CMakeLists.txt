@@ -518,3 +518,26 @@ if(COIN_BUILD_LEGACY_GL_RENDERER AND UNIX AND NOT APPLE AND HAVE_GLX)
       ENVIRONMENT "COIN_VBO=0;COIN_VERTEX_ARRAYS=1")
   endif()
 endif()
+
+# One process per generator and invalid boundary: unfixed negative indices can
+# abort before another generator's assertions are reached.
+if(COIN_BUILD_LEGACY_GL_RENDERER AND UNIX AND NOT APPLE AND HAVE_GLX)
+  find_package(X11 QUIET)
+  if(X11_FOUND)
+    add_executable(CoinTextureCoordinateGeneratorGuardsTest TextureCoordinateGeneratorGuardsTest.cpp)
+    target_compile_definitions(CoinTextureCoordinateGeneratorGuardsTest PRIVATE COIN_INTERNAL)
+    target_include_directories(CoinTextureCoordinateGeneratorGuardsTest PRIVATE
+      ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+      ${PROJECT_SOURCE_DIR}/src ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+    target_link_libraries(CoinTextureCoordinateGeneratorGuardsTest
+      Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+    foreach(generator default cube cylinder sphere environment object plane normalmap reflectionmap)
+      foreach(boundary valid negative min limit above)
+        add_test(NAME TextureCoordinateGeneratorGuards_${generator}_${boundary}
+          COMMAND CoinTextureCoordinateGeneratorGuardsTest ${generator} ${boundary})
+        set_tests_properties(TextureCoordinateGeneratorGuards_${generator}_${boundary} PROPERTIES
+          SKIP_RETURN_CODE 77 LABELS texture-coordinates TIMEOUT 30)
+      endforeach()
+    endforeach()
+  endif()
+endif()
