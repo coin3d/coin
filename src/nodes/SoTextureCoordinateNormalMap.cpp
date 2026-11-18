@@ -73,6 +73,7 @@
 #include "coindefs.h"
 
 #include <cmath>
+#include "nodes/SoTextureCoordinateNormalMapP.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -158,9 +159,43 @@ SoTextureCoordinateNormalMap::generate(void * userdata,
                 double(n[1]) * normalmatrix[1][i] +
                 double(n[2]) * normalmatrix[2][i];
   }
-  const double length = std::sqrt(normal[0] * normal[0] +
+  double length = std::sqrt(normal[0] * normal[0] +
                                   normal[1] * normal[1] +
                                   normal[2] * normal[2]);
+
+  bool admissible = false;
+  const bool range = coin_texture_normal_range(modelview, admissible);
+  const SbMatrix & model = SoModelMatrixElement::get(state);
+  const SbMatrix & view = SoViewingMatrixElement::get(state);
+  bool compositionrange = false;
+  for (int i = 0; i < 3; ++i) {
+    for (int j = 0; j < 3; ++j) {
+      if (!std::isfinite(modelview[i][j])) compositionrange = true;
+      for (int k = 0; k < 3; ++k) {
+        const float product = model[i][k]*view[k][j];
+        if (!std::isfinite(product) ||
+            (product == 0.0f && model[i][k] != 0.0f && view[k][j] != 0.0f)) compositionrange = true;
+      }
+    }
+  }
+  if ((range || compositionrange) && (admissible || compositionrange) &&
+      std::isfinite(n[0]) && std::isfinite(n[1]) && std::isfinite(n[2])) {
+    bool modelok = false, viewok = false;
+    coin_texture_normal_range(model, modelok);
+    coin_texture_normal_range(view, viewok);
+    if (modelok && viewok) {
+      double recovered[3] = { double(n[0]), double(n[1]), double(n[2]) };
+      coin_reflection_normalize(recovered);
+      coin_reflection_transform_normal(model, recovered);
+      coin_reflection_transform_normal(view, recovered);
+      const double recoveredlength = std::sqrt(recovered[0]*recovered[0] +
+        recovered[1]*recovered[1] + recovered[2]*recovered[2]);
+      if (std::isfinite(recoveredlength) && recoveredlength > 0.0) {
+        for (int i = 0; i < 3; ++i) normal[i] = recovered[i];
+        length = recoveredlength;
+      }
+    }
+  }
 
   // The element API returns a reference; keep its storage private to each
   // traversal thread without adding fields to the public node class.
