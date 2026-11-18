@@ -568,3 +568,31 @@ if(COIN_BUILD_LEGACY_GL_RENDERER AND UNIX AND NOT APPLE AND HAVE_GLX)
       SKIP_RETURN_CODE 77 LABELS texture-coordinates TIMEOUT 30)
   endif()
 endif()
+
+# Environment/ReflectionMap callbacks must agree with eye-space GL texgen.
+# Callback and picking run without a display or CoinRender.
+add_executable(CoinTextureCoordinateEnvironmentReflectionTest
+  TextureCoordinateEnvironmentReflectionTest.cpp)
+target_include_directories(CoinTextureCoordinateEnvironmentReflectionTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+target_link_libraries(CoinTextureCoordinateEnvironmentReflectionTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+foreach(envref_action callback pick)
+  add_test(NAME TextureCoordinateEnvironmentReflection_${envref_action}
+    COMMAND CoinTextureCoordinateEnvironmentReflectionTest ${envref_action})
+  set_tests_properties(TextureCoordinateEnvironmentReflection_${envref_action}
+    PROPERTIES LABELS texture-coordinates TIMEOUT 30)
+endforeach()
+if(COIN_BUILD_LEGACY_GL_RENDERER AND UNIX AND NOT APPLE AND HAVE_GLX)
+  find_package(X11 QUIET)
+  if(X11_FOUND)
+    target_compile_definitions(CoinTextureCoordinateEnvironmentReflectionTest PRIVATE COIN_ENVREF_GLX)
+    target_include_directories(CoinTextureCoordinateEnvironmentReflectionTest PRIVATE ${X11_INCLUDE_DIR})
+    target_link_libraries(CoinTextureCoordinateEnvironmentReflectionTest ${X11_LIBRARIES})
+    add_test(NAME TextureCoordinateEnvironmentReflection_gl
+      COMMAND CoinTextureCoordinateEnvironmentReflectionTest gl)
+    set_tests_properties(TextureCoordinateEnvironmentReflection_gl PROPERTIES
+      SKIP_RETURN_CODE 77 LABELS texture-coordinates TIMEOUT 30)
+  endif()
+endif()
