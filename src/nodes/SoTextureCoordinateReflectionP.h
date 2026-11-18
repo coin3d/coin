@@ -81,7 +81,8 @@ coin_reflection_transform_point(const SbMatrix & matrix, double point[3])
 }
 
 inline void
-coin_reflection_transform_normal(const SbMatrix & matrix, double normal[3])
+coin_reflection_transform_normal(const SbMatrix & matrix, double normal[3],
+                                 bool recoverzero = false)
 {
   // For row vectors the inverse transpose is the cofactor matrix divided
   // by its determinant. Its magnitude cancels during normalization; retain
@@ -102,9 +103,21 @@ coin_reflection_transform_normal(const SbMatrix & matrix, double normal[3])
   const double sign = determinant < 0.0 ? -1.0 : 1.0;
   double result[3];
   for (int i = 0; i < 3; i++) {
-    result[i] = sign * (normal[0]*cofactor[0][i] +
-                        normal[1]*cofactor[1][i] +
-                        normal[2]*cofactor[2][i]);
+    const double terms[3] = { normal[0]*cofactor[0][i],
+      normal[1]*cofactor[1][i], normal[2]*cofactor[2][i] };
+    result[i] = sign * (terms[0] + terms[1] + terms[2]);
+    if (recoverzero && result[i] == 0.0 && determinant != 0.0 &&
+        std::isfinite(determinant) && std::isfinite(normal[0]) &&
+        std::isfinite(normal[1]) && std::isfinite(normal[2])) {
+      bool finite = true;
+      for (int row = 0; row < 4; ++row)
+        for (int column = 0; column < 4; ++column)
+          if (!std::isfinite(matrix[row][column])) finite = false;
+      if (finite) {
+        const double recovered = sign * coin_texture_sum(terms, 3);
+        if (std::isfinite(recovered) && recovered != 0.0) result[i] = recovered;
+      }
+    }
   }
   for (int i = 0; i < 3; i++) normal[i] = result[i];
   coin_reflection_normalize(normal);
@@ -153,8 +166,8 @@ coin_texture_reflection(SoState * state, const SbVec3f & point,
   }
   coin_reflection_normalize(incident);
   coin_reflection_normalize(eyeNormal);
-  coin_reflection_transform_normal(model, eyeNormal);
-  coin_reflection_transform_normal(view, eyeNormal);
+  coin_reflection_transform_normal(model, eyeNormal, true);
+  coin_reflection_transform_normal(view, eyeNormal, true);
   const double dot = eyeNormal[0]*incident[0] +
                      eyeNormal[1]*incident[1] + eyeNormal[2]*incident[2];
   for (int i = 0; i < 3; i++) {
