@@ -47,6 +47,7 @@
 #include <Inventor/SoPickedPoint.h>
 
 #include <cassert>
+#include "nodes/SoTextureCoordinateMathP.h"
 
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
@@ -72,6 +73,23 @@ void clean_class()
 {
   delete matrixAction;
   matrixAction = NULL;
+}
+
+namespace {
+void coin_picked_texture_transform(const SbMatrix & matrix,
+                                   const SbVec4f & src, SbVec4f & dst)
+{
+  // Snapshot before writing: callers may pass a coordinate returned by
+  // this picked point as the setter input.
+  const SbVec4f input = src;
+  matrix.multVecMatrix(input, dst);
+  for (int i = 0; i < 4; ++i) {
+    const float column[4] = { matrix[0][i], matrix[1][i], matrix[2][i], matrix[3][i] };
+    // The private helper retains finite nonzero Float sums unless a
+    // product lost range. Double arithmetic is confined to recovery.
+    dst[i] = coin_texture_dot(dst[i], input.getValue(), column, 4);
+  }
+}
 }
 
 /*!
@@ -308,7 +326,7 @@ SoPickedPoint::getObjectTextureCoords(const SoNode * const node) const
 {
   if (node && node != this->path->fullPath().getTail()) {
     SbVec4f ret;
-    this->getImageToObject(node).multVecMatrix(this->texCoords, ret);
+    coin_picked_texture_transform(this->getImageToObject(node), this->texCoords, ret);
     return ret;
   }
   return this->objTexCoords;
@@ -331,7 +349,8 @@ void
 SoPickedPoint::setObjectTextureCoords(const SbVec4f &texCoordsref)
 {
   this->objTexCoords = texCoordsref;
-  SoMultiTextureMatrixElement::get(this->state, 0).multVecMatrix(texCoordsref, this->texCoords);
+  coin_picked_texture_transform(SoMultiTextureMatrixElement::get(this->state, 0),
+                                texCoordsref, this->texCoords);
 }
 
 /*!
