@@ -88,7 +88,24 @@
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/system/gl.h>
 
+#include "tidbitsp.h"
 #include "nodes/SoSubNodeP.h"
+
+// *************************************************************************
+
+class SoTextureCoordinateNormalMapP {
+public:
+  static SbVec4f * dummy_texcoords;
+  static void cleanup_func(void);
+};
+
+SbVec4f * SoTextureCoordinateNormalMapP::dummy_texcoords = NULL;
+
+void
+SoTextureCoordinateNormalMapP::cleanup_func(void)
+{
+  delete SoTextureCoordinateNormalMapP::dummy_texcoords;
+}
 
 // *************************************************************************
 
@@ -117,6 +134,9 @@ void
 SoTextureCoordinateNormalMap::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateNormalMap, SO_FROM_INVENTOR_1);
+
+  SoTextureCoordinateNormalMapP::dummy_texcoords = new SbVec4f(0.0f, 0.0f, 0.0f, 1.0f);
+  coin_atexit((coin_atexit_f *)SoTextureCoordinateNormalMapP::cleanup_func, CC_ATEXIT_NORMAL);
 }
 
 // generates texture coordinates for GLRender, callback and pick actions
