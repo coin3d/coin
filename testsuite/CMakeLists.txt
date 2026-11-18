@@ -541,3 +541,30 @@ if(COIN_BUILD_LEGACY_GL_RENDERER AND UNIX AND NOT APPLE AND HAVE_GLX)
     endforeach()
   endif()
 endif()
+
+# NormalMap's CPU callback is also used by picking and by legacy GL texgen.
+# Keep callback/pick runnable without an X display or the optional CoinRender.
+add_executable(CoinTextureCoordinateNormalMapTest TextureCoordinateNormalMapTest.cpp)
+target_include_directories(CoinTextureCoordinateNormalMapTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+target_link_libraries(CoinTextureCoordinateNormalMapTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+foreach(normalmap_action callback pick)
+  add_test(NAME TextureCoordinateNormalMap_${normalmap_action}
+    COMMAND CoinTextureCoordinateNormalMapTest ${normalmap_action})
+  set_tests_properties(TextureCoordinateNormalMap_${normalmap_action}
+    PROPERTIES LABELS texture-coordinates TIMEOUT 30)
+endforeach()
+if(COIN_BUILD_LEGACY_GL_RENDERER AND UNIX AND NOT APPLE AND HAVE_GLX)
+  find_package(X11 QUIET)
+  if(X11_FOUND)
+    target_compile_definitions(CoinTextureCoordinateNormalMapTest PRIVATE COIN_NORMALMAP_GLX)
+    target_include_directories(CoinTextureCoordinateNormalMapTest PRIVATE ${X11_INCLUDE_DIR})
+    target_link_libraries(CoinTextureCoordinateNormalMapTest ${X11_LIBRARIES})
+    add_test(NAME TextureCoordinateNormalMap_gl
+      COMMAND CoinTextureCoordinateNormalMapTest gl)
+    set_tests_properties(TextureCoordinateNormalMap_gl PROPERTIES
+      SKIP_RETURN_CODE 77 LABELS texture-coordinates TIMEOUT 30)
+  endif()
+endif()

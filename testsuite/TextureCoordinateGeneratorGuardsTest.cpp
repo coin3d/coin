@@ -255,7 +255,7 @@ void validCPU(SoState * s,int u,Kind k) {
   check(e->getType(u)==(k==DEFAULT?SoMultiTextureCoordinateElement::DEFAULT:hardware?SoMultiTextureCoordinateElement::TEXGEN:SoMultiTextureCoordinateElement::FUNCTION),"valid unit coordinate type");
   if(k!=DEFAULT) {
     const SbVec4f want[]={SbVec4f(),SbVec4f(.5f,.5f,0,1),SbVec4f(.75f,.5f,0,1),SbVec4f(.75f,.5f,0,1),
-      SbVec4f(.14644661f,.5f,0,1),SbVec4f(2.125f,.25f,.5f,2),SbVec4f(1,0,0,1),SbVec4f(0,0,0,1),SbVec4f(-1,0,0,1)};
+      SbVec4f(.14644661f,.5f,0,1),SbVec4f(2.125f,.25f,.5f,2),SbVec4f(1,0,0,1),SbVec4f(1,0,0,1),SbVec4f(-1,0,0,1)};
     equal(e->get(u,SbVec3f(1,0,0),SbVec3f(1,0,0)),want[k],"valid CPU mapping");
   }
   GLint active=0; glGetIntegerv(GL_ACTIVE_TEXTURE,&active); glActiveTexture(GL_TEXTURE0+u);
