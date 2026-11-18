@@ -231,6 +231,13 @@ SoTextureCoordinateSphereP::calculateTextureCoordinate(const SbVec3f & point, co
     radial = std::hypot(double(point[0]), double(point[2]));
     latitude = (float) (atan2(point[1], radial) * (1.0/M_PI) + 0.5);
   }
+  // Near the south pole the offset can erase a nonzero latitude, even
+  // when the Float radial square is normal. Keep the legacy pole itself.
+  if (latitude <= 0.0f && point[1] < 0.0f && radial > 0.0 &&
+      std::isfinite(radial) && std::isfinite(point[1])) {
+    const double recovered = std::atan2(radial, -double(point[1])) * (1.0/M_PI);
+    if (std::isfinite(recovered) && float(recovered) > 0.0f) latitude = float(recovered);
+  }
   SbVec4f tc(coin_texture_longitude((float) (atan2(point[0], point[2]) * (1.0/(2.0*M_PI)) + 0.5), point[0], point[2]),
              latitude,
              0.0f, 1.0f);
