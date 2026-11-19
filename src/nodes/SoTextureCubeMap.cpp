@@ -83,6 +83,7 @@
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/errors/SoReadError.h>
@@ -463,47 +464,31 @@ SoTextureCubeMap::GLRender(SoGLRenderAction * action)
 
 // Documented in superclass.
 void
-SoTextureCubeMap::doAction(SoAction * COIN_UNUSED_ARG(action))
+SoTextureCubeMap::doAction(SoAction * action)
 {
-#if 0 // not implemented yet
   SoState * state = action->getState();
+  const int unit = SoTextureUnitElement::get(state);
+  if (unit < 0 ||
+      (unit == 0 && SoTextureOverrideElement::getImageOverride(state))) return;
 
-  if (SoTextureOverrideElement::getImageOverride(state))
-    return;
-
-  int nc;
-  SbVec2s size;
-  const unsigned char * bytes = this->image.getValue(size, nc);
-
-  if (size != SbVec2s(0,0)) {
-    SoTextureImageElement::set(state, this,
-                               size, nc, bytes,
-                               (int)this->wrapT.getValue(),
-                               (int)this->wrapS.getValue(),
-                               (SoTextureImageElement::Model) model.getValue(),
-                               this->blendColor.getValue());
-    SoTextureEnabledElement::set(state, this, TRUE);
+  // CPU coordinate generation needs the texture mode, not a 2D image standing
+  // in for the six faces. Any usable face establishes cubemap presence; this
+  // does not impose GL cubemap completeness requirements on the images.
+  for (int i = 0; i < 6; i++) {
+    SoSFImage * image = this->getImageField(i);
+    if (image->isIgnored()) continue;
+    SbVec2s size;
+    int nc;
+    const unsigned char * bytes = image->getValue(size, nc);
+    if (bytes && size[0] > 0 && size[1] > 0 && nc >= 1 && nc <= 4) {
+      SoMultiTextureEnabledElement::enableCubeMap(state, this, unit);
+      if (unit == 0 && this->isOverride()) {
+        SoTextureOverrideElement::setImageOverride(state, TRUE);
+      }
+      return;
+    }
   }
-  // if a filename has been set, but the file has not been loaded, supply
-  // a dummy texture image to make sure texture coordinates are generated.
-  else if (this->image.isDefault() && this->filename.getValue().getLength()) {
-    static const unsigned char dummytex[] = {0xff,0xff,0xff,0xff};
-    SoTextureImageElement::set(state, this,
-                               SbVec2s(2,2), 1, dummytex,
-                               (int)this->wrapT.getValue(),
-                               (int)this->wrapS.getValue(),
-                               (SoTextureImageElement::Model) model.getValue(),
-                               this->blendColor.getValue());
-    SoTextureEnabledElement::set(state, this, TRUE);
-  }
-  else {
-    SoTextureImageElement::setDefault(state, this);
-    SoTextureEnabledElement::set(state, this, FALSE);
-  }
-  if (this->isOverride()) {
-    SoTextureOverrideElement::setImageOverride(state, TRUE);
-  }
-#endif // not implemented
+  // Empty or unloaded cubemaps retain the preceding texture state.
 }
 
 // doc from parent
