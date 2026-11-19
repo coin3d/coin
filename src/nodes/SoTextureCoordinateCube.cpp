@@ -302,8 +302,9 @@ SoTextureCoordinateCube::GLRender(SoGLRenderAction * action)
   const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(action->getState()));
   int maxunits = cc_glglue_max_texture_units(glue);
   if (unit < maxunits) {        
-    SoMultiTextureCoordinateElement::setFunction(data->currentstate, this,
-                                                 unit, textureCoordinateCubeCallback,
+    SoGLMultiTextureCoordinateElement::setTexGen(data->currentstate, this,
+                                                 unit, NULL, NULL,
+                                                 textureCoordinateCubeCallback,
                                                  PRIVATE(this));
   }
 }
