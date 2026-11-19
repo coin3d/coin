@@ -18,6 +18,7 @@
 #include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTextureCoordinate2.h>
 #include <Inventor/nodes/SoTextureCoordinate3.h>
 #include <Inventor/nodes/SoTextureCoordinateDefault.h>
@@ -82,9 +83,39 @@ void cubeMap(SoGroup * root) {
   SoTextureCubeMap * n=new SoTextureCubeMap;
   const unsigned char pixel[]={17,29,43,255}; n->imagePosX.setValue(SbVec2s(1,1),4,pixel); root->addChild(n);
 }
-struct DerivedBox : SoVRMLBox {};
-struct DerivedCone : SoVRMLCone {};
-struct DerivedCylinder : SoVRMLCylinder {};
+class DerivedBox : public SoVRMLBox {
+  SO_NODE_HEADER(DerivedBox);
+public:
+  static void initClass();
+  DerivedBox();
+protected:
+  ~DerivedBox() override = default;
+};
+class DerivedCone : public SoVRMLCone {
+  SO_NODE_HEADER(DerivedCone);
+public:
+  static void initClass();
+  DerivedCone();
+protected:
+  ~DerivedCone() override = default;
+};
+class DerivedCylinder : public SoVRMLCylinder {
+  SO_NODE_HEADER(DerivedCylinder);
+public:
+  static void initClass();
+  DerivedCylinder();
+protected:
+  ~DerivedCylinder() override = default;
+};
+SO_NODE_SOURCE(DerivedBox);
+SO_NODE_SOURCE(DerivedCone);
+SO_NODE_SOURCE(DerivedCylinder);
+void DerivedBox::initClass() { SO_NODE_INIT_CLASS(DerivedBox,SoVRMLBox,"VRMLBox"); }
+void DerivedCone::initClass() { SO_NODE_INIT_CLASS(DerivedCone,SoVRMLCone,"VRMLCone"); }
+void DerivedCylinder::initClass() { SO_NODE_INIT_CLASS(DerivedCylinder,SoVRMLCylinder,"VRMLCylinder"); }
+DerivedBox::DerivedBox() { SO_NODE_CONSTRUCTOR(DerivedBox); }
+DerivedCone::DerivedCone() { SO_NODE_CONSTRUCTOR(DerivedCone); }
+DerivedCylinder::DerivedCylinder() { SO_NODE_CONSTRUCTOR(DerivedCylinder); }
 const int kinds=3;
 SoNode * shape(int kind,bool derived=false,int parts=-1) {
   if(kind==0) {
@@ -209,6 +240,9 @@ void analyticCases(bool functional) {
       }
     }
     Transform t(transformed); t.add(root); materials(root); SoNode * node=shape(c.kind,transformed,c.parts); root->addChild(node);
+    const SoType base=c.kind==0?SoVRMLBox::getClassTypeId():c.kind==1?SoVRMLCone::getClassTypeId():SoVRMLCylinder::getClassTypeId();
+    check(node->getTypeId().isDerivedFrom(base),"fixture has expected VRML ancestry");
+    check((node->getTypeId()!=base)==bool(transformed),"derived fixture has a distinct registered Coin type");
     {
       SoRayPickAction a(SbViewportRegion(64,64)); prepare(a,c,t,all); a.apply(root);
       const int count=all?int(c.hits.size()):(c.hits.empty()?0:1);
@@ -405,7 +439,9 @@ void scopes() {
 
 }
 int main(int argc,char ** argv) {
-  if(argc!=2) return 2; SoDB::init(); const std::string mode=argv[1];
+  if(argc!=2) return 2; SoDB::init();
+  DerivedBox::initClass(); DerivedCone::initClass(); DerivedCylinder::initClass();
+  const std::string mode=argv[1];
   if(mode=="functions") { analyticCases(true); homogeneous(); }
   else if(mode=="legacy") analyticCases(false);
   else if(mode=="generators") generators();
