@@ -113,6 +113,7 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoTextureCoordinatePlane.h>
+#include "nodes/SoTextureCoordinateMathP.h"
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -205,9 +206,9 @@ SoTextureCoordinatePlane::generate(void * userdata,
   SoTextureCoordinatePlane *thisp =
     (SoTextureCoordinatePlane*) userdata;
   
-  PRIVATE(thisp)->ret.setValue(PRIVATE(thisp)->s.dot(p),
-                               PRIVATE(thisp)->t.dot(p),
-                               PRIVATE(thisp)->r.dot(p), 
+  PRIVATE(thisp)->ret.setValue(coin_texture_dot(PRIVATE(thisp)->s.dot(p), PRIVATE(thisp)->s.getValue(), p.getValue(), 3),
+                               coin_texture_dot(PRIVATE(thisp)->t.dot(p), PRIVATE(thisp)->t.getValue(), p.getValue(), 3),
+                               coin_texture_dot(PRIVATE(thisp)->r.dot(p), PRIVATE(thisp)->r.getValue(), p.getValue(), 3),
                                1.0f);
   return PRIVATE(thisp)->ret;
 }
@@ -233,7 +234,7 @@ SoTextureCoordinatePlane::GLRender(SoGLRenderAction * action)
 
   const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
   int maxunits = cc_glglue_max_texture_units(glue);
-  if (unit < maxunits) {
+  if (unit >= 0 && unit < maxunits) {
     this->setupGencache();
     SoGLMultiTextureCoordinateElement::setTexGen(action->getState(),
                                                  this, unit,
