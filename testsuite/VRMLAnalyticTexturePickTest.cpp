@@ -170,7 +170,8 @@ std::vector<Case> cases() {
     c.start=SbVec3f(.3f,10,.4f); c.direction=SbVec3f(0,-1,0);
     Hit a,b; a.p=SbVec3f(.3f,k==1?1.0f:2.0f,.4f); b.p=SbVec3f(.3f,-2,.4f);
     a.n=k==1?norm(SbVec3f(.3f,.25f,.4f)):SbVec3f(0,1,0); b.n=SbVec3f(0,-1,0);
-    a.part=k==1?SoCone::SIDES:SoCylinder::TOP; b.part=k==1?SoCone::BOTTOM:SoCylinder::BOTTOM;
+    a.part=k==1?int(SoCone::SIDES):int(SoCylinder::TOP);
+    b.part=k==1?int(SoCone::BOTTOM):int(SoCylinder::BOTTOM);
     a.material=0; b.material=0;
     c.hits.push_back(a); c.hits.push_back(b); result.push_back(c);
     for(int mask=0;mask<(k==1?4:8);++mask) {
