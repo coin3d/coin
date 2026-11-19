@@ -162,6 +162,22 @@ if (USE_PTHREAD)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
+# Keep the independent modes as separate CTest entries so a bad dimension,
+# callback path, or action reset is reported without masking the others.
+add_executable(CoinQuadMeshPrimitiveCountTest
+  quadmesh-primitive-count/main.cpp)
+target_compile_features(CoinQuadMeshPrimitiveCountTest PRIVATE cxx_std_11)
+target_link_libraries(CoinQuadMeshPrimitiveCountTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CoinQuadMeshPrimitiveCountTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+foreach(_quadmesh_count_mode dimensions limits callbacks accumulation state)
+  add_test(NAME QuadMeshPrimitiveCount_${_quadmesh_count_mode}
+    COMMAND CoinQuadMeshPrimitiveCountTest ${_quadmesh_count_mode})
+endforeach()
+
 # Keep this regression test in a fresh process: the unfixed implementation corrupts
 # SoTempPath's internal empty-list storage before ordinary assertions can
 # observe the violation.
