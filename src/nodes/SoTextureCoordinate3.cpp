@@ -160,17 +160,17 @@ SoTextureCoordinate3::GLRender(SoGLRenderAction * action)
   const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
   int maxunits = cc_glglue_max_texture_units(glue);
   
-  if (unit < maxunits) {
-    SoGLMultiTextureCoordinateElement::setTexGen(action->getState(), this, unit, NULL);
-    SoMultiTextureCoordinateElement::set3(action->getState(), this, unit,
-                                          this->point.getNum(),
-                                          this->point.getValues(0));
-  }
+  if (unit < 0 || unit >= maxunits) return;
+
+  SoGLMultiTextureCoordinateElement::setTexGen(state, this, unit, NULL);
+  SoMultiTextureCoordinateElement::set3(state, this, unit,
+                                        this->point.getNum(),
+                                        this->point.getValues(0));
   
   SoBase::staticDataLock();
   const int num = this->point.getNum();
   SbBool setvbo = FALSE;
-  if (SoGLVBOElement::shouldCreateVBO(state, num)) {
+  if (num > 0 && SoGLVBOElement::shouldCreateVBO(state, num)) {
     setvbo = TRUE;
     SbBool dirty = FALSE;
     if (PRIVATE(this)->vbo == NULL) {
@@ -191,7 +191,7 @@ SoTextureCoordinate3::GLRender(SoGLRenderAction * action)
     PRIVATE(this)->vbo->setBufferData(NULL, 0, 0);
   }
   SoBase::staticDataUnlock();
-  SoGLVBOElement::setVertexVBO(state, setvbo ? PRIVATE(this)->vbo : NULL);
+  SoGLVBOElement::setTexCoordVBO(state, unit, setvbo ? PRIVATE(this)->vbo : NULL);
 }
 
 // Documented in superclass.
