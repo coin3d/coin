@@ -162,6 +162,22 @@ if (USE_PTHREAD)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
+add_executable(CoinQuadStripPickOrderTest
+  quad-strip-pick-order/main.cpp)
+target_compile_features(CoinQuadStripPickOrderTest PRIVATE cxx_std_11)
+target_link_libraries(CoinQuadStripPickOrderTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CoinQuadStripPickOrderTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+foreach(_quad_strip_pick_scenario
+    generic-strip generic-quads generic-triangles detail-copy
+    mesh-state mesh-vertex-property)
+  add_test(NAME QuadStripPickOrder_${_quad_strip_pick_scenario}
+    COMMAND CoinQuadStripPickOrderTest ${_quad_strip_pick_scenario})
+endforeach()
+
 # Keep this regression test in a fresh process: the unfixed implementation corrupts
 # SoTempPath's internal empty-list storage before ordinary assertions can
 # observe the violation.
