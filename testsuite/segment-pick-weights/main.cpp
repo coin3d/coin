@@ -138,10 +138,10 @@ void customCase(const std::string & group, const SbVec3f & a, const SbVec3f & b,
   attributes(*hit, shape->first, shape->second, t, group);
   if (transformed && (group == "normal" || group == "all")) {
     SbVec3f worldnormal;
-    // Preserve the existing SoPickedPoint transform: model matrix direction,
-    // with no additional normalization of the world-space result.
-    matrix.multDirMatrix(normalAt(shape->first, shape->second, t), worldnormal);
-    close(hit->getNormal(), worldnormal, "existing world normal transform");
+    matrix.inverse().transpose().multDirMatrix(
+      normalAt(shape->first, shape->second, t), worldnormal);
+    worldnormal.normalize();
+    close(hit->getNormal(), worldnormal, "world normal transform");
   }
   // Copies must keep the attributes after the ray action and original picked point die.
   std::unique_ptr<SoPickedPoint> copy(hit->copy()); hit.reset();

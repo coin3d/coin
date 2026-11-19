@@ -176,6 +176,20 @@ foreach(_picked_normal_group world hierarchy controls ownership)
     COMMAND CoinPickedPointNormalTransformTest ${_picked_normal_group})
 endforeach()
 
+add_executable(CoinSegmentPickWeightsTest
+  segment-pick-weights/main.cpp)
+target_compile_features(CoinSegmentPickWeightsTest PRIVATE cxx_std_11)
+target_link_libraries(CoinSegmentPickWeightsTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CoinSegmentPickWeightsTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+foreach(_segment_pick_group normal texture material controls native)
+  add_test(NAME SegmentPickWeights_${_segment_pick_group}
+    COMMAND CoinSegmentPickWeightsTest ${_segment_pick_group})
+endforeach()
+
 # Keep this regression test in a fresh process: the unfixed implementation corrupts
 # SoTempPath's internal empty-list storage before ordinary assertions can
 # observe the violation.
