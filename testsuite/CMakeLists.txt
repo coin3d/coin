@@ -454,3 +454,5 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 endif()
 
 include(SoDepthBufferTests.cmake)
+
+include(SoDepthBufferEngineTests.cmake)
