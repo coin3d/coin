@@ -186,14 +186,47 @@ SoSphere::computeBBox(SoAction * COIN_UNUSED_ARG(action), SbBox3f & box, SbVec3f
   center.setValue(0.0f, 0.0f, 0.0f);
 }
 
+// Evaluate texture functions only for intersections accepted by the action.
+static void
+sphere_function_intersection(SoRayPickAction * action,
+                             const SoMultiTextureCoordinateElement * texcoords,
+                             const SbVec3f & point)
+{
+  if (action->isBetweenPlanes(point)) {
+    SoPickedPoint * pp = action->addIntersection(point);
+    if (pp) {
+      SbVec3f normal = point;
+      (void) normal.normalize();
+      pp->setObjectNormal(normal);
+      const SbVec4f tc = texcoords->get(0, point, normal);
+      pp->setObjectTextureCoords(tc);
+    }
+  }
+}
+
 // Documented in superclass.
 void
 SoSphere::rayPick(SoRayPickAction *action)
 {
   if (!shouldRayPick(action)) return;
 
-  sopick_pick_sphere(this->radius.getValue(),
-                     action);
+  // SoPickedPoint represents unit 0, irrespective of the traversal's unit.
+  const SoMultiTextureCoordinateElement * texcoords =
+    SoMultiTextureCoordinateElement::getInstance(action->getState());
+  if (texcoords->getType(0) != SoMultiTextureCoordinateElement::FUNCTION) {
+    sopick_pick_sphere(this->radius.getValue(), action);
+    return;
+  }
+
+  // Keep the shared helper's geometry and legacy texture mapping unchanged.
+  action->setObjectSpace();
+  const SbLine & line = action->getLine();
+  SbSphere sphere(SbVec3f(0.0f, 0.0f, 0.0f), this->radius.getValue());
+  SbVec3f enter, exit;
+  if (sphere.intersect(line, enter, exit)) {
+    sphere_function_intersection(action, texcoords, enter);
+    if (exit != enter) sphere_function_intersection(action, texcoords, exit);
+  }
 }
 
 // Documented in superclass.
