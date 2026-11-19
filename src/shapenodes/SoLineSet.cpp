@@ -566,7 +566,8 @@ SoLineSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   else {
     int cnt = 0;
     while (ptr < end) {
-      cnt += *ptr++ - 1;
+      const int n = *ptr++;
+      if (n > 1) cnt += n - 1;
     }
     action->addNumLines(cnt);
   }
@@ -630,7 +631,12 @@ SoLineSet::generatePrimitives(SoAction *action)
     while (ptr < end) {
       int n = *ptr++;
       if (n < 2) {
+        // Short polylines still occupy a line and consume their vertices.
+        normnr += nbind == PER_LINE ? 1 : (nbind == PER_VERTEX ? n : 0);
+        matnr += mbind == PER_LINE ? 1 : (mbind == PER_VERTEX ? n : 0);
+        if (doTextures && !tb.isFunction()) texnr += n;
         idx += n;
+        lineDetail.incLineIndex();
         continue;
       }
       if (nbind == PER_LINE || nbind == PER_VERTEX) {
@@ -693,10 +699,14 @@ SoLineSet::generatePrimitives(SoAction *action)
   }
   else {
     while (ptr < end) {
-      lineDetail.setPartIndex(0);
       int n = *ptr++;
       if (n < 2) {
+        // Short polylines still occupy a line and consume their vertices.
+        normnr += nbind == PER_LINE ? 1 : (nbind == PER_VERTEX ? n : 0);
+        matnr += mbind == PER_LINE ? 1 : (mbind == PER_VERTEX ? n : 0);
+        if (doTextures && !tb.isFunction()) texnr += n;
         idx += n;
+        lineDetail.incLineIndex();
         continue;
       }
       n -= 2;
