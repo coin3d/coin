@@ -64,6 +64,9 @@
 #include <Inventor/system/gl.h>
 
 #include <cassert>
+#include <cmath>
+#include <cfloat>
+#include <limits>
 #include "SbBasicP.h"
 #include "coindefs.h"
 
@@ -74,6 +77,28 @@
 #define FLAG_3DTEXTURES         0x10
 #define FLAG_DIDINITDEFAULT     0x20
 #define FLAG_NEEDINDICES        0x40
+#define FLAG_FINITEBOX          0x80
+#define FLAG_WIDESIZE           0x100
+
+namespace {
+// For an overflowing extent, store its original maximum in the existing
+// size slot. Flags distinguish that representation without changing layout.
+float coin_bundle_ratio(float point, float minimum, float size,
+                        bool wide, bool finitebox)
+{
+  const float numerator = point - minimum;
+  const float denominator = wide ? std::numeric_limits<float>::infinity() : size;
+  const float legacy = numerator / denominator;
+  if (finitebox && std::isfinite(point) &&
+      (wide || !std::isfinite(numerator))) {
+    const double divisor = wide ? double(size)-minimum : double(size);
+    const double result = (double(point)-minimum)/divisor;
+    if (std::isfinite(result) && std::fabs(result) <= FLT_MAX) return float(result);
+  }
+  return legacy;
+}
+}
+
 
 /*!
   Constructor with \a action being the action applied to the node.
@@ -215,19 +240,7 @@ SoTextureCoordinateBundle::get(const SbVec3f &point, const SbVec3f &normal)
 {
   assert(this->coordElt != NULL && (this->flags & FLAG_FUNCTION));
   if (this->flags & FLAG_DEFAULT) {
-    SbVec3f pt;
-    if (this->flags & FLAG_3DTEXTURES) {
-      pt = point - this->defaultorigo;
-      this->dummyInstance[2] = pt[2]/this->defaultsize[2];
-    }
-    else {
-      pt.setValue(point[this->defaultdim0]-this->defaultorigo[0],
-                  point[this->defaultdim1]-this->defaultorigo[1],
-                  0.0f);
-    }
-    this->dummyInstance[0] = pt[0]/this->defaultsize[0];
-    this->dummyInstance[1] = pt[1]/this->defaultsize[1];
-    return this->dummyInstance;
+    return SoTextureCoordinateBundle::defaultCBMulti(this, point, normal);
   }
   else {
     return coordElt->get(point, normal);
@@ -303,18 +316,17 @@ SoTextureCoordinateBundle:: defaultCBMulti(void * userdata,
 {
   SoTextureCoordinateBundle * thisp = static_cast<SoTextureCoordinateBundle *>(userdata);
 
-  SbVec3f pt;
+  const bool finitebox = (thisp->flags & FLAG_FINITEBOX) != 0;
   if (thisp->flags & FLAG_3DTEXTURES) {
-    pt = point - thisp->defaultorigo;
-    thisp->dummyInstance[2] = pt[2]/thisp->defaultsize[2];
+    thisp->dummyInstance[2] = coin_bundle_ratio(point[2], thisp->defaultorigo[2],
+      thisp->defaultsize[2], (thisp->flags & (FLAG_WIDESIZE << 2)) != 0, finitebox);
   }
-  else {
-    pt.setValue(point[thisp->defaultdim0]-thisp->defaultorigo[0],
-                point[thisp->defaultdim1]-thisp->defaultorigo[1],
-                0.0f);
-  }
-  thisp->dummyInstance[0] = pt[0]/thisp->defaultsize[0];
-  thisp->dummyInstance[1] = pt[1]/thisp->defaultsize[1];
+  thisp->dummyInstance[0] = coin_bundle_ratio(point[thisp->defaultdim0],
+    thisp->defaultorigo[0], thisp->defaultsize[0],
+    (thisp->flags & FLAG_WIDESIZE) != 0, finitebox);
+  thisp->dummyInstance[1] = coin_bundle_ratio(point[thisp->defaultdim1],
+    thisp->defaultorigo[1], thisp->defaultsize[1],
+    (thisp->flags & (FLAG_WIDESIZE << 1)) != 0, finitebox);
   return thisp->dummyInstance;
 }
 
@@ -353,6 +365,22 @@ SoTextureCoordinateBundle::initDefaultCallback(SoAction * action)
     origo = box.getMin();
   }
 
+  this->flags &= ~(FLAG_FINITEBOX | FLAG_WIDESIZE |
+                   (FLAG_WIDESIZE << 1) | (FLAG_WIDESIZE << 2));
+  bool finitebox = !box.isEmpty();
+  for (int i = 0; i < 3; ++i) {
+    if (!std::isfinite(box.getMin()[i]) || !std::isfinite(box.getMax()[i]) ||
+        box.getMax()[i] < box.getMin()[i]) finitebox = false;
+  }
+  if (finitebox) this->flags |= FLAG_FINITEBOX;
+  // Finite extents keep their Float ordering, including rounded ties.
+  double ordering[3];
+  for (int i = 0; i < 3; ++i) {
+    ordering[i] = size[i];
+    if (finitebox && !std::isfinite(size[i]))
+      ordering[i] = double(box.getMax()[i])-box.getMin()[i];
+  }
+
   // Map S,T,R to X,Y,Z for 3D texturing
   if (SoMultiTextureEnabledElement::getMode(this->state, 0) == 
       SoMultiTextureEnabledElement::TEXTURE3D) {
@@ -368,19 +396,19 @@ SoTextureCoordinateBundle::initDefaultCallback(SoAction * action)
     this->flags &= ~FLAG_3DTEXTURES;
     // find the two biggest dimensions
     int smallest = 0;
-    float smallval = size[0];
-    if (size[1] < smallval) {
+    double smallval = ordering[0];
+    if (ordering[1] < smallval) {
       smallest = 1;
-      smallval = size[1];
+      smallval = ordering[1];
     }
-    if (size[2] < smallval) {
+    if (ordering[2] < smallval) {
       smallest = 2;
     }
 
     this->defaultdim0 = (smallest + 1) % 3;
     this->defaultdim1 = (smallest + 2) % 3;
 
-    if (size[this->defaultdim0] == size[this->defaultdim1]) {
+    if (ordering[this->defaultdim0] == ordering[this->defaultdim1]) {
       // FIXME: this is probably an OIV bug. The OIV man pages are not
       // clear on this point (surprise), but the VRML specification states
       // that if the two dimensions are equal, the ordering X>Y>Z should
@@ -395,7 +423,7 @@ SoTextureCoordinateBundle::initDefaultCallback(SoAction * action)
       }
 #endif // OIV compatibility fix
     }
-    else if (size[this->defaultdim0] < size[this->defaultdim1]) {
+    else if (ordering[this->defaultdim0] < ordering[this->defaultdim1]) {
       SbSwap(this->defaultdim0, this->defaultdim1);
     }
   }
@@ -405,10 +433,19 @@ SoTextureCoordinateBundle::initDefaultCallback(SoAction * action)
   this->defaultsize[0] = size[this->defaultdim0];
   this->defaultsize[1] = size[this->defaultdim1];
 
+  const int dimensions[3] = { this->defaultdim0, this->defaultdim1, 2 };
+  const int count = (this->flags & FLAG_3DTEXTURES) ? 3 : 2;
+  for (int i = 0; i < count; ++i) {
+    if (finitebox && !std::isfinite(this->defaultsize[i])) {
+      this->defaultsize[i] = box.getMax()[dimensions[i]];
+      this->flags |= FLAG_WIDESIZE << i;
+    }
+  }
+
   // if bbox is empty in one dimension we just want to set it to
   // 0.0. The size should be set to 1.0 to avoid division by zero.
   for (int i = 0; i < 3; i++) {
-    if (this->defaultsize[i] <= 0.0f) {
+    if (!(this->flags & (FLAG_WIDESIZE << i)) && this->defaultsize[i] <= 0.0f) {
       this->defaultsize[i] = 1.0f;
     }
   }
@@ -416,10 +453,12 @@ SoTextureCoordinateBundle::initDefaultCallback(SoAction * action)
   this->dummyInstance[2] = 0.0f;
   this->dummyInstance[3] = 1.0f;
 
-  assert(this->defaultsize[0] > 0.0f);
-  assert(this->defaultsize[1] > 0.0f);
+  assert((this->flags & FLAG_WIDESIZE) || this->defaultsize[0] > 0.0f);
+  assert((this->flags & (FLAG_WIDESIZE << 1)) || this->defaultsize[1] > 0.0f);
 }
 
+#undef FLAG_FINITEBOX
+#undef FLAG_WIDESIZE
 #undef FLAG_FUNCTION
 #undef FLAG_NEEDCOORDS
 #undef FLAG_DEFAULT
