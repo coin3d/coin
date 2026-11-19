@@ -70,12 +70,16 @@ inline float coin_texture_dot(float legacy, const float * a, const float * b, in
 
 inline float coin_texture_longitude(float legacy, float x, float z)
 {
-  if ((legacy <= 0.0f || legacy >= 1.0f) && x != 0.0f && z < 0.0f &&
+  // A platform atan2 can round to a value just inside the seam.
+  const bool nearLowerEdge = x < 0.0f && legacy <= FLT_EPSILON * 0.5f;
+  if ((nearLowerEdge || legacy >= 1.0f) && x != 0.0f && z < 0.0f &&
       std::isfinite(x) && std::isfinite(z)) {
     const double edge = std::atan2(std::fabs(double(x)), -double(z)) /
       (2.0 * 3.14159265358979323846);
     const float recovered = float(x < 0.0f ? edge : 1.0-edge);
-    if (recovered > 0.0f && recovered <= 1.0f) return recovered;
+    // Keep finite nonzero results unless rounding swamps the small angle.
+    if (recovered > 0.0f && recovered <= 1.0f &&
+        (legacy <= 0.0f || legacy >= 1.0f || edge * 2.0 < legacy)) return recovered;
   }
   return legacy;
 }

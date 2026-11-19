@@ -1,7 +1,18 @@
 #include "TextureCoordinateRangeTest.h"
+#include "../src/nodes/SoTextureCoordinateMathP.h"
 using namespace range_test;
 int main(int argc,char **argv) {
   SoDB::init();const bool repair=mode(argc,argv);
+  if (repair) {
+    // Simulate the nonzero seam residue seen on macOS independently of libm.
+    const float x = -1e-12f;
+    const float residual = 2.40317277e-08f;
+    const float expected = float(std::atan2(std::fabs(double(x)), 1.0)/(2*pi));
+    check(same(coin_texture_longitude(residual,x,-1.0f),expected),
+          "recover a small angle obscured by a positive seam residue");
+    check(same(coin_texture_longitude(residual,-1.5e-7f,-1.0f),residual),
+          "keep a finite small angle without substantial cancellation");
+  }
   for(bool sphere:{false,true}) {
     if(repair) {
       const float values[]={-1e-12f,-1e-30f,-1e-40f,1e-12f};
