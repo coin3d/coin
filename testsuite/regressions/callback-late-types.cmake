@@ -1,0 +1,6 @@
+add_executable(CallbackLateTypesTest CallbackLateTypesTest.cpp)
+target_link_libraries(CallbackLateTypesTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CallbackLateTypesTest PRIVATE ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include ${COIN_TARGET_INCLUDE_DIRECTORIES})
+foreach(callback_case late live during internal)
+  add_test(NAME CallbackLateTypes_${callback_case} COMMAND CallbackLateTypesTest ${callback_case})
+endforeach()

@@ -221,6 +221,8 @@
 #include "actions/SoSubActionP.h"
 #include "SbBasicP.h"
 
+#include <vector>
+
 #ifndef DOXYGEN_SKIP_THIS
 
 class SoCallbackData { //internal class
@@ -325,6 +327,73 @@ SoCallbackData::doPointCallbacks(SoCallbackAction * action,
   }
 }
 
+// Keep registrations independently of the types initialized at registration time.
+// Materialize each type on first use, and extend existing chains in place so
+// callbacks registered from a callback remain visible to the active dispatch.
+class SoCallbackRegistry {
+public:
+  ~SoCallbackRegistry() {
+    for (size_t i = 0; i < this->cache.size(); ++i) {
+      if (this->cache[i].head) this->cache[i].head->deleteAll();
+    }
+  }
+
+  void add(const SoType type, void * func, void * data) {
+    Registration registration = { type, func, data };
+    this->registrations.push_back(registration);
+    for (size_t i = 0; i < this->materialized.size(); ++i) {
+      this->refresh(this->cache[this->materialized[i]]);
+    }
+  }
+
+  SoCallbackData * get(const SoType type) const {
+    if (this->registrations.empty()) return NULL;
+    const size_t idx = static_cast<size_t>(type.getData());
+    if (idx >= this->cache.size()) this->cache.resize(idx + 1);
+    Cache & entry = this->cache[idx];
+    if (entry.type.isBad()) {
+      this->materialized.push_back(idx);
+      entry.type = type;
+    }
+    this->refresh(entry);
+    return entry.head;
+  }
+
+private:
+  struct Registration {
+    SoType type;
+    void * func;
+    void * data;
+  };
+  struct Cache {
+    Cache() : type(SoType::badType()), next(0), head(NULL), tail(NULL) {}
+    SoType type;
+    size_t next;
+    SoCallbackData * head;
+    SoCallbackData * tail;
+  };
+
+  void refresh(Cache & entry) const {
+    while (entry.next < this->registrations.size()) {
+      const Registration & registration = this->registrations[entry.next];
+      // Match getAllDerivedFrom(): internal types are not callback targets.
+      if (!entry.type.isInternal() && entry.type.isDerivedFrom(registration.type)) {
+        SoCallbackData * data = new SoCallbackData(registration.func, registration.data);
+        if (entry.tail) entry.tail->next = data;
+        else entry.head = data;
+        entry.tail = data;
+      }
+      // Advance only after successful allocation/linking, so a retry cannot
+      // repeat callbacks already materialized for this type.
+      ++entry.next;
+    }
+  }
+
+  std::vector<Registration> registrations;
+  mutable std::vector<Cache> cache;
+  mutable std::vector<size_t> materialized;
+};
+
 // class to hold private, hidden data
 class SoCallbackActionP {
 public:
@@ -333,15 +402,15 @@ public:
   SoCallbackAction::Response response;
   SoNode * currentnode;
 
-  SbList <SoCallbackData *> precallback;
-  SbList <SoCallbackData *> postcallback;
+  SoCallbackRegistry precallback;
+  SoCallbackRegistry postcallback;
 
   SoCallbackData * pretailcallback;
   SoCallbackData * posttailcallback;
 
-  SbList <SoCallbackData *> trianglecallback;
-  SbList <SoCallbackData *> linecallback;
-  SbList <SoCallbackData *> pointcallback;
+  SoCallbackRegistry trianglecallback;
+  SoCallbackRegistry linecallback;
+  SoCallbackRegistry pointcallback;
 
   SbBool callbackall;
 };
@@ -458,61 +527,16 @@ SoCallbackAction::setViewportRegion(const SbViewportRegion & vp)
   PRIVATE(this)->viewportset = TRUE;
 }
 
-static void
-delete_list_elements(SbList<SoCallbackData *> & cl)
-{
-  int n = cl.getLength();
-  for (int i = 0; i < n; i++) {
-    if (cl[i] != NULL) {
-      cl[i]->deleteAll();
-    }
-  }
-}
-
 /*!
   Destructor.
 */
 SoCallbackAction::~SoCallbackAction()
 {
-  delete_list_elements(PRIVATE(this)->precallback);
-  delete_list_elements(PRIVATE(this)->postcallback);
-  delete_list_elements(PRIVATE(this)->trianglecallback);
-  delete_list_elements(PRIVATE(this)->linecallback);
-  delete_list_elements(PRIVATE(this)->pointcallback);
-
   if (PRIVATE(this)->pretailcallback) {
     PRIVATE(this)->pretailcallback->deleteAll();
   }
   if (PRIVATE(this)->posttailcallback) {
     PRIVATE(this)->posttailcallback->deleteAll();
-  }
-}
-
-//
-// for setting node callbacks. makes sure NULLs are filled in where not set
-//
-static void
-set_callback_data_idx(SbList<SoCallbackData *> & list, const int idx,
-                      void * func, void * data)
-{
-  int n = list.getLength();
-  while (n <= idx) {
-    list.append(NULL);
-    n++;
-  }
-  if (list[idx] == NULL) list[idx] = new SoCallbackData(func, data);
-  else list[idx]->append(new SoCallbackData(func, data));
-}
-
-static void
-set_callback_data(SbList<SoCallbackData *> & list, const SoType type,
-                  void * func, void * data)
-{
-  SoTypeList derivedtypes;
-  int n = SoType::getAllDerivedFrom(type, derivedtypes);
-  for (int i = 0; i < n; i++) {
-    set_callback_data_idx(list, static_cast<int>(derivedtypes[i].getData()),
-                          func, data);
   }
 }
 
@@ -524,7 +548,7 @@ void
 SoCallbackAction::addPreCallback(const SoType type, SoCallbackActionCB * cb,
                                  void * userdata)
 {
-  set_callback_data(PRIVATE(this)->precallback, type, function_to_object_cast<void *>(cb), userdata);
+  PRIVATE(this)->precallback.add(type, function_to_object_cast<void *>(cb), userdata);
 }
 
 /*!
@@ -535,7 +559,7 @@ void
 SoCallbackAction::addPostCallback(const SoType type, SoCallbackActionCB * cb,
                                   void * userdata)
 {
-  set_callback_data(PRIVATE(this)->postcallback, type, function_to_object_cast<void *>(cb), userdata);
+  PRIVATE(this)->postcallback.add(type, function_to_object_cast<void *>(cb), userdata);
 }
 
 /*!
@@ -573,7 +597,7 @@ void
 SoCallbackAction::addTriangleCallback(const SoType type, SoTriangleCB * cb,
                                       void * userdata)
 {
-  set_callback_data(PRIVATE(this)->trianglecallback, type, function_to_object_cast<void *>(cb), userdata);
+  PRIVATE(this)->trianglecallback.add(type, function_to_object_cast<void *>(cb), userdata);
 }
 
 /*!
@@ -585,7 +609,7 @@ void
 SoCallbackAction::addLineSegmentCallback(const SoType type, SoLineSegmentCB * cb,
                                          void * userdata)
 {
-  set_callback_data(PRIVATE(this)->linecallback, type, function_to_object_cast<void *>(cb), userdata);
+  PRIVATE(this)->linecallback.add(type, function_to_object_cast<void *>(cb), userdata);
 }
 
 /*!
@@ -597,7 +621,7 @@ void
 SoCallbackAction::addPointCallback(const SoType type, SoPointCB * cb,
                                    void * userdata)
 {
-  set_callback_data(PRIVATE(this)->pointcallback, type, function_to_object_cast<void *>(cb), userdata);
+  PRIVATE(this)->pointcallback.add(type, function_to_object_cast<void *>(cb), userdata);
 }
 
 /************************************************************************************/
@@ -1134,10 +1158,10 @@ SoCallbackAction::invokePreCallbacks(const SoNode * const node)
   // reset response if previous node was pruned
   if (PRIVATE(this)->response == PRUNE) PRIVATE(this)->response = CONTINUE;
 
-  int idx = static_cast<int>(node->getTypeId().getData());
+  SoCallbackData * callbacks = PRIVATE(this)->precallback.get(node->getTypeId());
 
-  if (idx < PRIVATE(this)->precallback.getLength() && PRIVATE(this)->precallback[idx] != NULL) {
-    PRIVATE(this)->response = PRIVATE(this)->precallback[idx]->doNodeCallbacks(this, node);
+  if (callbacks != NULL) {
+    PRIVATE(this)->response = callbacks->doNodeCallbacks(this, node);
     if (PRIVATE(this)->response == SoCallbackAction::ABORT) {
       this->setTerminated(TRUE);
       return;
@@ -1167,9 +1191,9 @@ SoCallbackAction::invokePostCallbacks(const SoNode * const node)
   // reset response if previous node was pruned
   if (PRIVATE(this)->response == PRUNE) PRIVATE(this)->response = CONTINUE;
 
-  int idx = static_cast<int>(node->getTypeId().getData());
-  if (idx < PRIVATE(this)->postcallback.getLength() && PRIVATE(this)->postcallback[idx] != NULL) {
-    PRIVATE(this)->response = static_cast<Response>(PRIVATE(this)->postcallback[idx]->doNodeCallbacks(this, node));
+  SoCallbackData * callbacks = PRIVATE(this)->postcallback.get(node->getTypeId());
+  if (callbacks != NULL) {
+    PRIVATE(this)->response = static_cast<Response>(callbacks->doNodeCallbacks(this, node));
     if (PRIVATE(this)->response == SoCallbackAction::ABORT) {
       this->setTerminated(TRUE);
       return;
@@ -1199,9 +1223,9 @@ SoCallbackAction::invokeTriangleCallbacks(const SoShape * const shape,
                                           const SoPrimitiveVertex * const v2,
                                           const SoPrimitiveVertex * const v3)
 {
-  int idx = static_cast<int>(shape->getTypeId().getData());
-  if (idx < PRIVATE(this)->trianglecallback.getLength() && PRIVATE(this)->trianglecallback[idx] != NULL)
-    PRIVATE(this)->trianglecallback[idx]->doTriangleCallbacks(this, v1, v2, v3);
+  SoCallbackData * callbacks = PRIVATE(this)->trianglecallback.get(shape->getTypeId());
+  if (callbacks != NULL)
+    callbacks->doTriangleCallbacks(this, v1, v2, v3);
 }
 
 /*!
@@ -1214,9 +1238,9 @@ SoCallbackAction::invokeLineSegmentCallbacks(const SoShape * const shape,
                                              const SoPrimitiveVertex * const v1,
                                              const SoPrimitiveVertex * const v2)
 {
-  int idx = static_cast<int>(shape->getTypeId().getData());
-  if (idx < PRIVATE(this)->linecallback.getLength() && PRIVATE(this)->linecallback[idx] != NULL)
-    PRIVATE(this)->linecallback[idx]->doLineSegmentCallbacks(this, v1, v2);
+  SoCallbackData * callbacks = PRIVATE(this)->linecallback.get(shape->getTypeId());
+  if (callbacks != NULL)
+    callbacks->doLineSegmentCallbacks(this, v1, v2);
 }
 
 /*!
@@ -1228,9 +1252,9 @@ void
 SoCallbackAction::invokePointCallbacks(const SoShape * const shape,
                                        const SoPrimitiveVertex * const v)
 {
-  int idx = static_cast<int>(shape->getTypeId().getData());
-  if (idx < PRIVATE(this)->pointcallback.getLength() && PRIVATE(this)->pointcallback[idx] != NULL)
-    PRIVATE(this)->pointcallback[idx]->doPointCallbacks(this, v);
+  SoCallbackData * callbacks = PRIVATE(this)->pointcallback.get(shape->getTypeId());
+  if (callbacks != NULL)
+    callbacks->doPointCallbacks(this, v);
 }
 
 /*!
@@ -1243,12 +1267,12 @@ SoCallbackAction::invokePointCallbacks(const SoShape * const shape,
 SbBool
 SoCallbackAction::shouldGeneratePrimitives(const SoShape * shape) const
 {
-  int idx = static_cast<int>(shape->getTypeId().getData());
-  if (idx < PRIVATE(this)->trianglecallback.getLength() && PRIVATE(this)->trianglecallback[idx])
+  const SoType type = shape->getTypeId();
+  if (PRIVATE(this)->trianglecallback.get(type))
     return TRUE;
-  if (idx < PRIVATE(this)->linecallback.getLength() && PRIVATE(this)->linecallback[idx])
+  if (PRIVATE(this)->linecallback.get(type))
     return TRUE;
-  if (idx < PRIVATE(this)->pointcallback.getLength() && PRIVATE(this)->pointcallback[idx])
+  if (PRIVATE(this)->pointcallback.get(type))
     return TRUE;
   return FALSE;
 }
