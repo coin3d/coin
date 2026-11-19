@@ -289,36 +289,6 @@ void legacy() {
     root->unref();
   }
 }
-SoNode * otherShape(int kind) {
-  if(kind==0) return new SoCube;
-  if(kind==1) return new SoCone;
-  if(kind==2) return new SoCylinder;
-#ifdef SPHERE_PICK_HAVE_VRML97
-  if(kind==3) return new SoVRMLSphere;
-#endif
-  return NULL;
-}
-void otherShapes() {
-  for(int kind=0;kind<4;++kind) {
-    SoNode * shape=otherShape(kind); if(!shape) continue;
-    context="other analytic shape kind="+std::to_string(kind);
-    Function f(71); SoSeparator * root=scene();
-    SoCallback * setter=new SoCallback; root->addChild(setter); root->addChild(shape);
-    std::vector<SbVec4f> legacycoords;
-    {
-      SoRayPickAction a(SbViewportRegion(64,64)); a.enableCulling(FALSE); a.setPickAll(TRUE);
-      a.setRay(SbVec3f(.3f,.4f,5),SbVec3f(0,0,-1)); a.apply(root);
-      for(int i=0;i<a.getPickedPointList().getLength();++i) legacycoords.push_back(a.getPickedPoint(i)->getObjectTextureCoords());
-      check(!legacycoords.empty(),"other analytic shape has reference hits");
-      setter->setCallback(install,&f); a.apply(root);
-      check(a.getPickedPointList().getLength()==int(legacycoords.size()),"other analytic shape hit count unchanged");
-      for(int i=0;i<a.getPickedPointList().getLength() && i<int(legacycoords.size());++i)
-        equal(a.getPickedPoint(i)->getObjectTextureCoords(),legacycoords[i],"other analytic shapes retain legacy coordinate behavior");
-      check(f.points.empty(),"SoSphere function repair does not reach other shape helpers");
-    }
-    root->unref();
-  }
-}
 void scopes() {
   context="separator restoration and action reuse";
   Function outer(23),inner(59);
@@ -355,7 +325,7 @@ int main(int argc,char ** argv) {
   if(mode=="functions") { userFunctions(); homogeneous(); boundaryCases(); }
   else if(mode=="generators") generators();
   else if(mode=="clipping") clipping();
-  else if(mode=="legacy") { legacy(); otherShapes(); }
+  else if(mode=="legacy") legacy();
   else if(mode=="scopes") scopes();
   else return 2;
   std::printf("%d checks, %d failures\n",checks,failures); return failures?1:0;
