@@ -41,10 +41,26 @@
 #include <Inventor/details/SoCubeDetail.h>
 #include <Inventor/SbLine.h>
 #include <Inventor/nodes/SoCone.h>
+#include <Inventor/nodes/SoCube.h>
+#include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/nodes/SoCylinder.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbCylinder.h>
 #include <Inventor/SbSphere.h>
+
+// The helpers are also used by VRML shapes whose picking behavior must stay
+// unchanged. Restrict function evaluation to the requested Inventor type and
+// its subclasses. Picked points always represent texture unit 0.
+static const SoMultiTextureCoordinateElement *
+pick_texture_function(SoShape * shape, const SoType type,
+                      SoRayPickAction * action)
+{
+  if (!shape || !shape->isOfType(type)) return NULL;
+  const SoMultiTextureCoordinateElement * texcoords =
+    SoMultiTextureCoordinateElement::getInstance(action->getState());
+  return texcoords->getType(0) == SoMultiTextureCoordinateElement::FUNCTION ?
+    texcoords : NULL;
+}
 
 //
 // this was actually much easier than I first though since the Cone
@@ -106,6 +122,8 @@ sopick_pick_cone(const float bottomRadius,
                  SoShape * const shape,
                  SoRayPickAction * const action)
 {
+  const SoMultiTextureCoordinateElement * texcoords =
+    pick_texture_function(shape, SoCone::getClassTypeId(), action);
   action->setObjectSpace();
   const SbLine & line = action->getLine();
 
@@ -134,9 +152,15 @@ sopick_pick_cone(const float bottomRadius,
           SbVec3f n = npoint.cross(v1);
           (void) n.normalize();
           pp->setObjectNormal(n);
-          pp->setObjectTextureCoords(SbVec4f((float) (atan2(npoint[0], npoint[2]) *
-                                                      (1.0 / (2.0 * M_PI)) + 0.5),
-                                             -npoint[1] / h, 0.0f, 1.0f));
+          if (texcoords) {
+            const SbVec4f tc = texcoords->get(0, isect[i], n);
+            pp->setObjectTextureCoords(tc);
+          }
+          else {
+            pp->setObjectTextureCoords(SbVec4f((float) (atan2(npoint[0], npoint[2]) *
+                                                        (1.0 / (2.0 * M_PI)) + 0.5),
+                                               -npoint[1] / h, 0.0f, 1.0f));
+          }
           SoConeDetail * detail = new SoConeDetail;
           detail->setPart((int)SoCone::SIDES);
           pp->setDetail(detail, shape);
@@ -156,9 +180,15 @@ sopick_pick_cone(const float bottomRadius,
         SoPickedPoint * pp = action->addIntersection(bpt);
         if (pp) {
           pp->setObjectNormal(SbVec3f(0.0f, -1.0f, 0.0f));
-          pp->setObjectTextureCoords(SbVec4f(0.5f + bpt[0] / (2.0f * r),
-                                             0.5f + bpt[2] / (2.0f * r),
-                                             0.0f, 1.0f));
+          if (texcoords) {
+            const SbVec4f tc = texcoords->get(0, bpt, SbVec3f(0.0f, -1.0f, 0.0f));
+            pp->setObjectTextureCoords(tc);
+          }
+          else {
+            pp->setObjectTextureCoords(SbVec4f(0.5f + bpt[0] / (2.0f * r),
+                                               0.5f + bpt[2] / (2.0f * r),
+                                               0.0f, 1.0f));
+          }
 
           SoConeDetail * detail = new SoConeDetail();
           detail->setPart((int)SoCone::BOTTOM);
@@ -194,6 +224,18 @@ set_side_pp_data(SoPickedPoint * pp, const SbVec3f & isect,
 }
 
 
+// Keep the legacy side mapping and its arithmetic in the original helper.
+static void
+set_side_function_pp_data(SoPickedPoint * pp, const SbVec3f & isect,
+                          const SoMultiTextureCoordinateElement * texcoords)
+{
+  SbVec3f normal(isect[0], 0.0f, isect[2]);
+  (void) normal.normalize();
+  pp->setObjectNormal(normal);
+  const SbVec4f tc = texcoords->get(0, isect, normal);
+  pp->setObjectTextureCoords(tc);
+}
+
 void
 sopick_pick_cylinder(const float r,
                      const float height,
@@ -201,6 +243,8 @@ sopick_pick_cylinder(const float r,
                      SoShape * const shape,
                      SoRayPickAction * const action)
 {
+  const SoMultiTextureCoordinateElement * texcoords =
+    pick_texture_function(shape, SoCylinder::getClassTypeId(), action);
   action->setObjectSpace();
   const SbLine & line = action->getLine();
   float halfh = height * 0.5f;
@@ -238,7 +282,8 @@ sopick_pick_cylinder(const float r,
       if ((fabs(enter[1]) <= halfh) && action->isBetweenPlanes(enter)) {
         SoPickedPoint * pp = action->addIntersection(enter);
         if (pp) {
-          set_side_pp_data(pp, enter, halfh);
+          if (texcoords) set_side_function_pp_data(pp, enter, texcoords);
+          else set_side_pp_data(pp, enter, halfh);
           SoCylinderDetail * detail = new SoCylinderDetail();
           detail->setPart((int)SoCylinder::SIDES);
           pp->setDetail(detail, shape);
@@ -248,7 +293,8 @@ sopick_pick_cylinder(const float r,
       if ((fabs(exit[1]) <= halfh) && (enter != exit) && action->isBetweenPlanes(exit)) {
         SoPickedPoint * pp = action->addIntersection(exit);
         if (pp) {
-          set_side_pp_data(pp, exit, halfh);
+          if (texcoords) set_side_function_pp_data(pp, exit, texcoords);
+          else set_side_pp_data(pp, exit, halfh);
           SoCylinderDetail * detail = new SoCylinderDetail();
           detail->setPart((int)SoCylinder::SIDES);
           pp->setDetail(detail, shape);
@@ -271,9 +317,15 @@ sopick_pick_cylinder(const float r,
         if (pp) {
           if (matperpart) pp->setMaterialIndex(1);
           pp->setObjectNormal(SbVec3f(0.0f, 1.0f, 0.0f));
-          pp->setObjectTextureCoords(SbVec4f(0.5f + enter[0] / (2.0f * r),
-                                             0.5f - enter[2] / (2.0f * r),
-                                             0.0f, 1.0f));
+          if (texcoords) {
+            const SbVec4f tc = texcoords->get(0, enter, SbVec3f(0.0f, 1.0f, 0.0f));
+            pp->setObjectTextureCoords(tc);
+          }
+          else {
+            pp->setObjectTextureCoords(SbVec4f(0.5f + enter[0] / (2.0f * r),
+                                               0.5f - enter[2] / (2.0f * r),
+                                               0.0f, 1.0f));
+          }
           SoCylinderDetail * detail = new SoCylinderDetail();
           detail->setPart((int)SoCylinder::TOP);
           pp->setDetail(detail, shape);
@@ -292,9 +344,15 @@ sopick_pick_cylinder(const float r,
         if (pp) {
           if (matperpart) pp->setMaterialIndex(2);
           pp->setObjectNormal(SbVec3f(0.0f, -1.0f, 0.0f));
-          pp->setObjectTextureCoords(SbVec4f(0.5f + enter[0] / (2.0f * r),
-                                             0.5f + enter[2] / (2.0f * r),
-                                             0.0f, 1.0f));
+          if (texcoords) {
+            const SbVec4f tc = texcoords->get(0, enter, SbVec3f(0.0f, -1.0f, 0.0f));
+            pp->setObjectTextureCoords(tc);
+          }
+          else {
+            pp->setObjectTextureCoords(SbVec4f(0.5f + enter[0] / (2.0f * r),
+                                               0.5f + enter[2] / (2.0f * r),
+                                               0.0f, 1.0f));
+          }
           SoCylinderDetail * detail = new SoCylinderDetail();
           detail->setPart((int)SoCylinder::BOTTOM);
           pp->setDetail(detail, shape);
@@ -347,6 +405,8 @@ sopick_pick_cube(const float width,
 {
   static int translation[6] = {2, 3, 5, 4, 1, 0}; // translate into detail part-num
   static int textranslation[3][2] = {{2,1},{0,2},{0,1}}; // to get correct texcoords
+  const SoMultiTextureCoordinateElement * texcoords =
+    pick_texture_function(shape, SoCube::getClassTypeId(), action);
   action->setObjectSpace();
   const SbLine & line = action->getLine();
   float size[3];
@@ -378,25 +438,31 @@ sopick_pick_cube(const float width,
             if (flags & SOPICK_MATERIAL_PER_PART)
               pp->setMaterialIndex(translation[cnt]);
             pp->setObjectNormal(norm);
-            i1 = textranslation[i][0];
-            i2 = textranslation[i][1];
-            float s = isect[i1] + size[i1];
-            float t = isect[i2] + size[i2];
-            if (size[i1]) s /= (size[i1]*2.0f);
-            if (size[i2]) t /= (size[i2]*2.0f);
-            switch (i) {
-            default: // just to avoid warnings
-            case 0:
-              if (j > 0) s = 1.0f - s;
-              break;
-            case 1:
-              if (j > 0) t = 1.0f - t;
-              break;
-            case 2:
-              if (j < 0) s = 1.0f - s;
-              break;
+            if (texcoords) {
+              const SbVec4f tc = texcoords->get(0, isect, norm);
+              pp->setObjectTextureCoords(tc);
             }
-            pp->setObjectTextureCoords(SbVec4f(s, t, 0.0f, 1.0f));
+            else {
+              i1 = textranslation[i][0];
+              i2 = textranslation[i][1];
+              float s = isect[i1] + size[i1];
+              float t = isect[i2] + size[i2];
+              if (size[i1]) s /= (size[i1]*2.0f);
+              if (size[i2]) t /= (size[i2]*2.0f);
+              switch (i) {
+              default: // just to avoid warnings
+              case 0:
+                if (j > 0) s = 1.0f - s;
+                break;
+              case 1:
+                if (j > 0) t = 1.0f - t;
+                break;
+              case 2:
+                if (j < 0) s = 1.0f - s;
+                break;
+              }
+              pp->setObjectTextureCoords(SbVec4f(s, t, 0.0f, 1.0f));
+            }
           }
         }
       }
