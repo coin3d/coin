@@ -650,7 +650,8 @@ SoSceneTexture2::notify(SoNotList * list)
   SoField * f = list->getLastField();
   if (f == &this->scene ||
       f == &this->size ||
-      f == &this->type) {
+      f == &this->type ||
+      f == &this->backgroundColor) {
     // rerender scene
     PRIVATE(this)->buffervalid = FALSE;
   }
