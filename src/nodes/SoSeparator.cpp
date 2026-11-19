@@ -66,6 +66,8 @@
 
 #include <cstdlib> // strtol(), rand()
 #include <climits> // LONG_MIN, LONG_MAX
+#include <set>
+#include <vector>
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -79,6 +81,8 @@
 #include <Inventor/caches/SoGLCacheList.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoCullElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/annex/FXViz/nodes/SoShadowGroup.h>
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
 #include <Inventor/elements/SoSoundElement.h>
 #include <Inventor/misc/SoChildList.h>
@@ -305,6 +309,9 @@ public:
                     soseparator_storage_construct,
                     soseparator_storage_destruct);
     this->pub = NULL;
+    this->shadowrevision = 0;
+    this->shadowqueryvalid = FALSE;
+    this->hasshadowgroup = FALSE;
   }
   ~SoSeparatorP() {
     delete this->glcachestorage;
@@ -335,6 +342,12 @@ public:
   enum { YES, NO, MAYBE } hassoundchild;
 
   SoGLCacheList * getGLCacheList(SbBool createifnull);
+
+  // Revision of the structural query, independent of GL context and paths.
+  SbUniqueId shadowrevision;
+  SbBool shadowqueryvalid;
+  SbBool hasshadowgroup;
+  SbBool containsShadowGroup(void);
 
   void invalidateGLCaches(void) {
     glcachestorage->applyToAll(invalidate_gl_cache, NULL);
@@ -369,6 +382,61 @@ SoSeparatorP::getGLCacheList(SbBool createifnull)
     ptr->glcachelist = new SoGLCacheList(SoSeparator::getNumRenderCaches());
   }
   return ptr->glcachelist;
+}
+
+// Check structure rather than applying a search action: Switch selection and
+// BaseKit::searchchildren must not hide a potential shadow pass from a cache
+// that encloses it. Public getChildren() also covers application subclasses
+// exposing their children through the normal Coin node contract.
+SbBool
+SoSeparatorP::containsShadowGroup(void)
+{
+  this->lock();
+  const SbUniqueId revision = this->pub->getNodeId();
+  if (this->shadowqueryvalid && this->shadowrevision == revision) {
+    const SbBool result = this->hasshadowgroup;
+    this->unlock();
+    return result;
+  }
+  this->unlock();
+
+  // getChildren() is virtual application code and may reenter notify(). Never
+  // invoke it with the separator mutex held. Visit shared DAG nodes only once.
+  std::set<SoNode *> visited;
+  std::vector<SoNode *> pending;
+  pending.push_back(this->pub);
+  SbBool found = FALSE;
+  const SoType shadowtype = SoShadowGroup::getClassTypeId();
+  while (!pending.empty()) {
+    SoNode * node = pending.back();
+    pending.pop_back();
+    if (!visited.insert(node).second) continue;
+    if (!shadowtype.isBad() && node->isOfType(shadowtype)) {
+      found = TRUE;
+      break;
+    }
+    SoChildList * children = node->getChildren();
+    if (children) {
+      for (int i = 0; i < children->getLength(); ++i) {
+        pending.push_back((*children)[i]);
+      }
+    }
+  }
+
+  this->lock();
+  if (this->pub->getNodeId() == revision) {
+    this->shadowrevision = revision;
+    this->hasshadowgroup = found;
+    this->shadowqueryvalid = TRUE;
+  }
+  else {
+    // A notification during the query can invalidate even a negative answer.
+    // Defer caching until a subsequent traversal observes a stable revision.
+    this->shadowqueryvalid = FALSE;
+    found = TRUE;
+  }
+  this->unlock();
+  return found;
 }
 
 // *************************************************************************
@@ -656,7 +724,13 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
 
   SoGLCacheList * createcache = NULL;
   if ((this->renderCaching.getValue() != OFF) &&
-      (SoSeparator::getNumRenderCaches() > 0)) {
+      (SoSeparator::getNumRenderCaches() > 0) &&
+      !(SoShapeStyleElement::get(state)->getFlags() &
+        (SoShapeStyleElement::SHADOWMAP | SoShapeStyleElement::SHADOWS)) &&
+      !PRIVATE(this)->containsShadowGroup()) {
+    // Shadow FBO work and shader transitions must run immediately. In
+    // particular, detect groups before opening GL_COMPILE in an ancestor;
+    // invalidating a cache after reaching the group would be too late.
 
     // test if bbox is outside view-volume
     if (!state->isCacheOpen()) {
@@ -954,6 +1028,7 @@ SoSeparator::notify(SoNotList * nl)
   if (PRIVATE(this)->bboxcache) PRIVATE(this)->bboxcache->invalidate();
   PRIVATE(this)->invalidateGLCaches();
   PRIVATE(this)->hassoundchild = SoSeparatorP::MAYBE;
+  PRIVATE(this)->shadowqueryvalid = FALSE;
   PRIVATE(this)->unlock();
 }
 

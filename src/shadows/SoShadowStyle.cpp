@@ -141,7 +141,11 @@ SoShadowStyle::GLRender(SoGLRenderAction * action)
                             this,
                             (int) this->style.getValue());
 
-  if (SoShapeStyleElement::get(state)->getFlags() & SoShapeStyleElement::SHADOWS) {
+  const unsigned int flags = SoShapeStyleElement::get(state)->getFlags();
+  // SHADOWED controls the receiver only. A caster must keep the VSM
+  // program enabled even when SHADOWS is inherited from an outer group.
+  if ((flags & SoShapeStyleElement::SHADOWS) &&
+      !(flags & SoShapeStyleElement::SHADOWMAP)) {
 
     if (this->style.getValue() & SHADOWED) {
       SoGLShaderProgramElement::enable(state, TRUE);
