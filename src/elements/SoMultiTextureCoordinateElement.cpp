@@ -52,6 +52,7 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/lists/SbList.h>
 #include <cassert>
+#include <cmath>
 
 #define PRIVATE(obj) obj->pimpl
 
@@ -362,8 +363,19 @@ SoMultiTextureCoordinateElement::get2(const int unit, const int index) const
       float tmp = ud.coords4[index][3];
       float to2D = tmp == 0.0f ? 1.0f : 1.0f / tmp;
 
-      elem->convert2.setValue(ud.coords4[index][0] * to2D,
-                              ud.coords4[index][1] * to2D);
+      float values[2] = { ud.coords4[index][0] * to2D,
+                          ud.coords4[index][1] * to2D };
+      // Preserve reciprocal multiplication except when a tiny finite q
+      // overflows its reciprocal but a component quotient is representable.
+      if (tmp != 0.0f && std::isfinite(tmp) && !std::isfinite(to2D)) {
+        for (int i = 0; i < 2; ++i) {
+          if (std::isfinite(ud.coords4[index][i])) {
+            const float quotient = ud.coords4[index][i] / tmp;
+            if (std::isfinite(quotient)) values[i] = quotient;
+          }
+        }
+      }
+      elem->convert2.setValue(values[0], values[1]);
     }
     else { // coordsDimension == 3
       elem->convert2.setValue(ud.coords3[index][0],
