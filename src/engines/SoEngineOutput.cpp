@@ -361,13 +361,16 @@ void
 SoEngineOutput::prepareToWrite(void) const
 {
   SoEngineOutput * that = const_cast<SoEngineOutput *>(this);
+  int n = this->slaves.getLength();
+  // Finish allocating before changing any slave's notification flag.
+  // The following appends of SbBool cannot allocate or throw.
+  that->fieldnotiflist.ensureCapacity(n);
   that->fieldnotiflist.truncate(0);
 
-  int n = this->slaves.getLength();
   for (int i = 0; i < n; i++) {
     SoField * f = this->slaves[i];
-    that->fieldnotiflist.append(f->isNotifyEnabled());
-    f->enableNotify(FALSE);
+    // Save the physical flag, not a temporary node-engine suppression mask.
+    that->fieldnotiflist.append(f->enableNotify(FALSE));
   }
 }
 
@@ -413,6 +416,9 @@ SoEngineOutput::touchSlaves(SoNotList * nl, SbBool donotify)
     // not added to the original list
     SoNotList listcopy;
     if (nl && donotify) listcopy = *nl;
+    // Silent invalidation still selects the notifying engine for fan-in.
+    const SoNotRec * rec = nl && !donotify ? nl->getLastRec() : NULL;
+    SoBase * source = rec && rec->getType() == SoNotRec::ENGINE ? rec->getBase() : NULL;
     int numconnections = this->getNumConnections();
     for (int j = 0; j < numconnections; j++) {
       SoField * field = (*this)[j];
@@ -422,7 +428,10 @@ SoEngineOutput::touchSlaves(SoNotList * nl, SbBool donotify)
           listcopy = *nl;
         }
       }
-      else field->setDirty(TRUE);
+      else {
+        if (source) field->recordConnectionSource(source);
+        field->setDirty(TRUE);
+      }
     }
   }
 }
