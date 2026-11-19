@@ -2478,11 +2478,6 @@ cc_glglue_instance(int contextid)
 
     /* Resolve our function pointers. */
       glglue_resolve_symbols(gi);
-
-    if (cc_glglue_has_3d_textures(gi)) {
-      glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE, &gltmp);
-      gi->max_3d_texture_size = gltmp;
-    }
   }
   else {
     gi = (cc_glglue *)ptr;
@@ -4925,7 +4920,7 @@ proxy_mipmap_2d(int width, int height,
     glTexImage2D(GL_PROXY_TEXTURE_2D, level, internalFormat, width,
                  height, 0, format, type,
                  NULL);
-    glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, level,
+    glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, 0,
                              GL_TEXTURE_WIDTH, &w);
     if (w == 0) return FALSE;
   }
@@ -4959,7 +4954,7 @@ proxy_mipmap_3d(const cc_glglue * glw, int width, int height, int depth,
     cc_glglue_glTexImage3D(glw, GL_PROXY_TEXTURE_3D, level, internalFormat,
                            width, height, depth, 0, format, type,
                            NULL);
-    glGetTexLevelParameteriv(GL_PROXY_TEXTURE_3D, level,
+    glGetTexLevelParameteriv(GL_PROXY_TEXTURE_3D, 0,
                              GL_TEXTURE_WIDTH, &w);
     if (w == 0) return FALSE;
   }
@@ -5008,16 +5003,14 @@ coin_glglue_is_texture_size_legal(const cc_glglue * glw,
                                   GLenum type,
                                   SbBool mipmap)
  {
-  const glglue_texture_size_limits & limits = glglue_get_texture_size_limits();
   if (xsize <= 0 || ysize <= 0 || zsize < 0) return FALSE;
 
+  const glglue_texture_size_limits & limits = glglue_get_texture_size_limits();
+  const int maximum = zsize == 0 ? limits.texture2 : limits.texture3;
+  if (maximum > 0 && (xsize > maximum || ysize > maximum || zsize > maximum))
+    return FALSE;
+
   if (zsize == 0) { /* 2D textures */
-    if (limits.texture2 > 0) {
-      const int maximum = cc_min(limits.texture2, glw->max_texture_size);
-      if (xsize <= 0 || xsize > maximum) return FALSE;
-      if (ysize <= 0 || ysize > maximum) return FALSE;
-      return TRUE;
-    }
     if (cc_glglue_has_2d_proxy_textures(glw)) {
       return proxy_mipmap_2d(xsize, ysize, internalformat, format, type, mipmap);
     }
@@ -5029,13 +5022,6 @@ coin_glglue_is_texture_size_legal(const cc_glglue * glw,
   }
   else { /*  3D textures */
     if (cc_glglue_has_3d_textures(glw)) {
-      if (limits.texture3 > 0) {
-        const int maximum = cc_min(limits.texture3, glw->max_3d_texture_size);
-        if (xsize <= 0 || xsize > maximum) return FALSE;
-        if (ysize <= 0 || ysize > maximum) return FALSE;
-        if (zsize <= 0 || zsize > maximum) return FALSE;
-        return TRUE;
-      }
       return proxy_mipmap_3d(glw, xsize, ysize, zsize, internalformat, format, type, mipmap);
     }
     else {

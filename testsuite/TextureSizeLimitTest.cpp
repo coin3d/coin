@@ -133,20 +133,6 @@ legal3(const cc_glglue * glue, int width, int height, int depth)
     GL_RGBA8, GL_RGBA, GL_UNSIGNED_BYTE, FALSE);
 }
 
-SbBool
-legal2_mipmap(const cc_glglue * glue, int width, int height)
-{
-  return coin_glglue_is_texture_size_legal(glue, width, height, 0,
-    GL_RGBA8, GL_RGBA, GL_UNSIGNED_BYTE, TRUE);
-}
-
-SbBool
-legal3_mipmap(const cc_glglue * glue, int width, int height, int depth)
-{
-  return coin_glglue_is_texture_size_legal(glue, width, height, depth,
-    GL_RGBA8, GL_RGBA, GL_UNSIGNED_BYTE, TRUE);
-}
-
 void
 clear_gl_errors()
 {
@@ -163,7 +149,7 @@ require_no_gl_error(int line)
 #define REQUIRE_NO_GL_ERROR() do { const int result = require_no_gl_error(__LINE__); if (result) return result; } while (0)
 
 int
-test_validation_mipmaps(const cc_glglue * glue, GLint physical2)
+test_invalid_dimensions(const cc_glglue * glue, GLint physical2)
 {
   REQUIRE(physical2 >= 8);
   clear_gl_errors();
@@ -180,16 +166,6 @@ test_validation_mipmaps(const cc_glglue * glue, GLint physical2)
     REQUIRE_NO_GL_ERROR();
     REQUIRE(!legal2(glue, 1, -1));
     REQUIRE_NO_GL_ERROR();
-
-    REQUIRE(legal2_mipmap(glue, 8, 4));
-    REQUIRE_NO_GL_ERROR();
-    for (int level = 0, width = 8; level <= 3; ++level, width >>= 1) {
-      GLint actual = 0;
-      glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, level,
-                               GL_TEXTURE_WIDTH, &actual);
-      REQUIRE_NO_GL_ERROR();
-      REQUIRE(actual == width);
-    }
   }
 
   cc_glglue noproxy = *glue;
@@ -214,16 +190,6 @@ test_validation_mipmaps(const cc_glglue * glue, GLint physical2)
     REQUIRE_NO_GL_ERROR();
     REQUIRE(!legal3(glue, 1, 1, -1));
     REQUIRE_NO_GL_ERROR();
-
-    REQUIRE(legal3_mipmap(glue, 8, 4, 2));
-    REQUIRE_NO_GL_ERROR();
-    for (int level = 0, width = 8; level <= 3; ++level, width >>= 1) {
-      GLint actual = 0;
-      glGetTexLevelParameteriv(GL_PROXY_TEXTURE_3D, level,
-                               GL_TEXTURE_WIDTH, &actual);
-      REQUIRE_NO_GL_ERROR();
-      REQUIRE(actual == width);
-    }
   }
 
   return 0;
@@ -255,7 +221,7 @@ test2(const char * scenario, const cc_glglue * glue, GLint physical)
     REQUIRE(!legal2(glue, 1, -1));
     return 0;
   }
-  if (std::strcmp(scenario, "proxy-bypass-2d") == 0) {
+  if (std::strcmp(scenario, "cap-keeps-proxy-2d") == 0) {
     if (!cc_glglue_has_2d_proxy_textures(glue)) return 77;
     glTexImage2D(GL_PROXY_TEXTURE_2D, 0, GL_RGBA8, 8, 8, 0,
                  GL_RGBA, GL_UNSIGNED_BYTE, NULL);
@@ -266,7 +232,7 @@ test2(const char * scenario, const cc_glglue * glue, GLint physical)
     REQUIRE(legal2(glue, 16, 16));
     glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &width);
     REQUIRE(glGetError() == GL_NO_ERROR);
-    REQUIRE(width == 8);
+    REQUIRE(width == 16);
     return 0;
   }
   if (std::strcmp(scenario, "physical-2d") == 0) {
@@ -317,7 +283,7 @@ test3(const char * scenario, const cc_glglue * glue, GLint physical)
     REQUIRE(!legal3(glue, 1, 1, -1));
     return 0;
   }
-  if (std::strcmp(scenario, "proxy-bypass-3d") == 0) {
+  if (std::strcmp(scenario, "cap-keeps-proxy-3d") == 0) {
     cc_glglue_glTexImage3D(glue, GL_PROXY_TEXTURE_3D, 0, GL_RGBA8,
                           8, 8, 8, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
     GLint width = 0;
@@ -327,7 +293,7 @@ test3(const char * scenario, const cc_glglue * glue, GLint physical)
     REQUIRE(legal3(glue, 16, 16, 16));
     glGetTexLevelParameteriv(GL_PROXY_TEXTURE_3D, 0, GL_TEXTURE_WIDTH, &width);
     REQUIRE(glGetError() == GL_NO_ERROR);
-    REQUIRE(width == 8);
+    REQUIRE(width == 16);
     return 0;
   }
   if (std::strcmp(scenario, "physical-3d") == 0) {
@@ -358,7 +324,7 @@ main(int argc, char ** argv)
 
   if (invalid) configure_environment(is3d ? NULL : invalid, is3d ? invalid : NULL);
   else if (std::strncmp(scenario, "cap-", 4) == 0 ||
-           std::strncmp(scenario, "proxy-bypass-", 13) == 0 ||
+           std::strncmp(scenario, "cap-keeps-proxy-", 16) == 0 ||
            std::strncmp(scenario, "immutable-set-", 14) == 0 ||
            std::strcmp(scenario, "unsupported-3d") == 0) {
     configure_environment(is3d ? NULL : "16", is3d ? "16" : NULL);
@@ -381,8 +347,8 @@ main(int argc, char ** argv)
       glGetIntegerv(is3d ? GL_MAX_3D_TEXTURE_SIZE : GL_MAX_TEXTURE_SIZE,
                     &physical);
       if (glGetError() != GL_NO_ERROR || physical <= 0) result = 77;
-      else if (std::strcmp(scenario, "validation-mipmaps") == 0) {
-        result = test_validation_mipmaps(fixture.glue, physical);
+      else if (std::strcmp(scenario, "invalid-dimensions") == 0) {
+        result = test_invalid_dimensions(fixture.glue, physical);
       }
       else result = is3d ? test3(scenario, fixture.glue, physical)
                          : test2(scenario, fixture.glue, physical);

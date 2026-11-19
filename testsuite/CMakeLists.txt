@@ -45,10 +45,10 @@ if(UNIX AND NOT APPLE AND HAVE_GLX)
       Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
 
     set(COIN_TEXTURE_LIMIT_CASES
-      validation-mipmaps
+      invalid-dimensions
       no-cap-2d
       cap-2d
-      proxy-bypass-2d
+      cap-keeps-proxy-2d
       physical-2d
       immutable-set-2d
       immutable-unset-2d
@@ -60,7 +60,7 @@ if(UNIX AND NOT APPLE AND HAVE_GLX)
       overflow-2d
       no-cap-3d
       cap-3d
-      proxy-bypass-3d
+      cap-keeps-proxy-3d
       physical-3d
       unsupported-3d
       empty-3d

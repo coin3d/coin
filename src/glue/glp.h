@@ -874,7 +874,6 @@ struct cc_glglue {
   float line_width_range[2];
   float point_size_range[2];
   int max_texture_size;
-  int max_3d_texture_size;
   cc_dict * glextdict;
 
   cc_libhandle dl_handle;
