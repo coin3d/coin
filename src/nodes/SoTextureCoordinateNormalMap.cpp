@@ -32,29 +32,31 @@
 
 /*!
   \class SoTextureCoordinateNormalMap SoTextureCoordinateNormalMap.h Inventor/nodes/SoTextureCoordinateNormalMap.h
-  \brief The SoTextureCoordinateNormalMap class generates texture coordinates by projecting onto a surrounding texture.
+  \brief The SoTextureCoordinateNormalMap class generates 3D texture coordinates from surface normals.
 
   \ingroup coin_nodes
 
-  The texture specifying the environment will be mapped around the 
-  scene graph below this node using a sphere. The texture will be mapped
-  onto the scene graph taking camera position into account. This will
-  lead to an object reflecting its environment.
+  The coordinates are the normalized surface normal in eye space, with
+  a homogeneous coordinate of 1. Model and camera rotations affect the
+  direction; translations and the surface point do not. The normal is
+  transformed by the inverse transpose of the model-view matrix, so
+  non-uniform scaling and shearing are taken into account. A zero normal
+  produces (0, 0, 0, 1).
 
-  Here is a scene graph example showing how environment mapping can be
-  applied to an object:
+  This node is usually used with SoTextureCubeMap. For example:
 
   \code
   #Inventor V2.1 ascii
 
   Separator {
 
-    Texture2 {
-      filename "ocean.jpg" # the environment, in this case ocean
+    TextureCubeMap {
+      filenames [ "negx.jpg", "posx.jpg", "negy.jpg", "posy.jpg",
+                  "negz.jpg", "posz.jpg" ]
     }
     TextureCoordinateNormalMap {}
 
-    Cube {} # the environmentally mapped object
+    Sphere {}
   }
   \endcode
 
@@ -67,23 +69,23 @@
 
 // *************************************************************************
 
-// FIXME: Can this somehow relate to 3D textures? (kintel 20020203)
-
 #include <Inventor/nodes/SoTextureCoordinateNormalMap.h>
 #include "coindefs.h"
 
-#include <cstdlib>
-#include <cfloat>
+#include <cmath>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+#include <Inventor/C/glue/gl.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/system/gl.h>
 
 #include "tidbitsp.h"
@@ -139,11 +141,38 @@ SoTextureCoordinateNormalMap::initClass(void)
 
 // generates texture coordinates for GLRender, callback and pick actions
 const SbVec4f &
-SoTextureCoordinateNormalMap::generate(void * COIN_UNUSED_ARG(userdata),
-                                         const SbVec3f & COIN_UNUSED_ARG(p),
-                                         const SbVec3f & COIN_UNUSED_ARG(n))
+SoTextureCoordinateNormalMap::generate(void * userdata,
+                                       const SbVec3f & COIN_UNUSED_ARG(p),
+                                       const SbVec3f & n)
 {
-  return *SoTextureCoordinateNormalMapP::dummy_texcoords;
+  SoState * state = static_cast<SoState *>(userdata);
+  SbMatrix modelview = SoModelMatrixElement::get(state);
+  modelview.multRight(SoViewingMatrixElement::get(state));
+
+  const SbMatrix normalmatrix = modelview.inverse().transpose();
+  // Use double intermediates so finite float normals can be normalized
+  // without overflowing or underflowing their squared length.
+  double normal[3];
+  for (int i = 0; i < 3; i++) {
+    normal[i] = double(n[0]) * normalmatrix[0][i] +
+                double(n[1]) * normalmatrix[1][i] +
+                double(n[2]) * normalmatrix[2][i];
+  }
+  const double length = std::sqrt(normal[0] * normal[0] +
+                                  normal[1] * normal[1] +
+                                  normal[2] * normal[2]);
+
+  // The element API returns a reference; keep its storage private to each
+  // traversal thread without adding fields to the public node class.
+  static thread_local SbVec4f texcoords;
+  if (length > 0.0) {
+    texcoords.setValue(float(normal[0] / length), float(normal[1] / length),
+                       float(normal[2] / length), 1.0f);
+  }
+  else {
+    texcoords.setValue(0.0f, 0.0f, 0.0f, 1.0f);
+  }
+  return texcoords;
 }
 
 // doc from parent
@@ -163,6 +192,11 @@ SoTextureCoordinateNormalMap::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
   int unit = SoTextureUnitElement::get(state);
+
+  const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
+  int maxunits = cc_glglue_max_texture_units(glue);
+  if (unit < 0 || unit >= maxunits) return;
+
   SoMultiTextureCoordinateElement::setFunction(action->getState(), this,
                                                unit,
                                                generate,
