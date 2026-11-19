@@ -88,6 +88,7 @@
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/SoPickedPoint.h>
+#include <Inventor/SbSphere.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 
@@ -159,14 +160,46 @@ SoVRMLSphere::GLRender(SoGLRenderAction * action)
                      flags, state);
 }
 
+// Evaluate only accepted intersections, using the actual object-space point
+// and the same normal as the legacy analytic picker.
+static void
+vrmlsphere_function_intersection(SoRayPickAction * action,
+                                 const SoMultiTextureCoordinateElement * texcoords,
+                                 const SbVec3f & point)
+{
+  if (action->isBetweenPlanes(point)) {
+    SoPickedPoint * pp = action->addIntersection(point);
+    if (pp) {
+      SbVec3f normal = point;
+      (void) normal.normalize();
+      pp->setObjectNormal(normal);
+      const SbVec4f tc = texcoords->get(0, point, normal);
+      pp->setObjectTextureCoords(tc);
+    }
+  }
+}
+
 // Doc in parent
 void
 SoVRMLSphere::rayPick(SoRayPickAction * action)
 {
   if (!shouldRayPick(action)) return;
 
-  sopick_pick_sphere(this->radius.getValue(),
-                     action);
+  const SoMultiTextureCoordinateElement * texcoords =
+    SoMultiTextureCoordinateElement::getInstance(action->getState());
+  if (texcoords->getType(0) != SoMultiTextureCoordinateElement::FUNCTION) {
+    sopick_pick_sphere(this->radius.getValue(), action);
+    return;
+  }
+
+  action->setObjectSpace();
+  const SbLine & line = action->getLine();
+  SbSphere sphere(SbVec3f(0.0f, 0.0f, 0.0f), this->radius.getValue());
+  SbVec3f enter, exit;
+  if (sphere.intersect(line, enter, exit)) {
+    vrmlsphere_function_intersection(action, texcoords, enter);
+    if (exit != enter) vrmlsphere_function_intersection(action, texcoords, exit);
+  }
 }
 
 // Doc in parent

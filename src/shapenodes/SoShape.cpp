@@ -115,6 +115,7 @@
 #endif // HAVE_VRML97
 
 #include "nodes/SoSubNodeP.h"
+#include "nodes/SoTextureCoordinateMathP.h"
 #include "rendering/SoGL.h"
 #include "glue/glp.h"
 #include "threads/threadsutilp.h"
@@ -1025,6 +1026,16 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
             v1->getTextureCoords() * barycentric[0] +
             v2->getTextureCoords() * barycentric[1] +
             v3->getTextureCoords() * barycentric[2];
+
+          // Recover only components that lost range or collapsed to zero.
+          for (int i = 0; i < 4; ++i) {
+            const float component[3] = {
+              v1->getTextureCoords()[i],
+              v2->getTextureCoords()[i],
+              v3->getTextureCoords()[i]
+            };
+            tc[i] = coin_texture_dot(tc[i], component, barycentric.getValue(), 3);
+          }
 
           pp->setObjectTextureCoords(tc);
 
