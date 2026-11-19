@@ -51,7 +51,9 @@
 
 #include <Inventor/nodes/SoTextureCoordinateDefault.h>
 
+#include <Inventor/C/glue/gl.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
 
@@ -98,10 +100,14 @@ SoTextureCoordinateDefault::doAction(SoAction * action)
 void
 SoTextureCoordinateDefault::GLRender(SoGLRenderAction * action)
 {
-  /*int unit = */SoTextureUnitElement::get(action->getState());
-  SoGLMultiTextureCoordinateElement::setTexGen(action->getState(),
-                                               this, 0, NULL);
-  SoTextureCoordinateDefault::doAction((SoAction *)action);
+  SoState * state = action->getState();
+  int unit = SoTextureUnitElement::get(state);
+  const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
+  int maxunits = cc_glglue_max_texture_units(glue);
+  if (unit >= 0 && unit < maxunits) {
+    SoGLMultiTextureCoordinateElement::setTexGen(state, this, unit, NULL);
+    SoTextureCoordinateDefault::doAction((SoAction *)action);
+  }
 }
 
 // doc from parent

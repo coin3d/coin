@@ -50,6 +50,8 @@
 
 #include <Inventor/nodes/SoTextureCoordinateSphere.h>
 #include "coindefs.h"
+#include "nodes/SoTextureCoordinateMathP.h"
+#include <cmath>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -220,8 +222,24 @@ SoTextureCoordinateSphereP::calculateTextureCoordinate(const SbVec3f & point, co
   // will be received, and therefore be able to patch up the
   // transition. (20040127 handegar)
 
-  SbVec4f tc((float) (atan2(point[0], point[2]) * (1.0/(2.0*M_PI)) + 0.5),
-             (float) (atan2(point[1], sqrt(point[0]*point[0] + point[2]*point[2])) * (1.0/M_PI) + 0.5),
+  const float squared = point[0]*point[0] + point[2]*point[2];
+  double radial = sqrt(squared);
+  float latitude = (float) (atan2(point[1], sqrt(point[0]*point[0] + point[2]*point[2])) * (1.0/M_PI) + 0.5);
+  if ((!std::isfinite(squared) ||
+       (squared == 0.0f && (point[0] != 0.0f || point[2] != 0.0f))) &&
+      std::isfinite(point[0]) && std::isfinite(point[2]) && std::isfinite(point[1])) {
+    radial = std::hypot(double(point[0]), double(point[2]));
+    latitude = (float) (atan2(point[1], radial) * (1.0/M_PI) + 0.5);
+  }
+  // Near the south pole the offset can erase a nonzero latitude, even
+  // when the Float radial square is normal. Keep the legacy pole itself.
+  if (latitude <= 0.0f && point[1] < 0.0f && radial > 0.0 &&
+      std::isfinite(radial) && std::isfinite(point[1])) {
+    const double recovered = std::atan2(radial, -double(point[1])) * (1.0/M_PI);
+    if (std::isfinite(recovered) && float(recovered) > 0.0f) latitude = float(recovered);
+  }
+  SbVec4f tc(coin_texture_longitude((float) (atan2(point[0], point[2]) * (1.0/(2.0*M_PI)) + 0.5), point[0], point[2]),
+             latitude,
              0.0f, 1.0f);
 
   return tc;
@@ -248,17 +266,18 @@ SoTextureCoordinateSphere::doAction(SoAction * action)
 void
 SoTextureCoordinateSphere::GLRender(SoGLRenderAction * action)
 {
-  so_texcoordsphere_data * data = PRIVATE(this)->so_texcoord_get_data();
-
-  data->currentstate = action->getState();
-  data->currentshape = NULL;
-
-  int unit = SoTextureUnitElement::get(data->currentstate);
-  const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(action->getState()));
+  SoState * state = action->getState();
+  int unit = SoTextureUnitElement::get(state);
+  const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
   int maxunits = cc_glglue_max_texture_units(glue);
-  if (unit < maxunits) {        
-    SoMultiTextureCoordinateElement::setFunction(data->currentstate, this,
-                                                 unit, textureCoordinateSphereCallback,
+  if (unit >= 0 && unit < maxunits) {
+    so_texcoordsphere_data * data = PRIVATE(this)->so_texcoord_get_data();
+    data->currentstate = state;
+    data->currentshape = NULL;
+
+    SoGLMultiTextureCoordinateElement::setTexGen(state, this,
+                                                 unit, NULL, NULL,
+                                                 textureCoordinateSphereCallback,
                                                  PRIVATE(this));
   }
 }
