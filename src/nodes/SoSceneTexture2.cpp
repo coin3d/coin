@@ -385,6 +385,7 @@ public:
   SbBool buffervalid;
 
   SbBool glimagevalid;
+  SbBool transparencyfunctiondirty;
   SbBool glrectangle;
 
   void updateBuffer(SoState * state, const float quality);
@@ -550,7 +551,8 @@ SoSceneTexture2::GLRender(SoGLRenderAction * action)
   }
   LOCK_GLIMAGE(this);
 
-  if (root && (!PRIVATE(this)->buffervalid || !PRIVATE(this)->glimagevalid)) {
+  if (root && (!PRIVATE(this)->buffervalid || !PRIVATE(this)->glimagevalid ||
+               PRIVATE(this)->transparencyfunctiondirty)) {
     PRIVATE(this)->updateBuffer(state, quality);
 
     // don't cache when we change the glimage
@@ -654,10 +656,12 @@ SoSceneTexture2::notify(SoNotList * list)
     // rerender scene
     PRIVATE(this)->buffervalid = FALSE;
   }
+  else if (f == &this->transparencyFunction) {
+    PRIVATE(this)->transparencyfunctiondirty = TRUE;
+  }
   else if (f == &this->wrapS ||
            f == &this->wrapT ||
            f == &this->model ||
-           f == &this->transparencyFunction ||
            f == &this->sceneTransparencyType) {
     // no need to render scene again, but update the texture object
     PRIVATE(this)->glimagevalid = FALSE;
@@ -685,6 +689,7 @@ SoSceneTexture2P::SoSceneTexture2P(SoSceneTexture2 * apiptr)
   this->glcontext = NULL;
   this->buffervalid = FALSE;
   this->glimagevalid = FALSE;
+  this->transparencyfunctiondirty = FALSE;
   this->glimage = NULL;
   this->glimagecontext = 0;
   this->glaction = NULL;
@@ -734,6 +739,10 @@ SoSceneTexture2P::updateBuffer(SoState * state, const float quality)
   }
 
   if (!candofbo) {
+    if (this->transparencyfunctiondirty) {
+      this->glimagevalid = FALSE;
+      this->transparencyfunctiondirty = FALSE;
+    }
     this->updatePBuffer(state, quality);
   }
   else {
@@ -741,9 +750,30 @@ SoSceneTexture2P::updateBuffer(SoState * state, const float quality)
   }
 }
 
+static uint32_t
+getTransparencyFlags(uint32_t flags, const int function)
+{
+  flags &= ~(SoGLImage::FORCE_TRANSPARENCY_TRUE | SoGLImage::FORCE_TRANSPARENCY_FALSE |
+             SoGLImage::FORCE_ALPHA_TEST_TRUE | SoGLImage::FORCE_ALPHA_TEST_FALSE);
+  switch (function) {
+  case SoSceneTexture2::NONE:
+    return flags | SoGLImage::FORCE_TRANSPARENCY_FALSE | SoGLImage::FORCE_ALPHA_TEST_FALSE;
+  case SoSceneTexture2::ALPHA_TEST:
+    return flags | SoGLImage::FORCE_TRANSPARENCY_TRUE | SoGLImage::FORCE_ALPHA_TEST_TRUE;
+  case SoSceneTexture2::ALPHA_BLEND:
+    return flags | SoGLImage::FORCE_TRANSPARENCY_TRUE | SoGLImage::FORCE_ALPHA_TEST_FALSE;
+  default:
+    assert(0 && "should not get here");
+    return flags;
+  }
+}
+
 void
 SoSceneTexture2P::updateFrameBuffer(SoState * state, const float COIN_UNUSED_ARG(quality))
 {
+  const SbBool transparencychanged = this->transparencyfunctiondirty;
+  this->transparencyfunctiondirty = FALSE;
+
   int i;
   SbVec2s size = PUBLIC(this)->size.getValue();
   SoNode * scene = PUBLIC(this)->scene.getValue();
@@ -758,8 +788,9 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float COIN_UNUSED_ARG
     this->fbodata = fbodata = new fbo_data(0);
   }
 
-  if ((fbodata->fbo_size != size) || (mipmap != fbodata->fbo_mipmap) || 
-      (cachecontext != fbodata->cachecontext)) {
+  const SbBool recreate = (fbodata->fbo_size != size) || (mipmap != fbodata->fbo_mipmap) ||
+    (cachecontext != fbodata->cachecontext);
+  if (recreate) {
     fbodata->fbo_mipmap = mipmap;
     fbodata->fbo_size = size;
     fbodata->cachecontext = cachecontext;
@@ -772,22 +803,6 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float COIN_UNUSED_ARG
     if (this->glimage == NULL) {
       this->glimage = new SoGLImage;
       this->glimagecontext = SoGLCacheContextElement::get(state);
-      uint32_t flags = this->glimage->getFlags();
-      switch ((SoSceneTexture2::TransparencyFunction) (PUBLIC(this)->transparencyFunction.getValue())) {
-      case SoSceneTexture2::NONE:
-        flags |= SoGLImage::FORCE_TRANSPARENCY_FALSE|SoGLImage::FORCE_ALPHA_TEST_FALSE;
-        break;
-      case SoSceneTexture2::ALPHA_TEST:
-        flags |= SoGLImage::FORCE_TRANSPARENCY_TRUE|SoGLImage::FORCE_ALPHA_TEST_TRUE;
-        break;
-      case SoSceneTexture2::ALPHA_BLEND:
-        flags |= SoGLImage::FORCE_TRANSPARENCY_TRUE|SoGLImage::FORCE_ALPHA_TEST_FALSE;
-        break;
-      default:
-        assert(0 && "should not get here");
-        break;
-      }
-      this->glimage->setFlags(flags);
     }
 
     SbBool finished = FALSE;
@@ -817,6 +832,14 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float COIN_UNUSED_ARG
       this->glimage->setGLDisplayList(fbodata->fbo_texture, state);
     }
   }
+
+  if (this->glimage && (recreate || transparencychanged)) {
+    const uint32_t flags = getTransparencyFlags(this->glimage->getFlags(),
+                                                PUBLIC(this)->transparencyFunction.getValue());
+    this->glimage->setFlags(flags);
+  }
+  // The transparency function only affects how the existing image is used.
+  if (!recreate && this->buffervalid && this->glimagevalid) return;
 
   state->push();
 
@@ -1025,20 +1048,7 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
     if (this->glrectangle) {
       flags |= SoGLImage::RECTANGLE;
     }
-    switch ((SoSceneTexture2::TransparencyFunction) (PUBLIC(this)->transparencyFunction.getValue())) {
-    case SoSceneTexture2::NONE:
-      flags |= SoGLImage::FORCE_TRANSPARENCY_FALSE|SoGLImage::FORCE_ALPHA_TEST_FALSE;
-      break;
-    case SoSceneTexture2::ALPHA_TEST:
-      flags |= SoGLImage::FORCE_TRANSPARENCY_TRUE|SoGLImage::FORCE_ALPHA_TEST_TRUE;
-      break;
-    case SoSceneTexture2::ALPHA_BLEND:
-      flags |= SoGLImage::FORCE_TRANSPARENCY_TRUE|SoGLImage::FORCE_ALPHA_TEST_FALSE;
-      break;
-    default:
-      assert(0 && "should not get here");
-      break;
-    }
+    flags = getTransparencyFlags(flags, PUBLIC(this)->transparencyFunction.getValue());
     if (this->canrendertotexture) {
       // bind texture to pbuffer
       this->glimage->setPBuffer(state, this->glcontext,
