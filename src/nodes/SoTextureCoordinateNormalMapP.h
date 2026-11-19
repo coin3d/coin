@@ -38,9 +38,11 @@ namespace {
 // Accept a cofactor recovery only for affine matrices whose determinant
 // suffered range loss, never to overturn the finite singularity threshold.
 inline bool
-coin_texture_normal_range(const SbMatrix & matrix, bool & admissible)
+coin_texture_normal_range(const SbMatrix & matrix, bool & admissible,
+                          bool * finite_rejection = NULL)
 {
   admissible = false;
+  if (finite_rejection) *finite_rejection = false;
   if (matrix[0][3] != 0.0f || matrix[1][3] != 0.0f ||
       matrix[2][3] != 0.0f || matrix[3][3] != 1.0f) return false;
   for (int i = 0; i < 4; ++i)
@@ -60,11 +62,20 @@ coin_texture_normal_range(const SbMatrix & matrix, bool & admissible)
         !std::isfinite(term) || (term == 0.0f && a != 0.0f && b != 0.0f && c != 0.0f)) range = true;
     if (term >= 0.0f) pos += term; else neg += term;
   }
-  if (!std::isfinite(pos) || !std::isfinite(neg) || !std::isfinite(pos+neg) || !std::isfinite(pos-neg)) range = true;
-  if (!range) {
-    const float determinant = pos+neg;
+  const float determinant = pos+neg;
+  const float magnitude = pos-neg;
+  const bool finite_classifier = determinant != 0.0f &&
+    std::isfinite(pos) && std::isfinite(neg) &&
+    std::isfinite(determinant) && std::isfinite(magnitude);
+  if (!std::isfinite(pos) || !std::isfinite(neg) ||
+      !std::isfinite(determinant) || !std::isfinite(magnitude)) range = true;
+  // A lost product does not authorize replacing an otherwise finite Float
+  // singularity decision. In particular, a tiny unrelated determinant term
+  // may underflow without affecting that decision's representable inputs.
+  if (finite_classifier || !range) {
     admissible = determinant != 0.0f &&
-      !(std::fabs(determinant/(pos-neg)) < FLT_EPSILON);
+      !(std::fabs(determinant/magnitude) < FLT_EPSILON);
+    if (finite_rejection && finite_classifier) *finite_rejection = !admissible;
   }
   else {
     double widepos = 0.0, wideneg = 0.0;

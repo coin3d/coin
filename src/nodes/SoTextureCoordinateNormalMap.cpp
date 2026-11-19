@@ -163,8 +163,9 @@ SoTextureCoordinateNormalMap::generate(void * userdata,
                                   normal[1] * normal[1] +
                                   normal[2] * normal[2]);
 
-  bool admissible = false;
-  const bool range = coin_texture_normal_range(modelview, admissible);
+  bool admissible = false, finite_rejection = false;
+  const bool range = coin_texture_normal_range(modelview, admissible,
+                                                &finite_rejection);
   const SbMatrix & model = SoModelMatrixElement::get(state);
   const SbMatrix & view = SoViewingMatrixElement::get(state);
   bool compositionrange = false;
@@ -178,7 +179,10 @@ SoTextureCoordinateNormalMap::generate(void * userdata,
       }
     }
   }
-  if ((range || compositionrange) && (admissible || compositionrange) &&
+  // Composition range loss must not override a finite Float rejection
+  // of the combined model-view matrix.
+  if (!finite_rejection &&
+      (range || compositionrange) && (admissible || compositionrange) &&
       std::isfinite(n[0]) && std::isfinite(n[1]) && std::isfinite(n[2])) {
     bool modelok = false, viewok = false;
     coin_texture_normal_range(model, modelok);
