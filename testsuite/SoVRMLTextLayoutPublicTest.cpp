@@ -49,6 +49,19 @@ bool near(const float lhs, const float rhs, const float epsilon = 2.0e-3f)
   return std::fabs(lhs - rhs) <= epsilon;
 }
 
+bool contains(const SbBox3f & box, const SbVec3f & point,
+              const float epsilon = 2.0e-3f)
+{
+  if (box.isEmpty()) return false;
+  const SbVec3f & minimum = box.getMin();
+  const SbVec3f & maximum = box.getMax();
+  for (int axis = 0; axis < 3; ++axis) {
+    if (point[axis] < minimum[axis] - epsilon ||
+        point[axis] > maximum[axis] + epsilon) return false;
+  }
+  return true;
+}
+
 void triangleCB(void * data, SoCallbackAction *,
                 const SoPrimitiveVertex * a,
                 const SoPrimitiveVertex * b,
@@ -343,7 +356,7 @@ void testBoundingBoxAndCachedRayPick(void)
   CHECK(!box.isEmpty());
   for (size_t i = 0; i < result.triangles.size(); ++i) {
     for (int vertex = 0; vertex < 3; ++vertex) {
-      CHECK(box.intersect(result.triangles[i].point[vertex]));
+      CHECK(contains(box, result.triangles[i].point[vertex]));
     }
   }
 
