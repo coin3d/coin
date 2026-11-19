@@ -128,7 +128,10 @@
 
 
   For SoQuadMesh, normals and materials can be bound PER_PART (per
-  row), PER_FACE, PER_VERTEX and OVERALL. The default material binding
+  row), PER_FACE (per quadrilateral), PER_VERTEX and OVERALL. The
+  _INDEXED bindings are equivalent to their non-indexed counterparts.
+  PER_FACE attributes are consumed in row major order, starting at zero;
+  startIndex only offsets the coordinates. The default material binding
   is OVERALL. The default normal binding is PER_VERTEX.
 
 
@@ -1052,8 +1055,11 @@ SoQuadMesh::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   if (!this->shouldPrimitiveCount(action)) return;
 
-  action->addNumTriangles(2 * this->verticesPerRow.getValue() *
-                          this->verticesPerColumn.getValue());
+  const int rowsize = this->verticesPerRow.getValue();
+  const int colsize = this->verticesPerColumn.getValue();
+  if (rowsize < 2 || colsize < 2) return;
+
+  action->addNumTriangles(2 * (rowsize - 1) * (colsize - 1));
 }
 
 // Documented in superclass. Overridden to return FALSE. Normals are
@@ -1122,83 +1128,90 @@ SoQuadMesh::generatePrimitives(SoAction *action)
 
 #define IDX(r,c) ((r)*rowsize+(c))
 
-  int normnr = 0;
-  int midx = 0;
+  // A per-face attribute belongs to all four corners of a quad. Emit
+  // separate strips in that case so neighboring quads do not reuse
+  // primitive vertices carrying the previous face's normal.
+  const SbBool perface = (nbind == PER_FACE || mbind == PER_FACE);
+  const int numstrips = perface ? rowsize-1 : 1;
   for (int i = 0; i < colsize-1; i++) {
-    int j = 0;
-    this->beginShape(action, QUAD_STRIP, &faceDetail);
     if (nbind == PER_ROW) {
-      pointDetail.setNormalIndex(normnr);
-      currnormal = &normals[normnr++];
+      pointDetail.setNormalIndex(i);
+      currnormal = &normals[i];
       vertex.setNormal(*currnormal);
     }
     if (mbind == PER_ROW) {
-      pointDetail.setMaterialIndex(midx);
-      vertex.setMaterialIndex(midx++);
+      pointDetail.setMaterialIndex(i);
+      vertex.setMaterialIndex(i);
     }
-    SbBool first = TRUE;
-    faceDetail.setFaceIndex(0);
-    for (j = 0; j < rowsize; j++) {
-      curridx = IDX(i,j);
-      if (nbind == PER_VERTEX) {
-        pointDetail.setNormalIndex(curridx);
-        currnormal = &normals[curridx];
+    for (int strip = 0; strip < numstrips; strip++) {
+      this->beginShape(action, QUAD_STRIP, &faceDetail);
+      const int face = i * (rowsize-1) + strip;
+      if (nbind == PER_FACE) {
+        pointDetail.setNormalIndex(face);
+        currnormal = &normals[face];
         vertex.setNormal(*currnormal);
       }
-      else if (nbind == PER_FACE) {
-        pointDetail.setNormalIndex(normnr);
-        currnormal = &normals[normnr++];
-        vertex.setNormal(*currnormal);
+      if (mbind == PER_FACE) {
+        pointDetail.setMaterialIndex(face);
+        vertex.setMaterialIndex(face);
       }
-      if (mbind == PER_VERTEX) {
-        pointDetail.setMaterialIndex(curridx);
-        vertex.setMaterialIndex(curridx);
-      }
-      else if (mbind == PER_FACE) {
-        pointDetail.setMaterialIndex(midx);
-        vertex.setMaterialIndex(midx++);
-      }
-      if (doTextures) {
-        if (tb.isFunction()) {
-          vertex.setTextureCoords(tb.get(coords->get3(start+curridx), *currnormal));
-          if (tb.needIndices()) pointDetail.setTextureCoordIndex(curridx);
+      SbBool first = TRUE;
+      faceDetail.setFaceIndex(perface ? strip : 0);
+      const int firstcolumn = perface ? strip : 0;
+      const int endcolumn = perface ? strip+2 : rowsize;
+      for (int j = firstcolumn; j < endcolumn; j++) {
+        curridx = IDX(i,j);
+        if (nbind == PER_VERTEX) {
+          pointDetail.setNormalIndex(curridx);
+          currnormal = &normals[curridx];
+          vertex.setNormal(*currnormal);
         }
-        else {
-          pointDetail.setTextureCoordIndex(curridx);
-          vertex.setTextureCoords(tb.get(curridx));
+        if (mbind == PER_VERTEX) {
+          pointDetail.setMaterialIndex(curridx);
+          vertex.setMaterialIndex(curridx);
         }
-      }
-      pointDetail.setCoordinateIndex(start + curridx);
-      vertex.setPoint(coords->get3(start + curridx));
-      this->shapeVertex(&vertex);
+        if (doTextures) {
+          if (tb.isFunction()) {
+            vertex.setTextureCoords(tb.get(coords->get3(start+curridx), *currnormal));
+            if (tb.needIndices()) pointDetail.setTextureCoordIndex(curridx);
+          }
+          else {
+            pointDetail.setTextureCoordIndex(curridx);
+            vertex.setTextureCoords(tb.get(curridx));
+          }
+        }
+        pointDetail.setCoordinateIndex(start + curridx);
+        vertex.setPoint(coords->get3(start + curridx));
+        this->shapeVertex(&vertex);
 
-      curridx = IDX(i+1,j);
-      if (nbind == PER_VERTEX) {
-        pointDetail.setNormalIndex(curridx);
-        currnormal = &normals[curridx];
-        vertex.setNormal(*currnormal);
-      }
-      if (mbind == PER_VERTEX) {
-        pointDetail.setMaterialIndex(curridx);
-        vertex.setMaterialIndex(curridx);
-      }
-      if (doTextures) {
-        if (tb.isFunction()) {
-          vertex.setTextureCoords(tb.get(coords->get3(start+curridx), *currnormal));
-          if (tb.needIndices()) pointDetail.setTextureCoordIndex(curridx);
+        curridx = IDX(i+1,j);
+        if (nbind == PER_VERTEX) {
+          pointDetail.setNormalIndex(curridx);
+          currnormal = &normals[curridx];
+          vertex.setNormal(*currnormal);
         }
-        else {
-          pointDetail.setTextureCoordIndex(curridx);
-          vertex.setTextureCoords(tb.get(curridx));
+        if (mbind == PER_VERTEX) {
+          pointDetail.setMaterialIndex(curridx);
+          vertex.setMaterialIndex(curridx);
         }
+        if (doTextures) {
+          if (tb.isFunction()) {
+            vertex.setTextureCoords(tb.get(coords->get3(start+curridx), *currnormal));
+            if (tb.needIndices()) pointDetail.setTextureCoordIndex(curridx);
+          }
+          else {
+            pointDetail.setTextureCoordIndex(curridx);
+            vertex.setTextureCoords(tb.get(curridx));
+          }
+        }
+        pointDetail.setCoordinateIndex(start + curridx);
+        vertex.setPoint(coords->get3(start + curridx));
+        this->shapeVertex(&vertex);
+        if (first) first = FALSE;
+        else faceDetail.incFaceIndex();
       }
-      pointDetail.setCoordinateIndex(start + curridx);
-      vertex.setPoint(coords->get3(start + curridx));
-      this->shapeVertex(&vertex);
-      if (first) first = FALSE;
-      else faceDetail.incFaceIndex();
+      this->endShape();
     }
-    this->endShape();
     faceDetail.incPartIndex();
   }
 #undef IDX
