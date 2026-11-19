@@ -204,10 +204,12 @@ SbUniqueId is not really a class, just a \c typedef.
 
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
+#include <Inventor/SoDB.h>
 #include <Inventor/actions/SoActions.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoChildList.h>
+#include <Inventor/misc/SoNotification.h>
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/misc/SoProtoInstance.h>
 #include <Inventor/nodes/SoNodes.h>
@@ -797,10 +799,28 @@ SoNode::setNodeType(const NodeType type)
 {
   // make sure we have enough bits to store this type
   assert((uint32_t) type <= FLAG_TYPEMASK);
-  // clear old type
+  if (this->getNodeType() == type) return;
+  // Preserve the other state flags and propagate the change, including the
+  // local node ID when propagation is disabled.
   this->clearStateFlags(FLAG_TYPEMASK);
-  // set new type
   this->setStateFlags((uint32_t) type);
+
+  // NodeType is base-class state and can be initialized from derived
+  // constructors. Propagate the change through SoNode directly instead of
+  // dispatching virtual notify() into a not-yet-constructed subclass.
+  SoNotList list;
+  SoNotRec rec(this->SoBase::createNotRec());
+  list.append(&rec);
+  list.setLastType(SoNotRec::CONTAINER);
+  SoDB::startNotify();
+  try {
+    this->SoNode::notify(&list);
+  }
+  catch (...) {
+    SoDB::endNotify();
+    throw;
+  }
+  SoDB::endNotify();
 }
 
 /*!
