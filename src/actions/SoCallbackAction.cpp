@@ -222,6 +222,8 @@
 #include "SbBasicP.h"
 
 #include <vector>
+#include <memory>
+#include <utility>
 
 #ifndef DOXYGEN_SKIP_THIS
 
@@ -339,10 +341,46 @@ public:
   }
 
   void add(const SoType type, void * func, void * data) {
-    Registration registration = { type, func, data };
-    this->registrations.push_back(registration);
+    // Bring all existing caches up to date before staging the new
+    // registration. A failure here only completes previously published
+    // registrations and leaves this operation uncommitted.
     for (size_t i = 0; i < this->materialized.size(); ++i) {
       this->refresh(this->cache[this->materialized[i]]);
+    }
+
+    Registration registration = { type, func, data };
+    this->registrations.reserve(this->registrations.size() + 1);
+
+    struct Pending {
+      Cache * entry;
+      std::unique_ptr<SoCallbackData> data;
+    };
+    std::vector<Pending> pending;
+    pending.reserve(this->materialized.size());
+
+    for (size_t i = 0; i < this->materialized.size(); ++i) {
+      Cache & entry = this->cache[this->materialized[i]];
+      if (!entry.type.isInternal() && entry.type.isDerivedFrom(type)) {
+        Pending item = { &entry,
+          std::unique_ptr<SoCallbackData>(new SoCallbackData(func, data)) };
+        pending.push_back(std::move(item));
+      }
+    }
+
+    // No operation below this point allocates. Publish the canonical
+    // registration and all of its per-type cache nodes atomically.
+    this->registrations.push_back(registration);
+    size_t nextpending = 0;
+    for (size_t i = 0; i < this->materialized.size(); ++i) {
+      Cache & entry = this->cache[this->materialized[i]];
+      if (nextpending < pending.size() && pending[nextpending].entry == &entry) {
+        SoCallbackData * callback = pending[nextpending].data.release();
+        if (entry.tail) entry.tail->next = callback;
+        else entry.head = callback;
+        entry.tail = callback;
+        ++nextpending;
+      }
+      ++entry.next;
     }
   }
 
