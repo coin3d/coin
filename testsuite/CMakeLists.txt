@@ -452,3 +452,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
       PROPERTIES TIMEOUT 10)
   endforeach()
 endif()
+
+include(SoDepthBufferTests.cmake)
+
+include(SoAnnotationDepthTests.cmake)

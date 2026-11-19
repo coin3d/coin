@@ -28,8 +28,23 @@ jobs:
         run: |
           sudo apt-get -y update
           sudo apt-get -y install freeglut3-dev
+          if [ "$LEGACY_RENDERER" = ON ]; then
+            sudo apt-get -y install xvfb xauth libgl1-mesa-dri
+          fi
+        env:
+          LEGACY_RENDERER: ${{ matrix.legacy_renderer.value }}
       - name: Build and test
-        run: .github/scripts/build-and-test.sh "${{ matrix.legacy_renderer.value }}"
+        env:
+          LEGACY_RENDERER: ${{ matrix.legacy_renderer.value }}
+        run: |
+          if [ "$LEGACY_RENDERER" = ON ]; then
+            # Keep Xvfb on the GLX pixmap path and avoid MIT-SHM image uploads.
+            LIBGL_ALWAYS_SOFTWARE=1 COIN_GLXGLUE_NO_PBUFFERS=1 COIN_GLX_PIXMAP_DIRECT_RENDERING=1 \
+              xvfb-run -a --server-args="-screen 0 1280x1024x24 -nolisten tcp -noreset -extension MIT-SHM" \
+                .github/scripts/build-and-test.sh "$LEGACY_RENDERER"
+          else
+            .github/scripts/build-and-test.sh "$LEGACY_RENDERER"
+          fi
       - name: Create Artifacts
         uses: actions/upload-artifact@v7
         with:

@@ -55,18 +55,64 @@
     \endcode
 */
 
-// FIXME: consider adding a lazy GL depth buffer element. 200YMMDD pederb.
-
 #include <Inventor/nodes/SoAnnotation.h>
 
 #include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoDepthBufferElement.h>
+#include <Inventor/elements/SoGLDepthBufferElement.h>
+#include <Inventor/misc/SoState.h>
 #include <Inventor/system/gl.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif // HAVE_CONFIG_H
 #include "nodes/SoSubNodeP.h"
+
+
+namespace {
+
+// Keep the annotation default in the element, so child depth settings and
+// cached rendering use the same state as OpenGL.
+class SoAnnotationDepthScope {
+public:
+  SoAnnotationDepthScope(SoState * state)
+    : state(state), depth(state->getDepth()),
+      depthtest(glIsEnabled(GL_DEPTH_TEST) ? TRUE : FALSE)
+  {
+    this->state->push();
+  }
+
+  ~SoAnnotationDepthScope()
+  {
+    // A throwing child can bypass the inherited separator's pop as well.
+    // Restore this local state scope; recovering the action's paths and
+    // render caches after an exception is a separate responsibility.
+    while (this->state->getDepth() > this->depth) this->state->pop();
+    this->depthtest ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
+  }
+
+  void disableTest(void)
+  {
+    SoDepthBufferElement::set(this->state, FALSE,
+                             SoDepthBufferElement::getWriteEnable(this->state),
+                             SoDepthBufferElement::getFunction(this->state),
+                             SoDepthBufferElement::getRange(this->state));
+    // The incoming native test may differ from the element, e.g. when
+    // an application has changed OpenGL state directly.
+    glDisable(GL_DEPTH_TEST);
+  }
+
+private:
+  SoAnnotationDepthScope(const SoAnnotationDepthScope &);
+  SoAnnotationDepthScope & operator=(const SoAnnotationDepthScope &);
+
+  SoState * state;
+  int depth;
+  SbBool depthtest;
+};
+
+} // namespace
 
 
 SO_NODE_SOURCE(SoAnnotation);
@@ -95,6 +141,8 @@ void
 SoAnnotation::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoAnnotation, SO_FROM_INVENTOR_1);
+
+  SO_ENABLE(SoGLRenderAction, SoGLDepthBufferElement);
 }
 
 // Doc in superclass.
@@ -120,10 +168,9 @@ void
 SoAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
 {
   if (action->isRenderingDelayedPaths()) {
-    SbBool zbenabled = glIsEnabled(GL_DEPTH_TEST);
-    if (zbenabled) glDisable(GL_DEPTH_TEST);
+    SoAnnotationDepthScope scope(action->getState());
+    scope.disableTest();
     inherited::GLRenderBelowPath(action);
-    if (zbenabled) glEnable(GL_DEPTH_TEST);
   }
   else {
     SoCacheElement::invalidate(action->getState());
@@ -136,10 +183,9 @@ void
 SoAnnotation::GLRenderInPath(SoGLRenderAction * action)
 {
   if (action->isRenderingDelayedPaths()) {
-    SbBool zbenabled = glIsEnabled(GL_DEPTH_TEST);
-    if (zbenabled) glDisable(GL_DEPTH_TEST);
+    SoAnnotationDepthScope scope(action->getState());
+    scope.disableTest();
     inherited::GLRenderInPath(action);
-    if (zbenabled) glEnable(GL_DEPTH_TEST);
   }
   else {
     SoCacheElement::invalidate(action->getState());

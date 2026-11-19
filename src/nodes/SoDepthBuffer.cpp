@@ -210,7 +210,7 @@ SoDepthBuffer::GLRender(SoGLRenderAction * action)
     function = SoDepthBufferElement::getFunction(state);
   }
   if (this->range.isIgnored()) {
-    range = SoDepthBufferElement::getRange(state);
+    depthrange = SoDepthBufferElement::getRange(state);
   }
 
   // update element
