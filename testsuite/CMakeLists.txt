@@ -452,3 +452,147 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
       PROPERTIES TIMEOUT 10)
   endforeach()
 endif()
+
+# These legacy GL traversal tests use Coin's compatibility context directly
+# and do not depend on the optional CoinRender library.
+if(COIN_BUILD_LEGACY_GL_RENDERER AND UNIX AND NOT APPLE AND HAVE_GLX)
+  find_package(X11 QUIET)
+  if(X11_FOUND)
+    add_executable(CoinTextureCoordinateTransitionTest TextureCoordinateTransitionTest.cpp)
+    target_include_directories(CoinTextureCoordinateTransitionTest PRIVATE
+      ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+      ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+    target_link_libraries(CoinTextureCoordinateTransitionTest
+      Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+    foreach(texture_case cpu default cube cylinder sphere limit)
+      add_test(NAME TextureCoordinateTransition_${texture_case}
+        COMMAND CoinTextureCoordinateTransitionTest ${texture_case})
+      set_tests_properties(TextureCoordinateTransition_${texture_case}
+        PROPERTIES SKIP_RETURN_CODE 77 LABELS texture-coordinates)
+    endforeach()
+  endif()
+endif()
+
+if(COIN_BUILD_LEGACY_GL_RENDERER AND UNIX AND NOT APPLE AND HAVE_GLX)
+  find_package(X11 QUIET)
+  if(X11_FOUND)
+    add_executable(CoinTextureCoordinate3VBOTest TextureCoordinate3VBOTest.cpp)
+    target_compile_definitions(CoinTextureCoordinate3VBOTest PRIVATE COIN_INTERNAL)
+    target_include_directories(CoinTextureCoordinate3VBOTest PRIVATE
+      ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+      ${PROJECT_SOURCE_DIR}/src ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+    target_link_libraries(CoinTextureCoordinate3VBOTest
+      Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+    foreach(vbo_case lifecycle separator disabled invalid-negative invalid-limit invalid-above)
+      add_test(NAME TextureCoordinate3VBO_${vbo_case}
+        COMMAND CoinTextureCoordinate3VBOTest ${vbo_case})
+      set_tests_properties(TextureCoordinate3VBO_${vbo_case} PROPERTIES
+        SKIP_RETURN_CODE 77 LABELS texture-coordinates TIMEOUT 30
+        ENVIRONMENT "COIN_VBO=1;COIN_VERTEX_ARRAYS=1")
+    endforeach()
+    set_tests_properties(TextureCoordinate3VBO_disabled PROPERTIES
+      ENVIRONMENT "COIN_VBO=0;COIN_VERTEX_ARRAYS=1")
+  endif()
+endif()
+
+# Exercise SoTextureCoordinate2 directly on the legacy renderer, including
+# isolated invalid-unit cases which may abort an unfixed implementation.
+if(COIN_BUILD_LEGACY_GL_RENDERER AND UNIX AND NOT APPLE AND HAVE_GLX)
+  find_package(X11 QUIET)
+  if(X11_FOUND)
+    add_executable(CoinTextureCoordinate2VBOTest TextureCoordinate2VBOTest.cpp)
+    target_compile_definitions(CoinTextureCoordinate2VBOTest PRIVATE COIN_INTERNAL)
+    target_include_directories(CoinTextureCoordinate2VBOTest PRIVATE
+      ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+      ${PROJECT_SOURCE_DIR}/src ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+    target_link_libraries(CoinTextureCoordinate2VBOTest
+      Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+    foreach(vbo_case lifecycle empty separator disabled invalid-negative invalid-min invalid-limit invalid-above)
+      add_test(NAME TextureCoordinate2VBO_${vbo_case}
+        COMMAND CoinTextureCoordinate2VBOTest ${vbo_case})
+      set_tests_properties(TextureCoordinate2VBO_${vbo_case} PROPERTIES
+        SKIP_RETURN_CODE 77 LABELS texture-coordinates TIMEOUT 30
+        ENVIRONMENT "COIN_VBO=1;COIN_VERTEX_ARRAYS=1")
+    endforeach()
+    set_tests_properties(TextureCoordinate2VBO_disabled PROPERTIES
+      ENVIRONMENT "COIN_VBO=0;COIN_VERTEX_ARRAYS=1")
+  endif()
+endif()
+
+# One process per generator and invalid boundary: unfixed negative indices can
+# abort before another generator's assertions are reached.
+if(COIN_BUILD_LEGACY_GL_RENDERER AND UNIX AND NOT APPLE AND HAVE_GLX)
+  find_package(X11 QUIET)
+  if(X11_FOUND)
+    add_executable(CoinTextureCoordinateGeneratorGuardsTest TextureCoordinateGeneratorGuardsTest.cpp)
+    target_compile_definitions(CoinTextureCoordinateGeneratorGuardsTest PRIVATE COIN_INTERNAL)
+    target_include_directories(CoinTextureCoordinateGeneratorGuardsTest PRIVATE
+      ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+      ${PROJECT_SOURCE_DIR}/src ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+    target_link_libraries(CoinTextureCoordinateGeneratorGuardsTest
+      Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+    foreach(generator default cube cylinder sphere environment object plane normalmap reflectionmap)
+      foreach(boundary valid negative min limit above)
+        add_test(NAME TextureCoordinateGeneratorGuards_${generator}_${boundary}
+          COMMAND CoinTextureCoordinateGeneratorGuardsTest ${generator} ${boundary})
+        set_tests_properties(TextureCoordinateGeneratorGuards_${generator}_${boundary} PROPERTIES
+          SKIP_RETURN_CODE 77 LABELS texture-coordinates TIMEOUT 30)
+      endforeach()
+    endforeach()
+  endif()
+endif()
+
+# NormalMap's CPU callback is also used by picking and by legacy GL texgen.
+# Keep callback/pick runnable without an X display or the optional CoinRender.
+add_executable(CoinTextureCoordinateNormalMapTest TextureCoordinateNormalMapTest.cpp)
+target_include_directories(CoinTextureCoordinateNormalMapTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+target_link_libraries(CoinTextureCoordinateNormalMapTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+foreach(normalmap_action callback pick)
+  add_test(NAME TextureCoordinateNormalMap_${normalmap_action}
+    COMMAND CoinTextureCoordinateNormalMapTest ${normalmap_action})
+  set_tests_properties(TextureCoordinateNormalMap_${normalmap_action}
+    PROPERTIES LABELS texture-coordinates TIMEOUT 30)
+endforeach()
+if(COIN_BUILD_LEGACY_GL_RENDERER AND UNIX AND NOT APPLE AND HAVE_GLX)
+  find_package(X11 QUIET)
+  if(X11_FOUND)
+    target_compile_definitions(CoinTextureCoordinateNormalMapTest PRIVATE COIN_NORMALMAP_GLX)
+    target_include_directories(CoinTextureCoordinateNormalMapTest PRIVATE ${X11_INCLUDE_DIR})
+    target_link_libraries(CoinTextureCoordinateNormalMapTest ${X11_LIBRARIES})
+    add_test(NAME TextureCoordinateNormalMap_gl
+      COMMAND CoinTextureCoordinateNormalMapTest gl)
+    set_tests_properties(TextureCoordinateNormalMap_gl PROPERTIES
+      SKIP_RETURN_CODE 77 LABELS texture-coordinates TIMEOUT 30)
+  endif()
+endif()
+
+# Environment/ReflectionMap callbacks must agree with eye-space GL texgen.
+# Callback and picking run without a display or CoinRender.
+add_executable(CoinTextureCoordinateEnvironmentReflectionTest
+  TextureCoordinateEnvironmentReflectionTest.cpp)
+target_include_directories(CoinTextureCoordinateEnvironmentReflectionTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+target_link_libraries(CoinTextureCoordinateEnvironmentReflectionTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+foreach(envref_action callback pick)
+  add_test(NAME TextureCoordinateEnvironmentReflection_${envref_action}
+    COMMAND CoinTextureCoordinateEnvironmentReflectionTest ${envref_action})
+  set_tests_properties(TextureCoordinateEnvironmentReflection_${envref_action}
+    PROPERTIES LABELS texture-coordinates TIMEOUT 30)
+endforeach()
+if(COIN_BUILD_LEGACY_GL_RENDERER AND UNIX AND NOT APPLE AND HAVE_GLX)
+  find_package(X11 QUIET)
+  if(X11_FOUND)
+    target_compile_definitions(CoinTextureCoordinateEnvironmentReflectionTest PRIVATE COIN_ENVREF_GLX)
+    target_include_directories(CoinTextureCoordinateEnvironmentReflectionTest PRIVATE ${X11_INCLUDE_DIR})
+    target_link_libraries(CoinTextureCoordinateEnvironmentReflectionTest ${X11_LIBRARIES})
+    add_test(NAME TextureCoordinateEnvironmentReflection_gl
+      COMMAND CoinTextureCoordinateEnvironmentReflectionTest gl)
+    set_tests_properties(TextureCoordinateEnvironmentReflection_gl PROPERTIES
+      SKIP_RETURN_CODE 77 LABELS texture-coordinates TIMEOUT 30)
+  endif()
+endif()
