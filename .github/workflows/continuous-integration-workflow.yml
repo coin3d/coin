@@ -38,8 +38,10 @@ jobs:
           LEGACY_RENDERER: ${{ matrix.legacy_renderer.value }}
         run: |
           if [ "$LEGACY_RENDERER" = ON ]; then
-            LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a --server-args="-screen 0 1280x1024x24 -nolisten tcp -noreset" \
-              .github/scripts/build-and-test.sh "$LEGACY_RENDERER"
+            # Keep Xvfb on the GLX pixmap path and avoid MIT-SHM image uploads.
+            LIBGL_ALWAYS_SOFTWARE=1 COIN_GLXGLUE_NO_PBUFFERS=1 COIN_GLX_PIXMAP_DIRECT_RENDERING=1 \
+              xvfb-run -a --server-args="-screen 0 1280x1024x24 -nolisten tcp -noreset -extension MIT-SHM" \
+                .github/scripts/build-and-test.sh "$LEGACY_RENDERER"
           else
             .github/scripts/build-and-test.sh "$LEGACY_RENDERER"
           fi
