@@ -52,6 +52,7 @@
 // *************************************************************************
 
 #include <Inventor/nodes/SoTextureCoordinateObject.h>
+#include "nodes/SoTextureCoordinateMathP.h"
 #include "coindefs.h"
 
 #ifdef HAVE_CONFIG_H
@@ -132,10 +133,10 @@ SoTextureCoordinateObject::generate(void * userdata,
     (SoTextureCoordinateObject*) userdata;
   
   SbVec4f p4(p[0], p[1], p[2], 1.0f);
-  thisp->dummy_object.setValue(thisp->factorS.getValue().dot(p4),
-                               thisp->factorT.getValue().dot(p4),
-                               thisp->factorR.getValue().dot(p4),
-                               thisp->factorQ.getValue().dot(p4));
+  thisp->dummy_object.setValue(coin_texture_dot(thisp->factorS.getValue().dot(p4), thisp->factorS.getValue().getValue(), p4.getValue(), 4),
+                               coin_texture_dot(thisp->factorT.getValue().dot(p4), thisp->factorT.getValue().getValue(), p4.getValue(), 4),
+                               coin_texture_dot(thisp->factorR.getValue().dot(p4), thisp->factorR.getValue().getValue(), p4.getValue(), 4),
+                               coin_texture_dot(thisp->factorQ.getValue().dot(p4), thisp->factorQ.getValue().getValue(), p4.getValue(), 4));
   return thisp->dummy_object;
 }
 
@@ -159,7 +160,7 @@ SoTextureCoordinateObject::GLRender(SoGLRenderAction * action)
 
   const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
   int maxunits = cc_glglue_max_texture_units(glue);
-  if (unit < maxunits) {        
+  if (unit >= 0 && unit < maxunits) {
     SoGLMultiTextureCoordinateElement::setTexGen(action->getState(),
                                                  this, unit,
                                                  SoTextureCoordinateObject::handleTexgen,
