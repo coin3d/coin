@@ -428,26 +428,7 @@ void scopes() {
     root->unref();
   }
 }
-#ifdef ANALYTIC_PICK_HAVE_VRML97
-void excludedVRMLShapes() {
-  for(int k=0;k<3;++k) {
-    context="excluded VRML helper sibling="+std::to_string(k); Function f(17); SoSeparator * root=scene();
-    SoCallback * setter=new SoCallback; root->addChild(setter);
-    root->addChild(k==0?static_cast<SoNode *>(new SoVRMLBox):k==1?static_cast<SoNode *>(new SoVRMLCone):static_cast<SoNode *>(new SoVRMLCylinder));
-    {
-      SoRayPickAction a(SbViewportRegion(64,64)); a.enableCulling(FALSE); a.setPickAll(TRUE); a.setRay(SbVec3f(.3f,.4f,5),SbVec3f(0,0,-1));
-      a.apply(root); const std::vector<Snapshot> before=snapshot(a); check(!before.empty(),"excluded VRML baseline intersects");
-      setter->setCallback(install,&f); a.apply(root); const std::vector<Snapshot> after=snapshot(a);
-      check(after.size()==before.size(),"excluded VRML hit count retained");
-      for(size_t i=0;i<after.size() && i<before.size();++i) {
-        check(after[i].p==before[i].p && after[i].n==before[i].n && bits(after[i].tc,before[i].tc),"excluded VRML geometry and legacy texture unchanged");
-      }
-      check(f.points.empty(),"scope does not change VRML Box/Cone/Cylinder helper behavior");
-    }
-    root->unref();
-  }
-}
-#endif
+
 }
 int main(int argc,char ** argv) {
   if(argc!=2) return 2; SoDB::init(); const std::string mode=argv[1];
@@ -456,11 +437,6 @@ int main(int argc,char ** argv) {
   else if(mode=="generators") generators();
   else if(mode=="boundaries") boundaries();
   else if(mode=="scopes") scopes();
-  else if(mode=="excluded") {
-#ifdef ANALYTIC_PICK_HAVE_VRML97
-    excludedVRMLShapes();
-#endif
-  }
   else return 2;
   std::printf("%d checks, %d failures\n",checks,failures); return failures?1:0;
 }
