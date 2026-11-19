@@ -293,17 +293,18 @@ SoTextureCoordinateCube::doAction(SoAction * action)
 void
 SoTextureCoordinateCube::GLRender(SoGLRenderAction * action)
 {
-  so_texcoordcube_data * data = PRIVATE(this)->so_texcoord_get_data();
-
-  data->currentstate = action->getState();
-  data->currentshape = NULL;
-
-  int unit = SoTextureUnitElement::get(data->currentstate);
-  const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(action->getState()));
+  SoState * state = action->getState();
+  int unit = SoTextureUnitElement::get(state);
+  const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
   int maxunits = cc_glglue_max_texture_units(glue);
-  if (unit < maxunits) {        
-    SoMultiTextureCoordinateElement::setFunction(data->currentstate, this,
-                                                 unit, textureCoordinateCubeCallback,
+  if (unit >= 0 && unit < maxunits) {
+    so_texcoordcube_data * data = PRIVATE(this)->so_texcoord_get_data();
+    data->currentstate = state;
+    data->currentshape = NULL;
+
+    SoGLMultiTextureCoordinateElement::setTexGen(state, this,
+                                                 unit, NULL, NULL,
+                                                 textureCoordinateCubeCallback,
                                                  PRIVATE(this));
   }
 }
