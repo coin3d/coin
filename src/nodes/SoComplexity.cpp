@@ -252,9 +252,15 @@ void
 SoComplexity::callback(SoCallbackAction * action)
 {
   SoComplexity::doAction((SoAction *)action);
-  if (!this->textureQuality.isIgnored()) {
-    SoTextureQualityElement::set(action->getState(), this,
+
+  SoState * state = action->getState();
+  if (!this->textureQuality.isIgnored() &&
+      !SoTextureOverrideElement::getQualityOverride(state)) {
+    SoTextureQualityElement::set(state, this,
                                  this->textureQuality.getValue());
+    if (this->isOverride()) {
+      SoTextureOverrideElement::setQualityOverride(state, TRUE);
+    }
   }
 }
 

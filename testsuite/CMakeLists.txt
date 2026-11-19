@@ -116,6 +116,7 @@ add_executable(CoinTests
 	TestSuiteUtils.cpp
 	TestSuiteMisc.cpp
 	InternalMacroTest.cpp
+	SoComplexityCallbackTest.cpp
 	InternalSmallMapTest.cpp
 	${COIN_TEST_SOURCES}
 )
