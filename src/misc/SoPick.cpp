@@ -30,6 +30,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #include "misc/SoPick.h"
 
 #include <cmath>
@@ -48,14 +52,30 @@
 #include <Inventor/SbCylinder.h>
 #include <Inventor/SbSphere.h>
 
-// The helpers are also used by VRML shapes whose picking behavior must stay
-// unchanged. Restrict function evaluation to the requested Inventor type and
+#ifdef HAVE_VRML97
+#include <Inventor/VRMLnodes/SoVRMLBox.h>
+#include <Inventor/VRMLnodes/SoVRMLCone.h>
+#include <Inventor/VRMLnodes/SoVRMLCylinder.h>
+#endif // HAVE_VRML97
+
+// Restrict function evaluation to the matching Inventor or VRML shape and
 // its subclasses. Picked points always represent texture unit 0.
 static const SoMultiTextureCoordinateElement *
 pick_texture_function(SoShape * shape, const SoType type,
                       SoRayPickAction * action)
 {
-  if (!shape || !shape->isOfType(type)) return NULL;
+  if (!shape) return NULL;
+  bool supported = shape->isOfType(type);
+#ifdef HAVE_VRML97
+  supported = supported ||
+    (type == SoCube::getClassTypeId() &&
+     shape->isOfType(SoVRMLBox::getClassTypeId())) ||
+    (type == SoCone::getClassTypeId() &&
+     shape->isOfType(SoVRMLCone::getClassTypeId())) ||
+    (type == SoCylinder::getClassTypeId() &&
+     shape->isOfType(SoVRMLCylinder::getClassTypeId()));
+#endif // HAVE_VRML97
+  if (!supported) return NULL;
   const SoMultiTextureCoordinateElement * texcoords =
     SoMultiTextureCoordinateElement::getInstance(action->getState());
   return texcoords->getType(0) == SoMultiTextureCoordinateElement::FUNCTION ?
