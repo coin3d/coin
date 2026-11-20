@@ -114,14 +114,52 @@ SoEngineOutputData::SoEngineOutputData()
 /*!
   Copy constructor.
 */
-SoEngineOutputData::SoEngineOutputData(const SoEngineOutputData *data)
+SoEngineOutputData::SoEngineOutputData(const SoEngineOutputData & data)
 {
-  if (data) {
-    int n = data->outputlist.getLength();
-    for (int i = 0; i < n; i++) {
-      this->outputlist.append(new SoOutputDataEntry(data->outputlist[i]));
-    }
+  this->copy(&data);
+}
+
+/*!
+  Copy constructor. A NULL pointer produces an empty output set.
+*/
+SoEngineOutputData::SoEngineOutputData(const SoEngineOutputData * data)
+{
+  this->copy(data);
+}
+
+/*!
+  Replaces this output set with an independent copy of \a data.
+*/
+SoEngineOutputData &
+SoEngineOutputData::operator=(const SoEngineOutputData & data)
+{
+  this->copy(&data);
+  return *this;
+}
+
+void
+SoEngineOutputData::copy(const SoEngineOutputData * data)
+{
+  if (data == this) return;
+
+  // The temporary owns every completed clone if an allocation fails.
+  SoEngineOutputData replacement;
+  const int n = data ? data->outputlist.getLength() : 0;
+  replacement.outputlist.ensureCapacity(n);
+  for (int i = 0; i < n; i++) {
+    replacement.outputlist.append(new SoOutputDataEntry(data->outputlist[i]));
   }
+
+  // Reserve before deleting the old entries, so failure preserves their value.
+  this->outputlist.ensureCapacity(n);
+  for (int i = 0; i < this->outputlist.getLength(); i++) {
+    delete this->outputlist[i];
+  }
+  this->outputlist.truncate(0);
+  for (int i = 0; i < n; i++) {
+    this->outputlist.append(replacement.outputlist[i]);
+  }
+  replacement.outputlist.truncate(0);
 }
 
 /*!

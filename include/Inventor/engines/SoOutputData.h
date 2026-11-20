@@ -49,9 +49,11 @@ class SoType;
 class COIN_DLL_API SoEngineOutputData {
 public:
   SoEngineOutputData(void);
+  SoEngineOutputData(const SoEngineOutputData & data);
   SoEngineOutputData(const SoEngineOutputData * data);
   SoEngineOutputData(int approxnum);
   ~SoEngineOutputData(void);
+  SoEngineOutputData & operator=(const SoEngineOutputData & data);
 
   void addOutput(const SoEngine * base, const char *name,
                  const SoEngineOutput * output, SoType type);
@@ -69,6 +71,7 @@ public:
   void writeDescriptions(SoOutput * out, SoEngine * engine) const;
 
 private:
+  void copy(const SoEngineOutputData * data);
   SbBool hasOutput(const char * name) const;
   void addOutputInternal(const SoFieldContainer * base, const char *name,
                          const SoEngineOutput * output, SoType type);

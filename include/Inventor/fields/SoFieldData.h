@@ -52,6 +52,7 @@ public:
   SoFieldData(const SoFieldData * fd);
   SoFieldData(int numfields);
   ~SoFieldData();
+  SoFieldData & operator=(const SoFieldData & fd);
 
   void addField(SoFieldContainer * base, const char * name,
                 const SoField * field);
