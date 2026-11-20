@@ -36,6 +36,15 @@
 
   \ingroup coin_nodes
 
+  \par Texture coordinates
+  Default coordinates for a single 2D texture on texture unit 0 can be
+  supplied as a cached vertex array when the shape's other bindings,
+  indices and caches allow array rendering. The array is reused while the
+  geometry, coordinate source and default mapping remain unchanged.
+  Texture-coordinate functions that require
+  per-vertex evaluation use a rendering path that supplies those values.
+  Explicit arrays and OpenGL texgen are also supported.
+
   The indexed counterpart of SoLineSet. Lines can be specified using
   indices for coordinates, normals, materials and texture coordinates.
 
@@ -100,6 +109,7 @@
 #include "rendering/SoGL.h"
 #include "rendering/SoVertexArrayIndexer.h"
 #include "rendering/SoVBO.h"
+#include "shapenodes/SoVertexArrayTexCoordGuard.h"
 
 
 SO_NODE_SOURCE(SoIndexedLineSet);
@@ -265,7 +275,10 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
 
   SoMaterialBundle mb(action);
 
+  const SbBool defaultmapping =
+    SoVertexArrayTexCoordGuard::isDefaultMapping(state);
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+  SbBool defaulttexcoords = defaultmapping && !tb.needIndices();
   doTextures = tb.needCoordinates();
   SbBool sendNormals = !mb.isColorOnly() || tb.isFunction();
 
@@ -315,6 +328,10 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   SbBool drawPoints =
     SoDrawStyleElement::get(state) == SoDrawStyleElement::POINTS;
 
+  if (defaulttexcoords &&
+      !SoVertexArrayTexCoordGuard::isAffordable(coords->getNum(), numindices)) {
+    defaulttexcoords = FALSE;
+  }
   const uint32_t contextid = action->getCacheContext();
   SoGLLazyElement * lelem = NULL;
 
@@ -322,7 +339,8 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
     !drawPoints &&
     SoVBO::shouldRenderAsVertexArrays(state, contextid, numindices) &&
     ((nbind == OVERALL) || ((nbind == PER_VERTEX_INDEXED) && ((nindices == cindices) || (nindices == NULL)))) &&
-    (!doTextures || (tindices == cindices)) &&
+    (!doTextures || (tindices == cindices) || defaulttexcoords) &&
+    (!doTextures || SoVertexArrayTexCoordGuard::canUseArrays(state, defaulttexcoords)) &&
     ((mbind == OVERALL) || ((mbind == PER_VERTEX_INDEXED) && ((mindices == cindices) || (mindices == NULL)))) &&
     SoGLDriverDatabase::isSupported(sogl_glue_instance(state), SO_GL_VERTEX_ARRAY);
 
@@ -346,6 +364,8 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
     }
   }
   if (dova) {
+    SoCachedVertexArrayTexCoordGuard texcoordguard(state, this, coords, tb,
+                                           defaulttexcoords && doTextures);
     SbBool dovbo = this->startVertexArray(action,
                                           coords,
                                           nbind != OVERALL ? normals : NULL,

@@ -36,6 +36,15 @@
 
   \ingroup coin_nodes
 
+  \par Texture coordinates
+  Default coordinates for a single 2D texture on texture unit 0 can be
+  supplied as a cached vertex array when the shape's other bindings,
+  indices and caches allow array rendering. The array is reused while the
+  geometry, coordinate source and default mapping remain unchanged.
+  Texture-coordinate functions that require
+  per-vertex evaluation use a rendering path that supplies those values.
+  Explicit arrays and OpenGL texgen are also supported.
+
   Facesets are specified using the numVertices field. Coordinates,
   normals, materials and texture coordinates are fetched in order from
   the current state or from the vertexProperty node if set. For
@@ -103,6 +112,7 @@
 
 #include "nodes/SoSubNodeP.h"
 #include "rendering/SoVBO.h"
+#include "shapenodes/SoVertexArrayTexCoordGuard.h"
 #include "rendering/SoGL.h"
 
 // *************************************************************************
@@ -526,7 +536,10 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
     SbBool doTextures;
 
     SoMaterialBundle mb(action);
+    const SbBool defaultmapping =
+      SoVertexArrayTexCoordGuard::isDefaultMapping(state);
     SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+    SbBool defaulttexcoords = defaultmapping && !tb.needIndices();
     doTextures = tb.needCoordinates();
 
     SbBool needNormals = !mb.isColorOnly() || tb.isFunction();
@@ -575,6 +588,15 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
 
     const uint32_t contextid = action->getCacheContext();
     int numcoords = coords ? coords->getNum() : 0;
+    if (defaulttexcoords) {
+      std::int64_t used = 0;
+      for (int f = 0; f < this->numVertices.getNum(); ++f) {
+        const int32_t nv = this->numVertices[f];
+        if (nv < 0) { used = std::int64_t(numcoords) - idx; break; }
+        used += nv;
+      }
+      defaulttexcoords = SoVertexArrayTexCoordGuard::isAffordable(numcoords, used);
+    }
     SoGLLazyElement* lelem = NULL;
     // check if we can render things using glDrawArrays
     SbBool dova =
@@ -583,7 +605,8 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
        (PRIVATE(this)->primitivetype == GL_QUADS)) &&
       (nbind != PER_FACE) &&
       (mbind != PER_FACE) &&
-      !tb.isFunction() &&
+      (!nc || idx == 0) &&
+      (!doTextures || SoVertexArrayTexCoordGuard::canUseArrays(state, defaulttexcoords)) &&
       SoGLDriverDatabase::isSupported(sogl_glue_instance(state), SO_GL_VERTEX_ARRAY);
 
     const SoGLVBOElement* vboelem = SoGLVBOElement::getInstance(state);
@@ -605,6 +628,8 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
       }
     }
     if (dova) {
+      SoCachedVertexArrayTexCoordGuard texcoordguard(state, this, coords, tb,
+                                             defaulttexcoords && doTextures);
       SbBool dovbo = this->startVertexArray(action,
                                             coords,
                                             nbind == PER_VERTEX ? normals : NULL,

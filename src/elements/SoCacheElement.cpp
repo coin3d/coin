@@ -287,7 +287,8 @@ SoCacheElement::addElement(SoState * const state,
 
 /*!
   This method creates dependencies on \a cache for all the open caches
-  in \a state.
+  in \a state. Empty cache levels are skipped so that open ancestors
+  also receive the dependencies.
 */
 
 void
@@ -298,9 +299,9 @@ SoCacheElement::addCacheDependency(SoState * const state,
     (
      state->getElementNoPush(classStackIndex)
      );
-  while (elem && elem->cache) {
-    elem->cache->addCacheDependency(state, cache);
-    elem = coin_assert_cast<SoCacheElement *>(elem->getNextInStack());
+  while (elem) {
+    if (elem->cache) elem->cache->addCacheDependency(state, cache);
+    elem = coin_safe_cast<SoCacheElement *>(elem->getNextInStack());
   }
 }
 
