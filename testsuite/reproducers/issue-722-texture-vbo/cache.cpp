@@ -46,6 +46,19 @@ public:
     box.makeEmpty();
   }
 };
+
+// #901 stores an overflowing extent's maximum in the size slot. These two
+// boxes consequently have equal encoded origins/sizes but different flags.
+// The unchanged phase changes only inherited state, exercising that key bit.
+class WideBoundsFaceSet : public SoIndexedFaceSet {
+public:
+  void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center) override
+  {
+    const bool wide = SoComplexityElement::get(action->getState()) > 0.75f;
+    box.setBounds(SbVec3f(-2e38f, 0, 0), SbVec3f(wide ? 2e38f : 0.0f, 1, 0));
+    center = box.getCenter();
+  }
+};
 static void diagnostic(const SoError * error, void *)
 {
   const char * message = error->getDebugString().getString();
@@ -66,7 +79,7 @@ static unsigned long long imageHash(SoOffscreenRenderer & renderer)
 
 static void explicitMapping(const std::vector<SbVec3f> & vertices,
                             const std::vector<int32_t> & indices,
-                            bool enlarged, bool emptybounds,
+                            bool enlarged, bool emptybounds, bool widebounds,
                             SoTextureCoordinate2 * coordinates)
 {
   SbBox3f box;
@@ -85,6 +98,13 @@ static void explicitMapping(const std::vector<SbVec3f> & vertices,
   const float tsize = size[t] > 0 ? size[t] : 1;
   std::vector<SbVec2f> uv;
   for (size_t i = 0; i < vertices.size(); ++i) {
+    if (widebounds) {
+      const double minimum = double(-2e38f);
+      const double maximum = enlarged ? double(2e38f) : 0.0;
+      uv.push_back(SbVec2f(float((double(vertices[i][0])-minimum)/(maximum-minimum)),
+                          vertices[i][1]));
+      continue;
+    }
     uv.push_back(SbVec2f((vertices[i][s] - box.getMin()[s]) / ssize,
                         (vertices[i][t] - box.getMin()[t]) / tsize));
   }
@@ -106,6 +126,7 @@ int main(int argc, char ** argv)
   const bool shared = !std::strcmp(argv[1], "shared");
   const bool statemapping = !std::strcmp(argv[1], "state");
   const bool emptybounds = !std::strcmp(argv[1], "empty-bounds");
+  const bool widebounds = !std::strcmp(argv[1], "wide-bounds");
   SoDB::init();
   CoinReproducerCleanup cleanup;
   SoDebugError::setHandlerCallback(diagnostic, NULL);
@@ -140,7 +161,7 @@ int main(int argc, char ** argv)
   SoComplexity * complexity = new SoComplexity;
   root->addChild(complexity);
   SoIndexedFaceSet * shape = statemapping ? new StateMappedFaceSet
-    : emptybounds ? new EmptyBoundsFaceSet : new SoIndexedFaceSet;
+    : emptybounds ? new EmptyBoundsFaceSet : widebounds ? new WideBoundsFaceSet : new SoIndexedFaceSet;
   SoSeparator * drawscope = cached && !shared ? new SoSeparator : NULL;
   SoSeparator * parent = drawscope ? drawscope : root;
   SoVertexProperty * vp = NULL;
@@ -193,7 +214,7 @@ int main(int argc, char ** argv)
   std::vector<int32_t> indices;
   const int side = 25;
   for (int phase = 0; phase < 8 && ok; ++phase) {
-    if (statemapping && phase == 1) complexity->value = 1.0f;
+    if ((statemapping || widebounds) && phase == 1) complexity->value = 1.0f;
     // Phase 1 is unchanged. Phase 3 edits only indices; phase 5 restores
     // them without editing coordinates. Other phases replace the source.
     if (phase != 1 && phase != 3 && phase != 5) {
@@ -241,12 +262,12 @@ int main(int argc, char ** argv)
       shape->coordIndex.setNum(int(indices.size()));
     }
     if (reference) {
-      const bool enlarged = statemapping && phase >= 1;
-      explicitMapping(vertices, indices, enlarged, emptybounds, referencecoords);
+      const bool enlarged = (statemapping || widebounds) && phase >= 1;
+      explicitMapping(vertices, indices, enlarged, emptybounds, widebounds, referencecoords);
       if (otherreference) {
         std::vector<SbVec3f> mirrored = vertices;
         for (size_t i = 0; i < mirrored.size(); ++i) mirrored[i][0] = 1.0f - mirrored[i][0];
-        explicitMapping(mirrored, indices, enlarged, emptybounds, otherreference);
+        explicitMapping(mirrored, indices, enlarged, emptybounds, widebounds, otherreference);
       }
     }
     for (int context = 0; context < 2; ++context) {
