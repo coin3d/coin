@@ -160,5 +160,7 @@ int main(int argc,char ** argv) {
     std::printf("{\"phase\":\"edit\",\"edit_ms\":%.6f}\n",std::chrono::duration<double,std::milli>(Clock::now()-edit).count());
     emit("invalidated",{render()},renderer);times.clear();for(int i=0;i<frames;++i)times.push_back(render());emit("restabilized",times,renderer);
   }
-  root->unref();SoDebugError::setHandlerCallback(NULL,NULL);SoDB::finish();return missing?4:0;
+  root->unref();
+  std::printf("{\"phase\":\"released\",\"rss_mib\":%.3f,\"peak_mib\":%.3f}\n",rss(),peak());
+  SoDebugError::setHandlerCallback(NULL,NULL);SoDB::finish();return missing?4:0;
 }

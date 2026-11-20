@@ -259,14 +259,13 @@ struct DefaultTextureRegistry {
   std::mutex mutex;
   std::map<const SoShape *, std::shared_ptr<DefaultTextureStorage> > entries;
 };
-DefaultTextureRegistry & defaultTextureRegistry()
-{
-  static DefaultTextureRegistry registry;
-  return registry;
-}
+// Owned by SoShape's init/cleanup cycle, not C++ static destruction. Client
+// atexit callbacks may release shapes after the first render has returned.
+DefaultTextureRegistry * defaulttextureregistry = NULL;
 std::shared_ptr<DefaultTextureStorage> defaultTextureStorage(const SoShape * shape)
 {
-  DefaultTextureRegistry & registry = defaultTextureRegistry();
+  assert(defaulttextureregistry != NULL);
+  DefaultTextureRegistry & registry = *defaulttextureregistry;
   std::lock_guard<std::mutex> lock(registry.mutex);
   std::shared_ptr<DefaultTextureStorage> & entry = registry.entries[shape];
   if (!entry) entry = std::make_shared<DefaultTextureStorage>();
@@ -275,7 +274,8 @@ std::shared_ptr<DefaultTextureStorage> defaultTextureStorage(const SoShape * sha
 void clearDefaultTextureStorage(const SoShape * shape)
 {
   std::shared_ptr<DefaultTextureStorage> old;
-  DefaultTextureRegistry & registry = defaultTextureRegistry();
+  if (!defaulttextureregistry) return;
+  DefaultTextureRegistry & registry = *defaulttextureregistry;
   {
     std::lock_guard<std::mutex> lock(registry.mutex);
     const auto it = registry.entries.find(shape);
@@ -567,6 +567,9 @@ soshape_get_staticdata(void)
 void
 SoShapeP::cleanup(void)
 {
+  DefaultTextureRegistry * registry = defaulttextureregistry;
+  defaulttextureregistry = NULL;
+  delete registry;
   delete soshape_staticstorage;
   soshape_staticstorage = NULL;
 
@@ -605,6 +608,8 @@ void
 SoShape::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoShape, SO_FROM_INVENTOR_1);
+
+  defaulttextureregistry = new DefaultTextureRegistry;
 
 #ifdef COIN_THREADSAFE
   SoShapeP::mutex = new SbMutex;

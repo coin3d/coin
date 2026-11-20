@@ -23,8 +23,17 @@
 #include <cstdio>
 #include <cstring>
 #include <vector>
+#include <memory>
+#include <cstdlib>
 
 static int missingarrays = 0;
+static SoSeparator * deferredScene = NULL;
+static void releaseDeferredScene()
+{
+  if (deferredScene) deferredScene->unref();
+  deferredScene = NULL;
+  SoDB::finish();
+}
 
 // Verify that a mapping cache captures dependencies beyond coordinates.
 class StateMappedFaceSet : public SoIndexedFaceSet {
@@ -112,13 +121,14 @@ static void explicitMapping(const std::vector<SbVec3f> & vertices,
   coordinates->point.setNum(int(uv.size()));
 }
 
-int main(int argc, char ** argv)
+static int runScene(int argc, char ** argv)
 {
   if (argc < 2 || argc > 4) return 2;
-  bool reference = false, cached = false;
+  bool reference = false, cached = false, deferred = false;
   for (int i = 2; i < argc; ++i) {
     if (!std::strcmp(argv[i], "reference")) reference = true;
     else if (!std::strcmp(argv[i], "cached")) cached = true;
+    else if (!std::strcmp(argv[i], "late-cleanup")) deferred = true;
     else if (std::strcmp(argv[i], "uncached")) return 2;
   }
   const bool property = !std::strcmp(argv[1], "property");
@@ -128,7 +138,12 @@ int main(int argc, char ** argv)
   const bool emptybounds = !std::strcmp(argv[1], "empty-bounds");
   const bool widebounds = !std::strcmp(argv[1], "wide-bounds");
   SoDB::init();
-  CoinReproducerCleanup cleanup;
+  // Register before the first cache use: C++ statics initialized by rendering
+  // must not be destroyed before this callback releases the scene.
+  if (deferred && std::atexit(releaseDeferredScene) != 0) return 2;
+  std::unique_ptr<CoinReproducerCleanup> cleanup(
+    deferred ? NULL : new CoinReproducerCleanup);
+  missingarrays = 0;
   SoDebugError::setHandlerCallback(diagnostic, NULL);
   SoSeparator * root = new SoSeparator;
   root->ref();
@@ -281,7 +296,23 @@ int main(int argc, char ** argv)
     }
   }
   ok = ok && !missingarrays;
-  root->unref();
+  if (deferred) deferredScene = root;
+  else root->unref();
   SoDebugError::setHandlerCallback(NULL, NULL);
   return ok ? 0 : 1;
+}
+
+int main(int argc, char ** argv)
+{
+  const bool repeat = argc > 2 && !std::strcmp(argv[argc-1], "cycles");
+  if (repeat) {
+    --argc;
+    for (int i = 2; i < argc; ++i)
+      if (!std::strcmp(argv[i], "late-cleanup")) return 2;
+  }
+  for (int cycle = 0; cycle < (repeat ? 3 : 1); ++cycle) {
+    const int result = runScene(argc, argv);
+    if (result) return result;
+  }
+  return 0;
 }

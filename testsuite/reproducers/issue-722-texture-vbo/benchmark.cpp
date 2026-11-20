@@ -21,6 +21,31 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <fstream>
+#include <string>
+#include <cmath>
+#ifdef __linux__
+#include <sys/resource.h>
+#endif
+
+static double rssMiB()
+{
+#ifdef __linux__
+  std::ifstream stream("/proc/self/status");
+  std::string line;
+  while (std::getline(stream, line))
+    if (line.find("VmRSS:") == 0) return std::strtod(line.c_str()+6, NULL)/1024.0;
+#endif
+  return -1;
+}
+static double peakMiB()
+{
+#ifdef __linux__
+  struct rusage usage;
+  if (!getrusage(RUSAGE_SELF, &usage)) return usage.ru_maxrss/1024.0;
+#endif
+  return -1;
+}
 
 static void finishFrame(void *, SoAction * action)
 {
@@ -115,8 +140,14 @@ int main(int argc, char ** argv)
   finish->setCallback(finishFrame, NULL);
   root->addChild(finish);
 
+  const double sceneRSS = rssMiB();
   SoOffscreenRenderer renderer(SbViewportRegion(128, 128));
   renderer.setComponents(SoOffscreenRenderer::RGB);
+  const auto firstBegin = std::chrono::steady_clock::now();
+  if (!renderer.render(root)) { root->unref(); return 1; }
+  const double firstMS = std::chrono::duration<double,std::milli>(
+    std::chrono::steady_clock::now()-firstBegin).count();
+  const double firstRSS = rssMiB();
   for (int i=0; i<5; ++i) {
     if (!renderer.render(root)) { root->unref(); return 1; }
   }
@@ -133,8 +164,30 @@ int main(int argc, char ** argv)
   const bool valid = textured ? pixels[pixel]>50 && pixels[pixel+1]>50 : pixels[pixel]>240;
   std::sort(samples.begin(), samples.end());
   const double median=samples[samples.size()/2];
-  std::printf("{\"texture\":%d,\"side\":%d,\"vertices\":%d,\"faces\":%d,\"frames\":%d,\"median_ms\":%.6f,\"p10_ms\":%.6f,\"p90_ms\":%.6f,\"valid\":%d}\n",
-    textured,side,vi,side*side,frames,median,samples[samples.size()/10],samples[(samples.size()*9)/10],valid);
+  const double steadyRSS = rssMiB();
+  SbVec3f * points = vp->vertex.startEditing();
+  for (int i=0; i<vi; ++i) points[i][0] += 0.02f*std::sin(6.2831853f*points[i][1]);
+  vp->vertex.finishEditing();
+  const auto invalidBegin = std::chrono::steady_clock::now();
+  if (!renderer.render(root)) { root->unref(); return 1; }
+  const double invalidMS = std::chrono::duration<double,std::milli>(
+    std::chrono::steady_clock::now()-invalidBegin).count();
+  const double invalidRSS = rssMiB();
+  std::vector<double> restabilized;
+  for (int i=0; i<frames; ++i) {
+    const auto begin = std::chrono::steady_clock::now();
+    if (!renderer.render(root)) { root->unref(); return 1; }
+    restabilized.push_back(std::chrono::duration<double,std::milli>(
+      std::chrono::steady_clock::now()-begin).count());
+  }
+  std::sort(restabilized.begin(), restabilized.end());
+  pixels = renderer.getBuffer();
+  unsigned long long hash = 14695981039346656037ULL;
+  for (int i=0; i<128*128*3; ++i) { hash ^= pixels[i]; hash *= 1099511628211ULL; }
+  const bool finalValid = textured ? pixels[pixel]>50 && pixels[pixel+1]>50 : pixels[pixel]>240;
+  const double finalRSS = rssMiB(), peakRSS = peakMiB();
   root->unref();
-  return valid ? 0 : 1;
+  std::printf("{\"texture\":%d,\"side\":%d,\"vertices\":%d,\"faces\":%d,\"frames\":%d,\"median_ms\":%.6f,\"p10_ms\":%.6f,\"p90_ms\":%.6f,\"first_ms\":%.6f,\"invalidated_ms\":%.6f,\"restabilized_ms\":%.6f,\"rss_scene_mib\":%.3f,\"rss_first_mib\":%.3f,\"rss_steady_mib\":%.3f,\"rss_invalidated_mib\":%.3f,\"rss_restabilized_mib\":%.3f,\"rss_after_release_mib\":%.3f,\"peak_mib\":%.3f,\"hash\":\"%016llx\",\"valid\":%d}\n",
+    textured,side,vi,side*side,frames,median,samples[samples.size()/10],samples[(samples.size()*9)/10],firstMS,invalidMS,restabilized[restabilized.size()/2],sceneRSS,firstRSS,steadyRSS,invalidRSS,finalRSS,rssMiB(),peakRSS,hash,valid && finalValid);
+  return valid && finalValid ? 0 : 1;
 }

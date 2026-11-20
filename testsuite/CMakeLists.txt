@@ -85,7 +85,26 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
       ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
       ${COIN_TARGET_INCLUDE_DIRECTORIES})
     target_link_libraries(CoinSharedCoordinateBenchmark Coin OpenGL::GL)
+    add_executable(CoinDefaultTextureCacheBenchmark EXCLUDE_FROM_ALL
+      reproducers/issue-722-texture-vbo/benchmark.cpp)
+    target_include_directories(CoinDefaultTextureCacheBenchmark PRIVATE
+      ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+      ${COIN_TARGET_INCLUDE_DIRECTORIES})
+    target_link_libraries(CoinDefaultTextureCacheBenchmark Coin OpenGL::GL)
     set_tests_properties(DefaultTextureCoordinateCache PROPERTIES SKIP_RETURN_CODE 77)
+    foreach(mode late-cleanup cycles)
+      foreach(vbo 0 1)
+        set(test_name DefaultTextureCacheLifecycle_${mode}_vbo${vbo})
+        if(COIN_TEST_XVFB_RUN)
+          add_test(NAME ${test_name} COMMAND ${COIN_TEST_XVFB_RUN} -a
+            $<TARGET_FILE:CoinTextureCacheTest> property ${mode})
+        else()
+          add_test(NAME ${test_name} COMMAND CoinTextureCacheTest property ${mode})
+        endif()
+        set_tests_properties(${test_name} PROPERTIES TIMEOUT 60
+          ENVIRONMENT "COIN_VERTEX_ARRAYS=1;COIN_VBO=${vbo};COIN_GLXGLUE_NO_PBUFFERS=1;COIN_GLX_PIXMAP_DIRECT_RENDERING=1")
+      endforeach()
+    endforeach()
   endif()
 endif()
 
