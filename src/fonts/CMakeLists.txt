@@ -15,6 +15,8 @@ set(COIN_FONTS_FILES
 
 # Files excluded from public API documentation, included in complete documentation.
 set(COIN_FONTS_INTERNAL_FILES
+	bitmap.h
+	fontutils.h
 	fontlib_wrapper.h
 	fontlib_wrapper.cpp
 	win32.h
