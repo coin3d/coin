@@ -36,6 +36,7 @@
 
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbImage.h>
+#include "engines/SoHeightMapToNormalMapP.h"
 #include "engines/SoSubEngineP.h"
 
 /*!
@@ -109,20 +110,40 @@ SoHeightMapToNormalMap::SoHeightMapToNormalMap(void)
 /*!
   Static function for computing a normal map from a height map.
   This function can be used directly without any engine instantiation.
+
+  The source must have positive dimensions and one to four components.
+  For an accepted source, the caller must provide a readable buffer of
+  width * height * \a nc bytes in tightly packed rows. Only the first
+  component of each pixel is sampled. The result is an RGB image of the
+  same dimensions.
+
+  A null source, invalid dimensions or component count, or a source or
+  output byte count greater than INT_MAX - 3 clears \a dst_out to a 0x0
+  image with zero components and no pixel data. The byte limit leaves
+  room for the four-byte alignment calculation in SoSFImage serialization.
 */
 void
 SoHeightMapToNormalMap::convert(const unsigned char * srcptr, SbVec2s size, int nc, SbImage & dst_out)
 {
   float dx, dy;
-  int width = size[0];
-  int height = size[1];
-  std::unique_ptr<unsigned char[]> dstarray(new unsigned char[width*height*3]);
+  const int width = size[0];
+  const int height = size[1];
+  const std::size_t pixels = coin_heightmap::pixelCount(width, height, nc);
+  if (!srcptr || pixels == 0) {
+    dst_out.setValue(SbVec2s(0, 0), 0, NULL);
+    return;
+  }
+
+  std::unique_ptr<unsigned char[]> dstarray(new unsigned char[pixels * 3]);
   unsigned char * dstptr = dstarray.get();
   unsigned char red;
   SbVec3f n;
+  const std::size_t components = nc;
+  const std::size_t rowBytes = static_cast<std::size_t>(width) * components;
 
 #define GET_PIXEL_RED(x_, y_) \
-  srcptr[(y_)*width*nc + (x_)*nc]
+  srcptr[static_cast<std::size_t>(y_) * rowBytes + \
+         static_cast<std::size_t>(x_) * components]
 
   for (int y = 0; y < height; y++) {
     for (int x = 0; x < width; x++) {
