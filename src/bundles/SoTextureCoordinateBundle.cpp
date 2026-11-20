@@ -41,6 +41,9 @@
   For a single default 2D texture during OpenGL rendering, the shape's
   bounding box is cached with its scene-state dependencies. Changes to the
   shape or those dependencies cause the default mapping to be recalculated.
+  Default 2D arrays and scalar callbacks share the same normalization.
+  Bulk generation converts homogeneous geometry to Cartesian coordinates
+  before evaluating S and T.
 */
 // FIXME: document class better.
 
@@ -263,7 +266,7 @@ SoTextureCoordinateBundle::get(const int index)
 /*!
   Fills \a target with the default 2D mapping for every source coordinate.
   The mapping must already be initialized for a default 2D texture. The caller
-  provides getNum() writable entries and keeps the source and target alive.
+  provides coords->getNum() writable entries and keeps the source and target alive.
   Homogeneous coordinates use the same Cartesian conversion as get3().
 */
 void

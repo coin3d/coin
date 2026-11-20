@@ -107,12 +107,14 @@ O cache é refeito quando os dados ou os parâmetros de mapeamento mudam.
 O array 2D preserva S/T do callback existente, com R=0 e Q=1.
 
 `CoinTextureCacheTest` e o CTest `DefaultTextureCoordinateCache` comparam
-**576 quadros**: seis fontes/cenários, com e sem display lists pais,
+**768 quadros**: oito fontes/cenários, com e sem display lists pais,
 três caminhos de renderização, oito fases e dois contextos. A referência
 usa UVs explícitas calculadas independentemente do cache. Os cenários
 incluem `SoVertexProperty`, coordenadas herdadas, coordenadas homogêneas,
 um shape compartilhado entre estados e um bounding box que depende de
 um elemento herdado, além de bounds vazios fornecidos por uma extensão.
+Dois cenários adicionais percorrem os seis pares ordenados de eixos S/T,
+usando fontes 3D e homogêneas e mudanças de bounds por estado herdado.
 As fases alteram posições, índices, tamanho do array,
 limites degenerados e estado. O display list pai também é criado a partir
 de um resultado já em cache, exercitando a propagação das dependências.
@@ -283,3 +285,86 @@ Dados e comandos locais: `/tmp/coin-cache-memory-20261120/RESULTS.txt`,
 `benchmark-cpu.json`, `benchmark-previous-final.json`, `final-threeway.json`,
 logs de validação e `release-symbols.json`. Nenhum PR, push ou comentário
 remoto foi feito.
+
+## Regeneração em lote — 2026-11-20
+
+A geração percorre diretamente o array 3D ou homogêneo no bundle. O mesmo
+normalizador 2D atende `get()`, o callback e a geração em lote; não se copia
+a fórmula para SoShape. O caminho homogêneo mantém `getReal()`. Não há
+recíproco aproximado, novas flags de ponto flutuante ou novo teto de memória.
+Um método privado não virtual foi acrescentado ao bundle, sem campos novos.
+O caminho escalar continua calculando diretamente, sem chamada extra ao
+callback. O compilador vetorizou o laço 3D (`divps`) nas flags Release normais.
+
+Sondas temporárias de CPU da thread no código anterior mediram, na edição de
+400 shapes: 7,738 ms em geração de UV, 7,302 ms em reconstrução de bounds e
+1,781 ms em `updateBufferData`. Isso aponta uma oportunidade no despacho por
+vértice (1.638.400 coordenadas). As sondas foram removidas antes dos benchmarks;
+elas não contabilizam todo o trabalho paralelo do driver nem o upload inicial.
+
+Nova comparação no Ryzen 7 5800H/16 CPUs, llvmpipe com quatro threads, bibliotecas
+Release e mesmo executável: baseline `44025052aea`, versão anterior `0453097c069`
+e lote `d4954e73d27`. Builds em RAM; sem nossos builds/testes concorrentes.
+Carga 2,09 / 3,37 no início/fim. Seis repetições na cena própria com VBO, com as
+seis ordens possíveis das três bibliotecas. Dez quadros estáveis por execução;
+CPU agrega os threads do processo, wall inclui esperas, ambos com `glFinish()`.
+
+| Fase, 400 shapes próprios/VBO | CPU baseline (ms) | CPU anterior (ms) | CPU lote (ms) |
+| --- | ---: | ---: | ---: |
+| Primeiro render | 220.106 | 227.880 | 221.770 |
+| Estável | 93.765 | 83.566 | 83.900 |
+| Após invalidação | 105.453 | 109.284 | 102.747 |
+| Reestabilizado | 92.990 | 78.298 | 78.278 |
+
+O custo residual reproduziu +3,6% de CPU na versão anterior (a medição anterior
+indicava +3,9%). O lote ficou **2,6% abaixo da baseline** e 6,0% abaixo da versão
+anterior na invalidação. Todas as seis amostras de CPU do lote ficaram abaixo
+das seis amostras anteriores. Em wall, invalidação foi 83,089 / 85,468 / 79,211 ms
+(baseline / anterior / lote). Os ganhos estável e reestabilizado frente à
+baseline permanecem em 10,5% e 15,8% de CPU. A diferença estável entre anterior
+e lote é +0,4% de CPU; o custo reestabilizado ficou equivalente.
+
+RSS anterior/lote: estável 251,867 / 251,903 MiB, invalidado 280,228 / 280,158 MiB,
+reestabilizado 280,919 / 280,928 MiB; pico 282,140 / 282,067 MiB. A economia da
+etapa anterior foi preservada. Após liberar cena/contextos, RSS variou de
+262,760 para 267,339 MiB. RSS inclui driver/alocador e não mede cache vivo ou
+VRAM; não houve trimming manual. A memória estável ainda excede a baseline.
+
+Controles com três repetições: sem VBO, CPU invalidada baseline/anterior/lote
+foi 91,958 / 92,818 / 86,832 ms. A melhora também aparece sem atualização GL.
+Na fonte compartilhada, sem cache de UV, CPU estável anterior/lote foi
+110,806 / 110,728 ms. A segunda rodada completa anterior/lote confirmou a
+queda na invalidação própria: 110,523 / 102,783 ms de CPU. Nas malhas únicas,
+tempo estável anterior/lote foi 2,239 / 2,374 ms (10k), 11,247 / 11,269 (40k),
+22,651 / 22,120 (160k); os controles explícito e sem textura também variaram
+(12,018 / 11,278 e 11,337 / 11,757 ms). Não se conclui melhora geral de malhas
+únicas, nem comportamento idêntico em GPU física.
+
+Validação final: 131/131 Debug, 131/131 Release, 118/118 renderer OFF sem DISPLAY,
+225/225 na composição #901/#902; sem skips. A composição mantém `coin_bundle_ratio`
+da #901 no normalizador compartilhado e passou também os 96 quadros extremos.
+Os arrays S/T reais das oito cenas coincidiram bit a bit entre baseline,
+anterior e lote; na composição, nove cenas, incluindo `wide-bounds`, coincidiram
+entre anterior e lote. R/Q da baseline 4D foram conferidos como 0/1.
+GDB confirma as mesmas gerações, orçamento, uploads e reaproveitamento.
+
+ABI Debug contra master+#833, sem suppressions: zero funções removidas/alteradas.
+Release: zero símbolos removidos tanto da baseline como da versão anterior;
+somente o método novo foi acrescentado frente à versão anterior. Consumidor
+dos headers antigos passou em Debug e Release. SoShapeP, SoVBO, bundle e guard
+antigo mantêm seus campos/layouts. Tudo local em
+`/tmp/coin-cache-invalidation-20261120/`: `benchmark.json`, `benchmark-full.json`,
+`values*.py`, dumps, logs de validação, saída ABI integral e `RESULTS.txt`.
+
+Para repetir a comparação de bits, com bibliotecas Debug e seus símbolos de
+parâmetros, usando o mesmo executável e cenas em ambos os lados:
+
+```sh
+COIN_GLXGLUE_NO_PBUFFERS=1 xvfb-run -a sh ./verify-cache-values.sh \
+  /path/to/debug/bin/CoinTextureCacheTest /path/to/before/lib /path/to/after/lib
+```
+
+O verificador exige 16 draws por cena, 32 na cena compartilhada, compara os
+bytes S/T completos e rejeita R/Q diferentes de 0/1 na representação 4D da
+baseline. Para a composição, `COIN_CACHE_SOURCES=wide-bounds` seleciona o caso
+extremo com as duas bibliotecas compostas, anterior e posterior ao lote.

@@ -45,6 +45,8 @@
   scene-state dependencies determine whether those results can be reused.
   Each shape retains one current mapping; active draws keep their storage
   alive independently of later cache replacements.
+  Generated arrays store S and T using the texture bundle's normalization,
+  with homogeneous sources first converted to Cartesian coordinates.
 */
 
 // *************************************************************************
