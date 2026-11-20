@@ -155,3 +155,56 @@ recriar o array temporário. A entrada anterior é liberada quando deixa de
 ser usada; SoVBO administra os recursos de cada contexto. Concorrência no
 VBO de uma mesma entrada é serializada durante o draw; os testes acima
 usam dois contextos em sequência, sem um teste de renderização simultânea.
+
+## Shutdown e validação Release — 2026-11-19
+
+O registro externo pertence ao ciclo de init/cleanup de SoShape. Não tem
+destrutor estático C++: cenas liberadas por callbacks atexit registrados antes
+do primeiro render ainda podem retirar suas entradas. A limpeza do Coin
+destrói o registro e zera o ponteiro, permitindo novos ciclos init/finish.
+Os testes DefaultTextureCacheLifecycle cobrem cleanup tardio e três ciclos,
+com arrays CPU e VBO. O controle opcional lifecycle.gdb deve indicar três
+registros construídos e três destruídos ao executar `property cycles`.
+
+Validação local Linux/GCC13: 130/130 CTests em Debug e 130/130 em Release;
+118/118 com renderer legado desligado em Release; composição com #901/#902:
+224/224. Todos passaram sem skips. O mesmo teste de cleanup tardio aborta
+na biblioteca anterior à correção e passa na baseline e na corrigida.
+ABI Debug sem suppressions: zero funções removidas/alteradas. Em Release,
+nenhum símbolo dinâmico da baseline foi removido.
+
+Benchmark atualizado: mesmas cenas e executáveis, alternando somente libCoin
+Release da base master+#833 (44025052aea) e do cache. Mesa/llvmpipe, viewport
+128x128, quatro threads do driver e três repetições alternadas; cronômetro
+em render() com glFinish no grafo, leitura/hash fora do cronômetro. Há 30
+quadros por fase estável nas malhas e 10 nas cenas de 400 shapes. Todos os
+hashes coincidem entre bibliotecas. RSS é do processo inteiro; inclui Mesa e
+o alocador e não representa isoladamente memória viva do cache ou VRAM.
+
+| Cena | Estado estável antes/depois (ms) | RSS estável antes/depois (MiB) |
+| --- | ---: | ---: |
+| 10000 faces, uma malha | 5.035 / 4.732 | 120.941 / 120.789 |
+| 40000 faces, uma malha | 13.142 / 13.064 | 133.316 / 133.145 |
+| 160000 faces, uma malha | 24.696 / 24.249 | 184.586 / 184.594 |
+| 400 shapes, fonte compartilhada | 93.850 / 85.311 | 203.414 / 203.836 |
+| 400 shapes, fontes próprias | 85.601 / 72.181 | 232.141 / 251.879 |
+
+Na cena com fontes próprias, o quadro após invalidação passou de 95.537 para
+107.895 ms; a fase reestabilizada passou de 82.095 para 63.657 ms, com RSS
+251.527 / 291.398 MiB. A retenção e a reconstrução dos buffers têm custo.
+O controle explícito de 40000 faces variou de 12.499 para 13.580 ms e o
+controle sem textura de 12.268 para 12.171 ms. Assim, esta rodada não sustenta
+uma melhora geral nas malhas únicas: seus ganhos são pequenos perante a
+variação dos controles. As medições históricas Debug acima não são uma
+previsão dos resultados Release nem de GPU física.
+
+Para repetir com primeiro render, invalidação, RSS/pico e liberação da cena:
+
+```sh
+cmake --build /path/to/release --target CoinDefaultTextureCacheBenchmark CoinSharedCoordinateBenchmark
+LP_NUM_THREADS=4 LIBGL_ALWAYS_SOFTWARE=1 COIN_GLXGLUE_NO_PBUFFERS=1 xvfb-run -a \
+  python3 benchmark.py /path/to/release/bin/CoinDefaultTextureCacheBenchmark \
+    /path/to/baseline/lib /path/to/candidate/lib \
+    --shared-binary /path/to/release/bin/CoinSharedCoordinateBenchmark \
+    --output /tmp/cache-release-benchmark.json
+```

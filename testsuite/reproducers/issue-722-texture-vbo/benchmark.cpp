@@ -24,6 +24,7 @@
 #include <fstream>
 #include <string>
 #include <cmath>
+#include <memory>
 #ifdef __linux__
 #include <sys/resource.h>
 #endif
@@ -141,7 +142,9 @@ int main(int argc, char ** argv)
   root->addChild(finish);
 
   const double sceneRSS = rssMiB();
-  SoOffscreenRenderer renderer(SbViewportRegion(128, 128));
+  std::unique_ptr<SoOffscreenRenderer> rendererOwner(
+    new SoOffscreenRenderer(SbViewportRegion(128, 128)));
+  SoOffscreenRenderer & renderer = *rendererOwner;
   renderer.setComponents(SoOffscreenRenderer::RGB);
   const auto firstBegin = std::chrono::steady_clock::now();
   if (!renderer.render(root)) { root->unref(); return 1; }
@@ -187,7 +190,9 @@ int main(int argc, char ** argv)
   const bool finalValid = textured ? pixels[pixel]>50 && pixels[pixel+1]>50 : pixels[pixel]>240;
   const double finalRSS = rssMiB(), peakRSS = peakMiB();
   root->unref();
-  std::printf("{\"texture\":%d,\"side\":%d,\"vertices\":%d,\"faces\":%d,\"frames\":%d,\"median_ms\":%.6f,\"p10_ms\":%.6f,\"p90_ms\":%.6f,\"first_ms\":%.6f,\"invalidated_ms\":%.6f,\"restabilized_ms\":%.6f,\"rss_scene_mib\":%.3f,\"rss_first_mib\":%.3f,\"rss_steady_mib\":%.3f,\"rss_invalidated_mib\":%.3f,\"rss_restabilized_mib\":%.3f,\"rss_after_release_mib\":%.3f,\"peak_mib\":%.3f,\"hash\":\"%016llx\",\"valid\":%d}\n",
-    textured,side,vi,side*side,frames,median,samples[samples.size()/10],samples[(samples.size()*9)/10],firstMS,invalidMS,restabilized[restabilized.size()/2],sceneRSS,firstRSS,steadyRSS,invalidRSS,finalRSS,rssMiB(),peakRSS,hash,valid && finalValid);
+  const double releasedRSS = rssMiB();
+  rendererOwner.reset();
+  std::printf("{\"texture\":%d,\"side\":%d,\"vertices\":%d,\"faces\":%d,\"frames\":%d,\"median_ms\":%.6f,\"p10_ms\":%.6f,\"p90_ms\":%.6f,\"first_ms\":%.6f,\"invalidated_ms\":%.6f,\"restabilized_ms\":%.6f,\"rss_scene_mib\":%.3f,\"rss_first_mib\":%.3f,\"rss_steady_mib\":%.3f,\"rss_invalidated_mib\":%.3f,\"rss_restabilized_mib\":%.3f,\"rss_after_release_mib\":%.3f,\"rss_after_context_mib\":%.3f,\"peak_mib\":%.3f,\"hash\":\"%016llx\",\"valid\":%d}\n",
+    textured,side,vi,side*side,frames,median,samples[samples.size()/10],samples[(samples.size()*9)/10],firstMS,invalidMS,restabilized[restabilized.size()/2],sceneRSS,firstRSS,steadyRSS,invalidRSS,finalRSS,releasedRSS,rssMiB(),peakRSS,hash,valid && finalValid);
   return valid && finalValid ? 0 : 1;
 }

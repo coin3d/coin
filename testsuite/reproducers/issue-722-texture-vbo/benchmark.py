@@ -39,7 +39,7 @@ for mode, side in sorted({(row['mode'], row['side']) for row in results}):
         raise RuntimeError('Different rendered images between libraries or repetitions')
     fields = ['median_ms', 'first_ms', 'invalidated_ms', 'restabilized_ms',
               'rss_scene_mib', 'rss_first_mib', 'rss_steady_mib', 'rss_invalidated_mib',
-              'rss_restabilized_mib', 'rss_after_release_mib', 'peak_mib']
+              'rss_restabilized_mib', 'rss_after_release_mib', 'rss_after_context_mib', 'peak_mib']
     metrics = {name: {key: statistics.median(r[key] for r in rows if r['library'] == name)
                       for key in fields} for name, _ in libraries}
     summary.append(dict(mode=mode, faces=side*side, **metrics,
