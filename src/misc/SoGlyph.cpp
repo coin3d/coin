@@ -534,6 +534,7 @@ SoGlyph::unrefGlyph(SoGlyph *glyph)
     }
     assert(i < n);
     activeGlyphs->removeFast(i);
+    cc_flw_done_glyph(PRIVATE(glyph)->fontidx, PRIVATE(glyph)->glyphidx);
     cc_flw_unref_font(PRIVATE(glyph)->fontidx);
     delete glyph;
   }
@@ -589,10 +590,9 @@ SoGlyph::getGlyph(SoState * state,
   // FIXME: use font style in addition to font name. preng 2003-03-03
   SbString fontname = state_name.getString();
 
-  const int font = cc_flw_get_font_id(fontname.getString(), fontsize[1], angle, 0.5f);
+  const int font = cc_flw_get_font_id_and_ref(fontname.getString(), fontsize[1], angle, 0.5f);
   // Should _always_ be able to get hold of a font.
   assert(font >= 0);
-  cc_flw_ref_font(font);
 
   const int glyphidx = cc_flw_get_glyph(font, character);
 

@@ -44,6 +44,7 @@
 #include "threads/threadsutilp.h"
 #include "tidbitsp.h"
 #include "fonts/glyph2d.h"
+#include "fonts/fontutils.h"
 #include "fonts/glyph.h"
 #include "coindefs.h"
 
@@ -57,13 +58,13 @@ struct cc_glyph2d {
   struct cc_glyph c; /* "c" for "common" glyph data (2d & 3d). */
 
   float angle; /* FIXME: is this one really in use? 20060109 mortene. */
-  unsigned short width; /* FIXME: is this one really in use? 20060109 mortene. */
+  unsigned int width; /* FIXME: is this one really in use? 20060109 mortene. */
 
-  unsigned short height;
-  unsigned short bitmapwidth;
-  unsigned short bitmapheight;
-  short bitmapoffsetx;
-  short bitmapoffsety;
+  unsigned int height;
+  int bitmapwidth;
+  int bitmapheight;
+  int bitmapoffsetx;
+  int bitmapoffsety;
   unsigned char * bitmap;
   SbBool mono;
 };
@@ -142,10 +143,10 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
 
   /* because this function is the entry point for glyph2d, the mutex
      is initialized here. */
-  if (glyph2d_fonthash_lock == NULL) 
-    cc_glyph2d_initialize();
+  cc_glyph2d_initialize();
   
   assert(spec);
+  angle = coin_font_normalize_angle(angle);
 
   GLYPH2D_MUTEX_LOCK(glyph2d_fonthash_lock);
 
@@ -154,9 +155,9 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
     glyphlist = (cc_list *) val;
     for (i = 0; i < cc_list_get_length(glyphlist); ++i) {
       glyph = (cc_glyph2d *) cc_list_get(glyphlist, i);
-      if (glyph2d_specmatch(spec, glyph->c.fontspec)) {
-        GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);
+      if (glyph->angle == angle && glyph2d_specmatch(spec, glyph->c.fontspec)) {
         glyph->c.refcount++;
+        GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);
         return glyph;
       }
     }    
@@ -196,7 +197,7 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
   
   /* FIXME: get rid of angle -- not used. 20050516 mortene. */
   fontidx =
-    cc_flw_get_font_id(cc_string_get_text(fonttoload),
+    cc_flw_get_font_id_and_ref(cc_string_get_text(fonttoload),
                        (unsigned int)(newspec->size), angle,
                        /* FIXME: passing in -1 for complexity below is
                           necessary because the Win32 API code in
@@ -216,7 +217,6 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
   cc_string_destruct(fonttoload);
   assert(fontidx >= 0);
 
-  cc_flw_ref_font(fontidx);
 
   /* Should _always_ be able to get hold of a glyph -- if no glyph is
      available for a specific character, a default empty rectangle
@@ -251,7 +251,9 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
 void
 cc_glyph2d_unref(cc_glyph2d * glyph)
 {
+  GLYPH2D_MUTEX_LOCK(glyph2d_fonthash_lock);
   cc_glyph_unref(glyph2d_fonthash, &(glyph->c), NULL);
+  GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);
 }
 
 static SbBool 
