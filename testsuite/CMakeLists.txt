@@ -70,6 +70,7 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
     target_link_libraries(CoinTextureBufferReuseTest Coin OpenGL::GL)
     if(COIN_TEST_XVFB_RUN)
       add_test(NAME DefaultTextureBufferReuse COMMAND ${COIN_TEST_XVFB_RUN} -a
+        -s "-screen 0 1280x1024x24 -noreset"
         $<TARGET_FILE:CoinTextureBufferReuseTest>)
     else()
       add_test(NAME DefaultTextureBufferReuse COMMAND CoinTextureBufferReuseTest)
@@ -79,10 +80,12 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
     if(COIN_TEST_XVFB_RUN)
       add_test(NAME TextureCoordinateArrayRendering
         COMMAND ${COIN_TEST_XVFB_RUN} -a
+          -s "-screen 0 1280x1024x24 -noreset"
           ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/issue-722-texture-vbo/matrix.sh
           $<TARGET_FILE:CoinTextureArrayTest>)
       add_test(NAME DefaultTextureCoordinateCache
         COMMAND ${COIN_TEST_XVFB_RUN} -a
+          -s "-screen 0 1280x1024x24 -noreset"
           ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/issue-722-texture-vbo/cache.sh
           $<TARGET_FILE:CoinTextureCacheTest>)
     else()
@@ -93,7 +96,9 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
         COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/issue-722-texture-vbo/cache.sh
           $<TARGET_FILE:CoinTextureCacheTest>)
     endif()
-    set_tests_properties(TextureCoordinateArrayRendering PROPERTIES SKIP_RETURN_CODE 77)
+    set_tests_properties(TextureCoordinateArrayRendering DefaultTextureCoordinateCache PROPERTIES
+      SKIP_RETURN_CODE 77
+      ENVIRONMENT "COIN_GLXGLUE_NO_PBUFFERS=1;COIN_GLX_PIXMAP_DIRECT_RENDERING=1")
 
     add_executable(CoinSharedCoordinateBenchmark EXCLUDE_FROM_ALL
       reproducers/issue-833-shared-coordinates/benchmark.cpp)
@@ -107,12 +112,12 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
       ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
       ${COIN_TARGET_INCLUDE_DIRECTORIES})
     target_link_libraries(CoinDefaultTextureCacheBenchmark Coin OpenGL::GL)
-    set_tests_properties(DefaultTextureCoordinateCache PROPERTIES SKIP_RETURN_CODE 77)
     foreach(mode late-cleanup cycles)
       foreach(vbo 0 1)
         set(test_name DefaultTextureCacheLifecycle_${mode}_vbo${vbo})
         if(COIN_TEST_XVFB_RUN)
           add_test(NAME ${test_name} COMMAND ${COIN_TEST_XVFB_RUN} -a
+            -s "-screen 0 1280x1024x24 -noreset"
             $<TARGET_FILE:CoinTextureCacheTest> property ${mode})
         else()
           add_test(NAME ${test_name} COMMAND CoinTextureCacheTest property ${mode})

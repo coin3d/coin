@@ -10,7 +10,8 @@ if(COIN_BUILD_LEGACY_GL_RENDERER AND UNIX AND NOT APPLE AND HAVE_GLX)
   find_program(COIN_DEPENDENCY_XVFB_RUN xvfb-run)
   if(COIN_DEPENDENCY_XVFB_RUN)
     add_test(NAME DefaultTextureCacheAncestorDependencies
-      COMMAND ${COIN_DEPENDENCY_XVFB_RUN} -a $<TARGET_FILE:CoinDefaultTextureDependencyTest>)
+      COMMAND ${COIN_DEPENDENCY_XVFB_RUN} -a
+        -s "-screen 0 1280x1024x24 -noreset" $<TARGET_FILE:CoinDefaultTextureDependencyTest>)
   else()
     add_test(NAME DefaultTextureCacheAncestorDependencies COMMAND CoinDefaultTextureDependencyTest)
   endif()

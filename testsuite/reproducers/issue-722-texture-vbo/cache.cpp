@@ -319,7 +319,12 @@ static int runScene(int argc, char ** argv)
       if (drawscope) drawscope->renderCaching = phase == 0 && context == 0
         ? SoSeparator::OFF : SoSeparator::ON;
       SoOffscreenRenderer & renderer = context ? second : first;
-      if (!renderer.render(root)) { ok = false; break; }
+      if (!renderer.render(root)) {
+        std::fprintf(stderr, "Offscreen render failed: source=%s phase=%d context=%d reference=%d cached=%d\n",
+                     argv[1], phase, context, reference, cached);
+        ok = false;
+        break;
+      }
       std::printf("%s phase=%d context=%d hash=%016llx\n", argv[1], phase, context, imageHash(renderer));
     }
   }

@@ -422,3 +422,17 @@ entre as três bibliotecas em cada driver, antes e depois da edição.
 
 Evidências locais: `/tmp/coin-cache-dependency-fix-20261120/RESULTS.txt`,
 `benchmark-threeway.json`, scripts e logs completos. Nenhuma publicação foi feita.
+
+### Backend dos testes de imagens GLX
+
+Os CTests `TextureCoordinateArrayRendering` e `DefaultTextureCoordinateCache`
+definem `COIN_GLXGLUE_NO_PBUFFERS=1` e `COIN_GLX_PIXMAP_DIRECT_RENDERING=1`.
+Assim usam pixmaps GLX também sob Xvfb, como os testes de dependências,
+reaproveitamento de buffers e ciclo de vida, sem depender das capacidades de
+pbuffer anunciadas pelo driver do runner. As variáveis fazem parte do CTest;
+não precisam ser herdadas do shell que o executa. Os comandos manuais dos
+scripts podem usar as mesmas variáveis. Uma falha em `render()` informa a cena,
+a fase e o contexto no stderr e continua sendo uma falha de teste.
+Os wrappers Xvfb usam `-screen 0 1280x1024x24 -noreset`: o servidor permanece
+disponível entre os processos de comparação e entre ciclos de init/finish,
+mesmo quando o último cliente fecha sua conexão.
