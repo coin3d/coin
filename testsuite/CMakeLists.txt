@@ -452,3 +452,10 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
       PROPERTIES TIMEOUT 10)
   endforeach()
 endif()
+
+# Character indices are decoded Unicode indices, independently of camera fitting.
+add_executable(CoinSoText2Utf8PickingTest SoText2Utf8PickingTest.cpp)
+target_link_libraries(CoinSoText2Utf8PickingTest PRIVATE Coin)
+add_test(NAME SoText2Utf8Picking COMMAND CoinSoText2Utf8PickingTest)
+add_test(NAME SoText2Utf8PickingBuiltin COMMAND CoinSoText2Utf8PickingTest)
+set_tests_properties(SoText2Utf8PickingBuiltin PROPERTIES ENVIRONMENT "COIN_FORCE_FREETYPE_OFF=1")
