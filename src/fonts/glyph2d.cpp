@@ -57,13 +57,13 @@ struct cc_glyph2d {
   struct cc_glyph c; /* "c" for "common" glyph data (2d & 3d). */
 
   float angle; /* FIXME: is this one really in use? 20060109 mortene. */
-  unsigned short width; /* FIXME: is this one really in use? 20060109 mortene. */
+  unsigned int width; /* FIXME: is this one really in use? 20060109 mortene. */
 
-  unsigned short height;
-  unsigned short bitmapwidth;
-  unsigned short bitmapheight;
-  short bitmapoffsetx;
-  short bitmapoffsety;
+  unsigned int height;
+  int bitmapwidth;
+  int bitmapheight;
+  int bitmapoffsetx;
+  int bitmapoffsety;
   unsigned char * bitmap;
   SbBool mono;
 };

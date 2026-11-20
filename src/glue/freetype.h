@@ -115,6 +115,8 @@ int cc_fcglue_FcPatternAddDouble(FcPattern *pattern, const char *object, double 
 #define FT_KERNING_DEFAULT  0
 #define FT_RENDER_MODE_NORMAL 0
 #define FT_RENDER_MODE_MONO 2
+#define FT_PIXEL_MODE_MONO 1
+#define FT_PIXEL_MODE_GRAY 2
 #define ft_kerning_default FT_KERNING_DEFAULT
 #define ft_render_mode_mono FT_RENDER_MODE_MONO
 #define ft_render_mode_normal FT_RENDER_MODE_NORMAL
@@ -176,13 +178,13 @@ struct FT_CharMapRec_ {
 };
 
 typedef struct {
-  int rows;
-  int width;
+  unsigned int rows;
+  unsigned int width;
   int pitch;
   unsigned char * buffer;
-  short num_grays;
-  char pixel_mode;
-  char palette_mode;
+  unsigned short num_grays;
+  unsigned char pixel_mode;
+  unsigned char palette_mode;
   void * palette;
 } FT_Bitmap;
 
