@@ -137,6 +137,94 @@ static bool callbacks_and_lists()
   return true;
 }
 
+struct ApplyFailure {};
+static void remove_and_throw(SbDict::Key key, void * value, void * closure)
+{
+  ApplyState * state = static_cast<ApplyState *>(closure);
+  ++state->seen[key];
+  if (state->expected[key] != value || !state->dictionary->remove(key)) state->failed = true;
+  throw ApplyFailure();
+}
+static void remove_and_throw_no_data(SbDict::Key key, void * value)
+{
+  remove_and_throw(key, value, nodata);
+}
+static bool callback_exceptions()
+{
+  int values[3] = { 1, 2, 3 };
+  for (int withdata = 0; withdata < 2; ++withdata) {
+    SbDict dictionary(1);
+    dictionary.setHashingFunction(collide);
+    ApplyState state = { &dictionary, {}, {}, 0, false };
+    for (unsigned int i = 0; i < 3; ++i) {
+      CHECK(dictionary.enter(i, &values[i]));
+      state.expected[i] = &values[i];
+    }
+    nodata = &state;
+    const SbDict & view = dictionary;
+    bool caught = false;
+    try {
+      if (withdata) view.applyToAll(remove_and_throw, &state);
+      else view.applyToAll(remove_and_throw_no_data);
+    }
+    catch (const ApplyFailure &) { caught = true; }
+    nodata = NULL;
+    CHECK(caught && !state.failed && state.seen.size() == 1);
+    const SbDict::Key removed = state.seen.begin()->first;
+    for (unsigned int i = 0; i < 3; ++i) {
+      void * found = &dictionary;
+      CHECK(dictionary.find(i, found) == (i == removed ? FALSE : TRUE));
+      CHECK(found == (i == removed ? static_cast<void *>(&dictionary) : &values[i]));
+    }
+    // A callback exception preserves its completed removal. Traversal can
+    // resume independently, visiting each remaining entry exactly once.
+    view.applyToAll(data_callback, &state);
+    CHECK(!state.failed && state.seen.size() == 3);
+    for (const auto & entry : state.seen) CHECK(entry.second == 1);
+    CHECK(dictionary.enter(100, &values[0]));
+  }
+  return true;
+}
+
+struct GrowthFailure {};
+static bool reject_existing_key;
+static SbDict::Key inserting_key;
+static SbDict::Key growth_hash(SbDict::Key key)
+{
+  if (reject_existing_key && key != inserting_key) throw GrowthFailure();
+  return key;
+}
+static bool growth_exception_keeps_inserted_entry()
+{
+  int values[64];
+  SbDict dictionary(2);
+  dictionary.setHashingFunction(growth_hash);
+  CHECK(dictionary.enter(0, &values[0]));
+  bool caught = false;
+  unsigned int inserted = 0;
+  for (unsigned int i = 1; i < 63 && !caught; ++i) {
+    inserting_key = i;
+    reject_existing_key = true;
+    try { CHECK(dictionary.enter(i, &values[i])); }
+    catch (const GrowthFailure &) { caught = true; }
+    reject_existing_key = false;
+    inserted = i;
+  }
+  // The initial lookup hashes only the new key. Rejecting an older key
+  // therefore injects a failure during rehash, without fixing its threshold.
+  CHECK(caught);
+  for (unsigned int i = 0; i <= inserted; ++i) {
+    void * found = NULL;
+    CHECK(dictionary.find(i, found) && found == &values[i]);
+  }
+  CHECK(dictionary.enter(inserted + 1, &values[inserted + 1]));
+  for (unsigned int i = 0; i <= inserted + 1; ++i) {
+    void * found = NULL;
+    CHECK(dictionary.find(i, found) && found == &values[i]);
+  }
+  return true;
+}
+
 static bool hash_changes_and_exceptions()
 {
   int values[64];
@@ -220,7 +308,8 @@ static bool model()
 
 int main()
 {
-  if (!mappings_and_copy() || !callbacks_and_lists() ||
+  if (!mappings_and_copy() || !callbacks_and_lists() || !callback_exceptions() ||
+      !growth_exception_keeps_inserted_entry() ||
       !hash_changes_and_exceptions() || !model()) return 1;
   std::puts("SbDict public API, copy, callbacks, lists, hashes and model passed.");
   return 0;

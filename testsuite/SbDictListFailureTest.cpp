@@ -19,30 +19,47 @@ void operator delete[](void * memory, std::size_t) noexcept { std::free(memory);
 #define CHECK(condition) do { if (!(condition)) { \
   std::fprintf(stderr, "line %d: %s\n", __LINE__, #condition); return 1; \
 } } while (false)
-int main() {
+static int failure_sweep(const int keyprefix, const int valueprefix) {
   int values[32];
   SbDict dictionary(17);
   for (unsigned int i = 0; i < 32; ++i) CHECK(dictionary.enter(i, &values[i]));
-  for (int stage = 0; stage < 8; ++stage) {
+  for (int stage = 0; stage < 128; ++stage) {
     SbPList keys, mapped;
-    for (int i = 0; i < 4; ++i) { keys.append(&values[i]); mapped.append(&values[i + 4]); }
+    for (int i = 0; i < keyprefix; ++i) keys.append(&values[i]);
+    for (int i = 0; i < valueprefix; ++i) mapped.append(&values[i + 4]);
     arrays_before_failure = stage;
     bool caught = false;
     try { dictionary.makePList(keys, mapped); }
     catch (const std::bad_alloc &) { caught = true; }
     arrays_before_failure = -1;
-    CHECK(caught && keys.getLength() == 4 && mapped.getLength() == 4);
-    for (int i = 0; i < 4; ++i) CHECK(keys[i] == &values[i] && mapped[i] == &values[i + 4]);
+    if (caught) {
+      CHECK(keys.getLength() == keyprefix && mapped.getLength() == valueprefix);
+      for (int i = 0; i < keyprefix; ++i) CHECK(keys[i] == &values[i]);
+      for (int i = 0; i < valueprefix; ++i) CHECK(mapped[i] == &values[i + 4]);
+    }
     for (unsigned int i = 0; i < 32; ++i) {
       void * found = NULL;
       CHECK(dictionary.find(i, found) && found == &values[i]);
     }
-    dictionary.makePList(keys, mapped);
-    CHECK(keys.getLength() == 36 && mapped.getLength() == 36);
-    for (int i = 4; i < 36; ++i) {
-      const SbDict::Key key = reinterpret_cast<SbDict::Key>(keys[i]);
-      CHECK(key < 32 && mapped[i] == &values[key]);
+    if (caught) dictionary.makePList(keys, mapped);
+    CHECK(keys.getLength() == keyprefix + 32 && mapped.getLength() == valueprefix + 32);
+    for (int i = 0; i < keyprefix; ++i) CHECK(keys[i] == &values[i]);
+    for (int i = 0; i < valueprefix; ++i) CHECK(mapped[i] == &values[i + 4]);
+    for (int i = 0; i < 32; ++i) {
+      const SbDict::Key key = reinterpret_cast<SbDict::Key>(keys[keyprefix + i]);
+      CHECK(key < 32 && mapped[valueprefix + i] == &values[key]);
+    }
+    if (!caught) {
+      CHECK(stage > 0);
+      std::printf("SbDict makePList prefixes %d/%d: %d allocation failure points passed.\n",
+                  keyprefix, valueprefix, stage);
+      return 0;
     }
   }
+  std::fputs("allocation sweep did not reach a successful case\n", stderr);
+  return 1;
+}
+int main() {
+  if (failure_sweep(4, 4) || failure_sweep(2, 9)) return 1;
   return 0;
 }
