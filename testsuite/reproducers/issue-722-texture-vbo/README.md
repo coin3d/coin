@@ -220,3 +220,66 @@ LP_NUM_THREADS=4 LIBGL_ALWAYS_SOFTWARE=1 COIN_GLXGLUE_NO_PBUFFERS=1 xvfb-run -a 
     --shared-binary /path/to/release/bin/CoinSharedCoordinateBenchmark \
     --output /tmp/cache-release-benchmark.json
 ```
+
+## Reaproveitamento e custo de invalidação — 2026-11-20
+
+Comparação local entre a baseline `44025052aea`, o cache anterior
+`af4847c6f6b` e o reaproveitamento `c12131a4a97`. Mesmas bibliotecas Release,
+executável, cenas e configuração Mesa/llvmpipe descritos acima. A rodada
+completa anterior/final mantém três repetições alternadas e os controles
+explícito e sem textura. Todos os hashes coincidiram. A carga externa do PC
+subiu de 23,6 para 35,3; houve grandes oscilações de tempo decorrido também
+nos controles. Essa rodada não permite concluir melhora geral de latência.
+
+Uma segunda comparação de três bibliotecas registra também o tempo de CPU do
+processo, somado sobre seus threads, com ordem rotativa por repetição. São
+três repetições por biblioteca/layout e dez quadros por fase estável, com
+`glFinish()` antes de encerrar cada amostra. Leitura e hash ficam fora dos
+dois relógios. A carga permaneceu próxima de 32; CPU reduz a interferência
+de desescalonamento, mas ainda sofre com frequência e contenção de memória.
+
+400 shapes com fontes próprias, medianas das três repetições:
+
+| Fase | CPU baseline (ms) | CPU cache anterior (ms) | CPU reaproveitamento (ms) | RSS anterior / reaproveitamento (MiB) |
+| --- | ---: | ---: | ---: | ---: |
+| Primeiro render | 403.073 | 428.501 | 445.653 | 251.160 / 251.012 |
+| Estável | 167.544 | 148.832 | 148.782 | 258.074 / 257.691 |
+| Após invalidação | 186.688 | 212.116 | 193.900 | 290.750 / 280.332 |
+| Reestabilizado | 168.734 | 137.534 | 141.270 | 291.801 / 282.949 |
+| Cena/contextos liberados | — | — | — | 280.273 / 263.070 |
+
+O reaproveitamento reduz 8,6% de CPU e 10,4 MiB de RSS no quadro invalidado.
+O ganho estável de CPU frente à baseline continua em 11,2%; após a edição,
+em 16,3%. A invalidação ainda custa 3,9% mais CPU que a baseline. O primeiro
+render não melhorou e a fase reestabilizada variou +2,7% frente ao cache
+anterior. A memória estável permanece semelhante; o cache conserva seu custo
+de retenção (257,691 MiB contra 233,285 MiB da baseline nesta cena).
+RSS e pico são do processo inteiro, incluindo driver e alocador.
+
+Na fonte compartilhada, sem cache de UV pelo orçamento, CPU estável anterior
+/ final foi 205,991 / 208,363 ms e reestabilizada 211,598 / 213,126 ms. Esse
+controle também varia, apesar de não gerar arrays de UV. A alternativa
+experimental sem VBO de UV reduziu memória neste PC, mas não foi adotada:
+o resultado final mantém os VBOs e atualiza sua alocação quando possível.
+Não há previsão de ganho idêntico em GPU física.
+
+Validação: 130 testes existentes e a nova regressão direta de buffers passaram
+em Debug e Release; 118 com renderer desligado e sem DISPLAY; 225 na
+composição local com #901/#902, além dos 96 quadros do caso `wide-bounds`.
+Sem skips. `DefaultTextureBufferReuse` confere bytes, binding, identificador
+GL reaproveitado, crescimento/redução e invalidação em dois contextos, para
+buffers de vértices e índices. Os controles GDB exigem as mesmas gerações e
+uploads do mapeamento e comprovam o reaproveitamento de oito entradas/VBOs.
+
+ABI contra a baseline master+#833: `abidiff --no-default-suppression
+--no-show-locs` aponta zero funções removidas/alteradas; os símbolos Release
+da baseline e o consumidor antigo são preservados. Não há suppressions nem
+mudança de layout em SoShapeP, SoVBO ou no guard antigo. A comparação bruta
+adicional com o cache anterior mostra a saída de uma instância weak privada
+de `std::vector<SbVec2f>::_M_default_append`, emitida por `resize()`; esse
+símbolo foi acrescentado pelo cache não publicado e não existe na baseline.
+
+Dados e comandos locais: `/tmp/coin-cache-memory-20261120/RESULTS.txt`,
+`benchmark-cpu.json`, `benchmark-previous-final.json`, `final-threeway.json`,
+logs de validação e `release-symbols.json`. Nenhum PR, push ou comentário
+remoto foi feito.
