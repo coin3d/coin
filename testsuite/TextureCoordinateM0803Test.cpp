@@ -25,8 +25,39 @@ static void sample(const SbBox3f & b,bool repair) {
     }
   });
 }
+static void mixed_lanes() {
+  visit([&](SoCallbackAction * a,Fixture *){
+    SoTextureCoordinateCache cache(a->getState());
+    const float m=FLT_MAX;
+    const SbBox3f wide(-m,-m,0,m,m,1);
+    const SbVec3f points[]={SbVec3f(0,0,INFINITY),SbVec3f(INFINITY,0,0),
+      SbVec3f(0,NAN,0),SbVec3f(m,m,NAN)};
+    const SbVec2f want[]={SbVec2f(.5f,.5f),SbVec2f(NAN,.5f),
+      SbVec2f(.5f,NAN),SbVec2f(1,1)};
+    cache.generate(wide,points,4);
+    check(cache.getNum()==4,"mixed wide cache count");
+    for(int i=0;i<4;++i)equal2(cache.get()[i],want[i],"nonfinite point leaves finite lane intact");
+
+    // The size stays finite in X, while the external X numerator overflows.
+    // A nonfinite discarded Z must not disable recovery of the X quotient.
+    const SbBox3f finite_size(-m,0,0,-m/2,1,0);
+    const SbVec3f external(m,.25f,NAN);
+    cache.generate(finite_size,&external,1);
+    // The denominator is m/2 in Float, so (m-(-m))/(m/2) is exactly 4.
+    equal2(cache.get()[0],SbVec2f(4.0f,.25f),"finite Float divisor with overflowing numerator");
+
+    // Both extents round to 1 in Float. Keep the historical X,Y tie order,
+    // even though the exact Y extent is larger and Z is nonfinite.
+    const float half_ulp=std::ldexp(1.0f,-24);
+    const SbBox3f tied(0,-half_ulp,0,1,1,.25f);
+    const SbVec3f tied_point(1,0,NAN);
+    cache.generate(tied,&tied_point,1);
+    equal2(cache.get()[0],SbVec2f(1,half_ulp),"rounded Float extent tie keeps X first");
+  });
+}
 int main(int argc,char **argv){init();bool repair=mode(argc,argv);const float m=FLT_MAX;
-  if(repair){
+  if(argc==2 && std::strcmp(argv[1],"mixed")==0) mixed_lanes();
+  else if(repair){
     sample(SbBox3f(-m,-m,-1,m/2,m,1),true);
     sample(SbBox3f(-m,-2,-1,-m/2,2,1),true);
     // Z becomes the longest axis and must carry its matching origin and size
