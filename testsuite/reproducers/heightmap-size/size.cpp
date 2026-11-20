@@ -4,6 +4,8 @@
 #include "engines/SoHeightMapToNormalMapP.h"
 
 #include <cstring>
+#include <limits>
+#include <vector>
 
 namespace {
 
@@ -52,31 +54,57 @@ bool enginePublishesEmptyImage()
   return valid && cleared;
 }
 
+bool rejects(const unsigned char * source, const SbVec2s & size, int nc)
+{
+  const unsigned char previous = 42;
+  SbImage result;
+  result.setValue(SbVec2s(1, 1), 1, &previous);
+  SoHeightMapToNormalMap::convert(source, size, nc, result);
+  return empty(result);
+}
+
+bool convertsLongestAxis()
+{
+  const short length = (std::numeric_limits<short>::max)();
+  const std::vector<unsigned char> source(static_cast<std::size_t>(length) * 4, 0);
+  const SbVec2s extents[] = {SbVec2s(length, 1), SbVec2s(1, length)};
+  for (const SbVec2s & size : extents) {
+    SbImage result;
+    SoHeightMapToNormalMap::convert(source.data(), size, 4, result);
+    SbVec2s actualSize;
+    int nc;
+    const unsigned char * bytes = result.getValue(actualSize, nc);
+    if (!bytes || actualSize != size || nc != 3) return false;
+    for (std::size_t i = 0; i < static_cast<std::size_t>(length); ++i) {
+      if (bytes[i * 3] != 128 || bytes[i * 3 + 1] != 128 ||
+          bytes[i * 3 + 2] != 255) return false;
+    }
+  }
+  return true;
+}
+
 } // namespace
 
 int main(int argc, char ** argv)
 {
   if (argc != 2) return 2;
   const unsigned char pixel = 0;
-  SbImage result;
-  // Check that rejection also clears a previously populated destination.
-  result.setValue(SbVec2s(1, 1), 1, &pixel);
   const char * test = argv[1];
   if (std::strcmp(test, "negative") == 0) {
-    SoHeightMapToNormalMap::convert(&pixel, SbVec2s(-1, 0), 1, result);
+    return rejects(&pixel, SbVec2s(-1, 1), 1) &&
+           rejects(&pixel, SbVec2s(1, -1), 1) ? 0 : 1;
   }
   else if (std::strcmp(test, "zero") == 0) {
-    SoHeightMapToNormalMap::convert(&pixel, SbVec2s(0, 1), 1, result);
+    return rejects(&pixel, SbVec2s(0, 1), 1) &&
+           rejects(&pixel, SbVec2s(1, 0), 1) ? 0 : 1;
   }
   else if (std::strcmp(test, "components") == 0) {
-    SoHeightMapToNormalMap::convert(&pixel, SbVec2s(1, 1), 0, result);
-    if (!empty(result)) return 1;
-    result.setValue(SbVec2s(1, 1), 1, &pixel);
     const unsigned char fiveComponents[] = {0, 1, 2, 3, 4};
-    SoHeightMapToNormalMap::convert(fiveComponents, SbVec2s(1, 1), 5, result);
+    return rejects(&pixel, SbVec2s(1, 1), 0) &&
+           rejects(fiveComponents, SbVec2s(1, 1), 5) ? 0 : 1;
   }
   else if (std::strcmp(test, "null") == 0) {
-    SoHeightMapToNormalMap::convert(NULL, SbVec2s(1, 1), 1, result);
+    return rejects(NULL, SbVec2s(1, 1), 1) ? 0 : 1;
   }
   else if (std::strcmp(test, "output_limit") == 0) {
     // These RGB byte counts straddle INT_MAX - 3: 2147483640 and
@@ -85,19 +113,22 @@ int main(int argc, char ** argv)
            coin_heightmap::pixelCount(32767, 21846, 1) == 0 ? 0 : 1;
   }
   else if (std::strcmp(test, "source_limit") == 0) {
-    // Same RGBA width on both sides of the limit. The rejected extent
-    // still fits as RGB, so the source stride determines the limit.
+    // The RGBA byte counts straddle INT_MAX - 3: 2147483640 and
+    // 2147483676. The rejected extent still fits as RGB.
     return coin_heightmap::pixelCount(16385, 32766, 4) == 536870910u &&
-           coin_heightmap::pixelCount(16385, 32767, 4) == 0 &&
-           coin_heightmap::pixelCount(16385, 32767, 3) == 536887295u ? 0 : 1;
+           coin_heightmap::pixelCount(17979, 29861, 4) == 0 &&
+           coin_heightmap::pixelCount(17979, 29861, 3) == 536870919u ? 0 : 1;
   }
   else if (std::strcmp(test, "valid") == 0) {
+    SbImage result;
     SoHeightMapToNormalMap::convert(heightmap, extent, 4, result);
     return matchesNormals(result) ? 0 : 1;
+  }
+  else if (std::strcmp(test, "max_axis") == 0) {
+    return convertsLongestAxis() ? 0 : 1;
   }
   else if (std::strcmp(test, "engine") == 0) {
     return enginePublishesEmptyImage() ? 0 : 1;
   }
-  else return 2;
-  return empty(result) ? 0 : 1;
+  return 2;
 }

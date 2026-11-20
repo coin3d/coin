@@ -6,7 +6,7 @@
 
 namespace coin_heightmap {
 
-inline std::size_t
+static inline std::size_t
 pixelCount(int width, int height, int components)
 {
   if (width <= 0 || height <= 0 || components < 1 || components > 4) {
