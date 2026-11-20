@@ -34,6 +34,8 @@
 
 #include "coindefs.h"
 #include "fonts/fontlib_wrapper.h"
+#include "fonts/bitmap.h"
+#include "fonts/fontutils.h"
 
 #include <cstdio>
 #include <cstring>
@@ -453,18 +455,6 @@ flw_find_font(const char * fontname, const unsigned int sizey,
 {
   unsigned int i, n;
 
-  /* This function is a common entry spot for first access into the
-     wrapper (unless client code is doing something wrong, but then
-     we'll likely catch that with an assert somewhere), so we call the
-     initialization code from here.
-
-     flw_initialize() is re-entrant, so this should be safe in a
-     multithreaded environment.
-  */
-  if (flw_global_lock == NULL) { flw_initialize(); }
-
-  FLW_MUTEX_LOCK(flw_global_lock);
-
   n = cc_dynarray_length(fontarray);
   for (i = 0; i < n; i++) {
     struct cc_flw_font * fs = (struct cc_flw_font *)cc_dynarray_get(fontarray, i);
@@ -472,11 +462,9 @@ flw_find_font(const char * fontname, const unsigned int sizey,
         (strcmp(fontname, cc_string_get_text(fs->requestname))==0) &&
         (fs->angle == angle) &&
         (fs->complexity == complexity)) {
-      FLW_MUTEX_UNLOCK(flw_global_lock);
       return fs->fontindex;
     }
   }
-  FLW_MUTEX_UNLOCK(flw_global_lock);
   return -1;
 }
 
@@ -542,9 +530,9 @@ cc_flw_unref_font(int fontid)
   guaranteed that this function will execute and return without
   needing any error checking on behalf of the client code.
 */
-int
-cc_flw_get_font_id(const char * fontname, unsigned int sizey,
-                   float angle, float complexity)
+static int
+flw_get_font_id(const char * fontname, unsigned int sizey,
+                float angle, float complexity, SbBool acquire)
 {
   /* FIXME: complexity (and angle, if we're keeping it) needs to be
      clamped to single-digit precision, to make sure we don't set up
@@ -557,13 +545,16 @@ cc_flw_get_font_id(const char * fontname, unsigned int sizey,
 
   /* Don't create font if one has already been created for this name
      and size. */
-  idx = flw_find_font(fontname, sizey, angle, complexity);
-
-  if (idx != -1) { return idx; }
-
-  font = NULL;
-
+  flw_initialize();
+  angle = coin_font_normalize_angle(angle);
   FLW_MUTEX_LOCK(flw_global_lock);
+  idx = flw_find_font(fontname, sizey, angle, complexity);
+  if (idx != -1) {
+    if (acquire) ++flw_fontidx2fontptr(idx)->refcount;
+    FLW_MUTEX_UNLOCK(flw_global_lock);
+    return idx;
+  }
+  font = NULL;
 
   /* Avoid having the underlying font import libraries try to find a
      best match for "defaultFont" (and get a positive result for some
@@ -585,7 +576,7 @@ cc_flw_get_font_id(const char * fontname, unsigned int sizey,
   fs->glyphdict = cc_dict_construct(256, 0.7f);
   if (fs->glyphdict == NULL) coin_oom_abort("cc_flw_get_font_id glyph cache");
   fs->fontindex = flw_global_font_index++;
-  fs->refcount = 0;
+  fs->refcount = acquire ? 1 : 0;
   fs->requestname = cc_string_construct_new();
   cc_string_set_text(fs->requestname, fontname);
   fs->fontname = cc_string_construct_new();
@@ -625,13 +616,26 @@ cc_flw_get_font_id(const char * fontname, unsigned int sizey,
        trying to match as close as possible to the requested size.
     */
     cc_string_set_text(fs->fontname, "defaultFont");
-    fs->angle = 0.0f;
+    fs->angle = angle;
   }
 
   cc_dynarray_append(fontarray, fs);
 
+  idx = fs->fontindex;
   FLW_MUTEX_UNLOCK(flw_global_lock);
-  return fs->fontindex;
+  return idx;
+}
+
+int
+cc_flw_get_font_id(const char * name, unsigned int size, float angle, float complexity)
+{
+  return flw_get_font_id(name, size, angle, complexity, FALSE);
+}
+
+int
+cc_flw_get_font_id_and_ref(const char * name, unsigned int size, float angle, float complexity)
+{
+  return flw_get_font_id(name, size, angle, complexity, TRUE);
 }
 
 /*!
@@ -908,11 +912,9 @@ cc_flw_done_glyph(int fontidx, unsigned int glyphidx)
 struct cc_font_bitmap *
 cc_flw_get_bitmap(int font, unsigned int glyph)
 {
-  unsigned char * buf;
   struct cc_flw_font * fs;
   struct cc_flw_glyph * gs;
   struct cc_font_bitmap * bm = NULL;
-  unsigned int i;
 
   FLW_MUTEX_LOCK(flw_global_lock);
 
@@ -936,22 +938,17 @@ cc_flw_get_bitmap(int font, unsigned int glyph)
       }
     }
 
+    if (bm && !coin_font_bitmap_flip(*bm)) {
+      // Reject invalid backend dimensions/storage before any consumer sees it.
+      free(bm->buffer);
+      free(bm);
+      bm = NULL;
+    }
     if (!bm) {
       /* glyph handle == char value in default font. &255 to avoid
          index out of range. */
       bm = get_default_bitmap(gs->nativeglyphidx & 0xff, (float)fs->sizey);
       gs->fromdefaultfont = TRUE;
-    }
-    else if (bm->buffer) {
-      buf = (unsigned char *)malloc(size_t(bm->pitch) * size_t(bm->rows));
-      /* Copy & reverse buffer to OpenGL "up" direction. */
-      for (i = 0; i < bm->rows; i++) {
-        (void)memcpy(buf + i*bm->pitch,
-                     bm->buffer + (bm->rows-i-1) * bm->pitch,
-                     bm->pitch);
-      }
-      free(bm->buffer);
-      bm->buffer = buf;
     }
 
     gs->bitmap = bm;
