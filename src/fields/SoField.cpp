@@ -108,6 +108,7 @@
 */
 
 #include <Inventor/fields/SoField.h>
+#include "engines/SoEngineEvaluationP.h"
 
 #include <cassert>
 #include <cstring>
@@ -156,6 +157,18 @@ inline unsigned int SbHashFunc(const void * key) noexcept
 #define SOFIELD_RECUNLOCK
 
 #endif // !COIN_THREADSAFE
+
+namespace {
+// Keep the recursive field mutex balanced on recursive returns and exceptions.
+class SoFieldEvaluationLock {
+public:
+  SoFieldEvaluationLock() { SOFIELD_RECLOCK; }
+  ~SoFieldEvaluationLock() { SOFIELD_RECUNLOCK; }
+private:
+  SoFieldEvaluationLock(const SoFieldEvaluationLock &);
+  SoFieldEvaluationLock & operator=(const SoFieldEvaluationLock &);
+};
+}
 
 static const int SOFIELD_GET_STACKBUFFER_SIZE = 1024;
 // need one static mutex for field_buffer in SoField::get(SbString &)
@@ -1489,9 +1502,7 @@ SoField::notify(SoNotList * nlist)
   if (rec) {
     SoNotRec::Type t = nlist->getLastRec()->getType();
     if (t == SoNotRec::ENGINE || t == SoNotRec::FIELD) {
-      if (this->hasExtendedStorage()) {
-        this->storage->lastnotify = static_cast<void *>(rec->getBase());
-      }
+      this->recordConnectionSource(rec->getBase());
       // don't process the notification if we're notified from a
       // connection, and connection is disabled (through
       // enableConnection())
@@ -1598,7 +1609,8 @@ SoField::enableNotify(SbBool on)
 SbBool
 SoField::isNotifyEnabled(void) const
 {
-  return this->getStatus(FLAG_DONOTIFY);
+  return this->getStatus(FLAG_DONOTIFY) &&
+    !coin_engine_suppresses_notifications(this);
 }
 
 // Makes an extended storage block on first connection.
@@ -2180,7 +2192,7 @@ SoField::evaluateField(void) const
   assert(this->storage != NULL);
 
   // lock _before_ testing FLAG_ISEVALUATING to be thread safe
-  SOFIELD_RECLOCK;
+  SoFieldEvaluationLock lock;
   // Recursive calls to SoField::evaluate() should _absolutely_ not
   // happen, as the state of the field variables might not be
   // consistent while evaluating.
@@ -2201,7 +2213,6 @@ SoField::evaluateField(void) const
                        "We strongly advise you to investigate and resolve "
                        "this issue before moving on.");
 #endif // COIN_DEBUG
-    SOFIELD_RECUNLOCK;
     return;
   }
 
@@ -2216,12 +2227,20 @@ SoField::evaluateField(void) const
   // pederb, 2002-10-04
   if (this->getStatus(FLAG_NEEDEVALUATION) && this->getStatus(FLAG_ENABLECONNECTS)) {
     that->setStatusBits(FLAG_ISEVALUATING);
-    this->evaluateConnection();
+    try {
+      this->evaluateConnection();
+    }
+    catch (...) {
+      // An override may have changed the value and cleared dirty before
+      // throwing. Leave the connection available for a later retry.
+      that->setDirty(TRUE);
+      that->clearStatusBits(FLAG_ISEVALUATING);
+      throw;
+    }
     that->clearStatusBits(FLAG_ISEVALUATING);
     // this will clear the NEEDEVALUATION flag
     that->setDirty(FALSE);
   }
-  SOFIELD_RECUNLOCK;
 }
 
 /*!
@@ -2242,6 +2261,12 @@ SoField::setDirty(SbBool dirty)
 {
   COIN_CHECK_THREAD();
   (void) this->changeStatusBits(FLAG_NEEDEVALUATION, dirty);
+}
+
+void
+SoField::recordConnectionSource(SoBase * source)
+{
+  if (this->hasExtendedStorage()) this->storage->lastnotify = source;
 }
 
 /*!
@@ -2509,9 +2534,13 @@ SoField::evaluateConnection(void) const
           SoField * that = const_cast<SoField *>(this); // cast away const
           // Copy data. Disable notification first since notification
           // has already been sent from the master.
-          SbBool oldnotify = that->enableNotify(FALSE);
+          struct RestoreNotifications {
+            SoField & field;
+            const SbBool enabled;
+            ~RestoreNotifications() { (void) this->field.enableNotify(this->enabled); }
+          };
+          const RestoreNotifications restore{*that, that->enableNotify(FALSE)};
           that->copyFrom(*master);
-          (void) that->enableNotify(oldnotify);
         }
       }
     }

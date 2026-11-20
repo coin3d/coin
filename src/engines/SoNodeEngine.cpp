@@ -56,7 +56,9 @@
 // pederb, 2001-10-23
 
 #include <Inventor/engines/SoNodeEngine.h>
+#include <Inventor/engines/SoEngine.h>
 #include <Inventor/engines/SoEngineOutput.h>
+#include "engines/SoEngineEvaluationP.h"
 #include <Inventor/engines/SoOutputData.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/SbName.h>
@@ -87,6 +89,142 @@
 SoType SoNodeEngine::classTypeId STATIC_SOTYPE_INIT;
 
 #define FLAG_ISNOTIFYING 0x1
+// A notification suspends every active scope, since callbacks may change
+// connections of any engine on the evaluation stack, including SoEngine.
+CoinEngineEvaluation::CoinEngineEvaluation(SoNodeEngine * engine,
+                                         const SoEngineOutputData * outputs)
+  : engine(engine), outputs(outputs), engineFlags(NULL), dirtyMask(0), prepared(0), nodeEngine(true),
+    active(true), emergency(false), dirtyPending(false), suspendedBy(NULL), previous(current)
+{ current = this; }
+
+CoinEngineEvaluation::CoinEngineEvaluation(SoEngine * engine,
+                                         const SoEngineOutputData * outputs,
+                                         unsigned int & flags, unsigned int dirty)
+  : engine(engine), outputs(outputs), engineFlags(&flags), dirtyMask(dirty), prepared(0), nodeEngine(false),
+    active(true), emergency(false), dirtyPending(false), suspendedBy(NULL), previous(current)
+{ current = this; }
+
+CoinEngineEvaluation::~CoinEngineEvaluation()
+{ current = this->previous; }
+
+SoEngineOutput *
+CoinEngineEvaluation::output(int index) const
+{
+  return this->nodeEngine
+    ? this->outputs->getOutput(static_cast<SoNodeEngine *>(this->engine), index)
+    : this->outputs->getOutput(static_cast<SoEngine *>(this->engine), index);
+}
+
+void
+CoinEngineEvaluation::prepare()
+{
+  this->active = true;
+  this->emergency = false;
+  const int n = this->outputs->getNumOutputs();
+  for (; this->prepared < n; ++this->prepared) this->output(this->prepared)->prepareToWrite();
+}
+
+void
+CoinEngineEvaluation::finish()
+{
+  while (this->prepared > 0) this->output(--this->prepared)->doneWriting();
+  this->active = false;
+  this->emergency = false;
+  // A callback may have evaluated this engine and consumed its dirty bit.
+  // This older evaluator can still overwrite that result with captured input,
+  // so its pending invalidation must survive until its own scope finishes.
+  if (this->dirtyPending) *this->engineFlags |= this->dirtyMask;
+}
+
+CoinEngineEvaluation *
+CoinEngineEvaluation::find(const SoFieldContainer * engine)
+{
+  for (CoinEngineEvaluation * scope = current; scope; scope = scope->previous) {
+    if (scope->engine == engine && scope->active) return scope;
+  }
+  return NULL;
+}
+
+SbBool
+CoinEngineEvaluation::suppresses(const SoField * field)
+{
+  for (CoinEngineEvaluation * scope = current; scope; scope = scope->previous) {
+    if (!scope->active || !scope->emergency) continue;
+    const int n = scope->outputs->getNumOutputs();
+    for (int i = 0; i < n; ++i) {
+      SoEngineOutput * output = scope->output(i);
+      for (int j = 0; j < output->getNumConnections(); ++j) {
+        if ((*output)[j] == field) return TRUE;
+      }
+    }
+  }
+  return FALSE;
+}
+thread_local CoinEngineEvaluation * CoinEngineEvaluation::current = NULL;
+
+void
+CoinEngineEvaluation::invalidate()
+{
+  if (this->engineFlags) {
+    this->dirtyPending = true;
+    *this->engineFlags |= this->dirtyMask;
+  }
+  const int n = this->outputs->getNumOutputs();
+  for (int i = 0; i < n; ++i) this->output(i)->touchSlaves(NULL, FALSE);
+}
+
+CoinEngineNotification::CoinEngineNotification() : top(CoinEngineEvaluation::current)
+{
+  // Unwind newest to oldest, including scopes of other engines and
+  // shared slaves. Already suspended scopes belong to an outer callback.
+  for (CoinEngineEvaluation * scope = top; scope; scope = scope->previous) {
+    if (scope->active) {
+      scope->finish();
+      scope->invalidate();
+      scope->suspendedBy = this;
+    }
+  }
+}
+
+void
+CoinEngineNotification::resume()
+{
+  try { this->prepareOldest(this->top); }
+  catch (...) {
+    // evaluate() may catch this allocation failure and continue writing.
+    // Roll back every partial snapshot, then suppress notifications by
+    // membership in these scopes. This fallback allocates nothing and
+    // leaves the fields' original notification flags untouched.
+    for (CoinEngineEvaluation * scope = top; scope; scope = scope->previous) {
+      if (scope->suspendedBy == this) scope->finish();
+    }
+    for (CoinEngineEvaluation * scope = top; scope; scope = scope->previous) {
+      if (scope->suspendedBy == this) {
+        scope->active = true;
+        scope->emergency = true;
+        scope->suspendedBy = NULL;
+      }
+    }
+    throw;
+  }
+  for (CoinEngineEvaluation * scope = top; scope; scope = scope->previous) {
+    if (scope->suspendedBy == this) scope->suspendedBy = NULL;
+  }
+}
+
+void
+CoinEngineNotification::prepareOldest(CoinEngineEvaluation * scope)
+{
+  if (!scope) return;
+  this->prepareOldest(scope->previous);
+  if (scope->suspendedBy == this) scope->prepare();
+}
+
+SbBool
+coin_engine_suppresses_notifications(const SoField * field)
+{
+  return CoinEngineEvaluation::suppresses(field);
+}
 
 // *************************************************************************
 
@@ -233,30 +371,68 @@ SoNodeEngine::notify(SoNotList * nl)
   // Avoid recursive notification calls.
   if (this->isNotifying()) return;
 
-  this->flags |= FLAG_ISNOTIFYING;
+  // Keep the reentry guard scoped even when user callbacks throw.
+  struct NotifyGuard {
+    explicit NotifyGuard(unsigned int & flags) : flags(flags) {
+      this->flags |= FLAG_ISNOTIFYING;
+    }
+    ~NotifyGuard() { this->flags &= ~FLAG_ISNOTIFYING; }
+    unsigned int & flags;
+  } guard(this->flags);
 
-  // Call inputChanged() only if we're being notified through one of
-  // the engine's fields (lastrec == CONTAINER, set in
-  // SoField::notify()).
-  SoNotRec * lastrec = nl->getLastRec();
-  if (lastrec && lastrec->getType() == SoNotRec::CONTAINER) {
-    // Let engine know that a field changed, so we can recalculate
-    // internal variables, if necessary.
-    this->inputChanged(nl->getLastField());
+  const bool evaluating = CoinEngineEvaluation::find(this) != NULL;
+  CoinEngineNotification notification;
+  try {
+    // Call inputChanged() only if we're being notified through one of
+    // the engine's fields (lastrec == CONTAINER, set in
+    // SoField::notify()).
+    SoNotRec * lastrec = nl->getLastRec();
+    if (lastrec && lastrec->getType() == SoNotRec::CONTAINER) {
+      // Let engine know that a field changed, so we can recalculate
+      // internal variables, if necessary.
+      this->inputChanged(nl->getLastField());
+    }
+
+    // Keep the scene graph and output branches separate. In particular,
+    // SoFieldContainer::notify() must not receive an ENGINE record, and
+    // neither caller list may retain a pointer to our stack records.
+    SoNotList outputlist(nl);
+    SoNotRec rec(createNotRec());
+    rec.setType(SoNotRec::ENGINE);
+    outputlist.append(&rec);
+
+    SoNotList nodelist(nl);
+    SoNotRec noderec(createNotRec());
+    if (!lastrec || (lastrec->getType() != SoNotRec::CONTAINER &&
+                     lastrec->getType() != SoNotRec::PARENT)) {
+      noderec.setType(SoNotRec::CONTAINER);
+      nodelist.append(&noderec);
+    }
+    // Notify the slave fields connected to our engine outputs.
+    const SoEngineOutputData * outputs = this->getOutputData();
+    int numoutputs = outputs ? outputs->getNumOutputs() : 0;
+    // During evaluation slave notifications were already suppressed by
+    // prepareToWrite(). Suspending that preparation must not expose a
+    // partially evaluated value to field observers; only mark them dirty.
+    // Keep the origin during temporary suppression, but not explicit muting.
+    SoNotList * outputorigin = this->isNotifyEnabled() ? &outputlist : NULL;
+    for (int i = 0; i < numoutputs; i++)
+      outputs->getOutput(this, i)->touchSlaves(outputorigin, outputorigin && !evaluating);
+
+    // Notify the node only after its outputs have been touched. A parent
+    // or auditor can read connected fields synchronously during notify(),
+    // so their cached values must already be dirty. Keep the origin list
+    // above, rather than forwarding the ENGINE branch to SoNode.
+    // The shared timestamp deduplicates ancestors reached by both paths.
+    inherited::notify(&nodelist);
   }
-
-  // add ourself to the notification list
-  SoNotRec rec(createNotRec());
-  rec.setType(SoNotRec::ENGINE);
-  nl->append(&rec);
-
-  // Notify the slave fields connected to our engine outputs.
-  const SoEngineOutputData * outputs = this->getOutputData();
-  int numoutputs = outputs->getNumOutputs();
-  for (int i = 0; i < numoutputs; i++)
-    outputs->getOutput(this, i)->touchSlaves(nl, this->isNotifyEnabled());
-
-  this->flags &= ~FLAG_ISNOTIFYING;
+  catch (...) {
+    // evaluate() may catch the callback exception and continue writing.
+    // Rebuild its preparation state using the current connection lists.
+    notification.resume();
+    throw;
+  }
+  notification.resume();
 
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoNodeEngine::notify", "%p - %s, done",
@@ -271,14 +447,24 @@ void
 SoNodeEngine::evaluateWrapper(void)
 {
   const SoEngineOutputData * outputs = this->getOutputData();
-  int i, n = outputs->getNumOutputs();
-  for (i = 0; i < n; i++) {
-    outputs->getOutput(this, i)->prepareToWrite();
+  if (outputs == NULL) return;
+
+  // Direct recursive evaluations share the active preparation. Graph
+  // notifications suspend it before invoking application callbacks.
+  if (CoinEngineEvaluation::find(this)) {
+    this->evaluate();
+    return;
   }
-  this->evaluate();
-  for (i = 0; i < n; i++) {
-    outputs->getOutput(this, i)->doneWriting();
+  CoinEngineEvaluation evaluation(this, outputs);
+  try {
+    evaluation.prepare();
+    this->evaluate();
   }
+  catch (...) {
+    evaluation.finish();
+    throw;
+  }
+  evaluation.finish();
 }
 
 /*!

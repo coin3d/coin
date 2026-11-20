@@ -61,6 +61,7 @@
 #include <Inventor/engines/SoEngine.h>
 
 #include "SbBasicP.h"
+#include "engines/SoEngineEvaluationP.h"
 
 #include <Inventor/engines/SoEngines.h>
 #include <Inventor/engines/SoNodeEngine.h>
@@ -317,35 +318,49 @@ SoEngine::notify(SoNotList * nl)
   // Avoid recursive notification calls.
   if (this->isNotifying()) return;
 
-  this->flags |= FLAG_ISNOTIFYING;
+  // Keep the reentry guard scoped even when user callbacks throw.
+  struct NotifyGuard {
+    explicit NotifyGuard(unsigned int & flags) : flags(flags) {
+      this->flags |= FLAG_ISNOTIFYING;
+    }
+    ~NotifyGuard() { this->flags &= ~FLAG_ISNOTIFYING; }
+    unsigned int & flags;
+  } guard(this->flags);
 
-  // The notification invocation could stem from a value change in
-  // whatever this engine is connected to, so we need to be evaluated
-  // on the next attempted read on our output(s).
-  this->flags |= FLAG_ISDIRTY;
+  const bool evaluating = CoinEngineEvaluation::find(this) != NULL;
+  CoinEngineNotification notification;
+  try {
+    // The notification invocation could stem from a value change in
+    // whatever this engine is connected to, so we need to be evaluated
+    // on the next attempted read on our output(s).
+    this->flags |= FLAG_ISDIRTY;
 
-  // Call inputChanged() only if we're being notified through one of
-  // the engine's fields (lastrec == CONTAINER, set in
-  // SoField::notify()).
-  SoNotRec * lastrec = nl->getLastRec();
-  if (lastrec && lastrec->getType() == SoNotRec::CONTAINER) {
-    // Let engine know that a field changed, so we can recalculate
-    // internal variables, if necessary.
-    this->inputChanged(nl->getLastField());
+    // Call inputChanged() only if we're being notified through one of
+    // the engine's fields (lastrec == CONTAINER, set in
+    // SoField::notify()).
+    SoNotRec * lastrec = nl->getLastRec();
+    if (lastrec && lastrec->getType() == SoNotRec::CONTAINER) {
+      // Let engine know that a field changed, so we can recalculate
+      // internal variables, if necessary.
+      this->inputChanged(nl->getLastField());
+    }
+
+    // add ourself to the notification list
+    SoNotRec rec(createNotRec());
+    rec.setType(SoNotRec::ENGINE);
+    nl->append(&rec);
+
+    // Notify the slave fields connected to our engine outputs.
+    const SoEngineOutputData * outputs = this->getOutputData();
+    int numoutputs = outputs ? outputs->getNumOutputs() : 0;
+    // Explicit muting invalidates the cache without selecting this source.
+    for (int i = 0; i < numoutputs; i++) {
+      SoNotList * outputorigin = this->isNotifyEnabled() ? nl : NULL;
+      outputs->getOutput(this, i)->touchSlaves(outputorigin, outputorigin && !evaluating);
+    }
   }
-
-  // add ourself to the notification list
-  SoNotRec rec(createNotRec());
-  rec.setType(SoNotRec::ENGINE);
-  nl->append(&rec);
-
-  // Notify the slave fields connected to our engine outputs.
-  const SoEngineOutputData * outputs = this->getOutputData();
-  int numoutputs = outputs->getNumOutputs();
-  for (int i = 0; i < numoutputs; i++)
-    outputs->getOutput(this, i)->touchSlaves(nl, this->isNotifyEnabled());
-
-  this->flags &= ~FLAG_ISNOTIFYING;
+  catch (...) { notification.resume(); throw; }
+  notification.resume();
 
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoEngine::notify", "%p - %s, done",
@@ -373,14 +388,24 @@ SoEngine::evaluateWrapper(void)
 
   this->flags &= ~FLAG_ISDIRTY;
 
-  int i, n = outputs->getNumOutputs();
-  for (i = 0; i < n; i++) {
-    outputs->getOutput(this, i)->prepareToWrite();
+  // A direct recursive evaluation reuses the active preparation. Node
+  // notification callbacks suspend all scopes before invoking user code.
+  if (CoinEngineEvaluation::find(this)) {
+    try { this->evaluate(); }
+    catch (...) { this->flags |= FLAG_ISDIRTY; throw; }
+    return;
   }
-  this->evaluate();
-  for (i = 0; i < n; i++) {
-    outputs->getOutput(this, i)->doneWriting();
+  CoinEngineEvaluation evaluation(this, outputs, this->flags, FLAG_ISDIRTY);
+  try {
+    evaluation.prepare();
+    this->evaluate();
   }
+  catch (...) {
+    this->flags |= FLAG_ISDIRTY;
+    evaluation.finish();
+    throw;
+  }
+  evaluation.finish();
 }
 
 /*!
