@@ -102,6 +102,8 @@ SoTextDetail::getStringIndex(void) const
 
 /*!
   Returns the index of the character in the string which was hit.
+  For UTF-8 SoText2 strings, this counts decoded Unicode characters, not bytes.
+  Combining characters count separately; this is not a grapheme index.
 
   \sa getStringIndex()
 */

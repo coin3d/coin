@@ -629,7 +629,8 @@ SoText2::rayPick(SoRayPickAction * action)
 
     // find the character
     int charidx = -1;
-    int strlength = this->string[stringidx].getLength();
+    // The glyph cache stores one position per decoded Unicode character.
+    const int strlength = PRIVATE(this)->positions[stringidx].getLength();
     short minx, miny, maxx, maxy;
     PRIVATE(this)->bbox.getBounds(minx, miny, maxx, maxy);
     float bbwidth = (float)(maxx - minx);
