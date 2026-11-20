@@ -185,8 +185,16 @@ int main(int argc, char ** argv)
   REQUIRE(argc == 2); fielddb::init();
   if (!std::strcmp(argv[1], "field-failure")) propagationFailure(false);
   else if (!std::strcmp(argv[1], "base-failure")) propagationFailure(true);
-  else if (!std::strncmp(argv[1], "end-", 4)) endCallbackFailure(argv[1]);
-  else if (!std::strncmp(argv[1], "nested-", 7)) nested(argv[1]);
-  else normal();
+  else if (!std::strcmp(argv[1], "end-field") ||
+           !std::strcmp(argv[1], "end-base") ||
+           !std::strcmp(argv[1], "end-direct")) endCallbackFailure(argv[1]);
+  else if (!std::strcmp(argv[1], "nested-field-success") ||
+           !std::strcmp(argv[1], "nested-base-success") ||
+           !std::strcmp(argv[1], "nested-field-caught") ||
+           !std::strcmp(argv[1], "nested-base-caught") ||
+           !std::strcmp(argv[1], "nested-field-escape") ||
+           !std::strcmp(argv[1], "nested-base-escape")) nested(argv[1]);
+  else if (!std::strcmp(argv[1], "normal")) normal();
+  else REQUIRE(false && "unknown notification session test case");
   return 0;
 }
