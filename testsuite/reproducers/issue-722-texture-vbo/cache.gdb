@@ -4,9 +4,10 @@ set breakpoint pending on
 set $cache_builds = 0
 set $bbox_builds = 0
 set $texture_uploads = 0
+set $texture_updates = 0
 set $first_context = -1
 set $second_context = -1
-break SoVertexArrayTexCoordCache::SoVertexArrayTexCoordCache
+break SoVertexArrayTexCoordCache::generate
 commands
 silent
 set $cache_builds = $cache_builds + 1
@@ -40,5 +41,15 @@ end
 end
 continue
 end
+break cc_glglue_glBufferSubData
+commands
+silent
+if target == 0x8892 && (size == 5408 || size == 5824)
+set $texture_uploads = $texture_uploads + 1
+set $texture_updates = $texture_updates + 1
+end
+continue
+end
 run
 printf "CACHE_BUILDS=%d BBOX_BUILDS=%d TEXTURE_UPLOADS=%d TWO_CONTEXTS=%d\n", $cache_builds, $bbox_builds, $texture_uploads, ($first_context != -1 && $second_context != -1 && $first_context != $second_context)
+printf "TEXTURE_UPDATES=%d\n", $texture_updates

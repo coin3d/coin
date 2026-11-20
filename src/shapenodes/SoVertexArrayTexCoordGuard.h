@@ -122,8 +122,9 @@ private:
 /*!
   Keeps the per-shape default mapping alive through one array draw.
   Callers apply SoVertexArrayTexCoordGuard::isAffordable() before using it.
-  Entries are released on replacement, notification or shape destruction;
-  active draws retain ownership. This is a per-shape, not global, budget.
+  Notifications invalidate the mapping. An entry can reuse its array and GL
+  allocation when no active draw owns it; otherwise it is replaced. Shape
+  destruction releases retained entries. This is a per-shape, not global, budget.
   The separate type preserves the temporary guard's layout and entry points.
 */
 class SoCachedVertexArrayTexCoordGuard {

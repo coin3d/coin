@@ -53,6 +53,8 @@ class SoVBO {
   static void init(void);
 
   void setBufferData(const GLvoid * data, intptr_t size, SbUniqueId dataid = 0);
+  void updateBufferData(const GLvoid * data, intptr_t size, SbUniqueId dataid,
+                        uint32_t contextid);
   void * allocBufferData(intptr_t size, SbUniqueId dataid = 0);
   SbUniqueId getBufferDataId(void) const;
   void getBufferData(const GLvoid *& data, intptr_t & size);

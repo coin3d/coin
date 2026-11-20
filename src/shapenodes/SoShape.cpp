@@ -210,15 +210,16 @@ SoVertexArrayTexCoordGuard::~SoVertexArrayTexCoordGuard()
   }
 
 
-// Immutable coordinate data can outlive the shape's most recent traversal.
-// Only the lazily created GL buffer and its context map require locking.
+// Coordinate data shared with an active traversal is immutable. An exclusively
+// owned entry can recycle its allocation when the mapping changes.
 class SoVertexArrayTexCoordCache {
 public:
   SoVertexArrayTexCoordCache(SbUniqueId shapeid, SbUniqueId coordinateid,
                             int count, SbBool is3d, unsigned int mappingflags, int dim0, int dim1,
                             const SbVec2f & origin, const SbVec2f & size)
     : shapeid(shapeid), coordinateid(coordinateid), count(count), is3d(is3d),
-      mappingflags(mappingflags), dim0(dim0), dim1(dim1), origin(origin), size(size) {}
+      mappingflags(mappingflags), dim0(dim0), dim1(dim1), origin(origin), size(size),
+      vbodirty(TRUE) {}
 
   SbBool matches(SbUniqueId shapeid, SbUniqueId coordinateid,
                  int count, SbBool is3d, unsigned int mappingflags, int dim0, int dim1,
@@ -231,6 +232,34 @@ public:
       this->origin == origin && this->size == size;
   }
 
+  void generate(SoState * state, const SoCoordinateElement * coords,
+                SbUniqueId shapeid, unsigned int mappingflags, int dim0, int dim1,
+                const SbVec2f & origin, const SbVec2f & size)
+  {
+    // No traversal can refer to this entry while its storage is rewritten.
+    this->vbodirty = TRUE;
+    this->shapeid = shapeid;
+    this->coordinateid = coords->getNodeId();
+    this->count = coords->getNum();
+    this->is3d = coords->is3D();
+    this->mappingflags = mappingflags;
+    this->dim0 = dim0;
+    this->dim1 = dim1;
+    this->origin = origin;
+    this->size = size;
+    // Do not retain a formerly larger array after the source shrinks.
+    if (this->coordinates.capacity() != static_cast<size_t>(this->count)) {
+      std::vector<SbVec2f>(this->count).swap(this->coordinates);
+    }
+    const SoMultiTextureCoordinateElement * element =
+      SoMultiTextureCoordinateElement::getInstance(state);
+    const SbVec3f normal(0.0f, 0.0f, 1.0f);
+    for (int i = 0; i < this->count; ++i) {
+      const SbVec4f & uv = element->get(0, coords->get3(i), normal);
+      this->coordinates[i].setValue(uv[0], uv[1]);
+    }
+  }
+
   SbUniqueId shapeid, coordinateid;
   int count;
   SbBool is3d;
@@ -239,6 +268,7 @@ public:
   SbVec2f origin, size;
   std::vector<SbVec2f> coordinates;
   std::unique_ptr<SoVBO> vbo;
+  SbBool vbodirty;
   SbMutex mutex;
 };
 
@@ -285,6 +315,23 @@ void clearDefaultTextureStorage(const SoShape * shape)
     }
   }
   // GL resource cleanup and cache unref callbacks run without registry locks.
+}
+void invalidateDefaultTextureStorage(const SoShape * shape)
+{
+  if (!defaulttextureregistry) return;
+  std::shared_ptr<DefaultTextureStorage> storage;
+  {
+    std::lock_guard<std::mutex> lock(defaulttextureregistry->mutex);
+    const auto it = defaulttextureregistry->entries.find(shape);
+    if (it != defaulttextureregistry->entries.end()) storage = it->second;
+  }
+  std::shared_ptr<SoDefaultTextureBBoxCache> old;
+  if (storage) {
+    std::lock_guard<std::mutex> lock(storage->mutex);
+    old.swap(storage->bounds);
+    // Node ids invalidate the UV mapping. Keep its allocation for the next
+    // traversal; active traversals keep ownership of their previous mapping.
+  }
 }
 }
 
@@ -434,27 +481,30 @@ SoCachedVertexArrayTexCoordGuard::SoCachedVertexArrayTexCoordGuard(
   const SbVec2f origin(bundle.defaultorigo[0], bundle.defaultorigo[1]);
   const SbVec2f size(bundle.defaultsize[0], bundle.defaultsize[1]);
 
-  // Copy ownership under the storage lock; release it before evaluating
-  // coordinates or drawing in a GL context.
+  // Claim a stale entry only when no active traversal owns it. Release the
+  // storage lock before evaluating coordinates or drawing in a GL context.
   const auto storage = defaultTextureStorage(shape);
   {
     std::lock_guard<std::mutex> lock(storage->mutex);
-    this->cache = storage->coordinates;
+    if (storage->coordinates && storage->coordinates.use_count() == 1 &&
+        !storage->coordinates->matches(shapeid, coordinateid, count, coords->is3D(),
+                                        bundle.flags, bundle.defaultdim0, bundle.defaultdim1,
+                                        origin, size)) {
+      this->cache.swap(storage->coordinates);
+    }
+    else this->cache = storage->coordinates;
   }
   if (!this->cache ||
       !this->cache->matches(shapeid, coordinateid, count, coords->is3D(),
                             bundle.flags, bundle.defaultdim0, bundle.defaultdim1, origin, size)) {
-    this->cache = std::make_shared<SoVertexArrayTexCoordCache>(
-      shapeid, coordinateid, count, coords->is3D(),
-      bundle.flags, bundle.defaultdim0, bundle.defaultdim1, origin, size);
-    this->cache->coordinates.resize(count);
-    const SoMultiTextureCoordinateElement * element =
-      SoMultiTextureCoordinateElement::getInstance(state);
-    const SbVec3f normal(0.0f, 0.0f, 1.0f);
-    for (int i = 0; i < count; ++i) {
-      const SbVec4f & uv = element->get(0, coords->get3(i), normal);
-      this->cache->coordinates[i].setValue(uv[0], uv[1]);
+    if (!this->cache || this->cache.use_count() != 1) {
+      this->cache = std::make_shared<SoVertexArrayTexCoordCache>(
+        shapeid, coordinateid, count, coords->is3D(),
+        bundle.flags, bundle.defaultdim0, bundle.defaultdim1, origin, size);
     }
+    this->locked = std::unique_lock<SbMutex>(this->cache->mutex);
+    this->cache->generate(state, coords, shapeid, bundle.flags,
+                           bundle.defaultdim0, bundle.defaultdim1, origin, size);
     std::shared_ptr<SoVertexArrayTexCoordCache> old;
     {
       std::lock_guard<std::mutex> lock(storage->mutex);
@@ -465,10 +515,21 @@ SoCachedVertexArrayTexCoordGuard::SoCachedVertexArrayTexCoordGuard(
 
   // SoVBO maintains a mutable context map. Keep concurrent draws using this
   // cache serialized, without preventing other shapes from rendering.
-  this->locked = std::unique_lock<SbMutex>(this->cache->mutex);
+  if (!this->locked.owns_lock()) {
+    this->locked = std::unique_lock<SbMutex>(this->cache->mutex);
+  }
   const uint32_t contextid = SoGLCacheContextElement::get(state);
   const SbBool usevbo = SoVBO::shouldCreateVBO(state, contextid, count);
-  if (!this->cache->vbo && usevbo) {
+  if (this->cache->vbodirty) {
+    if (usevbo) {
+      if (!this->cache->vbo) this->cache->vbo.reset(new SoVBO);
+      this->cache->vbo->updateBufferData(this->cache->coordinates.data(),
+                                       count * sizeof(SbVec2f), shapeid, contextid);
+    }
+    else this->cache->vbo.reset();
+    this->cache->vbodirty = FALSE;
+  }
+  else if (!this->cache->vbo && usevbo) {
     this->cache->vbo.reset(new SoVBO);
     this->cache->vbo->setBufferData(this->cache->coordinates.data(),
                                    count * sizeof(SbVec2f), shapeid);
@@ -1671,7 +1732,7 @@ void
 SoShape::notify(SoNotList * nl)
 {
   inherited::notify(nl);
-  clearDefaultTextureStorage(this);
+  invalidateDefaultTextureStorage(this);
   PRIVATE(this)->lock();
   if (PRIVATE(this)->bboxcache) {
     PRIVATE(this)->bboxcache->invalidate();

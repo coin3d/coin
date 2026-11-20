@@ -59,12 +59,15 @@ foram todos compilados ou executados nesta etapa.
 Preparação local de 2026-11-19: o cache é aplicado sobre master + o head
 atual da #833. As chamadas a isAffordable() foram preservadas, incluindo o
 limite em bytes derivado de sizeof(SbVec4f) e a proporção por vértices usados.
-Uma entrada de UVs SbVec2f é retida por shape elegível. Notificações retiram
-as entradas retidas; draws ativos mantêm referências e a liberação ocorre
-fora do lock global. Não há um orçamento global para todos os shapes.
+Uma entrada de UVs SbVec2f é retida por shape elegível. Notificações invalidam
+o mapeamento; draws ativos mantêm referências e a liberação ocorre fora do
+lock global. Uma entrada sem draws ativos reaproveita seu vetor na próxima
+geração de mesmo tamanho. Ao mudar o tamanho, o vetor é substituído para não
+reter a capacidade de uma fonte maior. Não há um orçamento global para todos
+os shapes.
 
 A estrutura de cache fica em um registro externo, removido quando o shape é
-notificado ou destruído; o layout de SoShapeP permanece preservado. O guard
+destruído; o layout de SoShapeP permanece preservado. O guard
 temporário conserva seu layout e suas entradas antigas. O caminho de cache
 usa o tipo privado separado SoCachedVertexArrayTexCoordGuard.
 
@@ -90,8 +93,10 @@ COIN_GLXGLUE_NO_PBUFFERS=1 xvfb-run -a sh ./verify-cache-budget.sh \
   /path/to/build/bin/CoinSharedCoordinateBenchmark
 ```
 
-Ele exige zero criações de cache de UV na fonte compartilhada de 410881
-pontos para draws de 4096 vértices e criações positivas na fonte própria.
+Ele exige zero gerações de UV na fonte compartilhada de 410881 pontos para
+draws de 4096 vértices. Nas oito fontes próprias, exige 16 gerações, oito
+entradas alocadas e oito atualizações GL por subdata: a edição reaproveita as
+entradas e os buffers. Construtores e gerações têm contadores separados.
 As medições de desempenho apresentadas abaixo são históricas (2026-10-12);
 não representam uma nova medição de desempenho desta preparação.
 
@@ -120,8 +125,15 @@ xvfb-run -a ./verify-cache.sh /path/to/build/bin/CoinTextureCacheTest
 
 Em Debug, `verify-cache.sh` verifica sete gerações de UV e de bounding box
 em dezesseis quadros por processo: o quadro inalterado reaproveita ambos.
-Para VBO, são quatorze uploads de UV (um por geração em cada contexto);
-para arrays CPU, são zero uploads. São seis execuções / 96 quadros.
+Para VBO, são quatorze uploads de UV (um por geração em cada contexto),
+incluindo atualizações por subdata; o teste exige que haja reaproveitamento.
+Para arrays CPU, são zero uploads. São seis execuções / 96 quadros.
+
+Quando uma entrada exclusiva muda sem alterar o tamanho, o VBO do contexto
+atual é atualizado por `glBufferSubData`. Os outros contextos são invalidados
+e recebem um novo upload no próximo uso. Mudanças de tamanho usam a alocação
+normal. `SoVBO::updateBufferData()` preserva o binding e acrescenta somente
+um método não virtual, sem novos campos ou mudança de layout em `SoVBO`.
 
 ## Comparação de desempenho entre bibliotecas
 

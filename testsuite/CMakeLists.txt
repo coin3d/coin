@@ -60,6 +60,21 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
       ${COIN_TARGET_INCLUDE_DIRECTORIES})
     target_link_libraries(CoinTextureCacheTest Coin)
     find_program(COIN_TEST_XVFB_RUN xvfb-run)
+    add_executable(CoinTextureBufferReuseTest reproducers/issue-722-texture-vbo/buffer-reuse.cpp)
+    target_compile_definitions(CoinTextureBufferReuseTest PRIVATE COIN_INTERNAL)
+    target_include_directories(CoinTextureBufferReuseTest PRIVATE
+      ${PROJECT_SOURCE_DIR}/src ${PROJECT_BINARY_DIR}/src
+      ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+      ${COIN_TARGET_INCLUDE_DIRECTORIES})
+    target_link_libraries(CoinTextureBufferReuseTest Coin OpenGL::GL)
+    if(COIN_TEST_XVFB_RUN)
+      add_test(NAME DefaultTextureBufferReuse COMMAND ${COIN_TEST_XVFB_RUN} -a
+        $<TARGET_FILE:CoinTextureBufferReuseTest>)
+    else()
+      add_test(NAME DefaultTextureBufferReuse COMMAND CoinTextureBufferReuseTest)
+    endif()
+    set_tests_properties(DefaultTextureBufferReuse PROPERTIES TIMEOUT 60
+      ENVIRONMENT "COIN_GLXGLUE_NO_PBUFFERS=1;COIN_GLX_PIXMAP_DIRECT_RENDERING=1")
     if(COIN_TEST_XVFB_RUN)
       add_test(NAME TextureCoordinateArrayRendering
         COMMAND ${COIN_TEST_XVFB_RUN} -a

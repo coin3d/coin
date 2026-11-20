@@ -13,6 +13,10 @@ for vbo in 0 1; do
     uploads=$((14 * vbo))
     expected="CACHE_BUILDS=7 BBOX_BUILDS=7 TEXTURE_UPLOADS=$uploads TWO_CONTEXTS=$vbo"
     if ! grep -q "$expected" "$logfile"; then cat "$logfile"; exit 1; fi
+    if [ "$vbo" -eq 1 ] && ! grep -Eq '^TEXTURE_UPDATES=[1-9][0-9]*$' "$logfile"; then
+      cat "$logfile"; exit 1
+    fi
     printf '%s vbo=%s %s\n' "$source" "$vbo" "$expected"
+    sed -n '/^TEXTURE_UPDATES=/p' "$logfile"
   done
 done

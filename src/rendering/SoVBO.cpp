@@ -271,6 +271,45 @@ SoVBO::setBufferData(const GLvoid * data, intptr_t size, SbUniqueId dataid)
 }
 
 /*!
+  Sets externally owned buffer data, reusing a same-sized GL allocation in
+  the current \a contextid for vertex or index buffers. The caller must make
+  that context current and serialize updates with rendering. Resources in other
+  contexts are invalidated and uploaded lazily on their next bind. The buffer
+  binding for this target is preserved.
+
+  \sa setBufferData()
+*/
+void
+SoVBO::updateBufferData(const GLvoid * data, intptr_t size, SbUniqueId dataid,
+                        uint32_t contextid)
+{
+  GLuint buffer;
+  if ((this->target == GL_ARRAY_BUFFER || this->target == GL_ELEMENT_ARRAY_BUFFER) &&
+      data && size > 0 && size == this->datasize &&
+      this->vbohash.get(contextid, buffer)) {
+    // Detach the reusable resource before invalidating the other contexts.
+    this->vbohash.erase(contextid);
+    try {
+      this->setBufferData(data, size, dataid);
+      this->vbohash.put(contextid, buffer);
+    }
+    catch (...) {
+      SoGLCacheContextElement::scheduleDeleteCallback(
+        contextid, SoVBO::vbo_delete, (void *) ((uintptr_t) buffer));
+      throw;
+    }
+    const cc_glglue * glue = cc_glglue_instance((int) contextid);
+    GLint binding;
+    glGetIntegerv(this->target == GL_ARRAY_BUFFER ? GL_ARRAY_BUFFER_BINDING :
+                  GL_ELEMENT_ARRAY_BUFFER_BINDING, &binding);
+    cc_glglue_glBindBuffer(glue, this->target, buffer);
+    cc_glglue_glBufferSubData(glue, this->target, 0, size, data);
+    cc_glglue_glBindBuffer(glue, this->target, (GLuint) binding);
+  }
+  else this->setBufferData(data, size, dataid);
+}
+
+/*!
   Returns the buffer data id.
 
   \sa setBufferData()
