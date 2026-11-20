@@ -76,8 +76,11 @@ chamadas usam os símbolos Itanium diretamente para não cair em corpos inline.
 
 A chave inclui também os flags do bundle, pois #901 usa flags para distinguir
 representações de extents. Essa mudança não incorpora os ajustes numéricos
-de #901 ou #902. As caixas extremas dessa composição ainda precisam de uma
-validação específica quando essas dependências forem reconciliadas.
+de #901 ou #902. Para validar uma composição que contenha essas correções,
+`COIN_CACHE_SOURCES=wide-bounds` seleciona em `cache.sh` uma caixa extrema
+cuja representação muda por estado herdado, preservando os valores codificados
+de origem e tamanho. A referência calcula as UVs independentemente em double.
+Esse caso opt-in depende da correção numérica da #901; os casos padrão não.
 
 O controle adicional usa o benchmark já existente da #833:
 

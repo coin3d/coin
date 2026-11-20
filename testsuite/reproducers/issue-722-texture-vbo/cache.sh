@@ -5,7 +5,7 @@ if [ -z "${DISPLAY:-}" ]; then exit 77; fi
 export COIN_GLX_PIXMAP_DIRECT_RENDERING=1
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT HUP INT TERM
-for source in property inherited homogeneous shared state empty-bounds; do
+for source in ${COIN_CACHE_SOURCES:-property inherited homogeneous shared state empty-bounds}; do
   for cachemode in uncached cached; do
     COIN_VERTEX_ARRAYS=0 COIN_VBO=0 "$binary" "$source" reference "$cachemode" > "$work/reference"
     for vbo in 0 1; do
