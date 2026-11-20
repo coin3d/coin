@@ -1189,15 +1189,33 @@ void
 SoDB::endNotify(void)
 {
   SoDBP::notificationcounter--;
-  if (SoDBP::notificationcounter == 0) {
-    // Process zero-priority sensors after notification has been done.
-    SoSensorManager * sm = SoDB::getSensorManager();
-    if (sm->isDelaySensorPending()) sm->processImmediateQueue();
+  try {
+    if (SoDBP::notificationcounter == 0) {
+      // Process zero-priority sensors after notification has been done.
+      SoSensorManager * sm = SoDB::getSensorManager();
+      if (sm->isDelaySensorPending()) sm->processImmediateQueue();
+    }
+  }
+  catch (...) {
+#ifdef COIN_THREADSAFE
+    (void) cc_recmutex_internal_notify_unlock();
+#endif // COIN_THREADSAFE
+    throw;
   }
 #ifdef COIN_THREADSAFE
   (void) cc_recmutex_internal_notify_unlock();
 #endif // COIN_THREADSAFE
 
+}
+
+// Finish a failed notification propagation without draining queued sensors.
+void
+SoDBP::abortNotify(void)
+{
+  SoDBP::notificationcounter--;
+#ifdef COIN_THREADSAFE
+  (void) cc_recmutex_internal_notify_unlock();
+#endif // COIN_THREADSAFE
 }
 
 /*!

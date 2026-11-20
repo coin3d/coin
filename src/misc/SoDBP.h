@@ -92,6 +92,7 @@ public:
   static SoTimerSensor * globaltimersensor;
   static UInt32ToInt16Map * converters;
   static int notificationcounter;
+  static void abortNotify(void);
   static SbBool isinitialized;
 
   static SbBool is3dsFile(SoInput * in);
