@@ -34,6 +34,7 @@
 
 #include "coindefs.h"
 #include "fonts/fontlib_wrapper.h"
+#include "fonts/bitmap.h"
 
 #include <cstdio>
 #include <cstring>
@@ -908,11 +909,9 @@ cc_flw_done_glyph(int fontidx, unsigned int glyphidx)
 struct cc_font_bitmap *
 cc_flw_get_bitmap(int font, unsigned int glyph)
 {
-  unsigned char * buf;
   struct cc_flw_font * fs;
   struct cc_flw_glyph * gs;
   struct cc_font_bitmap * bm = NULL;
-  unsigned int i;
 
   FLW_MUTEX_LOCK(flw_global_lock);
 
@@ -936,22 +935,17 @@ cc_flw_get_bitmap(int font, unsigned int glyph)
       }
     }
 
+    if (bm && !coin_font_bitmap_flip(*bm)) {
+      // Reject invalid backend dimensions/storage before any consumer sees it.
+      free(bm->buffer);
+      free(bm);
+      bm = NULL;
+    }
     if (!bm) {
       /* glyph handle == char value in default font. &255 to avoid
          index out of range. */
       bm = get_default_bitmap(gs->nativeglyphidx & 0xff, (float)fs->sizey);
       gs->fromdefaultfont = TRUE;
-    }
-    else if (bm->buffer) {
-      buf = (unsigned char *)malloc(size_t(bm->pitch) * size_t(bm->rows));
-      /* Copy & reverse buffer to OpenGL "up" direction. */
-      for (i = 0; i < bm->rows; i++) {
-        (void)memcpy(buf + i*bm->pitch,
-                     bm->buffer + (bm->rows-i-1) * bm->pitch,
-                     bm->pitch);
-      }
-      free(bm->buffer);
-      bm->buffer = buf;
     }
 
     gs->bitmap = bm;

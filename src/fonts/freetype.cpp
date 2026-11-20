@@ -54,6 +54,7 @@
 #include "glue/GLUWrapper.h"
 
 #include "fonts/freetype.h"
+#include "fonts/bitmap.h"
 
 /* ************************************************************************* */
 
@@ -650,6 +651,7 @@ find_font_file(const char * fontname, unsigned int pixelsize)
 void *
 cc_flwft_get_font(const char * fontname, unsigned int pixelsize)
 {
+  if (pixelsize > unsigned(INT_MAX) || uint64_t(pixelsize) > uint64_t(LONG_MAX) / 64) return NULL;
   FT_Face face;
   FT_Error error;
   const char * fontfilename = find_font_file(fontname, pixelsize);
@@ -796,7 +798,12 @@ cc_flwft_set_char_size(void * font, int height)
 
   /* set the size for the face by using default values of FreeType for
    * the resolution */
-  error = cc_ftglue_FT_Set_Char_Size(face, 0, (height<<6), 0, 0);
+  if (height < 0 || uint64_t(height) > uint64_t(LONG_MAX) / 64) {
+    if (cc_font_debug()) cc_debugerror_post("cc_flwft_set_char_size", "invalid height %d", height);
+    return;
+  }
+  const long fixedheight = long(height) * 64;
+  error = cc_ftglue_FT_Set_Char_Size(face, 0, fixedheight, 0, 0);
   if (error) {
     cc_debugerror_post("cc_flwft_set_char_size",
                        "FT_Set_Char_Size(.., %d, %d, ..) returned error code %d",
@@ -942,9 +949,8 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
 
   /* render a glyph only if it is in outline format. this won't be the
      case for any of the bitmap font types such as pcf. the variable
-     mono needs to be set before the conversion to a 256 gray level
-     bitmap in order to propagate the correct format value up the code
-     path through the later bm->mono assignment. */
+     pixel mode is checked after conversion to determine whether the
+     resulting bitmap is monochrome or grayscale. */
   mono = (g->format == FT_GLYPH_FORMAT_BITMAP);
   if (!mono) {
     error = cc_ftglue_FT_Glyph_To_Bitmap(&g, ft_render_mode_normal, 0, 1);
@@ -952,6 +958,7 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
       if (cc_font_debug()) cc_debugerror_post("cc_flwft_get_bitmap",
                                               "FT_Glyph_To_Bitmap() => error %d",
                                               error);
+      cc_ftglue_FT_Done_Glyph(g);
       return NULL;
     }
   }
@@ -959,18 +966,33 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
   tfbmg = (FT_BitmapGlyph)g;
   tfbm = &tfbmg->bitmap;
 
+  // Bitmap fonts can be gray as well as monochrome. The pixel mode, not
+  // the original glyph format, determines how consumers read the buffer.
+  mono = (tfbm->pixel_mode == FT_PIXEL_MODE_MONO);
+  if (tfbm->rows && tfbm->width &&
+      (!mono && (tfbm->pixel_mode != FT_PIXEL_MODE_GRAY || tfbm->num_grays != 256))) {
+    cc_ftglue_FT_Done_Glyph(g);
+    return NULL; // unsupported format: wrapper supplies the default glyph
+  }
   bm = (struct cc_font_bitmap *) malloc(sizeof(struct cc_font_bitmap));
-  bm->buffer = (unsigned char *) malloc(size_t(tfbm->rows) * size_t(tfbm->pitch));
+  if (!bm) {
+    cc_ftglue_FT_Done_Glyph(g);
+    return NULL;
+  }
+  if (!coin_font_bitmap_copy(tfbm->rows, tfbm->width, tfbm->pitch,
+                            tfbm->buffer, mono, bm->buffer, bm->pitch)) {
+    free(bm);
+    cc_ftglue_FT_Done_Glyph(g);
+    return NULL;
+  }
   bm->bearingX = tfbmg->left;
   bm->bearingY = tfbmg->top;
   bm->advanceX = (int)(face->glyph->advance.x / 64);
   bm->advanceY = (int)(face->glyph->advance.y / 64);
   bm->rows = tfbm->rows;
   bm->width = tfbm->width;
-  bm->pitch = tfbm->pitch;
   bm->mono = mono;
 
-  memcpy(bm->buffer, tfbm->buffer, size_t(tfbm->rows) * size_t(tfbm->pitch));
   cc_ftglue_FT_Done_Glyph(g);
 
   return bm;
