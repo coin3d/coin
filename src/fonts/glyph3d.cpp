@@ -31,6 +31,7 @@
 \**************************************************************************/
 
 #include "fonts/glyph3d.h"
+#include "fonts/fontutils.h"
 
 #include <cfloat> /* FLT_MIN */
 #include <cstring>
@@ -47,6 +48,7 @@
 #include "base/oomp.h"
 #include "threads/threadsutilp.h"
 #include "fonts/fontlib_wrapper.h"
+#include "glue/freetype.h"
 #include "fonts/glyph.h"
 #include "fonts/defaultfonts.h"
 #include "coindefs.h"
@@ -152,8 +154,7 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
 
   /* because this function is the entry point for glyph3d, the mutex
      is initialized here. */
-  if (glyph3d_fonthash_lock == NULL) 
-    cc_glyph3d_initialize();
+  cc_glyph3d_initialize();
   
   assert(spec);
 
@@ -166,8 +167,8 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
     for (i=0;i<cc_list_get_length(glyphlist);++i) {
       glyph = (cc_glyph3d *) cc_list_get(glyphlist, i);
       if (glyph3d_specmatch(spec, glyph->c.fontspec)) {
-        GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);
         glyph->c.refcount++;
+        GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);
         return glyph;
       }
     }    
@@ -203,11 +204,20 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
   if (fonttoload == NULL) coin_oom_abort("cc_glyph3d font name");
   cc_string_set_text(fonttoload, cc_string_get_text(&spec->name));
   if (cc_string_length(&spec->style) > 0) {
-    cc_string_append_text(fonttoload, " ");
-    cc_string_append_string(fonttoload, &spec->style);
+    cc_string_append_text(fonttoload, cc_fcglue_available() ? ":style=" : " ");
+    // Escape separators when embedding a legacy style in a Fontconfig pattern.
+    const char * style = cc_string_get_text(&spec->style);
+    if (cc_fcglue_available()) {
+      for (; *style; ++style) {
+        if (*style == ':' || *style == '\\') cc_string_append_text(fonttoload, "\\");
+        const char character[2] = {*style, 0};
+        cc_string_append_text(fonttoload, character);
+      }
+    }
+    else cc_string_append_string(fonttoload, &spec->style);
   }
   
-  fontidx = cc_flw_get_font_id(cc_string_get_text(fonttoload), 
+  fontidx = cc_flw_get_font_id_and_ref(cc_string_get_text(fonttoload),
                                glyph3d_standardfontsize,
                                0.0f,
                                newspec->complexity);
@@ -215,7 +225,6 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
   cc_string_destruct(fonttoload);
   assert(fontidx >= 0);
 
-  cc_flw_ref_font(fontidx);
 
   glyphidx = cc_flw_get_glyph(fontidx, character);
 
@@ -237,7 +246,8 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
     if (glyph->vectorglyph == NULL) coin_oom_abort("cc_glyph3d fallback glyph");
     glyph->didallocvectorglyph = TRUE;
 
-    if (character <= 32 || character >= 127) {
+    const unsigned int fallback = coin_font_default_character(character, 126);
+    if (fallback <= 32) {
 
       /* FIXME: Characters other than space, should be replaced with
          squares. (20030910 handegar) */
@@ -248,9 +258,9 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
       glyph->vectorglyph->edgeindices = (int *) glyph3d_spaceglyphindices;
     }
     else {
-      glyph->vectorglyph->vertices = (float *) coin_default3dfont_get_coords()[character-33];
-      glyph->vectorglyph->faceindices = (int *) coin_default3dfont_get_faceidx()[character-33];
-      glyph->vectorglyph->edgeindices = (int *) coin_default3dfont_get_edgeidx()[character-33];
+      glyph->vectorglyph->vertices = (float *) coin_default3dfont_get_coords()[fallback-33];
+      glyph->vectorglyph->faceindices = (int *) coin_default3dfont_get_faceidx()[fallback-33];
+      glyph->vectorglyph->edgeindices = (int *) coin_default3dfont_get_edgeidx()[fallback-33];
     }
   }
   
@@ -275,7 +285,9 @@ finalize_glyph3d(cc_glyph * g)
 void 
 cc_glyph3d_unref(cc_glyph3d * glyph)
 {
+  GLYPH3D_MUTEX_LOCK(glyph3d_fonthash_lock);
   cc_glyph_unref(glyph3d_fonthash, &(glyph->c), finalize_glyph3d);
+  GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);
 }
 
 const float *
