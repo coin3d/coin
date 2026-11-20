@@ -54,16 +54,28 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
       ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
       ${COIN_TARGET_INCLUDE_DIRECTORIES})
     target_link_libraries(CoinTextureArrayTest Coin)
+    add_executable(CoinTextureCacheTest reproducers/issue-722-texture-vbo/cache.cpp)
+    target_include_directories(CoinTextureCacheTest PRIVATE
+      ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+      ${COIN_TARGET_INCLUDE_DIRECTORIES})
+    target_link_libraries(CoinTextureCacheTest Coin)
     find_program(COIN_TEST_XVFB_RUN xvfb-run)
     if(COIN_TEST_XVFB_RUN)
       add_test(NAME TextureCoordinateArrayRendering
         COMMAND ${COIN_TEST_XVFB_RUN} -a
           ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/issue-722-texture-vbo/matrix.sh
           $<TARGET_FILE:CoinTextureArrayTest>)
+      add_test(NAME DefaultTextureCoordinateCache
+        COMMAND ${COIN_TEST_XVFB_RUN} -a
+          ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/issue-722-texture-vbo/cache.sh
+          $<TARGET_FILE:CoinTextureCacheTest>)
     else()
       add_test(NAME TextureCoordinateArrayRendering
         COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/issue-722-texture-vbo/matrix.sh
           $<TARGET_FILE:CoinTextureArrayTest>)
+      add_test(NAME DefaultTextureCoordinateCache
+        COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/issue-722-texture-vbo/cache.sh
+          $<TARGET_FILE:CoinTextureCacheTest>)
     endif()
     set_tests_properties(TextureCoordinateArrayRendering PROPERTIES SKIP_RETURN_CODE 77)
 
@@ -73,6 +85,7 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
       ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
       ${COIN_TARGET_INCLUDE_DIRECTORIES})
     target_link_libraries(CoinSharedCoordinateBenchmark Coin OpenGL::GL)
+    set_tests_properties(DefaultTextureCoordinateCache PROPERTIES SKIP_RETURN_CODE 77)
   endif()
 endif()
 

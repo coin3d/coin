@@ -38,6 +38,9 @@
 
   It is unlikely that application programmers should need to know how
   to use this class, as it is mostly intended for internal use.
+  For a single default 2D texture during OpenGL rendering, the shape's
+  bounding box is cached with its scene-state dependencies. Changes to the
+  shape or those dependencies cause the default mapping to be recalculated.
 */
 // FIXME: document class better.
 
@@ -66,6 +69,7 @@
 #include <cassert>
 #include "SbBasicP.h"
 #include "coindefs.h"
+#include "shapenodes/SoVertexArrayTexCoordGuard.h"
 
 #define FLAG_FUNCTION           0x01
 #define FLAG_NEEDCOORDS         0x02
@@ -330,13 +334,18 @@ SoTextureCoordinateBundle::initDefaultCallback(SoAction * action)
   //
   SbBox3f box;
   SbVec3f center;
-  // this could be very slow, but if you're looking for speed, default
-  // texture coordinate mapping shouldn't be used. We might optimize this
-  // by using a SoTextureCoordinateCache soon though. pederb, 20000218
-
   SoShape * shape = coin_assert_cast<SoShape *>(this->shapenode);
+  int lastenabled = -1;
+  const SbBool * enabled =
+    SoMultiTextureEnabledElement::getEnabledUnits(this->state, lastenabled);
   const SoBoundingBoxCache * bboxcache = shape->getBoundingBoxCache();
-  if (bboxcache && bboxcache->isValid(action->getState())) {
+  if (action->isOfType(SoGLRenderAction::getClassTypeId()) &&
+      lastenabled == 0 && enabled && enabled[0] &&
+      SoMultiTextureEnabledElement::getMode(this->state, 0) ==
+        SoMultiTextureEnabledElement::TEXTURE2D) {
+    SoVertexArrayTexCoordGuard::getDefaultBBox(action, shape, box, center);
+  }
+  else if (bboxcache && bboxcache->isValid(action->getState())) {
     box = bboxcache->getProjectedBox();
     if (bboxcache->isCenterSet()) center = bboxcache->getCenter();
     else center = box.getCenter();

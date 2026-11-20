@@ -73,8 +73,10 @@
   \par Rendering with texture coordinates
   Vertex arrays and VBOs are used when the bindings, indices and caches
   permit them. For a single 2D texture on texture unit 0, default texture
-  coordinates can be evaluated into a temporary array, preserving the
-  default mapping for shaders that read the texture coordinates. Enabling
+  coordinates can be evaluated into a cached array, preserving the
+  default mapping for shaders that read the texture coordinates. The array
+  and its VBO can be reused while the geometry, coordinate source and default
+  mapping remain unchanged. Enabling
   a texture therefore does not by itself require immediate-mode rendering.
   Texture-coordinate functions and other texture configurations may require
   a different rendering path. Explicit texture coordinates
@@ -584,7 +586,7 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
     }
   }
   if (dova) {
-    SoVertexArrayTexCoordGuard texcoordguard(state, this, coords,
+    SoVertexArrayTexCoordGuard texcoordguard(state, this, coords, tb,
                                            defaulttexcoords && doTextures);
     SbBool dovbo = this->startVertexArray(action,
                                           coords,

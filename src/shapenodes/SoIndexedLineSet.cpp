@@ -38,8 +38,10 @@
 
   \par Texture coordinates
   Default coordinates for a single 2D texture on texture unit 0 can be
-  supplied as a temporary vertex array when the shape's other bindings,
-  indices and caches allow array rendering. Texture-coordinate functions that require
+  supplied as a cached vertex array when the shape's other bindings,
+  indices and caches allow array rendering. The array is reused while the
+  geometry, coordinate source and default mapping remain unchanged.
+  Texture-coordinate functions that require
   per-vertex evaluation use a rendering path that supplies those values.
   Explicit arrays and OpenGL texgen are also supported.
 
@@ -362,7 +364,7 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
     }
   }
   if (dova) {
-    SoVertexArrayTexCoordGuard texcoordguard(state, this, coords,
+    SoVertexArrayTexCoordGuard texcoordguard(state, this, coords, tb,
                                            defaulttexcoords && doTextures);
     SbBool dovbo = this->startVertexArray(action,
                                           coords,
