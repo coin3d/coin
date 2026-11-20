@@ -166,8 +166,8 @@ add_executable(HeightMapSizeTest reproducers/heightmap-size/size.cpp)
 target_link_libraries(HeightMapSizeTest Coin ${COIN_TARGET_LINK_LIBRARIES})
 target_include_directories(HeightMapSizeTest PRIVATE
   ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
-  ${COIN_TARGET_INCLUDE_DIRECTORIES})
-foreach(heightmap_case negative zero components null output_limit source_limit valid)
+  ${PROJECT_SOURCE_DIR}/src ${COIN_TARGET_INCLUDE_DIRECTORIES})
+foreach(heightmap_case negative zero components null output_limit source_limit valid engine)
   add_test(NAME HeightMapSize_${heightmap_case}
     COMMAND HeightMapSizeTest ${heightmap_case})
 endforeach()

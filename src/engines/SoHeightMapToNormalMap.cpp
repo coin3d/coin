@@ -32,11 +32,11 @@
 
 #include <Inventor/engines/SoHeightMapToNormalMap.h>
 
-#include <limits>
 #include <memory>
 
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbImage.h>
+#include "engines/SoHeightMapToNormalMapP.h"
 #include "engines/SoSubEngineP.h"
 
 /*!
@@ -110,71 +110,77 @@ SoHeightMapToNormalMap::SoHeightMapToNormalMap(void)
 /*!
   Static function for computing a normal map from a height map.
   This function can be used directly without any engine instantiation.
+
+  The source must have positive dimensions and one to four components.
+  A non-null \a srcptr must point to \a nc bytes per pixel in tightly
+  packed rows. Only the first component of each pixel is sampled. The
+  result is an RGB image of the same dimensions.
+
+  A null source, invalid dimensions or component count, or a source or
+  output byte count greater than INT_MAX - 3 clears \a dst_out to a 0x0
+  image with zero components.
 */
 void
 SoHeightMapToNormalMap::convert(const unsigned char * srcptr, SbVec2s size, int nc, SbImage & dst_out)
 {
-  float dx, dy;
-  int width = size[0];
-  int height = size[1];
-  // SoSFImage stores image byte counts and aligned padding in int. Reject
-  // extents before either the source index or output allocation can overflow.
-  const size_t limit = static_cast<size_t>(std::numeric_limits<int>::max() - 3);
-  if (width <= 0 || height <= 0 || nc < 1 || nc > 4 || !srcptr ||
-      static_cast<size_t>(width) * static_cast<size_t>(height) >
-        limit / static_cast<size_t>(nc) ||
-      static_cast<size_t>(width) * static_cast<size_t>(height) > limit / 3) {
+  const int width = size[0];
+  const int height = size[1];
+  const std::size_t pixels = coin_heightmap::pixelCount(width, height, nc);
+  if (!srcptr || pixels == 0) {
     dst_out.setValue(SbVec2s(0, 0), 0, NULL);
     return;
   }
-  const size_t pixels = static_cast<size_t>(width) * static_cast<size_t>(height);
+
   std::unique_ptr<unsigned char[]> dstarray(new unsigned char[pixels * 3]);
   unsigned char * dstptr = dstarray.get();
-  unsigned char red;
   SbVec3f n;
-
-#define GET_PIXEL_RED(x_, y_) \
-  srcptr[(static_cast<size_t>(y_) * static_cast<size_t>(width) + \
-          static_cast<size_t>(x_)) * static_cast<size_t>(nc)]
+  const std::size_t components = nc;
+  const std::size_t rowBytes = static_cast<std::size_t>(width) * components;
+  const auto redAt = [srcptr, rowBytes, components](int x, int y) {
+    return srcptr[static_cast<std::size_t>(y) * rowBytes +
+                  static_cast<std::size_t>(x) * components];
+  };
 
   for (int y = 0; y < height; y++) {
     for (int x = 0; x < width; x++) {
+      unsigned char red;
+      float dx, dy;
       // do Y Sobel filter
-      red = GET_PIXEL_RED((x-1+width) % width, (y+1) % height);
+      red = redAt((x-1+width) % width, (y+1) % height);
       dy  = static_cast<float>(red) / 255.0f * -1.0f;
 
-      red = GET_PIXEL_RED(x % width, (y+1) % height);
+      red = redAt(x % width, (y+1) % height);
       dy += static_cast<float>(red) / 255.0f * -2.0f;
 
-      red = GET_PIXEL_RED((x+1) % width, (y+1) % height);
+      red = redAt((x+1) % width, (y+1) % height);
       dy += static_cast<float>(red) / 255.0f * -1.0f;
 
-      red = GET_PIXEL_RED((x-1+width) % width, (y-1+height) % height);
+      red = redAt((x-1+width) % width, (y-1+height) % height);
       dy += static_cast<float>(red) / 255.0f *  1.0f;
 
-      red = GET_PIXEL_RED(x % width, (y-1+height) % height);
+      red = redAt(x % width, (y-1+height) % height);
       dy += static_cast<float>(red) / 255.0f *  2.0f;
 
-      red = GET_PIXEL_RED((x+1) % width, (y-1+height) % height);
+      red = redAt((x+1) % width, (y-1+height) % height);
       dy += static_cast<float>(red) / 255.0f *  1.0f;
 
       // Do X Sobel filter
-      red = GET_PIXEL_RED((x-1+width) % width, (y-1+height) % height);
+      red = redAt((x-1+width) % width, (y-1+height) % height);
       dx  = static_cast<float>(red) / 255.0f * -1.0f;
 
-      red = GET_PIXEL_RED((x-1+width) % width, y % height);
+      red = redAt((x-1+width) % width, y % height);
       dx += static_cast<float>(red) / 255.0f * -2.0f;
 
-      red = GET_PIXEL_RED((x-1+width) % width, (y+1) % height);
+      red = redAt((x-1+width) % width, (y+1) % height);
       dx += static_cast<float>(red) / 255.0f * -1.0f;
 
-      red = GET_PIXEL_RED((x+1) % width, (y-1+height) % height);
+      red = redAt((x+1) % width, (y-1+height) % height);
       dx += static_cast<float>(red) / 255.0f *  1.0f;
 
-      red = GET_PIXEL_RED((x+1) % width, y % height);
+      red = redAt((x+1) % width, y % height);
       dx += static_cast<float>(red) / 255.0f *  2.0f;
 
-      red = GET_PIXEL_RED((x+1) % width, (y+1) % height);
+      red = redAt((x+1) % width, (y+1) % height);
       dx += static_cast<float>(red) / 255.0f *  1.0f;
 
       n[0] = -dx;
@@ -187,7 +193,6 @@ SoHeightMapToNormalMap::convert(const unsigned char * srcptr, SbVec2s size, int 
       *dstptr++ = static_cast<unsigned char>(SbMin((n[2]+1.0f) * 128.0f, 255.0f));
     }
   }
-#undef GET_PIXEL_RED
   dst_out.setValue(size, 3, dstarray.get());
 }
 
