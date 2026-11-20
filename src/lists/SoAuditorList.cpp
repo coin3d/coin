@@ -52,16 +52,36 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+#include <stdexcept>
+#include <climits>
+
 #ifdef COIN_THREADSAFE
 #include "threads/recmutexp.h"
-// we need this lock to avoid that auditors are added/removed by one
-// thread while another thread is notifying
-#define NOTIFY_LOCK (void) cc_recmutex_internal_notify_lock()
-#define NOTIFY_UNLOCK (void) cc_recmutex_internal_notify_unlock()
-#else // COIN_THREADSAFE
-#define NOTIFY_LOCK
-#define NOTIFY_UNLOCK
-#endif // !COIN_THREADSAFE
+#endif
+
+namespace {
+class NotifyLock {
+public:
+  NotifyLock() {
+#ifdef COIN_THREADSAFE
+    cc_recmutex_internal_notify_lock();
+#endif
+  }
+  ~NotifyLock() {
+#ifdef COIN_THREADSAFE
+    cc_recmutex_internal_notify_unlock();
+#endif
+  }
+private:
+  NotifyLock(const NotifyLock &);
+  NotifyLock & operator=(const NotifyLock &);
+};
+
+void validateAuditorIndex(int index, int length) {
+  if (index < 0 || index >= length)
+    throw std::out_of_range("SoAuditorList: index out of range");
+}
+}
 
 /*!
   Default constructor.
@@ -84,10 +104,18 @@ SoAuditorList::~SoAuditorList()
 void
 SoAuditorList::append(void * const auditor, const SoNotRec::Type type)
 {
-  NOTIFY_LOCK;
+  NotifyLock notifylock;
+  const int length = SbPList::getLength();
+  if (length > INT_MAX - 2) throw std::bad_alloc();
+  // Reserve both slots before publishing either half of the pair.
+  const int capacity = SbPList::getArraySize();
+  if (capacity - length < 2) {
+    const int target = capacity <= INT_MAX / 2 ? capacity * 2 : length + 2;
+    SbPList::expand(target);
+    SbPList::truncate(length);
+  }
   SbPList::append(auditor);
   SbPList::append((void *)type);
-  NOTIFY_UNLOCK;
 }
 
 /*!
@@ -97,12 +125,11 @@ void
 SoAuditorList::set(const int index,
                    void * const auditor, const SoNotRec::Type type)
 {
-  NOTIFY_LOCK;
-  assert(index >= 0 && index < this->getLength());
+  NotifyLock notifylock;
+  validateAuditorIndex(index, this->getLength());
 
   SbPList::set(index * 2, auditor);
   SbPList::set(index * 2 + 1, (void *)type);
-  NOTIFY_UNLOCK;
 }
 
 /*!
@@ -135,7 +162,8 @@ SoAuditorList::find(void * const auditor, const SoNotRec::Type type) const
 void *
 SoAuditorList::getObject(const int index) const
 {
-  return SbPList::operator[](index * 2);
+  validateAuditorIndex(index, this->getLength());
+  return SbPList::get(index * 2);
 }
 
 /*!
@@ -144,7 +172,8 @@ SoAuditorList::getObject(const int index) const
 SoNotRec::Type
 SoAuditorList::getType(const int index) const
 {
-  const uintptr_t tmp = (uintptr_t)(SbPList::operator[](index*2+1));
+  validateAuditorIndex(index, this->getLength());
+  const uintptr_t tmp = (uintptr_t)(SbPList::get(index*2+1));
   return (SoNotRec::Type)tmp;
 }
 
@@ -154,11 +183,10 @@ SoAuditorList::getType(const int index) const
 void
 SoAuditorList::remove(const int index)
 {
-  NOTIFY_LOCK;
-  assert(index >= 0 && index < this->getLength());
+  NotifyLock notifylock;
+  validateAuditorIndex(index, this->getLength());
   SbPList::remove(index * 2); // ptr
   SbPList::remove(index * 2); // type
-  NOTIFY_UNLOCK;
 }
 
 /*!
@@ -167,7 +195,9 @@ SoAuditorList::remove(const int index)
 void
 SoAuditorList::remove(void * const auditor, const SoNotRec::Type type)
 {
-  this->remove(this->find(auditor, type));
+  NotifyLock notifylock;
+  const int index = this->find(auditor, type);
+  if (index >= 0) this->remove(index);
 }
 
 /*!
@@ -258,6 +288,3 @@ SoAuditorList::doNotify(SoNotList * l, const void * auditor, const SoNotRec::Typ
     assert(0 && "Unknown auditor type");
   }
 }
-
-#undef NOTIFY_LOCK
-#undef NOTIFY_UNLOCK
