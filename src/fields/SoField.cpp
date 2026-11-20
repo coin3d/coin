@@ -2534,15 +2534,13 @@ SoField::evaluateConnection(void) const
           SoField * that = const_cast<SoField *>(this); // cast away const
           // Copy data. Disable notification first since notification
           // has already been sent from the master.
-          SbBool oldnotify = that->enableNotify(FALSE);
-          try {
-            that->copyFrom(*master);
-          }
-          catch (...) {
-            (void) that->enableNotify(oldnotify);
-            throw;
-          }
-          (void) that->enableNotify(oldnotify);
+          struct RestoreNotifications {
+            SoField & field;
+            const SbBool enabled;
+            ~RestoreNotifications() { (void) this->field.enableNotify(this->enabled); }
+          };
+          const RestoreNotifications restore{*that, that->enableNotify(FALSE)};
+          that->copyFrom(*master);
         }
       }
     }
