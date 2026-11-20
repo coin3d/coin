@@ -368,3 +368,57 @@ O verificador exige 16 draws por cena, 32 na cena compartilhada, compara os
 bytes S/T completos e rejeita R/Q diferentes de 0/1 na representação 4D da
 baseline. Para a composição, `COIN_CACHE_SOURCES=wide-bounds` seleciona o caso
 extremo com as duas bibliotecas compostas, anterior e posterior ao lote.
+
+## Dependências de caches ancestrais — 2026-11-20
+
+`SoCacheElement::addCacheDependency()` agora percorre toda a pilha, propagando
+as dependências a cada cache aberto mesmo com níveis vazios entre eles.
+A interrupção no primeiro nível vazio já existia na baseline master+#833;
+o reaproveitamento dos bounds pelo cache tornava essa falha uma regressão do
+mapeamento, pois deixava o cache ancestral válido após mudar o estado herdado.
+
+As novas regressões `CacheAncestorDependencies` (CPU, inclusive renderer OFF)
+e `DefaultTextureCacheAncestorDependencies` (GL, dois contextos) falham com o
+cache anterior `f33965ff0ea` e passam com `d8173489e12`. A regressão GL também
+passa na baseline `44025052aea`, que recalcula os bounds. Os controles exigem
+validade antes da alteração e ao reaplicar o mesmo valor; mudar a complexidade
+invalida ambos os ancestrais e produz as novas UVs esperadas. O diagnóstico
+confirma que os bounds continuam sendo reutilizados na versão corrigida.
+Veja também [cache-dependencies](../../cache-dependencies/README.md).
+
+Validação: **133/133 Debug, 133/133 Release, 119/119 renderer OFF sem DISPLAY
+e 227/227 na composição #901/#902**, sem skips. A regressão GL passou também
+na Radeon física. Permanecem os controles GDB de gerações, uploads, orçamento
+e reaproveitamento; a composição passou novamente os 96 quadros extremos.
+Todos os novos builds e temporários de compilação ficaram em RAM.
+
+ABI Debug, sem suppressions: nenhuma diferença entre o cache anterior e o
+corrigido (`abidiff --no-default-suppression --no-show-locs`, saída vazia,
+status 0). Contra master+#833: zero funções removidas/alteradas. Os símbolos
+dinâmicos Release são idênticos aos do cache anterior, e o consumidor dos
+headers antigos passou em Debug e Release. Nenhum campo ou layout foi alterado.
+
+Benchmark Release atualizado, mesmo executável, 400 shapes próprios com VBO,
+4096 pontos por shape, dez quadros estáveis e seis repetições nas seis ordens
+das três bibliotecas. Sem builds/testes concorrentes; carga inicial/final
+1,01 / 1,43. Medianas de CPU do processo, em ms:
+
+| Driver / fase | Baseline | Cache anterior | Corrigido |
+| --- | ---: | ---: | ---: |
+| Radeon / estável | 21,847 | 2,557 | 2,623 |
+| Radeon / após invalidação | 26,109 | 15,147 | 14,900 |
+| Radeon / reestabilizado | 21,722 | 2,606 | 2,713 |
+| llvmpipe / estável | 91,784 | 83,127 | 83,000 |
+| llvmpipe / após invalidação | 102,643 | 101,632 | 100,886 |
+| llvmpipe / reestabilizado | 91,193 | 77,048 | 76,086 |
+
+Wall após invalidação baseline/anterior/corrigido: Radeon 27,813 / 16,195 /
+16,855 ms; llvmpipe 80,778 / 75,873 / 76,208 ms. A diferença de wall frente ao
+cache anterior varia entre rodadas; não se atribui ganho de tempo a esta
+correção. RSS estável anterior/corrigido: Radeon 130,674 / 130,736 MiB,
+llvmpipe 252,036 / 252,004 MiB. Os ganhos do cache frente à baseline permanecem,
+assim como seu consumo adicional de memória. Os hashes das imagens coincidem
+entre as três bibliotecas em cada driver, antes e depois da edição.
+
+Evidências locais: `/tmp/coin-cache-dependency-fix-20261120/RESULTS.txt`,
+`benchmark-threeway.json`, scripts e logs completos. Nenhuma publicação foi feita.
