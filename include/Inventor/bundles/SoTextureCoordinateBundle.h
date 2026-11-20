@@ -69,7 +69,7 @@ public:
   SbBool needIndices(void) const;
 
 private:
-  friend class SoVertexArrayTexCoordGuard; // internal default-mapping cache
+  friend class SoCachedVertexArrayTexCoordGuard; // internal default-mapping cache
   const SoMultiTextureCoordinateElement *coordElt;
   const SoGLMultiTextureCoordinateElement *glElt;
   unsigned int flags;

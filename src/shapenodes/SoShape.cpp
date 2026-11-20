@@ -58,6 +58,7 @@
 #include <memory>
 #include <mutex>
 #include <vector>
+#include <map>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -183,6 +184,32 @@
 
 // *************************************************************************
 
+SoVertexArrayTexCoordGuard::SoVertexArrayTexCoordGuard(SoState * state, SoNode * node,
+                           const SoCoordinateElement * coords,
+                           SbBool generatedefault)
+    : state(state), pushed(FALSE)
+  {
+    if (!generatedefault) return;
+    const SoMultiTextureCoordinateElement * element =
+      SoMultiTextureCoordinateElement::getInstance(state);
+    const int count = coords->getNum();
+    this->coordinates.reserve(count);
+    const SbVec3f normal(0.0f, 0.0f, 1.0f);
+    for (int i = 0; i < count; ++i) {
+      this->coordinates.push_back(element->get(0, coords->get3(i), normal));
+    }
+    state->push();
+    this->pushed = TRUE;
+    SoMultiTextureCoordinateElement::set4(state, node, 0, count,
+                                          this->coordinates.data());
+  }
+
+SoVertexArrayTexCoordGuard::~SoVertexArrayTexCoordGuard()
+  {
+    if (this->pushed) this->state->pop();
+  }
+
+
 // Immutable coordinate data can outlive the shape's most recent traversal.
 // Only the lazily created GL buffer and its context map require locking.
 class SoVertexArrayTexCoordCache {
@@ -222,6 +249,45 @@ public:
   SbUniqueId shapeid;
 };
 
+namespace {
+struct DefaultTextureStorage {
+  std::mutex mutex;
+  std::shared_ptr<SoVertexArrayTexCoordCache> coordinates;
+  std::shared_ptr<SoDefaultTextureBBoxCache> bounds;
+};
+struct DefaultTextureRegistry {
+  std::mutex mutex;
+  std::map<const SoShape *, std::shared_ptr<DefaultTextureStorage> > entries;
+};
+DefaultTextureRegistry & defaultTextureRegistry()
+{
+  static DefaultTextureRegistry registry;
+  return registry;
+}
+std::shared_ptr<DefaultTextureStorage> defaultTextureStorage(const SoShape * shape)
+{
+  DefaultTextureRegistry & registry = defaultTextureRegistry();
+  std::lock_guard<std::mutex> lock(registry.mutex);
+  std::shared_ptr<DefaultTextureStorage> & entry = registry.entries[shape];
+  if (!entry) entry = std::make_shared<DefaultTextureStorage>();
+  return entry;
+}
+void clearDefaultTextureStorage(const SoShape * shape)
+{
+  std::shared_ptr<DefaultTextureStorage> old;
+  DefaultTextureRegistry & registry = defaultTextureRegistry();
+  {
+    std::lock_guard<std::mutex> lock(registry.mutex);
+    const auto it = registry.entries.find(shape);
+    if (it != registry.entries.end()) {
+      old.swap(it->second);
+      registry.entries.erase(it);
+    }
+  }
+  // GL resource cleanup and cache unref callbacks run without registry locks.
+}
+}
+
 class SoShapeP {
 public:
   SoShapeP() {
@@ -251,8 +317,6 @@ public:
   SoBoundingBoxCache * bboxcache;
   SoPrimitiveVertexCache * pvcache;
   soshape_bumprender * bumprender;
-  std::shared_ptr<SoVertexArrayTexCoordCache> defaulttexcoords;
-  std::shared_ptr<SoDefaultTextureBBoxCache> defaulttexbbox;
   uint32_t flags : FLAG_BITS;
   // stores the number of frames rendered with no node changes
   uint32_t rendercnt : RENDERCNT_BITS;
@@ -313,14 +377,17 @@ SbMutex * SoShapeP::mutex = NULL;
 
 // *************************************************************************
 void
-SoVertexArrayTexCoordGuard::getDefaultBBox(SoAction * action, SoShape * shape,
+SoCachedVertexArrayTexCoordGuard::getDefaultBBox(SoAction * action, SoShape * shape,
                                           SbBox3f & box, SbVec3f & center)
 {
   SoState * state = action->getState();
   const SbUniqueId shapeid = shape->getNodeId();
-  PRIVATE(shape)->lock();
-  std::shared_ptr<SoDefaultTextureBBoxCache> cache = PRIVATE(shape)->defaulttexbbox;
-  PRIVATE(shape)->unlock();
+  const auto storage = defaultTextureStorage(shape);
+  std::shared_ptr<SoDefaultTextureBBoxCache> cache;
+  {
+    std::lock_guard<std::mutex> lock(storage->mutex);
+    cache = storage->bounds;
+  }
   if (!cache || cache->shapeid != shapeid || !cache->isValid(state)) {
     const SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
     state->push();
@@ -341,9 +408,12 @@ SoVertexArrayTexCoordGuard::getDefaultBBox(SoAction * action, SoShape * shape,
       SoCacheElement::setInvalid(storedinvalid);
       throw;
     }
-    PRIVATE(shape)->lock();
-    PRIVATE(shape)->defaulttexbbox = cache;
-    PRIVATE(shape)->unlock();
+    std::shared_ptr<SoDefaultTextureBBoxCache> old;
+    {
+      std::lock_guard<std::mutex> lock(storage->mutex);
+      old.swap(storage->bounds);
+      storage->bounds = cache;
+    }
   }
   // Propagate dependencies when an enclosing render cache uses this result.
   SoCacheElement::addCacheDependency(state, cache.get());
@@ -352,7 +422,7 @@ SoVertexArrayTexCoordGuard::getDefaultBBox(SoAction * action, SoShape * shape,
 }
 
 // *************************************************************************
-SoVertexArrayTexCoordGuard::SoVertexArrayTexCoordGuard(
+SoCachedVertexArrayTexCoordGuard::SoCachedVertexArrayTexCoordGuard(
   SoState * state, SoShape * shape, const SoCoordinateElement * coords,
   const SoTextureCoordinateBundle & bundle, SbBool generatedefault)
   : state(state), pushed(FALSE)
@@ -364,11 +434,13 @@ SoVertexArrayTexCoordGuard::SoVertexArrayTexCoordGuard(
   const SbVec2f origin(bundle.defaultorigo[0], bundle.defaultorigo[1]);
   const SbVec2f size(bundle.defaultsize[0], bundle.defaultsize[1]);
 
-  // Copy ownership under the shape lock; avoid holding that class-wide lock
-  // while evaluating coordinates or drawing in a GL context.
-  PRIVATE(shape)->lock();
-  this->cache = PRIVATE(shape)->defaulttexcoords;
-  PRIVATE(shape)->unlock();
+  // Copy ownership under the storage lock; release it before evaluating
+  // coordinates or drawing in a GL context.
+  const auto storage = defaultTextureStorage(shape);
+  {
+    std::lock_guard<std::mutex> lock(storage->mutex);
+    this->cache = storage->coordinates;
+  }
   if (!this->cache ||
       !this->cache->matches(shapeid, coordinateid, count, coords->is3D(),
                             bundle.flags, bundle.defaultdim0, bundle.defaultdim1, origin, size)) {
@@ -383,9 +455,12 @@ SoVertexArrayTexCoordGuard::SoVertexArrayTexCoordGuard(
       const SbVec4f & uv = element->get(0, coords->get3(i), normal);
       this->cache->coordinates[i].setValue(uv[0], uv[1]);
     }
-    PRIVATE(shape)->lock();
-    PRIVATE(shape)->defaulttexcoords = this->cache;
-    PRIVATE(shape)->unlock();
+    std::shared_ptr<SoVertexArrayTexCoordCache> old;
+    {
+      std::lock_guard<std::mutex> lock(storage->mutex);
+      old.swap(storage->coordinates);
+      storage->coordinates = this->cache;
+    }
   }
 
   // SoVBO maintains a mutable context map. Keep concurrent draws using this
@@ -413,7 +488,7 @@ SoVertexArrayTexCoordGuard::SoVertexArrayTexCoordGuard(
   }
 }
 
-SoVertexArrayTexCoordGuard::~SoVertexArrayTexCoordGuard()
+SoCachedVertexArrayTexCoordGuard::~SoCachedVertexArrayTexCoordGuard()
 {
   if (this->pushed) this->state->pop();
 }
@@ -519,6 +594,7 @@ SoShape::SoShape(void)
 */
 SoShape::~SoShape()
 {
+  clearDefaultTextureStorage(this);
   delete PRIVATE(this);
 }
 
@@ -1590,13 +1666,8 @@ void
 SoShape::notify(SoNotList * nl)
 {
   inherited::notify(nl);
-  std::shared_ptr<SoVertexArrayTexCoordCache> oldcoords;
-  std::shared_ptr<SoDefaultTextureBBoxCache> oldbbox;
+  clearDefaultTextureStorage(this);
   PRIVATE(this)->lock();
-  // Existing draws retain their own references; a later traversal must
-  // regenerate data after notification rather than retain stale storage.
-  oldcoords.swap(PRIVATE(this)->defaulttexcoords);
-  oldbbox.swap(PRIVATE(this)->defaulttexbbox);
   if (PRIVATE(this)->bboxcache) {
     PRIVATE(this)->bboxcache->invalidate();
   }
@@ -1606,7 +1677,6 @@ SoShape::notify(SoNotList * nl)
   PRIVATE(this)->flags &= ~SoShapeP::SHOULD_BBOX_CACHE;
   PRIVATE(this)->rendercnt = 0;
   PRIVATE(this)->unlock();
-  // Release storage and schedule GL cleanup outside the class-wide lock.
 }
 
 /*!

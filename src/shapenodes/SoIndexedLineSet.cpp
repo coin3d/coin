@@ -364,7 +364,7 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
     }
   }
   if (dova) {
-    SoVertexArrayTexCoordGuard texcoordguard(state, this, coords, tb,
+    SoCachedVertexArrayTexCoordGuard texcoordguard(state, this, coords, tb,
                                            defaulttexcoords && doTextures);
     SbBool dovbo = this->startVertexArray(action,
                                           coords,

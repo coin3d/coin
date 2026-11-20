@@ -63,6 +63,17 @@ Uma entrada de UVs SbVec2f é retida por shape elegível. Notificações retiram
 as entradas retidas; draws ativos mantêm referências e a liberação ocorre
 fora do lock global. Não há um orçamento global para todos os shapes.
 
+A estrutura de cache fica em um registro externo, removido quando o shape é
+notificado ou destruído; o layout de SoShapeP permanece preservado. O guard
+temporário conserva seu layout e suas entradas antigas. O caminho de cache
+usa o tipo privado separado SoCachedVertexArrayTexCoordGuard.
+
+O consumidor `legacy-guard-client.cpp` deve ser compilado com os headers da
+biblioteca baseline, incluindo `src/shapenodes`, e ligado contra ela. Executar
+o mesmo binário com cada libCoin verifica as entradas dinâmicas antigas, o
+espaço reservado pelo cliente, o array gerado e a restauração de estado. As
+chamadas usam os símbolos Itanium diretamente para não cair em corpos inline.
+
 A chave inclui também os flags do bundle, pois #901 usa flags para distinguir
 representações de extents. Essa mudança não incorpora os ajustes numéricos
 de #901 ou #902. As caixas extremas dessa composição ainda precisam de uma

@@ -361,7 +361,7 @@ SoIndexedPointSet::GLRender(SoGLRenderAction * action)
   }
   SbBool didrenderasvbo = FALSE;
   if (dova) {
-    SoVertexArrayTexCoordGuard texcoordguard(state, this, coords, tb,
+    SoCachedVertexArrayTexCoordGuard texcoordguard(state, this, coords, tb,
                                            defaulttexcoords && doTextures);
     SbBool vbo = this->startVertexArray(action,
                                         glcoords,

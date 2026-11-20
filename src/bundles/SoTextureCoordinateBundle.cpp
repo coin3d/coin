@@ -343,7 +343,7 @@ SoTextureCoordinateBundle::initDefaultCallback(SoAction * action)
       lastenabled == 0 && enabled && enabled[0] &&
       SoMultiTextureEnabledElement::getMode(this->state, 0) ==
         SoMultiTextureEnabledElement::TEXTURE2D) {
-    SoVertexArrayTexCoordGuard::getDefaultBBox(action, shape, box, center);
+    SoCachedVertexArrayTexCoordGuard::getDefaultBBox(action, shape, box, center);
   }
   else if (bboxcache && bboxcache->isValid(action->getState())) {
     box = bboxcache->getProjectedBox();
