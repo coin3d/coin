@@ -32,6 +32,7 @@
 
 #include <Inventor/engines/SoHeightMapToNormalMap.h>
 
+#include <limits>
 #include <memory>
 
 #include <Inventor/SbVec3f.h>
@@ -116,13 +117,25 @@ SoHeightMapToNormalMap::convert(const unsigned char * srcptr, SbVec2s size, int 
   float dx, dy;
   int width = size[0];
   int height = size[1];
-  std::unique_ptr<unsigned char[]> dstarray(new unsigned char[width*height*3]);
+  // SoSFImage stores image byte counts and aligned padding in int. Reject
+  // extents before either the source index or output allocation can overflow.
+  const size_t limit = static_cast<size_t>(std::numeric_limits<int>::max() - 3);
+  if (width <= 0 || height <= 0 || nc < 1 || nc > 4 || !srcptr ||
+      static_cast<size_t>(width) * static_cast<size_t>(height) >
+        limit / static_cast<size_t>(nc) ||
+      static_cast<size_t>(width) * static_cast<size_t>(height) > limit / 3) {
+    dst_out.setValue(SbVec2s(0, 0), 0, NULL);
+    return;
+  }
+  const size_t pixels = static_cast<size_t>(width) * static_cast<size_t>(height);
+  std::unique_ptr<unsigned char[]> dstarray(new unsigned char[pixels * 3]);
   unsigned char * dstptr = dstarray.get();
   unsigned char red;
   SbVec3f n;
 
 #define GET_PIXEL_RED(x_, y_) \
-  srcptr[(y_)*width*nc + (x_)*nc]
+  srcptr[(static_cast<size_t>(y_) * static_cast<size_t>(width) + \
+          static_cast<size_t>(x_)) * static_cast<size_t>(nc)]
 
   for (int y = 0; y < height; y++) {
     for (int x = 0; x < width; x++) {

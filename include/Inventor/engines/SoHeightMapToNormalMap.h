@@ -53,6 +53,9 @@ public:
 
   SoSFEnum format;
 
+  // A valid source has positive dimensions, 1-4 components, and non-NULL
+  // pixels. Images whose source or RGB output byte count exceeds INT_MAX-3
+  // are also rejected. Rejection clears dst_out to an empty 0x0 image.
   static void convert(const unsigned char * srcptr, SbVec2s size, int nc, SbImage & dst_out);
 
 protected:
