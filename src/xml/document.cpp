@@ -41,6 +41,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <cassert>
+#include <climits>
 
 #include <memory>
 
@@ -621,7 +622,7 @@ SbBool
 cc_xml_doc_read_buffer_x(cc_xml_doc * doc, const char * buffer, size_t buflen)
 {
 #ifdef DEV_DEBUG
-  fprintf(stdout, "cc_xml_doc_read_buffer_x(%p, %d, %p)\n", doc, (int) buflen, buffer);
+  fprintf(stdout, "cc_xml_doc_read_buffer_x(%p, %zu, %p)\n", static_cast<void *>(doc), buflen, static_cast<const void *>(buffer));
 #endif // DEV_DEBUG
   cc_xml_doc_parse_abort_if_active_x(doc);
   return cc_xml_doc_parse_buffer_partial_done_x(doc, buffer, buflen);
@@ -647,6 +648,12 @@ cc_xml_doc_parse_buffer_partial_x(cc_xml_doc * doc, const char * buffer, size_t 
 #ifdef DEV_DEBUG
   fprintf(stdout, "cc_xml_doc_parse_buffer_partial_x()\n");
 #endif // DEV_DEBUG
+  // XML_Parse() takes an int; reject lengths that cannot be represented
+  // before creating or advancing the parser.
+  if (buflen > static_cast<size_t>(INT_MAX)) {
+    cc_xml_doc_parse_abort_if_active_x(doc);
+    return FALSE;
+  }
   if (doc->parsestate == CC_XML_DOC_PARSE_IDLE) {
     cc_xml_doc_parse_buffer_partial_init_x(doc);
   }
@@ -667,6 +674,10 @@ cc_xml_doc_parse_buffer_partial_done_x(cc_xml_doc * doc, const char * buffer, si
   fprintf(stdout, "cc_xml_doc_parse_buffer_partial_done_x()\n");
 #endif // DEV_DEBUG
   assert(doc);
+  if (buflen > static_cast<size_t>(INT_MAX)) {
+    cc_xml_doc_parse_abort_if_active_x(doc);
+    return FALSE;
+  }
   if (doc->parsestate == CC_XML_DOC_PARSE_IDLE) {
     cc_xml_doc_parse_buffer_partial_init_x(doc);
   }
@@ -909,12 +920,13 @@ cc_xml_doc_write_to_file(const cc_xml_doc * doc, const char * path)
     fp = stdout;
   else
     fp = fopen(path, "wb");
-  assert(fp != NULL);
-  fwrite(buffer.get(), 1, bufsize, fp);
-  if (strcmp(path, "-") != 0)
-    fclose(fp);
+  if (!fp) return FALSE;
 
-  return TRUE;
+  const size_t written = fwrite(buffer.get(), 1, bufsize, fp);
+  const int writeerror = ferror(fp);
+  const int closeerror = fp == stdout ? fflush(fp) : fclose(fp);
+
+  return written == bufsize && !writeerror && closeerror == 0;
 }
 
 // *************************************************************************
@@ -1023,6 +1035,7 @@ cc_xml_doc_handle_parse_warning(const cc_xml_doc * doc, const char * message)
 
 #include <cstring>
 #include <memory>
+#include <stdio.h>
 #include <Inventor/C/XML/attribute.h>
 #include <Inventor/C/XML/element.h>
 #include <Inventor/C/XML/parser.h>
@@ -1139,6 +1152,23 @@ BOOST_AUTO_TEST_CASE(buffer_round_trip_compares_real_dom)
 
   cc_xml_doc_delete_x(doc1);
   cc_xml_doc_delete_x(doc2);
+}
+
+BOOST_AUTO_TEST_CASE(write_to_file_reports_io_errors)
+{
+  cc_xml_doc * doc = cc_xml_doc_new();
+  BOOST_REQUIRE(doc != NULL);
+
+  const char * output = "coin_xml_doc_write_file_fixture.xml";
+  BOOST_CHECK(cc_xml_doc_write_to_file(doc, output) == TRUE);
+  remove(output);
+
+  BOOST_CHECK(cc_xml_doc_write_to_file(doc, ".") == FALSE);
+#if defined(__linux__)
+  BOOST_CHECK(cc_xml_doc_write_to_file(doc, "/dev/full") == FALSE);
+#endif
+
+  cc_xml_doc_delete_x(doc);
 }
 
 BOOST_AUTO_TEST_CASE(character_data_is_independent_of_input_chunks)
