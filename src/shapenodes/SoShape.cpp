@@ -232,7 +232,7 @@ public:
       this->origin == origin && this->size == size;
   }
 
-  void generate(SoState * state, const SoCoordinateElement * coords,
+  void generate(const SoTextureCoordinateBundle & bundle, const SoCoordinateElement * coords,
                 SbUniqueId shapeid, unsigned int mappingflags, int dim0, int dim1,
                 const SbVec2f & origin, const SbVec2f & size)
   {
@@ -251,13 +251,7 @@ public:
     if (this->coordinates.capacity() != static_cast<size_t>(this->count)) {
       std::vector<SbVec2f>(this->count).swap(this->coordinates);
     }
-    const SoMultiTextureCoordinateElement * element =
-      SoMultiTextureCoordinateElement::getInstance(state);
-    const SbVec3f normal(0.0f, 0.0f, 1.0f);
-    for (int i = 0; i < this->count; ++i) {
-      const SbVec4f & uv = element->get(0, coords->get3(i), normal);
-      this->coordinates[i].setValue(uv[0], uv[1]);
-    }
+    bundle.generateDefault2(coords, this->coordinates.data());
   }
 
   SbUniqueId shapeid, coordinateid;
@@ -503,7 +497,7 @@ SoCachedVertexArrayTexCoordGuard::SoCachedVertexArrayTexCoordGuard(
         bundle.flags, bundle.defaultdim0, bundle.defaultdim1, origin, size);
     }
     this->locked = std::unique_lock<SbMutex>(this->cache->mutex);
-    this->cache->generate(state, coords, shapeid, bundle.flags,
+    this->cache->generate(bundle, coords, shapeid, bundle.flags,
                            bundle.defaultdim0, bundle.defaultdim1, origin, size);
     std::shared_ptr<SoVertexArrayTexCoordCache> old;
     {

@@ -42,6 +42,8 @@
 
 class SoTextureCoordinateCache;
 class SoShape;
+class SoCoordinateElement;
+class SbVec2f;
 
 
 class COIN_DLL_API SoTextureCoordinateBundle : public SoBundle {
@@ -70,6 +72,8 @@ public:
 
 private:
   friend class SoCachedVertexArrayTexCoordGuard; // internal default-mapping cache
+  friend class SoVertexArrayTexCoordCache;
+  void generateDefault2(const SoCoordinateElement * coords, SbVec2f * target) const;
   const SoMultiTextureCoordinateElement *coordElt;
   const SoGLMultiTextureCoordinateElement *glElt;
   unsigned int flags;

@@ -25,6 +25,7 @@
 #include <vector>
 #include <memory>
 #include <cstdlib>
+#include <algorithm>
 
 static int missingarrays = 0;
 static SoSeparator * deferredScene = NULL;
@@ -53,6 +54,25 @@ public:
   void computeBBox(SoAction *, SbBox3f & box, SbVec3f &) override
   {
     box.makeEmpty();
+  }
+};
+
+static SbBox3f axisBounds(int variant)
+{
+  const int extents[6][3] = {{2,3,4}, {2,4,3}, {3,2,4},
+                            {4,2,3}, {3,4,2}, {4,3,2}};
+  const SbVec3f minimum(-0.1f, -0.2f, -0.3f);
+  return SbBox3f(minimum, minimum + SbVec3f(float(extents[variant][0]),
+    float(extents[variant][1]), float(extents[variant][2])));
+}
+
+class AxisMappedFaceSet : public SoIndexedFaceSet {
+public:
+  void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center) override
+  {
+    const int variant = int(5.0f * SoComplexityElement::get(action->getState()) + 0.5f);
+    box = axisBounds(variant);
+    center = box.getCenter();
   }
 };
 
@@ -89,20 +109,23 @@ static unsigned long long imageHash(SoOffscreenRenderer & renderer)
 static void explicitMapping(const std::vector<SbVec3f> & vertices,
                             const std::vector<int32_t> & indices,
                             bool enlarged, bool emptybounds, bool widebounds,
-                            SoTextureCoordinate2 * coordinates)
+                            SoTextureCoordinate2 * coordinates, int axisvariant = -1)
 {
   SbBox3f box;
   for (size_t i = 0; i < indices.size(); ++i) {
     if (indices[i] >= 0) box.extendBy(vertices[indices[i]]);
   }
   if (emptybounds) box.setBounds(SbVec3f(0,0,0), SbVec3f(1,1,1));
+  if (axisvariant >= 0) box = axisBounds(axisvariant);
   if (enlarged) box.extendBy(box.getMax() + (box.getMax() - box.getMin()));
   const SbVec3f size = box.getMax() - box.getMin();
-  // These scenes lie in XY. The current default mapping chooses Y for S
-  // on equal planar extents and normalizes the two axes independently.
-  // Empty bounds use the unit-cube fallback, whose chosen axes are Z/Y.
-  const int s = emptybounds ? 2 : (size[1] >= size[0] ? 1 : 0);
-  const int t = emptybounds ? 1 : 1 - s;
+  // Rank by extent, breaking ties by descending axis number. This also
+  // covers the unit-cube fallback (Z/Y), independently of bundle callbacks.
+  int axes[] = {0,1,2};
+  std::sort(axes, axes+3, [&size](int a, int b) {
+    return size[a] == size[b] ? a > b : size[a] > size[b];
+  });
+  const int s = axes[0], t = axes[1];
   const float ssize = size[s] > 0 ? size[s] : 1;
   const float tsize = size[t] > 0 ? size[t] : 1;
   std::vector<SbVec2f> uv;
@@ -132,7 +155,10 @@ static int runScene(int argc, char ** argv)
     else if (std::strcmp(argv[i], "uncached")) return 2;
   }
   const bool property = !std::strcmp(argv[1], "property");
-  const bool homogeneous = !std::strcmp(argv[1], "homogeneous");
+  const bool homogeneous = !std::strcmp(argv[1], "homogeneous") ||
+                           !std::strcmp(argv[1], "axes-homogeneous");
+  const bool axismapping = !std::strcmp(argv[1], "axes") ||
+                          !std::strcmp(argv[1], "axes-homogeneous");
   const bool shared = !std::strcmp(argv[1], "shared");
   const bool statemapping = !std::strcmp(argv[1], "state");
   const bool emptybounds = !std::strcmp(argv[1], "empty-bounds");
@@ -175,7 +201,7 @@ static int runScene(int argc, char ** argv)
 
   SoComplexity * complexity = new SoComplexity;
   root->addChild(complexity);
-  SoIndexedFaceSet * shape = statemapping ? new StateMappedFaceSet
+  SoIndexedFaceSet * shape = axismapping ? new AxisMappedFaceSet : statemapping ? new StateMappedFaceSet
     : emptybounds ? new EmptyBoundsFaceSet : widebounds ? new WideBoundsFaceSet : new SoIndexedFaceSet;
   SoSeparator * drawscope = cached && !shared ? new SoSeparator : NULL;
   SoSeparator * parent = drawscope ? drawscope : root;
@@ -229,6 +255,7 @@ static int runScene(int argc, char ** argv)
   std::vector<int32_t> indices;
   const int side = 25;
   for (int phase = 0; phase < 8 && ok; ++phase) {
+    if (axismapping) complexity->value = float(phase % 6) / 5.0f;
     if ((statemapping || widebounds) && phase == 1) complexity->value = 1.0f;
     // Phase 1 is unchanged. Phase 3 edits only indices; phase 5 restores
     // them without editing coordinates. Other phases replace the source.
@@ -238,14 +265,14 @@ static int runScene(int argc, char ** argv)
       for (int y = 0; y <= rows; ++y) for (int x = 0; x <= side; ++x) {
         const float px = phase == 2 ? 0.05f + 0.7f * x / side : float(x) / side;
         const float py = phase == 6 ? 0.5f : (phase == 2 ? 1.3f : 1.0f) * y / rows;
-        vertices.push_back(SbVec3f(px, py, 0));
+        vertices.push_back(SbVec3f(px, py, axismapping ? 0.2f*px+0.3f*py : 0.0f));
       }
       if (vp) vp->vertex.setValues(0, int(vertices.size()), vertices.data());
       else if (coord4) {
         std::vector<SbVec4f> points;
         for (size_t i = 0; i < vertices.size(); ++i) {
           const float w = float(1 << (i % 3));
-          points.push_back(SbVec4f(vertices[i][0]*w, vertices[i][1]*w, 0, w));
+          points.push_back(SbVec4f(vertices[i][0]*w, vertices[i][1]*w, vertices[i][2]*w, w));
         }
         coord4->point.setValues(0, int(points.size()), points.data());
         coord4->point.setNum(int(points.size()));
@@ -278,7 +305,8 @@ static int runScene(int argc, char ** argv)
     }
     if (reference) {
       const bool enlarged = (statemapping || widebounds) && phase >= 1;
-      explicitMapping(vertices, indices, enlarged, emptybounds, widebounds, referencecoords);
+      explicitMapping(vertices, indices, enlarged, emptybounds, widebounds, referencecoords,
+                      axismapping ? phase % 6 : -1);
       if (otherreference) {
         std::vector<SbVec3f> mirrored = vertices;
         for (size_t i = 0; i < mirrored.size(); ++i) mirrored[i][0] = 1.0f - mirrored[i][0];
