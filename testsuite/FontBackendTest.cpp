@@ -46,7 +46,7 @@ int main(int argc, char **) {
   FT_GlyphSlotRec_ slot = {};
   slot.advance.x=12*64;
   face.glyph=&slot;
-  fixture.root.format=0x62697473u /* bits */;
+  fixture.root.format=static_cast<decltype(fixture.root.format)>(0x62697473u) /* bits */;
   fixture.left=-40000; fixture.top=40000;
   const unsigned char topdown[]={1,2,9, 3,4,8, 5,6,7};
   unsigned char bottomup[]={5,6,7, 3,4,8, 1,2,9};
@@ -75,11 +75,11 @@ int main(int argc, char **) {
   fixture.bitmap.pitch=1;
   before=released;
   check("invalid stride releases glyph",!cc_flwft_get_bitmap(&face,1) && released==before+1);
-  fixture.root.format=0x6f75746cu /* outl */;
+  fixture.root.format=static_cast<decltype(fixture.root.format)>(0x6f75746cu) /* outl */;
   conversionerror=1;
   before=released;
   check("conversion error releases glyph",!cc_flwft_get_bitmap(&face,1) && released==before+1);
-  conversionerror=0; fixture.root.format=0x62697473u /* bits */;
+  conversionerror=0; fixture.root.format=static_cast<decltype(fixture.root.format)>(0x62697473u) /* bits */;
   loaderror=1;
   before=released;
   check("load error",!cc_flwft_get_bitmap(&face,1) && released==before);
