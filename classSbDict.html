@@ -191,7 +191,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Constructor with <em>entries</em> specifying the initial number of buckets in the hash list &ndash; so it need to be larger than 0. Other than this, no special care needs to be taken in choosing the value since it is always rounded up to the nearest power of two. </p>
+<p>Constructor with <em>entries</em> specifying the initial number of buckets in the hash list &ndash; so it need to be larger than 0. Other than this, no special care needs to be taken in choosing the value since it is rounded up to a suitable prime number. </p>
 
 </div>
 </div>
@@ -209,7 +209,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Copy constructor. </p>
+<p>Makes a shallow copy of the entries, using the default hash function. The custom hash function of the source is not copied. </p>
 
 </div>
 </div>
@@ -268,7 +268,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Applies <em>rtn</em> to all entries in the dictionary. </p>
+<p>Applies <em>rtn</em> to all entries in the dictionary, without a guaranteed order. The callback may read entries and remove its current entry; it must not otherwise mutate or destroy this dictionary. Exceptions propagate. </p>
 
 </div>
 </div>
@@ -309,7 +309,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Inserts a new entry into the dictionary. <em>key</em> should be a unique number, and <em>value</em> is the generic user data.</p>
-<p>If <em>key</em> does not exist in the dictionary, a new entry is created and <code>TRUE</code> is returned. Otherwise, the generic user data is changed to <em>value</em>, and <code>FALSE</code> is returned. </p>
+<p>If <em>key</em> does not exist in the dictionary, a new entry is created and <code>TRUE</code> is returned. Otherwise, the generic user data is changed to <em>value</em>, and <code>FALSE</code> is returned. Failure to allocate a mandatory entry terminates with a diagnostic. Optional growth failure preserves the newly inserted entry. If a custom hash throws during growth, the exception propagates with that entry still present in the valid table. </p>
 
 </div>
 </div>
@@ -331,7 +331,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Searches for <em>key</em> in the dictionary. If an entry with this key exists, <code>TRUE</code> is returned and the entry value is returned in <em>value</em>. Otherwise, <code>FALSE</code> is returned. </p>
+<p>Searches for <em>key</em> in the dictionary. If an entry with this key exists, <code>TRUE</code> is returned and the entry value is returned in <em>value</em>. Otherwise, <code>FALSE</code> is returned and <em>value</em> is unchanged. </p>
 
 </div>
 </div>
@@ -353,7 +353,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Creates lists with all entries in the dictionary. </p>
+<p>Appends all entries to <em>keys</em> and <em>values</em>, preserving their existing contents. Appended keys and values correspond by position, without a guaranteed order. Keys are represented as pointer-sized values. If an append throws, both lists regain their original lengths and contents; their allocated capacities may have grown. </p>
 
 </div>
 </div>
@@ -371,7 +371,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Make a shallow copy of the contents of dictionary <em>from</em> into this dictionary. </p>
+<p>Make a shallow copy of the contents of dictionary <em>from</em> into this dictionary. The values remain non-owning pointers. As with the copy constructor, the default hash function is used. Self-assignment preserves the entries and the current hash function without rebuilding the table. </p>
 
 </div>
 </div>
@@ -407,7 +407,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Sets a new hashing function for this dictionary. Default hashing function just returns the key.</p>
+<p>Sets a new hashing function for this dictionary. Default hashing function just returns the key. Passing NULL restores it.</p>
+<p>Existing entries remain accessible after changing the hash function. If allocating replacement storage fails, the previous function and entries remain unchanged. A hash exception also preserves the previous function and chains and propagates. Hash callbacks must be stable and must not mutate this dictionary.</p>
 <p>If you find that items entered into the dictionary seems to make clusters in only a few buckets, you should try setting a hashing function. If you're for instance using strings, you could use the static <a class="el" href="classSbString.html#a5b029f547aa68f3679f7e9927921705d">SbString::hash()</a> function (you'd need to make a static function that will cast from SbDict::Key to char * of course).</p>
 <p>This function is not part of the OIV API. </p>
 
@@ -423,7 +424,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSbDict.html">SbDict</a></li>
-    <li class="footer">Generated on Sat Nov 21 2026 20:42:09 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sat Nov 21 2026 21:02:14 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
