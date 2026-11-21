@@ -3,7 +3,7 @@
 This catalog was prepared locally on November 21, 2026. It organizes the 45
 entries in [`docs/BUGS.txt`](../BUGS.txt) and preserves the historical reports.
 The local audit of October 5, 2026 supplied the technical evidence for the
-statuses below. The cited PRs were open when checked on November 21, 2026.
+statuses below, with later GitHub outcomes noted where verified.
 **This triage did not rerun all 45 cases.** An entry in the historical file
 does not establish that the defect persists, and a single unsuccessful
 attempt to reproduce it does not establish that it was fixed.
@@ -15,7 +15,9 @@ distinguishes cases with an existing issue or PR from candidates for new reports
 ## How to read the triage
 
 - **Confirmed**: the audit reproduced the symptom or identified a limitation
-  that persists. There are 13 entries, including 219 in an open PR.
+  that persists. There are 12 entries.
+- **Fixed upstream**: the matching PR was merged with validation of the historical
+  symptom. There is 1 entry.
 - **Partial**: the audit examined related code, mitigation, or behavior.
   The full report still needs a verdict. There are 12 entries.
 - **Not reproduced**: the test did not show the symptom, and its coverage
@@ -26,7 +28,8 @@ distinguishes cases with an existing issue or PR from candidates for new reports
 In the **Destination** column, `Issue` means a candidate technical report
 after checking for duplicates. `Discussion` means a decision about API,
 policy, or scope. `Verify` means gathering evidence before publishing.
-`Existing` means continuing in the existing issue and PR. The numbers from
+`Existing` means continuing in the existing issue and PR. `Archive` means the
+resolution is recorded and the entry requires no new report. The numbers from
 `BUGS.txt` are **historical identifiers**, distinct from GitHub issue numbers.
 
 ## Full inventory
@@ -76,7 +79,7 @@ policy, or scope. `Verify` means gathering evidence before publishing.
 | [214](../BUGS.txt#L2251) | `VRMLScript` and current SpiderMonkey | Confirmed | Discussion | Legacy JavaScript support remains unavailable. Decide on a backend and scope. |
 | [215](../BUGS.txt#L2273) | `SoText2` under `SoClipPlane` | Partial | Discussion | Reproduce visually and decide the clipping semantics. |
 | [217](../BUGS.txt#L2314) | `DrawStyle::POINTS` becomes lines during VRML2 conversion | Confirmed | Issue | `LineSet` and `IndexedLineSet` produce `IndexedLineSet` without a `PointSet`. |
-| [219](../BUGS.txt#L2326) | `viewAll` fails to frame `SoText2` | Confirmed | Existing | Continue in [issue #417](https://github.com/coin3d/coin/issues/417) and [PR #774](https://github.com/coin3d/coin/pull/774), both open when checked. |
+| [219](../BUGS.txt#L2326) | `viewAll` fails to frame `SoText2` | Fixed upstream | Archive | [Issue #417](https://github.com/coin3d/coin/issues/417) is closed. [PR #774](https://github.com/coin3d/coin/pull/774) was merged and documents the original SoXt example rendering after one `viewAll()` call. |
 | [221](../BUGS.txt#L2357) | Global field is not evaluated on file read | Confirmed | Issue | In the example, `string` updates only after `touch()`. |
 
 ## Cross-reference with closed issues
@@ -93,24 +96,23 @@ closed the issue. Symptoms in the historical file still require verification.
 | `BUGS.txt` 157 | [#78](https://github.com/coin3d/coin/issues/78) | **Related but distinct**: Windows font selection was fixed by converting the name between UTF-8 and UTF-16. Entry 157 asks about the `:Bold` style suffix. |
 | `BUGS.txt` 211 | [#75](https://github.com/coin3d/coin/issues/75) | **Related but distinct**: successive `TextureCoordinatePlane` updates. Entry 211 addresses whether primitives use the function. |
 | `BUGS.txt` 121 | [#74](https://github.com/coin3d/coin/issues/74) | **Related but distinct**: the vertical offset in untiled offscreen rendering was fixed. Entry 121 addresses tiles when the subviewport changes. |
-| `BUGS.txt` 219 | [#126](https://github.com/coin3d/coin/issues/126), [#384](https://github.com/coin3d/coin/issues/384) | **Related but distinct**: `SoText2` quality and alpha testing. The direct references for framing with `viewAll` are open issue #417 and PR #774. |
+| `BUGS.txt` 219 | [#126](https://github.com/coin3d/coin/issues/126), [#384](https://github.com/coin3d/coin/issues/384) | **Related but distinct**: `SoText2` quality and alpha testing. The direct references for framing with `viewAll` are [closed issue #417](https://github.com/coin3d/coin/issues/417) and [merged PR #774](https://github.com/coin3d/coin/pull/774). |
 | `BUGS.txt` 141 | [#505](https://github.com/coin3d/coin/issues/505), [#591](https://github.com/coin3d/coin/issues/591) | **Related but distinct**: GLX context failures on RHEL/SLES and WGL failures on Windows. Entry 141 concerns nested and mixed contexts. |
 | `docs/bugs/` 148 | [#81](https://github.com/coin3d/coin/issues/81) | **Same request, closed**: `SoDrawStyle::linePatternScaleFactor`. The current code contains the field and its initialization. The historical request has already been addressed. |
 
 The remaining `BUGS.txt` entries had no direct match among the 259 closed
-issues reviewed. Open issues, discussions, PRs, and records in other repositories
+issues in the initial review. Open issues, discussions, PRs, and records in other repositories
 may still cover them. The secondary files under `docs/bugs/` have a
 [separate index](bugs-secondary.md).
 
 ## Suggested order for preparing reports
 
-1. **Continue the existing case:** 219 in issue #417 and PR #774.
-2. **Prepare issues with a reproducer:** 072, 114, 162 and 196 together, 217,
+1. **Prepare issues with a reproducer:** 072, 114, 162 and 196 together, 217,
    and 221. Item 191 needs a visual comparison to isolate the symptom before
    the report can be finalized.
-3. **Open discussions on scope decisions:** 090, 092, 102, 121, and 214.
+2. **Open discussions on scope decisions:** 090, 092, 102, 121, and 214.
    Link 121 to 191 and explain the architectural limitation and the concrete case.
-4. **Reproduce before publishing:** entries marked `Partial`, `Not reproduced`,
+3. **Reproduce before publishing:** entries marked `Partial`, `Not reproduced`,
    and `Pending`, especially 211, 073, and reports that depend on Windows or
    specific drivers.
 

@@ -32,8 +32,8 @@ against current behavior, issues, and PRs before publishing it.
 | Historical ID | Topic | Triage note |
 | --- | --- | --- |
 | TODO-000 | [Improve error reporting on texture loading](../todo.txt#L16) | The file marks the error-message subtask as fixed. The broader request remains open for review. |
-| TODO-001 | [A "stopwatch" for built-in profiling support](../todo.txt#L51) | Needs verification |
-| TODO-002 | [Heed the SoBoundingBoxCache::hasLinesOrPoints() settings](../todo.txt#L102) | Needs verification |
+| TODO-001 | [A "stopwatch" for built-in profiling support](../todo.txt#L51) | Partly covered. [Node profiling](../../src/profiler/SoNodeProfiling.h#L85) measures elapsed wall time with `SbTime::getTimeOfDay()`. The historical proposal asks for a per-thread CPU clock and stopwatch API. |
+| TODO-002 | [Heed the SoBoundingBoxCache::hasLinesOrPoints() settings](../todo.txt#L102) | Partly covered. [SoSeparator](../../src/nodes/SoSeparator.cpp#L533), [SoLevelOfDetail](../../src/nodes/SoLevelOfDetail.cpp#L495), and [SoVRMLGroup](../../src/vrml97/Group.cpp#L417) propagate the flag from cached bounds. Confirm antialiasing padding with a rendered reproducer and audit the relevant shapes before marking the request complete. |
 | TODO-003 | [Clean up the file versioning mess](../todo.txt#L117) | Needs verification |
 | TODO-004 | [Re-design the public API for handling textures](../todo.txt#L252) | Needs verification |
 | TODO-005 | [Support compressed textures](../todo.txt#L295) | Basic support exists. [SoTexture2](../../src/nodes/SoTexture2.cpp#L553) forwards the compression preference, and the [OpenGL glue](../../src/glue/gl.cpp#L5040) selects compressed formats. Format and driver coverage require separate verification. |
@@ -46,7 +46,7 @@ against current behavior, issues, and PRs before publishing it.
 | TODO-015 | [100% correct transparency mode.](../todo.txt#L389) | Needs verification |
 | TODO-016 | [Detect multiple instances of the Coin library within the same run-time application space.](../todo.txt#L410) | An older update records this as implemented. The code contains `CoinStaticObjectInDLL`. Test detection on the current build. |
 | TODO-017 | [Move action-style code developed in other projects into proper actions.](../todo.txt#L432) | The code contains `SoToVRMLAction`, `SoToVRML2Action`, and `SoReorganizeAction`. Check what work is still needed. |
-| TODO-018 | [Check out and build simage as part of the Coin build process.](../todo.txt#L452) | Needs verification |
+| TODO-018 | [Check out and build simage as part of the Coin build process.](../todo.txt#L452) | Build policy proposal. [CMake](../../CMakeLists.txt#L546) can find an external simage package when runtime linking is disabled. The historical request is to build simage as part of Coin. Any renewed proposal should specify how dependency acquisition and packaging would work. |
 | TODO-019 | [Dynamically configurable viewer interaction (SoQt++)](../todo.txt#L516) | Needs verification |
 | TODO-020 | [SoSub*.h improvements.](../todo.txt#L531) | Needs verification |
 | TODO-021 | [Call-stack backtraces on errors.](../todo.txt#L544) | Needs verification |
@@ -66,15 +66,15 @@ against current behavior, issues, and PRs before publishing it.
 | TODO-035 | [Clean up SoBase write code.](../todo.txt#L989) | Related to the scene graph writing in BUGS-072, with broader scope. |
 | TODO-036 | [Write an "interior-geometry reducer" action.](../todo.txt#L1004) | Needs verification |
 | TODO-037 | [Take advantage of NVidia's occlusion culling extension.](../todo.txt#L1027) | Needs verification |
-| TODO-038 | [Duplicate API for TGS's SoBigImageRenderer extension.](../todo.txt#L1039) | Needs verification |
-| TODO-039 | [Move tristripifying code into SoReorganizeAction.](../todo.txt#L1048) | Needs verification |
+| TODO-038 | [Duplicate API for TGS's SoBigImageRenderer extension.](../todo.txt#L1039) | Partly covered. [SoOffscreenRenderer](../../src/rendering/SoOffscreenRenderer.cpp#L728) handles tiled offscreen rendering. The remaining request is a source-compatible wrapper for the historical TGS API. |
+| TODO-039 | [Move tristripifying code into SoReorganizeAction.](../todo.txt#L1048) | Partly covered. [SoReorganizeAction](../../src/actions/SoReorganizeAction.cpp#L442) exposes a triangle strip setting. Verify that enabling it actually produces strips before marking the original conversion request complete. |
 | TODO-040 | [Add built-in version numbers to win32 DLLs.](../todo.txt#L1055) | Implemented in the Windows shared library build. [CMake](../../src/CMakeLists.txt#L243) adds the generated [version resource](../../src/Coin.rc.cmake.in#L3) with major, minor and patch values. Verified in source. |
 | TODO-041 | [Generic ADT in C for dynamic arrays.](../todo.txt#L1119) | Needs verification |
 | TODO-042 | [Coin internationalization.](../todo.txt#L1131) | Needs verification |
 | TODO-043 | [The Coin library should have an option to set up a fatal error handler.](../todo.txt#L1169) | Needs verification |
 | TODO-044 | [Use GL_TEXTURE_RECTANGLE_EXT extension.](../todo.txt#L1186) | Partly covered. [SoGLImage](../../src/rendering/SoGLImage.cpp#L1749) uses the ARB rectangle texture target. The original request also covers pbuffer creation and binding, which this code does not establish. |
 | TODO-045 | [Coin / SoQt / Qt port or reimplementation of the SGI ''gview'' program.](../todo.txt#L1202) | Needs verification |
-| TODO-046 | [FILEFORMAT/DEFAULTS sections for the nodes.](../todo.txt#L1221) | Needs verification |
+| TODO-046 | [FILEFORMAT/DEFAULTS sections for the nodes.](../todo.txt#L1221) | Partly covered. Nodes such as [SoCube](../../src/shapenodes/SoCube.cpp#L57) and [SoSeparator](../../src/nodes/SoSeparator.cpp#L46) already document file formats and defaults. Check missing nodes or specify how to generate these sections from introspection. |
 
 ## `api-wish-list.txt`: 45 ideas
 
@@ -83,11 +83,11 @@ The file ends with a section titled “IMPLEMENTED, RESIDING IN SmallChange.” 
 | Catalog ID | Idea | Triage note |
 | --- | --- | --- |
 | API-01 | [missing base class fields](../api-wish-list.txt#L19) | Needs verification |
-| API-02 | [SbVec2i](../api-wish-list.txt#L31) | Needs verification |
+| API-02 | [SbVec2i](../api-wish-list.txt#L31) | Implemented under fixed-width names. Coin provides [SbVec2i32](../../include/Inventor/SbVec2i32.h#L50) and the matching [single](../../include/Inventor/fields/SoSFVec2i32.h#L40) and [multiple](../../include/Inventor/fields/SoMFVec2i32.h#L40) value fields. |
 | API-03 | [SoGLPrimitiveSet node.](../api-wish-list.txt#L49) | Needs verification |
 | API-04 | [More nodes and elements to control GL state.](../api-wish-list.txt#L115) | Needs verification |
 | API-05 | [Add SoMFMatrix input fields in SoCalculator](../api-wish-list.txt#L124) | Needs verification |
-| API-06 | [A better hash/dict class than SbDict.](../api-wish-list.txt#L135) | Needs verification |
+| API-06 | [A better hash/dict class than SbDict.](../api-wish-list.txt#L135) | Addressed in the existing containers. The current [SbHash](../../src/misc/SbHash.h) is a typed internal template and `SbDict` is the public compatibility class. [PR #792](https://github.com/coin3d/coin/pull/792) and [PR #791](https://github.com/coin3d/coin/pull/791) were merged. A public replacement API would require a separate proposal. |
 | API-07 | [SoGestureEvent](../api-wish-list.txt#L165) | Needs verification |
 | API-08 | [SoText2::verticalAlignment / verticalJustification](../api-wish-list.txt#L175) | Needs verification |
 | API-09 | [3D GUI Components](../api-wish-list.txt#L185) | Needs verification |
@@ -95,24 +95,24 @@ The file ends with a section titled “IMPLEMENTED, RESIDING IN SmallChange.” 
 | API-11 | [SbBool SbMatrix::inversePossible(void) const](../api-wish-list.txt#L276) | Needs verification |
 | API-12 | [SbList::setEqTester()](../api-wish-list.txt#L289) | Needs verification |
 | API-13 | [SoNode::setOverride() should be made persistent](../api-wish-list.txt#L311) | Needs verification |
-| API-14 | [SoDB::registerImporter()](../api-wish-list.txt#L330) | Needs verification |
+| API-14 | [SoDB::registerImporter()](../api-wish-list.txt#L330) | Partly covered by [SoForeignFileKit::registerFileExtension()](../../include/Inventor/annex/ForeignFiles/SoForeignFileKit.h#L79). It registers a handler for an extension with an identification callback. The proposed `SoDB::registerImporter()` entry point is absent from [SoDB](../../include/Inventor/SoDB.h). |
 | API-15 | [New node TextureAttribute](../api-wish-list.txt#L347) | Needs verification |
-| API-16 | [void SbRotation::getAsEuler(SbVec3f &), void SbRotation::setAsEuler(const SbVec3f &)](../api-wish-list.txt#L375) | Needs verification |
+| API-16 | [void SbRotation::getAsEuler(SbVec3f &), void SbRotation::setAsEuler(const SbVec3f &)](../api-wish-list.txt#L375) | The requested Euler methods are absent from the [public SbRotation API](../../include/Inventor/SbRotation.h#L52). The repository preserves [conversion notes](../quat2euler.txt). A new API needs an axis order, units, and a convention for singularities. |
 | API-17 | [SoFocusEvent](../api-wish-list.txt#L383) | Needs verification |
 | API-18 | [SoMarkerSet scaling](../api-wish-list.txt#L392) | Needs verification |
 | API-19 | [SbReal typedef](../api-wish-list.txt#L400) | Needs verification |
 | API-20 | [The SbBool typedef](../api-wish-list.txt#L417) | Requires an ABI decision. The [public C header template](../../include/Inventor/C/basic.h.cmake.in#L55) defines `SbBool` as `int`. The wish proposes changing the type to `bool`; the historical [Doxygen report](doxygen.md#item-119-sbbool) concerns documenting the existing type. |
 | API-21 | [Make APIs for engine classes more consistent.](../api-wish-list.txt#L434) | Needs verification |
-| API-22 | [SoInput::setStrings(char **)](../api-wish-list.txt#L445) | Needs verification |
+| API-22 | [SoInput::setStrings(char **)](../api-wish-list.txt#L445) | The [public SoInput API](../../include/Inventor/SoInput.h#L87) accepts a single memory buffer. The proposed null-terminated list of string fragments is a separate input form. |
 | API-23 | [SoInput/SoOutput alternative](../api-wish-list.txt#L459) | Needs verification |
-| API-24 | [SoAction::apply(SoAction * beingApplied)](../api-wish-list.txt#L476) | Needs verification |
+| API-24 | [SoAction::apply(SoAction * beingApplied)](../api-wish-list.txt#L476) | Implemented since Coin 2.1. [SoAction::apply(SoAction *)](../../src/actions/SoAction.cpp#L845) dispatches to the node, path, or path-list overload. |
 | API-25 | [SbFile](../api-wish-list.txt#L492) | Needs verification |
 | API-26 | [SoField::setValidator(SoValidator *)](../api-wish-list.txt#L535) | Needs verification |
 | API-27 | [SoKeyboardEvent::Key enums](../api-wish-list.txt#L545) | Needs verification |
-| API-28 | [SoSwitch::whichChild as an SoMFBool](../api-wish-list.txt#L635) | Needs verification |
+| API-28 | [SoSwitch::whichChild as an SoMFBool](../api-wish-list.txt#L635) | Requires a compatibility decision. [SoSwitch](../../include/Inventor/nodes/SoSwitch.h#L56) still exposes `whichChild` as `SoSFInt32`. The historical suggestion of a separate node avoids changing existing scene-file fields. |
 | API-29 | [SoMouseButtonEvent::isDoubleClick()](../api-wish-list.txt#L661) | Needs verification |
 | API-30 | [SbBigNum type](../api-wish-list.txt#L680) | Needs verification |
-| API-31 | [SoOffscreenRenderer::render(SoPathList &)](../api-wish-list.txt#L687) | Needs verification |
+| API-31 | [SoOffscreenRenderer::render(SoPathList &)](../api-wish-list.txt#L687) | The [renderer API](../../include/Inventor/SoOffscreenRenderer.h#L79) accepts a node or one path. Rendering a path list in one operation remains a proposed API. |
 | API-32 | [Support for field value expressions in Inventor ascii files](../api-wish-list.txt#L699) | Needs verification |
 | API-33 | [SoGLTeaPot](../api-wish-list.txt#L713) | Needs verification |
 | API-34 | [SoSearchPathAction (which is part of the TGS Inventor API)](../api-wish-list.txt#L725) | Needs verification |
@@ -121,7 +121,7 @@ The file ends with a section titled “IMPLEMENTED, RESIDING IN SmallChange.” 
 | API-37 | [Prettier SoWriteAction .iv-formatting](../api-wish-list.txt#L794) | Needs verification |
 | API-38 | [Output .iv-files with CR/LF on Win32 systems](../api-wish-list.txt#L817) | Needs verification |
 | API-39 | [SoViewportEvent](../api-wish-list.txt#L829) | Needs verification |
-| API-40 | [Extending SoInput to support callbacks for file operations](../api-wish-list.txt#L841) | Needs verification |
+| API-40 | [Extending SoInput to support callbacks for file operations](../api-wish-list.txt#L841) | Partly covered for in-memory data. [SoInput](../../include/Inventor/SoInput.h#L80) offers file and buffer input. A buffer does not provide the requested application callbacks for opening, reading, seeking, and closing a stream. |
 | API-41 | [SoDepthBuffer, SoGLDepthBufferElement](../api-wish-list.txt#L885) | Implemented in Coin. Both [SoDepthBuffer](../../include/Inventor/nodes/SoDepthBuffer.h#L42) and [SoGLDepthBufferElement](../../include/Inventor/elements/SoGLDepthBufferElement.h#L38) are present. See [PR #856](https://github.com/coin3d/coin/pull/856) and [PR #886](https://github.com/coin3d/coin/pull/886) for specific behavior changes. |
 | API-42 | [SoViewportRegion](../api-wish-list.txt#L897) | The file records an implementation in SmallChange. This Coin checkout has no SoViewportRegion. |
 | API-43 | [Coinboard node](../api-wish-list.txt#L911) | The file notes a partial implementation in SmallChange. |
