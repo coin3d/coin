@@ -951,6 +951,14 @@ add_subdirectory(include)
 add_subdirectory(data)
 add_subdirectory(src)
 
+if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+  add_custom_target(uninstall
+    COMMAND "${CMAKE_COMMAND}"
+      "-DCOIN_INSTALL_MANIFEST=${CMAKE_CURRENT_BINARY_DIR}/install_manifest.txt"
+      -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/CoinUninstall.cmake"
+    VERBATIM)
+endif()
+
 if (COIN_BUILD_EXAMPLES)
   add_subdirectory(examples)
 endif()

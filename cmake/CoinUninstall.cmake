@@ -1,0 +1,30 @@
+cmake_minimum_required(VERSION 3.0...3.31)
+
+if(NOT EXISTS "${COIN_INSTALL_MANIFEST}")
+  message(FATAL_ERROR "Install manifest is missing. Run a full installation from this build directory first.")
+endif()
+
+set(stage "$ENV{DESTDIR}")
+if(NOT stage STREQUAL "" AND NOT IS_ABSOLUTE "${stage}")
+  message(FATAL_ERROR "DESTDIR must be an absolute path for uninstall.")
+endif()
+
+file(STRINGS "${COIN_INSTALL_MANIFEST}" installed_files ENCODING UTF-8)
+foreach(installed_file IN LISTS installed_files)
+  if(NOT IS_ABSOLUTE "${installed_file}")
+    message(FATAL_ERROR "Install manifest contains a relative path: ${installed_file}")
+  endif()
+
+  set(path "${stage}${installed_file}")
+  if(IS_DIRECTORY "${path}" AND NOT IS_SYMLINK "${path}")
+    message(FATAL_ERROR "Refusing to remove a directory from the install manifest: ${path}")
+  endif()
+endforeach()
+
+foreach(installed_file IN LISTS installed_files)
+  set(path "${stage}${installed_file}")
+  file(REMOVE "${path}")
+  if(EXISTS "${path}" OR IS_SYMLINK "${path}")
+    message(FATAL_ERROR "Could not remove installed file: ${path}")
+  endif()
+endforeach()
