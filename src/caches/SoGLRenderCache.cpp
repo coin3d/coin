@@ -210,6 +210,25 @@ SoGLRenderCache::call(SoState * state)
   Returns TRUE if the setting was accepted. Once the first call() begins
   executing a cached display list, subsequent setter calls return FALSE.
 
+  Configure the setting during application initialization, before
+  rendering starts. If the setting has already been locked, query the
+  value Coin is using:
+
+  \code{.cpp}
+  #include <Inventor/SoDB.h>
+  #include <Inventor/caches/SoGLRenderCache.h>
+  #include <cstdio>
+
+  void initializeCoin()
+  {
+    SoDB::init();
+    if (!SoGLRenderCache::setNestedCachingEnabled(TRUE)) {
+      std::fprintf(stderr, "Coin nested render caching is already locked %s.\n",
+                   SoGLRenderCache::getNestedCachingEnabled() ? "on" : "off");
+    }
+  }
+  \endcode
+
   \sa getNestedCachingEnabled()
 */
 SbBool
