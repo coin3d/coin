@@ -21,6 +21,7 @@ set(COIN_GLUE_FILES
 
 # Files excluded from public API documentation, included in complete documentation.
 set(COIN_GLUE_INTERNAL_FILES
+	pbuffer_limits.h
 	gl-core.h
 	cg.h
 	cg.cpp
