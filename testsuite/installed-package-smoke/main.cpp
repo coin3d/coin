@@ -3,15 +3,10 @@
 #include <Inventor/SoSceneManager.h>
 #include <Inventor/system/gl.h>
 
-#if COIN_HAVE_LEGACY_GL_RENDERER != COIN_EXPECT_LEGACY_GL_RENDERER
-#error Installed Coin package reports an unexpected legacy renderer capability.
-#endif
-
 /**
  * Exercise Coin strictly through its installed CMake package and public
  * headers. Besides representative Coin classes, this preserves the historical
- * OpenGL fallback contract required by consumers with older platform headers
- * and verifies the configured legacy-renderer capability.
+ * OpenGL fallback contract required by consumers with older platform headers.
  */
 int
 main()

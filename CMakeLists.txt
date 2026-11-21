@@ -171,11 +171,6 @@ if(COIN_STRICT_WARNINGS)
   endif()
 endif()
 
-option(COIN_BUILD_LEGACY_GL_RENDERER
-  "Build Coin's legacy fixed-function OpenGL renderer."
-  ON)
-set(COIN_HAVE_LEGACY_GL_RENDERER ${COIN_BUILD_LEGACY_GL_RENDERER})
-
 check_include_file_cxx(thread HAVE_STD_THREAD)
 cmake_dependent_option(COIN_DEBUG_CHECK_THREAD "Enable thread check in several central Coin functions." OFF "HAVE_STD_THREAD" OFF)
 

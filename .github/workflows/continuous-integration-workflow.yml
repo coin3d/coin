@@ -9,16 +9,8 @@ on:
 
 jobs:
   ubuntu-build:
-    name: Ubuntu · legacy renderer ${{ matrix.legacy_renderer.label }}
+    name: Ubuntu
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        legacy_renderer:
-          - value: 'ON'
-            label: enabled
-          - value: 'OFF'
-            label: disabled
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
@@ -27,27 +19,27 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get -y update
-          sudo apt-get -y install freeglut3-dev
+          sudo apt-get -y install freeglut3-dev xvfb xauth libgl1-mesa-dri
       - name: Build and test
-        run: .github/scripts/build-and-test.sh "${{ matrix.legacy_renderer.value }}"
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          COIN_GLXGLUE_NO_PBUFFERS: '1'
+          COIN_GLX_PIXMAP_DIRECT_RENDERING: '1'
+        run: |
+          # Use GLX pixmaps and avoid MIT-SHM image uploads in Xvfb.
+          xvfb-run -a \
+            --server-args="-screen 0 1280x1024x24 -nolisten tcp -noreset -extension MIT-SHM" \
+            .github/scripts/build-and-test.sh
       - name: Create Artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: Ubuntu-Artifacts-LegacyGL-${{ matrix.legacy_renderer.value }}
+          name: Ubuntu-Artifacts
           path: cmake_install_dir/
         if: always()
 
   windows-build:
-    name: Windows · legacy renderer ${{ matrix.legacy_renderer.label }}
+    name: Windows
     runs-on: windows-2022
-    strategy:
-      fail-fast: false
-      matrix:
-        legacy_renderer:
-          - value: 'ON'
-            label: enabled
-          - value: 'OFF'
-            label: disabled
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
@@ -55,35 +47,27 @@ jobs:
           submodules: recursive
       - name: Build and test
         shell: pwsh
-        run: .github/scripts/build-and-test.ps1 -LegacyRenderer "${{ matrix.legacy_renderer.value }}"
+        run: .github/scripts/build-and-test.ps1
       - name: Create Artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: Windows-Artifacts-LegacyGL-${{ matrix.legacy_renderer.value }}
+          name: Windows-Artifacts
           path: cmake_install_dir/
         if: always()
 
   macos-build:
-    name: macOS · legacy renderer ${{ matrix.legacy_renderer.label }}
+    name: macOS
     runs-on: macos-15
-    strategy:
-      fail-fast: false
-      matrix:
-        legacy_renderer:
-          - value: 'ON'
-            label: enabled
-          - value: 'OFF'
-            label: disabled
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
         with:
           submodules: recursive
       - name: Build and test
-        run: .github/scripts/build-and-test.sh "${{ matrix.legacy_renderer.value }}"
+        run: .github/scripts/build-and-test.sh
       - name: Create Artifacts
         uses: actions/upload-artifact@v7
         with:
-          name: MacOS-Artifacts-LegacyGL-${{ matrix.legacy_renderer.value }}
+          name: MacOS-Artifacts
           path: cmake_install_dir/
         if: always()
