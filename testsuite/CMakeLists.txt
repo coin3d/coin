@@ -3,6 +3,7 @@ add_executable(CoinPbufferLimitsTest PbufferLimitsTest.cpp)
 target_include_directories(CoinPbufferLimitsTest PRIVATE ${PROJECT_SOURCE_DIR}/src)
 add_test(NAME PbufferLimits COMMAND CoinPbufferLimitsTest)
 
+include(cc-list/Tests.cmake)
 include(glglue-lifetime/Tests.cmake)
 include(action-apply-exceptions/Tests.cmake)
 include(gl-render-exceptions/Tests.cmake)
@@ -169,6 +170,14 @@ if (USE_PTHREAD)
 	target_link_libraries(CoinTests pthread)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
+
+# Exercise cleanup after the tree subsystem's normal-priority shutdown hook.
+add_executable(CcRbptreeCleanupTest CcRbptreeCleanupTest.cpp)
+target_link_libraries(CcRbptreeCleanupTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CcRbptreeCleanupTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+add_test(NAME CcRbptreeCleanupDuringShutdown COMMAND CcRbptreeCleanupTest)
 
 include(SoAnnotationDepthTests.cmake)
 
