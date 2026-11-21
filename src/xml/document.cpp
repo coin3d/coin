@@ -593,6 +593,22 @@ cc_xml_doc_get_filter_cb(const cc_xml_doc * doc, cc_xml_filter_cb ** cb, void **
   if (userdata) *userdata = doc->filtercbdata;
 }
 
+/*!
+  \fn SbBool cc_xml_doc_set_limits_x(cc_xml_doc * doc, const cc_xml_limits * limits)
+
+  Copies the opt-in parsing limits in \a limits to \a doc. Each zero-valued
+  member disables that quota. Limits can only be changed while the document
+  parser is idle; attempting to change them during a partial parsing session,
+  or passing \c NULL for \a limits, returns \c FALSE without changing the
+  current configuration.
+
+  The configured values apply to subsequent file, buffer, and partial parsing
+  sessions. They do not impose limits on serialization of an existing DOM.
+
+  \sa cc_xml_doc_get_limits(), cc_xml_doc_get_limit_hit()
+  \ingroup coin_XML
+  \relates cc_xml_doc
+*/
 SbBool
 cc_xml_doc_set_limits_x(cc_xml_doc * doc, const cc_xml_limits * limits)
 {
@@ -602,6 +618,16 @@ cc_xml_doc_set_limits_x(cc_xml_doc * doc, const cc_xml_limits * limits)
   return TRUE;
 }
 
+/*!
+  \fn void cc_xml_doc_get_limits(const cc_xml_doc * doc, cc_xml_limits * limits)
+
+  Copies the parsing limits currently configured on \a doc into \a limits.
+  The returned values are configuration, not the counters consumed by a parse.
+
+  \sa cc_xml_doc_set_limits_x(), cc_xml_doc_get_limit_hit()
+  \ingroup coin_XML
+  \relates cc_xml_doc
+*/
 void
 cc_xml_doc_get_limits(const cc_xml_doc * doc, cc_xml_limits * limits)
 {
@@ -609,6 +635,22 @@ cc_xml_doc_get_limits(const cc_xml_doc * doc, cc_xml_limits * limits)
   *limits = doc->limits;
 }
 
+/*!
+  \fn cc_xml_limit_hit cc_xml_doc_get_limit_hit(const cc_xml_doc * doc)
+
+  Returns the first configured parsing limit reached in the current or most
+  recent parse session, or \c CC_XML_LIMIT_NONE if no limit was reached.
+  Starting a new parse session resets the result to \c CC_XML_LIMIT_NONE.
+
+  A limit failure makes the parsing operation return \c FALSE and leaves the
+  previously committed DOM unchanged. A \c CC_XML_LIMIT_NONE result does not
+  imply parsing success: syntax and I/O failures are reported separately by
+  the parsing operation's return value.
+
+  \sa cc_xml_doc_set_limits_x(), cc_xml_doc_get_limits()
+  \ingroup coin_XML
+  \relates cc_xml_doc
+*/
 cc_xml_limit_hit
 cc_xml_doc_get_limit_hit(const cc_xml_doc * doc)
 {

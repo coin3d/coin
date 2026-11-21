@@ -51,22 +51,63 @@ COIN_DLL_API void cc_xml_doc_delete_x(cc_xml_doc * doc);
 COIN_DLL_API void cc_xml_doc_set_filter_cb_x(cc_xml_doc * doc, cc_xml_filter_cb * cb, void * userdata);
 COIN_DLL_API void cc_xml_doc_get_filter_cb(const cc_xml_doc * doc, cc_xml_filter_cb ** cb, void ** userdata);
 
-/* Per-document opt-in parse limits. Zero disables the corresponding limit.
-   The legacy default remains unlimited. Counts restart with each parse. */
+/*! \brief Optional per-document XML parsing limits.
+
+  These limits let an application bound selected resource growth while parsing
+  XML. Every member is a quota for one complete parse session. A value of zero
+  disables that quota, and a newly created document has all quotas disabled for
+  compatibility with the legacy API.
+
+  Counters restart when a new file, buffer, or partial parsing session begins.
+  Elements and attributes are counted before filtering, so discarding an
+  element does not refund the budget.
+
+  These quotas are not a universal security profile. Applications should
+  select values appropriate for the trust level and expected size of their
+  documents.
+
+  \ingroup coin_XML
+  \relates cc_xml_doc
+*/
 typedef struct cc_xml_limits {
+  /*! Cumulative input bytes supplied during the complete parse session,
+      including all file blocks or partial parsing chunks. */
   size_t input_bytes;
+
+  /*! Bytes reported by Expat for element and attribute names, attribute
+      values, and character data. Closing tags are not counted. */
   size_t expanded_bytes;
+
+  /*! Total element start events, including elements later discarded by the
+      document filter. Character-data nodes are not counted as elements. */
   size_t elements;
+
+  /*! Total attributes reported on element start events, including attributes
+      on elements later discarded by the document filter. */
   size_t attributes;
+
+  /*! Maximum element nesting depth. The document root has depth 1. */
   size_t depth;
 } cc_xml_limits;
 
+/*! \brief Identifies the first XML parsing limit reached in a session.
+
+  \ingroup coin_XML
+  \relates cc_xml_doc
+*/
 typedef enum cc_xml_limit_hit {
+  /*! No configured limit has been reached in the current or most recent
+      parse session. */
   CC_XML_LIMIT_NONE,
+  /*! The cumulative input byte quota was reached. */
   CC_XML_LIMIT_INPUT_BYTES,
+  /*! The expanded byte quota was reached. */
   CC_XML_LIMIT_EXPANDED_BYTES,
+  /*! The element quota was reached. */
   CC_XML_LIMIT_ELEMENTS,
+  /*! The attribute quota was reached. */
   CC_XML_LIMIT_ATTRIBUTES,
+  /*! The element nesting depth quota was reached. */
   CC_XML_LIMIT_DEPTH
 } cc_xml_limit_hit;
 
