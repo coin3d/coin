@@ -1,4 +1,3 @@
-#include <Inventor/C/glue/gl.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoOffscreenRenderer.h>
 #include <Inventor/nodes/SoCube.h>
@@ -8,10 +7,11 @@
 #include <EGL/egl.h>
 
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 
 static bool
-renderScene()
+renderScene(bool expectRender = true)
 {
   SoSeparator * root = new SoSeparator;
   root->ref();
@@ -33,14 +33,20 @@ renderScene()
     SoOffscreenRenderer renderer(SbViewportRegion(width, height));
     renderer.setComponents(SoOffscreenRenderer::RGB);
     renderer.setBackgroundColor(SbColor(0, 0, 0));
-    if (renderer.render(root)) {
+    const bool rendered = renderer.render(root);
+    if (rendered && expectRender) {
       const unsigned char * pixels = renderer.getBuffer();
       const int center = ((height / 2) * width + width / 2) * 3;
       passed = pixels && std::memcmp(pixels, pixels + center, 3) != 0;
+    } else {
+      passed = !rendered && !expectRender;
     }
   }
   root->unref();
-  if (!passed) std::fprintf(stderr, "EGL offscreen rendering did not produce the scene\n");
+  if (!passed) {
+    std::fprintf(stderr, "%s\n", expectRender ? "EGL offscreen rendering did not produce the scene" :
+                 "Expected EGL offscreen rendering to fail with pbuffers disabled");
+  }
   const bool restored = eglQueryAPI() == previousapi &&
     eglGetCurrentDisplay() == previousdisplay &&
     eglGetCurrentContext() == previouscontext &&
@@ -51,13 +57,11 @@ renderScene()
 }
 
 static int
-renderAfterUnavailableGLX()
+renderAfterFailedProbe()
 {
-  if (void * unexpected = cc_glglue_context_create_offscreen(16, 16)) {
-    cc_glglue_context_destruct(unexpected);
-    std::fprintf(stderr, "Expected GLX offscreen creation to fail without DISPLAY\n");
-    return 1;
-  }
+  if (setenv("COIN_EGLGLUE_NO_PBUFFERS", "1", 1) != 0) return 1;
+  const bool failedAsExpected = renderScene(false);
+  if (unsetenv("COIN_EGLGLUE_NO_PBUFFERS") != 0 || !failedAsExpected) return 1;
 
   const EGLDisplay display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
   const EGLint attribs[] = {
@@ -89,8 +93,13 @@ int
 main(int argc, char ** argv)
 {
   SoDB::init();
-  const int result = argc > 1 && std::strcmp(argv[1], "after-unavailable-glx") == 0 ?
-    renderAfterUnavailableGLX() : (renderScene() ? 0 : 1);
+  if (eglGetCurrentContext() != EGL_NO_CONTEXT) {
+    std::fprintf(stderr, "Expected the test to start without an EGL context\n");
+    SoDB::finish();
+    return 1;
+  }
+  const int result = argc > 1 && std::strcmp(argv[1], "after-failed-probe") == 0 ?
+    renderAfterFailedProbe() : (renderScene() ? 0 : 1);
   SoDB::finish();
   return result;
 }

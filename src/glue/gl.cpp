@@ -4428,6 +4428,22 @@ cc_glglue_context_create_offscreen(unsigned int width, unsigned int height)
     // Offscreen rendering can create the first context in the process.
     check_egl(false);
     if (COIN_USE_EGL > 0) return eglglue_context_create_offscreen(width, height);
+#if defined(HAVE_GLX)
+    if (COIN_USE_EGL < 0) {
+      // Preserve the GLX default on X11. Without a usable X display,
+      // try EGL and leave detection open if neither backend succeeds.
+      const char * display = coin_getenv("DISPLAY");
+      if (display && display[0]) {
+        if (void * ctx = glxglue_context_create_offscreen(width, height)) {
+          COIN_USE_EGL = 0;
+          return ctx;
+        }
+      }
+      void * ctx = eglglue_context_create_offscreen(width, height);
+      if (ctx) COIN_USE_EGL = 1;
+      return ctx;
+    }
+#endif
 #endif
 #if defined(HAVE_GLX)
     return glxglue_context_create_offscreen(width, height);
@@ -4581,10 +4597,6 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
                            "query by making a dummy offscreen context");
   }
 
-  cached = TRUE; /* Flip flag on first run. Note: it doesn't matter
-                    that the detection below might fail -- as we
-                    should report <0,0> on consecutive runs. */
-
   /* The below calls *can* fail, due to e.g. lack of resources, or no
      usable visual for the GL context. We try to handle gracefully.
      This is straightforward to do here, simply returning dimensions
@@ -4729,10 +4741,10 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
                            *width, *height);
   }
 
-  /* cache values for next invocation */
-
+  /* An unavailable backend or a failed allocation can be temporary. */
   dim[0] = *width;
   dim[1] = *height;
+  cached = dim[0] > 0 && dim[1] > 0;
 }
 
 SbBool
