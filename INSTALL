@@ -274,7 +274,8 @@ Use the same build directory that performed the full installation.
 
 With the Unix Makefiles generator, you can also run `make uninstall` in
 `coin_build`. For an install staged with `DESTDIR`, set the same `DESTDIR`
-when running the uninstall target.
+when running the uninstall target. The target checks this value against the
+last full installation from the build directory before removing any files.
 
 The target removes the files and symbolic links listed in the most recent
 full install manifest. It leaves directories and files outside the manifest
