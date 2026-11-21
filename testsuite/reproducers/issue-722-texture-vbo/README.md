@@ -1,54 +1,56 @@
-# Coordenadas de textura e vertex arrays
+# Texture coordinates and vertex arrays
 
-A matriz cobre `SoIndexedFaceSet`, `SoFaceSet`, `SoPointSet`,
-`SoIndexedPointSet`, `SoIndexedLineSet` e `SoVRMLIndexedFaceSet`.
-Para cada shape, verifica a imagem sem textura, com UV constante no shader,
-com mapeamento padrão, com coordenadas explícitas, com função dependente da
-normal, com duas texturas padrão, com GL texgen e com normais geradas. Cada
-caso renderiza dois quadros e exige ausência do diagnóstico de array de textura ausente.
+The matrix covers `SoIndexedFaceSet`, `SoFaceSet`, `SoPointSet`,
+`SoIndexedPointSet`, `SoIndexedLineSet`, and `SoVRMLIndexedFaceSet`.
+For each shape, it checks the image without a texture, with constant UVs in
+the shader, with default mapping, with explicit coordinates, with a
+normal-dependent function, with two default textures, with GL texgen,
+and with generated normals. Each case renders two frames and checks that
+the missing texture array diagnostic does not appear.
 
-São **144 casos / 288 quadros**: oito configurações de textura, seis shapes e
-três modos de renderização (imediato, arrays CPU e VBO). `SoFaceSet` também
-exercita `startIndex` diferente de zero e coordenadas não utilizadas no início.
+The **144 cases / 288 frames** cover eight texture configurations, six
+shapes, and three rendering modes (immediate mode, CPU arrays, and VBOs).
+`SoFaceSet` also exercises a nonzero `startIndex` with unused leading coordinates.
 
-No CMake, o alvo `CoinTextureArrayTest` e o teste
-`TextureCoordinateArrayRendering` são registrados para o renderizador GL
-legado em Linux/Unix com GLX e suporte VRML. O CTest usa `xvfb-run` quando
-disponível; sem ele, precisa de DISPLAY e retorna 77 se não houver display.
+CMake registers the `CoinTextureArrayTest` target and the
+`TextureCoordinateArrayRendering` test for the legacy GL renderer on
+Linux/Unix with GLX and VRML support. CTest uses `xvfb-run` when available.
+Otherwise, the test requires `DISPLAY` and returns 77 if no display is available.
 
 ```sh
 cmake --build /path/to/build --target CoinTextureArrayTest
 ctest --test-dir /path/to/build -R '^TextureCoordinateArrayRendering$' --output-on-failure
 ```
 
-Para executar também o reprodutor original da issue 722:
+To run the original reproducer for issue #722 as well:
 
 ```sh
 xvfb-run -a ./run.sh /path/to/build/lib
 ```
 
-Para comprovar a seleção do caminho em uma biblioteca Coin com símbolos de
-depuração, depois de executar `run.sh`:
+To verify rendering path selection with a Coin library built with debug
+symbols, run the following after `run.sh`:
 
 ```sh
 xvfb-run -a ./verify-arrays.sh /path/to/build/lib
 ```
 
-O depurador verifica **72 casos** (seis shapes, seis configurações e dois
-modos de arrays), contando duas chamadas de arrays por processo e o valor
-VBO recebido por `finishVertexArray()`. Mapeamento padrão, explícito e GL
-texgen devem usar arrays; função dependente da normal e multitextura padrão
-devem usar o fallback. Faces com normal cache também usam fallback quando
-o array não cobre o startIndex ou os bindings não permitem arrays. A matriz
-visual verifica também o resultado desses fallbacks.
+The debugger checks **72 cases** (six shapes, six configurations, and two
+array modes). It checks for two array draw calls per process and checks the
+VBO value passed to `finishVertexArray()`. Default mapping, explicit
+mapping, and GL texgen should use arrays. The normal-dependent function and
+default multitexturing should use the fallback. Faces using the normal cache
+also fall back when the array does not cover `startIndex` or the bindings
+prevent array rendering. The visual matrix also checks the fallback results.
 
-Resultados locais em 2026-10-12: compilação aprovada; reprodutor original
-3/3; matriz visual 144/144, 288 quadros corretos; depurador 72/72. Os resultados
-foram obtidos em Xvfb/Mesa com `COIN_GLX_PIXMAP_DIRECT_RENDERING=1`. Outros
-drivers e plataformas ainda dependem de validação própria.
+Local results on 2026-10-12: the build succeeded, the original reproducer
+passed 3/3, the visual matrix passed 144/144 with all 288 frames correct,
+and the debugger checks passed 72/72. These runs used Xvfb/Mesa with
+`COIN_GLX_PIXMAP_DIRECT_RENDERING=1`. Other drivers and platforms still
+require separate validation.
 
-Após atualizar a branch sobre `origin/master` (`ca247c1321`), foram removidos
-10 testes gerados obsoletos do build reutilizado. `CoinTests` compilou e passou
-**419 testes / 307.739 verificações**. A regressão de textura foi repetida
-nessa base. Os demais executáveis independentes registrados no CTest não
-foram todos compilados ou executados nesta etapa.
+After updating the branch on top of `origin/master` (`ca247c1321`), ten
+obsolete generated tests were removed from the reused build directory.
+`CoinTests` built and passed **419 tests / 307,739 checks**. The texture
+regression ran again on this base. This validation covered only a subset
+of the other standalone executables registered with CTest.
