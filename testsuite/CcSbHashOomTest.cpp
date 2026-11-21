@@ -7,6 +7,7 @@
 #include <sys/resource.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <climits>
 
 #include <Inventor/C/base/memalloc.h>
 #include <Inventor/lists/SbList.h>
@@ -112,13 +113,13 @@ int main()
 {
   struct rlimit no_core = { 0, 0 };
   setrlimit(RLIMIT_CORE, &no_core);
-  for (int stage = 0; stage < 3; ++stage) {
+  for (int stage = 0; stage < 4; ++stage) {
     const pid_t child = fork();
     if (child == 0) {
       fail_constructor = stage == 0;
-      SbHash<unsigned int, int> hash(2);
-      fail_entry = stage == 1;
       fail_buckets = stage == 2;
+      SbHash<unsigned int, int> hash(stage == 3 ? UINT_MAX : 2);
+      fail_entry = stage == 1;
       hash.put(1, 7);
       _exit(1);
     }
