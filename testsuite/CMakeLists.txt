@@ -1,7 +1,13 @@
+# This regression test exercises limit handling without an OpenGL display.
+add_executable(CoinPbufferLimitsTest PbufferLimitsTest.cpp)
+target_include_directories(CoinPbufferLimitsTest PRIVATE ${PROJECT_SOURCE_DIR}/src)
+add_test(NAME PbufferLimits COMMAND CoinPbufferLimitsTest)
+
 include(glglue-lifetime/Tests.cmake)
 include(action-apply-exceptions/Tests.cmake)
 include(gl-render-exceptions/Tests.cmake)
 include(SbSmallMapTests.cmake)
+include(gl-context-maps/Tests.cmake)
 
 if(COIN_BUILD_LEGACY_GL_RENDERER)
   find_package(Threads REQUIRED)
@@ -107,6 +113,8 @@ endforeach()
 create_file_test("models" "testCorrectFile" false "incorrect")
 # bug039.iv and bug055-5.iv contain errors but load anyway: ignore for now
 create_file_test("models/io/incorrect" "testIncorrectFile" true "(bug039|bug055-5)")
+
+include(SuperimpositionDepthTests.cmake)
 
 # Include all extracted '*Tests.cpp' files in the target.
 FILE(GLOB COIN_TEST_SOURCES "${CMAKE_CURRENT_BINARY_DIR}/*Test.cpp")
@@ -453,4 +461,45 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   endforeach()
 endif()
 
-include(SuperimpositionDepthTests.cmake)
+# Offscreen text must contribute bounds before camera fitting.
+add_executable(CoinSoText2BoundsTest SoText2BoundsTest.cpp)
+target_link_libraries(CoinSoText2BoundsTest PRIVATE Coin)
+target_include_directories(CoinSoText2BoundsTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include)
+add_test(NAME SoText2BoundsAndPicking COMMAND CoinSoText2BoundsTest)
+
+add_executable(CoinSoText2ExtendedTest SoText2ExtendedTest.cpp)
+target_link_libraries(CoinSoText2ExtendedTest PRIVATE Coin)
+target_include_directories(CoinSoText2ExtendedTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include)
+add_test(NAME SoText2ExtendedBounds COMMAND CoinSoText2ExtendedTest)
+add_test(NAME SoText2ExtendedRendering COMMAND CoinSoText2ExtendedTest --render)
+set_tests_properties(SoText2ExtendedRendering PROPERTIES SKIP_RETURN_CODE 77 TIMEOUT 30)
+
+# Three-label one-call framing regression, with pixel-coverage oracle.
+add_executable(CoinSoText2ViewAllAudit SoText2ViewAllAudit.cpp)
+target_link_libraries(CoinSoText2ViewAllAudit PRIVATE Coin)
+target_include_directories(CoinSoText2ViewAllAudit PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include)
+
+add_test(NAME SoText2ViewAllSingleCall COMMAND CoinSoText2ViewAllAudit)
+set_tests_properties(SoText2ViewAllSingleCall PROPERTIES SKIP_RETURN_CODE 77 TIMEOUT 60)
+add_executable(CoinSoCameraTextFitTest SoCameraTextFitTest.cpp)
+target_link_libraries(CoinSoCameraTextFitTest PRIVATE Coin)
+target_include_directories(CoinSoCameraTextFitTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include)
+add_test(NAME SoCameraTextFittingContract COMMAND CoinSoCameraTextFitTest)
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  add_test(NAME SoText2ViewAllNativeFont COMMAND CoinSoText2ViewAllAudit)
+  set_tests_properties(SoText2ViewAllNativeFont PROPERTIES
+    ENVIRONMENT "COIN_VIEWALL_TEST_FONT=DejaVu Sans" SKIP_RETURN_CODE 77 TIMEOUT 60)
+endif()
+
+# Exercise the same clipping oracle when runtime FreeType is unavailable.
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  add_test(NAME SoText2ExtendedRenderingBuiltinFont
+    COMMAND CoinSoText2ExtendedTest --render)
+  set_tests_properties(SoText2ExtendedRenderingBuiltinFont PROPERTIES
+    ENVIRONMENT "COIN_FORCE_FREETYPE_OFF=1" SKIP_RETURN_CODE 77 TIMEOUT 30)
+endif()
