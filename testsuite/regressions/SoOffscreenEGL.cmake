@@ -1,9 +1,16 @@
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND HAVE_EGL AND NOT HAVE_GLX)
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND HAVE_EGL)
   add_executable(CoinSoOffscreenEGLTest SoOffscreenEGLTest.cpp)
   target_include_directories(CoinSoOffscreenEGLTest PRIVATE ${COIN_TARGET_INCLUDE_DIRECTORIES})
   target_link_libraries(CoinSoOffscreenEGLTest PRIVATE Coin ${COIN_TARGET_LINK_LIBRARIES_GL})
-  add_test(NAME SoOffscreenEGL COMMAND CoinSoOffscreenEGLTest)
-  set_tests_properties(SoOffscreenEGL PROPERTIES
-    ENVIRONMENT "EGL_PLATFORM=surfaceless;LIBGL_ALWAYS_SOFTWARE=1;DISPLAY=;WAYLAND_DISPLAY="
+  if(HAVE_GLX)
+    set(test_name SoOffscreenEGLAfterUnavailableGLX)
+    add_test(NAME ${test_name} COMMAND CoinSoOffscreenEGLTest after-unavailable-glx)
+    set_tests_properties(${test_name} PROPERTIES SKIP_RETURN_CODE 77)
+  else()
+    set(test_name SoOffscreenEGL)
+    add_test(NAME ${test_name} COMMAND CoinSoOffscreenEGLTest)
+  endif()
+  set_tests_properties(${test_name} PROPERTIES
+    ENVIRONMENT "EGL_PLATFORM=surfaceless;LIBGL_ALWAYS_SOFTWARE=1;DISPLAY=;WAYLAND_DISPLAY=;COIN_EGL="
     TIMEOUT 30)
 endif()

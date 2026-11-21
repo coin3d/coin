@@ -2134,7 +2134,7 @@ static void check_force_agl()
 #endif
 }
 
-static void check_egl()
+static void check_egl(bool COIN_UNUSED_ARG(allow_default) = true)
 {
 #if !defined(HAVE_EGL)
   COIN_USE_EGL = 0;
@@ -2169,6 +2169,9 @@ static void check_egl()
       COIN_USE_EGL = 0;
       return;
     }
+
+    // Leave detection open if an offscreen context has not been created yet.
+    if (!allow_default) return;
 
     // Use GLX by default if could not detect any current context
     COIN_USE_EGL = 0;
@@ -4423,7 +4426,7 @@ cc_glglue_context_create_offscreen(unsigned int width, unsigned int height)
 #else
 #if defined(HAVE_EGL)
     // Offscreen rendering can create the first context in the process.
-    check_egl();
+    check_egl(false);
     if (COIN_USE_EGL > 0) return eglglue_context_create_offscreen(width, height);
 #endif
 #if defined(HAVE_GLX)
