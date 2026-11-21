@@ -97,6 +97,7 @@ var hierarchy =
     [ "SbList< ReadImageCBData >", "classSbList.html", null ],
     [ "SbList< SbBool >", "classSbList.html", null ],
     [ "SbList< SbClipData >", "classSbList.html", null ],
+    [ "SbList< SbList< SbVec2i32 > >", "classSbList.html", null ],
     [ "SbList< SbList< SbVec2s > >", "classSbList.html", null ],
     [ "SbList< SbMatrix >", "classSbList.html", null ],
     [ "SbList< SbName >", "classSbList.html", null ],

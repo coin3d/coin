@@ -1472,6 +1472,7 @@ default:
 </div><div class="memdoc">
 <p>Position the camera so that all geometry of the scene from <em>sceneroot</em> is contained in the view volume of the camera, while keeping the camera orientation constant.</p>
 <p>Finds the bounding box of the scene and calls <a class="el" href="#ab04c2ed686b698bee525eaf29aca0f64">SoCamera::viewBoundingBox()</a>. A bounding sphere will be calculated from the scene bounding box, so the camera will "view all" even when the scene is rotated, in any way.</p>
+<p>For scenes containing <a class="el" href="classSoText2.html" title="The SoText2 class is a node type for visualizing 2D text aligned with the camera plane.">SoText2</a>, the pixel footprint is checked again under the fitted camera. A bounded private-camera adjustment reserves two pixels at the viewport edges; only its final field values are published. This also works when this camera is outside the measured scene. Fixed-pixel text larger than its viewport cannot be made to fit by moving the camera; in that case the best finite trial is retained. The camera orientation is not changed.</p>
 <p>The <em>slack</em> argument gives a multiplication factor to the distance the camera is supposed to move out from the <em>sceneroot</em> mid-point.</p>
 <p>A value less than <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">1.0</a> for the <em>slack</em> argument will therefore cause the camera to come closer to the scene, a value of <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">1.0</a> will position the camera as exactly outside the scene bounding sphere, and a value larger than <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">1.0</a> will give "extra slack" versus the scene bounding sphere. </p>
 
@@ -1501,7 +1502,7 @@ default:
       </table>
 </div><div class="memdoc">
 <p>Position the camera so all geometry of the scene in <em>path</em> is contained in the view volume of the camera.</p>
-<p>Finds the bounding box of the scene and calls <a class="el" href="#ab04c2ed686b698bee525eaf29aca0f64">SoCamera::viewBoundingBox()</a>. </p>
+<p>Uses the same bounded screen-space text fitting as the scene-root overload. </p>
 
 </div>
 </div>
@@ -1677,7 +1678,7 @@ default:
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoCamera.html">SoCamera</a></li>
-    <li class="footer">Generated on Sat Nov 21 2026 20:03:29 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sat Nov 21 2026 20:42:09 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
