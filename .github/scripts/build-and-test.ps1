@@ -1,9 +1,3 @@
-param(
-    [Parameter(Mandatory = $true)]
-    [ValidateSet("ON", "OFF")]
-    [string]$LegacyRenderer
-)
-
 $ErrorActionPreference = "Stop"
 
 $repositoryDir = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot "../.."))
@@ -29,7 +23,6 @@ $configureArguments = @(
     "-G", "Visual Studio 17 2022",
     "-A", "x64",
     "-DCMAKE_INSTALL_PREFIX=$installDir",
-    "-DCOIN_BUILD_LEGACY_GL_RENDERER=$LegacyRenderer",
     "-DCOIN_BUILD_TESTS=ON"
 )
 cmake @configureArguments
@@ -46,8 +39,7 @@ $smokeConfigureArguments = @(
     "-B", $smokeBuildDir,
     "-G", "Visual Studio 17 2022",
     "-A", "x64",
-    "-DCMAKE_PREFIX_PATH=$installDir",
-    "-DCOIN_EXPECT_LEGACY_GL_RENDERER=$LegacyRenderer"
+    "-DCMAKE_PREFIX_PATH=$installDir"
 )
 cmake @smokeConfigureArguments
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
