@@ -189,17 +189,16 @@ HTML_FILE_EXTENSION    = .html
 HTML_HEADER            = @CMAKE_BINARY_DIR@/src/doc/header_awesome.html
 HTML_FOOTER            =
 HTML_STYLESHEET        =
-HTML_EXTRA_STYLESHEET  = @PROJECT_SOURCE_DIR@/docs/doxygen-awesome/doxygen-awesome.css \
+HTML_EXTRA_STYLESHEET  = @DOXYGEN_AWESOME_ASSET_DIR@/doxygen-awesome.css \
                          @PROJECT_SOURCE_DIR@/docs/doxygen-awesome/doxygen-custom/custom.css \
-                         @PROJECT_SOURCE_DIR@/docs/doxygen-awesome/doxygen-awesome-sidebar-only.css \
-                         @PROJECT_SOURCE_DIR@/docs/doxygen-awesome/doxygen-awesome-sidebar-only-darkmode-toggle.css \
+                         @DOXYGEN_AWESOME_ASSET_DIR@/doxygen-awesome-sidebar-only.css \
+                         @DOXYGEN_AWESOME_ASSET_DIR@/doxygen-awesome-sidebar-only-darkmode-toggle.css \
                          @PROJECT_SOURCE_DIR@/docs/doxygen-awesome/doxygen-custom/custom-alternative.css
-HTML_EXTRA_FILES       = @PROJECT_SOURCE_DIR@/docs/doxygen-awesome/doxygen-awesome-darkmode-toggle.js \
-                         @PROJECT_SOURCE_DIR@/docs/doxygen-awesome/doxygen-awesome-fragment-copy-button.js \
-                         @PROJECT_SOURCE_DIR@/docs/doxygen-awesome/doxygen-awesome-paragraph-link.js \
+HTML_EXTRA_FILES       = @DOXYGEN_AWESOME_ASSET_DIR@/doxygen-awesome-darkmode-toggle.js \
+@DOXYGEN_AWESOME_COPY_ASSET@                         @DOXYGEN_AWESOME_ASSET_DIR@/doxygen-awesome-paragraph-link.js \
                          @PROJECT_SOURCE_DIR@/docs/doxygen-awesome/doxygen-custom/toggle-alternative-theme.js \
-                         @PROJECT_SOURCE_DIR@/docs/doxygen-awesome/doxygen-awesome-interactive-toc.js \
-                         @PROJECT_SOURCE_DIR@/docs/doxygen-awesome/doxygen-awesome-tabs.js
+                         @DOXYGEN_AWESOME_ASSET_DIR@/doxygen-awesome-interactive-toc.js \
+                         @DOXYGEN_AWESOME_ASSET_DIR@/doxygen-awesome-tabs.js
 HTML_COLORSTYLE        = LIGHT
 HTML_COLORSTYLE_HUE    = 220
 HTML_COLORSTYLE_SAT    = 100
@@ -266,7 +265,7 @@ LATEX_CMD_NAME         = latex
 MAKEINDEX_CMD_NAME     = makeindex
 LATEX_MAKEINDEX_CMD    = makeindex
 COMPACT_LATEX          = NO
-PAPER_TYPE             = a4wide
+PAPER_TYPE             = a4
 EXTRA_PACKAGES         =
 LATEX_HEADER           =
 LATEX_FOOTER           =
@@ -404,7 +403,6 @@ PLANTUML_CFG_FILE      =
 PLANTUML_INCLUDE_PATH  =
 DOT_GRAPH_MAX_NODES    = 50
 MAX_DOT_GRAPH_DEPTH    = 0
-DOT_MULTI_TARGETS      = NO
 GENERATE_LEGEND        = YES
 DOT_CLEANUP            = YES
 MSCGEN_TOOL            =

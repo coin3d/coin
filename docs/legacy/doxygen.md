@@ -36,10 +36,7 @@ enquanto a descrição anterior estava inativa em
 [`SoDB.cpp`](../../src/misc/SoDB.cpp). A descrição agora acompanha o `typedef`
 na fonte do cabeçalho gerado. Uma geração local do alvo clássico
 `documentation` com Doxygen 1.9.8 incluiu `SbBool` no grupo `coin_base`, com
-a descrição esperada. O alvo moderno também foi gerado localmente com 1.9.8.
-A publicação moderna, que usa Doxygen 1.10.0 no
-[workflow](../../.github/workflows/documentation-workflow.yml), ainda precisa
-ser conferida depois do merge.
+a descrição esperada.
 
 ## O que o fluxo de documentação ensina à triagem
 
@@ -77,7 +74,7 @@ ser conferida depois do merge.
   triagem; a fonte, a configuração e o site publicado precisam ser conferidos
   juntos.
 
-Os alvos clássico e moderno foram reconstruídos localmente com Doxygen 1.9.8.
-Ambos terminaram sem referências não resolvidas nem imagens ausentes.
-O workflow de PR e a publicação usam Doxygen 1.10.0; conferir o resultado
-da execução no GitHub antes de considerar essa versão validada.
+O workflow de PR e o de publicação usam Doxygen 1.18.0. Com Doxygen 1.17
+ou superior, o alvo moderno usa Awesome 2.5.0, o cabeçalho gerado pelo
+Doxygen e o botão nativo de copiar código. O fork do Coin fornece as
+personalizações visuais e os recursos para versões anteriores.
