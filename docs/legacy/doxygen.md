@@ -27,15 +27,39 @@ publicação liga a segunda opção. Os dois caminhos desabilitam a lista
 automática de `\todo` e a lista de itens depreciados; elas não substituem
 os catálogos históricos [`todo.txt`](../todo.txt) e [`BUGS.txt`](../BUGS.txt).
 
-## Questão histórica a verificar
+## Item 119: `SbBool`
 
 O [relato 119 do catálogo secundário](../bugs/documentation/20040625--sbool-is-not-in-coin-docs.txt)
-diz que `SbBool` não aparece como definição própria no Doxygen. O texto em
-[`src/misc/SoDB.cpp`](../../src/misc/SoDB.cpp) usa `//` para as linhas com
-`\typedef int SbBool`, fora de um bloco Doxygen convencional. A documentação
-atual mostra usos de `SbBool` nas APIs, mas isso não comprova uma página ou
-entrada própria para o tipo. Conferir o índice de tipos do HTML gerado antes
-de classificar o item 119 como resolvido ou abrir uma issue nova.
+descreve a ausência de `SbBool` no Doxygen. A declaração fica no cabeçalho
+gerado a partir de [`basic.h.cmake.in`](../../include/Inventor/C/basic.h.cmake.in),
+enquanto a descrição anterior estava inativa em
+[`SoDB.cpp`](../../src/misc/SoDB.cpp). A descrição agora acompanha o `typedef`
+na fonte do cabeçalho gerado. Uma geração local do alvo clássico
+`documentation` com Doxygen 1.9.8 incluiu `SbBool` no grupo `coin_base`, com
+a descrição esperada. A publicação moderna, que usa Doxygen 1.10.0 no
+[workflow](../../.github/workflows/documentation-workflow.yml), ainda precisa
+ser conferida depois do merge.
+
+## O que o fluxo de documentação ensina à triagem
+
+- **Fonte e saída são evidências diferentes.** O comentário pode existir no
+  código sem aparecer no HTML. Para encerrar um relato de documentação,
+  registrar a fonte alterada e verificar a página ou entrada gerada.
+- **A referência da API deve acompanhar o código.** Páginas temáticas em
+  `src/doc/` explicam conceitos; comentários junto a declarações e métodos
+  explicam seu contrato. O catálogo histórico registra a origem da mudança,
+  sem ser ingerido automaticamente pelo Doxygen.
+- **A validação precisa ocorrer antes da publicação.** O workflow atual só
+  roda em `master` ou manualmente. Uma checagem de geração em PR seria útil,
+  mas requer uma linha de base para avisos: a configuração usa
+  `WARN_IF_UNDOCUMENTED=YES` e `WARN_AS_ERROR=NO`, e a geração clássica local
+  emitiu milhares de avisos preexistentes. Falhar por todo aviso agora
+  bloquearia mudanças sem distinguir regressões.
+- **A página inicial merece revisão editorial.**
+  [`Coin_main.dox`](../../src/doc/Coin_main.dox) contém referências antigas a
+  integrações gráficas e um rascunho de whitepaper desativado. Revisar
+  esses caminhos e oferecer exemplos atuais é trabalho editorial separado
+  da correção pontual de `SbBool`.
 
 ## Encaminhamento no GitHub
 
@@ -47,6 +71,6 @@ de classificar o item 119 como resolvido ou abrir uma issue nova.
   triagem; a fonte, a configuração e o site publicado precisam ser conferidos
   juntos.
 
-O submódulo `docs/doxygen-awesome` está não inicializado neste checkout,
-portanto o alvo moderno não foi reconstruído nesta rodada. A estrutura do
-workflow e o site publicado foram inspecionados.
+O submódulo `docs/doxygen-awesome` está não inicializado neste checkout;
+portanto só o alvo clássico foi reconstruído nesta rodada. A estrutura do
+workflow moderno e o site publicado foram inspecionados.

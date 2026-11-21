@@ -16,7 +16,7 @@ Na consulta de 21/11/2026 às 259 issues fechadas de `coin3d/coin`, foi identifi
 | Configuração e build | 177 | [Libtool is buggy on 64-bit Linux.](../bugs/configuration_and_build/20041208--libtool-buggy-on-64-bit-linux.txt) | — |
 | Configuração e build | 193 | [superglu should be sync'ed against SGI GLU.](../bugs/configuration_and_build/20050602--sync-with-sgi-glu.txt) | — |
 | Configuração e build | 198 | [MS Windows DLL versioning.](../bugs/configuration_and_build/20050624--dll-versioning.txt) | — |
-| Documentação | 119 | [Documentation bug: SbBool is not part of the Doxygen-generated doc.](../bugs/documentation/20040625--sbool-is-not-in-coin-docs.txt) | [Verificar na saída gerada](doxygen.md): o comentário atual ainda usa `//` fora de um bloco Doxygen convencional. |
+| Documentação | 119 | [Documentation bug: SbBool is not part of the Doxygen-generated doc.](../bugs/documentation/20040625--sbool-is-not-in-coin-docs.txt) | [Corrigido na fonte e validado localmente](doxygen.md#item-119-sbbool): `SbBool` aparece no grupo `coin_base` do HTML clássico gerado com Doxygen 1.9.8; conferir a publicação após merge. |
 | Recursos diversos | 103 | [Need more 'ivinfo' information](../bugs/features/others/20040218--more-information-from-ivinfo-hack-desirable.txt) | — |
 | Recursos diversos | 124 | [Manipulators and Spacemouse support](../bugs/features/others/20040722--spacemouse-support-for-draggers-and-manips.txt) | — |
 | Compatibilidade TGS Inventor | 146 | [Compatibility issue: SoShapeHints::windingType missing in Coin.](../bugs/features/tgs-inventor/20041010--SoShapeHints_windingType-missing-in-Coin.txt) | — |
