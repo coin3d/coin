@@ -76,11 +76,8 @@ Separator {
 }
   \endverbatim
 
-  Which results in the following scene:
-
-  <center>
-  \image html transformaccum.png "Rendering of Example Scenegraph"
-  </center>
+  The later shapes inherit both rotations unless a separator restores
+  the previous transformation matrix.
 */
 
 

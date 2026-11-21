@@ -337,7 +337,7 @@
   subset constitutes the Inventor format.  The rest of the nodes are
   extensions that are not part of any standardized format.
 
-  For VRML97 nodes, see the \ref VRMLnodes page.
+  For VRML97 nodes, see the \ref coin_VRMLnodes page.
 
   The VRML1.0 specification is at
   http://www.web3d.org/x3d/specifications/vrml/VRML1.0/index.html
@@ -561,6 +561,10 @@
 
   Here we will set up a list of some of the environment variables Coin will
   check for and can alter behavior because of.
+
+  The c EnvironmentVariable declarations shown here are documentation-only
+  placeholders, not linkable C++ symbols. Set the variables in the process
+  environment before starting a Coin-based application.
 
 */
 

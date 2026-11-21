@@ -83,13 +83,6 @@
   }
   \endverbatim
 
-  The scene graph above in a viewer:
-
-  <center>
-  \image html trianglestripset.png "Rendering of Example File"
-  </center>
-
-
   Strips are converted into triangles the way OpenGL does it, of
   course, so for the dirty details, check out the documentation of
   the OpenGL \c GL_TRIANGLE_STRIP primitive rendering type.

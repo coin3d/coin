@@ -18,7 +18,7 @@ novamente o site; o HTML gerado não é a fonte editorial.
 | Configuração clássica | [`docs/coin.doxygen.cmake.in`](../coin.doxygen.cmake.in) | Gera `html/index.html` pelo alvo CMake `documentation`. |
 | Configuração moderna | [`docs/coin.doxygen.awesome.cmake.in`](../coin.doxygen.awesome.cmake.in) | Gera `html_awesome/index.html` pelo alvo `documentation_awesome`. |
 | Aparência e imagens | [`docs/doxygen/`](../doxygen/), submódulo `docs/doxygen-awesome/` | Cabeçalho, CSS, imagens e tema moderno. |
-| Build e publicação | [`src/doc/CMakeLists.txt`](../../src/doc/CMakeLists.txt), [workflow](../../.github/workflows/documentation-workflow.yml) | Configura as entradas, constrói o alvo moderno e publica `html_awesome` no GitHub Pages após push em `master` ou disparo manual. |
+| Build, checagem e publicação | [`src/doc/CMakeLists.txt`](../../src/doc/CMakeLists.txt), [checagem de PR](../../.github/workflows/documentation-pr-check.yml), [publicação](../../.github/workflows/documentation-workflow.yml) | Configura as entradas, valida a geração e os links em PRs; publica `html_awesome` após push em `master` ou disparo manual. |
 | Auxiliares antigos | [`docs/coin_doxygenfiles.inc`](../coin_doxygenfiles.inc), [`docs/doxypp.sed`](../doxypp.sed) | Não são referenciados pelo fluxo CMake atual examinado; preservar até revisão específica. |
 
 O CMake deixa `COIN_BUILD_DOCUMENTATION` e
@@ -36,7 +36,8 @@ enquanto a descrição anterior estava inativa em
 [`SoDB.cpp`](../../src/misc/SoDB.cpp). A descrição agora acompanha o `typedef`
 na fonte do cabeçalho gerado. Uma geração local do alvo clássico
 `documentation` com Doxygen 1.9.8 incluiu `SbBool` no grupo `coin_base`, com
-a descrição esperada. A publicação moderna, que usa Doxygen 1.10.0 no
+a descrição esperada. O alvo moderno também foi gerado localmente com 1.9.8.
+A publicação moderna, que usa Doxygen 1.10.0 no
 [workflow](../../.github/workflows/documentation-workflow.yml), ainda precisa
 ser conferida depois do merge.
 
@@ -49,12 +50,17 @@ ser conferida depois do merge.
   `src/doc/` explicam conceitos; comentários junto a declarações e métodos
   explicam seu contrato. O catálogo histórico registra a origem da mudança,
   sem ser ingerido automaticamente pelo Doxygen.
-- **A validação precisa ocorrer antes da publicação.** O workflow atual só
-  roda em `master` ou manualmente. Uma checagem de geração em PR seria útil,
-  mas requer uma linha de base para avisos: a configuração usa
-  `WARN_IF_UNDOCUMENTED=YES` e `WARN_AS_ERROR=NO`, e a geração clássica local
-  emitiu milhares de avisos preexistentes. Falhar por todo aviso agora
-  bloquearia mudanças sem distinguir regressões.
+- **A validação precisa ocorrer antes da publicação.** A
+  [checagem de PR](../../.github/workflows/documentation-pr-check.yml)
+  constrói o alvo moderno sem publicar e falha se houver referências
+  não resolvidas ou imagens ausentes. Os demais avisos permanecem registrados
+  para triagem gradual: `WARN_IF_UNDOCUMENTED=YES` ainda produz milhares de
+  avisos, portanto `WARN_AS_ERROR=NO` continua necessário.
+- **As descrições precisam de alvos navegáveis.** As 142 variáveis de ambiente
+  descritas em [`Coin_environment.dox`](../../src/doc/Coin_environment.dox)
+  agora têm declarações somente para documentação em
+  [`environment.dox.h`](../../src/doc/environment.dox.h). Os links usam
+  âncoras próprias para evitar colisões com símbolos internos de mesmo nome.
 - **A página inicial merece revisão editorial.**
   [`Coin_main.dox`](../../src/doc/Coin_main.dox) contém referências antigas a
   integrações gráficas e um rascunho de whitepaper desativado. Revisar
@@ -71,6 +77,7 @@ ser conferida depois do merge.
   triagem; a fonte, a configuração e o site publicado precisam ser conferidos
   juntos.
 
-O submódulo `docs/doxygen-awesome` está não inicializado neste checkout;
-portanto só o alvo clássico foi reconstruído nesta rodada. A estrutura do
-workflow moderno e o site publicado foram inspecionados.
+Os alvos clássico e moderno foram reconstruídos localmente com Doxygen 1.9.8.
+Ambos terminaram sem referências não resolvidas nem imagens ausentes.
+O workflow de PR e a publicação usam Doxygen 1.10.0; conferir o resultado
+da execução no GitHub antes de considerar essa versão validada.

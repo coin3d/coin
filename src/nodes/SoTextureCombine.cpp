@@ -53,11 +53,7 @@
   This node has many fields, but usually it is sufficient to set only
   one or very few fields. The selected operation decides which
   values you need to set. One common example is to add a light map
-  to textured geometry. A light map can look like this:
-  
-  <center>
-  \image html lightmap.jpg "Rendering of an Example LightMap"
-  </center>
+  to textured geometry.
   
   The example below just shows how to apply the light map to a cube,
   with one light source on each side of the cube. Usually the texture
@@ -88,12 +84,6 @@
 
   \endverbatim
 
-  The scene above in a viewer:
-
-  <center>
-  \image html lightmap_screenshot.png "Rendering of Example Scenegraph"
-  </center>
-  
   In addition to the functions you can set in rgbOperation (or
   alphaOperation), it's possible to create more complex texture
   functions by combining two textures that have already been
