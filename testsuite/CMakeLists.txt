@@ -20,6 +20,12 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
     set_tests_properties(NestedCachingReplay_${nested_case}
       PROPERTIES SKIP_RETURN_CODE 77)
   endforeach()
+  foreach(nested_case enable disable)
+    add_test(NAME NestedCachingScene_${nested_case}
+      COMMAND CoinNestedCachingTest scene ${nested_case})
+    set_tests_properties(NestedCachingScene_${nested_case}
+      PROPERTIES SKIP_RETURN_CODE 77)
+  endforeach()
 
   find_package(Threads REQUIRED)
   add_executable(CoinBumpProgramTest bumprender/FailureTest.cpp)
