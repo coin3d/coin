@@ -25,6 +25,12 @@
   symbol_name_regexp = ^_ZN25SoUniformShaderParameterPD[12]Ev$
   label = SoUniformShaderParameterP is a source-file-private implementation class; its destructor is not part of Coin's public ABI.
 
+# The follow-up's context cleanup can inline away this source-file-private
+# method. Callers outside Coin cannot name SoShaderObjectP.
+[suppress_function]
+  symbol_name_regexp = ^_ZN15SoShaderObjectP21deleteGLShaderObjectsEv$
+  label = SoShaderObjectP is a source-file-private implementation class; this method is not part of Coin's public ABI.
+
 # SoOutputROUTE is defined only inside src/io/SoOutput.cpp. Changes to the
 # SbList implementation can alter whether this template member is emitted, but
 # clients cannot name SoOutputROUTE or instantiate SbList<SoOutputROUTE>.
