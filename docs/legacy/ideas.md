@@ -36,7 +36,7 @@ against current behavior, issues, and PRs before publishing it.
 | TODO-002 | [Heed the SoBoundingBoxCache::hasLinesOrPoints() settings](../todo.txt#L102) | Needs verification |
 | TODO-003 | [Clean up the file versioning mess](../todo.txt#L117) | Needs verification |
 | TODO-004 | [Re-design the public API for handling textures](../todo.txt#L252) | Needs verification |
-| TODO-005 | [Support compressed textures](../todo.txt#L295) | A 2005 update records this as implemented. `src/glue/gl.cpp` uses compressed formats. Verify current coverage and completeness. |
+| TODO-005 | [Support compressed textures](../todo.txt#L295) | Basic support exists. [SoTexture2](../../src/nodes/SoTexture2.cpp#L553) forwards the compression preference, and the [OpenGL glue](../../src/glue/gl.cpp#L5040) selects compressed formats. Format and driver coverage require separate verification. |
 | TODO-006 | [Font specification](../todo.txt#L318) | Needs verification |
 | TODO-010 | [Make Coin Usable from ROM](../todo.txt#L332) | Needs verification |
 | TODO-011 | [Rethink handling of camera properties and display configuration.](../todo.txt#L340) | Needs verification |
@@ -58,7 +58,7 @@ against current behavior, issues, and PRs before publishing it.
 | TODO-027 | [Build Coin / SoQt / SoWin on MSWin without relying on MSVC++.](../todo.txt#L736) | Needs verification |
 | TODO-028 | [Support for multiple viewports in render areas](../todo.txt#L807) | Needs verification |
 | TODO-029 | [Better font support.](../todo.txt#L840) | Needs verification |
-| TODO-030 | [Offscreen context support functions.](../todo.txt#L915) | The original file marks this as FIXED. |
+| TODO-030 | [Offscreen context support functions.](../todo.txt#L915) | The [context helpers](../../include/Inventor/C/glue/gl.h#L624) provide creation and activation, consistent with the original FIXED note. Track the separate request for context configuration under [BUGS-102](bugs.md), linking to the [original report](../BUGS.txt#L1165). |
 | TODO-031 | [Handle POSIX paths under MSWin.](../todo.txt#L920) | Needs verification |
 | TODO-032 | [Port SGI's ''ivperf'' tool.](../todo.txt#L935) | Needs verification |
 | TODO-033 | [Port TGS's ''ivtovrml'' tool.](../todo.txt#L943) | Needs verification |
@@ -68,11 +68,11 @@ against current behavior, issues, and PRs before publishing it.
 | TODO-037 | [Take advantage of NVidia's occlusion culling extension.](../todo.txt#L1027) | Needs verification |
 | TODO-038 | [Duplicate API for TGS's SoBigImageRenderer extension.](../todo.txt#L1039) | Needs verification |
 | TODO-039 | [Move tristripifying code into SoReorganizeAction.](../todo.txt#L1048) | Needs verification |
-| TODO-040 | [Add built-in version numbers to win32 DLLs.](../todo.txt#L1055) | Needs verification |
+| TODO-040 | [Add built-in version numbers to win32 DLLs.](../todo.txt#L1055) | Implemented in the Windows shared library build. [CMake](../../src/CMakeLists.txt#L243) adds the generated [version resource](../../src/Coin.rc.cmake.in#L3) with major, minor and patch values. Verified in source. |
 | TODO-041 | [Generic ADT in C for dynamic arrays.](../todo.txt#L1119) | Needs verification |
 | TODO-042 | [Coin internationalization.](../todo.txt#L1131) | Needs verification |
 | TODO-043 | [The Coin library should have an option to set up a fatal error handler.](../todo.txt#L1169) | Needs verification |
-| TODO-044 | [Use GL_TEXTURE_RECTANGLE_EXT extension.](../todo.txt#L1186) | Needs verification |
+| TODO-044 | [Use GL_TEXTURE_RECTANGLE_EXT extension.](../todo.txt#L1186) | Partly covered. [SoGLImage](../../src/rendering/SoGLImage.cpp#L1749) uses the ARB rectangle texture target. The original request also covers pbuffer creation and binding, which this code does not establish. |
 | TODO-045 | [Coin / SoQt / Qt port or reimplementation of the SGI ''gview'' program.](../todo.txt#L1202) | Needs verification |
 | TODO-046 | [FILEFORMAT/DEFAULTS sections for the nodes.](../todo.txt#L1221) | Needs verification |
 
@@ -101,7 +101,7 @@ The file ends with a section titled “IMPLEMENTED, RESIDING IN SmallChange.” 
 | API-17 | [SoFocusEvent](../api-wish-list.txt#L383) | Needs verification |
 | API-18 | [SoMarkerSet scaling](../api-wish-list.txt#L392) | Needs verification |
 | API-19 | [SbReal typedef](../api-wish-list.txt#L400) | Needs verification |
-| API-20 | [The SbBool typedef](../api-wish-list.txt#L417) | Needs verification |
+| API-20 | [The SbBool typedef](../api-wish-list.txt#L417) | Requires an ABI decision. The [public C header template](../../include/Inventor/C/basic.h.cmake.in#L55) defines `SbBool` as `int`. The wish proposes changing the type to `bool`; the historical [Doxygen report](doxygen.md#item-119-sbbool) concerns documenting the existing type. |
 | API-21 | [Make APIs for engine classes more consistent.](../api-wish-list.txt#L434) | Needs verification |
 | API-22 | [SoInput::setStrings(char **)](../api-wish-list.txt#L445) | Needs verification |
 | API-23 | [SoInput/SoOutput alternative](../api-wish-list.txt#L459) | Needs verification |
@@ -122,10 +122,10 @@ The file ends with a section titled “IMPLEMENTED, RESIDING IN SmallChange.” 
 | API-38 | [Output .iv-files with CR/LF on Win32 systems](../api-wish-list.txt#L817) | Needs verification |
 | API-39 | [SoViewportEvent](../api-wish-list.txt#L829) | Needs verification |
 | API-40 | [Extending SoInput to support callbacks for file operations](../api-wish-list.txt#L841) | Needs verification |
-| API-41 | [SoDepthBuffer, SoGLDepthBufferElement](../api-wish-list.txt#L885) | The file records an implementation in SmallChange. SoDepthBuffer is also present in this checkout. |
+| API-41 | [SoDepthBuffer, SoGLDepthBufferElement](../api-wish-list.txt#L885) | Implemented in Coin. Both [SoDepthBuffer](../../include/Inventor/nodes/SoDepthBuffer.h#L42) and [SoGLDepthBufferElement](../../include/Inventor/elements/SoGLDepthBufferElement.h#L38) are present. See [PR #856](https://github.com/coin3d/coin/pull/856) and [PR #886](https://github.com/coin3d/coin/pull/886) for specific behavior changes. |
 | API-42 | [SoViewportRegion](../api-wish-list.txt#L897) | The file records an implementation in SmallChange. This Coin checkout has no SoViewportRegion. |
 | API-43 | [Coinboard node](../api-wish-list.txt#L911) | The file notes a partial implementation in SmallChange. |
-| API-44 | [SoEnvironment::fogStart field.](../api-wish-list.txt#L936) | The file notes support in the element. Check the requested public field. |
+| API-44 | [SoEnvironment::fogStart field.](../api-wish-list.txt#L936) | Partly covered. [SoEnvironmentElement](../../include/Inventor/elements/SoEnvironmentElement.h#L63) accepts `fogStart`, but [SoEnvironment](../../include/Inventor/nodes/SoEnvironment.h#L65) does not expose that field. The remaining proposal is the public field and its scene-file behavior. |
 | API-45 | [SoSkyDome node.](../api-wish-list.txt#L946) | The file notes a partial implementation in SmallChange. |
 
 ## `projects.txt`: 12 proposals
@@ -144,7 +144,7 @@ These entries proposed work for students or interns. Some depend on older platfo
 | PROJECT-08 | [Make simple routines for packaging up Coin for RedHat Linux (.rpm),](../projects.txt#L26) | Reassess scope and relevance |
 | PROJECT-09 | [Do the work needed for being compatible with 64-bit systems. These](../projects.txt#L31) | Reassess scope and relevance |
 | PROJECT-10 | [Profiling and optimalization of rendering and other action](../projects.txt#L44) | Reassess scope and relevance |
-| PROJECT-11 | [A regression test system for the classes under Coin/src/base.](../projects.txt#L47) | `testsuite/CMakeLists.txt` defines `CoinTests`. Identify specific coverage gaps before proposing another test system. |
+| PROJECT-11 | [A regression test system for the classes under Coin/src/base.](../projects.txt#L47) | Implemented as test infrastructure. [CoinTests](../../testsuite/CMakeLists.txt#L114) is registered with [CTest](../../testsuite/CMakeLists.txt#L163), and base classes such as [SbImage](../../src/base/SbImage.cpp#L727) have regression tests. Track specific coverage gaps separately. |
 | PROJECT-12 | [Profiling and optimalization of the base classes. Should depend on a](../projects.txt#L49) | Reassess scope and relevance |
 
 ## Related entries
