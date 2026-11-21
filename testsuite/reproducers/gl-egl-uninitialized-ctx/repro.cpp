@@ -1,6 +1,6 @@
 // Reproducer for a -Wuninitialized bug in eglglue_context_create_offscreen()
 // (src/glue/gl_egl.cpp): the function used to read ctx->width / ctx->height
-// to build its EGLAttrib surface_attrib[] array before ctx was assigned by
+// to build its surface attribute array before ctx was assigned by
 // eglglue_contextdata_init(), dereferencing an indeterminate pointer.
 //
 // Calls the real, exported glue entry point directly (extern "C", not
@@ -29,24 +29,7 @@ int main()
 
   std::fprintf(stderr, "[repro] returned ctx=%p (did not crash)\n", ctx);
 
-  // When run under LD_PRELOAD=./egl_shim.so, cross-check the width/height
-  // that actually reached the EGL attribute list against what was
-  // requested -- this is what would have been garbage (read through the
-  // uninitialized ctx pointer) before the fix. The shim's intercepted
-  // eglCreatePlatformWindowSurface()/PixmapSurface() calls happen inside
-  // eglglue_context_create_offscreen() *before* it goes on to
-  // eglCreateContext() and possibly fails there for unrelated
-  // environment reasons (e.g. no real GPU backing this EGL install) --
-  // so a valid shim capture is checked, and trusted, independently of
-  // whether ctx ultimately came back non-NULL: the specific code path
-  // this reproducer targets already ran by the time that capture exists.
-  //
-  // Checked ahead of the ctx==NULL fallback below on purpose: EGL_SHIM_OUTFILE
-  // being set means the caller explicitly asked for this verification, so
-  // silently skipping it (whether because the file doesn't exist, or
-  // because ctx happened to be NULL) and falling through to a bare
-  // "didn't crash" pass would defeat the point of running under the shim
-  // at all.
+  // With the shim enabled, verify the dimensions passed to EGL.
   const char * outpath = getenv("EGL_SHIM_OUTFILE");
   if (outpath) {
     bool verified = false;

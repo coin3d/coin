@@ -4422,6 +4422,8 @@ cc_glglue_context_create_offscreen(unsigned int width, unsigned int height)
   return wglglue_context_create_offscreen(width, height);
 #else
 #if defined(HAVE_EGL)
+    // Offscreen rendering can create the first context in the process.
+    check_egl();
     if (COIN_USE_EGL > 0) return eglglue_context_create_offscreen(width, height);
 #endif
 #if defined(HAVE_GLX)

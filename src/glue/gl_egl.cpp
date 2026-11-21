@@ -33,8 +33,8 @@
 /*
  *  Environment variable controls available:
  * 
- *   - COIN_EGLGLUE_NO_PBUFFERS: set to 1 to force software rendering of
- *     offscreen contexts.
+ *   - COIN_EGLGLUE_NO_PBUFFERS: set to 1 to disable EGL offscreen
+ *     pbuffers.
  */
 
 #include "glue/gl_egl.h"
@@ -47,6 +47,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <cassert>
+#include <climits>
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/glue/gl.h>
@@ -98,6 +99,7 @@ SbBool eglglue_context_pbuffer_max(void * ctx, unsigned int * lims)
 #include <EGL/eglext.h>
 
 EGLDisplay eglglue_display = EGL_NO_DISPLAY;
+static EGLDisplay eglglue_surfaceless_display = EGL_NO_DISPLAY;
 struct eglglue_contextdata;
 
 #define CASE_STR( value ) case value: return #value;
@@ -136,28 +138,17 @@ const char* eglAPIString( EGLenum api )
 #undef CASE_STR
 
 struct eglglue_contextdata {
+  EGLDisplay display;
+  EGLConfig config;
   EGLContext context;
   EGLSurface surface;
-  EGLContext storedcontext;
-  EGLSurface storedsurface;
-  unsigned int width;
-  unsigned int height;
+  EGLDisplay previousdisplay;
+  EGLContext previouscontext;
+  EGLSurface previousdraw;
+  EGLSurface previousread;
+  EGLenum previousapi;
+  EGLint bindtotexture;
 };
-
-static struct eglglue_contextdata *
-eglglue_contextdata_init(unsigned int width, unsigned int height)
-{
-  struct eglglue_contextdata * ctx;
-  ctx = (struct eglglue_contextdata *)malloc(sizeof(struct eglglue_contextdata));
-
-  ctx->context = EGL_NO_CONTEXT;
-  ctx->surface = EGL_NO_SURFACE;
-  ctx->storedcontext = EGL_NO_CONTEXT;
-  ctx->storedsurface = EGL_NO_SURFACE;
-  ctx->width = width;
-  ctx->height = height;
-  return ctx;
-}
 
 static EGLDisplay
 eglglue_get_display(void)
@@ -201,6 +192,32 @@ found:
   return eglglue_display;
 }
 
+static EGLDisplay
+eglglue_get_surfaceless_display(void)
+{
+#ifdef EGL_PLATFORM_SURFACELESS_MESA
+  if (eglglue_surfaceless_display != EGL_NO_DISPLAY) return eglglue_surfaceless_display;
+
+  const char extension[] = "EGL_MESA_platform_surfaceless";
+  const char * extensions = eglQueryString(EGL_NO_DISPLAY, EGL_EXTENSIONS);
+  const char * match = extensions ? std::strstr(extensions, extension) : NULL;
+  if (match && (match == extensions || match[-1] == ' ') &&
+      (match[sizeof(extension) - 1] == ' ' || match[sizeof(extension) - 1] == '\0')) {
+    eglglue_surfaceless_display =
+      eglGetPlatformDisplay(EGL_PLATFORM_SURFACELESS_MESA, EGL_DEFAULT_DISPLAY, NULL);
+  }
+#endif
+  return eglglue_surfaceless_display;
+}
+
+static SbBool
+eglglue_choose_pbuffer_config(EGLDisplay display, const EGLint * attrib, EGLConfig * config)
+{
+  EGLint matches;
+  return display != EGL_NO_DISPLAY && eglInitialize(display, NULL, NULL) &&
+    eglChooseConfig(display, attrib, config, 1, &matches) && matches > 0;
+}
+
 void
 eglglue_init(cc_glglue * w)
 {
@@ -215,7 +232,9 @@ eglglue_init(cc_glglue * w)
 
   w->glx.glXGetCurrentDisplay = (COIN_PFNGLXGETCURRENTDISPLAYPROC)eglglue_getprocaddress(w, "eglglue_get_display");
 
-  if (eglInitialize(eglglue_get_display(), &w->glx.version.major, &w->glx.version.minor) == EGL_FALSE) {
+  EGLDisplay display = eglGetCurrentDisplay();
+  if (display == EGL_NO_DISPLAY) display = eglglue_get_display();
+  if (eglInitialize(display, &w->glx.version.major, &w->glx.version.minor) == EGL_FALSE) {
     cc_debugerror_post("eglglue_init",
                        "Couldn't initialize EGL. %s",
                         eglErrorString(eglGetError()));
@@ -236,40 +255,38 @@ eglglue_init(cc_glglue * w)
                             w->glx.version.minor);
     cc_debugerror_postinfo("eglglue_init",
                            "eglQueryString(EGL_VERSION)=='%s'",
-                            eglQueryString(eglglue_get_display(), EGL_VERSION));
+                            eglQueryString(display, EGL_VERSION));
     cc_debugerror_postinfo("eglglue_init",
                            "eglQueryString(EGL_VENDOR)=='%s'",
-                            eglQueryString(eglglue_get_display(), EGL_VENDOR));
+                            eglQueryString(display, EGL_VENDOR));
     cc_debugerror_postinfo("eglglue_init",
                            "eglQueryString(EGL_CLIENT_APIS)=='%s'",
-                            eglQueryString(eglglue_get_display(), EGL_CLIENT_APIS));
+                            eglQueryString(display, EGL_CLIENT_APIS));
     cc_debugerror_postinfo("eglglue_init",
                            "eglQueryAPI()=='%s'",
                            eglAPIString(eglQueryAPI()));
     cc_debugerror_postinfo("eglglue_init",
                            "eglQueryString(EGL_EXTENSIONS)=='%s'",
-                            eglQueryString(eglglue_get_display(), EGL_EXTENSIONS));
+                            eglQueryString(display, EGL_EXTENSIONS));
   }
 }
 
 static void
 eglglue_contextdata_cleanup(struct eglglue_contextdata * ctx)
 {
-  if (ctx == NULL) { return; }
-  if (eglglue_get_display() != EGL_NO_DISPLAY && ctx->context != EGL_NO_CONTEXT) eglDestroyContext(eglglue_get_display(), ctx->context);
-  if (eglglue_get_display() != EGL_NO_DISPLAY && ctx->surface != EGL_NO_SURFACE) eglDestroySurface(eglglue_get_display(), ctx->surface);
-  if (eglglue_get_display() != EGL_NO_DISPLAY && ctx->storedcontext != EGL_NO_CONTEXT) eglDestroyContext(eglglue_get_display(), ctx->storedcontext);
-  if (eglglue_get_display() != EGL_NO_DISPLAY && ctx->storedsurface != EGL_NO_SURFACE) eglDestroySurface(eglglue_get_display(), ctx->storedsurface);
+  if (ctx->context != EGL_NO_CONTEXT) eglDestroyContext(ctx->display, ctx->context);
+  if (ctx->surface != EGL_NO_SURFACE) eglDestroySurface(ctx->display, ctx->surface);
   free(ctx);
 }
 
 void *
 eglglue_context_create_offscreen(unsigned int width, unsigned int height)
 {
-  struct eglglue_contextdata * ctx;
-  EGLint numConfigs;
-  EGLConfig config;
-  EGLint attrib[] = {
+  const char * env = coin_getenv("COIN_EGLGLUE_NO_PBUFFERS");
+  if (env && atoi(env) > 0) return NULL;
+
+  const int stencilbits = coin_glglue_stencil_bits_hack();
+  const EGLint attrib[] = {
     EGL_RENDERABLE_TYPE, EGL_OPENGL_BIT,
     EGL_SURFACE_TYPE, EGL_PBUFFER_BIT,
     EGL_RED_SIZE, 8,
@@ -277,100 +294,66 @@ eglglue_context_create_offscreen(unsigned int width, unsigned int height)
     EGL_BLUE_SIZE, 8,
     EGL_ALPHA_SIZE, 8,
     EGL_DEPTH_SIZE, 24,
-    EGL_STENCIL_SIZE, 1,
+    EGL_STENCIL_SIZE, stencilbits == -1 ? 1 : stencilbits,
     EGL_NONE
   };
+  EGLDisplay display = eglGetCurrentDisplay();
+  if (display == EGL_NO_DISPLAY) display = eglglue_get_display();
+  EGLConfig config;
+  if (!eglglue_choose_pbuffer_config(display, attrib, &config)) {
+    // A Wayland EGL display can offer window surfaces without any pbuffers.
+    const EGLDisplay fallback = eglglue_get_surfaceless_display();
+    if (fallback == display || !eglglue_choose_pbuffer_config(fallback, attrib, &config)) {
+      cc_debugerror_post("eglglue_context_create_offscreen",
+                         "No matching EGL pbuffer configuration.");
+      return NULL;
+    }
+    display = fallback;
+  }
 
-  // Use the width/height arguments directly: ctx is not assigned until
-  // eglglue_contextdata_init() below, and eglglue_contextdata_init()
-  // sets ctx->width/ctx->height to exactly these values, so there is
-  // no need to (and, before ctx exists, no way to) read them off ctx.
-  EGLAttrib surface_attrib[] = {
-    EGL_TEXTURE_FORMAT, EGL_TEXTURE_RGBA,
-    EGL_TEXTURE_TARGET, EGL_TEXTURE_2D,
-    EGL_WIDTH, (EGLint) width,
-    EGL_HEIGHT, (EGLint) height,
-    EGL_NONE
-  };
-
-  ctx = eglglue_contextdata_init(width, height);
+  struct eglglue_contextdata * ctx =
+    static_cast<struct eglglue_contextdata *>(calloc(1, sizeof(struct eglglue_contextdata)));
   if (!ctx) return NULL;
+  ctx->display = display;
+  ctx->config = config;
+  ctx->context = EGL_NO_CONTEXT;
+  ctx->previouscontext = EGL_NO_CONTEXT;
+  ctx->bindtotexture = EGL_FALSE;
+  eglGetConfigAttrib(display, config, EGL_BIND_TO_TEXTURE_RGBA, &ctx->bindtotexture);
 
-  const int v = coin_glglue_stencil_bits_hack();
-  if (v != -1) {
-    attrib[15] = v;
+  const EGLint surfaceattrib[] = {
+    EGL_WIDTH, static_cast<EGLint>(width),
+    EGL_HEIGHT, static_cast<EGLint>(height),
+    EGL_TEXTURE_FORMAT, ctx->bindtotexture ? EGL_TEXTURE_RGBA : EGL_NO_TEXTURE,
+    EGL_TEXTURE_TARGET, ctx->bindtotexture ? EGL_TEXTURE_2D : EGL_NO_TEXTURE,
+    EGL_NONE
+  };
+  ctx->surface = eglCreatePbufferSurface(display, config, surfaceattrib);
+  if (ctx->surface == EGL_NO_SURFACE) {
+    cc_debugerror_post("eglglue_context_create_offscreen",
+                       "Couldn't create EGL pbuffer. %s",
+                       eglErrorString(eglGetError()));
+    eglglue_contextdata_cleanup(ctx);
+    return NULL;
   }
 
-  if (coin_glglue_debug()) {
-    cc_debugerror_postinfo("eglglue_context_create_offscreen",
-                           "Creating offscreen context.");
-  }
-
-  if (eglBindAPI(EGL_OPENGL_API) == EGL_FALSE) {
+  const EGLenum previousapi = eglQueryAPI();
+  if (!eglBindAPI(EGL_OPENGL_API)) {
     cc_debugerror_post("eglglue_context_create_offscreen",
                        "eglBindAPI(EGL_OPENGL_API) failed. %s",
                        eglErrorString(eglGetError()));
-    return NULL;
-  }
-
-  const char * env = coin_getenv("COIN_EGLGLUE_NO_PBUFFERS");
-  if (env && atoi(env) > 0) {
-    attrib[3] = EGL_PIXMAP_BIT;
-    if (coin_glglue_debug()) {
-      cc_debugerror_postinfo("eglglue_context_create_offscreen",
-                             "Force software rendering.");
-    }
-  }
-
-  eglChooseConfig(eglglue_get_display(), attrib, &config, 1, &numConfigs);
-  if (numConfigs == 0) {
-    if (attrib[3] == EGL_PBUFFER_BIT) {
-      if (coin_glglue_debug()) {
-        cc_debugerror_postinfo("eglglue_context_create_offscreen",
-                               "PBuffer offscreen rendering is NOT supported "
-                               "by the OpenGL driver. Try software rendering.");
-      }
-      attrib[3] = EGL_PIXMAP_BIT;
-      eglChooseConfig(eglglue_get_display(), attrib, &config, 1, &numConfigs);
-    }
-  }
-  if (numConfigs == 0) {
-    cc_debugerror_post("eglglue_context_create_offscreen",
-                       "No matching EGL config. %s",
-                       eglErrorString(eglGetError()));
     eglglue_contextdata_cleanup(ctx);
     return NULL;
   }
-
-  if (attrib[3] == EGL_PBUFFER_BIT) {
-    ctx->surface = eglCreatePlatformWindowSurface(eglglue_get_display(), config, 0, surface_attrib);
-  } else {
-    ctx->surface = eglCreatePlatformPixmapSurface(eglglue_get_display(), config, 0, surface_attrib);
-  }
-
-  if (ctx->surface == EGL_NO_SURFACE) {
-    cc_debugerror_post("eglglue_context_create_offscreen",
-                       "Couldn't create EGL surface. %s",
-                       eglErrorString(eglGetError()));
-    eglglue_contextdata_cleanup(ctx);
-    return NULL;
-  }
-
-  ctx->context = eglCreateContext(eglglue_get_display(), config, EGL_NO_CONTEXT, NULL);
+  ctx->context = eglCreateContext(display, config, EGL_NO_CONTEXT, NULL);
+  const EGLint error = ctx->context == EGL_NO_CONTEXT ? eglGetError() : EGL_SUCCESS;
+  if (previousapi != EGL_NONE) eglBindAPI(previousapi);
 
   if (ctx->context == EGL_NO_CONTEXT) {
     cc_debugerror_post("eglglue_context_create_offscreen",
-                       "Couldn't create EGL context. %s",
-                       eglErrorString(eglGetError()));
+                       "Couldn't create EGL context. %s", eglErrorString(error));
     eglglue_contextdata_cleanup(ctx);
     return NULL;
-  }
-
-  if (coin_glglue_debug()) {
-    cc_debugerror_postinfo("eglglue_context_create_offscreen",
-                           "created new %s offscreen context == %p",
-                           attrib[3] == EGL_PBUFFER_BIT ? "pBuffer" : "software",
-                           ctx->context);
   }
   return ctx;
 }
@@ -378,21 +361,20 @@ eglglue_context_create_offscreen(unsigned int width, unsigned int height)
 SbBool
 eglglue_context_make_current(void * ctx)
 {
-  struct eglglue_contextdata * context = (struct eglglue_contextdata *)ctx;
+  struct eglglue_contextdata * context = static_cast<struct eglglue_contextdata *>(ctx);
 
-  context->storedcontext = eglGetCurrentContext();
-  context->storedsurface = eglGetCurrentSurface(EGL_DRAW);
-  if (eglMakeCurrent(eglglue_get_display(), context->surface, context->surface, context->context) == EGL_FALSE) {
-      cc_debugerror_post("eglglue_context_make_current",
-                         "eglMakeCurrent failed: %s",
-                         eglErrorString(eglGetError()));
-      return FALSE;
-  }
+  context->previousapi = eglQueryAPI();
+  if (!eglBindAPI(EGL_OPENGL_API)) return FALSE;
+  context->previousdisplay = eglGetCurrentDisplay();
+  context->previouscontext = eglGetCurrentContext();
+  context->previousdraw = eglGetCurrentSurface(EGL_DRAW);
+  context->previousread = eglGetCurrentSurface(EGL_READ);
 
-  if (coin_glglue_debug()) {
-      cc_debugerror_postinfo("eglglue_context_make_current",
-                             "EGL Context (0x%X)\n",
-                             context->context);
+  if (!eglMakeCurrent(context->display, context->surface, context->surface, context->context)) {
+    cc_debugerror_post("eglglue_context_make_current",
+                       "eglMakeCurrent failed: %s", eglErrorString(eglGetError()));
+    if (context->previousapi != EGL_NONE) eglBindAPI(context->previousapi);
+    return FALSE;
   }
   return TRUE;
 }
@@ -400,33 +382,21 @@ eglglue_context_make_current(void * ctx)
 void
 eglglue_context_reinstate_previous(void * ctx)
 {
-  struct eglglue_contextdata * context = (struct eglglue_contextdata *)ctx;
-
-  if (context->storedcontext != EGL_NO_CONTEXT && context->storedsurface != EGL_NO_SURFACE) {
-    if (eglMakeCurrent(eglglue_get_display(), context->storedsurface, context->storedsurface, context->storedcontext) == EGL_TRUE) {
-      if (coin_glglue_debug()) {
-        cc_debugerror_postinfo("eglglue_context_make_current",
-                               "EGL Context (0x%X)\n",
-                               context->context);
-      }
-    } else {
-      cc_debugerror_post("eglglue_context_make_current",
-                         "eglMakeCurrent failed: %s",
-                         eglErrorString(eglGetError()));
-    }
+  struct eglglue_contextdata * context = static_cast<struct eglglue_contextdata *>(ctx);
+  EGLDisplay display = context->previouscontext == EGL_NO_CONTEXT ?
+    context->display : context->previousdisplay;
+  if (!eglMakeCurrent(display, context->previousdraw, context->previousread,
+                      context->previouscontext)) {
+    cc_debugerror_post("eglglue_context_reinstate_previous",
+                       "eglMakeCurrent failed: %s", eglErrorString(eglGetError()));
   }
+  if (context->previousapi != EGL_NONE) eglBindAPI(context->previousapi);
 }
 
 void
 eglglue_context_destruct(void * ctx)
 {
-  struct eglglue_contextdata * context = (struct eglglue_contextdata *)ctx;
-
-  if (coin_glglue_debug()) {
-    cc_debugerror_postinfo("eglglue_context_destruct",
-                           "Destroying context %p", context->context);
-  }
-  eglglue_contextdata_cleanup(context);
+  eglglue_contextdata_cleanup(static_cast<struct eglglue_contextdata *>(ctx));
 }
 
 void
@@ -434,7 +404,7 @@ eglglue_context_bind_pbuffer(void * ctx)
 {
   struct eglglue_contextdata * context = (struct eglglue_contextdata *)ctx;
 
-  if (eglBindTexImage(eglglue_get_display(), context->surface, EGL_BACK_BUFFER) == EGL_FALSE) {
+  if (eglBindTexImage(context->display, context->surface, EGL_BACK_BUFFER) == EGL_FALSE) {
     cc_debugerror_post("eglglue_context_bind_pbuffer()"
                        "after binding pbuffer: %s",
                        eglErrorString(eglGetError()));
@@ -446,7 +416,7 @@ eglglue_context_release_pbuffer(void * ctx)
 {
   struct eglglue_contextdata * context = (struct eglglue_contextdata *)ctx;
 
-  if (eglReleaseTexImage(eglglue_get_display(), context->surface, EGL_BACK_BUFFER) == EGL_FALSE) {
+  if (eglReleaseTexImage(context->display, context->surface, EGL_BACK_BUFFER) == EGL_FALSE) {
     cc_debugerror_post("eglglue_context_release_pbuffer()"
                        "releasing pbuffer: %s",
                        eglErrorString(eglGetError()));
@@ -459,7 +429,7 @@ eglglue_context_pbuffer_is_bound(void * ctx)
   struct eglglue_contextdata * context = (struct eglglue_contextdata *)ctx;
   GLint buffer = EGL_NONE;
 
-  if(eglQueryContext(eglglue_get_display(), context->context, EGL_RENDER_BUFFER, &buffer) == EGL_FALSE) {
+  if(eglQueryContext(context->display, context->context, EGL_RENDER_BUFFER, &buffer) == EGL_FALSE) {
     cc_debugerror_post("eglglue_context_pbuffer_is_bound()"
                        "after query pbuffer: %s",
                        eglErrorString(eglGetError()));
@@ -471,7 +441,7 @@ SbBool
 eglglue_context_can_render_to_texture(void * ctx)
 {
   struct eglglue_contextdata * context = (struct eglglue_contextdata *)ctx;
-  return context->surface != EGL_NO_SURFACE;
+  return context->bindtotexture == EGL_TRUE;
 }
 
 SbBool
@@ -486,9 +456,9 @@ eglglue_context_pbuffer_max(void * ctx, unsigned int * lims)
   if (context->surface == EGL_NO_SURFACE) { return FALSE; }
 
   for (i = 0; i < 3; i++) {
-    if(eglQuerySurface(eglglue_get_display(), context->surface, attribs[i], &attribval) == EGL_FALSE) {
+    if(eglGetConfigAttrib(context->display, context->config, attribs[i], &attribval) == EGL_FALSE) {
       cc_debugerror_post("eglglue_context_pbuffer_max",
-                         "eglQuerySurface() failed, "
+                         "eglGetConfigAttrib() failed, "
                          "returned error code %s",
                          eglErrorString(eglGetError()));
       return FALSE;
@@ -496,6 +466,8 @@ eglglue_context_pbuffer_max(void * ctx, unsigned int * lims)
     assert(attribval >= 0);
     lims[i] = (unsigned int)attribval;
   }
+  // Mesa can report no separate pixel-count limit.
+  if (lims[2] == 0) lims[2] = UINT_MAX;
   return TRUE;
 }
 
@@ -508,7 +480,12 @@ eglglue_getprocaddress(const cc_glglue * COIN_UNUSED_ARG(glue_in), const char * 
 void
 eglglue_cleanup(void)
 {
+  if (eglglue_surfaceless_display != EGL_NO_DISPLAY &&
+      eglglue_surfaceless_display != eglglue_display) {
+    eglTerminate(eglglue_surfaceless_display);
+  }
   if (eglglue_display != EGL_NO_DISPLAY) eglTerminate(eglglue_display);
+  eglglue_surfaceless_display = EGL_NO_DISPLAY;
   eglglue_display = EGL_NO_DISPLAY;
 }
 

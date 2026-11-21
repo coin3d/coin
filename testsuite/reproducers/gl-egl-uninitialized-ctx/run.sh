@@ -11,7 +11,7 @@
 #
 # Before the fix: crashes with SIGSEGV (the uninitialized `ctx` pointer
 # is dereferenced as ctx->width/ctx->height while building the
-# surface_attrib[] array, before ctx is ever assigned).
+# surface attribute array, before ctx is ever assigned).
 # After the fix: does not crash, and -- when LD_PRELOAD-ing egl_shim.so
 # -- the EGL_WIDTH/EGL_HEIGHT values actually reaching the real EGL
 # surface-creation call are verified to equal the requested size.
@@ -33,11 +33,7 @@ CXX=${CXX:-c++}
 export LD_LIBRARY_PATH="$LIBDIR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 
 # Run both phases even if one is inconclusive: run 2 (via the shim) can
-# still reach a real verdict on environments where run 1's raw,
-# non-intercepted EGL surface creation fails for unrelated reasons (e.g.
-# a real driver rejecting the NULL native window this reproducer passes,
-# independent of anything eglglue_context_create_offscreen() does wrong)
-# -- so a run 1 inconclusive must not hide a real pass or fail from run 2.
+# still verify the dimensions when the driver rejects pbuffer creation.
 any_inconclusive=0
 
 echo "=== run 1/2: direct call, no interception ==="
