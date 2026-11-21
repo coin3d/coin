@@ -4,6 +4,23 @@ include(gl-render-exceptions/Tests.cmake)
 include(SbSmallMapTests.cmake)
 
 if(COIN_BUILD_LEGACY_GL_RENDERER)
+  add_executable(CoinNestedCachingTest NestedCachingTest.cpp)
+  target_link_libraries(CoinNestedCachingTest Coin)
+  target_include_directories(CoinNestedCachingTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND HAVE_GLX)
+    target_compile_definitions(CoinNestedCachingTest PRIVATE COIN_TEST_HAVE_GLX)
+  endif()
+  foreach(nested_case default environment enable disable)
+    add_test(NAME NestedCachingConfig_${nested_case}
+      COMMAND CoinNestedCachingTest config ${nested_case})
+    add_test(NAME NestedCachingReplay_${nested_case}
+      COMMAND CoinNestedCachingTest replay ${nested_case})
+    set_tests_properties(NestedCachingReplay_${nested_case}
+      PROPERTIES SKIP_RETURN_CODE 77)
+  endforeach()
+
   find_package(Threads REQUIRED)
   add_executable(CoinBumpProgramTest bumprender/FailureTest.cpp)
   target_compile_definitions(CoinBumpProgramTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)

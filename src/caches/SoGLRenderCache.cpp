@@ -40,6 +40,8 @@
 // *************************************************************************
 
 #include <cassert>
+#include <cstdlib>
+#include <mutex>
 
 #include <Inventor/caches/SoGLRenderCache.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
@@ -60,6 +62,48 @@ public:
 };
 
 #define PRIVATE(obj) ((obj)->pimpl)
+
+namespace {
+enum class NestedCaching {
+  FromEnvironment,
+  Disabled,
+  Enabled
+};
+
+struct NestedCachingPolicy {
+  std::mutex mutex;
+  NestedCaching setting = NestedCaching::FromEnvironment;
+  bool locked = false;
+};
+
+NestedCachingPolicy &
+nested_caching_policy()
+{
+  static NestedCachingPolicy policy;
+  return policy;
+}
+
+bool
+nested_caching_enabled(NestedCaching setting)
+{
+  if (setting == NestedCaching::FromEnvironment) {
+    const char * value = coin_getenv("COIN_NESTED_CACHING");
+    return value && std::atoi(value) != 0;
+  }
+  return setting == NestedCaching::Enabled;
+}
+
+bool
+lock_nested_caching()
+{
+  NestedCachingPolicy & policy = nested_caching_policy();
+  const std::lock_guard<std::mutex> lock(policy.mutex);
+  const bool enabled = nested_caching_enabled(policy.setting);
+  policy.setting = enabled ? NestedCaching::Enabled : NestedCaching::Disabled;
+  policy.locked = true;
+  return enabled;
+}
+}
 
 // *************************************************************************
 
@@ -128,14 +172,8 @@ SoGLRenderCache::call(SoState * state)
 {
   assert(PRIVATE(this)->displaylist != NULL);
 
-  static int COIN_NESTED_CACHING = -1;
-  if (COIN_NESTED_CACHING < 0) {
-    const char * env = coin_getenv("COIN_NESTED_CACHING");
-    if (env) COIN_NESTED_CACHING = atoi(env);
-    else COIN_NESTED_CACHING = 0;
-  }
-  
-  if (COIN_NESTED_CACHING) {
+  static const bool nested = lock_nested_caching();
+  if (nested) {
     if (state->isCacheOpen()) {
       SoCacheElement::addCacheDependency(state, this);  
       
@@ -162,6 +200,40 @@ SoGLRenderCache::call(SoState * state)
     SoCacheElement::invalidate(state); // destroy any parent caches
     PRIVATE(this)->displaylist->call(state);
   }
+}
+
+/*!
+  Configures nested render caching for the entire process. An explicit
+  setting takes precedence over \c COIN_NESTED_CACHING. Without either
+  setting, nested caching is disabled.
+
+  Returns TRUE if the setting was accepted. Once the first call() begins
+  executing a cached display list, subsequent setter calls return FALSE.
+
+  \sa getNestedCachingEnabled()
+*/
+SbBool
+SoGLRenderCache::setNestedCachingEnabled(SbBool enabled)
+{
+  NestedCachingPolicy & policy = nested_caching_policy();
+  const std::lock_guard<std::mutex> lock(policy.mutex);
+  if (policy.locked) { return FALSE; }
+  policy.setting = enabled ? NestedCaching::Enabled : NestedCaching::Disabled;
+  return TRUE;
+}
+
+/*!
+  Returns the effective setting for nested render caching. Before the
+  first call(), this query does not lock the setting.
+
+  \sa setNestedCachingEnabled()
+*/
+SbBool
+SoGLRenderCache::getNestedCachingEnabled(void)
+{
+  NestedCachingPolicy & policy = nested_caching_policy();
+  const std::lock_guard<std::mutex> lock(policy.mutex);
+  return nested_caching_enabled(policy.setting) ? TRUE : FALSE;
 }
 
 /*!
