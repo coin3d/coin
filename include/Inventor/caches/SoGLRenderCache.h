@@ -51,6 +51,9 @@ public:
   void close(void);
   void call(SoState * state);
 
+  static SbBool setNestedCachingEnabled(SbBool enabled);
+  static SbBool getNestedCachingEnabled(void);
+
   int getCacheContext(void) const;
 
   SbBool isValid(const SoState * state) const override;
