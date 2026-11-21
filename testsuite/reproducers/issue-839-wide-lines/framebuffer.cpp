@@ -120,6 +120,79 @@ bool measure(SoGLRenderAction & action, bool indexed, bool perspective)
   return passed;
 }
 
+enum JoinCase { LINE_SET, INDEXED_STRIP, SPLIT_EDGES, BRANCH, DIFFERENT_DEPTH };
+
+bool measureJoin(SoGLRenderAction & action, JoinCase geometry, bool acute)
+{
+  auto * root = new SoSeparator;
+  root->ref();
+  auto * camera = new SoOrthographicCamera;
+  camera->position.setValue(0, 0, 4);
+  camera->nearDistance = 1;
+  camera->farDistance = 10;
+  camera->height = 2;
+  root->addChild(camera);
+  auto * lighting = new SoLightModel;
+  lighting->model = SoLightModel::BASE_COLOR;
+  root->addChild(lighting);
+  auto * style = new SoDrawStyle;
+  style->lineWidth = 64;
+  root->addChild(style);
+
+  auto * coords = new SoCoordinate3;
+  const SbVec3f end(acute ? -0.6f : 0.0f, 0.6f, 0);
+  coords->point.set1Value(0, -0.85f, 0, 0);
+  coords->point.set1Value(1, 0, 0, 0);
+  coords->point.set1Value(2, end);
+  root->addChild(coords);
+  if (geometry == LINE_SET) {
+    auto * lines = new SoLineSet;
+    lines->numVertices.set1Value(0, 3);
+    root->addChild(lines);
+  }
+  else {
+    auto * lines = new SoIndexedLineSet;
+    if (geometry == INDEXED_STRIP) {
+      const int32_t indices[] = { 0, 1, 2, -1 };
+      lines->coordIndex.setValues(0, 4, indices);
+    }
+    else {
+      coords->point.set1Value(3, 0, 0, geometry == DIFFERENT_DEPTH ? -0.5f : 0.0f);
+      coords->point.set1Value(4, 0, 0, 0);
+      coords->point.set1Value(5, -0.5f, 0.6f, 0);
+      // Split CAD edges can repeat a vertex under different indices and
+      // orient the two edges in either direction.
+      const int32_t indices[] = { 0, 1, -1, 2, 3, -1, 4, 5, -1 };
+      lines->coordIndex.setValues(0, geometry == BRANCH ? 9 : 6, indices);
+    }
+    root->addChild(lines);
+  }
+
+  action.setViewportRegion(SbViewportRegion(surfaceSize, surfaceSize));
+  glViewport(0, 0, surfaceSize, surfaceSize);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  action.apply(root);
+
+  const auto covered = [](int x, int y) {
+    GLubyte pixel[4];
+    glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
+    return pixel[0] > 127;
+  };
+  const int middle = surfaceSize / 2;
+  const bool corner = covered(middle + 8, middle - 8);
+  const bool endCap = covered(12, middle);
+  const bool inside = covered(middle - 8, middle + 8);
+  int width = 0;
+  for (int y = 0; y < surfaceSize; ++y) width += covered(24, y);
+  const GLenum error = glGetError();
+  const bool expectJoin = geometry != BRANCH && geometry != DIFFERENT_DEPTH;
+  std::printf("join %d %s width=%d bevel=%d cap=%d interior=%d glerror=0x%x\n",
+              int(geometry), acute ? "45 degrees" : "90 degrees",
+              width, corner, endCap, inside, unsigned(error));
+  root->unref();
+  return width == 64 && corner == expectJoin && !endCap && inside && error == GL_NO_ERROR;
+}
+
 } // namespace
 
 int main()
@@ -146,6 +219,12 @@ int main()
     passed &= measure(action, true, false);
     passed &= measure(action, false, true);
     passed &= measure(action, true, true);
+    for (JoinCase geometry : { LINE_SET, INDEXED_STRIP, SPLIT_EDGES }) {
+      passed &= measureJoin(action, geometry, false);
+      passed &= measureJoin(action, geometry, true);
+    }
+    passed &= measureJoin(action, BRANCH, false);
+    passed &= measureJoin(action, DIFFERENT_DEPTH, false);
   }
   SoDB::finish();
   return passed ? 0 : 1;

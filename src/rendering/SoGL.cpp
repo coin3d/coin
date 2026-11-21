@@ -38,10 +38,12 @@
 #include "rendering/SoGL.h"
 #include "coindefs.h"
 
+#include <array>
 #include <cassert>
 #include <cmath>
 #include <cstdio>
 #include <cstring>
+#include <map>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -120,7 +122,32 @@ sogl_glue_instance(const SoState * state)
 namespace {
 
 class WideLineRenderer {
+  struct Endpoint {
+    SbVec4f position{0, 0, 0, 0};
+    SbVec4f clip{0, 0, 0, 0};
+    SbVec4f leftOffset{0, 0, 0, 0};
+    bool visible = false;
+  };
+
+  struct Segment {
+    Endpoint start;
+    Endpoint end;
+  };
+
+  struct Junction {
+    Endpoint ends[2];
+    unsigned count = 0;
+  };
+
 public:
+  ~WideLineRenderer()
+  {
+    if (this->drawing) {
+      glEnd();
+      glPopAttrib();
+    }
+  }
+
   bool begin(SoState * state)
   {
     const float width = SoLineWidthElement::get(state);
@@ -154,24 +181,63 @@ public:
     glDisable(GL_POLYGON_SMOOTH);
     glDisable(GL_POLYGON_OFFSET_FILL);
     glBegin(GL_TRIANGLES);
+    this->drawing = true;
     return true;
   }
 
-  void send(const SoCoordinateElement * coords, int first, int second) const
+  void send(const SoCoordinateElement * coords, int first, int second)
   {
-    SbVec4f a, b;
-    this->toClip.multVecMatrix(coords->get4(first), a);
-    this->toClip.multVecMatrix(coords->get4(second), b);
+    // get4() can reuse its return storage for 3D coordinate elements.
+    const SbVec4f start = coords->get4(first);
+    const SbVec4f end = coords->get4(second);
+    if (start == end) return;
+
+    const Segment segment = this->drawSegment(start, end);
+    if (this->hasSegment) this->join(this->stripEnd, segment.start);
+    else this->stripStart = segment.start;
+    this->stripEnd = segment.end;
+    this->hasSegment = true;
+  }
+
+  void finishStrip(bool joinSeparated)
+  {
+    if (!this->hasSegment) return;
+    if (this->stripStart.visible && this->stripEnd.visible &&
+        this->stripStart.position == this->stripEnd.position) {
+      this->join(this->stripStart, this->stripEnd);
+    }
+    else if (joinSeparated) {
+      this->rememberEndpoint(this->stripStart);
+      this->rememberEndpoint(this->stripEnd);
+    }
+    this->hasSegment = false;
+  }
+
+  void drawSeparatedJoins() const
+  {
+    for (const auto & entry : this->junctions) {
+      const Junction & joint = entry.second;
+      if (joint.count == 2) this->join(joint.ends[0], joint.ends[1]);
+    }
+  }
+
+private:
+  Segment drawSegment(const SbVec4f & start, const SbVec4f & end) const
+  {
+    SbVec4f originalA, originalB;
+    this->toClip.multVecMatrix(start, originalA);
+    this->toClip.multVecMatrix(end, originalB);
+    SbVec4f a = originalA, b = originalB;
 
     // Clip the centerline in depth before dividing by w. OpenGL clips
     // the triangles to the sides of the viewport after expansion.
     if (!clipDepth(a, b, 1) || !clipDepth(a, b, -1) ||
-        !(a[3] > 0.0f && b[3] > 0.0f)) return;
+        !(a[3] > 0.0f && b[3] > 0.0f)) return Segment();
 
     const double dx = (double(b[0]) / b[3] - double(a[0]) / a[3]) * this->viewportWidth;
     const double dy = (double(b[1]) / b[3] - double(a[1]) / a[3]) * this->viewportHeight;
     const double length = std::hypot(dx, dy);
-    if (!(length > 0.0) || !std::isfinite(length)) return;
+    if (!(length > 0.0) || !std::isfinite(length)) return Segment();
 
     // The viewport scales NDC by half its size, so these offsets are
     // half the requested width in pixels. Keep the original clip z and w.
@@ -191,15 +257,62 @@ public:
     glVertex4fv(corners[2].getValue());
     glVertex4fv(corners[1].getValue());
     glVertex4fv(corners[3].getValue());
+
+    Segment segment;
+    // A depth-clipped endpoint is a cap, never a join.
+    if (a == originalA) segment.start = this->makeEndpoint(start, a, aoffset);
+    if (b == originalB) segment.end = this->makeEndpoint(end, b, -boffset);
+    return segment;
   }
 
-  void end() const
+  static Endpoint makeEndpoint(const SbVec4f & position, const SbVec4f & clip,
+                               const SbVec4f & leftOffset)
   {
-    glEnd();
-    glPopAttrib();
+    Endpoint endpoint;
+    endpoint.position = position;
+    endpoint.clip = clip;
+    endpoint.leftOffset = leftOffset;
+    endpoint.visible = true;
+    return endpoint;
   }
 
-private:
+  void triangle(const SbVec4f & a, const SbVec4f & b, const SbVec4f & c) const
+  {
+    SbVec4f vertex;
+    this->fromClip.multVecMatrix(a, vertex);
+    glVertex4fv(vertex.getValue());
+    this->fromClip.multVecMatrix(b, vertex);
+    glVertex4fv(vertex.getValue());
+    this->fromClip.multVecMatrix(c, vertex);
+    glVertex4fv(vertex.getValue());
+  }
+
+  void join(const Endpoint & a, const Endpoint & b) const
+  {
+    if (!a.visible || !b.visible || a.position != b.position) return;
+    const SbVec4f & u = a.leftOffset;
+    const SbVec4f & v = b.leftOffset;
+    const double cross = double(u[0]) * v[1] - double(u[1]) * v[0];
+
+    // Fill only the outside corner. The two segment quads already overlap
+    // on the inside, and the bevel keeps the join within the stroke radius.
+    if (cross > 0.0) this->triangle(a.clip, a.clip + v, a.clip - u);
+    else if (cross < 0.0) this->triangle(a.clip, a.clip + u, a.clip - v);
+  }
+
+  void rememberEndpoint(const Endpoint & endpoint)
+  {
+    if (!endpoint.visible) return;
+    const SbVec4f & p = endpoint.position;
+    for (int i = 0; i < 4; ++i) {
+      if (!std::isfinite(p[i])) return;
+    }
+    const std::array<float, 4> key = {{ p[0], p[1], p[2], p[3] }};
+    Junction & joint = this->junctions[key];
+    if (joint.count < 2) joint.ends[joint.count] = endpoint;
+    if (joint.count < 3) ++joint.count;
+  }
+
   static bool clipDepth(SbVec4f & a, SbVec4f & b, int sign)
   {
     const float da = a[3] + sign * a[2];
@@ -213,6 +326,10 @@ private:
   SbMatrix toClip, fromClip;
   int viewportWidth, viewportHeight;
   float lineWidth;
+  bool drawing = false;
+  bool hasSegment = false;
+  Endpoint stripStart, stripEnd;
+  std::map<std::array<float, 4>, Junction> junctions;
 };
 
 } // namespace
@@ -228,9 +345,9 @@ sogl_render_wide_lines(SoState * state, const SoCoordinateElement * coords,
     const int count = *counts;
     if (first < 0 || first > numcoords || count < 0 || count > numcoords - first) break;
     for (int i = 1; i < count; ++i) renderer.send(coords, first + i - 1, first + i);
+    renderer.finishStrip(false);
     first += count;
   }
-  renderer.end();
   return TRUE;
 }
 
@@ -245,10 +362,14 @@ sogl_render_wide_indexed_lines(SoState * state, const SoCoordinateElement * coor
   for (; indices != end; ++indices) {
     const int current = *indices;
     if (current >= numcoords) break;
-    if (previous >= 0 && current >= 0) renderer.send(coords, previous, current);
+    if (current < 0) renderer.finishStrip(true);
+    else if (previous >= 0) renderer.send(coords, previous, current);
     previous = current;
   }
-  renderer.end();
+  // CAD view providers may emit each edge as a separate strip with duplicate
+  // coordinates at its ends. Join only an unambiguous pair of open ends.
+  renderer.finishStrip(true);
+  renderer.drawSeparatedJoins();
   return TRUE;
 }
 
