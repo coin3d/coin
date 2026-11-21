@@ -143,11 +143,10 @@
   also of geometry border lines if setting the SoDrawStyle::style to
   SoDrawStyle::LINES.
 
-  The valid range of line width settings varies according to which
-  OpenGL implementation is used. For the purpose of not trying to set
-  illegal values, the application programmer should at runtime check
-  the valid range. How this can be accomplished is described in the
-  class documentation of SoGLLineWidthElement.
+  The native OpenGL range varies by implementation. SoLineSet and
+  SoIndexedLineSet can exceed it for solid, unlit, untextured lines with
+  an overall material and without a shader program. Each segment is
+  expanded independently. Other lines still use the native range.
 
   Default value is 0.0f, which is a "tag" value which tells the
   rendering library to use the default setting.

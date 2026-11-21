@@ -39,6 +39,7 @@
 #include "coindefs.h"
 
 #include <cassert>
+#include <cmath>
 #include <cstdio>
 #include <cstring>
 
@@ -60,6 +61,10 @@
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
+#include <Inventor/elements/SoGLShaderProgramElement.h>
+#include <Inventor/elements/SoGLViewingMatrixElement.h>
+#include <Inventor/elements/SoLinePatternElement.h>
+#include <Inventor/elements/SoLineWidthElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoProfileElement.h>
@@ -111,6 +116,141 @@ sogl_glue_instance(const SoState * state)
 #endif // workaround version
 }
 
+
+namespace {
+
+class WideLineRenderer {
+public:
+  bool begin(SoState * state)
+  {
+    const float width = SoLineWidthElement::get(state);
+    if (!(width > 1.0f) || !std::isfinite(width) ||
+        width <= cc_glglue_get_line_width_range(sogl_glue_instance(state))[1] ||
+        SoLinePatternElement::get(state) != SoLinePatternElement::getDefault() ||
+        SoGLShaderProgramElement::get(state)) {
+      return false;
+    }
+
+    // Read traversal state even when GL commands are being recorded
+    // into a display list. Expanded vertices must not be cached.
+    SoCacheElement::invalidate(state);
+    const SbVec2s viewport = SoViewportRegionElement::get(state).getViewportSizePixels();
+    if (viewport[0] <= 0 || viewport[1] <= 0) return false;
+
+    this->toClip = SoModelMatrixElement::get(state);
+    this->toClip.multRight(SoGLViewingMatrixElement::getResetMatrix(state));
+    this->toClip.multRight(SoProjectionMatrixElement::get(state));
+    const float determinant = this->toClip.det4();
+    if (determinant == 0.0f || !std::isfinite(determinant)) return false;
+    this->fromClip = this->toClip.inverse();
+    this->viewportWidth = viewport[0];
+    this->viewportHeight = viewport[1];
+    this->lineWidth = width;
+
+    glPushAttrib(GL_ENABLE_BIT | GL_POLYGON_BIT);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_POLYGON_STIPPLE);
+    glDisable(GL_POLYGON_SMOOTH);
+    glDisable(GL_POLYGON_OFFSET_FILL);
+    glBegin(GL_TRIANGLES);
+    return true;
+  }
+
+  void send(const SoCoordinateElement * coords, int first, int second) const
+  {
+    SbVec4f a, b;
+    this->toClip.multVecMatrix(coords->get4(first), a);
+    this->toClip.multVecMatrix(coords->get4(second), b);
+
+    // Clip the centerline in depth before dividing by w. OpenGL clips
+    // the triangles to the sides of the viewport after expansion.
+    if (!clipDepth(a, b, 1) || !clipDepth(a, b, -1) ||
+        !(a[3] > 0.0f && b[3] > 0.0f)) return;
+
+    const double dx = (double(b[0]) / b[3] - double(a[0]) / a[3]) * this->viewportWidth;
+    const double dy = (double(b[1]) / b[3] - double(a[1]) / a[3]) * this->viewportHeight;
+    const double length = std::hypot(dx, dy);
+    if (!(length > 0.0) || !std::isfinite(length)) return;
+
+    // The viewport scales NDC by half its size, so these offsets are
+    // half the requested width in pixels. Keep the original clip z and w.
+    const float x = float(-dy / length * this->lineWidth / this->viewportWidth);
+    const float y = float(dx / length * this->lineWidth / this->viewportHeight);
+    const SbVec4f aoffset(x * a[3], y * a[3], 0.0f, 0.0f);
+    const SbVec4f boffset(x * b[3], y * b[3], 0.0f, 0.0f);
+    SbVec4f corners[4];
+    this->fromClip.multVecMatrix(a + aoffset, corners[0]);
+    this->fromClip.multVecMatrix(a - aoffset, corners[1]);
+    this->fromClip.multVecMatrix(b + boffset, corners[2]);
+    this->fromClip.multVecMatrix(b - boffset, corners[3]);
+
+    glVertex4fv(corners[0].getValue());
+    glVertex4fv(corners[1].getValue());
+    glVertex4fv(corners[2].getValue());
+    glVertex4fv(corners[2].getValue());
+    glVertex4fv(corners[1].getValue());
+    glVertex4fv(corners[3].getValue());
+  }
+
+  void end() const
+  {
+    glEnd();
+    glPopAttrib();
+  }
+
+private:
+  static bool clipDepth(SbVec4f & a, SbVec4f & b, int sign)
+  {
+    const float da = a[3] + sign * a[2];
+    const float db = b[3] + sign * b[2];
+    if (da < 0.0f && db < 0.0f) return false;
+    if (da < 0.0f) a += (b - a) * (da / (da - db));
+    else if (db < 0.0f) b += (a - b) * (db / (db - da));
+    return true;
+  }
+
+  SbMatrix toClip, fromClip;
+  int viewportWidth, viewportHeight;
+  float lineWidth;
+};
+
+} // namespace
+
+SbBool
+sogl_render_wide_lines(SoState * state, const SoCoordinateElement * coords,
+                       int first, const int32_t * counts, const int32_t * end)
+{
+  WideLineRenderer renderer;
+  if (!renderer.begin(state)) return FALSE;
+  const int numcoords = coords->getNum();
+  for (; counts != end; ++counts) {
+    const int count = *counts;
+    if (first < 0 || first > numcoords || count < 0 || count > numcoords - first) break;
+    for (int i = 1; i < count; ++i) renderer.send(coords, first + i - 1, first + i);
+    first += count;
+  }
+  renderer.end();
+  return TRUE;
+}
+
+SbBool
+sogl_render_wide_indexed_lines(SoState * state, const SoCoordinateElement * coords,
+                               const int32_t * indices, const int32_t * end)
+{
+  WideLineRenderer renderer;
+  if (!renderer.begin(state)) return FALSE;
+  int previous = -1;
+  const int numcoords = coords->getNum();
+  for (; indices != end; ++indices) {
+    const int current = *indices;
+    if (current >= numcoords) break;
+    if (previous >= 0 && current >= 0) renderer.send(coords, previous, current);
+    previous = current;
+  }
+  renderer.end();
+  return TRUE;
+}
 
 // generate a 3d circle in the x-z plane
 static void

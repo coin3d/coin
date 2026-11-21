@@ -46,6 +46,7 @@
 class SoShape;
 class SoState;
 class SoAction;
+class SoCoordinateElement;
 class SoMaterialBundle;
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;
@@ -69,6 +70,10 @@ class SbVec2f;
 // pointer.
 const cc_glglue * sogl_glue_instance(const SoState * state);
 
+SbBool sogl_render_wide_lines(SoState * state, const SoCoordinateElement * coords,
+                             int first, const int32_t * counts, const int32_t * end);
+SbBool sogl_render_wide_indexed_lines(SoState * state, const SoCoordinateElement * coords,
+                                     const int32_t * indices, const int32_t * end);
 
 // render
 void sogl_render_cone(const float bottomRadius,

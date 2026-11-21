@@ -55,7 +55,6 @@ protected:
 
 private:
   SoState * state;
-  static float sizerange[2];
   void updategl(void);
 };
 
