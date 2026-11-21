@@ -17,6 +17,7 @@ program="$0"
 me=`echo "$0" | sed 's,^.*[/\\],,g'`
 scriptdir=$(CDPATH= cd -P "$(dirname "$0")" && pwd -P) || exit 1
 prefix=$(CDPATH= cd -P "@COIN_CONFIG_SCRIPT_PREFIX@" && pwd -P) || exit 1
+exec_prefix="$prefix"
 datarootdir="@COIN_CONFIG_DATAROOTDIR@"
 
 hello=`echo hello | fmt -t -w70 2>&1`

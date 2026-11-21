@@ -1,5 +1,6 @@
+coin_prefix=@COIN_CONFIG_PC_PREFIX@
 prefix=@COIN_CONFIG_PC_PREFIX@
-exec_prefix=${prefix}
+exec_prefix=@COIN_CONFIG_PC_EXEC_PREFIX@
 bindir=@COIN_CONFIG_BINDIR@
 libdir=@COIN_CONFIG_LIBDIR@
 includedir=@COIN_CONFIG_INCLUDEDIR@

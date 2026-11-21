@@ -451,16 +451,23 @@ else()
       if(IS_ABSOLUTE "${install_dir}")
         set(COIN_CONFIG_${dir} "${install_dir}")
       else()
-        set(COIN_CONFIG_${dir} "\${prefix}/${install_dir}")
+        set(COIN_CONFIG_${dir} "\${exec_prefix}/${install_dir}")
       endif()
     endforeach()
 
     set(COIN_CONFIG_PC_PREFIX "${CMAKE_INSTALL_PREFIX}")
+    set(COIN_CONFIG_PC_EXEC_PREFIX "\${coin_prefix}")
     if(NOT IS_ABSOLUTE "${CMAKE_INSTALL_LIBDIR}")
       file(RELATIVE_PATH pc_to_prefix
         "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/pkgconfig" "${CMAKE_INSTALL_PREFIX}")
       string(REGEX REPLACE "/$" "" pc_to_prefix "${pc_to_prefix}")
       set(COIN_CONFIG_PC_PREFIX "\${pcfiledir}/${pc_to_prefix}")
+      # pkg-config's --define-prefix assumes exactly two parent directories.
+      # Keep that override for the standard layout and use our own prefix
+      # for install paths in layouts where its heuristic would be wrong.
+      if(pc_to_prefix STREQUAL "../..")
+        set(COIN_CONFIG_PC_EXEC_PREFIX "\${prefix}")
+      endif()
     endif()
 
     set(COIN_CONFIG_SCRIPT_PREFIX "${CMAKE_INSTALL_PREFIX}")
