@@ -315,6 +315,12 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   SbBool drawPoints =
     SoDrawStyleElement::get(state) == SoDrawStyleElement::POINTS;
 
+  if (!drawPoints && !doTextures && !sendNormals && mbind == OVERALL &&
+      sogl_render_wide_indexed_lines(state, coords, cindices, cindices + numindices)) {
+    if (hasvp) state->pop();
+    return;
+  }
+
   const uint32_t contextid = action->getCacheContext();
   SoGLLazyElement * lelem = NULL;
 

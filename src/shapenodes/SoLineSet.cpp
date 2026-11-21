@@ -495,6 +495,12 @@ SoLineSet::GLRender(SoGLRenderAction * action)
   SbBool drawPoints =
     SoDrawStyleElement::get(state) == SoDrawStyleElement::POINTS;
 
+  if (!drawPoints && !doTextures && !needNormals && mbind == OVERALL &&
+      sogl_render_wide_lines(state, coords, idx, ptr, end)) {
+    if (didpush) state->pop();
+    return;
+  }
+
   SOGL_LINESET_GLRENDER(nbind, mbind, doTextures, (coords,
                                                    normals,
                                                    &mb,

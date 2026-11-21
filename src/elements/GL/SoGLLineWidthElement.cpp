@@ -40,13 +40,10 @@
   OpenGL line primitives will be made through this element, which
   forwards it to the appropriate native OpenGL call.
 
-  The Coin library does not place any bounds on the values of the
-  line widths, but be aware that the range and granularity of what is
-  valid line widths depends on the underlying OpenGL
-  implementation. Application programmers using line primitives
-  (typically through the SoLineSet or SoIndexedLineSet nodes) should
-  consider these boundary values. They can be acquired by running the
-  following code from within a valid OpenGL context:
+  The range and granularity of native line widths depend on the
+  underlying OpenGL implementation. This element clamps the native GL
+  state to that range while preserving the requested width in Coin's
+  traversal state. The native limits can be queried in a valid GL context:
 
   \code
     GLfloat bounds[2];
@@ -64,22 +61,14 @@
 #include <Inventor/elements/SoGLLineWidthElement.h>
 #include "coindefs.h"
 
-#include <cfloat>
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/system/gl.h>
 
-#include <cassert>
 #include <Inventor/errors/SoDebugError.h>
-
-// Important note: do _not_ use a "static const" variable instead, as
-// it is then not given that it will be initialized before the static
-// "sizerange" class variable array below.
-#define RANGE_NOT_CHECKED FLT_MAX
-
-float SoGLLineWidthElement::sizerange[2] = { RANGE_NOT_CHECKED, -1.0f};
+#include "rendering/SoGL.h"
 
 
 SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoGLLineWidthElement);
@@ -112,6 +101,7 @@ SoGLLineWidthElement::~SoGLLineWidthElement(void)
 void
 SoGLLineWidthElement::init(SoState * stateptr)
 {
+  this->state = stateptr;
   inherited::init(stateptr);
 }
 
@@ -119,6 +109,7 @@ SoGLLineWidthElement::init(SoState * stateptr)
 void
 SoGLLineWidthElement::push(SoState * stateptr)
 {
+  this->state = stateptr;
   SoGLLineWidthElement * prev = (SoGLLineWidthElement*)this->getNextInStack();
   this->data = prev->data;
   // capture previous element since we might or might not change the
@@ -150,21 +141,7 @@ SoGLLineWidthElement::setElt(float width)
 void
 SoGLLineWidthElement::updategl(void)
 {
-  if (SoGLLineWidthElement::sizerange[0] == RANGE_NOT_CHECKED) {
-    GLfloat vals[2];
-    glGetFloatv(GL_LINE_WIDTH_RANGE, vals);
-
-    // Matthias Koenig reported on coin-discuss that the OpenGL
-    // implementation on SGI Onyx 2 InfiniteReality returns 0 for the
-    // lowest line width, but it will still set the return value of
-    // glGetError() to GL_INVALID_VALUE if this size is attempted
-    // used. This is a workaround for what looks like an OpenGL bug.
-
-    if (vals[0] <= 0.0f) { vals[0] = SbMin(1.0f, vals[1]); }
-
-    SoGLLineWidthElement::sizerange[0] = vals[0];
-    SoGLLineWidthElement::sizerange[1] = vals[1];
-  }
+  const float * range = cc_glglue_get_line_width_range(sogl_glue_instance(this->state));
 
   float useval = this->data;
 
@@ -176,11 +153,11 @@ SoGLLineWidthElement::updategl(void)
 
   // Range checks.
 
-  if (useval < SoGLLineWidthElement::sizerange[0]) {
-    useval = SoGLLineWidthElement::sizerange[0];
+  if (useval < range[0]) {
+    useval = range[0];
   }
-  if (useval > SoGLLineWidthElement::sizerange[1]) {
-    useval = SoGLLineWidthElement::sizerange[1];
+  if (useval > range[1]) {
+    useval = range[1];
   }
 
 
@@ -205,8 +182,8 @@ SoGLLineWidthElement::updategl(void)
                                   "acquire the boundary values for the legal "
                                   "range.",
                                   this->data,
-                                  SoGLLineWidthElement::sizerange[0],
-                                  SoGLLineWidthElement::sizerange[1]);
+                                  range[0],
+                                  range[1]);
       }
     }
   }
@@ -215,5 +192,3 @@ SoGLLineWidthElement::updategl(void)
 
   glLineWidth(useval);
 }
-
-#undef RANGE_NOT_CHECKED
