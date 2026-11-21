@@ -134,18 +134,18 @@ These entries proposed work for students or interns. Some depend on older platfo
 
 | Catalog ID | Proposal | Triage note |
 | --- | --- | --- |
-| PROJECT-01 | [A QNX port (QNX for x86 platforms is supposedly available for free](../projects.txt#L4) | Reassess scope and relevance |
-| PROJECT-02 | [A "gl-attack" application stressing many different aspects of](../projects.txt#L7) | Reassess scope and relevance |
-| PROJECT-03 | [Work with the documentation to improve it (add example code](../projects.txt#L10) | Reassess scope and relevance |
-| PROJECT-04 | [Write many more examples, covering the functionality offered by](../projects.txt#L13) | Reassess scope and relevance |
-| PROJECT-05 | [Write a tutorial.](../projects.txt#L16) | Reassess scope and relevance |
-| PROJECT-06 | [Write a NURBS-library covering all the necessary functionality we](../projects.txt#L18) | Reassess scope and relevance |
-| PROJECT-07 | [An IVF (MFC-based) GUI-glue library.](../projects.txt#L24) | Reassess scope and relevance |
-| PROJECT-08 | [Make simple routines for packaging up Coin for RedHat Linux (.rpm),](../projects.txt#L26) | Reassess scope and relevance |
-| PROJECT-09 | [Do the work needed for being compatible with 64-bit systems. These](../projects.txt#L31) | Reassess scope and relevance |
-| PROJECT-10 | [Profiling and optimalization of rendering and other action](../projects.txt#L44) | Reassess scope and relevance |
+| PROJECT-01 | [A port to QNX on x86](../projects.txt#L4-L5) | Defer until there is a concrete deployment. The [main CI](../../.github/workflows/continuous-integration-workflow.yml) and [cross-build matrix](../../.github/workflows/cross-build-arch-workflow.yml#L20-L31) have no QNX job. A port proposal needs a target QNX version and architecture, a toolchain, a graphics backend and someone to maintain the build. |
+| PROJECT-02 | [An OpenGL driver stress application](../projects.txt#L7-L8) | Keep as historical context. The [GLFW example](../../examples/glfw/glfw.cpp) provides a starting point for a Coin rendering smoke test. Track a specific rendering regression with a scene, a supported graphics stack and an expected result. |
+| PROJECT-03 | [Improve the documentation with examples and screenshots](../projects.txt#L10-L11) | Ongoing documentation work. The [SoNurbsCurve reference](../../src/shapenodes/SoNurbsCurve.cpp#L60-L91) already pairs an example with a rendering. Track missing or outdated illustrations and snippets by API page. See [issue #615](https://github.com/coin3d/coin/issues/615) for the broader documentation discussion. |
+| PROJECT-04 | [Add examples covering more Coin features](../projects.txt#L13-L14) | Partly covered. The [example build](../../examples/CMakeLists.txt) includes GLFW, Qt, SDL3 and dynamically loaded extensions. Follow up with a list of specific API workflows that lack a runnable example and link each new example from the relevant reference page. See PROJECT-03 and PROJECT-05. |
+| PROJECT-05 | [Write a tutorial](../projects.txt#L16) | Candidate for a getting-started guide. The [README](../../README.md#L14-L22) points to Open Inventor books. Use one [buildable example](../../examples/CMakeLists.txt) to take a reader from configuring Coin to displaying a first scene. Coordinate tutorial scope in [issue #615](https://github.com/coin3d/coin/issues/615). |
+| PROJECT-06 | [Provide a NURBS implementation independent of GLU](../projects.txt#L18-L22) | The dependency remains. [SoGLNurbs](../../src/rendering/SoGLNurbs.cpp#L816-L850) uses GLU for rendering and tessellation. Track concrete behavior gaps first and use expected results for curves, trimmed surfaces and picking to scope any backend proposal. [Issue #413](https://github.com/coin3d/coin/issues/413) tracks a specific surface-coloring request. |
+| PROJECT-07 | [Add an IVF/MFC GUI binding](../projects.txt#L24) | Historical integration proposal. [SoWin](https://github.com/coin3d/sowin) provides the Win32 binding. Revisit in SoWin if an application needs a specific IVF or MFC compatibility feature and can supply a supported toolchain and an integration example. |
+| PROJECT-08 | [Package Coin for several operating systems](../projects.txt#L26-L29) | Partly implemented. Coin has an [optional CPack integration](../../CMakeLists.txt#L981-L984) and its [pinned packaging rules](https://github.com/coin3d/cpack.d/tree/118ac5a21bcf57f0f90e2b0e681c9dcbf07074c2) include RHEL and Fedora RPM templates and a Debian template. Track gaps per current distribution and package artifact. The HP-UX and IRIX targets are historical. |
+| PROJECT-09 | [Audit 64-bit compatibility](../projects.txt#L31-L42) | General 64-bit build support is present. The [build matrix](../../.github/workflows/cross-build-arch-workflow.yml#L20-L31) includes aarch64, ppc64le and s390x, and [SbDict keys](../../include/Inventor/SbDict.h#L57-L72) use `uintptr_t`. The matrix builds and installs Coin. Verify the original binary scene interchange, [offscreen image output](../../src/rendering/SoOffscreenRenderer.cpp#L1574) and [built-in font](../../src/fonts/defaultfonts.h#L48-L56) concerns with targeted tests if they still matter on a supported platform. |
+| PROJECT-10 | [Profile and optimize rendering and other action traversals](../projects.txt#L44-L45) | Profiling infrastructure exists. [SoProfiler](../../src/profiler/SoProfiler.cpp#L35-L46) collects traversal timings. Use a representative scene and a baseline before proposing an optimization for a specific action. [Issue #542](https://github.com/coin3d/coin/issues/542) and [PR #614](https://github.com/coin3d/coin/pull/614) already track single-pick performance. |
 | PROJECT-11 | [A regression test system for the classes under Coin/src/base.](../projects.txt#L47) | Implemented as test infrastructure. [CoinTests](../../testsuite/CMakeLists.txt#L114) is registered with [CTest](../../testsuite/CMakeLists.txt#L163), and base classes such as [SbImage](../../src/base/SbImage.cpp#L727) have regression tests. Track specific coverage gaps separately. |
-| PROJECT-12 | [Profiling and optimalization of the base classes. Should depend on a](../projects.txt#L49) | Reassess scope and relevance |
+| PROJECT-12 | [Profile and optimize the base classes after adding regression tests](../projects.txt#L49-L50) | The test infrastructure prerequisite exists (PROJECT-11). Start with a measured hot operation and a representative workload, then check regression coverage for that operation. The [scene graph profiler](../../src/profiler/SoProfiler.cpp#L35-L46) measures traversals. Benchmark base-class operations directly when isolated timings are needed. |
 
 ## Related entries
 
@@ -157,6 +157,8 @@ These entries proposed work for students or interns. Some depend on older platfo
 ## Review scope
 
 The 59 entries previously marked “Needs verification” now record a code observation or a specific question for follow-up. This pass inspected the PR checkout and checked relevant API findings against Coin master (`f73b679140b`). It did not run the proposed rendering, platform, or compatibility tests.
+
+The follow-up reviewed the 11 remaining `projects.txt` entries against the PR checkout, Coin master (`f73b679140b`) and related GitHub records. The notes describe repository evidence. Platform execution, package installation, rendering and performance measurements remain follow-up work for specific proposals.
 
 ## Next steps
 
