@@ -88,7 +88,7 @@
         SoTexture2 * tex = (SoTexture2*) p->fullPath().getTail();
         if (tex->filename.getValue().getLength()) {
           SbName name = tex->filename.getValue().getString();
-          unsigned long key = (unsigned long) ((void*) name.getString());
+          SbDict::Key key = reinterpret_cast<SbDict::Key>(name.getString());
           void * tmp;
           if (!namedict.find(key, tmp)) {
             // new texture. just insert into list
