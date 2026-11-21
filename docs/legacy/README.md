@@ -8,6 +8,7 @@ This directory indexes older Coin reports and proposals without changing their o
 | [Secondary bugs](bugs-secondary.md) | 42 separate report files, including known issue and PR matches | [`bugs/`](../bugs/) |
 | [Ideas and plans](ideas.md) | 44 TODO entries, 45 API wishes, 12 project ideas, and other historical files | [`todo.txt`](../todo.txt), [`api-wish-list.txt`](../api-wish-list.txt), [`projects.txt`](../projects.txt) |
 | [Doxygen](doxygen.md) | Sources, build targets, publishing workflow, and documentation issue 119 | [`src/doc/`](../../src/doc/), [`docs/`](../) |
+| [Examples and tutorials](../../examples/README.md) | CMake targets, historical code samples, and Inventor book examples | [`examples/`](../../examples/), [`ivexamples`](https://github.com/coin3d/ivexamples) |
 
 The [organization discussion #935](https://github.com/orgs/coin3d/discussions/935) gives the primary bug catalog a public entry point. Use namespaced identifiers such as `BUGS-219`, `SECONDARY-148`, `TODO-022`, `API-41`, and `PROJECT-11` when referring to historical entries; their numbers are not GitHub issue numbers. The original files remain the evidence for the old wording and dates. These catalogs record the triage and links to newer work.
 
