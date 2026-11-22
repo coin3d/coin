@@ -1,7 +1,10 @@
 // Exercise the real GLRender node traversal without requiring a window or GL
 // context. Only the element's GL side effects and action GL setup are replaced.
 #include "CoinTest.h"
+#include "DepthCountingEngine.h"
 #include <Inventor/SoDB.h>
+#include <Inventor/caches/SoCache.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLDepthBufferElement.h>
@@ -38,6 +41,7 @@ class RecordingRenderAction : public SoGLRenderAction {
 public:
   RecordingRenderAction() : SoGLRenderAction(SbViewportRegion(16, 16)),
                             elements(NULL) {
+    elements.enable(SoCacheElement::getClassTypeId(), SoCacheElement::getClassStackIndex());
     elements.enable(RecordingDepthElement::getClassTypeId(),
                     RecordingDepthElement::getClassStackIndex());
   }
@@ -270,9 +274,153 @@ BOOST_AUTO_TEST_CASE(depth_raw_ranges_are_preserved) {
   }
 }
 
+BOOST_AUTO_TEST_CASE(depth_ignored_engines_are_lazy) {
+  const Depth inherited(FALSE, FALSE, SoDepthBufferElement::GREATER, -.25f, 1.4f);
+  for (int mask = 0; mask != 16; ++mask) {
+    Scene scene;
+    scene.root->addChild(depth(inherited));
+    SoDepthBuffer * node = new SoDepthBuffer;
+    scene.root->addChild(node);
+    SoField * fields[] = { &node->test, &node->write, &node->function, &node->range };
+    DepthCountingEngine * engines[4];
+    SoEngineOutput * outputs[4];
+    for (int i = 0; i != 4; ++i) {
+      engines[i] = new DepthCountingEngine;
+      engines[i]->ref();
+      outputs[i] = i == 2 ? &engines[i]->function :
+                   i == 3 ? &engines[i]->range : &engines[i]->boolean;
+      BOOST_REQUIRE(fields[i]->connectFrom(outputs[i]));
+    }
+    // Settle the connections once. Every phase below dirties them again after
+    // changing ignored, so cached connection values cannot hide eager reads.
+    node->test.getValue(); node->write.getValue();
+    node->function.getValue(); node->range.getValue();
+    Probe probe(inherited);
+    scene.root->addChild(probe.node());
+    RecordingRenderAction action;
+    for (int phase = 0; phase != 3; ++phase) {
+      const int ignored = phase == 1 ? (mask ^ 15) : mask;
+      const Depth explicitValue(phase != 1, phase != 1,
+        phase == 1 ? SoDepthBufferElement::NEVER : SoDepthBufferElement::NOTEQUAL,
+        phase == 1 ? -.7f : 1.7f, phase == 1 ? 1.3f : -.4f);
+      ignore(node, ignored);
+      int before[4];
+      probe.expected = Depth(ignored & 1 ? inherited.test : explicitValue.test,
+        ignored & 2 ? inherited.write : explicitValue.write,
+        ignored & 4 ? inherited.function : explicitValue.function,
+        ignored & 8 ? inherited.range[0] : explicitValue.range[0],
+        ignored & 8 ? inherited.range[1] : explicitValue.range[1]);
+      int nodeNotifications = 0, fieldNotifications = 0;
+      SoNodeSensor nodeSensor(notified, &nodeNotifications);
+      nodeSensor.setPriority(0);
+      nodeSensor.attach(node);
+      SoFieldSensor sensors[4];
+      for (int i = 0; i != 4; ++i) {
+        sensors[i].setFunction(notified);
+        sensors[i].setData(&fieldNotifications);
+        // An immediate field sensor evaluates its field in trigger(). Keep
+        // this observer queued so it cannot consume the dirty engine value.
+        sensors[i].setPriority(1);
+        sensors[i].attach(fields[i]);
+      }
+      for (int i = 0; i != 4; ++i) {
+        engines[i]->booleanValue = i == 0 ? explicitValue.test : explicitValue.write;
+        engines[i]->functionValue = explicitValue.function;
+        engines[i]->rangeValue = explicitValue.range;
+        engines[i]->dirty();
+        fields[i]->setDefault(phase & 1);
+        before[i] = engines[i]->evaluations;
+      }
+      for (int i = 0; i != 4; ++i) sensors[i].unschedule();
+      nodeNotifications = fieldNotifications = 0;
+      action.apply(scene.root);
+      action.apply(scene.root);
+      for (int i = 0; i != 4; ++i) {
+        BOOST_CHECK_EQUAL(engines[i]->evaluations,
+                          before[i] + ((ignored & (1 << i)) ? 0 : 1));
+        BOOST_CHECK_EQUAL(fields[i]->isIgnored(), (ignored & (1 << i)) != 0);
+        // A required engine output normally clears the default flag when it
+        // writes its value; an ignored field must preserve the prepared flag.
+        BOOST_CHECK_EQUAL(fields[i]->isDefault(),
+                          (ignored & (1 << i)) && (phase & 1));
+        BOOST_CHECK(fields[i]->isConnected());
+        BOOST_CHECK(fields[i]->isConnectionEnabled());
+        SoEngineOutput * current = NULL;
+        BOOST_CHECK(fields[i]->getConnectedEngine(current));
+        BOOST_CHECK(current == outputs[i]);
+        BOOST_CHECK(outputs[i]->isEnabled());
+        BOOST_CHECK(!sensors[i].isScheduled());
+        sensors[i].detach();
+      }
+      BOOST_CHECK_EQUAL(nodeNotifications, 0);
+      BOOST_CHECK_EQUAL(fieldNotifications, 0);
+      nodeSensor.detach();
+    }
+    BOOST_CHECK_EQUAL(probe.visits, 6);
+    for (int i = 0; i != 4; ++i) engines[i]->unref();
+  }
+}
+
+
+namespace {
+struct InheritedCacheProbe {
+  SoCache * cache;
+  int component, visits;
+  explicit InheritedCacheProbe(int c) : cache(NULL), component(c), visits(0) { }
+  static void open(void * data, SoAction * action) {
+    InheritedCacheProbe * p = static_cast<InheritedCacheProbe *>(data);
+    SoState * state = action->getState();
+    state->push();
+    p->cache = new SoCache(state);
+    p->cache->ref();
+    SoCacheElement::set(state, p->cache);
+  }
+  static void closeAndCheck(void * data, SoAction * action) {
+    InheritedCacheProbe * p = static_cast<InheritedCacheProbe *>(data);
+    SoState * state = action->getState();
+    SoCacheElement::set(state, NULL);
+    state->pop();
+    ++p->visits;
+    BOOST_CHECK(p->cache->isValid(state));
+    // Change only the inherited component, outside the completed cache.
+    SoDepthBufferElement::set(state, p->component == 0 ? TRUE : FALSE,
+      p->component == 1 ? TRUE : FALSE,
+      p->component == 2 ? SoDepthBufferElement::NEVER : SoDepthBufferElement::GREATER,
+      p->component == 3 ? SbVec2f(.7f, -.2f) : SbVec2f(-.25f, 1.4f));
+    BOOST_CHECK(!p->cache->isValid(state));
+    p->cache->unref(state);
+    p->cache = NULL;
+  }
+  SoCallback * callback(SoCallbackCB * cb) {
+    SoCallback * node = new SoCallback;
+    node->setCallback(cb, this);
+    return node;
+  }
+};
+}
+
+BOOST_AUTO_TEST_CASE(depth_ignored_components_capture_cache_dependencies) {
+  for (int component = 0; component != 4; ++component) {
+    Scene scene;
+    scene.root->addChild(depth(Depth(FALSE, FALSE,
+      SoDepthBufferElement::GREATER, -.25f, 1.4f)));
+    InheritedCacheProbe probe(component);
+    scene.root->addChild(probe.callback(InheritedCacheProbe::open));
+    SoDepthBuffer * node = depth(Depth(TRUE, TRUE,
+      SoDepthBufferElement::NOTEQUAL, 1.7f, -.4f));
+    ignore(node, 1 << component);
+    scene.root->addChild(node);
+    scene.root->addChild(probe.callback(InheritedCacheProbe::closeAndCheck));
+    RecordingRenderAction action;
+    for (int repeat = 0; repeat != 3; ++repeat) action.apply(scene.root);
+    BOOST_CHECK_EQUAL(probe.visits, 3);
+  }
+}
+
 int main(int argc, char ** argv) {
   SoDB::init();
   RecordingDepthElement::initClass();
+  DepthCountingEngine::initClass();
   const int result = CoinTest::run_all(argc, argv);
   SoDB::finish();
   return result;

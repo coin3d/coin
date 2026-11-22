@@ -316,6 +316,8 @@ add_test(NAME SoTempPathReplaceTail_empty_noop
 add_subdirectory(xml-c-api/c-headers)
 add_subdirectory(xml-c-api/entity-abi)
 
+include(SoDepthBufferEngineTests.cmake)
+
 # Compile the private XML utility into its test so the function does not need
 # to become a public DLL symbol on Windows.
 add_executable(XmlLoadFileTest XmlLoadFileTest.cpp
