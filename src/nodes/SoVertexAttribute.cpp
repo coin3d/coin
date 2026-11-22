@@ -207,6 +207,7 @@ SoVertexAttribute::SoVertexAttribute(void)
 */
 SoVertexAttribute::~SoVertexAttribute(void)
 {
+  delete PRIVATE(this)->attributedata->vbo;
   delete PRIVATE(this)->attributedata;
 }
 

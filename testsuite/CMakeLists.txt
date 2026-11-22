@@ -576,3 +576,16 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   set_tests_properties(SoText2ExtendedRenderingBuiltinFont PROPERTIES
     ENVIRONMENT "COIN_FORCE_FREETYPE_OFF=1" SKIP_RETURN_CODE 77 TIMEOUT 30)
 endif()
+
+# SoVertexAttribute must release its lazily created VBO when it is destroyed.
+# Needs an offscreen OpenGL context; returns 77 (skipped) when none is available.
+if(WIN32)
+  add_executable(VertexAttributeVBOLifetimeTest VertexAttributeVBOLifetimeTest.cpp)
+  target_link_libraries(VertexAttributeVBOLifetimeTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+  add_test(NAME VertexAttributeVBOLifetime COMMAND VertexAttributeVBOLifetimeTest)
+  set_tests_properties(VertexAttributeVBOLifetime PROPERTIES
+    SKIP_RETURN_CODE 77
+    TIMEOUT 30
+    ENVIRONMENT
+      "COIN_VBO=1;COIN_VERTEX_ARRAYS=1;COIN_VBO_MIN_LIMIT=20;COIN_VBO_MAX_LIMIT=100000000;COIN_GL_DISABLE_VBO=0")
+endif()
