@@ -8,6 +8,7 @@ include(glglue-lifetime/Tests.cmake)
 include(action-apply-exceptions/Tests.cmake)
 include(gl-render-exceptions/Tests.cmake)
 include(SbSmallMapTests.cmake)
+include(scene-texture-type/Tests.cmake)
 include(gl-context-maps/Tests.cmake)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND COIN_BUILD_SHARED_LIBS AND CMAKE_NM)
