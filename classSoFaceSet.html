@@ -667,6 +667,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="classSoFaceSet.html" title="The SoFaceSet class is used to render and organize non-indexed polygonal face data.">SoFaceSet</a> class is used to render and organize non-indexed polygonal face data. </p>
+<dl class="section user"><dt>Texture coordinates</dt><dd>Default coordinates for a single 2D texture on texture unit 0 can be supplied as a temporary vertex array when the shape's other bindings, indices and caches allow array rendering. Texture-coordinate functions that require per-vertex evaluation use a rendering path that supplies those values. Explicit arrays and OpenGL texgen are also supported.</dd></dl>
 <p>Facesets are specified using the numVertices field. Coordinates, normals, materials and texture coordinates are fetched in order from the current state or from the vertexProperty node if set. For example, if numVertices is set to [3, 4, 5, 3], this node would specify a triangle from coordinates 0, 1 and 2, a quad from coordinates 3, 4, 5 and 6, a polygon from coordinates 7, 8, 9, 10 and 11 and finally a triangle from coordinates 12, 13, 14.</p>
 <p>Binding PER_VERTEX, PER_FACE or OVERALL can be set for material, and normals. The default material binding is OVERALL. The default normal binding is PER_VERTEX.</p>
 <p>For more elaborate documentation about face sets, see the class documentation of the <a class="el" href="classSoIndexedFaceSet.html" title="The SoIndexedFaceSet class is used to handle generic indexed facesets.">SoIndexedFaceSet</a> node, which contains examples and more detailed information about various issues also relevant for this node.</p>
@@ -1092,7 +1093,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoFaceSet.html">SoFaceSet</a></li>
-    <li class="footer">Generated on Sun Nov 22 2026 15:22:39 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sun Nov 22 2026 16:14:53 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

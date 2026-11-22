@@ -1135,7 +1135,19 @@ this-&gt;endShape();
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Should be called after rendering with vertex arrays. This method will disable arrays and VBOs enabled in the <a class="el" href="#ae6960f1e9dfc812eb88d5109ea55b935">startVertexArray()</a> function.</p>
+<p>Disables the vertex arrays enabled by <a class="el" href="#ae6960f1e9dfc812eb88d5109ea55b935">startVertexArray()</a> after drawing.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">action</td><td>The same render action used by <a class="el" href="#ae6960f1e9dfc812eb88d5109ea55b935">startVertexArray()</a>. </td></tr>
+    <tr><td class="paramname">vbo</td><td>The value returned by <a class="el" href="#ae6960f1e9dfc812eb88d5109ea55b935">startVertexArray()</a>. </td></tr>
+    <tr><td class="paramname">normpervertex</td><td>Whether a non-NULL normal array was passed to <a class="el" href="#ae6960f1e9dfc812eb88d5109ea55b935">startVertexArray()</a>. </td></tr>
+    <tr><td class="paramname">texpervertex</td><td>The texture-coordinate choice passed to <a class="el" href="#ae6960f1e9dfc812eb88d5109ea55b935">startVertexArray()</a>. </td></tr>
+    <tr><td class="paramname">colorpervertex</td><td>The color choice passed to <a class="el" href="#ae6960f1e9dfc812eb88d5109ea55b935">startVertexArray()</a>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Keep the coordinate elements, enabled texture units and their backing arrays valid through this call. If temporary texture arrays were installed on a pushed state, pop that state only after <a class="el" href="#a25bfbc335977c789643a22abd64982e7">finishVertexArray()</a>.</p>
+<p>This method unbinds the vertex VBO when used and disables the configured client arrays. It does not restore arbitrary client-array state that was active before <a class="el" href="#ae6960f1e9dfc812eb88d5109ea55b935">startVertexArray()</a>.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#ae6960f1e9dfc812eb88d5109ea55b935">startVertexArray()</a> </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>Coin <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">3.0</a> </dd></dl>
 
@@ -1961,7 +1973,21 @@ this-&gt;endShape();
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Convenience method that enables vertex arrays and/or VBOs Returns <em>TRUE</em> if VBO is used.</p>
+<p>Enables vertex arrays for a draw call, using VBOs when available.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">action</td><td>The active OpenGL render action. </td></tr>
+    <tr><td class="paramname">coords</td><td>Vertex positions, indexed by the subsequent draw call. </td></tr>
+    <tr><td class="paramname">pervertexnormals</td><td>Normal array, or <code>NULL</code> for an overall normal. </td></tr>
+    <tr><td class="paramname">texpervertex</td><td>Whether per-vertex texture coordinates are needed. </td></tr>
+    <tr><td class="paramname">colorpervertex</td><td>Whether per-vertex colors are needed.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section pre"><dt>Precondition</dt><dd>The caller has checked that the shape's bindings and indices can use vertex arrays. Arrays and VBOs must cover every vertex referenced by the draw call and remain valid until <a class="el" href="#a25bfbc335977c789643a22abd64982e7">finishVertexArray()</a>.</dd></dl>
+<p>When <em>texpervertex</em> is <em>TRUE</em>, each enabled texture unit must have an explicit coordinate array unless OpenGL texgen supplies its coordinates. A texture coordinate function alone does not provide an array. The caller must evaluate a suitable function into an array or choose another rendering path. Missing arrays produce a warning; this method does not select a fallback or cancel the draw call.</p>
+<dl class="section return"><dt>Returns</dt><dd><em>TRUE</em> if VBO rendering is used, or <em>FALSE</em> if vertex arrays use CPU data. The return value is not a success or eligibility check.</dd></dl>
+<p>Pair this call with <a class="el" href="#a25bfbc335977c789643a22abd64982e7">finishVertexArray()</a> after drawing, passing the returned value and the same choices for normals, texture coordinates and colors.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#a25bfbc335977c789643a22abd64982e7">finishVertexArray()</a> </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>Coin <a class="el" href="classSbList.html#ab18cad4eb2d06030cd564917a8c331f4">3.0</a> </dd></dl>
 
@@ -1977,7 +2003,7 @@ this-&gt;endShape();
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoShape.html">SoShape</a></li>
-    <li class="footer">Generated on Sun Nov 22 2026 15:22:41 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sun Nov 22 2026 16:14:55 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

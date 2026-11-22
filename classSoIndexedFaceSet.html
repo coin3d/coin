@@ -690,6 +690,7 @@ Separator {
    }
 }
 </pre><p>Binding PER_VERTEX_INDEXED, PER_VERTEX, PER_FACE_INDEXED, PER_FACE or OVERALL can be set for material, and normals. The default material binding is OVERALL. The default normal binding is PER_VERTEX_INDEXED. When PER_VERTEX_INDEXED binding is used and the corresponding materialIndex, normalIndex, texCoordIndex field is empty, the coordIndex field will be used to index material, normal or texture coordinate. If you do specify indices for material, normals or texture coordinates for PER_VERTEX_INDEXED binding, make sure your index array matches the coordIndex array: there should be a -1 wherever there is a -1 in the coordIndex field. This is done to make this node more easily readable for humans.</p>
+<dl class="section user"><dt>Rendering with texture coordinates</dt><dd>Vertex arrays and VBOs are used when the bindings, indices and caches permit them. For a single 2D texture on texture unit 0, default texture coordinates can be evaluated into a temporary array, preserving the default mapping for shaders that read the texture coordinates. Enabling a texture therefore does not by itself require immediate-mode rendering. Texture-coordinate functions and other texture configurations may require a different rendering path. Explicit texture coordinates must have bindings and indices compatible with the coordinate array to use the vertex-array path.</dd></dl>
 <p>A fairly common request when rendering facesets is how to display a set of faces with different colors on the backside versus the frontside. There is not <em>direct</em> support for this in the API, but it can easily be implemented by duplicating all faces in both the <a class="el" href="classSoShapeHints.html#a8b5f51cadba677ab1fb3abb6b5bb589fa35af3b282ec837d8d00027262431d2e8">SoShapeHints::COUNTERCLOCKWISE</a> and the <a class="el" href="classSoShapeHints.html#a8b5f51cadba677ab1fb3abb6b5bb589fa60096b3deefd82e621aa16d5c08c0495">SoShapeHints::CLOCKWISE</a> order. Here is a simple usage example, showing the technique for a single polygon, using two <a class="el" href="classSoFaceSet.html" title="The SoFaceSet class is used to render and organize non-indexed polygonal face data.">SoFaceSet</a> nodes for rendering the same polygon from both sides:</p>
 <pre class="fragment">#Inventor V2.1 ascii
 
@@ -1121,7 +1122,7 @@ FaceSet {}
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoIndexedFaceSet.html">SoIndexedFaceSet</a></li>
-    <li class="footer">Generated on Sun Nov 22 2026 15:22:39 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sun Nov 22 2026 16:14:53 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
