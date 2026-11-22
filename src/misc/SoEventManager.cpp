@@ -378,6 +378,7 @@ void
 SoEventManager::setHandleEventAction(SoHandleEventAction * handleeventaction)
 {
   assert(handleeventaction && "SoEventManager::setHandleEventAction, action == NULL");
+  if (handleeventaction == PRIVATE(this)->handleeventaction) return;
 
   // remember old viewport region
   SbViewportRegion region = PRIVATE(this)->handleeventaction->getViewportRegion();

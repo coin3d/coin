@@ -602,6 +602,7 @@ SoSceneManager::getAudioRenderAction(void) const
 void
 SoSceneManager::setHandleEventAction(SoHandleEventAction * hea)
 {
+  if (hea == PRIVATE(this)->eventmanager->getHandleEventAction()) return;
   PRIVATE(this)->eventmanager->setHandleEventAction(hea);
 }
 
