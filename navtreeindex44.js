@@ -1,5 +1,7 @@
 var NAVTREEINDEX44 =
 {
+"classSoVRMLVertexShape.html#aedad4ad2668360229fc6a50b500101d8":[5,0,827,15],
+"classSoVRMLVertexShape.html#af44bfc4297c05bb27eb768515967c6bf":[5,0,827,16],
 "classSoVRMLViewpoint.html":[3,23,52],
 "classSoVRMLViewpoint.html#a4add4ec8a888ff30e3872cebd7b71231":[3,23,52,9],
 "classSoVRMLViewpoint.html#a4d2924ed0bc18ae401757ec38aba4376":[3,23,52,7],
@@ -247,7 +249,5 @@ var NAVTREEINDEX44 =
 "classSoWWWAnchor.html#a27ef3223b6f7ce1396a6228121959818":[3,15,135,3],
 "classSoWWWAnchor.html#a2a4580c6e9b0c8fab426187220cdd189":[3,15,135,0],
 "classSoWWWAnchor.html#a2a4580c6e9b0c8fab426187220cdd189a32bf6285508c67925bc28e7a42943bac":[3,15,135,0,0],
-"classSoWWWAnchor.html#a2a4580c6e9b0c8fab426187220cdd189aec04d56e0e9fcf51b054b4310703b8b1":[3,15,135,0,1],
-"classSoWWWAnchor.html#a35fb89db784a9ab190bf22afee21f895":[3,15,135,1],
-"classSoWWWAnchor.html#a428199dd1c076d07965f3e8458161c1c":[3,15,135,9]
+"classSoWWWAnchor.html#a2a4580c6e9b0c8fab426187220cdd189aec04d56e0e9fcf51b054b4310703b8b1":[3,15,135,0,1]
 };

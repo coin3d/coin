@@ -1,11 +1,13 @@
 var NAVTREEINDEX43 =
 {
-"classSoVRMLSound.html#a9f078df5cfede11fbdd68236a10e7b08":[3,20,3,9],
+"classSoVRMLSound.html#a992e2e478fa2e4c3988df8ce8d1a6f09":[3,20,3,2],
+"classSoVRMLSound.html#a992e2e478fa2e4c3988df8ce8d1a6f09":[3,23,41,2],
 "classSoVRMLSound.html#a9f078df5cfede11fbdd68236a10e7b08":[3,23,41,9],
+"classSoVRMLSound.html#a9f078df5cfede11fbdd68236a10e7b08":[3,20,3,9],
 "classSoVRMLSound.html#aa6974aef0559a8727b25d399dd78d5f3":[3,23,41,20],
 "classSoVRMLSound.html#aa6974aef0559a8727b25d399dd78d5f3":[3,20,3,20],
-"classSoVRMLSound.html#aac5a9efd4b80a91c0864daa717689b73":[3,20,3,8],
 "classSoVRMLSound.html#aac5a9efd4b80a91c0864daa717689b73":[3,23,41,8],
+"classSoVRMLSound.html#aac5a9efd4b80a91c0864daa717689b73":[3,20,3,8],
 "classSoVRMLSphere.html":[3,23,42],
 "classSoVRMLSphere.html#a1ea5486e2808458db8afde07ac7f3b93":[3,23,42,7],
 "classSoVRMLSphere.html#a35ed96b1a1774b443924984862648177":[3,23,42,6],
@@ -247,7 +249,5 @@ var NAVTREEINDEX43 =
 "classSoVRMLVertexShape.html#ac09f301ddf1b2c083d89852f3fec000d":[5,0,827,8],
 "classSoVRMLVertexShape.html#ad26f29ad789978575ad061a8a6c7b3e2":[5,0,827,21],
 "classSoVRMLVertexShape.html#ad7f2aa82c7420b14572b654f35d38e8e":[5,0,827,13],
-"classSoVRMLVertexShape.html#ae840f9b64433ed85ef747cf4f9706745":[5,0,827,0],
-"classSoVRMLVertexShape.html#aedad4ad2668360229fc6a50b500101d8":[5,0,827,15],
-"classSoVRMLVertexShape.html#af44bfc4297c05bb27eb768515967c6bf":[5,0,827,16]
+"classSoVRMLVertexShape.html#ae840f9b64433ed85ef747cf4f9706745":[5,0,827,0]
 };

@@ -513,7 +513,7 @@ var searchData=
   ['socalculator_510',['SoCalculator',['../classSoCalculator.html#a792ba9073ca014317ada73bee9c97183',1,'SoCalculator']]],
   ['socallback_511',['SoCallback',['../classSoCallback.html#af1e3717dfd82737b6f1d864748857130',1,'SoCallback']]],
   ['socallbackaction_512',['SoCallbackAction',['../classSoCallbackAction.html#ad7da5f0d08e5c9b37df8ffdaf87631fe',1,'SoCallbackAction::SoCallbackAction(void)'],['../classSoCallbackAction.html#a2b50588d8902f28efa53ca0b5b8e0191',1,'SoCallbackAction::SoCallbackAction(const SbViewportRegion &amp;vp)']]],
-  ['socallbacklist_513',['SoCallbackList',['../classSoCallbackList.html#accb308b0e556f22f4c3d7e5ae0a66a86',1,'SoCallbackList']]],
+  ['socallbacklist_513',['SoCallbackList',['../classSoCallbackList.html#accb308b0e556f22f4c3d7e5ae0a66a86',1,'SoCallbackList::SoCallbackList(void)'],['../classSoCallbackList.html#ac655405d7e191b0afa833a8c0570e35f',1,'SoCallbackList::SoCallbackList(const SoCallbackList &amp;list)']]],
   ['socamera_514',['SoCamera',['../classSoCamera.html#afe2aa3972f415c77eb0a61eb8a2ed0ce',1,'SoCamera']]],
   ['socamerakit_515',['SoCameraKit',['../classSoCameraKit.html#a0a910b4788271ab679a209e2177a6c2f',1,'SoCameraKit']]],
   ['socenterballdragger_516',['SoCenterballDragger',['../classSoCenterballDragger.html#ae20ff9682e8b592413299eacfaab0b33',1,'SoCenterballDragger']]],

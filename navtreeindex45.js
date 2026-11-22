@@ -1,5 +1,7 @@
 var NAVTREEINDEX45 =
 {
+"classSoWWWAnchor.html#a35fb89db784a9ab190bf22afee21f895":[3,15,135,1],
+"classSoWWWAnchor.html#a428199dd1c076d07965f3e8458161c1c":[3,15,135,9],
 "classSoWWWAnchor.html#a4f74a7ccfc6835b944512050043f2de6":[3,15,135,11],
 "classSoWWWAnchor.html#a51934e950ad8a49db4ce1173582161e9":[3,15,135,4],
 "classSoWWWAnchor.html#a5fc51c17700a1f8b9f60363ad40eb28e":[3,15,135,8],
@@ -189,8 +191,8 @@ var NAVTREEINDEX45 =
 "error_8h_source.html":[6,0,1,0,3,1,1],
 "fifo_8h_source.html":[6,0,1,0,3,3,3],
 "files.html":[6,0],
-"functions.html":[5,3,0],
 "functions.html":[5,3,0,0],
+"functions.html":[5,3,0],
 "functions_b.html":[5,3,0,1],
 "functions_c.html":[5,3,0,2],
 "functions_d.html":[5,3,0,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX45 =
 "functions_func_u.html":[5,3,1,20],
 "functions_func_v.html":[5,3,1,21],
 "functions_func_w.html":[5,3,1,22],
-"functions_func_x.html":[5,3,1,23],
-"functions_func_z.html":[5,3,1,24],
-"functions_func_~.html":[5,3,1,25]
+"functions_func_x.html":[5,3,1,23]
 };

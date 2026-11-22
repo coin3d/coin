@@ -18465,6 +18465,13 @@
       <type></type>
       <name>SoCallbackList</name>
       <anchorfile>classSoCallbackList.html</anchorfile>
+      <anchor>ac655405d7e191b0afa833a8c0570e35f</anchor>
+      <arglist>(const SoCallbackList &amp;list)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>SoCallbackList</name>
+      <anchorfile>classSoCallbackList.html</anchorfile>
       <anchor>accb308b0e556f22f4c3d7e5ae0a66a86</anchor>
       <arglist>(void)</arglist>
     </member>
@@ -18502,6 +18509,13 @@
       <anchorfile>classSoCallbackList.html</anchorfile>
       <anchor>a1a310491a27b615e968e84eb484368f4</anchor>
       <arglist>(void *callbackdata)</arglist>
+    </member>
+    <member kind="function">
+      <type>SoCallbackList &amp;</type>
+      <name>operator=</name>
+      <anchorfile>classSoCallbackList.html</anchorfile>
+      <anchor>a6d039abdc3a0e7816f8ba1d72a3d4636</anchor>
+      <arglist>(const SoCallbackList &amp;list)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
