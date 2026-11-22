@@ -15,6 +15,9 @@ Unreleased:
     and popping an empty path has no effect. Copying an empty range returns
     an empty SoPath in both Debug and Release builds.
 * API additions:
+  - Add optional XML parser limits for input and expanded bytes, elements,
+    attributes, and nesting depth. Applications can inspect which limit was
+    reached; the default remains unlimited. See pull request #811.
   - Add SoPath::nodeKitPath(), a borrowed view for inspecting the nodekit
     projection without copying the path. The view contains only nodekits;
     getTail() returns NULL when there are none. Replace downcasts used only
