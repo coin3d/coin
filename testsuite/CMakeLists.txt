@@ -51,6 +51,8 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
   endif()
 endif()
 
+include(SoDepthBufferTests.cmake)
+
 macro(create_testsuite input)
 	get_filename_component(FLNAME "${input}" NAME_WE)
 	get_filename_component(FLPATH "${input}" PATH)
