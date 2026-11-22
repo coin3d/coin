@@ -621,3 +621,9 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   set_tests_properties(SoText2ExtendedRenderingBuiltinFont PROPERTIES
     ENVIRONMENT "COIN_FORCE_FREETYPE_OFF=1" SKIP_RETURN_CODE 77 TIMEOUT 30)
 endif()
+
+# SoLinePatternElement clamps the scale factor to [1, 256] in release builds too.
+add_executable(LinePatternScaleClampTest LinePatternScaleClampTest.cpp)
+target_link_libraries(LinePatternScaleClampTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+add_test(NAME LinePatternScaleClamp COMMAND LinePatternScaleClampTest)
+set_tests_properties(LinePatternScaleClamp PROPERTIES TIMEOUT 30)
