@@ -576,3 +576,9 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   set_tests_properties(SoText2ExtendedRenderingBuiltinFont PROPERTIES
     ENVIRONMENT "COIN_FORCE_FREETYPE_OFF=1" SKIP_RETURN_CODE 77 TIMEOUT 30)
 endif()
+
+# Shared nodes written as "USE name," inside multiple-value node fields must read back.
+add_executable(SoBaseReferenceRoundTripTest SoBaseReferenceRoundTripTest.cpp)
+target_link_libraries(SoBaseReferenceRoundTripTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+add_test(NAME SoBaseReferenceRoundTrip COMMAND SoBaseReferenceRoundTripTest)
+set_tests_properties(SoBaseReferenceRoundTrip PROPERTIES TIMEOUT 30)
