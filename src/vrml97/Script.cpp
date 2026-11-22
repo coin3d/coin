@@ -40,13 +40,13 @@
 
 // *************************************************************************
 
-#include <Inventor/VRMLnodes/SoVRMLScript.h>
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
 #ifdef HAVE_VRML97
+
+#include <Inventor/VRMLnodes/SoVRMLScript.h>
 
 // *************************************************************************
 
@@ -175,7 +175,9 @@
 #include <Inventor/sensors/SoOneShotSensor.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/tidbits.h>
+#ifdef COIN_HAVE_JAVASCRIPT
 #include <Inventor/misc/SoJavaScriptEngine.h>
+#endif // COIN_HAVE_JAVASCRIPT
 
 #include "nodes/SoSubNodeP.h"
 #include "tidbitsp.h"

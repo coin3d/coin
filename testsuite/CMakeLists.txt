@@ -39,8 +39,11 @@ macro(create_testsuite input)
 	file(READ ${PROJECT_SOURCE_DIR}/${input} f0)
 	if(f0 MATCHES "#ifdef[ \t]+COIN_TEST_SUITE")
 		# message(STATUS "Parse: ${PROJECT_SOURCE_DIR}/${input} - ${FLPATHSUB}${FLNAME}Test.cpp")
-		# get first include from file, which we assume is include to tested class
-		string(REGEX MATCH "[\n\r]+#include[ \t]<[^\n]+" iclass "${f0}")
+		# Get the first non-configuration include, which we assume names the
+		# tested class. Feature guards may require config.h to appear first.
+		string(REGEX REPLACE
+			"[\n\r]+#include[ \t]+<config\\.h>[^\n\r]*" "" fclass "${f0}")
+		string(REGEX MATCH "[\n\r]+#include[ \t]<[^\n]+" iclass "${fclass}")
 		# get block between '#ifdef COIN_TEST_SUITE' and '#endif'
 		string(REGEX REPLACE ".*#ifdef[ \t]+COIN_TEST_SUITE" "" f1 "${f0}")
 		string(REGEX REPLACE "#endif[ \t/!]+COIN_TEST_SUITE.*" "" f2 "${f1}")
