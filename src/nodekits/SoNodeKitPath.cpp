@@ -372,7 +372,8 @@ SoNodeKitPath::append(SoBaseKit * childKit)
 void
 SoNodeKitPath::append(const SoNodeKitPath * fromPath)
 {
-  if (fromPath->nodes.getLength() == 0) return;
+  // A route with no nodekits has no projected nodes to append.
+  if (fromPath->getLength() == 0) return;
   if (this->nodes.getLength() == 0) {
     this->SoPath::operator=(*fromPath);
     return;
