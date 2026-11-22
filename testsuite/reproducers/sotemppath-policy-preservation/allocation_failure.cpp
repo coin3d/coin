@@ -19,7 +19,7 @@ operator new[](std::size_t bytes)
     throw std::bad_alloc();
   }
   if (failafter > 0) failafter--;
-  void * memory = std::malloc(bytes);
+  void * memory = std::malloc(bytes ? bytes : 1);
   if (memory == NULL) throw std::bad_alloc();
   return memory;
 }
@@ -29,6 +29,27 @@ operator delete[](void * memory) noexcept
 {
   std::free(memory);
 }
+
+void *
+operator new[](std::size_t bytes, const std::nothrow_t &) noexcept
+{
+  try { return ::operator new[](bytes); }
+  catch (...) { return NULL; }
+}
+
+void
+operator delete[](void * memory, const std::nothrow_t &) noexcept
+{
+  std::free(memory);
+}
+
+#if defined(__cpp_sized_deallocation)
+void
+operator delete[](void * memory, std::size_t) noexcept
+{
+  std::free(memory);
+}
+#endif
 
 static bool
 list_growth_failure()

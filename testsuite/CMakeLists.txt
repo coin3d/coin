@@ -588,6 +588,8 @@ if(DISABLE_WARNING_TAUTOLOGCOMPARE)
 	target_compile_options(CoinTests PUBLIC -Wno-tautological-compare)
 endif()
 
+include(AllocationHookContracts.cmake)
+
 # These cases inspect the global queues and disable realTime. Keep each in
 # its own process to avoid changing the shared CoinTests sensor state.
 add_executable(CoinSensorSchedulingTest SensorSchedulingTest.cpp)
