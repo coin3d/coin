@@ -117,6 +117,14 @@
 #include <Inventor/nodes/SoCamera.h>
 
 #include <cfloat> // for FLT_EPSILON
+#include <cmath>
+#include <Inventor/SbVec2d.h>
+#include <limits>
+#include <vector>
+#include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/nodes/SoText2.h>
+#include <Inventor/fields/SoFieldData.h>
+#include <Inventor/lists/SoFieldList.h>
 
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
@@ -521,6 +529,176 @@ SoCamera::pointAt(const SbVec3f & targetpoint, const SbVec3f & upvector)
   this->lookAt(dir, upvector);
 }
 
+namespace {
+// Seed the view even when the caller's camera is outside the measured scene.
+// Cameras in the scene keep their own projection, except for the camera being
+// fitted: its private candidate supplies the state without moving the real node.
+class ViewAllBoundsAction : public SoGetBoundingBoxAction {
+public:
+  ViewAllBoundsAction(const SbViewportRegion & vp, SoCamera * target,
+                      SoCamera * candidate)
+    : SoGetBoundingBoxAction(vp), target(target), candidate(candidate) {}
+  SoCamera * target;
+  SoCamera * candidate;
+protected:
+  void beginTraversal(SoNode * node) override {
+    this->resetCenter();
+    this->getXfBoundingBox().makeEmpty();
+    SoViewportRegionElement::set(this->getState(), this->getViewportRegion());
+    this->candidate->doAction(this);
+    SoAction::beginTraversal(node);
+  }
+};
+
+class ViewAllCameraCopy {
+public:
+  explicit ViewAllCameraCopy(SoCamera * camera)
+    : camera(static_cast<SoCamera *>(camera->copy(FALSE))) { this->camera->ref(); }
+  ~ViewAllCameraCopy() { this->camera->unref(); }
+  SoCamera * camera;
+private:
+  ViewAllCameraCopy(const ViewAllCameraCopy &);
+  ViewAllCameraCopy & operator=(const ViewAllCameraCopy &);
+};
+
+static SbBool viewall_finite_box(const SbBox3f & box)
+{
+  if (box.isEmpty()) return FALSE;
+  for (int i = 0; i < 3; ++i)
+    if (!std::isfinite(box.getMin()[i]) || !std::isfinite(box.getMax()[i])) return FALSE;
+  return TRUE;
+}
+
+// Return the worst violation of the final view. Also reserve two raster pixels
+// around the measured box for the next fit, at each corner's actual depth.
+static double viewall_violation(SoCamera * camera, const SbViewportRegion & vp,
+                               const SbBox3f & box, SbBox3f & padded, float slack,
+                               SbVec3d & shift, SbBool & recenter)
+{
+  SbViewportRegion actualvp;
+  const SbViewVolume vv = camera->getViewVolume(vp, actualvp);
+  const SbVec2s pixels = actualvp.getViewportSizePixels();
+  if (pixels[0] <= 4 || pixels[1] <= 4 || !viewall_finite_box(box))
+    return std::numeric_limits<double>::infinity();
+  const SbDPViewVolume & dp = vv.getDPViewVolume();
+  const double mx = 2.0 / pixels[0], my = 2.0 / pixels[1];
+  double worst = 0.0, lateral = 0.0;
+  double xmin = DBL_MAX, xmax = -DBL_MAX, ymin = DBL_MAX, ymax = -DBL_MAX;
+  recenter = FALSE;
+  for (int i = 0; i < 8; ++i) {
+    SbVec3d point;
+    for (int axis = 0; axis < 3; ++axis)
+      point[axis] = (i & (1 << axis)) ? box.getMax()[axis] : box.getMin()[axis];
+    const double distance = (point - dp.getProjectionPoint()).dot(dp.getProjectionDirection());
+    SbVec3d screen;
+    dp.projectToScreen(point, screen);
+    if (!(distance > 0.0) || !std::isfinite(screen[0]) || !std::isfinite(screen[1]) ||
+        !std::isfinite(screen[2]))
+      return std::numeric_limits<double>::infinity();
+    const double xy = SbMax(SbMax(mx - screen[0], screen[0] - (1.0 - mx)),
+                            SbMax(my - screen[1], screen[1] - (1.0 - my)));
+    worst = SbMax(worst, xy);
+    lateral = SbMax(lateral, xy);
+    xmin = SbMin(xmin, screen[0]); xmax = SbMax(xmax, screen[0]);
+    ymin = SbMin(ymin, screen[1]); ymax = SbMax(ymax, screen[1]);
+    // slack < 1 deliberately tightens clipping; do not override that request.
+    if (slack >= 1.0f)
+      worst = SbMax(worst, SbMax(-screen[2], screen[2] - 1.0));
+    for (int j = 0; j < 4; ++j) {
+      const SbVec3d pad = dp.getPlanePoint(distance,
+        SbVec2d(screen[0] + (j & 1 ? mx : -mx), screen[1] + (j & 2 ? my : -my)));
+      for (int axis = 0; axis < 3; ++axis)
+        if (!std::isfinite(pad[axis]) || std::fabs(pad[axis]) > FLT_MAX)
+          return std::numeric_limits<double>::infinity();
+      padded.extendBy(SbVec3f(float(pad[0]), float(pad[1]), float(pad[2])));
+    }
+  }
+  if (lateral > 0.0 && xmax - xmin <= 1.0 - 2 * mx && ymax - ymin <= 1.0 - 2 * my) {
+    const double distance = (SbVec3d(box.getCenter()) - dp.getProjectionPoint()).dot(dp.getProjectionDirection());
+    shift = dp.getPlanePoint(distance, SbVec2d((xmin + xmax) * 0.5, (ymin + ymax) * 0.5)) -
+            dp.getPlanePoint(distance, SbVec2d(0.5, 0.5));
+    recenter = TRUE;
+  }
+  return worst;
+}
+
+// Publish only the final field values. Immediate field sensors must not observe
+// the trial camera positions used to solve the screen-space dependency.
+static void viewall_publish(SoCamera * target, SoCamera * candidate)
+{
+  SoFieldList changed, values;
+  std::vector<SbBool> notify;
+  const SoFieldData * data = static_cast<SoFieldContainer *>(target)->getFieldData();
+  for (int i = 0; i < data->getNumFields(); ++i) {
+    SoField * field = data->getField(target, i);
+    SoField * value = candidate->getField(data->getFieldName(i));
+    if (value && !field->isSame(*value)) {
+      changed.append(field); values.append(value);
+      notify.push_back(field->enableNotify(FALSE));
+    }
+  }
+  for (int i = 0; i < changed.getLength(); ++i) changed[i]->copyFrom(*values[i]);
+  for (int i = 0; i < changed.getLength(); ++i) changed[i]->enableNotify(notify[i]);
+  for (int i = 0; i < changed.getLength(); ++i) if (notify[i]) changed[i]->touch();
+}
+
+template <typename Target>
+static void viewall_text(SoCamera * camera, Target * scene,
+                         const SbViewportRegion & vp, float aspect, float slack)
+{
+  ViewAllCameraCopy candidate(camera), best(camera);
+  ViewAllBoundsAction action(vp, camera, candidate.camera);
+  action.apply(scene);
+  SbBox3f envelope = action.getBoundingBox();
+  if (!viewall_finite_box(envelope)) return;
+  double bestscore = std::numeric_limits<double>::infinity();
+  SbBool fitbox = TRUE;
+  // Text larger than its viewport cannot be made smaller by moving the camera.
+  // Bound work and retain the best finite trial instead of moving without limit.
+  for (int iteration = 0; iteration < 16; ++iteration) {
+    if (fitbox) candidate.camera->viewBoundingBox(envelope, aspect, slack);
+    action.apply(scene);
+    const SbBox3f measured = action.getBoundingBox();
+    SbBox3f padded;
+    SbVec3d shift;
+    SbBool recenter = FALSE;
+    const double score = viewall_violation(candidate.camera, vp, measured, padded, slack, shift, recenter);
+    if (!std::isfinite(score)) break;
+    if (score < bestscore) {
+      best.camera->copyFieldValues(candidate.camera, FALSE);
+      bestscore = score;
+    }
+    if (score == 0.0) break;
+    if (recenter) {
+      // A footprint which already fits only needs centering. Another sphere
+      // fit would increase the world size of wide fixed-pixel labels again.
+      const SbVec3d position = SbVec3d(candidate.camera->position.getValue()) + shift;
+      SbBool finite = TRUE;
+      for (int axis = 0; axis < 3; ++axis)
+        finite = finite && std::isfinite(position[axis]) && std::fabs(position[axis]) <= FLT_MAX;
+      if (!finite) break;
+      candidate.camera->position = SbVec3f(float(position[0]), float(position[1]), float(position[2]));
+      fitbox = FALSE;
+      continue;
+    }
+    fitbox = TRUE;
+    envelope.extendBy(padded);
+    if (!viewall_finite_box(envelope)) break;
+  }
+  if (std::isfinite(bestscore)) viewall_publish(camera, best.camera);
+}
+
+template <typename Target>
+static SbBool viewall_has_text(Target * scene)
+{
+  SoSearchAction search;
+  search.setType(SoText2::getClassTypeId());
+  search.setInterest(SoSearchAction::FIRST);
+  search.apply(scene);
+  return search.getPath() != NULL;
+}
+} // namespace
+
 // FIXME: should collect common code from the two viewAll() methods
 // below. 20010824 mortene.
 
@@ -533,6 +711,13 @@ SoCamera::pointAt(const SbVec3f & targetpoint, const SbVec3f & upvector)
   SoCamera::viewBoundingBox(). A bounding sphere will be calculated
   from the scene bounding box, so the camera will "view all" even when
   the scene is rotated, in any way.
+
+  For scenes containing SoText2, the pixel footprint is checked again under
+  the fitted camera. A bounded private-camera adjustment reserves two pixels
+  at the viewport edges; only its final field values are published. This also
+  works when this camera is outside the measured scene. Fixed-pixel text larger
+  than its viewport cannot be made to fit by moving the camera; in that case
+  the best finite trial is retained. The camera orientation is not changed.
 
   The \a slack argument gives a multiplication factor to the distance
   the camera is supposed to move out from the \a sceneroot mid-point.
@@ -580,15 +765,15 @@ SoCamera::viewAll(SoNode * const sceneroot, const SbViewportRegion & vpregion,
     break;
   }
 
-  this->viewBoundingBox(box, aspectratio, slack);
+  if (viewall_has_text(sceneroot)) viewall_text(this, sceneroot, vpregion, aspectratio, slack);
+  else this->viewBoundingBox(box, aspectratio, slack);
 }
 
 /*!
   Position the camera so all geometry of the scene in \a path is
   contained in the view volume of the camera.
 
-  Finds the bounding box of the scene and calls
-  SoCamera::viewBoundingBox().
+  Uses the same bounded screen-space text fitting as the scene-root overload.
 */
 void
 SoCamera::viewAll(SoPath * const path, const SbViewportRegion & vpregion,
@@ -615,7 +800,8 @@ SoCamera::viewAll(SoPath * const path, const SbViewportRegion & vpregion,
     break;
   }
 
-  this->viewBoundingBox(box, aspectratio, slack);
+  if (viewall_has_text(path)) viewall_text(this, path, vpregion, aspectratio, slack);
+  else this->viewBoundingBox(box, aspectratio, slack);
 }
 
 /*!
@@ -785,7 +971,9 @@ void
 SoCamera::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoCacheElement::invalidate(action->getState());
-  SoCamera::doAction(action);
+  ViewAllBoundsAction * fitting = dynamic_cast<ViewAllBoundsAction *>(action);
+  if (fitting && fitting->target == this) fitting->candidate->doAction(action);
+  else SoCamera::doAction(action);
 }
 
 // Doc in superclass.
