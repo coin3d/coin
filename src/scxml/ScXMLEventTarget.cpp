@@ -336,7 +336,7 @@ ScXMLEventTarget::getEventTarget(const char * targettype, const char * targetnam
   SessionMap * sessionmap = targetit->second;
 
   SessionMap::iterator sessionit = sessionmap->find(targetsessionid.getString());
-  if unlikely (targetit == targetmap->end()) {
+  if unlikely (sessionit == sessionmap->end()) {
     // SoDebugError::post("ScXMLEventTarget::getEventTarget",
     //                    "given target (type '%s' '%s') with session '%s' not registered",
     //                    targettypename.getString(), targetnamename.getString(), targetsessionid.getString());
