@@ -32,6 +32,19 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
         ${PROJECT_SOURCE_DIR}/include/Inventor/annex
         ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
       target_link_libraries(CoinBumpGLXTest Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+      add_executable(CoinShadowDirectionalGLXTest shadows/DirectionalGLXTest.cpp)
+      target_include_directories(CoinShadowDirectionalGLXTest PRIVATE
+        ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+        ${PROJECT_SOURCE_DIR}/include/Inventor/annex
+        ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+      target_link_libraries(CoinShadowDirectionalGLXTest
+        Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+      foreach(shadow_case low medium high matrix boundaries)
+        add_test(NAME ShadowDirectionalGLX_${shadow_case}
+          COMMAND CoinShadowDirectionalGLXTest ${shadow_case})
+        set_tests_properties(ShadowDirectionalGLX_${shadow_case} PROPERTIES
+          SKIP_RETURN_CODE 77 LABELS "shadows;native-gl" TIMEOUT 120)
+      endforeach()
       add_test(NAME BumpProgramGLX COMMAND CoinBumpGLXTest)
       set_tests_properties(BumpProgramGLX PROPERTIES SKIP_RETURN_CODE 77)
     endif()
@@ -124,6 +137,7 @@ add_executable(CoinTests
 	TestSuiteMisc.cpp
 	InternalMacroTest.cpp
 	InternalSmallMapTest.cpp
+	SoHeightMapToNormalMapTest.cpp
 	${COIN_TEST_SOURCES}
 )
 
@@ -168,6 +182,22 @@ if (USE_PTHREAD)
 	target_link_libraries(CoinTests pthread)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
+
+# Keep the independent modes as separate CTest entries so a bad dimension,
+# callback path, or action reset is reported without masking the others.
+add_executable(CoinQuadMeshPrimitiveCountTest
+  quadmesh-primitive-count/main.cpp)
+target_compile_features(CoinQuadMeshPrimitiveCountTest PRIVATE cxx_std_11)
+target_link_libraries(CoinQuadMeshPrimitiveCountTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CoinQuadMeshPrimitiveCountTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+foreach(_quadmesh_count_mode dimensions limits callbacks accumulation state)
+  add_test(NAME QuadMeshPrimitiveCount_${_quadmesh_count_mode}
+    COMMAND CoinQuadMeshPrimitiveCountTest ${_quadmesh_count_mode})
+endforeach()
 
 # This render regression requires a real GLX display; enable it explicitly in
 # environments with X11 or run CTest under xvfb-run.
@@ -258,6 +288,28 @@ target_include_directories(CoinAtexitTest PRIVATE
   ${PROJECT_SOURCE_DIR}/src ${COIN_TARGET_INCLUDE_DIRECTORIES})
 add_test(NAME CoinAtexit COMMAND CoinAtexitTest)
 
+if(UNIX)
+  add_executable(CoinStdFdsFailureTest CoinStdFdsFailureTest.cpp)
+  target_compile_definitions(CoinStdFdsFailureTest PRIVATE COIN_INTERNAL)
+  target_link_libraries(CoinStdFdsFailureTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(CoinStdFdsFailureTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${PROJECT_SOURCE_DIR}/src ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  add_test(NAME CoinStdFdsFailure COMMAND CoinStdFdsFailureTest)
+  set_tests_properties(CoinStdFdsFailure PROPERTIES SKIP_RETURN_CODE 77)
+endif()
+
+if(UNIX AND COIN_THREADSAFE)
+  add_executable(CoinStdFdsConcurrentTest CoinStdFdsConcurrentTest.cpp)
+  target_compile_definitions(CoinStdFdsConcurrentTest PRIVATE COIN_INTERNAL)
+  target_link_libraries(CoinStdFdsConcurrentTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(CoinStdFdsConcurrentTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${PROJECT_SOURCE_DIR}/src ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  add_test(NAME CoinStdFdsConcurrent COMMAND CoinStdFdsConcurrentTest)
+  set_tests_properties(CoinStdFdsConcurrent PROPERTIES SKIP_RETURN_CODE 77)
+endif()
+
 # Process-isolated public behavior checks. Keeping each invalid access in its
 # own CTest process prevents one unsafe access from masking the remaining
 # boundary classes.
@@ -312,6 +364,18 @@ endforeach()
 # on Windows, so keep the deterministic allocation-failure test on platforms
 # where executable symbol interposition applies to the linked Coin library.
 if(NOT WIN32)
+  # The executable interposes on new[] to fail the SbPList copy and checks
+  # that cc_dynarray_duplicate releases its partially constructed destination.
+  add_executable(CoinDynarrayDuplicateFailureTest
+    CcDynarrayDuplicateFailureTest.cpp)
+  target_compile_definitions(CoinDynarrayDuplicateFailureTest PRIVATE COIN_INTERNAL)
+  target_link_libraries(CoinDynarrayDuplicateFailureTest
+    Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(CoinDynarrayDuplicateFailureTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${PROJECT_SOURCE_DIR}/src ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  add_test(NAME CcDynarrayDuplicateFailure COMMAND CoinDynarrayDuplicateFailureTest)
+
   add_executable(CoinSbPListGrowthFailureTest
     SbPListGrowthFailureTest.cpp)
   target_link_libraries(CoinSbPListGrowthFailureTest
