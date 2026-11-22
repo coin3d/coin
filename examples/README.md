@@ -36,6 +36,8 @@ The files in [bindings](bindings/) and [misc](misc/) are outside the current CMa
 | Understand how a ray finds an object in a scene | [PickAction](https://github.com/coin3d/ivexamples/blob/master/Mentor/09.4.PickAction.cpp.in) |
 | Extend the library with a custom node | [Toolmaker node examples](https://github.com/coin3d/ivexamples/tree/master/Toolmaker/02.Nodes) |
 
+The [Qt 6 and Quarter capture gallery](qt6-capture/README.md) shows these five scenes and documents how to regenerate the PNGs.
+
 The [historical wiki index](https://github-wiki-see.page/m/coin3d/coin/wiki/Available-tutorials) lists SoWin tutorials for older Visual Studio versions, MFC integration and the Sc21 Cocoa tutorials. The [Coin documentation](https://www.coin3d.org/coin/coin_books.html) explains what each Inventor book covers.
 
 ## Coming from FreeCAD
