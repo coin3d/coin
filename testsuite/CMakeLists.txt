@@ -124,6 +124,7 @@ add_executable(CoinTests
 	TestSuiteMisc.cpp
 	InternalMacroTest.cpp
 	InternalSmallMapTest.cpp
+	SoHeightMapToNormalMapTest.cpp
 	${COIN_TEST_SOURCES}
 )
 
