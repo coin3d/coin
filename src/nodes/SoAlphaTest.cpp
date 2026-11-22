@@ -52,6 +52,9 @@
   TransparencyType node with value = NONE, and an AlphaTest node with
   \e function set to GREATER and \e value set to for instance 0.01.
 
+  Each ignored field inherits its corresponding value from the traversal
+  state. Ignoring both fields leaves the alpha test state unchanged.
+
   <b>FILE FORMAT/DEFAULTS:</b>
   \code
     AlphaTest {
@@ -124,13 +127,21 @@
 /*!
   \var SoSFEnum SoAlphaTest::function
 
-  Which alpha function to use. Defaults to NONE.
+  Which alpha function to use. Defaults to NONE. If ignored, the function
+  is inherited from the traversal state independently of value.
 */
 
 /*!
   \var SoSFFloat SoAlphaTest::value
 
-  The value the function will compare against when applicable. Default is 0.5.
+  The reference value the function will compare against when applicable.
+  Default is 0.5. If ignored, the reference is inherited from the traversal
+  state independently of function.
+
+  The floating-point reference is passed to OpenGL without clamping by Coin.
+  Conversion and clamping when the reference is used depend on the framebuffer
+  format and OpenGL clamp state. In particular, floating-point color buffers
+  can use references outside [0, 1].
 */
 
 SO_NODE_SOURCE(SoAlphaTest);
@@ -177,39 +188,53 @@ SoAlphaTest::~SoAlphaTest()
 void
 SoAlphaTest::GLRender(SoGLRenderAction * action)
 {
-  int func = this->function.getValue();
-  GLenum glfunc = 0;
-  switch (func) {
-  case NONE:
-    glfunc = 0;
-    break;
-  case NEVER:
-    glfunc = GL_NEVER;
-    break;
-  case ALWAYS:
-    glfunc = GL_ALWAYS;
-    break;
-  case LESS:
-    glfunc = GL_LESS;
-    break;
-  case LEQUAL:
-    glfunc = GL_LEQUAL;
-    break;
-  case EQUAL:
-    glfunc = GL_EQUAL;
-    break;
-  case GEQUAL:
-    glfunc = GL_GEQUAL;
-    break;
-  case GREATER:
-    glfunc = GL_GREATER;
-    break;
-  case NOTEQUAL:
-    glfunc = GL_NOTEQUAL;
-    break;
-  default:
-    break;
+  SoState * state = action->getState();
+  const SbBool ignorefunction = this->function.isIgnored();
+  const SbBool ignorevalue = this->value.isIgnored();
+  int glfunc = 0;
+  float reference = 0.0f;
+
+  if (ignorefunction || ignorevalue) {
+    // Read the pair before setting either component, so render caches retain
+    // the dependency on the inherited component of the shared alpha state.
+    glfunc = SoLazyElement::getAlphaTest(state, reference);
+    if (ignorefunction && ignorevalue) return;
   }
-  SoLazyElement::setAlphaTest(action->getState(),
-                              glfunc, this->value.getValue());
+  if (!ignorevalue) reference = this->value.getValue();
+
+  if (!ignorefunction) {
+    glfunc = 0;
+    switch (this->function.getValue()) {
+    case NONE:
+      glfunc = 0;
+      break;
+    case NEVER:
+      glfunc = GL_NEVER;
+      break;
+    case ALWAYS:
+      glfunc = GL_ALWAYS;
+      break;
+    case LESS:
+      glfunc = GL_LESS;
+      break;
+    case LEQUAL:
+      glfunc = GL_LEQUAL;
+      break;
+    case EQUAL:
+      glfunc = GL_EQUAL;
+      break;
+    case GEQUAL:
+      glfunc = GL_GEQUAL;
+      break;
+    case GREATER:
+      glfunc = GL_GREATER;
+      break;
+    case NOTEQUAL:
+      glfunc = GL_NOTEQUAL;
+      break;
+    default:
+      break;
+    }
+  }
+  SoLazyElement::setAlphaTest(state, glfunc, reference);
 }

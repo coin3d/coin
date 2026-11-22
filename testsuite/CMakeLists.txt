@@ -159,6 +159,8 @@ macro(create_file_test input testfunc filter)
 	configure_file(TestSuiteTemplate.cmake.in "${TESTSUITENAME}Test.cpp")
 endmacro()
 
+include(SoAlphaTestTests.cmake)
+
 # Parse all source files for embedded '#ifdef COIN_TEST_SUITE' and extract those blocks
 # to separate test source files.
 file(GLOB_RECURSE COIN_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/src/*.cpp)
