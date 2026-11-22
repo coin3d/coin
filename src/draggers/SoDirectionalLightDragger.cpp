@@ -52,11 +52,11 @@
   SoDirectionalLight node, as it provides geometry for the end-user to
   interact with a directional vector.
 
-  The image below is an action shot example, with the directional light being red
-  and the camera headlight turned right down.
+  The example below shows a red directional light illuminating one side of
+  a cube. A dim fill light keeps the other faces visible.
 
   <center>
-  \image html directionallightdragger_actionshot.png "DirectionalLight Dragger Action Shot"
+  \image html directionallightdragger_actionshot.png "A DirectionalLight manipulator aimed at a cube"
   </center>
 
   For convenience, this dragger also by default contains interaction

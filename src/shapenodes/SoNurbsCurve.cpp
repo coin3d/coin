@@ -84,7 +84,7 @@
   \endcode
 
   <center>
-  \image html nurbscurve-circle.png "Rendering of Example Scenegraph"
+  \image html nurbscurve-circle.png "A rational NURBS circle with its control points in yellow"
   </center>
 
   <b>FILE FORMAT/DEFAULTS:</b>

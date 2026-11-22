@@ -70,3 +70,19 @@ LIBGL_ALWAYS_SOFTWARE=1 QT_SCALE_FACTOR=1 QT_QPA_PLATFORM=xcb \
 The pick coordinates are relative to the top-left of the viewport, below the header. For an interactive check on a desktop session, run `"$capture" pick-action "$sources"` and click a star.
 
 The historical GLX, GLUT and Qt 3 programs illustrate their original windowing integrations. The gallery covers the classic scenes that can be hosted in Quarter.
+
+## Regenerate the API reference images
+
+Run the following from the Coin repository root after building the viewer above. The script regenerates 33 of the 35 images in the API reference. It reads Inventor scene blocks and the documented mesh coordinates from the Coin source, loads the default dragger nodes, and runs the projector example that prints an Inventor scene. The viewer saves only the rendered scene. The Text3 capture uses perspective to make the extrusion visible, and the NURBS surface and profile use cameras aligned with the historical views.
+
+The directional light, volume texture and transparency screenshots use scenes defined in [the capture script](capture-api.py). The text captures on Linux were generated with Fontconfig resolving Arial to Liberation Sans.
+
+The original [Centerball interaction](../../docs/doxygen/images/centerballdragger_actionexample.png) and [Jack clip-plane](../../docs/doxygen/images/jack-in-action.png) images document the selected handle and a cut contour on the aircraft model, respectively. Keep those two files with the regenerated figures.
+
+```sh
+LIBGL_ALWAYS_SOFTWARE=1 QT_SCALE_FACTOR=1 QT_QPA_PLATFORM=xcb \
+  xvfb-run -a -s "-screen 0 1280x800x24 -noreset" \
+  python3 examples/qt6-capture/capture-api.py "$capture" "$work_dir/api-images"
+```
+
+Review the PNGs and copy them to [the Doxygen image directory](../../docs/doxygen/images/), where the class pages refer to them by filename. Check the images in both [Doxygen builds](../../docs/legacy/doxygen.md), including pages that share the same dragger image.

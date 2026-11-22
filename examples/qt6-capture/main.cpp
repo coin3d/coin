@@ -4,6 +4,7 @@
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Quarter/Quarter.h>
 #include <Quarter/QuarterWidget.h>
@@ -16,8 +17,11 @@
 #include <QPixmap>
 #include <QPushButton>
 #include <QScreen>
+#include <QSurfaceFormat>
 #include <QTimer>
 #include <QVBoxLayout>
+
+#include <cmath>
 
 using namespace SIM::Coin3D::Quarter;
 
@@ -74,7 +78,8 @@ private:
 };
 
 int showExample(QApplication &app, const ExampleScene &example, SoSeparator *scene,
-                const QString &output, const QString &pickCoordinates)
+                const QString &output, const QString &pickCoordinates,
+                bool sceneOnly, bool headlight, bool fitCamera, float cameraScale)
 {
   QWidget window;
   window.setWindowTitle(example.title);
@@ -107,14 +112,21 @@ int showExample(QApplication &app, const ExampleScene &example, SoSeparator *sce
   auto *fitView = new QPushButton("Fit view", header);
   headerLayout->addWidget(fitView);
   layout->addWidget(header);
+  header->setVisible(!sceneOnly);
 
   const QLatin1String name(example.name);
   auto *pickViewer = name == "pick-action" ? new PickViewer(subtitle, &window) : nullptr;
   auto *viewer = pickViewer ? pickViewer : new QuarterWidget(&window);
+  if (sceneOnly) {
+    auto format = viewer->format();
+    format.setSamples(4);
+    viewer->setFormat(format);
+  }
   viewer->setNavigationModeFile();
   if (name == "toolmaker-nodes") {
     viewer->setTransparencyType(QuarterWidget::SORTED_OBJECT_BLEND);
   }
+  viewer->setHeadlightEnabled(headlight);
   viewer->setBackgroundColor(QColor("#172334"));
   viewer->setSceneGraph(scene);
   layout->addWidget(viewer, 1);
@@ -129,7 +141,10 @@ int showExample(QApplication &app, const ExampleScene &example, SoSeparator *sce
     });
   }
   QTimer::singleShot(0, &window, [&] {
-    viewer->viewAll();
+    if (fitCamera) viewer->viewAll();
+    if (cameraScale != 1.0f) {
+      viewer->getSoRenderManager()->getCamera()->scaleHeight(cameraScale);
+    }
     if (!pickCoordinates.isEmpty()) {
       const auto coordinates = pickCoordinates.split(',');
       bool validX = false;
@@ -170,28 +185,43 @@ int main(int argc, char **argv)
   app.setFont(QFont("DejaVu Sans", 10));
 
   QCommandLineParser parser;
-  parser.setApplicationDescription("View and capture classic Coin examples");
+  parser.setApplicationDescription("View and capture Coin examples or an Inventor scene file");
   parser.addHelpOption();
   parser.addPositionalArgument("example", "Example name");
   parser.addPositionalArgument("ivexamples-dir", "Path to the ivexamples checkout");
   QCommandLineOption output("output", "Save the window to a PNG and exit", "path");
   QCommandLineOption pick("pick", "Pick at x,y measured from the top left of the viewport", "x,y");
-  parser.addOptions({output, pick});
+  QCommandLineOption sceneFile("scene-file", "Capture only the scene from an Inventor file (requires --output)", "path");
+  QCommandLineOption noHeadlight("no-headlight", "Use only the lights in the scene file");
+  QCommandLineOption keepCamera("keep-camera", "Use the authored camera framing in the scene file");
+  QCommandLineOption cameraScaleOption("camera-scale", "Multiply the fitted camera height or field of view", "factor", "1");
+  parser.addOptions({output, pick, sceneFile, noHeadlight, keepCamera, cameraScaleOption});
   parser.process(app);
   const auto arguments = parser.positionalArguments();
-  if (arguments.size() != 2) parser.showHelp(1);
-  const auto *example = findExample(arguments.at(0));
+  const bool sceneOnly = parser.isSet(sceneFile);
+  bool validScale = false;
+  const float cameraScale = parser.value(cameraScaleOption).toFloat(&validScale);
+  if (!validScale || !std::isfinite(cameraScale) || cameraScale <= 0) parser.showHelp(1);
+  if (sceneOnly) {
+    if (!arguments.isEmpty() || parser.value(output).isEmpty() || parser.isSet(pick)) parser.showHelp(1);
+  } else if (arguments.size() != 2 || parser.isSet(noHeadlight) ||
+             parser.isSet(keepCamera) || parser.isSet(cameraScaleOption)) {
+    parser.showHelp(1);
+  }
+  const ExampleScene fileExample{"scene-file", "Coin scene", "", nullptr};
+  const auto *example = sceneOnly ? &fileExample : findExample(arguments.at(0));
   if (!example) {
     qCritical("Unknown example: %s", qPrintable(arguments.at(0)));
     return 1;
   }
 
   Quarter::init();
-  auto *scene = example->load(arguments.at(1));
+  auto *scene = sceneOnly ? readScene(parser.value(sceneFile)) : example->load(arguments.at(1));
   int result = 1;
   if (scene) {
     scene->ref();
-    result = showExample(app, *example, scene, parser.value(output), parser.value(pick));
+    result = showExample(app, *example, scene, parser.value(output), parser.value(pick),
+                         sceneOnly, !parser.isSet(noHeadlight), !parser.isSet(keepCamera), cameraScale);
     scene->unref();
   } else {
     qCritical("Could not read the example data");

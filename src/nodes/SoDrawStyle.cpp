@@ -58,7 +58,7 @@
   \endcode
 
   <center>
-  \image html drawstyle.png "Rendering of Example Scenegraph"
+  \image html drawstyle.png "A filled sphere, a wireframe sphere, and a sphere rendered as points"
   </center>
 
   <b>FILE FORMAT/DEFAULTS:</b>

@@ -11,4 +11,5 @@ struct ExampleScene {
   SoSeparator *(*load)(const QString &);
 };
 
+SoSeparator *readScene(const QString &path);
 const ExampleScene *findExample(const QString &name);

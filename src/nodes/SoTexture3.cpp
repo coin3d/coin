@@ -48,7 +48,7 @@
   be ignored (set to 0.0).
 
   <center>
-  \image html texture3.png "Rendering of an Example Texture3"
+  \image html texture3.png "A cube mapped with a procedural volume texture"
   </center>
 
   \COIN_CLASS_EXTENSION

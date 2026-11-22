@@ -45,7 +45,7 @@
   single scene.
  
   <center>
-  \image html transparencytype.png "Rendering of Different Transparency Modes"
+  \image html transparencytype.png "Nine transparency modes applied to the same pair of overlapping objects"
   </center>
 
   \COIN_CLASS_EXTENSION

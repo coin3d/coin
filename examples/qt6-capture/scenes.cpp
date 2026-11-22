@@ -17,13 +17,13 @@
 
 SoSeparator *makeStellatedDodecahedron();
 
-namespace {
-
 SoSeparator *readScene(const QString &path)
 {
   SoInput input;
   return input.openFile(QFile::encodeName(path).constData()) ? SoDB::readAll(&input) : nullptr;
 }
+
+namespace {
 
 SoSeparator *helloCone(const QString &)
 {
