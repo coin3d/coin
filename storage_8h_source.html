@@ -195,24 +195,25 @@ $(function(){initNavTree('storage_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">/* Returns NULL if the thread&#39;s block or dictionary entry cannot be allocated.</span></div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment">   A constructed block is destroyed before rollback; later calls may retry. */</span></div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>COIN_DLL_API <span class="keywordtype">void</span> * cc_storage_get(cc_storage * storage);</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>COIN_DLL_API <span class="keywordtype">void</span> cc_storage_apply_to_all(cc_storage * storage, </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                                          cc_storage_apply_func * func, </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                                          <span class="keywordtype">void</span> * closure);</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment">/* ********************************************************************** */</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>} <span class="comment">/* extern &quot;C&quot; */</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="preprocessor">#endif </span><span class="comment">/* __cplusplus */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">#endif </span><span class="comment">/* ! CC_STORAGE_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment">/* A NULL callback leaves the storage unchanged. */</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>COIN_DLL_API <span class="keywordtype">void</span> cc_storage_apply_to_all(cc_storage * storage, </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                                          cc_storage_apply_func * func, </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                                          <span class="keywordtype">void</span> * closure);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment">/* ********************************************************************** */</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>} <span class="comment">/* extern &quot;C&quot; */</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">#endif </span><span class="comment">/* __cplusplus */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="preprocessor">#endif </span><span class="comment">/* ! CC_STORAGE_H */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_469ed70aca823fd8322768ad54869f94.html">Inventor</a></li><li class="navelem"><a class="el" href="dir_c926cf464acaebc2091d00c8a935648f.html">C</a></li><li class="navelem"><a class="el" href="dir_b7bb16c11722e2c1eb4bf76dbb6d1b35.html">threads</a></li><li class="navelem"><b>storage.h</b></li>
-    <li class="footer">Generated on Sat Nov 21 2026 21:53:22 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sun Nov 22 2026 10:25:36 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
