@@ -386,7 +386,9 @@ halve_image(const int width, const int height, const int depth, const int nc,
   unsigned char *dst = dataout;
   const unsigned char *src = datain;
 
-  int numdims = (width>=1?1:0)+(height>=1?1:0)+(depth>=1?1:0);
+  // Only axes that can still be halved contribute samples. A size of one
+  // must keep its texel instead of selecting an empty 3D reduction.
+  int numdims = (width>1?1:0)+(height>1?1:0)+(depth>1?1:0);
   // check for 1D images.
   if (numdims == 1) {
     int n = SbMax(SbMax(newwidth, newheight), newdepth);

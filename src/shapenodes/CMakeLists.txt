@@ -36,6 +36,7 @@ set(COIN_SHAPENODES_FILES
 # Files excluded from public API documentation, included in complete documentation.
 set(COIN_SHAPENODES_INTERNAL_FILES
 	SoNurbsP.h
+	SoVertexArrayTexCoordGuard.h
 	soshape_bigtexture.h
 	soshape_bigtexture.cpp
 	soshape_bumprender.h
