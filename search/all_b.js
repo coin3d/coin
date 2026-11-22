@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['b_0',['B',['../classSoBoolOperation.html#a670d9a9ba8cbd9a70b15095993705749a7c06cd121526ebeb2f440e3b93646e67',1,'SoBoolOperation::B'],['../classSoCalculator.html#ac275feac67d7994c577cc056da4afc99',1,'SoCalculator::B']]],
-  ['b_1',['b',['../classSoBoolOperation.html#aace01f5778ec26d120e62a2c62676a3a',1,'SoBoolOperation::b'],['../classSoCalculator.html#ab8dcece3f0627bc900f37455726ceb0b',1,'SoCalculator::b']]],
+  ['b_0',['b',['../classSoBoolOperation.html#aace01f5778ec26d120e62a2c62676a3a',1,'SoBoolOperation::b'],['../classSoCalculator.html#ab8dcece3f0627bc900f37455726ceb0b',1,'SoCalculator::b']]],
+  ['b_1',['B',['../classSoBoolOperation.html#a670d9a9ba8cbd9a70b15095993705749a7c06cd121526ebeb2f440e3b93646e67',1,'SoBoolOperation::B'],['../classSoCalculator.html#ac275feac67d7994c577cc056da4afc99',1,'SoCalculator::B']]],
   ['back_2',['BACK',['../classSoDragger.html#afdfe9d11fcbde8e42fff713907f6c7a1a1740183c2afc21c9650e8c0ab7647750',1,'SoDragger::BACK'],['../classSoText3.html#a7a795bea518688db02b74ec9b99edd59ad9f89a1e9bd16f6d57fdebcc211d08ac',1,'SoText3::BACK']]],
   ['backgroundcolor_3',['backgroundColor',['../classSoSceneTexture2.html#a7eb407e7133231bda6ade026b0c67bd8',1,'SoSceneTexture2']]],
   ['badtype_4',['badType',['../classSoType.html#a08a5653a56fb7a1999eea6bf42a787f6',1,'SoType']]],
