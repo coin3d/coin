@@ -110,7 +110,7 @@ notifications:
 deploy:
   # Deploy to GitHub Releases
   - provider: GitHub
-    auth_token: GH_AUTH_TOKEN
+    auth_token: $(GH_AUTH_TOKEN)
     artifact: CIArchives, CIArchivesTGZ, CImd5, CIsha256, logs
     tag: 'CI builds'
     description: 'Results of CI builds for various platforms'
@@ -123,7 +123,7 @@ deploy:
 
   # Deploy to GitHub Releases
   - provider: GitHub
-    auth_token: GH_AUTH_TOKEN
+    auth_token: $(GH_AUTH_TOKEN)
     artifact: CIArchives, CIArchivesTGZ, CImd5, CIsha256
     tag: $(APPVEYOR_REPO_TAG_NAME)
     description: 'Release build'
