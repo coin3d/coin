@@ -44,4 +44,4 @@ The [historical wiki index](https://github-wiki-see.page/m/coin3d/coin/wiki/Avai
 
 Use the [FreeCAD scene graph guide](https://github.com/FreeCAD/FreeCAD-documentation/blob/main/wiki/Scenegraph.md) to see how FreeCAD represents its objects in Coin. To isolate a display or selection problem, start with the [Quarter example](qt/README.md), recreate the smallest relevant scene with Coin nodes, and compare the result with FreeCAD. The `IndexedFaceSet` and `PickAction` examples above show the geometry and selection steps.
 
-[Issue #615](https://github.com/coin3d/coin/issues/615) is the discussion about user documentation and tutorials. The [standalone CMake example proposed in PR #925](https://github.com/coin3d/coin/pull/925) covers finding and linking an installed Coin package before adding a viewer.
+[Issue #615](https://github.com/coin3d/coin/issues/615) is the discussion about user documentation and tutorials. The [standalone CMake example](cmake-consumer/README.md) shows how to find and link an installed Coin package before adding a viewer.
