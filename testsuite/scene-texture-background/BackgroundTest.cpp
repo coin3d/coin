@@ -12,6 +12,8 @@
 
 #include <GL/glx.h>
 #include <X11/Xlib.h>
+#include <X11/Xproto.h>
+#include <X11/extensions/shmproto.h>
 
 #include <array>
 #include <cstdio>
@@ -69,12 +71,12 @@ struct GlxWindow {
   }
 };
 
-bool hasPbufferConfig(Display * display, int screen)
+const char * pbufferUnavailable(Display * display, int screen)
 {
   int major, minor;
   if (!glXQueryVersion(display, &major, &minor) ||
       major < 1 || (major == 1 && minor < 3)) {
-    return false;
+    return "GLX 1.3 is unavailable";
   }
   const int attributes[] = {
     GLX_DRAWABLE_TYPE, GLX_PBUFFER_BIT,
@@ -85,9 +87,64 @@ bool hasPbufferConfig(Display * display, int screen)
   };
   int count = 0;
   GLXFBConfig * configs = glXChooseFBConfig(display, screen, attributes, &count);
-  const bool supported = configs && count > 0;
-  if (configs) XFree(configs);
-  return supported;
+  if (!configs || count == 0) {
+    if (configs) XFree(configs);
+    return "No GLX RGBA8 pbuffer configuration with depth and stencil";
+  }
+
+  // Some software GLX servers advertise the configuration but reject image
+  // transfers from the pbuffer. Probe raw GLX before running any Coin checks.
+  static XErrorEvent unexpected;
+  static bool putImageBadMatch;
+  static int shmOpcode;
+  int eventBase = 0, errorBase = 0;
+  const Bool hasShm = XQueryExtension(display, "MIT-SHM", &shmOpcode, &eventBase, &errorBase);
+  if (!hasShm) shmOpcode = -1;
+  unexpected = {};
+  putImageBadMatch = false;
+  XSync(display, False);
+  const auto previousHandler = XSetErrorHandler([](Display *, XErrorEvent * event) -> int {
+    if (event->error_code == BadMatch &&
+        (event->request_code == X_PutImage ||
+         (event->request_code == shmOpcode && event->minor_code == X_ShmPutImage))) {
+      putImageBadMatch = true;
+    }
+    else {
+      unexpected = *event;
+    }
+    return 0;
+  });
+
+  const int dimensions[] = { GLX_PBUFFER_WIDTH, textureSize, GLX_PBUFFER_HEIGHT, textureSize, None };
+  const GLXPbuffer pbuffer = glXCreatePbuffer(display, configs[0], dimensions);
+  const GLXContext context = glXCreateNewContext(display, configs[0], GLX_RGBA_TYPE, nullptr, True);
+  XFree(configs);
+
+  const bool current = pbuffer && context && glXMakeCurrent(display, pbuffer, context);
+  GLenum glError = GL_NO_ERROR;
+  if (current) {
+    glClearColor(0.25f, 0.5f, 0.75f, 0.5f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glFlush();
+    std::array<GLubyte, textureSize * textureSize * 4> pixels{};
+    glReadPixels(0, 0, textureSize, textureSize, GL_RGBA, GL_UNSIGNED_BYTE, pixels.data());
+    glError = glGetError();
+    glXMakeCurrent(display, None, nullptr);
+  }
+  if (context) glXDestroyContext(display, context);
+  if (pbuffer) glXDestroyPbuffer(display, pbuffer);
+  XSync(display, False);
+  XSetErrorHandler(previousHandler);
+
+  if (unexpected.error_code) {
+    std::fprintf(stderr, "Unexpected X error in GLX probe: %u (request %u.%u)\n",
+                 unsigned(unexpected.error_code), unsigned(unexpected.request_code),
+                 unsigned(unexpected.minor_code));
+    fail("The raw GLX pbuffer probe failed");
+  }
+  if (putImageBadMatch) return "The GLX server rejected a raw pbuffer image transfer (BadMatch)";
+  if (!current || glError != GL_NO_ERROR) fail("Could not render into the advertised GLX pbuffer");
+  return nullptr;
 }
 
 struct Probe {
@@ -300,8 +357,8 @@ int run(Backend backend)
   GlxWindow window;
   if (!window.display) return skip("No X11 display");
   if (backend == Backend::Pbuffer) {
-    if (!hasPbufferConfig(window.display, DefaultScreen(window.display))) {
-      return skip("No GLX 1.3 RGBA8 pbuffer configuration with depth and stencil");
+    if (const char * reason = pbufferUnavailable(window.display, DefaultScreen(window.display))) {
+      return skip(reason);
     }
     Display * display = coinOffscreenDisplay();
     if (!display) return skip("Coin could not create and activate an offscreen GLX context");
