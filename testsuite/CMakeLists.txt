@@ -11,6 +11,7 @@ include(scene-texture-background/Tests.cmake)
 include(SbSmallMapTests.cmake)
 include(scene-texture-type/Tests.cmake)
 include(gl-context-maps/Tests.cmake)
+include(fonts/Tests.cmake)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND COIN_BUILD_SHARED_LIBS AND CMAKE_NM)
   add_test(NAME LegacyExportedSymbols
