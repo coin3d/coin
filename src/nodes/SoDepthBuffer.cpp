@@ -191,27 +191,20 @@ void
 SoDepthBuffer::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
-  SbBool testenable = this->test.getValue();
-  SbBool writeenable = this->write.getValue();
-  SoDepthBufferElement::DepthWriteFunction function =
-    static_cast<SoDepthBufferElement::DepthWriteFunction>(this->function.getValue());
-  SbVec2f depthrange = this->range.getValue();
+  // Read only fields that contribute to the state. Evaluating an ignored
+  // field could unnecessarily evaluate its connected engine.
+  SbBool testenable = this->test.isIgnored()
+    ? SoDepthBufferElement::getTestEnable(state) : this->test.getValue();
 
-  // accommodate for ignored fields
-  if (this->test.isIgnored()) {
-    testenable = SoDepthBufferElement::getTestEnable(state);
-  }
-  // if we're rendering transparent objects, let SoGLRenderAction decide if
-  // depth write should be enabled
-  if (this->write.isIgnored() || action->isRenderingTranspPaths()) {
-    writeenable = SoDepthBufferElement::getWriteEnable(state);
-  }
-  if (this->function.isIgnored()) {
-    function = SoDepthBufferElement::getFunction(state);
-  }
-  if (this->range.isIgnored()) {
-    range = SoDepthBufferElement::getRange(state);
-  }
+  // During transparent rendering the action controls depth writes, so the
+  // write field must not be evaluated in that pass either.
+  SbBool writeenable = this->write.isIgnored() || action->isRenderingTranspPaths()
+    ? SoDepthBufferElement::getWriteEnable(state) : this->write.getValue();
+  SoDepthBufferElement::DepthWriteFunction function = this->function.isIgnored()
+    ? SoDepthBufferElement::getFunction(state)
+    : static_cast<SoDepthBufferElement::DepthWriteFunction>(this->function.getValue());
+  SbVec2f depthrange = this->range.isIgnored()
+    ? SoDepthBufferElement::getRange(state) : this->range.getValue();
 
   // update element
   SoDepthBufferElement::set(state, testenable, writeenable,

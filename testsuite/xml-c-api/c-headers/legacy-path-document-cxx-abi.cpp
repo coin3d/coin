@@ -1,6 +1,23 @@
 #include <cstddef>
 
-#include <Inventor/C/XML/document.h>
+#include <Inventor/C/XML/types.h>
+
+// Declare the historical entry points without document.h. Its inline
+// overloads adapt references to pointers before reaching the library, which
+// would only test source compatibility, not calls from existing binaries.
+extern "C" {
+COIN_DLL_API cc_xml_doc * cc_xml_doc_new(void);
+COIN_DLL_API void cc_xml_doc_delete_x(cc_xml_doc * doc);
+COIN_DLL_API void cc_xml_doc_set_filter_cb_x(cc_xml_doc * doc,
+                                           cc_xml_filter_cb * cb,
+                                           void * userdata);
+COIN_DLL_API void cc_xml_doc_get_filter_cb(const cc_xml_doc * doc,
+                                          cc_xml_filter_cb *& cb,
+                                          void *& userdata);
+COIN_DLL_API SbBool cc_xml_doc_write_to_buffer(const cc_xml_doc * doc,
+                                              char *& buffer,
+                                              size_t & bytes);
+}
 
 struct cc_xml_path;
 
