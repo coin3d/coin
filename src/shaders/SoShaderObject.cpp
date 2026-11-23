@@ -189,12 +189,7 @@ public:
     }
   }
 
-  void invalidateParameters(void) {
-    for (SbSmallMap<uint32_t, SoGLShaderObject *>::const_iterator it =
-           this->glshaderobjects.const_begin(); it != this->glshaderobjects.const_end(); ++it) {
-      it->obj->setParametersDirty(TRUE);
-    }
-  }
+  void invalidateParameters(void);
 
   SoShaderObject * owner;
   SoShaderObject::SourceType cachedSourceType;
@@ -388,6 +383,16 @@ SoShaderObjectP::~SoShaderObjectP()
   SbStringList empty;
   this->setSearchDirectories(empty);
   delete this->sensor;
+}
+
+// Keep an out-of-line definition for the exported entry point.
+void
+SoShaderObjectP::invalidateParameters(void)
+{
+  for (SbSmallMap<uint32_t, SoGLShaderObject *>::const_iterator it =
+         this->glshaderobjects.const_begin(); it != this->glshaderobjects.const_end(); ++it) {
+    it->obj->setParametersDirty(TRUE);
+  }
 }
 
 void

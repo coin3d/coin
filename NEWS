@@ -1,5 +1,13 @@
 Unreleased:
 * bugfixes:
+  - Document cc_rbptree ownership: clients must initialize independent trees
+    with cc_rbptree_init(), because copying owned nodes is unsafe. The public
+    C/C++ layout, aggregate properties, and ABI classification are unchanged;
+    the contract is documented rather than enforced by special members.
+  - Document that SbStorage and SbTypedStorage own their storage handle and
+    must not be shallow-copied. Their historical implicit special members are
+    retained for C++ ABI compatibility. A NULL cc_storage_apply_to_all callback
+    is a no-op.
   - Handle allocation failures in dictionary and allocator consumers,
     including the legacy hash, worker pool, synchronizer, GL cache and font
     caches. Preserve mappings when hash-table bucket growth fails.
