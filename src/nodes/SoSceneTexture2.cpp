@@ -350,6 +350,7 @@ class SoSceneTexture2P {
     GLuint fbo_depthBuffer;
     SbVec2s fbo_size;
     SbBool fbo_mipmap;
+    SoSceneTexture2::Type fbo_requestedtype;
     SoGLDisplayList * fbo_texture;
     SoGLDisplayList * fbo_depthmap;
     int32_t cachecontext;
@@ -362,6 +363,7 @@ class SoSceneTexture2P {
         this->fbo_depthmap = NULL;
         this->fbo_size.setValue(-1,-1);
         this->fbo_mipmap = FALSE;
+        this->fbo_requestedtype = SoSceneTexture2::RGBA8;
     }
   };
 
@@ -653,7 +655,8 @@ SoSceneTexture2::notify(SoNotList * list)
   SoField * f = list->getLastField();
   if (f == &this->scene ||
       f == &this->size ||
-      f == &this->type) {
+      f == &this->type ||
+      f == &this->backgroundColor) {
     // rerender scene
     PRIVATE(this)->buffervalid = FALSE;
   }
@@ -758,6 +761,7 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float COIN_UNUSED_ARG
   int cachecontext = SoGLCacheContextElement::get(state);
   const cc_glglue * glue = cc_glglue_instance(cachecontext);
   SbBool mipmap = this->shouldCreateMipmap(state);
+  const SoSceneTexture2::Type requestedtype = (SoSceneTexture2::Type) PUBLIC(this)->type.getValue();
 
   fbo_data * fbodata = this->fbodata;
   if (!fbodata) {
@@ -766,6 +770,7 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float COIN_UNUSED_ARG
 
   const SbBool recreate = (fbodata->fbo_size != size ||
                            mipmap != fbodata->fbo_mipmap ||
+                           requestedtype != fbodata->fbo_requestedtype ||
                            cachecontext != fbodata->cachecontext);
   if (recreate) {
     fbodata->fbo_mipmap = mipmap;
@@ -800,7 +805,7 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float COIN_UNUSED_ARG
 
     SbBool finished = FALSE;
 
-    SoSceneTexture2::Type type = (SoSceneTexture2::Type) PUBLIC(this)->type.getValue();
+    SoSceneTexture2::Type type = requestedtype;
     while (!finished) {
       this->deleteFrameBufferObjects(glue, state);
       finished = TRUE;
@@ -813,8 +818,10 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float COIN_UNUSED_ARG
         }
       }
     }
+    // Cache the request even if allocation used the fallback format.
+    fbodata->fbo_requestedtype = requestedtype;
 
-    if (PUBLIC(this)->type.getValue() == SoSceneTexture2::DEPTH) {
+    if (requestedtype == SoSceneTexture2::DEPTH) {
       assert(fbodata->fbo_depthmap != NULL);
       this->glimage->setGLDisplayList(fbodata->fbo_depthmap, state,
                                       SoGLImage::CLAMP, SoGLImage::CLAMP);
@@ -891,7 +898,7 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float COIN_UNUSED_ARG
   // make sure rendering has completed before switching back to the previous context
   glFlush();
 
-  if (PUBLIC(this)->type.getValue() == SoSceneTexture2::DEPTH) {
+  if (requestedtype == SoSceneTexture2::DEPTH) {
     // need to copy the depth buffer into the depth texture object
     cc_glglue_glBindTexture(glue,GL_TEXTURE_2D, fbodata->fbo_depthmap->getFirstIndex());
     glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0,

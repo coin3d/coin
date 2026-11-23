@@ -3,15 +3,36 @@ add_executable(CoinPbufferLimitsTest PbufferLimitsTest.cpp)
 target_include_directories(CoinPbufferLimitsTest PRIVATE ${PROJECT_SOURCE_DIR}/src)
 add_test(NAME PbufferLimits COMMAND CoinPbufferLimitsTest)
 
+include(cc-list/Tests.cmake)
 include(glglue-lifetime/Tests.cmake)
 include(action-apply-exceptions/Tests.cmake)
 include(gl-render-exceptions/Tests.cmake)
+include(scene-texture-background/Tests.cmake)
 include(SbSmallMapTests.cmake)
+include(scene-texture-type/Tests.cmake)
 include(scene-texture-wrap/Tests.cmake)
 include(gl-context-maps/Tests.cmake)
 
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND COIN_BUILD_SHARED_LIBS AND CMAKE_NM)
+  add_test(NAME LegacyExportedSymbols
+    COMMAND ${CMAKE_COMMAND}
+      "-DNM=${CMAKE_NM}"
+      "-DLIBRARY=$<TARGET_FILE:Coin>"
+      -P ${CMAKE_CURRENT_SOURCE_DIR}/CheckLegacyExportedSymbols.cmake)
+endif()
+
 if(COIN_BUILD_LEGACY_GL_RENDERER)
   find_package(Threads REQUIRED)
+  add_executable(CoinTextureArrayBudgetTest
+    reproducers/issue-833-shared-coordinates/budget.cpp)
+  target_compile_definitions(CoinTextureArrayBudgetTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
+  target_include_directories(CoinTextureArrayBudgetTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${PROJECT_SOURCE_DIR}/src ${PROJECT_BINARY_DIR}/src
+    ${PROJECT_SOURCE_DIR}/include/Inventor/annex ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  target_link_libraries(CoinTextureArrayBudgetTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+  add_test(NAME TextureCoordinateArrayBudget COMMAND CoinTextureArrayBudgetTest)
+
   add_executable(CoinBumpProgramTest bumprender/FailureTest.cpp)
   target_compile_definitions(CoinBumpProgramTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
   target_include_directories(CoinBumpProgramTest PRIVATE
@@ -24,6 +45,15 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
   if(UNIX AND NOT APPLE)
     find_package(X11 QUIET)
     if(X11_FOUND AND HAVE_GLX)
+      add_executable(CoinSoGLImageMipmapGLXTest SoGLImageMipmapGLXTest.cpp)
+      target_include_directories(CoinSoGLImageMipmapGLXTest PRIVATE
+        ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+        ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+      target_link_libraries(CoinSoGLImageMipmapGLXTest
+        Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+      add_test(NAME SoGLImageMipmapGLX COMMAND CoinSoGLImageMipmapGLXTest)
+      set_tests_properties(SoGLImageMipmapGLX PROPERTIES SKIP_RETURN_CODE 77 TIMEOUT 60)
+
       add_executable(CoinBumpGLXTest bumprender/GLXTest.cpp)
       target_compile_definitions(CoinBumpGLXTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
       target_include_directories(CoinBumpGLXTest PRIVATE
@@ -32,11 +62,82 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
         ${PROJECT_SOURCE_DIR}/include/Inventor/annex
         ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
       target_link_libraries(CoinBumpGLXTest Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+      add_executable(CoinShadowDirectionalGLXTest shadows/DirectionalGLXTest.cpp)
+      target_include_directories(CoinShadowDirectionalGLXTest PRIVATE
+        ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+        ${PROJECT_SOURCE_DIR}/include/Inventor/annex
+        ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+      target_link_libraries(CoinShadowDirectionalGLXTest
+        Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+      foreach(shadow_case low medium high matrix boundaries)
+        add_test(NAME ShadowDirectionalGLX_${shadow_case}
+          COMMAND CoinShadowDirectionalGLXTest ${shadow_case})
+        set_tests_properties(ShadowDirectionalGLX_${shadow_case} PROPERTIES
+          SKIP_RETURN_CODE 77 LABELS "shadows;native-gl" TIMEOUT 120)
+      endforeach()
       add_test(NAME BumpProgramGLX COMMAND CoinBumpGLXTest)
       set_tests_properties(BumpProgramGLX PROPERTIES SKIP_RETURN_CODE 77)
+
+
+      add_executable(CoinGLImageUploadTargetTest glimage/UploadTargetGLXTest.cpp)
+      target_include_directories(CoinGLImageUploadTargetTest PRIVATE
+        ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+        ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+      target_link_libraries(CoinGLImageUploadTargetTest
+        Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+      foreach(upload_case
+          direct-2d-disabled direct-2d-mode2d direct-2d-mode3d
+          direct-2d-modecube direct-2d-moderect
+          direct-3d-disabled direct-3d-mode2d direct-3d-mode3d
+          direct-3d-modecube direct-3d-moderect
+          direct-3d-depth1-disabled direct-3d-depth1-mode2d
+          direct-3d-depth1-mode3d
+          direct-2d-mode3d-mipmap direct-3d-disabled-mipmap
+          direct-3d-mode2d-mipmap direct-3d-mode3d-mipmap
+          direct-2d-mode3d-eager direct-3d-disabled-eager
+          direct-2d-rectangle-mode3d
+          transition-depth1 transition-cubic transition-cubic-mipmap
+          unit1-zero2d-depth1 unit1-disabled-depth1
+          unit1-zero2d-cubic unit1-disabled-cubic
+          unit1-zero2d-cubic-mipmap unit1-disabled-cubic-mipmap)
+        add_test(NAME GLImageUploadTarget_${upload_case}
+          COMMAND CoinGLImageUploadTargetTest ${upload_case})
+        set_tests_properties(GLImageUploadTarget_${upload_case} PROPERTIES
+          SKIP_RETURN_CODE 77 LABELS "glimage;glx" TIMEOUT 30
+          ENVIRONMENT "COIN_GLERROR_DEBUGGING=0;COIN_TEX2_LINEAR_LIMIT=0.2;COIN_TEX2_MIPMAP_LIMIT=0.5;COIN_TEX2_LINEAR_MIPMAP_LIMIT=0.8")
+      endforeach()
     endif()
   endif()
+
+  if(HAVE_VRML97 AND UNIX AND NOT APPLE AND HAVE_GLX)
+    add_executable(CoinTextureArrayTest reproducers/issue-722-texture-vbo/shapes.cpp)
+    target_include_directories(CoinTextureArrayTest PRIVATE
+      ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+      ${COIN_TARGET_INCLUDE_DIRECTORIES})
+    target_link_libraries(CoinTextureArrayTest Coin)
+    find_program(COIN_TEST_XVFB_RUN xvfb-run)
+    if(COIN_TEST_XVFB_RUN)
+      add_test(NAME TextureCoordinateArrayRendering
+        COMMAND ${COIN_TEST_XVFB_RUN} -a
+          ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/issue-722-texture-vbo/matrix.sh
+          $<TARGET_FILE:CoinTextureArrayTest>)
+    else()
+      add_test(NAME TextureCoordinateArrayRendering
+        COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/issue-722-texture-vbo/matrix.sh
+          $<TARGET_FILE:CoinTextureArrayTest>)
+    endif()
+    set_tests_properties(TextureCoordinateArrayRendering PROPERTIES SKIP_RETURN_CODE 77)
+
+    add_executable(CoinSharedCoordinateBenchmark EXCLUDE_FROM_ALL
+      reproducers/issue-833-shared-coordinates/benchmark.cpp)
+    target_include_directories(CoinSharedCoordinateBenchmark PRIVATE
+      ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+      ${COIN_TARGET_INCLUDE_DIRECTORIES})
+    target_link_libraries(CoinSharedCoordinateBenchmark Coin OpenGL::GL)
+  endif()
 endif()
+
+include(SoDepthBufferTests.cmake)
 
 macro(create_testsuite input)
 	get_filename_component(FLNAME "${input}" NAME_WE)
@@ -99,6 +200,8 @@ macro(create_file_test input testfunc filter)
 	configure_file(TestSuiteTemplate.cmake.in "${TESTSUITENAME}Test.cpp")
 endmacro()
 
+include(SoAlphaTestTests.cmake)
+
 # Parse all source files for embedded '#ifdef COIN_TEST_SUITE' and extract those blocks
 # to separate test source files.
 file(GLOB_RECURSE COIN_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/src/*.cpp)
@@ -124,6 +227,7 @@ add_executable(CoinTests
 	TestSuiteMisc.cpp
 	InternalMacroTest.cpp
 	InternalSmallMapTest.cpp
+	SoHeightMapToNormalMapTest.cpp
 	${COIN_TEST_SOURCES}
 )
 
@@ -169,6 +273,30 @@ if (USE_PTHREAD)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
+# Keep the independent modes as separate CTest entries so a bad dimension,
+# callback path, or action reset is reported without masking the others.
+add_executable(CoinQuadMeshPrimitiveCountTest
+  quadmesh-primitive-count/main.cpp)
+target_compile_features(CoinQuadMeshPrimitiveCountTest PRIVATE cxx_std_11)
+target_link_libraries(CoinQuadMeshPrimitiveCountTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CoinQuadMeshPrimitiveCountTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+foreach(_quadmesh_count_mode dimensions limits callbacks accumulation state)
+  add_test(NAME QuadMeshPrimitiveCount_${_quadmesh_count_mode}
+    COMMAND CoinQuadMeshPrimitiveCountTest ${_quadmesh_count_mode})
+endforeach()
+
+# Exercise cleanup after the tree subsystem's normal-priority shutdown hook.
+add_executable(CcRbptreeCleanupTest CcRbptreeCleanupTest.cpp)
+target_link_libraries(CcRbptreeCleanupTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CcRbptreeCleanupTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+add_test(NAME CcRbptreeCleanupDuringShutdown COMMAND CcRbptreeCleanupTest)
+
 # Keep this regression test in a fresh process: the unfixed implementation corrupts
 # SoTempPath's internal empty-list storage before ordinary assertions can
 # observe the violation.
@@ -188,6 +316,8 @@ add_test(NAME SoTempPathReplaceTail_empty_noop
 
 add_subdirectory(xml-c-api/c-headers)
 add_subdirectory(xml-c-api/entity-abi)
+
+include(SoDepthBufferEngineTests.cmake)
 
 # Compile the private XML utility into its test so the function does not need
 # to become a public DLL symbol on Windows.
@@ -215,6 +345,28 @@ target_include_directories(CoinAtexitTest PRIVATE
   ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
   ${PROJECT_SOURCE_DIR}/src ${COIN_TARGET_INCLUDE_DIRECTORIES})
 add_test(NAME CoinAtexit COMMAND CoinAtexitTest)
+
+if(UNIX)
+  add_executable(CoinStdFdsFailureTest CoinStdFdsFailureTest.cpp)
+  target_compile_definitions(CoinStdFdsFailureTest PRIVATE COIN_INTERNAL)
+  target_link_libraries(CoinStdFdsFailureTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(CoinStdFdsFailureTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${PROJECT_SOURCE_DIR}/src ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  add_test(NAME CoinStdFdsFailure COMMAND CoinStdFdsFailureTest)
+  set_tests_properties(CoinStdFdsFailure PROPERTIES SKIP_RETURN_CODE 77)
+endif()
+
+if(UNIX AND COIN_THREADSAFE)
+  add_executable(CoinStdFdsConcurrentTest CoinStdFdsConcurrentTest.cpp)
+  target_compile_definitions(CoinStdFdsConcurrentTest PRIVATE COIN_INTERNAL)
+  target_link_libraries(CoinStdFdsConcurrentTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(CoinStdFdsConcurrentTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${PROJECT_SOURCE_DIR}/src ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  add_test(NAME CoinStdFdsConcurrent COMMAND CoinStdFdsConcurrentTest)
+  set_tests_properties(CoinStdFdsConcurrent PROPERTIES SKIP_RETURN_CODE 77)
+endif()
 
 # Process-isolated public behavior checks. Keeping each invalid access in its
 # own CTest process prevents one unsafe access from masking the remaining
@@ -270,6 +422,18 @@ endforeach()
 # on Windows, so keep the deterministic allocation-failure test on platforms
 # where executable symbol interposition applies to the linked Coin library.
 if(NOT WIN32)
+  # The executable interposes on new[] to fail the SbPList copy and checks
+  # that cc_dynarray_duplicate releases its partially constructed destination.
+  add_executable(CoinDynarrayDuplicateFailureTest
+    CcDynarrayDuplicateFailureTest.cpp)
+  target_compile_definitions(CoinDynarrayDuplicateFailureTest PRIVATE COIN_INTERNAL)
+  target_link_libraries(CoinDynarrayDuplicateFailureTest
+    Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(CoinDynarrayDuplicateFailureTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${PROJECT_SOURCE_DIR}/src ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  add_test(NAME CcDynarrayDuplicateFailure COMMAND CoinDynarrayDuplicateFailureTest)
+
   add_executable(CoinSbPListGrowthFailureTest
     SbPListGrowthFailureTest.cpp)
   target_link_libraries(CoinSbPListGrowthFailureTest
@@ -424,6 +588,8 @@ CHECK_CXX_COMPILER_FLAG(-Wtautological-compare DISABLE_WARNING_TAUTOLOGCOMPARE)
 if(DISABLE_WARNING_TAUTOLOGCOMPARE)
 	target_compile_options(CoinTests PUBLIC -Wno-tautological-compare)
 endif()
+
+include(AllocationHookContracts.cmake)
 
 # These cases inspect the global queues and disable realTime. Keep each in
 # its own process to avoid changing the shared CoinTests sensor state.

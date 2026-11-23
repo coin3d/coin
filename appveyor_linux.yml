@@ -16,8 +16,6 @@ matrix:
 
 environment:
   SUPERGLU_VERSION: 1.3.3
-  GH_AUTH_TOKEN:
-    secure: 850frgRGZcc4Cljd2P7Ej68no4/kkl4EMB+DjnX725wcKBRJuFk/kGRdJGyKXd2u
   matrix:
 #    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu1804
 #      CMAKE_GENERATOR: 'Unix Makefiles'
@@ -270,8 +268,7 @@ notifications:
 deploy:
   # Deploy to GitHub Releases
   - provider: GitHub
-    auth_token:
-      secure: 850frgRGZcc4Cljd2P7Ej68no4/kkl4EMB+DjnX725wcKBRJuFk/kGRdJGyKXd2u # your encrypted token from GitHub
+    auth_token: $(GH_AUTH_TOKEN)
     artifact: CIArchives, CIArchivesTGZ, CImd5, CIsha256, logs
     tag: 'CI builds'
     description: 'Results of CI builds for various platforms'
@@ -284,8 +281,7 @@ deploy:
 
   # Deploy to GitHub Releases
   - provider: GitHub
-    auth_token:
-      secure: 850frgRGZcc4Cljd2P7Ej68no4/kkl4EMB+DjnX725wcKBRJuFk/kGRdJGyKXd2u # your encrypted token from GitHub
+    auth_token: $(GH_AUTH_TOKEN)
     artifact: CIArchives, CIArchivesTGZ, CImd5, CIsha256
     tag: $(APPVEYOR_REPO_TAG_NAME)
     description: 'Release build'
