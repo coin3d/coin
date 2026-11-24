@@ -94,7 +94,8 @@ static bool nonblack(const std::vector<unsigned char> &image) {
 }
 int main(int argc, char **argv) {
   const bool rendering = argc > 1 && std::strcmp(argv[1], "--render") == 0;
-  if (rendering && !coinTestGLXDisplayAvailable())
+  if (rendering && (!std::getenv("DISPLAY") ||
+                    !coinTestGLXDisplayAvailable()))
     return 77;
   SoDB::init();
   if (!rendering) {
