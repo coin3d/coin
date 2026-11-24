@@ -129,7 +129,9 @@
 
 #include <Inventor/actions/SoRayPickAction.h>
 
+#include <algorithm>
 #include <cfloat>
+#include <cmath>
 
 #include <Inventor/SbLine.h>
 #include <Inventor/SoPickedPoint.h>
@@ -923,8 +925,72 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
 SbBool
 SoRayPickAction::intersect(const SbBox3f & box, const SbBool usefullviewvolume)
 {
-  SbVec3f dummy;
-  return this->intersect(box, dummy, usefullviewvolume);
+  const SoRayPickActionP & pick = PRIVATE(this).get();
+  if (!usefullviewvolume || pick.isFlagSet(SoRayPickActionP::WS_RAY_SET) ||
+      pick.radiusinpixels <= 0.0f) {
+    SbVec3f dummy;
+    return this->intersect(box, dummy, usefullviewvolume);
+  }
+  if (box.isEmpty() || !pick.objectspacevalid) return FALSE;
+
+  // This overload culls geometry. Sampling only the ray's crossings of
+  // box face planes can miss an edge between two crossings.
+  const SbDPMatrix & model = pick.obj2world;
+  if (model[0][3] != 0.0 || model[1][3] != 0.0 ||
+      model[2][3] != 0.0 || model[3][3] != 1.0) return TRUE;
+
+  SbVec3d minimum, maximum, center, extent;
+  minimum.setValue(box.getMin());
+  maximum.setValue(box.getMax());
+  model.multVecMatrix((minimum + maximum) * 0.5, center);
+  const SbVec3d halfsize = (maximum - minimum) * 0.5;
+  for (int axis = 0; axis < 3; ++axis) {
+    extent[axis] = std::abs(model[0][axis]) * halfsize[0] +
+                   std::abs(model[1][axis]) * halfsize[1] +
+                   std::abs(model[2][axis]) * halfsize[2];
+  }
+
+  const SbVec3d & normal = pick.nearplane.getNormal();
+  const double centerdepth = pick.nearplane.getDistance(center);
+  const double depthspan = std::abs(normal[0]) * extent[0] +
+                           std::abs(normal[1]) * extent[1] +
+                           std::abs(normal[2]) * extent[2];
+  const double mindepth = centerdepth - depthspan;
+  const double maxdepth = centerdepth + depthspan;
+  if ((pick.isFlagSet(SoRayPickActionP::CLIP_NEAR) && maxdepth < 0.0) ||
+      (pick.isFlagSet(SoRayPickActionP::CLIP_FAR) &&
+       mindepth > pick.rayfar - pick.raynear)) return FALSE;
+
+  // A ray point within radius r of the box can be up to r deeper or
+  // shallower than the box. Bound that additional radius growth as well.
+  const double slope = pick.rayradiusdelta;
+  const double growth = std::abs(slope);
+  if (!(growth < 1.0)) return TRUE;
+  const double depth = slope >= 0.0 ? maxdepth : mindepth;
+  const double radius = (pick.rayradiusstart + slope * depth) / (1.0 - growth);
+  if (!std::isfinite(radius)) return TRUE;
+  const double padding = std::max(0.0, radius) * (1.0 + 4.0 * FLT_EPSILON);
+
+  // Intersect the ray axis with an enclosing world-space box expanded by
+  // the radius bound. Primitive intersection still decides the actual hit.
+  const SbVec3d & origin = pick.wsline.getPosition();
+  const SbVec3d & direction = pick.wsline.getDirection();
+  double first = -DBL_MAX;
+  double last = DBL_MAX;
+  for (int axis = 0; axis < 3; ++axis) {
+    const double offset = origin[axis] - center[axis];
+    const double slab = extent[axis] + padding;
+    if (direction[axis] == 0.0) {
+      if (std::abs(offset) > slab) return FALSE;
+      continue;
+    }
+    const double a = (-slab - offset) / direction[axis];
+    const double b = ( slab - offset) / direction[axis];
+    first = std::max(first, std::min(a, b));
+    last = std::min(last, std::max(a, b));
+    if (first > last) return FALSE;
+  }
+  return TRUE;
 }
 
 /*!
