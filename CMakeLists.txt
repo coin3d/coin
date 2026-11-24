@@ -983,3 +983,17 @@ endif()
 if (COIN_USE_CPACK)
   add_subdirectory(cpack.d)
 endif()
+
+if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+  # CMake's full install manifest omits DESTDIR. Record it after the install rules.
+  install(CODE [[
+    if(NOT CMAKE_INSTALL_COMPONENT)
+      file(WRITE "${CMAKE_CURRENT_LIST_DIR}/coin-install-destdir.txt" "$ENV{DESTDIR}")
+    endif()
+  ]])
+  add_custom_target(uninstall
+    COMMAND "${CMAKE_COMMAND}"
+      "-DCOIN_INSTALL_MANIFEST=${CMAKE_CURRENT_BINARY_DIR}/install_manifest.txt"
+      -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/CoinUninstall.cmake"
+    VERBATIM)
+endif()
