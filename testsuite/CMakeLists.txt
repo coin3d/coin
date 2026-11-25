@@ -278,6 +278,22 @@ if (USE_PTHREAD)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
+add_executable(CoinShapePrimitiveReentrancyTest
+  shape-primitive-reentrancy/reentrancy.cpp)
+target_compile_features(CoinShapePrimitiveReentrancyTest PRIVATE cxx_std_11)
+target_link_libraries(CoinShapePrimitiveReentrancyTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CoinShapePrimitiveReentrancyTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+foreach(_shape_reentrancy_scenario controls different same deep count pick count_callback pick_callback partial polygon convex abort prune exception empty single)
+  add_test(NAME ShapePrimitiveReentrancy_${_shape_reentrancy_scenario}
+    COMMAND CoinShapePrimitiveReentrancyTest ${_shape_reentrancy_scenario})
+  set_tests_properties(ShapePrimitiveReentrancy_${_shape_reentrancy_scenario}
+    PROPERTIES TIMEOUT 30)
+endforeach()
+
 # Keep the independent modes as separate CTest entries so a bad dimension,
 # callback path, or action reset is reported without masking the others.
 add_executable(CoinQuadMeshPrimitiveCountTest

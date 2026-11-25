@@ -269,7 +269,7 @@ enum SoShapeRenderMode {
   PVCACHE
 };
 
-typedef struct {
+struct soshape_staticdata {
   soshape_primdata * primdata;
   SbList <soshape_bigtexture*> * bigtexturelist;
   SbList <uint32_t> * bigtexturecontext;
@@ -280,7 +280,14 @@ typedef struct {
   SoMaterialBundle * currentbundle;
 
   int rendermode;
-} soshape_staticdata;
+  soshape_staticdata * next;
+};
+
+struct soshape_threaddata {
+  soshape_staticdata * first;
+  soshape_staticdata * current;
+  unsigned int depth;
+};
 
 static soshape_bigtexture *
 soshape_get_bigtexture(soshape_staticdata * data, uint32_t context)
@@ -297,21 +304,21 @@ soshape_get_bigtexture(soshape_staticdata * data, uint32_t context)
 }
 
 static void
-soshape_construct_staticdata(void * closure)
+soshape_construct_frame(soshape_staticdata * data)
 {
-  soshape_staticdata * data = (soshape_staticdata*) closure;
-
   data->bigtexturelist = new SbList <soshape_bigtexture*>;
   data->bigtexturecontext = new SbList <uint32_t>;
   data->primdata = new soshape_primdata();
   data->trianglesort = new soshape_trianglesort();
   data->rendermode = NORMAL;
+  data->currentbundle = NULL;
+  data->currentbigtexture = NULL;
+  data->next = NULL;
 }
 
 static void
-soshape_destruct_staticdata(void * closure)
+soshape_destruct_frame(soshape_staticdata * data)
 {
-  soshape_staticdata * data = (soshape_staticdata*) closure;
   for (int i = 0; i < data->bigtexturelist->getLength(); i++) {
     delete (*(data->bigtexturelist))[i];
   }
@@ -321,13 +328,77 @@ soshape_destruct_staticdata(void * closure)
   delete data->trianglesort;
 }
 
+static void
+soshape_construct_staticdata(void * closure)
+{
+  soshape_threaddata * data = (soshape_threaddata *) closure;
+  data->first = new soshape_staticdata;
+  soshape_construct_frame(data->first);
+  data->current = data->first;
+  data->depth = 0;
+}
+
+static void
+soshape_destruct_staticdata(void * closure)
+{
+  soshape_threaddata * data = (soshape_threaddata *) closure;
+  soshape_staticdata * frame = data->first;
+  while (frame) {
+    soshape_staticdata * next = frame->next;
+    soshape_destruct_frame(frame);
+    delete frame;
+    frame = next;
+  }
+}
+
 static SbStorage * soshape_staticstorage;
 
 static soshape_staticdata *
 soshape_get_staticdata(void)
 {
-  return (soshape_staticdata*) soshape_staticstorage->get();
+  return ((soshape_threaddata *) soshape_staticstorage->get())->current;
 }
+
+// Keep a separate accumulator for every active generatePrimitives() call.
+// In particular, switching frames at beginShape()/endShape() would be too
+// late for reentry between vertices, and too early while endShape() invokes
+// tessellator callbacks. The heap-allocated frames also keep callback vertex
+// and detail pointers stable when a nested traversal grows its own buffers.
+// Retain frames until thread cleanup to reuse their buffers and tessellators.
+class soshape_generation {
+public:
+  soshape_generation(void)
+  {
+    this->data = (soshape_threaddata *) soshape_staticstorage->get();
+    this->previous = this->data->current;
+    soshape_staticdata * frame = this->data->first;
+    if (this->data->depth) {
+      if (!this->previous->next) {
+        soshape_staticdata * next = new soshape_staticdata;
+        soshape_construct_frame(next);
+        this->previous->next = next;
+      }
+      frame = this->previous->next;
+    }
+    frame->rendermode = NORMAL;
+    frame->currentbundle = NULL;
+    frame->currentbigtexture = NULL;
+    this->data->current = frame;
+    ++this->data->depth;
+  }
+
+  ~soshape_generation()
+  {
+    this->data->current = this->previous;
+    --this->data->depth;
+  }
+
+private:
+  soshape_generation(const soshape_generation &);
+  soshape_generation & operator=(const soshape_generation &);
+  soshape_threaddata * data;
+  soshape_staticdata * previous;
+};
 
 // called by atexit
 void
@@ -376,7 +447,7 @@ SoShape::initClass(void)
 #endif // COIN_THREADSAFE
 
   soshape_staticstorage =
-    new SbStorage(sizeof(soshape_staticdata),
+    new SbStorage(sizeof(soshape_threaddata),
                   soshape_construct_staticdata,
                   soshape_destruct_staticdata);
   SoShapeP::calibrateBBoxCache();
@@ -420,6 +491,7 @@ SoShape::GLRender(SoGLRenderAction * action)
     action->getState()->push();
     vp->doAction(action);
   }
+  soshape_generation generation;
   SoMaterialBundle mb(action);
   mb.sendFirst();
   soshape_get_staticdata()->currentbundle = &mb;  // needed in the primitive callbacks
@@ -433,6 +505,7 @@ void
 SoShape::callback(SoCallbackAction * action)
 {
   if (action->shouldGeneratePrimitives(this)) {
+    soshape_generation generation;
     soshape_staticdata * shapedata = soshape_get_staticdata();
     shapedata->primdata->faceCounter = 0;
     this->generatePrimitives(action);
@@ -460,6 +533,7 @@ SoShape::rayPick(SoRayPickAction * action)
     if (!PRIVATE(this)->bboxcache ||
         !PRIVATE(this)->bboxcache->isValid(action->getState()) ||
         soshape_ray_intersect(action, PRIVATE(this)->bboxcache->getProjectedBox())) {
+      soshape_generation generation;
       this->generatePrimitives(action);
     }
   }
@@ -646,6 +720,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       SoGLCacheContextElement::shouldAutoCache(state,
                                                SoGLCacheContextElement::DONT_AUTO_CACHE);
 
+      soshape_generation generation;
       soshape_staticdata * shapedata = soshape_get_staticdata();
 
       // do this before generating triangles to get correct
@@ -816,6 +891,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   }
 
 #if COIN_DEBUG && 0 // enable this to test generatePrimitives() rendering
+  soshape_generation generation;
   SoMaterialBundle mb(action);
   mb.sendFirst();
   soshape_get_staticdata()->currentbundle = &mb;  // needed in the primitive callbacks
@@ -1358,7 +1434,10 @@ SoShape::affectsState(void) const
 void
 SoShape::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  if (this->shouldPrimitiveCount(action)) this->generatePrimitives(action);
+  if (this->shouldPrimitiveCount(action)) {
+    soshape_generation generation;
+    this->generatePrimitives(action);
+  }
 }
 
 /*!
@@ -1823,6 +1902,7 @@ SoShape::validatePVCache(SoGLRenderAction * action)
     // we don't want to create display list caches while building the VBOs
     SoCacheElement::invalidate(state);
 
+    soshape_generation generation;
     soshape_staticdata * shapedata = soshape_get_staticdata();
     SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
     // must push state to make cache dependencies work
