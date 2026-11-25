@@ -48,3 +48,17 @@
 [suppress_function]
   symbol_name_regexp = ^_ZN15SoShaderObjectP20invalidateParametersEv$
   label = SoShaderObjectP::invalidateParameters() is defined only in the implementation file; its compiler-emitted symbol is not part of Coin's public ABI.
+
+# The XML C-header conversion replaced C++ output references with pointers
+# under the same C linkage. A consumer built against the old declarations
+# still calls these entry points directly. Limit these rules to type changes
+# for the two symbols so additions and removals remain visible.
+[suppress_function]
+  change_kind = function-subtype-change
+  symbol_name = cc_xml_doc_get_filter_cb
+  label = Equivalent reference-to-pointer output parameters under C linkage.
+
+[suppress_function]
+  change_kind = function-subtype-change
+  symbol_name = cc_xml_doc_write_to_buffer
+  label = Equivalent reference-to-pointer output parameters under C linkage.
