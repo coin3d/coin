@@ -21,15 +21,7 @@ jobs:
           sudo apt-get -y update
           sudo apt-get -y install freeglut3-dev xvfb xauth libgl1-mesa-dri
       - name: Build and test
-        env:
-          LIBGL_ALWAYS_SOFTWARE: '1'
-          COIN_GLXGLUE_NO_PBUFFERS: '1'
-          COIN_GLX_PIXMAP_DIRECT_RENDERING: '1'
-        run: |
-          # Use GLX pixmaps and avoid MIT-SHM image uploads in Xvfb.
-          xvfb-run -a \
-            --server-args="-screen 0 1280x1024x24 -nolisten tcp -noreset -extension MIT-SHM" \
-            .github/scripts/build-and-test.sh
+        run: .github/scripts/build-and-test.sh
       - name: Create Artifacts
         uses: actions/upload-artifact@v7
         with:

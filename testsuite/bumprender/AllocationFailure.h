@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <new>
 
-// Only FailureTest.cpp includes this header. Other threads are unaffected.
+// Include in one translation unit per executable. Failure injection is thread-local.
 namespace BumpTestAllocation {
 thread_local int remaining = -1;
 thread_local std::size_t allocations = 0;
@@ -40,6 +40,16 @@ void * operator new(std::size_t size) {
 void operator delete(void * memory) noexcept { std::free(memory); }
 void * operator new[](std::size_t size) { return ::operator new(size); }
 void operator delete[](void * memory) noexcept { std::free(memory); }
+void * operator new(std::size_t size, const std::nothrow_t &) noexcept {
+  try { return ::operator new(size); }
+  catch (...) { return nullptr; }
+}
+void * operator new[](std::size_t size, const std::nothrow_t &) noexcept {
+  try { return ::operator new[](size); }
+  catch (...) { return nullptr; }
+}
+void operator delete(void * memory, const std::nothrow_t &) noexcept { std::free(memory); }
+void operator delete[](void * memory, const std::nothrow_t &) noexcept { std::free(memory); }
 #if defined(__cpp_sized_deallocation)
 void operator delete(void * memory, std::size_t) noexcept { std::free(memory); }
 void operator delete[](void * memory, std::size_t) noexcept { std::free(memory); }

@@ -17,7 +17,18 @@ cmake_options=(
 cmake -S "${repository_dir}" -B "${build_dir}" -G Ninja \
   "${cmake_options[@]}"
 cmake --build "${build_dir}" --target install --config Release --parallel
-ctest --test-dir "${build_dir}" -C Release --output-on-failure
+if [[ "$(uname -s)" == "Linux" ]]; then
+  # Run the screen-space text regressions with a real GLX context on the
+  # headless runner, using Mesa software rendering instead of requiring a GPU.
+  # Mesa may report GLX_MAX_PBUFFER_PIXELS=0; exercise the existing pixmap
+  # backend so graphical regressions run instead of getting a zero-area tile.
+  COIN_GLXGLUE_NO_PBUFFERS=1 \
+  COIN_GLX_PIXMAP_DIRECT_RENDERING=1 LIBGL_ALWAYS_SOFTWARE=1 \
+    xvfb-run -a --server-args="-screen 0 1280x1024x24 -nolisten tcp -noreset -extension MIT-SHM" \
+      ctest --test-dir "${build_dir}" -C Release --output-on-failure
+else
+  ctest --test-dir "${build_dir}" -C Release --output-on-failure
+fi
 
 cmake -S "${repository_dir}/testsuite/installed-package-smoke" \
   -B "${smoke_build_dir}" \
