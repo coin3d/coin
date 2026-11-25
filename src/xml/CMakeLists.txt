@@ -1,3 +1,8 @@
+# The xml object target compiles this source in this directory.
+if(HAVE_EXPAT AND NOT COIN_BUILD_SINGLE_LIB)
+  set_property(SOURCE document.cpp APPEND PROPERTY
+    COMPILE_DEFINITIONS HAVE_EXPAT=1)
+endif()
 if(NOT EXPAT_FOUND)
 	add_subdirectory(expat)
 endif()

@@ -1,0 +1,5 @@
+find_package(Threads REQUIRED)
+add_executable(CoinActionApplyExceptionTest action-apply-exceptions/ExceptionTest.cpp)
+target_link_libraries(CoinActionApplyExceptionTest Coin Threads::Threads ${COIN_TARGET_LINK_LIBRARIES})
+add_test(NAME ActionApplyExceptions COMMAND CoinActionApplyExceptionTest)
+set_tests_properties(ActionApplyExceptions PROPERTIES TIMEOUT 15)

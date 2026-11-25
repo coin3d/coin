@@ -16,12 +16,9 @@ public:
   void addFixtureChild(SoNode * node) { this->children->append(node); }
 };
 
-int
-main()
+static int
+runTest()
 {
-  SoDB::init();
-  SoInteraction::init();
-
   FixtureKit * outer = new FixtureKit;
   outer->ref();
   SoSeparatorKit * inner = new SoSeparatorKit;
@@ -66,4 +63,14 @@ main()
   manip->unref();
   outer->unref();
   return correct ? 0 : 1;
+}
+
+int
+main()
+{
+  SoDB::init();
+  SoInteraction::init();
+  const int result = runTest();
+  SoDB::finish();
+  return result;
 }

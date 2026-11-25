@@ -53,6 +53,7 @@
 #endif /* HAVE_SYS_TYPES_H */
 
 #ifdef HAVE_FONTCONFIG
+#define FONTCONFIGGLUE_ASSUME_FONTCONFIG 1
 #include <fontconfig/fontconfig.h>
 #endif
 
@@ -101,6 +102,7 @@ typedef void (*cc_ftglue_FT_Library_Version_t)(void * library, int * major, int 
 typedef FT_Error (*cc_ftglue_FT_Done_FreeType_t)(void * library);
 typedef FT_Error (*cc_ftglue_FT_New_Face_t)(void * library, const char * filepathname, long faceindex, FT_Face * face);
 typedef FT_Error (*cc_ftglue_FT_Done_Face_t)(void * face);
+typedef const char * (*cc_ftglue_FT_Get_Postscript_Name_t)(FT_Face face);
 typedef FT_Error (*cc_ftglue_FT_Select_Charmap_t)(FT_Face face, int encoding);
 typedef FT_Error (*cc_ftglue_FT_Set_Char_Size_t)(FT_Face face, long width, long height, unsigned int hres, unsigned int vres);
 typedef void (*cc_ftglue_FT_Set_Transform_t)(FT_Face face, FT_Matrix * matrix, FT_Vector * delta);
@@ -120,6 +122,7 @@ typedef struct {
   cc_ftglue_FT_Done_FreeType_t FT_Done_FreeType;
   cc_ftglue_FT_New_Face_t FT_New_Face;
   cc_ftglue_FT_Done_Face_t  FT_Done_Face;
+  cc_ftglue_FT_Get_Postscript_Name_t FT_Get_Postscript_Name;
   cc_ftglue_FT_Select_Charmap_t FT_Select_Charmap; 
   cc_ftglue_FT_Set_Char_Size_t FT_Set_Char_Size;
   cc_ftglue_FT_Set_Transform_t FT_Set_Transform;
@@ -310,11 +313,16 @@ cc_fcglue_FcPatternAddDouble(FcPattern *p, const char *object, double d)
 int
 cc_fcglue_available(void)
 {
-  const char * env;
-  
-  if (!((env = coin_getenv("COIN_FORCE_FONTCONFIG_OFF")) && (atoi(env) > 0))) {
-    fcglue_init();
-  }
+  const char * env = coin_getenv("COIN_FORCE_FONTCONFIG_OFF");
+  if (env && atoi(env) > 0) return 0;
+
+#if defined(__APPLE__) || defined(_WIN32)
+  const char * force = coin_getenv("COIN_FORCE_FONTCONFIG_ON");
+  const char * libname = coin_getenv("COIN_FONTCONFIG_LIBNAME");
+  if (!(force && atoi(force) > 0) && !(libname && libname[0])) return 0;
+#endif
+
+  fcglue_init();
   return fontconfig_instance && fontconfig_instance->available;
 }
 
@@ -412,6 +420,7 @@ ftglue_init(void)
     else {
       FTGLUE_REGISTER_FUNC(cc_ftglue_FT_New_Face_t, FT_New_Face);
       FTGLUE_REGISTER_FUNC(cc_ftglue_FT_Done_Face_t, FT_Done_Face);
+      FTGLUE_REGISTER_FUNC(cc_ftglue_FT_Get_Postscript_Name_t, FT_Get_Postscript_Name);
       FTGLUE_REGISTER_FUNC(cc_ftglue_FT_Select_Charmap_t, FT_Select_Charmap); 
       FTGLUE_REGISTER_FUNC(cc_ftglue_FT_Set_Char_Size_t, FT_Set_Char_Size);
       FTGLUE_REGISTER_FUNC(cc_ftglue_FT_Set_Transform_t, FT_Set_Transform);
@@ -462,7 +471,14 @@ cc_ftglue_FT_New_Face(void * library, const char * filepathname, long faceindex,
   return freetype_instance->FT_New_Face(library, filepathname, faceindex, face);
 }
 
-FT_Error 
+const char *
+cc_ftglue_FT_Get_Postscript_Name(FT_Face face)
+{
+  assert(freetype_instance && freetype_instance->available);
+  return freetype_instance->FT_Get_Postscript_Name(face);
+}
+
+FT_Error
 cc_ftglue_FT_Done_Face(void * face)
 {
   assert(freetype_instance && freetype_instance->available);

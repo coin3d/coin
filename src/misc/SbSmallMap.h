@@ -56,7 +56,12 @@
    inserted. Allocation is the only operation that may throw; insertion keeps
    the map unchanged when allocation fails. Insertion past the inline limit
    and erase() may invalidate iterators and references. erase() does not
-   preserve iteration order, and clear() retains spilled storage for reuse. */
+   preserve iteration order, and clear() retains spilled storage for reuse.
+   Pointer values are non-owning: replacement, erase, clear and destruction do
+   not release pointed-to resources. Copies have independent entry storage but
+   copy pointer values shallowly. Allocation failure during copying or assignment
+   preserves existing maps. makeKeyList appends without promising order; if its
+   allocation throws, the destination list can contain a partial appended suffix. */
 template <typename Key, typename Type>
 class SbSmallMap {
 public:
@@ -64,9 +69,9 @@ public:
                 "SbSmallMap keys must be trivial types");
   static_assert(std::is_trivial<Type>::value,
                 "SbSmallMap values must be trivial types");
-  static_assert(noexcept(std::declval<const Key &>() ==
-                         std::declval<const Key &>()),
-                "SbSmallMap key equality must be noexcept");
+  static_assert(noexcept(static_cast<bool>(std::declval<const Key &>() ==
+                         std::declval<const Key &>())),
+                "SbSmallMap key equality and conversion to bool must be noexcept");
 
   class Entry {
   public:

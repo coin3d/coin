@@ -320,12 +320,17 @@ ScXMLDocument::readBuffer(const SbByteBuffer & buffer)
 ScXMLDocument *
 ScXMLDocument::readXMLData(cc_xml_doc * xmldoc)
 {
+  if (unlikely(!xmldoc)) return NULL;
+
   // get a handle on the root element
   cc_xml_elt * root = cc_xml_doc_get_root(xmldoc);
-  if (unlikely(strcmp(cc_xml_elt_get_type(root), "scxml") != 0)) {
+  if (unlikely(!root)) return NULL;
+
+  const char * roottype = cc_xml_elt_get_type(root);
+  if (unlikely(!roottype || strcmp(roottype, "scxml") != 0)) {
     SoDebugError::post("ScXMLDocument::readXMLData",
                        "expected root to be an <scxml> element, not '%s'",
-                       cc_xml_elt_get_type(root));
+                       roottype ? roottype : "<unnamed>");
     return NULL;
   }
 
@@ -340,6 +345,32 @@ ScXMLDocument::readXMLData(cc_xml_doc * xmldoc)
   scxmldoc->setRoot(static_cast<ScXMLScxmlElt *>(elt));
   return scxmldoc;
 }
+
+#ifdef COIN_TEST_SUITE
+
+#include <Inventor/C/XML/document.h>
+#include <Inventor/C/XML/element.h>
+
+BOOST_AUTO_TEST_CASE(ScXMLDocumentRejectsMissingOrUnexpectedRoot)
+{
+  BOOST_CHECK(ScXMLDocument::readXMLData(NULL) == NULL);
+
+  cc_xml_doc * xmldoc = cc_xml_doc_new();
+  BOOST_REQUIRE(xmldoc != NULL);
+  BOOST_CHECK(ScXMLDocument::readXMLData(xmldoc) == NULL);
+
+  cc_xml_elt * root = cc_xml_elt_new();
+  BOOST_REQUIRE(root != NULL);
+  cc_xml_doc_set_root_x(xmldoc, root);
+  BOOST_CHECK(ScXMLDocument::readXMLData(xmldoc) == NULL);
+
+  cc_xml_elt_set_type_x(root, "not-scxml");
+  BOOST_CHECK(ScXMLDocument::readXMLData(xmldoc) == NULL);
+
+  cc_xml_doc_delete_x(xmldoc);
+}
+
+#endif // COIN_TEST_SUITE
 
 void
 ScXMLDocument::setFilename(const char * filename)

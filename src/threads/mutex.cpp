@@ -64,6 +64,7 @@
 #include <Inventor/C/errors/debugerror.h>
 
 #include "threads/mutexp.h"
+#include "base/oomp.h"
 #include "tidbitsp.h"
 
 #ifdef USE_PTHREAD
@@ -102,7 +103,7 @@ cc_mutex_struct_init(cc_mutex * mutex_struct)
 #else /* USE_W32THREAD */
   ok = internal_mutex_struct_init(mutex_struct);
 #endif /* ! USE_W32THREAD */
-  if (!ok) assert(!"mutex struct init failed");
+  if (ok != CC_OK) coin_oom_abort("cc_mutex_struct_init");
 }
 
 /*
@@ -154,7 +155,7 @@ cc_mutex_construct(void)
 {
   cc_mutex * mutex;
   mutex = (cc_mutex *) malloc(sizeof(cc_mutex));
-  assert(mutex != NULL);
+  if (mutex == NULL) return NULL;
   cc_mutex_struct_init(mutex);
 
   /* debugging */
@@ -263,12 +264,13 @@ cc_mutex_unlock(cc_mutex * mutex)
   if (ok != CC_OK) assert(!"mutex unlock failed");
 }
 
+static cc_mutex cc_global_mutex_storage;
 static cc_mutex * cc_global_mutex = NULL;
 
 static void
 cc_mutex_cleanup(void)
 {
-  cc_mutex_destruct(cc_global_mutex);
+  cc_mutex_struct_clean(cc_global_mutex);
   cc_global_mutex = NULL;
 }
 
@@ -293,7 +295,9 @@ cc_mutex_init(void)
 #endif /* USE_W32THREAD */
 
   if (cc_global_mutex == NULL) {
-    cc_global_mutex = cc_mutex_construct();
+    /* Acquiring the global lock must not need a heap allocation. */
+    cc_mutex_struct_init(&cc_global_mutex_storage);
+    cc_global_mutex = &cc_global_mutex_storage;
     /* atexit priority makes this callback trigger after other cleanup
        functions. */
     /* FIXME: not sure if this really needs the "- 1", but I added it
@@ -326,4 +330,3 @@ cc_mutex_global_unlock(void)
 {
   (void) cc_mutex_unlock(cc_global_mutex);
 }
-

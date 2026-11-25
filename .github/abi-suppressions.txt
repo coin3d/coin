@@ -24,3 +24,27 @@
 [suppress_function]
   symbol_name_regexp = ^_ZN25SoUniformShaderParameterPD[12]Ev$
   label = SoUniformShaderParameterP is a source-file-private implementation class; its destructor is not part of Coin's public ABI.
+
+# The follow-up's context cleanup can inline away this source-file-private
+# method. Callers outside Coin cannot name SoShaderObjectP.
+[suppress_function]
+  symbol_name_regexp = ^_ZN15SoShaderObjectP21deleteGLShaderObjectsEv$
+  label = SoShaderObjectP is a source-file-private implementation class; this method is not part of Coin's public ABI.
+
+# SoOutputROUTE is defined only inside src/io/SoOutput.cpp. Changes to the
+# SbList implementation can alter whether this template member is emitted, but
+# clients cannot name SoOutputROUTE or instantiate SbList<SoOutputROUTE>.
+
+[suppress_function]
+  symbol_name_regexp = ^_ZN6SbListI13SoOutputROUTEE4growEi$
+  label = SoOutputROUTE is a source-file-private helper type; its SbList growth symbol is not part of Coin's public ABI.
+
+# SoShaderObjectP is only forward-declared as an opaque pimpl in the public
+# header; its complete definition and invalidateParameters() member exist only
+# inside src/shaders/SoShaderObject.cpp. The compiler may inline this member or
+# emit an out-of-line copy depending on the private container implementation
+# and compiler version.
+
+[suppress_function]
+  symbol_name_regexp = ^_ZN15SoShaderObjectP20invalidateParametersEv$
+  label = SoShaderObjectP::invalidateParameters() is defined only in the implementation file; its compiler-emitted symbol is not part of Coin's public ABI.
