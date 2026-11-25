@@ -1,0 +1,8 @@
+add_executable(CoinMetadataConnectionsTest regressions/metadata/Connections.cpp)
+target_link_libraries(CoinMetadataConnectionsTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CoinMetadataConnectionsTest PRIVATE ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include ${COIN_TARGET_INCLUDE_DIRECTORIES})
+foreach(kind node engine)
+  foreach(case duplicate absent valid workflow)
+    add_test(NAME MetadataConnections_${kind}_${case} COMMAND CoinMetadataConnectionsTest ${kind} ${case})
+  endforeach()
+endforeach()
