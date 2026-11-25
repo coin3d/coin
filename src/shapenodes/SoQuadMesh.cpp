@@ -1052,8 +1052,11 @@ SoQuadMesh::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   if (!this->shouldPrimitiveCount(action)) return;
 
-  action->addNumTriangles(2 * this->verticesPerRow.getValue() *
-                          this->verticesPerColumn.getValue());
+  const int rowsize = this->verticesPerRow.getValue();
+  const int colsize = this->verticesPerColumn.getValue();
+  if (rowsize < 2 || colsize < 2) return;
+
+  action->addNumTriangles(2 * (rowsize - 1) * (colsize - 1));
 }
 
 // Documented in superclass. Overridden to return FALSE. Normals are

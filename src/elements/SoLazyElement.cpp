@@ -599,6 +599,9 @@ int
 SoLazyElement::getAlphaTest(SoState * state, float & value)
 {
   SoLazyElement * elem = getInstance(state);
+  // A caller can inherit one component and then set the combined pair. Record
+  // the read before that set marks the shared alpha-test mask as overwritten.
+  if (state->isCacheOpen()) elem->lazyDidntSet(ALPHATEST_MASK);
   value = elem->coinstate.alphatestvalue;
   return elem->coinstate.alphatestfunc;
 }
