@@ -40,10 +40,14 @@
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
+#include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoNormalElement.h>
+#include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/elements/SoProfileElement.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -75,6 +79,7 @@ namespace {
   SbStorage * sogl_coordstorage = NULL;
   SbStorage * sogl_texcoordstorage = NULL;
   SbStorage * sogl_normalstorage = NULL;
+  SbStorage * sogl_colorstorage = NULL;
 
   void nurbs_coord_cleanup(void)
   {
@@ -92,6 +97,12 @@ namespace {
   {
     delete sogl_normalstorage;
     sogl_normalstorage = NULL;
+  }
+
+  void nurbs_color_cleanup(void)
+  {
+    delete sogl_colorstorage;
+    sogl_colorstorage = NULL;
   }
 
   void sogl_alloc_coords(void * ptr)
@@ -139,6 +150,17 @@ namespace {
     return *ptr;
   }
 
+  SbList <float> *
+  sogl_get_tmpcolorlist(void)
+  {
+    if (sogl_colorstorage == NULL) {
+      sogl_colorstorage = new SbStorage(sizeof(void*), sogl_alloc_coords, sogl_dealloc_coords);
+      coin_atexit((coin_atexit_f *)nurbs_color_cleanup, CC_ATEXIT_NORMAL);
+    }
+    SbList <float> ** ptr = (SbList <float> **) sogl_colorstorage->get();
+    return *ptr;
+  }
+
   // Toggle extra debugging output for nurbs complexity settings code.
   SbBool
   sogl_nurbs_debugging(void)
@@ -153,13 +175,18 @@ namespace {
 
   void
   sogl_set_nurbs_complexity(SoAction * action, SoShape * shape, void * nurbsrenderer,
-                            int uIsLinear, int vIsLinear, int numuctrlpts, int numvctrlpts, int uIsClosed, int vIsClosed, float uSpan, float vSpan)
+                            int uIsLinear, int vIsLinear, int numuctrlpts, int numvctrlpts, int uIsClosed, int vIsClosed, float uSpan, float vSpan,
+                            SbBool colorinterpolation = FALSE)
   {
     SoState * state = action->getState();
 
     float complexity = SbClamp(SoComplexityElement::get(state), 0.0f, 1.0f);
+    // Geometric error metrics do not account for variation in the color map.
+    // Sample colored surfaces in parameter space, including planar patches.
+    const SoComplexityTypeElement::Type complexitytype = colorinterpolation ?
+      SoComplexityTypeElement::OBJECT_SPACE : SoComplexityTypeElement::get(state);
 
-    if (!GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
+    if (!colorinterpolation && !GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
       // GLU < 1.3 does not support view-independent error metrics
       // for tessellation accuracy. => Fall back to pixel-based metric.
 
@@ -201,10 +228,10 @@ namespace {
       const char * env = coin_getenv("COIN_OLD_NURBS_COMPLEXITY");
       oldnurbscomplexity = env ? atoi(env) : -2;
     }
-    if ((oldnurbscomplexity > 0) || 
+    if (!colorinterpolation && ((oldnurbscomplexity > 0) ||
         ((oldnurbscomplexity == -2) && 
-         (SoComplexityTypeElement::get(state) == SoComplexityTypeElement::SCREEN_SPACE))) {
-      switch (SoComplexityTypeElement::get(state)) {
+         (complexitytype == SoComplexityTypeElement::SCREEN_SPACE)))) {
+      switch (complexitytype) {
       case SoComplexityTypeElement::SCREEN_SPACE:
         {
           SbBox3f box;
@@ -287,7 +314,7 @@ namespace {
       }
     }
     else { // new nurbs complexity
-      switch (SoComplexityTypeElement::get(state)) {
+      switch (complexitytype) {
       case SoComplexityTypeElement::SCREEN_SPACE:
         {
           float tolerance;
@@ -797,6 +824,54 @@ namespace {
     return SurfacePoint( u, v );
   }
 
+  // GLU's color map is polynomial even when the vertex map is rational.
+  // For rational material fields, use tessellator parameters to evaluate
+  // the weighted color numerator and divide by the geometry's weight sum.
+  struct rational_color_render {
+    rational_color_render() : geometry(NULL), colors(NULL), texture(NULL),
+                              textured(FALSE), u(0.0f), v(0.0f) {}
+    ~rational_color_render() {
+      delete geometry;
+      delete colors;
+      delete texture;
+    }
+    nurbs * geometry;
+    nurbs * colors;
+    nurbs * texture;
+    SbBool textured;
+    float u, v;
+    float umin, umax, vmin, vmax;
+    float texumin, texumax, texvmin, texvmax;
+  };
+
+  void APIENTRY rational_color_begin(GLenum type, void *) { glBegin(type); }
+  void APIENTRY rational_color_end(void *) { glEnd(); }
+  void APIENTRY rational_color_normal(float * normal, void *) { glNormal3fv(normal); }
+  void APIENTRY rational_color_parameter(float * uv, void * data) {
+    rational_color_render * render = static_cast<rational_color_render *>(data);
+    render->u = uv[0];
+    render->v = uv[1];
+  }
+  void APIENTRY rational_color_vertex(float * vertex, void * data) {
+    rational_color_render * render = static_cast<rational_color_render *>(data);
+    const float weight = render->geometry->SurfacePoint(render->u, render->v)[3];
+    SbVec4f color = render->colors->SurfacePoint(render->u, render->v);
+    if (weight != 0.0f) color /= weight;
+    else color.setValue(0.0f, 0.0f, 0.0f, 0.0f);
+    glColor4fv(color.getValue());
+    if (render->textured) {
+      if (render->texture) {
+        const SbVec4f texcoord = render->texture->SurfacePoint(render->u, render->v);
+        glTexCoord4fv(texcoord.getValue());
+      }
+      else {
+        glTexCoord2f((render->u - render->texumin) / (render->texumax - render->texumin),
+                     (render->v - render->texvmin) / (render->texvmax - render->texvmin));
+      }
+    }
+    glVertex3fv(vertex);
+  }
+
 }
 
 void
@@ -841,17 +916,56 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
 
   const SoCoordinateElement * coords =
     SoCoordinateElement::getInstance(state);
+  if (!coords->getNum()) return;
+  const SoMaterialBindingElement::Binding materialbinding =
+    SoMaterialBindingElement::get(state);
+  const SbBool controlcolorbinding = glrender &&
+    (materialbinding == SoMaterialBindingElement::PER_VERTEX ||
+     materialbinding == SoMaterialBindingElement::PER_VERTEX_INDEXED);
+  const SbBool controlcolors = controlcolorbinding &&
+    (coords->is3D() || GLUWrapper()->versionMatchesAtLeast(1, 3, 0));
+  if (controlcolorbinding && !controlcolors) {
+    SoDebugError::postWarning("sogl_render_nurbs_surface",
+      "Rational control-point color interpolation requires GLU 1.3; "
+      "using the overall material.");
+  }
+  const SbBool rationalcolors = controlcolors && !coords->is3D() &&
+    SoLazyElement::getInstance(state)->getNumDiffuse() > 0 &&
+    (!numcoordindex || numcoordindex == numuctrlpts * numvctrlpts) &&
+    GLUWrapper()->versionMatchesAtLeast(1, 3, 0);
+  rational_color_render rationalrender;
+  if (rationalcolors) {
+    // Keep the node's primitive-generation callbacks intact. This renderer
+    // belongs only to this draw and never retains the stack callback data.
+    nurbsrenderer = GLUWrapper()->gluNewNurbsRenderer();
+    if (!nurbsrenderer) return;
+    GLUWrapper()->gluNurbsCallbackData(nurbsrenderer, &rationalrender);
+    GLUWrapper()->gluNurbsCallback(nurbsrenderer, GLU_NURBS_BEGIN_DATA,
+      (gluNurbsCallback_cb_t)(void (*)(void))rational_color_begin);
+    GLUWrapper()->gluNurbsCallback(nurbsrenderer, GLU_NURBS_END_DATA,
+      (gluNurbsCallback_cb_t)rational_color_end);
+    GLUWrapper()->gluNurbsCallback(nurbsrenderer, GLU_NURBS_NORMAL_DATA,
+      (gluNurbsCallback_cb_t)rational_color_normal);
+    GLUWrapper()->gluNurbsCallback(nurbsrenderer, GLU_NURBS_TEXTURE_COORD_DATA,
+      (gluNurbsCallback_cb_t)rational_color_parameter);
+    GLUWrapper()->gluNurbsCallback(nurbsrenderer, GLU_NURBS_VERTEX_DATA,
+      (gluNurbsCallback_cb_t)rational_color_vertex);
+    const SoDrawStyleElement::Style style = SoDrawStyleElement::get(state);
+    GLUWrapper()->gluNurbsProperty(nurbsrenderer, GLU_DISPLAY_MODE,
+      style == SoDrawStyleElement::LINES ? GLU_OUTLINE_POLYGON :
+      style == SoDrawStyleElement::POINTS ? GLU_OUTLINE_PATCH : GLU_FILL);
+  }
 
   if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
     // Should not set mode if GLU version is < 1.3, as NURBS_RENDERER
     // was the only game in town back then in the old days.
     GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_NURBS_MODE,
-                                   (GLfloat) (glrender ? GLU_NURBS_RENDERER : GLU_NURBS_TESSELLATOR));
+                                   (GLfloat) ((glrender && !rationalcolors) ? GLU_NURBS_RENDERER : GLU_NURBS_TESSELLATOR));
   }
   // Need to load sampling matrices if glrender==FALSE.
-  GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_AUTO_LOAD_MATRIX, (GLfloat) glrender);
+  GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_AUTO_LOAD_MATRIX, (GLfloat) (glrender && !rationalcolors));
 
-  if (!glrender) { // supply the sampling matrices
+  if (!glrender || rationalcolors) { // supply the sampling matrices
     SbMatrix glmodelmatrix = SoViewingMatrixElement::get(state);
     glmodelmatrix.multLeft(SoModelMatrixElement::get(state));
     SbVec2s size, origin;
@@ -881,8 +995,6 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
 
   const SoCoordinateElement * coordelem =
     SoCoordinateElement::getInstance(state);
-
-  if (!coords->getNum()) return;
 
   GLfloat * ptr = coords->is3D() ?
     (GLfloat *)coordelem->getArrayPtr3() :
@@ -923,7 +1035,14 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
   float uSpan = uknotvec[numuknot-1] - uknotvec[0];
   float vSpan = vknotvec[numvknot-1] - vknotvec[0];
 
-  sogl_set_nurbs_complexity(action, shape, nurbsrenderer, uIsLinear, vIsLinear, numuctrlpts, numvctrlpts, uIsClosed, vIsClosed, uSpan, vSpan);
+  SoLazyElement * lazy = SoLazyElement::getInstance(state);
+  const SbBool colorinterpolation = controlcolors &&
+    (lazy->getNumDiffuse() > 1 || lazy->getNumTransparencies() > 1);
+  sogl_set_nurbs_complexity(action, shape, nurbsrenderer,
+                            colorinterpolation ? FALSE : uIsLinear,
+                            colorinterpolation ? FALSE : vIsLinear,
+                            numuctrlpts, numvctrlpts, uIsClosed, vIsClosed,
+                            uSpan, vSpan, colorinterpolation);
 
   GLUWrapper()->gluBeginSurface(nurbsrenderer);
   GLUWrapper()->gluNurbsSurface(nurbsrenderer,
@@ -933,7 +1052,50 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
                                 numuknot - numuctrlpts, numvknot - numvctrlpts,
                                 (dim == 3) ? GL_MAP2_VERTEX_3 : GL_MAP2_VERTEX_4);
 
-
+  // NURBS control points are also the control points for the material map.
+  // GLU evaluates GL_MAP2_COLOR_4 using the same surface basis and knot
+  // vectors, so the resulting colors vary smoothly over the rendered surface.
+  if (controlcolors) {
+    const int numcontrolpoints = numuctrlpts * numvctrlpts;
+    const int numcolorpoints = numcoordindex && coordindex ? numcoordindex : numcontrolpoints;
+    if (numcolorpoints == numcontrolpoints) {
+      SoLazyElement * lazy = SoLazyElement::getInstance(state);
+      const int numdiffuse = lazy->getNumDiffuse();
+      if (numdiffuse > 0) {
+        SbList <float> * tmpcolorlist = sogl_get_tmpcolorlist();
+        tmpcolorlist->truncate(0);
+        for (int i = 0; i < numcolorpoints; i++) {
+          int materialindex = numcoordindex && coordindex ? coordindex[i] : i;
+          materialindex = SbMax(materialindex, 0);
+          const float alpha = 1.0f - SoLazyElement::getTransparency(state, materialindex);
+          const SbColor & color = SoLazyElement::getDiffuse(state,
+            SbMin(materialindex, numdiffuse - 1));
+          const float weight = rationalcolors ? ptr[i * dim + 3] : 1.0f;
+          tmpcolorlist->append(color[0] * weight);
+          tmpcolorlist->append(color[1] * weight);
+          tmpcolorlist->append(color[2] * weight);
+          tmpcolorlist->append(alpha * weight);
+        }
+        if (rationalcolors) {
+          rationalrender.geometry = new nurbs(numuknot-numuctrlpts, numuknot, uknotvec,
+            numvknot-numvctrlpts, numvknot, vknotvec, ustride, vstride, ptr, dim);
+          rationalrender.colors = new nurbs(numuknot-numuctrlpts, numuknot, uknotvec,
+            numvknot-numvctrlpts, numvknot, vknotvec, 4, 4*numuctrlpts,
+            tmpcolorlist->getArrayPtr(), 4);
+        }
+        else {
+          GLUWrapper()->gluNurbsSurface(nurbsrenderer,
+                                      numuknot, (GLfloat*) uknotvec,
+                                      numvknot, (GLfloat*) vknotvec,
+                                      4, 4 * numuctrlpts,
+                                      (GLfloat*) tmpcolorlist->getArrayPtr(),
+                                      numuknot - numuctrlpts,
+                                      numvknot - numvctrlpts,
+                                      GL_MAP2_COLOR_4);
+        }
+      }
+    }
+  }
 
   static int calculatenurbsnormals = -1;
   if (calculatenurbsnormals == -1) {
@@ -941,7 +1103,7 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
     	calculatenurbsnormals = env ? atoi(env) : 1;
   }
   // generate normal map
-  if (calculatenurbsnormals) {
+  if (calculatenurbsnormals || rationalcolors) {
     GLfloat * ptrnormals = NULL;
 
     SbList <float> * tmpnormallist = sogl_get_tmpnormallist();
@@ -1020,12 +1182,20 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
         texptr = (float*) tmptexcoordlist->getArrayPtr();
       }
 
+      if (rationalcolors) {
+        rationalrender.textured = TRUE;
+        rationalrender.texture = new nurbs(numsknot-numsctrlpts, numsknot, sknotvec,
+          numtknot-numtctrlpts, numtknot, tknotvec, texdim, texdim*numsctrlpts,
+          texptr, texdim);
+      }
+      else {
       GLUWrapper()->gluNurbsSurface(nurbsrenderer,
                                     numsknot, (GLfloat*) sknotvec,
                                     numtknot, (GLfloat*) tknotvec,
                                     texdim, texdim * numsctrlpts,
                                     texptr, numsknot - numsctrlpts, numtknot - numtctrlpts,
                                     (texdim == 2) ? GL_MAP2_TEXTURE_COORD_2 : GL_MAP2_TEXTURE_COORD_4);
+      }
 
     }
     else if ((tc->getType() == SoMultiTextureCoordinateElement::DEFAULT) ||
@@ -1062,10 +1232,35 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
           defaultknott[3] = val;
         }
       }
-      GLUWrapper()->gluNurbsSurface(nurbsrenderer, 4, defaultknots, 4, defaultknott,
-                                    2, 2*2, defaulttex, 4-2, 4-2,
-                                    GL_MAP2_TEXTURE_COORD_2);
+      if (rationalcolors) {
+        rationalrender.textured = TRUE;
+        rationalrender.texumin = defaultknots[0];
+        rationalrender.texumax = defaultknots[2];
+        rationalrender.texvmin = defaultknott[0];
+        rationalrender.texvmax = defaultknott[2];
+      }
+      else GLUWrapper()->gluNurbsSurface(nurbsrenderer, 4, defaultknots, 4, defaultknott,
+                                         2, 2*2, defaulttex, 4-2, 4-2,
+                                         GL_MAP2_TEXTURE_COORD_2);
     }
+  }
+  if (rationalcolors) {
+    // A linear auxiliary map delivers the actual surface parameters to the
+    // callback. User texture coordinates are evaluated separately above.
+    const int uorder = numuknot - numuctrlpts;
+    const int vorder = numvknot - numvctrlpts;
+    rationalrender.umin = uknotvec[uorder-1];
+    rationalrender.umax = uknotvec[numuctrlpts];
+    rationalrender.vmin = vknotvec[vorder-1];
+    rationalrender.vmax = vknotvec[numvctrlpts];
+    GLfloat uk[4] = {rationalrender.umin, rationalrender.umin,
+                     rationalrender.umax, rationalrender.umax};
+    GLfloat vk[4] = {rationalrender.vmin, rationalrender.vmin,
+                     rationalrender.vmax, rationalrender.vmax};
+    GLfloat uv[8] = {uk[0], vk[0], uk[2], vk[0],
+                     uk[0], vk[2], uk[2], vk[2]};
+    GLUWrapper()->gluNurbsSurface(nurbsrenderer, 4, uk, 4, vk,
+                                  2, 4, uv, 2, 2, GL_MAP2_TEXTURE_COORD_2);
   }
   const SoNodeList & profilelist = SoProfileElement::get(state);
   int i, n = profilelist.getLength();
@@ -1109,6 +1304,10 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
     if (istrimming) GLUWrapper()->gluEndTrim(nurbsrenderer);
   }
   GLUWrapper()->gluEndSurface(nurbsrenderer);
+  if (rationalcolors) {
+    GLUWrapper()->gluDeleteNurbsRenderer(nurbsrenderer);
+    SoGLLazyElement::getInstance(state)->reset(state, SoLazyElement::DIFFUSE_MASK);
+  }
 
   // clear GL error(s) if parametric error value is out of range.
   // FIXME: man, this is ugly! 20020530 mortene.
