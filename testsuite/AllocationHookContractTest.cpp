@@ -180,6 +180,9 @@ int ThrowingElement::failAt = 0;
 
 static bool constructorCleanup(bool array)
 {
+  // familyBudget() tests failed allocations through volatile function pointers.
+  // A new-expression can omit a call to a replaceable global allocation
+  // function, so only test constructor unwinding here.
   bool ok = true;
   for (int nt = 0; nt < 2; ++nt) {
     arm(-1);
@@ -198,30 +201,6 @@ static bool constructorCleanup(bool array)
     ok &= check(caught && ThrowingElement::attempts == ThrowingElement::failAt &&
                 ThrowingElement::live == 0,
                 "constructor exception must escape and destroy only constructed elements");
-  }
-  // Allocation failure must happen before any constructor, even for zero
-  // successful elements; nothrow affects allocation, not constructor throws.
-  for (int nt = 0; nt < 2; ++nt) {
-    arm(0);
-    ThrowingElement::attempts = 0;
-    ThrowingElement::failAt = 1;
-    bool caughtBadAlloc = false;
-    bool other = false;
-    ThrowingElement * object = NULL;
-    try {
-      object = array ?
-        (nt ? new(std::nothrow) ThrowingElement[3] : new ThrowingElement[3]) :
-        (nt ? new(std::nothrow) ThrowingElement : new ThrowingElement);
-    }
-    catch (const std::bad_alloc &) { caughtBadAlloc = true; }
-    catch (...) { other = true; }
-    ok &= check(!other && (nt ? !caughtBadAlloc : caughtBadAlloc) &&
-                object == NULL && ThrowingElement::attempts == 0 &&
-                ThrowingElement::live == 0 && budgetLeft() == -1,
-                "failed allocation must skip constructors and preserve exception semantics");
-    if (array) delete[] object;
-    else delete object;
-    arm(-1);
   }
   return ok;
 }
