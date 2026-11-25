@@ -40,6 +40,14 @@
 #include <cstddef>
 #include <cstdint>
 #include <vector>
+#include <Inventor/threads/SbMutex.h>
+#include <memory>
+#include <mutex>
+class SoShape;
+class SoAction;
+class SbBox3f;
+class SoTextureCoordinateBundle;
+class SoVertexArrayTexCoordCache;
 
 /*!
   \class SoVertexArrayTexCoordGuard
@@ -100,28 +108,8 @@ public:
 
   SoVertexArrayTexCoordGuard(SoState * state, SoNode * node,
                            const SoCoordinateElement * coords,
-                           SbBool generatedefault)
-    : state(state), pushed(FALSE)
-  {
-    if (!generatedefault) return;
-    const SoMultiTextureCoordinateElement * element =
-      SoMultiTextureCoordinateElement::getInstance(state);
-    const int count = coords->getNum();
-    this->coordinates.reserve(count);
-    const SbVec3f normal(0.0f, 0.0f, 1.0f);
-    for (int i = 0; i < count; ++i) {
-      this->coordinates.push_back(element->get(0, coords->get3(i), normal));
-    }
-    state->push();
-    this->pushed = TRUE;
-    SoMultiTextureCoordinateElement::set4(state, node, 0, count,
-                                          this->coordinates.data());
-  }
-
-  ~SoVertexArrayTexCoordGuard()
-  {
-    if (this->pushed) this->state->pop();
-  }
+                           SbBool generatedefault);
+  ~SoVertexArrayTexCoordGuard();
 
 private:
   SoVertexArrayTexCoordGuard(const SoVertexArrayTexCoordGuard &);
@@ -129,6 +117,32 @@ private:
   SoState * state;
   SbBool pushed;
   std::vector<SbVec4f> coordinates;
+};
+
+/*!
+  Keeps the per-shape default mapping alive through one array draw.
+  Callers apply SoVertexArrayTexCoordGuard::isAffordable() before using it.
+  Notifications invalidate the mapping. An entry can reuse its array and GL
+  allocation when no active draw owns it; otherwise it is replaced. Shape
+  destruction releases retained entries. This is a per-shape, not global, budget.
+  The separate type preserves the temporary guard's layout and entry points.
+*/
+class SoCachedVertexArrayTexCoordGuard {
+public:
+  static void getDefaultBBox(SoAction * action, SoShape * shape,
+                            SbBox3f & box, SbVec3f & center);
+  SoCachedVertexArrayTexCoordGuard(SoState * state, SoShape * shape,
+                                  const SoCoordinateElement * coords,
+                                  const SoTextureCoordinateBundle & bundle,
+                                  SbBool generatedefault);
+  ~SoCachedVertexArrayTexCoordGuard();
+private:
+  SoCachedVertexArrayTexCoordGuard(const SoCachedVertexArrayTexCoordGuard &);
+  SoCachedVertexArrayTexCoordGuard & operator=(const SoCachedVertexArrayTexCoordGuard &);
+  SoState * state;
+  SbBool pushed;
+  std::shared_ptr<SoVertexArrayTexCoordCache> cache;
+  std::unique_lock<SbMutex> locked;
 };
 
 #endif // COIN_SOVERTEXARRAYTEXCOORDGUARD_H
