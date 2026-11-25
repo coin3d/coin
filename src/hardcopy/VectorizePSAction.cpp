@@ -282,6 +282,7 @@ void
 SoVectorizePSAction::printHeader(void) const
 {
   FILE * file = this->getOutput()->getFilePointer();
+  if (file == NULL) return;
 
   int viewport[4];
 
@@ -325,6 +326,7 @@ void
 SoVectorizePSAction::printFooter(void) const
 {
   FILE * file = this->getOutput()->getFilePointer();
+  if (file == NULL) return;
 
   fputs("\ngrestore\n", file);
   fputs("showpage\n", file);
@@ -335,6 +337,7 @@ void
 SoVectorizePSAction::printViewport(void) const
 {
   FILE * file = this->getOutput()->getFilePointer();
+  if (file == NULL) return;
 
   float viewport[4];
   viewport[0] = PRIVATE(this)->convertToPS(this->getRotatedViewportStartpos())[0];
@@ -356,6 +359,7 @@ void
 SoVectorizePSAction::printBackground(void) const
 {
   FILE * file = this->getOutput()->getFilePointer();
+  if (file == NULL) return;
 
   float viewport[4];
   SbColor bgcol;
@@ -427,6 +431,7 @@ void
 SoVectorizePSActionP::printSetdash(uint16_t pattern) const
 {
   FILE * file = PUBLIC(this)->getOutput()->getFilePointer();
+  if (file == NULL) return;
   fputs("[", file);
 
   int pos = 15;
@@ -464,6 +469,7 @@ void
 SoVectorizePSActionP::updateFont(const SbString & fontnameref, const float fontsizearg)
 {
   FILE * file = PUBLIC(this)->getOutput()->getFilePointer();
+  if (file == NULL) return;
 
   if (fontnameref != this->fontname ||
       fontsizearg != this->fontsize) {
@@ -483,6 +489,7 @@ void
 SoVectorizePSActionP::updateLineAttribs(const SoVectorizeLine * line)
 {
   FILE * file = PUBLIC(this)->getOutput()->getFilePointer();
+  if (file == NULL) return;
 
   float lw = line->width;
   uint16_t lp = line->pattern;
@@ -510,6 +517,7 @@ void
 SoVectorizePSActionP::printLine(const SoVectorizeLine * item)
 {
   FILE * file = PUBLIC(this)->getOutput()->getFilePointer();
+  if (file == NULL) return;
 
   SbVec2f mul = this->convertToPS(PUBLIC(this)->getRotatedViewportSize());
   SbVec2f add = this->convertToPS(PUBLIC(this)->getRotatedViewportStartpos());
@@ -543,6 +551,7 @@ void
 SoVectorizePSActionP::printCircle(const SbVec3f & v, const SbColor & c, const float radius) const
 {
   FILE * file = PUBLIC(this)->getOutput()->getFilePointer();
+  if (file == NULL) return;
 
   fprintf(file, "newpath %g %g %g 0 360 arc closepath\n", v[0], v[1], radius);
   fprintf(file, "%g %g %g setrgbcolor\n", c[0], c[1], c[2]);
@@ -556,6 +565,7 @@ void
 SoVectorizePSActionP::printSquare(const SbVec3f & v, const SbColor & c, const float size) const
 {
   FILE * file = PUBLIC(this)->getOutput()->getFilePointer();
+  if (file == NULL) return;
 
   float s2 = size * 0.5f;
 
@@ -609,6 +619,7 @@ SoVectorizePSActionP::printTriangle(const SbVec3f * v, const SbColor * c)
   if (v[0] == v[1] || v[1] == v[2] || v[0] == v[2]) return;
 
   FILE * file = PUBLIC(this)->getOutput()->getFilePointer();
+  if (file == NULL) return;
 
   SbBool flatshade =
     (this->gouraudeps == 0.0f) ||
@@ -679,6 +690,7 @@ void
 SoVectorizePSActionP::printImage(const SoVectorizeImage * item) const
 {
   FILE * fp = PUBLIC(this)->getOutput()->getFilePointer();
+  if (fp == NULL) return;
   SbVec2f mul = this->convertToPS(PUBLIC(this)->getRotatedViewportSize());
   SbVec2f add = this->convertToPS(PUBLIC(this)->getRotatedViewportStartpos());
 
@@ -755,6 +767,7 @@ void
 SoVectorizePSActionP::printText(const SoVectorizeText * item)
 {
   FILE * file = PUBLIC(this)->getOutput()->getFilePointer();
+  if (file == NULL) return;
 
   SbVec2f mul = this->convertToPS(PUBLIC(this)->getRotatedViewportSize());
   SbVec2f add = this->convertToPS(PUBLIC(this)->getRotatedViewportStartpos());

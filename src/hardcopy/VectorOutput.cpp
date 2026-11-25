@@ -111,7 +111,7 @@ SoVectorOutput::closeFile(void)
 {
   if (PRIVATE(this)->didopen) {
     fclose(PRIVATE(this)->fp);
-    PRIVATE(this)->fp = stdout;
+    PRIVATE(this)->fp = coin_get_stdout();
     PRIVATE(this)->didopen = FALSE;
   }
 }

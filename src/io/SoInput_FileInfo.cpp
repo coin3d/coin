@@ -70,6 +70,7 @@ SoInput_FileInfo::SoInput_FileInfo(SoInput_Reader * readerptr,
   this->threadreadidx = 0;
   this->threadbufidx = 0;
   this->threadeof = FALSE;
+  this->threadreaderror = FALSE;
   this->readbuf = NULL;
 #else // HAVE_THREADS && SOINPUT_ASYNC_IO
   this->readbuf = new char[READBUFSIZE];
@@ -85,6 +86,7 @@ SoInput_FileInfo::SoInput_FileInfo(SoInput_Reader * readerptr,
   this->lastputback = -1;
   this->lastchar = -1;
   this->eof = FALSE;
+  this->readerror = FALSE;
   this->isbinary = FALSE;
   this->vrml1file = FALSE;
   this->vrml2file = FALSE;
@@ -129,6 +131,7 @@ SoInput_FileInfo::sched_cb(void * closure)
     size_t len = thisp->getReader()->readBuffer(thisp->threadbuf[idx], READBUFSIZE);
     if (len == 0) {
       thisp->threadeof = TRUE;
+      thisp->threadreaderror = thisp->getReader()->hasError();
       thisp->threadbuflen[idx] = 0;
     }
     else {
@@ -160,6 +163,7 @@ SoInput_FileInfo::doBufferRead(void)
     this->readbufidx = 0;
     this->readbuflen = 0;
     this->eof = TRUE;
+    this->readerror = this->threadreaderror;
 #if 0 // debug
     SoDebugError::postInfo("doBufferRead", "met Mr End-of-file");
 #endif // debug
@@ -186,6 +190,7 @@ SoInput_FileInfo::doBufferRead(void)
     this->readbufidx = 0;
     this->readbuflen = 0;
     this->eof = TRUE;
+    this->readerror = this->getReader()->hasError();
 #if 0 // debug
     SoDebugError::postInfo("doBufferRead", "met Mr End-of-file");
 #endif // debug
