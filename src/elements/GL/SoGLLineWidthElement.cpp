@@ -61,6 +61,8 @@
 #include <Inventor/elements/SoGLLineWidthElement.h>
 #include "coindefs.h"
 
+#include <cfloat>
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
@@ -70,6 +72,10 @@
 #include <Inventor/errors/SoDebugError.h>
 #include "rendering/SoGL.h"
 
+
+// Keep the data symbol exported by earlier releases for binary compatibility.
+// Rendering uses the range cached for the current OpenGL context.
+float SoGLLineWidthElement::sizerange[2] = { FLT_MAX, -1.0f };
 
 SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoGLLineWidthElement);
 
