@@ -631,6 +631,75 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   endforeach()
 endif()
 
+# Public CPU-only primitive/detail regressions; no GL context or display needed.
+add_executable(CoinLineDetailTest LineDetailTest.cpp)
+target_link_libraries(CoinLineDetailTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CoinLineDetailTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+add_test(NAME LineDetails_native COMMAND CoinLineDetailTest native)
+add_test(NAME LineDetails_assembler COMMAND CoinLineDetailTest assembler)
+
+
+# Keep count/callback/picking and each binding in separate processes. A short
+# polyline must not abort and hide failures in a different public action.
+function(add_line_contract shape layout binding source operation indices)
+  set(case_name LineContract_${shape}_${layout}_${binding}_${source}_${operation}_${indices})
+  add_test(NAME ${case_name} COMMAND CoinLineDetailTest contract
+    ${shape} ${layout} ${binding} ${source} ${operation} ${indices})
+  set_tests_properties(${case_name} PROPERTIES LABELS "line-contract" TIMEOUT 30)
+endfunction()
+foreach(shape lineset indexed)
+  foreach(binding overall vertex part face vf fv pv vp pf fp)
+    foreach(operation callback pick)
+      add_line_contract(${shape} normal ${binding} state ${operation} sequential)
+      foreach(source state vp)
+        add_line_contract(${shape} shorts ${binding} ${source} ${operation} sequential)
+      endforeach()
+    endforeach()
+    foreach(operation callback pick count)
+      add_line_contract(${shape} allshort ${binding} state ${operation} sequential)
+    endforeach()
+  endforeach()
+  foreach(layout normal shorts allshort)
+    foreach(source state vp)
+      if(NOT layout STREQUAL "allshort" OR NOT source STREQUAL "state")
+        add_line_contract(${shape} ${layout} vertex ${source} count sequential)
+      endif()
+    endforeach()
+  endforeach()
+endforeach()
+foreach(binding overall vertex part face vf fv pv vp pf fp)
+  foreach(operation callback pick)
+    foreach(layout normal shorts)
+      add_line_contract(indexed ${layout} ${binding} state ${operation} independent)
+    endforeach()
+    add_line_contract(lineset sentinel ${binding} state ${operation} sequential)
+  endforeach()
+endforeach()
+foreach(operation callback pick count)
+  add_line_contract(indexed unterminated vertex state ${operation} independent)
+  add_line_contract(indexed shorts vertex state ${operation} implicit)
+  add_line_contract(indexed shorts vertex vrml1 ${operation} independent)
+  add_line_contract(indexed shorts vertex vrml1 ${operation} sequential)
+  add_line_contract(lineset sentinel vertex vp ${operation} sequential)
+endforeach()
+
+foreach(binding vertex part face pf fp)
+  foreach(operation callback pick)
+    add_line_contract(indexed shorts ${binding} vp ${operation} independent)
+  endforeach()
+endforeach()
+
+foreach(shape lineset indexed)
+  foreach(operation callback pick)
+    add_test(NAME LineContract_${shape}_vp_sibling_${operation}
+      COMMAND CoinLineDetailTest vp-sibling ${shape} ${operation})
+    set_tests_properties(LineContract_${shape}_vp_sibling_${operation}
+      PROPERTIES LABELS "line-contract" TIMEOUT 30)
+  endforeach()
+endforeach()
+
 # Offscreen text must contribute bounds before camera fitting.
 add_executable(CoinSoText2BoundsTest SoText2BoundsTest.cpp)
 target_link_libraries(CoinSoText2BoundsTest PRIVATE Coin)

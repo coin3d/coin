@@ -477,7 +477,7 @@ SoIndexedLineSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
     while (ptr < endptr) {
       if (*ptr++ >= 0) cnt++;
       else {
-        add += cnt-1;
+        if (cnt > 1) add += cnt-1;
         cnt = 0;
       }
     }
@@ -523,6 +523,15 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
     nbind = OVERALL;
   }
 
+  // A multi-entry per-vertex index stream can start with the separator
+  // of an empty polyline. Only the single default -1 means coordIndex.
+  if (mbind == PER_VERTEX_INDEXED && this->materialIndex.getNum() > 1) {
+    matindices = this->materialIndex.getValues(0);
+  }
+  if (nbind == PER_VERTEX_INDEXED && this->normalIndex.getNum() > 1) {
+    normindices = this->normalIndex.getValues(0);
+  }
+
   if (this->getNodeType() == SoNode::VRML1) {
     // For VRML1, PER_VERTEX means per vertex in shape, not PER_VERTEX
     // on the state.
@@ -543,6 +552,9 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
     if (SoTextureCoordinateBindingElement::get(state) ==
         SoTextureCoordinateBindingElement::PER_VERTEX) {
       texindices = NULL; // just in case
+    }
+    else if (this->textureCoordIndex.getNum() > 1) {
+      texindices = this->textureCoordIndex.getValues(0);
     }
     else if (texindices == NULL) {
       texindices = cindices;
@@ -585,6 +597,35 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
     vertex.setNormal(*currnormal);
   }
 
+  // Advance every stream according to its binding even when a group
+  // cannot emit a segment. Indexed per-vertex streams include separators;
+  // indexed per-line and per-segment streams do not.
+  const auto skipShortLine = [&]() -> SbBool {
+    const int n = *cindices >= 0 ? 1 : 0;
+    if (n && cindices + 1 < end && cindices[1] >= 0) return FALSE;
+    const SbBool terminated = cindices + n < end;
+    const int vertexentries = n + (terminated ? 1 : 0);
+    if (mbind == PER_LINE || mbind == PER_LINE_INDEXED) {
+      if (matindices) ++matindices;
+      else ++matnr;
+    }
+    else if (mbind == PER_VERTEX_INDEXED) matindices += vertexentries;
+    else if (mbind == PER_VERTEX) matnr += n;
+    if (nbind == PER_LINE || nbind == PER_LINE_INDEXED) {
+      if (normindices) ++normindices;
+      else ++normnr;
+    }
+    else if (nbind == PER_VERTEX_INDEXED) normindices += vertexentries;
+    else if (nbind == PER_VERTEX) normnr += n;
+    if (doTextures && !tb.isFunction()) {
+      if (texindices) texindices += vertexentries;
+      else texidx += n;
+    }
+    cindices += vertexentries;
+    lineDetail.incLineIndex();
+    return TRUE;
+  };
+
   if (mbind == PER_SEGMENT || mbind == PER_SEGMENT_INDEXED ||
       nbind == PER_SEGMENT || nbind == PER_SEGMENT_INDEXED) {
     int previ;
@@ -593,7 +634,8 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
 
     this->beginShape(action, SoShape::LINES, &lineDetail);
 
-    while (cindices + 1 < end) { // need at least two vertices
+    while (cindices < end) {
+      if (skipShortLine()) continue;
       previ = *cindices++;
 
       if (matPerPolyline || mbind >= PER_VERTEX) {
@@ -675,15 +717,19 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
         previ = i;
       }
       lineDetail.incLineIndex();
-      if (mbind == PER_VERTEX_INDEXED) matindices++;
-      if (nbind == PER_VERTEX_INDEXED) normindices++;
-      if (doTextures && texindices) texindices++;
+      if (cindices[-1] < 0) {
+        if (mbind == PER_VERTEX_INDEXED) matindices++;
+        if (nbind == PER_VERTEX_INDEXED) normindices++;
+        if (doTextures && texindices && !tb.isFunction()) texindices++;
+      }
     }
     this->endShape();
+    if (this->vertexProperty.getValue()) state->pop();
     return;
   }
 
-  while (cindices + 1 < end) { // need at least two vertices
+  while (cindices < end) {
+    if (skipShortLine()) continue;
     this->beginShape(action, LINE_STRIP, &lineDetail);
     i = *cindices++;
     assert(i >= 0);
@@ -782,9 +828,11 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
       lineDetail.incPartIndex();
     }
     this->endShape(); // end of line strip
-    if (mbind == PER_VERTEX_INDEXED) matindices++;
-    if (nbind == PER_VERTEX_INDEXED) normindices++;
-    if (doTextures && texindices) texindices++;
+    if (cindices[-1] < 0) {
+      if (mbind == PER_VERTEX_INDEXED) matindices++;
+      if (nbind == PER_VERTEX_INDEXED) normindices++;
+      if (doTextures && texindices && !tb.isFunction()) texindices++;
+    }
     lineDetail.incLineIndex();
   }
 
