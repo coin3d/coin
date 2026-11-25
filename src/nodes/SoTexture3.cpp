@@ -296,7 +296,7 @@ SoTexture3::GLRender(SoGLRenderAction * action)
   }
 
 
-  if (SoTextureOverrideElement::getImageOverride(state))
+  if (SoTextureOverrideElement::getImageOverride(state) && unit == 0)
     return;
 
   float quality = SoTextureQualityElement::get(state);

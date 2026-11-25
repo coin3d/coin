@@ -631,6 +631,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   endforeach()
 endif()
 
+include(texture3/Tests.cmake)
+
 # Offscreen text must contribute bounds before camera fitting.
 add_executable(CoinSoText2BoundsTest SoText2BoundsTest.cpp)
 target_link_libraries(CoinSoText2BoundsTest PRIVATE Coin)
