@@ -79,7 +79,9 @@ SoVectorOutput::SoVectorOutput(void)
 */
 SoVectorOutput::~SoVectorOutput()
 {
-  this->closeFile();
+  // Don't call closeFile() here: it fetches Coin's stdout, which would be
+  // reopened and leaked if we're destructed after SoDB::finish().
+  if (PRIVATE(this)->didopen) fclose(PRIVATE(this)->fp);
   delete PRIVATE(this);
 }
 
