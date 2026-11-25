@@ -1,4 +1,8 @@
 Unreleased:
+* compatibility changes:
+  - Coin now uses native font discovery by default on macOS and Windows.
+    Set COIN_FORCE_FONTCONFIG_ON=1 to use Fontconfig instead, if available.
+    Other platforms still use Fontconfig when available.
 * bugfixes:
   - Document cc_rbptree ownership: clients must initialize independent trees
     with cc_rbptree_init(), because copying owned nodes is unsafe. The public

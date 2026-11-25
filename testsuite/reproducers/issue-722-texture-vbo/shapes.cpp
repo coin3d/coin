@@ -1,4 +1,5 @@
 #include "../CoinCleanup.h"
+#include "../../GLXDisplayCheck.h"
 #include <Inventor/SoDB.h>
 #include <Inventor/SoOffscreenRenderer.h>
 #include <Inventor/actions/SoAction.h>
@@ -53,6 +54,7 @@ static void installFunction(void * node, SoAction * action)
 
 int main(int argc, char ** argv)
 {
+  if (!coinTestGLXDisplayAvailable()) return 77;
   if (argc != 3) return 2;
   const char * kind = argv[1];
   const char * mode = argv[2];

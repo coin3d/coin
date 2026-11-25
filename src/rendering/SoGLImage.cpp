@@ -203,7 +203,6 @@
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLDisplayList.h>
 #include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
@@ -1793,9 +1792,10 @@ SoGLImageP::reallyCreateTexture(SoState *state,
 
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
+  // Match the texture object target and filters to the image dimensions.
+  // A positive depth, including one, denotes a 3D image.
   //FIXME: Check cc_glglue capability as well? (kintel 20011129)
-  if (SoMultiTextureEnabledElement::getMode(state) == 
-      SoMultiTextureEnabledElement::TEXTURE3D) { // 3D textures
+  if (d > 0) { // 3D textures
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S,
                     translate_wrap(state, this->wraps));
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T,

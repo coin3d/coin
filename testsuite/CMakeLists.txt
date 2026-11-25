@@ -7,8 +7,11 @@ include(cc-list/Tests.cmake)
 include(glglue-lifetime/Tests.cmake)
 include(action-apply-exceptions/Tests.cmake)
 include(gl-render-exceptions/Tests.cmake)
+include(scene-texture-background/Tests.cmake)
 include(SbSmallMapTests.cmake)
+include(scene-texture-type/Tests.cmake)
 include(gl-context-maps/Tests.cmake)
+include(fonts/Tests.cmake)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND COIN_BUILD_SHARED_LIBS AND CMAKE_NM)
   add_test(NAME LegacyExportedSymbols
@@ -85,6 +88,35 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
       endforeach()
       add_test(NAME BumpProgramGLX COMMAND CoinBumpGLXTest)
       set_tests_properties(BumpProgramGLX PROPERTIES SKIP_RETURN_CODE 77)
+
+
+      add_executable(CoinGLImageUploadTargetTest glimage/UploadTargetGLXTest.cpp)
+      target_include_directories(CoinGLImageUploadTargetTest PRIVATE
+        ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+        ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+      target_link_libraries(CoinGLImageUploadTargetTest
+        Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+      foreach(upload_case
+          direct-2d-disabled direct-2d-mode2d direct-2d-mode3d
+          direct-2d-modecube direct-2d-moderect
+          direct-3d-disabled direct-3d-mode2d direct-3d-mode3d
+          direct-3d-modecube direct-3d-moderect
+          direct-3d-depth1-disabled direct-3d-depth1-mode2d
+          direct-3d-depth1-mode3d
+          direct-2d-mode3d-mipmap direct-3d-disabled-mipmap
+          direct-3d-mode2d-mipmap direct-3d-mode3d-mipmap
+          direct-2d-mode3d-eager direct-3d-disabled-eager
+          direct-2d-rectangle-mode3d
+          transition-depth1 transition-cubic transition-cubic-mipmap
+          unit1-zero2d-depth1 unit1-disabled-depth1
+          unit1-zero2d-cubic unit1-disabled-cubic
+          unit1-zero2d-cubic-mipmap unit1-disabled-cubic-mipmap)
+        add_test(NAME GLImageUploadTarget_${upload_case}
+          COMMAND CoinGLImageUploadTargetTest ${upload_case})
+        set_tests_properties(GLImageUploadTarget_${upload_case} PROPERTIES
+          SKIP_RETURN_CODE 77 LABELS "glimage;glx" TIMEOUT 30
+          ENVIRONMENT "COIN_GLERROR_DEBUGGING=0;COIN_TEX2_LINEAR_LIMIT=0.2;COIN_TEX2_MIPMAP_LIMIT=0.5;COIN_TEX2_LINEAR_MIPMAP_LIMIT=0.8")
+      endforeach()
     endif()
   endif()
 
@@ -92,8 +124,9 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
     add_executable(CoinTextureArrayTest reproducers/issue-722-texture-vbo/shapes.cpp)
     target_include_directories(CoinTextureArrayTest PRIVATE
       ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
-      ${COIN_TARGET_INCLUDE_DIRECTORIES})
-    target_link_libraries(CoinTextureArrayTest Coin)
+      ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+    target_compile_definitions(CoinTextureArrayTest PRIVATE COIN_TEST_HAS_X11)
+    target_link_libraries(CoinTextureArrayTest Coin ${X11_LIBRARIES})
     find_program(COIN_TEST_XVFB_RUN xvfb-run)
     if(COIN_TEST_XVFB_RUN)
       add_test(NAME TextureCoordinateArrayRendering
@@ -105,7 +138,11 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
         COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/issue-722-texture-vbo/matrix.sh
           $<TARGET_FILE:CoinTextureArrayTest>)
     endif()
-    set_tests_properties(TextureCoordinateArrayRendering PROPERTIES SKIP_RETURN_CODE 77)
+    # xvfb-run can report failure even after the child returns 77 when the
+    # virtual X server itself could not start.
+    set_tests_properties(TextureCoordinateArrayRendering PROPERTIES
+      SKIP_RETURN_CODE 77
+      SKIP_REGULAR_EXPRESSION "SKIP: no accessible X display for GLX rendering")
 
     add_executable(CoinSharedCoordinateBenchmark EXCLUDE_FROM_ALL
       reproducers/issue-833-shared-coordinates/benchmark.cpp)
@@ -295,6 +332,8 @@ add_test(NAME SoTempPathReplaceTail_empty_noop
 
 add_subdirectory(xml-c-api/c-headers)
 add_subdirectory(xml-c-api/entity-abi)
+
+include(SoDepthBufferEngineTests.cmake)
 
 # Compile the private XML utility into its test so the function does not need
 # to become a public DLL symbol on Windows.
@@ -566,6 +605,8 @@ if(DISABLE_WARNING_TAUTOLOGCOMPARE)
 	target_compile_options(CoinTests PUBLIC -Wno-tautological-compare)
 endif()
 
+include(AllocationHookContracts.cmake)
+
 # These cases inspect the global queues and disable realTime. Keep each in
 # its own process to avoid changing the shared CoinTests sensor state.
 add_executable(CoinSensorSchedulingTest SensorSchedulingTest.cpp)
@@ -612,6 +653,11 @@ add_executable(CoinSoText2ExtendedTest SoText2ExtendedTest.cpp)
 target_link_libraries(CoinSoText2ExtendedTest PRIVATE Coin)
 target_include_directories(CoinSoText2ExtendedTest PRIVATE
   ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include)
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND HAVE_GLX AND X11_FOUND)
+  target_compile_definitions(CoinSoText2ExtendedTest PRIVATE COIN_TEST_HAS_X11)
+  target_include_directories(CoinSoText2ExtendedTest PRIVATE ${X11_INCLUDE_DIR})
+  target_link_libraries(CoinSoText2ExtendedTest PRIVATE ${X11_LIBRARIES})
+endif()
 add_test(NAME SoText2ExtendedBounds COMMAND CoinSoText2ExtendedTest)
 add_test(NAME SoText2ExtendedRendering COMMAND CoinSoText2ExtendedTest --render)
 set_tests_properties(SoText2ExtendedRendering PROPERTIES SKIP_RETURN_CODE 77 TIMEOUT 30)
@@ -621,6 +667,11 @@ add_executable(CoinSoText2ViewAllAudit SoText2ViewAllAudit.cpp)
 target_link_libraries(CoinSoText2ViewAllAudit PRIVATE Coin)
 target_include_directories(CoinSoText2ViewAllAudit PRIVATE
   ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include)
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND HAVE_GLX AND X11_FOUND)
+  target_compile_definitions(CoinSoText2ViewAllAudit PRIVATE COIN_TEST_HAS_X11)
+  target_include_directories(CoinSoText2ViewAllAudit PRIVATE ${X11_INCLUDE_DIR})
+  target_link_libraries(CoinSoText2ViewAllAudit PRIVATE ${X11_LIBRARIES})
+endif()
 
 add_test(NAME SoText2ViewAllSingleCall COMMAND CoinSoText2ViewAllAudit)
 set_tests_properties(SoText2ViewAllSingleCall PROPERTIES SKIP_RETURN_CODE 77 TIMEOUT 60)
