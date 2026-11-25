@@ -11,6 +11,7 @@ include(scene-texture-background/Tests.cmake)
 include(SbSmallMapTests.cmake)
 include(scene-texture-type/Tests.cmake)
 include(gl-context-maps/Tests.cmake)
+include(fonts/Tests.cmake)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND COIN_BUILD_SHARED_LIBS AND CMAKE_NM)
   add_test(NAME LegacyExportedSymbols
@@ -112,8 +113,9 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
     add_executable(CoinTextureArrayTest reproducers/issue-722-texture-vbo/shapes.cpp)
     target_include_directories(CoinTextureArrayTest PRIVATE
       ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
-      ${COIN_TARGET_INCLUDE_DIRECTORIES})
-    target_link_libraries(CoinTextureArrayTest Coin)
+      ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+    target_compile_definitions(CoinTextureArrayTest PRIVATE COIN_TEST_HAS_X11)
+    target_link_libraries(CoinTextureArrayTest Coin ${X11_LIBRARIES})
     find_program(COIN_TEST_XVFB_RUN xvfb-run)
     if(COIN_TEST_XVFB_RUN)
       add_test(NAME TextureCoordinateArrayRendering
@@ -125,7 +127,11 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
         COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/issue-722-texture-vbo/matrix.sh
           $<TARGET_FILE:CoinTextureArrayTest>)
     endif()
-    set_tests_properties(TextureCoordinateArrayRendering PROPERTIES SKIP_RETURN_CODE 77)
+    # xvfb-run can report failure even after the child returns 77 when the
+    # virtual X server itself could not start.
+    set_tests_properties(TextureCoordinateArrayRendering PROPERTIES
+      SKIP_RETURN_CODE 77
+      SKIP_REGULAR_EXPRESSION "SKIP: no accessible X display for GLX rendering")
 
     add_executable(CoinSharedCoordinateBenchmark EXCLUDE_FROM_ALL
       reproducers/issue-833-shared-coordinates/benchmark.cpp)
@@ -656,6 +662,11 @@ add_executable(CoinSoText2ExtendedTest SoText2ExtendedTest.cpp)
 target_link_libraries(CoinSoText2ExtendedTest PRIVATE Coin)
 target_include_directories(CoinSoText2ExtendedTest PRIVATE
   ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include)
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND HAVE_GLX AND X11_FOUND)
+  target_compile_definitions(CoinSoText2ExtendedTest PRIVATE COIN_TEST_HAS_X11)
+  target_include_directories(CoinSoText2ExtendedTest PRIVATE ${X11_INCLUDE_DIR})
+  target_link_libraries(CoinSoText2ExtendedTest PRIVATE ${X11_LIBRARIES})
+endif()
 add_test(NAME SoText2ExtendedBounds COMMAND CoinSoText2ExtendedTest)
 add_test(NAME SoText2ExtendedRendering COMMAND CoinSoText2ExtendedTest --render)
 set_tests_properties(SoText2ExtendedRendering PROPERTIES SKIP_RETURN_CODE 77 TIMEOUT 30)
@@ -665,6 +676,11 @@ add_executable(CoinSoText2ViewAllAudit SoText2ViewAllAudit.cpp)
 target_link_libraries(CoinSoText2ViewAllAudit PRIVATE Coin)
 target_include_directories(CoinSoText2ViewAllAudit PRIVATE
   ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include)
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND HAVE_GLX AND X11_FOUND)
+  target_compile_definitions(CoinSoText2ViewAllAudit PRIVATE COIN_TEST_HAS_X11)
+  target_include_directories(CoinSoText2ViewAllAudit PRIVATE ${X11_INCLUDE_DIR})
+  target_link_libraries(CoinSoText2ViewAllAudit PRIVATE ${X11_LIBRARIES})
+endif()
 
 add_test(NAME SoText2ViewAllSingleCall COMMAND CoinSoText2ViewAllAudit)
 set_tests_properties(SoText2ViewAllSingleCall PROPERTIES SKIP_RETURN_CODE 77 TIMEOUT 60)

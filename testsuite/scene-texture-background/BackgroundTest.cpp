@@ -85,7 +85,20 @@ bool hasPbufferConfig(Display * display, int screen)
   };
   int count = 0;
   GLXFBConfig * configs = glXChooseFBConfig(display, screen, attributes, &count);
-  const bool supported = configs && count > 0;
+  bool supported = false;
+  for (int i = 0; configs && i < count; ++i) {
+    int width = 0;
+    int height = 0;
+    int pixels = 0;
+    if (glXGetFBConfigAttrib(display, configs[i], GLX_MAX_PBUFFER_WIDTH, &width) == Success &&
+        glXGetFBConfigAttrib(display, configs[i], GLX_MAX_PBUFFER_HEIGHT, &height) == Success &&
+        glXGetFBConfigAttrib(display, configs[i], GLX_MAX_PBUFFER_PIXELS, &pixels) == Success &&
+        width >= textureSize && height >= textureSize &&
+        pixels >= textureSize * textureSize) {
+      supported = true;
+      break;
+    }
+  }
   if (configs) XFree(configs);
   return supported;
 }
@@ -301,7 +314,7 @@ int run(Backend backend)
   if (!window.display) return skip("No X11 display");
   if (backend == Backend::Pbuffer) {
     if (!hasPbufferConfig(window.display, DefaultScreen(window.display))) {
-      return skip("No GLX 1.3 RGBA8 pbuffer configuration with depth and stencil");
+      return skip("No GLX 1.3 RGBA8 pbuffer configuration large enough for the test");
     }
     Display * display = coinOffscreenDisplay();
     if (!display) return skip("Coin could not create and activate an offscreen GLX context");
