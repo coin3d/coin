@@ -119,11 +119,14 @@ SoVectorOutput::closeFile(void)
 }
 
 /*!
-  Returns the \e stdio file handle pointer.
+  Returns the \e stdio file handle pointer. Returns \c NULL if writing
+  to the default output and it is not available. It will then be
+  requested again on the next call.
 */
 FILE *
 SoVectorOutput::getFilePointer(void)
 {
+  if (PRIVATE(this)->fp == NULL) PRIVATE(this)->fp = coin_get_stdout();
   return PRIVATE(this)->fp;
 }
 

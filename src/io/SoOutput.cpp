@@ -178,6 +178,7 @@ class SoOutputP {
 public:
   SoOutputP(void) {
     this->writer = NULL;
+    this->defaultunavailable = FALSE;
   }
   ~SoOutputP() {
     delete this->writer;
@@ -256,18 +257,27 @@ public:
   }
 
   SoOutput_Writer * getWriter(void) {
+    // If the default output was unavailable, try again. But not after a
+    // write failed, as we would then continue in the middle of a stream.
+    if (this->defaultunavailable && !this->disabledwriting) {
+      this->setWriter(NULL);
+    }
     if (this->writer == NULL) {
-      this->writer = SoOutput_Writer::createWriter(coin_get_stdout(), FALSE,
+      FILE * fp = coin_get_stdout();
+      this->writer = SoOutput_Writer::createWriter(fp, FALSE,
                                                    this->compmethod, this->complevel);
+      this->defaultunavailable = (fp == NULL);
     }
     return this->writer;
   }
   void setWriter(SoOutput_Writer * writerptr) {
     delete this->writer;
     this->writer = writerptr;
+    this->defaultunavailable = FALSE;
   }
 private:
   SoOutput_Writer * writer;
+  SbBool defaultunavailable;
 
 };
 

@@ -13,7 +13,12 @@
 #include <Inventor/nodes/SoText2.h>
 
 #include <fcntl.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <sys/resource.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 int
 main(void)
@@ -83,10 +88,50 @@ main(void)
       action.endViewport();
       action.endPage();
     }
+
+    // If the output becomes available in the middle of a page, nothing
+    // must be written before the next page starts.
+    action.beginPage(SbVec2f(0.0f, 0.0f), SbVec2f(100.0f, 100.0f));
+    if (setrlimit(RLIMIT_NOFILE, &original) != 0) result = 1;
+    char filename[] = "/tmp/coin-vectorize-ps-XXXXXX";
+    const int descriptor = mkstemp(filename);
+    const int savedstdout = dup(STDOUT_FILENO);
+    if (descriptor == -1 || savedstdout == -1) {
+      result = 1;
+    }
+    else {
+      dup2(descriptor, STDOUT_FILENO);
+      FILE * stream = action.getOutput()->getFilePointer();
+      if (stream == NULL) {
+        result = 1;
+      }
+      else {
+        action.apply(root);
+        action.endPage();
+        fflush(stream);
+        struct stat info;
+        if (fstat(descriptor, &info) != 0 || info.st_size != 0) result = 1;
+
+        action.beginPage(SbVec2f(0.0f, 0.0f), SbVec2f(100.0f, 100.0f));
+        action.apply(root);
+        action.endPage();
+        fflush(stream);
+        char start[5] = { 0 };
+        if (pread(descriptor, start, 4, 0) != 4 ||
+            strcmp(start, "%!PS") != 0) {
+          result = 1;
+        }
+      }
+      dup2(savedstdout, STDOUT_FILENO);
+    }
+    if (savedstdout != -1) close(savedstdout);
+    if (descriptor != -1) {
+      close(descriptor);
+      unlink(filename);
+    }
     root->unref();
   }
 
-  if (setrlimit(RLIMIT_NOFILE, &original) != 0) result = 1;
   SoDB::finish();
   return fcntl(1, F_GETFD) == -1 ? 1 : result;
 }

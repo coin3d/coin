@@ -1450,6 +1450,9 @@ SoProfilingReportGeneratorP::printGfxMemKilobytes(const SbProfilingData & data, 
 /*!
   Ready-made callback that can be used with generate() to print to stdout.
 
+  Returns STOP if the stream is unavailable or the text could not be
+  written, which ends the report. Otherwise returns CONTINUE.
+
   \sa generate
 */
 SoProfilingReportGenerator::CallbackResponse
@@ -1462,6 +1465,9 @@ SoProfilingReportGenerator::stdoutCB(void * COIN_UNUSED_ARG(userdata), int COIN_
 
 /*!
   Ready-made callback that can be used with generate() to print to stderr.
+
+  Returns STOP if the stream is unavailable or the text could not be
+  written, which ends the report. Otherwise returns CONTINUE.
 
   \sa generate
 */

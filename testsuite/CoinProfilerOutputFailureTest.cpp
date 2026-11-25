@@ -24,6 +24,8 @@ main(void)
         SoProfilingReportGenerator::STOP) {
     return 1;
   }
+  // Tools such as LeakSanitizer need descriptors at exit.
+  if (setrlimit(RLIMIT_NOFILE, &original) != 0) return 1;
   for (int fd = 0; fd <= 2; ++fd) {
     if (fcntl(fd, F_GETFD) == -1) return 1;
   }

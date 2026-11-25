@@ -1,6 +1,7 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
+#include <Inventor/annex/HardCopy/SoVectorOutput.h>
 #include <Inventor/nodes/SoSeparator.h>
 
 #include <fcntl.h>
@@ -57,9 +58,31 @@ main(void)
 
     SoOutput output;
     output.write('x');
-  }
 
-  if (setrlimit(RLIMIT_NOFILE, &original) != 0) result = 1;
+    SoOutput unwritten;
+    SoOutput nullpointer;
+    nullpointer.setFilePointer(NULL);
+    SoVectorOutput vectoroutput;
+    if (output.getFilePointer() != NULL || unwritten.getFilePointer() != NULL ||
+        vectoroutput.getFilePointer() != NULL) {
+      result = 1;
+    }
+
+    if (setrlimit(RLIMIT_NOFILE, &original) != 0) result = 1;
+
+    // The default stream is picked up when it becomes available, except
+    // in the middle of a stream where writing has already failed.
+    if (unwritten.getFilePointer() == NULL ||
+        vectoroutput.getFilePointer() != unwritten.getFilePointer()) {
+      result = 1;
+    }
+    if (output.getFilePointer() != NULL) result = 1;
+    output.reset();
+    if (output.getFilePointer() != unwritten.getFilePointer()) result = 1;
+
+    // An explicit NULL file pointer must not turn into stdout.
+    if (nullpointer.getFilePointer() != NULL) result = 1;
+  }
   SoDB::finish();
   for (int fd = 0; fd <= 2; ++fd) {
     if (fcntl(fd, F_GETFD) == -1) result = 1;
