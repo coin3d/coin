@@ -83,6 +83,8 @@ option(COIN_BUILD_TESTS "Build unit tests when ON (default), skips them when OFF
 option(COIN_BUILD_DOCUMENTATION "Build and install API documentation (requires Doxygen)." OFF)
 option(COIN_BUILD_AWESOME_DOCUMENTATION "Build and install API documentation in new modern style (requires Doxygen)." OFF)
 option(COIN_BUILD_EXAMPLES "Build examples when ON (default), skips them when OFF." OFF)
+option(COIN_ENABLE_SANITIZERS "Build Coin with AddressSanitizer and UndefinedBehaviorSanitizer." OFF)
+cmake_dependent_option(COIN_BUILD_FUZZERS "Build libFuzzer targets when ON." OFF "COIN_BUILD_TESTS" OFF)
 cmake_dependent_option(COIN_BUILD_INTERNAL_DOCUMENTATION "Document internal code not part of the API." OFF "COIN_BUILD_DOCUMENTATION" OFF)
 cmake_dependent_option(COIN_BUILD_DOCUMENTATION_MAN "Build Coin man pages." OFF "COIN_BUILD_DOCUMENTATION" OFF)
 cmake_dependent_option(COIN_BUILD_DOCUMENTATION_QTHELP "Build QtHelp documentation." OFF "COIN_BUILD_DOCUMENTATION" OFF)
@@ -113,6 +115,26 @@ option(COIN_VERBOSE "Add verbose debugging information during the configure proc
 option(COIN_STRICT_WARNINGS "Treat supported compiler warnings as errors." OFF)
 option(HAVE_MULTIPLE_VERSION "Forces versioned paths for includes and documentation when ON, usual behaviour otherwise." OFF)
 option(COIN_USE_CPACK "If enabled the cpack subrepo is mandatory" OFF)
+
+if(COIN_ENABLE_SANITIZERS OR COIN_BUILD_FUZZERS)
+  if(NOT (CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" AND
+          CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang"))
+    message(FATAL_ERROR
+      "COIN_ENABLE_SANITIZERS requires GCC or Clang for both C and C++")
+  endif()
+  set(COIN_SANITIZER_FLAGS
+    "-fsanitize=address,undefined -fno-omit-frame-pointer")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${COIN_SANITIZER_FLAGS}")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COIN_SANITIZER_FLAGS}")
+  set(CMAKE_EXE_LINKER_FLAGS
+    "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address,undefined")
+  set(CMAKE_SHARED_LINKER_FLAGS
+    "${CMAKE_SHARED_LINKER_FLAGS} -fsanitize=address,undefined")
+endif()
+
+if(COIN_BUILD_FUZZERS AND NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  message(FATAL_ERROR "COIN_BUILD_FUZZERS requires Clang and libFuzzer")
+endif()
 
 cmake_dependent_option(COIN_BUILD_MAC_FRAMEWORK "Build framework instead of dylib on Mac OS X when ON. Only valid if COIN_BUILD_SHARED_LIBS is ON." OFF "APPLE;NOT IOS;COIN_BUILD_SHARED_LIBS" OFF)
 cmake_dependent_option(COIN_BUILD_MAC_X11 "Build for X11 on Mac OS X when ON. Default is OFF." OFF "APPLE" OFF)
@@ -161,6 +183,8 @@ report_prepare(
   COIN_BUILD_SHARED_LIBS
   COIN_BUILD_TESTS
   COIN_BUILD_DOCUMENTATION
+  COIN_ENABLE_SANITIZERS
+  COIN_BUILD_FUZZERS
   COIN_BUILD_INTERNAL_DOCUMENTATION
   COIN_BUILD_DOCUMENTATION_MAN
   COIN_BUILD_DOCUMENTATION_QTHELP
@@ -277,7 +301,7 @@ else()
     else()
       list(APPEND COIN_TARGET_LINK_LIBRARIES_GL OpenGL::GL)
     endif()
-    if(OpenGL_GLU_FOUND AND NOT COIN_BUILD_EGL)
+    if(OPENGL_GLU_FOUND)
       set(HAVE_GLU 1)
       if (NOT TARGET OpenGL::GLU)
         list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${OPENGL_INCLUDE_DIR})
@@ -311,6 +335,7 @@ if(USE_EXTERNAL_EXPAT)
   find_package(EXPAT)
   if(EXPAT_FOUND)
     set(HAVE_EXPAT 1)
+    list(APPEND COIN_TARGET_INCLUDE_DIRECTORIES ${EXPAT_INCLUDE_DIRS})
     if(NOT TARGET EXPAT::EXPAT)
       add_library(EXPAT::EXPAT UNKNOWN IMPORTED)
       set_target_properties(EXPAT::EXPAT PROPERTIES
@@ -636,7 +661,8 @@ elseif(APPLE)
   configure_file(version.plist.in version.plist)
   set(HAVE_GZDOPEN)
 
-  list(APPEND COIN_TARGET_LINK_LIBRARIES "-framework CoreFoundation" "-framework CoreGraphics")
+  list(APPEND COIN_TARGET_LINK_LIBRARIES
+    "-framework CoreFoundation" "-framework CoreGraphics" "-framework CoreText")
 
   set(COIN_MAC_FRAMEWORK ${COIN_BUILD_MAC_FRAMEWORK})
   set(COIN_MAC_FRAMEWORK_NAME "Inventor")
@@ -956,4 +982,18 @@ endif()
 # New CPACK section, please see the README file inside cpack.d directory.
 if (COIN_USE_CPACK)
   add_subdirectory(cpack.d)
+endif()
+
+if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+  # CMake's full install manifest omits DESTDIR. Record it after the install rules.
+  install(CODE [[
+    if(NOT CMAKE_INSTALL_COMPONENT)
+      file(WRITE "${CMAKE_CURRENT_LIST_DIR}/coin-install-destdir.txt" "$ENV{DESTDIR}")
+    endif()
+  ]])
+  add_custom_target(uninstall
+    COMMAND "${CMAKE_COMMAND}"
+      "-DCOIN_INSTALL_MANIFEST=${CMAKE_CURRENT_BINARY_DIR}/install_manifest.txt"
+      -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/CoinUninstall.cmake"
+    VERBATIM)
 endif()

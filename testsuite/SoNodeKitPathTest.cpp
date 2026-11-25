@@ -309,6 +309,45 @@ checkAppendPathAndPop()
 }
 
 static void
+checkAppendPathWithoutNodekits()
+{
+  SoSeparatorKit * kit = new SoSeparatorKit;
+  kit->ref();
+  SoNode * ordinary = kit->getPart("transform", TRUE);
+  SoPath * ordinarypath = new SoPath(ordinary);
+  ordinarypath->ref();
+  SoNodeKitPath * source = SoNodeKitPath::fromPath(ordinarypath);
+  source->ref();
+  check(source->getLength() == 0 && fullLength(source) == 1,
+        "ordinary source unexpectedly has a projected nodekit");
+
+  SoPath * kitpath = new SoPath(kit);
+  kitpath->ref();
+  SoNodeKitPath * destination = SoNodeKitPath::fromPath(kitpath);
+  destination->ref();
+  destination->append(source);
+  check(destination->getLength() == 1 && fullLength(destination) == 1 &&
+        destination->getTail() == kit,
+        "appending a source with no nodekits changed a populated destination");
+
+  SoPath * emptypath = new SoPath;
+  emptypath->ref();
+  SoNodeKitPath * emptydestination = SoNodeKitPath::fromPath(emptypath);
+  emptydestination->ref();
+  emptydestination->append(source);
+  check(emptydestination->getLength() == 0 && fullLength(emptydestination) == 0,
+        "appending a source with no nodekits changed an empty destination");
+
+  emptydestination->unref();
+  emptypath->unref();
+  destination->unref();
+  kitpath->unref();
+  source->unref();
+  ordinarypath->unref();
+  kit->unref();
+}
+
+static void
 checkFactoryType()
 {
   SoSeparatorKit * kit = new SoSeparatorKit;
@@ -511,6 +550,7 @@ main()
   checkProjectionAndOwnership();
   checkAppendBelowLogicalTail();
   checkAppendPathAndPop();
+  checkAppendPathWithoutNodekits();
   checkFactoryType();
   checkFactoryTypeWithExtension();
   checkTemporarySentinel();

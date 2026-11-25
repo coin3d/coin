@@ -331,6 +331,26 @@ SoType SoAction::classTypeId STATIC_SOTYPE_INIT;
 
 #define PRIVATE(obj) ((obj)->pimpl)
 
+namespace {
+class SoActionReadLock {
+public:
+  SoActionReadLock() { SoDB::readlock(); }
+  ~SoActionReadLock() { SoDB::readunlock(); }
+private:
+  SoActionReadLock(const SoActionReadLock &);
+  SoActionReadLock & operator=(const SoActionReadLock &);
+};
+
+class SoActionProfilerPause {
+public:
+  SoActionProfilerPause() { SoProfiler::enable(FALSE); }
+  ~SoActionProfilerPause() { SoProfiler::enable(TRUE); }
+private:
+  SoActionProfilerPause(const SoActionProfilerPause &);
+  SoActionProfilerPause & operator=(const SoActionProfilerPause &);
+};
+}
+
 /*!
   Default constructor, does all necessary top level initialization.
 */
@@ -462,12 +482,15 @@ SoAction::isOfType(SoType type) const
 void
 SoAction::apply(SoNode * root)
 {
-  SoDB::readlock();
+  SoActionReadLock readlock;
   // need to store these in case action is re-applied
   AppliedCode storedcode = PRIVATE(this)->appliedcode;
   SoActionP::AppliedData storeddata = PRIVATE(this)->applieddata;
   PathCode storedcurr = this->currentpathcode;
+  const int storeddepth = this->state ? this->state->getDepth() : 0;
+  bool rootreferenced = false;
 
+  try {
   // This is a pretty good indicator on whether or not we remembered
   // to use the SO_ACTION_CONSTRUCTOR() macro in the constructor of
   // the SoAction subclass.
@@ -519,6 +542,7 @@ SoAction::apply(SoNode * root)
 #endif // COIN_DEBUG
     // So the graph is not deallocated during traversal.
     root->ref();
+    rootreferenced = true;
     this->currentpath.setHead(root);
 
     // make sure state is created before traversing
@@ -535,10 +559,9 @@ SoAction::apply(SoNode * root)
 
       SoNode * profileroverlay = SoActionP::getProfilerOverlay();
       if (profileroverlay) {
-        SoProfiler::enable(FALSE);
+        SoActionProfilerPause pause;
         this->beginTraversal(profileroverlay);
         this->endTraversal(profileroverlay);
-        SoProfiler::enable(TRUE);
       }
 
       // FIXME: if there was a hit on the overlay scene graph view and
@@ -577,9 +600,8 @@ SoAction::apply(SoNode * root)
         !this->isOfType(SoGLRenderAction::getClassTypeId())) {
       // update profiler stats node with the profiling data from the traversal
       SoNode * profilerstats = SoActionP::getProfilerStatsNode();
-      SoProfiler::enable(FALSE);
+      SoActionProfilerPause pause;
       this->traverse(profilerstats);
-      SoProfiler::enable(TRUE);
     }
 
     if (SoProfiler::isConsoleActive()) {
@@ -594,11 +616,22 @@ SoAction::apply(SoNode * root)
 
     PRIVATE(this)->applieddata.node = NULL;
     root->unrefNoDelete();
+    rootreferenced = false;
   }
   PRIVATE(this)->appliedcode = storedcode;
   PRIVATE(this)->applieddata = storeddata;
   this->currentpathcode = storedcurr;
-  SoDB::readunlock();
+  }
+  catch (...) {
+    while (this->state && this->state->getDepth() > storeddepth) {
+      this->state->pop();
+    }
+    if (rootreferenced) root->unrefNoDelete();
+    PRIVATE(this)->appliedcode = storedcode;
+    PRIVATE(this)->applieddata = storeddata;
+    this->currentpathcode = storedcurr;
+    throw;
+  }
 }
 
 /*!
@@ -616,12 +649,15 @@ SoAction::apply(SoNode * root)
 void
 SoAction::apply(SoPath * path)
 {
-  SoDB::readlock();
+  SoActionReadLock readlock;
   // need to store these in case action in reapplied
   AppliedCode storedcode = PRIVATE(this)->appliedcode;
   SoActionP::AppliedData storeddata = PRIVATE(this)->applieddata;
   PathCode storedcurr = this->currentpathcode;
+  const int storeddepth = this->state ? this->state->getDepth() : 0;
+  bool pathreferenced = false;
 
+  try {
   // This is a pretty good indicator on whether or not we remembered
   // to use the SO_ACTION_CONSTRUCTOR() macro in the constructor of
   // the SoAction subclass.
@@ -639,6 +675,7 @@ SoAction::apply(SoPath * path)
 
   // So the path is not deallocated during traversal.
   path->ref();
+  pathreferenced = true;
 
   this->currentpathcode =
     path->getFullLength() > 1 ? SoAction::IN_PATH : SoAction::BELOW_PATH;
@@ -656,10 +693,21 @@ SoAction::apply(SoPath * path)
   }
 
   path->unrefNoDelete();
+  pathreferenced = false;
   PRIVATE(this)->appliedcode = storedcode;
   PRIVATE(this)->applieddata = storeddata;
   this->currentpathcode = storedcurr;
-  SoDB::readunlock();
+  }
+  catch (...) {
+    while (this->state && this->state->getDepth() > storeddepth) {
+      this->state->pop();
+    }
+    if (pathreferenced) path->unrefNoDelete();
+    PRIVATE(this)->appliedcode = storedcode;
+    PRIVATE(this)->applieddata = storeddata;
+    this->currentpathcode = storedcurr;
+    throw;
+  }
 }
 
 /*!
@@ -678,21 +726,23 @@ SoAction::apply(SoPath * path)
 void
 SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
 {
-  SoDB::readlock();
+  SoActionReadLock readlock;
+  // Save the outer invocation even when setup or state creation throws.
+  AppliedCode storedcode = PRIVATE(this)->appliedcode;
+  SoActionP::AppliedData storeddata = PRIVATE(this)->applieddata;
+  PathCode storedcurr = this->currentpathcode;
+  const int storeddepth = this->state ? this->state->getDepth() : 0;
+  bool listinitialized = false;
+
+  try {
   // This is a pretty good indicator on whether or not we remembered
   // to use the SO_ACTION_CONSTRUCTOR() macro in the constructor of
   // the SoAction subclass.
   assert(this->traversalMethods);
   this->traversalMethods->setUp();
   if (pathlist.getLength() == 0) {
-    SoDB::readunlock();
     return;
   }
-
-  // need to store these in case action in reapplied
-  AppliedCode storedcode = PRIVATE(this)->appliedcode;
-  SoActionP::AppliedData storeddata = PRIVATE(this)->applieddata;
-  PathCode storedcurr = this->currentpathcode;
 
   PRIVATE(this)->terminated = FALSE;
 
@@ -702,6 +752,7 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
   PRIVATE(this)->applieddata.pathlistdata.origpathlist = &pathlist;
   PRIVATE(this)->applieddata.pathlistdata.pathlist = &pathlist;
   PRIVATE(this)->applieddata.pathlistdata.compactlist = NULL;
+  listinitialized = true;
   PRIVATE(this)->appliedcode = PATH_LIST;
   this->currentpathcode = pathlist[0]->getFullLength() > 1 ?
     SoAction::IN_PATH : SoAction::BELOW_PATH;
@@ -777,7 +828,17 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
   PRIVATE(this)->appliedcode = storedcode;
   PRIVATE(this)->applieddata = storeddata;
   this->currentpathcode = storedcurr;
-  SoDB::readunlock();
+  }
+  catch (...) {
+    while (this->state && this->state->getDepth() > storeddepth) {
+      this->state->pop();
+    }
+    if (listinitialized) delete PRIVATE(this)->applieddata.pathlistdata.compactlist;
+    PRIVATE(this)->appliedcode = storedcode;
+    PRIVATE(this)->applieddata = storeddata;
+    this->currentpathcode = storedcurr;
+    throw;
+  }
 }
 
 /*!

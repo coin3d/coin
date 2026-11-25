@@ -41,11 +41,36 @@
 #include <cctype>
 
 char *
+cc_xml_read_exact_file(FILE * file, size_t bytes)
+{
+  if ( bytes == static_cast<size_t>(-1) ) return NULL;
+  char * buffer = new char [ bytes + 1 ];
+  size_t pos = 0;
+  while ( pos != bytes ) {
+    const size_t count = fread(buffer + pos, 1, bytes - pos, file);
+    if ( count == 0 ) {
+      delete [] buffer;
+      return NULL;
+    }
+    pos += count;
+  }
+  if ( ferror(file) ) {
+    delete [] buffer;
+    return NULL;
+  }
+  buffer[bytes] = '\0';
+  return buffer;
+}
+
+char *
 cc_xml_load_file(const char * path)
 {
   FILE * fd = fopen(path, "rb");
   if ( !fd ) return NULL;
-  fseek(fd, 0, SEEK_END);
+  if ( fseek(fd, 0, SEEK_END) != 0 ) {
+    fclose(fd);
+    return NULL;
+  }
   const long filesize = ftell(fd);
   if ( filesize < 0 ) {
     // ftell() failed (e.g. fd does not support seeking) -- without
@@ -56,19 +81,17 @@ cc_xml_load_file(const char * path)
     return NULL;
   }
   const size_t bufsize = static_cast<size_t>(filesize);
-  fseek(fd, 0, SEEK_SET);
-  char * buffer = new char [ bufsize + 1 ];
-  size_t pos = 0, bytes;
-  while ( pos != bufsize ) {
-    bytes = fread(buffer + pos, 1, bufsize - pos, fd);
-    if ( bytes == 0 ) {
-      // fprintf(stderr, "fread() returned %d\n", bytes);
-    } else {
-      pos += bytes;
-    }
+  if ( fseek(fd, 0, SEEK_SET) != 0 ) {
+    fclose(fd);
+    return NULL;
   }
-  buffer[bufsize] = '\0';
-  fclose(fd); // close opened file
+  char * buffer = cc_xml_read_exact_file(fd, bufsize);
+  const int readerror = ferror(fd);
+  const int closeerror = fclose(fd);
+  if ( !buffer || readerror || closeerror != 0 ) {
+    delete [] buffer;
+    return NULL;
+  }
   return buffer;
 }
 
@@ -100,6 +123,66 @@ cc_xml_strieq(const char * s1, const char * s2)
     if ( tolower(*s1++) != tolower(*s2++) ) return FALSE;
   if ( *s1 || *s2 ) return FALSE;
   return TRUE;
+}
+
+// *************************************************************************
+
+static const char *
+cc_xml_escape_sequence(char character, enum cc_xml_escape_mode mode)
+{
+  switch (character) {
+  case '&': return "&amp;";
+  case '<': return "&lt;";
+  case '>': return "&gt;";
+  case '"': return mode == CC_XML_ESCAPE_ATTRIBUTE ? "&quot;" : NULL;
+  case '\'': return mode == CC_XML_ESCAPE_ATTRIBUTE ? "&apos;" : NULL;
+  case '\t': return mode == CC_XML_ESCAPE_ATTRIBUTE ? "&#x9;" : NULL;
+  case '\n': return mode == CC_XML_ESCAPE_ATTRIBUTE ? "&#xA;" : NULL;
+  case '\r': return "&#xD;";
+  default: return NULL;
+  }
+}
+
+size_t
+cc_xml_escape_calculate_size(const char * string,
+                             enum cc_xml_escape_mode mode)
+{
+  assert(string);
+  size_t bytes = 0;
+  while (*string) {
+    const char character = *string++;
+    const char * sequence = cc_xml_escape_sequence(character, mode);
+    bytes += sequence ? strlen(sequence) : 1;
+  }
+  return bytes;
+}
+
+size_t
+cc_xml_escape_write_to_buffer(const char * string,
+                              char * buffer,
+                              size_t bufsize,
+                              enum cc_xml_escape_mode mode)
+{
+  assert(string);
+  assert(buffer);
+
+  const size_t required = cc_xml_escape_calculate_size(string, mode);
+  assert(required <= bufsize);
+  if (required > bufsize) return 0;
+
+  char * here = buffer;
+  while (*string) {
+    const char character = *string++;
+    const char * sequence = cc_xml_escape_sequence(character, mode);
+    if (sequence) {
+      const size_t length = strlen(sequence);
+      memcpy(here, sequence, length);
+      here += length;
+    } else {
+      *here++ = character;
+    }
+  }
+  return required;
 }
 
 #if 0

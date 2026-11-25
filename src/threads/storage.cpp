@@ -88,12 +88,22 @@ cc_storage_init(unsigned int size, void (*constructor)(void *),
                 void (*destructor)(void *)) 
 {
   cc_storage * storage = (cc_storage *) malloc(sizeof(cc_storage));
+  if (storage == NULL) return NULL;
   storage->size = size;
   storage->constructor = constructor;
   storage->destructor = destructor;
   storage->dict = cc_dict_construct(8, 0.75f);
+  if (storage->dict == NULL) {
+    free(storage);
+    return NULL;
+  }
 #ifdef HAVE_THREADS
   storage->mutex = cc_mutex_construct();
+  if (storage->mutex == NULL) {
+    cc_dict_destruct(storage->dict);
+    free(storage);
+    return NULL;
+  }
 #endif /* HAVE_THREADS */
 
   return storage;
@@ -163,10 +173,15 @@ cc_storage_get(cc_storage * storage)
 
   if (!cc_dict_get(storage->dict, threadid, &val)) {
     val = malloc(storage->size);
-    if (storage->constructor) {
+    if (val != NULL && storage->constructor) {
       storage->constructor(val);
     }
-    (void) cc_dict_put(storage->dict, threadid, val);
+    if (val != NULL &&
+        cc_dict_try_put(storage->dict, threadid, val) != CC_DICT_PUT_INSERTED) {
+      if (storage->destructor) storage->destructor(val);
+      free(val);
+      val = NULL;
+    }
   }
 
 #ifdef HAVE_THREADS
@@ -197,6 +212,8 @@ cc_storage_apply_to_all(cc_storage * storage,
                         cc_storage_apply_func * func, 
                         void * closure)
 {
+  if (func == NULL) return;
+
   /* need to set up a struct to use cc_dict_apply */
   cc_storage_hash_apply_data mydata;
   
@@ -330,3 +347,75 @@ cc_storage_thread_cleanup(unsigned long COIN_UNUSED_ARG(threadid))
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */
+
+#ifdef COIN_TEST_SUITE
+
+#include <Inventor/threads/SbStorage.h>
+#include <Inventor/threads/SbTypedStorage.h>
+
+#include <type_traits>
+
+// These operations remain available only because removing the compiler-
+// generated special members changes the established C++ ABI. Their presence
+// does not make shallow copying safe; see the ownership warning in the headers.
+static_assert(std::is_copy_constructible<SbStorage>::value,
+              "SbStorage must retain its historical C++ ABI");
+static_assert(std::is_copy_assignable<SbStorage>::value,
+              "SbStorage must retain its historical C++ ABI");
+static_assert(std::is_copy_constructible<SbTypedStorage<int *> >::value,
+              "SbTypedStorage must retain its historical C++ ABI");
+static_assert(std::is_copy_assignable<SbTypedStorage<int *> >::value,
+              "SbTypedStorage must retain its historical C++ ABI");
+
+static int storage_test_construct_count;
+static int storage_test_destruct_count;
+
+static void
+storage_test_construct(void * data)
+{
+  storage_test_construct_count++;
+  *static_cast<int *>(data) = 17;
+}
+
+static void
+storage_test_destruct(void * data)
+{
+  storage_test_destruct_count++;
+  *static_cast<int *>(data) = 0;
+}
+
+static void
+storage_test_apply(void * data, void * closure)
+{
+  BOOST_CHECK_EQUAL(*static_cast<int *>(data), 17);
+  (*static_cast<int *>(closure))++;
+}
+
+BOOST_AUTO_TEST_CASE(cc_storage_preserves_same_thread_value_and_lifecycle)
+{
+  storage_test_construct_count = 0;
+  storage_test_destruct_count = 0;
+
+  cc_storage * storage = cc_storage_construct_etc(sizeof(int),
+                                                   storage_test_construct,
+                                                   storage_test_destruct);
+  int * first = static_cast<int *>(cc_storage_get(storage));
+  int * second = static_cast<int *>(cc_storage_get(storage));
+
+  BOOST_REQUIRE(first != NULL);
+  BOOST_CHECK(first == second);
+  BOOST_CHECK_EQUAL(*first, 17);
+  BOOST_CHECK_EQUAL(storage_test_construct_count, 1);
+
+  int apply_count = 0;
+  cc_storage_apply_to_all(storage, storage_test_apply, &apply_count);
+  BOOST_CHECK_EQUAL(apply_count, 1);
+
+  cc_storage_apply_to_all(storage, NULL, &apply_count);
+  BOOST_CHECK_EQUAL(apply_count, 1);
+
+  cc_storage_destruct(storage);
+  BOOST_CHECK_EQUAL(storage_test_destruct_count, 1);
+}
+
+#endif // COIN_TEST_SUITE

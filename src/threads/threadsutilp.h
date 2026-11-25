@@ -47,12 +47,14 @@
 #include <Inventor/C/threads/sync.h>
 
 #include "threads/mutexp.h"
+#include "base/oomp.h"
 
 #define CC_MUTEX_CONSTRUCT(_mymutex_) \
   do { \
     cc_mutex_global_lock(); \
     if (_mymutex_ == NULL) { \
       _mymutex_ = static_cast<void*>(cc_mutex_construct()); \
+      if (_mymutex_ == NULL) coin_oom_abort("CC_MUTEX_CONSTRUCT"); \
     } \
     cc_mutex_global_unlock(); \
   } while (0)

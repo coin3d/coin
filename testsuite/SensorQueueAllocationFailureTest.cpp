@@ -52,6 +52,17 @@ void * operator new[](std::size_t size)
 
 void operator delete[](void * p) noexcept { std::free(p); }
 
+void * operator new[](std::size_t size, const std::nothrow_t &) noexcept
+{
+  try { return ::operator new[](size); }
+  catch (...) { return nullptr; }
+}
+
+void operator delete[](void * p, const std::nothrow_t &) noexcept { std::free(p); }
+#if defined(__cpp_sized_deallocation)
+void operator delete[](void * p, std::size_t) noexcept { std::free(p); }
+#endif
+
 static void count(void * data, SoSensor *)
 {
   ++*static_cast<int *>(data);

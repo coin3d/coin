@@ -60,6 +60,7 @@ COIN_DLL_API void          cc_xml_path_append_x(cc_xml_path * path, const char *
 COIN_DLL_API void          cc_xml_path_append_path_x(cc_xml_path * path, cc_xml_path * path2);
 COIN_DLL_API void          cc_xml_path_prepend_x(cc_xml_path * path, const char * elt, int idx);
 COIN_DLL_API void          cc_xml_path_prepend_path_x(cc_xml_path * path, cc_xml_path * path2);
+/* Retains at most the first length nodes. A length of zero clears the path. */
 COIN_DLL_API void          cc_xml_path_truncate_x(cc_xml_path * path, int length);
 
 COIN_DLL_API void          cc_xml_path_dump(const cc_xml_path * path);

@@ -474,7 +474,6 @@ SoLevelOfDetail::getBoundingBox(SoGetBoundingBoxAction * action)
     // can't cache if we're not traversing all children
     iscaching = FALSE;
     break;
-    return; // no need to do any more work
   case SoAction::BELOW_PATH:
   case SoAction::NO_PATH:
     // check if this is a normal traversal

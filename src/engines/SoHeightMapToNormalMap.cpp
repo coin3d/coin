@@ -113,12 +113,11 @@ SoHeightMapToNormalMap::SoHeightMapToNormalMap(void)
 void
 SoHeightMapToNormalMap::convert(const unsigned char * srcptr, SbVec2s size, int nc, SbImage & dst_out)
 {
-  float dx, dy;
+  int dx, dy;
   int width = size[0];
   int height = size[1];
   std::unique_ptr<unsigned char[]> dstarray(new unsigned char[width*height*3]);
   unsigned char * dstptr = dstarray.get();
-  unsigned char red;
   SbVec3f n;
 
 #define GET_PIXEL_RED(x_, y_) \
@@ -127,45 +126,23 @@ SoHeightMapToNormalMap::convert(const unsigned char * srcptr, SbVec2s size, int 
   for (int y = 0; y < height; y++) {
     for (int x = 0; x < width; x++) {
       // do Y Sobel filter
-      red = GET_PIXEL_RED((x-1+width) % width, (y+1) % height);
-      dy  = static_cast<float>(red) / 255.0f * -1.0f;
-
-      red = GET_PIXEL_RED(x % width, (y+1) % height);
-      dy += static_cast<float>(red) / 255.0f * -2.0f;
-
-      red = GET_PIXEL_RED((x+1) % width, (y+1) % height);
-      dy += static_cast<float>(red) / 255.0f * -1.0f;
-
-      red = GET_PIXEL_RED((x-1+width) % width, (y-1+height) % height);
-      dy += static_cast<float>(red) / 255.0f *  1.0f;
-
-      red = GET_PIXEL_RED(x % width, (y-1+height) % height);
-      dy += static_cast<float>(red) / 255.0f *  2.0f;
-
-      red = GET_PIXEL_RED((x+1) % width, (y-1+height) % height);
-      dy += static_cast<float>(red) / 255.0f *  1.0f;
+      dy  = GET_PIXEL_RED((x-1+width) % width, (y+1) % height) * -1;
+      dy += GET_PIXEL_RED(x % width, (y+1) % height) * -2;
+      dy += GET_PIXEL_RED((x+1) % width, (y+1) % height) * -1;
+      dy += GET_PIXEL_RED((x-1+width) % width, (y-1+height) % height);
+      dy += GET_PIXEL_RED(x % width, (y-1+height) % height) * 2;
+      dy += GET_PIXEL_RED((x+1) % width, (y-1+height) % height);
 
       // Do X Sobel filter
-      red = GET_PIXEL_RED((x-1+width) % width, (y-1+height) % height);
-      dx  = static_cast<float>(red) / 255.0f * -1.0f;
+      dx  = GET_PIXEL_RED((x-1+width) % width, (y-1+height) % height) * -1;
+      dx += GET_PIXEL_RED((x-1+width) % width, y % height) * -2;
+      dx += GET_PIXEL_RED((x-1+width) % width, (y+1) % height) * -1;
+      dx += GET_PIXEL_RED((x+1) % width, (y-1+height) % height);
+      dx += GET_PIXEL_RED((x+1) % width, y % height) * 2;
+      dx += GET_PIXEL_RED((x+1) % width, (y+1) % height);
 
-      red = GET_PIXEL_RED((x-1+width) % width, y % height);
-      dx += static_cast<float>(red) / 255.0f * -2.0f;
-
-      red = GET_PIXEL_RED((x-1+width) % width, (y+1) % height);
-      dx += static_cast<float>(red) / 255.0f * -1.0f;
-
-      red = GET_PIXEL_RED((x+1) % width, (y-1+height) % height);
-      dx += static_cast<float>(red) / 255.0f *  1.0f;
-
-      red = GET_PIXEL_RED((x+1) % width, y % height);
-      dx += static_cast<float>(red) / 255.0f *  2.0f;
-
-      red = GET_PIXEL_RED((x+1) % width, (y+1) % height);
-      dx += static_cast<float>(red) / 255.0f *  1.0f;
-
-      n[0] = -dx;
-      n[1] = -dy;
+      n[0] = -static_cast<float>(dx) / 255.0f;
+      n[1] = -static_cast<float>(dy) / 255.0f;
       n[2] = 1.0f;
       (void) n.normalize();
 
