@@ -1082,10 +1082,10 @@ static std::atomic<SbBool> isexiting(FALSE);
 
 #ifdef COIN_THREADSAFE
 static std::mutex &
-coin_atexit_mutex(void)
+coin_tidbits_mutex(void)
 {
-  /* Registration can precede coin_init_tidbits(). The mutex must also
-     outlive each cleanup cycle so that waiters never use a freed mutex. */
+  /* Registration and standard stream access can precede coin_init_tidbits().
+     Keep this mutex alive across cleanup cycles for waiting threads. */
   static std::mutex mutex;
   return mutex;
 }
@@ -1141,10 +1141,11 @@ coin_atexit_cleanup(void)
   int i, n;
   tb_atexit_data * data;
   SbBool debug = FALSE;
+  FILE * debugoutput = NULL;
 
 #ifdef COIN_THREADSAFE
   {
-    std::lock_guard<std::mutex> guard(coin_atexit_mutex());
+    std::lock_guard<std::mutex> guard(coin_tidbits_mutex());
     if (isexiting || !atexit_list) return;
     isexiting = TRUE;
   }
@@ -1156,22 +1157,27 @@ coin_atexit_cleanup(void)
   /* A callback may indirectly ask for cleanup again. The outer call still
      owns the list and will finish processing it. */
   debug = coin_atexit_debug_enabled();
+  if (debug) debugoutput = coin_get_stdout();
 
   n = cc_list_get_length(atexit_list);
   qsort(cc_list_get_array(atexit_list), n, sizeof(void*), atexit_qsort_cb);
 
   for (i = n-1; i >= 0; i--) {
     data = (tb_atexit_data*) cc_list_get(atexit_list, i);
-    if (debug) {
+    if (debugoutput) {
       /* Can't use cc_debugerror_postinfo() here, since this will
           allocate static data that need to be cleaned up, resulting
           in a call to coin_atexit() while we are already exiting...
       */
-      fprintf(stdout, "coin_atexit_cleanup: invoking %s()\n", data->name);
+      fprintf(debugoutput, "coin_atexit_cleanup: invoking %s()\n", data->name);
     }
     data->func();
     free(data->name);
     free(data);
+  }
+
+  if (debugoutput) {
+    fprintf(debugoutput, "coin_atexit_cleanup: fini\n");
   }
 
   /* Close stdin/stdout/stderr if any of them have been opened */
@@ -1179,7 +1185,7 @@ coin_atexit_cleanup(void)
 
 #ifdef COIN_THREADSAFE
   {
-    std::lock_guard<std::mutex> guard(coin_atexit_mutex());
+    std::lock_guard<std::mutex> guard(coin_tidbits_mutex());
     cc_list_destruct(atexit_list);
     atexit_list = NULL;
     isexiting = FALSE;
@@ -1190,9 +1196,6 @@ coin_atexit_cleanup(void)
   isexiting = FALSE;
 #endif /* COIN_THREADSAFE */
 
-  if (debug) {
-    fprintf(stdout, "coin_atexit_cleanup: fini\n");
-  }
 }
 
 /*
@@ -1221,7 +1224,7 @@ void
 coin_atexit_func(const char * name, coin_atexit_f * f, coin_atexit_priorities priority)
 {
 #ifdef COIN_THREADSAFE
-  std::lock_guard<std::mutex> guard(coin_atexit_mutex());
+  std::lock_guard<std::mutex> guard(coin_tidbits_mutex());
 #endif /* COIN_THREADSAFE */
 
   if (isexiting) {
@@ -1354,6 +1357,9 @@ static int coin_dup_stderr = -1;
 void
 free_std_fds(void)
 {
+#ifdef COIN_THREADSAFE
+  std::lock_guard<std::mutex> guard(coin_tidbits_mutex());
+#endif /* COIN_THREADSAFE */
   /* Close stdin/stdout/stderr */
   if (coin_stdin) {
     assert(coin_dup_stdin != -1);
@@ -1381,34 +1387,43 @@ free_std_fds(void)
   }
 }
 
+static FILE *
+coin_get_std_fd(FILE ** stream, int * savedfd, int fd, const char * mode)
+{
+#ifdef COIN_THREADSAFE
+  std::lock_guard<std::mutex> guard(coin_tidbits_mutex());
+#endif /* COIN_THREADSAFE */
+  if (*stream == NULL) {
+    const int duplicate = dup(fd);
+    if (duplicate == -1) return NULL;
+
+    FILE * opened = fdopen(fd, mode);
+    if (opened == NULL) {
+      close(duplicate);
+      return NULL;
+    }
+    *savedfd = duplicate;
+    *stream = opened;
+  }
+  return *stream;
+}
+
 FILE *
 coin_get_stdin(void)
 {
-  if ( ! coin_stdin ){
-    coin_dup_stdin = dup(STDIN_FILENO);
-    coin_stdin = fdopen(STDIN_FILENO, "r");
-  }
-  return coin_stdin;
+  return coin_get_std_fd(&coin_stdin, &coin_dup_stdin, STDIN_FILENO, "r");
 }
 
 FILE *
 coin_get_stdout(void)
 {
-  if ( ! coin_stdout ){
-    coin_dup_stdout = dup(STDOUT_FILENO);
-    coin_stdout = fdopen(STDOUT_FILENO, "w");
-  }
-  return coin_stdout;
+  return coin_get_std_fd(&coin_stdout, &coin_dup_stdout, STDOUT_FILENO, "w");
 }
 
 FILE *
 coin_get_stderr(void)
 {
-  if ( ! coin_stderr ){
-    coin_dup_stderr = dup(STDERR_FILENO);
-    coin_stderr = fdopen(STDERR_FILENO, "w");
-  }
-  return coin_stderr;
+  return coin_get_std_fd(&coin_stderr, &coin_dup_stderr, STDERR_FILENO, "w");
 }
 
 /**************************************************************************/

@@ -1,0 +1,7 @@
+if(UNIX AND PROJECT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+  add_test(NAME CoinUninstall
+    COMMAND "${CMAKE_COMMAND}"
+      "-DCOIN_UNINSTALL_SCRIPT=${PROJECT_SOURCE_DIR}/cmake/CoinUninstall.cmake"
+      "-DCOIN_TEST_DIR=${CMAKE_CURRENT_BINARY_DIR}"
+      -P "${CMAKE_CURRENT_SOURCE_DIR}/CoinUninstallTest.cmake")
+endif()

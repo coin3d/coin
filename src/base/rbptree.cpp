@@ -293,6 +293,7 @@ rbptree_new_node(cc_rbptree * COIN_UNUSED_ARG(t))
 {
   cc_rbptree_node * x = static_cast<cc_rbptree_node*>(
     malloc(sizeof(cc_rbptree_node)));
+  if (x == NULL) coin_oom_abort("cc_rbptree_insert node");
 
   x->left = &rbptree_sentinel;
   x->right = &rbptree_sentinel;
@@ -301,71 +302,75 @@ rbptree_new_node(cc_rbptree * COIN_UNUSED_ARG(t))
 }
 
 /*
- * rebalance the tree after a node has been removed.
+ * Rebalance after removal. Keep the parent of a sentinel child local, since
+ * the sentinel is shared by all trees and must not be modified by removal.
  */
 static void
-rbptree_delete_fixup(cc_rbptree * t, cc_rbptree_node * x)
+rbptree_delete_fixup(cc_rbptree * t, cc_rbptree_node * x,
+                      cc_rbptree_node * parent)
 {
   /* page 274 */
   cc_rbptree_node * w;
 
   while (x != t->root && x->color == RBPTREE_BLACK) {
-    if (x == x->parent->left) { /* x is left child */
-      w = x->parent->right;
+    if (x == parent->left) { /* x is left child */
+      w = parent->right;
       assert(w != &rbptree_sentinel);
       if (w->color == RBPTREE_RED) {
         w->color = RBPTREE_BLACK;
-        x->parent->color = RBPTREE_RED;
-        rbptree_left_rotate(t, x->parent);
-        w = x->parent->right;
+        parent->color = RBPTREE_RED;
+        rbptree_left_rotate(t, parent);
+        w = parent->right;
       }
       if (w->left->color == RBPTREE_BLACK && w->right->color == RBPTREE_BLACK) {
         w->color = RBPTREE_RED;
-        x = x->parent;
+        x = parent;
+        parent = x->parent;
       }
       else {
         if (w->right->color == RBPTREE_BLACK) {
           w->left->color = RBPTREE_BLACK;
           w->color = RBPTREE_RED;
           rbptree_right_rotate(t, w);
-          w = x->parent->right;
+          w = parent->right;
         }
-        w->color = x->parent->color;
-        x->parent->color = RBPTREE_BLACK;
+        w->color = parent->color;
+        parent->color = RBPTREE_BLACK;
         w->right->color = RBPTREE_BLACK;
-        rbptree_left_rotate(t, x->parent);
+        rbptree_left_rotate(t, parent);
         x = t->root;
       }
     }
     else { /* x is right child */
-      w = x->parent->left;
+      w = parent->left;
       assert(w != &rbptree_sentinel);
       if (w->color == RBPTREE_RED) {
         w->color = RBPTREE_BLACK;
-        x->parent->color = RBPTREE_RED;
-        rbptree_right_rotate(t, x->parent);
-        w = x->parent->left;
+        parent->color = RBPTREE_RED;
+        rbptree_right_rotate(t, parent);
+        w = parent->left;
       }
       if (w->right->color == RBPTREE_BLACK && w->left->color == RBPTREE_BLACK) {
         w->color = RBPTREE_RED;
-        x = x->parent;
+        x = parent;
+        parent = x->parent;
       }
       else {
         if (w->left->color == RBPTREE_BLACK) {
           w->right->color = RBPTREE_BLACK;
           w->color = RBPTREE_RED;
           rbptree_left_rotate(t, w);
-          w = x->parent->left;
+          w = parent->left;
         }
-        w->color = x->parent->color;
-        x->parent->color = RBPTREE_BLACK;
+        w->color = parent->color;
+        parent->color = RBPTREE_BLACK;
         w->left->color = RBPTREE_BLACK;
-        rbptree_right_rotate(t, x->parent);
+        rbptree_right_rotate(t, parent);
         x = t->root;
       }
     }
   }
-  x->color = RBPTREE_BLACK;
+  if (x != &rbptree_sentinel) x->color = RBPTREE_BLACK;
 }
 
 
@@ -392,17 +397,18 @@ rbptree_remove_node(cc_rbptree * t, cc_rbptree_node * z)
   else {
     x = y->right;
   }
-  x->parent = y->parent;
+  cc_rbptree_node * parent = y->parent;
+  if (x != nil) x->parent = parent;
 
-  if (y->parent == nil) {
+  if (parent == nil) {
     t->root = x;
   }
   else {
-    if (y == y->parent->left) {
-      y->parent->left = x;
+    if (y == parent->left) {
+      parent->left = x;
     }
     else {
-      y->parent->right =x;
+      parent->right = x;
     }
   }
   if (y != z) {
@@ -410,11 +416,22 @@ rbptree_remove_node(cc_rbptree * t, cc_rbptree_node * z)
     z->data = y->data;
   }
   if (y->color == RBPTREE_BLACK) {
-    rbptree_delete_fixup(t, x);
+    rbptree_delete_fixup(t, x, parent);
   }
   /* free memory for node */
   free(static_cast<void*>(y));
   t->counter--;
+}
+
+static void
+rbptree_reset(cc_rbptree * t)
+{
+  t->root = &rbptree_sentinel;
+  t->counter = 0;
+  t->inlinepointer[0] = NULL;
+  t->inlinepointer[1] = NULL;
+  t->inlinedata[0] = NULL;
+  t->inlinedata[1] = NULL;
 }
 
 /*!
@@ -436,8 +453,7 @@ cc_rbptree_init(cc_rbptree * t)
   }
   CC_GLOBAL_UNLOCK;
 
-  t->root = &rbptree_sentinel;
-  t->counter = 0;
+  rbptree_reset(t);
 }
 
 /*
@@ -463,8 +479,10 @@ cc_rbptree_clean(cc_rbptree * t)
 {
   if (t->root != &rbptree_sentinel) {
     rbptree_recursive_clean(t->root);
-    cc_rbptree_init(t);
   }
+  // Cleanup may run after the subsystem's shutdown hook. Reset only the
+  // local state; init() could register another hook while Coin is exiting.
+  rbptree_reset(t);
 }
 
 
@@ -817,6 +835,39 @@ BOOST_AUTO_TEST_CASE(rbptree_traverse_survives_callback_mutation)
   BOOST_CHECK_EQUAL(state.visits, 3);
   BOOST_CHECK_EQUAL(cc_rbptree_size(&tree), 4U);
   cc_rbptree_clean(&tree);
+}
+
+static void
+rbptree_count_items(void * pointer, void * data, void * closure)
+{
+  (void) pointer;
+  (void) data;
+  int * count = static_cast<int *>(closure);
+  (*count)++;
+}
+
+BOOST_AUTO_TEST_CASE(rbptree_clean_clears_every_representation)
+{
+  int values[4] = { 0, 1, 2, 3 };
+  for (int length = 0; length <= 3; length++) {
+    cc_rbptree tree;
+    cc_rbptree_init(&tree);
+    for (int i = 0; i < length; i++) {
+      cc_rbptree_insert(&tree, &values[i], &values[3 - i]);
+    }
+
+    cc_rbptree_clean(&tree);
+    BOOST_CHECK_EQUAL(cc_rbptree_size(&tree), 0U);
+
+    int count = 0;
+    cc_rbptree_traverse(&tree, rbptree_count_items, &count);
+    BOOST_CHECK_EQUAL(count, 0);
+
+    cc_rbptree_insert(&tree, &values[0], &values[1]);
+    BOOST_CHECK_EQUAL(cc_rbptree_size(&tree), 1U);
+    BOOST_CHECK(cc_rbptree_remove(&tree, &values[0]));
+    BOOST_CHECK_EQUAL(cc_rbptree_size(&tree), 0U);
+  }
 }
 
 static void

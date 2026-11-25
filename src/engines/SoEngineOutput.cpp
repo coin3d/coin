@@ -260,13 +260,13 @@ SoEngineOutput::setNodeContainer(SoNodeEngine * nodeengine)
 void
 SoEngineOutput::addConnection(SoField * f)
 {
-#if COIN_DEBUG
   if (this->slaves.find(f) != -1) {
+#if COIN_DEBUG
     SoDebugError::postWarning("SoEngineOutput::addConnection",
                               "connection from %p already made", f);
+#endif // COIN_DEBUG
     return;
   }
-#endif // COIN_DEBUG
 
   this->slaves.append(f);
 
@@ -304,13 +304,13 @@ void
 SoEngineOutput::removeConnection(SoField * f)
 {
   int i = this->slaves.find(f);
-#if COIN_DEBUG
   if (i == -1) {
+#if COIN_DEBUG
     SoDebugError::postWarning("SoEngineOutput::removeConnection",
                               "no connection from %p present", f);
+#endif // COIN_DEBUG
     return;
   }
-#endif // COIN_DEBUG
   this->slaves.remove(i);
 
   // SoProtoInstance has some special memory handling. Don't ref
