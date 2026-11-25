@@ -50,6 +50,16 @@ cc_fontspec_construct(cc_font_specification * spec,
 
   cc_string_construct(&spec->style);
 
+  // Colons before the last path separator (e.g. C:) are not style delimiters.
+  // A colon in the filename itself is ambiguous and is treated as a style delimiter.
+  tmpstr = cc_string_get_text(&spec->name);
+  tmpptr = NULL;
+  for (const char * p = tmpstr + std::strlen(tmpstr); p != tmpstr;) {
+    --p;
+    if (*p == '/' || *p == '\\') break;
+    if (*p == ':') tmpptr = p;
+  }
+
   /* handle the previously allowed ':Bold Italic' case for fontconfig */
   /* FIXME: this is an ugly non robust workaround. it would be better
      to agree on an abstract fontname matching schema that is then
@@ -58,7 +68,7 @@ cc_fontspec_construct(cc_font_specification * spec,
   if (cc_fcglue_available()) {
     tmpstr = cc_string_get_text(&spec->name);
 
-    if ((tmpptr = strchr(tmpstr, ':'))) {
+    if (tmpptr) {
       char * tmpptrspace;
       if ((tmpptrspace = (char *) strchr(tmpptr, ' '))) {
         *tmpptrspace = ':';
@@ -71,7 +81,7 @@ cc_fontspec_construct(cc_font_specification * spec,
   /* Check if style is included in the fontname using the
      "family:style" syntax. */
   tmpstr = cc_string_get_text(&spec->name);
-  if ((tmpptr = strchr(tmpstr, ':'))) {
+  if (tmpptr) {
     const int pos = (int)(tmpptr - tmpstr);
     const int namelen = cc_string_length(&spec->name);
 
