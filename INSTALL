@@ -100,6 +100,23 @@ existing applications, see the [SoQt](https://github.com/coin3d/soqt),
 [SoXt](https://github.com/coin3d/soxt) build instructions. Point each binding's
 `CMAKE_PREFIX_PATH` at the Coin installation and any toolkit dependencies.
 
+## Uninstalling a source installation
+
+Use the same build directory that performed the full installation.
+
+```sh
+cmake --build coin-build --target uninstall
+```
+
+With the Unix Makefiles generator, you can also run `make uninstall` in
+`coin-build`. For an install staged with `DESTDIR`, set the same `DESTDIR`
+when running the uninstall target. The target checks this value against the
+last full installation from the build directory before removing any files.
+
+The target removes the files and symbolic links listed in the most recent
+full install manifest. It leaves directories and files outside the manifest
+in place.
+
 ## Optional build features
 
 | CMake option | Purpose |

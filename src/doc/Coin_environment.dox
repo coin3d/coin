@@ -224,6 +224,7 @@
   \li \ref env_COIN_FONT_PATH "COIN_FONT_PATH"
   \li \ref env_COIN_FONTCONFIG_LIBNAME "COIN_FONTCONFIG_LIBNAME"
   \li \ref env_COIN_FORCE_FONTCONFIG_OFF "COIN_FORCE_FONTCONFIG_OFF"
+  \li \ref env_COIN_FORCE_FONTCONFIG_ON "COIN_FORCE_FONTCONFIG_ON"
   \li \ref env_COIN_FREETYPE2_LIBNAME "COIN_FREETYPE2_LIBNAME"
   \li \ref env_COIN_FORCE_FREETYPE_OFF "COIN_FORCE_FREETYPE_OFF"
   \li \ref env_COIN_FORCE_WIN32FONTS_OFF "COIN_FORCE_WIN32FONTS_OFF"
@@ -519,12 +520,20 @@
 /*!
   \var EnvironmentVariable COIN_FORCE_FONTCONFIG_OFF
 
-  In case you intend to use your application on systems where the
-  \e Fontconfig library is expected to be not installed you
-  should not make use of \e Fontconfig's font pattern syntax.
+  Set this variable to a value &gt; 0 to disable Fontconfig, even if
+  \ref env_COIN_FORCE_FONTCONFIG_ON "COIN_FORCE_FONTCONFIG_ON" or \ref env_COIN_FONTCONFIG_LIBNAME "COIN_FONTCONFIG_LIBNAME" is set.
 
-  If this environment variable is set to a value &gt; 0, the usage of
-  \e Fontconfig can be prevented.
+  \ingroup coin_envvars
+*/
+
+/*!
+  \var EnvironmentVariable COIN_FORCE_FONTCONFIG_ON
+
+  On macOS and Windows, Coin uses native font discovery instead of FontConfig
+  by default. Set this variable to a value &gt; 0 or set \ref env_COIN_FONTCONFIG_LIBNAME "COIN_FONTCONFIG_LIBNAME"
+  to a nonempty value to use Fontconfig if available. On other platforms,
+  Coin uses Fontconfig if available without either variable.
+  \ref env_COIN_FORCE_FONTCONFIG_OFF "COIN_FORCE_FONTCONFIG_OFF" takes precedence.
 
   \ingroup coin_envvars
 */

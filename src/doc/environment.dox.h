@@ -313,6 +313,11 @@ extern EnvironmentVariable COIN_FORCE_AGL;
  * \ingroup coin_envvars
  */
 extern EnvironmentVariable COIN_FORCE_FONTCONFIG_OFF;
+/** \brief The \c COIN_FORCE_FONTCONFIG_ON environment variable.
+ * \anchor env_COIN_FORCE_FONTCONFIG_ON
+ * \ingroup coin_envvars
+ */
+extern EnvironmentVariable COIN_FORCE_FONTCONFIG_ON;
 /** \brief The \c COIN_FORCE_FREETYPE_OFF environment variable.
  * \anchor env_COIN_FORCE_FREETYPE_OFF
  * \ingroup coin_envvars

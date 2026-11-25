@@ -73,14 +73,17 @@
 
 #include <cassert>
 
-#define COIN_ALLOW_CC_HASH /* Hack to get around include protection
-                              for obsoleted ADT. */
-#include <Inventor/C/base/hash.h>
-#undef COIN_ALLOW_CC_HASH
+#include "base/dict.h"
+#include "base/oomp.h"
 #include <Inventor/lists/SbPList.h>
-#include <Inventor/C/base/memalloc.h>
 
-#include "SbBasicP.h"
+// Keep the historical private handle type in the installed header. The
+// stored pointer is opaque and is only dereferenced as its actual backend.
+static cc_dict *
+sbdict_backend(cc_hash * handle)
+{
+  return reinterpret_cast<cc_dict *>(handle);
+}
 
 // *************************************************************************
 
@@ -88,16 +91,18 @@
   Constructor with \a entries specifying the initial number of buckets
   in the hash list -- so it need to be larger than 0. Other than this,
   no special care needs to be taken in choosing the value since it is
-  always rounded up to the nearest power of two.
+  rounded up to a suitable prime number.
 */
 SbDict::SbDict(const int entries)
 {
   assert(entries > 0);
-  this->hashtable = cc_hash_construct(entries, 0.75f);
+  this->hashtable = reinterpret_cast<cc_hash *>(cc_dict_construct(entries, 0.75f));
+  if (this->hashtable == NULL) coin_oom_abort("SbDict constructor");
 }
 
 /*!
-  Copy constructor.
+  Makes a shallow copy of the entries, using the default hash function.
+  The custom hash function of the source is not copied.
 */
 SbDict::SbDict(const SbDict & from)
 {
@@ -110,7 +115,7 @@ SbDict::SbDict(const SbDict & from)
 */
 SbDict::~SbDict()
 {
-  cc_hash_destruct(this->hashtable);
+  cc_dict_destruct(sbdict_backend(this->hashtable));
 }
 
 extern "C" {
@@ -130,17 +135,22 @@ copyval(SbDictKeyType key, void * value, void * data)
 
 /*!
   Make a shallow copy of the contents of dictionary \a from into this
-  dictionary.
+  dictionary. The values remain non-owning pointers. As with the copy
+  constructor, the default hash function is used. Self-assignment preserves
+  the entries and the current hash function without rebuilding the table.
 */
 SbDict &
 SbDict::operator=(const SbDict & from)
 {
+  if (this == &from) return *this;
   if (this->hashtable) {
     // clear old values
     this->clear();
-    cc_hash_destruct(this->hashtable);
+    cc_dict_destruct(sbdict_backend(this->hashtable));
   }
-  this->hashtable = cc_hash_construct(cc_hash_get_num_elements(from.hashtable), 0.75f);
+  this->hashtable = reinterpret_cast<cc_hash *>(cc_dict_construct(
+    cc_dict_get_num_elements(sbdict_backend(from.hashtable)), 0.75f));
+  if (this->hashtable == NULL) coin_oom_abort("SbDict assignment");
   from.applyToAll(copyval, this);
   return *this;
 }
@@ -151,7 +161,7 @@ SbDict::operator=(const SbDict & from)
 void
 SbDict::clear(void)
 {
-  cc_hash_clear(this->hashtable);
+  cc_dict_clear(sbdict_backend(this->hashtable));
 }
 
 /*!
@@ -160,23 +170,29 @@ SbDict::clear(void)
 
   If \a key does not exist in the dictionary, a new entry
   is created and \c TRUE is returned. Otherwise, the generic user
-  data is changed to \a value, and \c FALSE is returned.
+  data is changed to \a value, and \c FALSE is returned. Failure to allocate
+  a mandatory entry terminates with a diagnostic. Optional growth failure
+  preserves the newly inserted entry. If a custom hash throws during growth,
+  the exception propagates with that entry still present in the valid table.
 */
 SbBool
 SbDict::enter(const Key key, void * const value)
 {
-  return cc_hash_put(this->hashtable, key, value);
+  const cc_dict_put_result result =
+    cc_dict_try_put(sbdict_backend(this->hashtable), key, value);
+  if (result == CC_DICT_PUT_FAILED) coin_oom_abort("SbDict::enter");
+  return result == CC_DICT_PUT_INSERTED;
 }
 
 /*!
   Searches for \a key in the dictionary. If an entry with this
   key exists, \c TRUE is returned and the entry value is returned
-  in \a value. Otherwise, \c FALSE is returned.
+  in \a value. Otherwise, \c FALSE is returned and \a value is unchanged.
 */
 SbBool
 SbDict::find(const Key key, void *& value) const
 {
-  return cc_hash_get(this->hashtable, key, &value);
+  return cc_dict_get(sbdict_backend(this->hashtable), key, &value);
 }
 
 /*!
@@ -186,31 +202,33 @@ SbDict::find(const Key key, void *& value) const
 SbBool
 SbDict::remove(const Key key)
 {
-  return cc_hash_remove(this->hashtable, key);
+  return cc_dict_remove(sbdict_backend(this->hashtable), key);
 }
 
 
-// needed to support the extra applyToAll function. The actual
-// function pointer is supplied as the closure pointer, and we just
-// call that function from our dummy callback. This is needed since
-// cc_hash only supports one apply function type.
+// Bridge the no-data overload through a stack-local closure. No function
+// pointer is converted to an object pointer; nested traversals are independent.
+struct SbDictApplyClosure {
+  SbDictApplyFunc * callback;
+};
 extern "C" {
-typedef void sbdict_dummy_apply_func(SbDict::Key, void *);
-
 static void
 sbdict_dummy_apply(SbDict::Key key, void * value, void * closure)
 {
-  sbdict_dummy_apply_func * func = (sbdict_dummy_apply_func*) closure;
-  func(key, value);
+  SbDictApplyClosure * data = static_cast<SbDictApplyClosure *>(closure);
+  data->callback(key, value);
 }
 }
 /*!
-  Applies \a rtn to all entries in the dictionary.
+  Applies \a rtn to all entries in the dictionary, without a guaranteed
+  order. The callback may read entries and remove its current entry; it must
+  not otherwise mutate or destroy this dictionary. Exceptions propagate.
 */
 void
 SbDict::applyToAll(SbDictApplyFunc * rtn) const
 {
-  cc_hash_apply(this->hashtable, sbdict_dummy_apply, function_to_object_cast<void *>(rtn));
+  SbDictApplyClosure closure = { rtn };
+  cc_dict_apply(sbdict_backend(this->hashtable), sbdict_dummy_apply, &closure);
 }
 
 /*!
@@ -219,7 +237,7 @@ SbDict::applyToAll(SbDictApplyFunc * rtn) const
 void
 SbDict::applyToAll(SbDictApplyDataFunc * rtn, void * data) const
 {
-  cc_hash_apply(this->hashtable, static_cast<cc_hash_apply_func *>(rtn), data);
+  cc_dict_apply(sbdict_backend(this->hashtable), static_cast<cc_dict_apply_func *>(rtn), data);
 }
 
 typedef struct {
@@ -240,7 +258,11 @@ sbdict_makeplist_cb(SbDict::Key key, void * value, void * closure)
 } // extern "C"
 
 /*!
-  Creates lists with all entries in the dictionary.
+  Appends all entries to \a keys and \a values, preserving their existing
+  contents. Appended keys and values correspond by position, without a
+  guaranteed order. Keys are represented as pointer-sized values. If an
+  append throws, both lists regain their original lengths and contents;
+  their allocated capacities may have grown.
 */
 void
 SbDict::makePList(SbPList & keys, SbPList & values)
@@ -249,12 +271,27 @@ SbDict::makePList(SbPList & keys, SbPList & values)
   applydata.keys = &keys;
   applydata.values = &values;
 
-  cc_hash_apply(this->hashtable, static_cast<cc_hash_apply_func *>(sbdict_makeplist_cb), &applydata);
+  const int keylength = keys.getLength();
+  const int valuelength = values.getLength();
+  try {
+    cc_dict_apply(sbdict_backend(this->hashtable), sbdict_makeplist_cb, &applydata);
+  }
+  catch (...) {
+    keys.truncate(keylength);
+    values.truncate(valuelength);
+    throw;
+  }
 }
 
 /*!
   Sets a new hashing function for this dictionary. Default
-  hashing function just returns the key.
+  hashing function just returns the key. Passing NULL restores it.
+
+  Existing entries remain accessible after changing the hash function.
+  If allocating replacement storage fails, the previous function and
+  entries remain unchanged. A hash exception also preserves the previous
+  function and chains and propagates. Hash callbacks must be stable and
+  must not mutate this dictionary.
 
   If you find that items entered into the dictionary seems to make
   clusters in only a few buckets, you should try setting a hashing
@@ -267,5 +304,5 @@ SbDict::makePList(SbPList & keys, SbPList & values)
 void
 SbDict::setHashingFunction(SbDictHashingFunc * func)
 {
-  cc_hash_set_hash_func(this->hashtable, static_cast<cc_hash_func *>(func));
+  cc_dict_set_hash_func(sbdict_backend(this->hashtable), static_cast<cc_dict_hash_func *>(func));
 }
