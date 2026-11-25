@@ -37,6 +37,12 @@ is the term we use on the larger group of libraries that all fall
 under the same license as Coin.  Coin is the core of Coin3D.
 
 
+## Using Coin with CMake
+
+The [standalone CMake example](examples/cmake-consumer) shows how to build
+a C++ application against an installed Coin package.
+
+
 ## Source Code and Binary Compatibility
 
 Coin is one of three Open Inventor implementations.  All
