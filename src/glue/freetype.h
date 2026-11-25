@@ -366,6 +366,7 @@ void cc_ftglue_FT_Done_FreeType(void * library);
 
 FT_Error cc_ftglue_FT_New_Face(void * library, const char * filepathname, long faceindex, FT_Face * face);
 FT_Error cc_ftglue_FT_Done_Face(void * face);
+const char * cc_ftglue_FT_Get_Postscript_Name(FT_Face face);
 FT_Error cc_ftglue_FT_Select_Charmap(FT_Face face, int encoding);
 FT_Error cc_ftglue_FT_Set_Char_Size(FT_Face face, long width, long height, unsigned int hres, unsigned int vres);
 void cc_ftglue_FT_Set_Transform(FT_Face face, FT_Matrix * matrix, FT_Vector * delta);

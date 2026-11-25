@@ -152,6 +152,9 @@ public:
   SbName fromfield, tofield;
 };
 
+// Retain the exported specialization independently of inlining decisions.
+template void SbList<SoOutputROUTE>::grow(const int);
+
 class SoOutputROUTEList : public SbList<SoOutputROUTE> {
 public:
   SoOutputROUTEList(void) : SbList<SoOutputROUTE>() { }
