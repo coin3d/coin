@@ -683,3 +683,9 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   set_tests_properties(SoText2ExtendedRenderingBuiltinFont PROPERTIES
     ENVIRONMENT "COIN_FORCE_FREETYPE_OFF=1" SKIP_RETURN_CODE 77 TIMEOUT 30)
 endif()
+
+# Source-over blending must not square the stored alpha (offscreen/thumbnail readback).
+add_executable(SourceOverAlphaTest SourceOverAlphaTest.cpp)
+target_link_libraries(SourceOverAlphaTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+add_test(NAME SourceOverAlpha COMMAND SourceOverAlphaTest)
+set_tests_properties(SourceOverAlpha PROPERTIES SKIP_RETURN_CODE 77 TIMEOUT 60)
