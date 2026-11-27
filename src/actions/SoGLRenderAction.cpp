@@ -659,6 +659,7 @@ public:
   int numpasses;
   SbBool internal_multipass;
   SoGLRenderAction::TransparencyType transparencytype;
+  SbBool sortedlayersblendfallback = FALSE;
   SbBool smoothing;
   SbBool passupdate;
   SoGLRenderPassCB * passcallback;
@@ -1052,8 +1053,9 @@ SoGLRenderAction::getAbortCallback(SoGLRenderAbortCB * & func_out,
 void
 SoGLRenderAction::setTransparencyType(const TransparencyType type)
 {
-  if (PRIVATE(this)->transparencytype != type) {
+  if (PRIVATE(this)->transparencytype != type || PRIVATE(this)->sortedlayersblendfallback) {
     PRIVATE(this)->transparencytype = type;
+    PRIVATE(this)->sortedlayersblendfallback = FALSE;
     PRIVATE(this)->needglinit = TRUE;
   }
 }
@@ -1492,7 +1494,7 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
     SoLazyElement::enableBlending(thestate, GL_SRC_ALPHA, GL_ONE);
     return FALSE;
   case SoGLRenderAction::BLEND:
-    SoLazyElement::enableBlending(thestate, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    PRIVATE(this)->setupBlending(thestate, transptype);
     return FALSE;
   case SoGLRenderAction::DELAYED_ADD:
   case SoGLRenderAction::DELAYED_BLEND:
@@ -2093,6 +2095,7 @@ SoGLRenderActionP::renderSingle(SoNode * node)
 
       // Do regular SORTED_OBJECT_BLEND if sorted layers blend is unsupported
       this->transparencytype = SoGLRenderAction::SORTED_OBJECT_BLEND;
+      this->sortedlayersblendfallback = TRUE;
       render(node); // Render again using the fallback transparency type.
     }
 
@@ -2222,12 +2225,22 @@ SoGLRenderActionP::renderSingle(SoNode * node)
 void
 SoGLRenderActionP::setupBlending(SoState * state, const SoGLRenderAction::TransparencyType transptype)
 {
+  if (transptype == SoGLRenderAction::SORTED_OBJECT_BLEND && this->sortedlayersblendfallback) {
+    // Preserve the legacy alpha equation of the sorted-layers fallback.
+    SoLazyElement::enableBlending(state, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    return;
+  }
 
   switch (transptype) {
   case SoGLRenderAction::BLEND:
   case SoGLRenderAction::DELAYED_BLEND:
-  case SoGLRenderAction::WEIGHTED_BLEND:
   case SoGLRenderAction::SORTED_OBJECT_BLEND:
+    // Source-over RGB uses the source alpha as a weight. The alpha channel
+    // already contains that value, so applying the weight again squares it.
+    SoLazyElement::enableSeparateBlending(state, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,
+                                         GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    break;
+  case SoGLRenderAction::WEIGHTED_BLEND:
   case SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND:
     SoLazyElement::enableBlending(state, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     break;
