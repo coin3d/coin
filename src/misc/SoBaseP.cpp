@@ -217,9 +217,12 @@ SoBase::PImpl::readReference(SoInput * in, SoBase *& base)
     return FALSE;
   }
 
-  // This code to handles cases where USE ref name is
-  // immediately followed by a "." and a fieldname, as can occur
-  // when reading field-to-field connections.
+  SbName delimitedref;
+  SbBool hascommadelimiter = FALSE;
+
+  // Handle a USE reference immediately followed by either a "." and a
+  // field name, as in field-to-field connections, or a trailing comma
+  // delimiter, as emitted for shared nodes inside multiple-value node fields.
   if (!in->isBinary()) {
     SbString refstr = refname.getString();
 
@@ -231,15 +234,34 @@ SoBase::PImpl::readReference(SoInput * in, SoBase *& base)
     // then we are in trouble, but so is Open Inventor.
     // This is due to the ability for "}" to be a character
     // in the name of a node.
-    const size_t index = strcspn(refstr.getString(), ".");
-    SbString startstr = refstr.getSubString(0, (int)(index - 1));
-    SbString endstr = refstr.getSubString((int)index);
-    in->putBack(endstr.getString());
-
-    refname = startstr;
+    const char * refchars = refstr.getString();
+    const size_t reflength = refstr.getLength();
+    const size_t index = strcspn(refchars, ".");
+    if (index < reflength) {
+      SbString startstr = refstr.getSubString(0, (int)(index - 1));
+      SbString endstr = refstr.getSubString((int)index);
+      in->putBack(endstr.getString());
+      refname = startstr;
+    }
+    else if (reflength > 0 && refchars[reflength - 1] == ',') {
+      // A comma can also be part of a legal SoBase name. Preserve the
+      // complete token for the first lookup and retain a delimiter-stripped
+      // fallback only if that exact reference does not exist.
+      SbString startstr = reflength > 1
+        ? refstr.getSubString(0, (int)(reflength - 2))
+        : SbString("");
+      delimitedref = startstr;
+      hascommadelimiter = TRUE;
+    }
   }
 
-  if ((base = in->findReference(refname)) == NULL) {
+  base = in->findReference(refname);
+  if (base == NULL && hascommadelimiter) {
+    refname = delimitedref;
+    in->putBack(",");
+    base = in->findReference(refname);
+  }
+  if (base == NULL) {
     SoReadError::post(in, "Unknown reference \"%s\"", refname.getString());
     return FALSE;
   }
