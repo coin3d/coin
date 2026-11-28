@@ -754,6 +754,15 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   endforeach()
 endif()
 
+# Public CPU-only primitive/detail regressions; no GL context or display needed.
+add_executable(CoinLineDetailTest LineDetailTest.cpp)
+target_link_libraries(CoinLineDetailTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CoinLineDetailTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+add_test(NAME LineDetails_native COMMAND CoinLineDetailTest native)
+add_test(NAME LineDetails_assembler COMMAND CoinLineDetailTest assembler)
+
 # Offscreen text must contribute bounds before camera fitting.
 add_executable(CoinSoText2BoundsTest SoText2BoundsTest.cpp)
 target_link_libraries(CoinSoText2BoundsTest PRIVATE Coin)

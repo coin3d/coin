@@ -313,7 +313,9 @@ void
 soshape_primdata::copyVertex(const int src, const int dest)
 {
   this->vertsArray[dest] = this->vertsArray[src];
-  if (this->faceDetail) {
+  if (this->faceDetail || this->lineDetail) {
+    // Keep a reused strip vertex's point detail aligned with its position
+    // and attributes after assembling the previous line or face detail.
     this->pointDetails[dest] = this->pointDetails[src];
     this->vertsArray[dest].setDetail(&this->pointDetails[dest]);
   }
