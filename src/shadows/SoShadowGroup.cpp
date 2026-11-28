@@ -1451,6 +1451,7 @@ SoShadowGroupP::setVertexShader(SoState * state)
   SbBool dirlight = FALSE;
   SbBool pointlight = FALSE;
   SbBool spotlight = FALSE;
+  SbBool dirspot = FALSE;
   SbString str;
 
   gen.addMainStatement("vec4 ecPosition = gl_ModelViewMatrix * gl_Vertex;\n"
@@ -1517,6 +1518,12 @@ SoShadowGroupP::setVertexShader(SoState * state)
         dirlight = TRUE;
         addDirectionalLight(gen, cache->lightid);
       }
+      else if (static_cast<SoSpotLight *>(cache->light)->dropOffRate.getValue() < 0.0f) {
+        // Negative drop-off changes the shadow light's illumination only;
+        // its perspective shadow map and radial VSM distance stay unchanged.
+        dirspot = TRUE;
+        addDirSpotLight(gen, cache->lightid);
+      }
       else {
         spotlight = TRUE;
         addSpotLight(gen, cache->lightid);
@@ -1532,6 +1539,7 @@ SoShadowGroupP::setVertexShader(SoState * state)
   // Shadow lights can require these functions even without ordinary lights.
   if (dirlight) gen.addNamedFunction(SbName("lights/DirectionalLight"), FALSE);
   if (spotlight) gen.addNamedFunction(SbName("lights/SpotLight"), FALSE);
+  if (dirspot) gen.addNamedFunction(SbName("lights/DirSpotLight"), FALSE);
   int32_t fogType = this->getFog(state);
 
   switch (fogType) {
@@ -2037,7 +2045,11 @@ SoShadowLightCache::createVSMProgram(void)
   SbBool dirlight = this->light->isOfType(SoDirectionalLight::getClassTypeId());
 
   vgen.addDeclaration("varying vec3 light_vec;", FALSE);
+  // User clip planes use the light pass's eye coordinates, also in a
+  // light-owned shadowMapScene. SO_GL_GLSL_CLIP_VERTEX_HW is a hardware
+  // performance heuristic, not a GLSL 1.20 clipping availability test.
   vgen.addMainStatement("light_vec = (gl_ModelViewMatrix * gl_Vertex).xyz;\n"
+                        "gl_ClipVertex = gl_ModelViewMatrix * gl_Vertex;\n"
                         "gl_Position = ftransform();");
 
   vshader->sourceProgram = vgen.getShaderProgram();
@@ -2151,6 +2163,23 @@ void
 SoShadowGroupP::GLRender(SoGLRenderAction * action, const SbBool inpath)
 {
   SoState * state = action->getState();
+
+  // Separators detect this group structurally before opening a render list.
+  // Also prevent publication by other cache owners which traverse the group.
+  // Invalidation alone cannot make an already open GL_COMPILE execute FBO
+  // commands immediately; enclosing custom cache nodes have that obligation.
+  SoCacheElement::invalidate(state);
+  SoGLCacheContextElement::shouldAutoCache(state,
+                                         SoGLCacheContextElement::DONT_AUTO_CACHE);
+
+  // In an ancestor's map this group is only a caster subtree. Starting
+  // another shadow pass here would replace the ancestor's VSM program.
+  if (SoShapeStyleElement::get(state)->getFlags() & SoShapeStyleElement::SHADOWMAP) {
+    if (inpath) PUBLIC(this)->SoSeparator::GLRenderInPath(action);
+    else PUBLIC(this)->SoSeparator::GLRenderBelowPath(action);
+    return;
+  }
+
   const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
 
   // FIXME: should store results in a "context -> supported" map.  -mortene.
@@ -2183,9 +2212,7 @@ SoShadowGroupP::GLRender(SoGLRenderAction * action, const SbBool inpath)
   }
 
   SoShadowStyleElement::set(state, PUBLIC(this), SoShadowStyleElement::CASTS_SHADOW_AND_SHADOWED);
-  SoShapeStyleElement::setShadowMapRendering(state, TRUE);
   this->updateShadowLights(action);
-  SoShapeStyleElement::setShadowMapRendering(state, FALSE);
 
   if (!this->vertexshadercache || !this->vertexshadercache->isValid(state)) {
     this->setVertexShader(state);
@@ -2199,7 +2226,7 @@ SoShadowGroupP::GLRender(SoGLRenderAction * action, const SbBool inpath)
   SoShapeStyleElement::setShadowsRendering(state, TRUE);
   if (inpath) PUBLIC(this)->SoSeparator::GLRenderInPath(action);
   else PUBLIC(this)->SoSeparator::GLRenderBelowPath(action);
-  SoShapeStyleElement::setShadowsRendering(state, FALSE);
+  // Restore the enclosing group's flags and shader enable state together.
   state->pop();
 }
 
@@ -2335,6 +2362,9 @@ SoShadowLightCache::shadowmap_glcallback(void * COIN_UNUSED_ARG(closure), SoActi
 {
   if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
     SoState * state = action->getState();
+    // Mark the action that actually traverses the map, after any RTT state
+    // reset (the pbuffer path can use a different action from the receiver).
+    SoShapeStyleElement::setShadowMapRendering(state, TRUE);
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
     SoTextureQualityElement::set(state, 0.0f);
     SoMaterialBindingElement::set(state, NULL, SoMaterialBindingElement::OVERALL);
