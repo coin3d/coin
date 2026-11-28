@@ -63,6 +63,34 @@ jobs:
           path: cmake_install_dir/
         if: always()
 
+  windows-feature-closure:
+    name: Windows · ${{ matrix.features.label }}
+    runs-on: windows-2022
+    strategy:
+      fail-fast: false
+      matrix:
+        features:
+          - label: VRML97 without JavaScript
+            vrml97: 'ON'
+            javascript: 'OFF'
+          - label: without VRML97
+            vrml97: 'OFF'
+            javascript: 'OFF'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+      - name: Configure feature closure
+        shell: pwsh
+        run: >-
+          cmake -S . -B cmake_feature_build -G "Visual Studio 17 2022" -A x64
+          -DCOIN_BUILD_TESTS=OFF
+          -DHAVE_VRML97=${{ matrix.features.vrml97 }}
+          -DCOIN_HAVE_JAVASCRIPT=${{ matrix.features.javascript }}
+      - name: Build Coin
+        run: cmake --build cmake_feature_build --target Coin --config Release --parallel 2
+
   macos-build:
     name: macOS · legacy renderer ${{ matrix.legacy_renderer.label }}
     runs-on: macos-15
