@@ -297,8 +297,6 @@ extern "C" {
 #endif
 
 static cc_list * gl_instance_created_cblist = NULL;
-static int COIN_MAXIMUM_TEXTURE2_SIZE = -1;
-static int COIN_MAXIMUM_TEXTURE3_SIZE = -1;
 static cc_glglue_offscreen_cb_functions* offscreen_cb = NULL;
 #if defined(HAVE_AGL)
 static int COIN_USE_AGL = -1;
@@ -315,6 +313,36 @@ glglue_resolve_envvar(const char * txt)
 {
   const char * val = coin_getenv(txt);
   return val ? atoi(val) : 0;
+}
+
+struct glglue_texture_size_limits {
+  int texture2;
+  int texture3;
+};
+
+static int
+glglue_parse_texture_size_limit(const char * value)
+{
+  if (value == NULL || value[0] == '\0') return 0;
+
+  int result = 0;
+  for (const char * ptr = value; ptr[0] != '\0'; ptr++) {
+    if (ptr[0] < '0' || ptr[0] > '9') return 0;
+    const int digit = ptr[0] - '0';
+    if (result > (INT_MAX - digit) / 10) return 0;
+    result = result * 10 + digit;
+  }
+  return result > 0 ? result : 0;
+}
+
+static const glglue_texture_size_limits &
+glglue_get_texture_size_limits(void)
+{
+  static const glglue_texture_size_limits limits = {
+    glglue_parse_texture_size_limit(coin_getenv("COIN_MAXIMUM_TEXTURE2_SIZE")),
+    glglue_parse_texture_size_limit(coin_getenv("COIN_MAXIMUM_TEXTURE3_SIZE"))
+  };
+  return limits;
 }
 
 /* Returns a flag which indicates whether or not to allow the use of
@@ -2192,17 +2220,6 @@ cc_glglue_instance(int contextid)
 
   CC_SYNC_BEGIN(cc_glglue_instance);
 
-  /* check environment variables */
-  if (COIN_MAXIMUM_TEXTURE2_SIZE == 0) {
-    const char * env = coin_getenv("COIN_MAXIMUM_TEXTURE2_SIZE");
-    if (env) COIN_MAXIMUM_TEXTURE2_SIZE = atoi(env);
-    else COIN_MAXIMUM_TEXTURE2_SIZE = -1;
-  }
-  if (COIN_MAXIMUM_TEXTURE3_SIZE == 0) {
-    const char * env = coin_getenv("COIN_MAXIMUM_TEXTURE3_SIZE");
-    if (env) COIN_MAXIMUM_TEXTURE3_SIZE = atoi(env);
-    else COIN_MAXIMUM_TEXTURE3_SIZE = -1;
-  }
   check_force_agl();
   check_egl();
 
@@ -4978,12 +4995,14 @@ coin_glglue_is_texture_size_legal(const cc_glglue * glw,
                                   GLenum type,
                                   SbBool mipmap)
  {
+  if (xsize <= 0 || ysize <= 0 || zsize < 0) return FALSE;
+
+  const glglue_texture_size_limits & limits = glglue_get_texture_size_limits();
+  const int maximum = zsize == 0 ? limits.texture2 : limits.texture3;
+  if (maximum > 0 && (xsize > maximum || ysize > maximum || zsize > maximum))
+    return FALSE;
+
   if (zsize == 0) { /* 2D textures */
-    if (COIN_MAXIMUM_TEXTURE2_SIZE > 0) {
-      if (xsize > COIN_MAXIMUM_TEXTURE2_SIZE) return FALSE;
-      if (ysize > COIN_MAXIMUM_TEXTURE2_SIZE) return FALSE;
-      return TRUE;
-    }
     if (cc_glglue_has_2d_proxy_textures(glw)) {
       return proxy_mipmap_2d(xsize, ysize, internalformat, format, type, mipmap);
     }
@@ -4995,12 +5014,6 @@ coin_glglue_is_texture_size_legal(const cc_glglue * glw,
   }
   else { /*  3D textures */
     if (cc_glglue_has_3d_textures(glw)) {
-      if (COIN_MAXIMUM_TEXTURE3_SIZE > 0) {
-        if (xsize > COIN_MAXIMUM_TEXTURE3_SIZE) return FALSE;
-        if (ysize > COIN_MAXIMUM_TEXTURE3_SIZE) return FALSE;
-        if (zsize > COIN_MAXIMUM_TEXTURE3_SIZE) return FALSE;
-        return TRUE;
-      }
       return proxy_mipmap_3d(glw, xsize, ysize, zsize, internalformat, format, type, mipmap);
     }
     else {
