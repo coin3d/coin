@@ -227,6 +227,7 @@ glxglue_get_display(const cc_glglue * currentcontext = NULL)
       cc_debugerror_post("glxglue_init",
                          "Couldn't open NULL display.");
       glxglue_opendisplay_failed = TRUE;
+      return NULL;
     }
     
     glxglue_screen = XScreenNumberOfScreen(

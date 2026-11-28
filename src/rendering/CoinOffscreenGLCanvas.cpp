@@ -452,10 +452,6 @@ CoinOffscreenGLCanvas::getMaxTileSize(void)
   // created every time render() is called in SoOffscreenRenderer
   if (tilesize_cached) return SbVec2s((short)maxtile[0], (short)maxtile[1]);
 
-  tilesize_cached = TRUE; // Flip on first run.
-
-  coin_atexit((coin_atexit_f*) tilesize_cleanup, CC_ATEXIT_NORMAL);
-
   unsigned int width, height;
   cc_glglue_context_max_dimensions(&width, &height);
 
@@ -487,6 +483,10 @@ CoinOffscreenGLCanvas::getMaxTileSize(void)
   // integer type
   maxtile[0] = SbMin(width, (unsigned int)SHRT_MAX);
   maxtile[1] = SbMin(height, (unsigned int)SHRT_MAX);
+  if (maxtile[0] > 0 && maxtile[1] > 0) {
+    tilesize_cached = TRUE;
+    coin_atexit((coin_atexit_f*) tilesize_cleanup, CC_ATEXIT_NORMAL);
+  }
 
   return SbVec2s((short)maxtile[0], (short)maxtile[1]);
 }
