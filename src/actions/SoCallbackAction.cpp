@@ -549,6 +549,7 @@ SoCallbackAction::commonConstructor(void)
   PRIVATE(this)->posttailcallback = NULL;
   PRIVATE(this)->viewportset = FALSE;
   PRIVATE(this)->callbackall = FALSE;
+  PRIVATE(this)->currentnode = NULL;
 }
 
 /*!
@@ -603,6 +604,9 @@ SoCallbackAction::addPostCallback(const SoType type, SoCallbackActionCB * cb,
 /*!
   Set a function \a cb to call before the tail of a path is
   traversed. \a cb will be called with \a userdata.
+
+  Tail callbacks are invoked only for a single SoPath application, at the
+  end of the full path including hidden children.
  */
 void
 SoCallbackAction::addPreTailCallback(SoCallbackActionCB * cb, void * userdata)
@@ -616,6 +620,9 @@ SoCallbackAction::addPreTailCallback(SoCallbackActionCB * cb, void * userdata)
 /*!
   Set a function \a cb to call after the tail of a path has been
   traversed. \a cb will be called with \a userdata.
+
+  Tail callbacks are invoked only for a single SoPath application, at the
+  end of the full path including hidden children.
  */
 void
 SoCallbackAction::addPostTailCallback(SoCallbackActionCB * cb, void * userdata)
@@ -1207,8 +1214,13 @@ SoCallbackAction::invokePreCallbacks(const SoNode * const node)
   }
 
   if (this->getWhatAppliedTo() == SoAction::PATH &&
-      this->getPathAppliedTo()->getTail() == node && PRIVATE(this)->pretailcallback != NULL) {
+      PRIVATE(this)->pretailcallback != NULL &&
+      *this->getPathAppliedTo() == *this->getCurPath()) {
+    const Response previous = PRIVATE(this)->response;
     PRIVATE(this)->response = PRIVATE(this)->pretailcallback->doNodeCallbacks(this, node);
+    if (PRIVATE(this)->response == CONTINUE && previous == PRUNE) {
+      PRIVATE(this)->response = PRUNE;
+    }
     if (PRIVATE(this)->response == SoCallbackAction::ABORT) {
       this->setTerminated(TRUE);
       return;
@@ -1226,6 +1238,7 @@ SoCallbackAction::invokePreCallbacks(const SoNode * const node)
 void
 SoCallbackAction::invokePostCallbacks(const SoNode * const node)
 {
+  PRIVATE(this)->currentnode = const_cast<SoNode *>(node);
   // reset response if previous node was pruned
   if (PRIVATE(this)->response == PRUNE) PRIVATE(this)->response = CONTINUE;
 
@@ -1239,7 +1252,8 @@ SoCallbackAction::invokePostCallbacks(const SoNode * const node)
   }
 
   if (this->getWhatAppliedTo() == SoAction::PATH &&
-      this->getPathAppliedTo()->getTail() == node && PRIVATE(this)->posttailcallback) {
+      PRIVATE(this)->posttailcallback != NULL &&
+      *this->getPathAppliedTo() == *this->getCurPath()) {
     PRIVATE(this)->response = PRIVATE(this)->posttailcallback->doNodeCallbacks(this, node);
     if (PRIVATE(this)->response == SoCallbackAction::ABORT) {
       this->setTerminated(TRUE);
@@ -1340,6 +1354,15 @@ SoCallbackAction::setCurrentNode(SoNode * const node)
 void
 SoCallbackAction::beginTraversal(SoNode * node)
 {
+  // SoAction restores its application metadata after a nested apply(). Keep
+  // this action's current-node context scoped to that application as well.
+  struct RestoreCurrentNode {
+    RestoreCurrentNode(SoNode *& current) : current(current), saved(current) {}
+    ~RestoreCurrentNode() { this->current = this->saved; }
+    SoNode *& current;
+    SoNode * saved;
+  } restorecurrent(PRIVATE(this)->currentnode);
+
   PRIVATE(this)->response = SoCallbackAction::CONTINUE;
   // we set the viewport region element here. This element is not enabled
   // for SoCallbackAction in Inventor, bu we think it should be.
