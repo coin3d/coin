@@ -1,5 +1,8 @@
 var NAVTREEINDEX32 =
 {
+"classSoSFColor.html#afe1a30fbef485d5df05842d50f0969ed":[3,10,52,0],
+"classSoSFColorRGBA.html":[3,10,53],
+"classSoSFColorRGBA.html#a01f835a2899fc93c7897a649655e9e1a":[3,10,53,2],
 "classSoSFColorRGBA.html#a11e4dcc0b7c1b27147cd6437372a113f":[3,10,53,4],
 "classSoSFColorRGBA.html#a191e7eafe1efa66d7278bca01045ecc9":[3,10,53,5],
 "classSoSFColorRGBA.html#a41c616fe1bcbdf794dfd2e1a0f3424e3":[3,10,53,3],
@@ -246,8 +249,5 @@ var NAVTREEINDEX32 =
 "classSoSField.html#a8bcb2c917d24ab3e90078b4e4857ca78":[3,10,58,1],
 "classSoSField.html#aec64dd05099f8ed4ad7b1c89277e9689":[3,10,58,0],
 "classSoSTLFileKit.html":[5,0,678],
-"classSoSTLFileKit.html#a02295699fca40883bc70c0d43161cf92":[5,0,678,8],
-"classSoSTLFileKit.html#a105d80e6cd494830a09e8a9fa2c149cd":[5,0,678,6],
-"classSoSTLFileKit.html#a32b5d92883f1391fb4e45b3c02214d36":[5,0,678,1],
-"classSoSTLFileKit.html#a36356388a7933df5f3b8ce515ed72744":[5,0,678,5]
+"classSoSTLFileKit.html#a02295699fca40883bc70c0d43161cf92":[5,0,678,8]
 };

@@ -1,6 +1,7 @@
 var classSoEngineOutputData =
 [
     [ "SoEngineOutputData", "classSoEngineOutputData.html#abe4afe71d6d314e3504799a6032bfc8a", null ],
+    [ "SoEngineOutputData", "classSoEngineOutputData.html#aa983d491e07f204c11e3f416839f184b", null ],
     [ "SoEngineOutputData", "classSoEngineOutputData.html#aec901cff89d0e11c2c27e298df0816b5", null ],
     [ "SoEngineOutputData", "classSoEngineOutputData.html#a7885d74dbde188c66b854a5198dffde3", null ],
     [ "~SoEngineOutputData", "classSoEngineOutputData.html#a96c3335b6523ee18e2b0dc86c2fbe04b", null ],
@@ -13,5 +14,6 @@ var classSoEngineOutputData =
     [ "getOutput", "classSoEngineOutputData.html#a90205fb72165c8ea404d644ec50c81b0", null ],
     [ "getOutputName", "classSoEngineOutputData.html#ad92ee5c422f228043b6951dd49370584", null ],
     [ "getType", "classSoEngineOutputData.html#af150da391a6efd5d8426f6d63333de23", null ],
+    [ "operator=", "classSoEngineOutputData.html#afc82ff6e680a6216c00936e301b74829", null ],
     [ "readDescriptions", "classSoEngineOutputData.html#a17e578e35ddc73c240f9462d21a1193d", null ]
 ];

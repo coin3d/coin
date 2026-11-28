@@ -1,5 +1,8 @@
 var NAVTREEINDEX20 =
 {
+"classSoGeoSeparator.html#a0445fe419fc0ae6d76e09936ae37260c":[3,15,35,0],
+"classSoGeoSeparator.html#a17244f71fa17e4063a3cfaf256c9d2f7":[3,15,35,5],
+"classSoGeoSeparator.html#a30e3463d34baf52c218dc912fd1031b7":[3,15,35,7],
 "classSoGeoSeparator.html#a66af1d6b171f92497cd89a81dbdb7438":[3,15,35,12],
 "classSoGeoSeparator.html#a689944d8f3051f323b4ed8e7d3b82ee9":[3,15,35,2],
 "classSoGeoSeparator.html#a6ad8ac4cc0b3bdda4390c76692204281":[3,15,35,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX20 =
 "classSoIndexedFaceSet.html#a921050ee3fdd894793debe2df3cc06d7":[3,15,38,6],
 "classSoIndexedFaceSet.html#aa8cba49ffb7d140de49efd7c50f112b0":[3,15,38,1],
 "classSoIndexedFaceSet.html#aceac32ff63d8509511fdf2571b86e097":[3,15,38,5],
-"classSoIndexedFaceSet.html#adfce86bfb10b3f35d4db1788049e02fc":[3,15,38,2],
-"classSoIndexedLineSet.html":[3,15,39],
-"classSoIndexedLineSet.html#a1200e4969ff49ec2891861d0637b24f6":[3,15,39,4],
-"classSoIndexedLineSet.html#a164d8a8b011e18eee1982abd1b581b20":[3,15,39,0]
+"classSoIndexedFaceSet.html#adfce86bfb10b3f35d4db1788049e02fc":[3,15,38,2]
 };

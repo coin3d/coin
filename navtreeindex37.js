@@ -1,5 +1,8 @@
 var NAVTREEINDEX37 =
 {
+"classSoTextDetail.html#a70e4793aa6ec2f2f6c4f8b1cbcea1f64":[3,4,9,7],
+"classSoTextDetail.html#a73ebebb671faff9ca13b98208c25d1ee":[3,4,9,4],
+"classSoTextDetail.html#ad3c99a6b8153e9bb0ae41919f35917da":[3,4,9,9],
 "classSoTextDetail.html#ad67d72f1c4caeb0325f248bb80f270d8":[3,4,9,2],
 "classSoTextDetail.html#adcafe65ce607fb881d09dcf18202fa88":[3,4,9,6],
 "classSoTextDetail.html#aec56971dfd8b2645469a22ed434331c5":[3,4,9,5],
@@ -246,8 +249,5 @@ var NAVTREEINDEX37 =
 "classSoTextureCoordinateNormalMap.html#ae65c2028baa4c36d0ccc22a774639f2b":[3,15,117,1],
 "classSoTextureCoordinateNormalMap.html#afd46bc254594ecdda9877d8358140dfe":[3,15,117,6],
 "classSoTextureCoordinateObject.html":[3,15,118],
-"classSoTextureCoordinateObject.html#a0911a6422d92e9ad9e32303828747b8f":[3,15,118,5],
-"classSoTextureCoordinateObject.html#a0f9b9ab737ece68bd882835cc5a18259":[3,15,118,6],
-"classSoTextureCoordinateObject.html#a1ad329ef3b0b8489effc5483b5abc1d6":[3,15,118,4],
-"classSoTextureCoordinateObject.html#a21289737ccc5e3cd9fd31c34bce56e7d":[3,15,118,1]
+"classSoTextureCoordinateObject.html#a0911a6422d92e9ad9e32303828747b8f":[3,15,118,5]
 };

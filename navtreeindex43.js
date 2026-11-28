@@ -1,9 +1,12 @@
 var NAVTREEINDEX43 =
 {
+"classSoVRMLSound.html#a7f092c629c91db1c56c5c868c00f5217":[3,20,3,16],
+"classSoVRMLSound.html#a9209c110ffd5cf1226fd59b9a8cbba7a":[3,20,3,13],
+"classSoVRMLSound.html#a9209c110ffd5cf1226fd59b9a8cbba7a":[3,23,41,13],
 "classSoVRMLSound.html#a992e2e478fa2e4c3988df8ce8d1a6f09":[3,20,3,2],
 "classSoVRMLSound.html#a992e2e478fa2e4c3988df8ce8d1a6f09":[3,23,41,2],
-"classSoVRMLSound.html#a9f078df5cfede11fbdd68236a10e7b08":[3,23,41,9],
 "classSoVRMLSound.html#a9f078df5cfede11fbdd68236a10e7b08":[3,20,3,9],
+"classSoVRMLSound.html#a9f078df5cfede11fbdd68236a10e7b08":[3,23,41,9],
 "classSoVRMLSound.html#aa6974aef0559a8727b25d399dd78d5f3":[3,23,41,20],
 "classSoVRMLSound.html#aa6974aef0559a8727b25d399dd78d5f3":[3,20,3,20],
 "classSoVRMLSound.html#aac5a9efd4b80a91c0864daa717689b73":[3,23,41,8],
@@ -246,8 +249,5 @@ var NAVTREEINDEX43 =
 "classSoVRMLVertexShape.html#aad66b7898eda09b9dd3a163ad48cb15b":[5,0,827,9],
 "classSoVRMLVertexShape.html#ab1d787448cccf69b1093b5c1eda21011":[5,0,827,2],
 "classSoVRMLVertexShape.html#ab5de75bbe9b3c7b7eb410a97ec1c754b":[5,0,827,5],
-"classSoVRMLVertexShape.html#ac09f301ddf1b2c083d89852f3fec000d":[5,0,827,8],
-"classSoVRMLVertexShape.html#ad26f29ad789978575ad061a8a6c7b3e2":[5,0,827,21],
-"classSoVRMLVertexShape.html#ad7f2aa82c7420b14572b654f35d38e8e":[5,0,827,13],
-"classSoVRMLVertexShape.html#ae840f9b64433ed85ef747cf4f9706745":[5,0,827,0]
+"classSoVRMLVertexShape.html#ac09f301ddf1b2c083d89852f3fec000d":[5,0,827,8]
 };

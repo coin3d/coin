@@ -1,5 +1,8 @@
 var NAVTREEINDEX26 =
 {
+"classSoMaterialBundle.html#a763e84e4ab3243e4ea630ea4cfb92c27":[3,2,1,1],
+"classSoMaterialBundle.html#afab2c71eb1bfb1500ecc3c0c8a34998b":[3,2,1,4],
+"classSoMatrixTransform.html":[3,15,59],
 "classSoMatrixTransform.html#a00818766cf0cee69d854b68154d3d4d5":[3,15,59,3],
 "classSoMatrixTransform.html#a0ca07022644e76405d7e244ed0587351":[3,15,59,8],
 "classSoMatrixTransform.html#a107c595c54dbe1b3fbd7e88f852472fa":[3,15,59,7],
@@ -246,8 +249,5 @@ var NAVTREEINDEX26 =
 "classSoNodeKitListPart.html#af256da66f48442e61a8903ea83f494a2":[3,14,7,18],
 "classSoNodeKitListPart.html#afb6680be8c94fd93c6eadcd2b4046ed7":[3,14,7,10],
 "classSoNodeKitPath.html":[3,14,8],
-"classSoNodeKitPath.html#a0409937d795db96449e75dd65fb1647f":[3,14,8,2],
-"classSoNodeKitPath.html#a06c0d0f1b89e8e8d353940682bd3ca78":[3,14,8,8],
-"classSoNodeKitPath.html#a0f2b9d6aff34f7fec50b5aebe27fe554":[3,14,8,1],
-"classSoNodeKitPath.html#a1c944ad83c395fb0cbb6c4248cbe663b":[3,14,8,3]
+"classSoNodeKitPath.html#a0409937d795db96449e75dd65fb1647f":[3,14,8,2]
 };

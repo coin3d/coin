@@ -1,5 +1,8 @@
 var NAVTREEINDEX18 =
 {
+"classSoFont.html#a1665809f7a386fd13f737ef436ddb2ca":[3,15,29,0],
+"classSoFont.html#a2fbbb8658e0e350e5d4af5e395af9fa6":[3,15,29,3],
+"classSoFont.html#a65641fa6b16f9e5ad46db2adb7a370bf":[3,15,29,6],
 "classSoFont.html#a6e05868c24cbaeeee3f8e2e89e024a5e":[3,15,29,10],
 "classSoFont.html#a7b95020fbcc5d861ba0cc7a5bc24c9bc":[3,15,29,9],
 "classSoFont.html#a8167d0d1d2cbf6f63fae8e2cffb94008":[3,15,29,5],
@@ -246,8 +249,5 @@ var NAVTREEINDEX18 =
 "classSoGLMultiTextureCoordinateElement.html#a4d016fb4912b068c8f87a062ae42da5a":[3,6,43,1],
 "classSoGLMultiTextureCoordinateElement.html#a6eef717dfcb5fb7ec702f54c616bf59f":[3,6,43,8],
 "classSoGLMultiTextureCoordinateElement.html#a815f83100c8291527158599f44646301":[3,6,43,5],
-"classSoGLMultiTextureCoordinateElement.html#a8ce55da87c09c436be51de780f780565":[3,6,43,6],
-"classSoGLMultiTextureCoordinateElement.html#a97cc3237fa9cc9d3bfdcd79199a16920":[3,6,43,9],
-"classSoGLMultiTextureCoordinateElement.html#aad86b8acba7dcac79894b94a4f4494b2":[3,6,43,10],
-"classSoGLMultiTextureCoordinateElement.html#ac69838447ff8566f460b54293d6fdc54":[3,6,43,11]
+"classSoGLMultiTextureCoordinateElement.html#a8ce55da87c09c436be51de780f780565":[3,6,43,6]
 };

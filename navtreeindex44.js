@@ -1,5 +1,8 @@
 var NAVTREEINDEX44 =
 {
+"classSoVRMLVertexShape.html#ad26f29ad789978575ad061a8a6c7b3e2":[5,0,827,21],
+"classSoVRMLVertexShape.html#ad7f2aa82c7420b14572b654f35d38e8e":[5,0,827,13],
+"classSoVRMLVertexShape.html#ae840f9b64433ed85ef747cf4f9706745":[5,0,827,0],
 "classSoVRMLVertexShape.html#aedad4ad2668360229fc6a50b500101d8":[5,0,827,15],
 "classSoVRMLVertexShape.html#af44bfc4297c05bb27eb768515967c6bf":[5,0,827,16],
 "classSoVRMLViewpoint.html":[3,23,52],
@@ -246,8 +249,5 @@ var NAVTREEINDEX44 =
 "classSoViewportRegionElement.html#af11021d39847b8bfbe4f42e9033cc2d9":[3,6,108,6],
 "classSoWWWAnchor.html":[3,15,135],
 "classSoWWWAnchor.html#a12db930014d56bccc298ad1a687bdf2c":[3,15,135,10],
-"classSoWWWAnchor.html#a27ef3223b6f7ce1396a6228121959818":[3,15,135,3],
-"classSoWWWAnchor.html#a2a4580c6e9b0c8fab426187220cdd189":[3,15,135,0],
-"classSoWWWAnchor.html#a2a4580c6e9b0c8fab426187220cdd189a32bf6285508c67925bc28e7a42943bac":[3,15,135,0,0],
-"classSoWWWAnchor.html#a2a4580c6e9b0c8fab426187220cdd189aec04d56e0e9fcf51b054b4310703b8b1":[3,15,135,0,1]
+"classSoWWWAnchor.html#a27ef3223b6f7ce1396a6228121959818":[3,15,135,3]
 };

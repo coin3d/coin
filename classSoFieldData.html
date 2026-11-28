@@ -169,6 +169,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1ef4daac41ff92d160fc604e9fb19b1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5c694d12ffe4d8db3ef5efa8b45916c" id="r_ae5c694d12ffe4d8db3ef5efa8b45916c"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae5c694d12ffe4d8db3ef5efa8b45916c">isSame</a> (<a class="el" href="classSbList.html">const</a> <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *<a class="el" href="classSbList.html">c1</a>, <a class="el" href="classSbList.html">const</a> <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *<a class="el" href="classSbList.html">c2</a>) <a class="el" href="classSbList.html">const</a></td></tr>
 <tr class="separator:ae5c694d12ffe4d8db3ef5efa8b45916c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abac9b6e158308cd854cc21388375b30d" id="r_abac9b6e158308cd854cc21388375b30d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSoFieldData.html">SoFieldData</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abac9b6e158308cd854cc21388375b30d">operator=</a> (<a class="el" href="classSbList.html">const</a> <a class="el" href="classSoFieldData.html">SoFieldData</a> &amp;<a class="el" href="classSbList.html">fd</a>)</td></tr>
+<tr class="separator:abac9b6e158308cd854cc21388375b30d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af054bf68426876f5f454c4bf9cd695fb" id="r_af054bf68426876f5f454c4bf9cd695fb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSbList.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af054bf68426876f5f454c4bf9cd695fb">overlay</a> (<a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *to, <a class="el" href="classSbList.html">const</a> <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *from, SbBool <a class="el" href="classSbList.html">copyconnections</a>) <a class="el" href="classSbList.html">const</a></td></tr>
 <tr class="separator:af054bf68426876f5f454c4bf9cd695fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab731b80cba062e5c278e32bcdefaf346" id="r_ab731b80cba062e5c278e32bcdefaf346"><td class="memItemLeft" align="right" valign="top">SbBool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab731b80cba062e5c278e32bcdefaf346">read</a> (<a class="el" href="classSoInput.html">SoInput</a> *input, <a class="el" href="classSoFieldContainer.html">SoFieldContainer</a> *<a class="el" href="classSbList.html">object</a>, <a class="el" href="classSbList.html">const</a> <a class="el" href="classSbName.html">SbName</a> &amp;<a class="el" href="classSbList.html">fieldname</a>, SbBool &amp;<a class="el" href="classSbList.html">foundname</a>) <a class="el" href="classSbList.html">const</a></td></tr>
@@ -351,7 +353,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Copy contents of <em>src</em> into this instance.</p>
-<p>If there was any data set up in this instance before the method was called, the old data is removed first.</p>
+<p>If there was any data set up in this instance before the method was called, it is replaced only after the new data has been copied successfully.</p>
 <p>Note that this only copies the field set template specification from <em>src</em>, <em>not</em> actual field contents. For copying field contents, see the <a class="el" href="#af054bf68426876f5f454c4bf9cd695fb">SoFieldData::overlay()</a> method. </p>
 
 </div>
@@ -489,6 +491,24 @@ Public Member Functions</h2></td></tr>
 <p>Compares <em>c1</em> and <em>c2</em> to see if they have the same field data set and if the fields of <em>c1</em> have the same values as the fields of <em>c2</em>.</p>
 <p>Field connections are not considered (i.e. we will return <code>TRUE</code> if the values of the fields of <em>c1</em> are equal to the fields of <em>c2</em>, even if they differ in how they have made connections to other fields).</p>
 <p>If you think the method signature is a bit strange, you're correct. This should really have been a static method (the owner <code>this</code> instance of the method isn't used at all, due to how the internal representations of field template lists are stored), but for unknown reasons this is a dynamic method in Open Inventor. So also in Coin, to keep compatibility. </p>
+
+</div>
+</div>
+<a id="abac9b6e158308cd854cc21388375b30d" name="abac9b6e158308cd854cc21388375b30d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abac9b6e158308cd854cc21388375b30d">&#9670;&#160;</a></span>operator=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSoFieldData.html">SoFieldData</a> &amp; SoFieldData::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSbList.html">const</a> <a class="el" href="classSoFieldData.html">SoFieldData</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>fd</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Replaces this field set template with an independent copy of <em>fd</em>. </p>
 
 </div>
 </div>
@@ -675,7 +695,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSoFieldData.html">SoFieldData</a></li>
-    <li class="footer">Generated on Sat Nov 28 2026 19:50:05 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Sat Nov 28 2026 19:57:40 for Coin by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

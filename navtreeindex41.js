@@ -1,5 +1,8 @@
 var NAVTREEINDEX41 =
 {
+"classSoVRMLCylinderSensor.html#af24c72833855c27d712de7470eedd880":[3,23,13,10],
+"classSoVRMLDirectionalLight.html":[3,23,14],
+"classSoVRMLDirectionalLight.html#a0383e2f042e0010df911e0cc4ff23595":[3,23,14,4],
 "classSoVRMLDirectionalLight.html#a204f1d2272828f5d95524d50a5ed9016":[3,23,14,1],
 "classSoVRMLDirectionalLight.html#a4331ed4e08547bbf6b91c30ace789e84":[3,23,14,2],
 "classSoVRMLDirectionalLight.html#a54ad844c8068ec0399c40812c7500211":[3,23,14,3],
@@ -246,8 +249,5 @@ var NAVTREEINDEX41 =
 "classSoVRMLLOD.html#aebe0ee531b183f9f57dfaea1b901a941":[3,23,25,24],
 "classSoVRMLLOD.html#af115205fe4774c8b8c279a6decea29bd":[3,23,25,7],
 "classSoVRMLLOD.html#af9e7c51dbb0497dc7bd69e94de3dfb2d":[3,23,25,29],
-"classSoVRMLLight.html":[5,0,794],
-"classSoVRMLLight.html#a0c3fcaae3ef801041794a5c44dcf6957":[5,0,794,8],
-"classSoVRMLLight.html#a14aa5904cb22b6ee750853e65bf840d7":[5,0,794,2],
-"classSoVRMLLight.html#a1e7df9e0af2184d65a056db03590a65b":[5,0,794,1]
+"classSoVRMLLight.html":[5,0,794]
 };

@@ -1,5 +1,8 @@
 var NAVTREEINDEX27 =
 {
+"classSoNodeKitPath.html#a06c0d0f1b89e8e8d353940682bd3ca78":[3,14,8,8],
+"classSoNodeKitPath.html#a0f2b9d6aff34f7fec50b5aebe27fe554":[3,14,8,1],
+"classSoNodeKitPath.html#a1c944ad83c395fb0cbb6c4248cbe663b":[3,14,8,3],
 "classSoNodeKitPath.html#a3649347d1c34cfa6e4628cf6518c562b":[3,14,8,7],
 "classSoNodeKitPath.html#a3862411124049ea324a11cfc0f9f866e":[3,14,8,4],
 "classSoNodeKitPath.html#a5d24e25fca99e56932e7e3b9a6b56851":[3,14,8,12],
@@ -246,8 +249,5 @@ var NAVTREEINDEX27 =
 "classSoNurbsCurve.html#aa9daf0ffa65c3dffa271925a19a2766d":[3,15,65,8],
 "classSoNurbsCurve.html#ab5f8cdbc4023faa7edd812042e66d838":[3,15,65,2],
 "classSoNurbsCurve.html#aba42bb016762b862804d5ba3df5eb7c4":[3,15,65,12],
-"classSoNurbsCurve.html#aef273afe49547719243f3a7c5a51ac61":[3,15,65,6],
-"classSoNurbsP.html":[5,0,486],
-"classSoNurbsProfile.html":[3,15,66],
-"classSoNurbsProfile.html#a1e5cb855e47b5428b5dcc80068048756":[3,15,66,1]
+"classSoNurbsCurve.html#aef273afe49547719243f3a7c5a51ac61":[3,15,65,6]
 };

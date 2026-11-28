@@ -14,6 +14,7 @@ var classSoFieldData =
     [ "getIndex", "classSoFieldData.html#abfadebe7f8798be8d4d1923c5af93cac", null ],
     [ "getNumFields", "classSoFieldData.html#a1ef4daac41ff92d160fc604e9fb19b1f", null ],
     [ "isSame", "classSoFieldData.html#ae5c694d12ffe4d8db3ef5efa8b45916c", null ],
+    [ "operator=", "classSoFieldData.html#abac9b6e158308cd854cc21388375b30d", null ],
     [ "overlay", "classSoFieldData.html#af054bf68426876f5f454c4bf9cd695fb", null ],
     [ "read", "classSoFieldData.html#ab731b80cba062e5c278e32bcdefaf346", null ],
     [ "read", "classSoFieldData.html#a3a26b5459bf1d97ba07406ef516674f9", null ],

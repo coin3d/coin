@@ -1,5 +1,8 @@
 var NAVTREEINDEX28 =
 {
+"classSoNurbsP.html":[5,0,486],
+"classSoNurbsProfile.html":[3,15,66],
+"classSoNurbsProfile.html#a1e5cb855e47b5428b5dcc80068048756":[3,15,66,1],
 "classSoNurbsProfile.html#a3df0c59559587883e32641614684c770":[3,15,66,5],
 "classSoNurbsProfile.html#a50428ab26e0d898331492ed34faf0d32":[3,15,66,6],
 "classSoNurbsProfile.html#a55c003974911bbf14cdf9129d4fd0f57":[3,15,66,2],
@@ -246,8 +249,5 @@ var NAVTREEINDEX28 =
 "classSoPath.html#ab2bcfe7f9958ce1e1dd77ce136841cd7":[3,11,21,24],
 "classSoPath.html#ab4848beb2243ec5b8166c38835a1583a":[3,11,21,34],
 "classSoPath.html#abb68ff2080762ca7f329c4b256d78029":[3,11,21,17],
-"classSoPath.html#ac2c8ab31aaece572afc70082e52f81cd":[3,11,21,22],
-"classSoPath.html#acb2027f6e94182bea1dbbed10f2a6a0f":[3,11,21,8],
-"classSoPath.html#acca61df3c242a3330b500841a8dc5bc6":[3,11,21,1],
-"classSoPath.html#ace80066f1f54af55a265c0d980c13975":[3,11,21,5]
+"classSoPath.html#ac2c8ab31aaece572afc70082e52f81cd":[3,11,21,22]
 };

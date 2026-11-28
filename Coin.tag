@@ -26513,6 +26513,13 @@
       <type></type>
       <name>SoEngineOutputData</name>
       <anchorfile>classSoEngineOutputData.html</anchorfile>
+      <anchor>aa983d491e07f204c11e3f416839f184b</anchor>
+      <arglist>(const SoEngineOutputData &amp;data)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>SoEngineOutputData</name>
+      <anchorfile>classSoEngineOutputData.html</anchorfile>
       <anchor>aec901cff89d0e11c2c27e298df0816b5</anchor>
       <arglist>(const SoEngineOutputData *data)</arglist>
     </member>
@@ -26599,6 +26606,13 @@
       <anchorfile>classSoEngineOutputData.html</anchorfile>
       <anchor>af150da391a6efd5d8426f6d63333de23</anchor>
       <arglist>(int index) const</arglist>
+    </member>
+    <member kind="function">
+      <type>SoEngineOutputData &amp;</type>
+      <name>operator=</name>
+      <anchorfile>classSoEngineOutputData.html</anchorfile>
+      <anchor>afc82ff6e680a6216c00936e301b74829</anchor>
+      <arglist>(const SoEngineOutputData &amp;data)</arglist>
     </member>
     <member kind="function">
       <type>SbBool</type>
@@ -29145,6 +29159,13 @@
       <anchorfile>classSoFieldData.html</anchorfile>
       <anchor>ae5c694d12ffe4d8db3ef5efa8b45916c</anchor>
       <arglist>(const SoFieldContainer *c1, const SoFieldContainer *c2) const</arglist>
+    </member>
+    <member kind="function">
+      <type>SoFieldData &amp;</type>
+      <name>operator=</name>
+      <anchorfile>classSoFieldData.html</anchorfile>
+      <anchor>abac9b6e158308cd854cc21388375b30d</anchor>
+      <arglist>(const SoFieldData &amp;fd)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
