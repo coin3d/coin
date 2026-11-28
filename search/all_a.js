@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['a_0',['A',['../classSoBoolOperation.html#a670d9a9ba8cbd9a70b15095993705749a1addd7ed358bd31cc77b38b4c3007286',1,'SoBoolOperation::A'],['../classSoCalculator.html#a78b6958e185647f1efcf8dc37a39b461',1,'SoCalculator::A']]],
-  ['a_1',['a',['../classSoBoolOperation.html#a50798f4ca280a3be7e252903d5bfa373',1,'SoBoolOperation::a'],['../classSoCalculator.html#a8334a05f1d4ad8a76233ab1227613c26',1,'SoCalculator::a']]],
+  ['a_0',['a',['../classSoBoolOperation.html#a50798f4ca280a3be7e252903d5bfa373',1,'SoBoolOperation::a'],['../classSoCalculator.html#a8334a05f1d4ad8a76233ab1227613c26',1,'SoCalculator::a']]],
+  ['a_1',['A',['../classSoBoolOperation.html#a670d9a9ba8cbd9a70b15095993705749a1addd7ed358bd31cc77b38b4c3007286',1,'SoBoolOperation::A'],['../classSoCalculator.html#a78b6958e185647f1efcf8dc37a39b461',1,'SoCalculator::A']]],
   ['a_20hardcopy_20overview_2',['A HardCopy Overview',['../group__coin__hardcopy.html',1,'coin_related_pages']]],
   ['a0_3',['A0',['../classSoVectorizeAction.html#a7fc8ac7c81ca974b55807f39f715f83aae5796440e222f2864e7abdc656979277',1,'SoVectorizeAction']]],
   ['a1_4',['A1',['../classSoVectorizeAction.html#a7fc8ac7c81ca974b55807f39f715f83aabf76f945847e5190a1837670381b8ba1',1,'SoVectorizeAction']]],
