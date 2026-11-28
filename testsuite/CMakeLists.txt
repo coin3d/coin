@@ -43,6 +43,17 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
   target_link_libraries(CoinBumpProgramTest Coin Threads::Threads ${COIN_TARGET_LINK_LIBRARIES})
   add_test(NAME BumpProgramFailuresAndLifetime COMMAND CoinBumpProgramTest)
 
+  if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND HAVE_EGL AND TARGET OpenGL::EGL)
+    add_library(CoinLineWidthLimit MODULE reproducers/issue-839-wide-lines/limit.c)
+    target_link_libraries(CoinLineWidthLimit PRIVATE OpenGL::GL ${CMAKE_DL_LIBS})
+    add_executable(CoinWideLineTest reproducers/issue-839-wide-lines/framebuffer.cpp)
+    target_link_libraries(CoinWideLineTest PRIVATE Coin OpenGL::GL OpenGL::EGL)
+    add_test(NAME WideLineFramebuffer COMMAND CoinWideLineTest)
+    set_tests_properties(WideLineFramebuffer PROPERTIES
+      SKIP_RETURN_CODE 77
+      ENVIRONMENT "EGL_PLATFORM=surfaceless;COIN_EGL=1;LIBGL_ALWAYS_SOFTWARE=1;LD_PRELOAD=$<TARGET_FILE:CoinLineWidthLimit>")
+  endif()
+
   if(UNIX AND NOT APPLE)
     find_package(X11 QUIET)
     if(X11_FOUND AND HAVE_GLX)
