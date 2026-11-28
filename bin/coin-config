@@ -15,8 +15,10 @@
 
 program="$0"
 me=`echo "$0" | sed 's,^.*[/\\],,g'`
-wd=`echo "$0" | sed 's,/[^/]*$,,'`
-prefix=`cd "$wd/.."; pwd`
+scriptdir=$(CDPATH= cd -P "$(dirname "$0")" && pwd -P) || exit 1
+prefix=$(CDPATH= cd -P "@COIN_CONFIG_SCRIPT_PREFIX@" && pwd -P) || exit 1
+exec_prefix="$prefix"
+datarootdir="@COIN_CONFIG_DATAROOTDIR@"
 
 hello=`echo hello | fmt -t -w70 2>&1`
 if test x"$hello" = x"hello"; then
@@ -75,14 +77,13 @@ do
   esac
 done
 
-if test -f $prefix/share/Coin/conf/coin-$alternate.cfg; then
-  configfile="$prefix/share/Coin/conf/coin-$alternate.cfg"
-  . $configfile
-elif test -f $prefix/share/Coin/conf/coin-default.cfg; then
-  configfile="$prefix/share/Coin/conf/coin-default.cfg"
-  . $configfile
+configdir="$datarootdir/Coin/conf"
+if test -f "$configdir/coin-$alternate.cfg"; then
+  . "$configdir/coin-$alternate.cfg"
+elif test -f "$configdir/coin-default.cfg"; then
+  . "$configdir/coin-default.cfg"
 else
-  echo >&2 "$me: no default Coin config available in $prefix/share/Coin/conf/"
+  echo >&2 "$me: no default Coin config available in $configdir/"
   exit 1
 fi
 
@@ -145,15 +146,15 @@ do
     if test $# -eq 1; then
       basename=`echo "$1" | sed -e 's/\.[^\.]*$//'`  # strip off extension
       # FIXME: SGI IRIX "fmt" doesn't support neither of the two options we use. 20021021 mortene.
-      echo $compiler $CPPFLAGS $cppflags $CXXFLAGS $cxxflags -c $1 -o $basename.$objext \
+      echo "$compiler" "-I$includedir" $CPPFLAGS $cppflags $CXXFLAGS $cxxflags -c "$1" -o "$basename.$objext" \
         | $preformat | sed "$sedformat"
-      $compiler \
-        $CPPFLAGS $cppflags \
+      "$compiler" \
+        "-I$includedir" $CPPFLAGS $cppflags \
         $CXXFLAGS $cxxflags \
-        -c $1 -o $basename.$objext || exit $?
+        -c "$1" -o "$basename.$objext" || exit $?
     else
-      for arg in $@; do
-        $program --alternate="$alternate" --compile $arg || exit $?
+      for arg in "$@"; do
+        "$program" --alternate="$alternate" --compile "$arg" || exit $?
       done
     fi
     exit 0
@@ -163,12 +164,12 @@ do
     progname=$1
     shift
     # FIXME: SGI IRIX "fmt" doesn't support neither of the two options we use. 20021021 mortene.
-    echo $compiler $LDFLAGS $ldflags -o $progname $@ $libs $LIBS \
+    echo "$compiler" $LDFLAGS $ldflags -o "$progname" "$@" "-L$libs" -lCoin $LIBS \
       | $preformat | sed "$sedformat"
-    $compiler \
+    "$compiler" \
       $LDFLAGS $ldflags \
-      -o $progname $@ \
-      $libs $LIBS || exit $?
+      -o "$progname" "$@" \
+      "-L$libs" -lCoin $LIBS || exit $?
     exit 0
     ;;
   --build)
@@ -182,7 +183,7 @@ do
       case $arg in
       *.c | *.cpp | *.cxx | *.cc | *.c++)
         basename=`echo "$arg" | sed -e 's/\.[^\.]*$//'`  # strip off extension
-        $program --alternate="$alternate" --compile $arg || exit $?
+        "$program" --alternate="$alternate" --compile "$arg" || exit $?
         objs="$objs $basename.$objext"
         ;;
       -L*)
@@ -193,15 +194,15 @@ do
         ;;
       esac
     done
-    echo $compiler $LDFLAGS $ldflags $extraldflags \
-      -o $progname $objs $extralibs $libs $LIBS \
+    echo "$compiler" $LDFLAGS $ldflags $extraldflags \
+      -o "$progname" $objs $extralibs "-L$libs" -lCoin $LIBS \
       | $preformat | sed "$sedformat"
-    $compiler \
+    "$compiler" \
       $CPPFLAGS $cppflags \
       $CXXFLAGS $cxxflags \
       $LDFLAGS $ldflags $extraldflags \
-      -o $progname $objs \
-      $extralibs $libs $LIBS || exit $?
+      -o "$progname" $objs \
+      $extralibs "-L$libs" -lCoin $LIBS || exit $?
     exit 0
     ;;
   --build-app)
@@ -245,22 +246,22 @@ EOF
     ;;
   --setup)
     # FIXME: scan variables and only modify variables that need modification
-    echo "PATH=\$PATH:$prefix/bin"
-    echo "LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:$prefix/lib"
+    echo "PATH=\"\${PATH:+\$PATH:}$scriptdir\""
+    echo "LD_LIBRARY_PATH=\"\${LD_LIBRARY_PATH:+\$LD_LIBRARY_PATH:}$libs\""
     echo "export PATH LD_LIBRARY_PATH"
     exit 0
     ;;
   --setup-front)
     # FIXME: scan variables and only modify variables that need modification
-    echo "PATH=$prefix/bin:\$PATH"
-    echo "LD_LIBRARY_PATH=$prefix/lib:\$LD_LIBRARY_PATH"
+    echo "PATH=\"$scriptdir\${PATH:+:\$PATH}\""
+    echo "LD_LIBRARY_PATH=\"$libs\${LD_LIBRARY_PATH:+:\$LD_LIBRARY_PATH}\""
     echo "export PATH LD_LIBRARY_PATH"
     exit 0
     ;;
   --header)
     shift
     classname=$1
-    for header in `find ${prefix}/include/Inventor -type f | xargs grep -n "^class COIN_DLL_API ${classname}\>" | cut -d: -f1`; do
+    for header in `find "$includedir/Inventor" -type f | xargs grep -n "^class COIN_DLL_API ${classname}\>" | cut -d: -f1`; do
       echo "FILE: ${header}"
       cat "${header}"
     done
