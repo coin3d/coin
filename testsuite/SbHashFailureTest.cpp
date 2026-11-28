@@ -1,4 +1,5 @@
 #include <cstddef>
+#include <cstdio>
 #include <cstdlib>
 #include <new>
 #include <climits>
@@ -21,8 +22,12 @@ void * operator new[](std::size_t n, const std::nothrow_t &) noexcept {
 void operator delete[](void * p, const std::nothrow_t &) noexcept { operator delete[](p); }
 struct Value {
   static int live, remaining;
+  static bool faildefault;
   int n;
-  Value(int n = 0) : n(n) { ++live; }
+  Value(int n = 0) : n(n) {
+    if (faildefault) throw std::runtime_error("default");
+    ++live;
+  }
   Value(const Value & v) : n(v.n) {
     if (remaining == 0) throw std::runtime_error("copy");
     if (remaining > 0) --remaining;
@@ -34,16 +39,25 @@ struct Value {
   }
   ~Value() { --live; }
 };
-int Value::live; int Value::remaining = -1;
+int Value::live; int Value::remaining = -1; bool Value::faildefault;
 struct Key {
-  static bool fail;
+  static bool fail, failcompare;
+  static int remaining, live;
   unsigned int n;
-  Key(unsigned int n) : n(n) { }
-  Key(const Key & k) : n(k.n) { if (fail) throw std::runtime_error("key"); }
-  bool operator==(const Key & k) const { return n == k.n; }
+  Key(unsigned int n) : n(n) { ++live; }
+  Key(const Key & k) : n(k.n) {
+    if (fail || remaining == 0) throw std::runtime_error("key");
+    if (remaining > 0) --remaining;
+    ++live;
+  }
+  ~Key() { --live; }
+  bool operator==(const Key & k) const {
+    if (failcompare) throw std::runtime_error("compare");
+    return n == k.n;
+  }
 };
-bool Key::fail;
-inline unsigned int SbHashFunc(const Key & k) noexcept { return k.n; }
+bool Key::fail; bool Key::failcompare; int Key::remaining = -1; int Key::live;
+inline unsigned int SbHashFunc(const Key & k) noexcept { return k.n % 5; }
 #include <Inventor/C/base/memalloc.h>
 static bool failpool;
 static cc_memalloc * injected_construct(unsigned int size, unsigned int alignment)
@@ -59,8 +73,101 @@ struct Probe : SbHash<unsigned int, int> {
   unsigned int count() const { return getNumBuckets(); }
   unsigned int limit() const { return getResizeThreshold(); }
 };
-#define CHECK(c) do { if (!(c)) return __LINE__; } while (0)
+#define CHECK(c) do { if (!(c)) { \
+  std::fprintf(stderr, "line %d: %s\n", __LINE__, #c); return 1; \
+} } while (0)
+static int additional_exception_contracts()
+{
+  // A failed key copy at every prefix must release the incomplete dictionary.
+  {
+    SbHash<Key, int> source(5);
+    for (unsigned int i = 0; i < 8; ++i) CHECK(source.put(Key(i), int(i + 10)));
+    const int baselinearrays = arrays, baselinekeys = Key::live;
+    for (int prefix = 0; prefix < 8; ++prefix) {
+      Key::remaining = prefix;
+      bool caught = false;
+      try { SbHash<Key, int> copy(source); }
+      catch (const std::runtime_error &) { caught = true; }
+      Key::remaining = -1;
+      CHECK(caught && arrays == baselinearrays && Key::live == baselinekeys &&
+            source.getNumElements() == 8);
+      for (unsigned int i = 0; i < 8; ++i) {
+        int value = 0;
+        CHECK(source.get(Key(i), value) && value == int(i + 10));
+      }
+    }
+    SbHash<Key, int> copy(source);
+    CHECK(copy.erase(Key(0)) == 1 && source.find(Key(0))->obj == 10);
+  }
+  // Equality may throw even though hashing is noexcept. No operation may
+  // unlink a mapping or publish a new entry before equality has succeeded.
+  for (int missing = 0; missing < 2; ++missing) {
+    SbHash<Key, int> hash(5);
+    CHECK(hash.put(Key(1), 10) && hash.put(Key(2), 20));
+    const int * address = &hash.find(Key(1))->obj;
+    const Key query(missing ? 6 : 1); // Key 6 collides with Key 1.
+    for (int operation = 0; operation < 5; ++operation) {
+      int output = -1;
+      Key::failcompare = true;
+      bool caught = false;
+      try {
+        switch (operation) {
+        case 0: hash.put(query, 99); break;
+        case 1: hash.get(query, output); break;
+        case 2: hash.find(query); break;
+        case 3: hash.erase(query); break;
+        case 4: hash[query] = 99; break;
+        }
+      }
+      catch (const std::runtime_error &) { caught = true; }
+      Key::failcompare = false;
+      CHECK(caught && output == -1 && hash.getNumElements() == 2);
+      CHECK(&hash.find(Key(1))->obj == address && *address == 10);
+      CHECK(hash.find(Key(2))->obj == 20 && hash.find(Key(6)) == hash.const_end());
+    }
+    CHECK(hash.put(Key(6), 60) && hash.erase(Key(1)) == 1);
+  }
+  {
+    SbHash<unsigned int, Value> hash(5);
+    Value original(10), replacement(99), output(-1);
+    CHECK(hash.put(1, original) && hash.put(2, original));
+    const Value * address = &hash.find(1)->obj;
+    const int baseline = Value::live;
+    // Existing operator[] must return the stored object without constructing
+    // a default value or copying it, even when either operation would throw.
+    Value::faildefault = true;
+    Value::remaining = 0;
+    CHECK(&hash[1] == address && hash[1].n == 10);
+    bool caught = false;
+    try { hash[3]; }
+    catch (const std::runtime_error &) { caught = true; }
+    Value::faildefault = false;
+    CHECK(caught && hash.getNumElements() == 2 && Value::live == baseline);
+    for (int operation = 0; operation < 2; ++operation) {
+      caught = false;
+      try {
+        if (operation == 0) hash.put(1, replacement);
+        else hash.get(1, output);
+      }
+      catch (const std::runtime_error &) { caught = true; }
+      CHECK(caught && hash.getNumElements() == 2 && Value::live == baseline);
+      CHECK(&hash.find(1)->obj == address && address->n == 10);
+      CHECK(hash.find(2)->obj.n == 10 && output.n == -1);
+    }
+    Value::remaining = -1;
+    CHECK(!hash.put(1, replacement) && hash.get(1, output) && output.n == 99);
+    CHECK(hash[3].n == 0 && hash.getNumElements() == 3);
+    hash.releaseStorage();
+    CHECK(hash.begin() == hash.end() && Value::live == baseline - 2);
+    CHECK(hash.put(4, original));
+  }
+  CHECK(Value::live == 0 && Key::live == 0);
+  return 0;
+}
+
 int main() {
+  const int additional = additional_exception_contracts();
+  if (additional) return additional;
   // Pool construction must not leak staged buckets or publish partial storage.
   {
     SbHash<unsigned int, int> hash;
