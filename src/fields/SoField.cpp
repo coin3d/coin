@@ -108,6 +108,7 @@
 */
 
 #include <Inventor/fields/SoField.h>
+#include "engines/SoEngineEvaluationP.h"
 
 #include <cassert>
 #include <cstring>
@@ -1489,9 +1490,7 @@ SoField::notify(SoNotList * nlist)
   if (rec) {
     SoNotRec::Type t = nlist->getLastRec()->getType();
     if (t == SoNotRec::ENGINE || t == SoNotRec::FIELD) {
-      if (this->hasExtendedStorage()) {
-        this->storage->lastnotify = static_cast<void *>(rec->getBase());
-      }
+      this->recordConnectionSource(rec->getBase());
       // don't process the notification if we're notified from a
       // connection, and connection is disabled (through
       // enableConnection())
@@ -1598,7 +1597,8 @@ SoField::enableNotify(SbBool on)
 SbBool
 SoField::isNotifyEnabled(void) const
 {
-  return this->getStatus(FLAG_DONOTIFY);
+  return this->getStatus(FLAG_DONOTIFY) &&
+    !coin_engine_suppresses_notifications(this);
 }
 
 // Makes an extended storage block on first connection.
@@ -2242,6 +2242,12 @@ SoField::setDirty(SbBool dirty)
 {
   COIN_CHECK_THREAD();
   (void) this->changeStatusBits(FLAG_NEEDEVALUATION, dirty);
+}
+
+void
+SoField::recordConnectionSource(SoBase * source)
+{
+  if (this->hasExtendedStorage()) this->storage->lastnotify = source;
 }
 
 /*!
