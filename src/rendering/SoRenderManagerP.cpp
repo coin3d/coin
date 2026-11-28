@@ -36,6 +36,10 @@
 #include <limits>
 
 #include <Inventor/nodes/SoInfo.h>
+#include <Inventor/nodes/SoGroup.h>
+#include <Inventor/nodes/SoCallback.h>
+#include <Inventor/elements/SoDepthBufferElement.h>
+#include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 #include "Inventor/nodes/SoOrthographicCamera.h"
@@ -230,6 +234,76 @@ SoRenderManagerP::getCameraCoordinateSystem(SbMatrix & matrix,
 // Superimposition
 //**********************************************************************************
 
+namespace {
+
+// Establish the superimposition default as part of scene traversal. In
+// particular, transparent and delayed paths traverse this state-setting
+// sibling again after the render action has prepared their depth state.
+// A group (rather than a cached separator) keeps the callback outside the
+// client scene's caches, without modifying any of its nodes or fields.
+class SuperimpositionRenderState {
+public:
+  SuperimpositionRenderState(SoGLRenderAction * action, SoNode * scene,
+                            SbBool depthtest, int transparencytype)
+    : action(action), depthtest(depthtest),
+      olddepthtest(glIsEnabled(GL_DEPTH_TEST) ? TRUE : FALSE),
+      oldtransparencytype(action->getTransparencyType()),
+      overridetransparency(transparencytype != INHERIT_TRANSPARENCY_TYPE)
+  {
+    this->root = new SoGroup;
+    this->root->ref();
+    this->callback = new SoCallback;
+    this->callback->setCallback(SuperimpositionRenderState::setDepthTest, this);
+    this->root->addChild(this->callback);
+    this->root->addChild(scene);
+    if (this->overridetransparency) {
+      action->setTransparencyType((SoGLRenderAction::TransparencyType) transparencytype);
+    }
+    depthtest ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
+  }
+
+  ~SuperimpositionRenderState()
+  {
+    // An interrupted action can still own delayed paths into the wrapper.
+    // They must not retain a callback to this stack object.
+    this->callback->setCallback(NULL);
+    this->root->unref();
+    this->olddepthtest ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
+    this->action->setTransparencyType(this->oldtransparencytype);
+  }
+
+  SoGroup * root;
+
+private:
+  static void setDepthTest(void * userdata, SoAction * action)
+  {
+    if (!action->isOfType(SoGLRenderAction::getClassTypeId())) return;
+    const SuperimpositionRenderState * self =
+      static_cast<const SuperimpositionRenderState *>(userdata);
+    SoState * state = action->getState();
+    SbBool test, write;
+    SoDepthBufferElement::DepthWriteFunction function;
+    SbVec2f range;
+    SoDepthBufferElement::get(state, test, write, function, range);
+    SoDepthBufferElement::set(state, self->depthtest, write, function, range);
+    // The element can already hold this value while the native GL state
+    // differs (for example at the beginning of a new render action).
+    self->depthtest ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
+  }
+
+  SoGLRenderAction * action;
+  SoCallback * callback;
+  SbBool depthtest;
+  SbBool olddepthtest;
+  SoGLRenderAction::TransparencyType oldtransparencytype;
+  SbBool overridetransparency;
+
+  SuperimpositionRenderState(const SuperimpositionRenderState &);
+  SuperimpositionRenderState & operator=(const SuperimpositionRenderState &);
+};
+
+} // namespace
+
 class SuperimpositionP {
 public:
   SoNode * scene;
@@ -279,30 +353,16 @@ SoRenderManager::Superimposition::render(SoGLRenderAction * action, SbBool clear
 {
   if (!PRIVATE(this)->enabled) return;
 
-  SoGLRenderAction::TransparencyType oldttype = action->getTransparencyType();
-  if (PRIVATE(this)->transparencytype != INHERIT_TRANSPARENCY_TYPE) {
-    action->setTransparencyType((SoGLRenderAction::TransparencyType) PRIVATE(this)->transparencytype);
-  }
-  SbBool zbufferwason = glIsEnabled(GL_DEPTH_TEST) ? TRUE : FALSE;
-
-  PRIVATE(this)->stateflags & Superimposition::ZBUFFERON ?
-    glEnable(GL_DEPTH_TEST):
-    glDisable(GL_DEPTH_TEST);
+  SuperimpositionRenderState renderstate(action, PRIVATE(this)->scene,
+    (PRIVATE(this)->stateflags & Superimposition::ZBUFFERON) ? TRUE : FALSE,
+    PRIVATE(this)->transparencytype);
 
   GLbitfield clearflags = clearcolorbuffer ? GL_COLOR_BUFFER_BIT : 0;
   if (PRIVATE(this)->stateflags & Superimposition::CLEARZBUFFER) {
     clearflags |= GL_DEPTH_BUFFER_BIT;
   }
 
-  PRIVATE(this)->manager->renderScene(action, PRIVATE(this)->scene, (uint32_t) clearflags);
-
-  zbufferwason ?
-    glEnable(GL_DEPTH_TEST):
-    glDisable(GL_DEPTH_TEST);
-
-  if (PRIVATE(this)->transparencytype != INHERIT_TRANSPARENCY_TYPE) {
-    action->setTransparencyType(oldttype);
-  }
+  PRIVATE(this)->manager->renderScene(action, renderstate.root, (uint32_t) clearflags);
 }
 
 void

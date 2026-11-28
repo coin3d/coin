@@ -273,6 +273,8 @@ create_file_test("models" "testCorrectFile" false "incorrect")
 # bug039.iv and bug055-5.iv contain errors but load anyway: ignore for now
 create_file_test("models/io/incorrect" "testIncorrectFile" true "(bug039|bug055-5)")
 
+include(SuperimpositionDepthTests.cmake)
+
 # Include all extracted '*Tests.cpp' files in the target.
 FILE(GLOB COIN_TEST_SOURCES "${CMAKE_CURRENT_BINARY_DIR}/*Test.cpp")
 
