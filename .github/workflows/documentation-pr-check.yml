@@ -1,0 +1,38 @@
+name: Doxygen PR check
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  documentation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+      - name: Install documentation dependencies
+        run: |
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+          sudo apt-get -y update
+          sudo apt-get -y install gcc-13 graphviz freeglut3-dev
+          curl -fL --retry 3 -o doxygen-1.18.0.linux.bin.tar.gz https://github.com/doxygen/doxygen/releases/download/Release_1_18_0/doxygen-1.18.0.linux.bin.tar.gz
+          echo "14fa81bdc34171edb5f1f02b1d60e74802f0439b77fa44e592565d517d72df90  doxygen-1.18.0.linux.bin.tar.gz" | sha256sum -c
+          tar xzf doxygen-1.18.0.linux.bin.tar.gz
+      - name: Generate API documentation
+        run: |
+          export PATH="${{ github.workspace }}/doxygen-1.18.0/bin:$PATH"
+          doxygen --version
+          cmake -S . -B cmake_build_dir -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=cmake_install_dir -DCOIN_BUILD_AWESOME_DOCUMENTATION=ON
+          cmake --build cmake_build_dir --target documentation_awesome --parallel
+      - name: Check generated pages and references
+        run: |
+          test -s cmake_build_dir/html_awesome/index.html
+          test -f cmake_build_dir/doxygen-warnings.log
+          if grep -E 'unable to resolve reference|image file .* is not found' cmake_build_dir/doxygen-warnings.log; then
+            echo '::error::Doxygen has unresolved references or missing images'
+            exit 1
+          fi

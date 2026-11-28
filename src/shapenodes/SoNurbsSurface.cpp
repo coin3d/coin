@@ -82,7 +82,7 @@
   \endcode
 
   <center>
-  \image html nurbssurface.png "Rendering of Example Scenegraph"
+  \image html nurbssurface.png "An oblique view of the NURBS surface defined by the 4 by 4 control grid"
   </center>
 
   <b>FILE FORMAT/DEFAULTS:</b>

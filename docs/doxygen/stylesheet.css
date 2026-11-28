@@ -1133,6 +1133,12 @@ dl.section dd {
         text-align: center;
 }
 
+.contents .image img
+{
+        max-width: 100%;
+        height: auto;
+}
+
 .dotgraph
 {
         text-align: center;

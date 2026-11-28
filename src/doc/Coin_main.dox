@@ -33,44 +33,46 @@
 /*!
   \mainpage
 
-  <a href="https://github.com/coin3d/coin/wiki/Home/">Coin</a> is an OpenGL based,
-  retained mode 3D graphics rendering library. It is implemented in
-  C++ and publicly released with the source code open for your
-  perusal. The application programmer's interface (API) is fully
-  compatible with SGI's Open Inventor, the \e de \e facto standard 3D
-  graphics API for complex visualization applications.
+  <a href="https://github.com/coin3d/coin">Coin</a> is an open-source C++
+  library for retained-mode 3D graphics with OpenGL. It implements the
+  Open Inventor 2.1 API.
 
-  For an excellently written, detailed, tutorial-style introduction to
-  the Open Inventor API used by the Coin library, we highly recommend
-  the book \ref mentorbook.  It walks the Coin application programmer
-  through all the principles applied in the API, richly illustrated
-  and with numerous, well documented code examples.
+  \section coin_getting_started Getting started
 
-  For overviews of various selected features of the Coin library, see
-  the "Modules" link to the left and the "Related Pages" link to the
-  right in the top menu on all the pages in this documentation.
+  Follow the <a href="https://github.com/coin3d/coin/blob/master/INSTALL">installation guide</a>
+  to build Coin and install it to a prefix you can write to. The
+  <a href="https://github.com/coin3d/coin/tree/master/examples/cmake-consumer">standalone CMake example</a>
+  finds the installed package with `find_package(Coin CONFIG REQUIRED)`,
+  links to `Coin::Coin`, and prints the Coin version.
 
-  Kongsberg Oil & Gas Technologies provided the bulk of the libraries for
-  interfacing Coin with a wide range of windowing systems and GUI toolkits,
-  the work now being continued by the open source community.
+  From the Coin checkout, use the actual installation prefix. For example,
+  if you followed the Linux or macOS commands in the installation guide:
+
+  \code{.sh}
+  cmake -S examples/cmake-consumer -B consumer-build \
+    -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$PWD/coin-install"
+  cmake --build consumer-build --config Release
+  ./consumer-build/coin-version
+  \endcode
+
+  The version check needs no window or GUI binding. To display a first scene,
+  choose a graphical example from the
+  <a href="https://github.com/coin3d/coin/tree/master/examples">examples index</a>.
+  Read \ref mentorbook for a longer introduction to the Open Inventor API,
+  and see \ref coin_related_pages for guides on individual Coin features.
+
+  \section coin_gui_bindings GUI bindings
+
   <ul>
-  <li><a href="https://github.com/coin3d/quarter">Quarter</a> is for integrating Coin with Trolltech's cross-platform Qt toolkit (UNIX, Windows, Mac OS X).</li>
-  <li><a href="https://github.com/coin3d/soqt">SoQt</a> is also for integrating with Qt, but is of an older legacy design.</li>
-  <li><a href="https://github.com/coin3d/sowin">SoWin</a> is for interfacing with the Win32 API on Microsoft Windows
-      platforms.</li>
-  <li><a href="https://github.com/coin3d/sc21">Sc21</a> is for interfacing with Cocoa on Mac OS X.</li>
-  <li><a href="https://github.com/coin3d/soxt">SoXt</a> is for interfacing with Xt/Motif on X Windows.</li>
+  <li><a href="https://github.com/coin3d/quarter">Quarter</a> embeds Coin scenes in Qt applications.</li>
+  <li><a href="https://github.com/coin3d/soqt">SoQt</a> provides Qt-based viewers and components.</li>
+  <li><a href="https://github.com/coin3d/sowin">SoWin</a> integrates Coin with Win32.</li>
+  <li><a href="https://github.com/coin3d/sc21">Sc21</a> integrates Coin with Cocoa on macOS.</li>
+  <li><a href="https://github.com/coin3d/soxt">SoXt</a> integrates Coin with Xt and Motif.</li>
   </ul>
 
-  See <https://github.com/coin3d/coin/wiki/Home> for more information about Coin and the
-  GUI toolkit libraries.
-
-  <b>IMPORTANT NOTE: the online documentation for the Coin library is
-  a continuous work-in-progress.</b> Although the large majority of
-  classes have been documented properly, there might still be some
-  poorly documented items. If you happen upon an undocumented or
-  poorly documented class and / or class method which you find hard to
-  understand, please give us a notice so we can rectify the situation.
+  For documentation corrections, use the
+  <a href="https://github.com/coin3d/coin/issues">Coin issue tracker</a>.
 */
 
 // FIXME: complete this to a first usable version -- it should evolve

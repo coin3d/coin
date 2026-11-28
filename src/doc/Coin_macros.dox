@@ -33,22 +33,23 @@
 /*!
   \page macros_nodes Node Macros
 
-  - \ref SO_NODE_HEADER
-  - \ref SO_NODE_ABSTRACT_HEADER
-  - \ref SO_NODE_SOURCE
-  - \ref SO_NODE_ABSTRACT_SOURCE
-  - \ref SO_NODE_INIT_CLASS
-  - \ref SO_NODE_INIT_ABSTRACT_CLASS
-  - \ref SO_NODE_IS_FIRST_INSTANCE
-  - \ref SO_NODE_CONSTRUCTOR
-  - \ref SO_NODE_ADD_FIELD
-  - \ref SO_NODE_DEFINE_ENUM_VALUE
+  - \ref doc_SO_NODE_HEADER "SO_NODE_HEADER"
+  - \ref doc_SO_NODE_ABSTRACT_HEADER "SO_NODE_ABSTRACT_HEADER"
+  - \ref doc_SO_NODE_SOURCE "SO_NODE_SOURCE"
+  - \ref doc_SO_NODE_ABSTRACT_SOURCE "SO_NODE_ABSTRACT_SOURCE"
+  - \ref doc_SO_NODE_INIT_CLASS "SO_NODE_INIT_CLASS"
+  - \ref doc_SO_NODE_INIT_ABSTRACT_CLASS "SO_NODE_INIT_ABSTRACT_CLASS"
+  - \ref doc_SO_NODE_IS_FIRST_INSTANCE "SO_NODE_IS_FIRST_INSTANCE"
+  - \ref doc_SO_NODE_CONSTRUCTOR "SO_NODE_CONSTRUCTOR"
+  - \ref doc_SO_NODE_ADD_FIELD "SO_NODE_ADD_FIELD"
+  - \ref doc_SO_NODE_DEFINE_ENUM_VALUE "SO_NODE_DEFINE_ENUM_VALUE"
 
   \ingroup coin_macros
 */
 
 #define SO_NODE_HEADER(classname)
 /*!
+  \anchor doc_SO_NODE_HEADER
   \def SO_NODE_HEADER(classname)
 
   This macro adds standard declarations needed in Coin nodes for
@@ -60,10 +61,11 @@
 
 #define SO_NODE_ABSTRACT_HEADER(classname)
 /*!
+  \anchor doc_SO_NODE_ABSTRACT_HEADER
   \def SO_NODE_ABSTRACT_HEADER(classname)
 
   This macro adds standard declarations needed in Coin nodes for
-  type identification.  It differs from \ref SO_NODE_HEADER in that
+  type identification.  It differs from \ref doc_SO_NODE_HEADER "SO_NODE_HEADER" in that
   the object creation part is omitted.
 
   \sa SO_NODE_ABSTRACT_SOURCE
@@ -72,6 +74,7 @@
 
 #define SO_NODE_INIT_CLASS(classname, parentclass, parentname)
 /*!
+  \anchor doc_SO_NODE_INIT_CLASS
   \def SO_NODE_INIT_CLASS(classname, parentclass, parentname)
 
   This macro is used in the initClass-function in a node class. It
@@ -85,6 +88,7 @@
 
 #define SO_NODE_INIT_ABSTRACT_CLASS(classname, parentclass, parentname)
 /*!
+  \anchor doc_SO_NODE_INIT_ABSTRACT_CLASS
   \def SO_NODE_INIT_ABSTRACT_CLASS(classname, parentclass, parentname)
 
   This macro is used in the initClass-function in abstract node classes.
@@ -97,10 +101,10 @@
 
 #define SO_NODE_SOURCE(classname)
 /*!
+  \anchor doc_SO_NODE_SOURCE
   \def SO_NODE_SOURCE(classname)
 
-  This macro sets up the implementation of the declarations in \ref
-  SO_NODE_HEADER.  It should be placed in the implementation file for
+  This macro sets up the implementation of the declarations in \ref doc_SO_NODE_HEADER "SO_NODE_HEADER".  It should be placed in the implementation file for
   extension nodes.
 
   \sa SO_NODE_HEADER
@@ -109,10 +113,10 @@
 
 #define SO_NODE_ABSTRACT_SOURCE(classname)
 /*!
+  \anchor doc_SO_NODE_ABSTRACT_SOURCE
   \def SO_NODE_ABSTRACT_SOURCE(classname)
 
-  This macro sets up the implementation of the declarations in \ref
-  SO_NODE_ABSTRACT_HEADER.  It should be placed in the implementation
+  This macro sets up the implementation of the declarations in \ref doc_SO_NODE_ABSTRACT_HEADER "SO_NODE_ABSTRACT_HEADER".  It should be placed in the implementation
   file for abstract extension nodes.
 
   \sa SO_NODE_ABSTRACT_HEADER
@@ -121,6 +125,7 @@
 
 #define SO_NODE_CONSTRUCTOR(classname)
 /*!
+  \anchor doc_SO_NODE_CONSTRUCTOR
   \def SO_NODE_CONSTRUCTOR(classname)
 
   Place this in the node constructor.  It sets up the field data object
@@ -131,6 +136,7 @@
 
 #define SO_NODE_IS_FIRST_INSTANCE()
 /*!
+  \anchor doc_SO_NODE_IS_FIRST_INSTANCE
   \def SO_NODE_IS_FIRST_INSTANCE()
 
   This macro can be used as a predicate to test if the constructed
@@ -143,17 +149,18 @@
 
 #define SO_NODE_ADD_FIELD(field, defaultvalue)
 /*!
+  \anchor doc_SO_NODE_ADD_FIELD
   \def SO_NODE_ADD_FIELD(field, (defaultvalue))
 
   This registers a field for a node, and sets its value to the default
-  value.  For use in the constructor, below the \ref
-  SO_NODE_CONSTRUCTOR macro.
+  value.  For use in the constructor, below the \ref doc_SO_NODE_CONSTRUCTOR "SO_NODE_CONSTRUCTOR" macro.
 
   \ingroup coin_nodes
 */
 
 #define SO_NODE_DEFINE_ENUM_VALUE(enumname, enumvalue)
 /*!
+  \anchor doc_SO_NODE_DEFINE_ENUM_VALUE
   \def SO_NODE_DEFINE_ENUM_VALUE(enumname, enumvalue)
 
   This macro associates enum names with values, used for file

@@ -85,7 +85,7 @@
   \endcode
 
   <center>
-  \image html nurbsprofile.png "Rendering of Example Scenegraph"
+  \image html nurbsprofile.png "The NURBS surface trimmed by the profile defined above"
   </center>
 
   Note that the coordinates of the NurbsProfile live in the parametric

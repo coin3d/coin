@@ -47,9 +47,6 @@
   node. When manipulation is finished, the node is put back into the
   graph, replacing the manipulator.
 
-  <center>
-  \image html spotlight.png "Example of SpotLight Manipulator"
-  </center>
 */
 
 /*!

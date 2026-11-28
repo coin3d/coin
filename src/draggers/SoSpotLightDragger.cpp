@@ -42,12 +42,6 @@
 
   \ingroup coin_draggers
 
-  \DRAGGER_DEFAULT_SCREENSHOT
-
-  <center>
-  \image html spotlight.png "Screen Shot of Default Dragger"
-  </center>
-
   This dragger is well suited for setting up the fields of a
   SoSpotLight node, as it provides geometry for the end-user to
   interact with a directional vector for the spotlight, to set up its

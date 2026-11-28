@@ -44,7 +44,14 @@
 
 /* *********************************************************************** */
 
-/* Documented for Doxygen in SoDB.cpp. */
+/**
+ * \brief A portable boolean type used by the Coin API.
+ *
+ * SbBool predates widespread support for the C++ \c bool keyword. It is an
+ * integer typedef rather than a class; use \c TRUE and \c FALSE for its values.
+ *
+ * \ingroup coin_base
+ */
 typedef int SbBool;
 
 #ifdef DOXYGEN_SKIP_THIS

@@ -42,12 +42,6 @@
 
   \ingroup coin_draggers
 
-  \DRAGGER_DEFAULT_SCREENSHOT
-
-  <center>
-  \image html scale2.png "Screen Shot of Default Dragger"
-  </center>
-
   Use this dragger to allow the end-user of your application to scale
   along the X-axis and the Y-axis. (Use a transformation node in front
   of the dragger to position it and re-orient it to scale in any

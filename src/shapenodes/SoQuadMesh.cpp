@@ -76,7 +76,7 @@
 
     // Define coordinates
     SoCoordinate3 * coords = new SoCoordinate3;
-    coords->point.setValues(0, 30, vertices);
+    coords->point.setValues(0, 25, vertices);
     qm->addChild(coords);
 
     // QuadMesh

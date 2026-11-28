@@ -42,7 +42,9 @@ if(COIN_BUILD_DOCUMENTATION)
   endif()
 
   # Add default files
-  file(GLOB_RECURSE DOX *.dox*)
+  file(GLOB_RECURSE DOX CONFIGURE_DEPENDS *.dox*)
+  file(GLOB_RECURSE DOXYGEN_ASSETS CONFIGURE_DEPENDS
+    "${PROJECT_SOURCE_DIR}/docs/doxygen/*")
   set(COIN_DOCUMENTATION_FILES
     ${COIN_DOCUMENTATION_FILES}
     "${PROJECT_SOURCE_DIR}/docs/releases.dox"
@@ -93,7 +95,8 @@ if(COIN_BUILD_DOCUMENTATION)
     COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYFILE}
     COMMAND ${CMAKE_COMMAND} -E echo "done."
     WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
-    DEPENDS ${DOXYFILE}
+    DEPENDS ${DOXYFILE} ${COIN_DOCUMENTATION_FILES}
+            "${PROJECT_SOURCE_DIR}/src/tidbits.cpp" ${DOXYGEN_ASSETS}
   )
   add_custom_target(documentation ALL DEPENDS ${DOXYGEN_OUTPUT})
 
@@ -152,7 +155,10 @@ if(COIN_BUILD_AWESOME_DOCUMENTATION)
   set(GENERATE_TREEVIEW YES)
 
   # Add default files
-  file(GLOB_RECURSE DOX *.dox*)
+  file(GLOB_RECURSE DOX CONFIGURE_DEPENDS *.dox*)
+  file(GLOB_RECURSE DOXYGEN_ASSETS CONFIGURE_DEPENDS
+    "${PROJECT_SOURCE_DIR}/docs/doxygen/*"
+    "${PROJECT_SOURCE_DIR}/docs/doxygen-awesome/*")
   set(COIN_DOCUMENTATION_FILES
     ${COIN_DOCUMENTATION_FILES}
     "${PROJECT_SOURCE_DIR}/docs/releases.dox"
@@ -194,8 +200,48 @@ if(COIN_BUILD_AWESOME_DOCUMENTATION)
   set(DOXYFILE_AWESOME "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile_awesome")
   set(HTML_HEADER_AWESOME "${CMAKE_CURRENT_BINARY_DIR}/header_awesome.html")
   set(DOXYGEN_OUTPUT_AWESOME "${CMAKE_BINARY_DIR}/html_awesome/index.html")
+  set(DOXYGEN_AWESOME_ASSET_DIR "${PROJECT_SOURCE_DIR}/docs/doxygen-awesome")
+  set(DOXYGEN_AWESOME_COPY_ASSET "")
+  if(DOXYGEN_VERSION VERSION_GREATER_EQUAL "1.17")
+    # Doxygen 1.17 removed jQuery. Awesome 2.5 is the first release without it.
+    include(FetchContent)
+    if(POLICY CMP0135)
+      cmake_policy(SET CMP0135 NEW)
+    endif()
+    FetchContent_Declare(doxygen_awesome
+      URL https://codeload.github.com/jothepro/doxygen-awesome-css/tar.gz/refs/tags/v2.5.0
+      URL_HASH SHA256=959b6e9369a0f5c7c0a9beba34b18a02bc5e788e68f6733975908f133a784dd5)
+    FetchContent_MakeAvailable(doxygen_awesome)
+    set(DOXYGEN_AWESOME_ASSET_DIR "${doxygen_awesome_SOURCE_DIR}")
+    file(GLOB AWESOME_RELEASE_ASSETS "${DOXYGEN_AWESOME_ASSET_DIR}/doxygen-awesome*")
+    list(APPEND DOXYGEN_ASSETS ${AWESOME_RELEASE_ASSETS})
+  else()
+    set(DOXYGEN_AWESOME_COPY_ASSET
+      "                         ${DOXYGEN_AWESOME_ASSET_DIR}/doxygen-awesome-fragment-copy-button.js \\\n")
+  endif()
   configure_file("${PROJECT_SOURCE_DIR}/docs/coin.doxygen.awesome.cmake.in" ${DOXYFILE_AWESOME} @ONLY)
-  configure_file("${PROJECT_SOURCE_DIR}/docs/doxygen-awesome/doxygen-custom/header.html.cmake.in" ${HTML_HEADER_AWESOME} @ONLY)
+  if(DOXYGEN_VERSION VERSION_GREATER_EQUAL "1.17")
+    # Keep the scripts required by this Doxygen release, including native copy.
+    execute_process(COMMAND "${DOXYGEN_EXECUTABLE}" -w html native-header.html
+      native-footer.html native-style.css "${DOXYFILE_AWESOME}"
+      WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+      RESULT_VARIABLE header_result)
+    if(NOT header_result STREQUAL "0")
+      message(FATAL_ERROR "Doxygen could not generate its default HTML header: ${header_result}")
+    endif()
+    set(scripts_file "${PROJECT_SOURCE_DIR}/docs/doxygen/awesome-scripts.html")
+    set(corner_file "${PROJECT_SOURCE_DIR}/docs/doxygen/github-corner.html.in")
+    set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${scripts_file}" "${corner_file}")
+    file(READ "${CMAKE_CURRENT_BINARY_DIR}/native-header.html" native_header)
+    file(READ "${scripts_file}" awesome_scripts)
+    file(READ "${corner_file}" github_corner)
+    string(CONFIGURE "${github_corner}" github_corner @ONLY)
+    string(REPLACE "</head>" "${awesome_scripts}</head>" awesome_header "${native_header}")
+    string(REPLACE "<body>" "<body>\n${github_corner}" awesome_header "${awesome_header}")
+    file(GENERATE OUTPUT "${HTML_HEADER_AWESOME}" CONTENT "${awesome_header}")
+  else()
+    configure_file("${PROJECT_SOURCE_DIR}/docs/doxygen-awesome/doxygen-custom/header.html.cmake.in" ${HTML_HEADER_AWESOME} @ONLY)
+  endif()
 
 # ############################################################################
 # Setup documentation targets
@@ -206,7 +252,9 @@ if(COIN_BUILD_AWESOME_DOCUMENTATION)
     COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYFILE_AWESOME}
     COMMAND ${CMAKE_COMMAND} -E echo "done."
     WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
-    DEPENDS ${DOXYFILE_AWESOME}
+    DEPENDS ${DOXYFILE_AWESOME} ${HTML_HEADER_AWESOME}
+            ${COIN_DOCUMENTATION_FILES}
+            "${PROJECT_SOURCE_DIR}/src/tidbits.cpp" ${DOXYGEN_ASSETS}
   )
   add_custom_target(documentation_awesome ALL DEPENDS ${DOXYGEN_OUTPUT_AWESOME})
 

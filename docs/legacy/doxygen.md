@@ -1,0 +1,73 @@
+# Map of Coin's Doxygen documentation
+
+This inventory was prepared on 21 November 2026 as part of the reorganization of
+`docs/`. Doxygen generates the project's active API documentation. The
+[published documentation](https://www.coin3d.org/coin/) shows Coin 4.0.10 and
+was generated with Doxygen 1.10.0 in November 2026. Make content corrections in
+the source files and regenerate the site.
+
+## Documentation sources
+
+| Component | Source | Purpose |
+| --- | --- | --- |
+| Home page | [`src/doc/Coin_main.dox`](../../src/doc/Coin_main.dox) | Introduction and primary navigation. |
+| Class groups | [`src/doc/Coin_modules.dox`](../../src/doc/Coin_modules.dox) | Groups actions, nodes, fields, sensors, VRML, XML, and other APIs. |
+| Topic pages | [`src/doc/Coin_books.dox`](../../src/doc/Coin_books.dox), [`Coin_macros.dox`](../../src/doc/Coin_macros.dox), [`Coin_environment.dox`](../../src/doc/Coin_environment.dox) | References, macros, and environment variables. |
+| Release pages | [`docs/releases.dox`](../releases.dox) | Feature history by release in the generated documentation. |
+| Class and function reference | Comments in `src/` and declarations in `include/` | Main source for the API reference pages. |
+| Classic configuration | [`docs/coin.doxygen.cmake.in`](../coin.doxygen.cmake.in) | The `documentation` CMake target generates `html/index.html`. |
+| Modern configuration | [`docs/coin.doxygen.awesome.cmake.in`](../coin.doxygen.awesome.cmake.in) | The `documentation_awesome` target generates `html_awesome/index.html`. |
+| Styling and images | [`docs/doxygen/`](../doxygen/), `docs/doxygen-awesome/` submodule | Header, CSS, images, and modern theme. |
+| Build, validation, and publishing | [`src/doc/CMakeLists.txt`](../../src/doc/CMakeLists.txt), [PR check](../../.github/workflows/documentation-pr-check.yml), [publishing workflow](../../.github/workflows/documentation-workflow.yml) | Configures inputs and checks generation and links in PRs. Publishes `html_awesome` on pushes to `master` or manual runs. |
+| Historical helpers | [`docs/coin_doxygenfiles.inc`](../coin_doxygenfiles.inc), [`docs/doxypp.sed`](../doxypp.sed) | The current CMake flow does not reference these files. Keep them until they can be reviewed separately. |
+
+CMake disables `COIN_BUILD_DOCUMENTATION` and
+`COIN_BUILD_AWESOME_DOCUMENTATION` by default. The publishing workflow enables
+the second option. Both targets disable the automatic `\todo` and deprecated
+lists. See [`todo.txt`](../todo.txt) and [`BUGS.txt`](../BUGS.txt) for the
+historical catalogs.
+
+## Item 119: `SbBool`
+
+[Report 119 in the secondary catalog](../bugs/documentation/20040625--sbool-is-not-in-coin-docs.txt)
+records that `SbBool` was missing from Doxygen. Its declaration is in the
+header generated from [`basic.h.cmake.in`](../../include/Inventor/C/basic.h.cmake.in).
+The old description in [`SoDB.cpp`](../../src/misc/SoDB.cpp) was inactive.
+The description now sits beside the `typedef` in the header template.
+A local build of the classic `documentation` target with Doxygen 1.9.8
+included `SbBool` in the `coin_base` group with the expected description.
+
+## Checking documentation reports
+
+- A source comment may be present without appearing in the HTML. Before
+  closing a documentation report, record the source change and verify the
+  generated page or entry.
+- Topic pages in `src/doc/` explain concepts. Comments beside declarations
+  and methods describe their API contracts. The historical catalog tracks
+  what prompted each change and is maintained independently of Doxygen.
+- The [PR check](../../.github/workflows/documentation-pr-check.yml) builds the
+  modern target without publishing and fails on unresolved references or
+  missing images. It logs other warnings for gradual triage.
+  `WARN_IF_UNDOCUMENTED=YES` still produces thousands of warnings, so
+  `WARN_AS_ERROR=NO` remains necessary.
+- All 142 environment variables in [`Coin_environment.dox`](../../src/doc/Coin_environment.dox)
+  now have documentation-only declarations in
+  [`environment.dox.h`](../../src/doc/environment.dox.h). Their links use
+  dedicated anchors to avoid collisions with internal symbols of the same name.
+- [`Coin_main.dox`](../../src/doc/Coin_main.dox) has older references to
+  graphics integrations and an inactive white paper draft. Review those links
+  and add current examples in a separate documentation change.
+
+## Using GitHub
+
+- Keep generating the Doxygen reference from the repository sources.
+- File focused issues for reproducible defects in the published documentation.
+  Include the page URL, generated version, relevant source, and expected output.
+- Use discussions to decide structure, tutorials, and editorial scope.
+- Check the source, configuration, and published site together before converting
+  build warnings or `\todo` entries into issues.
+
+The PR and publishing workflows use Doxygen 1.18.0. With Doxygen 1.17 or
+later, the modern target uses Awesome 2.5.0, the header generated by Doxygen,
+and the native code copy button. Coin's fork supplies the visual customizations
+and resources for earlier versions.

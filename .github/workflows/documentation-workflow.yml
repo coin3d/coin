@@ -18,14 +18,15 @@ jobs:
         run: |
           sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
           sudo apt-get -y update
-          sudo apt-get -y install gcc-13 doxygen graphviz freeglut3-dev
-          curl -L -o doxygen-1.10.0.linux.bin.tar.gz https://github.com/doxygen/doxygen/releases/download/Release_1_10_0/doxygen-1.10.0.linux.bin.tar.gz
-          tar xzf doxygen-1.10.0.linux.bin.tar.gz
-          export PATH=${{ github.workspace }}/doxygen-1.10.0/bin:$PATH
+          sudo apt-get -y install gcc-13 graphviz freeglut3-dev
+          curl -fL --retry 3 -o doxygen-1.18.0.linux.bin.tar.gz https://github.com/doxygen/doxygen/releases/download/Release_1_18_0/doxygen-1.18.0.linux.bin.tar.gz
+          echo "14fa81bdc34171edb5f1f02b1d60e74802f0439b77fa44e592565d517d72df90  doxygen-1.18.0.linux.bin.tar.gz" | sha256sum -c
+          tar xzf doxygen-1.18.0.linux.bin.tar.gz
+          export PATH=${{ github.workspace }}/doxygen-1.18.0/bin:$PATH
           cmake -S . -B cmake_build_dir -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=cmake_install_dir -DCOIN_BUILD_AWESOME_DOCUMENTATION=ON
       - name: Build project
         run: |
-          export PATH=${{ github.workspace }}/doxygen-1.10.0/bin:$PATH
+          export PATH=${{ github.workspace }}/doxygen-1.18.0/bin:$PATH
           doxygen --version
           cmake --build cmake_build_dir --target documentation_awesome --config Release --parallel
       - name: Deploy Awesome Documentation to Github Pages
