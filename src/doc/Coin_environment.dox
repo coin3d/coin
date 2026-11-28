@@ -1750,7 +1750,11 @@ EnvironmentVariable WINDIR;
 /*!
   \var EnvironmentVariable COIN_NESTED_CACHING
 
-  \todo Write documentation for this
+  Set to 1 to enable nested render caching or 0 to disable it. The
+  default is disabled. SoGLRenderCache::setNestedCachingEnabled() can
+  override this setting before the first cached display list is
+  executed by SoGLRenderCache::call().
+
   \ingroup coin_envvars
 */
 
