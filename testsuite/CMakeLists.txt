@@ -683,3 +683,9 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   set_tests_properties(SoText2ExtendedRenderingBuiltinFont PROPERTIES
     ENVIRONMENT "COIN_FORCE_FREETYPE_OFF=1" SKIP_RETURN_CODE 77 TIMEOUT 30)
 endif()
+
+# ScXMLEventTarget::getEventTarget() rejects a session that is not registered.
+add_executable(ScXMLEventTargetLookupTest ScXMLEventTargetLookupTest.cpp)
+target_link_libraries(ScXMLEventTargetLookupTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+add_test(NAME ScXMLEventTargetLookup COMMAND ScXMLEventTargetLookupTest)
+set_tests_properties(ScXMLEventTargetLookup PROPERTIES TIMEOUT 30)
