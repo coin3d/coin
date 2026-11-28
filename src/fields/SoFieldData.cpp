@@ -169,6 +169,16 @@ SoFieldData::SoFieldData(const SoFieldData * fd)
 }
 
 /*!
+  Replaces this field set template with an independent copy of \a fd.
+*/
+SoFieldData &
+SoFieldData::operator=(const SoFieldData & fd)
+{
+  this->copy(&fd);
+  return *this;
+}
+
+/*!
   Constructor. Takes an indication on the number of fields which
   should be stored, to make sure the memory handling is efficient.
  */
@@ -707,7 +717,7 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
   Copy contents of \a src into this instance.
 
   If there was any data set up in this instance before the method was
-  called, the old data is removed first.
+  called, it is replaced only after the new data has been copied successfully.
 
   Note that this only copies the field set template specification from
   \a src, \e not actual field contents. For copying field contents,
@@ -716,15 +726,34 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
 void
 SoFieldData::copy(const SoFieldData * src)
 {
-  this->freeResources();
+  if (src == this) return;
 
-  int i;
-  for (i=0; i < src->fields.getLength(); i++) {
-    this->fields.append(new SoFieldEntry(src->fields[i]));
+  // Keep the old entries alive until all cloning and allocation succeeds.
+  // The temporary also releases completed clones if a later clone throws.
+  SoFieldData replacement;
+  const int numfields = src->fields.getLength();
+  const int numenums = src->enums.getLength();
+  replacement.fields.ensureCapacity(numfields);
+  replacement.enums.ensureCapacity(numenums);
+  for (int i = 0; i < numfields; i++) {
+    replacement.fields.append(new SoFieldEntry(src->fields[i]));
   }
-  for (i=0; i < src->enums.getLength(); i++) {
-    this->enums.append(new SoEnumEntry(src->enums[i]));
+  for (int i = 0; i < numenums; i++) {
+    replacement.enums.append(new SoEnumEntry(src->enums[i]));
   }
+
+  // Once reserved, appending pointers cannot allocate or throw.
+  this->fields.ensureCapacity(numfields);
+  this->enums.ensureCapacity(numenums);
+  this->freeResources();
+  for (int i = 0; i < numfields; i++) {
+    this->fields.append(replacement.fields[i]);
+  }
+  for (int i = 0; i < numenums; i++) {
+    this->enums.append(replacement.enums[i]);
+  }
+  replacement.fields.truncate(0);
+  replacement.enums.truncate(0);
 }
 
 /*!
