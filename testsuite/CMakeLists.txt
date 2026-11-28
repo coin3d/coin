@@ -314,6 +314,22 @@ foreach(_quadmesh_count_mode dimensions limits callbacks accumulation state)
     COMMAND CoinQuadMeshPrimitiveCountTest ${_quadmesh_count_mode})
 endforeach()
 
+add_executable(CoinQuadMeshPerFaceTest
+  quadmesh-per-face/QuadMeshPerFace.cpp)
+target_compile_features(CoinQuadMeshPerFaceTest PRIVATE cxx_std_11)
+target_link_libraries(CoinQuadMeshPerFaceTest
+  Coin ${COIN_TARGET_LINK_LIBRARIES})
+target_include_directories(CoinQuadMeshPerFaceTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include
+  ${PROJECT_BINARY_DIR}/include
+  ${COIN_TARGET_INCLUDE_DIRECTORIES})
+foreach(_quadmesh_face_mode defaults controls material normal combined aliases generated vertex-property empty)
+  foreach(_quadmesh_face_action callback pick)
+    add_test(NAME QuadMeshPerFace_${_quadmesh_face_mode}_${_quadmesh_face_action}
+      COMMAND CoinQuadMeshPerFaceTest ${_quadmesh_face_mode} ${_quadmesh_face_action})
+  endforeach()
+endforeach()
+
 # Exercise cleanup after the tree subsystem's normal-priority shutdown hook.
 add_executable(CcRbptreeCleanupTest CcRbptreeCleanupTest.cpp)
 target_link_libraries(CcRbptreeCleanupTest Coin ${COIN_TARGET_LINK_LIBRARIES})
