@@ -76,6 +76,19 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
         set_tests_properties(ShadowDirectionalGLX_${shadow_case} PROPERTIES
           SKIP_RETURN_CODE 77 LABELS "shadows;native-gl" TIMEOUT 120)
       endforeach()
+      add_executable(CoinShadowNegativeSpotGLXTest shadows/NegativeSpotGLXTest.cpp)
+      target_include_directories(CoinShadowNegativeSpotGLXTest PRIVATE
+        ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+        ${PROJECT_SOURCE_DIR}/include/Inventor/annex
+        ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+      target_link_libraries(CoinShadowNegativeSpotGLXTest
+        Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+      foreach(shadow_case low medium high boundaries)
+        add_test(NAME ShadowNegativeSpotGLX_${shadow_case}
+          COMMAND CoinShadowNegativeSpotGLXTest ${shadow_case})
+        set_tests_properties(ShadowNegativeSpotGLX_${shadow_case} PROPERTIES
+          SKIP_RETURN_CODE 77 LABELS "shadows;native-gl" TIMEOUT 120)
+      endforeach()
       add_test(NAME BumpProgramGLX COMMAND CoinBumpGLXTest)
       set_tests_properties(BumpProgramGLX PROPERTIES SKIP_RETURN_CODE 77)
 
