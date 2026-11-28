@@ -196,6 +196,8 @@ void
 SoBase::PImpl::rbptree_notify_cb(void * auditor, void * type, void * closure)
 {
   NotifyData * data = static_cast<NotifyData *>(closure);
+  if (data->notified->find(auditor) >= 0) return;
+  data->notified->append(auditor);
 
   // MSVC7 on 64-bit Windows wants to go through this type when
   // casting from void*.

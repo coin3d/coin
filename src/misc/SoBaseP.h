@@ -103,6 +103,7 @@ public:
   struct NotifyData {
     SoNotList * list;
     SoBase * thisp;
+    SbPList * notified;
   };
 
 }; // SoBase::PImpl
