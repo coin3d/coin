@@ -387,6 +387,7 @@ public:
   SbBool buffervalid;
 
   SbBool glimagevalid;
+  SbBool wrapvalid;
   SbBool glrectangle;
 
   void updateBuffer(SoState * state, const float quality);
@@ -398,6 +399,7 @@ public:
   SbBool createFramebufferObjects(const cc_glglue * glue, SoState * state,
                                   const SoSceneTexture2::Type type,
                                   const SbBool warn);
+  void setFramebufferTextureWrap(const cc_glglue * glue);
   void deleteFrameBufferObjects(const cc_glglue * glue, SoState * state);
   SbBool checkFramebufferStatus(const cc_glglue * glue, const SbBool warn);
 
@@ -552,7 +554,8 @@ SoSceneTexture2::GLRender(SoGLRenderAction * action)
   }
   LOCK_GLIMAGE(this);
 
-  if (root && (!PRIVATE(this)->buffervalid || !PRIVATE(this)->glimagevalid)) {
+  if (root && (!PRIVATE(this)->buffervalid || !PRIVATE(this)->glimagevalid ||
+               !PRIVATE(this)->wrapvalid)) {
     PRIVATE(this)->updateBuffer(state, quality);
 
     // don't cache when we change the glimage
@@ -657,9 +660,10 @@ SoSceneTexture2::notify(SoNotList * list)
     // rerender scene
     PRIVATE(this)->buffervalid = FALSE;
   }
-  else if (f == &this->wrapS ||
-           f == &this->wrapT ||
-           f == &this->model ||
+  else if (f == &this->wrapS || f == &this->wrapT) {
+    PRIVATE(this)->wrapvalid = FALSE;
+  }
+  else if (f == &this->model ||
            f == &this->transparencyFunction ||
            f == &this->sceneTransparencyType) {
     // no need to render scene again, but update the texture object
@@ -688,6 +692,7 @@ SoSceneTexture2P::SoSceneTexture2P(SoSceneTexture2 * apiptr)
   this->glcontext = NULL;
   this->buffervalid = FALSE;
   this->glimagevalid = FALSE;
+  this->wrapvalid = FALSE;
   this->glimage = NULL;
   this->glimagecontext = 0;
   this->glaction = NULL;
@@ -737,6 +742,7 @@ SoSceneTexture2P::updateBuffer(SoState * state, const float quality)
   }
 
   if (!candofbo) {
+    if (!this->wrapvalid) this->glimagevalid = FALSE;
     this->updatePBuffer(state, quality);
   }
   else {
@@ -762,9 +768,11 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float COIN_UNUSED_ARG
     this->fbodata = fbodata = new fbo_data(0);
   }
 
-  if ((fbodata->fbo_size != size) || (mipmap != fbodata->fbo_mipmap) ||
-      (requestedtype != fbodata->fbo_requestedtype) ||
-      (cachecontext != fbodata->cachecontext)) {
+  const SbBool recreate = (fbodata->fbo_size != size ||
+                           mipmap != fbodata->fbo_mipmap ||
+                           requestedtype != fbodata->fbo_requestedtype ||
+                           cachecontext != fbodata->cachecontext);
+  if (recreate) {
     fbodata->fbo_mipmap = mipmap;
     fbodata->fbo_size = size;
     fbodata->cachecontext = cachecontext;
@@ -813,17 +821,30 @@ SoSceneTexture2P::updateFrameBuffer(SoState * state, const float COIN_UNUSED_ARG
     // Cache the request even if allocation used the fallback format.
     fbodata->fbo_requestedtype = requestedtype;
 
-    // FIXME: for some reason we need to do this every frame. Investigate why.
     if (requestedtype == SoSceneTexture2::DEPTH) {
       assert(fbodata->fbo_depthmap != NULL);
       this->glimage->setGLDisplayList(fbodata->fbo_depthmap, state,
                                       SoGLImage::CLAMP, SoGLImage::CLAMP);
     }
-    else {
-      assert(fbodata->fbo_texture != NULL);
-      this->glimage->setGLDisplayList(fbodata->fbo_texture, state);
-    }
   }
+
+  if (!fbodata->fbo_depthmap && (recreate || !this->wrapvalid)) {
+    assert(fbodata->fbo_texture != NULL);
+    if (!recreate) {
+      GLint oldtexture;
+      glGetIntegerv(GL_TEXTURE_BINDING_2D, &oldtexture);
+      cc_glglue_glBindTexture(glue, GL_TEXTURE_2D, fbodata->fbo_texture->getFirstIndex());
+      this->setFramebufferTextureWrap(glue);
+      cc_glglue_glBindTexture(glue, GL_TEXTURE_2D, (GLuint) oldtexture);
+    }
+    const SoGLImage::Wrap wraps = translateWrap((SoSceneTexture2::Wrap) PUBLIC(this)->wrapS.getValue());
+    const SoGLImage::Wrap wrapt = translateWrap((SoSceneTexture2::Wrap) PUBLIC(this)->wrapT.getValue());
+    this->glimage->setGLDisplayList(fbodata->fbo_texture, state, wraps, wrapt);
+  }
+  this->wrapvalid = TRUE;
+
+  // A wrap change alone leaves the rendered scene valid.
+  if (!recreate && this->buffervalid && this->glimagevalid) return;
 
   state->push();
 
@@ -1067,6 +1088,7 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
   }
   this->glimagevalid = TRUE;
   this->buffervalid = TRUE;
+  this->wrapvalid = TRUE;
 }
 
 void
@@ -1198,21 +1220,7 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
                format,
                gltype, NULL);
 
-  // for mipmaps
-  // FIXME: add support for CLAMP_TO_BORDER in SoSceneTexture2 and SoTextureImageElement
-
-  GLenum wraps = (GLenum) PUBLIC(this)->wrapS.getValue();
-  GLenum wrapt = (GLenum) PUBLIC(this)->wrapT.getValue();
-
-  SbBool clamptoborder_ok =
-    SoGLDriverDatabase::isSupported(glue, "GL_ARB_texture_border_clamp") ||
-    SoGLDriverDatabase::isSupported(glue, "GL_SGIS_texture_border_clamp");
-
-  if (wraps == GL_CLAMP_TO_BORDER && !clamptoborder_ok) wraps = GL_CLAMP;
-  if (wrapt == GL_CLAMP_TO_BORDER && !clamptoborder_ok) wrapt = GL_CLAMP;
-
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wraps);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapt);
+  this->setFramebufferTextureWrap(glue);
 
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, fbodata->fbo_mipmap ? GL_LINEAR_MIPMAP_LINEAR : GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -1287,6 +1295,23 @@ SoSceneTexture2P::createFramebufferObjects(const cc_glglue * glue, SoState * sta
   cc_glglue_glBindFramebuffer(glue, GL_FRAMEBUFFER_EXT, (GLint)oldfb);
 
   return ret;
+}
+
+void
+SoSceneTexture2P::setFramebufferTextureWrap(const cc_glglue * glue)
+{
+  GLenum wraps = (GLenum) PUBLIC(this)->wrapS.getValue();
+  GLenum wrapt = (GLenum) PUBLIC(this)->wrapT.getValue();
+
+  SbBool clamptoborder_ok =
+    SoGLDriverDatabase::isSupported(glue, "GL_ARB_texture_border_clamp") ||
+    SoGLDriverDatabase::isSupported(glue, "GL_SGIS_texture_border_clamp");
+
+  if (wraps == GL_CLAMP_TO_BORDER && !clamptoborder_ok) wraps = GL_CLAMP;
+  if (wrapt == GL_CLAMP_TO_BORDER && !clamptoborder_ok) wrapt = GL_CLAMP;
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wraps);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapt);
 }
 
 void

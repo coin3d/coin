@@ -10,6 +10,7 @@ include(gl-render-exceptions/Tests.cmake)
 include(scene-texture-background/Tests.cmake)
 include(SbSmallMapTests.cmake)
 include(scene-texture-type/Tests.cmake)
+include(scene-texture-wrap/Tests.cmake)
 include(gl-context-maps/Tests.cmake)
 include(fonts/Tests.cmake)
 
