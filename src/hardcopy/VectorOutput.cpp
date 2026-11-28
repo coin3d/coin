@@ -79,7 +79,9 @@ SoVectorOutput::SoVectorOutput(void)
 */
 SoVectorOutput::~SoVectorOutput()
 {
-  this->closeFile();
+  // Don't call closeFile() here: it fetches Coin's stdout, which would be
+  // reopened and leaked if we're destructed after SoDB::finish().
+  if (PRIVATE(this)->didopen) fclose(PRIVATE(this)->fp);
   delete PRIVATE(this);
 }
 
@@ -111,17 +113,20 @@ SoVectorOutput::closeFile(void)
 {
   if (PRIVATE(this)->didopen) {
     fclose(PRIVATE(this)->fp);
-    PRIVATE(this)->fp = stdout;
+    PRIVATE(this)->fp = coin_get_stdout();
     PRIVATE(this)->didopen = FALSE;
   }
 }
 
 /*!
-  Returns the \e stdio file handle pointer.
+  Returns the \e stdio file handle pointer. Returns \c NULL if writing
+  to the default output and it is not available. It will then be
+  requested again on the next call.
 */
 FILE *
 SoVectorOutput::getFilePointer(void)
 {
+  if (PRIVATE(this)->fp == NULL) PRIVATE(this)->fp = coin_get_stdout();
   return PRIVATE(this)->fp;
 }
 

@@ -553,7 +553,7 @@ SoInput::pushFile(const char * filename)
   // File::readNamedFile, which calls pushFile. No other files than
   // the pushed file should end up on the stack.
   if (this->filestack.getLength() == 1 &&
-      this->filestack[0]->ivFilePointer() == coin_get_stdin() &&
+      this->filestack[0]->isStdin() &&
       !PRIVATE(this)->usingstdin) {
 
     this->closeFile();
@@ -593,7 +593,7 @@ SoInput::closeFile(void)
 {
   // Remove all entries, including the default <stdin>.
   while (this->filestack.getLength() > 0) {
-    if (!this->fromBuffer() && (this->getCurFile() != coin_get_stdin())) {
+    if (!this->fromBuffer() && !this->getTopOfStack()->isStdin()) {
       SbString s = SoInput::getPathname(this->getTopOfStack()->ivFilename());
       if (s.getLength()) SoInput::removeDirectory(s.getString());
     }
@@ -2120,7 +2120,7 @@ SoInput::checkHeader(SbBool bValidateBufferHeader)
   // telling if the user want to use <stdin> to read from or not when
   // a new file is pushed on the stack.
   if (this->filestack.getLength() == 1 &&
-      fi->ivFilePointer() == coin_get_stdin() &&
+      fi->isStdin() &&
       !PRIVATE(this)->usingstdin) {
 
     PRIVATE(this)->usingstdin = TRUE;

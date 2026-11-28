@@ -1450,23 +1450,31 @@ SoProfilingReportGeneratorP::printGfxMemKilobytes(const SbProfilingData & data, 
 /*!
   Ready-made callback that can be used with generate() to print to stdout.
 
+  Returns STOP if the stream is unavailable or the text could not be
+  written, which ends the report. Otherwise returns CONTINUE.
+
   \sa generate
 */
 SoProfilingReportGenerator::CallbackResponse
 SoProfilingReportGenerator::stdoutCB(void * COIN_UNUSED_ARG(userdata), int COIN_UNUSED_ARG(entryidx), const char * text)
 {
-  fprintf(coin_get_stdout(), "%s\n", text);
+  FILE * output = coin_get_stdout();
+  if (output == NULL || fprintf(output, "%s\n", text) < 0) return STOP;
   return CONTINUE;
 }
 
 /*!
   Ready-made callback that can be used with generate() to print to stderr.
 
+  Returns STOP if the stream is unavailable or the text could not be
+  written, which ends the report. Otherwise returns CONTINUE.
+
   \sa generate
 */
 SoProfilingReportGenerator::CallbackResponse
 SoProfilingReportGenerator::stderrCB(void * COIN_UNUSED_ARG(userdata), int COIN_UNUSED_ARG(entryidx), const char * text)
 {
-  fprintf(coin_get_stderr(), "%s\n", text);
+  FILE * output = coin_get_stderr();
+  if (output == NULL || fprintf(output, "%s\n", text) < 0) return STOP;
   return CONTINUE;
 }

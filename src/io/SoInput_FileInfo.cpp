@@ -91,6 +91,7 @@ SoInput_FileInfo::SoInput_FileInfo(SoInput_Reader * readerptr,
   this->prefunc = NULL;
   this->postfunc = NULL;
   this->stdinname = "<stdin>";
+  this->readsstdin = (readerptr == NULL);
   this->deletebuffer = NULL;
 
 #if defined(HAVE_THREADS) && defined(SOINPUT_ASYNC_IO)

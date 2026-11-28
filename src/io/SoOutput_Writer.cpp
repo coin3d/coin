@@ -90,6 +90,7 @@ SoOutput_Writer::createWriter(FILE * fp,
                               const SbName & compmethod,
                               const float level)
 {
+  if (fp == NULL) return new SoOutput_FileWriter(NULL, FALSE);
   if (compmethod == "GZIP") {
     if (cc_zlibglue_available()) {
       return new SoOutput_GZFileWriter(fp, shouldclose, level);
@@ -141,7 +142,7 @@ SoOutput_FileWriter::getType(void) const
 size_t
 SoOutput_FileWriter::write(const char * buf, size_t numbytes, const SbBool COIN_UNUSED_ARG(binary))
 {
-  assert(this->fp);
+  if (this->fp == NULL) return 0;
   return fwrite(buf, 1, numbytes, this->fp);
 }
 
@@ -154,6 +155,7 @@ SoOutput_FileWriter::getFilePointer(void)
 size_t 
 SoOutput_FileWriter::bytesInBuf(void)
 {
+  if (this->fp == NULL) return 0;
   return ftell(this->fp);
 }
 

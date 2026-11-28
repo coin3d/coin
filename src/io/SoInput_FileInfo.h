@@ -132,6 +132,12 @@ public:
   unsigned int lineNr(void) {
     return this->linenr;
   }
+  // TRUE if this is the default stdin entry. Don't compare
+  // ivFilePointer() with coin_get_stdin() for this: both can be NULL
+  // (memory buffers and compressed files vs unavailable stdin).
+  SbBool isStdin(void) const {
+    return this->readsstdin;
+  }
   FILE * ivFilePointer(void) {
     // if reader == NULL, it means that we're reading from stdin
     if (this->reader == NULL) return coin_get_stdin();
@@ -247,6 +253,7 @@ private:
   SbList <SoProto*> protostack;
 
   SbString stdinname; // needed for ivFilename()
+  SbBool readsstdin;
   char * deletebuffer;
   SbHash<const char *, SoBase *> references;
 
