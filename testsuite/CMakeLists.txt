@@ -683,3 +683,13 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   set_tests_properties(SoText2ExtendedRenderingBuiltinFont PROPERTIES
     ENVIRONMENT "COIN_FORCE_FREETYPE_OFF=1" SKIP_RETURN_CODE 77 TIMEOUT 30)
 endif()
+
+# Passing setHandleEventAction() the action already in use must not delete it.
+add_executable(HandleEventActionSelfAssignmentTest HandleEventActionSelfAssignmentTest.cpp)
+target_link_libraries(HandleEventActionSelfAssignmentTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+add_test(NAME EventManagerHandleEventActionSelfAssignment
+  COMMAND HandleEventActionSelfAssignmentTest event)
+add_test(NAME SceneManagerHandleEventActionSelfAssignment
+  COMMAND HandleEventActionSelfAssignmentTest scene)
+set_tests_properties(EventManagerHandleEventActionSelfAssignment
+  SceneManagerHandleEventActionSelfAssignment PROPERTIES TIMEOUT 30)
