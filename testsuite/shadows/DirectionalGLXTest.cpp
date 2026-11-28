@@ -18,6 +18,7 @@
 #include <Inventor/nodes/SoNormalBinding.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSpotLight.h>
 #include <Inventor/nodes/SoTexture2.h>
 #include <Inventor/nodes/SoTextureUnit.h>
 #include <Inventor/nodes/SoTranslation.h>
@@ -91,8 +92,17 @@ struct Options {
   int directional, spots, inherited, textures;
   bool blocker, ordinary, reverse;
   float offset, cameraDistance;
+  // Optional spot fixtures shared with the negative-drop-off regression suite.
+  float drop, cutoff, spotIntensity, diffuse, specular, shininess;
+  SbVec3f normal, spotDirection, attenuation;
+  bool baseSpot, regularSpot, inheritedSpot, shallowMap, notifyDrop, explicitSpotRange;
+  float initialDrop;
   Options(float q) : quality(q), directional(1), spots(0), inherited(0), textures(0),
-    blocker(false), ordinary(false), reverse(false), offset(0), cameraDistance(8) {}
+    blocker(false), ordinary(false), reverse(false), offset(0), cameraDistance(8),
+    drop(0), cutoff(0.75f), spotIntensity(-1), diffuse(1), specular(0), shininess(0.2f),
+    normal(0,0,1), spotDirection(0,0,-1), attenuation(0,0,1),
+    baseSpot(false), regularSpot(false), inheritedSpot(false), shallowMap(false),
+    notifyDrop(false), explicitSpotRange(false), initialDrop(0) {}
 };
 SoSeparator * mapScene(bool blocker, float offset) {
   SoSeparator * scene = new SoSeparator;
@@ -106,6 +116,19 @@ SoSeparator * mapScene(bool blocker, float offset) {
   scene->addChild(cube);
   return scene;
 }
+SoSeparator * radialScene(bool blocker, float offset) {
+  SoSeparator * scene = new SoSeparator;
+  SoCoordinate3 * coordinates = new SoCoordinate3;
+  const SbVec3f points[] = {SbVec3f(-3.8f+offset,-3.8f,0), SbVec3f(3.8f+offset,-3.8f,0),
+    SbVec3f(3.8f+offset,3.8f,0), SbVec3f(-3.8f+offset,3.8f,0)};
+  coordinates->point.setValues(0,4,points); scene->addChild(coordinates);
+  SoFaceSet * face = new SoFaceSet; face->numVertices.setValue(4); scene->addChild(face);
+  SoTranslation * t = new SoTranslation;
+  t->translation.setValue(blocker ? offset-2.25f : offset+30,0,0.2f); scene->addChild(t);
+  SoCube * cube = new SoCube;
+  cube->width = 0.8f; cube->height = 2; cube->depth = 0.1f; scene->addChild(cube);
+  return scene;
+}
 Result render(const Options & o, bool requireProgram = true) {
   Result r;
   SoSeparator * root = new SoSeparator; root->ref();
@@ -115,7 +138,8 @@ Result render(const Options & o, bool requireProgram = true) {
   camera->height = 8; camera->nearDistance = 1; camera->farDistance = 40;
   root->addChild(camera);
   SoEnvironment * environment = new SoEnvironment;
-  environment->ambientIntensity = 0; root->addChild(environment);
+  environment->ambientIntensity = 0; environment->attenuation = o.attenuation;
+  root->addChild(environment);
   for (int i = 0; i < o.inherited; ++i) {
     SoDirectionalLight * light = new SoDirectionalLight;
     light->intensity = 0; root->addChild(light);
@@ -126,6 +150,12 @@ Result render(const Options & o, bool requireProgram = true) {
     // Ordinary lights must already be in traversal state when the shadow
     // group builds its shader; late ordinary-light discovery is separate work.
     light->intensity = 0.7f; root->addChild(light);
+  }
+  if (o.inheritedSpot) {
+    SoSpotLight * light = new SoSpotLight;
+    light->location.setValue(o.offset,0,6); light->direction.setValue(0,0,-1);
+    light->cutOffAngle = 0.25f; light->dropOffRate = -1; light->intensity = 0.2f;
+    root->addChild(light);
   }
   SoShadowGroup * group = new SoShadowGroup;
   group->quality = o.quality; group->precision = 0.2f;
@@ -141,18 +171,27 @@ Result render(const Options & o, bool requireProgram = true) {
     light->shadowMapScene = mapScene(o.blocker, o.offset);
     group->addChild(light);
   }
-  for (int i = 0; i < o.spots; ++i) {
-    SoShadowSpotLight * light = new SoShadowSpotLight;
+  std::vector<SoSpotLight *> spotnodes;
+  for (int i = 0; i < o.spots + int(o.regularSpot); ++i) {
+    SoSpotLight * light = o.baseSpot ? new SoSpotLight : new SoShadowSpotLight;
     light->location.setValue(o.offset, 0, 6);
-    light->direction.setValue(0, 0, -1);
-    light->cutOffAngle = 0.75f; light->dropOffRate = 0;
-    light->intensity = o.directional ? 0.35f : 0.7f;
-    light->shadowMapScene = mapScene(o.blocker, o.offset);
+    light->direction = o.spotDirection;
+    light->cutOffAngle = o.cutoff;
+    light->dropOffRate = i == o.spots ? 0.0f : (o.notifyDrop ? o.initialDrop : o.drop);
+    light->intensity = o.spotIntensity >= 0 ? o.spotIntensity : (o.directional ? 0.35f : 0.7f);
+    if (!o.baseSpot) {
+      SoShadowSpotLight * shadow = static_cast<SoShadowSpotLight *>(light);
+      shadow->shadowMapScene = o.shallowMap ? radialScene(o.blocker, o.offset) : mapScene(o.blocker, o.offset);
+      if (o.shallowMap || o.explicitSpotRange) { shadow->nearDistance = 0.1f; shadow->farDistance = 12; }
+    }
+    spotnodes.push_back(light);
     group->addChild(light);
   }
   SoMaterial * material = new SoMaterial;
-  material->ambientColor.setValue(0,0,0); material->specularColor.setValue(0,0,0);
-  material->diffuseColor.setValue(1,1,1); group->addChild(material);
+  material->ambientColor.setValue(0,0,0);
+  material->specularColor.setValue(o.specular,o.specular,o.specular);
+  material->shininess = o.shininess;
+  material->diffuseColor.setValue(o.diffuse,o.diffuse,o.diffuse); group->addChild(material);
   for (int i = 0; i < o.textures; ++i) {
     SoTextureUnit * unit = new SoTextureUnit; unit->unit = i; group->addChild(unit);
     SoTexture2 * texture = new SoTexture2;
@@ -160,7 +199,7 @@ Result render(const Options & o, bool requireProgram = true) {
     texture->image.setValue(SbVec2s(2,2), 3, white);
     group->addChild(texture);
   }
-  SoNormal * normal = new SoNormal; normal->vector.setValue(0,0,1); group->addChild(normal);
+  SoNormal * normal = new SoNormal; normal->vector = o.normal; group->addChild(normal);
   SoNormalBinding * binding = new SoNormalBinding;
   binding->value = SoNormalBinding::OVERALL; group->addChild(binding);
   SoCoordinate3 * coordinates = new SoCoordinate3;
@@ -176,6 +215,12 @@ Result render(const Options & o, bool requireProgram = true) {
     action.setCacheContext(5391);
     glViewport(0,0,size,size); glClearColor(0,0,0,0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if (o.notifyDrop) {
+      action.apply(root); glFinish();
+      r = Result();
+      for (int i = 0; i < o.spots; ++i) spotnodes[i]->dropOffRate = o.drop;
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
     action.apply(root); glFinish();
     glPixelStorei(GL_PACK_ALIGNMENT,1);
     glReadPixels(0,0,size,size,GL_RGB,GL_UNSIGNED_BYTE,&r.image[0]);
@@ -260,6 +305,7 @@ void boundaries() {
         "intermediate and high branches are distinct");
 }
 }
+#ifndef COIN_SHADOW_GLX_FIXTURE_ONLY
 int main(int argc, char ** argv) {
   Display * display = XOpenDisplay(NULL);
   if (!display) { std::puts("SKIP: no X display for native shadow GLX tests"); return 77; }
@@ -291,3 +337,5 @@ int main(int argc, char ** argv) {
   std::printf("Native shadow checks: %d failure(s)\n",failures);
   return failures ? 1 : 0;
 }
+
+#endif // COIN_SHADOW_GLX_FIXTURE_ONLY
