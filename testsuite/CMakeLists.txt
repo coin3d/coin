@@ -214,6 +214,8 @@ foreach(INPUTFILE ${COIN_SRC_FILES})
 	create_testsuite(${INPUTFILE})
 endforeach()
 
+include(SoOffscreenRendererTests.cmake)
+
 # Create test cases for all scenes under models folder (this replaces StandardTests.cpp).
 # The original StandardTests.cpp also tested additional folders:
 # - "killers" with testInCorrectFile

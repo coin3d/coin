@@ -34,7 +34,8 @@ if [[ "$(uname -s)" == "Linux" ]]; then
   # backend so graphical regressions run instead of getting a zero-area tile.
   COIN_GLXGLUE_NO_PBUFFERS=1 \
   COIN_GLX_PIXMAP_DIRECT_RENDERING=1 LIBGL_ALWAYS_SOFTWARE=1 \
-    xvfb-run -a ctest --test-dir "${build_dir}" -C Release --output-on-failure
+    xvfb-run -a --server-args="-screen 0 1280x1024x24 -nolisten tcp -noreset -extension MIT-SHM" \
+      ctest --test-dir "${build_dir}" -C Release --output-on-failure
 else
   ctest --test-dir "${build_dir}" -C Release --output-on-failure
 fi
