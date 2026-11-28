@@ -77,17 +77,19 @@ SoLinePatternElement::set(SoState * const state,
 {
   int32_t factorClamped = factor;
 
-#if COIN_DEBUG
   if (factor < 1) {
     factorClamped = 1;
+#if COIN_DEBUG
     SoDebugError::postWarning("SoLinePatternElement::set", 
                               "Factor out of range (%d). Clamped to 1.", factor);
+#endif // COIN_DEBUG
   } else if (factor > 256) {
     factorClamped = 256;
+#if COIN_DEBUG
     SoDebugError::postWarning("SoLinePatternElement::set",
                               "Factor out of range (%d). Clamped to 256.", factor);
-  }
 #endif // COIN_DEBUG
+  }
 
   // pattern and scale factor are stored as single value (pattern: 0 - 15, factor: 16-24)
   SoInt32Element::set(classStackIndex, state, node, (pattern & 0xffff) | ((factorClamped & 0x1ff) << 16));
