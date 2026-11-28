@@ -51,6 +51,7 @@ set(COIN_ENGINES_INTERNAL_FILES
 	evaluator_tab.c
 	SoSubEngineP.h
 	SoSubNodeEngineP.h
+	SoEngineEvaluationP.h
 )
 
 # build library
