@@ -156,6 +156,7 @@ private:
   void rayPickBoundingBox(SoRayPickAction * action);
   friend class soshape_primdata;           // internal class
   friend class so_generate_prim_private;   // a very private class
+  friend class SoCachedVertexArrayTexCoordGuard; // internal array storage
 };
 
 #endif // !COIN_SOSHAPE_H

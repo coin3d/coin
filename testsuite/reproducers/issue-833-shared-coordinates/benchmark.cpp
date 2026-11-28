@@ -36,6 +36,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <ctime>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -63,13 +64,18 @@ static double rss() {
   return -1;
 }
 static double peak() { struct rusage r; getrusage(RUSAGE_SELF,&r);return r.ru_maxrss/1024.0; }
-static void emit(const char * phase,const std::vector<double>& input,SoOffscreenRenderer& renderer) {
-  auto s=input; std::sort(s.begin(),s.end());
+struct Sample { double wall_ms, cpu_ms; };
+static void emit(const char * phase,const std::vector<Sample>& input,SoOffscreenRenderer& renderer) {
+  std::vector<double> wall, cpu;
+  for (const auto & sample : input) { wall.push_back(sample.wall_ms); cpu.push_back(sample.cpu_ms); }
+  std::sort(wall.begin(),wall.end()); std::sort(cpu.begin(),cpu.end());
   const unsigned char * p=renderer.getBuffer();
   unsigned long long hash=14695981039346656037ULL; int lit=0;
   for(int i=0;i<128*128*3;++i){hash^=p[i];hash*=1099511628211ULL;if(p[i])++lit;}
-  std::printf("{\"phase\":\"%s\",\"median_ms\":%.6f,\"rss_mib\":%.3f,\"peak_mib\":%.3f,\"hash\":\"%016llx\",\"nonzero_bytes\":%d,\"missing\":%d,\"samples_ms\":[",phase,s[s.size()/2],rss(),peak(),hash,lit,missing);
-  for(size_t i=0;i<input.size();++i)std::printf("%s%.6f",i?",":"",input[i]);
+  std::printf("{\"phase\":\"%s\",\"median_ms\":%.6f,\"cpu_median_ms\":%.6f,\"rss_mib\":%.3f,\"peak_mib\":%.3f,\"hash\":\"%016llx\",\"nonzero_bytes\":%d,\"missing\":%d,\"samples_ms\":[",phase,wall[wall.size()/2],cpu[cpu.size()/2],rss(),peak(),hash,lit,missing);
+  for(size_t i=0;i<input.size();++i)std::printf("%s%.6f",i?",":"",input[i].wall_ms);
+  std::printf("],\"samples_cpu_ms\":[");
+  for(size_t i=0;i<input.size();++i)std::printf("%s%.6f",i?",":"",input[i].cpu_ms);
   std::puts("]}");std::fflush(stdout);
 }
 static std::vector<SbVec3f> points(int count,int columns) {
@@ -150,9 +156,9 @@ int main(int argc,char ** argv) {
   SoCallback* done=new SoCallback;done->setCallback(finish,NULL);root->addChild(done);
   {SoOffscreenRenderer renderer(SbViewportRegion(128,128));renderer.setComponents(SoOffscreenRenderer::RGB);
     std::printf("{\"phase\":\"scene\",\"rss_mib\":%.3f,\"peak_mib\":%.3f,\"points_per_source\":%d,\"vertices_per_shape\":%d,\"shapes\":%d}\n",rss(),peak(),shared?sharedpoints:verticespershape,verticespershape,count);std::fflush(stdout);
-    auto render=[&](){auto b=Clock::now();if(!renderer.render(root))std::exit(3);return std::chrono::duration<double,std::milli>(Clock::now()-b).count();};
+    auto render=[&](){auto b=Clock::now();auto c=std::clock();if(!renderer.render(root))std::exit(3);const double cpu=1000.0*double(std::clock()-c)/CLOCKS_PER_SEC;return Sample{std::chrono::duration<double,std::milli>(Clock::now()-b).count(),cpu};};
     emit("first",{render()},renderer);
-    std::vector<double> times;for(int i=0;i<frames;++i)times.push_back(render());emit("static",times,renderer);
+    std::vector<Sample> times;for(int i=0;i<frames;++i)times.push_back(render());emit("static",times,renderer);
     auto edit=Clock::now();
     if(mutation=="coord") {for(auto c:coordinates){SbVec3f* p=c->point.startEditing();for(int i=0;i<c->point.getNum();++i)p[i][0]+=0.1f*std::sin(6.2831853f*p[i][1]);c->point.finishEditing();}if(vc)vc->point=coordinates[0]->point;}
     else if(!ifs){faces[0]->startIndex=faces[0]->startIndex.getValue()+4;faces[0]->numVertices.setNum(1023);}
@@ -160,5 +166,7 @@ int main(int argc,char ** argv) {
     std::printf("{\"phase\":\"edit\",\"edit_ms\":%.6f}\n",std::chrono::duration<double,std::milli>(Clock::now()-edit).count());
     emit("invalidated",{render()},renderer);times.clear();for(int i=0;i<frames;++i)times.push_back(render());emit("restabilized",times,renderer);
   }
-  root->unref();SoDebugError::setHandlerCallback(NULL,NULL);SoDB::finish();return missing?4:0;
+  root->unref();
+  std::printf("{\"phase\":\"released\",\"rss_mib\":%.3f,\"peak_mib\":%.3f}\n",rss(),peak());
+  SoDebugError::setHandlerCallback(NULL,NULL);SoDB::finish();return missing?4:0;
 }

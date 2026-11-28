@@ -38,6 +38,12 @@
 
   It is unlikely that application programmers should need to know how
   to use this class, as it is mostly intended for internal use.
+  For a single default 2D texture during OpenGL rendering, the shape's
+  bounding box is cached with its scene-state dependencies. Changes to the
+  shape or those dependencies cause the default mapping to be recalculated.
+  Default 2D arrays and scalar callbacks share the same normalization.
+  Bulk generation converts homogeneous geometry to Cartesian coordinates
+  before evaluating S and T.
 */
 // FIXME: document class better.
 
@@ -45,6 +51,8 @@
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 
 #include <Inventor/misc/SoState.h>
+#include <Inventor/elements/SoCoordinateElement.h>
+#include <Inventor/SbVec2f.h>
 #include <Inventor/elements/SoMultiTextureImageElement.h>
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
@@ -66,6 +74,7 @@
 #include <cassert>
 #include "SbBasicP.h"
 #include "coindefs.h"
+#include "shapenodes/SoVertexArrayTexCoordGuard.h"
 
 #define FLAG_FUNCTION           0x01
 #define FLAG_NEEDCOORDS         0x02
@@ -74,6 +83,15 @@
 #define FLAG_3DTEXTURES         0x10
 #define FLAG_DIDINITDEFAULT     0x20
 #define FLAG_NEEDINDICES        0x40
+
+namespace {
+SbVec2f coin_bundle_default2(const SbVec3f & point, const SbVec3f & origin,
+                           const SbVec3f & size, int dim0, int dim1)
+{
+  return SbVec2f((point[dim0] - origin[0]) / size[0],
+                (point[dim1] - origin[1]) / size[1]);
+}
+}
 
 /*!
   Constructor with \a action being the action applied to the node.
@@ -215,18 +233,18 @@ SoTextureCoordinateBundle::get(const SbVec3f &point, const SbVec3f &normal)
 {
   assert(this->coordElt != NULL && (this->flags & FLAG_FUNCTION));
   if (this->flags & FLAG_DEFAULT) {
-    SbVec3f pt;
     if (this->flags & FLAG_3DTEXTURES) {
-      pt = point - this->defaultorigo;
+      const SbVec3f pt = point - this->defaultorigo;
       this->dummyInstance[2] = pt[2]/this->defaultsize[2];
+      this->dummyInstance[0] = pt[0]/this->defaultsize[0];
+      this->dummyInstance[1] = pt[1]/this->defaultsize[1];
     }
     else {
-      pt.setValue(point[this->defaultdim0]-this->defaultorigo[0],
-                  point[this->defaultdim1]-this->defaultorigo[1],
-                  0.0f);
+      const SbVec2f uv = coin_bundle_default2(point, this->defaultorigo,
+        this->defaultsize, this->defaultdim0, this->defaultdim1);
+      this->dummyInstance[0] = uv[0];
+      this->dummyInstance[1] = uv[1];
     }
-    this->dummyInstance[0] = pt[0]/this->defaultsize[0];
-    this->dummyInstance[1] = pt[1]/this->defaultsize[1];
     return this->dummyInstance;
   }
   else {
@@ -243,6 +261,36 @@ SoTextureCoordinateBundle::get(const int index)
 {
   assert(coordElt && !(this->flags & FLAG_FUNCTION));
   return coordElt->get4(index);
+}
+
+/*!
+  Fills \a target with the default 2D mapping for every source coordinate.
+  The mapping must already be initialized for a default 2D texture. The caller
+  provides coords->getNum() writable entries and keeps the source and target alive.
+  Homogeneous coordinates use the same Cartesian conversion as get3().
+*/
+void
+SoTextureCoordinateBundle::generateDefault2(const SoCoordinateElement * coords,
+                                            SbVec2f * target) const
+{
+  assert((this->flags & FLAG_DEFAULT) && !(this->flags & FLAG_3DTEXTURES));
+  const int count = coords->getNum();
+  if (coords->is3D()) {
+    const SbVec3f * points = coords->getArrayPtr3();
+    for (int i = 0; i < count; ++i) {
+      target[i] = coin_bundle_default2(points[i], this->defaultorigo,
+        this->defaultsize, this->defaultdim0, this->defaultdim1);
+    }
+  }
+  else {
+    const SbVec4f * points = coords->getArrayPtr4();
+    for (int i = 0; i < count; ++i) {
+      SbVec3f point;
+      points[i].getReal(point);
+      target[i] = coin_bundle_default2(point, this->defaultorigo,
+        this->defaultsize, this->defaultdim0, this->defaultdim1);
+    }
+  }
 }
 
 
@@ -303,18 +351,18 @@ SoTextureCoordinateBundle:: defaultCBMulti(void * userdata,
 {
   SoTextureCoordinateBundle * thisp = static_cast<SoTextureCoordinateBundle *>(userdata);
 
-  SbVec3f pt;
   if (thisp->flags & FLAG_3DTEXTURES) {
-    pt = point - thisp->defaultorigo;
+    const SbVec3f pt = point - thisp->defaultorigo;
     thisp->dummyInstance[2] = pt[2]/thisp->defaultsize[2];
+    thisp->dummyInstance[0] = pt[0]/thisp->defaultsize[0];
+    thisp->dummyInstance[1] = pt[1]/thisp->defaultsize[1];
   }
   else {
-    pt.setValue(point[thisp->defaultdim0]-thisp->defaultorigo[0],
-                point[thisp->defaultdim1]-thisp->defaultorigo[1],
-                0.0f);
+    const SbVec2f uv = coin_bundle_default2(point, thisp->defaultorigo,
+      thisp->defaultsize, thisp->defaultdim0, thisp->defaultdim1);
+    thisp->dummyInstance[0] = uv[0];
+    thisp->dummyInstance[1] = uv[1];
   }
-  thisp->dummyInstance[0] = pt[0]/thisp->defaultsize[0];
-  thisp->dummyInstance[1] = pt[1]/thisp->defaultsize[1];
   return thisp->dummyInstance;
 }
 
@@ -330,13 +378,18 @@ SoTextureCoordinateBundle::initDefaultCallback(SoAction * action)
   //
   SbBox3f box;
   SbVec3f center;
-  // this could be very slow, but if you're looking for speed, default
-  // texture coordinate mapping shouldn't be used. We might optimize this
-  // by using a SoTextureCoordinateCache soon though. pederb, 20000218
-
   SoShape * shape = coin_assert_cast<SoShape *>(this->shapenode);
+  int lastenabled = -1;
+  const SbBool * enabled =
+    SoMultiTextureEnabledElement::getEnabledUnits(this->state, lastenabled);
   const SoBoundingBoxCache * bboxcache = shape->getBoundingBoxCache();
-  if (bboxcache && bboxcache->isValid(action->getState())) {
+  if (action->isOfType(SoGLRenderAction::getClassTypeId()) &&
+      lastenabled == 0 && enabled && enabled[0] &&
+      SoMultiTextureEnabledElement::getMode(this->state, 0) ==
+        SoMultiTextureEnabledElement::TEXTURE2D) {
+    SoCachedVertexArrayTexCoordGuard::getDefaultBBox(action, shape, box, center);
+  }
+  else if (bboxcache && bboxcache->isValid(action->getState())) {
     box = bboxcache->getProjectedBox();
     if (bboxcache->isCenterSet()) center = bboxcache->getCenter();
     else center = box.getCenter();

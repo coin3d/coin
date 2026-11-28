@@ -31,7 +31,14 @@ LIBGL_ALWAYS_SOFTWARE=1 LP_NUM_THREADS=4 xvfb-run -a \
 It prints JSON lines for scene construction, first render, static renders,
 coordinate-source invalidation, and restabilized renders. Each render record
 includes elapsed time, resident memory, an RGB image hash, and any missing-array
-diagnostics. Use the same executable with different Coin shared libraries when
+diagnostics. `cpu_median_ms` and `samples_cpu_ms` report process CPU time on
+Linux, summed over all process threads; they can exceed elapsed time with a
+parallel software renderer. They exclude CPU work in the X server and other
+processes. Both clocks surround `render()`; the scene's final callback calls
+`glFinish()`, and pixel readback and hashing take place outside the clocks.
+CPU time helps distinguish execution cost from time spent descheduled, but
+frequency scaling and memory contention can still affect it.
+Use the same executable with different Coin shared libraries when
 comparing revisions so that only the library changes.
 
 Set `COIN_BENCHMARK_SHARED_POINTS` to sweep the shared source size while each

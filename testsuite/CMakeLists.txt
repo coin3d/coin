@@ -13,6 +13,7 @@ include(scene-texture-type/Tests.cmake)
 include(scene-texture-wrap/Tests.cmake)
 include(gl-context-maps/Tests.cmake)
 include(fonts/Tests.cmake)
+include(cache-dependencies/Tests.cmake)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND COIN_BUILD_SHARED_LIBS AND CMAKE_NM)
   add_test(NAME LegacyExportedSymbols
@@ -117,22 +118,53 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
       ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
     target_compile_definitions(CoinTextureArrayTest PRIVATE COIN_TEST_HAS_X11)
     target_link_libraries(CoinTextureArrayTest Coin ${X11_LIBRARIES})
+    add_executable(CoinTextureCacheTest reproducers/issue-722-texture-vbo/cache.cpp)
+    target_include_directories(CoinTextureCacheTest PRIVATE
+      ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+      ${COIN_TARGET_INCLUDE_DIRECTORIES})
+    target_link_libraries(CoinTextureCacheTest Coin)
     find_program(COIN_TEST_XVFB_RUN xvfb-run)
+    add_executable(CoinTextureBufferReuseTest reproducers/issue-722-texture-vbo/buffer-reuse.cpp)
+    target_compile_definitions(CoinTextureBufferReuseTest PRIVATE COIN_INTERNAL)
+    target_include_directories(CoinTextureBufferReuseTest PRIVATE
+      ${PROJECT_SOURCE_DIR}/src ${PROJECT_BINARY_DIR}/src
+      ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+      ${COIN_TARGET_INCLUDE_DIRECTORIES})
+    target_link_libraries(CoinTextureBufferReuseTest Coin OpenGL::GL)
+    if(COIN_TEST_XVFB_RUN)
+      add_test(NAME DefaultTextureBufferReuse COMMAND ${COIN_TEST_XVFB_RUN} -a
+        -s "-screen 0 1280x1024x24 -noreset"
+        $<TARGET_FILE:CoinTextureBufferReuseTest>)
+    else()
+      add_test(NAME DefaultTextureBufferReuse COMMAND CoinTextureBufferReuseTest)
+    endif()
+    set_tests_properties(DefaultTextureBufferReuse PROPERTIES TIMEOUT 60
+      ENVIRONMENT "COIN_GLXGLUE_NO_PBUFFERS=1;COIN_GLX_PIXMAP_DIRECT_RENDERING=1")
     if(COIN_TEST_XVFB_RUN)
       add_test(NAME TextureCoordinateArrayRendering
         COMMAND ${COIN_TEST_XVFB_RUN} -a
+          -s "-screen 0 1280x1024x24 -noreset"
           ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/issue-722-texture-vbo/matrix.sh
           $<TARGET_FILE:CoinTextureArrayTest>)
+      add_test(NAME DefaultTextureCoordinateCache
+        COMMAND ${COIN_TEST_XVFB_RUN} -a
+          -s "-screen 0 1280x1024x24 -noreset"
+          ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/issue-722-texture-vbo/cache.sh
+          $<TARGET_FILE:CoinTextureCacheTest>)
     else()
       add_test(NAME TextureCoordinateArrayRendering
         COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/issue-722-texture-vbo/matrix.sh
           $<TARGET_FILE:CoinTextureArrayTest>)
+      add_test(NAME DefaultTextureCoordinateCache
+        COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/issue-722-texture-vbo/cache.sh
+          $<TARGET_FILE:CoinTextureCacheTest>)
     endif()
     # xvfb-run can report failure even after the child returns 77 when the
     # virtual X server itself could not start.
-    set_tests_properties(TextureCoordinateArrayRendering PROPERTIES
+    set_tests_properties(TextureCoordinateArrayRendering DefaultTextureCoordinateCache PROPERTIES
       SKIP_RETURN_CODE 77
-      SKIP_REGULAR_EXPRESSION "SKIP: no accessible X display for GLX rendering")
+      SKIP_REGULAR_EXPRESSION "SKIP: no accessible X display for GLX rendering"
+      ENVIRONMENT "COIN_GLXGLUE_NO_PBUFFERS=1;COIN_GLX_PIXMAP_DIRECT_RENDERING=1")
 
     add_executable(CoinSharedCoordinateBenchmark EXCLUDE_FROM_ALL
       reproducers/issue-833-shared-coordinates/benchmark.cpp)
@@ -140,6 +172,26 @@ if(COIN_BUILD_LEGACY_GL_RENDERER)
       ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
       ${COIN_TARGET_INCLUDE_DIRECTORIES})
     target_link_libraries(CoinSharedCoordinateBenchmark Coin OpenGL::GL)
+    add_executable(CoinDefaultTextureCacheBenchmark EXCLUDE_FROM_ALL
+      reproducers/issue-722-texture-vbo/benchmark.cpp)
+    target_include_directories(CoinDefaultTextureCacheBenchmark PRIVATE
+      ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+      ${COIN_TARGET_INCLUDE_DIRECTORIES})
+    target_link_libraries(CoinDefaultTextureCacheBenchmark Coin OpenGL::GL)
+    foreach(mode late-cleanup cycles)
+      foreach(vbo 0 1)
+        set(test_name DefaultTextureCacheLifecycle_${mode}_vbo${vbo})
+        if(COIN_TEST_XVFB_RUN)
+          add_test(NAME ${test_name} COMMAND ${COIN_TEST_XVFB_RUN} -a
+            -s "-screen 0 1280x1024x24 -noreset"
+            $<TARGET_FILE:CoinTextureCacheTest> property ${mode})
+        else()
+          add_test(NAME ${test_name} COMMAND CoinTextureCacheTest property ${mode})
+        endif()
+        set_tests_properties(${test_name} PROPERTIES TIMEOUT 60
+          ENVIRONMENT "COIN_VERTEX_ARRAYS=1;COIN_VBO=${vbo};COIN_GLXGLUE_NO_PBUFFERS=1;COIN_GLX_PIXMAP_DIRECT_RENDERING=1")
+      endforeach()
+    endforeach()
   endif()
 endif()
 
