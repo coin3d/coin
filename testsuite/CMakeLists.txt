@@ -405,6 +405,8 @@ target_include_directories(CcRbptreeCleanupTest PRIVATE
   ${COIN_TARGET_INCLUDE_DIRECTORIES})
 add_test(NAME CcRbptreeCleanupDuringShutdown COMMAND CcRbptreeCleanupTest)
 
+include(SoAnnotationDepthTests.cmake)
+
 # Keep this regression test in a fresh process: the unfixed implementation corrupts
 # SoTempPath's internal empty-list storage before ordinary assertions can
 # observe the violation.
