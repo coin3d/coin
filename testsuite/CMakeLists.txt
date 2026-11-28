@@ -22,125 +22,123 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND COIN_BUILD_SHARED_LIBS AND CMAKE_NM)
       -P ${CMAKE_CURRENT_SOURCE_DIR}/CheckLegacyExportedSymbols.cmake)
 endif()
 
-if(COIN_BUILD_LEGACY_GL_RENDERER)
-  find_package(Threads REQUIRED)
-  add_executable(CoinTextureArrayBudgetTest
-    reproducers/issue-833-shared-coordinates/budget.cpp)
-  target_compile_definitions(CoinTextureArrayBudgetTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
-  target_include_directories(CoinTextureArrayBudgetTest PRIVATE
-    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
-    ${PROJECT_SOURCE_DIR}/src ${PROJECT_BINARY_DIR}/src
-    ${PROJECT_SOURCE_DIR}/include/Inventor/annex ${COIN_TARGET_INCLUDE_DIRECTORIES})
-  target_link_libraries(CoinTextureArrayBudgetTest Coin ${COIN_TARGET_LINK_LIBRARIES})
-  add_test(NAME TextureCoordinateArrayBudget COMMAND CoinTextureArrayBudgetTest)
+find_package(Threads REQUIRED)
+add_executable(CoinTextureArrayBudgetTest
+  reproducers/issue-833-shared-coordinates/budget.cpp)
+target_compile_definitions(CoinTextureArrayBudgetTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
+target_include_directories(CoinTextureArrayBudgetTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${PROJECT_SOURCE_DIR}/src ${PROJECT_BINARY_DIR}/src
+  ${PROJECT_SOURCE_DIR}/include/Inventor/annex ${COIN_TARGET_INCLUDE_DIRECTORIES})
+target_link_libraries(CoinTextureArrayBudgetTest Coin ${COIN_TARGET_LINK_LIBRARIES})
+add_test(NAME TextureCoordinateArrayBudget COMMAND CoinTextureArrayBudgetTest)
 
-  add_executable(CoinBumpProgramTest bumprender/FailureTest.cpp)
-  target_compile_definitions(CoinBumpProgramTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
-  target_include_directories(CoinBumpProgramTest PRIVATE
-    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
-    ${PROJECT_SOURCE_DIR}/src ${PROJECT_BINARY_DIR}/src
-    ${PROJECT_SOURCE_DIR}/include/Inventor/annex ${COIN_TARGET_INCLUDE_DIRECTORIES})
-  target_link_libraries(CoinBumpProgramTest Coin Threads::Threads ${COIN_TARGET_LINK_LIBRARIES})
-  add_test(NAME BumpProgramFailuresAndLifetime COMMAND CoinBumpProgramTest)
+add_executable(CoinBumpProgramTest bumprender/FailureTest.cpp)
+target_compile_definitions(CoinBumpProgramTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
+target_include_directories(CoinBumpProgramTest PRIVATE
+  ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+  ${PROJECT_SOURCE_DIR}/src ${PROJECT_BINARY_DIR}/src
+  ${PROJECT_SOURCE_DIR}/include/Inventor/annex ${COIN_TARGET_INCLUDE_DIRECTORIES})
+target_link_libraries(CoinBumpProgramTest Coin Threads::Threads ${COIN_TARGET_LINK_LIBRARIES})
+add_test(NAME BumpProgramFailuresAndLifetime COMMAND CoinBumpProgramTest)
 
-  if(UNIX AND NOT APPLE)
-    find_package(X11 QUIET)
-    if(X11_FOUND AND HAVE_GLX)
-      add_executable(CoinSoGLImageMipmapGLXTest SoGLImageMipmapGLXTest.cpp)
-      target_include_directories(CoinSoGLImageMipmapGLXTest PRIVATE
-        ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
-        ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
-      target_link_libraries(CoinSoGLImageMipmapGLXTest
-        Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
-      add_test(NAME SoGLImageMipmapGLX COMMAND CoinSoGLImageMipmapGLXTest)
-      set_tests_properties(SoGLImageMipmapGLX PROPERTIES SKIP_RETURN_CODE 77 TIMEOUT 60)
-
-      add_executable(CoinBumpGLXTest bumprender/GLXTest.cpp)
-      target_compile_definitions(CoinBumpGLXTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
-      target_include_directories(CoinBumpGLXTest PRIVATE
-        ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
-        ${PROJECT_SOURCE_DIR}/src ${PROJECT_BINARY_DIR}/src
-        ${PROJECT_SOURCE_DIR}/include/Inventor/annex
-        ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
-      target_link_libraries(CoinBumpGLXTest Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
-      add_executable(CoinShadowDirectionalGLXTest shadows/DirectionalGLXTest.cpp)
-      target_include_directories(CoinShadowDirectionalGLXTest PRIVATE
-        ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
-        ${PROJECT_SOURCE_DIR}/include/Inventor/annex
-        ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
-      target_link_libraries(CoinShadowDirectionalGLXTest
-        Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
-      foreach(shadow_case low medium high matrix boundaries)
-        add_test(NAME ShadowDirectionalGLX_${shadow_case}
-          COMMAND CoinShadowDirectionalGLXTest ${shadow_case})
-        set_tests_properties(ShadowDirectionalGLX_${shadow_case} PROPERTIES
-          SKIP_RETURN_CODE 77 LABELS "shadows;native-gl" TIMEOUT 120)
-      endforeach()
-      add_test(NAME BumpProgramGLX COMMAND CoinBumpGLXTest)
-      set_tests_properties(BumpProgramGLX PROPERTIES SKIP_RETURN_CODE 77)
-
-
-      add_executable(CoinGLImageUploadTargetTest glimage/UploadTargetGLXTest.cpp)
-      target_include_directories(CoinGLImageUploadTargetTest PRIVATE
-        ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
-        ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
-      target_link_libraries(CoinGLImageUploadTargetTest
-        Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
-      foreach(upload_case
-          direct-2d-disabled direct-2d-mode2d direct-2d-mode3d
-          direct-2d-modecube direct-2d-moderect
-          direct-3d-disabled direct-3d-mode2d direct-3d-mode3d
-          direct-3d-modecube direct-3d-moderect
-          direct-3d-depth1-disabled direct-3d-depth1-mode2d
-          direct-3d-depth1-mode3d
-          direct-2d-mode3d-mipmap direct-3d-disabled-mipmap
-          direct-3d-mode2d-mipmap direct-3d-mode3d-mipmap
-          direct-2d-mode3d-eager direct-3d-disabled-eager
-          direct-2d-rectangle-mode3d
-          transition-depth1 transition-cubic transition-cubic-mipmap
-          unit1-zero2d-depth1 unit1-disabled-depth1
-          unit1-zero2d-cubic unit1-disabled-cubic
-          unit1-zero2d-cubic-mipmap unit1-disabled-cubic-mipmap)
-        add_test(NAME GLImageUploadTarget_${upload_case}
-          COMMAND CoinGLImageUploadTargetTest ${upload_case})
-        set_tests_properties(GLImageUploadTarget_${upload_case} PROPERTIES
-          SKIP_RETURN_CODE 77 LABELS "glimage;glx" TIMEOUT 30
-          ENVIRONMENT "COIN_GLERROR_DEBUGGING=0;COIN_TEX2_LINEAR_LIMIT=0.2;COIN_TEX2_MIPMAP_LIMIT=0.5;COIN_TEX2_LINEAR_MIPMAP_LIMIT=0.8")
-      endforeach()
-    endif()
-  endif()
-
-  if(HAVE_VRML97 AND UNIX AND NOT APPLE AND HAVE_GLX)
-    add_executable(CoinTextureArrayTest reproducers/issue-722-texture-vbo/shapes.cpp)
-    target_include_directories(CoinTextureArrayTest PRIVATE
+if(UNIX AND NOT APPLE)
+  find_package(X11 QUIET)
+  if(X11_FOUND AND HAVE_GLX)
+    add_executable(CoinSoGLImageMipmapGLXTest SoGLImageMipmapGLXTest.cpp)
+    target_include_directories(CoinSoGLImageMipmapGLXTest PRIVATE
       ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
       ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
-    target_compile_definitions(CoinTextureArrayTest PRIVATE COIN_TEST_HAS_X11)
-    target_link_libraries(CoinTextureArrayTest Coin ${X11_LIBRARIES})
-    find_program(COIN_TEST_XVFB_RUN xvfb-run)
-    if(COIN_TEST_XVFB_RUN)
-      add_test(NAME TextureCoordinateArrayRendering
-        COMMAND ${COIN_TEST_XVFB_RUN} -a
-          ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/issue-722-texture-vbo/matrix.sh
-          $<TARGET_FILE:CoinTextureArrayTest>)
-    else()
-      add_test(NAME TextureCoordinateArrayRendering
-        COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/issue-722-texture-vbo/matrix.sh
-          $<TARGET_FILE:CoinTextureArrayTest>)
-    endif()
-    # xvfb-run can report failure even after the child returns 77 when the
-    # virtual X server itself could not start.
-    set_tests_properties(TextureCoordinateArrayRendering PROPERTIES
-      SKIP_RETURN_CODE 77
-      SKIP_REGULAR_EXPRESSION "SKIP: no accessible X display for GLX rendering")
+    target_link_libraries(CoinSoGLImageMipmapGLXTest
+      Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+    add_test(NAME SoGLImageMipmapGLX COMMAND CoinSoGLImageMipmapGLXTest)
+    set_tests_properties(SoGLImageMipmapGLX PROPERTIES SKIP_RETURN_CODE 77 TIMEOUT 60)
 
-    add_executable(CoinSharedCoordinateBenchmark EXCLUDE_FROM_ALL
-      reproducers/issue-833-shared-coordinates/benchmark.cpp)
-    target_include_directories(CoinSharedCoordinateBenchmark PRIVATE
+    add_executable(CoinBumpGLXTest bumprender/GLXTest.cpp)
+    target_compile_definitions(CoinBumpGLXTest PRIVATE COIN_INTERNAL HAVE_CONFIG_H)
+    target_include_directories(CoinBumpGLXTest PRIVATE
       ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
-      ${COIN_TARGET_INCLUDE_DIRECTORIES})
-    target_link_libraries(CoinSharedCoordinateBenchmark Coin OpenGL::GL)
+      ${PROJECT_SOURCE_DIR}/src ${PROJECT_BINARY_DIR}/src
+      ${PROJECT_SOURCE_DIR}/include/Inventor/annex
+      ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+    target_link_libraries(CoinBumpGLXTest Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+    add_executable(CoinShadowDirectionalGLXTest shadows/DirectionalGLXTest.cpp)
+    target_include_directories(CoinShadowDirectionalGLXTest PRIVATE
+      ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+      ${PROJECT_SOURCE_DIR}/include/Inventor/annex
+      ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+    target_link_libraries(CoinShadowDirectionalGLXTest
+      Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+    foreach(shadow_case low medium high matrix boundaries)
+      add_test(NAME ShadowDirectionalGLX_${shadow_case}
+        COMMAND CoinShadowDirectionalGLXTest ${shadow_case})
+      set_tests_properties(ShadowDirectionalGLX_${shadow_case} PROPERTIES
+        SKIP_RETURN_CODE 77 LABELS "shadows;native-gl" TIMEOUT 120)
+    endforeach()
+    add_test(NAME BumpProgramGLX COMMAND CoinBumpGLXTest)
+    set_tests_properties(BumpProgramGLX PROPERTIES SKIP_RETURN_CODE 77)
+
+
+    add_executable(CoinGLImageUploadTargetTest glimage/UploadTargetGLXTest.cpp)
+    target_include_directories(CoinGLImageUploadTargetTest PRIVATE
+      ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+      ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+    target_link_libraries(CoinGLImageUploadTargetTest
+      Coin ${COIN_TARGET_LINK_LIBRARIES} ${X11_LIBRARIES})
+    foreach(upload_case
+        direct-2d-disabled direct-2d-mode2d direct-2d-mode3d
+        direct-2d-modecube direct-2d-moderect
+        direct-3d-disabled direct-3d-mode2d direct-3d-mode3d
+        direct-3d-modecube direct-3d-moderect
+        direct-3d-depth1-disabled direct-3d-depth1-mode2d
+        direct-3d-depth1-mode3d
+        direct-2d-mode3d-mipmap direct-3d-disabled-mipmap
+        direct-3d-mode2d-mipmap direct-3d-mode3d-mipmap
+        direct-2d-mode3d-eager direct-3d-disabled-eager
+        direct-2d-rectangle-mode3d
+        transition-depth1 transition-cubic transition-cubic-mipmap
+        unit1-zero2d-depth1 unit1-disabled-depth1
+        unit1-zero2d-cubic unit1-disabled-cubic
+        unit1-zero2d-cubic-mipmap unit1-disabled-cubic-mipmap)
+      add_test(NAME GLImageUploadTarget_${upload_case}
+        COMMAND CoinGLImageUploadTargetTest ${upload_case})
+      set_tests_properties(GLImageUploadTarget_${upload_case} PROPERTIES
+        SKIP_RETURN_CODE 77 LABELS "glimage;glx" TIMEOUT 30
+        ENVIRONMENT "COIN_GLERROR_DEBUGGING=0;COIN_TEX2_LINEAR_LIMIT=0.2;COIN_TEX2_MIPMAP_LIMIT=0.5;COIN_TEX2_LINEAR_MIPMAP_LIMIT=0.8")
+    endforeach()
   endif()
+endif()
+
+if(HAVE_VRML97 AND UNIX AND NOT APPLE AND HAVE_GLX)
+  add_executable(CoinTextureArrayTest reproducers/issue-722-texture-vbo/shapes.cpp)
+  target_include_directories(CoinTextureArrayTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES} ${X11_INCLUDE_DIR})
+  target_compile_definitions(CoinTextureArrayTest PRIVATE COIN_TEST_HAS_X11)
+  target_link_libraries(CoinTextureArrayTest Coin ${X11_LIBRARIES})
+  find_program(COIN_TEST_XVFB_RUN xvfb-run)
+  if(COIN_TEST_XVFB_RUN)
+    add_test(NAME TextureCoordinateArrayRendering
+      COMMAND ${COIN_TEST_XVFB_RUN} -a
+        ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/issue-722-texture-vbo/matrix.sh
+        $<TARGET_FILE:CoinTextureArrayTest>)
+  else()
+    add_test(NAME TextureCoordinateArrayRendering
+      COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/reproducers/issue-722-texture-vbo/matrix.sh
+        $<TARGET_FILE:CoinTextureArrayTest>)
+  endif()
+  # xvfb-run can report failure even after the child returns 77 when the
+  # virtual X server itself could not start.
+  set_tests_properties(TextureCoordinateArrayRendering PROPERTIES
+    SKIP_RETURN_CODE 77
+    SKIP_REGULAR_EXPRESSION "SKIP: no accessible X display for GLX rendering")
+
+  add_executable(CoinSharedCoordinateBenchmark EXCLUDE_FROM_ALL
+    reproducers/issue-833-shared-coordinates/benchmark.cpp)
+  target_include_directories(CoinSharedCoordinateBenchmark PRIVATE
+    ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  target_link_libraries(CoinSharedCoordinateBenchmark Coin OpenGL::GL)
 endif()
 
 include(SoDepthBufferTests.cmake)

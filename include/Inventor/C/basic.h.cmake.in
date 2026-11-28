@@ -34,9 +34,6 @@
 #ifndef COIN_BASIC_H
 #define COIN_BASIC_H
 
-/* Whether this Coin library contains the LegacyGL renderer. */
-#cmakedefine01 COIN_HAVE_LEGACY_GL_RENDERER
-
 /*
   NOTE: basic.h is automatically generated from basic.h.in, so don't
   edit basic.h directly.

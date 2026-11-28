@@ -1,4 +1,4 @@
-if(COIN_BUILD_LEGACY_GL_RENDERER AND UNIX AND NOT APPLE)
+if(UNIX AND NOT APPLE)
   find_package(X11 QUIET)
   if(X11_FOUND AND HAVE_GLX)
     add_executable(CoinAlphaTestGLXTest SoAlphaTestGLXTest.cpp)

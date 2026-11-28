@@ -1,4 +1,4 @@
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND COIN_BUILD_LEGACY_GL_RENDERER)
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   find_package(X11 QUIET)
   if(X11_FOUND AND HAVE_GLX)
     # Compile the actual four consumers with the existing deterministic map hook.

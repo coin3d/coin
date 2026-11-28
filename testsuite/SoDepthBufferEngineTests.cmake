@@ -1,6 +1,6 @@
 # The recording test extends the existing range target; native GLX covers the
 # real delayed transparent traversal and the action-owned write policy.
-if(COIN_BUILD_TESTS AND COIN_BUILD_LEGACY_GL_RENDERER)
+if(COIN_BUILD_TESTS)
   add_test(NAME SoDepthBuffer_ignored_engines_are_lazy
     COMMAND CoinSoDepthBufferTest --run_test=depth_ignored_engines_are_lazy)
   set_tests_properties(SoDepthBuffer_ignored_engines_are_lazy PROPERTIES
