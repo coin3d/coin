@@ -94,6 +94,7 @@
 #include "tidbitsp.h"
 #include "io/SoInputP.h"
 #include "io/SoWriterefCounter.h"
+#include "misc/SoDBP.h"
 #include "coindefs.h"
 
 #ifdef HAVE_CONFIG_H
@@ -802,7 +803,15 @@ SoBase::startNotify(void)
   l.setLastType(SoNotRec::CONTAINER);
 
   SoDB::startNotify();
-  this->notify(&l);
+  try {
+    this->notify(&l);
+  }
+  catch (...) {
+    // Unwind this session without starting more sensor callbacks.
+    SoDBP::abortNotify();
+    throw;
+  }
+  // endNotify() consumes the session even if an immediate sensor throws.
   SoDB::endNotify();
 }
 

@@ -143,6 +143,7 @@ inline unsigned int SbHashFunc(const void * key) noexcept
 {
   return SbHashFunc(reinterpret_cast<size_t>(key));
 }
+#include "misc/SoDBP.h"
 #include "coindefs.h" // COIN_STUB(), COIN_CHECK_THREAD()
 
 #ifdef COIN_THREADSAFE
@@ -1459,7 +1460,15 @@ SoField::startNotify(void)
 #endif // COIN_DEBUG
 
   SoDB::startNotify();
-  this->notify(&l);
+  try {
+    this->notify(&l);
+  }
+  catch (...) {
+    // Unwind this session without starting more sensor callbacks.
+    SoDBP::abortNotify();
+    throw;
+  }
+  // endNotify() consumes the session even if an immediate sensor throws.
   SoDB::endNotify();
 
 #if COIN_DEBUG
