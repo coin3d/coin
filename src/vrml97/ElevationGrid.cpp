@@ -273,6 +273,8 @@
 #include "coindefs.h"
 
 #include <cfloat>
+#include <climits>
+#include <cstddef>
 
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -329,6 +331,18 @@ public:
 
 #define PRIVATE(obj) ((obj)->pimpl)
 
+static SbBool
+sovrmlelevationgrid_numvertices(const int xdim, const int zdim,
+                                size_t & numvertices)
+{
+  if (xdim < 2 || zdim < 2) return FALSE;
+  const size_t x = static_cast<size_t>(xdim);
+  const size_t z = static_cast<size_t>(zdim);
+  if (x > static_cast<size_t>(-1) / z) return FALSE;
+  numvertices = x * z;
+  return TRUE;
+}
+
 // *************************************************************************
 
 SO_NODE_SOURCE(SoVRMLElevationGrid);
@@ -382,13 +396,15 @@ SoVRMLElevationGrid::GLRender(SoGLRenderAction * action)
 {
   const int xdim = this->xDimension.getValue();
   const int zdim = this->zDimension.getValue();
-  if (xdim < 2 || zdim < 2) return;
+  size_t numvertices;
+  if (!sovrmlelevationgrid_numvertices(xdim, zdim, numvertices)) return;
 
-  if (this->height.getNum() < xdim*zdim) {
+  if (static_cast<size_t>(this->height.getNum()) < numvertices) {
     SoDebugError::postWarning("SoVRMLElevationGrid::GLRender",
                               "Too few height values. "
-                              "Expected %d values, got %d",
-                              xdim*zdim, this->height.getNum());
+                              "Expected %lu values, got %d",
+                              static_cast<unsigned long>(numvertices),
+                              this->height.getNum());
     return;
   }
 
@@ -511,8 +527,11 @@ SoVRMLElevationGrid::GLRender(SoGLRenderAction * action)
           glNormal3fv(normals[0].getValue());
           normals++;
         }
-        if (mbind != OVERALL) {
+        if (mbind == PER_VERTEX) {
           mb.send(idx2, TRUE);
+        }
+        else if (mbind == PER_QUAD) {
+          mb.send((z * (xdim - 1)) + x - 1, TRUE);
         }
         glVertex3f(currx, nexth[x], nextz);
         idx2++;
@@ -531,8 +550,6 @@ SoVRMLElevationGrid::GLRender(SoGLRenderAction * action)
     for (int z = 0; z < zdim-1; z++) {
       float currx = 0.0f;
       float nextz = currz + zspace;
-
-      int mcnt = 0;
 
       for (int x = 0; x < xdim-1; x++) {
         // vertex 1
@@ -612,7 +629,7 @@ SoVRMLElevationGrid::GLRender(SoGLRenderAction * action)
           mb.send(idx, TRUE);
         }
         else if (mbind == PER_QUAD) {
-          mb.send(mcnt++, TRUE);
+          mb.send(x + z * (xdim - 1), TRUE);
         }
         glVertex3f(currx, h[idx], currz);
         currx += xspace;
@@ -640,9 +657,18 @@ SoVRMLElevationGrid::rayPick(SoRayPickAction * action)
 void
 SoVRMLElevationGrid::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  if (this->shouldPrimitiveCount(action)) {
-    action->addNumTriangles((xDimension.getValue()-1)*(zDimension.getValue()-1)*2);
-  }
+  if (!this->shouldPrimitiveCount(action)) return;
+
+  const int xdim = this->xDimension.getValue();
+  const int zdim = this->zDimension.getValue();
+  size_t numvertices;
+  if (!sovrmlelevationgrid_numvertices(xdim, zdim, numvertices) ||
+      static_cast<size_t>(this->height.getNum()) < numvertices) return;
+
+  const size_t numtriangles =
+    static_cast<size_t>(xdim - 1) * static_cast<size_t>(zdim - 1) * 2;
+  action->addNumTriangles(numtriangles > static_cast<size_t>(INT_MAX) ?
+                          INT_MAX : static_cast<int>(numtriangles));
 }
 
 // Doc in parent
@@ -653,22 +679,29 @@ SoVRMLElevationGrid::computeBBox(SoAction * COIN_UNUSED_ARG(action),
 {
   // FIXME: consider caching minh, maxh in the private class.
 
-  const int n = this->height.getNum();
-  if (n == 0) return;
+  const int xdim = this->xDimension.getValue();
+  const int zdim = this->zDimension.getValue();
+  size_t numvertices;
+  if (!sovrmlelevationgrid_numvertices(xdim, zdim, numvertices) ||
+      static_cast<size_t>(this->height.getNum()) < numvertices) {
+    bbox.makeEmpty();
+    center.setValue(0.0f, 0.0f, 0.0f);
+    return;
+  }
 
   const float * h = this->height.getValues(0);
 
   float minh, maxh;
   minh = maxh = h[0];
-  for (int i = 1; i < n; i++) {
+  for (size_t i = 1; i < numvertices; i++) {
     if (h[i] < minh) minh = h[i];
     else if (h[i] > maxh) maxh = h[i];
   }
 
   bbox.setBounds(0.0f, minh, 0.0f,
-                 this->xDimension.getValue() * this->xSpacing.getValue(),
+                 (xdim - 1) * this->xSpacing.getValue(),
                  maxh,
-                 this->zDimension.getValue() * this->zSpacing.getValue());
+                 (zdim - 1) * this->zSpacing.getValue());
 
   center = bbox.getCenter();
 }
@@ -679,11 +712,12 @@ SoVRMLElevationGrid::generatePrimitives(SoAction * action)
 {
   const int xdim = this->xDimension.getValue();
   const int zdim = this->zDimension.getValue();
-  if (xdim < 2 || zdim < 2) return;
+  size_t numvertices;
+  if (!sovrmlelevationgrid_numvertices(xdim, zdim, numvertices)) return;
 
-  if (this->height.getNum() != xdim*zdim) {
+  if (static_cast<size_t>(this->height.getNum()) < numvertices) {
     SoDebugError::postWarning("SoVRMLElevationGrid::generatePrimitives",
-                              "Wrong number of height values.");
+                              "Too few height values.");
     return;
   }
 
@@ -738,11 +772,10 @@ SoVRMLElevationGrid::generatePrimitives(SoAction * action)
   this->beginShape(action, QUADS, &faceDetail);
 
   int idx;
-  int cnt = 0;
-
   for (int z = 0; z < zdim-1; z++) {
     float currx = 0.0f;
     for (int x = 0; x < xdim-1; x++) {
+      const int quadidx = x + z * (xdim - 1);
 
       // vertex 1
       idx = x+(z+1)*xdim;
@@ -752,8 +785,8 @@ SoVRMLElevationGrid::generatePrimitives(SoAction * action)
         vertex.setMaterialIndex(idx);
       }
       else if (mbind == PER_QUAD) {
-        pointDetail.setMaterialIndex(cnt);
-        vertex.setMaterialIndex(cnt);
+        pointDetail.setMaterialIndex(quadidx);
+        vertex.setMaterialIndex(quadidx);
       }
       if (nbind == PER_VERTEX) {
         pointDetail.setNormalIndex(idx);
@@ -766,7 +799,7 @@ SoVRMLElevationGrid::generatePrimitives(SoAction * action)
         }
       }
       else if (nbind == PER_QUAD) {
-        pointDetail.setNormalIndex(cnt);
+        pointDetail.setNormalIndex(quadidx);
         vertex.setNormal(*currnormal);
         currnormal++;
       }
@@ -839,6 +872,7 @@ SoVRMLElevationGrid::generatePrimitives(SoAction * action)
           vertex.setNormal(normals[idx]);
         }
       }
+      pointDetail.setTextureCoordIndex(idx);
       pointDetail.setCoordinateIndex(idx);
       if (tcoords) vertex.setTextureCoords(tcoords[idx]);
       vertex.setPoint(v3);
@@ -850,7 +884,6 @@ SoVRMLElevationGrid::generatePrimitives(SoAction * action)
     h += xdim;
     nexth += xdim;
     currz += zspace;
-    cnt++;
   }
   this->endShape();
 

@@ -278,6 +278,26 @@ if (USE_PTHREAD)
 endif()
 add_test(NAME CoinTests COMMAND CoinTests)
 
+if(HAVE_VRML97)
+  add_executable(SoVRMLElevationGridPublicTest
+    SoVRMLElevationGridPublicTest.cpp)
+  target_link_libraries(SoVRMLElevationGridPublicTest
+    Coin ${COIN_TARGET_LINK_LIBRARIES})
+  target_include_directories(SoVRMLElevationGridPublicTest PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
+    ${COIN_TARGET_INCLUDE_DIRECTORIES})
+  foreach(elevation_case
+      excess-details invalid-overflow per-quad-bindings raypick-cache
+      normal-cache-ccw)
+    add_test(NAME SoVRMLElevationGrid_${elevation_case}
+      COMMAND SoVRMLElevationGridPublicTest ${elevation_case})
+    set_tests_properties(SoVRMLElevationGrid_${elevation_case}
+      PROPERTIES LABELS vrml97-primitives)
+  endforeach()
+
+endif()
+
 # Keep the independent modes as separate CTest entries so a bad dimension,
 # callback path, or action reset is reported without masking the others.
 add_executable(CoinQuadMeshPrimitiveCountTest
